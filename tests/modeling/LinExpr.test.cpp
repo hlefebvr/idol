@@ -15,7 +15,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
     auto x = model.create_variable(0., Inf, Continuous, "x");
     auto y = model.create_variable(0., Inf, Continuous, "y");
 
-    SECTION("operator*(double, Variable<PlayerT>)") {
+    SECTION("should do the product between (double, Variable<PlayerT>)") {
 
         SECTION("with explicit type") {
             double c = 3.;
@@ -32,7 +32,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(double, Variable<PlayerT>)") {
+    SECTION("should do the sum between (double, Variable<PlayerT>)") {
 
         SECTION("with explicit type") {
             double c = 3.;
@@ -51,7 +51,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(Variable<PlayerT>, double)") {
+    SECTION("should do the sum between (Variable<PlayerT>, double)") {
 
         SECTION("with explicit type") {
             double c = 3.;
@@ -70,7 +70,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(Variable<PlayerT>, Variable<PlayerT>)") {
+    SECTION("should do the sum between (Variable<PlayerT>, Variable<PlayerT>)") {
 
         SECTION("\"with explicit type\" with different variables") {
 
@@ -89,7 +89,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(Variable<PlayerT>, LinExpr<PlayerT>)") {
+    SECTION("should do the sum between (Variable<PlayerT>, LinExpr<PlayerT>)") {
 
         SECTION("with same variables") {
 
@@ -129,7 +129,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(LinExpr<PlayerT>, Variable<PlayerT>)") {
+    SECTION("should do the sum between (LinExpr<PlayerT>, Variable<PlayerT>)") {
 
         SECTION("with same variables") {
 
@@ -169,7 +169,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(double, LinExpr<PlayerT>)") {
+    SECTION("should do the sum between (double, LinExpr<PlayerT>)") {
 
         SECTION("with explicit type") {
             LinExpr<TestType::PlayerT> c = 2 * x;
@@ -189,7 +189,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(LinExpr<PlayerT>, double)") {
+    SECTION("should do the sum between (LinExpr<PlayerT>, double)") {
 
         SECTION("with explicit type") {
             LinExpr<TestType::PlayerT> c = 2 * x;
@@ -210,7 +210,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator+(LinExpr<PlayerT>, LinExpr<PlayerT>)") {
+    SECTION("should do the sum between (LinExpr<PlayerT>, LinExpr<PlayerT>)") {
 
         SECTION("with same variables") {
 
@@ -252,14 +252,14 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("LinExpr<PlayerT>()") {
+    SECTION("should construct with ()") {
         LinExpr<TestType::PlayerT> lin_expr;
         CHECK(lin_expr.n_terms() == 0);
         CHECK(lin_expr.constant() == 0._a);
         CHECK(lin_expr.is_numerical());
     }
 
-    SECTION("LinExpr<PlayerT>(double)") {
+    SECTION("should construct with (double)") {
 
         SECTION("with explicit type") {
             double c = 3.;
@@ -276,7 +276,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("LinExpr<PlayerT>(Variable<PlayerT>)") {
+    SECTION("should construct with (Variable<PlayerT>)") {
 
         LinExpr<TestType::PlayerT> lin_expr(x);
         CHECK(lin_expr.n_terms() == 1);
@@ -285,7 +285,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("LinExpr<PlayerT>(const LinExpr<PlayerT>&)") {
+    SECTION("should construct with (const LinExpr<PlayerT>&)") {
 
         LinExpr<TestType::PlayerT> c = 2 * x;
         LinExpr<TestType::PlayerT> lin_expr(c);
@@ -294,7 +294,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("LinExpr<PlayerT>(LinExpr<PlayerT>&&)") {
+    SECTION("should construct with (LinExpr<PlayerT>&&)") {
 
 
         SECTION("with explicit type") {
@@ -312,7 +312,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator=(double)") {
+    SECTION("should make equality with (double)") {
 
         SECTION("with explicit type") {
             double c = 3.;
@@ -329,7 +329,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator=(const Variable<PlayerT>&)") {
+    SECTION("should make equality with (const Variable<PlayerT>&)") {
 
         LinExpr<TestType::PlayerT> lin_expr = x;
         CHECK(lin_expr[x] == 1._a);
@@ -337,7 +337,7 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
-    SECTION("operator=(const LinExpr<PlayerT>&)") {
+    SECTION("should make equality with (const LinExpr<PlayerT>&)") {
 
         SECTION("with explicit type") {
             LinExpr<TestType::PlayerT> c = 3 + 2 * x + y;

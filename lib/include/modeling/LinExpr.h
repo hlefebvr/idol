@@ -45,15 +45,19 @@ public:
     //LinExpr<PlayerT>& operator+=(double t_coeff); // TODO after adding tests
 
     [[nodiscard]] double operator[](const Variable<PlayerT>& t_variable) const;
-    [[nodiscard]] bool operator==(const LinExpr<PlayerT>& t_lin_expr) const;
 
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator*(double, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(double, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(const Variable<GenPlayerT>&, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(LinExpr<GenPlayerT>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(LinExpr<GenPlayerT>, double);
-    template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(const LinExpr<GenPlayerT>&, const LinExpr<GenPlayerT>&);
+    template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(LinExpr<GenPlayerT>, const LinExpr<GenPlayerT>&);
+
+    static const LinExpr<PlayerT> Zero;
 };
+
+template<enum Player PlayerT>
+const LinExpr<PlayerT> LinExpr<PlayerT>::Zero = LinExpr<PlayerT>(0.);
 
 template<enum Player PlayerT>
 LinExpr<PlayerT>::LinExpr(double t_offset) : m_constant(t_offset) {
@@ -116,17 +120,12 @@ LinExpr<PlayerT> operator+(double t_coeff, LinExpr<PlayerT> t_expr) {
 }
 
 template<enum Player PlayerT>
-LinExpr<PlayerT> operator+(const LinExpr<PlayerT>& t_expr_1, const LinExpr<PlayerT>& t_expr_2) {
+LinExpr<PlayerT> operator+(LinExpr<PlayerT> t_expr_1, const LinExpr<PlayerT>& t_expr_2) {
 
-    const bool t_expr_1_is_moved = t_expr_1.n_terms() >= t_expr_2.n_terms();
+    LinExpr<PlayerT> result(std::move(t_expr_1));
+    result.m_constant += t_expr_2.m_constant;
 
-    auto&& expr_1     = t_expr_1_is_moved ? std::move(t_expr_1) : std::move(t_expr_2);
-    const auto expr_2 = t_expr_1_is_moved ?      t_expr_2       :     t_expr_1       ;
-
-    LinExpr<PlayerT> result(std::move(expr_1));
-    result.m_constant += expr_2.m_constant;
-
-    for (auto [var, coeff] : expr_2) {
+    for (auto [var, coeff] : t_expr_2) {
         auto [it, success] = result.m_terms.template emplace(var, coeff);
         if (!success) {
             it->second += coeff;

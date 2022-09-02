@@ -15,7 +15,11 @@ class Expr {
     Expr(Map<Variable<PlayerT>, LinExpr<opp_player_v<PlayerT>>>&& t_map, LinExpr<opp_player_v<PlayerT>>&& t_constant);
 public:
     Expr() = default;
+    Expr(double t_constant); // NOLINT(google-explicit-constructor)
+    Expr(const Variable<PlayerT>& t_variable); // NOLINT(google-explicit-constructor)
+    Expr(const Variable<opp_player_v<PlayerT>>& t_variable); // NOLINT(google-explicit-constructor)
     Expr(const LinExpr<PlayerT>& t_lin_expr); // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<opp_player_v<PlayerT>> t_lin_expr); // NOLINT(google-explicit-constructor)
 
     Expr(const Expr&) = default;
     Expr(Expr&&) noexcept = default;
@@ -37,12 +41,17 @@ public:
 
     [[nodiscard]] unsigned int n_terms() const;
 
+    [[nodiscard]] bool is_numerical() const;
+
+    [[nodiscard]] const LinExpr<opp_player_v<PlayerT>>& operator[](const Variable<PlayerT>& t_variable) const;
+
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator*(LinExpr<opp_player_v<GenPlayerT>>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, double);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, const Variable<opp_player_v<GenPlayerT>>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, LinExpr<GenPlayerT>);
-    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, Expr<GenPlayerT>);
+    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, LinExpr<opp_player_v<GenPlayerT>>);
+    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, const Expr<GenPlayerT>&);
 };
 
 template<enum Player PlayerT>
@@ -161,17 +170,27 @@ Expr<PlayerT> operator+(LinExpr<PlayerT> t_lin_expr, Expr<PlayerT> t_expr) {
     return std::move(t_expr) + std::move(t_lin_expr);
 }
 
+
+template<enum Player GenPlayerT>
+Expr<GenPlayerT> operator+(Expr<GenPlayerT> t_expr, LinExpr<opp_player_v<GenPlayerT>> t_lin_expr) {
+    Expr<GenPlayerT> result(std::move(t_expr));
+    result.m_constant = std::move(result.m_constant) + t_lin_expr;
+    return result;
+}
+
+template<enum Player GenPlayerT>
+Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>> t_lin_expr, Expr<GenPlayerT> t_expr) {
+    return std::move(t_expr) + std::move(t_lin_expr);
+}
+
+
 template<enum Player PlayerT>
-Expr<PlayerT> operator+(Expr<PlayerT> t_expr_1, Expr<PlayerT> t_expr_2) {
-    const bool t_expr_1_is_moved = t_expr_1.n_terms() >= t_expr_2.n_terms();
+Expr<PlayerT> operator+(Expr<PlayerT> t_expr_1, const Expr<PlayerT>& t_expr_2) {
 
-    auto&& expr_1     = t_expr_1_is_moved ? std::move(t_expr_1) : std::move(t_expr_2);
-    const auto expr_2 = t_expr_1_is_moved ?      t_expr_2       :     t_expr_1       ;
+    Expr<PlayerT> result(std::move(t_expr_1));
+    result.m_constant = std::move(result.m_constant) + t_expr_2.m_constant;
 
-    Expr<PlayerT> result(std::move(expr_1));
-    result.m_constant = std::move(result.m_constant) + expr_2.m_constant;
-
-    for (auto [var, coeff] : expr_2) {
+    for (auto [var, coeff] : t_expr_2) {
         auto [it, success] = result.m_terms.template emplace(var, coeff);
         if (!success) {
             it->second = std::move(it->second) + coeff;
@@ -179,6 +198,37 @@ Expr<PlayerT> operator+(Expr<PlayerT> t_expr_1, Expr<PlayerT> t_expr_2) {
     }
 
     return result;
+}
+
+template<enum Player PlayerT>
+const LinExpr<opp_player_v<PlayerT>> &Expr<PlayerT>::operator[](const Variable<PlayerT> &t_variable) const {
+    auto it = m_terms.find(t_variable);
+    return it == m_terms.end() ? LinExpr<opp_player_v<PlayerT>>::Zero : it->second;
+}
+
+template<enum Player PlayerT>
+bool Expr<PlayerT>::is_numerical() const {
+    return m_constant.is_numerical() && m_terms.empty();
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT>::Expr(LinExpr<opp_player_v<PlayerT>> t_lin_expr) : m_constant(std::move(t_lin_expr)) {
+
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT>::Expr(double t_constant) : m_constant(t_constant) {
+
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT>::Expr(const Variable<PlayerT> &t_variable) : m_terms({ { t_variable, 1. } }) {
+
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT>::Expr(const Variable<opp_player_v<PlayerT>> &t_variable) : m_constant(t_variable) {
+
 }
 
 template<enum Player PlayerT>
