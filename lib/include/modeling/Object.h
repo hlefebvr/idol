@@ -13,6 +13,8 @@ public:
 
     [[nodiscard]] virtual const std::string& name() const = 0;
 
+    [[nodiscard]] virtual unsigned int index() const = 0;
+
     struct compare {
         bool operator()(const AbstractObject& a, const AbstractObject& b) const {
             return a.id() < b.id();
@@ -47,6 +49,8 @@ public:
     [[nodiscard]] unsigned int id() const final;
 
     [[nodiscard]] const std::string& name() const final;
+
+    [[nodiscard]] unsigned int index() const final;
 };
 
 template<class Impl>
@@ -62,6 +66,11 @@ unsigned int Object<Impl>::id() const {
 template<class Impl>
 const std::string &Object<Impl>::name() const {
     return impl().name();
+}
+
+template<class Impl>
+unsigned int Object<Impl>::index() const {
+    return impl().index();
 }
 
 #endif //OPTIMIZE_OBJECT_H

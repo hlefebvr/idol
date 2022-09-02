@@ -13,9 +13,11 @@ int main() {
 
     Model model(env);
 
-    auto x = model.create_variable(0., Inf, Continuous, "x");
-    auto y = model.create_variable(0., Inf, Continuous, "y");
-    auto xi = model.create_parameter(0., Inf, Continuous, "xi");
+    auto x = model.add_variable(0., Inf, Continuous, "x");
+    auto y = model.add_variable(0., Inf, Continuous, "y");
+    auto xi = model.add_parameter(0., Inf, Continuous, "xi");
+
+    model.add_constraint(x + y <= 2.);
 
     return 0;
 }

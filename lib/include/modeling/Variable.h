@@ -5,7 +5,6 @@
 #ifndef OPTIMIZE_VARIABLE_H
 #define OPTIMIZE_VARIABLE_H
 
-#include "../Types.h"
 #include "impl_Variable.h"
 #include "Object.h"
 
@@ -20,8 +19,6 @@ public:
     Variable& operator=(const Variable&) = default;
     Variable& operator=(Variable&&) noexcept = default;
 
-    [[nodiscard]] unsigned int index() const;
-
     [[nodiscard]] double lower_bound() const;
 
     [[nodiscard]] double upper_bound() const;
@@ -32,11 +29,6 @@ public:
 template<enum Player PlayerT>
 Variable<PlayerT>::Variable(impl::Variable *const t_impl) : Object<impl::Variable>(t_impl) {
 
-}
-
-template<enum Player PlayerT>
-unsigned int Variable<PlayerT>::index() const {
-    return impl().index();
 }
 
 template<enum Player PlayerT>

@@ -8,7 +8,8 @@
 
 unsigned int impl::Object::s_id = 0;
 
-impl::Object::Object(Env &t_env, std::string&& t_name) : m_env(t_env), m_name(std::move(t_name)) {
+impl::Object::Object(Env &t_env, unsigned int t_index, std::string&& t_name)
+    : m_env(t_env), m_index(t_index), m_name(std::move(t_name)) {
 
 }
 

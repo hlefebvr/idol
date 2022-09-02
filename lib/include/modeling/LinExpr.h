@@ -5,7 +5,6 @@
 #ifndef OPTIMIZE_LINEXPR_H
 #define OPTIMIZE_LINEXPR_H
 
-#include "../Types.h"
 #include "Variable.h"
 #include "../containers/Map.h"
 

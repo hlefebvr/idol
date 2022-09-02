@@ -6,14 +6,13 @@
 #define OPTIMIZE_LINEXPR_TEST_CPP
 
 #include "../test_utils.h"
-#include "modeling/LinExpr.h"
 
 TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     Env env;
     Model<TestType::PlayerT> model(env);
-    auto x = model.create_variable(0., Inf, Continuous, "x");
-    auto y = model.create_variable(0., Inf, Continuous, "y");
+    auto x = model.add_variable(0., Inf, Continuous, "x");
+    auto y = model.add_variable(0., Inf, Continuous, "y");
 
     SECTION("should do the product between (double, Variable<PlayerT>)") {
 

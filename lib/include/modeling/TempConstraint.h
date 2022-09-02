@@ -5,7 +5,6 @@
 #ifndef OPTIMIZE_TEMPCONSTRAINT_H
 #define OPTIMIZE_TEMPCONSTRAINT_H
 
-#include "../Types.h"
 #include "Expr.h"
 
 template<enum Player PlayerT> class Model;

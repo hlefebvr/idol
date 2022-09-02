@@ -9,8 +9,6 @@
 #include "../Types.h"
 #include "impl_Object.h"
 
-template<enum Player> class Model;
-
 namespace impl {
     class Variable;
 }
@@ -19,7 +17,6 @@ class impl::Variable : public impl::Object {
     double m_lower_bound;
     double m_upper_bound;
     VariableType m_type;
-    const unsigned int m_index;
 public:
     Variable(Env& t_env, unsigned int t_index, double t_lower_bound, double t_upper_bound, VariableType t_type, std::string&& t_name);
 
@@ -28,8 +25,6 @@ public:
 
     Variable& operator=(const Variable&) = delete;
     Variable& operator=(Variable&&) noexcept = delete;
-
-    [[nodiscard]] inline unsigned int index() const;
 
     [[nodiscard]] inline double lower_bound() const;
 
@@ -43,10 +38,6 @@ public:
 
     inline void set_type(VariableType t_type);
 };
-
-unsigned int impl::Variable::index() const {
-    return m_index;
-}
 
 double impl::Variable::lower_bound() const {
     return m_lower_bound;

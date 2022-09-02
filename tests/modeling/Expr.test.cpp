@@ -4,16 +4,15 @@
 
 #include <iostream>
 #include "../test_utils.h"
-#include "modeling/Expr.h"
 
 TEMPLATE_LIST_TEST_CASE("Expr", "[expressions][modeling]", for_each_player) {
 
     Env env;
     Model<TestType::PlayerT> model(env);
-    auto x = model.create_variable(0., Inf, Continuous, "x");
-    auto y = model.create_variable(0., Inf, Continuous, "y");
-    auto xi_1 = model.create_parameter(0., Inf, Continuous, "xi_1");
-    auto xi_2 = model.create_parameter(0., Inf, Continuous, "xi_2");
+    auto x = model.add_variable(0., Inf, Continuous, "x");
+    auto y = model.add_variable(0., Inf, Continuous, "y");
+    auto xi_1 = model.add_parameter(0., Inf, Continuous, "xi_1");
+    auto xi_2 = model.add_parameter(0., Inf, Continuous, "xi_2");
 
     SECTION("should construct with (double)") {
         Expr<TestType::PlayerT> expr(3);

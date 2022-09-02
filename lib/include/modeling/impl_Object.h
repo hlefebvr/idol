@@ -19,10 +19,11 @@ class impl::Object {
     static unsigned int s_id;
     const unsigned int m_id = ++s_id;
     const std::string m_name;
+    const unsigned int m_index;
     Env& m_env;
     std::list<impl::Object*>::iterator m_it;
 public:
-    explicit Object(Env& t_env, std::string&& t_name);
+    explicit Object(Env& t_env, unsigned int t_index, std::string&& t_name);
 
     Object(const Object&) = default;
     Object(Object&&) noexcept = default;
@@ -36,6 +37,8 @@ public:
 
     [[nodiscard]] inline const std::string& name() const;
 
+    [[nodiscard]] inline unsigned int index() const;
+
     void free();
 };
 
@@ -45,6 +48,10 @@ unsigned int impl::Object::id() const {
 
 const std::string &impl::Object::name() const {
     return m_name;
+}
+
+unsigned int impl::Object::index() const {
+    return m_index;
 }
 
 #endif //OPTIMIZE_IMPL_OBJECT_H
