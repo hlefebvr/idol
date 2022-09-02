@@ -8,6 +8,7 @@
 enum Player { Decision, Parameter };
 
 enum VariableType { Continuous, Binary, Integer };
+enum ConstraintType { GreaterOrEqual, LessOrEqual, Equal };
 
 template<enum Player> struct opp_player {};
 template<> struct opp_player<Decision> { static constexpr Player value = Parameter; };
