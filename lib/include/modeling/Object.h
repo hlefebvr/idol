@@ -30,7 +30,7 @@ public:
     };
 };
 
-std::ostream& operator<<(std::ostream& t_os, const AbstractObject& t_object) {
+static std::ostream& operator<<(std::ostream& t_os, const AbstractObject& t_object) {
     return t_os << t_object.name();
 }
 

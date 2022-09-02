@@ -44,6 +44,9 @@ public:
 
     //LinExpr<PlayerT>& operator+=(double t_coeff); // TODO after adding tests
 
+    [[nodiscard]] double operator[](const Variable<PlayerT>& t_variable) const;
+    [[nodiscard]] bool operator==(const LinExpr<PlayerT>& t_lin_expr) const;
+
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator*(double, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(double, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator+(const Variable<GenPlayerT>&, const Variable<GenPlayerT>&);
@@ -181,6 +184,12 @@ LinExpr<PlayerT>::LinExpr(Map<Variable<PlayerT>, double> &&t_map, double t_const
 template<enum Player PlayerT>
 bool LinExpr<PlayerT>::is_numerical() const {
     return m_terms.empty();
+}
+
+template<enum Player PlayerT>
+double LinExpr<PlayerT>::operator[](const Variable<PlayerT> &t_variable) const {
+    auto it = m_terms.find(t_variable);
+    return it == m_terms.end() ? 0. : it->second;
 }
 
 template<enum Player PlayerT>
