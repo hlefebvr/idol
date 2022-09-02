@@ -51,6 +51,8 @@ public:
     [[nodiscard]] const std::string& name() const final;
 
     [[nodiscard]] unsigned int index() const final;
+
+    using impl_t = Impl;
 };
 
 template<class Impl>

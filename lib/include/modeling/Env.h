@@ -13,14 +13,14 @@ namespace impl {
     class Object;
 }
 
-template<enum Player> class Model;
+template<enum Player> class BaseModel;
 
 class Env;
 
 class ObjectCreator {
 protected:
-    friend class Model<Decision>;
-    friend class Model<Parameter>;
+    friend class BaseModel<Decision>;
+    friend class BaseModel<Parameter>;
 
     template<class T, class ...Args>
     T* create(Args ...t_args) {
