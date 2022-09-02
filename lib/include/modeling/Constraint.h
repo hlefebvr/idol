@@ -38,4 +38,16 @@ ConstraintType Constraint<PlayerT>::type() const {
     return this->impl().type();
 }
 
+template<enum Player PlayerT>
+std::ostream &operator<<(std::ostream& t_os, const Constraint<PlayerT>& t_ctr) {
+    t_os << t_ctr.name() << " : ";
+    t_os << t_ctr.expr();
+    switch (t_ctr.type()) {
+        case Equal: t_os << " == "; break;
+        case LessOrEqual: t_os << " <= "; break;
+        case GreaterOrEqual: t_os << " >= "; break;
+    }
+    return t_os << '0';
+}
+
 #endif //OPTIMIZE_CONSTRAINT_H

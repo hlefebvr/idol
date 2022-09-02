@@ -675,4 +675,95 @@ TEMPLATE_LIST_TEST_CASE("Expr", "[expressions][modeling]", for_each_player) {
 
     }
 
+    SECTION("should update a specific coefficient") {
+
+        Expr<TestType::PlayerT> expr = (2 + 3 * xi_1) * x;
+
+        SECTION("should insert a new term without parameter") {
+
+            SECTION("with a non-zero term") {
+                expr.set_coefficient(y, 1.);
+                CHECK(expr.n_terms() == 2);
+                CHECK(expr[y].constant() == 1._a);
+            }
+
+            SECTION("with zero") {
+                expr.set_coefficient(y, 0.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[y].constant() == 0._a);
+            }
+
+        }
+
+        SECTION("should insert a new term with parameter") {
+
+            SECTION("with a non-zero term") {
+                expr.set_coefficient(y, xi_1, 1.);
+                CHECK(expr.n_terms() == 2);
+                CHECK(expr[y].constant() == 0._a);
+                CHECK(expr[y][xi_1] == 1._a);
+            }
+
+            SECTION("with zero") {
+                expr.set_coefficient(y, xi_1, 0.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[y].constant() == 0._a);
+                CHECK(expr[y][xi_1] == 0._a);
+            }
+
+        }
+
+        SECTION("should update an existing term without parameter") {
+
+            SECTION("with a non-zero term") {
+                expr.set_coefficient(x, 1.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[x].constant() == 1._a);
+            }
+
+            SECTION("with zero") {
+                expr.set_coefficient(x, 0.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[x].constant() == 0._a);
+            }
+
+        }
+
+        SECTION("should update an existing term with parameter") {
+
+            SECTION("with a non-zero term") {
+                expr.set_coefficient(x, xi_1, 1.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[x].constant() == 2._a);
+                CHECK(expr[x][xi_1] == 1._a);
+            }
+
+            SECTION("with zero") {
+                expr.set_coefficient(x, xi_1, 0.);
+                CHECK(expr.n_terms() == 1);
+                CHECK(expr[x].constant() == 2._a);
+                CHECK(expr[x][xi_1] == 0._a);
+            }
+
+
+            SECTION("should erase term when setting to zero coefficient of (x) then of (x,xi)") {
+                expr.set_coefficient(x, 0.);
+                expr.set_coefficient(x, xi_1, 0.);
+                CHECK(expr.n_terms() == 0);
+                CHECK(expr[x].constant() == 0._a);
+                CHECK(expr[x][xi_1] == 0._a);
+            }
+
+            SECTION("should erase term when setting to zero coefficient of (x,xi) then of (x)") {
+                expr.set_coefficient(x, xi_1, 0.);
+                expr.set_coefficient(x, 0.);
+                CHECK(expr.n_terms() == 0);
+                CHECK(expr[x].constant() == 0._a);
+                CHECK(expr[x][xi_1] == 0._a);
+            }
+
+        }
+
+    }
+
 }

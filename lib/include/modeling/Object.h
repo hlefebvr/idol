@@ -64,7 +64,7 @@ unsigned int Object<Impl>::id() const {
 }
 
 template<class Impl>
-const std::string &Object<Impl>::name() const {
+const std::string& Object<Impl>::name() const {
     return impl().name();
 }
 

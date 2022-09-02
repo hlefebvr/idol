@@ -45,11 +45,28 @@ public:
 
     [[nodiscard]] const LinExpr<opp_player_v<PlayerT>>& operator[](const Variable<PlayerT>& t_variable) const;
 
+    void set_numerical_constant(double t_constant);
+
+    void set_coefficient(const Variable<PlayerT>& t_var, double t_coeff);
+
+    void set_coefficient(const Variable<opp_player_v<PlayerT>>& t_param, double t_coeff);
+
+    void set_coefficient(const Variable<PlayerT>& t_var, const Variable<opp_player_v<PlayerT>>& t_param, double t_coeff);
+
+    void set_exact_coefficient(const Variable<PlayerT>& t_var, LinExpr<opp_player_v<PlayerT>> t_coefficient);
+
+    void set_exact_constant(LinExpr<opp_player_v<PlayerT>> t_coefficient);
+
     Expr<PlayerT>& operator*=(double t_rhs);
+
     Expr<PlayerT>& operator+=(double t_rhs);
+
     Expr<PlayerT>& operator+=(const Variable<PlayerT>& t_rhs);
+
     Expr<PlayerT>& operator+=(const Variable<opp_player_v<PlayerT>>& t_rhs);
+
     Expr<PlayerT>& operator+=(const LinExpr<opp_player_v<PlayerT>>& t_rhs);
+
     Expr<PlayerT>& operator+=(const Expr<PlayerT>& t_rhs);
 
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator*(LinExpr<opp_player_v<GenPlayerT>>, const Variable<GenPlayerT>&);
@@ -297,6 +314,55 @@ template<enum Player PlayerT>
 Expr<PlayerT> &Expr<PlayerT>::operator+=(const LinExpr<opp_player_v<PlayerT>> &t_rhs) {
     m_constant += t_rhs;
     return *this;
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_numerical_constant(double t_constant) {
+    m_constant = t_constant;
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_coefficient(const Variable<PlayerT>& t_var, double t_coeff) {
+    auto [it, success] = m_terms.template emplace(t_var, t_coeff);
+    if (!success) {
+        it->second.set_constant(t_coeff);
+    }
+    if (it->second.is_empty()) {
+        m_terms.erase(it);
+    }
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_coefficient(const Variable<opp_player_v<PlayerT>>& t_var, double t_coeff) {
+    m_constant.set_coefficient(t_var, t_coeff);
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_coefficient(const Variable<PlayerT>& t_var, const Variable<opp_player_v<PlayerT>>& t_param, double t_coeff) {
+    auto [it, success] = m_terms.template emplace(t_var, t_coeff * t_param);
+    if (!success) {
+        it->second.set_coefficient(t_param, t_coeff);
+    }
+    if (it->second.is_empty()) {
+        m_terms.erase(it);
+    }
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_exact_coefficient(const Variable<PlayerT>& t_var, LinExpr<opp_player_v<PlayerT>> t_coefficient) {
+    if (t_coefficient.is_empty()) {
+        m_terms.erase(t_var);
+        return;
+    }
+    auto [it, success] = m_terms.template emplace(t_var, std::move(t_coefficient));
+    if (!success) {
+        it->second = std::move(t_coefficient);
+    }
+}
+
+template<enum Player PlayerT>
+void Expr<PlayerT>::set_exact_constant(LinExpr<opp_player_v<PlayerT>> t_coefficient) {
+    m_constant = std::move(t_coefficient);
 }
 
 template<enum Player PlayerT>

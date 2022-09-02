@@ -454,6 +454,46 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
+    SECTION("should set specific coefficient") {
+
+        SECTION("should insert a new term") {
+
+            LinExpr<TestType::PlayerT> lin_expr;
+
+            SECTION("with a non-zero value") {
+                lin_expr.set_coefficient(x, 1.);
+                CHECK(lin_expr[x] == 1._a);
+                CHECK(lin_expr.n_terms() == 1);
+            }
+
+            SECTION("with zero") {
+                lin_expr.set_coefficient(x, 0.);
+                CHECK(lin_expr[x] == 0._a);
+                CHECK(lin_expr.n_terms() == 0);
+            }
+
+        }
+
+        SECTION("should update an existing term") {
+
+            LinExpr<TestType::PlayerT> lin_expr = 3 * x;
+
+            SECTION("with a non-zero value") {
+                lin_expr.set_coefficient(x, 1.);
+                CHECK(lin_expr[x] == 1._a);
+                CHECK(lin_expr.n_terms() == 1);
+            }
+
+            SECTION("with zero") {
+                lin_expr.set_coefficient(x, 0.);
+                CHECK(lin_expr[x] == 0._a);
+                CHECK(lin_expr.n_terms() == 0);
+            }
+
+        }
+
+    }
+
 }
 
 #endif //OPTIMIZE_LINEXPR_TEST_CPP

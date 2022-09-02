@@ -22,6 +22,8 @@ class impl::Object {
     const unsigned int m_index;
     Env& m_env;
     std::list<impl::Object*>::iterator m_it;
+protected:
+    [[nodiscard]] virtual std::string default_name() const = 0;
 public:
     explicit Object(Env& t_env, unsigned int t_index, std::string&& t_name);
 
@@ -46,7 +48,10 @@ unsigned int impl::Object::id() const {
     return m_id;
 }
 
-const std::string &impl::Object::name() const {
+const std::string& impl::Object::name() const {
+    if (m_name.empty()) {
+        const_cast<std::string&>(m_name) = default_name() + '(' + std::to_string(id()) + ')';
+    }
     return m_name;
 }
 

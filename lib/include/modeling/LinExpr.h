@@ -45,6 +45,10 @@ public:
 
     [[nodiscard]] double operator[](const Variable<PlayerT>& t_variable) const;
 
+    void set_coefficient(const Variable<PlayerT>& t_var, double t_coeff);
+
+    void set_constant(double t_constant);
+
     LinExpr<PlayerT> operator*=(double t_rhs);
     LinExpr<PlayerT> operator+=(double t_rhs);
     LinExpr<PlayerT> operator+=(const Variable<PlayerT>& t_rhs);
@@ -76,6 +80,9 @@ LinExpr<PlayerT>::LinExpr(const Variable<PlayerT> &t_var) : m_terms({{t_var, 1. 
 
 template<enum Player PlayerT>
 LinExpr<PlayerT> operator*(double t_coeff, const Variable<PlayerT>& t_variable) {
+    if (equals(t_coeff, 0., TolFeas)) {
+        return LinExpr<PlayerT>();
+    }
     return LinExpr<PlayerT>({ { t_variable, t_coeff } }, 0.);
 }
 
@@ -175,7 +182,7 @@ unsigned int LinExpr<PlayerT>::n_terms() const {
 
 template<enum Player PlayerT>
 bool LinExpr<PlayerT>::is_empty() const {
-    return m_terms.size() == 0 && equals(m_constant, 0., TolFeas);
+    return m_terms.empty() && equals(m_constant, 0., TolFeas);
 }
 
 template<enum Player PlayerT>
@@ -247,6 +254,23 @@ LinExpr<PlayerT> LinExpr<PlayerT>::operator+=(const Variable<PlayerT> &t_rhs) {
         }
     }
     return *this;
+}
+
+template<enum Player PlayerT>
+void LinExpr<PlayerT>::set_constant(double t_constant) {
+    m_constant = t_constant;
+}
+
+template<enum Player PlayerT>
+void LinExpr<PlayerT>::set_coefficient(const Variable<PlayerT> &t_var, double t_coeff) {
+    if (equals(t_coeff, 0., TolFeas)) {
+        m_terms.erase(t_var);
+        return;
+    }
+    auto [it, success] = m_terms.template emplace(t_var, t_coeff);
+    if (!success) {
+        it->second = t_coeff;
+    }
 }
 
 template<enum Player GenPlayerT>

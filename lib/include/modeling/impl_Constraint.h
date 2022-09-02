@@ -15,6 +15,8 @@ template<enum Player PlayerT>
 class impl::Constraint : public impl::Object {
     Expr<PlayerT> m_expression;
     ConstraintType m_type;
+protected:
+    [[nodiscard]] std::string default_name() const override;
 public:
     Constraint(Env& t_env, unsigned int t_index, TempConstraint<PlayerT>&& t_temp_ctr, std::string&& t_name);
 
@@ -44,6 +46,11 @@ const Expr<PlayerT> &impl::Constraint<PlayerT>::expr() const {
 template<enum Player PlayerT>
 ConstraintType impl::Constraint<PlayerT>::type() const {
     return m_type;
+}
+
+template<enum Player PlayerT>
+std::string impl::Constraint<PlayerT>::default_name() const {
+    return "Ctr";
 }
 
 #endif //OPTIMIZE_IMPL_CONSTRAINT_H

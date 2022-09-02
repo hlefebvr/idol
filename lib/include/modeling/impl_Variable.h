@@ -17,6 +17,8 @@ class impl::Variable : public impl::Object {
     double m_lower_bound;
     double m_upper_bound;
     VariableType m_type;
+protected:
+    [[nodiscard]] inline std::string default_name() const override;
 public:
     Variable(Env& t_env, unsigned int t_index, double t_lower_bound, double t_upper_bound, VariableType t_type, std::string&& t_name);
 
@@ -61,6 +63,10 @@ void impl::Variable::set_upper_bound(double t_upper_bound) {
 
 void impl::Variable::set_type(VariableType t_type) {
     m_type = t_type;
+}
+
+std::string impl::Variable::default_name() const {
+    return "Var";
 }
 
 #endif //OPTIMIZE_IMPL_VARIABLE_H
