@@ -36,6 +36,12 @@ public:
 
     void update(const Variable<PlayerT>& t_variable, const Optional<double>& t_lower_bound, const Optional<double>& t_upper_bound, const Optional<VariableType>& t_type);
     void update(const Variable<opp_player_v<PlayerT>>& t_parameter, const Optional<double>& t_lower_bound, const Optional<double>& t_upper_bound, const Optional<VariableType>& t_type);
+    /* void update(const Constraint<PlayerT>& t_ctr, const Variable<PlayerT>& t_variable, double t_coeff);
+    void update(const Constraint<PlayerT>& t_ctr, const Variable<PlayerT>& t_variable, LinExpr<opp_player_v<PlayerT>> t_coeff);
+    void update(const Constraint<PlayerT>& t_ctr, const Variable<PlayerT>& t_variable, const Variable<opp_player_v<PlayerT>>&, double t_coeff);
+    void update(const Constraint<PlayerT>& t_ctr, const Variable<opp_player_v<PlayerT>>&, double t_coeff);
+    void update(const Constraint<PlayerT>& t_ctr, LinExpr<opp_player_v<PlayerT>> t_rhs);
+    void update(const Constraint<PlayerT>& t_ctr, double t_rhs); */
 };
 
 template<enum Player PlayerT>

@@ -45,6 +45,13 @@ public:
 
     [[nodiscard]] const LinExpr<opp_player_v<PlayerT>>& operator[](const Variable<PlayerT>& t_variable) const;
 
+    Expr<PlayerT>& operator*=(double t_rhs);
+    Expr<PlayerT>& operator+=(double t_rhs);
+    Expr<PlayerT>& operator+=(const Variable<PlayerT>& t_rhs);
+    Expr<PlayerT>& operator+=(const Variable<opp_player_v<PlayerT>>& t_rhs);
+    Expr<PlayerT>& operator+=(const LinExpr<opp_player_v<PlayerT>>& t_rhs);
+    Expr<PlayerT>& operator+=(const Expr<PlayerT>& t_rhs);
+
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator*(LinExpr<opp_player_v<GenPlayerT>>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, double);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(const Variable<opp_player_v<GenPlayerT>>&, const Variable<GenPlayerT>&);
@@ -118,7 +125,7 @@ Expr<PlayerT> operator*(LinExpr<opp_player_v<PlayerT>> t_coeff, const Variable<P
 template<enum Player PlayerT>
 Expr<PlayerT> operator+(Expr<PlayerT> t_expr, double t_coeff) {
     Expr<PlayerT> result(std::move(t_expr));
-    result.m_constant = std::move(result.m_constant) + t_coeff;
+    result.m_constant += t_coeff;
     return result;
 }
 
@@ -130,10 +137,7 @@ Expr<PlayerT> operator+(double t_coeff, Expr<PlayerT> t_expr) {
 template<enum Player PlayerT>
 Expr<PlayerT> operator+(Expr<PlayerT> t_expr, const Variable<PlayerT>& t_var) {
     Expr<PlayerT> result(std::move(t_expr));
-    auto [it, success] = result.m_terms.template emplace(t_var, 1.);
-    if (!success) {
-        it->second = std::move(it->second) + 1.;
-    }
+    result += t_var;
     return result;
 }
 
@@ -150,7 +154,7 @@ Expr<PlayerT> operator+(Variable<PlayerT> t_var, const Expr<PlayerT>& t_expr) {
 template<enum Player PlayerT>
 Expr<PlayerT> operator+(Expr<PlayerT> t_expr, const Variable<opp_player_v<PlayerT>>& t_var) {
     Expr<PlayerT> result(std::move(t_expr));
-    result.m_constant = std::move(result.m_constant) + t_var;
+    result.m_constant += t_var;
     return result;
 }
 
@@ -162,14 +166,7 @@ Expr<PlayerT> operator+(const Variable<opp_player_v<PlayerT>>& t_var, Expr<Playe
 template<enum Player PlayerT>
 Expr<PlayerT> operator+(Expr<PlayerT> t_expr, LinExpr<PlayerT> t_lin_expr) {
     Expr<PlayerT> result(std::move(t_expr));
-    result.m_constant = std::move(result.m_constant) + t_lin_expr.constant();
-    for (auto&& term : t_lin_expr) {
-        auto&& [var, coeff] = term;
-        auto [it, success] = result.m_terms.template emplace(var, coeff);
-        if (!success) {
-            it->second = std::move(it->second) + coeff;
-        }
-    }
+    result += std::move(t_lin_expr);
     return result;
 }
 
@@ -182,7 +179,7 @@ Expr<PlayerT> operator+(LinExpr<PlayerT> t_lin_expr, Expr<PlayerT> t_expr) {
 template<enum Player GenPlayerT>
 Expr<GenPlayerT> operator+(Expr<GenPlayerT> t_expr, LinExpr<opp_player_v<GenPlayerT>> t_lin_expr) {
     Expr<GenPlayerT> result(std::move(t_expr));
-    result.m_constant = std::move(result.m_constant) + t_lin_expr;
+    result.m_constant += std::move(t_lin_expr);
     return result;
 }
 
@@ -194,17 +191,8 @@ Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>> t_lin_expr, Expr<Ge
 
 template<enum Player PlayerT>
 Expr<PlayerT> operator+(Expr<PlayerT> t_expr_1, const Expr<PlayerT>& t_expr_2) {
-
     Expr<PlayerT> result(std::move(t_expr_1));
-    result.m_constant = std::move(result.m_constant) + t_expr_2.m_constant;
-
-    for (auto [var, coeff] : t_expr_2) {
-        auto [it, success] = result.m_terms.template emplace(var, coeff);
-        if (!success) {
-            it->second = std::move(it->second) + coeff;
-        }
-    }
-
+    result += t_expr_2;
     return result;
 }
 
@@ -254,6 +242,61 @@ Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>> t_lin_expr_1, LinEx
     Expr<GenPlayerT> result(std::move(t_lin_expr_1));
     result = std::move(result) + t_lin_expr_2;
     return result;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator*=(double t_rhs) {
+    m_constant *= t_rhs;
+    for (auto& [var, coeff] : m_terms) {
+        coeff *= t_rhs;
+    }
+    return *this;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator+=(const Expr<PlayerT> &t_rhs) {
+    m_constant += t_rhs.m_constant;
+
+    for (auto [var, coeff] : t_rhs) {
+        auto [it, success] = m_terms.template emplace(var, coeff);
+        if (!success) {
+            it->second = std::move(it->second) + coeff;
+            if (it->second.is_empty()) {
+                m_terms.erase(it);
+            }
+        }
+    }
+    return *this;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator+=(double t_rhs) {
+    m_constant += t_rhs;
+    return *this;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator+=(const Variable<PlayerT> &t_rhs) {
+    auto [it, success] = m_terms.template emplace(t_rhs, 1.);
+    if (!success) {
+        it->second += 1.;
+        if (it->second.is_empty()) {
+            m_terms.erase(it);
+        }
+    }
+    return *this;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator+=(const Variable<opp_player_v<PlayerT>> &t_rhs) {
+    m_constant += t_rhs;
+    return *this;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> &Expr<PlayerT>::operator+=(const LinExpr<opp_player_v<PlayerT>> &t_rhs) {
+    m_constant += t_rhs;
+    return *this;
 }
 
 template<enum Player PlayerT>

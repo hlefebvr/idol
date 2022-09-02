@@ -48,6 +48,86 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
+    SECTION("should do the product between (double, LinExpr<PlayerT>)") {
+
+        SECTION("with explicit type") {
+            double a = 3.;
+            LinExpr<TestType::PlayerT> b = 1. + x + 2 * y;
+            auto lin_expr = a * b;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type for double") {
+            LinExpr<TestType::PlayerT> b = 1. + x + 2 * y;
+            auto lin_expr = 3. * b;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type for LinExpr<PlayerT>") {
+            double a = 3.;
+            auto lin_expr = a * (1. + x + 2 * y);
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type") {
+            auto lin_expr = 3. * (1. + x + 2 * y);
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+    }
+
+    SECTION("should do the product between (LinExpr<PlayerT>, double)") {
+
+        SECTION("with explicit type") {
+            double a = 3.;
+            LinExpr<TestType::PlayerT> b = 1. + x + 2 * y;
+            auto lin_expr = b * a;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type for double") {
+            LinExpr<TestType::PlayerT> b = 1. + x + 2 * y;
+            auto lin_expr = b * 3.;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type for LinExpr<PlayerT>") {
+            double a = 3.;
+            auto lin_expr = (1. + x + 2 * y) * a;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+        SECTION("with deduced type") {
+            auto lin_expr = (1. + x + 2 * y) * 3.;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr.constant() == 3._a);
+            CHECK(lin_expr[x] == 3._a);
+            CHECK(lin_expr[y] == 6._a);
+        }
+
+    }
+
     SECTION("should do the sum between (double, Variable<PlayerT>)") {
 
         SECTION("with explicit type") {

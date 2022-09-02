@@ -19,5 +19,14 @@ int main() {
 
     model.add_constraint(x + y <= 2.);
 
+    Expr expr;
+
+    expr += 1 * xi;
+    expr += 2 * x;
+    expr += 3 * y;
+    expr += 2;
+
+    std::cout << expr << std::endl;
+
     return 0;
 }
