@@ -32,6 +32,23 @@ TEMPLATE_LIST_TEST_CASE("LinExpr", "[expressions][modeling]", for_each_player) {
 
     }
 
+    SECTION("should do the product between (Variable<PlayerT>, double)") {
+
+        SECTION("with explicit type") {
+            double c = 3.;
+            auto lin_expr = x * c;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr[x] == 3._a);
+        }
+
+        SECTION("with deduced type") {
+            auto lin_expr = x * 3;
+            CHECK(std::is_same_v<LinExpr<TestType::PlayerT>, decltype(lin_expr)>);
+            CHECK(lin_expr[x] == 3._a);
+        }
+
+    }
+
     SECTION("should do the sum between (double, Variable<PlayerT>)") {
 
         SECTION("with explicit type") {

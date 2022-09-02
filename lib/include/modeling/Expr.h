@@ -47,6 +47,9 @@ public:
 
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator*(LinExpr<opp_player_v<GenPlayerT>>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, double);
+    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(const Variable<opp_player_v<GenPlayerT>>&, const Variable<GenPlayerT>&);
+    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>>, const Variable<GenPlayerT>&);
+    template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>>, LinExpr<GenPlayerT>);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, const Variable<opp_player_v<GenPlayerT>>&);
     template<enum Player GenPlayerT> friend Expr<GenPlayerT> operator+(Expr<GenPlayerT>, LinExpr<GenPlayerT>);
@@ -132,6 +135,11 @@ Expr<PlayerT> operator+(Expr<PlayerT> t_expr, const Variable<PlayerT>& t_var) {
         it->second = std::move(it->second) + 1.;
     }
     return result;
+}
+
+template<enum Player PlayerT>
+Expr<PlayerT> operator+(const Variable<opp_player_v<PlayerT>>& t_constant, const Variable<PlayerT>& t_var) {
+    return Expr<PlayerT>({ { t_var, 1. } }, t_constant);
 }
 
 template<enum Player PlayerT>
@@ -229,6 +237,23 @@ Expr<PlayerT>::Expr(const Variable<PlayerT> &t_variable) : m_terms({ { t_variabl
 template<enum Player PlayerT>
 Expr<PlayerT>::Expr(const Variable<opp_player_v<PlayerT>> &t_variable) : m_constant(t_variable) {
 
+}
+
+template<enum Player GenPlayerT>
+Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>> t_lin_expr, const Variable<GenPlayerT> &t_var) {
+    Expr<GenPlayerT> result(std::move(t_lin_expr));
+    auto [it, success] = result.m_terms.template emplace(t_var, 1.);
+    if (!success) {
+        it->second = std::move(it->second) + 1.;
+    }
+    return result;
+}
+
+template<enum Player GenPlayerT>
+Expr<GenPlayerT> operator+(LinExpr<opp_player_v<GenPlayerT>> t_lin_expr_1, LinExpr<GenPlayerT> t_lin_expr_2) {
+    Expr<GenPlayerT> result(std::move(t_lin_expr_1));
+    result = std::move(result) + t_lin_expr_2;
+    return result;
 }
 
 template<enum Player PlayerT>

@@ -281,6 +281,77 @@ TEMPLATE_LIST_TEST_CASE("Expr", "[expressions][modeling]", for_each_player) {
 
     }
 
+    SECTION("should make sum between (Var<opp_player_v<PlayerT>>, Var<PlayerT>)") {
+
+        auto expr = xi_1 + x;
+        CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+        CHECK(expr[x].constant() == 1._a);
+        CHECK(expr[x][xi_1] == 0._a);
+        CHECK(expr.constant()[xi_1] == 1._a);
+
+    }
+
+    SECTION("should make sum between (LinExpr<opp_player_v<PlayerT>>, Var<PlayerT>)") {
+
+        SECTION("with explicit type") {
+            LinExpr<TestType::OppositePlayerT> c = 2 * xi_1;
+            auto expr = c + x;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 1._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+        SECTION("with deduced type") {
+            auto expr = 2 * xi_1 + x;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 1._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+    }
+
+    SECTION("should make sum between (LinExpr<opp_player_v<PlayerT>>, LinExpr<PlayerT>)") {
+
+        SECTION("with explicit type") {
+            LinExpr<TestType::OppositePlayerT> a = 2 * xi_1;
+            LinExpr<TestType::PlayerT> b = 2 * x;
+            auto expr = a + b;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 2._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+        SECTION("with deduced type for LinExpr<PlayerT>") {
+            LinExpr<TestType::OppositePlayerT> a = 2 * xi_1;
+            auto expr = a + 2 * x;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 2._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+        SECTION("with deduced type for LinExpr<opp_player_v<PlayerT>>") {
+            LinExpr<TestType::PlayerT> b = 2 * x;
+            auto expr = 2 * xi_1 + b;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 2._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+        SECTION("with deduced type") {
+            auto expr = 2 * xi_1 + 2 * x;
+            CHECK(std::is_same_v<Expr<TestType::PlayerT>, decltype(expr)>);
+            CHECK(expr[x].constant() == 2._a);
+            CHECK(expr[x][xi_1] == 0._a);
+            CHECK(expr.constant()[xi_1] == 2._a);
+        }
+
+    }
+
     SECTION("should make sum between (Expr<PlayerT>, Variable<PlayerT>)") {
 
         SECTION("with \"explicit\" types") {

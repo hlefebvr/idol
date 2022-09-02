@@ -75,6 +75,11 @@ LinExpr<PlayerT> operator*(double t_coeff, const Variable<PlayerT>& t_variable) 
 }
 
 template<enum Player PlayerT>
+LinExpr<PlayerT> operator*(const Variable<PlayerT>& t_variable, double t_coeff) {
+    return t_coeff * t_variable;
+}
+
+template<enum Player PlayerT>
 LinExpr<PlayerT> operator+(double t_coeff, const Variable<PlayerT>& t_variable) {
     return LinExpr<PlayerT>({ { t_variable, 1. } }, t_coeff);
 }
