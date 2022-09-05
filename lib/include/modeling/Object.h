@@ -20,21 +20,6 @@ public:
 
     [[nodiscard]] virtual unsigned int index() const = 0;
 
-    struct compare {
-        bool operator()(const AbstractObject& a, const AbstractObject& b) const {
-            return a.id() < b.id();
-        }
-
-        bool operator()(const AbstractObject* a, const AbstractObject* b) const {
-            return a->id() < b->id();
-        }
-
-        template<class T, class S>
-        bool operator()(const AbstractObject& a, std::pair<T, S>& b) const {
-            static_assert(std::is_base_of_v<AbstractObject, T>);
-            return a.id() < b.first.id();
-        }
-    };
 };
 
 static std::ostream& operator<<(std::ostream& t_os, const AbstractObject& t_object) {

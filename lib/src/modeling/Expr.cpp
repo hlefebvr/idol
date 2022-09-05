@@ -183,8 +183,10 @@ void Expr<PlayerT>::set_exact_coefficient(const Variable<PlayerT>& t_var, LinExp
         m_terms.erase(t_var);
         return;
     }
-    auto [it, success] = m_terms.template emplace(t_var, std::move(t_coefficient));
-    if (!success) {
+    auto it = m_terms.find(t_var);
+    if (it == m_terms.end()) {
+        m_terms.template emplace(t_var, std::move(t_coefficient));
+    } else {
         it->second = std::move(t_coefficient);
     }
 }
