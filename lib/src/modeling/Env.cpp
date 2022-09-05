@@ -11,11 +11,15 @@ Env::~Env() {
     }
 }
 
+#include <iostream>
+
 void Env::free(const std::list<impl::Object *>::iterator& t_it) {
-    delete *t_it;
+    auto* ptr = *t_it;
     m_objects.erase(t_it);
+    delete ptr;
 }
 
 void Env::save_object(impl::Object *t_ptr_to_object) {
-    m_objects.emplace_back(t_ptr_to_object);
+    m_objects.emplace_front(t_ptr_to_object);
+    ((impl::Destructible*) t_ptr_to_object)->set_death_id(m_objects.begin());
 }

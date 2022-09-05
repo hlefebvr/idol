@@ -112,12 +112,12 @@ void Model<PlayerT>::update(const Constraint<PlayerT> &t_ctr, const Variable<opp
 
 template<enum Player PlayerT>
 void Model<PlayerT>::update(const Constraint<PlayerT> &t_ctr, LinExpr<opp_player_v<PlayerT>> t_constant) {
-    this->template impl(t_ctr).expr().set_exact_constant(std::move(t_constant));
+    impl(t_ctr).expr().set_exact_constant(std::move(t_constant));
 }
 
 template<enum Player PlayerT>
 void Model<PlayerT>::update(const Constraint<PlayerT> &t_ctr, double t_rhs) {
-    this->template impl(t_ctr).expr().set_numerical_constant(t_rhs);
+    impl(t_ctr).expr().set_numerical_constant(t_rhs);
 }
 
 #endif //OPTIMIZE_MODEL_H

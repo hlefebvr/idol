@@ -14,6 +14,9 @@ impl::Object::Object(Env &t_env, unsigned int t_index, std::string&& t_name)
 }
 
 void impl::Object::free() {
-    throw std::runtime_error("not implemented");
-    ((ObjectDestructor&) m_env).free(m_it);
+    ((ObjectDestructor&) m_env).free(m_death_id);
+}
+
+void impl::Object::set_death_id(std::list<impl::Object *>::iterator &&t_id) {
+    m_death_id = std::move(t_id);
 }
