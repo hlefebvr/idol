@@ -6,6 +6,9 @@
 #define OPTIMIZE_OBJECT_H
 
 #include <ostream>
+#include "../Types.h"
+
+template<enum Player> class BaseModel;
 
 class AbstractObject {
 public:

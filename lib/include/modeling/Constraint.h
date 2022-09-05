@@ -23,20 +23,8 @@ public:
     [[nodiscard]] ConstraintType type() const;
 };
 
-template<enum Player PlayerT>
-Constraint<PlayerT>::Constraint(impl::Constraint<PlayerT> *t_impl) : Object<impl::Constraint<PlayerT>>(t_impl) {
-
-}
-
-template<enum Player PlayerT>
-const Expr<PlayerT> &Constraint<PlayerT>::expr() const {
-    return this->impl().expr();
-}
-
-template<enum Player PlayerT>
-ConstraintType Constraint<PlayerT>::type() const {
-    return this->impl().type();
-}
+template class Constraint<Decision>;
+template class Constraint<Parameter>;
 
 template<enum Player PlayerT>
 std::ostream &operator<<(std::ostream& t_os, const Constraint<PlayerT>& t_ctr) {

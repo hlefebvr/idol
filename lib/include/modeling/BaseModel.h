@@ -37,10 +37,6 @@ public:
     BaseModel& operator=(BaseModel&&) noexcept = delete;
 };
 
-template<enum Player PlayerT>
-BaseModel<PlayerT>::BaseModel(Env& t_env) : m_env(t_env) {
-
-}
 
 template<enum Player PlayerT>
 template<class T>
@@ -79,18 +75,12 @@ typename T::impl_t& BaseModel<PlayerT>::impl(const T& t_obj) {
 template<enum Player PlayerT>
 template<class T>
 void BaseModel<PlayerT>::free(std::vector<T> &t_vec) {
-    for (auto& var : t_vec) {
-        impl(var).free();
+    for (auto& obj : t_vec) {
+        impl(obj).free();
     }
 }
 
-template<enum Player PlayerT>
-BaseModel<PlayerT>::~BaseModel() {
-
-    free(m_variables);
-    free(m_parameters);
-    free(m_constraints);
-
-}
+template class BaseModel<Decision>;
+template class BaseModel<Parameter>;
 
 #endif //OPTIMIZE_BASEMODEL_H
