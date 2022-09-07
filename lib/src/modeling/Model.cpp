@@ -21,7 +21,12 @@ Model<PlayerT>::add_parameter(double t_lower_bound, double t_upper_bound, Variab
 }
 
 template<enum Player PlayerT>
-Constraint<PlayerT> Model<PlayerT>::add_constraint(TempConstraint<PlayerT> t_temp_ctr, std::string t_name) {
+Constraint<PlayerT> Model<PlayerT>::add_constraint(const TempConstraint<PlayerT>& t_temp_ctr, std::string t_name) {
+    return this->template add_impl<Constraint<PlayerT>>(t_temp_ctr, std::move(t_name));
+}
+
+template<enum Player PlayerT>
+Constraint<PlayerT> Model<PlayerT>::add_constraint(TempConstraint<PlayerT>&& t_temp_ctr, std::string t_name) {
     return this->template add_impl<Constraint<PlayerT>>(std::move(t_temp_ctr), std::move(t_name));
 }
 

@@ -24,9 +24,9 @@ public:
     TempConstraint& operator=(const TempConstraint&) = default;
     TempConstraint& operator=(TempConstraint&&) noexcept = default;
 
-    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator<=(Expr<GenPlayerT> t_expr, double t_rhs);
-    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator>=(Expr<GenPlayerT> t_expr, double t_rhs);
-    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator==(Expr<GenPlayerT> t_expr, double t_rhs);
+    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator<=(Expr<GenPlayerT>&& t_expr, double t_rhs);
+    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator>=(Expr<GenPlayerT>&& t_expr, double t_rhs);
+    template<enum Player GenPlayerT> friend TempConstraint<GenPlayerT> operator==(Expr<GenPlayerT>&& t_expr, double t_rhs);
     template<enum Player GenPlayerT> friend std::ostream &operator<<(std::ostream& t_os, const TempConstraint<GenPlayerT>& t_temp_ctr);
 
     Expr<PlayerT> expr() &&;
@@ -40,7 +40,7 @@ TempConstraint<PlayerT>::TempConstraint(Expr<PlayerT> &&t_expression, Constraint
 }
 
 template<enum Player PlayerT>
-TempConstraint<PlayerT> operator<=(Expr<PlayerT> t_expr, double t_rhs) {
+TempConstraint<PlayerT> operator<=(Expr<PlayerT>&& t_expr, double t_rhs) {
     return TempConstraint<PlayerT>(std::move(t_expr) + -1. * t_rhs, LessOrEqual);
 }
 
@@ -55,7 +55,7 @@ TempConstraint<PlayerT> operator<=(const Variable<PlayerT>& t_variable, double t
 }
 
 template<enum Player PlayerT>
-TempConstraint<PlayerT> operator>=(Expr<PlayerT> t_expr, double t_rhs) {
+TempConstraint<PlayerT> operator>=(Expr<PlayerT>&& t_expr, double t_rhs) {
     return TempConstraint<PlayerT>(std::move(t_expr) + -1. * t_rhs, GreaterOrEqual);
 }
 
@@ -70,7 +70,7 @@ TempConstraint<PlayerT> operator>=(const Variable<PlayerT>& t_variable, double t
 }
 
 template<enum Player PlayerT>
-TempConstraint<PlayerT> operator==(Expr<PlayerT> t_expr, double t_rhs) {
+TempConstraint<PlayerT> operator==(Expr<PlayerT>&& t_expr, double t_rhs) {
     return TempConstraint<PlayerT>(std::move(t_expr) + -1. * t_rhs, Equal);
 }
 

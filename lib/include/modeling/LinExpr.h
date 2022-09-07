@@ -5,35 +5,37 @@
 #ifndef OPTIMIZE_LINEXPR_H
 #define OPTIMIZE_LINEXPR_H
 
-#include "Variable.h"
-#include "../containers/Map.h"
+#include "../containers/Pointers.h"
+#include "impl_LinExpr.h"
+#include <memory>
 
 template<enum Player PlayerT = Decision>
 class LinExpr {
-    Map<Variable<PlayerT>, double> m_terms;
-    double m_constant = 0.;
+    Pointer<impl::LinExpr<PlayerT>> m_impl;
 
-    explicit LinExpr(Map<Variable<PlayerT>, double>&& t_map, double t_constant);
+    explicit LinExpr(Map<::Variable<PlayerT>, double>&& t_map, double t_constant);
 public:
-    LinExpr()= default;
+    LinExpr();
     LinExpr(double t_offset); // NOLINT(google-explicit-constructor)
     LinExpr(const Variable<PlayerT>& t_var); // NOLINT(google-explicit-constructor)
 
-    LinExpr(const LinExpr&) = default;
+    LinExpr(const LinExpr& t_src) = default;
     LinExpr(LinExpr&&) noexcept = default;
 
     LinExpr<PlayerT>& operator=(const LinExpr<PlayerT>&) = default;
     LinExpr<PlayerT>& operator=(LinExpr<PlayerT>&&) noexcept = default;
 
-    using iterator = typename Map<Variable<PlayerT>, double>::iterator;
-    using const_iterator = typename Map<Variable<PlayerT>, double>::const_iterator;
+    using iterator = typename impl::LinExpr<PlayerT>::iterator;
+    using const_iterator = typename impl::LinExpr<PlayerT>::const_iterator;
+
+    [[nodiscard]] LinExpr<PlayerT> deep_copy() const;
 
     iterator begin();
     iterator end();
-    const_iterator begin() const;
-    const_iterator end() const;
-    const_iterator cbegin() const;
-    const_iterator cend() const;
+    [[nodiscard]] const_iterator begin() const;
+    [[nodiscard]] const_iterator end() const;
+    [[nodiscard]] const_iterator cbegin() const;
+    [[nodiscard]] const_iterator cend() const;
 
     [[nodiscard]] double constant() const;
 
@@ -49,10 +51,10 @@ public:
 
     void set_constant(double t_constant);
 
-    LinExpr<PlayerT> operator*=(double t_rhs);
-    LinExpr<PlayerT> operator+=(double t_rhs);
-    LinExpr<PlayerT> operator+=(const Variable<PlayerT>& t_rhs);
-    LinExpr<PlayerT> operator+=(const LinExpr<PlayerT>& t_rhs);
+    LinExpr<PlayerT>& operator*=(double t_rhs);
+    LinExpr<PlayerT>& operator+=(double t_rhs);
+    LinExpr<PlayerT>& operator+=(const Variable<PlayerT>& t_rhs);
+    LinExpr<PlayerT>& operator+=(const LinExpr<PlayerT>& t_rhs);
 
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator*(double, const Variable<GenPlayerT>&);
     template<enum Player GenPlayerT> friend LinExpr<GenPlayerT> operator*(double, LinExpr<GenPlayerT>);
@@ -111,7 +113,7 @@ LinExpr<PlayerT> operator+(const Variable<PlayerT>& t_variable, LinExpr<PlayerT>
 template<enum Player PlayerT>
 LinExpr<PlayerT> operator+(LinExpr<PlayerT> t_expr, double t_coeff) {
     LinExpr<PlayerT> result(std::move(t_expr));
-    result.m_constant += t_coeff;
+    result += t_coeff;
     return result;
 }
 

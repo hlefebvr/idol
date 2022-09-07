@@ -38,4 +38,20 @@ std::ostream &operator<<(std::ostream& t_os, const Constraint<PlayerT>& t_ctr) {
     return t_os << '0';
 }
 
+
+template<enum Player PlayerT>
+struct std::hash<Constraint<PlayerT>> {
+    std::size_t operator()(const Constraint<PlayerT>& t_constraint) const {
+        return std::hash<unsigned int>()(t_constraint.id());
+    }
+};
+
+template<enum Player PlayerT>
+struct std::equal_to<Constraint<PlayerT>> {
+    std::size_t operator()(const Constraint<PlayerT>& t_a, const Constraint<PlayerT>& t_b) const {
+        return t_a.id() == t_b.id();
+    }
+};
+
+
 #endif //OPTIMIZE_CONSTRAINT_H

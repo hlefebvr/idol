@@ -7,6 +7,7 @@ template<enum Player PlayerT>
 impl::Constraint<PlayerT>::Constraint(Env &t_env, unsigned int t_index, TempConstraint<PlayerT> &&t_temp_ctr, std::string &&t_name)
         : Object(t_env, t_index, std::move(t_name)), m_type(t_temp_ctr.type()), m_expression(std::move(t_temp_ctr).expr()) {
 
+
 }
 
 template<enum Player PlayerT>

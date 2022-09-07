@@ -195,3 +195,13 @@ template<enum Player PlayerT>
 void Expr<PlayerT>::set_exact_constant(LinExpr<opp_player_v<PlayerT>> t_coefficient) {
     m_constant = std::move(t_coefficient);
 }
+
+template<enum Player PlayerT>
+Expr<PlayerT> Expr<PlayerT>::deep_copy() const {
+    Expr result;
+    result.m_constant = m_constant.deep_copy();
+    for (const auto& [var, coeff] : m_terms) {
+        result.m_terms.template emplace(var, coeff.deep_copy());
+    }
+    return result;
+}

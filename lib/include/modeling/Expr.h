@@ -27,15 +27,17 @@ public:
     Expr& operator=(const Expr&) = default;
     Expr& operator=(Expr&&) noexcept = default;
 
+    [[nodiscard]] Expr<PlayerT> deep_copy() const;
+
     using iterator = typename Map<Variable<PlayerT>, LinExpr<opp_player_v<PlayerT>>>::iterator;
     using const_iterator = typename Map<Variable<PlayerT>, LinExpr<opp_player_v<PlayerT>>>::const_iterator;
 
     iterator begin();
     iterator end();
-    const_iterator begin() const;
-    const_iterator end() const;
-    const_iterator cbegin() const;
-    const_iterator cend() const;
+    [[nodiscard]] const_iterator begin() const;
+    [[nodiscard]] const_iterator end() const;
+    [[nodiscard]] const_iterator cbegin() const;
+    [[nodiscard]] const_iterator cend() const;
 
     [[nodiscard]] const LinExpr<opp_player_v<PlayerT>>& constant() const;
 
