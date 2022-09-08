@@ -16,7 +16,7 @@ if (${WITH_TEST_COVERAGE})
     target_link_libraries(tests PRIVATE gcov)
     #target_compile_definitions(tests PRIVATE COVERAGE=true)
 else()
-    add_executable(tests Types.test.cpp ${TEST_FILES})
+    add_executable(tests ${TEST_FILES})
     target_link_libraries(tests PRIVATE optimize)
 endif()
 
