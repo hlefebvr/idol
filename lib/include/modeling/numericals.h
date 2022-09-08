@@ -9,7 +9,7 @@
 #include <cmath>
 
 static constexpr double Inf = std::numeric_limits<double>::max();
-static double TolFeas = 1e-8;
+static double ToleranceForSparsity = 1e-8;
 
 static bool equals(double t_a, double t_b, double t_tolerance) {
     return std::abs(t_a - t_b) <= t_tolerance;

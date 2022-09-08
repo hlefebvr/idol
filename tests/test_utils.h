@@ -11,12 +11,5 @@
 
 using namespace Catch::literals;
 
-template<enum Player GenPlayerT> struct type {
-    static constexpr Player PlayerT = GenPlayerT;
-    static constexpr Player OppositePlayerT = opp_player_v<GenPlayerT>;
-};
-
-using for_each_player = std::tuple<type<Decision>, type<Parameter>>;
-
 
 #endif //OPTIMIZE_TEST_UTILS_H
