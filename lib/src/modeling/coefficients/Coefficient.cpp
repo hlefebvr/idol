@@ -7,7 +7,9 @@
 Coefficient Coefficient::Zero;
 
 Coefficient::Coefficient(const Param &t_param, double t_value) : m_products({ { t_param, t_value } }) {
-
+    if (equals(t_value, 0., ToleranceForSparsity)) {
+        m_products.clear();
+    }
 }
 
 Coefficient::Coefficient(double t_constant) : m_constant(t_constant) {
@@ -27,16 +29,24 @@ void Coefficient::set(const Param &t_param, double t_value) {
     }
 }
 
-double Coefficient::operator[](const Param &t_param) const {
+double Coefficient::get(const Param &t_param) const {
     auto it = m_products.find(t_param);
     return it == m_products.end() ? 0. : it->second;
 }
 
 Coefficient &Coefficient::operator*=(double t_factor) {
+
+    if (equals(t_factor, 0., ToleranceForSparsity)) {
+        m_constant = 0;
+        m_products.clear();
+        return *this;
+    }
+
     m_constant *= t_factor;
     for (auto& [param, value] : m_products) {
         value *= t_factor;
     }
+
     return *this;
 }
 
@@ -81,7 +91,24 @@ bool Coefficient::is_numerical() const {
 }
 
 Coefficient operator*(double t_factor, const Param& t_param) {
+    if (equals(t_factor, 0., ToleranceForSparsity)) {
+        return {};
+    }
     return { t_param, t_factor };
+}
+
+Coefficient operator*(const Param& t_param, double t_factor) {
+    return t_factor * t_param;
+}
+
+Coefficient operator*(double t_factor, const Coefficient& t_coefficient) {
+    Coefficient result(t_coefficient);
+    result *= t_factor;
+    return result;
+}
+
+Coefficient operator*(const Coefficient& t_coefficient, double t_factor) {
+    return t_factor * t_coefficient;
 }
 
 Coefficient operator+(Coefficient t_a, const Coefficient& t_b) {

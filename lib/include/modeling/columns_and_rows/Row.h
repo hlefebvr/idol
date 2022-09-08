@@ -5,8 +5,6 @@
 #ifndef OPTIMIZE_ROW_H
 #define OPTIMIZE_ROW_H
 
-
-#include "modeling/variables/Variable.h"
 #include "ColumnOrRow.h"
 #include "Expr.h"
 

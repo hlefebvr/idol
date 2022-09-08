@@ -11,5 +11,4 @@
 
 using namespace Catch::literals;
 
-
 #endif //OPTIMIZE_TEST_UTILS_H

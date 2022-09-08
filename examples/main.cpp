@@ -1,10 +1,5 @@
 #include <iostream>
 #include "modeling.h"
-#include "modeling/environment/Env.h"
-#include "modeling/models/Model.h"
-#include "modeling/coefficients/Coefficient.h"
-#include "modeling/coefficients/MatrixCoefficient.h"
-#include "modeling/constraints/TempCtr.h"
 
 int main() {
 

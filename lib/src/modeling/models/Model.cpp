@@ -8,6 +8,12 @@ Model::Model(Env &t_env) : m_objects(t_env) {
 
 }
 
+Model::~Model() {
+    free(m_parameters);
+    free(m_variables);
+    free(m_constraints);
+}
+
 Param Model::add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name) {
     auto result = m_objects.create<Param>(std::move(t_name), t_lb, t_ub, t_type);
     add_object(m_parameters, result);

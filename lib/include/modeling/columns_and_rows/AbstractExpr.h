@@ -5,8 +5,6 @@
 #ifndef OPTIMIZE_ABSTRACTEXPR_H
 #define OPTIMIZE_ABSTRACTEXPR_H
 
-#include "containers/Map.h"
-#include "../coefficients/AbstractMatrixCoefficient.h"
 #include "../coefficients/MatrixCoefficient.h"
 #include "../coefficients/Coefficient.h"
 #include <memory>

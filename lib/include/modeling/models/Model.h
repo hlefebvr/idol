@@ -5,16 +5,11 @@
 #ifndef OPTIMIZE_MODEL_H
 #define OPTIMIZE_MODEL_H
 
-#include "../Types.h"
 #include "modeling/environment/ObjectManager.h"
-#include "modeling/parameters/Param.h"
 #include "modeling/parameters/impl_Param.h"
-#include "modeling/variables/Variable.h"
 #include "modeling/variables/impl_Variable.h"
-#include "modeling/constraints/Constraint.h"
 #include "modeling/constraints/impl_Constraint.h"
 #include "modeling/constraints/TempCtr.h"
-#include <string>
 #include <vector>
 
 class Env;
@@ -29,12 +24,15 @@ class Model {
 
     template<class T> void add_object(std::vector<T>& t_vec, const T& t_value);
     template<class T> void remove_object(std::vector<T>& t_vec, const T& t_value);
+    template<class T> void free(std::vector<T>& t_vec);
     void add_column_to_rows(const Var& t_var);
     void add_row_to_columns(const Ctr& t_ctr);
 public:
     explicit Model(Env& t_env);
 
-    Param add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name);
+    ~Model();
+
+    Param add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name = "");
     void remove(const Param& t_param);
 
     Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
@@ -62,5 +60,11 @@ void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
     t_vec.pop_back();
 }
 
+template<class T>
+void Model::free(std::vector<T> &t_vec) {
+    for (auto obj : t_vec) {
+        m_objects.template free(obj);
+    }
+}
 
 #endif //OPTIMIZE_MODEL_H

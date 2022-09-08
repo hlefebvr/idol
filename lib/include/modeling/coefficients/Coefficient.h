@@ -26,13 +26,15 @@ public:
 
     void set(const Param& t_param, double t_value);
 
-    double operator[](const Param& t_param) const;
+    double get(const Param& t_param) const;
 
     void set_constant(double t_constant) { m_constant = t_constant; }
 
     double constant() const { return m_constant; }
 
     bool empty() const;
+
+    unsigned int size() const { return m_products.size(); }
 
     bool is_numerical() const;
 
@@ -56,6 +58,11 @@ public:
 };
 
 Coefficient operator*(double t_factor, const Param& t_param);
+Coefficient operator*(const Param& t_param, double t_factor);
+
+Coefficient operator*(double t_factor, const Coefficient& t_coefficient);
+Coefficient operator*(const Coefficient& t_coefficient, double t_factor);
+
 Coefficient operator+(Coefficient t_a, const Coefficient& t_b);
 
 static std::ostream& operator<<(std::ostream& t_os, const Coefficient& t_coefficient) {
