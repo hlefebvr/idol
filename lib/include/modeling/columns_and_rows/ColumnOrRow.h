@@ -38,6 +38,12 @@ ColumnOrRow<Key>::ColumnOrRow(Coefficient t_constant) : m_constant(std::make_uni
 
 template<class Key>
 void ColumnOrRow<Key>::set_constant(Coefficient t_constant) {
+
+    if (t_constant.is_zero()) {
+        m_constant.reset(nullptr);
+        return;
+    }
+
     if (!m_constant) {
         m_constant = std::make_unique<MatrixCoefficient>(std::move(t_constant));
     } else {

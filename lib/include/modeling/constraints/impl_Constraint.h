@@ -24,6 +24,8 @@ public:
 
     [[nodiscard]] CtrType type() const;
 
+    void set_type(CtrType t_type) { m_type = t_type; }
+
     Row& row();
 
     const Row& row() const;

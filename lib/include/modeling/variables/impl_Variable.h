@@ -25,6 +25,12 @@ public:
 
     const Column& column() const;
 
+    void set_lb(double t_lb) { m_lb = t_lb; }
+
+    void set_ub(double t_ub) { m_ub = t_ub; }
+
+    void set_type(VarType t_type) { m_type = t_type; }
+
     double lb() const { return m_lb; }
 
     double ub() const { return m_ub; }

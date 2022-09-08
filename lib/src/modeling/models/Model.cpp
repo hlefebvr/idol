@@ -74,3 +74,36 @@ void Model::add_row_to_columns(const Ctr &t_ctr) {
 void Model::remove(const Ctr &t_ctr) {
     remove_object(m_constraints, t_ctr);
 }
+
+void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Coefficient t_coefficient) {
+    if (t_coefficient.is_zero()) {
+        m_objects.impl(t_var).column().set(t_ctr, 0.);
+        m_objects.impl(t_ctr).row().set(t_var, 0.);
+        return;
+    }
+    m_objects.impl(t_ctr).row().set(t_var, std::move(t_coefficient));
+}
+
+void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {
+    m_objects.impl(t_var).column().set_constant(std::move(t_coefficient));
+}
+
+void Model::update_rhs(const Ctr &t_ctr, Coefficient t_coefficient) {
+    m_objects.impl(t_ctr).row().set_constant(std::move(t_coefficient));
+}
+
+void Model::update_lb(const Var &t_var, double t_lb) {
+    m_objects.impl(t_var).set_lb(t_lb);
+}
+
+void Model::update_ub(const Var &t_var, double t_ub) {
+    m_objects.impl(t_var).set_ub(t_ub);
+}
+
+void Model::update_type(const Var &t_var, VarType t_type) {
+    m_objects.impl(t_var).set_type(t_type);
+}
+
+void Model::update_type(const Ctr &t_ctr, CtrType t_type) {
+    m_objects.impl(t_ctr).set_type(t_type);
+}

@@ -42,6 +42,14 @@ public:
     Ctr add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);
+
+    void update_objective(const Var& t_var, Coefficient t_coefficient);
+    void update_rhs(const Ctr& t_var, Coefficient t_coefficient);
+    void update_coefficient(const Ctr& t_ctr, const Var& t_var, Coefficient t_coefficient);
+    void update_lb(const Var& t_var, double t_lb);
+    void update_ub(const Var& t_var, double t_ub);
+    void update_type(const Var& t_var, VarType t_type);
+    void update_type(const Ctr& t_ctr, CtrType t_type);
 };
 
 template<class T>
