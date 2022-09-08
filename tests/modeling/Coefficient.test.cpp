@@ -5,4 +5,7 @@
 
 TEST_CASE("Coefficient", "[expressions][modeling]") {
 
+    Env env;
+    Model model(env);
+
 }

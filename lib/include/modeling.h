@@ -5,4 +5,6 @@
 #ifndef OPTIMIZE_MODELING_H
 #define OPTIMIZE_MODELING_H
 
+#include "modeling/models/Model.h"
+
 #endif //OPTIMIZE_MODELING_H

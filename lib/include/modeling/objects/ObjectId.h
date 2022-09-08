@@ -27,7 +27,7 @@ class ObjectId {
     ObjectId(const std::list<std::unique_ptr<impl::Object>>::iterator& t_it, std::string&& t_name);
 public:
     ObjectId(const ObjectId&) = delete;
-    ObjectId(ObjectId&&) noexcept = default;
+    ObjectId(ObjectId&&) = default;
 
     ObjectId& operator=(const ObjectId&) = delete;
     ObjectId& operator=(ObjectId&&) noexcept = delete;
