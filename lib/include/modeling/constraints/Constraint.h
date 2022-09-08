@@ -6,6 +6,7 @@
 #define OPTIMIZE_CONSTRAINT_H
 
 #include "../objects/Object.h"
+#include "modeling/Types.h"
 #include <string>
 #include <iostream>
 
@@ -14,6 +15,8 @@ namespace impl {
 }
 
 class Row;
+class Coefficient;
+class Var;
 
 class Ctr {
     friend class impl::ObjectManager;
@@ -24,6 +27,12 @@ public:
     [[nodiscard]] unsigned int id() const;
 
     [[nodiscard]] const std::string& name() const;
+
+    [[nodiscard]] CtrType type() const;
+
+    [[nodiscard]] const Coefficient& rhs() const;
+
+    [[nodiscard]] const Coefficient& get(const Var& t_var) const;
 
     [[nodiscard]] const Row& row() const;
 

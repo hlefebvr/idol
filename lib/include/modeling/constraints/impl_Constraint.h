@@ -21,7 +21,11 @@ class impl::Ctr : public impl::Object {
 public:
     Ctr(ObjectId&& t_id, CtrType t_type, Coefficient&& t_rhs);
     Ctr(ObjectId&& t_id, TempCtr&& t_temporary_constraint);
+
+    [[nodiscard]] CtrType type() const;
+
     Row& row();
+
     const Row& row() const;
 };
 

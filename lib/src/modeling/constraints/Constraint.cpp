@@ -15,3 +15,15 @@ const std::string &Ctr::name() const {
 const Row &Ctr::row() const {
     return m_impl->row();
 }
+
+const Coefficient &Ctr::rhs() const {
+    return m_impl->row().constant();
+}
+
+const Coefficient &Ctr::get(const Var &t_var) const {
+    return m_impl->row().get(t_var);
+}
+
+CtrType Ctr::type() const {
+    return m_impl->type();
+}

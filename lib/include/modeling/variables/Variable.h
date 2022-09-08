@@ -6,6 +6,7 @@
 #define OPTIMIZE_VARIABLE_H
 
 #include "../objects/Object.h"
+#include "modeling/Types.h"
 #include <iostream>
 
 namespace impl {
@@ -13,6 +14,8 @@ namespace impl {
 }
 
 class Column;
+class Coefficient;
+class Ctr;
 
 class Var {
     friend class impl::ObjectManager;
@@ -23,6 +26,16 @@ public:
     [[nodiscard]] unsigned int id() const;
 
     [[nodiscard]] const std::string& name() const;
+
+    [[nodiscard]] double lb() const;
+
+    [[nodiscard]] double ub() const;
+
+    [[nodiscard]] VarType type() const;
+
+    [[nodiscard]] const Coefficient& obj() const;
+
+    [[nodiscard]] const Coefficient& get(const Ctr& t_ctr) const;
 
     [[nodiscard]] const Column& column() const;
 

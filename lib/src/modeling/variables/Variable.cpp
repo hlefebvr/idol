@@ -16,3 +16,23 @@ const Column &Var::column() const {
     return m_impl->column();
 }
 
+double Var::lb() const {
+    return m_impl->lb();
+}
+
+double Var::ub() const {
+    return m_impl->ub();
+}
+
+VarType Var::type() const {
+    return m_impl->type();
+}
+
+const Coefficient& Var::obj() const {
+    return m_impl->column().constant();
+}
+
+const Coefficient &Var::get(const Ctr &t_ctr) const {
+    return m_impl->column().get(t_ctr);
+}
+

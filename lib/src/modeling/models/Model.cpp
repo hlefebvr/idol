@@ -2,7 +2,7 @@
 // Created by henri on 07/09/22.
 //
 #include "modeling/models/Model.h"
-#include "modeling/coefficients/ColumnOrRowReference.h"
+#include "modeling/columns_and_rows/ColumnOrRowReference.h"
 
 Model::Model(Env &t_env) : m_objects(t_env) {
 

@@ -26,3 +26,7 @@ impl::Ctr::Ctr(ObjectId &&t_id, TempCtr &&t_temporary_constraint)
 
 }
 
+CtrType impl::Ctr::type() const {
+    return m_type;
+}
+

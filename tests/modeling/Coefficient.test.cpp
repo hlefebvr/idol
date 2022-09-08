@@ -55,21 +55,26 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("product between double and Param") {
 
-        auto expr = 2 * a;
+        SECTION("with a non-zero value") {
 
-        CHECK(expr.constant() == 0._a);
-        CHECK(expr.get(a) == 2._a);
-        CHECK(expr.size() == 1);
+            auto expr = 2 * a;
 
-    }
+            CHECK(expr.constant() == 0._a);
+            CHECK(expr.get(a) == 2._a);
+            CHECK(expr.size() == 1);
 
-    SECTION("product between zero and Param") {
+        }
 
-        auto expr = 0 * a;
+        SECTION("with zero") {
 
-        CHECK(expr.constant() == 0._a);
-        CHECK(expr.get(a) == 0._a);
-        CHECK(expr.size() == 0);
+            auto expr = 0 * a;
+
+            CHECK(expr.constant() == 0._a);
+            CHECK(expr.get(a) == 0._a);
+            CHECK(expr.size() == 0);
+
+        }
+
 
     }
 

@@ -1,6 +1,6 @@
 enable_testing()
 
-set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp)
+set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp)
 
 if (${WITH_TEST_COVERAGE})
     # Get optimize sources

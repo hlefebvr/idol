@@ -24,6 +24,12 @@ public:
     Column& column();
 
     const Column& column() const;
+
+    double lb() const { return m_lb; }
+
+    double ub() const { return m_ub; }
+
+    VarType type() const { return m_type; }
 };
 
 #endif //OPTIMIZE_IMPL_VARIABLE_H
