@@ -82,7 +82,7 @@ void Coefficient::insert_or_add(const Param &t_param, double t_value) {
     }
 }
 
-bool Coefficient::empty() const {
+bool Coefficient::is_zero() const {
     return m_products.empty() && equals(m_constant, 0., ToleranceForSparsity);
 }
 
@@ -97,18 +97,10 @@ Coefficient operator*(double t_factor, const Param& t_param) {
     return { t_param, t_factor };
 }
 
-Coefficient operator*(const Param& t_param, double t_factor) {
-    return t_factor * t_param;
-}
-
 Coefficient operator*(double t_factor, const Coefficient& t_coefficient) {
     Coefficient result(t_coefficient);
     result *= t_factor;
     return result;
-}
-
-Coefficient operator*(const Coefficient& t_coefficient, double t_factor) {
-    return t_factor * t_coefficient;
 }
 
 Coefficient operator+(Coefficient t_a, const Coefficient& t_b) {

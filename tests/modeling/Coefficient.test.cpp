@@ -63,29 +63,9 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     }
 
-    SECTION("product between double and Param") {
-
-        auto expr = a * 2;
-
-        CHECK(expr.constant() == 0._a);
-        CHECK(expr.get(a) == 2._a);
-        CHECK(expr.size() == 1);
-
-    }
-
     SECTION("product between zero and Param") {
 
         auto expr = 0 * a;
-
-        CHECK(expr.constant() == 0._a);
-        CHECK(expr.get(a) == 0._a);
-        CHECK(expr.size() == 0);
-
-    }
-
-    SECTION("product between Param and zero") {
-
-        auto expr = a * 0;
 
         CHECK(expr.constant() == 0._a);
         CHECK(expr.get(a) == 0._a);
@@ -159,7 +139,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("build a complex expression") {
 
-        auto expr = 2 * a + b + a + 3 * (a + b + 2) * 10;
+        auto expr = 2 * a + b + a + 3 * 10 * (a + b + 2);
 
         CHECK(expr.constant() == 60._a);
         CHECK(expr.get(a) == 33._a);

@@ -32,7 +32,7 @@ public:
 
     double constant() const { return m_constant; }
 
-    bool empty() const;
+    bool is_zero() const;
 
     unsigned int size() const { return m_products.size(); }
 
@@ -58,10 +58,8 @@ public:
 };
 
 Coefficient operator*(double t_factor, const Param& t_param);
-Coefficient operator*(const Param& t_param, double t_factor);
 
 Coefficient operator*(double t_factor, const Coefficient& t_coefficient);
-Coefficient operator*(const Coefficient& t_coefficient, double t_factor);
 
 Coefficient operator+(Coefficient t_a, const Coefficient& t_b);
 

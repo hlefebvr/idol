@@ -7,6 +7,7 @@
 
 #include "../coefficients/MatrixCoefficient.h"
 #include "../coefficients/Coefficient.h"
+#include "modeling/numericals.h"
 #include <memory>
 #include <stdexcept>
 
@@ -19,6 +20,7 @@ protected:
     template<class Iterator, class Output> class base_iterator;
 public:
     AbstractExpr() = default;
+    AbstractExpr(Coefficient t_factor, const Key& t_key);
 
     virtual ~AbstractExpr() = default;
 
@@ -27,6 +29,9 @@ public:
 
     AbstractExpr& operator=(const AbstractExpr& t_src);
     AbstractExpr& operator=(AbstractExpr&& t_src) noexcept = default;
+
+    virtual AbstractExpr& operator*=(double t_factor);
+    AbstractExpr& operator+=(const AbstractExpr& t_expr);
 
     void set(const Key& t_key, Coefficient t_coefficient);
 
@@ -64,7 +69,7 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator=(const AbstractExpr &t_src) {
 template<class Key>
 void AbstractExpr<Key>::set(const Key &t_key, Coefficient t_coefficient) {
 
-    if (t_coefficient.empty()) {
+    if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
         return;
     }
@@ -95,6 +100,36 @@ void AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coe
     if (!success) {
         throw std::runtime_error("Trying to insert a matrix coefficient by reference on an existing coefficient.");
     }
+}
+
+template<class Key>
+AbstractExpr<Key>::AbstractExpr(Coefficient t_factor, const Key &t_key) {
+    set(t_key, std::move(t_factor));
+}
+
+template<class Key>
+AbstractExpr<Key> &AbstractExpr<Key>::operator*=(double t_factor) {
+    if (equals(t_factor, 0., ToleranceForSparsity)) {
+        m_map.clear();
+        return *this;
+    }
+    for (const auto& [key, ptr_to_value] : m_map) {
+        ptr_to_value->value() *= t_factor;
+    }
+    return *this;
+}
+
+template<class Key>
+AbstractExpr<Key> &AbstractExpr<Key>::operator+=(const AbstractExpr& t_expr) {
+    for (const auto& [key, value] : t_expr) {
+        auto it = m_map.find(key);
+        if (it == m_map.end()) {
+            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(value));
+        } else {
+            it->second->value() += value;
+        }
+    }
+    return *this;
 }
 
 template<class Key>
