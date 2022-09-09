@@ -12,6 +12,7 @@
 #include "modeling/constraints/TempCtr.h"
 #include "containers/IteratorForward.h"
 #include "modeling/objective/Objective.h"
+#include "solvers/ModelListenerManager.h"
 #include <vector>
 
 class Env;
@@ -19,6 +20,7 @@ class Column;
 
 class Model {
     ObjectManager m_objects;
+    ModelListenerManager m_listeners;
 
     std::vector<Param> m_parameters;
     std::vector<Var> m_variables;
@@ -37,7 +39,7 @@ public:
 
     ~Model();
 
-    Objective objective() const { return Objective(m_variables); }
+    [[nodiscard]] Objective objective() const { return Objective(m_variables); }
 
     iterator_forward<Param> parameters() { return iterator_forward<Param>(m_parameters); }
     [[nodiscard]] const_iterator_forward<Param> parameters() const { return const_iterator_forward<Param>(m_parameters); }
@@ -58,6 +60,8 @@ public:
     Ctr add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);
+
+    void add_listener(ModelListener& t_listener);
 
     void update_objective(const Var& t_var, Coefficient t_coefficient);
     void update_rhs(const Ctr& t_ctr, Coefficient t_coefficient);

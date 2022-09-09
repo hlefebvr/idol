@@ -1,11 +1,30 @@
 #include <iostream>
 #include "modeling.h"
 
+class MyListener : public ModelListener {
+public:
+protected:
+    void on_start() override {
+        std::cout << "start" << std::endl;
+    }
+
+    void on_add(const Var &t_var) override {
+        std::cout << "adding " << t_var << std::endl;
+    }
+
+    void on_add(const Ctr &t_ctr) override {
+        std::cout << "adding " << t_ctr << std::endl;
+    }
+};
+
 int main() {
 
     Env env;
 
     Model model(env);
+
+    MyListener listener;
+    model.add_listener(listener);
 
     auto xi_1 = model.add_parameter(0., 1., Continuous, "xi_1");
     auto xi_2 = model.add_parameter(0., 1., Continuous, "xi_2");
