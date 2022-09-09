@@ -66,7 +66,8 @@ Ctr Model::add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name)
 
 void Model::add_row_to_columns(const Ctr &t_ctr) {
     auto& impl = m_objects.impl(t_ctr);
-    for (auto [ctr, ref_to_coef] : ColumnOrRowReference(impl.row())) {
+    ColumnOrRowReference row_ref(impl.row());
+    for (auto [ctr, ref_to_coef] : row_ref) {
         m_objects.impl(ctr).column().set(t_ctr, std::move(ref_to_coef));
     }
 }
@@ -76,12 +77,13 @@ void Model::remove(const Ctr &t_ctr) {
 }
 
 void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Coefficient t_coefficient) {
-    if (t_coefficient.is_zero()) {
-        m_objects.impl(t_var).column().set(t_ctr, 0.);
-        m_objects.impl(t_ctr).row().set(t_var, 0.);
-        return;
+
+    ColumnOrRowReference row_ref(m_objects.impl(t_ctr).row());
+    auto [ref_to_coef, update_structure] = row_ref.set(t_var, std::move(t_coefficient));
+    if (update_structure) {
+        m_objects.impl(t_var).column().set(t_ctr, std::move(ref_to_coef));
     }
-    m_objects.impl(t_ctr).row().set(t_var, std::move(t_coefficient));
+
 }
 
 void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {

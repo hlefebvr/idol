@@ -11,9 +11,10 @@ class Coefficient;
 
 class MatrixCoefficientReference : public AbstractMatrixCoefficient {
 protected:
-    Coefficient* m_coefficient;
+    Coefficient* m_coefficient = nullptr;
     explicit MatrixCoefficientReference(Coefficient* t_coefficient) : m_coefficient(t_coefficient) {}
 public:
+    MatrixCoefficientReference() = default;
     explicit MatrixCoefficientReference(AbstractMatrixCoefficient& t_src) : m_coefficient(&t_src.value()) {}
 
     MatrixCoefficientReference(const MatrixCoefficientReference&) = delete;
@@ -21,6 +22,8 @@ public:
 
     MatrixCoefficientReference& operator=(const MatrixCoefficientReference&) = delete;
     MatrixCoefficientReference& operator=(MatrixCoefficientReference&&) noexcept = default;
+
+    [[nodiscard]] bool empty() const { return !m_coefficient; }
 
     void set_value(Coefficient &&t_coefficient) override;
 

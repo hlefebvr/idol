@@ -18,6 +18,8 @@ protected:
     MapType m_map;
 
     template<class Iterator, class Output> class base_iterator;
+
+    std::pair<MatrixCoefficientReference, bool> insert_or_update(const Key& t_key, Coefficient t_coefficient);
 public:
     AbstractExpr() = default;
     AbstractExpr(Coefficient t_factor, const Key& t_key);
@@ -67,20 +69,26 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator=(const AbstractExpr &t_src) {
 }
 
 template<class Key>
-void AbstractExpr<Key>::set(const Key &t_key, Coefficient t_coefficient) {
-
+std::pair<MatrixCoefficientReference, bool>
+AbstractExpr<Key>::insert_or_update(const Key &t_key, Coefficient t_coefficient) {
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
-        return;
+        return { MatrixCoefficientReference(), true };
     }
 
     auto it = m_map.find(t_key);
     if (it == m_map.end()) {
-        m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
-    } else {
-        it->second->set_value(std::move(t_coefficient));
+        auto result = m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
+        return { MatrixCoefficientReference(*result.first->second), true };
     }
 
+    it->second->set_value(std::move(t_coefficient));
+    return { MatrixCoefficientReference(*it->second), false };
+}
+
+template<class Key>
+void AbstractExpr<Key>::set(const Key &t_key, Coefficient t_coefficient) {
+    insert_or_update(t_key, std::move(t_coefficient));
 }
 
 template<class Key>
@@ -96,6 +104,12 @@ unsigned int AbstractExpr<Key>::size() const {
 
 template<class Key>
 void AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
+
+    if (t_coefficient.empty()) {
+        m_map.erase(t_key);
+        return;
+    }
+
     auto [it, success] = m_map.template emplace(t_key, std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)));
     if (!success) {
         throw std::runtime_error("Trying to insert a matrix coefficient by reference on an existing coefficient.");

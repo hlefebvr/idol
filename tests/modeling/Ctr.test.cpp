@@ -56,4 +56,43 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
 
     }
 
+    SECTION("update an existing constraint") {
+
+        auto ctr = model.add_constraint(x + y <= 2);
+
+        SECTION("update RHS") {
+
+            model.update_rhs(ctr, 0.);
+
+            CHECK(ctr.rhs().constant() == 0._a);
+            CHECK(ctr.rhs().get(xi) == 0._a);
+
+            model.update_rhs(ctr, 1 + 2 * xi);
+
+            CHECK(ctr.rhs().constant() == 1._a);
+            CHECK(ctr.rhs().get(xi) == 2._a);
+
+        }
+
+        SECTION("update type") {
+
+            SECTION("GreaterOrEqual") {
+                model.update_type(ctr, GreaterOrEqual);
+                CHECK(ctr.type() == GreaterOrEqual);
+            }
+
+            SECTION("LessOrEqual") {
+                model.update_type(ctr, LessOrEqual);
+                CHECK(ctr.type() == LessOrEqual);
+            }
+
+            SECTION("Equal") {
+                model.update_type(ctr, Equal);
+                CHECK(ctr.type() == Equal);
+            }
+
+        }
+
+    }
+
 }

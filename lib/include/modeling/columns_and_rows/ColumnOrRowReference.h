@@ -24,12 +24,20 @@ public:
     iterator begin() { return iterator(m_column.m_map.begin()); }
     iterator end() { return iterator(m_column.m_map.end()); }
 
+    std::pair<MatrixCoefficientReference, bool> set(const Key& t_key, Coefficient t_coefficient);
+
     MatrixCoefficientReference constant();
 };
 
 template<class Key>
 MatrixCoefficientReference impl::ColumnOrRowReference<Key>::constant() {
     return MatrixCoefficientReference(*m_column.m_constant);
+}
+
+template<class Key>
+std::pair<MatrixCoefficientReference, bool>
+impl::ColumnOrRowReference<Key>::set(const Key &t_key, Coefficient t_coefficient) {
+    return m_column.insert_or_update(t_key, std::move(t_coefficient));
 }
 
 template<class Key>

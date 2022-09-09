@@ -26,7 +26,6 @@ TEST_CASE("Var", "[variables][modeling]") {
 
     SECTION("create a new variable with Param objective coefficient") {
 
-        auto xi = model.add_parameter(0., 1., Continuous);
         auto x = model.add_variable(0., 1., Continuous, xi);
 
         CHECK(x.obj().constant() == 0.);
@@ -77,6 +76,41 @@ TEST_CASE("Var", "[variables][modeling]") {
 
         auto x = model.add_variable(0., 1., Binary, 0);
         CHECK(x.type() == Binary);
+
+    }
+
+    SECTION("update an existing variable") {
+
+        auto x = model.add_variable(0., 1., Continuous, 0.);
+
+        SECTION("update lb") {
+            model.update_lb(x, -1.);
+            CHECK(x.lb() == -1._a);
+        }
+
+        SECTION("update ub") {
+            model.update_lb(x, 3.);
+            CHECK(x.lb() == 3._a);
+        }
+
+        SECTION("update type") {
+
+            SECTION("Continuous") {
+                model.update_type(x, Continuous);
+                CHECK(x.type() == Continuous);
+            }
+
+            SECTION("Integer") {
+                model.update_type(x, Integer);
+                CHECK(x.type() == Integer);
+            }
+
+            SECTION("Binary") {
+                model.update_type(x, Binary);
+                CHECK(x.type() == Binary);
+            }
+        }
+
 
     }
 

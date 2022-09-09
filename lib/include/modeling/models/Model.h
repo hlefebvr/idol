@@ -10,6 +10,7 @@
 #include "modeling/variables/impl_Variable.h"
 #include "modeling/constraints/impl_Constraint.h"
 #include "modeling/constraints/TempCtr.h"
+#include "containers/IteratorForward.h"
 #include <vector>
 
 class Env;
@@ -22,6 +23,9 @@ class Model {
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
+    template<class T> using iterator_forward = IteratorForward<std::vector<T>>;
+    template<class T> using const_iterator_forward = ConstIteratorForward<std::vector<T>>;
+
     template<class T> void add_object(std::vector<T>& t_vec, const T& t_value);
     template<class T> void remove_object(std::vector<T>& t_vec, const T& t_value);
     template<class T> void free(std::vector<T>& t_vec);
@@ -31,6 +35,15 @@ public:
     explicit Model(Env& t_env);
 
     ~Model();
+
+    iterator_forward<Param> parameters() { return iterator_forward<Param>(m_parameters); }
+    [[nodiscard]] const_iterator_forward<Param> parameters() const { return const_iterator_forward<Param>(m_parameters); }
+
+    iterator_forward<Var> variables() { return iterator_forward<Var>(m_variables); }
+    [[nodiscard]] const_iterator_forward<Var> variables() const { return const_iterator_forward<Var>(m_variables); }
+
+    iterator_forward<Ctr> constraints() { return iterator_forward<Ctr>(m_constraints); }
+    [[nodiscard]] const_iterator_forward<Ctr> constraints() const { return const_iterator_forward<Ctr>(m_constraints); }
 
     Param add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name = "");
     void remove(const Param& t_param);
