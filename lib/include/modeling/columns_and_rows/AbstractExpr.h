@@ -151,6 +151,7 @@ struct AbstractExpr<Key>::Entry {
     Key first;
     const Coefficient& second;
     explicit Entry(const std::pair<const Key, std::unique_ptr<AbstractMatrixCoefficient>>& t_pair) : first(t_pair.first), second(t_pair.second->value()) {}
+    explicit Entry(const Key& t_key, const Coefficient& t_coeff) : first(t_key), second(t_coeff) {}
 };
 
 template<class Key>
@@ -167,16 +168,34 @@ public:
 
 template<class Key>
 std::ostream &operator<<(std::ostream& t_os, const AbstractExpr<Key>& t_column_or_row) {
-    t_os << t_column_or_row.constant();
-    for (const auto& [key, value] : t_column_or_row) {
-        t_os << " + ";
-        if (value.is_numerical()) {
-            t_os << value;
+
+    const auto print_term = [&t_os](const Key& t_key, const Coefficient& t_coeff) {
+        if (t_coeff.is_numerical()) {
+            if (!equals(t_coeff.constant(), 1., ToleranceForSparsity)) {
+                t_os << t_coeff << ' ';
+            }
+        } else if(equals(t_coeff.constant(), 0., ToleranceForSparsity) && t_coeff.size() == 1) {
+            t_os << t_coeff << ' ';
         } else {
-            t_os << '(' << value << ')';
+            t_os << '(' << t_coeff << ") ";
         }
-        t_os << " * " << key;
+        t_os << t_key;
+    };
+
+    auto it = t_column_or_row.begin();
+    const auto end = t_column_or_row.end();
+
+    if (it == end) {
+        return t_os << '0';
     }
+
+    print_term((*it).first, (*it).second);
+
+    for (++it ; it != end ; ++it) {
+        t_os << " + ";
+        print_term((*it).first, (*it).second);
+    }
+
     return t_os;
 }
 

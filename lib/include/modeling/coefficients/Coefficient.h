@@ -7,6 +7,7 @@
 
 #include "../../containers/Map.h"
 #include "../parameters/Param.h"
+#include "modeling/numericals.h"
 
 class Coefficient {
     Map<Param, double> m_products;
@@ -64,10 +65,35 @@ Coefficient operator*(double t_factor, const Coefficient& t_coefficient);
 Coefficient operator+(Coefficient t_a, const Coefficient& t_b);
 
 static std::ostream& operator<<(std::ostream& t_os, const Coefficient& t_coefficient) {
-    t_os << t_coefficient.constant();
-    for (const auto& [param, coeff] : t_coefficient) {
-        t_os << " + " << coeff << " * " << param;
+
+    const auto print_term = [&t_os](const Param& t_param, double t_coeff) {
+        if (!equals(t_coeff, 1., ToleranceForSparsity)) {
+            t_os << t_coeff << ' ';
+        }
+        t_os << t_param;
+    };
+
+    const double constant = t_coefficient.constant();
+
+    auto it = t_coefficient.begin();
+    const auto end = t_coefficient.end();
+
+    if (it == end) {
+        return t_os << constant;
     }
+
+    if (!equals(constant, 0., ToleranceForSparsity)) {
+        t_os << constant << " + ";
+    }
+
+    print_term(it->first, it->second);
+
+    for (++it ; it != end ; ++it) {
+        const auto& [param, coeff] = *it;
+        t_os << " + ";
+        print_term(it->first, it->second);
+    }
+
     return t_os;
 }
 

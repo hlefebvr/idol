@@ -11,6 +11,7 @@
 #include "modeling/constraints/impl_Constraint.h"
 #include "modeling/constraints/TempCtr.h"
 #include "containers/IteratorForward.h"
+#include "modeling/objective/Objective.h"
 #include <vector>
 
 class Env;
@@ -35,6 +36,8 @@ public:
     explicit Model(Env& t_env);
 
     ~Model();
+
+    Objective objective() const { return Objective(m_variables); }
 
     iterator_forward<Param> parameters() { return iterator_forward<Param>(m_parameters); }
     [[nodiscard]] const_iterator_forward<Param> parameters() const { return const_iterator_forward<Param>(m_parameters); }

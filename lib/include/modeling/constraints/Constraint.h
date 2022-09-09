@@ -39,12 +39,7 @@ public:
     using impl_t = impl::Ctr;
 };
 
-static std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    if (t_ctr.name().empty()) {
-        return t_os << "Ctr(" << t_ctr.id() << ")";
-    }
-    return t_os << t_ctr.name();
-}
+std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr);
 
 MAKE_HASHABLE(Ctr)
 

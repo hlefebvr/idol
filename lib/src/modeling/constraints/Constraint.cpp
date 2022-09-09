@@ -27,3 +27,18 @@ const Coefficient &Ctr::get(const Var &t_var) const {
 CtrType Ctr::type() const {
     return m_impl->type();
 }
+
+std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
+    if (t_ctr.name().empty()) {
+        t_os << "Ctr(" << t_ctr.id() << ") : ";
+    } else {
+        t_os << t_ctr.name() << " : ";
+    }
+    t_os << t_ctr.row();
+    switch (t_ctr.type()) {
+        case LessOrEqual: t_os << " <= "; break;
+        case GreaterOrEqual: t_os << " >= "; break;
+        case Equal: t_os << " == "; break;
+    }
+    return t_os << t_ctr.rhs();
+}

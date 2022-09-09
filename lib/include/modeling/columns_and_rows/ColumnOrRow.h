@@ -81,19 +81,4 @@ ColumnOrRow<Key>::ColumnOrRow(AbstractExpr<Key> t_expr, Coefficient t_constant)
 
 }
 
-template<class Key>
-std::ostream &operator<<(std::ostream& t_os, const ColumnOrRow<Key>& t_column_or_row) {
-    t_os << t_column_or_row.constant();
-    for (const auto& [key, value] : t_column_or_row) {
-        t_os << " + ";
-        if (value.is_numerical()) {
-            t_os << value;
-        } else {
-            t_os << '(' << value << ')';
-        }
-        t_os << " * " << key;
-    }
-    return t_os;
-}
-
 #endif //OPTIMIZE_COLUMNORROW_H
