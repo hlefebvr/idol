@@ -2,22 +2,22 @@
 // Created by henri on 09/09/22.
 //
 
-#ifndef OPTIMIZE_MODELLISTENERMANAGER_H
-#define OPTIMIZE_MODELLISTENERMANAGER_H
+#ifndef OPTIMIZE_LISTENERMANAGER_H
+#define OPTIMIZE_LISTENERMANAGER_H
 
 #include <list>
 #include <memory>
-#include "ModelListener.h"
+#include "Listener.h"
 #include "../modeling/Types.h"
 
 class Var;
 class Ctr;
 class Coefficient;
 
-class ModelListenerManager;
+class ListenerManager;
 
-class ModelListenerManager {
-    std::list<ModelListener*> m_listeners;
+class ListenerManager {
+    std::list<Listener*> m_listeners;
 public:
     void broadcast_add(const Var& t_var);
     void broadcast_remove(const Var& t_var);
@@ -31,9 +31,9 @@ public:
     void broadcast_update_type(const Var& t_var, VarType t_type);
     void broadcast_update_type(const Ctr& t_ctr, CtrType t_type);
 
-    void add(ModelListener& t_listener);
+    void add(Listener& t_listener);
 
-    void free(const ModelListener::Id& t_id);
+    void free(const Listener::Id& t_id);
 };
 
-#endif //OPTIMIZE_MODELLISTENERMANAGER_H
+#endif //OPTIMIZE_LISTENERMANAGER_H

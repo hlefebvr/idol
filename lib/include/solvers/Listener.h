@@ -2,8 +2,8 @@
 // Created by henri on 09/09/22.
 //
 
-#ifndef OPTIMIZE_MODELLISTENER_H
-#define OPTIMIZE_MODELLISTENER_H
+#ifndef OPTIMIZE_LISTENER_H
+#define OPTIMIZE_LISTENER_H
 
 #include <list>
 #include "../modeling/Types.h"
@@ -11,14 +11,13 @@
 class Var;
 class Ctr;
 class Coefficient;
-class ModelListenerManager;
+class ListenerManager;
 
-class ModelListener {
-    friend class ModelListenerManager;
+class Listener {
 protected:
-    ModelListener() = default;
+    Listener() = default;
 
-    virtual ~ModelListener();
+    virtual ~Listener();
 
     virtual void on_start() {}
     virtual void on_add(const Var& t_var) {}
@@ -34,10 +33,10 @@ protected:
     virtual void on_update_type(const Ctr& t_ctr, CtrType t_type) {}
 
     class Id {
-        friend class ::ModelListenerManager;
-        ModelListenerManager* m_manager;
-        typename std::list<ModelListener*>::iterator m_id;
-        explicit Id(ModelListenerManager& t_manager, std::list<ModelListener*>::iterator&& t_it);
+        friend class ::ListenerManager;
+        ListenerManager* m_manager;
+        typename std::list<Listener*>::iterator m_id;
+        explicit Id(ListenerManager& t_manager, std::list<Listener*>::iterator&& t_it);
     public:
         Id(const Id&) = default;
         Id(Id&&) noexcept = default;
@@ -49,9 +48,10 @@ protected:
     };
 
 private:
+    friend class ListenerManager;
     std::list<Id> m_ids;
     void set_id(const Id& t_id) { m_ids.emplace_back(t_id); }
 };
 
 
-#endif //OPTIMIZE_MODELLISTENER_H
+#endif //OPTIMIZE_LISTENER_H

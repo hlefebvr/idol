@@ -12,7 +12,7 @@
 #include "modeling/constraints/TempCtr.h"
 #include "containers/IteratorForward.h"
 #include "modeling/objective/Objective.h"
-#include "solvers/ModelListenerManager.h"
+#include "solvers/ListenerManager.h"
 #include <vector>
 
 class Env;
@@ -20,7 +20,7 @@ class Column;
 
 class Model {
     ObjectManager m_objects;
-    ModelListenerManager m_listeners;
+    ListenerManager m_listeners;
 
     std::vector<Param> m_parameters;
     std::vector<Var> m_variables;
@@ -61,7 +61,7 @@ public:
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);
 
-    void add_listener(ModelListener& t_listener);
+    void add_listener(Listener& t_listener);
 
     void update_objective(const Var& t_var, Coefficient t_coefficient);
     void update_rhs(const Ctr& t_ctr, Coefficient t_coefficient);
@@ -84,7 +84,7 @@ void Model::add_object(std::vector<T> &t_vec, const T &t_value) {
 
 template<class T>
 void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
-    const auto index = m_objects.impl(t_value).index();
+    const auto index = t_value.index();
     t_vec[index] = t_vec.back();
     m_objects.impl(t_vec[index]).set_index(index);
     m_objects.free(t_value);

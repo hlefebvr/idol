@@ -134,6 +134,6 @@ void Model::update_type(const Param &t_var, VarType t_type) {
     m_objects.impl(t_var).set_type(t_type);
 }
 
-void Model::add_listener(ModelListener &t_listener) {
+void Model::add_listener(Listener &t_listener) {
     m_listeners.add(t_listener);
 }

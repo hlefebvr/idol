@@ -1,8 +1,12 @@
 #include <iostream>
 #include "modeling.h"
+#include "solvers/gurobi/Gurobi.h"
 
-class MyListener : public ModelListener {
+class MySolver : public Listener {
 public:
+    explicit MySolver(Model& t_model) {
+        t_model.add_listener(*this);
+    }
 protected:
     void on_start() override {
         std::cout << "start" << std::endl;
@@ -23,23 +27,16 @@ int main() {
 
     Model model(env);
 
-    MyListener listener;
-    model.add_listener(listener);
+    auto x = model.add_variable(0., 1., Binary, -1, "x");
+    auto y = model.add_variable(0., 1., Binary, -2, "y");
 
-    auto xi_1 = model.add_parameter(0., 1., Continuous, "xi_1");
-    auto xi_2 = model.add_parameter(0., 1., Continuous, "xi_2");
-    auto x = model.add_variable(0., 1., Binary, 0, "x");
-    auto y = model.add_variable(0., 1., Binary, 0, "y");
+    auto ctr = model.add_constraint(x + y <= 1);
 
-    auto expr = x + y;
+    Gurobi solver(model);
 
-    std::cout << (x + y) << std::endl;
-    std::cout << (2 * x + y) << std::endl;
-    std::cout << (xi_1 * x + y) << std::endl;
-    std::cout << ((1 + 2 * xi_1) * x + y) << std::endl;
-    std::cout << model.add_constraint((1 + 2 * xi_1) * x + y <= 3) << std::endl;
+    solver.write("model.lp");
 
-    std::cout << model.objective() << std::endl;
+    solver.solve();
 
     return 0;
 }

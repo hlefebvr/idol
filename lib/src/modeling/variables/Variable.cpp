@@ -36,3 +36,7 @@ const Coefficient &Var::get(const Ctr &t_ctr) const {
     return m_impl->column().get(t_ctr);
 }
 
+unsigned int Var::index() const {
+    return m_impl->index();
+}
+

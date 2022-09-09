@@ -25,6 +25,8 @@ class Var {
 public:
     [[nodiscard]] unsigned int id() const;
 
+    [[nodiscard]] unsigned int index() const;
+
     [[nodiscard]] const std::string& name() const;
 
     [[nodiscard]] double lb() const;

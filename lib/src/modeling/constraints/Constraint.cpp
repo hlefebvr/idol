@@ -28,6 +28,10 @@ CtrType Ctr::type() const {
     return m_impl->type();
 }
 
+unsigned int Ctr::index() const {
+    return m_impl->index();
+}
+
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
     if (t_ctr.name().empty()) {
         t_os << "Ctr(" << t_ctr.id() << ") : ";

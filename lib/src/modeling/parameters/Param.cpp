@@ -23,3 +23,7 @@ double Param::ub() const {
 VarType Param::type() const {
     return m_impl->type();
 }
+
+unsigned int Param::index() const {
+    return m_impl->index();
+}

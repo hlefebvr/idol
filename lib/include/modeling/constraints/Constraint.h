@@ -26,6 +26,8 @@ class Ctr {
 public:
     [[nodiscard]] unsigned int id() const;
 
+    [[nodiscard]] unsigned int index() const;
+
     [[nodiscard]] const std::string& name() const;
 
     [[nodiscard]] CtrType type() const;
