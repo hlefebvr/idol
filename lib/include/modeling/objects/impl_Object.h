@@ -16,11 +16,10 @@ namespace impl {
 
 class impl::Object {
     ObjectId m_object_id;
-
     unsigned int m_index = 0;
-public:
+protected:
     explicit Object(ObjectId&& t_id);
-
+public:
     virtual ~Object() = default;
 
     [[nodiscard]] unsigned int id() const { return m_object_id.id(); }

@@ -76,7 +76,7 @@ void Coefficient::insert_or_add(const Param &t_param, double t_value) {
     auto [it, success] = m_products.emplace(t_param, t_value);
     if (!success) {
         it->second += t_value;
-        if (equals(t_value, 0., ToleranceForSparsity)) {
+        if (equals(it->second, 0., ToleranceForSparsity)) {
             m_products.erase(it);
         }
     }

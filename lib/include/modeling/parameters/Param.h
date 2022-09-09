@@ -6,6 +6,7 @@
 #define OPTIMIZE_PARAM_H
 
 #include "../objects/Object.h"
+#include "modeling/Types.h"
 #include <iostream>
 
 namespace impl {
@@ -21,6 +22,12 @@ public:
     [[nodiscard]] unsigned int id() const;
 
     [[nodiscard]] const std::string& name() const;
+
+    [[nodiscard]] double lb() const;
+
+    [[nodiscard]] double ub() const;
+
+    [[nodiscard]] VarType type() const;
 
     using impl_t = impl::Param;
 };

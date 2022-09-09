@@ -57,11 +57,14 @@ public:
     void remove(const Ctr& t_ctr);
 
     void update_objective(const Var& t_var, Coefficient t_coefficient);
-    void update_rhs(const Ctr& t_var, Coefficient t_coefficient);
+    void update_rhs(const Ctr& t_ctr, Coefficient t_coefficient);
     void update_coefficient(const Ctr& t_ctr, const Var& t_var, Coefficient t_coefficient);
     void update_lb(const Var& t_var, double t_lb);
     void update_ub(const Var& t_var, double t_ub);
     void update_type(const Var& t_var, VarType t_type);
+    void update_lb(const Param& t_var, double t_lb);
+    void update_ub(const Param& t_var, double t_ub);
+    void update_type(const Param& t_var, VarType t_type);
     void update_type(const Ctr& t_ctr, CtrType t_type);
 };
 

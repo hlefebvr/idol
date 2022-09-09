@@ -89,8 +89,8 @@ TEST_CASE("Var", "[variables][modeling]") {
         }
 
         SECTION("update ub") {
-            model.update_lb(x, 3.);
-            CHECK(x.lb() == 3._a);
+            model.update_ub(x, 3.);
+            CHECK(x.ub() == 3._a);
         }
 
         SECTION("update type") {
@@ -111,6 +111,24 @@ TEST_CASE("Var", "[variables][modeling]") {
             }
         }
 
+
+    }
+
+    SECTION("cout") {
+
+        std::stringstream stream;
+
+        SECTION("with a given name") {
+            auto x = model.add_variable(0., 1., Continuous, 0., "x");
+            stream << x;
+            CHECK(stream.str() == "x");
+        }
+
+        SECTION("without any given name") {
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            stream << x;
+            CHECK(stream.str() == "Var(" + std::to_string(x.id()) + ')');
+        }
 
     }
 

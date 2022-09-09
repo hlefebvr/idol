@@ -1,6 +1,6 @@
 enable_testing()
 
-set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp)
+set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp)
 
 if (${WITH_TEST_COVERAGE})
     # Get optimize sources
@@ -22,17 +22,24 @@ endif()
 
 add_test(tests tests)
 
-Include(FetchContent)
 
-set(FETCHCONTENT_QUIET FALSE)
+find_package(Catch2)
 
-FetchContent_Declare(
-        Catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG        v3.1.0 # or a later release
-        GIT_PROGRESS TRUE
-)
+if (NOT ${Catch2_FOUND})
 
-FetchContent_MakeAvailable(Catch2)
+    Include(FetchContent)
+
+    set(FETCHCONTENT_QUIET FALSE)
+
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG        v3.1.0 # or a later release
+            GIT_PROGRESS TRUE
+    )
+
+    FetchContent_MakeAvailable(Catch2)
+
+endif()
 
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)

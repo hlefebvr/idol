@@ -11,3 +11,15 @@ unsigned int Param::id() const {
 const std::string &Param::name() const {
     return m_impl->name();
 }
+
+double Param::lb() const {
+    return m_impl->lb();
+}
+
+double Param::ub() const {
+    return m_impl->ub();
+}
+
+VarType Param::type() const {
+    return m_impl->type();
+}

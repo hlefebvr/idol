@@ -75,6 +75,29 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         }
 
+    }
+
+    SECTION("product between double and Coefficient") {
+
+        SECTION("with a non-zero value") {
+
+            auto expr = 10 * (1 + 2 * a);
+
+            CHECK(expr.constant() == 10._a);
+            CHECK(expr.get(a) == 20._a);
+            CHECK(expr.size() == 1);
+
+        }
+
+        SECTION("with zero") {
+
+            auto expr = 0 * (1 + 2 * a);
+
+            CHECK(expr.constant() == 0._a);
+            CHECK(expr.get(a) == 0._a);
+            CHECK(expr.size() == 0);
+
+        }
 
     }
 
@@ -142,6 +165,27 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     }
 
+    SECTION("auto sum with double") {
+        auto expr = 1 + 2 * a;
+        expr += 1.;
+        CHECK(expr.constant() == 2._a);
+    }
+
+    SECTION("auto sum with Param") {
+        auto expr = 1 + 2 * a;
+        expr += a;
+        CHECK(expr.constant() == 1._a);
+        CHECK(expr.get(a) == 3._a);
+    }
+
+    SECTION("sum with opposite Coefficient") {
+        auto e1 = 2 * a;
+        auto e2 = -2 * a;
+        auto expr = e1 + e2;
+        CHECK(expr.is_zero());
+        CHECK(expr.size() == 0);
+    }
+
     SECTION("build a complex expression") {
 
         auto expr = 2 * a + b + a + 3 * 10 * (a + b + 2);
@@ -161,6 +205,12 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
         CHECK(expr.get(a) == 3._a);
         CHECK(expr.size() == 1);
 
+    }
+
+    SECTION("update a non-zero coefficient with a non-zero coefficient") {
+        auto expr = 2 * a;
+        expr.set(a, 3);
+        CHECK(expr.get(a) == 3._a);
     }
 
     SECTION("set zero coefficient") {
@@ -191,6 +241,15 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
         expr.set_constant(0.);
 
         CHECK(expr.constant() == 0.);
+
+    }
+
+    SECTION("is_numerical") {
+
+        auto expr = 1 + 2 * a;
+        CHECK(!expr.is_numerical());
+        expr = 10;
+        CHECK(expr.is_numerical());
 
     }
 }

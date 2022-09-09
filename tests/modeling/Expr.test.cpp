@@ -97,6 +97,16 @@ TEST_CASE("Expr", "[expressions][modeling]") {
 
     }
 
+    SECTION("product between double and Expr") {
+
+        auto expr = 10 * ((1 + 2 * a) * x + y);
+
+        CHECK(expr.get(x).constant() == 10._a);
+        CHECK(expr.get(x).get(a) == 20._a);
+        CHECK(expr.get(y).constant() == 10._a);
+
+    }
+
     SECTION("build a complex expression") {
 
         auto expr = x + y + 2 * x + 3 * a * y + (2 + 3 * a + b) * x;

@@ -109,3 +109,15 @@ void Model::update_type(const Var &t_var, VarType t_type) {
 void Model::update_type(const Ctr &t_ctr, CtrType t_type) {
     m_objects.impl(t_ctr).set_type(t_type);
 }
+
+void Model::update_lb(const Param &t_var, double t_lb) {
+    m_objects.impl(t_var).set_lb(t_lb);
+}
+
+void Model::update_ub(const Param &t_var, double t_ub) {
+    m_objects.impl(t_var).set_ub(t_ub);
+}
+
+void Model::update_type(const Param &t_var, VarType t_type) {
+    m_objects.impl(t_var).set_type(t_type);
+}
