@@ -1,6 +1,6 @@
 enable_testing()
 
-set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp)
+set(TEST_FILES test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp solvers/LP.test.cpp)
 
 if (${WITH_TEST_COVERAGE})
     # Get optimize sources
@@ -14,7 +14,12 @@ if (${WITH_TEST_COVERAGE})
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CPP_COMPILER gcc)
     target_link_libraries(tests PRIVATE gcov)
-    #target_compile_definitions(tests PRIVATE COVERAGE=true)
+
+    if(${USE_LPSOLVE})
+        target_compile_definitions(tests PRIVATE USE_LPSOLVE)
+        find_package(LPSOLVE REQUIRED)
+        target_link_libraries(tests PUBLIC lpsolve)
+    endif()
 else()
     add_executable(tests ${TEST_FILES})
     target_link_libraries(tests PRIVATE optimize)

@@ -6,6 +6,8 @@
 #define OPTIMIZE_TEST_UTILS_H
 
 #include "modeling.h"
+#include "solvers/lpsolve/Lpsolve.h"
+#include "solvers/gurobi/Gurobi.h"
 
 #include <catch2/catch_all.hpp>
 
