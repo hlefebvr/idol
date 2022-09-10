@@ -3,6 +3,7 @@ target_include_directories(optimize PUBLIC include)
 
 if (${USE_GUROBI})
 
+    find_package(GUROBI REQUIRED)
     target_link_libraries(optimize PUBLIC gurobi)
     target_compile_definitions(optimize PUBLIC USE_GUROBI)
 
@@ -10,6 +11,7 @@ endif()
 
 if (${USE_LPSOLVE})
 
+    find_package(LPSOLVE REQUIRED)
     target_link_libraries(optimize PUBLIC lpsolve)
     target_compile_definitions(optimize PUBLIC USE_LPSOLVE)
 
