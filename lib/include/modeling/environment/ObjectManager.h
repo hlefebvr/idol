@@ -8,6 +8,7 @@
 #include "Env.h"
 #include "../objects/ObjectId.h"
 #include "../objects/Object.h"
+#include "default_name.h"
 
 namespace impl {
     class ObjectManager;
@@ -27,7 +28,7 @@ protected:
 template<class T, class... Args>
 T impl::ObjectManager::create(std::string&& t_name, Args ...t_args) {
     auto it = create_placeholder();
-    ObjectId id(it, std::move(t_name));
+    ObjectId id(it, std::move(t_name), default_name_v<T>);
     auto* ptr = new typename T::impl_t(std::move(id), std::forward<Args>(t_args)...);
     it->reset(ptr);
     return T(ptr);

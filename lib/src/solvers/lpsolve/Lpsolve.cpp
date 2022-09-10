@@ -62,7 +62,8 @@ int Lpsolve::create_variable(const Var &t_var) {
     }
     throw_if_error(success, "could not set variable type");
     
-    //set_col_name(model, index, (char*) t_var.name().c_str());
+    success = set_col_name(model, index, (char*) t_var.name().c_str());
+    throw_if_error(success, "could not set variable name");
     
     return index;
 }
@@ -74,11 +75,17 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
     
     const double coeff = t_ctr.rhs().constant();
     
-    set_add_rowmode(model, true);
+    success = set_add_rowmode(model, true);
+    throw_if_error(success, "could not enter rowmode");
+
     success = add_constraintex(model, 0, NULL, NULL, LE, coeff);
     throw_if_error(success, "could not add constraint");
-    set_add_rowmode(model, false);
-    //set_row_name(model, index, (char*) t_ctr.name().c_str());
+
+    success = set_add_rowmode(model, false);
+    throw_if_error(success, "could not exit rowmode");
+
+    success = set_row_name(model, index, (char*) t_ctr.name().c_str());
+    throw_if_error(success, "could not set constraint name");
     
     return index;
 }

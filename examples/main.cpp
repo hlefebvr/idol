@@ -28,7 +28,7 @@ int main() {
 
     Model model(env);
 
-    auto x = model.add_variable(0., 1., Binary, -1, "x");
+    auto x = model.add_variable(0., 1., Binary, -1);
     auto y = model.add_variable(0., 1., Binary, -2, "y");
 
     auto ctr = model.add_constraint(x + y <= 1);
@@ -37,9 +37,9 @@ int main() {
     lpsolve.write("model.lp");
     lpsolve.solve();
 
-    /* Gurobi gurobi(model);
-    gurobi.write("model.model");
-    gurobi.solve(); */
+    Gurobi gurobi(model);
+    gurobi.write("model.lp");
+    gurobi.solve();
 
     return 0;
 }

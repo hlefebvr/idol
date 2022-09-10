@@ -33,11 +33,7 @@ unsigned int Ctr::index() const {
 }
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    if (t_ctr.name().empty()) {
-        t_os << "Ctr(" << t_ctr.id() << ") : ";
-    } else {
-        t_os << t_ctr.name() << " : ";
-    }
+    t_os << t_ctr.name() << " : ";
     t_os << t_ctr.row();
     switch (t_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;

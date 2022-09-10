@@ -45,9 +45,6 @@ public:
 };
 
 static std::ostream& operator<<(std::ostream& t_os, const Var& t_var) {
-    if (t_var.name().empty()) {
-        return t_os << "Var(" << t_var.id() << ")";
-    }
     return t_os << t_var.name();
 }
 

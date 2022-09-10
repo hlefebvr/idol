@@ -4,6 +4,7 @@
 #ifdef USE_GUROBI
 #include "solvers/gurobi/Gurobi.h"
 
+GRBEnv Gurobi::m_env = GRBEnv();
 
 char Gurobi::gurobi_type(CtrType t_type) {
     if (t_type == Equal) {

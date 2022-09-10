@@ -10,7 +10,7 @@
 #include <gurobi_c++.h>
 
 class Gurobi final : public BaseSolver<GRBVar, GRBConstr> {
-    GRBEnv m_env;
+    static GRBEnv m_env;
     GRBModel m_model;
 public:
     explicit Gurobi(Model& t_model);
