@@ -17,9 +17,14 @@ if (${WITH_TEST_COVERAGE})
 
     if(${USE_LPSOLVE})
         target_compile_definitions(tests PRIVATE USE_LPSOLVE)
-        find_package(LPSOLVE REQUIRED)
         target_link_libraries(tests PUBLIC lpsolve)
     endif()
+
+    if (${USE_GUROBI})
+        target_compile_definitions(tests PRIVATE USE_GUROBI)
+        target_link_libraries(tests PUBLIC gurobi)
+    endif()
+
 else()
     add_executable(tests ${TEST_FILES})
     target_link_libraries(tests PRIVATE optimize)

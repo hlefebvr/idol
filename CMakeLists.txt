@@ -4,6 +4,14 @@ project(optimize)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+if (${USE_GUROBI})
+    find_package(GUROBI REQUIRED)
+endif()
+
+if (${USE_LPSOLVE})
+    find_package(LPSOLVE REQUIRED)
+endif()
+
 add_subdirectory(lib)
 
 if (${BUILD_EXAMPLES})

@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-TEST_CASE("LP", "[solvers]") {
+TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", for_each_solver) {
 
     Env env;
     Model model(env);
@@ -13,8 +13,7 @@ TEST_CASE("LP", "[solvers]") {
 
     auto ctr = model.add_constraint(x + y <= 1);
 
-    Lpsolve lpsolve(model);
-    lpsolve.write("model.lp");
-    lpsolve.solve();
+    TestType solver(model);
+    solver.solve();
 
 }
