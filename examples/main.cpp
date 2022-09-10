@@ -1,6 +1,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "solvers/gurobi/Gurobi.h"
+#include "solvers/lpsolve/Lpsolve.h"
 
 class MySolver : public Listener {
 public:
@@ -32,11 +33,13 @@ int main() {
 
     auto ctr = model.add_constraint(x + y <= 1);
 
-    Gurobi solver(model);
+    Lpsolve lpsolve(model);
+    lpsolve.write("model.lp");
+    lpsolve.solve();
 
-    solver.write("model.lp");
-
-    solver.solve();
+    /* Gurobi gurobi(model);
+    gurobi.write("model.model");
+    gurobi.solve(); */
 
     return 0;
 }

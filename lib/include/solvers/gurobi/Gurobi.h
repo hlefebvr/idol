@@ -19,6 +19,13 @@ public:
 
     void solve() override;
 
+    GRBEnv& get_env() { return m_env; }
+
+    [[nodiscard]] const GRBEnv& get_env() const { return m_env; }
+
+    GRBModel& get_model() { return m_model; }
+
+    [[nodiscard]] const GRBModel& get_model() const { return m_model; }
 protected:
 
     static char gurobi_type(VarType t_type);
