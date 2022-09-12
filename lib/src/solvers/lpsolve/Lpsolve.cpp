@@ -26,6 +26,8 @@ Lpsolve::Lpsolve(Model& t_model) : BaseSolver<int, int>(t_model) {
     auto result = resize_lp(model, n_rows, n_cols);
     throw_if_error(result, "could not resize model");
 
+    set_verbose(model, NEUTRAL);
+
     init_model(t_model);
 }
 
@@ -38,7 +40,20 @@ void Lpsolve::write(const std::string &t_filename) {
 }
 
 void Lpsolve::solve() {
-    ::solve(model);
+    int status = ::solve(model);
+
+    switch (status) {
+        case NUMFAILURE: [[fallthrough]];
+        case NOMEMORY: m_solution_status = Error; break;
+        case PRESOLVED: [[fallthrough]];
+        case OPTIMAL: m_solution_status = Optimal; break;
+        case SUBOPTIMAL: m_solution_status = FeasibleTimeLimit; break;
+        case INFEASIBLE: m_solution_status = Infeasible; break;
+        case UNBOUNDED: m_solution_status = Unbounded; break;
+        case TIMEOUT: m_solution_status = InfeasibleTimeLimit; break;
+        default: throw std::runtime_error("Did not know what to do with lpsolve status: " + std::to_string(status));
+    }
+
 }
 
 int Lpsolve::create_variable(const Var &t_var) {
@@ -46,7 +61,7 @@ int Lpsolve::create_variable(const Var &t_var) {
     const auto index = (int) t_var.index() + 1;
     unsigned char success;
     
-    double coeff = t_var.obj().constant();
+    double coeff = value(t_var.obj());
     int row_id = 0;
     
     success = add_columnex(model, 1, &coeff, &row_id);
@@ -64,7 +79,7 @@ int Lpsolve::create_variable(const Var &t_var) {
     
     success = set_col_name(model, index, (char*) t_var.name().c_str());
     throw_if_error(success, "could not set variable name");
-    
+
     return index;
 }
 
@@ -73,7 +88,7 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
     const auto index = (int) t_ctr.index() + 1;
     unsigned char success;
     
-    const double coeff = t_ctr.rhs().constant();
+    const double coeff = value(t_ctr.rhs());
     
     success = set_add_rowmode(model, true);
     throw_if_error(success, "could not enter rowmode");
@@ -105,25 +120,25 @@ void Lpsolve::fill_row(const Ctr &t_ctr) {
 }
 
 void Lpsolve::remove_variable(const Var &t_var) {
-    // TODO
+    throw std::runtime_error("Not implemented.");
 }
 
 void Lpsolve::remove_constraint(const Ctr &t_ctr) {
-    // TODO
+    throw std::runtime_error("Not implemented.");
 }
 
 void Lpsolve::set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) {
-    const auto success = set_obj(model, get(t_var), t_coeff.constant());
+    const auto success = set_obj(model, get(t_var), value(t_coeff));
     throw_if_error(success, "could not set objective coefficient");
 }
 
 void Lpsolve::set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
-    const auto success = set_rh(model, get(t_ctr), t_coeff.constant());
+    const auto success = set_rh(model, get(t_ctr), value(t_coeff));
     throw_if_error(success, "could not set RHS");
 }
 
 void Lpsolve::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) {
-    const auto success = set_mat(model, get(t_ctr), get(t_var), t_coefficient.constant());
+    const auto success = set_mat(model, get(t_ctr), get(t_var), value(t_coefficient));
     throw_if_error(success, "could not set coefficient");
 }
 
@@ -166,6 +181,29 @@ void Lpsolve::set_type(const Ctr &t_ctr, CtrType t_type) {
     }
     const auto success = set_constr_type(model, get(t_ctr), type);
     throw_if_error(success, "could not set constraint type");
+}
+
+SolutionStatus Lpsolve::get_status() const {
+    if (!m_solution_status) {
+        throw std::runtime_error("No solution found.");
+    }
+    return *m_solution_status;
+}
+
+double Lpsolve::get_objective_value() const {
+    return get_objective(model);
+}
+
+double Lpsolve::get_primal_value(const Var &t_var) const {
+    return get_var_primalresult(model, get_Norig_rows(model) + get(t_var));
+}
+
+double Lpsolve::get_dual_value(const Ctr &t_ctr) const {
+    return get_var_dualresult(model, get(t_ctr));
+}
+
+double Lpsolve::get_reduced_cost(const Var &t_var) const {
+    return get_var_dualresult(model, get_Norig_rows(model) + get(t_var));
 }
 
 #endif

@@ -57,6 +57,16 @@ protected:
     void set_type(const Var &t_var, VarType t_type) override;
 
     void set_type(const Ctr &t_ctr, CtrType t_type) override;
+
+    [[nodiscard]] SolutionStatus get_status() const override;
+
+    [[nodiscard]] double get_objective_value() const override;
+
+    [[nodiscard]] double get_primal_value(const Var &t_var) const override;
+
+    [[nodiscard]] double get_dual_value(const Ctr &t_var) const override;
+
+    [[nodiscard]] double get_reduced_cost(const Var &t_var) const override;
 };
 
 #endif

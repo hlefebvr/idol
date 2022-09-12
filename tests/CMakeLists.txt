@@ -7,7 +7,7 @@ if (${WITH_TEST_COVERAGE})
     target_compile_options(optimize PRIVATE -fprofile-arcs -ftest-coverage -g -O0 -fno-inline-small-functions -fkeep-inline-functions -fkeep-static-functions --coverage)
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CPP_COMPILER gcc)
-    target_link_libraries(tests PRIVATE gcov)
+    target_link_libraries(optimize PUBLIC gcov)
 endif()
 
 add_test(tests tests)

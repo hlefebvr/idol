@@ -12,6 +12,7 @@ struct _lprec; // NOLINT(bugprone-reserved-identifier)
 
 class Lpsolve final : public BaseSolver<int, int> {
     _lprec* model = nullptr;
+    Optional<SolutionStatus> m_solution_status;
 
     static void throw_if_error(unsigned char t_code, const std::string& t_msg);
 
@@ -51,6 +52,16 @@ protected:
     void set_type(const Var &t_var, VarType t_type) override;
 
     void set_type(const Ctr &t_ctr, CtrType t_type) override;
+
+    SolutionStatus get_status() const override;
+
+    double get_objective_value() const override;
+
+    double get_primal_value(const Var &t_var) const override;
+
+    double get_dual_value(const Ctr &t_ctr) const override;
+
+    double get_reduced_cost(const Var &t_var) const override;
 };
 
 #endif

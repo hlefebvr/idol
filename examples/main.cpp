@@ -22,24 +22,60 @@ protected:
     }
 };
 
+std::ostream& operator<<(std::ostream& t_os, const Solution& t_solution) {
+    t_os << "SOLUTION STATUS: " << t_solution.status() << '\n';
+    if (t_solution.has_value()) {
+        t_os << "OBJECTIVE VALUE: " << t_solution.value() << '\n';
+    }
+    if (t_solution.has_primal_values()) {
+        std::cout << "PRIMAL VALUES:" << '\n';
+        for (const auto& [var, value] : t_solution.primal_values()) {
+            std::cout << '\t' << var << " = " << value << '\n';
+        }
+    }
+    if (t_solution.has_dual_values()) {
+        std::cout << "DUAL VALUES:" << '\n';
+        for (const auto& [ctr, value] : t_solution.dual_values()) {
+            std::cout << '\t' << "dual(" << ctr.name() << ") = " << value << '\n';
+        }
+    }
+    if (t_solution.has_reduced_costs()) {
+        std::cout << "REDUCED COSTS:" << '\n';
+        for (const auto& [var, value] : t_solution.reduced_costs()) {
+            std::cout << '\t' << "rc(" << var << ") = " << value << '\n';
+        }
+    }
+    return t_os;
+}
+
 int main() {
 
     Env env;
 
     Model model(env);
 
-    auto x = model.add_variable(0., 1., Binary, -1);
-    auto y = model.add_variable(0., 1., Binary, -2, "y");
-
-    auto ctr = model.add_constraint(x + y <= 1);
-
-    Lpsolve lpsolve(model);
-    lpsolve.write("model.lp");
-    lpsolve.solve();
+    auto x = model.add_variable(0., Inf, Continuous, -143, "x");
+    auto y = model.add_variable(0., Inf, Continuous, -60, "y");
+    model.add_constraint(120 * x + 210 * y <= 15000, "c1");
+    model.add_constraint(110 * x + 30 * y <= 4000, "c2");
+    model.add_constraint(x + y <= 75, "c3");
 
     Gurobi gurobi(model);
-    gurobi.write("model.lp");
     gurobi.solve();
+    auto solution = gurobi.solution(true, true, true);
+
+    std::cout << solution << std::endl;
+
+    Lpsolve lpsolve(model);
+    lpsolve.solve();
+    lpsolve.write("model.lp");
+
+
+    solution = lpsolve.solution(true, true, true);
+
+    std::cout << "\n\n";
+
+    std::cout << solution << std::endl;
 
     return 0;
 }

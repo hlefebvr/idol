@@ -6,7 +6,7 @@ DESTINATION_FOLDER=${BASEDIR}/coverage
 mkdir -p ${BUILD_DIRECTORY}
 
 # Build test target
-(cd ${BUILD_DIRECTORY} && cmake ../.. -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES && cmake --build tests && ./tests/tests)
+(cd ${BUILD_DIRECTORY} && cmake ../.. -DBUILD_TESTS=YES -DUSE_GUROBI=YES -DUSE_LPSOLVE=YES -DWITH_TEST_COVERAGE=YES && cmake --build tests && ./tests/tests)
 
 # Generate lcov output
 lcov --directory . --capture --output-file ${DESTINATION_FOLDER}/coverage.info

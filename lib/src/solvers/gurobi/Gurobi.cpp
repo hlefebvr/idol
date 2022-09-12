@@ -27,11 +27,14 @@ char Gurobi::gurobi_type(VarType t_type) {
 }
 
 Gurobi::Gurobi(Model &t_model) : BaseSolver<GRBVar, GRBConstr>(t_model), m_model(m_env) {
+    m_model.set(GRB_IntParam_OutputFlag, 0);
+    //m_model.set(GRB_IntParam_InfUnbdInfo, true);
+    //m_model.set(GRB_IntParam_Presolve, false);
     init_model(t_model);
 }
 
 GRBVar Gurobi::create_variable(const Var &t_var) {
-    return m_model.addVar(t_var.lb(), t_var.ub(), t_var.obj().constant(), gurobi_type(t_var.type()), t_var.name());
+    return m_model.addVar(t_var.lb(), t_var.ub(), value(t_var.obj()), gurobi_type(t_var.type()), t_var.name());
 }
 
 GRBConstr Gurobi::create_constraint(const Ctr &t_ctr) {
@@ -61,15 +64,15 @@ void Gurobi::remove_constraint(const Ctr &t_ctr) {
 }
 
 void Gurobi::set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) {
-    get(t_var).set(GRB_DoubleAttr_Obj, t_coeff.constant());
+    get(t_var).set(GRB_DoubleAttr_Obj, value(t_coeff));
 }
 
 void Gurobi::set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
-    get(t_ctr).set(GRB_DoubleAttr_RHS, t_coeff.constant());
+    get(t_ctr).set(GRB_DoubleAttr_RHS, value(t_coeff));
 }
 
 void Gurobi::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) {
-    m_model.chgCoeff(get(t_ctr), get(t_var), t_coefficient.constant());
+    m_model.chgCoeff(get(t_ctr), get(t_var), value(t_coefficient));
 }
 
 void Gurobi::set_lb(const Var &t_var, double t_lb) {
@@ -94,6 +97,40 @@ void Gurobi::write(const std::string &t_filename) {
 
 void Gurobi::solve() {
     m_model.optimize();
+}
+
+SolutionStatus Gurobi::get_status() const {
+    SolutionStatus status = Unknown;
+    auto grb_status = m_model.get(GRB_IntAttr_Status);
+    switch (grb_status) {
+        case GRB_OPTIMAL: status = Optimal; break;
+        case GRB_INFEASIBLE: status = Infeasible; break;
+        case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
+        case GRB_UNBOUNDED: status = Unbounded; break;
+        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? FeasibleTimeLimit : InfeasibleTimeLimit; break;
+        case GRB_NUMERIC: status = Error; break;
+        default: throw std::runtime_error("Did not know what to do with gurobi status: " + std::to_string(grb_status));
+    }
+    return status;
+}
+
+double Gurobi::get_objective_value() const {
+    return m_model.get(GRB_DoubleAttr_ObjVal);
+}
+
+double Gurobi::get_primal_value(const Var &t_var) const {
+    return get(t_var).get(GRB_DoubleAttr_X);
+}
+
+double Gurobi::get_dual_value(const Ctr &t_ctr) const {
+    if (get_status() == Infeasible) {
+        return get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
+    }
+    return get(t_ctr).get(GRB_DoubleAttr_Pi);
+}
+
+double Gurobi::get_reduced_cost(const Var &t_var) const {
+    return get(t_var).get(GRB_DoubleAttr_RC);
 }
 
 #endif
