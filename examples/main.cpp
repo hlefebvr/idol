@@ -54,11 +54,11 @@ int main() {
 
     Model model(env);
 
-    auto x = model.add_variable(0., Inf, Continuous, -143, "x");
-    auto y = model.add_variable(0., Inf, Continuous, -60, "y");
-    model.add_constraint(120 * x + 210 * y <= 15000, "c1");
-    model.add_constraint(110 * x + 30 * y <= 4000, "c2");
-    model.add_constraint(x + y <= 75, "c3");
+    auto u = model.add_variable(0., Inf, Continuous, 1, "u");
+    auto v = model.add_variable(0., Inf, Continuous, 1, "v");
+    auto w = model.add_variable(0., Inf, Continuous, -2, "w");
+    auto c1 = model.add_constraint(u + -2 * v + -1 * w >= 3);
+    auto c2 = model.add_constraint(-2 * u + v + -1 * w >= 2);
 
     Gurobi gurobi(model);
     gurobi.solve();

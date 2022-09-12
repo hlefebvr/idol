@@ -28,6 +28,10 @@ Lpsolve::Lpsolve(Model& t_model) : BaseSolver<int, int>(t_model) {
 
     set_verbose(model, NEUTRAL);
 
+    //set_presolve(model, false, false);
+
+    set_minim(model);
+
     init_model(t_model);
 }
 
@@ -66,17 +70,24 @@ int Lpsolve::create_variable(const Var &t_var) {
     
     success = add_columnex(model, 1, &coeff, &row_id);
     throw_if_error(success, "could not add column");
-    
-    success = set_bounds(model, index, t_var.lb(), t_var.ub());
-    throw_if_error(success, "could not set bounds");
-    
+
     switch (t_var.type()) {
         case Integer: success = set_int(model, index, true); break;
         case Binary: success = set_binary(model, index, true); break;
-        default: break;
+        default: success = set_unbounded(model, index); break;
     }
     throw_if_error(success, "could not set variable type");
-    
+
+    if (double lb = t_var.lb() ; !is_neg_inf(lb)) {
+        success = set_lowbo(model, index, t_var.lb());
+        throw_if_error(success, "could not set LB");
+    }
+
+    if (double ub = t_var.ub() ; !is_pos_inf(ub)) {
+        success = set_upbo(model, index, t_var.ub());
+        throw_if_error(success, "could not set UB");
+    }
+
     success = set_col_name(model, index, (char*) t_var.name().c_str());
     throw_if_error(success, "could not set variable name");
 
@@ -93,7 +104,15 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
     success = set_add_rowmode(model, true);
     throw_if_error(success, "could not enter rowmode");
 
-    success = add_constraintex(model, 0, NULL, NULL, LE, coeff);
+    int type;
+    switch (t_ctr.type()) {
+        case LessOrEqual: type = LE; break;
+        case GreaterOrEqual: type = GE; break;
+        case Equal: type = EQ; break;
+        default: throw std::runtime_error("Unexpected constraint type: " + std::to_string(t_ctr.type()));
+    }
+
+    success = add_constraintex(model, 0, NULL, NULL, type, coeff);
     throw_if_error(success, "could not add constraint");
 
     success = set_add_rowmode(model, false);

@@ -11,6 +11,18 @@
 static constexpr double Inf = std::numeric_limits<double>::max();
 static double ToleranceForSparsity = 1e-8;
 
+static bool is_pos_inf(double t_value) {
+    return t_value >= Inf;
+}
+
+static bool is_neg_inf(double t_value) {
+    return t_value <= -Inf;
+}
+
+static bool is_inf(double t_value) {
+    return is_pos_inf(t_value) || is_neg_inf(t_value);
+}
+
 static bool equals(double t_a, double t_b, double t_tolerance) {
     return std::abs(t_a - t_b) <= t_tolerance;
 }

@@ -53,15 +53,15 @@ protected:
 
     void set_type(const Ctr &t_ctr, CtrType t_type) override;
 
-    SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
 
-    double get_objective_value() const override;
+    [[nodiscard]] double get_objective_value() const override;
 
-    double get_primal_value(const Var &t_var) const override;
+    [[nodiscard]] double get_primal_value(const Var &t_var) const override;
 
-    double get_dual_value(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_dual_value(const Ctr &t_ctr) const override;
 
-    double get_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_reduced_cost(const Var &t_var) const override;
 };
 
 #endif

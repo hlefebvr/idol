@@ -62,7 +62,7 @@ public:
 
     virtual void solve() = 0;
 
-    [[nodiscard]] Solution solution(bool t_primal = true, bool t_dual = true, bool t_reduced_costs = false) const;
+    [[nodiscard]] Solution solution(bool t_primal = true, bool t_dual = false, bool t_reduced_costs = false) const;
 };
 
 template<class VarT, class CtrT>
@@ -176,9 +176,9 @@ template<class VarT, class CtrT>
 Solution BaseSolver<VarT, CtrT>::solution(bool t_primal, bool t_dual, bool t_reduced_costs) const {
     Solution result(get_status());
 
-    if (!is_feasible(result.status())) {
-        return result;
-    }
+    //if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit, Unbounded })) {
+    //    return result;
+    //}
 
     result.set_value(get_objective_value());
 

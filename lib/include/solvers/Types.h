@@ -17,21 +17,26 @@ enum SolutionStatus {
     Error
 };
 
-static bool is_feasible(SolutionStatus t_status) {
-    return t_status == Optimal || t_status == Feasible || t_status == FeasibleTimeLimit;
+static bool is_in(SolutionStatus t_status, std::initializer_list<SolutionStatus> t_list) {
+    for (auto status : t_list) {
+        if (status == t_status) {
+            return true;
+        }
+    }
+    return false;
 }
 
 static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
     switch (t_status) {
-        case Unknown: return t_os << "Unknown";
+        case Unknown: return t_os << "Unknown"; break;
         case Optimal: return t_os << "Optimal";
         case Feasible: return t_os << "Feasible";
         case Infeasible: return t_os << "Infeasible";
-        case FeasibleTimeLimit: t_os << "FeasibleTimeLimit";
-        case InfeasibleTimeLimit: t_os << "InfeasibleTimeLimit";
-        case InfeasibleOrUnbounded: t_os << "InfeasibleOrUnbounded";
-        case Unbounded: t_os << "Unbounded";
-        case Error: t_os << "Error";
+        case FeasibleTimeLimit: return t_os << "FeasibleTimeLimit";
+        case InfeasibleTimeLimit: return t_os << "InfeasibleTimeLimit";
+        case InfeasibleOrUnbounded: return t_os << "InfeasibleOrUnbounded";
+        case Unbounded: return t_os << "Unbounded";
+        case Error: return t_os << "Error";
         default: throw std::runtime_error("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;

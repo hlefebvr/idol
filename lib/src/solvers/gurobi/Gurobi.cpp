@@ -28,7 +28,7 @@ char Gurobi::gurobi_type(VarType t_type) {
 
 Gurobi::Gurobi(Model &t_model) : BaseSolver<GRBVar, GRBConstr>(t_model), m_model(m_env) {
     m_model.set(GRB_IntParam_OutputFlag, 0);
-    //m_model.set(GRB_IntParam_InfUnbdInfo, true);
+    m_model.set(GRB_IntParam_InfUnbdInfo, true); std::cout << "inf or undb info = true" << std::endl;
     //m_model.set(GRB_IntParam_Presolve, false);
     init_model(t_model);
 }
@@ -119,6 +119,9 @@ double Gurobi::get_objective_value() const {
 }
 
 double Gurobi::get_primal_value(const Var &t_var) const {
+    if (get_status() == Unbounded) {
+        return get(t_var).get(GRB_DoubleAttr_UnbdRay);
+    }
     return get(t_var).get(GRB_DoubleAttr_X);
 }
 
