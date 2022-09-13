@@ -321,11 +321,15 @@ void Lpsolve::compute_farkas_dual() {
 }
 
 double Lpsolve::get_dual_farkas_objective_value() const {
-    return get_dual_objective_value();
+    double result = 0.;
+    for (const auto& ctr : source_model().constraints()) {
+        result += get_dual_farkas_value(ctr) * value(ctr.rhs());
+    }
+    return -result;
 }
 
 double Lpsolve::get_dual_farkas_value(const Ctr &t_ctr) const {
-    return get_dual_value(t_ctr);
+    return -get_dual_value(t_ctr);
 }
 
 Solution::Primal Lpsolve::unbounded_ray() const {

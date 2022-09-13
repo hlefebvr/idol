@@ -163,7 +163,7 @@ double Gurobi::get_dual_farkas_objective_value() const {
 }
 
 double Gurobi::get_dual_farkas_value(const Ctr &t_ctr) const {
-    return -get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
+    return get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
 }
 
 void Gurobi::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {

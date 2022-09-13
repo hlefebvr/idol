@@ -74,6 +74,7 @@ TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
         auto c3 = model.add_constraint(x + y >= 2);
 
         TestType solver(model);
+        solver.set_algorithm_for_lp(PrimalSimplex);
         solver.set_infeasible_or_unbounded_info(true);
         solver.solve();
 
@@ -111,9 +112,12 @@ TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
 
         CHECK(primal_solution.status() == Infeasible);
         CHECK(dual_solution.status() == Unbounded);
-        CHECK(farkas.objective_value() == 5._a);
-        CHECK(farkas.get(c1) == 1._a);
-        CHECK(farkas.get(c2) == 1._a);
+
+
+        CHECK(farkas.objective_value() > 0.);
+        CHECK(1. * farkas.get(c1) - 2. * farkas.get(c2) >= 0. );
+        CHECK(-2. * farkas.get(c1) + 1. * farkas.get(c2) >= 0. );
+        CHECK(-1. * farkas.get(c1) + -1. * farkas.get(c2) >= 0. );
 
     }
 
