@@ -56,6 +56,7 @@ protected:
     [[nodiscard]] virtual double get_dual_value(const Ctr& t_ctr) const = 0;
     [[nodiscard]] virtual double get_dual_farkas_objective_value() const = 0;
     [[nodiscard]] virtual double get_dual_farkas_value(const Ctr& t_ctr) const = 0;
+    [[nodiscard]] virtual bool get_iis(const Ctr& t_ctr) const;
 
     [[nodiscard]] const Model& source_model() const { return m_src_model; }
 public:
@@ -75,6 +76,8 @@ public:
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
     [[nodiscard]] Solution::Dual dual_farkas() const override;
+
+    Solution::Dual iis() const override;
 };
 
 template<class VarT, class CtrT>
@@ -298,6 +301,34 @@ Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
 
     for (const auto& ctr : m_src_model.constraints()) {
         result.set(ctr, get_dual_farkas_value(ctr));
+    }
+
+    return result;
+}
+
+template<class VarT, class CtrT>
+bool BaseSolver<VarT, CtrT>::get_iis(const Ctr &t_ctr) const {
+    throw std::runtime_error("Not available.");
+}
+
+template<class VarT, class CtrT>
+Solution::Dual BaseSolver<VarT, CtrT>::iis() const {
+
+    if (get_primal_status() != Infeasible) {
+        throw std::runtime_error("Only available for infeasible problems.");
+    }
+
+    if (!infeasible_or_unbounded_info()) {
+        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+    }
+
+    Solution::Dual result;
+
+    result.set_status(Infeasible);
+    result.set_objective_value(Inf);
+
+    for (const auto& ctr : m_src_model.constraints()) {
+        result.set(ctr, get_iis(ctr));
     }
 
     return result;

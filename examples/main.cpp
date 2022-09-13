@@ -6,29 +6,26 @@
 #include "algorithms/column-generation/ColGenerator.h"
 #include "solvers/solutions/Solution.h"
 
-template<class SolverT>
-void solve_with(Model& t_model) {
-    SolverT solver(t_model);
-    solver.set_infeasible_or_unbounded_info(true);
-    solver.solve();
-    std::cout << "Primal\n" << solver.primal_solution() << std::endl;
-    std::cout << "Dual\n" << solver.dual_solution() << std::endl;
-    std::cout << "Ray\n" << solver.unbounded_ray().normalize(Inf) << std::endl;
-}
-
 int main() {
 
     Env env;
     Model model(env);
 
-    auto x = model.add_variable(0., Inf, Continuous, -3, "x");
-    auto y = model.add_variable(0., Inf, Continuous, -2, "y");
-    auto c1 = model.add_constraint(x + -2 * y <= 1);
-    auto c2 = model.add_constraint(-2 * x + y <= 1);
-    auto c3 = model.add_constraint(x + y >= 2);
+    auto tau = model.add_variable(0, Inf, Continuous, -1, "tau");
+    auto xi = model.add_variable(0., 1., Binary, 0., "xi");
+    auto c1 = model.add_constraint(tau + xi <= 2.);
+    auto c2 = model.add_constraint(tau + -1 * xi <= 1.);
+    model.add_constraint(tau >= 1.1);
 
-    solve_with<Gurobi>(model);
-    solve_with<Lpsolve>(model);
+    Gurobi gurobi(model);
+    gurobi.set_presolve(false);
+    gurobi.set_infeasible_or_unbounded_info(true);
+    gurobi.solve();
+    gurobi.write("model.lp");
+
+    std::cout << gurobi.primal_solution() << std::endl;
+    std::cout << gurobi.iis() << std::endl;
+
 
     return 0;
 }

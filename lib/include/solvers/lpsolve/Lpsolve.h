@@ -78,6 +78,9 @@ protected:
     void compute_farkas_dual();
 
 public:
+    void set_presolve(bool t_value) override;
+
+    bool presolve() const override;
 
     Solution::Primal unbounded_ray() const override;
 

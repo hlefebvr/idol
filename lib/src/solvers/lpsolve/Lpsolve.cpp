@@ -355,5 +355,13 @@ AlgorithmForLP Lpsolve::algorithm_for_lp() const {
     throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
 }
 
+void Lpsolve::set_presolve(bool t_value) {
+    throw std::runtime_error("Not implemented.");
+}
+
+bool Lpsolve::presolve() const {
+    throw std::runtime_error("Not implemented.");
+}
+
 
 #endif

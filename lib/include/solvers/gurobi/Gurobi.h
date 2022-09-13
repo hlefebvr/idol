@@ -66,7 +66,7 @@ protected:
 
     [[nodiscard]] double get_unbounded_ray(const Var &t_var) const override;
 
-    double get_unbounded_ray_objective_value() const override;
+    [[nodiscard]] double get_unbounded_ray_objective_value() const override;
 
     [[nodiscard]] double get_dual_value(const Ctr &t_var) const override;
 
@@ -74,7 +74,13 @@ protected:
 
     [[nodiscard]] double get_dual_farkas_value(const Ctr &t_ctr) const override;
 
+    [[nodiscard]] bool get_iis(const Ctr &t_ctr) const override;
+
 public:
+    void set_presolve(bool t_value) override;
+
+    bool presolve() const override;
+
     [[nodiscard]] bool infeasible_or_unbounded_info() const override;
 
     void set_infeasible_or_unbounded_info(bool t_value) override;

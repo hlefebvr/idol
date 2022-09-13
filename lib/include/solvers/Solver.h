@@ -20,6 +20,10 @@ public:
 
     virtual void set_algorithm_for_lp(AlgorithmForLP t_algorithm) = 0;
 
+    virtual void set_presolve(bool t_value) = 0;
+
+    [[nodiscard]] virtual bool presolve() const = 0;
+
     [[nodiscard]] virtual AlgorithmForLP algorithm_for_lp() const = 0;
 
     [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
@@ -29,6 +33,8 @@ public:
     [[nodiscard]] virtual Solution::Dual dual_solution() const = 0;
 
     [[nodiscard]] virtual Solution::Dual dual_farkas() const = 0;
+
+    [[nodiscard]] virtual Solution::Dual iis() const = 0;
 };
 
 #endif //OPTIMIZE_SOLVER_H

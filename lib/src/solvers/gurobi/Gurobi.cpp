@@ -95,6 +95,11 @@ void Gurobi::write(const std::string &t_filename) {
 
 void Gurobi::solve() {
     m_model.optimize();
+
+    if (m_model.get(GRB_IntAttr_Status) == GRB_INFEASIBLE && m_model.get(GRB_IntParam_InfUnbdInfo)) {
+        m_model.computeIIS();
+    }
+
 }
 
 SolutionStatus Gurobi::get_primal_status() const {
@@ -180,6 +185,18 @@ AlgorithmForLP Gurobi::algorithm_for_lp() const {
     if (algorithm == GRB_METHOD_DUAL) { return DualSimplex; }
     if (algorithm == GRB_METHOD_BARRIER) { return Barrier; }
     throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
+}
+
+bool Gurobi::get_iis(const Ctr &t_ctr) const {
+    return get(t_ctr).get(GRB_IntAttr_IISConstr);
+}
+
+void Gurobi::set_presolve(bool t_value) {
+    m_model.set(GRB_IntParam_Presolve, t_value);
+}
+
+bool Gurobi::presolve() const {
+    return m_model.get(GRB_IntParam_Presolve);
 }
 
 #endif
