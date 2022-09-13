@@ -63,7 +63,9 @@ protected:
 
     [[nodiscard]] double get_primal_value(const Var &t_var) const override;
 
-    [[nodiscard]] double get_extreme_ray_value(const Var &t_var) const override;
+    [[nodiscard]] double get_unbounded_ray(const Var &t_var) const override;
+
+    double get_unbounded_ray_objective_value() const override;
 
     [[nodiscard]] double get_dual_value(const Ctr &t_ctr) const override;
 
@@ -71,19 +73,23 @@ protected:
 
     [[nodiscard]] double get_dual_farkas_value(const Ctr &t_ctr) const override;
 
-    void compute_extreme_ray();
+    void compute_unbounded_ray();
 
     void compute_farkas_dual();
 
 public:
 
-    Solution::Primal extreme_ray() const override;
+    Solution::Primal unbounded_ray() const override;
 
     Solution::Dual dual_farkas() const override;
 
     [[nodiscard]] bool infeasible_or_unbounded_info() const override;
 
     void set_infeasible_or_unbounded_info(bool t_value) override;
+
+    void set_algorithm_for_lp(AlgorithmForLP t_algorithm) override;
+
+    AlgorithmForLP algorithm_for_lp() const override;
 };
 
 #endif

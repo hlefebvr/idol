@@ -64,7 +64,7 @@ void Lpsolve::solve() {
     if (infeasible_or_unbounded_info()) {
 
         if (m_solution_status.value() == Unbounded) {
-            compute_extreme_ray();
+            compute_unbounded_ray();
         } else if (m_solution_status.value() == Infeasible) {
             compute_farkas_dual();
         }
@@ -238,15 +238,19 @@ void Lpsolve::set_infeasible_or_unbounded_info(bool t_value) {
     m_infeasible_or_unbounded_info = t_value;
 }
 
-double Lpsolve::get_extreme_ray_value(const Var &t_var) const {
+double Lpsolve::get_unbounded_ray(const Var &t_var) const {
     return get_primal_value(t_var);
+}
+
+double Lpsolve::get_unbounded_ray_objective_value() const {
+    return get_primal_objective_value();
 }
 
 bool Lpsolve::infeasible_or_unbounded_info() const {
     return m_infeasible_or_unbounded_info;
 }
 
-void Lpsolve::compute_extreme_ray() {
+void Lpsolve::compute_unbounded_ray() {
 
     std::vector<double> ones(source_model().variables().size()+1, 1.);
     add_constraint(model, ones.data(), LE, 1);
@@ -257,7 +261,7 @@ void Lpsolve::compute_extreme_ray() {
 
     const auto status = ::solve(model);
 
-    m_ray = BaseSolver::extreme_ray();
+    m_ray = BaseSolver::unbounded_ray();
 
     del_constraint(model, get_Norig_rows(model));
     for (const auto& ctr : source_model().constraints()) {
@@ -324,12 +328,31 @@ double Lpsolve::get_dual_farkas_value(const Ctr &t_ctr) const {
     return get_dual_value(t_ctr);
 }
 
-Solution::Primal Lpsolve::extreme_ray() const {
+Solution::Primal Lpsolve::unbounded_ray() const {
     return m_ray.value();
 }
 
 Solution::Dual Lpsolve::dual_farkas() const {
     return m_farkas.value();
+}
+
+void Lpsolve::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {
+    int algorithm;
+    switch (t_algorithm) {
+        case Automatic: algorithm = SIMPLEX_DUAL_PRIMAL; break;
+        case PrimalSimplex: algorithm = SIMPLEX_PRIMAL_PRIMAL;  break;
+        case DualSimplex: algorithm = SIMPLEX_DUAL_DUAL; break;
+        case Barrier: throw std::runtime_error("lpsolve does not have a barrier solver.");
+        default: throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(t_algorithm));
+    }
+    set_simplextype(model, algorithm);
+}
+
+AlgorithmForLP Lpsolve::algorithm_for_lp() const {
+    int algorithm = get_simplextype(model);
+    if (algorithm == SIMPLEX_PRIMAL_PRIMAL || algorithm == SIMPLEX_DUAL_PRIMAL) { return PrimalSimplex; }
+    if (algorithm == SIMPLEX_DUAL_DUAL || algorithm == SIMPLEX_PRIMAL_DUAL) { return DualSimplex; }
+    throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
 }
 
 

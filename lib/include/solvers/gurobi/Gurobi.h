@@ -64,7 +64,9 @@ protected:
 
     [[nodiscard]] double get_primal_value(const Var &t_var) const override;
 
-    [[nodiscard]] double get_extreme_ray_value(const Var &t_var) const override;
+    [[nodiscard]] double get_unbounded_ray(const Var &t_var) const override;
+
+    double get_unbounded_ray_objective_value() const override;
 
     [[nodiscard]] double get_dual_value(const Ctr &t_var) const override;
 
@@ -76,6 +78,10 @@ public:
     [[nodiscard]] bool infeasible_or_unbounded_info() const override;
 
     void set_infeasible_or_unbounded_info(bool t_value) override;
+
+    void set_algorithm_for_lp(AlgorithmForLP t_algorithm) override;
+
+    [[nodiscard]] AlgorithmForLP algorithm_for_lp() const override;
 };
 
 #endif

@@ -51,7 +51,8 @@ protected:
     [[nodiscard]] virtual double get_primal_objective_value() const = 0;
     [[nodiscard]] virtual double get_dual_objective_value() const;
     [[nodiscard]] virtual double get_primal_value(const Var& t_var) const = 0;
-    [[nodiscard]] virtual double get_extreme_ray_value(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_unbounded_ray(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_unbounded_ray_objective_value() const = 0;
     [[nodiscard]] virtual double get_dual_value(const Ctr& t_ctr) const = 0;
     [[nodiscard]] virtual double get_dual_farkas_objective_value() const = 0;
     [[nodiscard]] virtual double get_dual_farkas_value(const Ctr& t_ctr) const = 0;
@@ -69,7 +70,7 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    [[nodiscard]] Solution::Primal extreme_ray() const override;
+    [[nodiscard]] Solution::Primal unbounded_ray() const override;
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
@@ -214,10 +215,7 @@ Solution::Primal BaseSolver<VarT, CtrT>::primal_solution() const {
 }
 
 template<class VarT, class CtrT>
-Solution::Primal BaseSolver<VarT, CtrT>::extreme_ray() const {
-    Solution::Primal result;
-    result.set_status(Unbounded);
-    result.set_objective_value(0.);
+Solution::Primal BaseSolver<VarT, CtrT>::unbounded_ray() const {
 
     if (get_primal_status() != Unbounded) {
         throw std::runtime_error("Only available for unbounded problems.");
@@ -227,8 +225,12 @@ Solution::Primal BaseSolver<VarT, CtrT>::extreme_ray() const {
         throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access extreme ray information.");
     }
 
+    Solution::Primal result;
+    result.set_status(algorithm_for_lp() == PrimalSimplex ? Optimal : Feasible);
+    result.set_objective_value(get_unbounded_ray_objective_value());
+
     for (const auto& var : m_src_model.variables()) {
-        result.set(var, get_extreme_ray_value(var));
+        result.set(var, get_unbounded_ray(var));
     }
 
     return result;
@@ -280,8 +282,6 @@ double BaseSolver<VarT, CtrT>::get_dual_objective_value() const {
 
 template<class VarT, class CtrT>
 Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
-    Solution::Dual result;
-    result.set_status(Infeasible);
 
     if (get_primal_status() != Infeasible) {
         throw std::runtime_error("Only available for infeasible problems.");
@@ -290,6 +290,9 @@ Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
     if (!infeasible_or_unbounded_info()) {
         throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
     }
+
+    Solution::Dual result;
+    result.set_status(algorithm_for_lp() == DualSimplex ? Optimal : Feasible);
 
     result.set_objective_value(get_dual_farkas_objective_value());
 

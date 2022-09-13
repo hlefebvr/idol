@@ -16,7 +16,7 @@ class AbstractSolution {
     double m_objective_value = Inf;
     Map<KeyT, double> m_values;
 
-    double norm_inf() const;
+    [[nodiscard]] double norm_inf() const;
 public:
     AbstractSolution() = default;
 
@@ -96,7 +96,7 @@ double AbstractSolution<KeyT, CRTP>::norm(double t_p) const {
 
     double result = 0.;
     for (const auto& [key, value] : m_values) {
-        result += std::pow(value, t_p);
+        result += std::pow(std::abs(value), t_p);
     }
     result = std::pow(result, 1 / t_p);
     return result;
@@ -106,8 +106,8 @@ template<class KeyT, class CRTP>
 double AbstractSolution<KeyT, CRTP>::norm_inf() const {
     double result = -Inf;
     for (const auto& [key, value] : m_values) {
-        if (result < value) {
-            result = value;
+        if (double abs = std::abs(value) ; result < abs) {
+            result = abs;
         }
     }
     return result;

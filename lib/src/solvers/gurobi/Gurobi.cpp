@@ -137,7 +137,15 @@ void Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
     m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
 }
 
-double Gurobi::get_extreme_ray_value(const Var &t_var) const {
+double Gurobi::get_unbounded_ray_objective_value() const {
+    double result = 0.;
+    for (const auto& [var, coeff] : source_model().objective()) {
+        result += get(var).get(GRB_DoubleAttr_UnbdRay) * value(coeff);
+    }
+    return result;
+}
+
+double Gurobi::get_unbounded_ray(const Var &t_var) const {
     return get(t_var).get(GRB_DoubleAttr_UnbdRay);
 }
 
@@ -151,6 +159,27 @@ double Gurobi::get_dual_farkas_objective_value() const {
 
 double Gurobi::get_dual_farkas_value(const Ctr &t_ctr) const {
     return -get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
+}
+
+void Gurobi::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {
+    int algorithm;
+    switch (t_algorithm) {
+        case Automatic: algorithm = GRB_METHOD_AUTO; break;
+        case PrimalSimplex: algorithm = GRB_METHOD_PRIMAL;  break;
+        case DualSimplex: algorithm = GRB_METHOD_DUAL; break;
+        case Barrier: algorithm = GRB_METHOD_BARRIER; break;
+        default: throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(t_algorithm));
+    }
+    m_model.set(GRB_IntParam_Method, algorithm);
+}
+
+AlgorithmForLP Gurobi::algorithm_for_lp() const {
+    int algorithm = m_model.get(GRB_IntParam_Method);
+    if (algorithm == GRB_METHOD_AUTO) { return Automatic; }
+    if (algorithm == GRB_METHOD_PRIMAL) { return PrimalSimplex; }
+    if (algorithm == GRB_METHOD_DUAL) { return DualSimplex; }
+    if (algorithm == GRB_METHOD_BARRIER) { return Barrier; }
+    throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
 }
 
 #endif

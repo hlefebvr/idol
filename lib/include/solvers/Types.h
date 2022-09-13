@@ -21,6 +21,13 @@ enum SolutionStatus {
     Error
 };
 
+enum AlgorithmForLP {
+    Automatic,
+    PrimalSimplex,
+    DualSimplex,
+    Barrier
+};
+
 static bool is_in(SolutionStatus t_status, std::initializer_list<SolutionStatus> t_list) {
     for (auto status : t_list) {
         if (status == t_status) {

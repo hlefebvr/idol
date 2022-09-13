@@ -18,9 +18,13 @@ public:
 
     [[nodiscard]] virtual bool infeasible_or_unbounded_info() const = 0;
 
+    virtual void set_algorithm_for_lp(AlgorithmForLP t_algorithm) = 0;
+
+    [[nodiscard]] virtual AlgorithmForLP algorithm_for_lp() const = 0;
+
     [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
 
-    [[nodiscard]] virtual Solution::Primal extreme_ray() const = 0;
+    [[nodiscard]] virtual Solution::Primal unbounded_ray() const = 0;
 
     [[nodiscard]] virtual Solution::Dual dual_solution() const = 0;
 

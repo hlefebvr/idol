@@ -3,8 +3,6 @@
 //
 #include "../test_utils.h"
 
-/*
-
 TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
 
     Env env;
@@ -24,12 +22,12 @@ TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
             TestType solver(model);
             solver.solve();
 
-            const auto solution = solver.solution();
+            const auto primal_solution = solver.primal_solution();
 
-            CHECK(solution.status() == Optimal);
-            CHECK(solution.value(x) == 1._a);
-            CHECK(solution.value(y) == 0._a);
-            CHECK(solution.value(z) == 1._a);
+            CHECK(primal_solution.status() == Optimal);
+            CHECK(primal_solution.get(x) == 1._a);
+            CHECK(primal_solution.get(y) == 0._a);
+            CHECK(primal_solution.get(z) == 1._a);
 
         }
 
@@ -45,17 +43,15 @@ TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
 
             solver.solve();
 
-            const auto solution = solver.solution();
+            const auto primal_solution = solver.primal_solution();
 
-            CHECK(solution.status() == Optimal);
-            CHECK(solution.value(x) == 1._a);
-            CHECK(solution.value(y) == 0._a);
-            CHECK(solution.value(z) == 1._a);
+            CHECK(primal_solution.status() == Optimal);
+            CHECK(primal_solution.get(x) == 1._a);
+            CHECK(primal_solution.get(y) == 0._a);
+            CHECK(primal_solution.get(z) == 1._a);
 
         }
 
     }
 
 }
-
- */
