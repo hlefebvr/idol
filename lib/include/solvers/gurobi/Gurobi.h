@@ -58,15 +58,24 @@ protected:
 
     void set_type(const Ctr &t_ctr, CtrType t_type) override;
 
-    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionStatus get_primal_status() const override;
 
-    [[nodiscard]] double get_objective_value() const override;
+    [[nodiscard]] double get_primal_objective_value() const override;
 
     [[nodiscard]] double get_primal_value(const Var &t_var) const override;
 
+    [[nodiscard]] double get_extreme_ray_value(const Var &t_var) const override;
+
     [[nodiscard]] double get_dual_value(const Ctr &t_var) const override;
 
-    [[nodiscard]] double get_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_dual_farkas_objective_value() const override;
+
+    [[nodiscard]] double get_dual_farkas_value(const Ctr &t_ctr) const override;
+
+public:
+    [[nodiscard]] bool infeasible_or_unbounded_info() const override;
+
+    void set_infeasible_or_unbounded_info(bool t_value) override;
 };
 
 #endif

@@ -7,12 +7,16 @@
 #ifdef USE_LPSOLVE
 
 #include "solvers/BaseSolver.h"
+#include "containers/Optional.h"
 
 struct _lprec; // NOLINT(bugprone-reserved-identifier)
 
 class Lpsolve final : public BaseSolver<int, int> {
     _lprec* model = nullptr;
     Optional<SolutionStatus> m_solution_status;
+    Optional<Solution::Primal> m_ray;
+    Optional<Solution::Dual> m_farkas;
+    bool m_infeasible_or_unbounded_info = false;
 
     static void throw_if_error(unsigned char t_code, const std::string& t_msg);
 
@@ -53,15 +57,33 @@ protected:
 
     void set_type(const Ctr &t_ctr, CtrType t_type) override;
 
-    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionStatus get_primal_status() const override;
 
-    [[nodiscard]] double get_objective_value() const override;
+    [[nodiscard]] double get_primal_objective_value() const override;
 
     [[nodiscard]] double get_primal_value(const Var &t_var) const override;
 
+    [[nodiscard]] double get_extreme_ray_value(const Var &t_var) const override;
+
     [[nodiscard]] double get_dual_value(const Ctr &t_ctr) const override;
 
-    [[nodiscard]] double get_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_dual_farkas_objective_value() const override;
+
+    [[nodiscard]] double get_dual_farkas_value(const Ctr &t_ctr) const override;
+
+    void compute_extreme_ray();
+
+    void compute_farkas_dual();
+
+public:
+
+    Solution::Primal extreme_ray() const override;
+
+    Solution::Dual dual_farkas() const override;
+
+    [[nodiscard]] bool infeasible_or_unbounded_info() const override;
+
+    void set_infeasible_or_unbounded_info(bool t_value) override;
 };
 
 #endif

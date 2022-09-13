@@ -20,9 +20,16 @@ class impl::ObjectManager {
     std::list<std::unique_ptr<impl::Object>>::iterator create_placeholder();
 protected:
     explicit ObjectManager(Env& t_env) : m_env(t_env) {}
+
     template<class T, class ...Args> T create(std::string&& t_name, Args ...t_args);
     template<class T> typename T::impl_t& impl(const T& t_object);
     template<class T> void free(const T& t_object);
+public:
+    ObjectManager(const impl::ObjectManager&) = default;
+    ObjectManager(impl::ObjectManager&&) = default;
+
+    ObjectManager& operator=(const impl::ObjectManager&) = delete;
+    ObjectManager& operator=(impl::ObjectManager&&) = delete;
 };
 
 template<class T, class... Args>
@@ -49,6 +56,12 @@ void impl::ObjectManager::free(const T &t_object) {
 class ObjectManager : public impl::ObjectManager {
     friend class Model;
     explicit ObjectManager(Env& t_env) : impl::ObjectManager(t_env) {}
+public:
+    ObjectManager(const ObjectManager&) = default;
+    ObjectManager(ObjectManager&&) = default;
+
+    ObjectManager& operator=(const ObjectManager&) = delete;
+    ObjectManager& operator=(ObjectManager&&) = delete;
 };
 
 #endif //OPTIMIZE_OBJECTMANAGER_H

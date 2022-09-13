@@ -8,11 +8,11 @@
 #include <vector>
 #include "modeling/Types.h"
 #include "../modeling/models/Model.h"
-#include "solvers/solutions/Solution.h"
+#include "Solver.h"
 
 template<class VarT, class CtrT>
-class BaseSolver : public Listener {
-    Model& m_src_model;
+class BaseSolver : public Listener, public Solver {
+    const Model& m_src_model;
     std::vector<VarT> m_variables;
     std::vector<CtrT> m_constraints;
 protected:
@@ -46,23 +46,34 @@ protected:
     virtual void set_ub(const Var &t_var, double t_ub) = 0;
     virtual void set_type(const Var &t_var, VarType t_type) = 0;
     virtual void set_type(const Ctr &t_ctr, CtrType t_type) = 0;
-    [[nodiscard]] virtual SolutionStatus get_status() const = 0;
-    [[nodiscard]] virtual double get_objective_value() const = 0;
+    [[nodiscard]] virtual SolutionStatus get_primal_status() const = 0;
+    [[nodiscard]] virtual SolutionStatus get_dual_status() const;
+    [[nodiscard]] virtual double get_primal_objective_value() const = 0;
+    [[nodiscard]] virtual double get_dual_objective_value() const;
     [[nodiscard]] virtual double get_primal_value(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_extreme_ray_value(const Var& t_var) const = 0;
     [[nodiscard]] virtual double get_dual_value(const Ctr& t_ctr) const = 0;
-    [[nodiscard]] virtual double get_reduced_cost(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_dual_farkas_objective_value() const = 0;
+    [[nodiscard]] virtual double get_dual_farkas_value(const Ctr& t_ctr) const = 0;
+
+    [[nodiscard]] const Model& source_model() const { return m_src_model; }
 public:
 
     VarT& get(const Var& t_var);
+
     const VarT& get(const Var& t_var) const;
+
     CtrT& get(const Ctr& t_ctr);
+
     const CtrT& get(const Ctr& t_ctr) const;
 
-    virtual void write(const std::string& t_filename) = 0;
+    [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    virtual void solve() = 0;
+    [[nodiscard]] Solution::Primal extreme_ray() const override;
 
-    [[nodiscard]] Solution solution(bool t_primal = true, bool t_dual = false, bool t_reduced_costs = false) const;
+    [[nodiscard]] Solution::Dual dual_solution() const override;
+
+    [[nodiscard]] Solution::Dual dual_farkas() const override;
 };
 
 template<class VarT, class CtrT>
@@ -173,31 +184,117 @@ double BaseSolver<VarT, CtrT>::value(const Coefficient &t_coefficient) const {
 }
 
 template<class VarT, class CtrT>
-Solution BaseSolver<VarT, CtrT>::solution(bool t_primal, bool t_dual, bool t_reduced_costs) const {
-    Solution result(get_status());
+Solution::Primal BaseSolver<VarT, CtrT>::primal_solution() const {
+    Solution::Primal result;
+    const auto status = get_primal_status();
+    result.set_status(status);
 
-    //if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit, Unbounded })) {
-    //    return result;
-    //}
-
-    result.set_value(get_objective_value());
-
-    if (t_primal) {
-        for (const auto& var : m_src_model.variables()) {
-            result.set_primal_value(var, get_primal_value(var));
-        }
+    if (status == Unbounded) {
+        result.set_objective_value(-Inf);
+        return result;
     }
 
-    if (t_dual) {
-        for (const auto& ctr : m_src_model.constraints()) {
-            result.set_dual_value(ctr, get_dual_value(ctr));
-        }
+    if (is_in(status, { Infeasible, InfeasibleTimeLimit })) {
+        result.set_objective_value(+Inf);
+        return result;
     }
 
-    if (t_reduced_costs) {
-        for (const auto& var : m_src_model.variables()) {
-            result.set_reduced_cost(var, get_reduced_cost(var));
-        }
+    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+        result.set_objective_value(0.);
+        return result;
+    }
+
+    result.set_objective_value(get_primal_objective_value());
+
+    for (const auto& var : m_src_model.variables()) {
+        result.set(var, get_primal_value(var));
+    }
+
+    return result;
+}
+
+template<class VarT, class CtrT>
+Solution::Primal BaseSolver<VarT, CtrT>::extreme_ray() const {
+    Solution::Primal result;
+    result.set_status(Unbounded);
+    result.set_objective_value(0.);
+
+    if (get_primal_status() != Unbounded) {
+        throw std::runtime_error("Only available for unbounded problems.");
+    }
+
+    if (!infeasible_or_unbounded_info()) {
+        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access extreme ray information.");
+    }
+
+    for (const auto& var : m_src_model.variables()) {
+        result.set(var, get_extreme_ray_value(var));
+    }
+
+    return result;
+}
+
+template<class VarT, class CtrT>
+Solution::Dual BaseSolver<VarT, CtrT>::dual_solution() const {
+    Solution::Dual result;
+    const auto dual_status = get_dual_status();
+    result.set_status(dual_status);
+
+    if (dual_status == Unbounded) {
+        result.set_objective_value(+Inf);
+        return result;
+    }
+
+    if (is_in(dual_status, { Infeasible, InfeasibleTimeLimit })) {
+        result.set_objective_value(-Inf);
+        return result;
+    }
+
+    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+        result.set_objective_value(0.);
+        return result;
+    }
+
+    result.set_objective_value(get_dual_objective_value());
+
+    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+        return result;
+    }
+
+    for (const auto& ctr : m_src_model.constraints()) {
+        result.set(ctr, get_dual_value(ctr));
+    }
+
+    return result;
+}
+
+template<class VarT, class CtrT>
+SolutionStatus BaseSolver<VarT, CtrT>::get_dual_status() const {
+    return dual(get_primal_status());
+}
+
+template<class VarT, class CtrT>
+double BaseSolver<VarT, CtrT>::get_dual_objective_value() const {
+    return get_primal_objective_value();
+}
+
+template<class VarT, class CtrT>
+Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
+    Solution::Dual result;
+    result.set_status(Infeasible);
+
+    if (get_primal_status() != Infeasible) {
+        throw std::runtime_error("Only available for infeasible problems.");
+    }
+
+    if (!infeasible_or_unbounded_info()) {
+        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+    }
+
+    result.set_objective_value(get_dual_farkas_objective_value());
+
+    for (const auto& ctr : m_src_model.constraints()) {
+        result.set(ctr, get_dual_farkas_value(ctr));
     }
 
     return result;

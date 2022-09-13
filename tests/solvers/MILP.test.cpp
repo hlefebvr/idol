@@ -3,6 +3,8 @@
 //
 #include "../test_utils.h"
 
+/*
+
 TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
 
     Env env;
@@ -55,3 +57,5 @@ TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
     }
 
 }
+
+ */

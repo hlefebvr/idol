@@ -28,8 +28,6 @@ Lpsolve::Lpsolve(Model& t_model) : BaseSolver<int, int>(t_model) {
 
     set_verbose(model, NEUTRAL);
 
-    //set_presolve(model, false, false);
-
     set_minim(model);
 
     init_model(t_model);
@@ -43,19 +41,34 @@ void Lpsolve::write(const std::string &t_filename) {
     write_lp(model, (char*) t_filename.c_str());
 }
 
+SolutionStatus convert_lpsolve_status(int t_lpsolve_status) {
+    switch (t_lpsolve_status) {
+        case NUMFAILURE: [[fallthrough]];
+        case NOMEMORY: return Error;
+        case PRESOLVED: [[fallthrough]];
+        case OPTIMAL: return Optimal;
+        case SUBOPTIMAL: return FeasibleTimeLimit;
+        case INFEASIBLE: return Infeasible;
+        case UNBOUNDED: return Unbounded;
+        case TIMEOUT: return InfeasibleTimeLimit;
+        default:;
+    }
+    throw std::runtime_error("Did not know what to do with lpsolve status: " + std::to_string(t_lpsolve_status));
+}
+
 void Lpsolve::solve() {
     int status = ::solve(model);
 
-    switch (status) {
-        case NUMFAILURE: [[fallthrough]];
-        case NOMEMORY: m_solution_status = Error; break;
-        case PRESOLVED: [[fallthrough]];
-        case OPTIMAL: m_solution_status = Optimal; break;
-        case SUBOPTIMAL: m_solution_status = FeasibleTimeLimit; break;
-        case INFEASIBLE: m_solution_status = Infeasible; break;
-        case UNBOUNDED: m_solution_status = Unbounded; break;
-        case TIMEOUT: m_solution_status = InfeasibleTimeLimit; break;
-        default: throw std::runtime_error("Did not know what to do with lpsolve status: " + std::to_string(status));
+    m_solution_status = convert_lpsolve_status(status);
+
+    if (infeasible_or_unbounded_info()) {
+
+        if (m_solution_status.value() == Unbounded) {
+            compute_extreme_ray();
+        } else if (m_solution_status.value() == Infeasible) {
+            compute_farkas_dual();
+        }
+
     }
 
 }
@@ -202,14 +215,14 @@ void Lpsolve::set_type(const Ctr &t_ctr, CtrType t_type) {
     throw_if_error(success, "could not set constraint type");
 }
 
-SolutionStatus Lpsolve::get_status() const {
+SolutionStatus Lpsolve::get_primal_status() const {
     if (!m_solution_status) {
         throw std::runtime_error("No solution found.");
     }
     return *m_solution_status;
 }
 
-double Lpsolve::get_objective_value() const {
+double Lpsolve::get_primal_objective_value() const {
     return get_objective(model);
 }
 
@@ -221,8 +234,103 @@ double Lpsolve::get_dual_value(const Ctr &t_ctr) const {
     return get_var_dualresult(model, get(t_ctr));
 }
 
-double Lpsolve::get_reduced_cost(const Var &t_var) const {
-    return get_var_dualresult(model, get_Norig_rows(model) + get(t_var));
+void Lpsolve::set_infeasible_or_unbounded_info(bool t_value) {
+    m_infeasible_or_unbounded_info = t_value;
 }
+
+double Lpsolve::get_extreme_ray_value(const Var &t_var) const {
+    return get_primal_value(t_var);
+}
+
+bool Lpsolve::infeasible_or_unbounded_info() const {
+    return m_infeasible_or_unbounded_info;
+}
+
+void Lpsolve::compute_extreme_ray() {
+
+    std::vector<double> ones(source_model().variables().size()+1, 1.);
+    add_constraint(model, ones.data(), LE, 1);
+
+    for (const auto& ctr : source_model().constraints()) {
+        set_rh(model, get(ctr), 0.);
+    }
+
+    const auto status = ::solve(model);
+
+    m_ray = BaseSolver::extreme_ray();
+
+    del_constraint(model, get_Norig_rows(model));
+    for (const auto& ctr : source_model().constraints()) {
+        set_rh(model, get(ctr), value(ctr.rhs()));
+    }
+
+}
+
+void Lpsolve::compute_farkas_dual() {
+
+    const unsigned int n_original_variables = source_model().variables().size();
+    unsigned int n_artificial_variables = 0;
+    const double plus_one = 1.;
+    const double minus_one = -1.;
+
+    for (const auto& ctr : source_model().constraints()) {
+
+        const int index = get(ctr);
+        const auto type = ctr.type();
+
+        if (type == LessOrEqual) {
+            add_columnex(model, 1, (double*) &minus_one, (int*) &index);
+            n_artificial_variables += 1;
+        } else if (type == GreaterOrEqual) {
+            add_columnex(model, 1, (double*) &plus_one, (int*) &index);
+            n_artificial_variables += 1;
+        } else {
+            add_columnex(model, 1, (double*) &minus_one, (int*) &index);
+            add_columnex(model, 1, (double*) &plus_one, (int*) &index);
+            n_artificial_variables += 2;
+        }
+
+    }
+
+    const unsigned int n_total_variables = n_original_variables + n_artificial_variables;
+
+    std::vector<double> objective;
+    objective.reserve(1 + n_total_variables);
+    unsigned int i = 0;
+    for ( ; i <= n_original_variables ; ++i) { objective.emplace_back(0.); }
+    for ( ; i <= n_total_variables ; ++i) { objective.emplace_back(1.); }
+
+    set_obj_fn(model, objective.data());
+
+    ::solve(model);
+
+    m_farkas = BaseSolver::dual_farkas();
+
+    for ( ; i > n_original_variables ; --i) {
+        del_column(model, i);
+    }
+
+    for (const auto& [var, coeff] : source_model().objective()) {
+        set_objective_coefficient(var, coeff);
+    }
+
+}
+
+double Lpsolve::get_dual_farkas_objective_value() const {
+    return get_dual_objective_value();
+}
+
+double Lpsolve::get_dual_farkas_value(const Ctr &t_ctr) const {
+    return get_dual_value(t_ctr);
+}
+
+Solution::Primal Lpsolve::extreme_ray() const {
+    return m_ray.value();
+}
+
+Solution::Dual Lpsolve::dual_farkas() const {
+    return m_farkas.value();
+}
+
 
 #endif

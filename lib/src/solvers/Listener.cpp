@@ -1,8 +1,8 @@
 //
 // Created by henri on 09/09/22.
 //
-#include "solvers/Listener.h"
-#include "solvers/ListenerManager.h"
+#include "modeling/models/Listener.h"
+#include "modeling/models/ListenerManager.h"
 
 Listener::Id::Id(ListenerManager &t_manager, typename std::list<Listener *>::iterator &&t_it)
     : m_id(t_it), m_manager(&t_manager) {

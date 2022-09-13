@@ -19,6 +19,8 @@ public:
 
     Row& operator=(const Row& t_src) = default;
     Row& operator=(Row&& t_src) noexcept = default;
+
+    static const Row EmptyRow;
 };
 
 

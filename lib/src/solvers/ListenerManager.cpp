@@ -1,7 +1,7 @@
 //
 // Created by henri on 09/09/22.
 //
-#include "solvers/ListenerManager.h"
+#include "modeling/models/ListenerManager.h"
 
 void ListenerManager::free(const Listener::Id &t_id) {
     m_listeners.erase(t_id.m_id);

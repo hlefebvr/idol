@@ -6,7 +6,7 @@
 #define OPTIMIZE_LISTENER_H
 
 #include <list>
-#include "../modeling/Types.h"
+#include "modeling/Types.h"
 
 class Var;
 class Ctr;

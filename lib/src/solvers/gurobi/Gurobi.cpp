@@ -28,8 +28,6 @@ char Gurobi::gurobi_type(VarType t_type) {
 
 Gurobi::Gurobi(Model &t_model) : BaseSolver<GRBVar, GRBConstr>(t_model), m_model(m_env) {
     m_model.set(GRB_IntParam_OutputFlag, 0);
-    m_model.set(GRB_IntParam_InfUnbdInfo, true); std::cout << "inf or undb info = true" << std::endl;
-    //m_model.set(GRB_IntParam_Presolve, false);
     init_model(t_model);
 }
 
@@ -99,7 +97,7 @@ void Gurobi::solve() {
     m_model.optimize();
 }
 
-SolutionStatus Gurobi::get_status() const {
+SolutionStatus Gurobi::get_primal_status() const {
     SolutionStatus status = Unknown;
     auto grb_status = m_model.get(GRB_IntAttr_Status);
     switch (grb_status) {
@@ -114,26 +112,45 @@ SolutionStatus Gurobi::get_status() const {
     return status;
 }
 
-double Gurobi::get_objective_value() const {
+double Gurobi::get_primal_objective_value() const {
     return m_model.get(GRB_DoubleAttr_ObjVal);
 }
 
 double Gurobi::get_primal_value(const Var &t_var) const {
-    if (get_status() == Unbounded) {
+    if (get_primal_status() == Unbounded) {
         return get(t_var).get(GRB_DoubleAttr_UnbdRay);
     }
     return get(t_var).get(GRB_DoubleAttr_X);
 }
 
 double Gurobi::get_dual_value(const Ctr &t_ctr) const {
-    if (get_status() == Infeasible) {
+    if (get_primal_status() == Infeasible) {
         return get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
     }
     return get(t_ctr).get(GRB_DoubleAttr_Pi);
 }
 
-double Gurobi::get_reduced_cost(const Var &t_var) const {
-    return get(t_var).get(GRB_DoubleAttr_RC);
+void Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
+    // For getting extreme ray instead of simply an unbounded direction
+    m_model.set(GRB_IntParam_Method, GRB_METHOD_PRIMAL);
+    // To activate InfUnbdInfo in gurobi
+    m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+}
+
+double Gurobi::get_extreme_ray_value(const Var &t_var) const {
+    return get(t_var).get(GRB_DoubleAttr_UnbdRay);
+}
+
+bool Gurobi::infeasible_or_unbounded_info() const {
+    return m_model.get(GRB_IntParam_InfUnbdInfo);
+}
+
+double Gurobi::get_dual_farkas_objective_value() const {
+    return m_model.get(GRB_DoubleAttr_FarkasProof);
+}
+
+double Gurobi::get_dual_farkas_value(const Ctr &t_ctr) const {
+    return -get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
 }
 
 #endif

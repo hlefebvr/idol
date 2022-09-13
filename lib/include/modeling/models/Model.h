@@ -12,7 +12,7 @@
 #include "modeling/constraints/TempCtr.h"
 #include "containers/IteratorForward.h"
 #include "modeling/objective/Objective.h"
-#include "solvers/ListenerManager.h"
+#include "ListenerManager.h"
 #include <vector>
 
 class Env;
@@ -36,6 +36,12 @@ class Model {
     void add_row_to_columns(const Ctr& t_ctr);
 public:
     explicit Model(Env& t_env);
+
+    Model(const Model&) = delete;
+    Model(Model&&) noexcept = default;
+
+    Model& operator=(const Model&) = delete;
+    Model& operator=(Model&&) noexcept = delete;
 
     ~Model();
 
