@@ -6,6 +6,7 @@
 #define OPTIMIZE_SOLUTION_H
 
 #include "modeling/variables/Variable.h"
+#include "modeling/constraints/Constraint.h"
 #include "AbstractSolution.h"
 
 namespace Solution {

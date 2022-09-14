@@ -10,6 +10,8 @@
 
 class Solver {
 public:
+    virtual ~Solver() = default;
+
     virtual void write(const std::string& t_filename) = 0;
 
     virtual void solve() = 0;
