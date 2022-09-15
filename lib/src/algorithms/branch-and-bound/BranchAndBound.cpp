@@ -168,11 +168,15 @@ void BranchAndBound::solve_current_node() {
 }
 
 bool BranchAndBound::current_node_was_not_solved_to_optimality() const {
-    return m_current_node->status() != Optimal;
+    const auto status = m_current_node->status();
+    if (status == Infeasible && m_current_node->id() != 0) {
+        return false;
+    }
+    return status != Optimal;
 }
 
 bool BranchAndBound::current_node_has_a_valid_solution() const {
-    return m_branching_strategy->is_valid(*m_current_node);
+    return m_current_node->status() != Infeasible && m_branching_strategy->is_valid(*m_current_node);
 }
 
 void BranchAndBound::set_solution_strategy(AbstractSolutionStrategy*t_node_strategy) {

@@ -71,6 +71,44 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             CHECK(primal_solution.get(z) == 1._a);
         }
 
+        SECTION("knapsack") {
+            // Taken from https://www.geeksforgeeks.org/implementation-of-0-1-knapsack-using-branch-and-bound/
+
+            const std::vector<std::pair<double, double>> items = { {2, 40}, {3.14, 50}, {1.98, 100}, {5, 95}, {3, 30} }; // (weight, value)
+            const double capacity = 10.;
+
+            std::vector<Var> x;
+            x.reserve(items.size());
+
+            Expr sum_weight;
+
+            for (const auto& [weight, profit] : items) {
+                auto var = model.add_variable(0., 1., Continuous, -profit);
+                sum_weight += weight * var;
+                x.emplace_back(var);
+            }
+
+            model.add_constraint(sum_weight <= capacity);
+
+            BranchAndBound solver;
+            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
+            solver.set_branching_strategy(new MostInfeasible(x)); // how it is branched and checked for feasibility
+            solver.solve();
+
+            CHECK(solver.status() == Optimal);
+            CHECK(solver.objective_value() == -235._a);
+            CHECK(solver.n_created_nodes() == 15);
+
+            const auto primal_solution = solver.primal_solution();
+
+            CHECK(primal_solution.get(x[0]) == 1._a);
+            CHECK(primal_solution.get(x[1]) == 0._a);
+            CHECK(primal_solution.get(x[2]) == 1._a);
+            CHECK(primal_solution.get(x[3]) == 1._a);
+            CHECK(primal_solution.get(x[4]) == 0._a);
+        }
+
     }
 
 }
