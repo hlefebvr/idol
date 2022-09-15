@@ -25,12 +25,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             auto c1 = model.add_constraint(x + 2 * y + 3 * z <= 4);
             auto c2 = model.add_constraint(x + y >= 1);
 
-            std::vector<Var> branching_candidates = { x, y, z };
-
-            BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-            solver.set_branching_strategy(new MostInfeasible(branching_candidates)); // how it is branched and checked for feasibility
+            BranchAndBound solver(model, { x, y, z });
             solver.solve();
 
             CHECK(solver.n_created_nodes() == 1);
@@ -52,12 +47,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             auto c1 = model.add_constraint(x + 2 * y + 2.5 * z <= 4);
             auto c2 = model.add_constraint(x + y >= 1);
 
-            std::vector<Var> branching_candidates = { x, y, z };
-
-            BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-            solver.set_branching_strategy(new MostInfeasible(branching_candidates)); // how it is branched and checked for feasibility
+            BranchAndBound solver(model, { x, y, z });
             solver.solve();
 
             CHECK(solver.n_created_nodes() == 3);
@@ -90,10 +80,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
             model.add_constraint(sum_weight <= capacity);
 
-            BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-            solver.set_branching_strategy(new MostInfeasible(x)); // how it is branched and checked for feasibility
+            BranchAndBound solver(model, x);
             solver.solve();
 
             CHECK(solver.status() == Optimal);
@@ -119,10 +106,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x >= 1);
             model.add_constraint(x <= 0);
 
-            BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-            solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+            BranchAndBound solver(model, { x });
             solver.solve();
 
             CHECK(solver.status() == Infeasible);
@@ -134,10 +118,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x >= .1);
             model.add_constraint(x <= .9);
 
-            BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-            solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+            BranchAndBound solver(model, { x });
             solver.solve();
 
 
@@ -151,10 +132,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
         auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
 
-        BranchAndBound solver;
-        solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
-        solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-        solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+        BranchAndBound solver(model, { x });
         solver.solve();
 
         CHECK(solver.status() == Unbounded);

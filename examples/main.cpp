@@ -20,10 +20,7 @@ int main() {
 
     auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
 
-    BranchAndBound solver;
-    solver.set_solution_strategy(new SolutionStrategy<Lpsolve>(model)); // how it is solved
-    solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
-    solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+    BranchAndBound solver(model, { x });
     solver.solve();
 
     std::cout << "Status: " << solver.status() << std::endl;

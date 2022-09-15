@@ -91,6 +91,8 @@ class BranchAndBound {
 
     void log_node(LogLevel t_msg_level, const Node& t_node) const;
 public:
+    BranchAndBound() = default;
+    BranchAndBound(Model& t_model, std::vector<Var> t_branching_candidates);
     virtual ~BranchAndBound();
 
     void solve();
