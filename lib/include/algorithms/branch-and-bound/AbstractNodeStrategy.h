@@ -11,7 +11,7 @@ class AbstractNodeStrategy {
 public:
     virtual ~AbstractNodeStrategy() = default;
 
-    [[nodiscard]] virtual Node* create_root_node(unsigned int t_id) const = 0;
+    [[nodiscard]] virtual Node* create_root_node() const = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTNODESTRATEGY_H

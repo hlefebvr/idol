@@ -40,3 +40,7 @@ unsigned int Var::index() const {
     return m_impl->index();
 }
 
+unsigned int Var::model_id() const {
+    return m_impl->model_id();
+}
+

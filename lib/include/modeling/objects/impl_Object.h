@@ -31,6 +31,8 @@ public:
     [[nodiscard]] unsigned int index() const { return m_index; }
 
     void set_index(unsigned int t_index) { m_index = t_index; }
+
+    [[nodiscard]] unsigned int model_id() const { return m_object_id.model_id(); };
 };
 
 #endif //OPTIMIZE_IMPL_OBJECT_H

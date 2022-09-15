@@ -21,7 +21,7 @@ class impl::ObjectManager {
 protected:
     explicit ObjectManager(Env& t_env) : m_env(t_env) {}
 
-    template<class T, class ...Args> T create(std::string&& t_name, Args ...t_args);
+    template<class T, class ...Args> T create(unsigned int t_model_id, std::string&& t_name, Args ...t_args);
     template<class T> typename T::impl_t& impl(const T& t_object);
     template<class T> void free(const T& t_object);
 public:
@@ -33,9 +33,9 @@ public:
 };
 
 template<class T, class... Args>
-T impl::ObjectManager::create(std::string&& t_name, Args ...t_args) {
+T impl::ObjectManager::create(unsigned int t_model_id, std::string&& t_name, Args ...t_args) {
     auto it = create_placeholder();
-    ObjectId id(it, std::move(t_name), default_name_v<T>);
+    ObjectId id(it, t_model_id, std::move(t_name), default_name_v<T>);
     auto* ptr = new typename T::impl_t(std::move(id), std::forward<Args>(t_args)...);
     it->reset(ptr);
     return T(ptr);

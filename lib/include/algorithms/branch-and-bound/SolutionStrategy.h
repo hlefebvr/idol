@@ -10,6 +10,7 @@
 #include <list>
 
 class NodeByBound;
+class Model;
 
 template<class SolverT>
 class SolutionStrategy : public AbstractSolutionStrategy {

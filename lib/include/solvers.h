@@ -24,6 +24,6 @@ using lpsolve_solver = std::tuple<Lpsolve>;
 using lpsolve_solver = std::tuple<>;
 #endif
 
-using available_solvers = tuple_cat_t<lpsolve_solver, gurobi_solver>;
+using available_solvers = tuple_cat_t<gurobi_solver, lpsolve_solver>;
 
 #endif //OPTIMIZE_SOLVERS_H

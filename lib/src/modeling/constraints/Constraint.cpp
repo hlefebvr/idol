@@ -32,6 +32,10 @@ unsigned int Ctr::index() const {
     return m_impl->index();
 }
 
+unsigned int Ctr::model_id() const {
+    return m_impl->model_id();
+}
+
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
     t_os << t_ctr.name() << " : ";
     t_os << t_ctr.row();

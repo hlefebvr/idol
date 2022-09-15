@@ -19,6 +19,7 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
 
         CHECK(ctr.type() == GreaterOrEqual);
         CHECK(ctr.rhs().constant() == 1._a);
+        CHECK(ctr.model_id() == model.id());
 
     }
 

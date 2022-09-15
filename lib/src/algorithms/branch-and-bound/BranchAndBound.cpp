@@ -105,7 +105,10 @@ void BranchAndBound::initialize() {
 }
 
 void BranchAndBound::create_root_node() {
-    auto* root_node = m_node_strategy->create_root_node(m_n_created_nodes);
+    auto* root_node = m_node_strategy->create_root_node();
+    if (root_node->id() != 0) {
+        throw std::runtime_error("Root node should have id 0.");
+    }
     m_nodes_to_be_processed.add(root_node);
     ++m_n_created_nodes;
 }

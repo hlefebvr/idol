@@ -10,7 +10,7 @@
 template<class NodeT>
 class NodeStrategy : public AbstractNodeStrategy {
 public:
-    [[nodiscard]] Node *create_root_node(unsigned int t_id) const override { return new NodeT(t_id); }
+    [[nodiscard]] Node *create_root_node() const override { return new NodeT(0); }
 };
 
 #endif //OPTIMIZE_NODESTRATEGY_H

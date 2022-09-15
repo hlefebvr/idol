@@ -19,6 +19,10 @@ class Env;
 class Column;
 
 class Model {
+    static unsigned int s_id;
+
+    const unsigned int m_id = s_id++;
+
     ObjectManager m_objects;
     ListenerManager m_listeners;
 
@@ -44,6 +48,8 @@ public:
     Model& operator=(Model&&) noexcept = delete;
 
     ~Model();
+
+    [[nodiscard]] unsigned int id() const { return m_id; }
 
     [[nodiscard]] Objective objective() const { return Objective(m_variables); }
 

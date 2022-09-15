@@ -4,6 +4,8 @@
 #include "modeling/models/Model.h"
 #include "modeling/columns_and_rows/ColumnOrRowReference.h"
 
+unsigned int Model::s_id = 0;
+
 Model::Model(Env &t_env) : m_objects(t_env) {
 
 }
@@ -15,7 +17,7 @@ Model::~Model() {
 }
 
 Param Model::add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name) {
-    auto result = m_objects.create<Param>(std::move(t_name), t_lb, t_ub, t_type);
+    auto result = m_objects.create<Param>(m_id, std::move(t_name), t_lb, t_ub, t_type);
     add_object(m_parameters, result);
     return result;
 }
@@ -25,7 +27,7 @@ void Model::remove(const Param &t_param) {
 }
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
-    auto variable = m_objects.create<Var>(std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
+    auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
     add_object(m_variables, variable);
     m_listeners.broadcast_add(variable);
     add_column_to_rows(variable);
@@ -50,7 +52,7 @@ void Model::remove(const Var &t_var) {
 }
 
 Ctr Model::add_constraint(TempCtr t_temporary_constraint, std::string t_name) {
-    auto constraint = m_objects.create<Ctr>(std::move(t_name), std::move(t_temporary_constraint));
+    auto constraint = m_objects.create<Ctr>(m_id, std::move(t_name), std::move(t_temporary_constraint));
     add_object(m_constraints, constraint);
     m_listeners.broadcast_add(constraint);
     add_row_to_columns(constraint);

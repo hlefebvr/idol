@@ -21,6 +21,7 @@ TEST_CASE("Var", "[variables][modeling]") {
         CHECK(x.lb() == 0._a);
         CHECK(x.ub() == 1._a);
         CHECK(x.type() == Continuous);
+        CHECK(x.model_id() == model.id());
 
     }
 
