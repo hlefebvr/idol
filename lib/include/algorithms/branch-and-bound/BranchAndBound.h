@@ -101,6 +101,8 @@ public:
     [[nodiscard]] double relative_gap() const;
     [[nodiscard]] double absolute_gap() const;
 
+    [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
+
     [[nodiscard]] SolutionStatus status() const;
     [[nodiscard]] double objective_value() const;
     [[nodiscard]] Solution::Primal primal_solution() const;
