@@ -116,6 +116,30 @@ void BranchAndBound::solve_queued_nodes() {
 
 void BranchAndBound::analyze_current_node() {
 
+    if (current_node_is_root_node()) {
+
+        if (current_node_is_infeasible()) {
+
+            terminate_for_infeasibility();
+            return;
+
+        } else if (current_node_is_unbounded()) {
+
+            terminate_for_unboundedness();
+            return;
+
+        }
+
+    }
+
+    if (current_node_is_infeasible()) {
+
+        EASY_LOG(Trace, "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        prune_current_node();
+        return;
+
+    }
+
     if (current_node_was_not_solved_to_optimality()) {
 
         terminate_for_node_could_not_be_solved_to_optimality();
@@ -136,7 +160,6 @@ void BranchAndBound::analyze_current_node() {
         }
 
         reset_current_node();
-
         return;
 
     }
@@ -145,7 +168,6 @@ void BranchAndBound::analyze_current_node() {
 
         EASY_LOG(Trace, "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
         prune_current_node();
-
         return;
 
     }
@@ -167,12 +189,20 @@ void BranchAndBound::solve_current_node() {
     m_current_node->save_solution(*m_solution_strategy);
 }
 
+bool BranchAndBound::current_node_is_root_node() const {
+    return m_current_node->id() == 0;
+}
+
+bool BranchAndBound::current_node_is_infeasible() const {
+    return m_current_node->status() == Infeasible;
+}
+
+bool BranchAndBound::current_node_is_unbounded() const {
+    return m_current_node->status() == Unbounded;
+}
+
 bool BranchAndBound::current_node_was_not_solved_to_optimality() const {
-    const auto status = m_current_node->status();
-    if (status == Infeasible && m_current_node->id() != 0) {
-        return false;
-    }
-    return status != Optimal;
+    return m_current_node->status() != Optimal;
 }
 
 bool BranchAndBound::current_node_has_a_valid_solution() const {
@@ -209,7 +239,8 @@ void BranchAndBound::reset_current_node() {
 }
 
 bool BranchAndBound::current_node_is_above_upper_bound() {
-    return m_current_node->objective_value() > upper_bound();
+    const double objective_value = m_current_node->objective_value();
+    return is_pos_inf(objective_value) || objective_value > upper_bound();
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
@@ -291,6 +322,17 @@ void BranchAndBound::terminate_for_no_active_nodes() {
 
 void BranchAndBound::terminate_for_gap_is_closed() {
     EASY_LOG(Trace, "[GAP_HAS_BEEN_CLOSED]");
+    terminate();
+}
+
+void BranchAndBound::terminate_for_infeasibility() {
+    EASY_LOG(Trace, "[INFEASIBILITY_DETECTED]");
+    terminate();
+}
+
+void BranchAndBound::terminate_for_unboundedness() {
+    m_best_upper_bound = -Inf;
+    EASY_LOG(Trace, "[UNBOUNDEDNESS_DETECTED]");
     terminate();
 }
 

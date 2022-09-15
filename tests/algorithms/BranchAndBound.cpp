@@ -16,7 +16,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
     SECTION("solving bounded feasible MILP") {
 
-        SECTION("sovled at root node") {
+        SECTION("solved at root node") {
             // Taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp
 
             auto x = model.add_variable(0., 1., Continuous, -1, "x");
@@ -108,6 +108,57 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             CHECK(primal_solution.get(x[3]) == 1._a);
             CHECK(primal_solution.get(x[4]) == 0._a);
         }
+
+    }
+
+    SECTION("Solving infeasible MILP with infeasible root node") {
+
+        SECTION("infeasible at root node") {
+
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            model.add_constraint(x >= 1);
+            model.add_constraint(x <= 0);
+
+            BranchAndBound solver;
+            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
+            solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+            solver.solve();
+
+            CHECK(solver.status() == Infeasible);
+            CHECK(is_pos_inf(solver.objective_value()));
+        }
+
+        SECTION("infeasible at first level") {
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            model.add_constraint(x >= .1);
+            model.add_constraint(x <= .9);
+
+            BranchAndBound solver;
+            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
+            solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+            solver.solve();
+
+
+            CHECK(solver.status() == Infeasible);
+            CHECK(is_pos_inf(solver.objective_value()));
+        }
+
+    }
+
+    SECTION("Solving an unbounded MILP") {
+
+        auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
+
+        BranchAndBound solver;
+        solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+        solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
+        solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
+        solver.solve();
+
+        CHECK(solver.status() == Unbounded);
+        CHECK(is_neg_inf(solver.objective_value()));
 
     }
 
