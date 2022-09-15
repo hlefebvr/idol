@@ -8,7 +8,7 @@
 #include <limits>
 #include <cmath>
 
-static constexpr double Inf = std::numeric_limits<double>::max();
+static constexpr double Inf = 1e20;
 static double ToleranceForSparsity = 1e-8;
 static double ToleranceForRelativeGapMIP = 1e-4;
 static double ToleranceForAbsoluteGapMIP = 1e-6;

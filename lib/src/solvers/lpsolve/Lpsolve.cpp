@@ -57,6 +57,7 @@ SolutionStatus convert_lpsolve_status(int t_lpsolve_status) {
 }
 
 void Lpsolve::solve() {
+    set_infinite(model, Inf);
     int status = ::solve(model);
 
     m_solution_status = convert_lpsolve_status(status);

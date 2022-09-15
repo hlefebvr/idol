@@ -91,7 +91,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(sum_weight <= capacity);
 
             BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
             solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
             solver.set_branching_strategy(new MostInfeasible(x)); // how it is branched and checked for feasibility
             solver.solve();
@@ -120,7 +120,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x <= 0);
 
             BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
             solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
             solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
             solver.solve();
@@ -135,7 +135,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x <= .9);
 
             BranchAndBound solver;
-            solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+            solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
             solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
             solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
             solver.solve();
@@ -152,7 +152,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
         auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
 
         BranchAndBound solver;
-        solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
+        solver.set_solution_strategy(new SolutionStrategy<TestType>(model)); // how it is solved
         solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
         solver.set_branching_strategy(new MostInfeasible({ x })); // how it is branched and checked for feasibility
         solver.solve();
