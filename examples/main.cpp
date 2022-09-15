@@ -9,8 +9,11 @@
 #include "algorithms/branch-and-bound/SolutionStrategy.h"
 #include "algorithms/branch-and-bound/NodeStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
+#include "algorithms/logs/Log.h"
 
 int main() {
+
+    Log::set_level(Info);
 
     Env env;
     Model model(env);
@@ -23,10 +26,13 @@ int main() {
     std::vector<Var> branching_candidates = { x, y, z };
 
     BranchAndBound solver;
-    solver.set_solution_strategy(new SolutionStrategy<Lpsolve>(model)); // how it is solved
+    solver.set_solution_strategy(new SolutionStrategy<Gurobi>(model)); // how it is solved
     solver.set_node_strategy(new NodeStrategy<NodeByBound>()); // how it is stored
     solver.set_branching_strategy(new MostInfeasible(branching_candidates)); // how it is branched and checked for feasibility
     solver.solve();
+
+    std::cout << "Status: " << solver.status() << std::endl;
+    std::cout << "Optimum: " << solver.objective_value() << std::endl;
 
     return 0;
 }

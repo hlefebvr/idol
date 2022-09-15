@@ -10,6 +10,7 @@
 #include "AbstractBranchingStrategy.h"
 #include "AbstractNodeStrategy.h"
 #include "../../modeling/numericals.h"
+#include "../logs/Log.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -37,6 +38,7 @@ public:
 
 class BranchAndBound {
     unsigned int m_n_created_nodes = 0;
+    bool m_is_terminated = false;
 
     // Nodes
     double m_best_lower_bound = -Inf;
@@ -58,6 +60,7 @@ class BranchAndBound {
     void update_current_node();
     void apply_local_changes();
     void solve_current_node();
+    void analyze_current_node();
     [[nodiscard]] bool current_node_was_not_solved_to_optimality() const;
     [[nodiscard]] bool current_node_has_a_valid_solution() const;
     void set_current_node_as_incumbent();
@@ -75,12 +78,19 @@ class BranchAndBound {
     void branch();
 
     void terminate();
+    void terminate_for_no_active_nodes();
+    void terminate_for_gap_is_closed();
+    void terminate_for_node_could_not_be_solved_to_optimality();
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
+
+    void log_node(LogLevel t_msg_level, const Node& t_node) const;
 public:
     virtual ~BranchAndBound();
 
     void solve();
+
+    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
     void set_solution_strategy(AbstractSolutionStrategy* t_node_strategy);
     void set_branching_strategy(AbstractBranchingStrategy* t_branching_strategy);
@@ -90,6 +100,10 @@ public:
     [[nodiscard]] double upper_bound() const { return m_best_upper_bound; }
     [[nodiscard]] double relative_gap() const;
     [[nodiscard]] double absolute_gap() const;
+
+    [[nodiscard]] SolutionStatus status() const;
+    [[nodiscard]] double objective_value() const;
+    [[nodiscard]] Solution::Primal primal_solution() const;
 };
 
 #endif //OPTIMIZE_BRANCHANDBOUND_H

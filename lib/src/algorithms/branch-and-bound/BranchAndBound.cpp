@@ -3,15 +3,14 @@
 //
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "solvers/Solver.h"
+#include <iomanip>
 
 void BranchAndBound::solve() {
 
     initialize();
     create_root_node();
 
-    int i = 0;
-
-    while(!gap_is_closed()) {
+    while(!is_terminated()) {
 
         solve_queued_nodes();
 
@@ -19,19 +18,15 @@ void BranchAndBound::solve() {
 
         update_best_lower_bound();
 
+        if (gap_is_closed()) {
+            terminate_for_gap_is_closed();
+        }
+
         if (no_active_nodes()) {
-            terminate();
-            break;
+            terminate_for_no_active_nodes();
         }
 
         branch();
-
-        std::cout << "STOPPING MANUALLY" << std::endl;
-
-        if (i > 3) {
-            break;
-        }
-        ++i;
 
     }
 
@@ -43,7 +38,6 @@ template<class T> void free(T& t_container) {
     }
     t_container = T();
 }
-
 
 double BranchAndBound::relative_gap() const {
     if (is_pos_inf(m_best_upper_bound) || is_neg_inf(m_best_lower_bound)) {
@@ -63,11 +57,11 @@ BranchAndBound::~BranchAndBound() {
     free(m_active_nodes);
     free(m_nodes_to_be_processed);
     free(m_solution_pool);
-    delete m_best_upper_bound_node;
     delete m_current_node;
 }
 
 void BranchAndBound::initialize() {
+    m_is_terminated = false;
     m_n_created_nodes = 0;
     m_best_lower_bound = -Inf;
     m_best_upper_bound = +Inf;
@@ -99,45 +93,69 @@ void BranchAndBound::create_root_node() {
 }
 
 void BranchAndBound::solve_queued_nodes() {
-    while (m_nodes_to_be_processed) {
+
+    while (m_nodes_to_be_processed && !is_terminated()) {
 
         update_current_node();
         apply_local_changes();
         solve_current_node();
 
-        if (current_node_was_not_solved_to_optimality()) {
-            terminate();
-            break;
+        log_node(Debug, *m_current_node);
+
+        analyze_current_node();
+
+        if (m_current_node) {
+            //apply_heuristics_on_current_node();
+            add_current_node_to_active_nodes();
         }
-
-        if (current_node_has_a_valid_solution()) {
-            if (current_node_is_below_upper_bound()) {
-                set_current_node_as_incumbent();
-            }
-            add_current_node_to_solution_pool();
-            reset_current_node();
-            reset_local_changes();
-            continue;
-        }
-
-        if (current_node_is_above_upper_bound()) {
-            prune_current_node();
-            reset_local_changes();
-            continue;
-        }
-
-        //apply_heuristics_on_current_node();
-
-        add_current_node_to_active_nodes();
 
         reset_local_changes();
 
     }
 }
 
+void BranchAndBound::analyze_current_node() {
+
+    if (current_node_was_not_solved_to_optimality()) {
+
+        terminate_for_node_could_not_be_solved_to_optimality();
+        return;
+
+    }
+
+    if (current_node_has_a_valid_solution()) {
+
+        add_current_node_to_solution_pool();
+
+        EASY_LOG(Trace, "[VALID_SOLUTION_FOUND] value = node " << m_current_node->id() << '.');
+
+        if (current_node_is_below_upper_bound()) {
+            set_current_node_as_incumbent();
+            log_node(Info, *m_current_node);
+            EASY_LOG(Trace, "[INCUMBENT_HAS_CHANGED] value = node " << m_current_node->id() << ".");
+        }
+
+        reset_current_node();
+
+        return;
+
+    }
+
+    if (current_node_is_above_upper_bound()) {
+
+        EASY_LOG(Trace, "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        prune_current_node();
+
+        return;
+
+    }
+
+}
+
 void BranchAndBound::update_current_node() {
     m_current_node = m_nodes_to_be_processed.top();
     m_nodes_to_be_processed.pop();
+    EASY_LOG(Trace, "[CURRENT_NODE_HAS_CHANGED] value = node " << m_current_node->id() << '.');
 }
 
 void BranchAndBound::apply_local_changes() {
@@ -175,6 +193,7 @@ bool BranchAndBound::current_node_is_below_upper_bound() {
 
 void BranchAndBound::set_current_node_as_incumbent() {
     m_best_upper_bound = m_current_node->objective_value();
+    m_best_upper_bound_node = m_current_node;
 }
 
 void BranchAndBound::add_current_node_to_solution_pool() {
@@ -190,7 +209,7 @@ bool BranchAndBound::current_node_is_above_upper_bound() {
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
-
+    if (is_terminated()) { return; }
 }
 
 void BranchAndBound::prune_current_node() {
@@ -200,7 +219,7 @@ void BranchAndBound::prune_current_node() {
 
 void BranchAndBound::add_current_node_to_active_nodes() {
     m_active_nodes.emplace_back(m_current_node);
-    std::push_heap(m_active_nodes.begin(), m_active_nodes.end());
+    std::push_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<Node*>());
     m_current_node = nullptr;
 }
 
@@ -212,17 +231,25 @@ void BranchAndBound::prune_active_nodes_by_bound() {
     for (auto it = m_active_nodes.begin(), end = m_active_nodes.end() ; it != end ; ++it) {
         const auto* ptr_to_node = *it;
         if (ptr_to_node->objective_value() >= upper_bound()) {
+            EASY_LOG(Trace, "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
             delete ptr_to_node;
             it = m_active_nodes.erase(it);
         }
     }
-    std::make_heap(m_active_nodes.begin(), m_active_nodes.end());
+    std::make_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<Node*>());
 }
 
 void BranchAndBound::update_best_lower_bound() {
+
+    if (m_active_nodes.empty()) {
+        m_best_lower_bound = m_best_upper_bound;
+        return;
+    }
+
     auto* min_node = m_active_nodes.front();
     if (double lb = min_node->objective_value() ; lb > lower_bound()) {
         m_best_lower_bound = lb;
+        log_node(Info, *min_node);
     }
 }
 
@@ -231,16 +258,94 @@ bool BranchAndBound::no_active_nodes() {
 }
 
 void BranchAndBound::branch() {
-    auto* selected_node = m_active_nodes.front();// m_branching_strategy->select_node_for_branching(m_active_nodes);
-    std::pop_heap(m_active_nodes.begin(), m_active_nodes.end());
+
+    if (is_terminated()) { return; }
+
+    auto* selected_node = m_active_nodes.front();
+    std::pop_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<Node*>());
     m_active_nodes.pop_back();
-    auto child_nodes = m_branching_strategy->create_child_nodes(m_active_nodes.size(), *selected_node);
+    EASY_LOG(Trace, "[NODE_SELECTED_FOR_BRANCHING] value = node " << selected_node->id());
+
+    auto child_nodes = m_branching_strategy->create_child_nodes(m_n_created_nodes, *selected_node);
+
     for (auto* node : child_nodes) {
+        if (node->id() != m_n_created_nodes) {
+            throw std::runtime_error("Created nodes should have strictly increasing ids.");
+        }
+        EASY_LOG(Trace, "[NEW_NODE_CREATED] value = node " << node->id() << " from " << selected_node->id() << '.');
         m_nodes_to_be_processed.add(node);
+        ++m_n_created_nodes;
     }
+
+    delete selected_node;
+}
+
+void BranchAndBound::terminate_for_no_active_nodes() {
+    EASY_LOG(Trace, "[NO_ACTIVE_NODE]");
+    terminate();
+}
+
+void BranchAndBound::terminate_for_gap_is_closed() {
+    EASY_LOG(Trace, "[GAP_HAS_BEEN_CLOSED]");
+    terminate();
+}
+
+void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
+    EASY_LOG(Trace, "[CURRENT_NODE_COULD_NOT_BE_SOLVED] value = node " << m_current_node->id());
+    terminate();
 }
 
 void BranchAndBound::terminate() {
-    throw std::runtime_error("Called terminate.");
+    m_is_terminated = true;
 }
 
+void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
+
+    const double objective_value = t_node.objective_value();
+    char sign = ' ';
+
+    if (equals(objective_value, upper_bound(), ToleranceForAbsoluteGapMIP)) {
+        sign = '-';
+    } else if (equals(objective_value, lower_bound(), ToleranceForAbsoluteGapMIP)) {
+        sign = '+';
+    }
+
+    EASY_LOG(t_msg_level,
+             std::setw(4)
+             << t_node.id() << sign
+             << std::setw(15)
+             << t_node.status()
+             << std::setw(10)
+             << t_node.objective_value()
+             << std::setw(10)
+             << lower_bound()
+             << std::setw(10)
+             << upper_bound()
+             << std::setw(10)
+             << (relative_gap() * 100.) << '%'
+     );
+}
+
+SolutionStatus BranchAndBound::status() const {
+    if (is_neg_inf(m_best_upper_bound)) {
+        return Unbounded;
+    }
+    if (m_best_upper_bound_node) {
+        if (gap_is_closed()) {
+            return Optimal;
+        }
+        return Feasible;
+    }
+    return Infeasible;
+}
+
+double BranchAndBound::objective_value() const {
+    return m_best_upper_bound;
+}
+
+Solution::Primal BranchAndBound::primal_solution() const {
+    if (!m_best_upper_bound_node) {
+        throw std::runtime_error("Not available.");
+    }
+    return m_best_upper_bound_node->primal_solution();
+}

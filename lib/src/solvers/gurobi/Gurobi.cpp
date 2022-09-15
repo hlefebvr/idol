@@ -78,7 +78,7 @@ void Gurobi::set_lb(const Var &t_var, double t_lb) {
 }
 
 void Gurobi::set_ub(const Var &t_var, double t_ub) {
-    get(t_var).set(GRB_DoubleAttr_LB, t_ub);
+    get(t_var).set(GRB_DoubleAttr_UB, t_ub);
 }
 
 void Gurobi::set_type(const Var &t_var, VarType t_type) {
@@ -111,7 +111,7 @@ SolutionStatus Gurobi::get_primal_status() const {
         case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
         case GRB_UNBOUNDED: status = Unbounded; break;
         case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? FeasibleTimeLimit : InfeasibleTimeLimit; break;
-        case GRB_NUMERIC: status = Error; break;
+        case GRB_NUMERIC: status = Fail; break;
         default: throw std::runtime_error("Did not know what to do with gurobi status: " + std::to_string(grb_status));
     }
     return status;

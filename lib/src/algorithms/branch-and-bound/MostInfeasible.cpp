@@ -57,7 +57,7 @@ std::list<Node *> MostInfeasible::create_child_nodes(unsigned int t_id, const No
     auto* n1 = t_node.create_child(t_id);
     n1->set_local_lower_bound(*selected_var, std::ceil(value));
 
-    auto* n2 = t_node.create_child(t_id++);
+    auto* n2 = t_node.create_child(t_id+1);
     n2->set_local_upper_bound(*selected_var, std::floor(value));
 
     return { n1, n2 };

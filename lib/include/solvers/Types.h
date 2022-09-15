@@ -18,7 +18,7 @@ enum SolutionStatus {
     InfeasibleTimeLimit,
     InfeasibleOrUnbounded,
     Unbounded,
-    Error
+    Fail
 };
 
 enum AlgorithmForLP {
@@ -47,7 +47,7 @@ static SolutionStatus dual(SolutionStatus t_status) {
         case InfeasibleTimeLimit: return InfeasibleTimeLimit;
         case InfeasibleOrUnbounded: return InfeasibleOrUnbounded;
         case Unbounded: return Infeasible;
-        case Error: return Error;
+        case Fail: return Fail;
     }
     throw std::runtime_error("Unexpected status: " + std::to_string(t_status));
 }
@@ -62,7 +62,7 @@ static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
         case InfeasibleTimeLimit: return t_os << "InfeasibleTimeLimit";
         case InfeasibleOrUnbounded: return t_os << "InfeasibleOrUnbounded";
         case Unbounded: return t_os << "Unbounded";
-        case Error: return t_os << "Error";
+        case Fail: return t_os << "Fail";
         default: throw std::runtime_error("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;

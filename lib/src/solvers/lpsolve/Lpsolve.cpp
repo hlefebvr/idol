@@ -44,7 +44,7 @@ void Lpsolve::write(const std::string &t_filename) {
 SolutionStatus convert_lpsolve_status(int t_lpsolve_status) {
     switch (t_lpsolve_status) {
         case NUMFAILURE: [[fallthrough]];
-        case NOMEMORY: return Error;
+        case NOMEMORY: return Fail;
         case PRESOLVED: [[fallthrough]];
         case OPTIMAL: return Optimal;
         case SUBOPTIMAL: return FeasibleTimeLimit;
