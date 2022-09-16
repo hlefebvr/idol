@@ -155,7 +155,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_infeasible()) {
 
-        EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << m_current_node->id() << " (infeasible).");
         prune_current_node();
         return;
 
@@ -172,12 +172,12 @@ void BranchAndBound::analyze_current_node() {
 
         add_current_node_to_solution_pool();
 
-        EASY_LOG(Trace, "branch-and-bound", "[VALID_SOLUTION_FOUND] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Valid solution found at node " << m_current_node->id() << '.');
 
         if (current_node_is_below_upper_bound()) {
             set_current_node_as_incumbent();
             log_node(Info, *m_current_node);
-            EASY_LOG(Trace, "branch-and-bound", "[INCUMBENT_HAS_CHANGED] value = node " << m_current_node->id() << ".");
+            EASY_LOG(Trace, "branch-and-bound", "Better incumbent found at node " << m_current_node->id() << ".");
         }
 
         reset_current_node();
@@ -187,7 +187,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_above_upper_bound()) {
 
-        EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << m_current_node->id() << " (by bound).");
         prune_current_node();
         return;
 
@@ -198,7 +198,7 @@ void BranchAndBound::analyze_current_node() {
 void BranchAndBound::update_current_node() {
     m_current_node = m_nodes_to_be_processed.top();
     m_nodes_to_be_processed.pop();
-    EASY_LOG(Trace, "branch-and-bound", "[CURRENT_NODE_HAS_CHANGED] value = node " << m_current_node->id() << '.');
+    EASY_LOG(Trace, "branch-and-bound", "Current node is now node " << m_current_node->id() << '.');
 }
 
 void BranchAndBound::apply_local_changes() {
@@ -323,7 +323,7 @@ void BranchAndBound::branch() {
     auto* selected_node = m_active_nodes.front();
     std::pop_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<Node*>());
     m_active_nodes.pop_back();
-    EASY_LOG(Trace, "branch-and-bound", "[NODE_SELECTED_FOR_BRANCHING] value = node " << selected_node->id());
+    EASY_LOG(Trace, "branch-and-bound", "Node " << selected_node->id() << " has been selected for branching.");
 
     auto child_nodes = m_branching_strategy->create_child_nodes(m_n_created_nodes, *selected_node);
 
@@ -331,7 +331,7 @@ void BranchAndBound::branch() {
         if (node->id() != m_n_created_nodes) {
             throw std::runtime_error("Created nodes should have strictly increasing ids.");
         }
-        EASY_LOG(Trace, "branch-and-bound", "[NEW_NODE_CREATED] value = node " << node->id() << " from " << selected_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Node " << node->id() << " has been created from " << selected_node->id() << '.');
         m_nodes_to_be_processed.add(node);
         ++m_n_created_nodes;
     }
@@ -340,28 +340,28 @@ void BranchAndBound::branch() {
 }
 
 void BranchAndBound::terminate_for_no_active_nodes() {
-    EASY_LOG(Trace, "branch-and-bound", "[NO_ACTIVE_NODE]");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. No active node.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_gap_is_closed() {
-    EASY_LOG(Trace, "branch-and-bound", "[GAP_HAS_BEEN_CLOSED]");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Gap is closed.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_infeasibility() {
-    EASY_LOG(Trace, "branch-and-bound", "[INFEASIBILITY_DETECTED]");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Infeasibility detected.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_unboundedness() {
     m_best_upper_bound = -Inf;
-    EASY_LOG(Trace, "branch-and-bound", "[UNBOUNDEDNESS_DETECTED]");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Unboundedness detected.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "branch-and-bound", "[CURRENT_NODE_COULD_NOT_BE_SOLVED] value = node " << m_current_node->id());
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Current node could node be solved to optimality (node " << m_current_node->id() << ").");
     terminate();
 }
 

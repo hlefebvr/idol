@@ -105,5 +105,4 @@ void DecompositionStrategy<SolverRMPT>::set_local_upper_bound(const Var &t_var, 
     }
 }
 
-
 #endif //OPTIMIZE_DECOMPOSITIONSTRATEGY_H

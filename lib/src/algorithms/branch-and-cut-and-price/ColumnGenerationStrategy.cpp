@@ -16,8 +16,6 @@ void ColumnGenerationStrategy::build() {
 
 void ColumnGenerationStrategy::solve() {
 
-    int iter = 0;
-
     initialize();
     while (!is_terminated()) {
 
@@ -34,8 +32,6 @@ void ColumnGenerationStrategy::solve() {
         solve_subproblems();
 
         add_columns();
-
-        ++iter;
 
     }
 

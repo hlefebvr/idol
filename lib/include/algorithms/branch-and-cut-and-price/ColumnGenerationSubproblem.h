@@ -60,6 +60,8 @@ public:
     bool improving_column_found() const override;
 
     TempVar create_column() const override;
+
+    ExactSolutionStrategyT& exact_solution_strategy() { return m_exact_solution_strategy; }
 };
 
 template<class ExactSolutionStrategyT>
