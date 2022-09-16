@@ -30,6 +30,10 @@ public:
     Coefficient &value() override { return *m_coefficient; }
 
     [[nodiscard]] const Coefficient &value() const override { return *m_coefficient; }
+
+    MatrixCoefficientReference &operator*=(double t_factor) override;
+
+    MatrixCoefficientReference &operator+=(const AbstractMatrixCoefficient &t_rhs) override;
 };
 
 #endif //OPTIMIZE_MATRIXCOEFFICIENTREFERENCE_H

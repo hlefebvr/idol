@@ -12,6 +12,7 @@ static constexpr double Inf = 1e20;
 static double ToleranceForSparsity = 1e-8;
 static double ToleranceForRelativeGapMIP = 1e-4;
 static double ToleranceForAbsoluteGapMIP = 1e-6;
+static double ToleranceForAbsoluteGapPricing = 1e-6;
 static double ToleranceForIntegrality = 1e-5;
 
 static bool is_pos_inf(double t_value) {

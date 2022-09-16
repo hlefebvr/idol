@@ -5,21 +5,57 @@
 #ifndef OPTIMIZE_ABSTRACTSOLUTIONSTRATEGY_H
 #define OPTIMIZE_ABSTRACTSOLUTIONSTRATEGY_H
 
+#include "../../solvers/solutions/Solution.h"
+#include "../../modeling/variables/TempVar.h"
+
 class Node;
 class Solver;
 class Var;
 
 class AbstractSolutionStrategy {
+    static void throw_not_implemented(const std::string& t_functionality, const std::string& t_method_to_implement) {
+        throw std::runtime_error(t_functionality + " is not implemented. "
+                                 "If you wish to implement it, "
+                                 "please override the " + t_method_to_implement + " method.");
+    }
 public:
     virtual ~AbstractSolutionStrategy() = default;
-    virtual void initialize() = 0;
-    virtual void solve() const = 0;
 
-    [[nodiscard]] virtual const Solver& solver() const = 0;
-    virtual void reset_local_changes() = 0;
+    virtual void build() {}
 
-    virtual void set_local_lower_bound(const Var& t_var, double t_lb) = 0;
-    virtual void set_local_upper_bound(const Var& t_var, double t_ub) = 0;
+    virtual void solve() = 0;
+
+    [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
+
+    [[nodiscard]] virtual Solution::Dual dual_solution() const {
+        throw_not_implemented("Retrieving dual solution", "dual_solution");
+        return {};
+    }
+
+    [[nodiscard]] virtual Solution::Dual farkas_certificate() const {
+        throw_not_implemented("Retrieving Farkas certificate", "farkas_certificate");
+        return {};
+    }
+
+    virtual void reset_local_changes() {
+        throw_not_implemented("Branching", "reset_local_changes");
+    }
+
+    virtual void set_local_lower_bound(const Var& t_var, double t_lb) {
+        throw_not_implemented("Branching on variables", "set_local_lower_bound");
+    }
+
+    virtual void set_local_upper_bound(const Var& t_var, double t_ub) {
+        throw_not_implemented("Branching on variables", "set_local_upper_bound");
+    }
+
+    virtual void update_objective(const Row& t_objective) {
+        throw_not_implemented("Updating objective", "update_objective");
+    }
+
+    virtual void add_column(TempVar t_temporary_variable) {
+        throw_not_implemented("Adding column", "add_column");
+    }
 };
 
 #endif //OPTIMIZE_ABSTRACTSOLUTIONSTRATEGY_H

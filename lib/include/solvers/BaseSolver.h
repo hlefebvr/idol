@@ -16,13 +16,14 @@ class BaseSolver : public Listener, public Solver {
     std::vector<VarT> m_variables;
     std::vector<CtrT> m_constraints;
 protected:
-    explicit BaseSolver(Model& t_model);
+    explicit BaseSolver(const Model& t_model);
 
     void on_add(const Var &t_var) final;
     void on_add(const Ctr &t_ctr) final;
     void on_remove(const Var& t_var) final;
     void on_remove(const Ctr& t_ctr) final;
     void on_update_objective(const Var &t_var, const Coefficient &t_coeff) final;
+    void on_update_objective_offset(const Coefficient &t_offset) final;
     void on_update_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) final;
     void on_update_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) final;
     void on_update_lb(const Var &t_var, double t_lb) final;
@@ -40,6 +41,7 @@ protected:
     virtual void remove_variable(const Var& t_var) = 0;
     virtual void remove_constraint(const Ctr& t_ctr) = 0;
     virtual void set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) = 0;
+    virtual void set_objective_offset(const Coefficient& t_offset) = 0;
     virtual void set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) = 0;
     virtual void set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) = 0;
     virtual void set_lb(const Var &t_var, double t_lb) = 0;
@@ -77,7 +79,7 @@ public:
 
     [[nodiscard]] Solution::Dual dual_farkas() const override;
 
-    Solution::Dual iis() const override;
+    [[nodiscard]] Solution::Dual iis() const override;
 };
 
 template<class VarT, class CtrT>
@@ -165,7 +167,12 @@ void BaseSolver<VarT, CtrT>::on_update_type(const Ctr &t_ctr, CtrType t_type) {
 }
 
 template<class VarT, class CtrT>
-BaseSolver<VarT, CtrT>::BaseSolver(Model &t_model) : m_src_model(t_model) {
+void BaseSolver<VarT, CtrT>::on_update_objective_offset(const Coefficient &t_offset) {
+    set_objective_offset(t_offset);
+}
+
+template<class VarT, class CtrT>
+BaseSolver<VarT, CtrT>::BaseSolver(const Model &t_model) : m_src_model(t_model) {
     t_model.add_listener(*this);
 }
 

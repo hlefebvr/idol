@@ -5,7 +5,7 @@
 #include "solvers.h"
 
 // used for building default branch-and-bound
-#include "algorithms/branch-and-bound/SolutionStrategy.h"
+#include "algorithms/branch-and-bound/ExternalSolverStrategy.h"
 #include "algorithms/branch-and-bound/NodeStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBound.h"
@@ -15,9 +15,9 @@
 
 BranchAndBound::BranchAndBound(Model &t_model, std::vector<Var> t_branching_candidates) {
     if constexpr (std::tuple_size_v<available_solvers>) {
-        set_solution_strategy(new SolutionStrategy<std::tuple_element_t<0, available_solvers>>(t_model));
-        set_node_strategy(new NodeStrategy<NodeByBound>());
-        set_branching_strategy(new MostInfeasible(std::move(t_branching_candidates)));
+        set_solution_strategy<ExternalSolverStrategy<std::tuple_element_t<0, available_solvers>>>(t_model);
+        set_node_strategy<NodeStrategy<NodeByBound>>();
+        set_branching_strategy<MostInfeasible>(std::move(t_branching_candidates));
     } else {
         throw std::runtime_error("No available solver.");
     }
@@ -101,7 +101,7 @@ void BranchAndBound::initialize() {
         throw std::runtime_error("No node strategy was given.");
     }
 
-    m_solution_strategy->initialize();
+    m_solution_strategy->build();
 }
 
 void BranchAndBound::create_root_node() {
@@ -155,7 +155,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_infeasible()) {
 
-        EASY_LOG(Trace, "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
         prune_current_node();
         return;
 
@@ -172,12 +172,12 @@ void BranchAndBound::analyze_current_node() {
 
         add_current_node_to_solution_pool();
 
-        EASY_LOG(Trace, "[VALID_SOLUTION_FOUND] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "[VALID_SOLUTION_FOUND] value = node " << m_current_node->id() << '.');
 
         if (current_node_is_below_upper_bound()) {
             set_current_node_as_incumbent();
             log_node(Info, *m_current_node);
-            EASY_LOG(Trace, "[INCUMBENT_HAS_CHANGED] value = node " << m_current_node->id() << ".");
+            EASY_LOG(Trace, "branch-and-bound", "[INCUMBENT_HAS_CHANGED] value = node " << m_current_node->id() << ".");
         }
 
         reset_current_node();
@@ -187,7 +187,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_above_upper_bound()) {
 
-        EASY_LOG(Trace, "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << m_current_node->id() << '.');
         prune_current_node();
         return;
 
@@ -198,7 +198,7 @@ void BranchAndBound::analyze_current_node() {
 void BranchAndBound::update_current_node() {
     m_current_node = m_nodes_to_be_processed.top();
     m_nodes_to_be_processed.pop();
-    EASY_LOG(Trace, "[CURRENT_NODE_HAS_CHANGED] value = node " << m_current_node->id() << '.');
+    EASY_LOG(Trace, "branch-and-bound", "[CURRENT_NODE_HAS_CHANGED] value = node " << m_current_node->id() << '.');
 }
 
 void BranchAndBound::apply_local_changes() {
@@ -230,16 +230,19 @@ bool BranchAndBound::current_node_has_a_valid_solution() const {
     return m_current_node->status() != Infeasible && m_branching_strategy->is_valid(*m_current_node);
 }
 
-void BranchAndBound::set_solution_strategy(AbstractSolutionStrategy*t_node_strategy) {
+AbstractSolutionStrategy& BranchAndBound::set_solution_strategy(AbstractSolutionStrategy*t_node_strategy) {
     m_solution_strategy.reset(t_node_strategy);
+    return *m_solution_strategy;
 }
 
-void BranchAndBound::set_branching_strategy(AbstractBranchingStrategy *t_branching_strategy) {
+AbstractBranchingStrategy& BranchAndBound::set_branching_strategy(AbstractBranchingStrategy *t_branching_strategy) {
     m_branching_strategy.reset(t_branching_strategy);
+    return *m_branching_strategy;
 }
 
-void BranchAndBound::set_node_strategy(AbstractNodeStrategy *t_node_strategy) {
+AbstractNodeStrategy& BranchAndBound::set_node_strategy(AbstractNodeStrategy *t_node_strategy) {
     m_node_strategy.reset(t_node_strategy);
+    return *m_node_strategy;
 }
 
 bool BranchAndBound::current_node_is_below_upper_bound() {
@@ -287,7 +290,7 @@ void BranchAndBound::prune_active_nodes_by_bound() {
     for (auto it = m_active_nodes.begin(), end = m_active_nodes.end() ; it != end ; ++it) {
         const auto* ptr_to_node = *it;
         if (ptr_to_node->objective_value() >= upper_bound()) {
-            EASY_LOG(Trace, "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
+            EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
             delete ptr_to_node;
             it = m_active_nodes.erase(it);
         }
@@ -320,7 +323,7 @@ void BranchAndBound::branch() {
     auto* selected_node = m_active_nodes.front();
     std::pop_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<Node*>());
     m_active_nodes.pop_back();
-    EASY_LOG(Trace, "[NODE_SELECTED_FOR_BRANCHING] value = node " << selected_node->id());
+    EASY_LOG(Trace, "branch-and-bound", "[NODE_SELECTED_FOR_BRANCHING] value = node " << selected_node->id());
 
     auto child_nodes = m_branching_strategy->create_child_nodes(m_n_created_nodes, *selected_node);
 
@@ -328,7 +331,7 @@ void BranchAndBound::branch() {
         if (node->id() != m_n_created_nodes) {
             throw std::runtime_error("Created nodes should have strictly increasing ids.");
         }
-        EASY_LOG(Trace, "[NEW_NODE_CREATED] value = node " << node->id() << " from " << selected_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "[NEW_NODE_CREATED] value = node " << node->id() << " from " << selected_node->id() << '.');
         m_nodes_to_be_processed.add(node);
         ++m_n_created_nodes;
     }
@@ -337,28 +340,28 @@ void BranchAndBound::branch() {
 }
 
 void BranchAndBound::terminate_for_no_active_nodes() {
-    EASY_LOG(Trace, "[NO_ACTIVE_NODE]");
+    EASY_LOG(Trace, "branch-and-bound", "[NO_ACTIVE_NODE]");
     terminate();
 }
 
 void BranchAndBound::terminate_for_gap_is_closed() {
-    EASY_LOG(Trace, "[GAP_HAS_BEEN_CLOSED]");
+    EASY_LOG(Trace, "branch-and-bound", "[GAP_HAS_BEEN_CLOSED]");
     terminate();
 }
 
 void BranchAndBound::terminate_for_infeasibility() {
-    EASY_LOG(Trace, "[INFEASIBILITY_DETECTED]");
+    EASY_LOG(Trace, "branch-and-bound", "[INFEASIBILITY_DETECTED]");
     terminate();
 }
 
 void BranchAndBound::terminate_for_unboundedness() {
     m_best_upper_bound = -Inf;
-    EASY_LOG(Trace, "[UNBOUNDEDNESS_DETECTED]");
+    EASY_LOG(Trace, "branch-and-bound", "[UNBOUNDEDNESS_DETECTED]");
     terminate();
 }
 
 void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "[CURRENT_NODE_COULD_NOT_BE_SOLVED] value = node " << m_current_node->id());
+    EASY_LOG(Trace, "branch-and-bound", "[CURRENT_NODE_COULD_NOT_BE_SOLVED] value = node " << m_current_node->id());
     terminate();
 }
 
@@ -378,6 +381,7 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
     }
 
     EASY_LOG(t_msg_level,
+             "branch-and-bound",
              std::setw(4)
              << t_node.id() << sign
              << std::setw(15)

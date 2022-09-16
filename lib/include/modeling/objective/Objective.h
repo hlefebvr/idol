@@ -16,8 +16,9 @@ class Coefficient;
 
 class Objective {
     friend class Model;
+    const Coefficient* m_offset;
     const std::vector<Var>* m_variables;
-    explicit Objective(const std::vector<Var>& t_variables) : m_variables(&t_variables) {}
+    explicit Objective(const std::vector<Var>& t_variables, const Coefficient& t_offset) : m_variables(&t_variables), m_offset(&t_offset) {}
 public:
     Objective() = delete;
 
@@ -26,6 +27,8 @@ public:
 
     Objective& operator=(const Objective&) = default;
     Objective& operator=(Objective&&) noexcept = default;
+
+    const Coefficient& offset() const { return *m_offset; }
 
     [[nodiscard]] const Coefficient& get(const Var& t_var) const { return t_var.column().constant(); } // NOLINT(readability-convert-member-functions-to-static)
 

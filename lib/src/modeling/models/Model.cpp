@@ -28,16 +28,24 @@ void Model::remove(const Param &t_param) {
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
     auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
-    add_object(m_variables, variable);
-    m_listeners.broadcast_add(variable);
-    add_column_to_rows(variable);
+    add_created_variable(variable);
     return variable;
 }
 
+Var Model::add_variable(TempVar t_temporary_variable, std::string t_name) {
+    auto variable = m_objects.create<Var>(m_id, std::move(t_name), std::move(t_temporary_variable));
+    add_created_variable(variable);
+    return variable;
+}
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name) {
     return add_variable(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
 }
 
+void Model::add_created_variable(const Var &t_var) {
+    add_object(m_variables, t_var);
+    m_listeners.broadcast_add(t_var);
+    add_column_to_rows(t_var);
+}
 
 void Model::add_column_to_rows(const Var &t_var) {
     auto& impl = m_objects.impl(t_var);
@@ -99,6 +107,20 @@ void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {
     m_objects.impl(t_var).column().set_constant(std::move(t_coefficient));
 }
 
+
+void Model::update_objective(const Row &t_row) {
+    update_objective_offset(t_row.constant());
+    for (const auto& var : m_variables) {
+        update_objective(var, t_row.get(var)); // TODO this is inefficient as it is done even for zero values
+    }
+}
+
+void Model::update_objective_offset(Coefficient t_offset) {
+    m_listeners.broadcast_update_objective_offset(t_offset);
+    m_objective_offset = std::move(t_offset);
+}
+
+
 void Model::update_rhs(const Ctr &t_ctr, Coefficient t_coefficient) {
     m_listeners.broadcast_update_rhs(t_ctr, t_coefficient);
     m_objects.impl(t_ctr).row().set_constant(std::move(t_coefficient));
@@ -136,6 +158,6 @@ void Model::update_type(const Param &t_var, VarType t_type) {
     m_objects.impl(t_var).set_type(t_type);
 }
 
-void Model::add_listener(Listener &t_listener) {
+void Model::add_listener(Listener &t_listener) const {
     m_listeners.add(t_listener);
 }

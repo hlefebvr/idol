@@ -31,6 +31,9 @@ Lpsolve::Lpsolve(Model& t_model) : BaseSolver<int, int>(t_model) {
     set_minim(model);
 
     init_model(t_model);
+
+    std::cout << "IMPORTANT WARNING: MANUALLY SETTING set_infeasible_or_unbounded_info TO TRUE." << std::endl;
+    set_infeasible_or_unbounded_info(true);
 }
 
 Lpsolve::~Lpsolve() {
@@ -57,7 +60,9 @@ SolutionStatus convert_lpsolve_status(int t_lpsolve_status) {
 }
 
 void Lpsolve::solve() {
+
     set_infinite(model, Inf);
+
     int status = ::solve(model);
 
     m_solution_status = convert_lpsolve_status(status);
@@ -224,7 +229,7 @@ SolutionStatus Lpsolve::get_primal_status() const {
 }
 
 double Lpsolve::get_primal_objective_value() const {
-    return get_objective(model);
+    return m_objective_offset + get_objective(model);
 }
 
 double Lpsolve::get_primal_value(const Var &t_var) const {
@@ -326,11 +331,11 @@ double Lpsolve::get_dual_farkas_objective_value() const {
     for (const auto& ctr : source_model().constraints()) {
         result += get_dual_farkas_value(ctr) * value(ctr.rhs());
     }
-    return -result;
+    return result;
 }
 
 double Lpsolve::get_dual_farkas_value(const Ctr &t_ctr) const {
-    return -get_dual_value(t_ctr);
+    return get_dual_value(t_ctr);
 }
 
 Solution::Primal Lpsolve::unbounded_ray() const {
@@ -366,6 +371,10 @@ void Lpsolve::set_presolve(bool t_value) {
 
 bool Lpsolve::presolve() const {
     throw std::runtime_error("Not implemented.");
+}
+
+void Lpsolve::set_objective_offset(const Coefficient &t_offset) {
+    m_objective_offset = value(t_offset);
 }
 
 

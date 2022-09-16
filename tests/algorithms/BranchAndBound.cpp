@@ -4,7 +4,7 @@
 
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/SolutionStrategy.h"
+#include "algorithms/branch-and-bound/ExternalSolverStrategy.h"
 #include "algorithms/branch-and-bound/NodeStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBound.h"

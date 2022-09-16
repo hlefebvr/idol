@@ -99,9 +99,14 @@ public:
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
-    void set_solution_strategy(AbstractSolutionStrategy* t_node_strategy);
-    void set_branching_strategy(AbstractBranchingStrategy* t_branching_strategy);
-    void set_node_strategy(AbstractNodeStrategy* t_node_strategy);
+    AbstractSolutionStrategy& set_solution_strategy(AbstractSolutionStrategy* t_node_strategy);
+    template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
+
+    AbstractBranchingStrategy& set_branching_strategy(AbstractBranchingStrategy* t_branching_strategy);
+    template<class T, class ...Args> T& set_branching_strategy(Args&& ...t_args);
+
+    AbstractNodeStrategy& set_node_strategy(AbstractNodeStrategy* t_node_strategy);
+    template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
 
     [[nodiscard]] double lower_bound() const { return m_best_lower_bound; }
     [[nodiscard]] double upper_bound() const { return m_best_upper_bound; }
@@ -114,5 +119,26 @@ public:
     [[nodiscard]] double objective_value() const;
     [[nodiscard]] Solution::Primal primal_solution() const;
 };
+
+template<class T, class... Args>
+T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
+    static_assert(std::is_base_of_v<AbstractSolutionStrategy, T>);
+    m_solution_strategy = std::make_unique<T>(std::forward<Args>(t_args)...);
+    return dynamic_cast<T&>(*m_solution_strategy);
+}
+
+template<class T, class... Args>
+T &BranchAndBound::set_branching_strategy(Args &&... t_args) {
+    static_assert(std::is_base_of_v<AbstractBranchingStrategy, T>);
+    m_branching_strategy = std::make_unique<T>(std::forward<Args>(t_args)...);
+    return dynamic_cast<T&>(*m_branching_strategy);
+}
+
+template<class T, class... Args>
+T &BranchAndBound::set_node_strategy(Args &&... t_args) {
+    static_assert(std::is_base_of_v<AbstractNodeStrategy, T>);
+    m_node_strategy = std::make_unique<T>(std::forward<Args>(t_args)...);
+    return dynamic_cast<T&>(*m_node_strategy);
+}
 
 #endif //OPTIMIZE_BRANCHANDBOUND_H

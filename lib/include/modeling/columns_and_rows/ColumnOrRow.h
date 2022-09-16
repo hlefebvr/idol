@@ -26,6 +26,9 @@ public:
     ColumnOrRow& operator=(const ColumnOrRow& t_src);
     ColumnOrRow& operator=(ColumnOrRow&& t_src) noexcept = default;
 
+    virtual ColumnOrRow<Key>& operator*=(double t_factor);
+    ColumnOrRow<Key>& operator+=(const ColumnOrRow<Key>& t_expr);
+
     void set_constant(Coefficient t_constant);
 
     [[nodiscard]] const Coefficient& constant() const;
@@ -79,6 +82,36 @@ ColumnOrRow<Key>::ColumnOrRow(AbstractExpr<Key> t_expr, Coefficient t_constant)
     : AbstractExpr<Key>(std::move(t_expr)),
       m_constant(std::make_unique<MatrixCoefficient>(std::move(t_constant))) {
 
+}
+
+template<class Key>
+ColumnOrRow<Key> &ColumnOrRow<Key>::operator*=(double t_factor) {
+    AbstractExpr<Key>::operator*=(t_factor);
+    if (m_constant) {
+        *m_constant *= t_factor;
+    }
+    return *this;
+}
+
+template<class Key>
+ColumnOrRow<Key> &ColumnOrRow<Key>::operator+=(const ColumnOrRow<Key> &t_expr) {
+    AbstractExpr<Key>::operator+=(t_expr);
+    if (t_expr.m_constant) {
+        if (!m_constant) {
+            set_constant(t_expr.m_constant->value());
+        } else {
+            *m_constant += *t_expr.m_constant;
+        }
+    }
+    return *this;
+}
+
+template<class Key>
+std::ostream& operator<<(std::ostream& t_os, const ColumnOrRow<Key>& t_col_or_row) {
+    if (!t_col_or_row.constant().is_zero()) {
+        t_os << t_col_or_row.constant() << " + ";
+    }
+    return t_os << (AbstractExpr<Key>&) t_col_or_row;
 }
 
 #endif //OPTIMIZE_COLUMNORROW_H

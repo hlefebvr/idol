@@ -13,6 +13,8 @@ namespace impl {
     class Var;
 }
 
+class TempVar;
+
 class impl::Var : public impl::Object {
     double m_lb;
     double m_ub;
@@ -20,6 +22,7 @@ class impl::Var : public impl::Object {
     Column m_column;
 public:
     Var(ObjectId&& t_id, double t_lb, double t_ub, VarType t_type, Column&& t_column);
+    Var(ObjectId&& t_id, TempVar&& t_temporary_variable);
 
     Column& column();
 

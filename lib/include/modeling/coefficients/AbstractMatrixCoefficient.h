@@ -16,6 +16,10 @@ public:
     virtual Coefficient& value() = 0;
 
     [[nodiscard]] virtual const Coefficient& value() const = 0;
+
+    virtual AbstractMatrixCoefficient& operator*=(double t_factor) = 0;
+
+    virtual AbstractMatrixCoefficient& operator+=(const AbstractMatrixCoefficient& t_rhs) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTMATRIXCOEFFICIENT_H

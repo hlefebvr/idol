@@ -29,6 +29,9 @@ char Gurobi::gurobi_type(VarType t_type) {
 Gurobi::Gurobi(Model &t_model) : BaseSolver<GRBVar, GRBConstr>(t_model), m_model(m_env) {
     m_model.set(GRB_IntParam_OutputFlag, 0);
     init_model(t_model);
+
+    set_infeasible_or_unbounded_info(true);
+    std::cout << "IMPORTANT WARNING: MANUALLY SETTING set_infeasible_or_unbounded_info TO TRUE." << std::endl;
 }
 
 GRBVar Gurobi::create_variable(const Var &t_var) {
@@ -94,6 +97,7 @@ void Gurobi::write(const std::string &t_filename) {
 }
 
 void Gurobi::solve() {
+
     m_model.optimize();
 
     if (m_model.get(GRB_IntAttr_Status) == GRB_INFEASIBLE && m_model.get(GRB_IntParam_InfUnbdInfo)) {
@@ -122,16 +126,10 @@ double Gurobi::get_primal_objective_value() const {
 }
 
 double Gurobi::get_primal_value(const Var &t_var) const {
-    if (get_primal_status() == Unbounded) {
-        return get(t_var).get(GRB_DoubleAttr_UnbdRay);
-    }
     return get(t_var).get(GRB_DoubleAttr_X);
 }
 
 double Gurobi::get_dual_value(const Ctr &t_ctr) const {
-    if (get_primal_status() == Infeasible) {
-        return get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
-    }
     return get(t_ctr).get(GRB_DoubleAttr_Pi);
 }
 
@@ -163,7 +161,7 @@ double Gurobi::get_dual_farkas_objective_value() const {
 }
 
 double Gurobi::get_dual_farkas_value(const Ctr &t_ctr) const {
-    return get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
+    return -get(t_ctr).get(GRB_DoubleAttr_FarkasDual);
 }
 
 void Gurobi::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {
@@ -197,6 +195,10 @@ void Gurobi::set_presolve(bool t_value) {
 
 bool Gurobi::presolve() const {
     return m_model.get(GRB_IntParam_Presolve);
+}
+
+void Gurobi::set_objective_offset(const Coefficient &t_offset) {
+    m_model.set(GRB_DoubleAttr_ObjCon, value(t_offset));
 }
 
 #endif

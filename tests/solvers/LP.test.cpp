@@ -115,9 +115,9 @@ TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
 
 
         CHECK(farkas.objective_value() > 0.);
-        CHECK(1. * farkas.get(c1) - 2. * farkas.get(c2) >= 0. );
-        CHECK(-2. * farkas.get(c1) + 1. * farkas.get(c2) >= 0. );
-        CHECK(-1. * farkas.get(c1) + -1. * farkas.get(c2) >= 0. );
+        CHECK(1. * farkas.get(c1) - 2. * farkas.get(c2) <= 0. );
+        CHECK(-2. * farkas.get(c1) + 1. * farkas.get(c2) <= 0. );
+        CHECK(-1. * farkas.get(c1) + -1. * farkas.get(c2) <= 0. );
 
     }
 

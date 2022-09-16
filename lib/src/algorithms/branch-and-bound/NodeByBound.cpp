@@ -23,7 +23,7 @@ void NodeByBound::apply_local_changes(AbstractSolutionStrategy &t_strategy) {
 }
 
 void NodeByBound::save_solution(const AbstractSolutionStrategy& t_strategy) {
-    m_primal_solutions = t_strategy.solver().primal_solution();
+    m_primal_solutions = t_strategy.primal_solution();
 }
 
 Node *NodeByBound::create_child(unsigned int t_id) const {

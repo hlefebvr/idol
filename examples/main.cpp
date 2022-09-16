@@ -4,30 +4,32 @@
 #include "solvers/lpsolve/Lpsolve.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/logs/Log.h"
-#include "algorithms/branch-and-cut-and-price/BranchAndCutAndPriceStrategy.h"
+#include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBound.h"
 #include "algorithms/branch-and-bound/NodeStrategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
+#include "algorithms/branch-and-cut-and-price/ColumnGenerationStrategy.h"
 
 int main() {
 
-    Log::set_level(Info);
+    Log::set_level(Debug);
+    Log::set_color("branch-and-bound", Color::Blue);
+    Log::set_color("column-generation", Color::Yellow);
 
     Env env;
 
-
     Model rmp(env);
-    auto x_bar_0 = rmp.add_variable(0., 10., Continuous, -1.);
-    auto x_bar_1 = rmp.add_variable(0., 10., Continuous, -1.);
-    auto ctr_rmp = rmp.add_constraint(-2. * x_bar_0 + 2. * x_bar_1 >= 1.);
-    auto ctr_x_0 = rmp.add_constraint(x_bar_0 == 0., "x_bar_0");
-    auto ctr_x_1 = rmp.add_constraint(x_bar_1 == 0., "x_bar_1");
-    auto ctr_con = rmp.add_constraint(Equal, 1.,     "convex_constraints");
+    auto x_bar_0 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_0");
+    auto x_bar_1 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_1");
+    auto ctr_rmp = rmp.add_constraint(-2. * x_bar_0 + 2. * x_bar_1 >= 1., "rmp_ctr");
+    auto ctr_x_0 = rmp.add_constraint(-1. * x_bar_0 == 0., "x_bar_0");
+    auto ctr_x_1 = rmp.add_constraint(-1. * x_bar_1 == 0., "x_bar_1");
+    auto ctr_con = rmp.add_constraint(Equal, 1,            "convex_constraints");
 
     Model sp(env);
-    auto x_0 = sp.add_variable(0., 10., Continuous, 0.);
-    auto x_1 = sp.add_variable(0., 10., Continuous, 0.);
+    auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
+    auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
     auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
     ColumnGenerator generator;
@@ -35,12 +37,14 @@ int main() {
     generator.set(ctr_x_1, x_1);
     generator.set(ctr_con, Expr(), 1.);
 
-    auto* strategy = new BranchAndCutAndPriceStrategy<Lpsolve>(rmp);
-
     BranchAndBound solver;
-    solver.set_solution_strategy(strategy);
-    solver.set_node_strategy(new NodeStrategy<NodeByBound>());
-    solver.set_branching_strategy(new MostInfeasible({ x_bar_0, x_bar_1 }));
+    solver.set_node_strategy<NodeStrategy<NodeByBound>>();
+    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> {  });
+
+    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Lpsolve>>(rmp);
+    auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
+    auto& subproblem  = column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, sp);
+
     solver.solve();
 
     std::cout << "Status: " << solver.status() << std::endl;

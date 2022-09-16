@@ -8,6 +8,7 @@
 #include "modeling/environment/ObjectManager.h"
 #include "modeling/parameters/impl_Param.h"
 #include "modeling/variables/impl_Variable.h"
+#include "modeling/variables/TempVar.h"
 #include "modeling/constraints/impl_Constraint.h"
 #include "modeling/constraints/TempCtr.h"
 #include "containers/IteratorForward.h"
@@ -24,8 +25,9 @@ class Model {
     const unsigned int m_id = s_id++;
 
     ObjectManager m_objects;
-    ListenerManager m_listeners;
+    mutable ListenerManager m_listeners;
 
+    Coefficient m_objective_offset;
     std::vector<Param> m_parameters;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
@@ -38,6 +40,8 @@ class Model {
     template<class T> void free(std::vector<T>& t_vec);
     void add_column_to_rows(const Var& t_var);
     void add_row_to_columns(const Ctr& t_ctr);
+
+    void add_created_variable(const Var& t_var);
 public:
     explicit Model(Env& t_env);
 
@@ -51,7 +55,7 @@ public:
 
     [[nodiscard]] unsigned int id() const { return m_id; }
 
-    [[nodiscard]] Objective objective() const { return Objective(m_variables); }
+    [[nodiscard]] Objective objective() const { return Objective(m_variables, m_objective_offset); }
 
     iterator_forward<Param> parameters() { return iterator_forward<Param>(m_parameters); }
     [[nodiscard]] const_iterator_forward<Param> parameters() const { return const_iterator_forward<Param>(m_parameters); }
@@ -67,14 +71,17 @@ public:
 
     Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
     Var add_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name = "");
+    Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
     void remove(const Var& t_var);
 
     Ctr add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);
 
-    void add_listener(Listener& t_listener);
+    void add_listener(Listener& t_listener) const;
 
+    void update_objective(const Row& t_row);
+    void update_objective_offset(Coefficient t_offset);
     void update_objective(const Var& t_var, Coefficient t_coefficient);
     void update_rhs(const Ctr& t_ctr, Coefficient t_coefficient);
     void update_coefficient(const Ctr& t_ctr, const Var& t_var, Coefficient t_coefficient);

@@ -24,6 +24,7 @@ public:
     void broadcast_add(const Ctr& t_ctr);
     void broadcast_remove(const Ctr& t_ctr);
     void broadcast_update_objective(const Var& t_var, const Coefficient& t_coeff);
+    void broadcast_update_objective_offset(const Coefficient& t_coeff);
     void broadcast_update_rhs(const Ctr& t_ctr, const Coefficient& t_coeff);
     void broadcast_update_coefficient(const Ctr& t_ctr, const Var& t_var, const Coefficient& t_coefficient);
     void broadcast_update_lb(const Var& t_var, double t_lb);

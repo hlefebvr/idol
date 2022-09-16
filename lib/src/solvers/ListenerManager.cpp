@@ -62,3 +62,7 @@ void ListenerManager::broadcast_update_type(const Var &t_var, VarType t_type) {
 void ListenerManager::broadcast_update_type(const Ctr &t_ctr, CtrType t_type) {
     BROADCAST(update_type(t_ctr, t_type));
 }
+
+void ListenerManager::broadcast_update_objective_offset(const Coefficient &t_coeff) {
+    BROADCAST(update_objective_offset(t_coeff));
+}

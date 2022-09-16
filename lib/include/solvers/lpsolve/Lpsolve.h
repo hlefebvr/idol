@@ -13,6 +13,7 @@ struct _lprec; // NOLINT(bugprone-reserved-identifier)
 
 class Lpsolve final : public BaseSolver<int, int> {
     _lprec* model = nullptr;
+    double m_objective_offset = 0.;
     Optional<SolutionStatus> m_solution_status;
     Optional<Solution::Primal> m_ray;
     Optional<Solution::Dual> m_farkas;
@@ -44,6 +45,8 @@ protected:
     void remove_constraint(const Ctr &t_ctr) override;
 
     void set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) override;
+
+    void set_objective_offset(const Coefficient &t_offset) override;
 
     void set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) override;
 
