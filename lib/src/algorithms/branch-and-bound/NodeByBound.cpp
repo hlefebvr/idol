@@ -7,26 +7,17 @@
 #include <iostream>
 
 NodeByBound::NodeByBound(unsigned int t_id, const NodeByBound &t_src)
-    : Node(t_id),
+    : AbstractNode(t_id),
       m_local_upper_bounds(t_src.m_local_upper_bounds),
       m_local_lower_bounds(t_src.m_local_lower_bounds) {
 
-}
-
-void NodeByBound::apply_local_changes(AbstractSolutionStrategy &t_strategy) {
-    for (const auto& [var, lb] : m_local_lower_bounds) {
-        t_strategy.set_local_lower_bound(var, lb);
-    }
-    for (const auto& [var, ub] : m_local_upper_bounds) {
-        t_strategy.set_local_upper_bound(var, ub);
-    }
 }
 
 void NodeByBound::save_solution(const AbstractSolutionStrategy& t_strategy) {
     m_primal_solutions = t_strategy.primal_solution();
 }
 
-Node *NodeByBound::create_child(unsigned int t_id) const {
+AbstractNode *NodeByBound::create_child(unsigned int t_id) const {
     return new NodeByBound(t_id, *this);
 }
 

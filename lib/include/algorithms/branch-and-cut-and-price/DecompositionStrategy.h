@@ -25,11 +25,9 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    void reset_local_changes() override;
+    void set_lower_bound(const Var &t_var, double t_lb) override;
 
-    void set_local_lower_bound(const Var &t_var, double t_lb) override;
-
-    void set_local_upper_bound(const Var &t_var, double t_ub) override;
+    void set_upper_bound(const Var &t_var, double t_ub) override;
 
     template<class T, class ...Args> T& add_generation_strategy(Args&& ...t_args) {
 
@@ -78,30 +76,22 @@ Solution::Dual DecompositionStrategy<SolverRMPT>::dual_solution() const {
 }
 
 template<class SolverRMPT>
-void DecompositionStrategy<SolverRMPT>::reset_local_changes() {
-    m_rmp_strategy.reset_local_changes();
+void DecompositionStrategy<SolverRMPT>::set_lower_bound(const Var &t_var, double t_lb) {
+    if (t_var.model_id() == m_rmp_strategy.model().id()) {
+        m_rmp_strategy.set_lower_bound(t_var, t_lb);
+    }
     for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
-        ptr_to_decomposition_strategy->reset_local_changes();
+        ptr_to_decomposition_strategy->set_lower_bound(t_var, t_lb);
     }
 }
 
 template<class SolverRMPT>
-void DecompositionStrategy<SolverRMPT>::set_local_lower_bound(const Var &t_var, double t_lb) {
+void DecompositionStrategy<SolverRMPT>::set_upper_bound(const Var &t_var, double t_ub) {
     if (t_var.model_id() == m_rmp_strategy.model().id()) {
-        m_rmp_strategy.set_local_lower_bound(t_var, t_lb);
+        m_rmp_strategy.set_upper_bound(t_var, t_ub);
     }
     for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
-        ptr_to_decomposition_strategy->set_local_lower_bound(t_var, t_lb);
-    }
-}
-
-template<class SolverRMPT>
-void DecompositionStrategy<SolverRMPT>::set_local_upper_bound(const Var &t_var, double t_ub) {
-    if (t_var.model_id() == m_rmp_strategy.model().id()) {
-        m_rmp_strategy.set_local_upper_bound(t_var, t_ub);
-    }
-    for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
-        ptr_to_decomposition_strategy->set_local_upper_bound(t_var, t_ub);
+        ptr_to_decomposition_strategy->set_upper_bound(t_var, t_ub);
     }
 }
 

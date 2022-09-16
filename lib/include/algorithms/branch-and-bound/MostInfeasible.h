@@ -14,12 +14,14 @@ class MostInfeasible : public AbstractBranchingStrategy {
 
     static double fractional_part(double t_x);
     static bool is_integer(double t_x);
+protected:
+    virtual double score(const Var& t_var, const AbstractNode& t_node);
 public:
     explicit MostInfeasible(std::vector<Var> t_branching_candidates);
 
-    [[nodiscard]] bool is_valid(const Node &t_node) const override;
+    [[nodiscard]] bool is_valid(const AbstractNode &t_node) const override;
 
-    std::list<Node *> create_child_nodes(unsigned int t_id, const Node& t_node) override;
+    std::list<AbstractNode *> create_child_nodes(unsigned int t_id, const AbstractNode& t_node) override;
 };
 
 #endif //OPTIMIZE_MOSTINFEASIBLE_H

@@ -7,14 +7,15 @@
 #include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBound.h"
-#include "algorithms/branch-and-bound/NodeStrategy.h"
+#include "algorithms/branch-and-bound/BaseNodeStrategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationStrategy.h"
+#include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
 
 int main() {
 
     Log::set_level(Trace);
-    Log::set_color("branch-and-bound", Color::Blue);
+    Log::set_color("ex1_branch_and_bound_knapsack", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
     Env env;
@@ -38,10 +39,10 @@ int main() {
     generator.set(ctr_con, Expr(), 1.);
 
     BranchAndBound solver;
-    solver.set_node_strategy<NodeStrategy<NodeByBound>>();
+    solver.set_node_strategy<NodeByBoundStrategy>();
     solver.set_branching_strategy<MostInfeasible>(std::vector<Var> {  });
 
-    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Lpsolve>>(rmp);
+    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Gurobi>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
     auto& subproblem  = column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, sp);
 

@@ -3,8 +3,9 @@
 //
 #include <cmath>
 #include "algorithms/branch-and-bound/MostInfeasible.h"
-#include "algorithms/branch-and-bound/Node.h"
+#include "algorithms/branch-and-bound/AbstractNode.h"
 #include "solvers/solutions/Solution.h"
+#include "algorithms/logs/Log.h"
 
 MostInfeasible::MostInfeasible(std::vector<Var> t_branching_candidates)
     : m_branching_candidates(std::move(t_branching_candidates)) {
@@ -19,11 +20,12 @@ bool MostInfeasible::is_integer(double t_x) {
     return fractional_part(t_x) <= ToleranceForIntegrality;
 }
 
-bool MostInfeasible::is_valid(const Node &t_node) const {
+bool MostInfeasible::is_valid(const AbstractNode &t_node) const {
     const auto& primal = t_node.primal_solution();
 
     for (const auto& var : m_branching_candidates) {
-        if (!is_integer(primal.get(var))) {
+        if (double value = primal.get(var) ; !is_integer(value)) {
+            EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Node " << t_node.id() << " solution not valid (value = " << value << ")." );
             return false;
         }
     }
@@ -31,18 +33,21 @@ bool MostInfeasible::is_valid(const Node &t_node) const {
     return true;
 }
 
-std::list<Node *> MostInfeasible::create_child_nodes(unsigned int t_id, const Node& t_node) {
-    const auto& primal = t_node.primal_solution();
+double MostInfeasible::score(const Var &t_var, const AbstractNode& t_node) {
+    const double frac_value = fractional_part(t_node.primal_solution().get(t_var));
+    if (frac_value <= ToleranceForIntegrality) {
+        return -Inf;
+    }
+    return std::max(frac_value, 1. - frac_value);
+}
+
+std::list<AbstractNode *> MostInfeasible::create_child_nodes(unsigned int t_id, const AbstractNode& t_node) {
 
     double max_infeas = 0.;
     const Var* selected_var = nullptr;
 
     for (const auto& var : m_branching_candidates) {
-        const double value = primal.get(var);
-        if (is_integer(value)) {
-            continue;
-        }
-        if (double infeas = std::abs(.5 - fractional_part(value)) ; infeas > max_infeas) {
+        if (double infeas = score(var, t_node) ; infeas > max_infeas) {
             max_infeas = infeas;
             selected_var = &var;
         }
@@ -52,7 +57,7 @@ std::list<Node *> MostInfeasible::create_child_nodes(unsigned int t_id, const No
         throw std::runtime_error("Maximum infeasibility is less than ToleranceForIntegrality");
     }
 
-    const double value = primal.get(*selected_var);
+    const double value = t_node.primal_solution().get(*selected_var);
 
     auto* n1 = t_node.create_child(t_id);
     n1->set_local_lower_bound(*selected_var, std::ceil(value));

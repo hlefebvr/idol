@@ -38,19 +38,17 @@ public:
 
     [[nodiscard]] const Model& model() const { return m_model; }
 
-    void reset_local_changes() override;
-
     [[nodiscard]] Solution::Primal primal_solution() const override { return m_solver->primal_solution(); }
 
     [[nodiscard]] Solution::Dual dual_solution() const override { return m_solver->dual_solution(); }
 
     [[nodiscard]] Solution::Dual farkas_certificate() const override { return m_solver->dual_farkas(); }
 
-    void set_local_lower_bound(const Var &t_var, double t_lb) override;
+    void set_lower_bound(const Var &t_var, double t_lb) override;
 
-    void set_local_upper_bound(const Var &t_var, double t_ub) override;
+    void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    void update_objective(const Row &t_objective) override;
+    void set_objective(const Row &t_objective) override;
 
     void add_column(TempVar t_temporary_variable) override;
 };
@@ -68,37 +66,25 @@ void ExternalSolverStrategy<SolverT>::build() {
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::reset_local_changes() {
-    for (auto it = m_original_lower_bounds.rbegin(), end = m_original_lower_bounds.rend() ; it != end ; ++it) {
-        m_model.update_lb(it->first, it->second);
-    }
-    m_original_lower_bounds.clear();
-    for (auto it = m_original_upper_bounds.rbegin(), end = m_original_upper_bounds.rend() ; it != end ; ++it) {
-        m_model.update_ub(it->first, it->second);
-    }
-    m_original_upper_bounds.clear();
-}
-
-template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_local_lower_bound(const Var &t_var, double t_lb) {
+void ExternalSolverStrategy<SolverT>::set_lower_bound(const Var &t_var, double t_lb) {
     m_original_lower_bounds.template emplace_back(t_var, t_var.lb());
     m_model.update_lb(t_var, t_lb);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_local_upper_bound(const Var &t_var, double t_ub) {
+void ExternalSolverStrategy<SolverT>::set_upper_bound(const Var &t_var, double t_ub) {
     m_original_upper_bounds.template emplace_back(t_var, t_var.ub());
     m_model.update_ub(t_var, t_ub);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::update_objective(const Row &t_objective) {
+void ExternalSolverStrategy<SolverT>::set_objective(const Row &t_objective) {
     m_model.update_objective(t_objective);
 }
 
 template<class SolverT>
 void ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
-    m_model.add_variable(std::move(t_temporary_variable));
+    auto variable = m_model.add_variable(std::move(t_temporary_variable));
 }
 
 #endif //OPTIMIZE_EXTERNALSOLVERSTRATEGY_H

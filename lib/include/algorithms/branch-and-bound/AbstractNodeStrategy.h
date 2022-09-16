@@ -5,13 +5,16 @@
 #ifndef OPTIMIZE_ABSTRACTNODESTRATEGY_H
 #define OPTIMIZE_ABSTRACTNODESTRATEGY_H
 
-class Node;
+class AbstractNode;
+class AbstractSolutionStrategy;
 
 class AbstractNodeStrategy {
 public:
     virtual ~AbstractNodeStrategy() = default;
 
-    [[nodiscard]] virtual Node* create_root_node() const = 0;
+    [[nodiscard]] virtual AbstractNode* create_root_node() const = 0;
+
+    virtual void prepare_node_solution(const AbstractNode& t_node, AbstractSolutionStrategy& t_solution_strategy) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTNODESTRATEGY_H

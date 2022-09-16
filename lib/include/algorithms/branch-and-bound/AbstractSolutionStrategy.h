@@ -8,7 +8,7 @@
 #include "../../solvers/solutions/Solution.h"
 #include "../../modeling/variables/TempVar.h"
 
-class Node;
+class AbstractNode;
 class Solver;
 class Var;
 
@@ -37,20 +37,16 @@ public:
         return {};
     }
 
-    virtual void reset_local_changes() {
-        throw_not_implemented("Branching", "reset_local_changes");
+    virtual void set_lower_bound(const Var& t_var, double t_lb) {
+        throw_not_implemented("Updating variable LB", "set_lower_bound");
     }
 
-    virtual void set_local_lower_bound(const Var& t_var, double t_lb) {
-        throw_not_implemented("Branching on variables", "set_local_lower_bound");
+    virtual void set_upper_bound(const Var& t_var, double t_ub) {
+        throw_not_implemented("Updating variable UB", "set_upper_bound");
     }
 
-    virtual void set_local_upper_bound(const Var& t_var, double t_ub) {
-        throw_not_implemented("Branching on variables", "set_local_upper_bound");
-    }
-
-    virtual void update_objective(const Row& t_objective) {
-        throw_not_implemented("Updating objective", "update_objective");
+    virtual void set_objective(const Row& t_objective) {
+        throw_not_implemented("Updating objective", "set_objective");
     }
 
     virtual void add_column(TempVar t_temporary_variable) {

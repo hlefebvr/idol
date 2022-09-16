@@ -7,15 +7,15 @@
 
 #include <list>
 
-class Node;
+class AbstractNode;
 
 class AbstractBranchingStrategy {
 public:
     virtual ~AbstractBranchingStrategy() = default;
 
-    [[nodiscard]] virtual bool is_valid(const Node& t_node) const = 0;
+    [[nodiscard]] virtual bool is_valid(const AbstractNode& t_node) const = 0;
 
-    virtual std::list<Node*> create_child_nodes(unsigned int t_id, const Node& t_node) = 0;
+    virtual std::list<AbstractNode*> create_child_nodes(unsigned int t_id, const AbstractNode& t_node) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTBRANCHINGSTRATEGY_H

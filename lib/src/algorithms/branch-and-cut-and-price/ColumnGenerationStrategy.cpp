@@ -45,15 +45,14 @@ Solution::Dual ColumnGenerationStrategy::dual_solution() const{
     return rmp_dual_solution();
 }
 
-void ColumnGenerationStrategy::reset_local_changes(){}
-
-void ColumnGenerationStrategy::set_local_lower_bound(const Var & t_var, double t_lb){
+void ColumnGenerationStrategy::set_lower_bound(const Var & t_var, double t_lb){
     if (t_var.model_id() == rmp_id()) { return; }
-    AbstractGenerationStrategy::set_local_lower_bound(t_var, t_lb);
+    //AbstractGenerationStrategy::set_lower_bound(t_var, t_lb);
 }
 
-void ColumnGenerationStrategy::set_local_upper_bound(const Var & t_var, double t_ub){
-    AbstractGenerationStrategy::set_local_lower_bound(t_var, t_ub);
+void ColumnGenerationStrategy::set_upper_bound(const Var & t_var, double t_ub){
+    if (t_var.model_id() == rmp_id()) { return; }
+    //AbstractGenerationStrategy::set_lower_bound(t_var, t_ub);
 }
 
 void ColumnGenerationStrategy::initialize() {

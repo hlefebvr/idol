@@ -100,7 +100,7 @@ Row ColumnGenerationSubProblem<ExactSolutionStrategyT>::get_pricing_objective(co
 
 template<class ExactSolutionStrategyT>
 void ColumnGenerationSubProblem<ExactSolutionStrategyT>::update_pricing_objective(const Row &t_objective) {
-    m_exact_solution_strategy.update_objective(t_objective);
+    m_exact_solution_strategy.set_objective(t_objective);
 }
 
 template<class ExactSolutionStrategyT>

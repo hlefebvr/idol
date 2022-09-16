@@ -47,11 +47,9 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    void reset_local_changes() override;
+    void set_lower_bound(const Var &t_var, double t_lb) override;
 
-    void set_local_lower_bound(const Var &t_var, double t_lb) override;
-
-    void set_local_upper_bound(const Var &t_var, double t_ub) override;
+    void set_upper_bound(const Var &t_var, double t_ub) override;
 
     template<class T, class ...Args> ColumnGenerationSubProblem<T>& add_subproblem(Args&& ...t_args);
 };

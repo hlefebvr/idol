@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_BRANCHANDBOUND_H
 #define OPTIMIZE_BRANCHANDBOUND_H
 
-#include "Node.h"
+#include "AbstractNode.h"
 #include "AbstractSolutionStrategy.h"
 #include "AbstractBranchingStrategy.h"
 #include "AbstractNodeStrategy.h"
@@ -43,11 +43,11 @@ class BranchAndBound {
     // Nodes
     double m_best_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
-    Node* m_best_upper_bound_node = nullptr;
-    Node* m_current_node = nullptr;
-    std::list<Node*> m_solution_pool;
-    std::vector<Node*> m_active_nodes;
-    Stack<Node*> m_nodes_to_be_processed;
+    AbstractNode* m_best_upper_bound_node = nullptr;
+    AbstractNode* m_current_node = nullptr;
+    std::list<AbstractNode*> m_solution_pool;
+    std::vector<AbstractNode*> m_active_nodes;
+    Stack<AbstractNode*> m_nodes_to_be_processed;
 
     // User strategies
     std::unique_ptr<AbstractSolutionStrategy> m_solution_strategy;
@@ -58,7 +58,7 @@ class BranchAndBound {
     void create_root_node();
     void solve_queued_nodes();
     void update_current_node();
-    void apply_local_changes();
+    void prepare_node_solution();
     void solve_current_node();
     void analyze_current_node();
     [[nodiscard]] bool current_node_is_root_node() const;
@@ -74,7 +74,6 @@ class BranchAndBound {
     void apply_heuristics_on_current_node();
     void prune_current_node();
     void add_current_node_to_active_nodes();
-    void reset_local_changes();
     void prune_active_nodes_by_bound();
     void update_best_lower_bound();
     bool no_active_nodes();
@@ -89,7 +88,7 @@ class BranchAndBound {
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 
-    void log_node(LogLevel t_msg_level, const Node& t_node) const;
+    void log_node(LogLevel t_msg_level, const AbstractNode& t_node) const;
 public:
     BranchAndBound() = default;
     BranchAndBound(Model& t_model, std::vector<Var> t_branching_candidates);
