@@ -9,7 +9,7 @@
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBound.h"
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][ex1_branch_and_bound_knapsack][algorithms]", available_solvers) {
+TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", available_solvers) {
 
     Env env;
     Model model(env);

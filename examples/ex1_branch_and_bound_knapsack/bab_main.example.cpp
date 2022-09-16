@@ -5,25 +5,7 @@
 #include "modeling.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 
-class MyListener : public Listener {
-public:
-    unsigned int n_lb_update = 0;
-    unsigned int n_ub_update = 0;
-protected:
-    void on_update_lb(const Var &t_var, double t_lb) override {
-        ++n_lb_update;
-    }
-
-    void on_update_ub(const Var &t_var, double t_ub) override {
-        ++n_ub_update;
-    }
-};
-
 int main() {
-
-    Log::set_level(Trace);
-    Log::set_color("ex1_branch_and_bound_knapsack", Color::Blue);
-    Log::set_color("column-generation", Color::Yellow);
 
     Env env;
 
@@ -45,14 +27,11 @@ int main() {
 
     model.add_constraint(sum_weight <= capacity);
 
-    MyListener listener;
-    model.add_listener(listener);
-
     BranchAndBound solver(model, x);
     solver.solve();
 
-    std::cout << listener.n_lb_update << std::endl;
-    std::cout << listener.n_ub_update << std::endl;
+    std::cout << "Solution status = " << solver.status() << std::endl;
+    std::cout << "Objective value = " << solver.objective_value() << std::endl;
 
     return 0;
 }

@@ -15,7 +15,7 @@
 int main() {
 
     Log::set_level(Trace);
-    Log::set_color("ex1_branch_and_bound_knapsack", Color::Blue);
+    Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
     Env env;

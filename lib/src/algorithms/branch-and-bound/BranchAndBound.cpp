@@ -4,7 +4,7 @@
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "solvers.h"
 
-// used for building default ex1_branch_and_bound_knapsack
+// used for building default branch-and-bound
 #include "algorithms/branch-and-bound/ExternalSolverStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
@@ -152,7 +152,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_infeasible()) {
 
-        EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Pruning node " << m_current_node->id() << " (infeasible).");
+        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << m_current_node->id() << " (infeasible).");
         prune_current_node();
         return;
 
@@ -169,12 +169,12 @@ void BranchAndBound::analyze_current_node() {
 
         add_current_node_to_solution_pool();
 
-        EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Valid solution found at node " << m_current_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Valid solution found at node " << m_current_node->id() << '.');
 
         if (current_node_is_below_upper_bound()) {
             set_current_node_as_incumbent();
             log_node(Info, *m_current_node);
-            EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Better incumbent found at node " << m_current_node->id() << ".");
+            EASY_LOG(Trace, "branch-and-bound", "Better incumbent found at node " << m_current_node->id() << ".");
         }
 
         reset_current_node();
@@ -184,7 +184,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_above_upper_bound()) {
 
-        EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Pruning node " << m_current_node->id() << " (by bound).");
+        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << m_current_node->id() << " (by bound).");
         prune_current_node();
         return;
 
@@ -195,7 +195,7 @@ void BranchAndBound::analyze_current_node() {
 void BranchAndBound::update_current_node() {
     m_current_node = m_nodes_to_be_processed.top();
     m_nodes_to_be_processed.pop();
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Current node is now node " << m_current_node->id() << '.');
+    EASY_LOG(Trace, "branch-and-bound", "Current node is now node " << m_current_node->id() << '.');
 }
 
 void BranchAndBound::prepare_node_solution() {
@@ -283,7 +283,7 @@ void BranchAndBound::prune_active_nodes_by_bound() {
     for (auto it = m_active_nodes.begin(), end = m_active_nodes.end() ; it != end ; ++it) {
         const auto* ptr_to_node = *it;
         if (ptr_to_node->objective_value() >= upper_bound()) {
-            EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
+            EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
             delete ptr_to_node;
             it = m_active_nodes.erase(it);
         }
@@ -316,7 +316,7 @@ void BranchAndBound::branch() {
     auto* selected_node = m_active_nodes.front();
     std::pop_heap(m_active_nodes.begin(), m_active_nodes.end(), std::less<AbstractNode*>());
     m_active_nodes.pop_back();
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Node " << selected_node->id() << " has been selected for branching.");
+    EASY_LOG(Trace, "branch-and-bound", "Node " << selected_node->id() << " has been selected for branching.");
 
     auto child_nodes = m_branching_strategy->create_child_nodes(m_n_created_nodes, *selected_node);
 
@@ -324,7 +324,7 @@ void BranchAndBound::branch() {
         if (node->id() != m_n_created_nodes) {
             throw std::runtime_error("Created nodes should have strictly increasing ids.");
         }
-        EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Node " << node->id() << " has been created from " << selected_node->id() << '.');
+        EASY_LOG(Trace, "branch-and-bound", "Node " << node->id() << " has been created from " << selected_node->id() << '.');
         m_nodes_to_be_processed.add(node);
         ++m_n_created_nodes;
     }
@@ -333,28 +333,28 @@ void BranchAndBound::branch() {
 }
 
 void BranchAndBound::terminate_for_no_active_nodes() {
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Terminate. No active node.");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. No active node.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_gap_is_closed() {
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Terminate. Gap is closed.");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Gap is closed.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_infeasibility() {
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Terminate. Infeasibility detected.");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Infeasibility detected.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_unboundedness() {
     m_best_upper_bound = -Inf;
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Terminate. Unboundedness detected.");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Unboundedness detected.");
     terminate();
 }
 
 void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Terminate. Current node could node be solved to optimality (node " << m_current_node->id() << ").");
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Current node could node be solved to optimality (node " << m_current_node->id() << ").");
     terminate();
 }
 
@@ -374,7 +374,7 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const AbstractNode& t_node) 
     }
 
     EASY_LOG(t_msg_level,
-             "ex1_branch_and_bound_knapsack",
+             "branch-and-bound",
              std::setw(4)
              << t_node.id() << sign
              << std::setw(15)

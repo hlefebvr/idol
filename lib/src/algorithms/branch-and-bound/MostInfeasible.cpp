@@ -25,7 +25,7 @@ bool MostInfeasible::is_valid(const AbstractNode &t_node) const {
 
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
-            EASY_LOG(Trace, "ex1_branch_and_bound_knapsack", "Node " << t_node.id() << " solution not valid (value = " << value << ")." );
+            EASY_LOG(Trace, "branch-and-bound", "Node " << t_node.id() << " solution not valid (value = " << value << ")." );
             return false;
         }
     }
