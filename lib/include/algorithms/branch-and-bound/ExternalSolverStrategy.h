@@ -53,6 +53,12 @@ public:
     Var add_column(TempVar t_temporary_variable) override;
 
     void remove_variable(const Var &t_variable) override;
+
+    Ctr add_constraint(TempCtr t_temporary_constraint) override;
+
+    void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+
+    void remove_constraint(const Ctr &t_constraint) override;
 };
 
 template<class SolverT>
@@ -90,8 +96,23 @@ Var ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
 }
 
 template<class SolverT>
+Ctr ExternalSolverStrategy<SolverT>::add_constraint(TempCtr t_temporary_constraint) {
+    return m_model.add_constraint(std::move(t_temporary_constraint));
+}
+
+template<class SolverT>
+void ExternalSolverStrategy<SolverT>::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+    m_model.update_rhs(t_ctr, t_rhs);
+}
+
+template<class SolverT>
 void ExternalSolverStrategy<SolverT>::remove_variable(const Var &t_variable) {
     m_model.remove(t_variable);
+}
+
+template<class SolverT>
+void ExternalSolverStrategy<SolverT>::remove_constraint(const Ctr &t_constraint) {
+    m_model.remove(t_constraint);
 }
 
 #endif //OPTIMIZE_EXTERNALSOLVERSTRATEGY_H

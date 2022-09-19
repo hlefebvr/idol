@@ -20,9 +20,10 @@ class impl::Var : public impl::Object {
     double m_ub;
     VarType m_type;
     Column m_column;
+    bool m_is_virtual;
 public:
-    Var(ObjectId&& t_id, double t_lb, double t_ub, VarType t_type, Column&& t_column);
-    Var(ObjectId&& t_id, TempVar&& t_temporary_variable);
+    Var(ObjectId&& t_id, bool t_is_virtual, double t_lb, double t_ub, VarType t_type, Column&& t_column);
+    Var(ObjectId&& t_id, bool t_is_virtual, TempVar&& t_temporary_variable);
 
     Column& column();
 
@@ -39,6 +40,8 @@ public:
     double ub() const { return m_ub; }
 
     VarType type() const { return m_type; }
+
+    bool is_virtual() const { return m_is_virtual; }
 };
 
 #endif //OPTIMIZE_IMPL_VARIABLE_H

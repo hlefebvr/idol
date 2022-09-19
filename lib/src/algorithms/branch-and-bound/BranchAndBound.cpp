@@ -1,7 +1,7 @@
 //
 // Created by henri on 13/09/22.
 //
-#include "algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms/branch-and-bound/BranchAndBound.test.h"
 #include "solvers.h"
 
 // used for building default branch-and-bound

@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include "modeling.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms/branch-and-bound/BranchAndBound.test.h"
 
 int main() {
 

@@ -7,6 +7,7 @@
 
 #include "../../solvers/solutions/Solution.h"
 #include "../../modeling/variables/TempVar.h"
+#include "../../modeling/constraints/TempCtr.h"
 
 class AbstractNode;
 class Solver;
@@ -57,6 +58,20 @@ public:
 
     virtual void remove_variable(const Var& t_variable) {
         throw_not_implemented("Removing variable", "remove_variable");
+    }
+
+    virtual void update_constraint_rhs(const Ctr& t_ctr, double t_rhs) {
+        throw_not_implemented("Updating constraint RHS", "update_constraint_rhs");
+    }
+
+    virtual Ctr add_constraint(TempCtr t_temporary_constraint) {
+        throw std::runtime_error("Adding constraints is not implemented. "
+                                 "If you wish to implement it, "
+                                 "please override the add_constraint method.");
+    }
+
+    virtual void remove_constraint(const Ctr& t_constraint) {
+        throw_not_implemented("Removing constraint", "remove_constraint");
     }
 };
 

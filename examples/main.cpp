@@ -2,7 +2,7 @@
 #include "modeling.h"
 #include "solvers/gurobi/Gurobi.h"
 #include "solvers/lpsolve/Lpsolve.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms/branch-and-bound/BranchAndBound.test.h"
 #include "algorithms/logs/Log.h"
 #include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
@@ -11,6 +11,21 @@
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationStrategy.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
+#include "algorithms/branch-and-cut-and-price/DantzigWolfeGenerator.h"
+
+class Counter : public Listener {
+public:
+    unsigned int n_adds = 0;
+    unsigned int n_removes = 0;
+protected:
+    void on_add(const Var &t_var) override {
+        ++n_adds;
+    }
+
+    void on_remove(const Var &t_var) override {
+        ++n_removes;
+    }
+};
 
 int main() {
 
@@ -24,19 +39,20 @@ int main() {
     auto x_bar_0 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_0");
     auto x_bar_1 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_1");
     auto ctr_rmp = rmp.add_constraint(-2. * x_bar_0 + 2. * x_bar_1 >= 1., "rmp_ctr");
-    auto ctr_x_0 = rmp.add_constraint(-1. * x_bar_0 == 0., "x_bar_0");
-    auto ctr_x_1 = rmp.add_constraint(-1. * x_bar_1 == 0., "x_bar_1");
-    auto ctr_con = rmp.add_constraint(Equal, 1,            "convex_constraints");
+    auto x_vir_0 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_vir_0");
+    auto x_vir_1 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_vir_0");
+    auto rmp_x_0 = rmp.add_constraint(x_bar_0 + -1 * x_vir_0 == 0., "con_vir_0");
+    auto rmp_x_1 = rmp.add_constraint(x_bar_1 + -1 * x_vir_1 == 0., "con_vir_1");
+    auto ctr_con = rmp.add_constraint(Equal, 1);
 
     Model sp(env);
     auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
     auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
     auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
-    ColumnGenerator generator;
-    generator.set(ctr_x_0, x_0);
-    generator.set(ctr_x_1, x_1);
-    generator.set(ctr_con, Expr(), 1.);
+    DantzigWolfeGenerator generator(rmp, sp, ctr_con);
+    generator.set(x_vir_0, x_0);
+    generator.set(x_vir_1, x_1);
 
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
@@ -46,11 +62,17 @@ int main() {
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
     auto& subproblem  = column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, sp);
 
+    Counter counter;
+    rmp.add_listener(counter);
+
     solver.solve();
 
     std::cout << "Status: " << solver.status() << std::endl;
     std::cout << "Optimum: " << solver.objective_value() << std::endl;
     std::cout << "N. created nodes: " << solver.n_created_nodes() << std::endl;
+
+    std::cout << "N. adds = " << counter.n_adds << std::endl;
+    std::cout << "N. removes = " << counter.n_removes << std::endl;
 
     return 0;
 }

@@ -43,6 +43,7 @@ GRBConstr Gurobi::create_constraint(const Ctr &t_ctr) {
 }
 
 void Gurobi::fill_column(const Var &t_var) {
+    if (t_var.is_virtual()) { return; }
     set_objective_coefficient(t_var, t_var.obj());
     for (const auto& [ctr, coeff] : t_var.column()) {
         set_coefficient(ctr, t_var, coeff);
@@ -52,6 +53,7 @@ void Gurobi::fill_column(const Var &t_var) {
 void Gurobi::fill_row(const Ctr &t_ctr) {
     set_rhs(t_ctr, t_ctr.rhs());
     for (const auto& [var, coeff] : t_ctr.row()) {
+        if (var.is_virtual()) { continue; }
         set_coefficient(t_ctr, var, coeff);
     }
 }

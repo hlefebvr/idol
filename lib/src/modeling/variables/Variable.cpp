@@ -44,3 +44,7 @@ unsigned int Var::model_id() const {
     return m_impl->model_id();
 }
 
+bool Var::is_virtual() const {
+    return m_impl->is_virtual();
+}
+

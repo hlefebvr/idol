@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp solvers/LP.test.cpp solvers/MILP.test.cpp algorithms/BranchAndBound.cpp)
+add_executable(tests test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp solvers/LP.test.cpp solvers/MILP.test.cpp algorithms/BranchAndBound.test.cpp algorithms/ColumnGeneration.test.cpp)
 target_link_libraries(tests PRIVATE optimize)
 
 if (${WITH_TEST_COVERAGE})

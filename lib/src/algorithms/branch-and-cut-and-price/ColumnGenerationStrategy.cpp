@@ -17,6 +17,7 @@ void ColumnGenerationStrategy::build() {
 void ColumnGenerationStrategy::solve() {
 
     initialize();
+
     while (!is_terminated()) {
 
         rmp_solution_strategy().solve();
@@ -34,6 +35,8 @@ void ColumnGenerationStrategy::solve() {
         add_columns();
 
     }
+
+
 
 }
 

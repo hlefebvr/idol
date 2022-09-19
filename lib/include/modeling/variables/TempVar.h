@@ -22,6 +22,8 @@ public:
 
     const Column& column() const { return m_column; }
 
+    Column& column() { return m_column; }
+
     [[nodiscard]] double lb() const { return m_lb; }
 
     [[nodiscard]] double ub() const { return m_ub; }

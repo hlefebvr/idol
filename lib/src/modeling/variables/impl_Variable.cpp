@@ -4,13 +4,14 @@
 #include "modeling/variables/impl_Variable.h"
 #include "modeling/variables/TempVar.h"
 
-impl::Var::Var(ObjectId &&t_id, double t_lb, double t_ub, VarType t_type, Column&& t_column)
-    : impl::Object(std::move(t_id)), m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {
+impl::Var::Var(ObjectId &&t_id, bool t_is_virtual, double t_lb, double t_ub, VarType t_type, Column&& t_column)
+    : impl::Object(std::move(t_id)), m_is_virtual(t_is_virtual), m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {
 
 }
 
-impl::Var::Var(ObjectId &&t_id, TempVar &&t_temporary_variable)
+impl::Var::Var(ObjectId &&t_id, bool t_is_virtual, TempVar &&t_temporary_variable)
         : impl::Object(std::move(t_id)),
+          m_is_virtual(t_is_virtual),
           m_lb(t_temporary_variable.m_lb),
           m_ub(t_temporary_variable.m_ub),
           m_type(t_temporary_variable.m_type),

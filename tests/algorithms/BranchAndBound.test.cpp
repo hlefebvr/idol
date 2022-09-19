@@ -3,7 +3,7 @@
 //
 
 #include "../test_utils.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms/branch-and-bound/BranchAndBound.test.h"
 #include "algorithms/branch-and-bound/ExternalSolverStrategy.h"
 #include "algorithms/branch-and-bound/BaseNodeStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
