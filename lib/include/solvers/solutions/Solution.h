@@ -14,4 +14,12 @@ namespace Solution {
     class Dual : public AbstractSolution<Ctr, Dual> {};
 }
 
+static Solution::Primal operator*(double t_factor, Solution::Primal t_solution) {
+    return t_solution *= t_factor;
+}
+
+static Solution::Dual operator*(double t_factor, Solution::Dual t_solution) {
+    return t_solution *= t_factor;
+}
+
 #endif //OPTIMIZE_SOLUTION_H

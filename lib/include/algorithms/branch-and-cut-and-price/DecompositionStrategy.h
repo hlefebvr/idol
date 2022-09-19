@@ -77,9 +77,6 @@ Solution::Dual DecompositionStrategy<SolverRMPT>::dual_solution() const {
 
 template<class SolverRMPT>
 void DecompositionStrategy<SolverRMPT>::set_lower_bound(const Var &t_var, double t_lb) {
-    if (t_var.model_id() == m_rmp_strategy.model().id()) {
-        m_rmp_strategy.set_lower_bound(t_var, t_lb);
-    }
     for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
         ptr_to_decomposition_strategy->set_lower_bound(t_var, t_lb);
     }
@@ -87,9 +84,6 @@ void DecompositionStrategy<SolverRMPT>::set_lower_bound(const Var &t_var, double
 
 template<class SolverRMPT>
 void DecompositionStrategy<SolverRMPT>::set_upper_bound(const Var &t_var, double t_ub) {
-    if (t_var.model_id() == m_rmp_strategy.model().id()) {
-        m_rmp_strategy.set_upper_bound(t_var, t_ub);
-    }
     for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
         ptr_to_decomposition_strategy->set_upper_bound(t_var, t_ub);
     }

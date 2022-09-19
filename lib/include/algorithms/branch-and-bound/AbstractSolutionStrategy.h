@@ -49,8 +49,14 @@ public:
         throw_not_implemented("Updating objective", "set_objective");
     }
 
-    virtual void add_column(TempVar t_temporary_variable) {
-        throw_not_implemented("Adding column", "add_column");
+    virtual Var add_column(TempVar t_temporary_variable) {
+        throw std::runtime_error("Adding columns is not implemented. "
+                               "If you wish to implement it, "
+                               "please override the add_column method.");
+    }
+
+    virtual void remove_variable(const Var& t_variable) {
+        throw_not_implemented("Removing variable", "remove_variable");
     }
 };
 

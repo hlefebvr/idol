@@ -49,7 +49,12 @@ public:
 
     [[nodiscard]] double norm(double t_p = 2.) const;
 
+    CRTP& merge_without_conflict(CRTP t_rhs);
+
     CRTP& normalize(double t_p = 2.);
+
+    CRTP& operator +=(const CRTP& t_rhs);
+    CRTP& operator *=(double t_factor);
 };
 
 template<class KeyT, class CRTP>
@@ -111,6 +116,34 @@ double AbstractSolution<KeyT, CRTP>::norm_inf() const {
         }
     }
     return result;
+}
+
+template<class KeyT, class CRTP>
+CRTP &AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
+    m_values.template merge(t_rhs.m_values);
+    if (!t_rhs.m_values.empty()) {
+        throw std::runtime_error("Conflicts were found while trying to merge explicitly \"without conflict\".");
+    }
+    return dynamic_cast<CRTP&>(*this);
+}
+
+template<class KeyT, class CRTP>
+CRTP &AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
+    for (const auto& [key, value] : t_rhs) {
+        auto [it, success] = m_values.template emplace(key, value);
+        if (!success) {
+            it->second += value;
+        }
+    }
+    return dynamic_cast<CRTP&>(*this);
+}
+
+template<class KeyT, class CRTP>
+CRTP &AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
+    for (auto& [key, value] : m_values) {
+        value *= t_factor;
+    }
+    return dynamic_cast<CRTP&>(*this);
 }
 
 template<class KeyT, class CRTP>

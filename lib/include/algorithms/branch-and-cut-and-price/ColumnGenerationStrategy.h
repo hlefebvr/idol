@@ -51,17 +51,19 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    template<class T, class ...Args> ColumnGenerationSubProblem<T>& add_subproblem(Args&& ...t_args);
+    template<class T, class ...Args> AbstractColumnGenerationSubproblem& add_subproblem(ColumnGenerator t_column_generator, Args&& ...t_args);
 };
 
 template<class T, class... Args>
-ColumnGenerationSubProblem<T>& ColumnGenerationStrategy::add_subproblem(Args &&... t_args) {
+AbstractColumnGenerationSubproblem& ColumnGenerationStrategy::add_subproblem(ColumnGenerator t_column_generator, Args &&... t_args) {
     m_subproblems.template emplace_back(
-            std::make_unique<ColumnGenerationSubProblem<T>>(
-                    std::forward<Args>(t_args)...
+            std::make_unique<ColumnGenerationSubProblem>(
+                    rmp_solution_strategy(),
+                    std::move(t_column_generator),
+                    new T(std::forward<Args>(t_args)...)
                 )
             );
-    return dynamic_cast<ColumnGenerationSubProblem<T>&>(*m_subproblems.back());
+    return *m_subproblems.back();
 }
 
 #endif //OPTIMIZE_COLUMNGENERATIONSTRATEGY_H

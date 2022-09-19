@@ -7,7 +7,6 @@
 
 #include "BaseGenerator.h"
 #include "modeling/constraints/Constraint.h"
-
 class ColumnGenerator : public BaseGenerator<Ctr> {
     VarType m_type = Continuous;
     double m_lower_bound = 0.;

@@ -40,7 +40,7 @@ int main() {
 
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
-    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> {  });
+    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
 
     auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Gurobi>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();

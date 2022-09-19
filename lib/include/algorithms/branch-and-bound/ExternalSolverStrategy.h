@@ -50,7 +50,9 @@ public:
 
     void set_objective(const Row &t_objective) override;
 
-    void add_column(TempVar t_temporary_variable) override;
+    Var add_column(TempVar t_temporary_variable) override;
+
+    void remove_variable(const Var &t_variable) override;
 };
 
 template<class SolverT>
@@ -83,8 +85,13 @@ void ExternalSolverStrategy<SolverT>::set_objective(const Row &t_objective) {
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
-    auto variable = m_model.add_variable(std::move(t_temporary_variable));
+Var ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
+    return m_model.add_variable(std::move(t_temporary_variable));
+}
+
+template<class SolverT>
+void ExternalSolverStrategy<SolverT>::remove_variable(const Var &t_variable) {
+    m_model.remove(t_variable);
 }
 
 #endif //OPTIMIZE_EXTERNALSOLVERSTRATEGY_H

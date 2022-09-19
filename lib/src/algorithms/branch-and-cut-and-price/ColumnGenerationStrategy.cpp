@@ -19,7 +19,7 @@ void ColumnGenerationStrategy::solve() {
     initialize();
     while (!is_terminated()) {
 
-        rmp_solve();
+        rmp_solution_strategy().solve();
 
         save_last_rmp_dual_solution();
 
@@ -38,28 +38,38 @@ void ColumnGenerationStrategy::solve() {
 }
 
 Solution::Primal ColumnGenerationStrategy::primal_solution() const{
-    return rmp_primal_solution();
+    Solution::Primal result = rmp_solution_strategy().primal_solution();
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        result.merge_without_conflict(ptr_to_subproblem->primal_solution());
+    }
+    return result;
 }
 
 Solution::Dual ColumnGenerationStrategy::dual_solution() const{
-    return rmp_dual_solution();
+    Solution::Dual result = rmp_solution_strategy().dual_solution();
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        result.merge_without_conflict(ptr_to_subproblem->dual_solution());
+    }
+    return result;
 }
 
 void ColumnGenerationStrategy::set_lower_bound(const Var & t_var, double t_lb){
-    if (t_var.model_id() == rmp_id()) { return; }
-    //AbstractGenerationStrategy::set_lower_bound(t_var, t_lb);
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        ptr_to_subproblem->set_lower_bound(t_var, t_lb);
+    }
 }
 
 void ColumnGenerationStrategy::set_upper_bound(const Var & t_var, double t_ub){
-    if (t_var.model_id() == rmp_id()) { return; }
-    //AbstractGenerationStrategy::set_lower_bound(t_var, t_ub);
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        ptr_to_subproblem->set_upper_bound(t_var, t_ub);
+    }
 }
 
 void ColumnGenerationStrategy::initialize() {
     m_is_terminated = false;
 }
 void ColumnGenerationStrategy::save_last_rmp_dual_solution() {
-    m_last_rmp_duals = std::make_unique<Solution::Dual>(rmp_dual_solution());
+    m_last_rmp_duals = std::make_unique<Solution::Dual>(rmp_solution_strategy().dual_solution());
 }
 
 void ColumnGenerationStrategy::analyze_last_rmp_dual_solution() {
@@ -96,7 +106,7 @@ bool ColumnGenerationStrategy::rmp_could_not_be_solved_to_optimality() const {
 }
 
 void ColumnGenerationStrategy::save_rmp_farkas() {
-    m_last_rmp_duals = std::make_unique<Solution::Dual>(rmp_farkas_certificate());
+    m_last_rmp_duals = std::make_unique<Solution::Dual>(rmp_solution_strategy().farkas_certificate());
 }
 
 void ColumnGenerationStrategy::terminate_for_rmp_could_not_be_solved_to_optimality() {
@@ -153,8 +163,7 @@ void ColumnGenerationStrategy::add_columns() {
 
         if (ptr_to_subproblem->improving_column_found()) {
             improving_columns_found = true;
-            const auto column = ptr_to_subproblem->create_column();
-            rmp_add_column(column);
+            ptr_to_subproblem->add_column_to_rmp();
         }
 
     }

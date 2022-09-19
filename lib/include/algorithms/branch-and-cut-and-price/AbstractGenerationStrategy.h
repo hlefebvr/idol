@@ -13,15 +13,9 @@ class AbstractGenerationStrategy : public AbstractSolutionStrategy {
 protected:
     [[nodiscard]] unsigned int rmp_id() const;
 
-    void rmp_solve();
+    AbstractSolutionStrategy& rmp_solution_strategy();
 
-    [[nodiscard]] Solution::Primal rmp_primal_solution() const;
-
-    [[nodiscard]] Solution::Dual rmp_dual_solution() const;
-
-    [[nodiscard]] Solution::Dual rmp_farkas_certificate() const;
-
-    void rmp_add_column(TempVar t_temporary_variable);
+    [[nodiscard]] const AbstractSolutionStrategy& rmp_solution_strategy() const;
 public:
     explicit AbstractGenerationStrategy(DecompositionId&& t_decomposition_id);
 };
