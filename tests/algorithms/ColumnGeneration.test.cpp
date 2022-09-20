@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
                 solver.set_node_strategy<NodeByBoundStrategy>();
                 solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
 
-                solver.set_solution_strategy<DecompositionStrategy<Gurobi>>(rmp)
+                solver.set_solution_strategy<DecompositionStrategy<TestType>>(rmp)
                         .template add_generation_strategy<ColumnGenerationStrategy>()
                         .template add_subproblem<ExternalSolverStrategy<TestType>>(generator, sp);
 
