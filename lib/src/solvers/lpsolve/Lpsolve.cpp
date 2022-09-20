@@ -65,6 +65,8 @@ void Lpsolve::solve() {
 
     int status = ::solve(model);
 
+    write("sp.lp");
+
     m_solution_status = convert_lpsolve_status(status);
 
     if (infeasible_or_unbounded_info()) {

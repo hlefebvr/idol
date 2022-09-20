@@ -36,27 +36,28 @@ int main() {
     Env env;
 
     Model rmp(env);
-    auto x_bar_0 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_0");
-    auto x_bar_1 = rmp.add_variable(0., 10., Continuous, -1., "x_bar_1");
+    auto x_bar_0 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_bar_0");
+    auto x_bar_1 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_bar_1");
     auto ctr_rmp = rmp.add_constraint(-2. * x_bar_0 + 2. * x_bar_1 >= 1., "rmp_ctr");
-    auto x_vir_0 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_vir_0");
-    auto x_vir_1 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_vir_0");
-    auto rmp_x_0 = rmp.add_constraint(x_bar_0 + -1 * x_vir_0 == 0., "con_vir_0");
-    auto rmp_x_1 = rmp.add_constraint(x_bar_1 + -1 * x_vir_1 == 0., "con_vir_1");
+    //auto ctr_rmp = rmp.add_constraint(GreaterOrEqual, 1., "rmp_ctr");
     auto ctr_con = rmp.add_constraint(Equal, 1);
 
     Model sp(env);
-    auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
-    auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
+    auto x_0 = sp.add_variable(0., 10., Continuous, -1., "x_0");
+    auto x_1 = sp.add_variable(0., 10., Continuous, -1., "x_1");
     auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
+    /*ColumnGenerator generator(rmp, sp);
+    generator.set(ctr_rmp, -2. * x_0 + 2. * x_1);
+    generator.set(ctr_con, Expr(), 1.);*/
+
     DantzigWolfeGenerator generator(rmp, sp, ctr_con);
-    generator.set(x_vir_0, x_0);
-    generator.set(x_vir_1, x_1);
+    generator.set(x_bar_0, x_0);
+    generator.set(x_bar_1, x_1);
 
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
-    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
+    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_bar_0, x_bar_1 });
 
     auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Gurobi>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();

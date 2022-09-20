@@ -15,14 +15,16 @@ void DantzigWolfeGenerator::set(const Var &t_rmp_var, const Var &t_sp_var) {
         throw std::runtime_error("Only virtual variables can be added to a Dantzig-Wolfe column generator.");
     }
 
-    auto [it, success] = m_rmp_to_subproblem_variables.emplace(t_rmp_var, t_sp_var);
-    if (!success) {
+    if (auto [it, success] = m_rmp_to_subproblem_variables.emplace(t_rmp_var, t_sp_var) ; !success) {
         throw std::runtime_error("Trying to insert twice the same RMP variable.");
     }
 
     for (const auto& ctr : rmp().constraints()) {
         if (const auto& coefficient = ctr.get(t_rmp_var) ; !coefficient.is_zero()) {
-            ColumnGenerator::set(ctr, coefficient * t_sp_var);
+            auto [it, success] = m_values.emplace(ctr, Row(coefficient * t_sp_var, 0.));
+            if (!success) {
+                it->second += Row(coefficient * t_sp_var, 0.);
+            }
         }
     }
 
@@ -36,7 +38,7 @@ TempVar DantzigWolfeGenerator::create_column(const Solution::Primal &t_primal_so
 
 Row DantzigWolfeGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
     auto result = ColumnGenerator::get_pricing_objective(t_dual_solution);
-    result.set_constant(-m_convexificiation_constraint.rhs().constant() * t_dual_solution.get(m_convexificiation_constraint));
+    result.set_constant(result.constant() + -m_convexificiation_constraint.rhs().constant() * t_dual_solution.get(m_convexificiation_constraint));
     return result;
 }
 

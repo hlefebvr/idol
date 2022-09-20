@@ -4,7 +4,14 @@
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-ColumnGenerator::ColumnGenerator(const Model &t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
+ColumnGenerator::ColumnGenerator(const Model &t_rmp, const Model &t_subproblem)
+    : BaseGenerator(t_rmp, t_subproblem) {
+
+    Expr objective;
+    for (const auto& [var, coeff] : t_subproblem.objective()) {
+        objective += coeff * var;
+    }
+    set_constant(objective);
 
 }
 
@@ -15,8 +22,15 @@ AbstractColumnGenerator *ColumnGenerator::clone() const {
 TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
     Column column;
 
-    //column.set_constant(m_last_primal_solution->objective_value());
-    // evaluate value from original objective
+    for (const auto& [var, val] : t_primal_solution) {
+        std::cout << var << " = " << val << std::endl;
+    }
+
+    double objective = 0.;
+    for (const auto& [var, coeff] : constant()) {
+        objective += coeff.constant() * t_primal_solution.get(var);
+    }
+    column.set_constant(objective);
 
     for (const auto& [ctr, expr] : *this) {
         double coeff = expr.constant().constant();
@@ -30,8 +44,7 @@ TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution
 }
 
 Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
-    // TODO what about objective ?
-    Row result;
+    Row result = t_dual_solution.status() == Optimal ? Row(constant(), 0.) : Row();
     for (auto [ctr, row] : *this) {
         row *= -t_dual_solution.get(ctr);
         result += row;
