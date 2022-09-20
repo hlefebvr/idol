@@ -21,22 +21,6 @@ int main() {
     Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
-    /*
-    Env env;
-    Model model(env);
-
-    Lpsolve solver(model);
-
-    auto x = model.add_variable(0., 1., Continuous, 0., "x");
-    auto y = model.add_variable(0., 1., Continuous, 0., "y");
-
-    model.remove(x);
-
-    auto z = model.add_variable(0., 1., Continuous, 0., "z");
-
-    model.update_objective(y, 3);
-    */
-
     const Instance instance;
 
     const unsigned int n_knapsacks = instance.n_knapsacks;
@@ -102,7 +86,7 @@ int main() {
 
     // DantzigWolfe
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        DantzigWolfeGenerator generator(rmp, subproblems[i], rmp.add_constraint(Expr() == 1), true);
+        DantzigWolfeGenerator generator(rmp, subproblems[i]);
         column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, subproblems[i]);
     }
 

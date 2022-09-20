@@ -152,16 +152,18 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
 
         index = (int) t_ctr.index() + 1;
 
-        const double coeff = value(t_ctr.rhs());
+        double coeff = value(t_ctr.rhs());
+        int rhs_index = 0;
+        double zero = 0.;
 
-        success = set_add_rowmode(model, true);
-        throw_if_error(success, "could not enter rowmode");
+        //success = set_add_rowmode(model, true);
+        //throw_if_error(success, "could not enter rowmode");
 
-        success = add_constraintex(model, 0, NULL, NULL, type, coeff);
+        success = add_constraintex(model, 1, &zero, &rhs_index, type, coeff);
         throw_if_error(success, "could not add constraint");
 
-        success = set_add_rowmode(model, false);
-        throw_if_error(success, "could not exit rowmode");
+        //success = set_add_rowmode(model, false);
+        //throw_if_error(success, "could not exit rowmode");
     }
 
     success = set_row_name(model, index, (char*) t_ctr.name().c_str());
@@ -187,26 +189,11 @@ void Lpsolve::fill_row(const Ctr &t_ctr) {
 }
 
 void Lpsolve::remove_variable(const Var &t_var) {
-    const int n_entries = 1 + (int) t_var.column().size();
-    auto* rowno = new int[n_entries];
-    auto* column = new double[n_entries];
+    int zero_i = 0;
+    double zero_d = 0;
 
-    int i = 0;
-    rowno[i] = 0;
-    column[i] = 0.;
-    ++i;
-
-    for (const auto& [ctr, coefficient] : t_var.column()) {
-        rowno[i] = get(ctr);
-        column[i] = 0.;
-        ++i;
-    }
-
-    auto success = set_columnex(model, get(t_var), n_entries, column, rowno);
+    auto success = set_columnex(model, get(t_var), 1, &zero_d, &zero_i);
     throw_if_error(success, "Could not remove variable");
-
-    delete[] rowno;
-    delete[] column;
 
     m_free_columns.push(get(t_var));
 }
@@ -330,7 +317,7 @@ bool Lpsolve::infeasible_or_unbounded_info() const {
 
 void Lpsolve::compute_unbounded_ray() {
 
-    std::vector<double> ones(source_model().variables().size()+1, 1.);
+    std::vector<double> ones(get_Norig_columns(model)+1, 1.);
     add_constraint(model, ones.data(), LE, 1);
 
     for (const auto& ctr : source_model().constraints()) {
