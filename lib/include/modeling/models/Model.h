@@ -67,7 +67,7 @@ public:
     iterator_forward<Ctr> constraints() { return iterator_forward<Ctr>(m_constraints); }
     [[nodiscard]] const_iterator_forward<Ctr> constraints() const { return const_iterator_forward<Ctr>(m_constraints); }
 
-    Param add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name = "");
+    Param add_parameter(const Var& t_variable, std::string t_name = "");
     void remove(const Param& t_param);
 
     Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
@@ -93,9 +93,6 @@ public:
     void update_lb(const Var& t_var, double t_lb);
     void update_ub(const Var& t_var, double t_ub);
     void update_type(const Var& t_var, VarType t_type);
-    void update_lb(const Param& t_var, double t_lb);
-    void update_ub(const Param& t_var, double t_ub);
-    void update_type(const Param& t_var, VarType t_type);
     void update_type(const Ctr& t_ctr, CtrType t_type);
 };
 

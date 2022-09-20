@@ -133,6 +133,9 @@ CRTP &AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
         auto [it, success] = m_values.template emplace(key, value);
         if (!success) {
             it->second += value;
+            if (equals(it->second, 0., ToleranceForSparsity)) {
+                m_values.erase(it);
+            }
         }
     }
     return dynamic_cast<CRTP&>(*this);
@@ -140,17 +143,24 @@ CRTP &AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
 
 template<class KeyT, class CRTP>
 CRTP &AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
+
+    if (equals(t_factor, 0., ToleranceForSparsity)) {
+        m_values.clear();
+        return dynamic_cast<CRTP&>(*this);
+    }
+
     for (auto& [key, value] : m_values) {
         value *= t_factor;
     }
+
     return dynamic_cast<CRTP&>(*this);
 }
 
 template<class KeyT, class CRTP>
 static std::ostream& operator<<(std::ostream& t_os, const AbstractSolution<KeyT, CRTP>& t_solution) {
-    t_os << "SOLUTION STATUS: " << t_solution.status() << '\n';
-    t_os << "OBJECTIVE VALUE: " << t_solution.objective_value() << '\n';
-    t_os << "STORED VALUES:" << '\n';
+    t_os << "Solution status: " << t_solution.status() << '\n';
+    t_os << "Objective value: " << t_solution.objective_value() << '\n';
+    t_os << "Non-zero values:" << '\n';
     for (const auto& [key, value] : t_solution) {
         t_os << '\t' << key.name() << " = " << value << '\n';
     }

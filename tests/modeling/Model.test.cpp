@@ -6,6 +6,7 @@
 TEST_CASE("Model", "[model][modeling]") {
 
     Env env;
+    Model sp(env);
     Model model(env);
 
     SECTION("remove a variable") {
@@ -16,7 +17,7 @@ TEST_CASE("Model", "[model][modeling]") {
     }
 
     SECTION("remove a parameter") {
-        auto xi = model.add_parameter(0., 1., Continuous);
+        auto xi = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
         CHECK(model.parameters().size() == 1);
         model.remove(xi);
         CHECK(model.parameters().size() == 0);
@@ -73,8 +74,8 @@ TEST_CASE("Model", "[model][modeling]") {
 
     SECTION("iterate over parameters") {
 
-        model.add_parameter(0., 1., Continuous, "x");
-        model.add_parameter(0., 1., Continuous, "y");
+        model.add_parameter( sp.add_variable(0., 1., Continuous, 0., "x") );
+        model.add_parameter( sp.add_variable(0., 1., Continuous, 0, "y") );
 
         bool x_has_been_found = false;
         bool y_has_been_found = false;

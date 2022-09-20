@@ -9,6 +9,8 @@
 #include "modeling/Types.h"
 #include <iostream>
 
+class Var;
+
 namespace impl {
     class Param;
 }
@@ -20,6 +22,8 @@ class Param {
     explicit Param(impl::Param* t_impl) : m_impl(t_impl) {}
 public:
     [[nodiscard]] unsigned int id() const;
+
+    const Var& variable() const;
 
     [[nodiscard]] unsigned int index() const;
 

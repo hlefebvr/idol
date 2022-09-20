@@ -7,29 +7,20 @@
 
 #include "../objects/impl_Object.h"
 #include "../Types.h"
+#include "modeling/variables/Variable.h"
 
 namespace impl {
     class Param;
 }
 
 class impl::Param : public impl::Object {
-    double m_lb;
-    double m_ub;
-    VarType m_type;
+    ::Var m_variable;
 public:
-    Param(ObjectId&& t_id, double t_lb, double t_ub, VarType t_type);
+    Param(ObjectId&& t_id, const ::Var& t_variable);
 
-    void set_lb(double t_lb) { m_lb = t_lb; }
+    [[nodiscard]] const ::Var& variable() const { return m_variable; }
 
-    void set_ub(double t_ub) { m_ub = t_ub; }
-
-    void set_type(VarType t_type) { m_type = t_type; }
-
-    [[nodiscard]] double lb() const { return m_lb; }
-
-    [[nodiscard]] double ub() const { return m_ub; }
-
-    [[nodiscard]] VarType type() const { return m_type; }
+    ::Var& variable() { return m_variable; }
 };
 
 #endif //OPTIMIZE_IMPL_PARAM_H

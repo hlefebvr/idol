@@ -6,10 +6,11 @@
 TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     Env env;
+    Model sp(env);
     Model model(env);
 
-    auto a = model.add_parameter(0., 1., Continuous);
-    auto b = model.add_parameter(0., 1., Continuous);
+    auto a = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
+    auto b = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
 
     SECTION("constructor with no argument") {
 

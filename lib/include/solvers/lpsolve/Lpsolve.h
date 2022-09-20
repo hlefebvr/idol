@@ -8,6 +8,7 @@
 
 #include "solvers/BaseSolver.h"
 #include "containers/Optional.h"
+#include <stack>
 
 struct _lprec; // NOLINT(bugprone-reserved-identifier)
 
@@ -18,6 +19,9 @@ class Lpsolve final : public BaseSolver<int, int> {
     Optional<Solution::Primal> m_ray;
     Optional<Solution::Dual> m_farkas;
     bool m_infeasible_or_unbounded_info = false;
+
+    std::stack<int> m_free_columns;
+    std::stack<int> m_free_constraints;
 
     static void throw_if_error(unsigned char t_code, const std::string& t_msg);
 

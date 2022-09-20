@@ -16,8 +16,12 @@ Model::~Model() {
     free(m_constraints);
 }
 
-Param Model::add_parameter(double t_lb, double t_ub, VarType t_type, std::string t_name) {
-    auto result = m_objects.create<Param>(m_id, std::move(t_name), t_lb, t_ub, t_type);
+Param Model::add_parameter(const Var& t_variable, std::string t_name) {
+    if (t_variable.model_id() == m_id) {
+        throw std::runtime_error("Cannot add a parameter referring to a variable of the same model.");
+    }
+    std::string&& name = t_name.empty() ? std::string(t_variable.name()) : std::move(t_name);
+    auto result = m_objects.create<Param>(m_id, std::move(name), t_variable);
     add_object(m_parameters, result);
     return result;
 }
@@ -163,18 +167,6 @@ void Model::update_type(const Var &t_var, VarType t_type) {
 void Model::update_type(const Ctr &t_ctr, CtrType t_type) {
     m_listeners.broadcast_update_type(t_ctr, t_type);
     m_objects.impl(t_ctr).set_type(t_type);
-}
-
-void Model::update_lb(const Param &t_var, double t_lb) {
-    m_objects.impl(t_var).set_lb(t_lb);
-}
-
-void Model::update_ub(const Param &t_var, double t_ub) {
-    m_objects.impl(t_var).set_ub(t_ub);
-}
-
-void Model::update_type(const Param &t_var, VarType t_type) {
-    m_objects.impl(t_var).set_type(t_type);
 }
 
 void Model::add_listener(Listener &t_listener) const {

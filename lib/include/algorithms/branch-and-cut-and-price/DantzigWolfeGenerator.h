@@ -27,6 +27,8 @@ class DantzigWolfeGenerator : public ColumnGenerator {
 public:
     DantzigWolfeGenerator(const Model& t_rmp, const Model& t_subproblem, const Ctr& t_convexification_constraint);
 
+    DantzigWolfeGenerator(Model& t_rmp, const Model& t_subproblem, const Ctr& t_convexification_constraint, bool);
+
     void set(const Var& t_rmp_var, const Var& t_sp_var);
 
     TempVar create_column(const Solution::Primal &t_primal_solution) const override;

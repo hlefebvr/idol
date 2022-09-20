@@ -13,19 +13,7 @@
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
 #include "algorithms/branch-and-cut-and-price/DantzigWolfeGenerator.h"
 
-class Counter : public Listener {
-public:
-    unsigned int n_adds = 0;
-    unsigned int n_removes = 0;
-protected:
-    void on_add(const Var &t_var) override {
-        ++n_adds;
-    }
-
-    void on_remove(const Var &t_var) override {
-        ++n_removes;
-    }
-};
+#include "ex2_branch_and_price_gap/Instance.h"
 
 int main() {
 
@@ -33,47 +21,95 @@ int main() {
     Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
+    /*
+    Env env;
+    Model model(env);
+
+    Lpsolve solver(model);
+
+    auto x = model.add_variable(0., 1., Continuous, 0., "x");
+    auto y = model.add_variable(0., 1., Continuous, 0., "y");
+
+    model.remove(x);
+
+    auto z = model.add_variable(0., 1., Continuous, 0., "z");
+
+    model.update_objective(y, 3);
+    */
+
+    const Instance instance;
+
+    const unsigned int n_knapsacks = instance.n_knapsacks;
+    const unsigned int n_items = instance.n_items;
+    const auto& p = instance.p;
+    const auto& w = instance.w;
+    const auto& c = instance.c;
+
     Env env;
 
+    std::vector<Var> branching_candidates;
+
+    // SP
+    std::vector<Model> subproblems;
+    subproblems.reserve(n_knapsacks);
+    std::vector<std::vector<Var>> x(n_knapsacks);
+
+    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+        subproblems.emplace_back(env);
+
+        x[i].reserve(n_items);
+
+        for (unsigned int j = 0 ; j < n_items ; ++j) {
+            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, -p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+
+            branching_candidates.emplace_back(x[i].back());
+        }
+
+        Expr expr;
+        for (unsigned int j = 0 ; j < n_items ; ++j) {
+            expr += w[i][j] * x[i][j];
+        }
+        subproblems.back().add_constraint(expr <= c[i]);
+
+    }
+
+    // RMP
     Model rmp(env);
-    auto x_bar_0 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_bar_0");
-    auto x_bar_1 = rmp.add_virtual_variable(0., 10., Continuous, 0., "x_bar_1");
-    auto ctr_rmp = rmp.add_constraint(-2. * x_bar_0 + 2. * x_bar_1 >= 1., "rmp_ctr");
-    //auto ctr_rmp = rmp.add_constraint(GreaterOrEqual, 1., "rmp_ctr");
-    auto ctr_con = rmp.add_constraint(Equal, 1);
 
-    Model sp(env);
-    auto x_0 = sp.add_variable(0., 10., Continuous, -1., "x_0");
-    auto x_1 = sp.add_variable(0., 10., Continuous, -1., "x_1");
-    auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
+    std::vector<std::vector<Param>> param_x(n_knapsacks);
 
-    /*ColumnGenerator generator(rmp, sp);
-    generator.set(ctr_rmp, -2. * x_0 + 2. * x_1);
-    generator.set(ctr_con, Expr(), 1.);*/
+    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+        param_x[i].reserve(n_items);
+        for (unsigned int j = 0 ; j < n_items ; ++j) {
+            param_x[i].emplace_back( rmp.add_parameter(x[i][j]) );
+        }
+    };
 
-    DantzigWolfeGenerator generator(rmp, sp, ctr_con);
-    generator.set(x_bar_0, x_0);
-    generator.set(x_bar_1, x_1);
+    for (unsigned int j = 0 ; j < n_items ; ++j) {
+        Coefficient expr = 1;
+        for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+            expr += -1. * param_x[i][j];
+        }
+        rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
+    }
 
+    // Alg
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
-    solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_bar_0, x_bar_1 });
-
-    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Gurobi>>(rmp);
+    solver.set_branching_strategy<MostInfeasible>(branching_candidates);
+    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Lpsolve>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
-    auto& subproblem  = column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, sp);
 
-    Counter counter;
-    rmp.add_listener(counter);
+    // DantzigWolfe
+    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+        DantzigWolfeGenerator generator(rmp, subproblems[i], rmp.add_constraint(Expr() == 1), true);
+        column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, subproblems[i]);
+    }
 
     solver.solve();
 
-    std::cout << "Status: " << solver.status() << std::endl;
-    std::cout << "Optimum: " << solver.objective_value() << std::endl;
-    std::cout << "N. created nodes: " << solver.n_created_nodes() << std::endl;
-
-    std::cout << "N. adds = " << counter.n_adds << std::endl;
-    std::cout << "N. removes = " << counter.n_removes << std::endl;
+    std::cout << solver.primal_solution() << std::endl;
+    std::cout << "N. nodes: " << solver.n_created_nodes() << std::endl;
 
     return 0;
 }

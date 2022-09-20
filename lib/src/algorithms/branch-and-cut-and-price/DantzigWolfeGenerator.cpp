@@ -10,6 +10,27 @@ DantzigWolfeGenerator::DantzigWolfeGenerator(const Model &t_rmp, const Model &t_
 
 }
 
+DantzigWolfeGenerator::DantzigWolfeGenerator(Model &t_rmp, const Model &t_subproblem,
+                                             const Ctr &t_convexification_constraint, bool)
+     : ColumnGenerator(t_rmp, t_subproblem),
+     m_convexificiation_constraint(t_convexification_constraint) {
+
+    for (const auto& ctr : t_rmp.constraints()) {
+        if (ctr.rhs().is_numerical()) { continue; }
+        for (const auto& [param, coefficient] : ctr.rhs()) {
+            if (param.variable().model_id() == t_subproblem.id()) {
+
+                auto [it, success] = m_values.emplace(ctr, Row(-coefficient * param.variable(), 0.));
+                if (!success) {
+                    it->second += Row(-coefficient * param.variable(), 0.);
+                }
+
+            }
+        }
+    }
+
+}
+
 void DantzigWolfeGenerator::set(const Var &t_rmp_var, const Var &t_sp_var) {
     if (!t_rmp_var.is_virtual()) {
         throw std::runtime_error("Only virtual variables can be added to a Dantzig-Wolfe column generator.");

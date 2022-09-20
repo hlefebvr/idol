@@ -63,11 +63,16 @@ void Lpsolve::solve() {
 
     set_infinite(model, Inf);
 
-    int status = ::solve(model);
+    if (source_model().variables().size() > 0) {
 
-    write("sp.lp");
+        int status = ::solve(model);
+        m_solution_status = convert_lpsolve_status(status);
 
-    m_solution_status = convert_lpsolve_status(status);
+    } else {
+
+        m_solution_status = Infeasible;
+
+    }
 
     if (infeasible_or_unbounded_info()) {
 
@@ -82,15 +87,22 @@ void Lpsolve::solve() {
 }
 
 int Lpsolve::create_variable(const Var &t_var) {
-    
-    const auto index = (int) t_var.index() + 1;
+
     unsigned char success;
-    
-    double coeff = value(t_var.obj());
-    int row_id = 0;
-    
-    success = add_columnex(model, 1, &coeff, &row_id);
-    throw_if_error(success, "could not add column");
+
+    int index;
+    if (m_free_columns.empty()) {
+        index = (int) t_var.index() + 1;
+
+        double coeff = value(t_var.obj());
+        int row_id = 0;
+
+        success = add_columnex(model, 1, &coeff, &row_id);
+        throw_if_error(success, "could not add column");
+    } else {
+        index = m_free_columns.top();
+        m_free_columns.pop();
+    }
 
     switch (t_var.type()) {
         case Integer: success = set_int(model, index, true); break;
@@ -116,14 +128,8 @@ int Lpsolve::create_variable(const Var &t_var) {
 }
 
 int Lpsolve::create_constraint(const Ctr &t_ctr) {
-    
-    const auto index = (int) t_ctr.index() + 1;
+
     unsigned char success;
-    
-    const double coeff = value(t_ctr.rhs());
-    
-    success = set_add_rowmode(model, true);
-    throw_if_error(success, "could not enter rowmode");
 
     int type;
     switch (t_ctr.type()) {
@@ -133,11 +139,30 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
         default: throw std::runtime_error("Unexpected constraint type: " + std::to_string(t_ctr.type()));
     }
 
-    success = add_constraintex(model, 0, NULL, NULL, type, coeff);
-    throw_if_error(success, "could not add constraint");
+    int index;
+    if (!m_free_constraints.empty()) {
 
-    success = set_add_rowmode(model, false);
-    throw_if_error(success, "could not exit rowmode");
+        index = m_free_constraints.top();
+        m_free_constraints.pop();
+
+        success = set_constr_type(model, index, type);
+        throw_if_error(success, "could not change constraint type");
+
+    } else {
+
+        index = (int) t_ctr.index() + 1;
+
+        const double coeff = value(t_ctr.rhs());
+
+        success = set_add_rowmode(model, true);
+        throw_if_error(success, "could not enter rowmode");
+
+        success = add_constraintex(model, 0, NULL, NULL, type, coeff);
+        throw_if_error(success, "could not add constraint");
+
+        success = set_add_rowmode(model, false);
+        throw_if_error(success, "could not exit rowmode");
+    }
 
     success = set_row_name(model, index, (char*) t_ctr.name().c_str());
     throw_if_error(success, "could not set constraint name");
@@ -162,11 +187,54 @@ void Lpsolve::fill_row(const Ctr &t_ctr) {
 }
 
 void Lpsolve::remove_variable(const Var &t_var) {
-    throw std::runtime_error("Not implemented.");
+    const int n_entries = 1 + (int) t_var.column().size();
+    auto* rowno = new int[n_entries];
+    auto* column = new double[n_entries];
+
+    int i = 0;
+    rowno[i] = 0;
+    column[i] = 0.;
+    ++i;
+
+    for (const auto& [ctr, coefficient] : t_var.column()) {
+        rowno[i] = get(ctr);
+        column[i] = 0.;
+        ++i;
+    }
+
+    auto success = set_columnex(model, get(t_var), n_entries, column, rowno);
+    throw_if_error(success, "Could not remove variable");
+
+    delete[] rowno;
+    delete[] column;
+
+    m_free_columns.push(get(t_var));
 }
 
 void Lpsolve::remove_constraint(const Ctr &t_ctr) {
-    throw std::runtime_error("Not implemented.");
+
+    const int n_entries = 1 + (int) t_ctr.row().size();
+    auto* colno = new int[n_entries];
+    auto* row = new double[n_entries];
+
+    int i = 0;
+    colno[i] = 0;
+    row[i] = 0.;
+    ++i;
+
+    for (const auto& [ctr, coefficient] : t_ctr.row()) {
+        colno[i] = get(ctr);
+        row[i] = 0.;
+        ++i;
+    }
+
+    auto success = set_rowex(model, get(t_ctr), n_entries, row, colno);
+    throw_if_error(success, "Could not remove constraint");
+
+    delete[] colno;
+    delete[] row;
+
+    m_free_constraints.push(get(t_ctr));
 }
 
 void Lpsolve::set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) {
@@ -282,7 +350,7 @@ void Lpsolve::compute_unbounded_ray() {
 
 void Lpsolve::compute_farkas_dual() {
 
-    const unsigned int n_original_variables = source_model().variables().size();
+    const unsigned int n_original_variables = get_Norig_columns(model);
     unsigned int n_artificial_variables = 0;
     const double plus_one = 1.;
     const double minus_one = -1.;
