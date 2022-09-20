@@ -3,7 +3,7 @@
 //
 
 #include "../test_utils.h"
-#include "algorithms/branch-and-bound/BranchAndBound.test.h"
+#include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"

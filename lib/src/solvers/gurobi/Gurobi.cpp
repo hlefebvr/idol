@@ -102,8 +102,6 @@ void Gurobi::solve() {
 
     m_model.optimize();
 
-    m_model.write("model.lp");
-
     if (m_model.get(GRB_IntAttr_Status) == GRB_INFEASIBLE && m_model.get(GRB_IntParam_InfUnbdInfo)) {
         m_model.computeIIS();
     }

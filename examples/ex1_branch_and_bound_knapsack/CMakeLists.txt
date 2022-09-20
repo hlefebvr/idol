@@ -1,2 +1,2 @@
-add_executable(ex1_branch_and_bound_knapsack bab_main.example.cpp)
+add_executable(ex1_branch_and_bound_knapsack ex1_main.example.cpp)
 target_link_libraries(ex1_branch_and_bound_knapsack PRIVATE optimize)

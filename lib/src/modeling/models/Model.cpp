@@ -129,6 +129,7 @@ void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {
 void Model::update_objective(const Row &t_row) {
     update_objective_offset(t_row.constant());
     for (const auto& var : m_variables) {
+        if (var.is_virtual()) { continue; }
         update_objective(var, t_row.get(var)); // TODO this is inefficient as it is done even for zero values
     }
 }

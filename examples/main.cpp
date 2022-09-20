@@ -2,7 +2,7 @@
 #include "modeling.h"
 #include "solvers/gurobi/Gurobi.h"
 #include "solvers/lpsolve/Lpsolve.h"
-#include "algorithms/branch-and-bound/BranchAndBound.test.h"
+#include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/logs/Log.h"
 #include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"

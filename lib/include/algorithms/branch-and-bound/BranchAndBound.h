@@ -2,8 +2,8 @@
 // Created by henri on 13/09/22.
 //
 
-#ifndef OPTIMIZE_BRANCHANDBOUND_TEST_H
-#define OPTIMIZE_BRANCHANDBOUND_TEST_H
+#ifndef OPTIMIZE_BRANCHANDBOUND_H
+#define OPTIMIZE_BRANCHANDBOUND_H
 
 #include "AbstractNode.h"
 #include "AbstractSolutionStrategy.h"
@@ -140,4 +140,4 @@ T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     return dynamic_cast<T&>(*m_node_strategy);
 }
 
-#endif //OPTIMIZE_BRANCHANDBOUND_TEST_H
+#endif //OPTIMIZE_BRANCHANDBOUND_H

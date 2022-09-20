@@ -22,10 +22,6 @@ AbstractColumnGenerator *ColumnGenerator::clone() const {
 TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
     Column column;
 
-    for (const auto& [var, val] : t_primal_solution) {
-        std::cout << var << " = " << val << std::endl;
-    }
-
     double objective = 0.;
     for (const auto& [var, coeff] : constant()) {
         objective += coeff.constant() * t_primal_solution.get(var);

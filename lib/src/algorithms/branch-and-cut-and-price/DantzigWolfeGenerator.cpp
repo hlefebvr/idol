@@ -108,8 +108,13 @@ void DantzigWolfeGenerator::set_bound_rmp(const Var& t_subproblem_variable,
 
 void DantzigWolfeGenerator::set_lower_bound_rmp(const Var &t_rmp_variable, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
+    auto it = m_rmp_to_subproblem_variables.find(t_rmp_variable);
+    if (it == m_rmp_to_subproblem_variables.end()) {
+        return;
+    }
+
     set_bound_rmp(
-            get_subproblem_variable(t_rmp_variable),
+            it->second,
             t_lb,
             m_lower_bound_constraints,
             [](Expr&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
@@ -121,8 +126,13 @@ void DantzigWolfeGenerator::set_lower_bound_rmp(const Var &t_rmp_variable, doubl
 
 void DantzigWolfeGenerator::set_upper_bound_rmp(const Var &t_rmp_variable, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
 
+    auto it = m_rmp_to_subproblem_variables.find(t_rmp_variable);
+    if (it == m_rmp_to_subproblem_variables.end()) {
+        return;
+    }
+
     set_bound_rmp(
-            get_subproblem_variable(t_rmp_variable),
+            it->second,
             t_ub,
             m_upper_bound_constraints,
             [](Expr&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
