@@ -44,11 +44,15 @@ AbstractColumnGenerator *DantzigWolfeGeneratorSP::clone() const {
 void
 DantzigWolfeGeneratorSP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
+    if (t_var.model_id() != subproblem().id()) { return; }
+
     set_lower_bound_sp(t_var, t_lb, t_subproblem);
 }
 
 void
 DantzigWolfeGeneratorSP::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+
+    if (t_var.model_id() != subproblem().id()) { return; }
 
     set_upper_bound_sp(t_var, t_ub, t_subproblem);
 }

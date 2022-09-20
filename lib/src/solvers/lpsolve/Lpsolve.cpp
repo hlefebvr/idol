@@ -189,37 +189,21 @@ void Lpsolve::fill_row(const Ctr &t_ctr) {
 }
 
 void Lpsolve::remove_variable(const Var &t_var) {
-    int zero_i = 0;
-    double zero_d = 0;
 
-    auto success = set_columnex(model, get(t_var), 1, &zero_d, &zero_i);
-    throw_if_error(success, "Could not remove variable");
+    for (const auto& [ctr, coeff] : t_var.column()) {
+        set_coefficient(ctr, t_var, 0.);
+    }
+    set_objective_coefficient(t_var, 0.);
 
     m_free_columns.push(get(t_var));
 }
 
 void Lpsolve::remove_constraint(const Ctr &t_ctr) {
 
-    const int n_entries = 1 + (int) t_ctr.row().size();
-    auto* colno = new int[n_entries];
-    auto* row = new double[n_entries];
-
-    int i = 0;
-    colno[i] = 0;
-    row[i] = 0.;
-    ++i;
-
-    for (const auto& [ctr, coefficient] : t_ctr.row()) {
-        colno[i] = get(ctr);
-        row[i] = 0.;
-        ++i;
+    for (const auto& [var, coeff] : t_ctr.row()) {
+        set_coefficient(t_ctr, var, 0.);
     }
-
-    auto success = set_rowex(model, get(t_ctr), n_entries, row, colno);
-    throw_if_error(success, "Could not remove constraint");
-
-    delete[] colno;
-    delete[] row;
+    set_rhs(t_ctr, 0.);
 
     m_free_constraints.push(get(t_ctr));
 }

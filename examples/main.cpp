@@ -74,7 +74,9 @@ int main() {
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             expr += -1. * param_x[i][j];
         }
-        rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
+        auto artificial_1 = rmp.add_variable(0., Inf, Continuous, 10.);
+        auto artificial_2 = rmp.add_variable(0., Inf, Continuous, 10.);
+        rmp.add_constraint(artificial_1 + -1 * artificial_2 == expr, "assign(" + std::to_string(j) + ")");
     }
 
     // Alg
@@ -86,7 +88,7 @@ int main() {
 
     // DantzigWolfe
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        DantzigWolfeGenerator generator(rmp, subproblems[i]);
+        DantzigWolfeGeneratorSP generator(rmp, subproblems[i]);
         column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, subproblems[i]);
     }
 
