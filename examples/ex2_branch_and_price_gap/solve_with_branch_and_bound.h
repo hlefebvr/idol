@@ -24,7 +24,8 @@ void solve_with_branch_and_bound(const Instance& t_instance) {
     BranchAndBound solver(model, branching_candidates);
     solver.solve();
 
-    std::cout << solver.primal_solution() << std::endl;
+    std::cout << solver.status() << std::endl;
+    std::cout << solver.objective_value() << std::endl;
     std::cout << "N. nodes: " << solver.n_created_nodes() << std::endl;
 
 }
