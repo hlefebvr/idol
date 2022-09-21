@@ -9,6 +9,7 @@
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
 #include "algorithms/branch-and-bound/NodeStorageStrategy.h"
+#include "algorithms/branch-and-bound/AbstractNodeUpdatorStrategy.h"
 //
 
 #include <iomanip>
@@ -16,9 +17,10 @@
 BranchAndBound::BranchAndBound(Model &t_model, std::vector<Var> t_branching_candidates) {
     if constexpr (std::tuple_size_v<available_solvers>) {
         set_solution_strategy<ExternalSolverStrategy<std::tuple_element_t<0, available_solvers>>>(t_model);
-        set_node_strategy<NodeByBoundStrategy>();
-        set_branching_strategy<MostInfeasible>(std::move(t_branching_candidates));
-        set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+        auto& node_strategy = set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+        node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
+        node_strategy.set_branching_strategy<MostInfeasible_2>(std::move(t_branching_candidates));
+        node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
     } else {
         throw Exception("No available solver.");
     }
@@ -75,14 +77,6 @@ void BranchAndBound::initialize() {
         throw Exception("No solution strategy was given.");
     }
 
-    if (!m_branching_strategy) {
-        throw Exception("No branching strategy was given.");
-    }
-
-    if (!m_node_strategy) {
-        throw Exception("No node strategy was given.");
-    }
-
     if (!m_nodes) {
         throw Exception("No node storage strategy was given");
     }
@@ -93,11 +87,7 @@ void BranchAndBound::initialize() {
 }
 
 void BranchAndBound::create_root_node() {
-    auto* root_node = m_node_strategy->create_root_node();
-    if (root_node->id() != 0) {
-        throw Exception("Root node should have id 0.");
-    }
-    m_nodes->add_node_to_be_processed(root_node);
+    m_nodes->create_root_node();
     ++m_n_created_nodes;
 }
 
@@ -192,7 +182,7 @@ void BranchAndBound::analyze_current_node() {
 }
 
 void BranchAndBound::prepare_node_solution() {
-    m_node_strategy->prepare_node_solution(m_nodes->current_node(), *m_solution_strategy);
+    m_nodes->apply_current_node_to(*m_solution_strategy);
 }
 
 void BranchAndBound::solve_current_node() {
@@ -217,7 +207,7 @@ bool BranchAndBound::current_node_was_not_solved_to_optimality() const {
 }
 
 bool BranchAndBound::current_node_has_a_valid_solution() const {
-    return current_node().status() != Infeasible && m_branching_strategy->is_valid(current_node());
+    return m_nodes->current_node_has_a_valid_solution();
 }
 
 bool BranchAndBound::current_node_is_below_upper_bound() {
@@ -254,16 +244,16 @@ void BranchAndBound::add_current_node_to_active_nodes() {
 }
 
 void BranchAndBound::prune_active_nodes_by_bound() {
-    m_nodes->prune_active_nodes_by_bound(m_best_upper_bound);
+    m_nodes->active_nodes().prune_by_bound(m_best_upper_bound);
 }
 
 void BranchAndBound::update_best_lower_bound() {
-    if (m_nodes->has_no_active_nodes()) {
+    if (m_nodes->active_nodes().empty()) {
         m_best_lower_bound = m_best_upper_bound;
         return;
     }
 
-    const auto& lowest_node = m_nodes->lowest_node();
+    const auto& lowest_node = m_nodes->active_nodes().lowest_node();
     if (double lb = lowest_node.objective_value() ; lb > m_best_lower_bound) {
         m_best_lower_bound = lb;
         log_node(Info, lowest_node);
@@ -271,28 +261,18 @@ void BranchAndBound::update_best_lower_bound() {
 }
 
 bool BranchAndBound::no_active_nodes() {
-    return m_nodes->has_no_active_nodes();
+    return m_nodes->active_nodes().empty();
 }
 
 void BranchAndBound::branch() {
 
     if (is_terminated()) { return; }
 
-    const auto& selected_node = m_nodes->select_node_for_branching();
-    EASY_LOG(Trace, "branch-and-bound", "Node " << selected_node.id() << " has been selected for branching.");
+    m_nodes->active_nodes().select_node_for_branching();
 
-    auto child_nodes = m_branching_strategy->create_child_nodes(m_n_created_nodes, selected_node);
+    m_n_created_nodes += m_nodes->create_child_nodes();
 
-    for (auto* node : child_nodes) {
-        if (node->id() != m_n_created_nodes) {
-            throw Exception("Created nodes should have strictly increasing ids.");
-        }
-        EASY_LOG(Trace, "branch-and-bound", "Node " << node->id() << " has been created from " << selected_node.id() << '.');
-        m_nodes->add_node_to_be_processed(node);
-        ++m_n_created_nodes;
-    }
-
-    delete &selected_node; // TODO this manage differently
+    m_nodes->active_nodes().remove_node_selected_for_branching();
 }
 
 void BranchAndBound::terminate_for_no_active_nodes() {

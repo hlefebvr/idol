@@ -11,13 +11,12 @@
 #include "../../modeling/variables/Variable.h"
 
 class NodeByBound : public AbstractNode {
+public: // TODO: remove this
     Solution::Primal m_primal_solutions;
     Map<Var, double> m_local_lower_bounds;
     Map<Var, double> m_local_upper_bounds;
 
     NodeByBound(unsigned int t_id, const NodeByBound& t_src);
-
-    friend class NodeByBoundStrategy; // TODO TEMPORARY
 public:
     explicit NodeByBound(unsigned int t_id) : AbstractNode(t_id) {}
 
@@ -33,7 +32,7 @@ public:
     const Solution::Primal& primal_solution() const override { return m_primal_solutions; }
     const Solution::Dual& dual_solution() const override { throw Exception("Not available."); };
 
-    AbstractNode *create_child(unsigned int t_id) const override;
+    NodeByBound *create_child(unsigned int t_id) const override;
     void set_local_lower_bound(const Var &t_var, double t_lb) override;
     void set_local_upper_bound(const Var &t_var, double t_ub) override;
 };

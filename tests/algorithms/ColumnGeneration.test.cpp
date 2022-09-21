@@ -35,8 +35,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
 
                 BranchAndBound solver;
                 solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
-                solver.set_node_strategy<NodeByBoundStrategy>();
-                solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
+                auto& node_strategy = solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+                node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
+                node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
+                node_strategy.set_branching_strategy<MostInfeasible_2>(std::vector<Var> { x_0, x_1 });
 
                 auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
                 auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);
@@ -68,8 +70,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
 
                 BranchAndBound solver;
                 solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
-                solver.set_node_strategy<NodeByBoundStrategy>();
-                solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
+                auto& node_strategy = solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+                node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
+                node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
+                node_strategy.set_branching_strategy<MostInfeasible_2>(std::vector<Var> { x_0, x_1 });
 
                 auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
                 auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);
@@ -106,8 +110,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
 
             BranchAndBound solver;
             solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
-            solver.set_node_strategy<NodeByBoundStrategy>();
-            solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
+            auto& node_strategy = solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+            node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
+            node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
+            node_strategy.set_branching_strategy<MostInfeasible_2>(std::vector<Var> { x_0, x_1 });
 
             auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
             auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);

@@ -14,6 +14,10 @@
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "solvers/gurobi/Gurobi.h"
 #include "solvers/lpsolve/Lpsolve.h"
+#include "algorithms/branch-and-bound/AbstractActiveNodeManagerWithTypeStrategy.h"
+#include "algorithms/branch-and-bound/AbstractBranchingStrategy_2.h"
+#include "algorithms/branch-and-bound/AbstractNodeUpdatorStrategy.h"
+#include "algorithms/branch-and-bound/NodeStorageStrategy.h"
 
 void solve_with_branch_and_price(const Instance& t_instance) {
 
@@ -73,8 +77,10 @@ void solve_with_branch_and_price(const Instance& t_instance) {
 
     // Algorithm
     BranchAndBound solver;
-    auto& node_strategy = solver.set_node_strategy<NodeByBoundStrategy>();
-    auto& branching_strategy = solver.set_branching_strategy<MostInfeasible>(branching_candidates);
+    auto& node_strategy = solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
+    node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
+    node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
+    node_strategy.set_branching_strategy<MostInfeasible_2>(std::move(branching_candidates));
     auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy>();
     auto& rmp_solver = generation_strategy.set_rmp_solution_strategy<ExternalSolverStrategy<Lpsolve>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();

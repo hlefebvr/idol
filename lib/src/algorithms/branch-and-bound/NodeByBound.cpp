@@ -17,7 +17,7 @@ void NodeByBound::save_solution(const AbstractSolutionStrategy& t_strategy) {
     m_primal_solutions = t_strategy.primal_solution();
 }
 
-AbstractNode *NodeByBound::create_child(unsigned int t_id) const {
+NodeByBound *NodeByBound::create_child(unsigned int t_id) const {
     return new NodeByBound(t_id, *this);
 }
 

@@ -26,8 +26,6 @@ class BranchAndBound {
     // User strategies
     std::unique_ptr<AbstractNodeStorageStrategy> m_nodes;
     std::unique_ptr<AbstractSolutionStrategy> m_solution_strategy;
-    std::unique_ptr<AbstractBranchingStrategy> m_branching_strategy;
-    std::unique_ptr<AbstractNodeStrategy> m_node_strategy;
 
     void initialize();
     void create_root_node();
@@ -75,10 +73,6 @@ public:
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
-    template<class T, class ...Args> T& set_branching_strategy(Args&& ...t_args);
-
-    template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
-
     template<class T, class ...Args> T& set_node_storage_strategy(Args&& ...t_args);
 
     [[nodiscard]] double lower_bound() const;
@@ -99,22 +93,6 @@ T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
     auto* solution_strategy = new T(std::forward<Args>(t_args)...);
     m_solution_strategy.reset(solution_strategy);
     return *solution_strategy;
-}
-
-template<class T, class... Args>
-T &BranchAndBound::set_branching_strategy(Args &&... t_args) {
-    static_assert(std::is_base_of_v<AbstractBranchingStrategy, T>);
-    auto* branching_strategy = new T(std::forward<Args>(t_args)...);
-    m_branching_strategy.reset(branching_strategy);
-    return *branching_strategy;
-}
-
-template<class T, class... Args>
-T &BranchAndBound::set_node_strategy(Args &&... t_args) {
-    static_assert(std::is_base_of_v<AbstractNodeStrategy, T>);
-    auto* node_strategy = new T(std::forward<Args>(t_args)...);
-    m_node_strategy.reset(node_strategy);
-    return *node_strategy;
 }
 
 template<class T, class... Args>
