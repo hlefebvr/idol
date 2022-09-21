@@ -78,14 +78,16 @@ public:
 
 template<class T, class... Args>
 T &ColumnGenerationSubProblem::set_solution_strategy(Args &&... t_args) {
-    m_exact_solution_strategy = std::make_unique<T>(std::forward<Args>(t_args)...);
-    return dynamic_cast<T&>(*m_exact_solution_strategy);
+    auto* exact_solution_strategy = new T(std::forward<Args>(t_args)...);
+    m_exact_solution_strategy.reset(exact_solution_strategy);
+    return *exact_solution_strategy;
 }
 
 template<class T, class... Args>
 T &ColumnGenerationSubProblem::set_generation_strategy(Args &&... t_args) {
-    m_generator = std::make_unique<T>(std::forward<Args>(t_args)...);
-    return dynamic_cast<T&>(*m_generator);
+    auto* generator = new T(std::forward<Args>(t_args)...);
+    m_generator.reset(generator);
+    return *generator;
 }
 
 #endif //OPTIMIZE_COLUMNGENERATIONSUBPROBLEM_H

@@ -37,10 +37,6 @@ Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual
     return result;
 }
 
-AbstractColumnGenerator *DantzigWolfe_SP_Strategy::clone() const {
-    return new DantzigWolfe_SP_Strategy(*this);
-}
-
 void
 DantzigWolfe_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 

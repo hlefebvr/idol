@@ -28,8 +28,6 @@ public:
     ColumnGenerator& operator=(const ColumnGenerator&) = delete;
     ColumnGenerator& operator=(ColumnGenerator&&) noexcept = delete;
 
-    AbstractColumnGenerator *clone() const override;
-
     TempVar create_column(const Solution::Primal &t_primal_solution) const override;
 
     Row get_pricing_objective(const Solution::Dual &t_dual_solution) override;

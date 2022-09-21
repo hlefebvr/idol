@@ -10,10 +10,6 @@ AbstractGenerationStrategy::AbstractGenerationStrategy(DecompositionId &&t_decom
 
 }
 
-unsigned int AbstractGenerationStrategy::rmp_id() const {
-    return m_id.m_rmp_model->id();
-}
-
 AbstractSolutionStrategy &AbstractGenerationStrategy::rmp_solution_strategy() {
     return *m_id.m_rmp_strategy;
 }

@@ -56,13 +56,9 @@ public:
 
 template<class T, class... Args>
 T& ColumnGenerationStrategy::add_subproblem(Args &&... t_args) {
-    m_subproblems.template emplace_back(
-            std::make_unique<T>(
-                    rmp_solution_strategy(),
-                    std::forward<Args>(t_args)...
-                )
-            );
-    return dynamic_cast<T&>(*m_subproblems.back());
+    auto* subproblem = new T(rmp_solution_strategy(), std::forward<Args>(t_args)...);
+    m_subproblems.template emplace_back(subproblem);
+    return *subproblem;
 }
 
 #endif //OPTIMIZE_COLUMNGENERATIONSTRATEGY_H

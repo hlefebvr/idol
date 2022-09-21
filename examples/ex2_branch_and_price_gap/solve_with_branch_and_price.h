@@ -75,7 +75,8 @@ void solve_with_branch_and_price(const Instance& t_instance) {
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
     solver.set_branching_strategy<MostInfeasible>(branching_candidates);
-    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Lpsolve>>(rmp);
+    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy>();
+    auto& rmp_solver = generation_strategy.set_rmp_solution_strategy<ExternalSolverStrategy<Lpsolve>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {

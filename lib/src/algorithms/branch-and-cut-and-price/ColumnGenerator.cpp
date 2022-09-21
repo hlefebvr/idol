@@ -4,8 +4,7 @@
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-ColumnGenerator::ColumnGenerator(const Model &t_rmp, const Model &t_subproblem)
-    : BaseGenerator(t_rmp, t_subproblem) {
+ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
 
     Expr objective;
     for (const auto& [var, coeff] : t_subproblem.objective()) {
@@ -13,10 +12,6 @@ ColumnGenerator::ColumnGenerator(const Model &t_rmp, const Model &t_subproblem)
     }
     set_constant(objective);
 
-}
-
-AbstractColumnGenerator *ColumnGenerator::clone() const {
-    return new ColumnGenerator(*this);
 }
 
 TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
@@ -69,7 +64,7 @@ void ColumnGenerator::set_lower_bound_sp(const Var &t_var, double t_lb, ColumnGe
 }
 
 void ColumnGenerator::set_upper_bound_sp(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
-    remove_columns_violating_lower_bound(t_var, t_ub, t_subproblem);
+    remove_columns_violating_upper_bound(t_var, t_ub, t_subproblem);
     t_subproblem.exact_solution_strategy().set_upper_bound(t_var, t_ub);
 }
 

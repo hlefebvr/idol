@@ -4,12 +4,8 @@
 #include "algorithms/branch-and-cut-and-price/DantzigWolfe_RMP_Strategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem)
-     : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
+DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem) : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
 
-AbstractColumnGenerator *DantzigWolfe_RMP_Strategy::clone() const {
-    return new DantzigWolfe_RMP_Strategy(*this);
-}
 
 void DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 

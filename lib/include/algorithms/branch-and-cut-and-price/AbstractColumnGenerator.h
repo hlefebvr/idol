@@ -31,8 +31,6 @@ public:
 
     [[nodiscard]] double ub() const { return m_upper_bound; }
 
-    [[nodiscard]] virtual AbstractColumnGenerator* clone() const  = 0;
-
     [[nodiscard]] virtual TempVar create_column(const Solution::Primal& t_primal_solution) const = 0;
 
     [[nodiscard]] virtual Row get_pricing_objective(const Solution::Dual& t_dual_solution) = 0;

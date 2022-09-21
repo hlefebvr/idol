@@ -11,8 +11,6 @@
 class AbstractGenerationStrategy : public AbstractSolutionStrategy {
     DecompositionId m_id;
 protected:
-    [[nodiscard]] unsigned int rmp_id() const;
-
     AbstractSolutionStrategy& rmp_solution_strategy();
 
     [[nodiscard]] const AbstractSolutionStrategy& rmp_solution_strategy() const;

@@ -19,8 +19,6 @@ public:
 
     Row get_pricing_objective(const Solution::Dual &t_dual_solution) override;
 
-    AbstractColumnGenerator *clone() const override;
-
     void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
     void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;

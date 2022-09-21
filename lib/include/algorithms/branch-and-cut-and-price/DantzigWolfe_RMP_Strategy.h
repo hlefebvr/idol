@@ -20,8 +20,6 @@ class DantzigWolfe_RMP_Strategy : public DantzigWolfe_SP_Strategy {
 public:
     DantzigWolfe_RMP_Strategy(Model& t_rmp, const Model& t_subproblem);
 
-    AbstractColumnGenerator *clone() const override;
-
     void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
     void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;

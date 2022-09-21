@@ -6,20 +6,15 @@
 #define OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
 
 #include "AbstractSolutionStrategy.h"
+#include "../../modeling/models/Model.h"
 #include <memory>
 #include <list>
-
-class NodeByBound;
-class Model;
 
 template<class SolverT>
 class ExternalSolverStrategy : public AbstractSolutionStrategy {
 protected:
     Model& m_model;
     std::unique_ptr<SolverT> m_solver;
-
-    std::list<std::pair<Var, double>> m_original_lower_bounds;
-    std::list<std::pair<Var, double>> m_original_upper_bounds;
 
     ExternalSolverStrategy(const ExternalSolverStrategy& t_src);
 public:
@@ -33,8 +28,6 @@ public:
     void build() override;
 
     void solve() override { m_solver->solve(); }
-
-    Model& model() { return m_model; }
 
     [[nodiscard]] const Model& model() const { return m_model; }
 
@@ -75,13 +68,11 @@ void ExternalSolverStrategy<SolverT>::build() {
 
 template<class SolverT>
 void ExternalSolverStrategy<SolverT>::set_lower_bound(const Var &t_var, double t_lb) {
-    m_original_lower_bounds.template emplace_back(t_var, t_var.lb());
     m_model.update_lb(t_var, t_lb);
 }
 
 template<class SolverT>
 void ExternalSolverStrategy<SolverT>::set_upper_bound(const Var &t_var, double t_ub) {
-    m_original_upper_bounds.template emplace_back(t_var, t_var.ub());
     m_model.update_ub(t_var, t_ub);
 }
 
