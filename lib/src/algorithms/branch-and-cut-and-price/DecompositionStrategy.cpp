@@ -1,7 +1,7 @@
 //
 // Created by henri on 21/09/22.
 //
-#include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
+#include "algorithms/solution-strategies/decomposition/DecompositionStrategy.h"
 
 void DecompositionStrategy::build() {
 

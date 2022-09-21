@@ -5,9 +5,9 @@
 #ifndef OPTIMIZE_COLUMNGENERATIONSTRATEGY_H
 #define OPTIMIZE_COLUMNGENERATIONSTRATEGY_H
 
-#include "AbstractGenerationStrategy.h"
+#include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "modeling/models/Model.h"
-#include "ColumnGenerationSubproblem.h"
+#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
 class ColumnGenerationStrategy : public AbstractGenerationStrategy {
     std::list<std::unique_ptr<AbstractColumnGenerationSubproblem>> m_subproblems;

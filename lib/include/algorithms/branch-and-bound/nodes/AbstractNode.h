@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ABSTRACTNODE_H
 #define OPTIMIZE_ABSTRACTNODE_H
 
-#include "../../solvers/Types.h"
+#include "solvers/Types.h"
 #include <functional>
 
 namespace Solution {

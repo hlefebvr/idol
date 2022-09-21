@@ -6,9 +6,9 @@
 #define OPTIMIZE_COLUMNGENERATIONSUBPROBLEM_H
 
 #include "AbstractColumnGenerationSubproblem.h"
-#include "AbstractGenerator.h"
-#include "ColumnGenerator.h"
-#include "../logs/Log.h"
+#include "algorithms/solution-strategies/decomposition/generators/AbstractGenerator.h"
+#include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
+#include "algorithms/logs/Log.h"
 #include "containers/Set.h"
 #include <memory>
 #include <list>

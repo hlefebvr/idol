@@ -5,10 +5,10 @@
 #ifndef OPTIMIZE_NODEBYBOUND_H
 #define OPTIMIZE_NODEBYBOUND_H
 
-#include "AbstractNode.h"
-#include "../../solvers/solutions/Solution.h"
-#include "../../containers/Map.h"
-#include "../../modeling/variables/Variable.h"
+#include "algorithms/branch-and-bound/nodes/AbstractNode.h"
+#include "solvers/solutions/Solution.h"
+#include "containers/Map.h"
+#include "modeling/variables/Variable.h"
 
 class NodeByBound : public AbstractNode {
 public: // TODO: remove this

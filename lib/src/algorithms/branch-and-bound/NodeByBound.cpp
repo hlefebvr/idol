@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/09/22.
 //
-#include "algorithms/branch-and-bound/NodeByBound.h"
-#include "algorithms/branch-and-bound/AbstractSolutionStrategy.h"
+#include "algorithms/branch-and-bound/nodes/NodeByBound.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "solvers/Solver.h"
 #include <iostream>
 

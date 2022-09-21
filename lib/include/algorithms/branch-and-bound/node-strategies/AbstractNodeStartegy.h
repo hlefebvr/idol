@@ -2,16 +2,16 @@
 // Created by henri on 21/09/22.
 //
 
-#ifndef OPTIMIZE_ABSTRACTNODESTORAGESTARTEGY_H
-#define OPTIMIZE_ABSTRACTNODESTORAGESTARTEGY_H
+#ifndef OPTIMIZE_ABSTRACTNODESTARTEGY_H
+#define OPTIMIZE_ABSTRACTNODESTARTEGY_H
 
 class AbstractNode;
 class AbstractSolutionStrategy;
 class AbstractActiveNodeManager;
 
-class AbstractNodeStorageStrategy {
+class AbstractNodeStrategy {
 public:
-    virtual ~AbstractNodeStorageStrategy() = default;
+    virtual ~AbstractNodeStrategy() = default;
     virtual void initialize() = 0;
     virtual bool has_current_node() = 0;
     [[nodiscard]] virtual const AbstractNode& current_node() const = 0;
@@ -35,4 +35,4 @@ public:
     [[nodiscard]] virtual const AbstractActiveNodeManager& active_nodes() const = 0;
 };
 
-#endif //OPTIMIZE_ABSTRACTNODESTORAGESTARTEGY_H
+#endif //OPTIMIZE_ABSTRACTNODESTARTEGY_H

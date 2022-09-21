@@ -4,10 +4,8 @@
 
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/ExternalSolverStrategy.h"
-#include "algorithms/branch-and-bound/BaseNodeStrategy.h"
-#include "algorithms/branch-and-bound/MostInfeasible.h"
-#include "algorithms/branch-and-bound/NodeByBound.h"
+#include "algorithms/solution-strategies/external-solver/ExternalSolverStrategy.h"
+#include "algorithms/branch-and-bound/nodes/NodeByBound.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", available_solvers) {
 

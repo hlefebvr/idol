@@ -1,8 +1,8 @@
 //
 // Created by henri on 15/09/22.
 //
-#include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
-#include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
+#include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
+#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
 ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
 
@@ -73,7 +73,7 @@ void ColumnGenerator::remove_columns_violating_lower_bound(const Var &t_var, dou
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "column-generation",
+                     "generation-strategies",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
             return true;
@@ -88,7 +88,7 @@ void ColumnGenerator::remove_columns_violating_upper_bound(const Var &t_var, dou
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "column-generation",
+                     "generation-strategies",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
             return true;

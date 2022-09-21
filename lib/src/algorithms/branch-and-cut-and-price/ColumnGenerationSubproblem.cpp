@@ -1,7 +1,8 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
+#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 
 ColumnGenerationSubProblem::ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy)
         : m_rmp_strategy(t_rmp_strategy) {
@@ -69,7 +70,7 @@ bool ColumnGenerationSubProblem::could_not_be_solved_to_optimality() const {
 
 
 void ColumnGenerationSubProblem::log_last_primal_solution() const {
-    EASY_LOG(Debug, "column-generation",
+    EASY_LOG(Debug, "generation-strategies",
              std::setw(5)
                      << "SP"
                      << std::setw(15)
@@ -90,7 +91,7 @@ void ColumnGenerationSubProblem::add_column_to_rmp() {
     auto temp_var = create_column_from(*last_primal_solution);
     auto variable = m_rmp_strategy.add_column(std::move(temp_var));
     m_currently_present_variables.template emplace_back(variable, *last_primal_solution);
-    EASY_LOG(Trace, "column-generation", "Adding new variable with name " << variable << ".");
+    EASY_LOG(Trace, "generation-strategies", "Adding new variable with name " << variable << ".");
 }
 
 

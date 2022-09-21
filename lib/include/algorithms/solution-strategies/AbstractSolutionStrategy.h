@@ -5,9 +5,9 @@
 #ifndef OPTIMIZE_ABSTRACTSOLUTIONSTRATEGY_H
 #define OPTIMIZE_ABSTRACTSOLUTIONSTRATEGY_H
 
-#include "../../solvers/solutions/Solution.h"
-#include "../../modeling/variables/TempVar.h"
-#include "../../modeling/constraints/TempCtr.h"
+#include "solvers/solutions/Solution.h"
+#include "modeling/variables/TempVar.h"
+#include "modeling/constraints/TempCtr.h"
 
 class AbstractNode;
 class Solver;

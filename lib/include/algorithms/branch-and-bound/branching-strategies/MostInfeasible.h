@@ -2,32 +2,25 @@
 // Created by henri on 21/09/22.
 //
 
-#ifndef OPTIMIZE_ABSTRACTBRANCHINGSTRATEGY_2_H
-#define OPTIMIZE_ABSTRACTBRANCHINGSTRATEGY_2_H
+#ifndef OPTIMIZE_MOSTINFEASIBLE_H
+#define OPTIMIZE_MOSTINFEASIBLE_H
 
-class AbstractBranchingStrategy_2 {
-public:
-    virtual ~AbstractBranchingStrategy_2() = default;
-};
+#include "AbstractBranchingStrategy.h"
+#include "../../../modeling/variables/Variable.h"
+#include "../../../modeling/numericals.h"
+#include "../../../errors/Exception.h"
+#include "../../logs/Log.h"
+#include <vector>
+#include <list>
+#include <functional>
 
-template<class NodeT>
-class AbstractBranchingStrategyWithType : public AbstractBranchingStrategy_2 {
-public:
-    virtual bool is_valid(const NodeT& t_node) const = 0;
-
-    virtual std::list<NodeT*> create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const = 0;
-};
-
-class MostInfeasible_2 {
+class MostInfeasible {
 public:
     template<class NodeT> class Strategy;
 };
 
-#include <vector>
-#include "../../modeling/variables/Variable.h"
-
 template<class NodeT>
-class MostInfeasible_2::Strategy : public AbstractBranchingStrategyWithType<NodeT> {
+class MostInfeasible::Strategy : public AbstractBranchingStrategyWithType<NodeT> {
     std::vector<Var> m_branching_candidates;
 protected:
     static double fractional_part(double t_x);
@@ -42,7 +35,7 @@ public:
 };
 
 template<class NodeT>
-bool MostInfeasible_2::Strategy<NodeT>::is_valid(const NodeT &t_node) const {
+bool MostInfeasible::Strategy<NodeT>::is_valid(const NodeT &t_node) const {
     const auto& primal = t_node.primal_solution();
 
     for (const auto& var : m_branching_candidates) {
@@ -56,7 +49,7 @@ bool MostInfeasible_2::Strategy<NodeT>::is_valid(const NodeT &t_node) const {
 }
 
 template<class NodeT>
-std::list<NodeT *> MostInfeasible_2::Strategy<NodeT>::create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const {
+std::list<NodeT *> MostInfeasible::Strategy<NodeT>::create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const {
 
     double max_infeas = 0.;
     const Var* selected_var = nullptr;
@@ -84,17 +77,17 @@ std::list<NodeT *> MostInfeasible_2::Strategy<NodeT>::create_child_nodes(const N
 }
 
 template<class NodeT>
-double MostInfeasible_2::Strategy<NodeT>::fractional_part(double t_x) {
+double MostInfeasible::Strategy<NodeT>::fractional_part(double t_x) {
     return std::abs(std::round(t_x) - t_x);
 }
 
 template<class NodeT>
-bool MostInfeasible_2::Strategy<NodeT>::is_integer(double t_x) {
+bool MostInfeasible::Strategy<NodeT>::is_integer(double t_x) {
     return fractional_part(t_x) <= ToleranceForIntegrality;
 }
 
 template<class NodeT>
-double MostInfeasible_2::Strategy<NodeT>::score(const Var &t_var, const NodeT &t_node) const {
+double MostInfeasible::Strategy<NodeT>::score(const Var &t_var, const NodeT &t_node) const {
     const double frac_value = fractional_part(t_node.primal_solution().get(t_var));
     if (frac_value <= ToleranceForIntegrality) {
         return -Inf;
@@ -102,4 +95,4 @@ double MostInfeasible_2::Strategy<NodeT>::score(const Var &t_var, const NodeT &t
     return std::max(frac_value, 1. - frac_value);
 }
 
-#endif //OPTIMIZE_ABSTRACTBRANCHINGSTRATEGY_2_H
+#endif //OPTIMIZE_MOSTINFEASIBLE_H

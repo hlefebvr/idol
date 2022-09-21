@@ -1,8 +1,8 @@
 //
 // Created by henri on 16/09/22.
 //
-#include "algorithms/branch-and-cut-and-price/AbstractGenerationStrategy.h"
-#include "algorithms/branch-and-cut-and-price/DecompositionId.h"
+#include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
+#include "algorithms/solution-strategies/decomposition/DecompositionId.h"
 #include "modeling/models/Model.h"
 
 AbstractGenerationStrategy::AbstractGenerationStrategy(DecompositionId &&t_decomposition_id)

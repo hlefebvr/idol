@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
 #define OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
 
-#include "AbstractSolutionStrategy.h"
-#include "../../modeling/models/Model.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "modeling/models/Model.h"
 #include <memory>
 #include <list>
 

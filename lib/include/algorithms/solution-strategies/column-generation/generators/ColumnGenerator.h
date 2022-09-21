@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_COLUMNGENERATOR_H
 #define OPTIMIZE_COLUMNGENERATOR_H
 
-#include "BaseGenerator.h"
+#include "algorithms/solution-strategies/decomposition/generators/BaseGenerator.h"
 #include "modeling/constraints/Constraint.h"
 #include "AbstractColumnGenerator.h"
 #include "solvers/solutions/Solution.h"

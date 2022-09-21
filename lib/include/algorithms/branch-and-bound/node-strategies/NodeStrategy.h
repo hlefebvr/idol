@@ -2,22 +2,22 @@
 // Created by henri on 21/09/22.
 //
 
-#ifndef OPTIMIZE_NODESTORAGESTRATEGY_H
-#define OPTIMIZE_NODESTORAGESTRATEGY_H
+#ifndef OPTIMIZE_NODESTRATEGY_H
+#define OPTIMIZE_NODESTRATEGY_H
 
-#include "AbstractNodeStorageStartegy.h"
+#include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
 #include "modeling/numericals.h"
-#include "AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "algorithms/logs/Log.h"
-#include "AbstractActiveNodeManagerWithTypeStrategy.h"
-#include "AbstractNodeUpdatorStrategy.h"
-#include "AbstractBranchingStrategy_2.h"
+#include "algorithms/branch-and-bound/active-node-managers/AbstractActiveNodeManagerWithTypeStrategy.h"
+#include "algorithms/branch-and-bound/node-updators/AbstractNodeUpdatorStrategy.h"
+#include "algorithms/branch-and-bound/branching-strategies/AbstractBranchingStrategy.h"
 #include <list>
 #include <vector>
 #include <algorithm>
 
 template<class NodeT>
-class NodeStorageStrategy : public AbstractNodeStorageStrategy {
+class NodeStrategy : public AbstractNodeStrategy {
 
     unsigned int m_node_id = 0;
 
@@ -33,7 +33,7 @@ class NodeStorageStrategy : public AbstractNodeStorageStrategy {
 
     template<class T> void free(T& t_container);
 public:
-    ~NodeStorageStrategy() override;
+    ~NodeStrategy() override;
 
     [[nodiscard]] AbstractActiveNodeManagerWithType<NodeT>& active_nodes() override { return *m_active_nodes; }
 
@@ -87,20 +87,20 @@ public:
 
 template<class NodeT>
 template<class T>
-void NodeStorageStrategy<NodeT>::free(T& t_container) {
+void NodeStrategy<NodeT>::free(T& t_container) {
     for (auto* t_ptr : t_container) { delete t_ptr; }
     t_container = T();
 }
 
 template<class NodeT>
-NodeStorageStrategy<NodeT>::~NodeStorageStrategy() {
+NodeStrategy<NodeT>::~NodeStrategy() {
     free(m_nodes_to_be_processed);
     free(m_solution_pool);
     delete m_current_node;
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::initialize() {
+void NodeStrategy<NodeT>::initialize() {
     m_node_id = 0;
     m_best_upper_bound_node = nullptr;
     m_current_node = nullptr;
@@ -119,76 +119,76 @@ void NodeStorageStrategy<NodeT>::initialize() {
 }
 
 template<class NodeT>
-const NodeT &NodeStorageStrategy<NodeT>::current_node() const {
+const NodeT &NodeStrategy<NodeT>::current_node() const {
     return *m_current_node;
 }
 
 template<class NodeT>
-bool NodeStorageStrategy<NodeT>::has_node_to_be_processed() const {
+bool NodeStrategy<NodeT>::has_node_to_be_processed() const {
     return !m_nodes_to_be_processed.empty();
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::set_current_node_to_next_node_to_be_processed() {
+void NodeStrategy<NodeT>::set_current_node_to_next_node_to_be_processed() {
     m_current_node = m_nodes_to_be_processed.back();
     m_nodes_to_be_processed.pop_back();
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::save_current_node_solution(const AbstractSolutionStrategy & t_solution_strategy){
+void NodeStrategy<NodeT>::save_current_node_solution(const AbstractSolutionStrategy & t_solution_strategy){
     m_current_node->save_solution(t_solution_strategy);
 }
 
 template<class NodeT>
-bool NodeStorageStrategy<NodeT>::has_current_node() {
+bool NodeStrategy<NodeT>::has_current_node() {
     return m_current_node;
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::add_node_to_be_processed(AbstractNode *t_node) {
+void NodeStrategy<NodeT>::add_node_to_be_processed(AbstractNode *t_node) {
     m_nodes_to_be_processed.emplace_back(dynamic_cast<NodeT*>(t_node));
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::set_current_node_as_incumbent() {
+void NodeStrategy<NodeT>::set_current_node_as_incumbent() {
     m_best_upper_bound_node = m_current_node;
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::add_current_node_to_solution_pool() {
+void NodeStrategy<NodeT>::add_current_node_to_solution_pool() {
     m_solution_pool.emplace_back(m_current_node);
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::reset_current_node() {
+void NodeStrategy<NodeT>::reset_current_node() {
     m_current_node = nullptr;
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::prune_current_node() {
+void NodeStrategy<NodeT>::prune_current_node() {
     delete m_current_node;
     m_current_node = nullptr;
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::add_current_node_to_active_nodes() {
+void NodeStrategy<NodeT>::add_current_node_to_active_nodes() {
     m_active_nodes->add(m_current_node);
     m_current_node = nullptr;
 }
 
 template<class NodeT>
-bool NodeStorageStrategy<NodeT>::has_incumbent() const {
+bool NodeStrategy<NodeT>::has_incumbent() const {
     return m_best_upper_bound_node;
 }
 
 template<class NodeT>
-const AbstractNode &NodeStorageStrategy<NodeT>::incumbent() const {
+const AbstractNode &NodeStrategy<NodeT>::incumbent() const {
     return *m_best_upper_bound_node;
 }
 
 template<class NodeT>
 template<class T, class... Args>
-typename T::template Strategy<NodeT> &NodeStorageStrategy<NodeT>::set_active_node_manager_strategy(Args &&... t_args) {
+typename T::template Strategy<NodeT> &NodeStrategy<NodeT>::set_active_node_manager_strategy(Args &&... t_args) {
     auto* active_node_manager = new typename T::template Strategy<NodeT>(std::forward<Args>(t_args)...);
     m_active_nodes.reset(active_node_manager);
     return *active_node_manager;
@@ -196,7 +196,7 @@ typename T::template Strategy<NodeT> &NodeStorageStrategy<NodeT>::set_active_nod
 
 template<class NodeT>
 template<class T, class... Args>
-typename T::template Strategy<NodeT> &NodeStorageStrategy<NodeT>::set_branching_strategy(Args &&... t_args) {
+typename T::template Strategy<NodeT> &NodeStrategy<NodeT>::set_branching_strategy(Args &&... t_args) {
     auto* branching_strategy = new typename T::template Strategy<NodeT>(std::forward<Args>(t_args)...);
     m_branching_strategy.reset(branching_strategy);
     return *branching_strategy;
@@ -204,19 +204,19 @@ typename T::template Strategy<NodeT> &NodeStorageStrategy<NodeT>::set_branching_
 
 template<class NodeT>
 template<class T, class... Args>
-typename T::template Strategy<NodeT> &NodeStorageStrategy<NodeT>::set_node_updator_strategy(Args &&... t_args) {
+typename T::template Strategy<NodeT> &NodeStrategy<NodeT>::set_node_updator_strategy(Args &&... t_args) {
     auto* node_updator = new typename T::template Strategy<NodeT>(std::forward<Args>(t_args)...);
     m_node_updator.reset(node_updator);
     return *node_updator;
 }
 
 template<class NodeT>
-bool NodeStorageStrategy<NodeT>::current_node_has_a_valid_solution() const {
+bool NodeStrategy<NodeT>::current_node_has_a_valid_solution() const {
     return current_node().status() != Infeasible && m_branching_strategy->is_valid(current_node());
 }
 
 template<class NodeT>
-unsigned int NodeStorageStrategy<NodeT>::create_child_nodes() {
+unsigned int NodeStrategy<NodeT>::create_child_nodes() {
 
     const auto& selected_node = m_active_nodes->node_selected_for_branching();
     auto child_nodes = m_branching_strategy->create_child_nodes(selected_node, [&](){ return m_node_id++; });
@@ -230,13 +230,13 @@ unsigned int NodeStorageStrategy<NodeT>::create_child_nodes() {
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::create_root_node() {
+void NodeStrategy<NodeT>::create_root_node() {
     m_nodes_to_be_processed.template emplace_back(new NodeT(m_node_id++));
 }
 
 template<class NodeT>
-void NodeStorageStrategy<NodeT>::apply_current_node_to(AbstractSolutionStrategy &t_solution_strategy) {
+void NodeStrategy<NodeT>::apply_current_node_to(AbstractSolutionStrategy &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
 }
 
-#endif //OPTIMIZE_NODESTORAGESTRATEGY_H
+#endif //OPTIMIZE_NODESTRATEGY_H

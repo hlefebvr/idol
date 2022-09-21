@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_ABSTRACTGENERATIONSTRATEGY_H
 #define OPTIMIZE_ABSTRACTGENERATIONSTRATEGY_H
 
-#include "../branch-and-bound/AbstractSolutionStrategy.h"
-#include "DecompositionId.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/decomposition/DecompositionId.h"
 
 class AbstractGenerationStrategy : public AbstractSolutionStrategy {
     DecompositionId m_id;

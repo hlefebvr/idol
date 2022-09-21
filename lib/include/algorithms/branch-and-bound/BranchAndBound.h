@@ -5,13 +5,11 @@
 #ifndef OPTIMIZE_BRANCHANDBOUND_H
 #define OPTIMIZE_BRANCHANDBOUND_H
 
-#include "AbstractNode.h"
-#include "AbstractSolutionStrategy.h"
-#include "AbstractBranchingStrategy.h"
-#include "AbstractNodeStrategy.h"
+#include "algorithms/branch-and-bound/nodes/AbstractNode.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
-#include "AbstractNodeStorageStartegy.h"
+#include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -24,7 +22,7 @@ class BranchAndBound {
     double m_best_upper_bound = +Inf;
 
     // User strategies
-    std::unique_ptr<AbstractNodeStorageStrategy> m_nodes;
+    std::unique_ptr<AbstractNodeStrategy> m_nodes;
     std::unique_ptr<AbstractSolutionStrategy> m_solution_strategy;
 
     void initialize();
@@ -73,7 +71,7 @@ public:
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
-    template<class T, class ...Args> T& set_node_storage_strategy(Args&& ...t_args);
+    template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
 
     [[nodiscard]] double lower_bound() const;
     [[nodiscard]] double upper_bound() const;
@@ -96,7 +94,7 @@ T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
 }
 
 template<class T, class... Args>
-T &BranchAndBound::set_node_storage_strategy(Args &&... t_args) {
+T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     auto* node_strategy = new T(std::forward<Args>(t_args)...);
     m_nodes.reset(node_strategy);
     return *node_strategy;

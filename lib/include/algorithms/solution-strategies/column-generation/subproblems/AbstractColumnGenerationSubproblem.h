@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 #define OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 
-#include "../branch-and-bound/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 
 class AbstractColumnGenerationSubproblem : public AbstractSolutionStrategy {
 public:

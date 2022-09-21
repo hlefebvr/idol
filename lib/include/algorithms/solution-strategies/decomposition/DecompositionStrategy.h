@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_DECOMPOSITIONSTRATEGY_H
 #define OPTIMIZE_DECOMPOSITIONSTRATEGY_H
 
-#include "../branch-and-bound/ExternalSolverStrategy.h"
-#include "AbstractGenerationStrategy.h"
+#include "algorithms/solution-strategies/external-solver/ExternalSolverStrategy.h"
+#include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "DecompositionId.h"
 #include <functional>
 
