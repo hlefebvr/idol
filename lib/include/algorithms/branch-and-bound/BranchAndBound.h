@@ -11,45 +11,20 @@
 #include "AbstractNodeStrategy.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
+#include "AbstractNodeStorageStartegy.h"
 #include <vector>
 #include <list>
 #include <memory>
-
-template <class T, class Container = std::list<T>>
-class Stack : private Container {
-public:
-    using std::list<T>::begin;
-    using std::list<T>::end;
-    using std::list<T>::rbegin;
-    using std::list<T>::rend;
-    using std::list<T>::cbegin;
-    using std::list<T>::cend;
-    using std::list<T>::crbegin;
-    using std::list<T>::crend;
-
-    void add(T&& t_object) { this->emplace_back(std::move(t_object)); }
-    void add(const T& t_object) { this->emplace_back(t_object); }
-    T& top() { return this->back(); }
-    [[nodiscard]] const T& top() const { return this->back(); }
-    void pop() { this->pop_back(); }
-
-    explicit operator bool() const { return !this->empty(); }
-};
 
 class BranchAndBound {
     unsigned int m_n_created_nodes = 0;
     bool m_is_terminated = false;
 
-    // Nodes
     double m_best_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
-    AbstractNode* m_best_upper_bound_node = nullptr;
-    AbstractNode* m_current_node = nullptr;
-    std::list<AbstractNode*> m_solution_pool;
-    std::vector<AbstractNode*> m_active_nodes;
-    Stack<AbstractNode*> m_nodes_to_be_processed;
 
     // User strategies
+    std::unique_ptr<AbstractNodeStorageStrategy> m_nodes;
     std::unique_ptr<AbstractSolutionStrategy> m_solution_strategy;
     std::unique_ptr<AbstractBranchingStrategy> m_branching_strategy;
     std::unique_ptr<AbstractNodeStrategy> m_node_strategy;
@@ -57,7 +32,6 @@ class BranchAndBound {
     void initialize();
     void create_root_node();
     void solve_queued_nodes();
-    void update_current_node();
     void prepare_node_solution();
     void solve_current_node();
     void analyze_current_node();
@@ -89,26 +63,26 @@ class BranchAndBound {
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 
     void log_node(LogLevel t_msg_level, const AbstractNode& t_node) const;
+
+    [[nodiscard]] const AbstractNode& current_node() const;
 public:
     BranchAndBound() = default;
     BranchAndBound(Model& t_model, std::vector<Var> t_branching_candidates);
-    virtual ~BranchAndBound();
 
     void solve();
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
-    AbstractSolutionStrategy& set_solution_strategy(AbstractSolutionStrategy* t_node_strategy);
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
-    AbstractBranchingStrategy& set_branching_strategy(AbstractBranchingStrategy* t_branching_strategy);
     template<class T, class ...Args> T& set_branching_strategy(Args&& ...t_args);
 
-    AbstractNodeStrategy& set_node_strategy(AbstractNodeStrategy* t_node_strategy);
     template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
 
-    [[nodiscard]] double lower_bound() const { return m_best_lower_bound; }
-    [[nodiscard]] double upper_bound() const { return m_best_upper_bound; }
+    template<class T, class ...Args> T& set_node_storage_strategy(Args&& ...t_args);
+
+    [[nodiscard]] double lower_bound() const;
+    [[nodiscard]] double upper_bound() const;
     [[nodiscard]] double relative_gap() const;
     [[nodiscard]] double absolute_gap() const;
 
@@ -140,6 +114,13 @@ T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     static_assert(std::is_base_of_v<AbstractNodeStrategy, T>);
     auto* node_strategy = new T(std::forward<Args>(t_args)...);
     m_node_strategy.reset(node_strategy);
+    return *node_strategy;
+}
+
+template<class T, class... Args>
+T &BranchAndBound::set_node_storage_strategy(Args &&... t_args) {
+    auto* node_strategy = new T(std::forward<Args>(t_args)...);
+    m_nodes.reset(node_strategy);
     return *node_strategy;
 }
 

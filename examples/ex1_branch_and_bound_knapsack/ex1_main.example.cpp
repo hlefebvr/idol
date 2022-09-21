@@ -7,6 +7,8 @@
 
 int main() {
 
+    Log::set_level(Trace);
+
     Env env;
 
     Model model(env);

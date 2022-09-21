@@ -7,6 +7,7 @@
 #include "algorithms/branch-and-cut-and-price/ColumnGenerator.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
+#include "algorithms/branch-and-bound/NodeStorageStrategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationStrategy.h"
 #include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
 #include "algorithms/branch-and-cut-and-price/DantzigWolfe_RMP_Strategy.h"
@@ -33,6 +34,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
                 auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
                 BranchAndBound solver;
+                solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
                 solver.set_node_strategy<NodeByBoundStrategy>();
                 solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
 
@@ -65,6 +67,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
                 auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
                 BranchAndBound solver;
+                solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
                 solver.set_node_strategy<NodeByBoundStrategy>();
                 solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
 
@@ -102,6 +105,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", a
             auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
             BranchAndBound solver;
+            solver.set_node_storage_strategy<NodeStorageStrategy<NodeByBound>>();
             solver.set_node_strategy<NodeByBoundStrategy>();
             solver.set_branching_strategy<MostInfeasible>(std::vector<Var> { x_0, x_1 });
 
