@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include "modeling.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms.h"
 
 int main() {
 
@@ -29,7 +29,7 @@ int main() {
 
     model.add_constraint(sum_weight <= capacity);
 
-    BranchAndBound solver(model, x);
+    auto solver = branch_and_bound(model, x);
     solver.solve();
 
     std::cout << "Solution status = " << solver.status() << std::endl;

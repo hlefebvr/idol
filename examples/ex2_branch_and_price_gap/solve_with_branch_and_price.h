@@ -6,18 +6,7 @@
 #define OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
 
 #include "Instance.h"
-#include "algorithms/solution-strategies/decomposition/generation-strategies/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
-#include "algorithms/branch-and-bound/MostInfeasible.h"
-#include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
-#include "algorithms/solution-strategies/decomposition/DecompositionStrategy.h"
-#include "algorithms/solution-strategies/column-generation/ColumnGenerationStrategy.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "solvers/gurobi/Gurobi.h"
-#include "solvers/lpsolve/Lpsolve.h"
-#include "algorithms/active-node-managers/AbstractActiveNodeManagerWithTypeStrategy.h"
-#include "algorithms/branch-and-bound/branching-strategies/AbstractBranchingStrategy.h"
-#include "algorithms/branch-and-bound/node-updators/AbstractNodeUpdatorStrategy.h"
-#include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
+#include "algorithms.h"
 
 void solve_with_branch_and_price(const Instance& t_instance) {
 
@@ -76,20 +65,7 @@ void solve_with_branch_and_price(const Instance& t_instance) {
     }
 
     // Algorithm
-    BranchAndBound solver;
-    auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();
-    node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-    node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
-    node_strategy.set_branching_strategy<MostInfeasible>(std::move(branching_candidates));
-    auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy>();
-    auto& rmp_solver = generation_strategy.set_rmp_solution_strategy<ExternalSolverStrategy<Lpsolve>>(rmp);
-    auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
-
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        auto& sp = column_generation.add_subproblem();
-        sp.set_solution_strategy<ExternalSolverStrategy<Lpsolve>>(subproblems[i]);
-        sp.set_generation_strategy<DantzigWolfe_RMP_Strategy>(rmp, subproblems[i]);
-    }
+    auto solver = branch_and_price(rmp, subproblems.begin(), subproblems.end(), branching_candidates);
 
     solver.solve();
 
