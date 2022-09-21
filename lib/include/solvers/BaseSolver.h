@@ -228,11 +228,11 @@ template<class VarT, class CtrT>
 Solution::Primal BaseSolver<VarT, CtrT>::unbounded_ray() const {
 
     if (get_primal_status() != Unbounded) {
-        throw std::runtime_error("Only available for unbounded problems.");
+        throw Exception("Only available for unbounded problems.");
     }
 
     if (!infeasible_or_unbounded_info()) {
-        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access extreme ray information.");
+        throw Exception("Turn on infeasible_or_unbounded_info before solving your model to access extreme ray information.");
     }
 
     Solution::Primal result;
@@ -294,11 +294,11 @@ template<class VarT, class CtrT>
 Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
 
     if (get_primal_status() != Infeasible) {
-        throw std::runtime_error("Only available for infeasible problems.");
+        throw Exception("Only available for infeasible problems.");
     }
 
     if (!infeasible_or_unbounded_info()) {
-        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+        throw Exception("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
     }
 
     Solution::Dual result;
@@ -315,18 +315,18 @@ Solution::Dual BaseSolver<VarT, CtrT>::dual_farkas() const {
 
 template<class VarT, class CtrT>
 bool BaseSolver<VarT, CtrT>::get_iis(const Ctr &t_ctr) const {
-    throw std::runtime_error("Not available.");
+    throw Exception("Not available.");
 }
 
 template<class VarT, class CtrT>
 Solution::Dual BaseSolver<VarT, CtrT>::iis() const {
 
     if (get_primal_status() != Infeasible) {
-        throw std::runtime_error("Only available for infeasible problems.");
+        throw Exception("Only available for infeasible problems.");
     }
 
     if (!infeasible_or_unbounded_info()) {
-        throw std::runtime_error("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+        throw Exception("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
     }
 
     Solution::Dual result;

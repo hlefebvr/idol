@@ -54,7 +54,7 @@ std::list<AbstractNode *> MostInfeasible::create_child_nodes(unsigned int t_id, 
     }
 
     if (!selected_var || max_infeas <= ToleranceForIntegrality) {
-        throw std::runtime_error("Maximum infeasibility is less than ToleranceForIntegrality");
+        throw Exception("Maximum infeasibility is less than ToleranceForIntegrality");
     }
 
     const double value = t_node.primal_solution().get(*selected_var);

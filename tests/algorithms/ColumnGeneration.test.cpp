@@ -14,8 +14,6 @@
 
 TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[column-generation][algorithms]", available_solvers) {
 
-    Log::set_level(Trace);
-
     Env env;
     Model model(env);
 

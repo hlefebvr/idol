@@ -37,11 +37,11 @@ void ColumnGenerationSubProblem::update_pricing_objective(const Row &t_objective
 void ColumnGenerationSubProblem::build() {
 
     if (!m_generator) {
-        throw std::runtime_error("No column generator has been given.");
+        throw Exception("No column generator has been given.");
     }
 
     if (!m_exact_solution_strategy) {
-        throw std::runtime_error("No exact solution strategy has been given.");
+        throw Exception("No exact solution strategy has been given.");
     }
 
     m_exact_solution_strategy->build();

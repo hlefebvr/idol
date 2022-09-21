@@ -18,7 +18,7 @@ BranchAndBound::BranchAndBound(Model &t_model, std::vector<Var> t_branching_cand
         set_node_strategy<NodeByBoundStrategy>();
         set_branching_strategy<MostInfeasible>(std::move(t_branching_candidates));
     } else {
-        throw std::runtime_error("No available solver.");
+        throw Exception("No available solver.");
     }
 }
 
@@ -89,15 +89,15 @@ void BranchAndBound::initialize() {
     free(m_solution_pool);
 
     if (!m_solution_strategy) {
-        throw std::runtime_error("No solution strategy was given.");
+        throw Exception("No solution strategy was given.");
     }
 
     if (!m_branching_strategy) {
-        throw std::runtime_error("No branching strategy was given.");
+        throw Exception("No branching strategy was given.");
     }
 
     if (!m_node_strategy) {
-        throw std::runtime_error("No node strategy was given.");
+        throw Exception("No node strategy was given.");
     }
 
     m_solution_strategy->build();
@@ -106,7 +106,7 @@ void BranchAndBound::initialize() {
 void BranchAndBound::create_root_node() {
     auto* root_node = m_node_strategy->create_root_node();
     if (root_node->id() != 0) {
-        throw std::runtime_error("Root node should have id 0.");
+        throw Exception("Root node should have id 0.");
     }
     m_nodes_to_be_processed.add(root_node);
     ++m_n_created_nodes;
@@ -322,7 +322,7 @@ void BranchAndBound::branch() {
 
     for (auto* node : child_nodes) {
         if (node->id() != m_n_created_nodes) {
-            throw std::runtime_error("Created nodes should have strictly increasing ids.");
+            throw Exception("Created nodes should have strictly increasing ids.");
         }
         EASY_LOG(Trace, "branch-and-bound", "Node " << node->id() << " has been created from " << selected_node->id() << '.');
         m_nodes_to_be_processed.add(node);
@@ -409,7 +409,7 @@ double BranchAndBound::objective_value() const {
 
 Solution::Primal BranchAndBound::primal_solution() const {
     if (!m_best_upper_bound_node) {
-        throw std::runtime_error("Not available.");
+        throw Exception("Not available.");
     }
     return m_best_upper_bound_node->primal_solution();
 }

@@ -6,6 +6,7 @@
 #define OPTIMIZE_LOG_H
 
 #include "../../modeling/numericals.h"
+#include "../../errors/Exception.h"
 #include <ostream>
 #include <unordered_map>
 #include <cmath>
@@ -64,7 +65,7 @@ static std::ostream& operator<<(std::ostream& t_os, LogLevel t_level) {
         case Trace: return t_os << "trace";
         default:;
     }
-    throw std::runtime_error("Unexpected log_last_primal_solution level: " + std::to_string(t_level));
+    throw Exception("Unexpected log_last_primal_solution level: " + std::to_string(t_level));
 }
 
 #define EASY_LOG(required_level, tag, then) \

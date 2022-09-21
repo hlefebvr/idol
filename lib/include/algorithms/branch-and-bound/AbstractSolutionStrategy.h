@@ -15,7 +15,7 @@ class Var;
 
 class AbstractSolutionStrategy {
     static void throw_not_implemented(const std::string& t_functionality, const std::string& t_method_to_implement) {
-        throw std::runtime_error(t_functionality + " is not implemented. "
+        throw Exception(t_functionality + " is not implemented. "
                                  "If you wish to implement it, "
                                  "please override the " + t_method_to_implement + " method.");
     }
@@ -51,7 +51,7 @@ public:
     }
 
     virtual Var add_column(TempVar t_temporary_variable) {
-        throw std::runtime_error("Adding columns is not implemented. "
+        throw Exception("Adding columns is not implemented. "
                                "If you wish to implement it, "
                                "please override the add_column method.");
     }
@@ -65,7 +65,7 @@ public:
     }
 
     virtual Ctr add_constraint(TempCtr t_temporary_constraint) {
-        throw std::runtime_error("Adding constraints is not implemented. "
+        throw Exception("Adding constraints is not implemented. "
                                  "If you wish to implement it, "
                                  "please override the add_constraint method.");
     }

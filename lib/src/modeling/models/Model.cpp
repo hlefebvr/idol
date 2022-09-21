@@ -18,7 +18,7 @@ Model::~Model() {
 
 Param Model::add_parameter(const Var& t_variable, std::string t_name) {
     if (t_variable.model_id() == m_id) {
-        throw std::runtime_error("Cannot add a parameter referring to a variable of the same model.");
+        throw Exception("Cannot add a parameter referring to a variable of the same model.");
     }
     std::string&& name = t_name.empty() ? std::string(t_variable.name()) : std::move(t_name);
     auto result = m_objects.create<Param>(m_id, std::move(name), t_variable);

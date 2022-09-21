@@ -31,7 +31,7 @@ public:
     SolutionStatus status() const override { return m_primal_solutions.status(); }
     double objective_value() const override { return m_primal_solutions.objective_value(); }
     const Solution::Primal& primal_solution() const override { return m_primal_solutions; }
-    const Solution::Dual& dual_solution() const override { throw std::runtime_error("Not available."); };
+    const Solution::Dual& dual_solution() const override { throw Exception("Not available."); };
 
     AbstractNode *create_child(unsigned int t_id) const override;
     void set_local_lower_bound(const Var &t_var, double t_lb) override;

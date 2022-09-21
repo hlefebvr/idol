@@ -122,7 +122,7 @@ template<class KeyT, class CRTP>
 CRTP &AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
     m_values.template merge(t_rhs.m_values);
     if (!t_rhs.m_values.empty()) {
-        throw std::runtime_error("Conflicts were found while trying to merge explicitly \"without conflict\".");
+        throw Exception("Conflicts were found while trying to merge explicitly \"without conflict\".");
     }
     return dynamic_cast<CRTP&>(*this);
 }

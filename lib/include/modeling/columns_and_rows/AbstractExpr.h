@@ -8,6 +8,7 @@
 #include "../coefficients/MatrixCoefficient.h"
 #include "../coefficients/Coefficient.h"
 #include "modeling/numericals.h"
+#include "errors/Exception.h"
 #include <memory>
 #include <stdexcept>
 
@@ -112,7 +113,7 @@ void AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coe
 
     auto [it, success] = m_map.template emplace(t_key, std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)));
     if (!success) {
-        throw std::runtime_error("Trying to insert a matrix coefficient by reference on an existing coefficient.");
+        throw Exception("Trying to insert a matrix coefficient by reference on an existing coefficient.");
     }
 }
 

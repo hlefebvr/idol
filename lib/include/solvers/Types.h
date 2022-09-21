@@ -8,6 +8,7 @@
 #include <string>
 #include <stdexcept>
 #include <ostream>
+#include "../errors/Exception.h"
 
 enum SolutionStatus {
     Unknown,
@@ -49,7 +50,7 @@ static SolutionStatus dual(SolutionStatus t_status) {
         case Unbounded: return Infeasible;
         case Fail: return Fail;
     }
-    throw std::runtime_error("Unexpected status: " + std::to_string(t_status));
+    throw Exception("Unexpected status: " + std::to_string(t_status));
 }
 
 static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
@@ -63,7 +64,7 @@ static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
         case InfeasibleOrUnbounded: return t_os << "InfeasibleOrUnbounded";
         case Unbounded: return t_os << "Unbounded";
         case Fail: return t_os << "Fail";
-        default: throw std::runtime_error("Unexpected status: " + std::to_string(t_status));
+        default: throw Exception("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;
 }

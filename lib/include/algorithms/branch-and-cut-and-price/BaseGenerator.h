@@ -50,14 +50,14 @@ template<class KeyT>
 void BaseGenerator<KeyT>::check_expression(const Expr &t_expr) const {
     for (const auto& [var, coefficient] : t_expr) {
         if (var.model_id() != m_subproblem.id()) {
-            throw std::runtime_error("Trying to insert an expression with variables which do not belong to subproblem.");
+            throw Exception("Trying to insert an expression with variables which do not belong to subproblem.");
         }
     }
 }
 template<class KeyT>
 void BaseGenerator<KeyT>::set(const KeyT &t_ctr, Expr t_expr, double t_offset) {
     if (t_ctr.model_id() != m_rmp.id()) {
-        throw std::runtime_error("Trying to insert a constraint which does not belong to RMP.");
+        throw Exception("Trying to insert a constraint which does not belong to RMP.");
     }
     check_expression(t_expr);
     auto it = m_values.find(t_ctr);

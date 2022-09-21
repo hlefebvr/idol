@@ -7,13 +7,13 @@
 
 void Lpsolve::throw_if_error(unsigned char t_code, const std::string& t_msg) {
     if (!t_code) {
-        throw std::runtime_error("Lpsolve error: " + t_msg);
+        throw Exception("Lpsolve error: " + t_msg);
     }
 }
 
 void Lpsolve::throw_if_error(void* t_ptr, const std::string& t_msg) {
     if (!t_ptr) {
-        throw std::runtime_error("Lpsolve error: " + t_msg);
+        throw Exception("Lpsolve error: " + t_msg);
     }
 }
 
@@ -56,7 +56,7 @@ SolutionStatus convert_lpsolve_status(int t_lpsolve_status) {
         case TIMEOUT: return InfeasibleTimeLimit;
         default:;
     }
-    throw std::runtime_error("Did not know what to do with lpsolve status: " + std::to_string(t_lpsolve_status));
+    throw Exception("Did not know what to do with lpsolve status: " + std::to_string(t_lpsolve_status));
 }
 
 void Lpsolve::solve() {
@@ -136,7 +136,7 @@ int Lpsolve::create_constraint(const Ctr &t_ctr) {
         case LessOrEqual: type = LE; break;
         case GreaterOrEqual: type = GE; break;
         case Equal: type = EQ; break;
-        default: throw std::runtime_error("Unexpected constraint type: " + std::to_string(t_ctr.type()));
+        default: throw Exception("Unexpected constraint type: " + std::to_string(t_ctr.type()));
     }
 
     int index;
@@ -256,7 +256,7 @@ void Lpsolve::set_type(const Ctr &t_ctr, CtrType t_type) {
         case LessOrEqual: type = LE; break;
         case GreaterOrEqual: type = GE; break;
         case Equal: type = EQ; break;
-        default: throw std::runtime_error("Unkown variable type");
+        default: throw Exception("Unkown variable type");
     }
     const auto success = set_constr_type(model, get(t_ctr), type);
     throw_if_error(success, "could not set constraint type");
@@ -264,7 +264,7 @@ void Lpsolve::set_type(const Ctr &t_ctr, CtrType t_type) {
 
 SolutionStatus Lpsolve::get_primal_status() const {
     if (!m_solution_status) {
-        throw std::runtime_error("No solution found.");
+        throw Exception("No solution found.");
     }
     return *m_solution_status;
 }
@@ -393,8 +393,8 @@ void Lpsolve::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {
         case Automatic: algorithm = SIMPLEX_DUAL_PRIMAL; break;
         case PrimalSimplex: algorithm = SIMPLEX_PRIMAL_PRIMAL;  break;
         case DualSimplex: algorithm = SIMPLEX_DUAL_DUAL; break;
-        case Barrier: throw std::runtime_error("lpsolve does not have a barrier solver.");
-        default: throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(t_algorithm));
+        case Barrier: throw Exception("lpsolve does not have a barrier solver.");
+        default: throw Exception("Did not know what to do with algorithm " + std::to_string(t_algorithm));
     }
     set_simplextype(model, algorithm);
 }
@@ -403,15 +403,15 @@ AlgorithmForLP Lpsolve::algorithm_for_lp() const {
     int algorithm = get_simplextype(model);
     if (algorithm == SIMPLEX_PRIMAL_PRIMAL || algorithm == SIMPLEX_DUAL_PRIMAL) { return PrimalSimplex; }
     if (algorithm == SIMPLEX_DUAL_DUAL || algorithm == SIMPLEX_PRIMAL_DUAL) { return DualSimplex; }
-    throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
+    throw Exception("Did not know what to do with algorithm " + std::to_string(algorithm));
 }
 
 void Lpsolve::set_presolve(bool t_value) {
-    throw std::runtime_error("Not implemented.");
+    throw Exception("Not implemented.");
 }
 
 bool Lpsolve::presolve() const {
-    throw std::runtime_error("Not implemented.");
+    throw Exception("Not implemented.");
 }
 
 void Lpsolve::set_objective_offset(const Coefficient &t_offset) {

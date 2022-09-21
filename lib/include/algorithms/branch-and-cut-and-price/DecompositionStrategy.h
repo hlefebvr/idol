@@ -52,7 +52,7 @@ void DecompositionStrategy<SolverRMPT>::build() {
     m_rmp_strategy.build();
 
     if (m_generation_strategies.empty()) {
-        throw std::runtime_error("No generation strategy was given to decomposition strategy.");
+        throw Exception("No generation strategy was given to decomposition strategy.");
     }
 
     for (auto& ptr_to_generator_strategy : m_generation_strategies) {

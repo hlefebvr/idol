@@ -116,7 +116,7 @@ SolutionStatus Gurobi::get_primal_status() const {
         case GRB_UNBOUNDED: status = Unbounded; break;
         case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? FeasibleTimeLimit : InfeasibleTimeLimit; break;
         case GRB_NUMERIC: status = Fail; break;
-        default: throw std::runtime_error("Did not know what to do with gurobi status: " + std::to_string(grb_status));
+        default: throw Exception("Did not know what to do with gurobi status: " + std::to_string(grb_status));
     }
     return status;
 }
@@ -171,7 +171,7 @@ void Gurobi::set_algorithm_for_lp(AlgorithmForLP t_algorithm) {
         case PrimalSimplex: algorithm = GRB_METHOD_PRIMAL;  break;
         case DualSimplex: algorithm = GRB_METHOD_DUAL; break;
         case Barrier: algorithm = GRB_METHOD_BARRIER; break;
-        default: throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(t_algorithm));
+        default: throw Exception("Did not know what to do with algorithm " + std::to_string(t_algorithm));
     }
     m_model.set(GRB_IntParam_Method, algorithm);
 }
@@ -182,7 +182,7 @@ AlgorithmForLP Gurobi::algorithm_for_lp() const {
     if (algorithm == GRB_METHOD_PRIMAL) { return PrimalSimplex; }
     if (algorithm == GRB_METHOD_DUAL) { return DualSimplex; }
     if (algorithm == GRB_METHOD_BARRIER) { return Barrier; }
-    throw std::runtime_error("Did not know what to do with algorithm " + std::to_string(algorithm));
+    throw Exception("Did not know what to do with algorithm " + std::to_string(algorithm));
 }
 
 bool Gurobi::get_iis(const Ctr &t_ctr) const {
