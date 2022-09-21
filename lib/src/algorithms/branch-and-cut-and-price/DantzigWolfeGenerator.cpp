@@ -1,17 +1,17 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/branch-and-cut-and-price/DantzigWolfeGenerator.h"
+#include "algorithms/branch-and-cut-and-price/DantzigWolfe_RMP_Strategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-DantzigWolfeGenerator::DantzigWolfeGenerator(Model &t_rmp, const Model &t_subproblem)
-     : DantzigWolfeGeneratorSP(t_rmp, t_subproblem) {}
+DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem)
+     : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
 
-AbstractColumnGenerator *DantzigWolfeGenerator::clone() const {
-    return new DantzigWolfeGenerator(*this);
+AbstractColumnGenerator *DantzigWolfe_RMP_Strategy::clone() const {
+    return new DantzigWolfe_RMP_Strategy(*this);
 }
 
-void DantzigWolfeGenerator::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return; }
 
@@ -20,7 +20,7 @@ void DantzigWolfeGenerator::set_lower_bound(const Var &t_var, double t_lb, Colum
 }
 
 void
-DantzigWolfeGenerator::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+DantzigWolfe_RMP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return; }
 
@@ -28,12 +28,12 @@ DantzigWolfeGenerator::set_upper_bound(const Var &t_var, double t_ub, ColumnGene
 
 }
 
-void DantzigWolfeGenerator::set_bound_rmp(const Var& t_subproblem_variable,
-                                          double t_bound,
-                                          Map<Var, Ctr>& t_bound_constraints,
-                                          const std::function<TempCtr(Expr&&, double)>& t_ctr_builder,
-                                          const std::function<double(const Var&)>& t_get_bound,
-                                          ColumnGenerationSubProblem& t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_bound_rmp(const Var& t_subproblem_variable,
+                                              double t_bound,
+                                              Map<Var, Ctr>& t_bound_constraints,
+                                              const std::function<TempCtr(Expr&&, double)>& t_ctr_builder,
+                                              const std::function<double(const Var&)>& t_get_bound,
+                                              ColumnGenerationSubProblem& t_subproblem) {
 
     auto& rmp = t_subproblem.rmp_solution_strategy();
 
@@ -60,7 +60,7 @@ void DantzigWolfeGenerator::set_bound_rmp(const Var& t_subproblem_variable,
 
 }
 
-void DantzigWolfeGenerator::set_lower_bound_rmp(const Var &t_rmp_variable, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_lower_bound_rmp(const Var &t_rmp_variable, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
     set_bound_rmp(
             t_rmp_variable,
@@ -73,7 +73,7 @@ void DantzigWolfeGenerator::set_lower_bound_rmp(const Var &t_rmp_variable, doubl
 
 }
 
-void DantzigWolfeGenerator::set_upper_bound_rmp(const Var &t_rmp_variable, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
 
     set_bound_rmp(
             t_rmp_variable,

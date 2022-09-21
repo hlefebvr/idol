@@ -27,7 +27,7 @@ class ColumnGenerationSubProblem : public AbstractColumnGenerationSubproblem {
 
     PresentColumnList m_currently_present_variables;
 public:
-    explicit ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy, const AbstractColumnGenerator& t_generator, AbstractSolutionStrategy* t_exact_solution_strategy);
+    explicit ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy);
 
     void build() override;
 
@@ -70,7 +70,22 @@ public:
     AbstractSolutionStrategy& rmp_solution_strategy() { return m_rmp_strategy; }
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
+
+    template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
+
+    template<class T, class ...Args> T& set_generation_strategy(Args&& ...t_args);
 };
 
+template<class T, class... Args>
+T &ColumnGenerationSubProblem::set_solution_strategy(Args &&... t_args) {
+    m_exact_solution_strategy = std::make_unique<T>(std::forward<Args>(t_args)...);
+    return dynamic_cast<T&>(*m_exact_solution_strategy);
+}
+
+template<class T, class... Args>
+T &ColumnGenerationSubProblem::set_generation_strategy(Args &&... t_args) {
+    m_generator = std::make_unique<T>(std::forward<Args>(t_args)...);
+    return dynamic_cast<T&>(*m_generator);
+}
 
 #endif //OPTIMIZE_COLUMNGENERATIONSUBPROBLEM_H

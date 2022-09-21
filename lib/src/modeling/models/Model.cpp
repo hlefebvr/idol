@@ -31,36 +31,19 @@ void Model::remove(const Param &t_param) {
 }
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), false, t_lb, t_ub, t_type, std::move(t_column));
+    auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
     add_created_variable(variable);
     return variable;
 }
 
 Var Model::add_variable(TempVar t_temporary_variable, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), false, std::move(t_temporary_variable));
+    auto variable = m_objects.create<Var>(m_id, std::move(t_name), std::move(t_temporary_variable));
     add_created_variable(variable);
     return variable;
 }
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name) {
     return add_variable(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
-}
-
-Var Model::add_virtual_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), true, t_lb, t_ub, t_type, std::move(t_column));
-    add_created_variable(variable);
-    return variable;
-}
-
-Var Model::add_virtual_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient,
-                                std::string t_name) {
-    return add_virtual_variable(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
-}
-
-Var Model::add_virtual_variable(TempVar t_temporary_variable, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), true, std::move(t_temporary_variable));
-    add_created_variable(variable);
-    return variable;
 }
 
 void Model::add_created_variable(const Var &t_var) {
@@ -133,7 +116,6 @@ void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {
 void Model::update_objective(const Row &t_row) {
     update_objective_offset(t_row.constant());
     for (const auto& var : m_variables) {
-        if (var.is_virtual()) { continue; }
         update_objective(var, t_row.get(var)); // TODO this is inefficient as it is done even for zero values
     }
 }

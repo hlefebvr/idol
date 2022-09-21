@@ -84,10 +84,6 @@ public:
 
 template<class VarT, class CtrT>
 void BaseSolver<VarT, CtrT>::on_add(const Var &t_var) {
-    if (t_var.is_virtual()) {
-        m_variables.template emplace_back();
-        return;
-    }
     m_variables.template emplace_back(create_variable(t_var));
     fill_column(t_var);
 }
@@ -183,11 +179,7 @@ BaseSolver<VarT, CtrT>::BaseSolver(const Model &t_model) : m_src_model(t_model) 
 template<class VarT, class CtrT>
 void BaseSolver<VarT, CtrT>::init_model(const Model &t_model) {
     for (const auto& var : t_model.variables()) {
-        if (var.is_virtual()) {
-            m_variables.template emplace_back();
-        } else {
-            m_variables.template emplace_back(create_variable(var));
-        }
+        m_variables.template emplace_back(create_variable(var));
     }
 
     for (const auto& ctr : t_model.constraints()) {
@@ -226,7 +218,6 @@ Solution::Primal BaseSolver<VarT, CtrT>::primal_solution() const {
     result.set_objective_value(get_primal_objective_value());
 
     for (const auto& var : m_src_model.variables()) {
-        if (var.is_virtual()) { continue; }
         result.set(var, get_primal_value(var));
     }
 

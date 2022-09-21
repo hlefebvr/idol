@@ -2,18 +2,18 @@
 // Created by henri on 20/09/22.
 //
 
-#ifndef OPTIMIZE_DANTZIGWOLFEGENERATORSP_H
-#define OPTIMIZE_DANTZIGWOLFEGENERATORSP_H
+#ifndef OPTIMIZE_DANTZIGWOLFE_SP_STRATEGY_H
+#define OPTIMIZE_DANTZIGWOLFE_SP_STRATEGY_H
 
 #include "ColumnGenerator.h"
 #include <functional>
 
-class DantzigWolfeGeneratorSP : public ColumnGenerator {
+class DantzigWolfe_SP_Strategy : public ColumnGenerator {
     Ctr m_convexificiation_constraint;
 protected:
     static  Expr expand(const Var& t_subproblem_variable, const ColumnGenerationSubProblem& t_subproblem);
 public:
-    DantzigWolfeGeneratorSP(Model& t_rmp, const Model& t_subproblem);
+    DantzigWolfe_SP_Strategy(Model& t_rmp, const Model& t_subproblem);
 
     TempVar create_column(const Solution::Primal &t_primal_solution) const override;
 
@@ -27,4 +27,4 @@ public:
 
 };
 
-#endif //OPTIMIZE_DANTZIGWOLFEGENERATORSP_H
+#endif //OPTIMIZE_DANTZIGWOLFE_SP_STRATEGY_H

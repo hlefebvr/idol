@@ -75,10 +75,6 @@ public:
     Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
     void remove(const Var& t_var);
 
-    Var add_virtual_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
-    Var add_virtual_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name = "");
-    Var add_virtual_variable(TempVar t_temporary_variable, std::string t_name = "");
-
     Ctr add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);

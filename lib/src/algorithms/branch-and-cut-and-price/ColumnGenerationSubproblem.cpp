@@ -3,10 +3,8 @@
 //
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-ColumnGenerationSubProblem::ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy, const AbstractColumnGenerator& t_generator, AbstractSolutionStrategy* t_exact_solution_strategy)
-        : m_generator(t_generator.clone()),
-          m_rmp_strategy(t_rmp_strategy),
-          m_exact_solution_strategy(t_exact_solution_strategy) {
+ColumnGenerationSubProblem::ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy)
+        : m_rmp_strategy(t_rmp_strategy) {
 
 }
 
@@ -37,6 +35,15 @@ void ColumnGenerationSubProblem::update_pricing_objective(const Row &t_objective
 
 
 void ColumnGenerationSubProblem::build() {
+
+    if (!m_generator) {
+        throw std::runtime_error("No column generator has been given.");
+    }
+
+    if (!m_exact_solution_strategy) {
+        throw std::runtime_error("No exact solution strategy has been given.");
+    }
+
     m_exact_solution_strategy->build();
 }
 

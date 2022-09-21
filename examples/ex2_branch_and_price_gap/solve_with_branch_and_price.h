@@ -6,7 +6,7 @@
 #define OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
 
 #include "Instance.h"
-#include "algorithms/branch-and-cut-and-price/DantzigWolfeGenerator.h"
+#include "algorithms/branch-and-cut-and-price/DantzigWolfe_RMP_Strategy.h"
 #include "algorithms/branch-and-bound/MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeByBoundStrategy.h"
 #include "algorithms/branch-and-cut-and-price/DecompositionStrategy.h"
@@ -71,17 +71,17 @@ void solve_with_branch_and_price(const Instance& t_instance) {
         rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
     }
 
-    // Alg
+    // Algorithm
     BranchAndBound solver;
     solver.set_node_strategy<NodeByBoundStrategy>();
     solver.set_branching_strategy<MostInfeasible>(branching_candidates);
     auto& generation_strategy = solver.set_solution_strategy<DecompositionStrategy<Lpsolve>>(rmp);
     auto& column_generation = generation_strategy.add_generation_strategy<ColumnGenerationStrategy>();
 
-    // DantzigWolfe
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        DantzigWolfeGeneratorSP generator(rmp, subproblems[i]);
-        column_generation.add_subproblem<ExternalSolverStrategy<Lpsolve>>(generator, subproblems[i]);
+        auto& sp = column_generation.add_subproblem();
+        sp.set_solution_strategy<ExternalSolverStrategy<Lpsolve>>(subproblems[i]);
+        sp.set_generation_strategy<DantzigWolfe_RMP_Strategy>(rmp, subproblems[i]);
     }
 
     solver.solve();

@@ -2,10 +2,10 @@
 // Created by henri on 20/09/22.
 //
 
-#include "algorithms/branch-and-cut-and-price/DantzigWolfeGeneratorSP.h"
+#include "algorithms/branch-and-cut-and-price/DantzigWolfe_SP_Strategy.h"
 #include "algorithms/branch-and-cut-and-price/ColumnGenerationSubproblem.h"
 
-DantzigWolfeGeneratorSP::DantzigWolfeGeneratorSP(Model &t_rmp, const Model &t_subproblem)
+DantzigWolfe_SP_Strategy::DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_subproblem)
         : ColumnGenerator(t_rmp, t_subproblem),
           m_convexificiation_constraint(t_rmp.add_constraint(Expr() == 1, "convex")) {
 
@@ -25,24 +25,24 @@ DantzigWolfeGeneratorSP::DantzigWolfeGeneratorSP(Model &t_rmp, const Model &t_su
 
 }
 
-TempVar DantzigWolfeGeneratorSP::create_column(const Solution::Primal &t_primal_solution) const {
+TempVar DantzigWolfe_SP_Strategy::create_column(const Solution::Primal &t_primal_solution) const {
     auto result = ColumnGenerator::create_column(t_primal_solution);
     result.column().set(m_convexificiation_constraint, m_convexificiation_constraint.rhs().constant());
     return result;
 }
 
-Row DantzigWolfeGeneratorSP::get_pricing_objective(const Solution::Dual &t_dual_solution) {
+Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual_solution) {
     auto result = ColumnGenerator::get_pricing_objective(t_dual_solution);
     result.set_constant(result.constant() + -m_convexificiation_constraint.rhs().constant() * t_dual_solution.get(m_convexificiation_constraint));
     return result;
 }
 
-AbstractColumnGenerator *DantzigWolfeGeneratorSP::clone() const {
-    return new DantzigWolfeGeneratorSP(*this);
+AbstractColumnGenerator *DantzigWolfe_SP_Strategy::clone() const {
+    return new DantzigWolfe_SP_Strategy(*this);
 }
 
 void
-DantzigWolfeGeneratorSP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+DantzigWolfe_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return; }
 
@@ -50,14 +50,14 @@ DantzigWolfeGeneratorSP::set_lower_bound(const Var &t_var, double t_lb, ColumnGe
 }
 
 void
-DantzigWolfeGeneratorSP::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+DantzigWolfe_SP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return; }
 
     set_upper_bound_sp(t_var, t_ub, t_subproblem);
 }
 
-Expr DantzigWolfeGeneratorSP::expand(const Var &t_subproblem_variable, const ColumnGenerationSubProblem& t_subproblem) {
+Expr DantzigWolfe_SP_Strategy::expand(const Var &t_subproblem_variable, const ColumnGenerationSubProblem& t_subproblem) {
     Expr result;
     for (const auto& [var, column] : t_subproblem.currently_present_variables()) {
         result += column.get(t_subproblem_variable) * var;

@@ -35,8 +35,6 @@ public:
 
     [[nodiscard]] double ub() const;
 
-    [[nodiscard]] bool is_virtual() const;
-
     [[nodiscard]] VarType type() const;
 
     [[nodiscard]] const Coefficient& obj() const;
