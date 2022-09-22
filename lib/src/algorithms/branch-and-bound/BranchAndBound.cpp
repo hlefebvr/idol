@@ -4,27 +4,13 @@
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 
 // used for building default branch-and-bound
-#include "solvers.h"
 #include "algorithms/solution-strategies/external-solver/ExternalSolverStrategy.h"
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
 #include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
-#include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
 //
 
 #include <iomanip>
-
-BranchAndBound::BranchAndBound(Model &t_model, std::vector<Var> t_branching_candidates) {
-    if constexpr (std::tuple_size_v<available_solvers>) {
-        set_solution_strategy<ExternalSolverStrategy<std::tuple_element_t<0, available_solvers>>>(t_model);
-        auto& node_strategy = set_node_strategy<NodeStrategy<NodeByBound>>();
-        node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-        node_strategy.set_branching_strategy<MostInfeasible>(std::move(t_branching_candidates));
-        node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
-    } else {
-        throw Exception("No available solver.");
-    }
-}
 
 void BranchAndBound::solve() {
 

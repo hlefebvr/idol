@@ -84,7 +84,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
             CHECK(solver.status() == Optimal);
             CHECK(solver.objective_value() == -235._a);
-            CHECK(solver.n_created_nodes() == 15);
 
             const auto primal_solution = solver.primal_solution();
 

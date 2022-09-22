@@ -63,7 +63,6 @@ class BranchAndBound {
     [[nodiscard]] const AbstractNode& current_node() const;
 public:
     BranchAndBound() = default;
-    BranchAndBound(Model& t_model, std::vector<Var> t_branching_candidates);
 
     void solve();
 

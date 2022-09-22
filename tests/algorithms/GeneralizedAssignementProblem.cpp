@@ -3,6 +3,11 @@
 //
 #include "../test_utils.h"
 
+#include "../instances/generalized-assignment-problem/InstanceGAP_0.h"
+#include "../instances/generalized-assignment-problem/InstanceGAP_1.h"
+#include "../instances/generalized-assignment-problem/InstanceGAP_2.h"
+#include "../instances/generalized-assignment-problem/InstanceGAP_3.h"
+
 using configurations =
         cartesian_product<
                 available_solvers,
@@ -12,6 +17,7 @@ using configurations =
                 std::tuple<ActiveNodeManager_Heap>,
                 std::tuple<NodeUpdatorByBound, NodeUpdatorByBoundCtr>
         >;
+
 
 TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) {
 
@@ -26,87 +32,88 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
 
 
         /* INSTANCE */
-        const unsigned int n_knapsacks = 3;
-        const unsigned int n_items = 8;
+        AbstractInstanceGAP* t_instance = GENERATE(
+                new InstanceGAP<0>(),
+                new InstanceGAP<1>(),
+                new InstanceGAP<2>(),
+                new InstanceGAP<3>()
+        );
 
-        const std::vector<std::vector<double>> p = {
-                { 27, 12, 12, 16, 24, 31, 41, 13 },
-                { 14,  5, 37,  9, 36, 25,  1, 35 },
-                { 34, 34, 20,  9, 19, 19,  3, 24 }
-        };
+        const unsigned int n_knapsacks = t_instance->n_knapsacks();
+        const unsigned int n_items = t_instance->n_items();
+        const auto p = t_instance->p();
+        const auto w = t_instance->w();
+        const auto c = t_instance->c();
 
-        const std::vector<std::vector<double>> w = {
-                { 21, 13,  9,  5,  7, 15,  5, 24 },
-                { 20,  8, 18, 25,  6,  6,  9,  6 },
-                { 16, 16, 18, 24, 11, 11, 16, 18 }
-        };
+        SECTION("should solve to optimum") {
 
-        const std::vector<double> c = { 26, 25, 34 };
+            /* MODEL */
 
-        /* MODEL */
+            Env env;
 
-        Env env;
+            std::vector<Var> branching_candidates;
 
-        std::vector<Var> branching_candidates;
+            // SP
+            std::vector<Model> subproblems;
+            subproblems.reserve(n_knapsacks);
+            std::vector<std::vector<Var>> x(n_knapsacks);
 
-        // SP
-        std::vector<Model> subproblems;
-        subproblems.reserve(n_knapsacks);
-        std::vector<std::vector<Var>> x(n_knapsacks);
+            for (unsigned int i = 0; i < n_knapsacks; ++i) {
+                subproblems.emplace_back(env);
 
-        for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-            subproblems.emplace_back(env);
+                x[i].reserve(n_items);
 
-            x[i].reserve(n_items);
+                for (unsigned int j = 0; j < n_items; ++j) {
+                    x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) +")"));
+                    branching_candidates.emplace_back(x[i].back());
+                }
 
-            for (unsigned int j = 0 ; j < n_items ; ++j) {
-                x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, -p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+                Expr expr;
+                for (unsigned int j = 0; j < n_items; ++j) {
+                    expr += w[i][j] * x[i][j];
+                }
+                subproblems.back().add_constraint(expr <= c[i]);
 
-                branching_candidates.emplace_back(x[i].back());
             }
 
-            Expr expr;
-            for (unsigned int j = 0 ; j < n_items ; ++j) {
-                expr += w[i][j] * x[i][j];
+            // RMP
+            Model rmp(env);
+
+            std::vector<std::vector<Param>> param_x(n_knapsacks);
+
+            for (unsigned int i = 0; i < n_knapsacks; ++i) {
+                param_x[i].reserve(n_items);
+                for (unsigned int j = 0; j < n_items; ++j) {
+                    param_x[i].emplace_back(rmp.add_parameter(x[i][j]));
+                }
+            };
+
+            for (unsigned int j = 0; j < n_items; ++j) {
+                Coefficient expr = 1;
+                for (unsigned int i = 0; i < n_knapsacks; ++i) {
+                    expr += -1. * param_x[i][j];
+                }
+                rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
             }
-            subproblems.back().add_constraint(expr <= c[i]);
+
+            auto solver = branch_and_price<
+                    ExternalSolverStrategy<SolverT>,
+                    ExternalSolverStrategy<SolverT>,
+                    GenerationStrategyT,
+                    BranchingStrategyT,
+                    NodeStrategyT,
+                    ActiveNodeManagerT,
+                    NodeUpdatorT
+            >(rmp, subproblems.begin(), subproblems.end(), branching_candidates);
+
+            solver.solve();
+
+            CHECK(solver.status() == Optimal);
+            CHECK(solver.objective_value() == Catch::Approx(t_instance->optimum()));
 
         }
 
-        // RMP
-        Model rmp(env);
-
-        std::vector<std::vector<Param>> param_x(n_knapsacks);
-
-        for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-            param_x[i].reserve(n_items);
-            for (unsigned int j = 0 ; j < n_items ; ++j) {
-                param_x[i].emplace_back( rmp.add_parameter(x[i][j]) );
-            }
-        };
-
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
-            Coefficient expr = 1;
-            for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-                expr += -1. * param_x[i][j];
-            }
-            rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
-        }
-
-        auto solver = branch_and_price<
-                ExternalSolverStrategy<SolverT>,
-                ExternalSolverStrategy<SolverT>,
-                GenerationStrategyT,
-                BranchingStrategyT,
-                NodeStrategyT,
-                ActiveNodeManagerT,
-                NodeUpdatorT
-        >(rmp, subproblems.begin(), subproblems.end(), branching_candidates);
-
-        solver.solve();
-
-        CHECK(solver.status() == Optimal);
-        CHECK(solver.objective_value() == -233._a);
+        delete t_instance;
 
     }
 

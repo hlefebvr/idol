@@ -33,7 +33,7 @@ public:
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             result[i].reserve(n_items);
             for (unsigned int j = 0 ; j < n_items ; ++j) {
-                result[i].emplace_back( t_model.add_variable(0., 1., t_type, -p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+                result[i].emplace_back( t_model.add_variable(0., 1., t_type, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
             }
         };
 

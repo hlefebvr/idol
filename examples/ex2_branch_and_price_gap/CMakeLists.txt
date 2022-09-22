@@ -1,2 +1,2 @@
-add_executable(ex2_branch_and_price_gap ex2_main.cpp Instance.h solve_with_lpsolve.h solve_with_branch_and_bound.h solve_with_branch_and_price.h)
+add_executable(ex2_branch_and_price_gap ex2_main.cpp Instance.h solve_with_external_solver.h solve_with_branch_and_bound.h solve_with_branch_and_price.h)
 target_link_libraries(ex2_branch_and_price_gap PRIVATE optimize)

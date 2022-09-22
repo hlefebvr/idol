@@ -69,20 +69,28 @@ public:
 template<class NodeT>
 void ActiveNodeManager_Heap::Strategy<NodeT>::add(NodeT *t_node) {
     m_nodes.emplace_back(t_node);
-    std::push_heap(m_nodes.begin(), m_nodes.end(), std::less<AbstractNode*>());
+    std::push_heap(m_nodes.begin(), m_nodes.end(), std::greater<AbstractNode*>());
 }
 
 template<class NodeT>
 void ActiveNodeManager_Heap::Strategy<NodeT>::prune_by_bound(double t_upper_bound) {
-    for (auto it = m_nodes.begin(), end = m_nodes.end() ; it != end ; ++it) {
-        const auto* ptr_to_node = *it;
-        if (ptr_to_node->objective_value() >= t_upper_bound) {
+
+    auto it = m_nodes.begin();
+    auto end = m_nodes.end();
+
+    while (it != end) {
+
+        if (const auto* ptr_to_node = *it ; ptr_to_node->objective_value() >= t_upper_bound) {
             EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
             delete ptr_to_node;
             it = m_nodes.erase(it);
+            end = m_nodes.end();
+        } else {
+            ++it;
         }
+
     }
-    std::make_heap(m_nodes.begin(), m_nodes.end(), std::less<AbstractNode*>());
+    std::make_heap(m_nodes.begin(), m_nodes.end(), std::greater<AbstractNode*>());
 }
 
 template<class NodeT>
@@ -102,7 +110,7 @@ const NodeT &ActiveNodeManager_Heap::Strategy<NodeT>::node_selected_for_branchin
 
 template<class NodeT>
 void ActiveNodeManager_Heap::Strategy<NodeT>::remove_node_selected_for_branching() {
-    std::pop_heap(m_nodes.begin(), m_nodes.end(), std::less<AbstractNode*>());
+    std::pop_heap(m_nodes.begin(), m_nodes.end(), std::greater<AbstractNode*>());
     delete m_nodes.back();
     m_nodes.pop_back();
 

@@ -8,13 +8,15 @@
 #include "Instance.h"
 #include "algorithms.h"
 
-void solve_with_branch_and_price(const Instance& t_instance) {
+#include "../../tests/instances/generalized-assignment-problem/AbstractInstanceGAP.h"
 
-    const unsigned int n_knapsacks = t_instance.n_knapsacks;
-    const unsigned int n_items = t_instance.n_items;
-    const auto& p = t_instance.p;
-    const auto& w = t_instance.w;
-    const auto& c = t_instance.c;
+void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
+
+    const unsigned int n_knapsacks = t_instance.n_knapsacks();
+    const unsigned int n_items = t_instance.n_items();
+    const auto p = t_instance.p();
+    const auto w = t_instance.w();
+    const auto c = t_instance.c();
 
     Env env;
 
@@ -31,7 +33,7 @@ void solve_with_branch_and_price(const Instance& t_instance) {
         x[i].reserve(n_items);
 
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, -p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
             branching_candidates.emplace_back(x[i].back());
         }

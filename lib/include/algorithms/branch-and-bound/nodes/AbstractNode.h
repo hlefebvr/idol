@@ -37,10 +37,10 @@ public:
 };
 
 template<>
-class std::less<AbstractNode*> {
+class std::greater<AbstractNode*> {
 public:
     bool operator()(const AbstractNode* t_a, const AbstractNode* t_b) const {
-        return t_a->objective_value() < t_b->objective_value();
+        return t_a->objective_value() > t_b->objective_value();
     }
 };
 
