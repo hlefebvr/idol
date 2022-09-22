@@ -7,6 +7,9 @@
 
 #include "modeling.h"
 #include "solvers.h"
+#include "algorithms.h"
+
+#include "./cartesian_product.h"
 
 #include <catch2/catch_all.hpp>
 

@@ -33,6 +33,11 @@ class NodeStrategy : public AbstractNodeStrategy {
 
     template<class T> void free(T& t_container);
 public:
+    NodeStrategy() = default;
+
+    NodeStrategy(const NodeStrategy&) = delete;
+    NodeStrategy(NodeStrategy&&) = default;
+
     ~NodeStrategy() override;
 
     [[nodiscard]] AbstractActiveNodeManagerWithType<NodeT>& active_nodes() override { return *m_active_nodes; }
