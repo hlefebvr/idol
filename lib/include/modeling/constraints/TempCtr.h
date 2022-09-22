@@ -11,6 +11,10 @@ namespace impl {
     class Ctr;
 }
 
+namespace Solution {
+    class Primal;
+}
+
 class TempCtr {
     friend class impl::Ctr;
     Row m_row;
@@ -20,11 +24,17 @@ public:
 
     const Row& row() const { return m_row; }
 
+    Row& row() { return m_row; }
+
     CtrType type() const { return m_type; }
+
+    bool is_violated(const Solution::Primal& t_solution) const;
 };
 
 TempCtr operator<=(Expr t_expr, Coefficient t_rhs);
 TempCtr operator>=(Expr t_expr, Coefficient t_rhs);
 TempCtr operator==(Expr t_expr, Coefficient t_rhs);
+
+std::ostream& operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr);
 
 #endif //OPTIMIZE_TEMPCTR_H

@@ -81,3 +81,53 @@ void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, d
     );
 
 }
+
+std::optional<Ctr> DantzigWolfe_RMP_Strategy::contribute_to_add_constraint(TempCtr &t_temporary_constraint,
+                                                                           ColumnGenerationSubProblem &t_subproblem) {
+
+    for (const auto& [var, ctr] : t_temporary_constraint.row()) {
+        if (var.model_id() != subproblem().id()) {
+            return {};
+        }
+    }
+
+    remove_columns_violating_constraint(t_temporary_constraint, t_subproblem);
+
+    auto& row = t_temporary_constraint.row();
+    const auto subproblem_id = subproblem().id();
+
+    // TODO this may be re-written in a better way after refacto of Row, Expr and Column
+    Expr original_space;
+
+    for (const auto& [var, coefficient] : row) {
+        if (var.model_id() == subproblem_id) {
+            original_space += coefficient * var;
+        }
+    }
+
+    row.replace_if([&](const Var& t_var) -> std::optional<Expr> {
+        if (t_var.model_id() == subproblem_id) {
+            return expand(t_var, t_subproblem);
+        }
+        return {};
+    });
+
+    auto result = t_subproblem.rmp_solution_strategy().add_constraint(std::move(t_temporary_constraint));
+
+    set(result, std::move(original_space));
+
+    return result;
+}
+
+bool DantzigWolfe_RMP_Strategy::update_constraint_rhs(const Ctr &t_ctr, double t_rhs,
+                                                      ColumnGenerationSubProblem &t_subproblem) {
+    return DantzigWolfe_SP_Strategy::update_constraint_rhs(t_ctr, t_rhs, t_subproblem);
+}
+
+bool DantzigWolfe_RMP_Strategy::remove_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
+    if (t_ctr.model_id() == rmp().id()) {
+        m_values.erase(t_ctr);
+        return false;
+    }
+    return DantzigWolfe_SP_Strategy::remove_constraint(t_ctr, t_subproblem);
+}

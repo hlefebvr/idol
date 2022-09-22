@@ -47,7 +47,7 @@ template<
         class BranchingStrategyT = MostInfeasible,
         class NodeStrategyT = NodeStrategy<NodeByBound>,
         class ActiveNodeManagerT = ActiveNodeManager_Heap,
-        class NodeUpdatorT = NodeUpdatorByBoundCtr,
+        class NodeUpdatorT = NodeUpdatorByBound,
         class IteratorT
 >
 BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT t_end, std::vector<Var> t_branching_candidates) {

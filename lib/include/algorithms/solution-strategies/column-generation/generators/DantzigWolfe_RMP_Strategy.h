@@ -24,6 +24,12 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
+    std::optional<Ctr>
+    contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem &t_subproblem) override;
+
+    bool update_constraint_rhs(const Ctr &t_ctr, double t_rhs, ColumnGenerationSubProblem &t_subproblem) override;
+
+    bool remove_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) override;
 };
 
 #endif //OPTIMIZE_DANTZIGWOLFE_RMP_STRATEGY_H

@@ -114,16 +114,16 @@ std::optional<Ctr> ColumnGenerator::contribute_to_add_constraint(TempCtr &t_temp
         }
     }
 
+    remove_columns_violating_constraint(t_temporary_constraint, t_subproblem);
+
     auto result = t_subproblem.exact_solution_strategy().add_constraint(std::move(t_temporary_constraint));
 
     EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to subproblem.")
 
-    remove_columns_violating_constraint(result, t_subproblem);
-
     return { result };
 }
 
-void ColumnGenerator::remove_columns_violating_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
+void ColumnGenerator::remove_columns_violating_constraint(const TempCtr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
 
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const Solution::Primal& t_solution) {
         if (t_ctr.is_violated(t_solution)) {

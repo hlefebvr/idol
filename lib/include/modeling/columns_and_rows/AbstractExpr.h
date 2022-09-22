@@ -11,6 +11,8 @@
 #include "errors/Exception.h"
 #include <memory>
 #include <stdexcept>
+#include <functional>
+#include <list>
 
 template<class Key>
 class AbstractExpr {
@@ -50,6 +52,8 @@ public:
 
     [[nodiscard]] const_iterator begin() const { return const_iterator(m_map.begin()); }
     [[nodiscard]] const_iterator end() const { return const_iterator(m_map.end()); }
+
+    void replace_if(const std::function<std::optional<AbstractExpr<Key>>(const Key&)>& t_function);
 };
 
 template<class Key>
@@ -145,6 +149,26 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator+=(const AbstractExpr& t_expr) {
         }
     }
     return *this;
+}
+
+template<class Key>
+void AbstractExpr<Key>::replace_if(const std::function<std::optional<AbstractExpr<Key>>(const Key &)> &t_function) {
+    std::list<AbstractExpr<Key>> to_add;
+
+    auto it = m_map.begin();
+    const auto end = m_map.end();
+    while (it != end) {
+        if (auto expr = t_function(it->first) ; expr.has_value()) {
+            to_add.template emplace_back(std::move(std::move(expr).value()));
+            it = m_map.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    for (auto& expr : to_add) {
+        *this += expr;
+    }
 }
 
 template<class Key>

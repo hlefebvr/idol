@@ -16,7 +16,7 @@ protected:
 
     static void remove_columns_violating_upper_bound(const Var& t_var, double t_ub, ColumnGenerationSubProblem& t_subproblem);
 
-    static void remove_columns_violating_constraint(const Ctr& t_ctr, ColumnGenerationSubProblem& t_subproblem);
+    static void remove_columns_violating_constraint(const TempCtr& t_ctr, ColumnGenerationSubProblem& t_subproblem);
 
     static void set_lower_bound_sp(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem);
 
