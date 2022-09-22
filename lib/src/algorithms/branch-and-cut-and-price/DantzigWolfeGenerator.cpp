@@ -37,7 +37,7 @@ void DantzigWolfe_RMP_Strategy::set_bound_rmp(const Var& t_subproblem_variable,
 
     if (it == t_bound_constraints.end()) {
 
-        Ctr ctr = rmp.add_constraint(t_ctr_builder(expand(t_subproblem_variable, t_subproblem), t_bound));
+        auto ctr = rmp.add_constraint(t_ctr_builder(expand(t_subproblem_variable, t_subproblem), t_bound));
         ColumnGenerator::set(ctr, t_subproblem_variable);
         t_bound_constraints.emplace(t_subproblem_variable, ctr);
         return;

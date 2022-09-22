@@ -40,6 +40,12 @@ public:
     virtual void set_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
 
     virtual void set_upper_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
+
+    virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) = 0;
+
+    virtual bool update_constraint_rhs(const Ctr& t_ctr, double t_rhs, ColumnGenerationSubProblem& t_subproblem) = 0;
+
+    virtual bool remove_constraint(const Ctr& t_ctr, ColumnGenerationSubProblem& t_subproblem) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTCOLUMNGENERATOR_H

@@ -11,9 +11,9 @@
 
 int main() {
 
-    Log::set_level(Info);
+    Log::set_level(Trace);
     Log::set_color("branch-and-bound", Color::Blue);
-    Log::set_color("generation-strategies", Color::Yellow);
+    Log::set_color("column-generation", Color::Yellow);
 
     Instance instance;
 

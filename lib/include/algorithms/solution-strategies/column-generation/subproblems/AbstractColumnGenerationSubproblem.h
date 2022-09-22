@@ -5,10 +5,20 @@
 #ifndef OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 #define OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "../../../../solvers/solutions/Solution.h"
+#include "../../../../modeling/constraints/TempCtr.h"
+#include <optional>
 
-class AbstractColumnGenerationSubproblem : public AbstractSolutionStrategy {
+class AbstractColumnGenerationSubproblem {
 public:
+    virtual void build() = 0;
+
+    virtual void solve() = 0;
+
+    [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
+
+    [[nodiscard]] virtual Solution::Dual dual_solution() const = 0;
+
     virtual void log_last_primal_solution() const = 0;
 
     virtual void save_last_primal_solution() = 0;
@@ -26,6 +36,16 @@ public:
     [[nodiscard]] virtual bool improving_column_found() const = 0;
 
     virtual void add_column_to_rmp() = 0;
+
+    virtual void set_lower_bound(const Var&, double t_lb) = 0;
+
+    virtual void set_upper_bound(const Var&, double t_ub) = 0;
+
+    virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporay_constraint) = 0;
+
+    virtual bool update_constraint_rhs(const Ctr& t_ctr, double t_rhs) = 0;
+
+    virtual bool remove_constraint(const Ctr& t_ctr) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H

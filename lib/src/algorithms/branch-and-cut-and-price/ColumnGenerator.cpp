@@ -73,7 +73,7 @@ void ColumnGenerator::remove_columns_violating_lower_bound(const Var &t_var, dou
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "generation-strategies",
+                     "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
             return true;
@@ -88,7 +88,7 @@ void ColumnGenerator::remove_columns_violating_upper_bound(const Var &t_var, dou
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "generation-strategies",
+                     "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
             return true;
@@ -104,4 +104,57 @@ Solution::Primal ColumnGenerator::primal_solution(const ColumnGenerationSubProbl
         result += t_rmp_primals.get(var) * (ptr_to_sol);
     }
     return result;
+}
+
+std::optional<Ctr> ColumnGenerator::contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) {
+
+    for (const auto& [var, ctr] : t_temporary_constraint.row()) {
+        if (var.model_id() != subproblem().id()) {
+            return {};
+        }
+    }
+
+    auto result = t_subproblem.exact_solution_strategy().add_constraint(std::move(t_temporary_constraint));
+
+    EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to subproblem.")
+
+    remove_columns_violating_constraint(result, t_subproblem);
+
+    return { result };
+}
+
+void ColumnGenerator::remove_columns_violating_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
+
+    t_subproblem.remove_column_if([&](const Var& t_column_variable, const Solution::Primal& t_solution) {
+        if (t_ctr.is_violated(t_solution)) {
+            EASY_LOG(Trace,
+                     "column-generation",
+                     "Column " << t_column_variable << " was removed by contradiction with required "
+                               << "constraint " << t_ctr << '.');
+            return true;
+        }
+        return false;
+    });
+
+}
+
+bool ColumnGenerator::update_constraint_rhs(const Ctr &t_ctr, double t_rhs, ColumnGenerationSubProblem &t_subproblem) {
+
+    if (t_ctr.model_id() != subproblem().id()) {
+        return false;
+    }
+
+    t_subproblem.exact_solution_strategy().update_constraint_rhs(t_ctr, t_rhs);
+
+    return true;
+}
+
+bool ColumnGenerator::remove_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
+    if (t_ctr.model_id() != subproblem().id()) {
+        return false;
+    }
+
+    t_subproblem.exact_solution_strategy().remove_constraint(t_ctr);
+
+    return true;
 }

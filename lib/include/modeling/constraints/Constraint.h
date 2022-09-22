@@ -18,6 +18,10 @@ class Row;
 class Coefficient;
 class Var;
 
+namespace Solution {
+    class Primal;
+}
+
 class Ctr {
     friend class impl::ObjectManager;
     impl::Ctr* m_impl;
@@ -39,6 +43,8 @@ public:
     [[nodiscard]] const Coefficient& get(const Var& t_var) const;
 
     [[nodiscard]] const Row& row() const;
+
+    [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
 
     using impl_t = impl::Ctr;
 };

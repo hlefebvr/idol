@@ -88,7 +88,7 @@ Var ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
 
 template<class SolverT>
 Ctr ExternalSolverStrategy<SolverT>::add_constraint(TempCtr t_temporary_constraint) {
-    return m_model.add_constraint(std::move(t_temporary_constraint));
+    return { m_model.add_constraint(std::move(t_temporary_constraint)) };
 }
 
 template<class SolverT>

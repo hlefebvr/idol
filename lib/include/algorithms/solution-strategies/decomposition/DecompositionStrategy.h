@@ -28,6 +28,12 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
+    void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+
+    Ctr add_constraint(TempCtr t_temporary_constraint) override;
+
+    void remove_constraint(const Ctr &t_constraint) override;
+
     template<class T, class ...Args> T& set_rmp_solution_strategy(Args&& ...t_args) {
         auto* solution_strategy = new T(std::forward<Args>(t_args)...);
         m_rmp_strategy.reset(solution_strategy);

@@ -70,7 +70,7 @@ bool ColumnGenerationSubProblem::could_not_be_solved_to_optimality() const {
 
 
 void ColumnGenerationSubProblem::log_last_primal_solution() const {
-    EASY_LOG(Debug, "generation-strategies",
+    EASY_LOG(Debug, "column-generation",
              std::setw(5)
                      << "SP"
                      << std::setw(15)
@@ -91,7 +91,7 @@ void ColumnGenerationSubProblem::add_column_to_rmp() {
     auto temp_var = create_column_from(*last_primal_solution);
     auto variable = m_rmp_strategy.add_column(std::move(temp_var));
     m_currently_present_variables.template emplace_back(variable, *last_primal_solution);
-    EASY_LOG(Trace, "generation-strategies", "Adding new variable with name " << variable << ".");
+    EASY_LOG(Trace, "column-generation", "Adding new variable with name " << variable << ".");
 }
 
 
@@ -122,4 +122,16 @@ void ColumnGenerationSubProblem::set_lower_bound(const Var &t_var, double t_lb) 
 
 void ColumnGenerationSubProblem::set_upper_bound(const Var &t_var, double t_ub) {
     m_generator->set_upper_bound(t_var, t_ub, *this);
+}
+
+std::optional<Ctr> ColumnGenerationSubProblem::contribute_to_add_constraint(TempCtr &t_temporay_constraint) {
+    return m_generator->contribute_to_add_constraint(t_temporay_constraint, *this);
+}
+
+bool ColumnGenerationSubProblem::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+    return m_generator->update_constraint_rhs(t_ctr, t_rhs, *this);
+}
+
+bool ColumnGenerationSubProblem::remove_constraint(const Ctr &t_ctr) {
+    return m_generator->remove_constraint(t_ctr, *this);
 }

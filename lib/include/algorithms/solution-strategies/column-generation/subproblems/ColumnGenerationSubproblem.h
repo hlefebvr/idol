@@ -6,6 +6,7 @@
 #define OPTIMIZE_COLUMNGENERATIONSUBPROBLEM_H
 
 #include "AbstractColumnGenerationSubproblem.h"
+#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "algorithms/solution-strategies/decomposition/generators/AbstractGenerator.h"
 #include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
 #include "algorithms/logs/Log.h"
@@ -70,6 +71,12 @@ public:
     AbstractSolutionStrategy& rmp_solution_strategy() { return m_rmp_strategy; }
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
+
+    std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporay_constraint) override;
+
+    bool update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+
+    bool remove_constraint(const Ctr& t_ctr) override;
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 

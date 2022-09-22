@@ -83,7 +83,7 @@ void ColumnGenerationStrategy::analyze_last_rmp_dual_solution() {
     }
 
     if (rmp_is_infeasible()) {
-        EASY_LOG(Trace, "generation-strategies", "Using Farkas certificate for pricing.");
+        EASY_LOG(Trace, "column-generation", "Using Farkas certificate for pricing.");
         save_rmp_farkas();
         return;
     }
@@ -92,7 +92,7 @@ void ColumnGenerationStrategy::analyze_last_rmp_dual_solution() {
         terminate_for_rmp_could_not_be_solved_to_optimality();
     }
 
-    EASY_LOG(Trace, "generation-strategies", "Using dual solution for pricing.");
+    EASY_LOG(Trace, "column-generation", "Using dual solution for pricing.");
 
 }
 
@@ -113,12 +113,12 @@ void ColumnGenerationStrategy::save_rmp_farkas() {
 }
 
 void ColumnGenerationStrategy::terminate_for_rmp_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. RMP returned with dual status \"" << m_last_rmp_duals->status() << "\".");
+    EASY_LOG(Trace, "column-generation", "Terminate. RMP returned with dual status \"" << m_last_rmp_duals->status() << "\".");
     terminate();
 }
 
 void ColumnGenerationStrategy::terminate_for_rmp_is_unbounded() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. Unbounded RMP.");
+    EASY_LOG(Trace, "column-generation", "Terminate. Unbounded RMP.");
     terminate();
 }
 
@@ -131,7 +131,7 @@ void ColumnGenerationStrategy::update_subproblems() {
 
     for (auto& ptr_to_subproblem : m_subproblems) {
         auto row = ptr_to_subproblem->get_pricing_objective(*m_last_rmp_duals);
-        EASY_LOG(Trace, "generation-strategies", "Setting pricing objective to " << row);
+        EASY_LOG(Trace, "column-generation", "Setting pricing objective to " << row);
         ptr_to_subproblem->update_pricing_objective(row);
     }
 }
@@ -178,18 +178,18 @@ void ColumnGenerationStrategy::add_columns() {
 }
 
 void ColumnGenerationStrategy::terminate_for_subproblem_is_infeasible() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. Infeasible SP.");
+    EASY_LOG(Trace, "column-generation", "Terminate. Infeasible SP.");
     terminate();
 }
 
 void ColumnGenerationStrategy::terminate_for_subproblem_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. SP could not be solved to optimality using the provided exact method."
+    EASY_LOG(Trace, "column-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
                                            "Reported status: ...............");
     terminate();
 }
 
 void ColumnGenerationStrategy::terminate_for_subproblem_is_unbounded() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. Unbounded SP.");
+    EASY_LOG(Trace, "column-generation", "Terminate. Unbounded SP.");
     terminate();
 }
 
@@ -213,12 +213,12 @@ void ColumnGenerationStrategy::analyze_last_subproblem_primal_solution(const Abs
 }
 
 void ColumnGenerationStrategy::terminate_for_no_improving_column_found() {
-    EASY_LOG(Trace, "generation-strategies", "Terminate. No improving column found.");
+    EASY_LOG(Trace, "column-generation", "Terminate. No improving column found.");
     terminate();
 }
 
 void ColumnGenerationStrategy::log_last_rmp_dual_solution() const {
-    EASY_LOG(Debug, "generation-strategies",
+    EASY_LOG(Debug, "column-generation",
              std::setw(5)
              << "RMP"
              << std::setw(15)
@@ -226,4 +226,44 @@ void ColumnGenerationStrategy::log_last_rmp_dual_solution() const {
              << std::setw(10)
              << m_last_rmp_duals->objective_value()
     );
+}
+
+Ctr ColumnGenerationStrategy::add_constraint(TempCtr t_temporary_constraint) {
+
+    for (auto& ptr_to_subproblem : m_subproblems) {
+
+        auto optional_ctr = ptr_to_subproblem->contribute_to_add_constraint(t_temporary_constraint);
+
+        if (optional_ctr.has_value()) {
+            return optional_ctr.value();
+        }
+
+    }
+
+    return rmp_solution_strategy().add_constraint(std::move(t_temporary_constraint));
+
+}
+
+void ColumnGenerationStrategy::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+
+    for (auto& ptr_to_subproblem : m_subproblems) {
+
+        if (ptr_to_subproblem->update_constraint_rhs(t_ctr, t_rhs)) {
+            return;
+        }
+
+    }
+
+}
+
+void ColumnGenerationStrategy::remove_constraint(const Ctr &t_constraint) {
+
+    for (auto& ptr_to_subproblem : m_subproblems) {
+
+        if (ptr_to_subproblem->remove_constraint(t_constraint)) {
+            return;
+        }
+
+    }
+
 }

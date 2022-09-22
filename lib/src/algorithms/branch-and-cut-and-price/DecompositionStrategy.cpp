@@ -37,14 +37,22 @@ Solution::Dual DecompositionStrategy::dual_solution() const {
 
 
 void DecompositionStrategy::set_lower_bound(const Var &t_var, double t_lb) {
-    for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
-        ptr_to_decomposition_strategy->set_lower_bound(t_var, t_lb);
-    }
+    m_generation_strategies.front()->set_lower_bound(t_var, t_lb);
 }
 
 
 void DecompositionStrategy::set_upper_bound(const Var &t_var, double t_ub) {
-    for (auto& ptr_to_decomposition_strategy : m_generation_strategies) {
-        ptr_to_decomposition_strategy->set_upper_bound(t_var, t_ub);
-    }
+    m_generation_strategies.front()->set_upper_bound(t_var, t_ub);
+}
+
+void DecompositionStrategy::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+    m_generation_strategies.front()->update_constraint_rhs(t_ctr, t_rhs);
+}
+
+Ctr DecompositionStrategy::add_constraint(TempCtr t_temporary_constraint) {
+    return m_generation_strategies.front()->add_constraint(std::move(t_temporary_constraint));
+}
+
+void DecompositionStrategy::remove_constraint(const Ctr &t_constraint) {
+    m_generation_strategies.front()->remove_constraint(t_constraint);
 }

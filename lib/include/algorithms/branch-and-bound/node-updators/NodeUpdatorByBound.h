@@ -20,8 +20,6 @@ public:
 
 template<class NodeT>
 class NodeUpdatorByBound::Strategy : public AbstractNodeUpdatorStrategyWithType<NodeT> {
-    std::list<std::pair<Var, double>> m_original_lower_bounds;
-    std::list<std::pair<Var, double>> m_original_upper_bounds;
 
     Map<Var, double> m_lower_bounds;
     Map<Var, double> m_upper_bounds;

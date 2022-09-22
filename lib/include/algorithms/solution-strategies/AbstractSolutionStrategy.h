@@ -8,6 +8,7 @@
 #include "solvers/solutions/Solution.h"
 #include "modeling/variables/TempVar.h"
 #include "modeling/constraints/TempCtr.h"
+#include <list>
 
 class AbstractNode;
 class Solver;

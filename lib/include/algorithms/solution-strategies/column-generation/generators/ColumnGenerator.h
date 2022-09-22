@@ -16,6 +16,8 @@ protected:
 
     static void remove_columns_violating_upper_bound(const Var& t_var, double t_ub, ColumnGenerationSubProblem& t_subproblem);
 
+    static void remove_columns_violating_constraint(const Ctr& t_ctr, ColumnGenerationSubProblem& t_subproblem);
+
     static void set_lower_bound_sp(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem);
 
     void set_upper_bound_sp(const Var& t_var, double t_ub, ColumnGenerationSubProblem& t_subproblem);
@@ -37,6 +39,12 @@ public:
     void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
     void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
+
+    std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) override;
+
+    bool update_constraint_rhs(const Ctr &t_ctr, double t_rhs, ColumnGenerationSubProblem &t_subproblem) override;
+
+    bool remove_constraint(const Ctr& t_ctr, ColumnGenerationSubProblem& t_subproblem) override;
 };
 
 #endif //OPTIMIZE_COLUMNGENERATOR_H
