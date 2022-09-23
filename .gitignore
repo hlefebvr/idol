@@ -1,5 +1,5 @@
 cmake-build-*
 .idea
 coverage
-documentation
+documentation/_build
 coverage/_build
