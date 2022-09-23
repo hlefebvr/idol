@@ -7,6 +7,8 @@
 
 #include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "modeling/models/Model.h"
+#include "../../attributes/Base.h"
+#include "../../attributes/Attributes.h"
 #include <memory>
 #include <list>
 
@@ -14,12 +16,26 @@ template<class SolverT>
 class ExternalSolverStrategy : public AbstractSolutionStrategy {
 protected:
     Model& m_model;
-    std::unique_ptr<SolverT> m_solver;
+    SolverT m_solver;
+    Attributes<AttrType::Base> m_attributes;
 
-    ExternalSolverStrategy(const ExternalSolverStrategy& t_src);
+    AbstractAttributes &parameters() override { return m_attributes; }
+
+    [[nodiscard]] const AbstractAttributes &parameters() const override { return m_attributes; }
 public:
-    explicit ExternalSolverStrategy(Model& t_model) : m_model(t_model) {}
+    explicit ExternalSolverStrategy(Model& t_model) : m_model(t_model), m_solver(t_model) {
 
+        m_attributes.template set_callback<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
+            m_solver.set_infeasible_or_unbounded_info(t_value);
+        });
+
+        m_attributes.template set_callback<Attr::Presolve>([this](bool t_value) {
+           m_solver.set_presolve(t_value);
+        });
+
+    }
+
+    ExternalSolverStrategy(const ExternalSolverStrategy& t_src) = delete;
     ExternalSolverStrategy(ExternalSolverStrategy&&) noexcept = delete;
 
     ExternalSolverStrategy& operator=(const ExternalSolverStrategy&) = delete;
@@ -27,15 +43,15 @@ public:
 
     void build() override;
 
-    void solve() override { m_solver->solve(); }
+    void solve() override { m_solver.solve(); }
 
     [[nodiscard]] const Model& model() const { return m_model; }
 
-    [[nodiscard]] Solution::Primal primal_solution() const override { return m_solver->primal_solution(); }
+    [[nodiscard]] Solution::Primal primal_solution() const override { return m_solver.primal_solution(); }
 
-    [[nodiscard]] Solution::Dual dual_solution() const override { return m_solver->dual_solution(); }
+    [[nodiscard]] Solution::Dual dual_solution() const override { return m_solver.dual_solution(); }
 
-    [[nodiscard]] Solution::Dual farkas_certificate() const override { return m_solver->dual_farkas(); }
+    [[nodiscard]] Solution::Dual farkas_certificate() const override { return m_solver.dual_farkas(); }
 
     void set_lower_bound(const Var &t_var, double t_lb) override;
 
@@ -55,16 +71,7 @@ public:
 };
 
 template<class SolverT>
-ExternalSolverStrategy<SolverT>::ExternalSolverStrategy(const ExternalSolverStrategy &t_src) : m_model(t_src.m_model) {
-
-}
-
-template<class SolverT>
-void ExternalSolverStrategy<SolverT>::build() {
-    if (!m_solver) {
-        m_solver = std::make_unique<SolverT>(m_model);
-    }
-}
+void ExternalSolverStrategy<SolverT>::build() {}
 
 template<class SolverT>
 void ExternalSolverStrategy<SolverT>::set_lower_bound(const Var &t_var, double t_lb) {

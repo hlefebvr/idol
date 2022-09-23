@@ -6,7 +6,6 @@
 #include "algorithms/logs/Log.h"
 
 #include "solve_with_external_solver.h"
-#include "solve_with_branch_and_bound.h"
 #include "solve_with_branch_and_price.h"
 
 #include "../../tests/instances/generalized-assignment-problem/InstanceGAP_0.h"
@@ -19,14 +18,13 @@
 
 int main() {
 
-    Log::set_level(Info);
+    Log::set_level(Trace);
     Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
-    InstanceGAP<6> instance;
+    InstanceGAP<0> instance;
 
     solve_with_external_solver(instance);
-    //solve_with_branch_and_bound(instance);
     solve_with_branch_and_price(instance);
 
     return 0;

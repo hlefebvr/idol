@@ -35,8 +35,8 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
         AbstractInstanceGAP* t_instance = GENERATE(
                 new InstanceGAP<0>(),
                 new InstanceGAP<1>(),
-                new InstanceGAP<2>(),
-                new InstanceGAP<3>()
+                new InstanceGAP<2>()
+                //new InstanceGAP<3>()
         );
 
         const unsigned int n_knapsacks = t_instance->n_knapsacks();

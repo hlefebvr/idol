@@ -31,9 +31,6 @@ Lpsolve::Lpsolve(Model& t_model) : BaseSolver<int, int>(t_model) {
     set_minim(model);
 
     init_model(t_model);
-
-    std::cout << "IMPORTANT WARNING: MANUALLY SETTING set_infeasible_or_unbounded_info TO TRUE." << std::endl;
-    set_infeasible_or_unbounded_info(true);
 }
 
 Lpsolve::~Lpsolve() {

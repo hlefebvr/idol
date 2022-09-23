@@ -8,10 +8,13 @@
 #include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "modeling/models/Model.h"
 #include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/attributes/Attributes.h"
+#include "algorithms/attributes/Base.h"
 
 class ColumnGenerationStrategy : public AbstractGenerationStrategy {
     std::list<std::unique_ptr<AbstractColumnGenerationSubproblem>> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
+    Attributes<AttrType::Base> m_attributes;
 
     bool m_is_terminated = false;
 
@@ -36,6 +39,11 @@ class ColumnGenerationStrategy : public AbstractGenerationStrategy {
     void terminate_for_subproblem_is_unbounded();
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
     void terminate_for_no_improving_column_found();
+protected:
+    AbstractAttributes &parameters() override { return m_attributes; }
+
+    const AbstractAttributes &parameters() const override { return m_attributes; }
+
 public:
     explicit ColumnGenerationStrategy(DecompositionId&& t_id);
 

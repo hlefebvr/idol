@@ -13,6 +13,11 @@
 class DecompositionStrategy : public AbstractSolutionStrategy {
     std::unique_ptr<AbstractSolutionStrategy> m_rmp_strategy;
     std::list<std::unique_ptr<AbstractGenerationStrategy>> m_generation_strategies;
+
+    Attributes<> m_attributes;
+protected:
+    AbstractAttributes &parameters() override { return m_attributes; }
+    [[nodiscard]] const AbstractAttributes &parameters() const override { return m_attributes; }
 public:
     DecompositionStrategy() = default;
 
@@ -37,6 +42,7 @@ public:
     template<class T, class ...Args> T& set_rmp_solution_strategy(Args&& ...t_args) {
         auto* solution_strategy = new T(std::forward<Args>(t_args)...);
         m_rmp_strategy.reset(solution_strategy);
+        m_rmp_strategy->set<Attr::InfeasibleOrUnboundedInfo>(true);
         return *solution_strategy;
     }
 

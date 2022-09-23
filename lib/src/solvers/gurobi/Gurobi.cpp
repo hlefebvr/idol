@@ -29,9 +29,6 @@ char Gurobi::gurobi_type(VarType t_type) {
 Gurobi::Gurobi(Model &t_model) : BaseSolver<GRBVar, GRBConstr>(t_model), m_model(m_env) {
     m_model.set(GRB_IntParam_OutputFlag, 0);
     init_model(t_model);
-
-    set_infeasible_or_unbounded_info(true);
-    std::cout << "IMPORTANT WARNING: MANUALLY SETTING set_infeasible_or_unbounded_info TO TRUE." << std::endl;
 }
 
 GRBVar Gurobi::create_variable(const Var &t_var) {
@@ -134,9 +131,6 @@ double Gurobi::get_dual_value(const Ctr &t_ctr) const {
 }
 
 void Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
-    // For getting extreme ray instead of simply an unbounded direction
-    m_model.set(GRB_IntParam_Method, GRB_METHOD_PRIMAL);
-    // To activate InfUnbdInfo in gurobi
     m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
 }
 
