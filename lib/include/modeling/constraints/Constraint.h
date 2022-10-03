@@ -22,30 +22,72 @@ namespace Solution {
     class Primal;
 }
 
+/**
+ * Constraint object.
+ *
+ * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_constraint method, rather than a constructor.
+ */
 class Ctr {
     friend class impl::ObjectManager;
     impl::Ctr* m_impl;
 
     explicit Ctr(impl::Ctr* t_impl) : m_impl(t_impl) {}
 public:
+    /**
+     * Returns the constraint id.
+     */
     [[nodiscard]] unsigned int id() const;
 
+    /**
+     * Returns the parent model's id.
+     */
     [[nodiscard]] unsigned int model_id() const;
 
+    /**
+     * Returns the current index of the constraint in the underlying model's matrix. The index may change over time, in particular,
+     * due to calls to Model::remove and others.
+     */
     [[nodiscard]] unsigned int index() const;
 
+    /**
+     * Returns the constraint's given name.
+     */
     [[nodiscard]] const std::string& name() const;
 
+    /**
+     * Returns the current type of the constraint (see also CtrType).
+     * It may be modified by calling the Model::update_type method.
+     */
     [[nodiscard]] CtrType type() const;
 
+    /**
+     * Returns the current right handside of the constraint.
+     * It may be modified by calling the Model::update_rhs method.
+     */
     [[nodiscard]] const Coefficient& rhs() const;
 
+    /**
+     * Returns the coefficient of the variable given as parameter in the constraint.
+     * @param t_var The queried variable.
+     */
     [[nodiscard]] const Coefficient& get(const Var& t_var) const;
 
+    /**
+     * Returns the current row associated to the constraint.
+     * It may be modified by calling the Model::update_coefficient method.
+     * @return
+     */
     [[nodiscard]] const Row& row() const;
 
+    /**
+     * Returns true if the constraint is violated by the solution given as parameter.
+     * @param t_solution The solution to be checked for feasibility.
+     */
     [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
 
+    /**
+     * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).
+     */
     using impl_t = impl::Ctr;
 };
 
