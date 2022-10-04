@@ -7,8 +7,8 @@
 
 #include <vector>
 #include "modeling/variables/Variable.h"
-#include "modeling/columns_and_rows/Deprecated_AbstractExpr.h"
-#include "modeling/columns_and_rows/Deprecated_Column.h"
+#include "modeling/expressions/Expr.h"
+#include "modeling/expressions/Column.h"
 
 class Model;
 class Var;
@@ -30,7 +30,7 @@ public:
 
     const Constant& offset() const { return *m_offset; }
 
-    [[nodiscard]] const Constant& get(const Var& t_var) const { return t_var.column().constant(); } // NOLINT(readability-convert-member-functions-to-static)
+    [[nodiscard]] const Constant& get(const Var& t_var) const { return t_var.column().objective_coefficient(); } // NOLINT(readability-convert-member-functions-to-static)
 
     class const_iterator {
         std::vector<Var>::const_iterator m_it;
@@ -39,7 +39,7 @@ public:
         bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
         bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
         const_iterator& operator++() { ++m_it; return *this; }
-        Deprecated_AbstractExpr<Var>::Entry operator*() const { return Deprecated_AbstractExpr<Var>::Entry(*m_it, m_it->column().constant()); }
+        std::pair<const Var&, const Constant&> operator*() const { return { *m_it, m_it->column().objective_coefficient() }; }
     };
 
     [[nodiscard]] const_iterator begin() const { return const_iterator(m_variables->cbegin()); }

@@ -13,16 +13,16 @@ const std::string &Ctr::name() const {
     return m_impl->name();
 }
 
-const Deprecated_Row &Ctr::row() const {
+const Row &Ctr::row() const {
     return m_impl->row();
 }
 
 const Constant &Ctr::rhs() const {
-    return m_impl->row().constant();
+    return m_impl->row().rhs();
 }
 
 const Constant &Ctr::get(const Var &t_var) const {
-    return m_impl->row().get(t_var);
+    return m_impl->row().lhs().get(t_var);
 }
 
 CtrType Ctr::type() const {
@@ -38,9 +38,9 @@ unsigned int Ctr::model_id() const {
 }
 
 bool Ctr::is_violated(const Solution::Primal &t_solution) const {
-    const double rhs = m_impl->row().constant().constant();
+    const double rhs = m_impl->row().rhs().constant();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_impl->row()) {
+    for (const auto& [var, coeff] : m_impl->row().lhs()) {
         lhs += coeff.constant() * t_solution.get(var);
     }
     switch (m_impl->type()) {
@@ -52,12 +52,5 @@ bool Ctr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    t_os << t_ctr.name() << " : ";
-    t_os << (Deprecated_AbstractExpr<Var>&) t_ctr.row();
-    switch (t_ctr.type()) {
-        case LessOrEqual: t_os << " <= "; break;
-        case GreaterOrEqual: t_os << " >= "; break;
-        case Equal: t_os << " == "; break;
-    }
-    return t_os << t_ctr.rhs();
+    return t_os << "TODO";
 }

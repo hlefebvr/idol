@@ -27,7 +27,7 @@ DantzigWolfe_RMP_Strategy::set_upper_bound(const Var &t_var, double t_ub, Column
 void DantzigWolfe_RMP_Strategy::set_bound_rmp(const Var& t_subproblem_variable,
                                               double t_bound,
                                               Map<Var, Ctr>& t_bound_constraints,
-                                              const std::function<TempCtr(Deprecated_Expr&&, double)>& t_ctr_builder,
+                                              const std::function<TempCtr(Expr<Var>&&, double)>& t_ctr_builder,
                                               const std::function<double(const Var&)>& t_get_bound,
                                               ColumnGenerationSubProblem& t_subproblem) {
 
@@ -62,7 +62,7 @@ void DantzigWolfe_RMP_Strategy::set_lower_bound_rmp(const Var &t_rmp_variable, d
             t_rmp_variable,
             t_lb,
             m_lower_bound_constraints,
-            [](Deprecated_Expr&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
+            [](Expr<Var>&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
             [](const Var& t_var){ return t_var.lb(); },
             t_subproblem
     );
@@ -75,7 +75,7 @@ void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, d
             t_rmp_variable,
             t_ub,
             m_upper_bound_constraints,
-            [](Deprecated_Expr&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
+            [](Expr<Var>&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
             [](const Var& t_var){ return t_var.ub(); },
             t_subproblem
     );
@@ -85,7 +85,7 @@ void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, d
 std::optional<Ctr> DantzigWolfe_RMP_Strategy::contribute_to_add_constraint(TempCtr &t_temporary_constraint,
                                                                            ColumnGenerationSubProblem &t_subproblem) {
 
-    for (const auto& [var, ctr] : t_temporary_constraint.row()) {
+    for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
         if (var.model_id() != subproblem().id()) {
             return {};
         }
@@ -97,15 +97,15 @@ std::optional<Ctr> DantzigWolfe_RMP_Strategy::contribute_to_add_constraint(TempC
     const auto subproblem_id = subproblem().id();
 
     // TODO this may be re-written in a better way after refacto of Row, Expr and Column
-    Deprecated_Expr original_space;
+    Expr original_space;
 
-    for (const auto& [var, coefficient] : row) {
+    for (const auto& [var, coefficient] : row.lhs()) {
         if (var.model_id() == subproblem_id) {
             original_space += coefficient * var;
         }
     }
 
-    row.replace_if([&](const Var& t_var) -> std::optional<Deprecated_Expr> {
+    row.lhs().replace_if([&](const Var& t_var) -> std::optional<Expr<Var>> {
         if (t_var.model_id() == subproblem_id) {
             return expand(t_var, t_subproblem);
         }

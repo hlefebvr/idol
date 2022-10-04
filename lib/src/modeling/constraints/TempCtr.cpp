@@ -4,22 +4,22 @@
 #include "modeling/constraints/TempCtr.h"
 #include "solvers/solutions/Solution.h"
 
-TempCtr operator<=(Deprecated_Expr t_expr, Constant t_rhs) {
-    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
+TempCtr operator<=(Expr<Var> t_expr, Constant t_rhs) {
+    return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
 }
 
-TempCtr operator>=(Deprecated_Expr t_expr, Constant t_rhs) {
-    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
+TempCtr operator>=(Expr<Var> t_expr, Constant t_rhs) {
+    return { Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
 }
 
-TempCtr operator==(Deprecated_Expr t_expr, Constant t_rhs) {
-    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), Equal };
+TempCtr operator==(Expr<Var> t_expr, Constant t_rhs) {
+    return { Row(std::move(t_expr), std::move(t_rhs)), Equal };
 }
 
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
-    const double rhs = m_row.constant().constant();
+    const double rhs = m_row.rhs().constant();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_row) {
+    for (const auto& [var, coeff] : m_row.lhs()) {
         lhs += coeff.constant() * t_solution.get(var);
     }
     switch (m_type) {
@@ -31,11 +31,12 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream &operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
-    t_os << (Deprecated_AbstractExpr<Var>&) t_temp_ctr.row();
+    return t_os << "TODO";
+    /*t_os << t_temp_ctr.row();
     switch (t_temp_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;
         case GreaterOrEqual: t_os << " >= "; break;
         case Equal: t_os << " == "; break;
     }
-    return t_os << t_temp_ctr.row().constant();
+    return t_os << t_temp_ctr.row().constant();*/
 }

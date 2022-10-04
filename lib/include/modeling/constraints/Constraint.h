@@ -14,7 +14,7 @@ namespace impl {
     class Ctr;
 }
 
-class Deprecated_Row;
+class Row;
 class Constant;
 class Var;
 
@@ -77,7 +77,7 @@ public:
      * It may be modified by calling the Model::update_coefficient method.
      * @return
      */
-    [[nodiscard]] const Deprecated_Row& row() const;
+    [[nodiscard]] const Row& row() const;
 
     /**
      * Returns true if the constraint is violated by the solution given as parameter.

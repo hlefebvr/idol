@@ -1,8 +1,8 @@
 //
 // Created by henri on 08/09/22.
 //
-#include "modeling/coefficients/MatrixCoefficientReference.h"
-#include "modeling/coefficients/Constant.h"
+#include "modeling/matrix/MatrixCoefficientReference.h"
+#include "modeling/matrix/Constant.h"
 
 void MatrixCoefficientReference::set_value(Constant &&t_coefficient) {
     *m_coefficient = std::move(t_coefficient);

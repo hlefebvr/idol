@@ -19,13 +19,15 @@ int main() {
     std::vector<Var> x;
     x.reserve(items.size());
 
-    Deprecated_Expr sum_weight;
+    Expr sum_weight;
 
     for (const auto& [weight, profit] : items) {
         auto var = model.add_variable(0., 1., Continuous, -profit);
         sum_weight += weight * var;
         x.emplace_back(var);
     }
+
+    return 0;
 
     model.add_constraint(sum_weight <= capacity);
 

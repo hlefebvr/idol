@@ -13,7 +13,7 @@ namespace impl {
     class Var;
 }
 
-class Deprecated_Column;
+class Column;
 class Constant;
 class Ctr;
 
@@ -84,7 +84,7 @@ public:
      * Returns the current column associated to the variable.
      * It may be modified by calling the Model::update_coefficient method.
      */
-    [[nodiscard]] const Deprecated_Column& column() const;
+    [[nodiscard]] const Column& column() const;
 
     /**
      * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).

@@ -41,9 +41,9 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    [[nodiscard]] Deprecated_Row get_pricing_objective(const Solution::Dual &t_duals) const override;
+    [[nodiscard]] Row get_pricing_objective(const Solution::Dual &t_duals) const override;
 
-    void update_pricing_objective(const Deprecated_Row& t_objective) override;
+    void update_pricing_objective(const Row& t_objective) override;
 
     void log_last_primal_solution() const override;
 

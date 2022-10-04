@@ -47,7 +47,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolverStrategy<TestType>>(sp);
                 auto& generator = subproblem.template set_generation_strategy<ColumnGenerator>(rmp, sp);
                 generator.set(ctr_rmp, -2. * x_0 + 2. * x_1);
-                generator.set(ctr_con, Deprecated_Expr(), 1.);
+                generator.set(ctr_con, Expr(), 1.);
 
                 solver.solve();
 
@@ -66,7 +66,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 Model rmp(env);
                 auto x_bar_0 = rmp.add_parameter( x_0 );
                 auto x_bar_1 = rmp.add_parameter( x_1 );
-                auto ctr_rmp = rmp.add_constraint(Deprecated_Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
+                auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
                 BranchAndBound solver;
                 auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();
@@ -105,7 +105,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
             Model rmp(env);
             auto x_bar_0 = rmp.add_parameter( x_0 );
             auto x_bar_1 = rmp.add_parameter( x_1 );
-            auto ctr_rmp = rmp.add_constraint(Deprecated_Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
+            auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
             BranchAndBound solver;
             auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();

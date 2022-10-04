@@ -17,7 +17,7 @@ TEST_CASE("Expr", "[expressions][modeling]") {
 
     SECTION("constructor with no argument") {
 
-        Deprecated_Expr expr;
+        Expr expr;
         CHECK(expr.size() == 0);
 
     }

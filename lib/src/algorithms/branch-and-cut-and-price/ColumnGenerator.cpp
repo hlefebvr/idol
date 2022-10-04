@@ -6,7 +6,7 @@
 
 ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
 
-    Deprecated_Expr objective;
+    Expr objective;
     for (const auto& [var, coeff] : t_subproblem.objective()) {
         objective += coeff * var;
     }
@@ -15,27 +15,27 @@ ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) 
 }
 
 TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
-    Deprecated_Column column;
+    Column column;
 
     double objective = 0.;
     for (const auto& [var, coeff] : constant()) {
         objective += coeff.constant() * t_primal_solution.get(var);
     }
-    column.set_constant(objective);
+    column.set_objective_coefficient(objective);
 
     for (const auto& [ctr, expr] : *this) {
-        double coeff = expr.constant().constant();
-        for (const auto& [var, value] : expr) {
+        double coeff = expr.rhs().constant();
+        for (const auto& [var, value] : expr.lhs()) {
             coeff += value.constant() * t_primal_solution.get(var);
         }
-        column.set(ctr, coeff);
+        column.components().set(ctr, coeff);
     }
 
     return { lb(), ub(), type(), std::move(column) };
 }
 
-Deprecated_Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
-    Deprecated_Row result = t_dual_solution.status() == Optimal ? Deprecated_Row(constant(), 0.) : Deprecated_Row();
+Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
+    Row result = t_dual_solution.status() == Optimal ? Row(constant(), 0.) : Row();
     for (auto [ctr, row] : *this) {
         row *= -t_dual_solution.get(ctr);
         result += row;
@@ -108,7 +108,7 @@ Solution::Primal ColumnGenerator::primal_solution(const ColumnGenerationSubProbl
 
 std::optional<Ctr> ColumnGenerator::contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) {
 
-    for (const auto& [var, ctr] : t_temporary_constraint.row()) {
+    for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
         if (var.model_id() != subproblem().id()) {
             return {};
         }

@@ -46,9 +46,9 @@ TEST_CASE("Var", "[variables][modeling]") {
 
     SECTION("create a new variable with Column") {
 
-        Deprecated_Column column(xi);
-        column.set(c1, 1 + 2 * xi);
-        column.set(c2, 3);
+        Column column(xi);
+        column.components().set(c1, 1 + 2 * xi);
+        column.components().set(c2, 3);
 
         auto x = model.add_variable(0., 1., Continuous, column);
 
@@ -61,7 +61,7 @@ TEST_CASE("Var", "[variables][modeling]") {
         CHECK(c1.get(x).get(xi) == 2._a);
         CHECK(c2.get(x).constant() == 3._a);
 
-        column.set(c1, 0.);
+        column.components().set(c1, 0.);
 
         CHECK(x.get(c1).constant() == 1._a);
 

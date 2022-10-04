@@ -1,7 +1,7 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "modeling/coefficients/Constant.h"
+#include "modeling/matrix/Constant.h"
 #include "modeling/numericals.h"
 
 Constant Constant::Zero;

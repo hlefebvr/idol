@@ -17,7 +17,7 @@
 #include <vector>
 
 class Env;
-class Deprecated_Column;
+class Column;
 
 class Model {
     static unsigned int s_id;
@@ -70,7 +70,7 @@ public:
     Param add_parameter(const Var& t_variable, std::string t_name = "");
     void remove(const Param& t_param);
 
-    Var add_variable(double t_lb, double t_ub, VarType t_type, Deprecated_Column t_column, std::string t_name = "");
+    Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
     Var add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
     Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
     void remove(const Var& t_var);
@@ -81,7 +81,7 @@ public:
 
     void add_listener(Listener& t_listener) const;
 
-    void update_objective(const Deprecated_Row& t_row);
+    void update_objective(const Row& t_row);
     void update_objective_offset(Constant t_offset);
     void update_objective(const Var& t_var, Constant t_coefficient);
     void update_rhs(const Ctr& t_ctr, Constant t_coefficient);

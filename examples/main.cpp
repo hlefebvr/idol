@@ -1,7 +1,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "algorithms/logs/Log.h"
-#include "modeling/expressions/LinExpr.h"
+#include "modeling/expressions/Expr.h"
 
 
 int main() {
@@ -14,11 +14,10 @@ int main() {
     Model model(env);
     auto x = model.add_variable(0., 1., Integer, 0.);
 
-    LinExpr map;
-    map.set(x, 3);
+    Expr expr(x);
 
-    for (auto [var, coeff] : map) {
-        std::cout << var << std::endl;
+    for (const auto& [var, coeff] : expr) {
+        std::cout << var << " * " << coeff << std::endl;
     }
 
     return 0;

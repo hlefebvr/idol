@@ -68,7 +68,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
                     branching_candidates.emplace_back(x[i].back());
                 }
 
-                Deprecated_Expr expr;
+                Expr expr;
                 for (unsigned int j = 0; j < n_items; ++j) {
                     expr += w[i][j] * x[i][j];
                 }
@@ -93,7 +93,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
                 for (unsigned int i = 0; i < n_knapsacks; ++i) {
                     expr += -1. * param_x[i][j];
                 }
-                rmp.add_constraint(Deprecated_Expr() == expr, "assign(" + std::to_string(j) + ")");
+                rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
             }
 
             auto solver = branch_and_price<

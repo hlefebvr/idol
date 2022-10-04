@@ -55,6 +55,7 @@ void impl::ObjectManager::free(const T &t_object) {
 
 class ObjectManager : public impl::ObjectManager {
     friend class Model;
+    friend class Matrix;
     explicit ObjectManager(Env& t_env) : impl::ObjectManager(t_env) {}
 public:
     ObjectManager(const ObjectManager&) = default;

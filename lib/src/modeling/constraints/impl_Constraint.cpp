@@ -7,15 +7,15 @@
 impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Constant&& t_rhs)
     : impl::Object(std::move(t_id)),
       m_type(t_type),
-      m_row(std::move(t_rhs)) {
+      m_row(Expr(), std::move(t_rhs)) {
 
 }
 
-const Deprecated_Row &impl::Ctr::row() const {
+const Row &impl::Ctr::row() const {
     return m_row;
 }
 
-Deprecated_Row &impl::Ctr::row() {
+Row &impl::Ctr::row() {
     return m_row;
 }
 

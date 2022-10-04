@@ -7,7 +7,7 @@
 
 #include "../objects/impl_Object.h"
 #include "../Types.h"
-#include "../columns_and_rows/Deprecated_Row.h"
+#include "../expressions/Row.h"
 
 namespace impl {
     class Ctr;
@@ -17,7 +17,7 @@ class TempCtr;
 
 class impl::Ctr : public impl::Object {
     CtrType m_type;
-    Deprecated_Row m_row;
+    Row m_row;
 public:
     Ctr(ObjectId&& t_id, CtrType t_type, Constant&& t_rhs);
     Ctr(ObjectId&& t_id, TempCtr&& t_temporary_constraint);
@@ -26,9 +26,9 @@ public:
 
     void set_type(CtrType t_type) { m_type = t_type; }
 
-    Deprecated_Row& row();
+    Row& row();
 
-    const Deprecated_Row& row() const;
+    const Row& row() const;
 };
 
 #endif //OPTIMIZE_IMPL_CONSTRAINT_H

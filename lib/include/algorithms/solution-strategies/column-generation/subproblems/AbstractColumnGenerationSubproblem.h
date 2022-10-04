@@ -23,9 +23,9 @@ public:
 
     virtual void save_last_primal_solution() = 0;
 
-    [[nodiscard]] virtual Deprecated_Row get_pricing_objective(const Solution::Dual& t_duals) const = 0;
+    [[nodiscard]] virtual Row get_pricing_objective(const Solution::Dual& t_duals) const = 0;
 
-    virtual void update_pricing_objective(const Deprecated_Row& t_objective) = 0;
+    virtual void update_pricing_objective(const Row& t_objective) = 0;
 
     [[nodiscard]] virtual bool is_unbounded() const = 0;
 

@@ -2,13 +2,14 @@
 // Created by henri on 03/10/22.
 //
 
-#ifndef OPTIMIZE_LINEXPR_H
-#define OPTIMIZE_LINEXPR_H
+#ifndef OPTIMIZE_EXPR_H
+#define OPTIMIZE_EXPR_H
 
 #include "containers/Map.h"
-#include "modeling/coefficients/AbstractMatrixCoefficient.h"
-#include "modeling/coefficients/Constant.h"
-#include "modeling/coefficients/MatrixCoefficient.h"
+#include "containers/IteratorForward.h"
+#include "modeling/matrix/AbstractMatrixCoefficient.h"
+#include "modeling/matrix/Constant.h"
+#include "modeling/matrix/MatrixCoefficient.h"
 #include "modeling/variables/Variable.h"
 #include "errors/Exception.h"
 #include <memory>
@@ -24,33 +25,34 @@
  * @tparam Key The type of elements for the first vector (the second vector type is always Constant).
  */
 template<class Key = Var>
-class LinExpr {
+class Expr {
+    friend class Matrix;
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>>;
     MapType m_map;
 public:
-    LinExpr() = default;
-    LinExpr(const Key& t_key); // NOLINT(google-explicit-constructor)
-    LinExpr(Constant t_factor, const Key& t_key);
+    Expr() = default;
+    Expr(const Key& t_key); // NOLINT(google-explicit-constructor)
+    Expr(Constant t_factor, const Key& t_key);
 
     /**
      * Copy constructor. Every terms are copied by value.
      * @param t_src The source object to copy.
      */
-    LinExpr(const LinExpr<Key>& t_src);
+    Expr(const Expr<Key>& t_src);
 
     /**
      * Move constructor. Every terms are moved.
      * Meaning that MatrixCoefficientReference-s remain MatrixCoefficientReference-s, if any.
      * @param t_src
      */
-    LinExpr(LinExpr<Key>&& t_src) noexcept = default;
+    Expr(Expr<Key>&& t_src) noexcept = default;
 
     /**
      * Assignment operator. Every term is copied by value.
      * @param t_src The source object to assign.
      * @return The object itself.
      */
-    LinExpr<Key>& operator=(const LinExpr<Key>& t_src);
+    Expr<Key>& operator=(const Expr<Key>& t_src);
 
     /**
      * Assignment move operator. Every term is moved.
@@ -58,7 +60,7 @@ public:
      * @param t_src The source object to assign.
      * @return The object itself.
      */
-    LinExpr<Key>& operator=(LinExpr<Key>&& t_src) noexcept = default;
+    Expr<Key>& operator=(Expr<Key>&& t_src) noexcept = default;
 
     /**
      * Adds up every term of t_rhs to the Expr.
@@ -66,7 +68,7 @@ public:
      * @param t_rhs The object whose terms are to be added up.
      * @return The object itself.
      */
-    LinExpr<Key>& operator+=(const LinExpr<Key>& t_rhs);
+    Expr<Key>& operator+=(const Expr<Key>& t_rhs);
 
     /**
      * Subtracts every term of t_rhs to the Expr.
@@ -74,14 +76,14 @@ public:
      * @param t_rhs The object whose terms are to be subtracted.
      * @return The object itself.
      */
-    LinExpr<Key>& operator-=(const LinExpr<Key>& t_rhs);
+    Expr<Key>& operator-=(const Expr<Key>& t_rhs);
 
     /**
      * Multiplies every term of the Expr by t_factor. If t_factor equals zero with tolerance ToleranceForSparsity, then the Expr is emptied.
      * @param t_factor The multiplying factor.
      * @return The object itself.
      */
-    LinExpr<Key>& operator*=(double t_factor);
+    Expr<Key>& operator*=(double t_factor);
 
     /**
      * Updates the coefficient associated to t_key.
@@ -121,7 +123,7 @@ public:
      */
     [[nodiscard]] bool empty() const { return m_map.empty(); }
 
-    virtual ~LinExpr() = default;
+    virtual ~Expr() = default;
 
     class const_iterator;
 
@@ -134,28 +136,34 @@ public:
      * Can be used to substitute, for instance, a Var by an Expr (e.g., \f$ x = \sum_e \alpha_e\textbf x^e \f$).
      * @param t_function A function which returns an optional expression to replace its argument.
      */
-    void replace_if(const std::function<std::optional<LinExpr<Key>>(const Key&)>& t_function);
+    void replace_if(const std::function<std::optional<Expr<Key>>(const Key&)>& t_function);
+
+    /**
+     * Removes the entry associated to the given key.
+     * @param t_key The key for which the entry should be removed.
+     */
+    void remove(const Key& t_key);
 };
 
 template<class Key>
-LinExpr<Key>::LinExpr(const Key &t_key) {
+Expr<Key>::Expr(const Key &t_key) {
     set(t_key, 1.);
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(Constant t_factor, const Key &t_key) {
+Expr<Key>::Expr(Constant t_factor, const Key &t_key) {
     set(t_key, std::move(t_factor));
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(const LinExpr<Key> &t_src) {
+Expr<Key>::Expr(const Expr<Key> &t_src) {
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
         m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
     }
 }
 
 template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator=(const LinExpr<Key> &t_src) {
+Expr<Key> &Expr<Key>::operator=(const Expr<Key> &t_src) {
     if (this == &t_src) { return *this; }
     m_map.clear();
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
@@ -165,7 +173,7 @@ LinExpr<Key> &LinExpr<Key>::operator=(const LinExpr<Key> &t_src) {
 }
 
 template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator+=(const LinExpr<Key> &t_rhs) {
+Expr<Key> &Expr<Key>::operator+=(const Expr<Key> &t_rhs) {
     for (const auto& [key, value] : t_rhs) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
@@ -178,7 +186,7 @@ LinExpr<Key> &LinExpr<Key>::operator+=(const LinExpr<Key> &t_rhs) {
 }
 
 template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator-=(const LinExpr<Key> &t_rhs) {
+Expr<Key> &Expr<Key>::operator-=(const Expr<Key> &t_rhs) {
     for (const auto& [key, value] : t_rhs) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
@@ -191,7 +199,7 @@ LinExpr<Key> &LinExpr<Key>::operator-=(const LinExpr<Key> &t_rhs) {
 }
 
 template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator*=(double t_factor) {
+Expr<Key> &Expr<Key>::operator*=(double t_factor) {
     if (equals(t_factor, 0., ToleranceForSparsity)) {
         m_map.clear();
         return *this;
@@ -203,7 +211,7 @@ LinExpr<Key> &LinExpr<Key>::operator*=(double t_factor) {
 }
 
 template<class Key>
-bool LinExpr<Key>::set(const Key &t_key, Constant t_coefficient) {
+bool Expr<Key>::set(const Key &t_key, Constant t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
@@ -221,7 +229,7 @@ bool LinExpr<Key>::set(const Key &t_key, Constant t_coefficient) {
 }
 
 template<class Key>
-bool LinExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
+bool Expr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
     if (t_coefficient.empty()) {
         m_map.erase(t_key);
         return true;
@@ -235,20 +243,20 @@ bool LinExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coeffici
 }
 
 template<class Key>
-const Constant &LinExpr<Key>::get(const Key &t_key) const {
+const Constant &Expr<Key>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
     return it == m_map.end() ? Constant::Zero : it->second->value();
 }
 
 template<class Key>
-void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(const Key &)> &t_function) {
-    std::list<LinExpr<Key>> to_add;
+void Expr<Key>::replace_if(const std::function<std::optional<Expr<Key>>(const Key &)> &t_function) {
+    std::list<Expr<Key>> to_add;
 
     auto it = m_map.begin();
     const auto end = m_map.end();
     while (it != end) {
         if (auto result = t_function(it->first) ; result.has_value()) {
-            auto expr = it->second * result.value();
+            auto expr = it->second->value().constant() * result.value();
             to_add.template emplace_back(std::move(expr));
             it = m_map.erase(it);
         } else {
@@ -262,48 +270,68 @@ void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(co
 }
 
 template<class Key>
-class LinExpr<Key>::const_iterator {
-    typename LinExpr<Key>::MapType::const_iterator m_it;
+void Expr<Key>::remove(const Key &t_key) {
+    m_map.erase(t_key);
+}
+
+template<class Key>
+class Expr<Key>::const_iterator {
+    typename Expr<Key>::MapType::const_iterator m_it;
 public:
-    explicit const_iterator(const typename LinExpr<Key>::MapType::const_iterator& t_it) : m_it(t_it) {}
+    explicit const_iterator(const typename Expr<Key>::MapType::const_iterator& t_it) : m_it(t_it) {}
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
     std::pair<const Key&, const Constant&> operator*() const {
-        return std::make_pair<const Key&, const Constant&>(m_it->first, m_it->second->value());
+        return { m_it->first, m_it->second->value() };
     }
 };
 
+static Expr<Var> operator+(const Var& t_a, const Var& t_b) {
+    Expr<Var> result(t_a);
+    result += t_b;
+    return result;
+}
+
+static Expr<Var> operator+(Expr<Var> t_a, const Var& t_b) {
+    Expr<Var> result(std::move(t_a));
+    result += t_b;
+    return result;
+}
+
+static Expr<Var> operator+(const Var& t_b, Expr<Var> t_a) {
+    return std::move(t_a) + t_b;
+}
 
 template<class Key>
-LinExpr<Key> operator*(double t_factor, const Key& t_var) {
+Expr<Key> operator*(double t_factor, const Key& t_var) {
     return { t_factor, t_var };
 }
 
 template<class Key>
-LinExpr<Key> operator*(Constant t_factor, const Key& t_var) {
+Expr<Key> operator*(Constant t_factor, const Key& t_var) {
     return { std::move(t_factor), t_var };
 }
 
 template<class Key>
-LinExpr<Key> operator*(double t_factor, LinExpr<Key> t_expr) {
-    LinExpr<Key> result(std::move(t_expr));
+Expr<Key> operator*(double t_factor, Expr<Key> t_expr) {
+    Expr<Key> result(std::move(t_expr));
     result *= t_factor;
     return result;
 }
 
 template<class Key>
-LinExpr<Key> operator+(LinExpr<Key> t_a, const LinExpr<Key>& t_b) {
-    LinExpr<Key> result(std::move(t_a));
+Expr<Key> operator+(Expr<Key> t_a, const Expr<Key>& t_b) {
+    Expr<Key> result(std::move(t_a));
     result += t_b;
     return result;
 }
 
 template<class Key>
-LinExpr<Key> operator-(LinExpr<Key> t_a, const LinExpr<Key>& t_b) {
-    LinExpr<Key> result(std::move(t_a));
+Expr<Key> operator-(Expr<Key> t_a, const Expr<Key>& t_b) {
+    Expr<Key> result(std::move(t_a));
     result -= t_b;
     return result;
 }
 
-#endif //OPTIMIZE_LINEXPR_H
+#endif //OPTIMIZE_EXPR_H
