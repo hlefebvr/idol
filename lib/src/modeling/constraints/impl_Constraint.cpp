@@ -4,18 +4,18 @@
 #include "modeling/constraints/impl_Constraint.h"
 #include "modeling/constraints/TempCtr.h"
 
-impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Coefficient&& t_rhs)
+impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Constant&& t_rhs)
     : impl::Object(std::move(t_id)),
       m_type(t_type),
       m_row(std::move(t_rhs)) {
 
 }
 
-const Row &impl::Ctr::row() const {
+const Deprecated_Row &impl::Ctr::row() const {
     return m_row;
 }
 
-Row &impl::Ctr::row() {
+Deprecated_Row &impl::Ctr::row() {
     return m_row;
 }
 

@@ -61,15 +61,15 @@ void Gurobi::remove_constraint(const Ctr &t_ctr) {
     m_model.remove(get(t_ctr));
 }
 
-void Gurobi::set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) {
+void Gurobi::set_objective_coefficient(const Var &t_var, const Constant &t_coeff) {
     get(t_var).set(GRB_DoubleAttr_Obj, value(t_coeff));
 }
 
-void Gurobi::set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
+void Gurobi::set_rhs(const Ctr &t_ctr, const Constant &t_coeff) {
     get(t_ctr).set(GRB_DoubleAttr_RHS, value(t_coeff));
 }
 
-void Gurobi::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) {
+void Gurobi::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) {
     m_model.chgCoeff(get(t_ctr), get(t_var), value(t_coefficient));
 }
 
@@ -191,7 +191,7 @@ bool Gurobi::presolve() const {
     return m_model.get(GRB_IntParam_Presolve);
 }
 
-void Gurobi::set_objective_offset(const Coefficient &t_offset) {
+void Gurobi::set_objective_offset(const Constant &t_offset) {
     m_model.set(GRB_DoubleAttr_ObjCon, value(t_offset));
 }
 

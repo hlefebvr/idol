@@ -2,7 +2,7 @@
 // Created by henri on 07/09/22.
 //
 #include "modeling/models/Model.h"
-#include "modeling/columns_and_rows/ColumnOrRowReference.h"
+#include "modeling/columns_and_rows/Deprecated_ColumnOrRowReference.h"
 
 unsigned int Model::s_id = 0;
 
@@ -30,7 +30,7 @@ void Model::remove(const Param &t_param) {
     remove_object(m_parameters, t_param);
 }
 
-Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
+Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Deprecated_Column t_column, std::string t_name) {
     auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
     add_created_variable(variable);
     return variable;
@@ -42,8 +42,8 @@ Var Model::add_variable(TempVar t_temporary_variable, std::string t_name) {
     return variable;
 }
 
-Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name) {
-    return add_variable(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
+Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name) {
+    return add_variable(t_lb, t_ub, t_type, Deprecated_Column(std::move(t_objective_coefficient)), std::move(t_name));
 }
 
 void Model::add_created_variable(const Var &t_var) {
@@ -72,14 +72,14 @@ Ctr Model::add_constraint(TempCtr t_temporary_constraint, std::string t_name) {
     return constraint;
 }
 
-Ctr Model::add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name) {
+Ctr Model::add_constraint(CtrType t_type, Constant t_rhs, std::string t_name) {
     if (t_type == Equal) {
-        return add_constraint(Expr() == std::move(t_rhs), std::move(t_name));
+        return add_constraint(Deprecated_Expr() == std::move(t_rhs), std::move(t_name));
     }
     if (t_type == LessOrEqual) {
-        return add_constraint(Expr() <= std::move(t_rhs), std::move(t_name));
+        return add_constraint(Deprecated_Expr() <= std::move(t_rhs), std::move(t_name));
     }
-    return add_constraint(Expr() >= std::move(t_rhs), std::move(t_name));
+    return add_constraint(Deprecated_Expr() >= std::move(t_rhs), std::move(t_name));
 }
 
 void Model::add_row_to_columns(const Ctr &t_ctr) {
@@ -95,7 +95,7 @@ void Model::remove(const Ctr &t_ctr) {
     remove_object(m_constraints, t_ctr);
 }
 
-void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Coefficient t_coefficient) {
+void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
 
     m_listeners.broadcast_update_coefficient(t_ctr, t_var, t_coefficient);
 
@@ -107,26 +107,26 @@ void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Coefficient t
 
 }
 
-void Model::update_objective(const Var &t_var, Coefficient t_coefficient) {
+void Model::update_objective(const Var &t_var, Constant t_coefficient) {
     m_listeners.broadcast_update_objective(t_var, t_coefficient);
     m_objects.impl(t_var).column().set_constant(std::move(t_coefficient));
 }
 
 
-void Model::update_objective(const Row &t_row) {
+void Model::update_objective(const Deprecated_Row &t_row) {
     update_objective_offset(t_row.constant());
     for (const auto& var : m_variables) {
         update_objective(var, t_row.get(var)); // TODO this is inefficient as it is done even for zero values
     }
 }
 
-void Model::update_objective_offset(Coefficient t_offset) {
+void Model::update_objective_offset(Constant t_offset) {
     m_listeners.broadcast_update_objective_offset(t_offset);
     m_objective_offset = std::move(t_offset);
 }
 
 
-void Model::update_rhs(const Ctr &t_ctr, Coefficient t_coefficient) {
+void Model::update_rhs(const Ctr &t_ctr, Constant t_coefficient) {
     m_listeners.broadcast_update_rhs(t_ctr, t_coefficient);
     m_objects.impl(t_ctr).row().set_constant(std::move(t_coefficient));
 }

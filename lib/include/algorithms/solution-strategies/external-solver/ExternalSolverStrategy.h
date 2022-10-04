@@ -57,7 +57,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    void set_objective(const Row &t_objective) override;
+    void set_objective(const Deprecated_Row &t_objective) override;
 
     Var add_column(TempVar t_temporary_variable) override;
 
@@ -84,7 +84,7 @@ void ExternalSolverStrategy<SolverT>::set_upper_bound(const Var &t_var, double t
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_objective(const Row &t_objective) {
+void ExternalSolverStrategy<SolverT>::set_objective(const Deprecated_Row &t_objective) {
     m_model.update_objective(t_objective);
 }
 

@@ -22,16 +22,16 @@ protected:
     void on_add(const Ctr &t_ctr) final;
     void on_remove(const Var& t_var) final;
     void on_remove(const Ctr& t_ctr) final;
-    void on_update_objective(const Var &t_var, const Coefficient &t_coeff) final;
-    void on_update_objective_offset(const Coefficient &t_offset) final;
-    void on_update_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) final;
-    void on_update_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) final;
+    void on_update_objective(const Var &t_var, const Constant &t_coeff) final;
+    void on_update_objective_offset(const Constant &t_offset) final;
+    void on_update_rhs(const Ctr &t_ctr, const Constant &t_coeff) final;
+    void on_update_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) final;
     void on_update_lb(const Var &t_var, double t_lb) final;
     void on_update_ub(const Var &t_var, double t_ub) final;
     void on_update_type(const Var &t_var, VarType t_type) final;
     void on_update_type(const Ctr &t_ctr, CtrType t_type) final;
 
-    [[nodiscard]] double value(const Coefficient& t_coefficient) const;
+    [[nodiscard]] double value(const Constant& t_coefficient) const;
 
     void init_model(const Model& t_model);
     virtual VarT create_variable(const Var& t_var) = 0;
@@ -40,10 +40,10 @@ protected:
     virtual void fill_row(const Ctr& t_ctr) = 0;
     virtual void remove_variable(const Var& t_var) = 0;
     virtual void remove_constraint(const Ctr& t_ctr) = 0;
-    virtual void set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) = 0;
-    virtual void set_objective_offset(const Coefficient& t_offset) = 0;
-    virtual void set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) = 0;
-    virtual void set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) = 0;
+    virtual void set_objective_coefficient(const Var &t_var, const Constant &t_coeff) = 0;
+    virtual void set_objective_offset(const Constant& t_offset) = 0;
+    virtual void set_rhs(const Ctr &t_ctr, const Constant &t_coeff) = 0;
+    virtual void set_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) = 0;
     virtual void set_lb(const Var &t_var, double t_lb) = 0;
     virtual void set_ub(const Var &t_var, double t_ub) = 0;
     virtual void set_type(const Var &t_var, VarType t_type) = 0;
@@ -131,18 +131,18 @@ void BaseSolver<VarT, CtrT>::on_remove(const Ctr &t_ctr) {
 }
 
 template<class VarT, class CtrT>
-void BaseSolver<VarT, CtrT>::on_update_objective(const Var &t_var, const Coefficient &t_coeff) {
+void BaseSolver<VarT, CtrT>::on_update_objective(const Var &t_var, const Constant &t_coeff) {
     set_objective_coefficient(t_var, t_coeff);
 }
 
 template<class VarT, class CtrT>
-void BaseSolver<VarT, CtrT>::on_update_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
+void BaseSolver<VarT, CtrT>::on_update_rhs(const Ctr &t_ctr, const Constant &t_coeff) {
     set_rhs(t_ctr, t_coeff);
 }
 
 template<class VarT, class CtrT>
 void
-BaseSolver<VarT, CtrT>::on_update_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) {
+BaseSolver<VarT, CtrT>::on_update_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) {
     set_coefficient(t_ctr, t_var, t_coefficient);
 }
 
@@ -167,7 +167,7 @@ void BaseSolver<VarT, CtrT>::on_update_type(const Ctr &t_ctr, CtrType t_type) {
 }
 
 template<class VarT, class CtrT>
-void BaseSolver<VarT, CtrT>::on_update_objective_offset(const Coefficient &t_offset) {
+void BaseSolver<VarT, CtrT>::on_update_objective_offset(const Constant &t_offset) {
     set_objective_offset(t_offset);
 }
 
@@ -190,7 +190,7 @@ void BaseSolver<VarT, CtrT>::init_model(const Model &t_model) {
 }
 
 template<class VarT, class CtrT>
-double BaseSolver<VarT, CtrT>::value(const Coefficient &t_coefficient) const {
+double BaseSolver<VarT, CtrT>::value(const Constant &t_coefficient) const {
     return t_coefficient.constant();
 }
 

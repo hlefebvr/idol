@@ -36,7 +36,7 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     knapsack_constraints.reserve(n_knapsacks);
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        Expr expr;
+        Deprecated_Expr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
             expr += w[i][j] * x[i][j];
         }
@@ -49,7 +49,7 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     assignment_constraints.reserve(n_items);
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
-        Expr expr;
+        Deprecated_Expr expr;
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             expr += x[i][j];
         }

@@ -12,7 +12,7 @@
 
 class Var;
 class Ctr;
-class Coefficient;
+class Constant;
 
 class ListenerManager;
 
@@ -23,10 +23,10 @@ public:
     void broadcast_remove(const Var& t_var);
     void broadcast_add(const Ctr& t_ctr);
     void broadcast_remove(const Ctr& t_ctr);
-    void broadcast_update_objective(const Var& t_var, const Coefficient& t_coeff);
-    void broadcast_update_objective_offset(const Coefficient& t_coeff);
-    void broadcast_update_rhs(const Ctr& t_ctr, const Coefficient& t_coeff);
-    void broadcast_update_coefficient(const Ctr& t_ctr, const Var& t_var, const Coefficient& t_coefficient);
+    void broadcast_update_objective(const Var& t_var, const Constant& t_coeff);
+    void broadcast_update_objective_offset(const Constant& t_coeff);
+    void broadcast_update_rhs(const Ctr& t_ctr, const Constant& t_coeff);
+    void broadcast_update_coefficient(const Ctr& t_ctr, const Var& t_var, const Constant& t_coefficient);
     void broadcast_update_lb(const Var& t_var, double t_lb);
     void broadcast_update_ub(const Var& t_var, double t_ub);
     void broadcast_update_type(const Var& t_var, VarType t_type);

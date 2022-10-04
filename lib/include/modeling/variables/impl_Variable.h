@@ -7,7 +7,7 @@
 
 #include "../objects/impl_Object.h"
 #include "../Types.h"
-#include "../columns_and_rows/Column.h"
+#include "../columns_and_rows/Deprecated_Column.h"
 
 namespace impl {
     class Var;
@@ -19,14 +19,14 @@ class impl::Var : public impl::Object {
     double m_lb;
     double m_ub;
     VarType m_type;
-    Column m_column;
+    Deprecated_Column m_column;
 public:
-    Var(ObjectId&& t_id, double t_lb, double t_ub, VarType t_type, Column&& t_column);
+    Var(ObjectId&& t_id, double t_lb, double t_ub, VarType t_type, Deprecated_Column&& t_column);
     Var(ObjectId&& t_id, TempVar&& t_temporary_variable);
 
-    Column& column();
+    Deprecated_Column& column();
 
-    const Column& column() const;
+    const Deprecated_Column& column() const;
 
     void set_lb(double t_lb) { m_lb = t_lb; }
 

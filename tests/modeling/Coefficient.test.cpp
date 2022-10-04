@@ -14,7 +14,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("constructor with no argument") {
 
-        Coefficient expr;
+        Constant expr;
 
         CHECK(expr.size() == 0);
         CHECK(expr.constant() == 0.);
@@ -23,7 +23,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("constructor with double") {
 
-        Coefficient expr(1.);
+        Constant expr(1.);
 
         CHECK(expr.size() == 0);
         CHECK(expr.constant() == 1.);
@@ -34,7 +34,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         SECTION("with a non-zero value") {
 
-            Coefficient expr(a, 1.);
+            Constant expr(a, 1.);
             
             CHECK(expr.size() == 1);
             CHECK(expr.constant() == 0.);
@@ -44,7 +44,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         SECTION("with zero") {
 
-            Coefficient expr(a, 0.);
+            Constant expr(a, 0.);
 
             CHECK(expr.size() == 0);
             CHECK(expr.constant() == 0.);
@@ -200,7 +200,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("set non-zero coefficient") {
 
-        Coefficient expr;
+        Constant expr;
         expr.set(a, 3);
 
         CHECK(expr.get(a) == 3._a);
@@ -216,7 +216,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("set zero coefficient") {
 
-        Coefficient expr;
+        Constant expr;
         expr.set(a, 0);
 
         CHECK(expr.get(a) == 0._a);
@@ -226,7 +226,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
     SECTION("remove non-zero coefficient by setting it to zero") {
 
-        Coefficient expr = 3 * a + b;
+        Constant expr = 3 * a + b;
 
         expr.set(a, 0.);
 

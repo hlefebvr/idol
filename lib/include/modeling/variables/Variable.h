@@ -13,8 +13,8 @@ namespace impl {
     class Var;
 }
 
-class Column;
-class Coefficient;
+class Deprecated_Column;
+class Constant;
 class Ctr;
 
 /**
@@ -71,20 +71,20 @@ public:
      * Returns the current objective coefficient of the variable.
      * It may be modified by calling the Model::update_objective method.
      */
-    [[nodiscard]] const Coefficient& obj() const;
+    [[nodiscard]] const Constant& obj() const;
 
     /**
      * Returns the coefficient of the variable in the constraint given as argument.
      * It may be modified by calling the Model::update_coefficient method.
      * @param t_ctr The constraint in which the variable is queried.
      */
-    [[nodiscard]] const Coefficient& get(const Ctr& t_ctr) const;
+    [[nodiscard]] const Constant& get(const Ctr& t_ctr) const;
 
     /**
      * Returns the current column associated to the variable.
      * It may be modified by calling the Model::update_coefficient method.
      */
-    [[nodiscard]] const Column& column() const;
+    [[nodiscard]] const Deprecated_Column& column() const;
 
     /**
      * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).

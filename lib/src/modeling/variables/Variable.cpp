@@ -12,7 +12,7 @@ const std::string &Var::name() const {
     return m_impl->name();
 }
 
-const Column &Var::column() const {
+const Deprecated_Column &Var::column() const {
     return m_impl->column();
 }
 
@@ -28,11 +28,11 @@ VarType Var::type() const {
     return m_impl->type();
 }
 
-const Coefficient& Var::obj() const {
+const Constant& Var::obj() const {
     return m_impl->column().constant();
 }
 
-const Coefficient &Var::get(const Ctr &t_ctr) const {
+const Constant &Var::get(const Ctr &t_ctr) const {
     return m_impl->column().get(t_ctr);
 }
 

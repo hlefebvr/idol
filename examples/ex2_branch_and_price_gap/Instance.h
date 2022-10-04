@@ -46,7 +46,7 @@ public:
         result.reserve(n_knapsacks);
 
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-            Expr expr;
+            Deprecated_Expr expr;
             for (unsigned int j = 0 ; j < n_items ; ++j) {
                 expr += w[i][j] * t_x[i][j];
             }
@@ -63,7 +63,7 @@ public:
         result.reserve(n_items);
 
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            Expr expr;
+            Deprecated_Expr expr;
             for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
                 expr += t_x[i][j];
             }

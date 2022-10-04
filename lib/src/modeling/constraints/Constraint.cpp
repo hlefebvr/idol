@@ -13,15 +13,15 @@ const std::string &Ctr::name() const {
     return m_impl->name();
 }
 
-const Row &Ctr::row() const {
+const Deprecated_Row &Ctr::row() const {
     return m_impl->row();
 }
 
-const Coefficient &Ctr::rhs() const {
+const Constant &Ctr::rhs() const {
     return m_impl->row().constant();
 }
 
-const Coefficient &Ctr::get(const Var &t_var) const {
+const Constant &Ctr::get(const Var &t_var) const {
     return m_impl->row().get(t_var);
 }
 
@@ -53,7 +53,7 @@ bool Ctr::is_violated(const Solution::Primal &t_solution) const {
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
     t_os << t_ctr.name() << " : ";
-    t_os << (AbstractExpr<Var>&) t_ctr.row();
+    t_os << (Deprecated_AbstractExpr<Var>&) t_ctr.row();
     switch (t_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;
         case GreaterOrEqual: t_os << " >= "; break;

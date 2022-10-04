@@ -25,12 +25,12 @@ Solution::Dual ColumnGenerationSubProblem::dual_solution() const {
 }
 
 
-Row ColumnGenerationSubProblem::get_pricing_objective(const Solution::Dual &t_duals) const {
+Deprecated_Row ColumnGenerationSubProblem::get_pricing_objective(const Solution::Dual &t_duals) const {
     return m_generator->get_pricing_objective(t_duals);
 }
 
 
-void ColumnGenerationSubProblem::update_pricing_objective(const Row &t_objective) {
+void ColumnGenerationSubProblem::update_pricing_objective(const Deprecated_Row &t_objective) {
     m_exact_solution_strategy->set_objective(t_objective);
 }
 

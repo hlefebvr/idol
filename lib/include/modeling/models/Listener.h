@@ -10,7 +10,7 @@
 
 class Var;
 class Ctr;
-class Coefficient;
+class Constant;
 class ListenerManager;
 
 class Listener {
@@ -24,10 +24,10 @@ protected:
     virtual void on_remove(const Var& t_var) {}
     virtual void on_add(const Ctr& t_ctr) {}
     virtual void on_remove(const Ctr& t_ctr) {}
-    virtual void on_update_objective(const Var& t_var, const Coefficient& t_coeff) {}
-    virtual void on_update_objective_offset(const Coefficient& t_coeff) {}
-    virtual void on_update_rhs(const Ctr& t_ctr, const Coefficient& t_coeff) {}
-    virtual void on_update_coefficient(const Ctr& t_ctr, const Var& t_var, const Coefficient& t_coefficient) {}
+    virtual void on_update_objective(const Var& t_var, const Constant& t_coeff) {}
+    virtual void on_update_objective_offset(const Constant& t_coeff) {}
+    virtual void on_update_rhs(const Ctr& t_ctr, const Constant& t_coeff) {}
+    virtual void on_update_coefficient(const Ctr& t_ctr, const Var& t_var, const Constant& t_coefficient) {}
     virtual void on_update_lb(const Var& t_var, double t_lb) {}
     virtual void on_update_ub(const Var& t_var, double t_ub) {}
     virtual void on_update_type(const Var& t_var, VarType t_type) {}

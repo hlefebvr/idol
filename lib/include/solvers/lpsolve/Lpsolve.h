@@ -48,13 +48,13 @@ protected:
 
     void remove_constraint(const Ctr &t_ctr) override;
 
-    void set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) override;
+    void set_objective_coefficient(const Var &t_var, const Constant &t_coeff) override;
 
-    void set_objective_offset(const Coefficient &t_offset) override;
+    void set_objective_offset(const Constant &t_offset) override;
 
-    void set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) override;
+    void set_rhs(const Ctr &t_ctr, const Constant &t_coeff) override;
 
-    void set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) override;
+    void set_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) override;
 
     void set_lb(const Var &t_var, double t_lb) override;
 

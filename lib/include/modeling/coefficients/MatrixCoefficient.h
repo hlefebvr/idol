@@ -9,8 +9,8 @@
 
 class MatrixCoefficient : public MatrixCoefficientReference {
 public:
-    explicit MatrixCoefficient(Coefficient&& t_coefficient);
-    explicit MatrixCoefficient(const Coefficient& t_coefficient);
+    explicit MatrixCoefficient(Constant&& t_coefficient);
+    explicit MatrixCoefficient(const Constant& t_coefficient);
 
     MatrixCoefficient(const MatrixCoefficient&) = delete;
     MatrixCoefficient(MatrixCoefficient&&) noexcept = default;

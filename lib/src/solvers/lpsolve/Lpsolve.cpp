@@ -203,17 +203,17 @@ void Lpsolve::remove_constraint(const Ctr &t_ctr) {
     m_free_constraints.push(get(t_ctr));
 }
 
-void Lpsolve::set_objective_coefficient(const Var &t_var, const Coefficient &t_coeff) {
+void Lpsolve::set_objective_coefficient(const Var &t_var, const Constant &t_coeff) {
     const auto success = set_obj(model, get(t_var), value(t_coeff));
     throw_if_error(success, "could not set objective coefficient");
 }
 
-void Lpsolve::set_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
+void Lpsolve::set_rhs(const Ctr &t_ctr, const Constant &t_coeff) {
     const auto success = set_rh(model, get(t_ctr), value(t_coeff));
     throw_if_error(success, "could not set RHS");
 }
 
-void Lpsolve::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Coefficient &t_coefficient) {
+void Lpsolve::set_coefficient(const Ctr &t_ctr, const Var &t_var, const Constant &t_coefficient) {
     const auto success = set_mat(model, get(t_ctr), get(t_var), value(t_coefficient));
     throw_if_error(success, "could not set coefficient");
 }
@@ -411,7 +411,7 @@ bool Lpsolve::presolve() const {
     throw Exception("Not implemented.");
 }
 
-void Lpsolve::set_objective_offset(const Coefficient &t_offset) {
+void Lpsolve::set_objective_offset(const Constant &t_offset) {
     m_objective_offset = value(t_offset);
 }
 

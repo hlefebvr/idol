@@ -17,7 +17,7 @@
 #include <vector>
 
 class Env;
-class Column;
+class Deprecated_Column;
 
 class Model {
     static unsigned int s_id;
@@ -27,7 +27,7 @@ class Model {
     ObjectManager m_objects;
     mutable ListenerManager m_listeners;
 
-    Coefficient m_objective_offset;
+    Constant m_objective_offset;
     std::vector<Param> m_parameters;
     std::vector<Var> m_variables;
     std::vector<Var> m_abstract_variables;
@@ -70,22 +70,22 @@ public:
     Param add_parameter(const Var& t_variable, std::string t_name = "");
     void remove(const Param& t_param);
 
-    Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
-    Var add_variable(double t_lb, double t_ub, VarType t_type, Coefficient t_objective_coefficient, std::string t_name = "");
+    Var add_variable(double t_lb, double t_ub, VarType t_type, Deprecated_Column t_column, std::string t_name = "");
+    Var add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
     Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
     void remove(const Var& t_var);
 
-    Ctr add_constraint(CtrType t_type, Coefficient t_rhs, std::string t_name = "");
+    Ctr add_constraint(CtrType t_type, Constant t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     void remove(const Ctr& t_ctr);
 
     void add_listener(Listener& t_listener) const;
 
-    void update_objective(const Row& t_row);
-    void update_objective_offset(Coefficient t_offset);
-    void update_objective(const Var& t_var, Coefficient t_coefficient);
-    void update_rhs(const Ctr& t_ctr, Coefficient t_coefficient);
-    void update_coefficient(const Ctr& t_ctr, const Var& t_var, Coefficient t_coefficient);
+    void update_objective(const Deprecated_Row& t_row);
+    void update_objective_offset(Constant t_offset);
+    void update_objective(const Var& t_var, Constant t_coefficient);
+    void update_rhs(const Ctr& t_ctr, Constant t_coefficient);
+    void update_coefficient(const Ctr& t_ctr, const Var& t_var, Constant t_coefficient);
     void update_lb(const Var& t_var, double t_lb);
     void update_ub(const Var& t_var, double t_ub);
     void update_type(const Var& t_var, VarType t_type);

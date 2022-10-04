@@ -69,7 +69,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             std::vector<Var> x;
             x.reserve(items.size());
 
-            Expr sum_weight;
+            Deprecated_Expr sum_weight;
 
             for (const auto& [weight, profit] : items) {
                 auto var = model.add_variable(0., 1., Continuous, -profit);

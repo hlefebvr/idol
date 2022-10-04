@@ -2,28 +2,28 @@
 // Created by henri on 07/09/22.
 //
 
-#ifndef OPTIMIZE_COEFFICIENT_H
-#define OPTIMIZE_COEFFICIENT_H
+#ifndef OPTIMIZE_CONSTANT_H
+#define OPTIMIZE_CONSTANT_H
 
 #include "../../containers/Map.h"
 #include "../parameters/Param.h"
 #include "modeling/numericals.h"
 
-class Coefficient {
+class Constant {
     Map<Param, double> m_products;
     double m_constant = 0.;
 
     void insert_or_add(const Param& t_param, double t_value);
 public:
-    Coefficient() = default;
-    Coefficient(const Param& t_param, double t_value = 1.); // NOLINT(google-explicit-constructor)
-    Coefficient(double t_constant); // NOLINT(google-explicit-constructor)
+    Constant() = default;
+    Constant(const Param& t_param, double t_value = 1.); // NOLINT(google-explicit-constructor)
+    Constant(double t_constant); // NOLINT(google-explicit-constructor)
 
-    Coefficient(const Coefficient&) = default;
-    Coefficient(Coefficient&&) noexcept = default;
+    Constant(const Constant&) = default;
+    Constant(Constant&&) noexcept = default;
 
-    Coefficient& operator=(const Coefficient&) = default;
-    Coefficient& operator=(Coefficient&&) noexcept = default;
+    Constant& operator=(const Constant&) = default;
+    Constant& operator=(Constant&&) noexcept = default;
 
     void set(const Param& t_param, double t_value);
 
@@ -49,22 +49,27 @@ public:
     const_iterator cbegin() const { return m_products.begin(); }
     const_iterator cend() const { return m_products.end(); }
 
-    Coefficient& operator*=(double t_factor);
+    Constant& operator*=(double t_factor);
 
-    Coefficient& operator+=(double t_term);
-    Coefficient& operator+=(Param t_term);
-    Coefficient& operator+=(const Coefficient& t_term);
+    Constant& operator+=(double t_term);
+    Constant& operator+=(Param t_term);
+    Constant& operator+=(const Constant& t_term);
+    Constant& operator-=(double t_term);
+    Constant& operator-=(Param t_term);
+    Constant& operator-=(const Constant& t_term);
 
-    static Coefficient Zero;
+    static Constant Zero;
 };
 
-Coefficient operator*(double t_factor, const Param& t_param);
+Constant operator*(double t_factor, const Param& t_param);
 
-Coefficient operator*(double t_factor, const Coefficient& t_coefficient);
+Constant operator*(double t_factor, const Constant& t_coefficient);
 
-Coefficient operator+(Coefficient t_a, const Coefficient& t_b);
+Constant operator+(Constant t_a, const Constant& t_b);
 
-static std::ostream& operator<<(std::ostream& t_os, const Coefficient& t_coefficient) {
+Constant operator-(const Constant& t_coefficient);
+
+static std::ostream& operator<<(std::ostream& t_os, const Constant& t_coefficient) {
 
     const auto print_term = [&t_os](const Param& t_param, double t_coeff) {
         if (!equals(t_coeff, 1., ToleranceForSparsity)) {
@@ -97,4 +102,4 @@ static std::ostream& operator<<(std::ostream& t_os, const Coefficient& t_coeffic
     return t_os;
 }
 
-#endif //OPTIMIZE_COEFFICIENT_H
+#endif //OPTIMIZE_CONSTANT_H

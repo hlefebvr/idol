@@ -7,12 +7,12 @@
 
 #include "AbstractMatrixCoefficient.h"
 
-class Coefficient;
+class Constant;
 
 class MatrixCoefficientReference : public AbstractMatrixCoefficient {
 protected:
-    Coefficient* m_coefficient = nullptr;
-    explicit MatrixCoefficientReference(Coefficient* t_coefficient) : m_coefficient(t_coefficient) {}
+    Constant* m_coefficient = nullptr;
+    explicit MatrixCoefficientReference(Constant* t_coefficient) : m_coefficient(t_coefficient) {}
 public:
     MatrixCoefficientReference() = default;
     explicit MatrixCoefficientReference(AbstractMatrixCoefficient& t_src) : m_coefficient(&t_src.value()) {}
@@ -25,11 +25,11 @@ public:
 
     [[nodiscard]] bool empty() const { return !m_coefficient; }
 
-    void set_value(Coefficient &&t_coefficient) override;
+    void set_value(Constant &&t_coefficient) override;
 
-    Coefficient &value() override { return *m_coefficient; }
+    Constant &value() override { return *m_coefficient; }
 
-    [[nodiscard]] const Coefficient &value() const override { return *m_coefficient; }
+    [[nodiscard]] const Constant &value() const override { return *m_coefficient; }
 
     MatrixCoefficientReference &operator*=(double t_factor) override;
 

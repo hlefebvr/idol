@@ -14,8 +14,8 @@ namespace impl {
     class Ctr;
 }
 
-class Row;
-class Coefficient;
+class Deprecated_Row;
+class Constant;
 class Var;
 
 namespace Solution {
@@ -64,20 +64,20 @@ public:
      * Returns the current right handside of the constraint.
      * It may be modified by calling the Model::update_rhs method.
      */
-    [[nodiscard]] const Coefficient& rhs() const;
+    [[nodiscard]] const Constant& rhs() const;
 
     /**
      * Returns the coefficient of the variable given as parameter in the constraint.
      * @param t_var The queried variable.
      */
-    [[nodiscard]] const Coefficient& get(const Var& t_var) const;
+    [[nodiscard]] const Constant& get(const Var& t_var) const;
 
     /**
      * Returns the current row associated to the constraint.
      * It may be modified by calling the Model::update_coefficient method.
      * @return
      */
-    [[nodiscard]] const Row& row() const;
+    [[nodiscard]] const Deprecated_Row& row() const;
 
     /**
      * Returns true if the constraint is violated by the solution given as parameter.

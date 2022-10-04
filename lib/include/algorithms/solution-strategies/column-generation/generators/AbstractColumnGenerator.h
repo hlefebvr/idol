@@ -33,7 +33,7 @@ public:
 
     [[nodiscard]] virtual TempVar create_column(const Solution::Primal& t_primal_solution) const = 0;
 
-    [[nodiscard]] virtual Row get_pricing_objective(const Solution::Dual& t_dual_solution) = 0;
+    [[nodiscard]] virtual Deprecated_Row get_pricing_objective(const Solution::Dual& t_dual_solution) = 0;
 
     [[nodiscard]] virtual Solution::Primal primal_solution(const ColumnGenerationSubProblem& t_subproblem, const Solution::Primal& t_rmp_primals) const = 0;
 

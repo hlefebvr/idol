@@ -4,16 +4,16 @@
 #include "modeling/constraints/TempCtr.h"
 #include "solvers/solutions/Solution.h"
 
-TempCtr operator<=(Expr t_expr, Coefficient t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
+TempCtr operator<=(Deprecated_Expr t_expr, Constant t_rhs) {
+    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
 }
 
-TempCtr operator>=(Expr t_expr, Coefficient t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
+TempCtr operator>=(Deprecated_Expr t_expr, Constant t_rhs) {
+    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
 }
 
-TempCtr operator==(Expr t_expr, Coefficient t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), Equal };
+TempCtr operator==(Deprecated_Expr t_expr, Constant t_rhs) {
+    return { Deprecated_Row(std::move(t_expr), std::move(t_rhs)), Equal };
 }
 
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
@@ -31,7 +31,7 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream &operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
-    t_os << (AbstractExpr<Var>&) t_temp_ctr.row();
+    t_os << (Deprecated_AbstractExpr<Var>&) t_temp_ctr.row();
     switch (t_temp_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;
         case GreaterOrEqual: t_os << " >= "; break;

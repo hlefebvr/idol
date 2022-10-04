@@ -46,7 +46,7 @@ TEST_CASE("Var", "[variables][modeling]") {
 
     SECTION("create a new variable with Column") {
 
-        Column column(xi);
+        Deprecated_Column column(xi);
         column.set(c1, 1 + 2 * xi);
         column.set(c2, 3);
 

@@ -2,11 +2,11 @@
 // Created by henri on 08/09/22.
 //
 
-#ifndef OPTIMIZE_ABSTRACTEXPR_H
-#define OPTIMIZE_ABSTRACTEXPR_H
+#ifndef OPTIMIZE_DEPRECATED_ABSTRACTEXPR_H
+#define OPTIMIZE_DEPRECATED_ABSTRACTEXPR_H
 
 #include "../coefficients/MatrixCoefficient.h"
-#include "../coefficients/Coefficient.h"
+#include "../coefficients/Constant.h"
 #include "modeling/numericals.h"
 #include "errors/Exception.h"
 #include <memory>
@@ -15,36 +15,36 @@
 #include <list>
 
 template<class Key>
-class AbstractExpr {
+class Deprecated_AbstractExpr {
 protected:
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>>;
     MapType m_map;
 
     template<class Iterator, class Output> class base_iterator;
 
-    std::pair<MatrixCoefficientReference, bool> insert_or_update(const Key& t_key, Coefficient t_coefficient);
+    std::pair<MatrixCoefficientReference, bool> insert_or_update(const Key& t_key, Constant t_coefficient);
 public:
-    AbstractExpr() = default;
-    AbstractExpr(Coefficient t_factor, const Key& t_key);
+    Deprecated_AbstractExpr() = default;
+    Deprecated_AbstractExpr(Constant t_factor, const Key& t_key);
 
-    virtual ~AbstractExpr() = default;
+    virtual ~Deprecated_AbstractExpr() = default;
 
-    AbstractExpr(const AbstractExpr& t_src);
-    AbstractExpr(AbstractExpr&& t_src) noexcept = default;
+    Deprecated_AbstractExpr(const Deprecated_AbstractExpr& t_src);
+    Deprecated_AbstractExpr(Deprecated_AbstractExpr&& t_src) noexcept = default;
 
-    AbstractExpr& operator=(const AbstractExpr& t_src);
-    AbstractExpr& operator=(AbstractExpr&& t_src) noexcept = default;
+    Deprecated_AbstractExpr& operator=(const Deprecated_AbstractExpr& t_src);
+    Deprecated_AbstractExpr& operator=(Deprecated_AbstractExpr&& t_src) noexcept = default;
 
-    virtual AbstractExpr& operator*=(double t_factor);
-    AbstractExpr& operator+=(const AbstractExpr& t_expr);
+    virtual Deprecated_AbstractExpr& operator*=(double t_factor);
+    Deprecated_AbstractExpr& operator+=(const Deprecated_AbstractExpr& t_expr);
 
-    void set(const Key& t_key, Coefficient t_coefficient);
+    void set(const Key& t_key, Constant t_coefficient);
 
     void set(const Key& t_key, MatrixCoefficientReference&& t_coefficient);
 
     [[nodiscard]] unsigned int size() const;
 
-    [[nodiscard]] const Coefficient& get(const Key& t_key) const;
+    [[nodiscard]] const Constant& get(const Key& t_key) const;
 
     struct Entry;
 
@@ -53,18 +53,18 @@ public:
     [[nodiscard]] const_iterator begin() const { return const_iterator(m_map.begin()); }
     [[nodiscard]] const_iterator end() const { return const_iterator(m_map.end()); }
 
-    void replace_if(const std::function<std::optional<AbstractExpr<Key>>(const Key&)>& t_function);
+    void replace_if(const std::function<std::optional<Deprecated_AbstractExpr<Key>>(const Key&)>& t_function);
 };
 
 template<class Key>
-AbstractExpr<Key>::AbstractExpr(const AbstractExpr &t_src) {
+Deprecated_AbstractExpr<Key>::Deprecated_AbstractExpr(const Deprecated_AbstractExpr &t_src) {
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
         m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
     }
 }
 
 template<class Key>
-AbstractExpr<Key> &AbstractExpr<Key>::operator=(const AbstractExpr &t_src) {
+Deprecated_AbstractExpr<Key> &Deprecated_AbstractExpr<Key>::operator=(const Deprecated_AbstractExpr &t_src) {
     if (this == &t_src) { return *this; }
     m_map.clear();
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
@@ -75,7 +75,7 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator=(const AbstractExpr &t_src) {
 
 template<class Key>
 std::pair<MatrixCoefficientReference, bool>
-AbstractExpr<Key>::insert_or_update(const Key &t_key, Coefficient t_coefficient) {
+Deprecated_AbstractExpr<Key>::insert_or_update(const Key &t_key, Constant t_coefficient) {
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
         return { MatrixCoefficientReference(), true };
@@ -92,23 +92,23 @@ AbstractExpr<Key>::insert_or_update(const Key &t_key, Coefficient t_coefficient)
 }
 
 template<class Key>
-void AbstractExpr<Key>::set(const Key &t_key, Coefficient t_coefficient) {
+void Deprecated_AbstractExpr<Key>::set(const Key &t_key, Constant t_coefficient) {
     insert_or_update(t_key, std::move(t_coefficient));
 }
 
 template<class Key>
-const Coefficient &AbstractExpr<Key>::get(const Key &t_key) const {
+const Constant &Deprecated_AbstractExpr<Key>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
-    return it == m_map.end() ? Coefficient::Zero : it->second->value();
+    return it == m_map.end() ? Constant::Zero : it->second->value();
 }
 
 template<class Key>
-unsigned int AbstractExpr<Key>::size() const {
+unsigned int Deprecated_AbstractExpr<Key>::size() const {
     return m_map.size();
 }
 
 template<class Key>
-void AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
+void Deprecated_AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
 
     if (t_coefficient.empty()) {
         m_map.erase(t_key);
@@ -122,12 +122,12 @@ void AbstractExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coe
 }
 
 template<class Key>
-AbstractExpr<Key>::AbstractExpr(Coefficient t_factor, const Key &t_key) {
+Deprecated_AbstractExpr<Key>::Deprecated_AbstractExpr(Constant t_factor, const Key &t_key) {
     set(t_key, std::move(t_factor));
 }
 
 template<class Key>
-AbstractExpr<Key> &AbstractExpr<Key>::operator*=(double t_factor) {
+Deprecated_AbstractExpr<Key> &Deprecated_AbstractExpr<Key>::operator*=(double t_factor) {
     if (equals(t_factor, 0., ToleranceForSparsity)) {
         m_map.clear();
         return *this;
@@ -139,7 +139,7 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator*=(double t_factor) {
 }
 
 template<class Key>
-AbstractExpr<Key> &AbstractExpr<Key>::operator+=(const AbstractExpr& t_expr) {
+Deprecated_AbstractExpr<Key> &Deprecated_AbstractExpr<Key>::operator+=(const Deprecated_AbstractExpr& t_expr) {
     for (const auto& [key, value] : t_expr) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
@@ -152,8 +152,8 @@ AbstractExpr<Key> &AbstractExpr<Key>::operator+=(const AbstractExpr& t_expr) {
 }
 
 template<class Key>
-void AbstractExpr<Key>::replace_if(const std::function<std::optional<AbstractExpr<Key>>(const Key &)> &t_function) {
-    std::list<AbstractExpr<Key>> to_add;
+void Deprecated_AbstractExpr<Key>::replace_if(const std::function<std::optional<Deprecated_AbstractExpr<Key>>(const Key &)> &t_function) {
+    std::list<Deprecated_AbstractExpr<Key>> to_add;
 
     auto it = m_map.begin();
     const auto end = m_map.end();
@@ -172,16 +172,16 @@ void AbstractExpr<Key>::replace_if(const std::function<std::optional<AbstractExp
 }
 
 template<class Key>
-struct AbstractExpr<Key>::Entry {
+struct Deprecated_AbstractExpr<Key>::Entry {
     Key first;
-    const Coefficient& second;
+    const Constant& second;
     explicit Entry(const std::pair<const Key, std::unique_ptr<AbstractMatrixCoefficient>>& t_pair) : first(t_pair.first), second(t_pair.second->value()) {}
-    explicit Entry(const Key& t_key, const Coefficient& t_coeff) : first(t_key), second(t_coeff) {}
+    explicit Entry(const Key& t_key, const Constant& t_coeff) : first(t_key), second(t_coeff) {}
 };
 
 template<class Key>
 template<class Iterator, class Output>
-class AbstractExpr<Key>::base_iterator {
+class Deprecated_AbstractExpr<Key>::base_iterator {
     Iterator m_it;
 public:
     explicit base_iterator(Iterator&& t_it) : m_it(std::move(t_it)) {}
@@ -192,9 +192,9 @@ public:
 };
 
 template<class Key>
-std::ostream &operator<<(std::ostream& t_os, const AbstractExpr<Key>& t_column_or_row) {
+std::ostream &operator<<(std::ostream& t_os, const Deprecated_AbstractExpr<Key>& t_column_or_row) {
 
-    const auto print_term = [&t_os](const Key& t_key, const Coefficient& t_coeff) {
+    const auto print_term = [&t_os](const Key& t_key, const Constant& t_coeff) {
         if (t_coeff.is_numerical()) {
             if (!equals(t_coeff.constant(), 1., ToleranceForSparsity)) {
                 t_os << t_coeff << ' ';
@@ -224,4 +224,4 @@ std::ostream &operator<<(std::ostream& t_os, const AbstractExpr<Key>& t_column_o
     return t_os;
 }
 
-#endif //OPTIMIZE_ABSTRACTEXPR_H
+#endif //OPTIMIZE_DEPRECATED_ABSTRACTEXPR_H

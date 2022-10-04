@@ -46,7 +46,7 @@ public:
         throw NotImplemented("Updating variable UB", "set_upper_bound");
     }
 
-    virtual void set_objective(const Row& t_objective) {
+    virtual void set_objective(const Deprecated_Row& t_objective) {
         throw NotImplemented("Updating objective", "set_objective");
     }
 

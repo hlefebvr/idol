@@ -7,18 +7,18 @@
 
 #include <vector>
 #include "modeling/variables/Variable.h"
-#include "modeling/columns_and_rows/AbstractExpr.h"
-#include "modeling/columns_and_rows/Column.h"
+#include "modeling/columns_and_rows/Deprecated_AbstractExpr.h"
+#include "modeling/columns_and_rows/Deprecated_Column.h"
 
 class Model;
 class Var;
-class Coefficient;
+class Constant;
 
 class Objective {
     friend class Model;
-    const Coefficient* m_offset;
+    const Constant* m_offset;
     const std::vector<Var>* m_variables;
-    explicit Objective(const std::vector<Var>& t_variables, const Coefficient& t_offset) : m_variables(&t_variables), m_offset(&t_offset) {}
+    explicit Objective(const std::vector<Var>& t_variables, const Constant& t_offset) : m_variables(&t_variables), m_offset(&t_offset) {}
 public:
     Objective() = delete;
 
@@ -28,9 +28,9 @@ public:
     Objective& operator=(const Objective&) = default;
     Objective& operator=(Objective&&) noexcept = default;
 
-    const Coefficient& offset() const { return *m_offset; }
+    const Constant& offset() const { return *m_offset; }
 
-    [[nodiscard]] const Coefficient& get(const Var& t_var) const { return t_var.column().constant(); } // NOLINT(readability-convert-member-functions-to-static)
+    [[nodiscard]] const Constant& get(const Var& t_var) const { return t_var.column().constant(); } // NOLINT(readability-convert-member-functions-to-static)
 
     class const_iterator {
         std::vector<Var>::const_iterator m_it;
@@ -39,7 +39,7 @@ public:
         bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
         bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
         const_iterator& operator++() { ++m_it; return *this; }
-        AbstractExpr<Var>::Entry operator*() const { return AbstractExpr<Var>::Entry(*m_it, m_it->column().constant()); }
+        Deprecated_AbstractExpr<Var>::Entry operator*() const { return Deprecated_AbstractExpr<Var>::Entry(*m_it, m_it->column().constant()); }
     };
 
     [[nodiscard]] const_iterator begin() const { return const_iterator(m_variables->cbegin()); }
@@ -50,7 +50,7 @@ public:
 
 static std::ostream &operator<<(std::ostream& t_os, const Objective& t_obj) {
 
-    const auto print_term = [&t_os](const Var& t_key, const Coefficient& t_coeff) {
+    const auto print_term = [&t_os](const Var& t_key, const Constant& t_coeff) {
         if (t_coeff.is_numerical()) {
             if (!equals(t_coeff.constant(), 1., ToleranceForSparsity)) {
                 t_os << t_coeff << ' ';

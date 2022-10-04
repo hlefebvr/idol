@@ -34,16 +34,16 @@ void ListenerManager::broadcast_remove(const Ctr &t_ctr) {
     BROADCAST(remove(t_ctr));
 }
 
-void ListenerManager::broadcast_update_objective(const Var &t_var, const Coefficient &t_coeff) {
+void ListenerManager::broadcast_update_objective(const Var &t_var, const Constant &t_coeff) {
     BROADCAST(update_objective(t_var, t_coeff));
 }
 
-void ListenerManager::broadcast_update_rhs(const Ctr &t_ctr, const Coefficient &t_coeff) {
+void ListenerManager::broadcast_update_rhs(const Ctr &t_ctr, const Constant &t_coeff) {
     BROADCAST(update_rhs(t_ctr, t_coeff));
 }
 
 void ListenerManager::broadcast_update_coefficient(const Ctr &t_ctr, const Var &t_var,
-                                                   const Coefficient &t_coefficient) {
+                                                   const Constant &t_coefficient) {
     BROADCAST(update_coefficient(t_ctr, t_var, t_coefficient));
 }
 
@@ -63,6 +63,6 @@ void ListenerManager::broadcast_update_type(const Ctr &t_ctr, CtrType t_type) {
     BROADCAST(update_type(t_ctr, t_type));
 }
 
-void ListenerManager::broadcast_update_objective_offset(const Coefficient &t_coeff) {
+void ListenerManager::broadcast_update_objective_offset(const Constant &t_coeff) {
     BROADCAST(update_objective_offset(t_coeff));
 }

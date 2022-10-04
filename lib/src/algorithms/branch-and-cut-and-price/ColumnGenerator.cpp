@@ -6,7 +6,7 @@
 
 ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
 
-    Expr objective;
+    Deprecated_Expr objective;
     for (const auto& [var, coeff] : t_subproblem.objective()) {
         objective += coeff * var;
     }
@@ -15,7 +15,7 @@ ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) 
 }
 
 TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
-    Column column;
+    Deprecated_Column column;
 
     double objective = 0.;
     for (const auto& [var, coeff] : constant()) {
@@ -34,8 +34,8 @@ TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution
     return { lb(), ub(), type(), std::move(column) };
 }
 
-Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
-    Row result = t_dual_solution.status() == Optimal ? Row(constant(), 0.) : Row();
+Deprecated_Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
+    Deprecated_Row result = t_dual_solution.status() == Optimal ? Deprecated_Row(constant(), 0.) : Deprecated_Row();
     for (auto [ctr, row] : *this) {
         row *= -t_dual_solution.get(ctr);
         result += row;
