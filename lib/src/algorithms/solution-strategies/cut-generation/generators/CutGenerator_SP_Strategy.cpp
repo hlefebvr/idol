@@ -1,18 +1,18 @@
 //
 // Created by henri on 05/10/22.
 //
-#include "algorithms/solution-strategies/cut-generation/generators/LazyCutGenerator.h"
+#include "algorithms/solution-strategies/cut-generation/generators/CutGenerator_SP_Strategy.h"
 #include "modeling/expressions/Row.h"
 #include "modeling/solutions/Solution.h"
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include "algorithms/logs/Log.h"
 
-LazyCutGenerator::LazyCutGenerator(const Model &t_rmp_model, const Model &t_sp_model)
+CutGenerator_SP_Strategy::CutGenerator_SP_Strategy(const Model &t_rmp_model, const Model &t_sp_model)
     : BaseGenerator<Var>(t_rmp_model, t_sp_model) {
 
 }
 
-Row LazyCutGenerator::get_separation_objective(const Solution::Primal &t_primals) {
+Row CutGenerator_SP_Strategy::get_separation_objective(const Solution::Primal &t_primals) {
 
     double rhs_factor = 1.;
 
@@ -32,7 +32,7 @@ Row LazyCutGenerator::get_separation_objective(const Solution::Primal &t_primals
     return result;
 }
 
-TempCtr LazyCutGenerator::create_cut(const Solution::Primal &t_primals) const {
+TempCtr CutGenerator_SP_Strategy::create_cut(const Solution::Primal &t_primals) const {
     Row row;
 
     double rhs = 0.;
@@ -52,7 +52,7 @@ TempCtr LazyCutGenerator::create_cut(const Solution::Primal &t_primals) const {
     return { std::move(row), type() };
 }
 
-bool LazyCutGenerator::set_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
+bool CutGenerator_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -63,7 +63,7 @@ bool LazyCutGenerator::set_lower_bound(const Var &t_var, double t_lb, CutGenerat
 
 }
 
-bool LazyCutGenerator::set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
+bool CutGenerator_SP_Strategy::set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -74,31 +74,30 @@ bool LazyCutGenerator::set_upper_bound(const Var &t_var, double t_ub, CutGenerat
 
 }
 
-Solution::Primal LazyCutGenerator::primal_solution(const CutGenerationSubproblem &t_subproblem,
+Solution::Primal CutGenerator_SP_Strategy::primal_solution(const CutGenerationSubproblem &t_subproblem,
                                                    const Solution::Dual &t_rmp_duals) const {
     Solution::Primal result;
-
-    // unsigned int n_actives = 0;
 
     double sum_duals = 0.;
 
     for (const auto& [ctr, primal_solution] : t_subproblem.currently_present_cuts()) {
         const double dual = t_rmp_duals.get(ctr);
 
-        if (!equals(dual, 0., 1e-5)) {
+        if (!equals(dual, 0., ToleranceForSparsity)) {
             sum_duals += dual;
             result += dual * primal_solution;
-            // ++n_actives;
         }
 
     }
 
-    result *= 1. / sum_duals;
+    if (!equals(sum_duals, 1., ToleranceForSparsity)) {
+        result *= 1. / sum_duals;
+    }
 
     return result;
 }
 
-void LazyCutGenerator::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
+void CutGenerator_SP_Strategy::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
 
     t_subproblem.remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
@@ -113,7 +112,7 @@ void LazyCutGenerator::remove_columns_violating_lower_bound(const Var &t_var, do
 
 }
 
-void LazyCutGenerator::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
+void CutGenerator_SP_Strategy::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
 
     t_subproblem.remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {

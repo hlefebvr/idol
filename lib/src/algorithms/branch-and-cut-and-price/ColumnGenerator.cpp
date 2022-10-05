@@ -104,9 +104,22 @@ void ColumnGenerator::remove_columns_violating_upper_bound(const Var &t_var, dou
 
 Solution::Primal ColumnGenerator::primal_solution(const ColumnGenerationSubproblem& t_subproblem, const Solution::Primal& t_rmp_primals) const {
     Solution::Primal result;
-    for (const auto& [var, ptr_to_sol] : t_subproblem.currently_present_variables()) {
-        result += t_rmp_primals.get(var) * (ptr_to_sol);
+
+    double sum_primals = 0.;
+
+    for (const auto& [var, primal_solution] : t_subproblem.currently_present_variables()) {
+        const double primal = t_rmp_primals.get(var);
+
+        if (!equals(primal, 0., ToleranceForSparsity)) {
+            result += primal * primal_solution;
+            sum_primals += primal;
+        }
     }
+
+    if (!equals(sum_primals, 1., ToleranceForSparsity)) {
+        result *= 1. / sum_primals;
+    }
+
     return result;
 }
 
