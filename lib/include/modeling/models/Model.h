@@ -19,6 +19,19 @@
 class Env;
 class Column;
 
+/**
+ * Optimization model object.
+ *
+ * This class represents an optimization model and is *mainly* composed of parameters (see Param), variables (see Var) and constraints (see Ctr).
+ * It is used to represent an optimization problem given in the following form:
+ *
+ * \f{align}{
+ *  \textrm{minimize } & c^Tx \\
+ *  \textrm{subject to } & Ax \ge b \\
+ *  & x \in \mathbb R \\
+ *  & x_j \in \mathbb N \textrm{ for some } j
+ * \f}
+ */
 class Model {
     static unsigned int s_id;
 

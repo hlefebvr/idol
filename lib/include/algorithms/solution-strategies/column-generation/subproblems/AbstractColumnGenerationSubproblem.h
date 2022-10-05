@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 #define OPTIMIZE_ABSTRACTCOLUMNGENERATIONSUBPROBLEM_H
 
-#include "../../../../solvers/solutions/Solution.h"
+#include "../../../../modeling/solutions/Solution.h"
 #include "../../../../modeling/constraints/TempCtr.h"
 #include <optional>
 

@@ -12,18 +12,6 @@ const std::string &Param::name() const {
     return m_impl->name();
 }
 
-double Param::lb() const {
-    return m_impl->variable().lb();
-}
-
-double Param::ub() const {
-    return m_impl->variable().ub();
-}
-
-VarType Param::type() const {
-    return m_impl->variable().type();
-}
-
 unsigned int Param::index() const {
     return m_impl->index();
 }

@@ -52,10 +52,10 @@ static std::ostream &operator<<(std::ostream& t_os, const Objective& t_obj) {
 
     const auto print_term = [&t_os](const Var& t_key, const Constant& t_coeff) {
         if (t_coeff.is_numerical()) {
-            if (!equals(t_coeff.constant(), 1., ToleranceForSparsity)) {
+            if (!equals(t_coeff.numerical(), 1., ToleranceForSparsity)) {
                 t_os << t_coeff << ' ';
             }
-        } else if(equals(t_coeff.constant(), 0., ToleranceForSparsity) && t_coeff.size() == 1) {
+        } else if(equals(t_coeff.numerical(), 0., ToleranceForSparsity) && t_coeff.size() == 1) {
             t_os << t_coeff << ' ';
         } else {
             t_os << '(' << t_coeff << ") ";

@@ -2,7 +2,7 @@
 // Created by henri on 08/09/22.
 //
 #include "modeling/constraints/TempCtr.h"
-#include "solvers/solutions/Solution.h"
+#include "modeling/solutions/Solution.h"
 
 TempCtr operator<=(Expr<Var> t_expr, Constant t_rhs) {
     return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
@@ -17,10 +17,10 @@ TempCtr operator==(Expr<Var> t_expr, Constant t_rhs) {
 }
 
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
-    const double rhs = m_row.rhs().constant();
+    const double rhs = m_row.rhs().numerical();
     double lhs = 0.;
     for (const auto& [var, coeff] : m_row.lhs()) {
-        lhs += coeff.constant() * t_solution.get(var);
+        lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_type) {
         case LessOrEqual: return lhs <= rhs;

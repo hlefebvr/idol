@@ -3,7 +3,7 @@
 //
 #include "modeling/constraints/Constraint.h"
 #include "modeling/constraints/impl_Constraint.h"
-#include "solvers/solutions/Solution.h"
+#include "modeling/solutions/Solution.h"
 
 unsigned int Ctr::id() const {
     return m_impl->id();
@@ -38,10 +38,10 @@ unsigned int Ctr::model_id() const {
 }
 
 bool Ctr::is_violated(const Solution::Primal &t_solution) const {
-    const double rhs = m_impl->row().rhs().constant();
+    const double rhs = m_impl->row().rhs().numerical();
     double lhs = 0.;
     for (const auto& [var, coeff] : m_impl->row().lhs()) {
-        lhs += coeff.constant() * t_solution.get(var);
+        lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_impl->type()) {
         case LessOrEqual: return lhs <= rhs;

@@ -6,7 +6,7 @@
 #define OPTIMIZE_NODEBYBOUND_H
 
 #include "algorithms/branch-and-bound/nodes/AbstractNode.h"
-#include "solvers/solutions/Solution.h"
+#include "modeling/solutions/Solution.h"
 #include "containers/Map.h"
 #include "modeling/variables/Variable.h"
 

@@ -19,7 +19,7 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
         auto ctr = model.add_constraint(GreaterOrEqual, 1.);
 
         CHECK(ctr.type() == GreaterOrEqual);
-        CHECK(ctr.rhs().constant() == 1._a);
+        CHECK(ctr.rhs().numerical() == 1._a);
         CHECK(ctr.model_id() == model.id());
 
     }
@@ -29,7 +29,7 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
         auto ctr = model.add_constraint(LessOrEqual, xi);
 
         CHECK(ctr.type() == LessOrEqual);
-        CHECK(ctr.rhs().constant() == 0._a);
+        CHECK(ctr.rhs().numerical() == 0._a);
         CHECK(ctr.rhs().get(xi) == 1._a);
 
     }
@@ -39,7 +39,7 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
         auto ctr = model.add_constraint(Equal, 1 + 2 * xi);
 
         CHECK(ctr.type() == Equal);
-        CHECK(ctr.rhs().constant() == 1._a);
+        CHECK(ctr.rhs().numerical() == 1._a);
         CHECK(ctr.rhs().get(xi) == 2._a);
 
     }
@@ -49,12 +49,12 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
         auto ctr = model.add_constraint(2 * x + y <= 2 + xi);
 
         CHECK(ctr.type() == LessOrEqual);
-        CHECK(ctr.rhs().constant() == 2._a);
+        CHECK(ctr.rhs().numerical() == 2._a);
         CHECK(ctr.rhs().get(xi) == 1._a);
-        CHECK(ctr.get(x).constant() == 2._a);
-        CHECK(ctr.get(y).constant() == 1._a);
-        CHECK(x.get(ctr).constant() == 2._a);
-        CHECK(y.get(ctr).constant() == 1._a);
+        CHECK(ctr.get(x).numerical() == 2._a);
+        CHECK(ctr.get(y).numerical() == 1._a);
+        CHECK(x.get(ctr).numerical() == 2._a);
+        CHECK(y.get(ctr).numerical() == 1._a);
 
     }
 
@@ -66,12 +66,12 @@ TEST_CASE("Ctr", "[constraints][modeling]") {
 
             model.update_rhs(ctr, 0.);
 
-            CHECK(ctr.rhs().constant() == 0._a);
+            CHECK(ctr.rhs().numerical() == 0._a);
             CHECK(ctr.rhs().get(xi) == 0._a);
 
             model.update_rhs(ctr, 1 + 2 * xi);
 
-            CHECK(ctr.rhs().constant() == 1._a);
+            CHECK(ctr.rhs().numerical() == 1._a);
             CHECK(ctr.rhs().get(xi) == 2._a);
 
         }

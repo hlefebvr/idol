@@ -28,14 +28,14 @@ TEST_CASE("Expr", "[expressions][modeling]") {
             auto expr = 0 * x;
 
             CHECK(expr.size() == 0);
-            CHECK(expr.get(x).constant() == 0._a);
+            CHECK(expr.get(x).numerical() == 0._a);
         }
 
         SECTION("with a non-zero value") {
             auto expr = 2 * x;
 
             CHECK(expr.size() == 1);
-            CHECK(expr.get(x).constant() == 2._a);
+            CHECK(expr.get(x).numerical() == 2._a);
         }
 
     }
@@ -45,8 +45,8 @@ TEST_CASE("Expr", "[expressions][modeling]") {
         auto expr = x + y;
 
         CHECK(expr.size() == 2);
-        CHECK(expr.get(x).constant() == 1._a);
-        CHECK(expr.get(y).constant() == 1._a);
+        CHECK(expr.get(x).numerical() == 1._a);
+        CHECK(expr.get(y).numerical() == 1._a);
 
     }
 
@@ -55,8 +55,8 @@ TEST_CASE("Expr", "[expressions][modeling]") {
         auto expr = 2 * x + y;
 
         CHECK(expr.size() == 2);
-        CHECK(expr.get(x).constant() == 2._a);
-        CHECK(expr.get(y).constant() == 1._a);
+        CHECK(expr.get(x).numerical() == 2._a);
+        CHECK(expr.get(y).numerical() == 1._a);
 
     }
 
@@ -65,8 +65,8 @@ TEST_CASE("Expr", "[expressions][modeling]") {
         auto expr = x + 2 * y;
 
         CHECK(expr.size() == 2);
-        CHECK(expr.get(x).constant() == 1._a);
-        CHECK(expr.get(y).constant() == 2._a);
+        CHECK(expr.get(x).numerical() == 1._a);
+        CHECK(expr.get(y).numerical() == 2._a);
 
     }
 
@@ -76,8 +76,8 @@ TEST_CASE("Expr", "[expressions][modeling]") {
         auto expr = 3 * x + 2 * y;
 
         CHECK(expr.size() == 2);
-        CHECK(expr.get(x).constant() == 3._a);
-        CHECK(expr.get(y).constant() == 2._a);
+        CHECK(expr.get(x).numerical() == 3._a);
+        CHECK(expr.get(y).numerical() == 2._a);
 
     }
 
@@ -85,7 +85,7 @@ TEST_CASE("Expr", "[expressions][modeling]") {
 
         auto expr = a * x;
         CHECK(expr.size() == 1);
-        CHECK(expr.get(x).constant() == 0._a);
+        CHECK(expr.get(x).numerical() == 0._a);
         CHECK(expr.get(x).get(a) == 1._a);
 
     }
@@ -94,7 +94,7 @@ TEST_CASE("Expr", "[expressions][modeling]") {
 
         auto expr = (1 + 2 * a) * x;
         CHECK(expr.size() == 1);
-        CHECK(expr.get(x).constant() == 1._a);
+        CHECK(expr.get(x).numerical() == 1._a);
         CHECK(expr.get(x).get(a) == 2._a);
 
     }
@@ -103,9 +103,9 @@ TEST_CASE("Expr", "[expressions][modeling]") {
 
         auto expr = 10 * ((1 + 2 * a) * x + y);
 
-        CHECK(expr.get(x).constant() == 10._a);
+        CHECK(expr.get(x).numerical() == 10._a);
         CHECK(expr.get(x).get(a) == 20._a);
-        CHECK(expr.get(y).constant() == 10._a);
+        CHECK(expr.get(y).numerical() == 10._a);
 
     }
 
@@ -114,10 +114,10 @@ TEST_CASE("Expr", "[expressions][modeling]") {
         auto expr = x + y + 2 * x + 3 * a * y + (2 + 3 * a + b) * x;
 
         CHECK(expr.size() == 2);
-        CHECK(expr.get(x).constant() == 5._a);
+        CHECK(expr.get(x).numerical() == 5._a);
         CHECK(expr.get(x).get(a) == 3._a);
         CHECK(expr.get(x).get(b) == 1._a);
-        CHECK(expr.get(y).constant() == 1._a);
+        CHECK(expr.get(y).numerical() == 1._a);
         CHECK(expr.get(y).get(a) == 3._a);
 
     }

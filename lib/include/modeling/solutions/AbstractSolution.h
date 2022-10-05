@@ -5,11 +5,16 @@
 #ifndef OPTIMIZE_ABSTRACTSOLUTION_H
 #define OPTIMIZE_ABSTRACTSOLUTION_H
 
-#include "containers/Map.h"
-#include "containers/IteratorForward.h"
-#include "solvers/Types.h"
-#include "modeling/numericals.h"
+#include "../../containers/Map.h"
+#include "../../containers/IteratorForward.h"
+#include "../../solvers/Types.h"
+#include "../numericals.h"
 
+/**
+ * Base class for Solution::Primal and Solution::Dual. Stores a sparse vector of values associated to a given key.
+ * @tparam KeyT The type of the key (typically Var or Ctr)
+ * @tparam CRTP See [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern).
+ */
 template<class KeyT, class CRTP>
 class AbstractSolution {
     SolutionStatus m_status = Unknown;
@@ -18,6 +23,9 @@ class AbstractSolution {
 
     [[nodiscard]] double norm_inf() const;
 public:
+    /**
+     * Creates a new empty solution.
+     */
     AbstractSolution() = default;
 
     virtual ~AbstractSolution() = default;
@@ -28,16 +36,41 @@ public:
     AbstractSolution& operator=(const AbstractSolution&) = default;
     AbstractSolution& operator=(AbstractSolution&&) noexcept = default;
 
+    /**
+     * Sets the solution status.
+     * @param t_status The desired solution status.
+     */
     void set_status(SolutionStatus t_status) { m_status = t_status; }
 
+    /**
+     * Returns the stored solution status.
+     */
     [[nodiscard]] SolutionStatus status() const { return m_status; }
 
+    /**
+     * Sets the stored objective value.
+     * @param t_value The desired objective value.
+     */
     void set_objective_value(double t_value) { m_objective_value = t_value; }
 
+    /**
+     * Returns the stored objective value.
+     */
     [[nodiscard]] double objective_value() const { return m_objective_value; }
 
+    /**
+     * Sets the value associated to the key given as argument.
+     * @param t_key The key for which the entry should be set.
+     * @param t_value The desired value associated to the key.
+     */
     void set(const KeyT& t_key, double t_value);
 
+    /**
+     * Returns the value associated to the key given as argument.
+     *
+     * If no value is stored, zero is returned.
+     * @param t_key  The queried key.
+     */
     [[nodiscard]] double get(const KeyT& t_key) const;
 
     using const_iterator = typename Map<KeyT, double>::const_iterator;
@@ -47,10 +80,28 @@ public:
     const_iterator cbegin() const { return const_iterator(m_values.begin()); }
     const_iterator cend() const { return const_iterator(m_values.end()); }
 
+    /**
+     * Returns the \f$ l_p \f$-norm of the solution.
+     *
+     * Note that Inf is a possible value for t_p, in which case, the infinite norm is computed.
+     * @param t_p The \f$ p \f$ parameter for the \f$ l_p \f$-norm.
+     */
     [[nodiscard]] double norm(double t_p = 2.) const;
 
+    /**
+     * Merges the solution with another solution, explicitly expecting that no conflict will arise (i.e., expecting that no
+     * entry from the solution is also present in the other solution).
+     * If a conflict is detected, an Exception is thrown.
+     * @param t_rhs The solution to merge.
+     * @return The object itself.
+     */
     CRTP& merge_without_conflict(CRTP t_rhs);
 
+    /**
+     * Normalizes the solution (i.e., divides by the norm every entry) with a given \f$ l_p \f$-norm.
+     * @param t_p The parameter \f$ p \f$ for the norm.
+     * @return The object itself.
+     */
     CRTP& normalize(double t_p = 2.);
 
     CRTP& operator +=(const CRTP& t_rhs);

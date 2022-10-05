@@ -19,14 +19,14 @@ TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution
 
     double objective = 0.;
     for (const auto& [var, coeff] : constant()) {
-        objective += coeff.constant() * t_primal_solution.get(var);
+        objective += coeff.numerical() * t_primal_solution.get(var);
     }
     column.set_objective_coefficient(objective);
 
     for (const auto& [ctr, expr] : *this) {
-        double coeff = expr.rhs().constant();
+        double coeff = expr.rhs().numerical();
         for (const auto& [var, value] : expr.lhs()) {
-            coeff += value.constant() * t_primal_solution.get(var);
+            coeff += value.numerical() * t_primal_solution.get(var);
         }
         column.components().set(ctr, coeff);
     }

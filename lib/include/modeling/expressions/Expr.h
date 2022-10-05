@@ -21,7 +21,30 @@
  * Numerical expression object.
  *
  * Typically represents the scalar product between a vector of Var and a vector of Constant.
- * This class is used to create Row and Column.
+ * This class is also used to create Row and Column.
+ *
+ * **Example 1**:
+ * ```
+ * Var x = ...;
+ * Var y = ...;
+ * Expr expr = 2 * x + 3 * y;
+ * ```
+ *
+ * **Example 2**:
+ * ```
+ * Var x = ...;
+ * Var y = ...;
+ * Param xi = ...;
+ * Expr expr = (2 + xi) * x + y:
+ * ```
+ *
+ * **Example 3**:
+ * ```
+ * Ctr c1 = ...;
+ * Ctr c2 = ...;
+ * Expr<Ctr> expr = 2 * c1 + 3 * c2;
+ * ```
+ *
  * @tparam Key The type of elements for the first vector (the second vector type is always Constant).
  */
 template<class Key = Var>
@@ -256,7 +279,7 @@ void Expr<Key>::replace_if(const std::function<std::optional<Expr<Key>>(const Ke
     const auto end = m_map.end();
     while (it != end) {
         if (auto result = t_function(it->first) ; result.has_value()) {
-            auto expr = it->second->value().constant() * result.value();
+            auto expr = it->second->value().numerical() * result.value();
             to_add.template emplace_back(std::move(expr));
             it = m_map.erase(it);
         } else {

@@ -27,13 +27,13 @@ DantzigWolfe_SP_Strategy::DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_
 
 TempVar DantzigWolfe_SP_Strategy::create_column(const Solution::Primal &t_primal_solution) const {
     auto result = ColumnGenerator::create_column(t_primal_solution);
-    result.column().components().set(m_convexificiation_constraint, m_convexificiation_constraint.rhs().constant());
+    result.column().components().set(m_convexificiation_constraint, m_convexificiation_constraint.rhs().numerical());
     return result;
 }
 
 Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual_solution) {
     auto result = ColumnGenerator::get_pricing_objective(t_dual_solution);
-    result.rhs() += -m_convexificiation_constraint.rhs().constant() * t_dual_solution.get(m_convexificiation_constraint);
+    result.rhs() += -m_convexificiation_constraint.rhs().numerical() * t_dual_solution.get(m_convexificiation_constraint);
     return result;
 }
 

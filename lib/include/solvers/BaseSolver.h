@@ -191,7 +191,7 @@ void BaseSolver<VarT, CtrT>::init_model(const Model &t_model) {
 
 template<class VarT, class CtrT>
 double BaseSolver<VarT, CtrT>::value(const Constant &t_coefficient) const {
-    return t_coefficient.constant();
+    return t_coefficient.numerical();
 }
 
 template<class VarT, class CtrT>

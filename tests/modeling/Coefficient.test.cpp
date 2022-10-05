@@ -17,7 +17,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
         Constant expr;
 
         CHECK(expr.size() == 0);
-        CHECK(expr.constant() == 0.);
+        CHECK(expr.numerical() == 0.);
 
     }
 
@@ -26,7 +26,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
         Constant expr(1.);
 
         CHECK(expr.size() == 0);
-        CHECK(expr.constant() == 1.);
+        CHECK(expr.numerical() == 1.);
 
     }
 
@@ -37,7 +37,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
             Constant expr(a, 1.);
             
             CHECK(expr.size() == 1);
-            CHECK(expr.constant() == 0.);
+            CHECK(expr.numerical() == 0.);
             CHECK(expr.get(a) == 1._a);
 
         }
@@ -47,7 +47,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
             Constant expr(a, 0.);
 
             CHECK(expr.size() == 0);
-            CHECK(expr.constant() == 0.);
+            CHECK(expr.numerical() == 0.);
             CHECK(expr.get(a) == 0._a);
 
         }
@@ -60,7 +60,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
             auto expr = 2 * a;
 
-            CHECK(expr.constant() == 0._a);
+            CHECK(expr.numerical() == 0._a);
             CHECK(expr.get(a) == 2._a);
             CHECK(expr.size() == 1);
 
@@ -70,7 +70,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
             auto expr = 0 * a;
 
-            CHECK(expr.constant() == 0._a);
+            CHECK(expr.numerical() == 0._a);
             CHECK(expr.get(a) == 0._a);
             CHECK(expr.size() == 0);
 
@@ -84,7 +84,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
             auto expr = 10 * (1 + 2 * a);
 
-            CHECK(expr.constant() == 10._a);
+            CHECK(expr.numerical() == 10._a);
             CHECK(expr.get(a) == 20._a);
             CHECK(expr.size() == 1);
 
@@ -94,7 +94,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
             auto expr = 0 * (1 + 2 * a);
 
-            CHECK(expr.constant() == 0._a);
+            CHECK(expr.numerical() == 0._a);
             CHECK(expr.get(a) == 0._a);
             CHECK(expr.size() == 0);
 
@@ -106,7 +106,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = 2 + a;
 
-        CHECK(expr.constant() == 2._a);
+        CHECK(expr.numerical() == 2._a);
         CHECK(expr.get(a) == 1._a);
         CHECK(expr.size() == 1);
 
@@ -116,7 +116,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = a + 2;
 
-        CHECK(expr.constant() == 2._a);
+        CHECK(expr.numerical() == 2._a);
         CHECK(expr.get(a) == 1._a);
         CHECK(expr.size() == 1);
 
@@ -126,7 +126,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = a + b;
 
-        CHECK(expr.constant() == 0._a);
+        CHECK(expr.numerical() == 0._a);
         CHECK(expr.get(a) == 1._a);
         CHECK(expr.get(b) == 1._a);
         CHECK(expr.size() == 2);
@@ -137,7 +137,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = a + 2 * b;
 
-        CHECK(expr.constant() == 0._a);
+        CHECK(expr.numerical() == 0._a);
         CHECK(expr.get(a) == 1._a);
         CHECK(expr.get(b) == 2._a);
         CHECK(expr.size() == 2);
@@ -148,7 +148,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = 2 * a + b;
 
-        CHECK(expr.constant() == 0._a);
+        CHECK(expr.numerical() == 0._a);
         CHECK(expr.get(a) == 2._a);
         CHECK(expr.get(b) == 1._a);
         CHECK(expr.size() == 2);
@@ -159,7 +159,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = 9 + 2 * a + 3 * b;
 
-        CHECK(expr.constant() == 9._a);
+        CHECK(expr.numerical() == 9._a);
         CHECK(expr.get(a) == 2._a);
         CHECK(expr.get(b) == 3._a);
         CHECK(expr.size() == 2);
@@ -169,13 +169,13 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
     SECTION("auto sum with double") {
         auto expr = 1 + 2 * a;
         expr += 1.;
-        CHECK(expr.constant() == 2._a);
+        CHECK(expr.numerical() == 2._a);
     }
 
     SECTION("auto sum with Param") {
         auto expr = 1 + 2 * a;
         expr += a;
-        CHECK(expr.constant() == 1._a);
+        CHECK(expr.numerical() == 1._a);
         CHECK(expr.get(a) == 3._a);
     }
 
@@ -191,7 +191,7 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = 2 * a + b + a + 3 * 10 * (a + b + 2);
 
-        CHECK(expr.constant() == 60._a);
+        CHECK(expr.numerical() == 60._a);
         CHECK(expr.get(a) == 33._a);
         CHECK(expr.get(b) == 31._a);
         CHECK(expr.size() == 2);
@@ -239,9 +239,9 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
 
         auto expr = 10. + a;
 
-        expr.set_constant(0.);
+        expr.set_numerical(0.);
 
-        CHECK(expr.constant() == 0.);
+        CHECK(expr.numerical() == 0.);
 
     }
 

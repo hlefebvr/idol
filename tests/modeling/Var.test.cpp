@@ -18,7 +18,7 @@ TEST_CASE("Var", "[variables][modeling]") {
 
         auto x = model.add_variable(0., 1., Continuous, 1.);
 
-        CHECK(x.obj().constant() == 1.);
+        CHECK(x.obj().numerical() == 1.);
         CHECK(x.lb() == 0._a);
         CHECK(x.ub() == 1._a);
         CHECK(x.type() == Continuous);
@@ -30,7 +30,7 @@ TEST_CASE("Var", "[variables][modeling]") {
 
         auto x = model.add_variable(0., 1., Continuous, xi);
 
-        CHECK(x.obj().constant() == 0.);
+        CHECK(x.obj().numerical() == 0.);
         CHECK(x.obj().get(xi) == 1.);
 
     }
@@ -39,7 +39,7 @@ TEST_CASE("Var", "[variables][modeling]") {
 
         auto x = model.add_variable(0., 1., Continuous, 1 + 2 * xi);
 
-        CHECK(x.obj().constant() == 1.);
+        CHECK(x.obj().numerical() == 1.);
         CHECK(x.obj().get(xi) == 2.);
 
     }
@@ -52,18 +52,18 @@ TEST_CASE("Var", "[variables][modeling]") {
 
         auto x = model.add_variable(0., 1., Continuous, column);
 
-        CHECK(x.obj().constant() == 0._a);
+        CHECK(x.obj().numerical() == 0._a);
         CHECK(x.obj().get(xi) == 1._a);
-        CHECK(x.get(c1).constant() == 1._a);
+        CHECK(x.get(c1).numerical() == 1._a);
         CHECK(x.get(c1).get(xi) == 2._a);
-        CHECK(x.get(c2).constant() == 3._a);
-        CHECK(c1.get(x).constant() == 1._a);
+        CHECK(x.get(c2).numerical() == 3._a);
+        CHECK(c1.get(x).numerical() == 1._a);
         CHECK(c1.get(x).get(xi) == 2._a);
-        CHECK(c2.get(x).constant() == 3._a);
+        CHECK(c2.get(x).numerical() == 3._a);
 
         column.components().set(c1, 0.);
 
-        CHECK(x.get(c1).constant() == 1._a);
+        CHECK(x.get(c1).numerical() == 1._a);
 
     }
 

@@ -8,7 +8,7 @@
 #include "algorithms/solution-strategies/decomposition/generators/BaseGenerator.h"
 #include "modeling/constraints/Constraint.h"
 #include "AbstractColumnGenerator.h"
-#include "solvers/solutions/Solution.h"
+#include "modeling/solutions/Solution.h"
 
 class ColumnGenerator : public AbstractColumnGenerator, public BaseGenerator<Ctr> {
 protected:

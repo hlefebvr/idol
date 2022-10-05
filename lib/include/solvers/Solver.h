@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_SOLVER_H
 #define OPTIMIZE_SOLVER_H
 
-#include "solvers/solutions/Solution.h"
+#include "modeling/solutions/Solution.h"
 #include <string>
 
 class Solver {
