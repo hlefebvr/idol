@@ -78,8 +78,8 @@ TempCtr CutGenerationSubproblem::create_cut_from(const Solution::Primal &t_prima
 }
 
 Solution::Primal CutGenerationSubproblem::primal_solution() const {
-    EASY_LOG(Warn, "cut-generation", "Original space is not rebuilt when calling primal_solution");
-    return {};
+    const auto rmp_duals = m_rmp_strategy.dual_solution();
+    return m_generator->primal_solution(*this, rmp_duals);
 }
 
 bool CutGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {
@@ -88,4 +88,21 @@ bool CutGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {
 
 bool CutGenerationSubproblem::set_upper_bound(const Var &t_var, double t_ub) {
     return m_generator->set_upper_bound(t_var, t_ub, *this);
+}
+
+void CutGenerationSubproblem::remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto it = m_currently_present_cuts.begin();
+    const auto end = m_currently_present_cuts.end();
+
+    while (it != end) {
+        const auto& [column_variable, ptr_to_column] = *it;
+        if (t_indicator_for_removal(column_variable, ptr_to_column)) {
+            m_rmp_strategy.remove_constraint(column_variable);
+            it = m_currently_present_cuts.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
 }

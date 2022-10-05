@@ -16,9 +16,9 @@
 void solve_with_mip() {
     Env env;
     Model model(env);
-    auto x_1 = model.add_variable(0., Inf, Continuous, 2., "x_1");
-    auto x_2 = model.add_variable(0., Inf, Continuous, 3., "x_2");
-    auto y = model.add_variable(0., Inf, Integer, 2., "y");
+    auto x_1 = model.add_variable(0., Inf, Integer, 2., "x_1");
+    auto x_2 = model.add_variable(0., Inf, Integer, 3., "x_2");
+    auto y = model.add_variable(0., Inf, Continuous, 2., "y");
     model.add_constraint(x_1 + 2 * x_2 + y >= 3.);
     model.add_constraint(2 * x_1 + -1 * x_2 + 3 * y >= 4.);
 
@@ -52,7 +52,7 @@ int main() {
 
     auto& node_strategy = result.set_node_strategy<NodeStrategy<NodeByBound>>();
     node_strategy.template set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-    node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { y });
+    node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { w_1, w_2 });
     node_strategy.template set_node_updator_strategy<NodeUpdatorByBound>();
 
     auto& decomposition = result.set_solution_strategy<DecompositionStrategy>();

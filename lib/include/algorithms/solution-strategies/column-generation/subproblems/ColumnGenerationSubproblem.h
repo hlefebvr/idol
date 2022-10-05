@@ -17,7 +17,7 @@
 
 class Model;
 
-class ColumnGenerationSubProblem : public AbstractColumnGenerationSubproblem {
+class ColumnGenerationSubproblem : public AbstractColumnGenerationSubproblem {
     AbstractSolutionStrategy& m_rmp_strategy;
     std::unique_ptr<AbstractSolutionStrategy> m_exact_solution_strategy;
     std::unique_ptr<AbstractColumnGenerator> m_generator;
@@ -27,7 +27,7 @@ class ColumnGenerationSubProblem : public AbstractColumnGenerationSubproblem {
 
     PresentColumnList m_currently_present_variables;
 public:
-    explicit ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy);
+    explicit ColumnGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy);
 
     void build() override;
 
@@ -83,14 +83,14 @@ public:
 };
 
 template<class T, class... Args>
-T &ColumnGenerationSubProblem::set_solution_strategy(Args &&... t_args) {
+T &ColumnGenerationSubproblem::set_solution_strategy(Args &&... t_args) {
     auto* exact_solution_strategy = new T(std::forward<Args>(t_args)...);
     m_exact_solution_strategy.reset(exact_solution_strategy);
     return *exact_solution_strategy;
 }
 
 template<class T, class... Args>
-T &ColumnGenerationSubProblem::set_generation_strategy(Args &&... t_args) {
+T &ColumnGenerationSubproblem::set_generation_strategy(Args &&... t_args) {
     auto* generator = new T(std::forward<Args>(t_args)...);
     m_generator.reset(generator);
     return *generator;

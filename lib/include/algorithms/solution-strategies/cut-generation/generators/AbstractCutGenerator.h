@@ -10,6 +10,7 @@
 
 namespace Solution {
     class Primal;
+    class Dual;
 }
 
 class CutGenerationSubproblem;
@@ -28,6 +29,8 @@ public:
     virtual bool set_lower_bound(const Var& t_var, double t_lb, CutGenerationSubproblem& t_subproblem) = 0;
 
     virtual bool set_upper_bound(const Var& t_var, double t_lb, CutGenerationSubproblem& t_subproblem) = 0;
+
+    [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem& t_subproblem, const Solution::Dual& t_rmp_duals) const = 0;
 
 };
 

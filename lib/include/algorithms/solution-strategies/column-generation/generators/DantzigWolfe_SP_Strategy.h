@@ -11,7 +11,7 @@
 class DantzigWolfe_SP_Strategy : public ColumnGenerator {
     Ctr m_convexificiation_constraint;
 protected:
-    static Expr<Var> expand(const Var &t_subproblem_variable, const ColumnGenerationSubProblem &t_subproblem);
+    static Expr<Var> expand(const Var &t_subproblem_variable, const ColumnGenerationSubproblem &t_subproblem);
 
 public:
     DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_subproblem);

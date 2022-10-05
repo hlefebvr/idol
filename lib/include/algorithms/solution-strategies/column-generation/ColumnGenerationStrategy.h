@@ -63,7 +63,7 @@ public:
 
     void remove_constraint(const Ctr &t_constraint) override;
 
-    template<class T = ColumnGenerationSubProblem, class ...Args> T& add_subproblem(Args&& ...t_args);
+    template<class T = ColumnGenerationSubproblem, class ...Args> T& add_subproblem(Args&& ...t_args);
 };
 
 template<class T, class... Args>

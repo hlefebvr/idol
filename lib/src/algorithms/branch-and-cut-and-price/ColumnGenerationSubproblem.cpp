@@ -4,38 +4,38 @@
 #include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
 #include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 
-ColumnGenerationSubProblem::ColumnGenerationSubProblem(AbstractSolutionStrategy& t_rmp_strategy)
+ColumnGenerationSubproblem::ColumnGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy)
         : m_rmp_strategy(t_rmp_strategy) {
 
 }
 
-void ColumnGenerationSubProblem::solve() {
+void ColumnGenerationSubproblem::solve() {
     m_exact_solution_strategy->solve();
 }
 
 
-Solution::Primal ColumnGenerationSubProblem::primal_solution() const {
+Solution::Primal ColumnGenerationSubproblem::primal_solution() const {
     const auto rmp_primals = m_rmp_strategy.primal_solution();
     return m_generator->primal_solution(*this, rmp_primals);
 }
 
 
-Solution::Dual ColumnGenerationSubProblem::dual_solution() const {
+Solution::Dual ColumnGenerationSubproblem::dual_solution() const {
     return m_exact_solution_strategy->dual_solution();
 }
 
 
-Row ColumnGenerationSubProblem::get_pricing_objective(const Solution::Dual &t_duals) const {
+Row ColumnGenerationSubproblem::get_pricing_objective(const Solution::Dual &t_duals) const {
     return m_generator->get_pricing_objective(t_duals);
 }
 
 
-void ColumnGenerationSubProblem::update_pricing_objective(const Row &t_objective) {
+void ColumnGenerationSubproblem::update_pricing_objective(const Row &t_objective) {
     m_exact_solution_strategy->set_objective(t_objective);
 }
 
 
-void ColumnGenerationSubProblem::build() {
+void ColumnGenerationSubproblem::build() {
 
     if (!m_generator) {
         throw Exception("No column generator has been given.");
@@ -49,27 +49,27 @@ void ColumnGenerationSubProblem::build() {
 }
 
 
-void ColumnGenerationSubProblem::save_last_primal_solution() {
+void ColumnGenerationSubproblem::save_last_primal_solution() {
     m_primal_solutions.emplace_back(std::make_unique<Solution::Primal>(m_exact_solution_strategy->primal_solution()));
 }
 
 
-bool ColumnGenerationSubProblem::is_unbounded() const {
+bool ColumnGenerationSubproblem::is_unbounded() const {
     return m_primal_solutions.back()->status() == Unbounded;
 }
 
 
-bool ColumnGenerationSubProblem::is_infeasible() const {
+bool ColumnGenerationSubproblem::is_infeasible() const {
     return m_primal_solutions.back()->status() == Infeasible;
 }
 
 
-bool ColumnGenerationSubProblem::could_not_be_solved_to_optimality() const {
+bool ColumnGenerationSubproblem::could_not_be_solved_to_optimality() const {
     return m_primal_solutions.back()->status() != Optimal;
 }
 
 
-void ColumnGenerationSubProblem::log_last_primal_solution() const {
+void ColumnGenerationSubproblem::log_last_primal_solution() const {
     EASY_LOG(Debug, "column-generation",
              std::setw(5)
                      << "SP"
@@ -81,12 +81,12 @@ void ColumnGenerationSubProblem::log_last_primal_solution() const {
 }
 
 
-bool ColumnGenerationSubProblem::improving_column_found() const {
+bool ColumnGenerationSubproblem::improving_column_found() const {
     return m_primal_solutions.back()->objective_value() < -ToleranceForAbsoluteGapPricing;
 }
 
 
-void ColumnGenerationSubProblem::add_column_to_rmp() {
+void ColumnGenerationSubproblem::add_column_to_rmp() {
     auto* last_primal_solution = m_primal_solutions.back().get();
     auto temp_var = create_column_from(*last_primal_solution);
     auto variable = m_rmp_strategy.add_column(std::move(temp_var));
@@ -95,11 +95,11 @@ void ColumnGenerationSubProblem::add_column_to_rmp() {
 }
 
 
-TempVar ColumnGenerationSubProblem::create_column_from(const Solution::Primal &t_primal_solution) const {
+TempVar ColumnGenerationSubproblem::create_column_from(const Solution::Primal &t_primal_solution) const {
     return m_generator->create_column(t_primal_solution);
 }
 
-void ColumnGenerationSubProblem::remove_column_if(const std::function<bool(const Var&, const Solution::Primal &)> &t_indicator_for_removal) {
+void ColumnGenerationSubproblem::remove_column_if(const std::function<bool(const Var&, const Solution::Primal &)> &t_indicator_for_removal) {
 
     auto it = m_currently_present_variables.begin();
     const auto end = m_currently_present_variables.end();
@@ -116,22 +116,22 @@ void ColumnGenerationSubProblem::remove_column_if(const std::function<bool(const
 
 }
 
-bool ColumnGenerationSubProblem::set_lower_bound(const Var &t_var, double t_lb) {
+bool ColumnGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {
     return m_generator->set_lower_bound(t_var, t_lb, *this);
 }
 
-bool ColumnGenerationSubProblem::set_upper_bound(const Var &t_var, double t_ub) {
+bool ColumnGenerationSubproblem::set_upper_bound(const Var &t_var, double t_ub) {
     return m_generator->set_upper_bound(t_var, t_ub, *this);
 }
 
-std::optional<Ctr> ColumnGenerationSubProblem::contribute_to_add_constraint(TempCtr &t_temporay_constraint) {
+std::optional<Ctr> ColumnGenerationSubproblem::contribute_to_add_constraint(TempCtr &t_temporay_constraint) {
     return m_generator->contribute_to_add_constraint(t_temporay_constraint, *this);
 }
 
-bool ColumnGenerationSubProblem::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+bool ColumnGenerationSubproblem::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
     return m_generator->update_constraint_rhs(t_ctr, t_rhs, *this);
 }
 
-bool ColumnGenerationSubProblem::remove_constraint(const Ctr &t_ctr) {
+bool ColumnGenerationSubproblem::remove_constraint(const Ctr &t_ctr) {
     return m_generator->remove_constraint(t_ctr, *this);
 }

@@ -14,7 +14,7 @@ namespace Solution {
     class Dual;
 }
 
-class ColumnGenerationSubProblem;
+class ColumnGenerationSubproblem;
 
 class AbstractColumnGenerator {
     VarType m_type = Continuous;
@@ -35,17 +35,17 @@ public:
 
     [[nodiscard]] virtual Row get_pricing_objective(const Solution::Dual& t_dual_solution) = 0;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution(const ColumnGenerationSubProblem& t_subproblem, const Solution::Primal& t_rmp_primals) const = 0;
+    [[nodiscard]] virtual Solution::Primal primal_solution(const ColumnGenerationSubproblem& t_subproblem, const Solution::Primal& t_rmp_primals) const = 0;
 
-    virtual bool set_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool set_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubproblem& t_subproblem) = 0;
 
-    virtual bool set_upper_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool set_upper_bound(const Var& t_var, double t_lb, ColumnGenerationSubproblem& t_subproblem) = 0;
 
-    virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporary_constraint, ColumnGenerationSubproblem& t_subproblem) = 0;
 
-    virtual bool update_constraint_rhs(const Ctr& t_ctr, double t_rhs, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool update_constraint_rhs(const Ctr& t_ctr, double t_rhs, ColumnGenerationSubproblem& t_subproblem) = 0;
 
-    virtual bool remove_constraint(const Ctr& t_ctr, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool remove_constraint(const Ctr& t_ctr, ColumnGenerationSubproblem& t_subproblem) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTCOLUMNGENERATOR_H

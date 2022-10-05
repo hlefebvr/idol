@@ -11,6 +11,10 @@
 class Model;
 
 class LazyCutGenerator : public AbstractCutGenerator, public BaseGenerator<Var> {
+protected:
+    static void remove_columns_violating_lower_bound(const Var& t_cut, double t_cut_primal_solution, CutGenerationSubproblem& t_subproblem);
+
+    static void remove_columns_violating_upper_bound(const Var& t_cut, double t_cut_primal_solution, CutGenerationSubproblem& t_subproblem);
 public:
     LazyCutGenerator(const Model& t_rmp_model, const Model& t_sp_model);
 
@@ -20,7 +24,9 @@ public:
 
     bool set_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) override;
 
-    bool set_upper_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) override;
+    bool set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) override;
+
+    Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Solution::Dual &t_rmp_duals) const override;
 };
 
 #endif //OPTIMIZE_LAZYCUTGENERATOR_H

@@ -37,7 +37,7 @@ Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual
     return result;
 }
 
-Expr<Var> DantzigWolfe_SP_Strategy::expand(const Var &t_subproblem_variable, const ColumnGenerationSubProblem& t_subproblem) {
+Expr<Var> DantzigWolfe_SP_Strategy::expand(const Var &t_subproblem_variable, const ColumnGenerationSubproblem& t_subproblem) {
     Expr result;
     for (const auto& [var, column] : t_subproblem.currently_present_variables()) {
         result += column.get(t_subproblem_variable) * var;

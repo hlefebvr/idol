@@ -7,7 +7,7 @@
 DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem) : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
 
 
-bool DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+bool DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -18,7 +18,7 @@ bool DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, C
 }
 
 bool
-DantzigWolfe_RMP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+DantzigWolfe_RMP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -33,7 +33,7 @@ void DantzigWolfe_RMP_Strategy::set_bound_rmp(const Var& t_subproblem_variable,
                                               Map<Var, Ctr>& t_bound_constraints,
                                               const std::function<TempCtr(Expr<Var>&&, double)>& t_ctr_builder,
                                               const std::function<double(const Var&)>& t_get_bound,
-                                              ColumnGenerationSubProblem& t_subproblem) {
+                                              ColumnGenerationSubproblem& t_subproblem) {
 
     auto& rmp = t_subproblem.rmp_solution_strategy();
 
@@ -60,7 +60,7 @@ void DantzigWolfe_RMP_Strategy::set_bound_rmp(const Var& t_subproblem_variable,
 
 }
 
-void DantzigWolfe_RMP_Strategy::set_lower_bound_rmp(const Var &t_rmp_variable, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_lower_bound_rmp(const Var &t_rmp_variable, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
 
     set_bound_rmp(
             t_rmp_variable,
@@ -73,7 +73,7 @@ void DantzigWolfe_RMP_Strategy::set_lower_bound_rmp(const Var &t_rmp_variable, d
 
 }
 
-void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
+void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, double t_ub, ColumnGenerationSubproblem &t_subproblem) {
 
     set_bound_rmp(
             t_rmp_variable,
@@ -87,7 +87,7 @@ void DantzigWolfe_RMP_Strategy::set_upper_bound_rmp(const Var &t_rmp_variable, d
 }
 
 std::optional<Ctr> DantzigWolfe_RMP_Strategy::contribute_to_add_constraint(TempCtr &t_temporary_constraint,
-                                                                           ColumnGenerationSubProblem &t_subproblem) {
+                                                                           ColumnGenerationSubproblem &t_subproblem) {
 
     for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
         if (var.model_id() != subproblem().id()) {
@@ -124,11 +124,11 @@ std::optional<Ctr> DantzigWolfe_RMP_Strategy::contribute_to_add_constraint(TempC
 }
 
 bool DantzigWolfe_RMP_Strategy::update_constraint_rhs(const Ctr &t_ctr, double t_rhs,
-                                                      ColumnGenerationSubProblem &t_subproblem) {
+                                                      ColumnGenerationSubproblem &t_subproblem) {
     return DantzigWolfe_SP_Strategy::update_constraint_rhs(t_ctr, t_rhs, t_subproblem);
 }
 
-bool DantzigWolfe_RMP_Strategy::remove_constraint(const Ctr &t_ctr, ColumnGenerationSubProblem &t_subproblem) {
+bool DantzigWolfe_RMP_Strategy::remove_constraint(const Ctr &t_ctr, ColumnGenerationSubproblem &t_subproblem) {
     if (t_ctr.model_id() == rmp().id()) {
         m_values.erase(t_ctr);
         return false;
