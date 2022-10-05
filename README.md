@@ -38,10 +38,3 @@ To build the code coverage evaluation report, simply run the following.
 ```shell
 ./build_coverage.sh
 ```
-
-### Documentation
-
-The documentation is built using `doxygen`. To build it, run the following command.
-```shell
-./build_documentation.sh
-```
