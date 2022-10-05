@@ -16,8 +16,8 @@ class DecompositionStrategy : public AbstractSolutionStrategy {
 
     Attributes<> m_attributes;
 protected:
-    AbstractAttributes &parameters() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &parameters() const override { return m_attributes; }
+    AbstractAttributes &attributes() override { return m_attributes; }
+    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
     DecompositionStrategy() = default;
 

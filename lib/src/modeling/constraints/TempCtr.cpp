@@ -31,12 +31,11 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream &operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
-    return t_os << "TODO";
-    /*t_os << t_temp_ctr.row();
+    t_os << t_temp_ctr.row().lhs();
     switch (t_temp_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;
         case GreaterOrEqual: t_os << " >= "; break;
         case Equal: t_os << " == "; break;
     }
-    return t_os << t_temp_ctr.row().constant();*/
+    return t_os << t_temp_ctr.row().rhs();
 }

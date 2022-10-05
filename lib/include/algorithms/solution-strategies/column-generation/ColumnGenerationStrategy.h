@@ -40,10 +40,8 @@ class ColumnGenerationStrategy : public AbstractGenerationStrategy {
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
     void terminate_for_no_improving_column_found();
 protected:
-    AbstractAttributes &parameters() override { return m_attributes; }
-
-    const AbstractAttributes &parameters() const override { return m_attributes; }
-
+    AbstractAttributes &attributes() override { return m_attributes; }
+    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
     explicit ColumnGenerationStrategy(DecompositionId&& t_id);
 

@@ -72,7 +72,7 @@ TEST_CASE("Model", "[model][modeling]") {
 
     }
 
-    SECTION("iterate over parameters") {
+    SECTION("iterate over attributes") {
 
         model.add_parameter( sp.add_variable(0., 1., Continuous, 0., "x") );
         model.add_parameter( sp.add_variable(0., 1., Continuous, 0, "y") );

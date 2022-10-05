@@ -357,4 +357,22 @@ Expr<Key> operator-(Expr<Key> t_a, const Expr<Key>& t_b) {
     return result;
 }
 
+template<class Key>
+std::ostream& operator<<(std::ostream& t_os, const Expr<Key>& t_expr) {
+    if (t_expr.empty()) {
+        return t_os << 0.;
+    }
+
+    auto it = t_expr.begin();
+    const auto end = t_expr.end();
+
+    t_os << '{' << (*it).second << '}' << " " << (*it).first;
+
+    for (++it ; it != end ; ++it) {
+        t_os << " + " << '{' << (*it).second << '}' << " " << (*it).first;
+    }
+
+    return t_os;
+}
+
 #endif //OPTIMIZE_EXPR_H

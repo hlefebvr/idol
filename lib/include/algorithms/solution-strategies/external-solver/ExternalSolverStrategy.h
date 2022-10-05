@@ -19,9 +19,9 @@ protected:
     SolverT m_solver;
     Attributes<AttrType::Base> m_attributes;
 
-    AbstractAttributes &parameters() override { return m_attributes; }
+    AbstractAttributes &attributes() override { return m_attributes; }
 
-    [[nodiscard]] const AbstractAttributes &parameters() const override { return m_attributes; }
+    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
     explicit ExternalSolverStrategy(Model& t_model) : m_model(t_model), m_solver(t_model) {
 

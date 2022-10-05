@@ -789,7 +789,7 @@ WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 
 # This WARN_NO_PARAMDOC option can be enabled to get warnings for functions that
-# are documented, but have no documentation for their parameters or return
+# are documented, but have no documentation for their attributes or return
 # value. If set to NO, doxygen will only warn about wrong or incomplete
 # parameter documentation, but not about the absence of documentation. If
 # EXTRACT_ALL is set to YES then this flag will automatically be disabled.

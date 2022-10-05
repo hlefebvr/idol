@@ -19,8 +19,8 @@ class AbstractAttributes;
 
 class AbstractSolutionStrategy {
 protected:
-    virtual AbstractAttributes& parameters() = 0;
-    [[nodiscard]] virtual const AbstractAttributes& parameters() const = 0;
+    virtual AbstractAttributes& attributes() = 0;
+    [[nodiscard]] virtual const AbstractAttributes& attributes() const = 0;
 public:
     virtual ~AbstractSolutionStrategy() = default;
 
@@ -28,7 +28,9 @@ public:
 
     virtual void solve() = 0;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
+    [[nodiscard]] virtual Solution::Primal primal_solution() const {
+        throw NotImplemented("Retrieving primal solution", "primal_solution");
+    }
 
     [[nodiscard]] virtual Solution::Dual dual_solution() const {
         throw NotImplemented("Retrieving dual solution", "dual_solution");
@@ -79,7 +81,7 @@ public:
 
     template<class T>
     void set(typename T::value_type t_value) {
-        auto* ptr = dynamic_cast<typename T::attr_type*>(&parameters());
+        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
         if (ptr == nullptr) {
             throw Exception("Wrong parameter type required: " + T::name() + ".");
         }
@@ -88,7 +90,7 @@ public:
 
     template<class T>
     typename T::value_type get() const {
-        auto* ptr = dynamic_cast<typename T::attr_type*>(&parameters());
+        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
         if (ptr == nullptr) {
             throw Exception("Wrong parameter type required: " + T::name() + ".");
         }

@@ -78,7 +78,7 @@ public:
 };
 
 static std::ostream &operator<<(std::ostream& t_os, const Row& t_row) {
-    return t_os << "TODO";
+    return t_os << '[' << t_row.lhs() << "] [" << t_row.rhs() << ']';
 }
 
 #endif //OPTIMIZE_ROW_H

@@ -4,7 +4,7 @@
 
 #include "../test_utils.h"
 
-TEST_CASE("Var", "[parameters][modeling]") {
+TEST_CASE("Var", "[attributes][modeling]") {
 
     Env env;
     Model sp(env);

@@ -52,5 +52,11 @@ bool Ctr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    return t_os << "TODO";
+    t_os << t_ctr.name() << ": " << t_ctr.row().lhs();
+    switch (t_ctr.type()) {
+        case LessOrEqual: t_os << " <= "; break;
+        case GreaterOrEqual: t_os << " >= "; break;
+        case Equal: t_os << " == "; break;
+    }
+    return t_os << t_ctr.row().rhs();
 }

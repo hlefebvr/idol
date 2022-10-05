@@ -18,7 +18,7 @@ namespace impl {
 /**
  * Parameter modeling object.
  *
- * This class is used to model parameters for optimization models. More precisely, it represents a variable from a model A
+ * This class is used to model attributes for optimization models. More precisely, it represents a variable from a model A
  * which is considered constant in another model B.
  *
  * Parameters are created using the Model::add_parameter method, rather than by using standard constructors.

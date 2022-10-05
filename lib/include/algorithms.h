@@ -10,15 +10,12 @@
 #include "./algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
 #include "./algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
+#include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBoundCtr.h"
 #include "./algorithms/solution-strategies/external-solver/ExternalSolverStrategy.h"
 #include "./solvers.h"
 #include "algorithms/solution-strategies/decomposition/DecompositionStrategy.h"
 #include "algorithms/solution-strategies/column-generation/ColumnGenerationStrategy.h"
 #include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
-
-
-// REMOVE THIS AND RESET
-#include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBoundCtr.h"
 
 template<
         class SolutionStrategyT = ExternalSolverStrategy< std::tuple_element_t<0, available_solvers> >,

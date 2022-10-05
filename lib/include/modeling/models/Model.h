@@ -22,7 +22,7 @@ class Column;
 /**
  * Optimization model object.
  *
- * This class represents an optimization model and is *mainly* composed of parameters (see Param), variables (see Var) and constraints (see Ctr).
+ * This class represents an optimization model and is *mainly* composed of attributes (see Param), variables (see Var) and constraints (see Ctr).
  * It is used to represent an optimization problem given in the following form:
  *
  * \f{align}{

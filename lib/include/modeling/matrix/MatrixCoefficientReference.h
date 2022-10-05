@@ -14,7 +14,6 @@ protected:
     Constant* m_coefficient = nullptr;
     explicit MatrixCoefficientReference(Constant* t_src) : m_coefficient(t_src) {}
 public:
-    MatrixCoefficientReference() = default; // TODO remove this if not necessary
     explicit MatrixCoefficientReference(AbstractMatrixCoefficient& t_src) : m_coefficient(&t_src.value()) {}
 
     MatrixCoefficientReference(const MatrixCoefficientReference&) = delete;

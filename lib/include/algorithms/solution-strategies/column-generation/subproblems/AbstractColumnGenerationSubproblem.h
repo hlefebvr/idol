@@ -11,6 +11,8 @@
 
 class AbstractColumnGenerationSubproblem {
 public:
+    virtual ~AbstractColumnGenerationSubproblem() = default;
+
     virtual void build() = 0;
 
     virtual void solve() = 0;
