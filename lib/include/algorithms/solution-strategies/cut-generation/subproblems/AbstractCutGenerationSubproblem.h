@@ -31,6 +31,10 @@ public:
 
     virtual void add_cut_to_rmp() = 0;
 
+    virtual bool set_lower_bound(const Var& t_var, double t_lb) = 0;
+
+    virtual bool set_upper_bound(const Var& t_var, double t_ub) = 0;
+
     [[nodiscard]] virtual bool is_unbounded() const = 0;
 
     [[nodiscard]] virtual bool is_infeasible() const = 0;

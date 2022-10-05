@@ -50,6 +50,10 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
+    void set_lower_bound(const Var &t_var, double t_lb) override;
+
+    void set_upper_bound(const Var &t_var, double t_ub) override;
+
     template<class T, class ...Args> T& add_subproblem(Args&& ...t_args);
 };
 

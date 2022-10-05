@@ -196,3 +196,23 @@ Solution::Primal CutGenerationStrategy::primal_solution() const {
     }
     return result;
 }
+
+void CutGenerationStrategy::set_lower_bound(const Var &t_var, double t_lb) {
+    for (auto& ptr_to_subproblem : m_subproblems) {
+
+        const bool is_applied = ptr_to_subproblem->set_lower_bound(t_var, t_lb);
+        if(is_applied) { return; }
+
+    }
+    rmp_solution_strategy().set_lower_bound(t_var, t_lb);
+}
+
+void CutGenerationStrategy::set_upper_bound(const Var &t_var, double t_ub) {
+    for (auto& ptr_to_subproblem : m_subproblems) {
+
+        const bool is_applied = ptr_to_subproblem->set_upper_bound(t_var, t_ub);
+        if (is_applied) { return; }
+
+    }
+    rmp_solution_strategy().set_upper_bound(t_var, t_ub);
+}

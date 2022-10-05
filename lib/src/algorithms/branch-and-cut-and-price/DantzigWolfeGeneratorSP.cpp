@@ -37,22 +37,6 @@ Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual
     return result;
 }
 
-void
-DantzigWolfe_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
-
-    if (t_var.model_id() != subproblem().id()) { return; }
-
-    set_lower_bound_sp(t_var, t_lb, t_subproblem);
-}
-
-void
-DantzigWolfe_SP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
-
-    if (t_var.model_id() != subproblem().id()) { return; }
-
-    set_upper_bound_sp(t_var, t_ub, t_subproblem);
-}
-
 Expr<Var> DantzigWolfe_SP_Strategy::expand(const Var &t_subproblem_variable, const ColumnGenerationSubProblem& t_subproblem) {
     Expr result;
     for (const auto& [var, column] : t_subproblem.currently_present_variables()) {

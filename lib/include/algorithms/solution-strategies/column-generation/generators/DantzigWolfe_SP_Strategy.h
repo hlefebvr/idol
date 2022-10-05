@@ -19,11 +19,6 @@ public:
     TempVar create_column(const Solution::Primal &t_primal_solution) const override;
 
     Row get_pricing_objective(const Solution::Dual &t_dual_solution) override;
-
-    void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
-
-    void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
-
 };
 
 #endif //OPTIMIZE_DANTZIGWOLFE_SP_STRATEGY_H

@@ -20,7 +20,7 @@ protected:
 
     static void set_lower_bound_sp(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem);
 
-    void set_upper_bound_sp(const Var& t_var, double t_ub, ColumnGenerationSubProblem& t_subproblem);
+    static void set_upper_bound_sp(const Var& t_var, double t_ub, ColumnGenerationSubProblem& t_subproblem);
 public:
     ColumnGenerator(const Model& t_rmp, const Model& t_subproblem);
 
@@ -36,9 +36,9 @@ public:
 
     Solution::Primal primal_solution(const ColumnGenerationSubProblem& t_subproblem, const Solution::Primal& t_rmp_primals) const override;
 
-    void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
+    bool set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
-    void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
+    bool set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
     std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) override;
 

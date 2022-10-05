@@ -7,20 +7,24 @@
 DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem) : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
 
 
-void DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+bool DantzigWolfe_RMP_Strategy::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
-    if (t_var.model_id() != subproblem().id()) { return; }
+    if (t_var.model_id() != subproblem().id()) { return false; }
 
     set_lower_bound_rmp(t_var, t_lb, t_subproblem);
 
+    return true;
+
 }
 
-void
+bool
 DantzigWolfe_RMP_Strategy::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubProblem &t_subproblem) {
 
-    if (t_var.model_id() != subproblem().id()) { return; }
+    if (t_var.model_id() != subproblem().id()) { return false; }
 
     set_upper_bound_rmp(t_var, t_ub, t_subproblem);
+
+    return true;
 
 }
 

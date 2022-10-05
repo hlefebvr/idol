@@ -9,12 +9,17 @@
 #include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "algorithms/solution-strategies/cut-generation/generators/AbstractCutGenerator.h"
 #include <memory>
+#include <list>
 
 class CutGenerationSubproblem : public AbstractCutGenerationSubproblem {
     AbstractSolutionStrategy& m_rmp_strategy;
     std::unique_ptr<AbstractSolutionStrategy> m_exact_solution_strategy;
     std::unique_ptr<AbstractCutGenerator> m_generator;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
+
+    using PresentColumnList = std::list<std::pair<Ctr, Solution::Primal&>>;
+
+    PresentColumnList m_currently_present_cuts;
 public:
     explicit CutGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy);
 
@@ -43,6 +48,10 @@ public:
     [[nodiscard]] TempCtr create_cut_from(const Solution::Primal& t_primals) const;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
+
+    bool set_lower_bound(const Var &t_var, double t_lb) override;
+
+    bool set_upper_bound(const Var &t_var, double t_ub) override;
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 

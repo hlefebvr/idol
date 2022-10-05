@@ -43,18 +43,22 @@ Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution
     return result;
 }
 
-void ColumnGenerator::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+bool ColumnGenerator::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
-    if (t_var.model_id() != subproblem().id()) { return; }
+    if (t_var.model_id() != subproblem().id()) { return false; }
 
     set_lower_bound_sp(t_var, t_lb, t_subproblem);
+
+    return true;
 }
 
-void ColumnGenerator::set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
+bool ColumnGenerator::set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) {
 
-    if (t_var.model_id() != subproblem().id()) { return; }
+    if (t_var.model_id() != subproblem().id()) { return false; }
 
     set_upper_bound_sp(t_var, t_lb, t_subproblem);
+
+    return true;
 
 }
 

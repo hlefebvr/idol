@@ -61,9 +61,9 @@ public:
 
     void add_column_to_rmp() override;
 
-    void set_lower_bound(const Var &t_var, double t_lb) override;
+    bool set_lower_bound(const Var &t_var, double t_lb) override;
 
-    void set_upper_bound(const Var &t_var, double t_ub) override;
+    bool set_upper_bound(const Var &t_var, double t_ub) override;
 
     AbstractSolutionStrategy& exact_solution_strategy() { return *m_exact_solution_strategy; }
 

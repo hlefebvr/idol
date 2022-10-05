@@ -39,9 +39,9 @@ public:
 
     virtual void add_column_to_rmp() = 0;
 
-    virtual void set_lower_bound(const Var&, double t_lb) = 0;
+    virtual bool set_lower_bound(const Var&, double t_lb) = 0;
 
-    virtual void set_upper_bound(const Var&, double t_ub) = 0;
+    virtual bool set_upper_bound(const Var&, double t_ub) = 0;
 
     virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporay_constraint) = 0;
 

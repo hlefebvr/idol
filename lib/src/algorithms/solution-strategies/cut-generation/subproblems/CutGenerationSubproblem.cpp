@@ -57,7 +57,7 @@ void CutGenerationSubproblem::add_cut_to_rmp() {
     auto* last_primal_solution = m_primal_solutions.back().get();
     auto temp_ctr = create_cut_from(*last_primal_solution);
     auto constraint = m_rmp_strategy.add_constraint(std::move(temp_ctr));
-    //TODO : m_currently_present_cuts.template emplace_back(constraint, *last_primal_solution);
+    m_currently_present_cuts.template emplace_back(constraint, *last_primal_solution);
     EASY_LOG(Trace, "cut-generation", "Adding new constraint " << constraint << ".");
 }
 
@@ -79,5 +79,13 @@ TempCtr CutGenerationSubproblem::create_cut_from(const Solution::Primal &t_prima
 
 Solution::Primal CutGenerationSubproblem::primal_solution() const {
     EASY_LOG(Warn, "cut-generation", "Original space is not rebuilt when calling primal_solution");
-    return Solution::Primal();
+    return {};
+}
+
+bool CutGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {
+    return m_generator->set_lower_bound(t_var, t_lb, *this);
+}
+
+bool CutGenerationSubproblem::set_upper_bound(const Var &t_var, double t_ub) {
+    return m_generator->set_upper_bound(t_var, t_ub, *this);
 }

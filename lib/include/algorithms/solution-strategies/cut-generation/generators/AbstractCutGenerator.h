@@ -12,6 +12,8 @@ namespace Solution {
     class Primal;
 }
 
+class CutGenerationSubproblem;
+
 class AbstractCutGenerator {
     CtrType m_type = GreaterOrEqual;
 public:
@@ -21,7 +23,12 @@ public:
 
     [[nodiscard]] virtual TempCtr create_cut(const Solution::Primal& t_primals) const = 0;
 
-    CtrType type() const { return m_type; }
+    [[nodiscard]] CtrType type() const { return m_type; }
+
+    virtual bool set_lower_bound(const Var& t_var, double t_lb, CutGenerationSubproblem& t_subproblem) = 0;
+
+    virtual bool set_upper_bound(const Var& t_var, double t_lb, CutGenerationSubproblem& t_subproblem) = 0;
+
 };
 
 #endif //OPTIMIZE_ABSTRACTCUTGENERATOR_H

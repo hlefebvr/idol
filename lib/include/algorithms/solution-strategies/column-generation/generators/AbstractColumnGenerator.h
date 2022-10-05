@@ -37,9 +37,9 @@ public:
 
     [[nodiscard]] virtual Solution::Primal primal_solution(const ColumnGenerationSubProblem& t_subproblem, const Solution::Primal& t_rmp_primals) const = 0;
 
-    virtual void set_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool set_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
 
-    virtual void set_upper_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
+    virtual bool set_upper_bound(const Var& t_var, double t_lb, ColumnGenerationSubProblem& t_subproblem) = 0;
 
     virtual std::optional<Ctr> contribute_to_add_constraint(TempCtr& t_temporary_constraint, ColumnGenerationSubProblem& t_subproblem) = 0;
 

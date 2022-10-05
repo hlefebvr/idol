@@ -116,12 +116,12 @@ void ColumnGenerationSubProblem::remove_column_if(const std::function<bool(const
 
 }
 
-void ColumnGenerationSubProblem::set_lower_bound(const Var &t_var, double t_lb) {
-    m_generator->set_lower_bound(t_var, t_lb, *this);
+bool ColumnGenerationSubProblem::set_lower_bound(const Var &t_var, double t_lb) {
+    return m_generator->set_lower_bound(t_var, t_lb, *this);
 }
 
-void ColumnGenerationSubProblem::set_upper_bound(const Var &t_var, double t_ub) {
-    m_generator->set_upper_bound(t_var, t_ub, *this);
+bool ColumnGenerationSubProblem::set_upper_bound(const Var &t_var, double t_ub) {
+    return m_generator->set_upper_bound(t_var, t_ub, *this);
 }
 
 std::optional<Ctr> ColumnGenerationSubProblem::contribute_to_add_constraint(TempCtr &t_temporay_constraint) {

@@ -20,9 +20,9 @@ class DantzigWolfe_RMP_Strategy : public DantzigWolfe_SP_Strategy {
 public:
     DantzigWolfe_RMP_Strategy(Model& t_rmp, const Model& t_subproblem);
 
-    void set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
+    bool set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
-    void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
+    bool set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubProblem &t_subproblem) override;
 
     std::optional<Ctr>
     contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubProblem &t_subproblem) override;
