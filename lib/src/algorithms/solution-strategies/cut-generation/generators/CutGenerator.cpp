@@ -1,18 +1,18 @@
 //
 // Created by henri on 05/10/22.
 //
-#include "algorithms/solution-strategies/cut-generation/generators/CutGenerator_SP_Strategy.h"
+#include "algorithms/solution-strategies/cut-generation/generators/CutGenerator.h"
 #include "modeling/expressions/Row.h"
 #include "modeling/solutions/Solution.h"
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include "algorithms/logs/Log.h"
 
-CutGenerator_SP_Strategy::CutGenerator_SP_Strategy(const Model &t_rmp_model, const Model &t_sp_model)
+CutGenerator::CutGenerator(const Model &t_rmp_model, const Model &t_sp_model)
     : BaseGenerator<Var>(t_rmp_model, t_sp_model) {
 
 }
 
-Row CutGenerator_SP_Strategy::get_separation_objective(const Solution::Primal &t_primals) {
+Row CutGenerator::get_separation_objective(const Solution::Primal &t_primals) {
 
     double rhs_factor = 1.;
 
@@ -32,7 +32,7 @@ Row CutGenerator_SP_Strategy::get_separation_objective(const Solution::Primal &t
     return result;
 }
 
-TempCtr CutGenerator_SP_Strategy::create_cut(const Solution::Primal &t_primals) const {
+TempCtr CutGenerator::create_cut(const Solution::Primal &t_primals) const {
     Row row;
 
     double rhs = 0.;
@@ -52,7 +52,7 @@ TempCtr CutGenerator_SP_Strategy::create_cut(const Solution::Primal &t_primals) 
     return { std::move(row), type() };
 }
 
-bool CutGenerator_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
+bool CutGenerator::set_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -63,7 +63,7 @@ bool CutGenerator_SP_Strategy::set_lower_bound(const Var &t_var, double t_lb, Cu
 
 }
 
-bool CutGenerator_SP_Strategy::set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
+bool CutGenerator::set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -74,7 +74,7 @@ bool CutGenerator_SP_Strategy::set_upper_bound(const Var &t_var, double t_ub, Cu
 
 }
 
-Solution::Primal CutGenerator_SP_Strategy::primal_solution(const CutGenerationSubproblem &t_subproblem,
+Solution::Primal CutGenerator::primal_solution(const CutGenerationSubproblem &t_subproblem,
                                                    const Solution::Dual &t_rmp_duals) const {
     Solution::Primal result;
 
@@ -97,7 +97,7 @@ Solution::Primal CutGenerator_SP_Strategy::primal_solution(const CutGenerationSu
     return result;
 }
 
-void CutGenerator_SP_Strategy::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
+void CutGenerator::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {
 
     t_subproblem.remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
@@ -112,7 +112,7 @@ void CutGenerator_SP_Strategy::remove_columns_violating_lower_bound(const Var &t
 
 }
 
-void CutGenerator_SP_Strategy::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
+void CutGenerator::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) {
 
     t_subproblem.remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
