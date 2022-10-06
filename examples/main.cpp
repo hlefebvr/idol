@@ -12,6 +12,7 @@
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include "algorithms/solution-strategies/cut-generation/generators/CutGenerator.h"
+#include "algorithms/solution-strategies/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
 
 void solve_with_mip() {
     Env env;
@@ -46,22 +47,23 @@ int main() {
 
     Model rmp(env);
     auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
-    auto y = rmp.add_variable(0., Inf, Integer, 2., "y");
+    auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
 
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategy<NodeByBound>>();
     node_strategy.template set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-    node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { });
+    node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { w_1, w_2 });
     node_strategy.template set_node_updator_strategy<NodeUpdatorByBound>();
 
     auto& decomposition = result.set_solution_strategy<DecompositionStrategy>();
     decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<Gurobi>>(rmp);
 
     auto& cut_generation = decomposition.template add_generation_strategy<CutGenerationStrategy>();
-    auto &subproblem = cut_generation.template add_subproblem<CutGenerationSubproblem>();
+    auto &subproblem = cut_generation.template add_subproblem();
     subproblem.template set_solution_strategy<ExternalSolverStrategy<Gurobi>>(sp);
     auto& generator = subproblem.template set_generation_strategy<CutGenerator>(rmp, sp);
+    generator.set_original_space_builder<CutGenerationOriginalSpaceBuilderDual>();
     generator.set_constant( 3 * w_1 + 4 * w_2 );
     generator.set(z, Expr(), 1.);
     generator.set(y, w_1 + 3 * w_2);

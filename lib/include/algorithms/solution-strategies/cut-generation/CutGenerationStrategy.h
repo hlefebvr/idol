@@ -9,6 +9,7 @@
 #include "algorithms/attributes/Base.h"
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/solution-strategies/cut-generation/subproblems/AbstractCutGenerationSubproblem.h"
+#include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include <list>
 #include <memory>
 
@@ -54,7 +55,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    template<class T, class ...Args> T& add_subproblem(Args&& ...t_args);
+    template<class T = CutGenerationSubproblem, class ...Args> T& add_subproblem(Args&& ...t_args);
 };
 
 template<class T, class... Args>

@@ -7,11 +7,14 @@
 
 #include "AbstractCutGenerator.h"
 #include "algorithms/solution-strategies/decomposition/generators/BaseGenerator.h"
+#include "algorithms/solution-strategies/cut-generation/original-space-builder/AbstractCutGenerationOriginalSpaceBuilder.h"
 
 class Model;
 
 class CutGenerator : public AbstractCutGenerator, public BaseGenerator<Var> {
 protected:
+    std::unique_ptr<AbstractCutGenerationOriginalSpaceBuilder> m_original_space_builder;
+
     static void remove_columns_violating_lower_bound(const Var& t_cut, double t_cut_primal_solution, CutGenerationSubproblem& t_subproblem);
 
     static void remove_columns_violating_upper_bound(const Var& t_cut, double t_cut_primal_solution, CutGenerationSubproblem& t_subproblem);
@@ -27,6 +30,16 @@ public:
     bool set_upper_bound(const Var &t_var, double t_ub, CutGenerationSubproblem &t_subproblem) override;
 
     Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Solution::Dual &t_rmp_duals) const override;
+
+    template<class T, class ...Args> T& set_original_space_builder(Args ...t_args);
 };
+
+template<class T, class... Args>
+T &CutGenerator::set_original_space_builder(Args... t_args) {
+    auto* ptr = new T(std::forward<Args>(t_args)...);
+    m_original_space_builder.reset(ptr);
+    return *ptr;
+}
+
 
 #endif //OPTIMIZE_CUTGENERATOR_H
