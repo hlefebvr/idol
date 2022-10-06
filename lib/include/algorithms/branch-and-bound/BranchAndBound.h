@@ -6,7 +6,7 @@
 #define OPTIMIZE_BRANCHANDBOUND_H
 
 #include "algorithms/branch-and-bound/nodes/AbstractNode.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
@@ -23,7 +23,7 @@ class BranchAndBound {
 
     // User strategies
     std::unique_ptr<AbstractNodeStrategy> m_nodes;
-    std::unique_ptr<AbstractSolutionStrategy> m_solution_strategy;
+    std::unique_ptr<Algorithm> m_solution_strategy;
 
     void initialize();
     void create_root_node();
@@ -86,7 +86,7 @@ public:
 
 template<class T, class... Args>
 T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
-    static_assert(std::is_base_of_v<AbstractSolutionStrategy, T>);
+    static_assert(std::is_base_of_v<Algorithm, T>);
     auto* solution_strategy = new T(std::forward<Args>(t_args)...);
     m_solution_strategy.reset(solution_strategy);
     return *solution_strategy;

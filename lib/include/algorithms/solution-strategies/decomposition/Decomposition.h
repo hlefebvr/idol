@@ -10,8 +10,8 @@
 #include "DecompositionId.h"
 #include <functional>
 
-class Decomposition : public AbstractSolutionStrategy {
-    std::unique_ptr<AbstractSolutionStrategy> m_rmp_strategy;
+class Decomposition : public Algorithm {
+    std::unique_ptr<Algorithm> m_rmp_strategy;
     std::list<std::unique_ptr<AbstractGenerationStrategy>> m_generation_strategies;
 
     Attributes<> m_attributes;

@@ -2,7 +2,7 @@
 // Created by henri on 14/09/22.
 //
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "solvers/Solver.h"
 #include <iostream>
 
@@ -13,7 +13,7 @@ NodeByBound::NodeByBound(unsigned int t_id, const NodeByBound &t_src)
 
 }
 
-void NodeByBound::save_solution(const AbstractSolutionStrategy& t_strategy) {
+void NodeByBound::save_solution(const Algorithm& t_strategy) {
     m_primal_solutions = t_strategy.primal_solution();
 }
 

@@ -7,7 +7,7 @@
 
 #include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "algorithms/logs/Log.h"
 #include "algorithms/branch-and-bound/active-node-managers/AbstractActiveNodeManagerWithTypeStrategy.h"
 #include "algorithms/branch-and-bound/node-updators/AbstractNodeUpdatorStrategy.h"
@@ -54,7 +54,7 @@ public:
 
     void set_current_node_to_next_node_to_be_processed() override;
 
-    void save_current_node_solution(const AbstractSolutionStrategy &t_solution_strategy) override;
+    void save_current_node_solution(const Algorithm &t_solution_strategy) override;
 
     void add_node_to_be_processed(AbstractNode *t_node) override;
 
@@ -87,7 +87,7 @@ public:
 
     void create_root_node() override;
 
-    void apply_current_node_to(AbstractSolutionStrategy &t_solution_strategy) override;
+    void apply_current_node_to(Algorithm &t_solution_strategy) override;
 };
 
 template<class NodeT>
@@ -140,7 +140,7 @@ void NodeStrategy<NodeT>::set_current_node_to_next_node_to_be_processed() {
 }
 
 template<class NodeT>
-void NodeStrategy<NodeT>::save_current_node_solution(const AbstractSolutionStrategy & t_solution_strategy){
+void NodeStrategy<NodeT>::save_current_node_solution(const Algorithm & t_solution_strategy){
     m_current_node->save_solution(t_solution_strategy);
 }
 
@@ -240,7 +240,7 @@ void NodeStrategy<NodeT>::create_root_node() {
 }
 
 template<class NodeT>
-void NodeStrategy<NodeT>::apply_current_node_to(AbstractSolutionStrategy &t_solution_strategy) {
+void NodeStrategy<NodeT>::apply_current_node_to(Algorithm &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
 }
 

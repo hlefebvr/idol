@@ -12,7 +12,7 @@
 #include "modeling/constraints/TempCtr.h"
 #include "containers/Map.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include <functional>
 
 class NodeUpdatorByBoundCtr {
@@ -29,9 +29,9 @@ class NodeUpdatorByBoundCtr::Strategy : public AbstractNodeUpdatorStrategyWithTy
     static void update_bounds(Map<Var, Ctr>& t_current_constraints,
                               const Map<Var, double>& t_node_bounds,
                               const std::function<TempCtr(const Var&, double)>& t_create_temp_ctr_function,
-                              AbstractSolutionStrategy& t_solution_strategy);
+                              Algorithm& t_solution_strategy);
 public:
-    void apply_local_changes(const NodeT &t_node, AbstractSolutionStrategy &t_solution_strategy) override {
+    void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) override {
 
         update_bounds(m_lower_bounds,
                       t_node.m_local_lower_bounds,
@@ -50,7 +50,7 @@ template<class NodeT>
 void NodeUpdatorByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_current_constraints,
                                                            const Map<Var, double>& t_node_bounds,
                                                            const std::function<TempCtr(const Var&, double)>& t_create_temp_ctr_function,
-                                                           AbstractSolutionStrategy& t_solution_strategy) {
+                                                           Algorithm& t_solution_strategy) {
 
 
     auto it = t_current_constraints.cbegin();

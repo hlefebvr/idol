@@ -9,7 +9,7 @@
 #include "containers/Map.h"
 #include "modeling/variables/Variable.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include <list>
 #include <functional>
 
@@ -32,7 +32,7 @@ class NodeUpdatorByBound::Strategy : public AbstractNodeUpdatorStrategyWithType<
 public:
     Strategy() = default;
 
-    void apply_local_changes(const NodeT &t_node, AbstractSolutionStrategy &t_solution_strategy);
+    void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy);
 };
 
 template<class NodeT>
@@ -74,7 +74,7 @@ void NodeUpdatorByBound::Strategy<NodeT>::update_bounds(
 }
 
 template<class NodeT>
-void NodeUpdatorByBound::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, AbstractSolutionStrategy &t_solution_strategy) {
+void NodeUpdatorByBound::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) {
 
     update_bounds(
             m_lower_bounds,

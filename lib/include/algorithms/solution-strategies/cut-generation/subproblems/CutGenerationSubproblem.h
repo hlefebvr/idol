@@ -6,14 +6,14 @@
 #define OPTIMIZE_CUTGENERATIONSUBPROBLEM_H
 
 #include "AbstractCutGenerationSubproblem.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "algorithms/solution-strategies/cut-generation/generators/AbstractCutGenerator.h"
 #include <memory>
 #include <list>
 
 class CutGenerationSubproblem : public AbstractCutGenerationSubproblem {
-    AbstractSolutionStrategy& m_rmp_strategy;
-    std::unique_ptr<AbstractSolutionStrategy> m_exact_solution_strategy;
+    Algorithm& m_rmp_strategy;
+    std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<AbstractCutGenerator> m_generator;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
 
@@ -21,7 +21,7 @@ class CutGenerationSubproblem : public AbstractCutGenerationSubproblem {
 
     PresentCutList m_currently_present_cuts;
 public:
-    explicit CutGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy);
+    explicit CutGenerationSubproblem(Algorithm& t_rmp_strategy);
 
     void build() override;
 
@@ -58,9 +58,9 @@ public:
 
     bool set_upper_bound(const Var &t_var, double t_ub) override;
 
-    AbstractSolutionStrategy& exact_solution_strategy() { return *m_exact_solution_strategy; }
+    Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
 
-    AbstractSolutionStrategy& rmp_solution_strategy() { return m_rmp_strategy; }
+    Algorithm& rmp_solution_strategy() { return m_rmp_strategy; }
 
     void remove_cut_if(const std::function<bool(const Ctr&, const Solution::Primal&)>& t_indicator_for_removal);
 

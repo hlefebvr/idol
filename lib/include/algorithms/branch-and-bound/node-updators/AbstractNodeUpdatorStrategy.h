@@ -5,14 +5,14 @@
 #ifndef OPTIMIZE_ABSTRACTNODEUPDATORSTRATEGY_H
 #define OPTIMIZE_ABSTRACTNODEUPDATORSTRATEGY_H
 
-class AbstractSolutionStrategy;
+class Algorithm;
 
 template<class NodeT>
 class AbstractNodeUpdatorStrategyWithType {
 public:
     virtual ~AbstractNodeUpdatorStrategyWithType() = default;
 
-    virtual void apply_local_changes(const NodeT &t_node, AbstractSolutionStrategy &t_solution_strategy) = 0;
+    virtual void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTNODEUPDATORSTRATEGY_H

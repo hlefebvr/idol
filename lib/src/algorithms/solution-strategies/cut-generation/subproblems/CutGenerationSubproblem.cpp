@@ -5,7 +5,7 @@
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include "algorithms/logs/Log.h"
 
-CutGenerationSubproblem::CutGenerationSubproblem(AbstractSolutionStrategy &t_rmp_strategy) : m_rmp_strategy(t_rmp_strategy) {
+CutGenerationSubproblem::CutGenerationSubproblem(Algorithm &t_rmp_strategy) : m_rmp_strategy(t_rmp_strategy) {
 
 }
 

@@ -10,10 +10,10 @@ AbstractGenerationStrategy::AbstractGenerationStrategy(DecompositionId &&t_decom
 
 }
 
-AbstractSolutionStrategy &AbstractGenerationStrategy::rmp_solution_strategy() {
+Algorithm &AbstractGenerationStrategy::rmp_solution_strategy() {
     return *m_id.m_rmp_strategy;
 }
 
-const AbstractSolutionStrategy &AbstractGenerationStrategy::rmp_solution_strategy() const {
+const Algorithm &AbstractGenerationStrategy::rmp_solution_strategy() const {
     return *m_id.m_rmp_strategy;
 }

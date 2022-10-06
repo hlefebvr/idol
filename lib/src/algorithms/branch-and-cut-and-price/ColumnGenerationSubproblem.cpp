@@ -2,9 +2,9 @@
 // Created by henri on 19/09/22.
 //
 #include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 
-ColumnGenerationSubproblem::ColumnGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy)
+ColumnGenerationSubproblem::ColumnGenerationSubproblem(Algorithm& t_rmp_strategy)
         : m_rmp_strategy(t_rmp_strategy) {
 
 }

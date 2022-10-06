@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_EXTERNALSOLVER_H
 #define OPTIMIZE_EXTERNALSOLVER_H
 
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "modeling/models/Model.h"
 #include "../../attributes/Base.h"
 #include "../../attributes/Attributes.h"
@@ -13,7 +13,7 @@
 #include <list>
 
 template<class SolverT>
-class ExternalSolver : public AbstractSolutionStrategy {
+class ExternalSolver : public Algorithm {
 protected:
     Model& m_model;
     SolverT m_solver;

@@ -6,7 +6,7 @@
 #define OPTIMIZE_COLUMNGENERATIONSUBPROBLEM_H
 
 #include "AbstractColumnGenerationSubproblem.h"
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "algorithms/solution-strategies/decomposition/generators/AbstractGenerator.h"
 #include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
 #include "algorithms/logs/Log.h"
@@ -18,8 +18,8 @@
 class Model;
 
 class ColumnGenerationSubproblem : public AbstractColumnGenerationSubproblem {
-    AbstractSolutionStrategy& m_rmp_strategy;
-    std::unique_ptr<AbstractSolutionStrategy> m_exact_solution_strategy;
+    Algorithm& m_rmp_strategy;
+    std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<AbstractColumnGenerator> m_generator;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
 
@@ -27,7 +27,7 @@ class ColumnGenerationSubproblem : public AbstractColumnGenerationSubproblem {
 
     PresentColumnList m_currently_present_variables;
 public:
-    explicit ColumnGenerationSubproblem(AbstractSolutionStrategy& t_rmp_strategy);
+    explicit ColumnGenerationSubproblem(Algorithm& t_rmp_strategy);
 
     void build() override;
 
@@ -65,9 +65,9 @@ public:
 
     bool set_upper_bound(const Var &t_var, double t_ub) override;
 
-    AbstractSolutionStrategy& exact_solution_strategy() { return *m_exact_solution_strategy; }
+    Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
 
-    AbstractSolutionStrategy& rmp_solution_strategy() { return m_rmp_strategy; }
+    Algorithm& rmp_solution_strategy() { return m_rmp_strategy; }
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
 

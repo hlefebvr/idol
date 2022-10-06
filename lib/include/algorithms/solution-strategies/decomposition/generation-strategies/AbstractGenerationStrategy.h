@@ -5,15 +5,15 @@
 #ifndef OPTIMIZE_ABSTRACTGENERATIONSTRATEGY_H
 #define OPTIMIZE_ABSTRACTGENERATIONSTRATEGY_H
 
-#include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
+#include "algorithms/solution-strategies/Algorithm.h"
 #include "algorithms/solution-strategies/decomposition/DecompositionId.h"
 
-class AbstractGenerationStrategy : public AbstractSolutionStrategy {
+class AbstractGenerationStrategy : public Algorithm {
     DecompositionId m_id;
 protected:
-    AbstractSolutionStrategy& rmp_solution_strategy();
+    Algorithm& rmp_solution_strategy();
 
-    [[nodiscard]] const AbstractSolutionStrategy& rmp_solution_strategy() const;
+    [[nodiscard]] const Algorithm& rmp_solution_strategy() const;
 public:
     explicit AbstractGenerationStrategy(DecompositionId&& t_decomposition_id);
 };

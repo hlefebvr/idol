@@ -20,7 +20,7 @@ public: // TODO: remove this
 public:
     explicit NodeByBound(unsigned int t_id) : AbstractNode(t_id) {}
 
-    void save_solution(const AbstractSolutionStrategy& t_strategy) override;
+    void save_solution(const Algorithm& t_strategy) override;
 
     using LocalBounds = ConstIteratorForward<Map<Var, double>>;
 

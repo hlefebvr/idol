@@ -5,13 +5,13 @@
 #ifndef OPTIMIZE_DECOMPOSITIONID_H
 #define OPTIMIZE_DECOMPOSITIONID_H
 
-class AbstractSolutionStrategy;
+class Algorithm;
 class Model;
 
 class DecompositionId {
-    AbstractSolutionStrategy* m_rmp_strategy;
+    Algorithm* m_rmp_strategy;
 
-    explicit DecompositionId(AbstractSolutionStrategy& t_rmp_strategy) : m_rmp_strategy(&t_rmp_strategy) {}
+    explicit DecompositionId(Algorithm& t_rmp_strategy) : m_rmp_strategy(&t_rmp_strategy) {}
 
     friend class AbstractGenerationStrategy;
     friend class Decomposition;
