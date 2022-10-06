@@ -5,9 +5,9 @@
 
 // used for building default branch-and-bound
 #include "algorithms/external-solver/ExternalSolver.h"
-#include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
-#include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
+#include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
+#include "algorithms/branch-and-bound/Nodes_Basic.h"
+#include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 //
 
 #include <iomanip>
@@ -291,7 +291,7 @@ void BranchAndBound::terminate() {
     m_is_terminated = true;
 }
 
-void BranchAndBound::log_node(LogLevel t_msg_level, const AbstractNode& t_node) const {
+void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
 
     const double objective_value = t_node.objective_value();
     char sign = ' ';
@@ -343,7 +343,7 @@ Solution::Primal BranchAndBound::primal_solution() const {
     return m_nodes->incumbent().primal_solution();
 }
 
-const AbstractNode &BranchAndBound::current_node() const {
+const Node &BranchAndBound::current_node() const {
     return m_nodes->current_node();
 }
 

@@ -6,23 +6,24 @@
 #define OPTIMIZE_ALGORITHMS_H
 
 #include "./algorithms/branch-and-bound/BranchAndBound.h"
-#include "./algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "./algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
-#include "./algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
-#include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
-#include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBoundCtr.h"
+#include "algorithms/branch-and-bound/Nodes_Basic.h"
+#include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
+#include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
+#include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
+#include "algorithms/branch-and-bound/ByBoundCtr.h"
 #include "./algorithms/external-solver/ExternalSolver.h"
 #include "./solvers.h"
 #include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
+#include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 
 template<
         class SolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-        class BranchingStrategyT = MostInfeasible,
-        class NodeStrategyT = NodeStrategy<NodeByBound>,
-        class ActiveNodeManagerT = ActiveNodeManager_Heap,
-        class NodeUpdatorT = NodeUpdatorByBound
+        class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+        class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
+        class ActiveNodeManagerT = ActiveNodesManagers::Heap,
+        class NodeUpdatorT = NodeUpdators::ByBoundVar
 >
 BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_candidates) {
     BranchAndBound result;
@@ -41,10 +42,10 @@ template<
         class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
         class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
         class GenerationStrategyT = DantzigWolfe_RMP_Strategy,
-        class BranchingStrategyT = MostInfeasible,
-        class NodeStrategyT = NodeStrategy<NodeByBound>,
-        class ActiveNodeManagerT = ActiveNodeManager_Heap,
-        class NodeUpdatorT = NodeUpdatorByBound,
+        class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+        class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
+        class ActiveNodeManagerT = ActiveNodesManagers::Heap,
+        class NodeUpdatorT = NodeUpdators::ByBoundVar,
         class IteratorT
 >
 BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT t_end, std::vector<Var> t_branching_candidates) {
@@ -73,10 +74,10 @@ template<
     class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
     class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
     class GenerationStrategyT = DantzigWolfe_RMP_Strategy,
-    class BranchingStrategyT = MostInfeasible,
-    class NodeStrategyT = NodeStrategy<NodeByBound>,
-    class ActiveNodeManagerT = ActiveNodeManager_Heap,
-    class NodeUpdatorT = NodeUpdatorByBound
+    class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+    class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
+    class ActiveNodeManagerT = ActiveNodesManagers::Heap,
+    class NodeUpdatorT = NodeUpdators::ByBoundVar
 >
 BranchAndBound branch_and_price(Model& t_rmp_model, Model& t_subproblem, std::vector<Var> t_branching_candidates) {
 

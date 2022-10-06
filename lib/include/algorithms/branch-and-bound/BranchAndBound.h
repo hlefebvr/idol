@@ -5,13 +5,13 @@
 #ifndef OPTIMIZE_BRANCHANDBOUND_H
 #define OPTIMIZE_BRANCHANDBOUND_H
 
-#include "algorithms/branch-and-bound/nodes/AbstractNode.h"
+#include "Node.h"
 #include "algorithms/Algorithm.h"
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/attributes/Attributes_Base.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
-#include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
+#include "NodeStrategy.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -62,9 +62,9 @@ class BranchAndBound : public Algorithm {
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 
-    void log_node(LogLevel t_msg_level, const AbstractNode& t_node) const;
+    void log_node(LogLevel t_msg_level, const Node& t_node) const;
 
-    [[nodiscard]] const AbstractNode& current_node() const;
+    [[nodiscard]] const Node& current_node() const;
 
 protected:
     AbstractAttributes &attributes() override;

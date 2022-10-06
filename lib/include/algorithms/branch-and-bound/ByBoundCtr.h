@@ -2,11 +2,11 @@
 // Created by henri on 22/09/22.
 //
 
-#ifndef OPTIMIZE_NODEUPDATORBYBOUNDCTR_H
-#define OPTIMIZE_NODEUPDATORBYBOUNDCTR_H
+#ifndef OPTIMIZE_BYBOUNDCTR_H
+#define OPTIMIZE_BYBOUNDCTR_H
 
 
-#include "AbstractNodeUpdatorStrategy.h"
+#include "NodeUpdator.h"
 #include "modeling/variables/Variable.h"
 #include "modeling/constraints/Constraint.h"
 #include "modeling/constraints/TempCtr.h"
@@ -15,13 +15,17 @@
 #include "algorithms/Algorithm.h"
 #include <functional>
 
-class NodeUpdatorByBoundCtr {
+namespace NodeUpdators {
+    class ByBoundCtr;
+}
+
+class NodeUpdators::ByBoundCtr {
 public:
     template<class NodeT> class Strategy;
 };
 
 template<class NodeT>
-class NodeUpdatorByBoundCtr::Strategy : public AbstractNodeUpdatorStrategyWithType<NodeT> {
+class NodeUpdators::ByBoundCtr::Strategy : public NodeUpdatorWithNodeType<NodeT> {
 
     Map<Var, Ctr> m_lower_bounds;
     Map<Var, Ctr> m_upper_bounds;
@@ -47,7 +51,7 @@ public:
 };
 
 template<class NodeT>
-void NodeUpdatorByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_current_constraints,
+void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_current_constraints,
                                                            const Map<Var, double>& t_node_bounds,
                                                            const std::function<TempCtr(const Var&, double)>& t_create_temp_ctr_function,
                                                            Algorithm& t_solution_strategy) {
@@ -86,4 +90,4 @@ void NodeUpdatorByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_curr
 }
 
 
-#endif //OPTIMIZE_NODEUPDATORBYBOUNDCTR_H
+#endif //OPTIMIZE_BYBOUNDCTR_H

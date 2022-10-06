@@ -11,7 +11,7 @@
 #include "errors/NotImplemented.h"
 #include <list>
 
-class AbstractNode;
+class Node;
 class Solver;
 class Var;
 

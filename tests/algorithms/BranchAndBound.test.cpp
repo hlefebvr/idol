@@ -5,7 +5,7 @@
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/external-solver/ExternalSolver.h"
-#include "algorithms/branch-and-bound/nodes/NodeByBound.h"
+#include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", available_solvers) {

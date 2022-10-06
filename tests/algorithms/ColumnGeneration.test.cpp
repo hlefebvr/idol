@@ -4,12 +4,12 @@
 
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
+#include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/decomposition/Decomposition.h"
-#include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
-#include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
+#include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
+#include "algorithms/branch-and-bound/Nodes_Basic.h"
+#include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
 #include "algorithms/column-generation/generators/DantzigWolfe_SP_Strategy.h"
 #include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
 #include "algorithms/column-generation/generators/ColumnGenerator.h"
@@ -35,10 +35,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
                 BranchAndBound solver;
-                auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();
-                node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-                node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
-                node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
+                auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+                node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+                node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+                node_strategy.set_branching_strategy<BranchingStrategies::BranchingStrategies_MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
                 auto& decomposition = solver.set_solution_strategy<Decomposition>();
                 auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
@@ -69,10 +69,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
                 BranchAndBound solver;
-                auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();
-                node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-                node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
-                node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
+                auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+                node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+                node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+                node_strategy.set_branching_strategy<BranchingStrategies::BranchingStrategies_MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
                 auto& decomposition = solver.set_solution_strategy<Decomposition>();
                 auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
@@ -108,10 +108,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
             auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
 
             BranchAndBound solver;
-            auto& node_strategy = solver.set_node_strategy<NodeStrategy<NodeByBound>>();
-            node_strategy.set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-            node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
-            node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
+            auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+            node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+            node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+            node_strategy.set_branching_strategy<BranchingStrategies::BranchingStrategies_MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
             auto& decomposition = solver.set_solution_strategy<Decomposition>();
             auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);

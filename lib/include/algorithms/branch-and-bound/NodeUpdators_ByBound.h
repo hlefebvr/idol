@@ -2,10 +2,10 @@
 // Created by henri on 21/09/22.
 //
 
-#ifndef OPTIMIZE_NODEUPDATORBYBOUND_H
-#define OPTIMIZE_NODEUPDATORBYBOUND_H
+#ifndef OPTIMIZE_NODEUPDATORS_BYBOUND_H
+#define OPTIMIZE_NODEUPDATORS_BYBOUND_H
 
-#include "AbstractNodeUpdatorStrategy.h"
+#include "NodeUpdator.h"
 #include "containers/Map.h"
 #include "modeling/variables/Variable.h"
 #include "modeling/numericals.h"
@@ -13,13 +13,17 @@
 #include <list>
 #include <functional>
 
-class NodeUpdatorByBound {
+namespace NodeUpdators {
+    class ByBoundVar;
+}
+
+class NodeUpdators::ByBoundVar {
 public:
     template<class NodeT> class Strategy;
 };
 
 template<class NodeT>
-class NodeUpdatorByBound::Strategy : public AbstractNodeUpdatorStrategyWithType<NodeT> {
+class NodeUpdators::ByBoundVar::Strategy : public NodeUpdatorWithNodeType<NodeT> {
 
     Map<Var, double> m_lower_bounds;
     Map<Var, double> m_upper_bounds;
@@ -36,7 +40,7 @@ public:
 };
 
 template<class NodeT>
-void NodeUpdatorByBound::Strategy<NodeT>::update_bounds(
+void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
         Map<Var, double> &t_currently_modified_variables_with_their_original_bound,
         const Map<Var, double> &t_node_bounds, const std::function<void(const Var &, double)> &t_set_bound_function,
         const std::function<double(const Var &)> &t_get_bound_function) {
@@ -74,7 +78,7 @@ void NodeUpdatorByBound::Strategy<NodeT>::update_bounds(
 }
 
 template<class NodeT>
-void NodeUpdatorByBound::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) {
+void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) {
 
     update_bounds(
             m_lower_bounds,
@@ -92,4 +96,4 @@ void NodeUpdatorByBound::Strategy<NodeT>::apply_local_changes(const NodeT &t_nod
 
 }
 
-#endif //OPTIMIZE_NODEUPDATORBYBOUND_H
+#endif //OPTIMIZE_NODEUPDATORS_BYBOUND_H
