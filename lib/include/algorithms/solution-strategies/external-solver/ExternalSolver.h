@@ -68,6 +68,10 @@ public:
     void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
 
     void remove_constraint(const Ctr &t_constraint) override;
+
+    void compute_iis() override;
+
+    [[nodiscard]] Solution::Dual iis() const override;
 };
 
 template<class SolverT>
@@ -111,6 +115,16 @@ void ExternalSolver<SolverT>::remove_variable(const Var &t_variable) {
 template<class SolverT>
 void ExternalSolver<SolverT>::remove_constraint(const Ctr &t_constraint) {
     m_model.remove(t_constraint);
+}
+
+template<class SolverT>
+Solution::Dual ExternalSolver<SolverT>::iis() const {
+    return m_solver.iis();
+}
+
+template<class SolverT>
+void ExternalSolver<SolverT>::compute_iis() {
+    m_solver.compute_iis();
 }
 
 #endif //OPTIMIZE_EXTERNALSOLVER_H

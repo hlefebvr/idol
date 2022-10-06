@@ -5,7 +5,10 @@
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 
 Solution::Primal CutGenerationOriginalSpaceBuilderDual::primal_solution(const CutGenerationSubproblem &t_subproblem,
-                                                                        const Solution::Dual &t_rmp_duals) const {
+                                                                        const Algorithm &t_rmp_solution_strategy) const {
+
+    const Solution::Dual t_rmp_duals = t_rmp_solution_strategy.dual_solution();
+
     Solution::Primal result;
 
     double sum_duals = 0.;

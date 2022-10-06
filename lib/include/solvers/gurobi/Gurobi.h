@@ -19,6 +19,8 @@ public:
 
     void solve() override;
 
+    void compute_iis() override;
+
     GRBEnv& get_env() { return m_env; }
 
     [[nodiscard]] const GRBEnv& get_env() const { return m_env; }

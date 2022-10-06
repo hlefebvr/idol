@@ -8,12 +8,13 @@
 #include "modeling/solutions/Solution.h"
 
 class CutGenerationSubproblem;
+class Algorithm;
 
 class AbstractCutGenerationOriginalSpaceBuilder {
 public:
     virtual ~AbstractCutGenerationOriginalSpaceBuilder() = default;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Solution::Dual &t_rmp_duals) const = 0;
+    [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const = 0;
 };
 
 #endif //OPTIMIZE_ABSTRACTCUTGENERATIONORIGINALSPACEBUILDER_H

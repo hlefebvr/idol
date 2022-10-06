@@ -415,5 +415,9 @@ void Lpsolve::set_objective_offset(const Constant &t_offset) {
     m_objective_offset = value(t_offset);
 }
 
+void Lpsolve::compute_iis() {
+    throw Exception("Not implemented");
+}
+
 
 #endif

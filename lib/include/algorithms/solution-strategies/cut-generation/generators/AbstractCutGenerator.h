@@ -14,6 +14,7 @@ namespace Solution {
 }
 
 class CutGenerationSubproblem;
+class Algorithm;
 
 class AbstractCutGenerator {
     CtrType m_type = GreaterOrEqual;
@@ -30,7 +31,7 @@ public:
 
     virtual bool set_upper_bound(const Var& t_var, double t_lb, CutGenerationSubproblem& t_subproblem) = 0;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem& t_subproblem, const Solution::Dual& t_rmp_duals) const = 0;
+    [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem& t_subproblem, const Algorithm& t_rmp_solution_strategy) const = 0;
 
 };
 

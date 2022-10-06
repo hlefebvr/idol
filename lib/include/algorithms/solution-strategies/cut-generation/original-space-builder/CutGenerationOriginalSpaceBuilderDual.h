@@ -9,7 +9,7 @@
 
 class CutGenerationOriginalSpaceBuilderDual : public AbstractCutGenerationOriginalSpaceBuilder {
 public:
-    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Solution::Dual &t_rmp_duals) const override;
+    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const override;
 };
 
 #endif //OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDERDUAL_H

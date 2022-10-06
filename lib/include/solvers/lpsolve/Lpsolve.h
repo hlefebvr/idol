@@ -35,6 +35,8 @@ public:
 
     void solve() override;
 
+    void compute_iis() override;
+
 protected:
     int create_variable(const Var &t_var) override;
 

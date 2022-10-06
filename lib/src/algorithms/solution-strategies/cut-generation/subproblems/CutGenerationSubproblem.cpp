@@ -78,8 +78,7 @@ TempCtr CutGenerationSubproblem::create_cut_from(const Solution::Primal &t_prima
 }
 
 Solution::Primal CutGenerationSubproblem::primal_solution() const {
-    const auto rmp_duals = m_rmp_strategy.dual_solution();
-    return m_generator->primal_solution(*this, rmp_duals);
+    return m_generator->primal_solution(*this, m_rmp_strategy);
 }
 
 bool CutGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {

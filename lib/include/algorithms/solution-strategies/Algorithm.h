@@ -42,6 +42,13 @@ public:
     virtual void solve() = 0;
 
     /**
+     * Searches for an IIS of the optimization problem.
+     */
+    virtual void compute_iis() {
+        throw NotImplemented("Computing IIS", "compute_iis");
+    }
+
+    /**
      * Returns the computed primal solution (after solve has been called).
      */
     [[nodiscard]] virtual Solution::Primal primal_solution() const {
@@ -60,6 +67,13 @@ public:
      */
     [[nodiscard]] virtual Solution::Dual farkas_certificate() const {
         throw NotImplemented("Retrieving Farkas certificate", "farkas_certificate");
+    }
+
+    /**
+     * Returns the computed iis (after solve or solve_for_iis has been called).
+     */
+    [[nodiscard]] virtual Solution::Dual iis() const {
+        throw NotImplemented("Retrieving IIS", "iis");
     }
 
     /**

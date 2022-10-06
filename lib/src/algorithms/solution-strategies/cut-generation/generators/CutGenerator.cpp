@@ -74,14 +74,13 @@ bool CutGenerator::set_upper_bound(const Var &t_var, double t_ub, CutGenerationS
 
 }
 
-Solution::Primal CutGenerator::primal_solution(const CutGenerationSubproblem &t_subproblem,
-                                                   const Solution::Dual &t_rmp_duals) const {
+Solution::Primal CutGenerator::primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const {
 
     if (!m_original_space_builder) {
         return {};
     }
 
-    return m_original_space_builder->primal_solution(t_subproblem, t_rmp_duals);
+    return m_original_space_builder->primal_solution(t_subproblem, t_rmp_solution_strategy);
 }
 
 void CutGenerator::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, CutGenerationSubproblem &t_subproblem) {

@@ -195,4 +195,8 @@ void Gurobi::set_objective_offset(const Constant &t_offset) {
     m_model.set(GRB_DoubleAttr_ObjCon, value(t_offset));
 }
 
+void Gurobi::compute_iis() {
+    m_model.computeIIS();
+}
+
 #endif

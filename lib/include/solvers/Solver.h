@@ -37,6 +37,8 @@ public:
     [[nodiscard]] virtual Solution::Dual dual_farkas() const = 0;
 
     [[nodiscard]] virtual Solution::Dual iis() const = 0;
+
+    virtual void compute_iis() = 0;
 };
 
 #endif //OPTIMIZE_SOLVER_H

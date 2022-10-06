@@ -5,8 +5,8 @@
 #include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
 
 Solution::Primal
-CutGenerationOriginalSpaceBuilderGenerated::primal_solution(const CutGenerationSubproblem &t_subproblem,
-                                                            const Solution::Dual &t_rmp_duals) const {
+CutGenerationOriginalSpaceBuilderGenerated::primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_duals) const {
+
     Solution::Primal result;
 
     for (const auto& [ctr, primal_solution] : t_subproblem.currently_present_cuts()) {
