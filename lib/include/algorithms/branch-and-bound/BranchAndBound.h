@@ -7,6 +7,8 @@
 
 #include "algorithms/branch-and-bound/nodes/AbstractNode.h"
 #include "algorithms/Algorithm.h"
+#include "algorithms/attributes/Attributes.h"
+#include "algorithms/attributes/Attributes_Base.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
@@ -14,7 +16,7 @@
 #include <list>
 #include <memory>
 
-class BranchAndBound {
+class BranchAndBound : public Algorithm {
     unsigned int m_n_created_nodes = 0;
     bool m_is_terminated = false;
 
@@ -24,6 +26,8 @@ class BranchAndBound {
     // User strategies
     std::unique_ptr<AbstractNodeStrategy> m_nodes;
     std::unique_ptr<Algorithm> m_solution_strategy;
+
+    Attributes<AttributesSections::Base> m_attributes;
 
     void initialize();
     void create_root_node();
@@ -61,10 +65,15 @@ class BranchAndBound {
     void log_node(LogLevel t_msg_level, const AbstractNode& t_node) const;
 
     [[nodiscard]] const AbstractNode& current_node() const;
+
+protected:
+    AbstractAttributes &attributes() override;
+
+    [[nodiscard]] const AbstractAttributes &attributes() const override;
 public:
     BranchAndBound() = default;
 
-    void solve();
+    void solve() override;
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
@@ -81,7 +90,7 @@ public:
 
     [[nodiscard]] SolutionStatus status() const;
     [[nodiscard]] double objective_value() const;
-    [[nodiscard]] Solution::Primal primal_solution() const;
+    [[nodiscard]] Solution::Primal primal_solution() const override;
 };
 
 template<class T, class... Args>
