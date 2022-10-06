@@ -11,7 +11,7 @@
 using configurations =
         cartesian_product<
                 available_solvers,
-                std::tuple<DantzigWolfe_RMP_Strategy, DantzigWolfe_SP_Strategy>,
+                std::tuple<ColumnGenerators::DantzigWolfeRMP, ColumnGenerators::DantzigWolfeSP>,
                 std::tuple<BranchingStrategies::BranchingStrategies_MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
                 std::tuple<ActiveNodesManagers::Heap>,

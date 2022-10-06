@@ -7,12 +7,12 @@
 
 #include "algorithms/decomposition/GenerationAlgorithm.h"
 #include "modeling/models/Model.h"
-#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "ColumnGenerationSP.h"
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/attributes/Attributes_Base.h"
 
 class ColumnGeneration : public GenerationAlgorithm {
-    std::list<std::unique_ptr<AbstractColumnGenerationSubproblem>> m_subproblems;
+    std::list<ColumnGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
     Attributes<AttributesSections::Base> m_attributes;
 
@@ -29,7 +29,7 @@ class ColumnGeneration : public GenerationAlgorithm {
     void update_subproblems();
     void solve_subproblems();
     void log_last_rmp_dual_solution() const;
-    void analyze_last_subproblem_primal_solution(const AbstractColumnGenerationSubproblem& t_subproblem);
+    void analyze_last_subproblem_primal_solution(const ColumnGenerationSP& t_subproblem);
     void add_columns();
 
     void terminate();
@@ -63,14 +63,7 @@ public:
 
     void remove_constraint(const Ctr &t_constraint) override;
 
-    template<class T = ColumnGenerationSubproblem, class ...Args> T& add_subproblem(Args&& ...t_args);
+    ColumnGenerationSP& add_subproblem();
 };
-
-template<class T, class... Args>
-T& ColumnGeneration::add_subproblem(Args &&... t_args) {
-    auto* subproblem = new T(rmp_solution_strategy(), std::forward<Args>(t_args)...);
-    m_subproblems.template emplace_back(subproblem);
-    return *subproblem;
-}
 
 #endif //OPTIMIZE_COLUMNGENERATION_H

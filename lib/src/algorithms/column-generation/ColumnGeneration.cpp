@@ -9,8 +9,8 @@ ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithm
 }
 
 void ColumnGeneration::build() {
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        ptr_to_subproblem->build();
+    for (auto& subproblem : m_subproblems) {
+        subproblem.build();
     }
 }
 
@@ -42,24 +42,24 @@ void ColumnGeneration::solve() {
 
 Solution::Primal ColumnGeneration::primal_solution() const{
     Solution::Primal result = rmp_solution_strategy().primal_solution();
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        result.merge_without_conflict(ptr_to_subproblem->primal_solution());
+    for (auto& subproblem : m_subproblems) {
+        result.merge_without_conflict(subproblem.primal_solution());
     }
     return result;
 }
 
 Solution::Dual ColumnGeneration::dual_solution() const{
     Solution::Dual result = rmp_solution_strategy().dual_solution();
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        result.merge_without_conflict(ptr_to_subproblem->dual_solution());
+    for (auto& subproblem : m_subproblems) {
+        result.merge_without_conflict(subproblem.dual_solution());
     }
     return result;
 }
 
 void ColumnGeneration::set_lower_bound(const Var & t_var, double t_lb){
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        const bool is_applied = ptr_to_subproblem->set_lower_bound(t_var, t_lb);
+        const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
         if(is_applied) { return; }
 
     }
@@ -67,9 +67,9 @@ void ColumnGeneration::set_lower_bound(const Var & t_var, double t_lb){
 }
 
 void ColumnGeneration::set_upper_bound(const Var & t_var, double t_ub){
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        const bool is_applied = ptr_to_subproblem->set_upper_bound(t_var, t_ub);
+        const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
         if (is_applied) { return; }
 
     }
@@ -137,10 +137,10 @@ void ColumnGeneration::terminate() {
 void ColumnGeneration::update_subproblems() {
     if (is_terminated()) { return; }
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        auto row = ptr_to_subproblem->get_pricing_objective(*m_last_rmp_duals);
+    for (auto& subproblem : m_subproblems) {
+        auto row = subproblem.get_pricing_objective(*m_last_rmp_duals);
         EASY_LOG(Trace, "column-generation", "Setting pricing objective to " << row);
-        ptr_to_subproblem->update_pricing_objective(row);
+        subproblem.update_pricing_objective(row);
     }
 }
 
@@ -148,15 +148,15 @@ void ColumnGeneration::solve_subproblems() {
 
     if (is_terminated()) { return; }
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        ptr_to_subproblem->solve();
+        subproblem.solve();
 
-        ptr_to_subproblem->save_last_primal_solution();
+        subproblem.save_last_primal_solution();
 
-        ptr_to_subproblem->log_last_primal_solution();
+        subproblem.log_last_primal_solution();
 
-        analyze_last_subproblem_primal_solution(*ptr_to_subproblem);
+        analyze_last_subproblem_primal_solution(subproblem);
 
         if (is_terminated()) { break; }
 
@@ -170,11 +170,11 @@ void ColumnGeneration::add_columns() {
 
     bool improving_columns_found = false;
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        if (ptr_to_subproblem->improving_column_found()) {
+        if (subproblem.improving_column_found()) {
             improving_columns_found = true;
-            ptr_to_subproblem->add_column_to_rmp();
+            subproblem.add_column_to_rmp();
         }
 
     }
@@ -201,7 +201,7 @@ void ColumnGeneration::terminate_for_subproblem_is_unbounded() {
     terminate();
 }
 
-void ColumnGeneration::analyze_last_subproblem_primal_solution(const AbstractColumnGenerationSubproblem &t_subproblem) {
+void ColumnGeneration::analyze_last_subproblem_primal_solution(const ColumnGenerationSP &t_subproblem) {
 
     if (t_subproblem.is_unbounded()) {
         terminate_for_subproblem_is_unbounded();
@@ -238,9 +238,9 @@ void ColumnGeneration::log_last_rmp_dual_solution() const {
 
 Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        auto optional_ctr = ptr_to_subproblem->contribute_to_add_constraint(t_temporary_constraint);
+        auto optional_ctr = subproblem.contribute_to_add_constraint(t_temporary_constraint);
 
         if (optional_ctr.has_value()) {
             return optional_ctr.value();
@@ -254,9 +254,9 @@ Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
 
 void ColumnGeneration::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        if (ptr_to_subproblem->update_constraint_rhs(t_ctr, t_rhs)) {
+        if (subproblem.update_constraint_rhs(t_ctr, t_rhs)) {
             return;
         }
 
@@ -266,12 +266,17 @@ void ColumnGeneration::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
 void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        if (ptr_to_subproblem->remove_constraint(t_constraint)) {
+        if (subproblem.remove_constraint(t_constraint)) {
             return;
         }
 
     }
 
+}
+
+ColumnGenerationSP &ColumnGeneration::add_subproblem() {
+    m_subproblems.emplace_back(rmp_solution_strategy());
+    return m_subproblems.back();
 }

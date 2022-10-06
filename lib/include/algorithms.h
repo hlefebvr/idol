@@ -15,7 +15,7 @@
 #include "./solvers.h"
 #include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
-#include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
+#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 
 template<
@@ -41,7 +41,7 @@ BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_can
 template<
         class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
         class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-        class GenerationStrategyT = DantzigWolfe_RMP_Strategy,
+        class GenerationStrategyT = ColumnGenerators::DantzigWolfeRMP,
         class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
@@ -62,7 +62,7 @@ BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT
     auto& column_generation = decomposition.template add_generation_strategy<ColumnGeneration>();
 
     for (; t_begin != t_end ; ++t_begin) {
-        auto &subproblem = column_generation.template add_subproblem();
+        auto &subproblem = column_generation.add_subproblem();
         subproblem.template set_solution_strategy<SPSolutionStrategyT>(*t_begin);
         subproblem.template set_generation_strategy<GenerationStrategyT>(t_rmp_model, *t_begin);
     }
@@ -73,7 +73,7 @@ BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT
 template<
     class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
     class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-    class GenerationStrategyT = DantzigWolfe_RMP_Strategy,
+    class GenerationStrategyT = ColumnGenerators::DantzigWolfeRMP,
     class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
     class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
     class ActiveNodeManagerT = ActiveNodesManagers::Heap,

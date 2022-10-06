@@ -2,11 +2,11 @@
 // Created by henri on 20/09/22.
 //
 
-#include "algorithms/column-generation/generators/DantzigWolfe_SP_Strategy.h"
-#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeSP.h"
+#include "algorithms/column-generation/ColumnGenerationSP.h"
 
-DantzigWolfe_SP_Strategy::DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_subproblem)
-        : ColumnGenerator(t_rmp, t_subproblem),
+ColumnGenerators::DantzigWolfeSP::DantzigWolfeSP(Model &t_rmp, const Model &t_subproblem)
+        : ColumnGenerators::Basic(t_rmp, t_subproblem),
           m_convexificiation_constraint(t_rmp.add_constraint(Expr() == 1, "convex")) {
 
     for (const auto& ctr : t_rmp.constraints()) {
@@ -25,19 +25,19 @@ DantzigWolfe_SP_Strategy::DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_
 
 }
 
-TempVar DantzigWolfe_SP_Strategy::create_column(const Solution::Primal &t_primal_solution) const {
-    auto result = ColumnGenerator::create_column(t_primal_solution);
+TempVar ColumnGenerators::DantzigWolfeSP::create_column(const Solution::Primal &t_primal_solution) const {
+    auto result = ColumnGenerators::Basic::create_column(t_primal_solution);
     result.column().components().set(m_convexificiation_constraint, m_convexificiation_constraint.rhs().numerical());
     return result;
 }
 
-Row DantzigWolfe_SP_Strategy::get_pricing_objective(const Solution::Dual &t_dual_solution) {
-    auto result = ColumnGenerator::get_pricing_objective(t_dual_solution);
+Row ColumnGenerators::DantzigWolfeSP::get_pricing_objective(const Solution::Dual &t_dual_solution) {
+    auto result = ColumnGenerators::Basic::get_pricing_objective(t_dual_solution);
     result.rhs() += -m_convexificiation_constraint.rhs().numerical() * t_dual_solution.get(m_convexificiation_constraint);
     return result;
 }
 
-Expr<Var> DantzigWolfe_SP_Strategy::expand(const Var &t_subproblem_variable, const ColumnGenerationSubproblem& t_subproblem) {
+Expr<Var> ColumnGenerators::DantzigWolfeSP::expand(const Var &t_subproblem_variable, const ColumnGenerationSP& t_subproblem) {
     Expr result;
     for (const auto& [var, column] : t_subproblem.currently_present_variables()) {
         result += column.get(t_subproblem_variable) * var;

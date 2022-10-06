@@ -10,9 +10,9 @@
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
-#include "algorithms/column-generation/generators/DantzigWolfe_SP_Strategy.h"
-#include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
-#include "algorithms/column-generation/generators/ColumnGenerator.h"
+#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeSP.h"
+#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
+#include "algorithms/column-generation/ColumnGenerators_Basic.h"
 
 TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]", available_solvers) {
 
@@ -45,7 +45,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
                 auto& subproblem = generation.add_subproblem();
                 auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
-                auto& generator = subproblem.template set_generation_strategy<ColumnGenerator>(rmp, sp);
+                auto& generator = subproblem.template set_generation_strategy<ColumnGenerators::Basic>(rmp, sp);
                 generator.set(ctr_rmp, -2. * x_0 + 2. * x_1);
                 generator.set(ctr_con, Expr(), 1.);
 
@@ -79,7 +79,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
                 auto& subproblem = generation.add_subproblem();
                 auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
-                auto& generator = subproblem.template set_generation_strategy<DantzigWolfe_SP_Strategy>(rmp, sp);
+                auto& generator = subproblem.template set_generation_strategy<ColumnGenerators::DantzigWolfeSP>(rmp, sp);
 
                 solver.solve();
 
@@ -118,7 +118,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
             auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
             auto& subproblem = generation.add_subproblem();
             auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
-            auto& generator = subproblem.template set_generation_strategy<DantzigWolfe_RMP_Strategy>(rmp, sp);
+            auto& generator = subproblem.template set_generation_strategy<ColumnGenerators::DantzigWolfeRMP>(rmp, sp);
 
             solver.solve();
 

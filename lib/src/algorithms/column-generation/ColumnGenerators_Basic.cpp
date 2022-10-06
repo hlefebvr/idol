@@ -1,10 +1,10 @@
 //
 // Created by henri on 15/09/22.
 //
-#include "algorithms/column-generation/generators/ColumnGenerator.h"
-#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/column-generation/ColumnGenerators_Basic.h"
+#include "algorithms/column-generation/ColumnGenerationSP.h"
 
-ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : Generators::Basic<Ctr>(t_rmp, t_subproblem) {
+ColumnGenerators::Basic::Basic(const Model& t_rmp, const Model &t_subproblem) : Generators::Basic<Ctr>(t_rmp, t_subproblem) {
 
     Expr objective;
     for (const auto& [var, coeff] : t_subproblem.objective()) {
@@ -14,7 +14,7 @@ ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) 
 
 }
 
-TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution) const {
+TempVar ColumnGenerators::Basic::create_column(const Solution::Primal &t_primal_solution) const {
     Column column;
 
     double objective = 0.;
@@ -34,7 +34,7 @@ TempVar ColumnGenerator::create_column(const Solution::Primal &t_primal_solution
     return { lb(), ub(), type(), std::move(column) };
 }
 
-Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution) {
+Row ColumnGenerators::Basic::get_pricing_objective(const Solution::Dual &t_dual_solution) {
     Row result = t_dual_solution.status() == Optimal ? Row(constant(), 0.) : Row();
     for (auto [ctr, row] : *this) {
         row *= -t_dual_solution.get(ctr);
@@ -43,7 +43,7 @@ Row ColumnGenerator::get_pricing_objective(const Solution::Dual &t_dual_solution
     return result;
 }
 
-bool ColumnGenerator::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
+bool ColumnGenerators::Basic::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -52,7 +52,7 @@ bool ColumnGenerator::set_lower_bound(const Var &t_var, double t_lb, ColumnGener
     return true;
 }
 
-bool ColumnGenerator::set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
+bool ColumnGenerators::Basic::set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 
     if (t_var.model_id() != subproblem().id()) { return false; }
 
@@ -62,17 +62,17 @@ bool ColumnGenerator::set_upper_bound(const Var &t_var, double t_lb, ColumnGener
 
 }
 
-void ColumnGenerator::set_lower_bound_sp(const Var &t_var, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
+void ColumnGenerators::Basic::set_lower_bound_sp(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
     remove_columns_violating_lower_bound(t_var, t_lb, t_subproblem);
     t_subproblem.exact_solution_strategy().set_lower_bound(t_var, t_lb);
 }
 
-void ColumnGenerator::set_upper_bound_sp(const Var &t_var, double t_ub, ColumnGenerationSubproblem &t_subproblem) {
+void ColumnGenerators::Basic::set_upper_bound_sp(const Var &t_var, double t_ub, ColumnGenerationSP &t_subproblem) {
     remove_columns_violating_upper_bound(t_var, t_ub, t_subproblem);
     t_subproblem.exact_solution_strategy().set_upper_bound(t_var, t_ub);
 }
 
-void ColumnGenerator::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSubproblem &t_subproblem) {
+void ColumnGenerators::Basic::remove_columns_violating_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
@@ -87,7 +87,7 @@ void ColumnGenerator::remove_columns_violating_lower_bound(const Var &t_var, dou
 
 }
 
-void ColumnGenerator::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSubproblem &t_subproblem) {
+void ColumnGenerators::Basic::remove_columns_violating_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSP &t_subproblem) {
 
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
@@ -102,7 +102,7 @@ void ColumnGenerator::remove_columns_violating_upper_bound(const Var &t_var, dou
 
 }
 
-Solution::Primal ColumnGenerator::primal_solution(const ColumnGenerationSubproblem& t_subproblem, const Solution::Primal& t_rmp_primals) const {
+Solution::Primal ColumnGenerators::Basic::primal_solution(const ColumnGenerationSP& t_subproblem, const Solution::Primal& t_rmp_primals) const {
     Solution::Primal result;
 
     double sum_primals = 0.;
@@ -123,7 +123,7 @@ Solution::Primal ColumnGenerator::primal_solution(const ColumnGenerationSubprobl
     return result;
 }
 
-std::optional<Ctr> ColumnGenerator::contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSubproblem& t_subproblem) {
+std::optional<Ctr> ColumnGenerators::Basic::contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSP& t_subproblem) {
 
     for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
         if (var.model_id() != subproblem().id()) {
@@ -140,7 +140,7 @@ std::optional<Ctr> ColumnGenerator::contribute_to_add_constraint(TempCtr &t_temp
     return { result };
 }
 
-void ColumnGenerator::remove_columns_violating_constraint(const TempCtr &t_ctr, ColumnGenerationSubproblem &t_subproblem) {
+void ColumnGenerators::Basic::remove_columns_violating_constraint(const TempCtr &t_ctr, ColumnGenerationSP &t_subproblem) {
 
     t_subproblem.remove_column_if([&](const Var& t_column_variable, const Solution::Primal& t_solution) {
         if (t_ctr.is_violated(t_solution)) {
@@ -155,7 +155,7 @@ void ColumnGenerator::remove_columns_violating_constraint(const TempCtr &t_ctr, 
 
 }
 
-bool ColumnGenerator::update_constraint_rhs(const Ctr &t_ctr, double t_rhs, ColumnGenerationSubproblem &t_subproblem) {
+bool ColumnGenerators::Basic::update_constraint_rhs(const Ctr &t_ctr, double t_rhs, ColumnGenerationSP &t_subproblem) {
 
     if (t_ctr.model_id() != subproblem().id()) {
         return false;
@@ -166,7 +166,7 @@ bool ColumnGenerator::update_constraint_rhs(const Ctr &t_ctr, double t_rhs, Colu
     return true;
 }
 
-bool ColumnGenerator::remove_constraint(const Ctr &t_ctr, ColumnGenerationSubproblem &t_subproblem) {
+bool ColumnGenerators::Basic::remove_constraint(const Ctr &t_ctr, ColumnGenerationSP &t_subproblem) {
     if (t_ctr.model_id() != subproblem().id()) {
         return false;
     }
