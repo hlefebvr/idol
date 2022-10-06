@@ -8,15 +8,15 @@
 #include "modeling/constraints/Constraint.h"
 #include "algorithms/column-generation/ColumnGenerators_Basic.h"
 #include <vector>
+#include <functional>
 
 class Model;
 
 class DantzigWolfe {
-    Ctr m_convexification_constraint;
-    Model m_subproblem;
-    ColumnGenerators::Basic m_generator;
+    std::unique_ptr<Ctr> m_convexification_constraint;
+    std::unique_ptr<ColumnGenerators::Basic> m_generator;
 public:
-    DantzigWolfe(Model& t_rmp, const std::vector<Var>& t_subproblem_variables);
+    Model reformulate(Model& t_rmp, const std::function<bool(const Ctr&)>& t_complicating_constraints_indicator);
 };
 
 #endif //OPTIMIZE_DANTZIGWOLFE_H

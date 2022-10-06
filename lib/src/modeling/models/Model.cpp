@@ -157,3 +157,78 @@ void Model::update_type(const Ctr &t_ctr, CtrType t_type) {
 void Model::add_listener(Listener &t_listener) const {
     m_listeners.add(t_listener);
 }
+
+
+Model::Transform::Transform(Model &t_model) : m_model(t_model) {
+
+}
+
+void Model::Transform::swap(const Var &t_a, const Var &t_b) {
+    swap(m_model.m_variables, t_a, t_b);
+}
+
+void Model::Transform::swap(const Ctr &t_a, const Ctr &t_b) {
+    swap(m_model.m_constraints, t_a, t_b);
+}
+
+void Model::Transform::swap(const Param &t_a, const Param &t_b) {
+    swap(m_model.m_parameters, t_a, t_b);
+}
+
+void Model::Transform::hard_move(Model& t_destination, const Ctr& t_ctr) {
+    hard_move(m_model.m_constraints, t_destination.m_constraints, t_destination.id(), t_ctr);
+}
+
+void Model::Transform::hard_move(Model &t_destination, const Var &t_var) {
+    hard_move(m_model.m_variables, t_destination.m_variables, t_destination.id(), t_var);
+}
+
+Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, const std::function<bool(const Ctr &)> &t_indicator) {
+    Map<Ctr, Expr<Var>> result;
+
+    unsigned int i = 0;
+    unsigned int n = m_model.m_constraints.size();
+
+    // (Hard) Move every indicated constraint with their variables
+    while (i < n) {
+
+        auto ctr = m_model.m_constraints[i];
+
+        if (t_indicator(ctr)) {
+
+            for (const auto& [var, coeff] : ctr.row().lhs()) {
+                if (var.model_id() != m_model.m_id) { continue; }
+                hard_move(t_destination, var);
+            }
+
+            hard_move(t_destination, ctr);
+            --n;
+
+        } else {
+
+            ++i;
+
+        }
+    }
+
+    // Register illegal terms in variable columns for the new model
+    for (const auto& var : t_destination.m_variables) {
+        for (const auto& [ctr, coeff] : var.column().components()) {
+            if (ctr.model_id() == m_model.m_id) {
+                auto [it, success] = result.emplace(ctr, coeff * var);
+                if (!success) {
+                    it->second += coeff * var;
+                }
+            }
+        }
+    }
+
+    // Remove illegal terms from the new model
+    for (const auto& [ctr, expr] : result) {
+        for (const auto& [var, coeff] : expr) {
+            m_model.update_coefficient(ctr, var, 0.);
+        }
+    }
+
+    return result;
+}

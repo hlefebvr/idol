@@ -26,6 +26,8 @@ public:
 
     [[nodiscard]] const std::string& name() const { return m_object_id.name(); }
 
+    [[nodiscard]] ObjectId& object_id() { return m_object_id; }
+
     [[nodiscard]] const ObjectId& object_id() const { return m_object_id; }
 
     [[nodiscard]] unsigned int index() const { return m_index; }

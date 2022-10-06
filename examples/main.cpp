@@ -15,6 +15,7 @@
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
+#include "reformulations/DantzigWolfe.h"
 
 void solve_with_mip() {
     Model model;
@@ -38,6 +39,23 @@ int main() {
     Log::set_color("column-generation", Color::Yellow);
     Log::set_color("cut-generation", Color::Green);
 
+    Model rmp;
+
+    auto x = rmp.add_variable(0., 1., Continuous, 1., "x");
+    auto y = rmp.add_variable(0., 1., Continuous, 2., "y");
+    auto z = rmp.add_variable(0., 1., Continuous, 3., "z");
+
+    auto c1 = rmp.add_constraint(x + y + z <= 1, "c1");
+    auto c2 = rmp.add_constraint(    y + z >= 1, "c2");
+
+    Model subproblem;
+    auto linking = Model::Transform(rmp).move(subproblem, [](const Ctr& t_ctr){ return t_ctr.name() == "c2"; });
+
+    std::cout << rmp << std::endl;
+
+    std::cout << subproblem << std::endl;
+
+    /*
     Model sp;
     auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
     auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
@@ -72,7 +90,7 @@ int main() {
     std::cout <<"B&B -> " << result.objective_value() << std::endl;
 
     solve_with_mip();
-
+    */
 
     return 0;
 }

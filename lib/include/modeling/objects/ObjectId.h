@@ -21,7 +21,7 @@ class ObjectId {
     static unsigned int s_id;
 
     const unsigned int m_id = ++s_id;
-    const unsigned int m_model_id;
+    unsigned int m_model_id;
     const std::string m_name;
     const std::list<std::unique_ptr<impl::Object>>::iterator m_it;
 
