@@ -1,8 +1,8 @@
 //
 // Created by henri on 15/09/22.
 //
-#include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
-#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/column-generation/generators/ColumnGenerator.h"
+#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
 ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
 

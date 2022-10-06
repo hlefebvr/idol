@@ -2,8 +2,8 @@
 // Created by henri on 20/09/22.
 //
 
-#include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_SP_Strategy.h"
-#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/column-generation/generators/DantzigWolfe_SP_Strategy.h"
+#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
 DantzigWolfe_SP_Strategy::DantzigWolfe_SP_Strategy(Model &t_rmp, const Model &t_subproblem)
         : ColumnGenerator(t_rmp, t_subproblem),

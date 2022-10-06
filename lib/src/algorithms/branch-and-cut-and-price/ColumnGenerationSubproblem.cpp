@@ -1,8 +1,8 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/Algorithm.h"
 
 ColumnGenerationSubproblem::ColumnGenerationSubproblem(Algorithm& t_rmp_strategy)
         : m_rmp_strategy(t_rmp_strategy) {

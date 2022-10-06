@@ -1,8 +1,8 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
-#include "algorithms/solution-strategies/column-generation/subproblems/ColumnGenerationSubproblem.h"
+#include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
+#include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
 DantzigWolfe_RMP_Strategy::DantzigWolfe_RMP_Strategy(Model &t_rmp, const Model &t_subproblem) : DantzigWolfe_SP_Strategy(t_rmp, t_subproblem) {}
 

@@ -1,8 +1,8 @@
 //
 // Created by henri on 16/09/22.
 //
-#include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
-#include "algorithms/solution-strategies/decomposition/DecompositionId.h"
+#include "algorithms/decomposition/generation-strategies/AbstractGenerationStrategy.h"
+#include "algorithms/decomposition/DecompositionId.h"
 #include "modeling/models/Model.h"
 
 AbstractGenerationStrategy::AbstractGenerationStrategy(DecompositionId &&t_decomposition_id)

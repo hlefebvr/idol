@@ -1,7 +1,7 @@
 //
 // Created by henri on 16/09/22.
 //
-#include "algorithms/solution-strategies/column-generation/ColumnGeneration.h"
+#include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/logs/Log.h"
 
 ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : AbstractGenerationStrategy(std::move(t_id)) {

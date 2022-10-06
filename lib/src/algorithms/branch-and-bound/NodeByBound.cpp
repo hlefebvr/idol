@@ -2,7 +2,7 @@
 // Created by henri on 14/09/22.
 //
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/Algorithm.h"
 #include "solvers/Solver.h"
 #include <iostream>
 

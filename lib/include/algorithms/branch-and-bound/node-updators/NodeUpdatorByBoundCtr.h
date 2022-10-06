@@ -12,7 +12,7 @@
 #include "modeling/constraints/TempCtr.h"
 #include "containers/Map.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/Algorithm.h"
 #include <functional>
 
 class NodeUpdatorByBoundCtr {

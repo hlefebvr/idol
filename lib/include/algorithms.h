@@ -11,11 +11,11 @@
 #include "./algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
 #include "./algorithms/branch-and-bound/node-updators/NodeUpdatorByBoundCtr.h"
-#include "./algorithms/solution-strategies/external-solver/ExternalSolver.h"
+#include "./algorithms/external-solver/ExternalSolver.h"
 #include "./solvers.h"
-#include "algorithms/solution-strategies/decomposition/Decomposition.h"
-#include "algorithms/solution-strategies/column-generation/ColumnGeneration.h"
-#include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
+#include "algorithms/decomposition/Decomposition.h"
+#include "algorithms/column-generation/ColumnGeneration.h"
+#include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
 
 template<
         class SolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,

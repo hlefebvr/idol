@@ -7,7 +7,7 @@
 
 #include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/Algorithm.h"
 #include "algorithms/logs/Log.h"
 #include "algorithms/branch-and-bound/active-node-managers/AbstractActiveNodeManagerWithTypeStrategy.h"
 #include "algorithms/branch-and-bound/node-updators/AbstractNodeUpdatorStrategy.h"

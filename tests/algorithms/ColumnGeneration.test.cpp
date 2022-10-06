@@ -5,14 +5,14 @@
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
-#include "algorithms/solution-strategies/column-generation/ColumnGeneration.h"
-#include "algorithms/solution-strategies/decomposition/Decomposition.h"
+#include "algorithms/column-generation/ColumnGeneration.h"
+#include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
 #include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
-#include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_SP_Strategy.h"
-#include "algorithms/solution-strategies/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
-#include "algorithms/solution-strategies/column-generation/generators/ColumnGenerator.h"
+#include "algorithms/column-generation/generators/DantzigWolfe_SP_Strategy.h"
+#include "algorithms/column-generation/generators/DantzigWolfe_RMP_Strategy.h"
+#include "algorithms/column-generation/generators/ColumnGenerator.h"
 
 TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]", available_solvers) {
 

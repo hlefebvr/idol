@@ -6,7 +6,7 @@
 #define OPTIMIZE_BRANCHANDBOUND_H
 
 #include "algorithms/branch-and-bound/nodes/AbstractNode.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/Algorithm.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "algorithms/branch-and-bound/node-strategies/AbstractNodeStartegy.h"

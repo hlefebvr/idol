@@ -4,16 +4,16 @@
 #include "modeling/expressions/Expr.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/solution-strategies/decomposition/Decomposition.h"
+#include "algorithms/decomposition/Decomposition.h"
 #include "solvers/gurobi/Gurobi.h"
-#include "algorithms/solution-strategies/cut-generation/CutGeneration.h"
+#include "algorithms/cut-generation/CutGeneration.h"
 #include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
-#include "algorithms/solution-strategies/cut-generation/subproblems/CutGenerationSubproblem.h"
-#include "algorithms/solution-strategies/cut-generation/generators/CutGenerator.h"
-#include "algorithms/solution-strategies/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
-#include "algorithms/solution-strategies/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
+#include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
+#include "algorithms/cut-generation/generators/CutGenerator.h"
+#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
+#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
 
 void solve_with_mip() {
     Env env;

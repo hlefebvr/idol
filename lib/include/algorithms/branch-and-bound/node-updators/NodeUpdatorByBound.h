@@ -9,7 +9,7 @@
 #include "containers/Map.h"
 #include "modeling/variables/Variable.h"
 #include "modeling/numericals.h"
-#include "algorithms/solution-strategies/Algorithm.h"
+#include "algorithms/Algorithm.h"
 #include <list>
 #include <functional>
 
