@@ -13,7 +13,7 @@ class DecompositionId {
 
     explicit DecompositionId(Algorithm& t_rmp_strategy) : m_rmp_strategy(&t_rmp_strategy) {}
 
-    friend class AbstractGenerationStrategy;
+    friend class GenerationAlgorithm;
     friend class Decomposition;
 };
 

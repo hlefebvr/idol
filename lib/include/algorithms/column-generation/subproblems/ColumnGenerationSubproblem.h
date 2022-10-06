@@ -7,7 +7,7 @@
 
 #include "AbstractColumnGenerationSubproblem.h"
 #include "algorithms/Algorithm.h"
-#include "algorithms/decomposition/generators/AbstractGenerator.h"
+#include "algorithms/decomposition/Generator.h"
 #include "algorithms/column-generation/generators/ColumnGenerator.h"
 #include "algorithms/logs/Log.h"
 #include <memory>

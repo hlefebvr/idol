@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_CUTGENERATION_H
 #define OPTIMIZE_CUTGENERATION_H
 
-#include "algorithms/decomposition/generation-strategies/AbstractGenerationStrategy.h"
+#include "algorithms/decomposition/GenerationAlgorithm.h"
 #include "algorithms/attributes/Attributes_Base.h"
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/cut-generation/subproblems/AbstractCutGenerationSubproblem.h"
@@ -13,7 +13,7 @@
 #include <list>
 #include <memory>
 
-class CutGeneration : public AbstractGenerationStrategy {
+class CutGeneration : public GenerationAlgorithm {
     std::list<std::unique_ptr<AbstractCutGenerationSubproblem>> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
     Attributes<AttributesSections::Base> m_attributes;

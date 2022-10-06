@@ -6,13 +6,13 @@
 #define OPTIMIZE_CUTGENERATOR_H
 
 #include "AbstractCutGenerator.h"
-#include "algorithms/decomposition/generators/BaseGenerator.h"
+#include "algorithms/decomposition/Generators_Basic.h"
 #include "algorithms/cut-generation/original-space-builder/AbstractCutGenerationOriginalSpaceBuilder.h"
 
 class Model;
 class Algorithm;
 
-class CutGenerator : public AbstractCutGenerator, public BaseGenerator<Var> {
+class CutGenerator : public AbstractCutGenerator, public Generators::Basic<Var> {
 protected:
     std::unique_ptr<AbstractCutGenerationOriginalSpaceBuilder> m_original_space_builder;
 

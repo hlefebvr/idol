@@ -4,7 +4,7 @@
 #include "algorithms/column-generation/generators/ColumnGenerator.h"
 #include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
 
-ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : BaseGenerator(t_rmp, t_subproblem) {
+ColumnGenerator::ColumnGenerator(const Model& t_rmp, const Model &t_subproblem) : Generators::Basic<Ctr>(t_rmp, t_subproblem) {
 
     Expr objective;
     for (const auto& [var, coeff] : t_subproblem.objective()) {

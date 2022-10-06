@@ -2,14 +2,18 @@
 // Created by henri on 16/09/22.
 //
 
-#ifndef OPTIMIZE_BASEGENERATOR_H
-#define OPTIMIZE_BASEGENERATOR_H
+#ifndef OPTIMIZE_GENERATORS_BASIC_H
+#define OPTIMIZE_GENERATORS_BASIC_H
 
-#include "AbstractGenerator.h"
+#include "Generator.h"
 #include "modeling/models/Model.h"
 
+namespace Generators {
+    template<class KeyT> class Basic;
+}
+
 template<class KeyT>
-class BaseGenerator : public AbstractGenerator {
+class Generators::Basic : public Generator {
     const Model& m_rmp;
     const Model& m_subproblem;
 protected:
@@ -18,7 +22,7 @@ protected:
 
     void check_expression(const Expr<Var>& t_expr) const;
 public:
-    BaseGenerator(const Model& t_rmp, const Model& t_subproblem);
+    Basic(const Model& t_rmp, const Model& t_subproblem);
 
     const Model& rmp() const { return m_rmp; }
 
@@ -41,13 +45,13 @@ public:
 };
 
 template<class KeyT>
-BaseGenerator<KeyT>::BaseGenerator(const Model& t_rmp, const Model& t_subproblem)
+Generators::Basic<KeyT>::Basic(const Model& t_rmp, const Model& t_subproblem)
     : m_rmp(t_rmp), m_subproblem(t_subproblem) {
 
 }
 
 template<class KeyT>
-void BaseGenerator<KeyT>::check_expression(const Expr<Var> &t_expr) const {
+void Generators::Basic<KeyT>::check_expression(const Expr<Var> &t_expr) const {
     for (const auto& [var, coefficient] : t_expr) {
         if (var.model_id() != m_subproblem.id()) {
             throw Exception("Trying to insert an expression with variables which do not belong to subproblem.");
@@ -55,7 +59,7 @@ void BaseGenerator<KeyT>::check_expression(const Expr<Var> &t_expr) const {
     }
 }
 template<class KeyT>
-void BaseGenerator<KeyT>::set(const KeyT &t_ctr, Expr<Var> t_expr, double t_offset) {
+void Generators::Basic<KeyT>::set(const KeyT &t_ctr, Expr<Var> t_expr, double t_offset) {
     if (t_ctr.model_id() != m_rmp.id()) {
         throw Exception("Trying to insert a constraint which does not belong to RMP.");
     }
@@ -69,21 +73,21 @@ void BaseGenerator<KeyT>::set(const KeyT &t_ctr, Expr<Var> t_expr, double t_offs
 }
 
 template<class KeyT>
-const Row &BaseGenerator<KeyT>::get(const KeyT &t_ctr) const {
+const Row &Generators::Basic<KeyT>::get(const KeyT &t_ctr) const {
     auto it = m_values.find(t_ctr);
     return it == m_values.end() ? Row::EmptyRow : it->second;
 }
 
 template<class KeyT>
-void BaseGenerator<KeyT>::set_constant(Expr<Var> t_expr) {
+void Generators::Basic<KeyT>::set_constant(Expr<Var> t_expr) {
     check_expression(t_expr);
     m_constant = std::move(t_expr);
 }
 
 template<class KeyT>
-const Expr<Var> &BaseGenerator<KeyT>::constant() const {
+const Expr<Var> &Generators::Basic<KeyT>::constant() const {
     return m_constant;
 }
 
 
-#endif //OPTIMIZE_BASEGENERATOR_H
+#endif //OPTIMIZE_GENERATORS_BASIC_H

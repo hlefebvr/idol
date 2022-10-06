@@ -5,12 +5,12 @@
 #ifndef OPTIMIZE_COLUMNGENERATOR_H
 #define OPTIMIZE_COLUMNGENERATOR_H
 
-#include "algorithms/decomposition/generators/BaseGenerator.h"
+#include "algorithms/decomposition/Generators_Basic.h"
 #include "modeling/constraints/Constraint.h"
 #include "AbstractColumnGenerator.h"
 #include "modeling/solutions/Solution.h"
 
-class ColumnGenerator : public AbstractColumnGenerator, public BaseGenerator<Ctr> {
+class ColumnGenerator : public AbstractColumnGenerator, public Generators::Basic<Ctr> {
 protected:
     static void remove_columns_violating_lower_bound(const Var& t_var, double t_lb, ColumnGenerationSubproblem& t_subproblem);
 

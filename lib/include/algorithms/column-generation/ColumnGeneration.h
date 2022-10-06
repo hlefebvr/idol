@@ -5,13 +5,13 @@
 #ifndef OPTIMIZE_COLUMNGENERATION_H
 #define OPTIMIZE_COLUMNGENERATION_H
 
-#include "algorithms/decomposition/generation-strategies/AbstractGenerationStrategy.h"
+#include "algorithms/decomposition/GenerationAlgorithm.h"
 #include "modeling/models/Model.h"
 #include "algorithms/column-generation/subproblems/ColumnGenerationSubproblem.h"
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/attributes/Attributes_Base.h"
 
-class ColumnGeneration : public AbstractGenerationStrategy {
+class ColumnGeneration : public GenerationAlgorithm {
     std::list<std::unique_ptr<AbstractColumnGenerationSubproblem>> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
     Attributes<AttributesSections::Base> m_attributes;

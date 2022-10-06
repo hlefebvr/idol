@@ -4,7 +4,7 @@
 #include <iomanip>
 #include "algorithms/cut-generation/CutGeneration.h"
 
-CutGeneration::CutGeneration(DecompositionId &&t_id) : AbstractGenerationStrategy(std::move(t_id)) {
+CutGeneration::CutGeneration(DecompositionId &&t_id) : GenerationAlgorithm(std::move(t_id)) {
 
 }
 

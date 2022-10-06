@@ -6,13 +6,13 @@
 #define OPTIMIZE_DECOMPOSITION_H
 
 #include "algorithms/external-solver/ExternalSolver.h"
-#include "algorithms/decomposition/generation-strategies/AbstractGenerationStrategy.h"
+#include "GenerationAlgorithm.h"
 #include "DecompositionId.h"
 #include <functional>
 
 class Decomposition : public Algorithm {
     std::unique_ptr<Algorithm> m_rmp_strategy;
-    std::list<std::unique_ptr<AbstractGenerationStrategy>> m_generation_strategies;
+    std::list<std::unique_ptr<GenerationAlgorithm>> m_generation_strategies;
 
     Attributes<> m_attributes;
 protected:
@@ -48,7 +48,7 @@ public:
 
     template<class T, class ...Args> T& add_generation_strategy(Args&& ...t_args) {
 
-        static_assert(std::is_base_of_v<AbstractGenerationStrategy, T>);
+        static_assert(std::is_base_of_v<GenerationAlgorithm, T>);
 
         auto* rmp_strategy = m_generation_strategies.empty() ? m_rmp_strategy.get() : m_generation_strategies.back().get();
 

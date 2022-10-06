@@ -8,7 +8,7 @@
 #include "algorithms/logs/Log.h"
 
 CutGenerator::CutGenerator(const Model &t_rmp_model, const Model &t_sp_model)
-    : BaseGenerator<Var>(t_rmp_model, t_sp_model) {
+    : Generators::Basic<Var>(t_rmp_model, t_sp_model) {
 
 }
 

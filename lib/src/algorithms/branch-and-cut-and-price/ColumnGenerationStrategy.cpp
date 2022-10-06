@@ -4,7 +4,7 @@
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/logs/Log.h"
 
-ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : AbstractGenerationStrategy(std::move(t_id)) {
+ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithm(std::move(t_id)) {
 
 }
 
