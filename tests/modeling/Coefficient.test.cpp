@@ -5,9 +5,8 @@
 
 TEST_CASE("Coefficient", "[expressions][modeling]") {
 
-    Env env;
-    Model sp(env);
-    Model model(env);
+    Model sp;
+    Model model;
 
     auto a = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
     auto b = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );

@@ -19,9 +19,7 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     const auto w = t_instance.w();
     const auto c = t_instance.c();
 
-    Env env;
-
-    Model model(env);
+    Model model;
 
     std::vector<std::vector<Var>> x(n_knapsacks);
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {

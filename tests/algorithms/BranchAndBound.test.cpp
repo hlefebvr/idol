@@ -10,8 +10,7 @@
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", available_solvers) {
 
-    Env env;
-    Model model(env);
+    Model model;
 
     SECTION("solving bounded feasible MILP") {
 

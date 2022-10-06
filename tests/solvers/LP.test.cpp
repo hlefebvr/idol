@@ -5,8 +5,7 @@
 
 TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
 
-    Env env;
-    Model model(env);
+    Model model;
 
     SECTION("solving bounded feasible LP") {
         // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language

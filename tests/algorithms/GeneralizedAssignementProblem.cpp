@@ -12,7 +12,7 @@ using configurations =
         cartesian_product<
                 available_solvers,
                 std::tuple<ColumnGenerators::DantzigWolfeRMP, ColumnGenerators::DantzigWolfeSP>,
-                std::tuple<BranchingStrategies::BranchingStrategies_MostInfeasible>,
+                std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
                 std::tuple<ActiveNodesManagers::Heap>,
                 std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
@@ -49,8 +49,6 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
 
             /* MODEL */
 
-            Env env;
-
             std::vector<Var> branching_candidates;
 
             // SP
@@ -59,7 +57,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
             std::vector<std::vector<Var>> x(n_knapsacks);
 
             for (unsigned int i = 0; i < n_knapsacks; ++i) {
-                subproblems.emplace_back(env);
+                subproblems.emplace_back();
 
                 x[i].reserve(n_items);
 
@@ -77,7 +75,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
             }
 
             // RMP
-            Model rmp(env);
+            Model rmp;
 
             std::vector<std::vector<Param>> param_x(n_knapsacks);
 

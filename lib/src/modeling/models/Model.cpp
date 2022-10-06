@@ -6,7 +6,7 @@
 
 unsigned int Model::s_id = 0;
 
-Model::Model(Env &t_env) : m_objects(t_env) {
+Model::Model() : m_objects(Env::get()) {
 
 }
 

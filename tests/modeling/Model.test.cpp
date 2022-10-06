@@ -5,9 +5,8 @@
 
 TEST_CASE("Model", "[model][modeling]") {
 
-    Env env;
-    Model sp(env);
-    Model model(env);
+    Model sp;
+    Model model;
 
     SECTION("remove a variable") {
         auto x = model.add_variable(0., 1., Continuous, 0.);

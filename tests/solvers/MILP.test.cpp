@@ -5,8 +5,7 @@
 
 TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
 
-    Env env;
-    Model model(env);
+    Model model;
 
     SECTION("solving MILP") {
         // Example taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp

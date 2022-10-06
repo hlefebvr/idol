@@ -20,7 +20,7 @@
 
 template<
         class SolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-        class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+        class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
         class NodeUpdatorT = NodeUpdators::ByBoundVar
@@ -42,7 +42,7 @@ template<
         class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
         class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
         class GenerationStrategyT = ColumnGenerators::DantzigWolfeRMP,
-        class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+        class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
         class NodeUpdatorT = NodeUpdators::ByBoundVar,
@@ -74,7 +74,7 @@ template<
     class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
     class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
     class GenerationStrategyT = ColumnGenerators::DantzigWolfeRMP,
-    class BranchingStrategyT = BranchingStrategies::BranchingStrategies_MostInfeasible,
+    class BranchingStrategyT = BranchingStrategies::MostInfeasible,
     class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
     class ActiveNodeManagerT = ActiveNodesManagers::Heap,
     class NodeUpdatorT = NodeUpdators::ByBoundVar

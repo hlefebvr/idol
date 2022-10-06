@@ -6,9 +6,8 @@
 
 TEST_CASE("Var", "[attributes][modeling]") {
 
-    Env env;
-    Model sp(env);
-    Model model(env);
+    Model sp;
+    Model model;
 
     SECTION("create a new parameter with type Continuous") {
 

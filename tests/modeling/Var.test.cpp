@@ -6,9 +6,8 @@
 
 TEST_CASE("Var", "[variables][modeling]") {
 
-    Env env;
-    Model sp(env);
-    Model model(env);
+    Model sp;
+    Model model;
 
     auto xi = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
     auto c1 = model.add_constraint(GreaterOrEqual, 0.);

@@ -14,10 +14,10 @@
 #include "algorithms/cut-generation/generators/CutGenerator.h"
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
+#include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 
 void solve_with_mip() {
-    Env env;
-    Model model(env);
+    Model model;
     auto x_1 = model.add_variable(0., Inf, Continuous, 2., "x_1");
     auto x_2 = model.add_variable(0., Inf, Continuous, 3., "x_2");
     auto y = model.add_variable(0., Inf, Integer, 2., "y");
@@ -38,24 +38,22 @@ int main() {
     Log::set_color("column-generation", Color::Yellow);
     Log::set_color("cut-generation", Color::Green);
 
-    Env env;
-
-    Model sp(env);
+    Model sp;
     auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
     auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
     sp.add_constraint(     w_1 +  2 * w_2 <= 2.);
     sp.add_constraint( 2 * w_1 + -1 * w_2 <= 3.);
 
-    Model rmp(env);
+    Model rmp;
     auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
     auto y = rmp.add_variable(0., Inf, Integer, 2., "y");
 
     BranchAndBound result;
 
-    auto& node_strategy = result.set_node_strategy<NodeStrategy<NodeByBound>>();
-    node_strategy.template set_active_node_manager_strategy<ActiveNodeManager_Heap>();
-    node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { y });
-    node_strategy.template set_node_updator_strategy<NodeUpdatorByBound>();
+    auto& node_strategy = result.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    node_strategy.template set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+    node_strategy.template set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> { y });
+    node_strategy.template set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& decomposition = result.set_solution_strategy<Decomposition>();
     decomposition.template set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);

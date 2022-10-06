@@ -18,8 +18,6 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
     const auto w = t_instance.w();
     const auto c = t_instance.c();
 
-    Env env;
-
     std::vector<Var> branching_candidates;
 
     // SP
@@ -28,7 +26,7 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
     std::vector<std::vector<Var>> x(n_knapsacks);
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        subproblems.emplace_back(env);
+        subproblems.emplace_back();
 
         x[i].reserve(n_items);
 
@@ -47,7 +45,7 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
     }
 
     // RMP
-    Model rmp(env);
+    Model rmp;
 
     std::vector<std::vector<Param>> param_x(n_knapsacks);
 

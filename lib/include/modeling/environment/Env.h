@@ -15,17 +15,19 @@ namespace impl {
 
 class Env {
     std::list<std::unique_ptr<impl::Object>> m_objects;
-public:
-    Env() = default;
 
+    static Env* s_unique_env;
+    Env() = default;
+public:
     Env(const Env&) = delete;
-    Env(Env&&) noexcept = default;
+    Env(Env&&) noexcept = delete;
 
     Env& operator=(const Env&) = delete;
-    Env& operator=(Env&&) noexcept = default;
+    Env& operator=(Env&&) noexcept = delete;
+
+    static Env& get();
 
     friend class impl::ObjectManager;
 };
-
 
 #endif //OPTIMIZE_ENV_H

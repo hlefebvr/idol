@@ -57,7 +57,7 @@ class Model {
 
     void add_created_variable(const Var& t_var);
 public:
-    explicit Model(Env& t_env);
+    explicit Model();
 
     Model(const Model&) = delete;
     Model(Model&&) noexcept = default;

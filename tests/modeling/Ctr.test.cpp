@@ -6,9 +6,8 @@
 
 TEST_CASE("Ctr", "[constraints][modeling]") {
 
-    Env env;
-    Model sp(env);
-    Model model(env);
+    Model sp;
+    Model model;
 
     auto xi = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
     auto x = model.add_variable(0., 1., Continuous, 0.);

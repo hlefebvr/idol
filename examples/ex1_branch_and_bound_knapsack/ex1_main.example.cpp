@@ -9,9 +9,7 @@ int main() {
 
     Log::set_level(Trace);
 
-    Env env;
-
-    Model model(env);
+    Model model;
 
     const std::vector<std::pair<double, double>> items = { {2, 40}, {3.14, 50}, {1.98, 100}, {5, 95}, {3, 30} }; // (weight, value)
     const double capacity = 10.;
@@ -26,8 +24,6 @@ int main() {
         sum_weight += weight * var;
         x.emplace_back(var);
     }
-
-    return 0;
 
     model.add_constraint(sum_weight <= capacity);
 
