@@ -4,9 +4,9 @@
 #include "modeling/expressions/Expr.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
-#include "algorithms/solution-strategies/decomposition/DecompositionStrategy.h"
+#include "algorithms/solution-strategies/decomposition/Decomposition.h"
 #include "solvers/gurobi/Gurobi.h"
-#include "algorithms/solution-strategies/cut-generation/CutGenerationStrategy.h"
+#include "algorithms/solution-strategies/cut-generation/CutGeneration.h"
 #include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
@@ -23,7 +23,7 @@ void solve_with_mip() {
     model.add_constraint(x_1 + 2 * x_2 + y >= 3.);
     model.add_constraint(2 * x_1 + -1 * x_2 + 3 * y >= 4.);
 
-    ExternalSolverStrategy<Gurobi> solver(model);
+    ExternalSolver<Gurobi> solver(model);
     solver.solve();
 
     std::cout << "MIP -> " << solver.primal_solution().objective_value() << std::endl;
@@ -56,12 +56,12 @@ int main() {
     node_strategy.template set_branching_strategy<MostInfeasible>(std::vector<Var> { w_1, w_2 });
     node_strategy.template set_node_updator_strategy<NodeUpdatorByBound>();
 
-    auto& decomposition = result.set_solution_strategy<DecompositionStrategy>();
-    decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<Gurobi>>(rmp);
+    auto& decomposition = result.set_solution_strategy<Decomposition>();
+    decomposition.template set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);
 
-    auto& cut_generation = decomposition.template add_generation_strategy<CutGenerationStrategy>();
+    auto& cut_generation = decomposition.template add_generation_strategy<CutGeneration>();
     auto &subproblem = cut_generation.template add_subproblem();
-    subproblem.template set_solution_strategy<ExternalSolverStrategy<Gurobi>>(sp);
+    subproblem.template set_solution_strategy<ExternalSolver<Gurobi>>(sp);
     auto& generator = subproblem.template set_generation_strategy<CutGenerator>(rmp, sp);
     generator.set_original_space_builder<CutGenerationOriginalSpaceBuilderDual>();
     generator.set_constant( 3 * w_1 + 4 * w_2 );

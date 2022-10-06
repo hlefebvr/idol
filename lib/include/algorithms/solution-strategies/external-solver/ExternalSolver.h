@@ -2,8 +2,8 @@
 // Created by henri on 14/09/22.
 //
 
-#ifndef OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
-#define OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
+#ifndef OPTIMIZE_EXTERNALSOLVER_H
+#define OPTIMIZE_EXTERNALSOLVER_H
 
 #include "algorithms/solution-strategies/AbstractSolutionStrategy.h"
 #include "modeling/models/Model.h"
@@ -13,7 +13,7 @@
 #include <list>
 
 template<class SolverT>
-class ExternalSolverStrategy : public AbstractSolutionStrategy {
+class ExternalSolver : public AbstractSolutionStrategy {
 protected:
     Model& m_model;
     SolverT m_solver;
@@ -23,7 +23,7 @@ protected:
 
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
-    explicit ExternalSolverStrategy(Model& t_model) : m_model(t_model), m_solver(t_model) {
+    explicit ExternalSolver(Model& t_model) : m_model(t_model), m_solver(t_model) {
 
         m_attributes.template set_callback<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
             m_solver.set_infeasible_or_unbounded_info(t_value);
@@ -35,11 +35,11 @@ public:
 
     }
 
-    ExternalSolverStrategy(const ExternalSolverStrategy& t_src) = delete;
-    ExternalSolverStrategy(ExternalSolverStrategy&&) noexcept = delete;
+    ExternalSolver(const ExternalSolver& t_src) = delete;
+    ExternalSolver(ExternalSolver&&) noexcept = delete;
 
-    ExternalSolverStrategy& operator=(const ExternalSolverStrategy&) = delete;
-    ExternalSolverStrategy& operator=(ExternalSolverStrategy&&) noexcept = default;
+    ExternalSolver& operator=(const ExternalSolver&) = delete;
+    ExternalSolver& operator=(ExternalSolver&&) noexcept = default;
 
     void build() override;
 
@@ -71,46 +71,46 @@ public:
 };
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::build() {}
+void ExternalSolver<SolverT>::build() {}
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_lower_bound(const Var &t_var, double t_lb) {
+void ExternalSolver<SolverT>::set_lower_bound(const Var &t_var, double t_lb) {
     m_model.update_lb(t_var, t_lb);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_upper_bound(const Var &t_var, double t_ub) {
+void ExternalSolver<SolverT>::set_upper_bound(const Var &t_var, double t_ub) {
     m_model.update_ub(t_var, t_ub);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::set_objective(const Row &t_objective) {
+void ExternalSolver<SolverT>::set_objective(const Row &t_objective) {
     m_model.update_objective(t_objective);
 }
 
 template<class SolverT>
-Var ExternalSolverStrategy<SolverT>::add_column(TempVar t_temporary_variable) {
+Var ExternalSolver<SolverT>::add_column(TempVar t_temporary_variable) {
     return m_model.add_variable(std::move(t_temporary_variable));
 }
 
 template<class SolverT>
-Ctr ExternalSolverStrategy<SolverT>::add_constraint(TempCtr t_temporary_constraint) {
+Ctr ExternalSolver<SolverT>::add_constraint(TempCtr t_temporary_constraint) {
     return { m_model.add_constraint(std::move(t_temporary_constraint)) };
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+void ExternalSolver<SolverT>::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
     m_model.update_rhs(t_ctr, t_rhs);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::remove_variable(const Var &t_variable) {
+void ExternalSolver<SolverT>::remove_variable(const Var &t_variable) {
     m_model.remove(t_variable);
 }
 
 template<class SolverT>
-void ExternalSolverStrategy<SolverT>::remove_constraint(const Ctr &t_constraint) {
+void ExternalSolver<SolverT>::remove_constraint(const Ctr &t_constraint) {
     m_model.remove(t_constraint);
 }
 
-#endif //OPTIMIZE_EXTERNALSOLVERSTRATEGY_H
+#endif //OPTIMIZE_EXTERNALSOLVER_H

@@ -14,7 +14,7 @@ class DecompositionId {
     explicit DecompositionId(AbstractSolutionStrategy& t_rmp_strategy) : m_rmp_strategy(&t_rmp_strategy) {}
 
     friend class AbstractGenerationStrategy;
-    friend class DecompositionStrategy;
+    friend class Decomposition;
 };
 
 #endif //OPTIMIZE_DECOMPOSITIONID_H

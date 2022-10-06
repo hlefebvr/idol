@@ -2,15 +2,15 @@
 // Created by henri on 15/09/22.
 //
 
-#ifndef OPTIMIZE_DECOMPOSITIONSTRATEGY_H
-#define OPTIMIZE_DECOMPOSITIONSTRATEGY_H
+#ifndef OPTIMIZE_DECOMPOSITION_H
+#define OPTIMIZE_DECOMPOSITION_H
 
-#include "algorithms/solution-strategies/external-solver/ExternalSolverStrategy.h"
+#include "algorithms/solution-strategies/external-solver/ExternalSolver.h"
 #include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "DecompositionId.h"
 #include <functional>
 
-class DecompositionStrategy : public AbstractSolutionStrategy {
+class Decomposition : public AbstractSolutionStrategy {
     std::unique_ptr<AbstractSolutionStrategy> m_rmp_strategy;
     std::list<std::unique_ptr<AbstractGenerationStrategy>> m_generation_strategies;
 
@@ -19,7 +19,7 @@ protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
-    DecompositionStrategy() = default;
+    Decomposition() = default;
 
     void build() override;
 
@@ -60,4 +60,4 @@ public:
     }
 };
 
-#endif //OPTIMIZE_DECOMPOSITIONSTRATEGY_H
+#endif //OPTIMIZE_DECOMPOSITION_H

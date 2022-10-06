@@ -2,8 +2,8 @@
 // Created by henri on 05/10/22.
 //
 
-#ifndef OPTIMIZE_CUTGENERATIONSTRATEGY_H
-#define OPTIMIZE_CUTGENERATIONSTRATEGY_H
+#ifndef OPTIMIZE_CUTGENERATION_H
+#define OPTIMIZE_CUTGENERATION_H
 
 #include "../decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "algorithms/attributes/Base.h"
@@ -13,7 +13,7 @@
 #include <list>
 #include <memory>
 
-class CutGenerationStrategy : public AbstractGenerationStrategy {
+class CutGeneration : public AbstractGenerationStrategy {
     std::list<std::unique_ptr<AbstractCutGenerationSubproblem>> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
     Attributes<AttrType::Base> m_attributes;
@@ -43,7 +43,7 @@ protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
-    explicit CutGenerationStrategy(DecompositionId&& t_id);
+    explicit CutGeneration(DecompositionId&& t_id);
 
     void build() override;
 
@@ -59,10 +59,10 @@ public:
 };
 
 template<class T, class... Args>
-T &CutGenerationStrategy::add_subproblem(Args &&... t_args) {
+T &CutGeneration::add_subproblem(Args &&... t_args) {
     auto* subproblem = new T(rmp_solution_strategy(), std::forward<Args>(t_args)...);
     m_subproblems.template emplace_back(subproblem);
     return *subproblem;
 }
 
-#endif //OPTIMIZE_CUTGENERATIONSTRATEGY_H
+#endif //OPTIMIZE_CUTGENERATION_H

@@ -2,8 +2,8 @@
 // Created by henri on 16/09/22.
 //
 
-#ifndef OPTIMIZE_COLUMNGENERATIONSTRATEGY_H
-#define OPTIMIZE_COLUMNGENERATIONSTRATEGY_H
+#ifndef OPTIMIZE_COLUMNGENERATION_H
+#define OPTIMIZE_COLUMNGENERATION_H
 
 #include "algorithms/solution-strategies/decomposition/generation-strategies/AbstractGenerationStrategy.h"
 #include "modeling/models/Model.h"
@@ -11,7 +11,7 @@
 #include "algorithms/attributes/Attributes.h"
 #include "algorithms/attributes/Base.h"
 
-class ColumnGenerationStrategy : public AbstractGenerationStrategy {
+class ColumnGeneration : public AbstractGenerationStrategy {
     std::list<std::unique_ptr<AbstractColumnGenerationSubproblem>> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
     Attributes<AttrType::Base> m_attributes;
@@ -43,7 +43,7 @@ protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
 public:
-    explicit ColumnGenerationStrategy(DecompositionId&& t_id);
+    explicit ColumnGeneration(DecompositionId&& t_id);
 
     void build() override;
 
@@ -67,10 +67,10 @@ public:
 };
 
 template<class T, class... Args>
-T& ColumnGenerationStrategy::add_subproblem(Args &&... t_args) {
+T& ColumnGeneration::add_subproblem(Args &&... t_args) {
     auto* subproblem = new T(rmp_solution_strategy(), std::forward<Args>(t_args)...);
     m_subproblems.template emplace_back(subproblem);
     return *subproblem;
 }
 
-#endif //OPTIMIZE_COLUMNGENERATIONSTRATEGY_H
+#endif //OPTIMIZE_COLUMNGENERATION_H

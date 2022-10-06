@@ -5,8 +5,8 @@
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/node-strategies/NodeStrategy.h"
-#include "algorithms/solution-strategies/column-generation/ColumnGenerationStrategy.h"
-#include "algorithms/solution-strategies/decomposition/DecompositionStrategy.h"
+#include "algorithms/solution-strategies/column-generation/ColumnGeneration.h"
+#include "algorithms/solution-strategies/decomposition/Decomposition.h"
 #include "algorithms/branch-and-bound/branching-strategies/MostInfeasible.h"
 #include "algorithms/branch-and-bound/nodes/NodeByBound.h"
 #include "algorithms/branch-and-bound/node-updators/NodeUpdatorByBound.h"
@@ -40,11 +40,11 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
                 node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
-                auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
-                auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);
-                auto& generation = decomposition.template add_generation_strategy<ColumnGenerationStrategy>();
+                auto& decomposition = solver.set_solution_strategy<Decomposition>();
+                auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+                auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
                 auto& subproblem = generation.add_subproblem();
-                auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolverStrategy<TestType>>(sp);
+                auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
                 auto& generator = subproblem.template set_generation_strategy<ColumnGenerator>(rmp, sp);
                 generator.set(ctr_rmp, -2. * x_0 + 2. * x_1);
                 generator.set(ctr_con, Expr(), 1.);
@@ -74,11 +74,11 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
                 node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
-                auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
-                auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);
-                auto& generation = decomposition.template add_generation_strategy<ColumnGenerationStrategy>();
+                auto& decomposition = solver.set_solution_strategy<Decomposition>();
+                auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+                auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
                 auto& subproblem = generation.add_subproblem();
-                auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolverStrategy<TestType>>(sp);
+                auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
                 auto& generator = subproblem.template set_generation_strategy<DantzigWolfe_SP_Strategy>(rmp, sp);
 
                 solver.solve();
@@ -113,11 +113,11 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
             node_strategy.set_node_updator_strategy<NodeUpdatorByBound>();
             node_strategy.set_branching_strategy<MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
-            auto& decomposition = solver.set_solution_strategy<DecompositionStrategy>();
-            auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolverStrategy<TestType>>(rmp);
-            auto& generation = decomposition.template add_generation_strategy<ColumnGenerationStrategy>();
+            auto& decomposition = solver.set_solution_strategy<Decomposition>();
+            auto& rmp_solver = decomposition.template set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+            auto& generation = decomposition.template add_generation_strategy<ColumnGeneration>();
             auto& subproblem = generation.add_subproblem();
-            auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolverStrategy<TestType>>(sp);
+            auto& sp_solver = subproblem.template set_solution_strategy<ExternalSolver<TestType>>(sp);
             auto& generator = subproblem.template set_generation_strategy<DantzigWolfe_RMP_Strategy>(rmp, sp);
 
             solver.solve();
