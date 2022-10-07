@@ -148,7 +148,7 @@ void CutGeneration::terminate_for_no_violated_cut_found() {
 }
 
 void
-CutGeneration::analyze_last_subproblem_primal_solution(const CutGenerationSubproblem &t_subproblem) {
+CutGeneration::analyze_last_subproblem_primal_solution(const CutGenerationSP &t_subproblem) {
 
     if (t_subproblem.is_unbounded()) {
         throw Exception("Did not know what to do with unbounded SP.");
@@ -217,7 +217,7 @@ void CutGeneration::set_upper_bound(const Var &t_var, double t_ub) {
     rmp_solution_strategy().set_upper_bound(t_var, t_ub);
 }
 
-CutGenerationSubproblem &CutGeneration::add_subproblem(const Ctr &t_cut) {
+CutGenerationSP &CutGeneration::add_subproblem(const Ctr &t_cut) {
     m_subproblems.emplace_back(rmp_solution_strategy(), t_cut);
     return m_subproblems.back();
 }

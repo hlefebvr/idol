@@ -18,7 +18,7 @@ class CutGenerationOriginalSpaceBuilders::IIS : public CutGenerationOriginalSpac
     const Model& m_rmp;
 public:
     explicit IIS(const Model& t_rmp);
-    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const override;
+    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSP &t_subproblem, const Algorithm &t_rmp_solution_strategy) const override;
 };
 
 #endif //OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDERS_IIS_H

@@ -2,8 +2,8 @@
 // Created by henri on 05/10/22.
 //
 
-#ifndef OPTIMIZE_CUTGENERATIONSUBPROBLEM_H
-#define OPTIMIZE_CUTGENERATIONSUBPROBLEM_H
+#ifndef OPTIMIZE_CUTGENERATIONSP_H
+#define OPTIMIZE_CUTGENERATIONSP_H
 
 #include "algorithms/Algorithm.h"
 #include "containers/Set.h"
@@ -11,7 +11,7 @@
 #include <memory>
 #include <list>
 
-class CutGenerationSubproblem {
+class CutGenerationSP {
 
     TempCtr m_cut_template;
     Row m_objective_template;
@@ -34,7 +34,7 @@ class CutGenerationSubproblem {
 
     void remove_cuts_violating_upper_bound(const Var& t_var, double t_ub);
 public:
-    explicit CutGenerationSubproblem(Algorithm& t_rmp_strategy, const Ctr& t_cut);
+    explicit CutGenerationSP(Algorithm& t_rmp_strategy, const Ctr& t_cut);
 
     void build();
 
@@ -82,17 +82,17 @@ public:
 };
 
 template<class T, class... Args>
-T &CutGenerationSubproblem::set_solution_strategy(Args &&... t_args) {
+T &CutGenerationSP::set_solution_strategy(Args &&... t_args) {
     auto* exact_solution_strategy = new T(std::forward<Args>(t_args)...);
     m_exact_solution_strategy.reset(exact_solution_strategy);
     return *exact_solution_strategy;
 }
 
 template<class T, class... Args>
-T &CutGenerationSubproblem::set_original_space_builder(Args &&... t_args) {
+T &CutGenerationSP::set_original_space_builder(Args &&... t_args) {
     auto* generator = new T(std::forward<Args>(t_args)...);
     m_original_space_builder.reset(generator);
     return *generator;
 }
 
-#endif //OPTIMIZE_CUTGENERATIONSUBPROBLEM_H
+#endif //OPTIMIZE_CUTGENERATIONSP_H

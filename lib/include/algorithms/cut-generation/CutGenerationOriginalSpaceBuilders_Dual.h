@@ -13,7 +13,7 @@ namespace CutGenerationOriginalSpaceBuilders {
 
 class CutGenerationOriginalSpaceBuilders::Dual : public CutGenerationOriginalSpaceBuilder {
 public:
-    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const override;
+    [[nodiscard]] Solution::Primal primal_solution(const CutGenerationSP &t_subproblem, const Algorithm &t_rmp_solution_strategy) const override;
 };
 
 #endif //OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDERS_DUAL_H

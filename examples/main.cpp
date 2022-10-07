@@ -10,7 +10,7 @@
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
 #include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
-#include "algorithms/cut-generation/CutGenerationSubproblem.h"
+#include "algorithms/cut-generation/CutGenerationSP.h"
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
