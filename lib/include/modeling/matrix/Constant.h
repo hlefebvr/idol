@@ -11,7 +11,10 @@
 
 namespace Solution {
     class Primal;
+    class Dual;
 }
+
+class Algorithm;
 
 /**
  * Constant term modeling object.
@@ -145,6 +148,8 @@ public:
     Constant& operator-=(const Constant& t_term);
 
     double fix(const Solution::Primal& t_primals) const;
+
+    double fix(const Solution::Dual& t_duals) const;
 
     static Constant Zero;
 };

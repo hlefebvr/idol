@@ -4,6 +4,7 @@
 #include "modeling/matrix/Constant.h"
 #include "modeling/numericals.h"
 #include "modeling/solutions/Solution.h"
+#include <memory>
 
 Constant Constant::Zero;
 
@@ -112,7 +113,15 @@ bool Constant::is_numerical() const {
 double Constant::fix(const Solution::Primal &t_primals) const {
     double result = m_constant;
     for (const auto& [param, coeff] : m_products) {
-        result += coeff * t_primals.get(!param);
+        result += coeff * t_primals.get(param.as<Var>());
+    }
+    return result;
+}
+
+double Constant::fix(const Solution::Dual &t_primals) const {
+    double result = m_constant;
+    for (const auto& [param, coeff] : m_products) {
+        result += coeff * t_primals.get(param.as<Ctr>());
     }
     return result;
 }

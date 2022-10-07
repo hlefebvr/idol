@@ -13,23 +13,23 @@ TEST_CASE("Var", "[attributes][modeling]") {
 
         auto xi = Param( sp.add_variable(0., 1., Continuous, 0.) );
 
-        CHECK(xi.variable().lb() == 0._a);
-        CHECK(xi.variable().ub() == 1._a);
-        CHECK(xi.variable().type() == Continuous);
+        CHECK(xi.as<Var>().lb() == 0._a);
+        CHECK(xi.as<Var>().ub() == 1._a);
+        CHECK(xi.as<Var>().type() == Continuous);
 
     }
 
     SECTION("create a new parameter with type Integer") {
 
         auto xi = Param( sp.add_variable(0., 1., Integer, 0.) );
-        CHECK(xi.variable().type() == Integer);
+        CHECK(xi.as<Var>().type() == Integer);
 
     }
 
     SECTION("create a new parameter with type Binary") {
 
         auto xi = Param( sp.add_variable(0., 1., Binary, 0.) );
-        CHECK(xi.variable().type() == Binary);
+        CHECK(xi.as<Var>().type() == Binary);
 
     }
 

@@ -17,7 +17,7 @@ CutGenerationSP::CutGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
 
 void CutGenerationSP::save_subproblem_ids() {
     for (const auto& [var, constant] : m_objective_template.lhs()) {
-        m_subproblem_ids.emplace(var.id());
+        m_subproblem_ids.emplace(var.model_id());
     }
 }
 

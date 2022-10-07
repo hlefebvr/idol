@@ -240,7 +240,7 @@ Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
 
     for (auto& subproblem : m_subproblems) {
 
-        auto optional_ctr = subproblem.contribute_to_add_constraint(t_temporary_constraint);
+        auto optional_ctr = subproblem.add_constraint(t_temporary_constraint);
 
         if (optional_ctr.has_value()) {
             return optional_ctr.value();
@@ -276,7 +276,7 @@ void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
 
 }
 
-ColumnGenerationSP &ColumnGeneration::add_subproblem() {
-    m_subproblems.emplace_back(rmp_solution_strategy());
+ColumnGenerationSP &ColumnGeneration::add_subproblem(const Var& t_var) {
+    m_subproblems.emplace_back(rmp_solution_strategy(), t_var);
     return m_subproblems.back();
 }

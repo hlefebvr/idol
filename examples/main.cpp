@@ -16,6 +16,8 @@
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 #include "reformulations/DantzigWolfe.h"
 #include "solvers/lpsolve/Lpsolve.h"
+#include "algorithms/column-generation/ColumnGeneration.h"
+#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
 
 void solve_with_mip() {
     Model model;
@@ -58,35 +60,32 @@ int main() {
      */
 
     Model sp;
-    auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
-    auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
-    sp.add_constraint(     w_1 +  2 * w_2 <= 2.);
-    sp.add_constraint( 2 * w_1 + -1 * w_2 <= 3.);
+    auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
+    auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
+    auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
     Model rmp;
-    auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
-    auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
-    auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
+    auto alpha = rmp.add_variable(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
+    auto ctr_rmp = rmp.add_constraint( (-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
+    auto ctr_con = rmp.add_constraint( alpha == 1 , "rmp_convex");
 
-    BranchAndBound result;
-
-    auto& node_strategy = result.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    BranchAndBound solver;
+    auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
     node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
-    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {  });
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
-    auto& decomposition = result.set_solution_strategy<Decomposition>();
+    auto& decomposition = solver.set_solution_strategy<Decomposition>();
     decomposition.set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);
+    auto& generation = decomposition.add_generation_strategy<ColumnGeneration>();
+    auto& subproblem = generation.add_subproblem(alpha);
+    subproblem.set_solution_strategy<ExternalSolver<Gurobi>>(sp);
+    auto& generator = subproblem.set_branching_scheme<ColumnGenerationBranchingSchemes::RMP>();
 
-    auto& cut_generation = decomposition.add_generation_strategy<CutGeneration>();
-    auto &subproblem = cut_generation.add_subproblem(ctr);
-    subproblem.set_solution_strategy<ExternalSolver<Lpsolve>>(sp);
+    solver.solve();
 
-    result.solve();
-
-    std::cout <<"B&B -> " << result.objective_value() << std::endl;
-
-    solve_with_mip();
+    std::cout << solver.primal_solution().status() << std::endl;
+    std::cout << solver.primal_solution().objective_value() << std::endl;
 
     return 0;
 }

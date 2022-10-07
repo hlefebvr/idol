@@ -9,6 +9,7 @@
 #include "algorithms/decomposition/Generator.h"
 #include "ColumnGenerators_Basic.h"
 #include "algorithms/logs/Log.h"
+#include "containers/Set.h"
 #include <memory>
 #include <list>
 #include <iomanip>
@@ -17,16 +18,26 @@
 class Model;
 
 class ColumnGenerationSP {
+
+    TempVar m_var_template;
+
+    Constant m_objective_coefficient_builder;
+    Map<Param, Constant> m_objective_terms_builder;
+
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
-    std::unique_ptr<ColumnGenerator> m_generator;
+    std::unique_ptr<ColumnGenerationBranchingScheme> m_branching_scheme;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
+    Set<unsigned int> m_subproblem_ids;
 
     using PresentColumnList = std::list<std::pair<Var, Solution::Primal&>>;
 
     PresentColumnList m_currently_present_variables;
+
+    void save_subproblem_ids();
+    void remove_var_template_from_rmp(const Var& t_var);
 public:
-    explicit ColumnGenerationSP(Algorithm& t_rmp_strategy);
+    explicit ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var);
 
     void build();
 
@@ -70,15 +81,32 @@ public:
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
 
-    std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporay_constraint);
+    std::optional<Ctr> add_constraint(TempCtr &t_temporay_constraint);
 
     bool update_constraint_rhs(const Ctr &t_ctr, double t_rhs);
 
     bool remove_constraint(const Ctr& t_ctr);
 
+
+    bool is_in_subproblem(const Var& t_var) const;
+
+    bool is_in_subproblem(const Ctr& t_ctr) const;
+
+    void remove_columns_violating_lower_bound(const Var& t_var, double t_lb);
+
+    void remove_columns_violating_upper_bound(const Var& t_var, double t_ub);
+
+    void remove_columns_violating_constraint(const TempCtr& t_ctr);
+
+    Expr<Var> expand(const Var &t_subproblem_variable) const;
+
+    void reset_linking_expr(const Ctr& t_ctr);
+
+    void add_linking_expr(const Ctr& t_ctr, const Expr<Var>& t_expr);
+
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
-    template<class T, class ...Args> T& set_generation_strategy(Args&& ...t_args);
+    template<class T, class ...Args> T& set_branching_scheme(Args&& ...t_args);
 };
 
 template<class T, class... Args>
@@ -89,10 +117,10 @@ T &ColumnGenerationSP::set_solution_strategy(Args &&... t_args) {
 }
 
 template<class T, class... Args>
-T &ColumnGenerationSP::set_generation_strategy(Args &&... t_args) {
-    auto* generator = new T(std::forward<Args>(t_args)...);
-    m_generator.reset(generator);
-    return *generator;
+T &ColumnGenerationSP::set_branching_scheme(Args &&... t_args) {
+    auto* branching = new T(std::forward<Args>(t_args)...);
+    m_branching_scheme.reset(branching);
+    return *branching;
 }
 
 #endif //OPTIMIZE_COLUMNGENERATIONSP_H

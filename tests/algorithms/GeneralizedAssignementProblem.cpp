@@ -7,11 +7,11 @@
 #include "../instances/generalized-assignment-problem/InstanceGAP_1.h"
 #include "../instances/generalized-assignment-problem/InstanceGAP_2.h"
 #include "../instances/generalized-assignment-problem/InstanceGAP_3.h"
-
+/*
 using configurations =
         cartesian_product<
                 available_solvers,
-                std::tuple<ColumnGenerators::DantzigWolfeRMP, ColumnGenerators::DantzigWolfeSP>,
+                std::tuple<ColumnGenerationBranchingSchemes::RMP, ColumnGenerationBranchingSchemes::DantzigWolfeSP>,
                 std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
                 std::tuple<ActiveNodesManagers::Heap>,
@@ -30,8 +30,6 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
 
     SECTION("Generalized Assignment Problem") {
 
-
-        /* INSTANCE */
         AbstractInstanceGAP* t_instance = GENERATE(
                 new InstanceGAP<0>(),
                 new InstanceGAP<1>(),
@@ -46,8 +44,6 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
         const auto c = t_instance->c();
 
         SECTION("should solve to optimum") {
-
-            /* MODEL */
 
             std::vector<Var> branching_candidates;
 
@@ -116,3 +112,4 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
     }
 
 }
+*/

@@ -23,7 +23,7 @@ public:
     /**
      * Creates an empty column.
      */
-    Column() = default;
+    Column();
 
     /**
      * Creates a new column with an objective coefficient and no components.
@@ -68,6 +68,8 @@ public:
      * @param t_objective_coefficient The desired new objective coefficient.
      */
     void set_objective_coefficient(Constant t_objective_coefficient);
+
+    Column fix(const Solution::Primal& t_primals) const;
 
     static const Column EmptyColumn;
 };

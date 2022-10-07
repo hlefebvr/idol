@@ -63,7 +63,7 @@ public:
 
     void remove_constraint(const Ctr &t_constraint) override;
 
-    ColumnGenerationSP& add_subproblem();
+    ColumnGenerationSP& add_subproblem(const Var& t_var);
 };
 
 #endif //OPTIMIZE_COLUMNGENERATION_H
