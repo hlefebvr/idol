@@ -8,13 +8,12 @@
 #include "algorithms/decomposition/GenerationAlgorithm.h"
 #include "algorithms/attributes/Attributes_Base.h"
 #include "algorithms/attributes/Attributes.h"
-#include "algorithms/cut-generation/subproblems/AbstractCutGenerationSubproblem.h"
-#include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
+#include "CutGenerationSubproblem.h"
 #include <list>
 #include <memory>
 
 class CutGeneration : public GenerationAlgorithm {
-    std::list<std::unique_ptr<AbstractCutGenerationSubproblem>> m_subproblems;
+    std::list<CutGenerationSubproblem> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
     Attributes<AttributesSections::Base> m_attributes;
 
@@ -30,7 +29,7 @@ class CutGeneration : public GenerationAlgorithm {
     void update_subproblems();
     void solve_subproblems();
     void log_last_rmp_primal_solution() const;
-    void analyze_last_subproblem_primal_solution(const AbstractCutGenerationSubproblem& t_subproblem);
+    void analyze_last_subproblem_primal_solution(const CutGenerationSubproblem& t_subproblem);
     void add_cuts();
 
     void terminate();
@@ -55,14 +54,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    template<class T = CutGenerationSubproblem, class ...Args> T& add_subproblem(Args&& ...t_args);
+    CutGenerationSubproblem& add_subproblem(const Ctr& t_cut);
 };
-
-template<class T, class... Args>
-T &CutGeneration::add_subproblem(Args &&... t_args) {
-    auto* subproblem = new T(rmp_solution_strategy(), std::forward<Args>(t_args)...);
-    m_subproblems.template emplace_back(subproblem);
-    return *subproblem;
-}
 
 #endif //OPTIMIZE_CUTGENERATION_H

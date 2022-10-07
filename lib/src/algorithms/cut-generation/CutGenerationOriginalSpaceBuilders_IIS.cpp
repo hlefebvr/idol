@@ -1,17 +1,17 @@
 //
 // Created by henri on 06/10/22.
 //
-#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
-#include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
+#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
+#include "algorithms/cut-generation/CutGenerationSubproblem.h"
 #include "algorithms/Algorithm.h"
 #include "modeling/models/Model.h"
 
-CutGenerationOriginalSpaceBuilderIIS::CutGenerationOriginalSpaceBuilderIIS(const Model& t_rmp)
+CutGenerationOriginalSpaceBuilders::IIS::IIS(const Model& t_rmp)
     : m_rmp(t_rmp) {
 
 }
 
-Solution::Primal CutGenerationOriginalSpaceBuilderIIS::primal_solution(const CutGenerationSubproblem &t_subproblem,
+Solution::Primal CutGenerationOriginalSpaceBuilders::IIS::primal_solution(const CutGenerationSubproblem &t_subproblem,
                                                                        const Algorithm &t_rmp_solution_strategy) const {
 
     Expr<Var> objective;

@@ -1,10 +1,10 @@
 //
 // Created by henri on 06/10/22.
 //
-#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
-#include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
+#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
+#include "algorithms/cut-generation/CutGenerationSubproblem.h"
 
-Solution::Primal CutGenerationOriginalSpaceBuilderDual::primal_solution(const CutGenerationSubproblem &t_subproblem,
+Solution::Primal CutGenerationOriginalSpaceBuilders::Dual::primal_solution(const CutGenerationSubproblem &t_subproblem,
                                                                         const Algorithm &t_rmp_solution_strategy) const {
 
     const Solution::Dual t_rmp_duals = t_rmp_solution_strategy.dual_solution();

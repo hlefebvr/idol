@@ -9,8 +9,8 @@ CutGeneration::CutGeneration(DecompositionId &&t_id) : GenerationAlgorithm(std::
 }
 
 void CutGeneration::build() {
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        ptr_to_subproblem->build();
+    for (auto& subproblem : m_subproblems) {
+        subproblem.build();
     }
 }
 
@@ -94,10 +94,10 @@ void CutGeneration::terminate() {
 void CutGeneration::update_subproblems() {
     if (is_terminated()) { return; }
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        auto row = ptr_to_subproblem->get_separation_objective(*m_last_rmp_primals);
+    for (auto& subproblem : m_subproblems) {
+        auto row = subproblem.get_separation_objective(*m_last_rmp_primals);
         EASY_LOG(Trace, "cut-generation", "Setting separation objective to " << row);
-        ptr_to_subproblem->update_separation_objective(row);
+        subproblem.update_separation_objective(row);
     }
 }
 
@@ -105,15 +105,15 @@ void CutGeneration::solve_subproblems() {
 
     if (is_terminated()) { return; }
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        ptr_to_subproblem->solve();
+        subproblem.solve();
 
-        ptr_to_subproblem->save_last_primal_solution();
+        subproblem.save_last_primal_solution();
 
-        ptr_to_subproblem->log_last_primal_solution();
+        subproblem.log_last_primal_solution();
 
-        analyze_last_subproblem_primal_solution(*ptr_to_subproblem);
+        analyze_last_subproblem_primal_solution(subproblem);
 
         if (is_terminated()) { break; }
 
@@ -127,11 +127,11 @@ void CutGeneration::add_cuts() {
 
     bool improving_columns_found = false;
 
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        if (ptr_to_subproblem->violated_cut_found()) {
+        if (subproblem.violated_cut_found()) {
             improving_columns_found = true;
-            ptr_to_subproblem->add_cut_to_rmp();
+            subproblem.add_cut_to_rmp();
         }
 
     }
@@ -148,7 +148,7 @@ void CutGeneration::terminate_for_no_violated_cut_found() {
 }
 
 void
-CutGeneration::analyze_last_subproblem_primal_solution(const AbstractCutGenerationSubproblem &t_subproblem) {
+CutGeneration::analyze_last_subproblem_primal_solution(const CutGenerationSubproblem &t_subproblem) {
 
     if (t_subproblem.is_unbounded()) {
         throw Exception("Did not know what to do with unbounded SP.");
@@ -191,16 +191,16 @@ void CutGeneration::log_last_rmp_primal_solution() const {
 
 Solution::Primal CutGeneration::primal_solution() const {
     Solution::Primal result = rmp_solution_strategy().primal_solution();
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        result.merge_without_conflict(ptr_to_subproblem->primal_solution());
+    for (auto& subproblem : m_subproblems) {
+        result.merge_without_conflict(subproblem.primal_solution());
     }
     return result;
 }
 
 void CutGeneration::set_lower_bound(const Var &t_var, double t_lb) {
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        const bool is_applied = ptr_to_subproblem->set_lower_bound(t_var, t_lb);
+        const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
         if(is_applied) { return; }
 
     }
@@ -208,11 +208,16 @@ void CutGeneration::set_lower_bound(const Var &t_var, double t_lb) {
 }
 
 void CutGeneration::set_upper_bound(const Var &t_var, double t_ub) {
-    for (auto& ptr_to_subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
 
-        const bool is_applied = ptr_to_subproblem->set_upper_bound(t_var, t_ub);
+        const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
         if (is_applied) { return; }
 
     }
     rmp_solution_strategy().set_upper_bound(t_var, t_ub);
+}
+
+CutGenerationSubproblem &CutGeneration::add_subproblem(const Ctr &t_cut) {
+    m_subproblems.emplace_back(rmp_solution_strategy(), t_cut);
+    return m_subproblems.back();
 }

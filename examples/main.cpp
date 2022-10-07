@@ -10,9 +10,9 @@
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
 #include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
-#include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
-#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
-#include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
+#include "algorithms/cut-generation/CutGenerationSubproblem.h"
+#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
+#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 #include "reformulations/DantzigWolfe.h"
 
@@ -70,17 +70,17 @@ int main() {
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
-    node_strategy.template set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
-    node_strategy.template set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> { y });
-    node_strategy.template set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> { y });
+    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& decomposition = result.set_solution_strategy<Decomposition>();
-    decomposition.template set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);
+    decomposition.set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);
 
-    auto& cut_generation = decomposition.template add_generation_strategy<CutGeneration>();
-    auto &subproblem = cut_generation.template add_subproblem(ctr);
-    subproblem.template set_solution_strategy<ExternalSolver<Gurobi>>(sp);
-    subproblem.template set_original_space_builder<CutGenerationOriginalSpaceBuilderIIS>(rmp);
+    auto& cut_generation = decomposition.add_generation_strategy<CutGeneration>();
+    auto &subproblem = cut_generation.add_subproblem(ctr);
+    subproblem.set_solution_strategy<ExternalSolver<Gurobi>>(sp);
+    subproblem.set_original_space_builder<CutGenerationOriginalSpaceBuilders::IIS>(rmp);
 
     result.solve();
 

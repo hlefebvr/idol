@@ -2,19 +2,19 @@
 // Created by henri on 06/10/22.
 //
 
-#ifndef OPTIMIZE_ABSTRACTCUTGENERATIONORIGINALSPACEBUILDER_H
-#define OPTIMIZE_ABSTRACTCUTGENERATIONORIGINALSPACEBUILDER_H
+#ifndef OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDER_H
+#define OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDER_H
 
 #include "modeling/solutions/Solution.h"
 
 class CutGenerationSubproblem;
 class Algorithm;
 
-class AbstractCutGenerationOriginalSpaceBuilder {
+class CutGenerationOriginalSpaceBuilder {
 public:
-    virtual ~AbstractCutGenerationOriginalSpaceBuilder() = default;
+    virtual ~CutGenerationOriginalSpaceBuilder() = default;
 
     [[nodiscard]] virtual Solution::Primal primal_solution(const CutGenerationSubproblem &t_subproblem, const Algorithm &t_rmp_solution_strategy) const = 0;
 };
 
-#endif //OPTIMIZE_ABSTRACTCUTGENERATIONORIGINALSPACEBUILDER_H
+#endif //OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDER_H
