@@ -27,3 +27,7 @@ unsigned int ObjectId::id() const {
 unsigned int ObjectId::model_id() const {
     return m_model_id;
 }
+
+void ObjectId::set_model_id(unsigned int t_id) {
+    m_model_id = t_id;
+}

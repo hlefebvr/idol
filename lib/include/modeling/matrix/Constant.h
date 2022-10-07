@@ -9,6 +9,10 @@
 #include "../parameters/Param.h"
 #include "modeling/numericals.h"
 
+namespace Solution {
+    class Primal;
+}
+
 /**
  * Constant term modeling object.
  *
@@ -139,6 +143,8 @@ public:
     Constant& operator-=(double t_term);
     Constant& operator-=(Param t_term);
     Constant& operator-=(const Constant& t_term);
+
+    double fix(const Solution::Primal& t_primals) const;
 
     static Constant Zero;
 };

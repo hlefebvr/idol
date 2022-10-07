@@ -82,7 +82,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
             for (unsigned int i = 0; i < n_knapsacks; ++i) {
                 param_x[i].reserve(n_items);
                 for (unsigned int j = 0; j < n_items; ++j) {
-                    param_x[i].emplace_back(rmp.add_parameter(x[i][j]));
+                    param_x[i].emplace_back(Param(x[i][j]));
                 }
             };
 

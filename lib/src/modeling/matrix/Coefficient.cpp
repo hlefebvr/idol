@@ -3,6 +3,7 @@
 //
 #include "modeling/matrix/Constant.h"
 #include "modeling/numericals.h"
+#include "modeling/solutions/Solution.h"
 
 Constant Constant::Zero;
 
@@ -106,6 +107,14 @@ bool Constant::is_zero() const {
 
 bool Constant::is_numerical() const {
     return m_products.empty();
+}
+
+double Constant::fix(const Solution::Primal &t_primals) const {
+    double result = m_constant;
+    for (const auto& [param, coeff] : m_products) {
+        result += coeff * t_primals.get(!param);
+    }
+    return result;
 }
 
 Constant operator*(double t_factor, const Param& t_param) {

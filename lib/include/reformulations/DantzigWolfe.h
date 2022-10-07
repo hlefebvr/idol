@@ -12,11 +12,6 @@
 
 class Model;
 
-class DantzigWolfe {
-    std::unique_ptr<Ctr> m_convexification_constraint;
-    std::unique_ptr<ColumnGenerators::Basic> m_generator;
-public:
-    Model reformulate(Model& t_rmp, const std::function<bool(const Ctr&)>& t_complicating_constraints_indicator);
-};
+class DantzigWolfe {};
 
 #endif //OPTIMIZE_DANTZIGWOLFE_H

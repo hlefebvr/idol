@@ -63,9 +63,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
                 auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
                 Model rmp;
-                auto x_bar_0 = rmp.add_parameter( x_0 );
-                auto x_bar_1 = rmp.add_parameter( x_1 );
-                auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
+                auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * !x_0 + -2 * !x_1, "rmp_ctr");
 
                 BranchAndBound solver;
                 auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
@@ -102,9 +100,7 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
             auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
             Model rmp;
-            auto x_bar_0 = rmp.add_parameter( x_0 );
-            auto x_bar_1 = rmp.add_parameter( x_1 );
-            auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * x_bar_0 + -2 * x_bar_1, "rmp_ctr");
+            auto ctr_rmp = rmp.add_constraint(Expr() >= 1 + 2. * !x_0 + -2 * !x_1, "rmp_ctr");
 
             BranchAndBound solver;
             auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();

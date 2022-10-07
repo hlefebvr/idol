@@ -24,7 +24,6 @@ protected:
     template<class T, class ...Args> T create(unsigned int t_model_id, std::string&& t_name, Args ...t_args);
     template<class T> typename T::impl_t& impl(const T& t_object);
     template<class T> void free(const T& t_object);
-    template<class T> void set_model_id(T& t_object, unsigned int t_model_id);
 public:
     ObjectManager(const impl::ObjectManager&) = default;
     ObjectManager(impl::ObjectManager&&) = default;
@@ -51,11 +50,6 @@ template<class T>
 void impl::ObjectManager::free(const T &t_object) {
     const auto& id = impl(t_object).object_id();
     m_env.m_objects.erase(id.m_it);
-}
-
-template<class T>
-void impl::ObjectManager::set_model_id(T &t_object, unsigned int t_model_id) {
-    impl(t_object).object_id().m_model_id = t_model_id;
 }
 
 

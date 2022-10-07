@@ -38,6 +38,8 @@ public:
     [[nodiscard]] unsigned int id() const;
 
     [[nodiscard]] unsigned int model_id() const;
+
+    void set_model_id(unsigned int t_id);
 };
 
 #endif //OPTIMIZE_OBJECTID_H

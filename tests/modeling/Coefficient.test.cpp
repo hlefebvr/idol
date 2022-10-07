@@ -8,8 +8,8 @@ TEST_CASE("Coefficient", "[expressions][modeling]") {
     Model sp;
     Model model;
 
-    auto a = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
-    auto b = model.add_parameter( sp.add_variable(0., 1., Continuous, 0.) );
+    auto a = Param( sp.add_variable(0., 1., Continuous, 0.) );
+    auto b = Param( sp.add_variable(0., 1., Continuous, 0.) );
 
     SECTION("constructor with no argument") {
 

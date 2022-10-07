@@ -74,6 +74,18 @@ public:
     Row operator*=(double t_factor);
     Row operator+=(const Row& t_factor);
 
+    /**
+     * Returns the transpose of the row.
+     *
+     * Variables therefore become parameters and parameters become variables.
+     *
+     * **Example 1**
+     * \f$ (f + Q\bar\xi)^Tx \le b^T\bar\xi \f$ gives \f$ (b + Q^T\bar x)^T\xi \le f^T\bar x \f$
+     */
+    Row transpose() const;
+
+    Row fix(const Solution::Primal& t_primals) const;
+
     static const Row EmptyRow;
 };
 

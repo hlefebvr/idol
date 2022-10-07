@@ -7,13 +7,10 @@
 
 #include "../objects/Object.h"
 #include "modeling/Types.h"
+#include "modeling/variables/Variable.h"
 #include <iostream>
 
 class Var;
-
-namespace impl {
-    class Param;
-}
 
 /**
  * Parameter modeling object.
@@ -26,11 +23,10 @@ namespace impl {
  * A model cannot have a parameter referring to one of its own variables.
  */
 class Param {
-    friend class impl::ObjectManager;
-    impl::Param* m_impl;
-
-    explicit Param(impl::Param* t_impl) : m_impl(t_impl) {}
+    Var m_variable;
 public:
+    Param(const Var& t_var); // NOLINT(google-explicit-constructor)
+
     /**
      * Returns the id of the parameter.
      */
@@ -42,25 +38,19 @@ public:
     [[nodiscard]] const Var& variable() const;
 
     /**
-     * Returns the index of the parameter in the underlying matrix.
-     */
-    [[nodiscard]] unsigned int index() const;
-
-    /**
      * Returns the name of the parameter.
      */
     [[nodiscard]] const std::string& name() const;
 
-    /**
-     * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).
-     */
-    using impl_t = impl::Param;
+    Var* operator->() { return &m_variable; }
+
+    const Var* operator->() const { return &m_variable; }
 };
 
+static Param operator!(const Var& t_var) { return t_var; }
+static Var operator!(const Param& t_param) { return t_param.variable(); }
+
 static std::ostream& operator<<(std::ostream& t_os, const Param& t_param) {
-    if (t_param.name().empty()) {
-        return t_os << "Param(" << t_param.id() << std::endl;
-    }
     return t_os << t_param.name();
 }
 

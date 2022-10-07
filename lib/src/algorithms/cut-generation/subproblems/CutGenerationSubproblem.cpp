@@ -5,15 +5,28 @@
 #include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
 #include "algorithms/logs/Log.h"
 
-CutGenerationSubproblem::CutGenerationSubproblem(Algorithm &t_rmp_strategy) : m_rmp_strategy(t_rmp_strategy) {
+CutGenerationSubproblem::CutGenerationSubproblem(Algorithm &t_rmp_strategy, const Ctr& t_cut)
+    : m_rmp_strategy(t_rmp_strategy),
+      m_cut_template(Row(t_cut.row()), t_cut.type()),
+      m_objective_template(t_cut.row().transpose()) {
+
+    save_subproblem_ids();
+    remove_cut_template_from_rmp(t_cut);
 
 }
 
-void CutGenerationSubproblem::build() {
-
-    if (!m_generator) {
-        throw Exception("No column generator has been given.");
+void CutGenerationSubproblem::save_subproblem_ids() {
+    for (const auto& [var, constant] : m_objective_template.lhs()) {
+        m_subproblem_ids.emplace(var.id());
     }
+}
+
+void CutGenerationSubproblem::remove_cut_template_from_rmp(const Ctr& t_cut) {
+    EASY_LOG(Trace, "cut-generation", "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
+    rmp_solution_strategy().remove_constraint(t_cut);
+}
+
+void CutGenerationSubproblem::build() {
 
     if (!m_exact_solution_strategy) {
         throw Exception("No exact solution strategy has been given.");
@@ -27,7 +40,17 @@ void CutGenerationSubproblem::solve() {
 }
 
 Row CutGenerationSubproblem::get_separation_objective(const Solution::Primal &t_primals) const {
-    return m_generator->get_separation_objective(t_primals);
+    double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
+
+    Row result;
+
+    for (const auto& [var, constant] : m_objective_template.lhs()) {
+        result.lhs() += sign * constant.fix(t_primals) * var;
+    }
+
+    result.rhs() = sign * m_objective_template.rhs().fix(t_primals);
+
+    return result;
 }
 
 void CutGenerationSubproblem::update_separation_objective(const Row &t_objective) {
@@ -74,19 +97,34 @@ bool CutGenerationSubproblem::could_not_be_solved_to_optimality() const {
 }
 
 TempCtr CutGenerationSubproblem::create_cut_from(const Solution::Primal &t_primals) const {
-    return m_generator->create_cut(t_primals);
+    return { m_cut_template.row().fix(t_primals), m_cut_template.type() };
 }
 
 Solution::Primal CutGenerationSubproblem::primal_solution() const {
-    return m_generator->primal_solution(*this, m_rmp_strategy);
+
+    if (!m_original_space_builder) {
+        return {};
+    }
+
+    return m_original_space_builder->primal_solution(*this, m_rmp_strategy);
 }
 
 bool CutGenerationSubproblem::set_lower_bound(const Var &t_var, double t_lb) {
-    return m_generator->set_lower_bound(t_var, t_lb, *this);
+    if (!is_in_subproblem(t_var)) { return false; }
+
+    remove_cuts_violating_lower_bound(t_var, t_lb);
+    exact_solution_strategy().set_lower_bound(t_var, t_lb);
+
+    return true;
 }
 
 bool CutGenerationSubproblem::set_upper_bound(const Var &t_var, double t_ub) {
-    return m_generator->set_upper_bound(t_var, t_ub, *this);
+    if (!is_in_subproblem(t_var)) { return false; }
+
+    remove_cuts_violating_upper_bound(t_var, t_ub);
+    exact_solution_strategy().set_upper_bound(t_var, t_ub);
+
+    return true;
 }
 
 void CutGenerationSubproblem::remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal) {
@@ -103,5 +141,39 @@ void CutGenerationSubproblem::remove_cut_if(const std::function<bool(const Ctr &
             ++it;
         }
     }
+
+}
+
+bool CutGenerationSubproblem::is_in_subproblem(const Var &t_var) const {
+    return m_subproblem_ids.find(t_var.id()) != m_subproblem_ids.end();
+}
+
+void CutGenerationSubproblem::remove_cuts_violating_lower_bound(const Var &t_var, double t_lb) {
+
+    remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
+        if (double value = t_cut_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
+            EASY_LOG(Trace,
+                     "cut-generation",
+                     "Cut " << t_cut << " was removed by contradiction with required "
+                            << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
+            return true;
+        }
+        return false;
+    });
+
+}
+
+void CutGenerationSubproblem::remove_cuts_violating_upper_bound(const Var &t_var, double t_ub) {
+
+    remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
+        if (double value = t_cut_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
+            EASY_LOG(Trace,
+                     "cut-generation",
+                     "Cut " << t_cut << " was removed by contradiction with required "
+                            << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
+            return true;
+        }
+        return false;
+    });
 
 }

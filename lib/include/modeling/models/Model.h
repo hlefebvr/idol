@@ -41,9 +41,7 @@ class Model {
     mutable ListenerManager m_listeners;
 
     Constant m_objective_offset;
-    std::vector<Param> m_parameters;
     std::vector<Var> m_variables;
-    std::vector<Var> m_abstract_variables;
     std::vector<Ctr> m_constraints;
 
     template<class T> using iterator_forward = IteratorForward<std::vector<T>>;
@@ -71,17 +69,11 @@ public:
 
     [[nodiscard]] Objective objective() const { return Objective(m_variables, m_objective_offset); }
 
-    iterator_forward<Param> parameters() { return iterator_forward<Param>(m_parameters); }
-    [[nodiscard]] const_iterator_forward<Param> parameters() const { return const_iterator_forward<Param>(m_parameters); }
-
     iterator_forward<Var> variables() { return iterator_forward<Var>(m_variables); }
     [[nodiscard]] const_iterator_forward<Var> variables() const { return const_iterator_forward<Var>(m_variables); }
 
     iterator_forward<Ctr> constraints() { return iterator_forward<Ctr>(m_constraints); }
     [[nodiscard]] const_iterator_forward<Ctr> constraints() const { return const_iterator_forward<Ctr>(m_constraints); }
-
-    Param add_parameter(const Var& t_variable, std::string t_name = "");
-    void remove(const Param& t_param);
 
     Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
     Var add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
@@ -106,7 +98,7 @@ public:
 
     class Transform;
 
-    Map<Ctr, Expr<Var>> move_to(Model& t_destination, const std::function<bool(const Ctr&)>& t_indicator);
+    Transform transform();
 };
 
 template<class T>
@@ -154,6 +146,7 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
  * Note that no public method leaves a Model in an undesirable state.
  */
 class Model::Transform {
+    friend class Model;
     Model& m_model;
 
     template<class T> void swap(std::vector<T>& t_container, const T& t_a, const T& t_b);
@@ -161,8 +154,9 @@ class Model::Transform {
     template<class T> void hard_move(std::vector<T>& t_source, std::vector<T>& t_dest, unsigned int t_dest_id, const T& t_object);
     void hard_move(Model& t_destination, const Ctr& t_ctr);
     void hard_move(Model& t_destination, const Var& t_var);
-public:
+
     explicit Transform(Model& t_model);
+public:
 
     /**
      * Swaps two columns in the underlying matrix
@@ -193,6 +187,8 @@ public:
      * @return The illegal terms removed from the original model.
      */
     Map<Ctr, Expr<Var>> move(Model& t_destination, const std::function<bool(const Ctr &)> &t_indicator);
+
+    Map<Ctr, Expr<Var>> move(Model& t_destination, std::vector<Ctr> t_indicator);
 };
 
 template<class T>
@@ -213,7 +209,7 @@ void Model::Transform::hard_move(std::vector<T> &t_source, std::vector<T> &t_des
     swap(t_object, t_source.back());
     t_source.pop_back();
 
-    m_model.m_objects.set_model_id(t_object, t_dest_id);
+    m_model.m_objects.impl(t_object).set_model_id(t_dest_id);
     m_model.m_objects.impl(t_object).set_index(t_dest.size());
     t_dest.emplace_back(t_object);
 

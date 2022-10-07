@@ -11,7 +11,6 @@
 #include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
 #include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
 #include "algorithms/cut-generation/subproblems/CutGenerationSubproblem.h"
-#include "algorithms/cut-generation/generators/CutGenerator.h"
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderDual.h"
 #include "algorithms/cut-generation/original-space-builder/CutGenerationOriginalSpaceBuilderIIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
@@ -39,6 +38,7 @@ int main() {
     Log::set_color("column-generation", Color::Yellow);
     Log::set_color("cut-generation", Color::Green);
 
+    /*
     Model rmp;
 
     auto x = rmp.add_variable(0., 1., Continuous, 1., "x");
@@ -49,13 +49,13 @@ int main() {
     auto c2 = rmp.add_constraint(    y + z >= 1, "c2");
 
     Model subproblem;
-    auto linking = Model::Transform(rmp).move(subproblem, [](const Ctr& t_ctr){ return t_ctr.name() == "c2"; });
+    auto illegal_terms = rmp.transform().move(subproblem, { c1, c2 });
 
     std::cout << rmp << std::endl;
 
     std::cout << subproblem << std::endl;
+     */
 
-    /*
     Model sp;
     auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
     auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
@@ -65,6 +65,7 @@ int main() {
     Model rmp;
     auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
     auto y = rmp.add_variable(0., Inf, Integer, 2., "y");
+    auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
 
     BranchAndBound result;
 
@@ -77,20 +78,15 @@ int main() {
     decomposition.template set_rmp_solution_strategy<ExternalSolver<Gurobi>>(rmp);
 
     auto& cut_generation = decomposition.template add_generation_strategy<CutGeneration>();
-    auto &subproblem = cut_generation.template add_subproblem();
+    auto &subproblem = cut_generation.template add_subproblem(ctr);
     subproblem.template set_solution_strategy<ExternalSolver<Gurobi>>(sp);
-    auto& generator = subproblem.template set_generation_strategy<CutGenerator>(rmp, sp);
-    generator.set_original_space_builder<CutGenerationOriginalSpaceBuilderIIS>(rmp);
-    generator.set_constant( 3 * w_1 + 4 * w_2 );
-    generator.set(z, Expr(), 1.);
-    generator.set(y, w_1 + 3 * w_2);
+    subproblem.template set_original_space_builder<CutGenerationOriginalSpaceBuilderIIS>(rmp);
 
     result.solve();
 
     std::cout <<"B&B -> " << result.objective_value() << std::endl;
 
     solve_with_mip();
-    */
 
     return 0;
 }

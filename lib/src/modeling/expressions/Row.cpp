@@ -49,3 +49,35 @@ Row Row::operator+=(const Row &t_factor) {
     m_lhs += t_factor.m_lhs;
     return *this;
 }
+
+Row Row::transpose() const {
+    Row result;
+
+    for (const auto& [var, constant] : m_lhs) {
+
+        result.rhs() -= constant.numerical() * !var;
+
+        for (const auto& [param, coeff] : constant) {
+            result.lhs() += -coeff * !var * !param;
+        }
+
+    }
+
+    for (const auto& [param, coeff] : m_rhs->value()) {
+        result.lhs() -= coeff * !param;
+    }
+
+    return result;
+}
+
+Row Row::fix(const Solution::Primal &t_primals) const {
+    Row result;
+
+    for (const auto& [var, constant] : m_lhs) {
+        result.m_lhs += constant.fix(t_primals) * var;
+    }
+
+    result.m_rhs->set_value(m_rhs->value().fix(t_primals));
+
+    return result;
+}

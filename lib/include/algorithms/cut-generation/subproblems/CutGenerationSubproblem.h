@@ -7,21 +7,35 @@
 
 #include "AbstractCutGenerationSubproblem.h"
 #include "algorithms/Algorithm.h"
-#include "algorithms/cut-generation/generators/AbstractCutGenerator.h"
+#include "containers/Set.h"
+#include "algorithms/cut-generation/original-space-builder/AbstractCutGenerationOriginalSpaceBuilder.h"
 #include <memory>
 #include <list>
 
 class CutGenerationSubproblem : public AbstractCutGenerationSubproblem {
+
+    TempCtr m_cut_template;
+    Row m_objective_template;
+
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
-    std::unique_ptr<AbstractCutGenerator> m_generator;
+    std::unique_ptr<AbstractCutGenerationOriginalSpaceBuilder> m_original_space_builder;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
+    Set<unsigned int> m_subproblem_ids;
 
     using PresentCutList = std::list<std::pair<Ctr, Solution::Primal&>>;
 
     PresentCutList m_currently_present_cuts;
+
+    void save_subproblem_ids();
+    void remove_cut_template_from_rmp(const Ctr& t_cut);
+    bool is_in_subproblem(const Var& t_var) const;
+
+    void remove_cuts_violating_lower_bound(const Var& t_var, double t_lb);
+
+    void remove_cuts_violating_upper_bound(const Var& t_var, double t_ub);
 public:
-    explicit CutGenerationSubproblem(Algorithm& t_rmp_strategy);
+    explicit CutGenerationSubproblem(Algorithm& t_rmp_strategy, const Ctr& t_cut);
 
     void build() override;
 
@@ -30,7 +44,6 @@ public:
     using PresentCuts = ConstIteratorForward<PresentCutList>;
 
     [[nodiscard]] PresentCuts currently_present_cuts() const { return PresentCuts(m_currently_present_cuts); }
-
 
     [[nodiscard]] Row get_separation_objective(const Solution::Primal &t_primals) const override;
 
@@ -66,7 +79,7 @@ public:
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
-    template<class T, class ...Args> T& set_generation_strategy(Args&& ...t_args);
+    template<class T, class ...Args> T& set_original_space_builder(Args&& ...t_args);
 };
 
 template<class T, class... Args>
@@ -77,9 +90,9 @@ T &CutGenerationSubproblem::set_solution_strategy(Args &&... t_args) {
 }
 
 template<class T, class... Args>
-T &CutGenerationSubproblem::set_generation_strategy(Args &&... t_args) {
+T &CutGenerationSubproblem::set_original_space_builder(Args &&... t_args) {
     auto* generator = new T(std::forward<Args>(t_args)...);
-    m_generator.reset(generator);
+    m_original_space_builder.reset(generator);
     return *generator;
 }
 

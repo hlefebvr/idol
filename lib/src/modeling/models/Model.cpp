@@ -11,23 +11,8 @@ Model::Model() : m_objects(Env::get()) {
 }
 
 Model::~Model() {
-    free(m_parameters);
     free(m_variables);
     free(m_constraints);
-}
-
-Param Model::add_parameter(const Var& t_variable, std::string t_name) {
-    if (t_variable.model_id() == m_id) {
-        throw Exception("Cannot add a parameter referring to a variable of the same model.");
-    }
-    std::string&& name = t_name.empty() ? std::string(t_variable.name()) : std::move(t_name);
-    auto result = m_objects.create<Param>(m_id, std::move(name), t_variable);
-    add_object(m_parameters, result);
-    return result;
-}
-
-void Model::remove(const Param &t_param) {
-    remove_object(m_parameters, t_param);
 }
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
@@ -158,6 +143,10 @@ void Model::add_listener(Listener &t_listener) const {
     m_listeners.add(t_listener);
 }
 
+Model::Transform Model::transform() {
+    return Model::Transform(*this);
+}
+
 
 Model::Transform::Transform(Model &t_model) : m_model(t_model) {
 
@@ -169,10 +158,6 @@ void Model::Transform::swap(const Var &t_a, const Var &t_b) {
 
 void Model::Transform::swap(const Ctr &t_a, const Ctr &t_b) {
     swap(m_model.m_constraints, t_a, t_b);
-}
-
-void Model::Transform::swap(const Param &t_a, const Param &t_b) {
-    swap(m_model.m_parameters, t_a, t_b);
 }
 
 void Model::Transform::hard_move(Model& t_destination, const Ctr& t_ctr) {
@@ -226,9 +211,30 @@ Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, const std::func
     // Remove illegal terms from the new model
     for (const auto& [ctr, expr] : result) {
         for (const auto& [var, coeff] : expr) {
-            m_model.update_coefficient(ctr, var, 0.);
+            m_model.m_objects.impl(ctr).row().lhs().set(var, 0.);
+            t_destination.m_objects.impl(var).column().components().set(ctr, 0.);
         }
     }
 
     return result;
+}
+
+Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, std::vector<Ctr> t_indicator) {
+
+    std::sort(t_indicator.begin(), t_indicator.end(), [](const Ctr& t_a, const Ctr& t_b){
+        return t_a.index() < t_b.index();
+    });
+
+    unsigned int i = 0;
+    const unsigned int n = t_indicator.size();
+
+    return move(t_destination, [&](const Ctr& t_ctr){
+        if (i >= n) { return false; }
+        if (t_ctr.index() == t_indicator[i].index()) {
+            ++i;
+            return true;
+        }
+        return false;
+    });
+
 }
