@@ -15,6 +15,7 @@
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 #include "reformulations/DantzigWolfe.h"
+#include "solvers/lpsolve/Lpsolve.h"
 
 void solve_with_mip() {
     Model model;
@@ -64,14 +65,14 @@ int main() {
 
     Model rmp;
     auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
-    auto y = rmp.add_variable(0., Inf, Integer, 2., "y");
+    auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
     auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
 
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
     node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
-    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> { y });
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {  });
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& decomposition = result.set_solution_strategy<Decomposition>();
@@ -79,8 +80,7 @@ int main() {
 
     auto& cut_generation = decomposition.add_generation_strategy<CutGeneration>();
     auto &subproblem = cut_generation.add_subproblem(ctr);
-    subproblem.set_solution_strategy<ExternalSolver<Gurobi>>(sp);
-    subproblem.set_original_space_builder<CutGenerationOriginalSpaceBuilders::IIS>(rmp);
+    subproblem.set_solution_strategy<ExternalSolver<Lpsolve>>(sp);
 
     result.solve();
 
