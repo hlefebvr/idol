@@ -20,6 +20,10 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
 
     std::vector<Var> branching_candidates;
 
+    Model rmp;
+    std::vector<Var> alpha;
+    alpha.reserve(n_knapsacks);
+
     // SP
     std::vector<Model> subproblems;
     subproblems.reserve(n_knapsacks);
@@ -28,10 +32,14 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         subproblems.emplace_back();
 
+        Constant objective_cost;
+
         x[i].reserve(n_items);
 
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+
+            objective_cost += p[i][j] * !x[i][j];
 
             branching_candidates.emplace_back(x[i].back());
         }
@@ -42,30 +50,24 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
         }
         subproblems.back().add_constraint(expr <= c[i]);
 
+        alpha.emplace_back( rmp.add_variable(0., 1., Continuous, std::move(objective_cost), "alpha") );
+
     }
 
-    // RMP
-    Model rmp;
-
-    std::vector<std::vector<Param>> param_x(n_knapsacks);
+    for (unsigned int j = 0 ; j < n_items ; ++j) {
+        Expr expr;
+        for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+            expr += !x[i][j] * alpha[i];
+        }
+        rmp.add_constraint(expr == 1., "assign(" + std::to_string(j) + ")");
+    }
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        param_x[i].reserve(n_items);
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
-            param_x[i].emplace_back( rmp.add_parameter(x[i][j]) );
-        }
-    };
-
-    for (unsigned int j = 0 ; j < n_items ; ++j) {
-        Constant expr = 1;
-        for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-            expr += -1. * param_x[i][j];
-        }
-        rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
+        rmp.add_constraint( alpha[i] == 1., "convexity(" + std::to_string(i) + ")" );
     }
 
     // Algorithm
-    auto solver = branch_and_price(rmp, subproblems.begin(), subproblems.end(), branching_candidates);
+    auto solver = branch_and_price(rmp, alpha, subproblems, branching_candidates);
 
     solver.solve();
 

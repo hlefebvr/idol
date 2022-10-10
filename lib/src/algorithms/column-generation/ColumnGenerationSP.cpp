@@ -8,27 +8,7 @@ ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_v
         : m_rmp_strategy(t_rmp_strategy),
           m_var_template(TempVar(t_var.lb(), t_var.ub(), t_var.type(), Column(t_var.column()))) {
 
-    // BEGIN BUILD BUILDER
-
-    for (const auto& [ctr, constant] : t_var.column().components()) {
-        m_objective_coefficient_builder += -constant.numerical() * !ctr;
-        for (const auto& [param, coeff] : constant) {
-            auto [it, success] = m_objective_terms_builder.emplace(param, -coeff * !ctr);
-            if (!success) {
-                it->second += -coeff * !ctr;
-            }
-        }
-    }
-    for (const auto& [param, coeff] : t_var.column().objective_coefficient()) {
-        auto [it, success] = m_objective_terms_builder.emplace(param, coeff);
-        if (!success) {
-            it->second += coeff;
-        }
-    }
-
-    // END BUILD BUILDER
-
-    save_subproblem_ids();
+    save_subproblem_ids(t_var);
     remove_var_template_from_rmp(t_var);
 
 }
@@ -70,17 +50,18 @@ Row ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_duals) con
 
     Row result;
 
-    const bool farkas_pricing = t_duals.status() != Optimal;
-
-    for (const auto& [param, constant] : m_objective_terms_builder) {
-        if (farkas_pricing) {
-            result.lhs() += (constant.fix(t_duals) - constant.numerical()) * param.as<Var>();
-        } else {
-            result.lhs() += constant.fix(t_duals) * param.as<Var>();
+    if (t_duals.status() == Optimal) {
+        for (const auto &[param, coeff]: m_var_template.column().objective_coefficient()) {
+            result.lhs() += coeff * param.as<Var>();
         }
     }
 
-    result.rhs() += m_objective_coefficient_builder.fix(t_duals);
+    for (const auto &[ctr, constant]: m_var_template.column().components()) {
+        result.rhs() += constant.numerical() * -t_duals.get(ctr);
+        for (const auto &[param, coeff]: constant) {
+            result.lhs() += -t_duals.get(ctr) * coeff * param.as<Var>();
+        }
+    }
 
     return result;
 }
@@ -205,6 +186,8 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     m_exact_solution_strategy->update_constraint_rhs(t_ctr, t_rhs);
 
+    remove_columns_violating_constraint(TempCtr(Row(t_ctr.row()), t_ctr.type()));
+
     return true;
 }
 
@@ -215,6 +198,7 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
         return false;
     }
 
+    EASY_LOG(Trace, "column-generation", "Constraint " << t_ctr << " has been removed from SP.");
     m_exact_solution_strategy->remove_constraint(t_ctr);
 
     return true;
@@ -222,27 +206,24 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
 
 void ColumnGenerationSP::reset_linking_expr(const Ctr &t_ctr) {
     m_var_template.column().components().set(t_ctr, 0.);
-    for (auto& [param, constant] : m_objective_terms_builder) {
-        constant.set(!t_ctr, 0.);
-    }
 }
 
 void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const Expr<Var> &t_expr) {
     Constant value;
     for (const auto& [var, constant] : t_expr) {
         value += constant.numerical() * !var;
-        auto [it, success] = m_objective_terms_builder.emplace(!var, -constant.numerical() * !t_ctr);
-        if (!success) {
-            it->second += -constant.numerical() * !t_ctr;
-        }
     }
+
     m_var_template.column().components().set(t_ctr, value);
 }
 
-void ColumnGenerationSP::save_subproblem_ids() {
+void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
 
-    for (const auto& [param, constant] : m_objective_terms_builder) {
-        m_subproblem_ids.emplace(param.model_id());
+    for (const auto& [ctr, constant] : t_var.column().components()) {
+        for (const auto& [param, coeff] : constant) {
+            m_subproblem_ids.emplace(param.model_id());
+            m_subproblem_ids.emplace(param.model_id());
+        }
     }
 
 }
@@ -257,7 +238,7 @@ bool ColumnGenerationSP::is_in_subproblem(const Var &t_var) const {
 }
 
 bool ColumnGenerationSP::is_in_subproblem(const Ctr &t_ctr) const {
-    return m_subproblem_ids.find(t_ctr.model_id()) == m_subproblem_ids.end();
+    return m_subproblem_ids.find(t_ctr.model_id()) != m_subproblem_ids.end();
 }
 
 void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, double t_lb) {

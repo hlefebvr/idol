@@ -56,7 +56,6 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
                                                            const std::function<TempCtr(const Var&, double)>& t_create_temp_ctr_function,
                                                            Algorithm& t_solution_strategy) {
 
-
     auto it = t_current_constraints.cbegin();
     const auto end = t_current_constraints.cend();
 

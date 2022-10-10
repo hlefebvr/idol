@@ -17,6 +17,8 @@ void BranchAndBound::solve() {
     initialize();
     create_root_node();
 
+    unsigned int iter = 0;
+
     while(!is_terminated()) {
 
         solve_queued_nodes();
@@ -34,6 +36,11 @@ void BranchAndBound::solve() {
         }
 
         branch();
+
+        ++iter;
+        if (iter > 3) {
+//            throw std::runtime_error("STOP B&B");
+        }
 
     }
 

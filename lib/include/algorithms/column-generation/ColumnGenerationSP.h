@@ -21,9 +21,6 @@ class ColumnGenerationSP {
 
     TempVar m_var_template;
 
-    Constant m_objective_coefficient_builder;
-    Map<Param, Constant> m_objective_terms_builder;
-
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<ColumnGenerationBranchingScheme> m_branching_scheme;
@@ -34,7 +31,7 @@ class ColumnGenerationSP {
 
     PresentColumnList m_currently_present_variables;
 
-    void save_subproblem_ids();
+    void save_subproblem_ids(const Var& t_var);
     void remove_var_template_from_rmp(const Var& t_var);
 public:
     explicit ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var);

@@ -7,6 +7,7 @@
 
 void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 
+    t_subproblem.remove_columns_violating_lower_bound(t_var, t_lb);
     set_bound_rmp(
             t_var,
             t_lb,
@@ -21,6 +22,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, do
 
 void ColumnGenerationBranchingSchemes::RMP::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSP &t_subproblem) {
 
+    t_subproblem.remove_columns_violating_upper_bound(t_var, t_ub);
     set_bound_rmp(
             t_var,
             t_ub,
@@ -50,7 +52,6 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
         auto ctr = rmp.add_constraint(t_ctr_builder(std::move(expanded), t_bound));
         t_subproblem.add_linking_expr(ctr, t_subproblem_variable);
         t_bound_constraints.emplace(t_subproblem_variable, ctr);
-        EASY_LOG(Trace, "cut-generation", "Added " << ctr << ".");
         return;
 
     }
@@ -59,13 +60,11 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
         auto constraint_to_remove = it->second;
         t_subproblem.reset_linking_expr(it->second);
         t_bound_constraints.erase(it);
-        EASY_LOG(Trace, "cut-generation", "Removed " << constraint_to_remove << ".");
         rmp.remove_constraint(constraint_to_remove);
         return;
     }
 
     rmp.update_constraint_rhs(it->second, t_bound);
-    EASY_LOG(Trace, "cut-generation", "Updated " << it->second << ".");
 
 }
 
@@ -73,7 +72,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
                                                                                        ColumnGenerationSP &t_subproblem) {
 
     for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
-        if (t_subproblem.is_in_subproblem(var)) {
+        if (!t_subproblem.is_in_subproblem(var)) {
             return {};
         }
     }
@@ -100,7 +99,9 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
 
     auto result = t_subproblem.rmp_solution_strategy().add_constraint(std::move(t_temporary_constraint));
 
-    t_subproblem.add_linking_expr(result, std::move(original_space));
+    t_subproblem.add_linking_expr(result, original_space);
 
-    return result;
+    EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to RMP.")
+
+    return { result };
 }

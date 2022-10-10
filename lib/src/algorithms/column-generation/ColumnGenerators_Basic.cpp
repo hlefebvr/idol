@@ -20,7 +20,7 @@ void ColumnGenerationBranchingSchemes::SP::set_upper_bound(const Var &t_var, dou
 
 std::optional<Ctr> ColumnGenerationBranchingSchemes::SP::contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSP& t_subproblem) {
 
-    for (const auto& [var, ctr] : t_temporary_constraint.row().lhs()) {
+    for (const auto& [var, constant] : t_temporary_constraint.row().lhs()) {
         if (!t_subproblem.is_in_subproblem(var)) {
             return {};
         }

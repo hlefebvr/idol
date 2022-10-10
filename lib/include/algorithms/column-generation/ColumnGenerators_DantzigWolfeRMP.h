@@ -23,8 +23,6 @@ public:
     void set_upper_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) override;
 
     std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSP &t_subproblem) override;
-
-    //bool remove_constraint(const Ctr &t_ctr, ColumnGenerationSP &t_subproblem) override;
 };
 
 #endif //OPTIMIZE_COLUMNGENERATORS_DANTZIGWOLFERMP_H

@@ -248,7 +248,7 @@ Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
 
     }
 
-    return rmp_solution_strategy().add_constraint(std::move(t_temporary_constraint));
+    throw std::runtime_error("Not implemented!");
 
 }
 
@@ -262,6 +262,8 @@ void ColumnGeneration::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     }
 
+    rmp_solution_strategy().update_constraint_rhs(t_ctr, t_rhs);
+
 }
 
 void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
@@ -273,6 +275,9 @@ void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
         }
 
     }
+
+    EASY_LOG(Trace, "column-generation", "Constraint " << t_constraint << " has been removed from RMP.");
+    rmp_solution_strategy().remove_constraint(t_constraint);
 
 }
 

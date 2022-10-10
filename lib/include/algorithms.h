@@ -45,15 +45,14 @@ template<
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
-        class NodeUpdatorT = NodeUpdators::ByBoundVar,
-        class IteratorT
+        class NodeUpdatorT = NodeUpdators::ByBoundVar
 >
-BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT t_end, std::vector<Var> t_branching_candidates) {
+BranchAndBound branch_and_price(Model& t_rmp_model, const std::vector<Var>& t_variables, std::vector<Model>& t_subproblems, std::vector<Var> t_branching_candidates) {
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategyT>();
     node_strategy.template set_active_node_manager_strategy<ActiveNodeManagerT>();
-    node_strategy.template set_branching_scheme<BranchingStrategyT>(std::move(t_branching_candidates));
+    node_strategy.template set_branching_strategy<BranchingStrategyT>(std::move(t_branching_candidates));
     node_strategy.template set_node_updator_strategy<NodeUpdatorT>();
 
     auto& decomposition = result.set_solution_strategy<Decomposition>();
@@ -61,9 +60,12 @@ BranchAndBound branch_and_price(Model& t_rmp_model, IteratorT t_begin, IteratorT
 
     auto& column_generation = decomposition.template add_generation_strategy<ColumnGeneration>();
 
-    for (; t_begin != t_end ; ++t_begin) {
-        auto &subproblem = column_generation.add_subproblem(t_begin->first);
-        subproblem.template set_solution_strategy<SPSolutionStrategyT>(t_begin->second);
+    const unsigned int n_subproblems = t_variables.size();
+    if (n_subproblems != t_subproblems.size()) { throw Exception("Subproblems and Variables size do not match."); }
+
+    for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
+        auto &subproblem = column_generation.add_subproblem(t_variables[i]);
+        subproblem.template set_solution_strategy<SPSolutionStrategyT>(t_subproblems[i]);
         subproblem.template set_branching_scheme<GenerationStrategyT>();
     }
 

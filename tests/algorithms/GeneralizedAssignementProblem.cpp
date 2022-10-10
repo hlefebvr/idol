@@ -7,11 +7,11 @@
 #include "../instances/generalized-assignment-problem/InstanceGAP_1.h"
 #include "../instances/generalized-assignment-problem/InstanceGAP_2.h"
 #include "../instances/generalized-assignment-problem/InstanceGAP_3.h"
-/*
+
 using configurations =
         cartesian_product<
-                available_solvers,
-                std::tuple<ColumnGenerationBranchingSchemes::RMP, ColumnGenerationBranchingSchemes::DantzigWolfeSP>,
+                std::tuple<Gurobi>,
+                std::tuple<ColumnGenerationBranchingSchemes::SP, ColumnGenerationBranchingSchemes::RMP>,
                 std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
                 std::tuple<ActiveNodesManagers::Heap>,
@@ -34,7 +34,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
                 new InstanceGAP<0>(),
                 new InstanceGAP<1>(),
                 new InstanceGAP<2>()
-                //new InstanceGAP<3>()
+                //,new InstanceGAP<3>()
         );
 
         const unsigned int n_knapsacks = t_instance->n_knapsacks();
@@ -47,48 +47,53 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
 
             std::vector<Var> branching_candidates;
 
+            Model rmp;
+            std::vector<Var> alpha;
+            alpha.reserve(n_knapsacks);
+
             // SP
             std::vector<Model> subproblems;
             subproblems.reserve(n_knapsacks);
             std::vector<std::vector<Var>> x(n_knapsacks);
 
-            for (unsigned int i = 0; i < n_knapsacks; ++i) {
+            for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
                 subproblems.emplace_back();
+
+                Constant objective_cost;
 
                 x[i].reserve(n_items);
 
-                for (unsigned int j = 0; j < n_items; ++j) {
-                    x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) +")"));
+                for (unsigned int j = 0 ; j < n_items ; ++j) {
+                    x[i].emplace_back(subproblems.back().add_variable(0., 1., Continuous, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+
+                    objective_cost += p[i][j] * !x[i][j];
+
                     branching_candidates.emplace_back(x[i].back());
                 }
 
                 Expr expr;
-                for (unsigned int j = 0; j < n_items; ++j) {
+                for (unsigned int j = 0 ; j < n_items ; ++j) {
                     expr += w[i][j] * x[i][j];
                 }
                 subproblems.back().add_constraint(expr <= c[i]);
 
+                alpha.emplace_back( rmp.add_variable(0., 1., Continuous, std::move(objective_cost), "alpha") );
+
             }
 
-            // RMP
-            Model rmp;
-
-            std::vector<std::vector<Param>> param_x(n_knapsacks);
-
-            for (unsigned int i = 0; i < n_knapsacks; ++i) {
-                param_x[i].reserve(n_items);
-                for (unsigned int j = 0; j < n_items; ++j) {
-                    param_x[i].emplace_back(Param(x[i][j]));
+            for (unsigned int j = 0 ; j < n_items ; ++j) {
+                Expr expr;
+                for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+                    expr += !x[i][j] * alpha[i];
                 }
-            };
-
-            for (unsigned int j = 0; j < n_items; ++j) {
-                Constant expr = 1;
-                for (unsigned int i = 0; i < n_knapsacks; ++i) {
-                    expr += -1. * param_x[i][j];
-                }
-                rmp.add_constraint(Expr() == expr, "assign(" + std::to_string(j) + ")");
+                rmp.add_constraint(expr == 1., "assign(" + std::to_string(j) + ")");
             }
+
+            for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+                rmp.add_constraint( alpha[i] == 1., "convexity(" + std::to_string(i) + ")" );
+            }
+
+            // Algorithm
 
             auto solver = branch_and_price<
                     ExternalSolver<SolverT>,
@@ -98,7 +103,7 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
                     NodeStrategyT,
                     ActiveNodeManagerT,
                     NodeUpdatorT
-            >(rmp, subproblems.begin(), subproblems.end(), branching_candidates);
+            >(rmp, alpha, subproblems, branching_candidates);
 
             solver.solve();
 
@@ -112,4 +117,3 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
     }
 
 }
-*/

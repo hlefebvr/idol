@@ -45,7 +45,6 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
         const Map<Var, double> &t_node_bounds, const std::function<void(const Var &, double)> &t_set_bound_function,
         const std::function<double(const Var &)> &t_get_bound_function) {
 
-
     auto it = t_currently_modified_variables_with_their_original_bound.cbegin();
     const auto end = t_currently_modified_variables_with_their_original_bound.cend();
 

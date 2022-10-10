@@ -18,6 +18,7 @@
 #include "solvers/lpsolve/Lpsolve.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
+#include "algorithms/branch-and-bound/ByBoundCtr.h"
 
 void solve_with_mip() {
     Model model;
@@ -72,7 +73,7 @@ int main() {
     BranchAndBound solver;
     auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
     node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
-    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundCtr>();
     node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
     auto& decomposition = solver.set_solution_strategy<Decomposition>();
