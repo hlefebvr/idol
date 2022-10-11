@@ -10,7 +10,7 @@ TEMPLATE_LIST_TEST_CASE("CutGeneration", "[generation-strategies][algorithms]", 
 
     Model model;
 
-    SECTION("Branching on subproblem") {
+    SECTION("Basic problem") {
 
 
         Model sp;

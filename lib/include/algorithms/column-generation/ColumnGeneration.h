@@ -12,7 +12,7 @@
 #include "algorithms/attributes/Attributes_Base.h"
 
 class ColumnGeneration : public GenerationAlgorithm {
-    std::vector<ColumnGenerationSP> m_subproblems;
+    std::list<ColumnGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
     Attributes<AttributesSections::Base> m_attributes;
 

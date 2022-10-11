@@ -74,7 +74,7 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
     std::cout << solver.status() << std::endl;
     std::cout << solver.objective_value() << std::endl;
     std::cout << "N. nodes: " << solver.n_created_nodes() << std::endl;
-    std::cout << "Time: " << solver.time().in_seconds() << std::endl;
+    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
 
 }
 

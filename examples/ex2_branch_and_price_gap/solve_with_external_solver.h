@@ -6,7 +6,6 @@
 #define OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 
 #include "Instance.h"
-#include "solvers/lpsolve/Lpsolve.h"
 
 #include "../../tests/instances/generalized-assignment-problem/AbstractInstanceGAP.h"
 #include "solvers.h"

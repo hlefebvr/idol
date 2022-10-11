@@ -67,7 +67,8 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
     }
 
     for (const auto& [var, bound] : t_node_bounds) {
-        auto [_, success] = t_currently_modified_variables_with_their_original_bound.emplace(var, t_get_bound_function(var));
+        const double org_bound = t_get_bound_function(var);
+        auto [_, success] = t_currently_modified_variables_with_their_original_bound.emplace(var, org_bound);
         if (success) {
             t_set_bound_function(var, bound);
         }

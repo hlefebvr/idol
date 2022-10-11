@@ -79,7 +79,7 @@ TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
 
         const auto primal_solution = solver.primal_solution();
         const auto dual_solution = solver.dual_solution();
-        const auto extreme_ray = solver.unbounded_ray().normalize(Inf);
+        const auto extreme_ray = solver.unbounded_ray();
 
         CHECK(primal_solution.status() == Unbounded);
         CHECK(is_neg_inf(primal_solution.objective_value()));
@@ -87,9 +87,10 @@ TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
         CHECK(dual_solution.status() == Infeasible);
         CHECK(is_neg_inf(dual_solution.objective_value()));
 
-        CHECK(extreme_ray.objective_value() == -4_a);
-        CHECK(extreme_ray.get(x) == 1._a);
-        CHECK(extreme_ray.get(y) == .5_a);
+        CHECK(extreme_ray.objective_value() <= 0_a);
+        CHECK(-3. * extreme_ray.get(x) -2. * extreme_ray.get(y) <= 0._a);
+        CHECK(-2. * extreme_ray.get(x) + extreme_ray.get(y) <= 0._a);
+        CHECK(extreme_ray.get(x) + extreme_ray.get(y) >= 0_a);
 
     }
 

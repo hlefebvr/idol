@@ -17,13 +17,15 @@ using gurobi_solver = std::tuple<Gurobi>;
 using gurobi_solver = std::tuple<>;
 #endif
 
-#ifdef USE_LPSOLVE
-#include "solvers/lpsolve/Lpsolve.h"
-using lpsolve_solver = std::tuple<Lpsolve>;
+#ifdef USE_GLPK
+#include "solvers/glpk/GLPK.h"
+using glpk_solver = std::tuple<GLPK>;
 #else
-using lpsolve_solver = std::tuple<>;
+using glpk_solver = std::tuple<>;
 #endif
 
-using available_solvers = tuple_cat_t<gurobi_solver, lpsolve_solver>;
+using available_solvers = tuple_cat_t<gurobi_solver,
+                                      glpk_solver
+                                      >;
 
 #endif //OPTIMIZE_SOLVERS_H

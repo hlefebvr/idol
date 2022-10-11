@@ -13,7 +13,7 @@
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
 
-TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]", std::tuple<Gurobi>) {
+TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]", available_solvers) {
 
     Model model;
 
