@@ -18,12 +18,12 @@ class Decomposition : public Algorithm {
 protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
+    void execute() override;
 public:
+
     Decomposition() = default;
 
     void build() override;
-
-    void solve() override;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

@@ -18,6 +18,7 @@
 
 class BranchAndBound : public Algorithm {
     unsigned int m_n_created_nodes = 0;
+    unsigned int m_iteration = 0;
     bool m_is_terminated = false;
 
     double m_best_lower_bound = -Inf;
@@ -52,6 +53,7 @@ class BranchAndBound : public Algorithm {
     void update_best_lower_bound();
     bool no_active_nodes();
     void branch();
+    [[nodiscard]] bool iteration_limit_is_reached() const;
 
     void terminate();
     void terminate_for_no_active_nodes();
@@ -59,6 +61,7 @@ class BranchAndBound : public Algorithm {
     void terminate_for_infeasibility();
     void terminate_for_unboundedness();
     void terminate_for_node_could_not_be_solved_to_optimality();
+    void terminate_for_iteration_limit_is_reached();
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 
@@ -68,12 +71,11 @@ class BranchAndBound : public Algorithm {
 
 protected:
     AbstractAttributes &attributes() override;
-
     [[nodiscard]] const AbstractAttributes &attributes() const override;
+    void execute() override;
 public:
-    BranchAndBound() = default;
 
-    void solve() override;
+    BranchAndBound() = default;
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 

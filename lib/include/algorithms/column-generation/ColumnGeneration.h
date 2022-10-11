@@ -12,7 +12,7 @@
 #include "algorithms/attributes/Attributes_Base.h"
 
 class ColumnGeneration : public GenerationAlgorithm {
-    std::list<ColumnGenerationSP> m_subproblems;
+    std::vector<ColumnGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
     Attributes<AttributesSections::Base> m_attributes;
 
@@ -42,12 +42,11 @@ class ColumnGeneration : public GenerationAlgorithm {
 protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
+    void execute() override;
 public:
     explicit ColumnGeneration(DecompositionId&& t_id);
 
     void build() override;
-
-    void solve() override;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

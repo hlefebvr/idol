@@ -12,12 +12,10 @@
 
 #include <iomanip>
 
-void BranchAndBound::solve() {
+void BranchAndBound::execute() {
 
     initialize();
     create_root_node();
-
-    unsigned int iter = 0;
 
     while(!is_terminated()) {
 
@@ -27,6 +25,8 @@ void BranchAndBound::solve() {
 
         update_best_lower_bound();
 
+        ++m_iteration;
+
         if (gap_is_closed()) {
             terminate_for_gap_is_closed();
         }
@@ -35,12 +35,11 @@ void BranchAndBound::solve() {
             terminate_for_no_active_nodes();
         }
 
-        branch();
-
-        ++iter;
-        if (iter > 3) {
-//            throw std::runtime_error("STOP B&B");
+        if (iteration_limit_is_reached()) {
+            terminate_for_iteration_limit_is_reached();
         }
+
+        branch();
 
     }
 
@@ -63,6 +62,7 @@ double BranchAndBound::absolute_gap() const {
 void BranchAndBound::initialize() {
     m_is_terminated = false;
     m_n_created_nodes = 0;
+    m_iteration = 0;
     m_best_lower_bound = -Inf;
     m_best_upper_bound = +Inf;
 
@@ -294,6 +294,10 @@ void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
     terminate();
 }
 
+void BranchAndBound::terminate_for_iteration_limit_is_reached() {
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. The maximum number of iterations has been reached.")
+    terminate();
+}
 void BranchAndBound::terminate() {
     m_is_terminated = true;
 }
@@ -368,4 +372,8 @@ AbstractAttributes &BranchAndBound::attributes() {
 
 const AbstractAttributes &BranchAndBound::attributes() const {
     return m_attributes;
+}
+
+bool BranchAndBound::iteration_limit_is_reached() const {
+    return m_iteration >= get<Attr::MaxIterations>();
 }

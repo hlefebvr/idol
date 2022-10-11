@@ -9,6 +9,7 @@
 #include "modeling/variables/TempVar.h"
 #include "modeling/constraints/TempCtr.h"
 #include "errors/NotImplemented.h"
+#include "algorithms/attributes/Timer.h"
 #include <list>
 
 class Node;
@@ -25,11 +26,15 @@ class AbstractAttributes;
  * By default, most of the methods are defined and throw a NotImplemented exception.
  */
 class Algorithm {
+    Timer m_timer;
 protected:
     virtual AbstractAttributes& attributes() = 0;
     [[nodiscard]] virtual const AbstractAttributes& attributes() const = 0;
+    virtual void execute() = 0;
 public:
     virtual ~Algorithm() = default;
+
+    [[nodiscard]] const Timer& time() const { return m_timer; }
 
     /**
      * This method is typically called to initialize/set up the algorithm before solving an optimization problem.
@@ -39,7 +44,11 @@ public:
     /**
      * Executes the solution algorithm.
      */
-    virtual void solve() = 0;
+    void solve() {
+        m_timer.start();
+        execute();
+        m_timer.stop();
+    }
 
     /**
      * Searches for an IIS of the optimization problem.
@@ -172,7 +181,7 @@ public:
      */
     template<class T>
     typename T::value_type get() const {
-        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
+        auto* ptr = dynamic_cast<const typename T::attr_type*>(&attributes());
         if (ptr == nullptr) {
             throw Exception("Wrong parameter type required: " + T::name() + ".");
         }

@@ -1,6 +1,7 @@
 //
 // Created by henri on 16/09/22.
 //
+#include <omp.h>
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/logs/Log.h"
 
@@ -14,7 +15,7 @@ void ColumnGeneration::build() {
     }
 }
 
-void ColumnGeneration::solve() {
+void ColumnGeneration::execute() {
 
     initialize();
 

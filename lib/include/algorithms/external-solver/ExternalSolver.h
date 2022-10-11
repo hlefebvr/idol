@@ -43,7 +43,7 @@ public:
 
     void build() override;
 
-    void solve() override { m_solver.solve(); }
+    void execute() override { m_solver.solve(); }
 
     [[nodiscard]] const Model& model() const { return m_model; }
 

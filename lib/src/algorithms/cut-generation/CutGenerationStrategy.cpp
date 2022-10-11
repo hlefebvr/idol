@@ -14,7 +14,7 @@ void CutGeneration::build() {
     }
 }
 
-void CutGeneration::solve() {
+void CutGeneration::execute() {
 
     initialize();
 

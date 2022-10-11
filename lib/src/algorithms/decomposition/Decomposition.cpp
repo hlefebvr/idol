@@ -21,7 +21,7 @@ void Decomposition::build() {
 }
 
 
-void Decomposition::solve() {
+void Decomposition::execute () {
     m_generation_strategies.front()->solve();
 }
 
