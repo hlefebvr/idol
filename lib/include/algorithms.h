@@ -19,7 +19,7 @@
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 
 template<
-        class SolutionStrategyT = std::tuple_element_t<0, available_solvers>,
+        class SolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
@@ -39,8 +39,8 @@ BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_can
 }
 
 template<
-        class RMPSolutionStrategyT = std::tuple_element_t<0, available_solvers>,
-        class SPSolutionStrategyT = std::tuple_element_t<0, available_solvers>,
+        class RMPSolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
+        class SPSolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
         class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,

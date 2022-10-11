@@ -23,11 +23,10 @@ using gurobi_solver = std::tuple<>;
 
 using glpk_simplex_solver = std::tuple<Solvers::GLPK_Simplex>;
 #else
-using glpk_solver = std::tuple<>;
+using glpk_simplex_solver = std::tuple<>;
 #endif
 
-using available_solvers = tuple_cat_t<gurobi_solver,
-                                      glpk_simplex_solver
-                                      >;
+using lp_solvers   = tuple_cat_t<gurobi_solver, glpk_simplex_solver>;
+using milp_solvers = tuple_cat_t<gurobi_solver>;
 
 #endif //OPTIMIZE_SOLVERS_H

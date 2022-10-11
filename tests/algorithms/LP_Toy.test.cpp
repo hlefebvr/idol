@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-TEMPLATE_LIST_TEST_CASE("LP", "[LP][solvers]", available_solvers) {
+TEMPLATE_LIST_TEST_CASE("LP: Toy", "[LP][solvers]", lp_solvers) {
 
     Model model;
 

@@ -53,7 +53,7 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
         assignment_constraints.emplace_back(model.add_constraint(expr == 1) );
     }
 
-    std::tuple_element_t<0, available_solvers> solver(model);
+    std::tuple_element_t<0, milp_solvers> solver(model);
     solver.solve();
 
     std::cout << solver.primal_solution().status() << std::endl;

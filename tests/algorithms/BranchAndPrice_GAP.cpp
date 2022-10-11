@@ -10,7 +10,7 @@
 
 using configurations =
         cartesian_product<
-                available_solvers,
+                lp_solvers,
                 std::tuple<ColumnGenerationBranchingSchemes::SP, ColumnGenerationBranchingSchemes::RMP>,
                 std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
