@@ -16,7 +16,7 @@ using configurations =
                 std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
             >;
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", configurations) {
+TEMPLATE_LIST_TEST_CASE("BranchAndBound: Toy", "[MILP][branch-and-bound][algorithms]", configurations) {
 
     using SolverT             = std::tuple_element_t<0, TestType>;
     using BranchingStrategyT  = std::tuple_element_t<1, TestType>;

@@ -19,7 +19,7 @@ using configurations =
         >;
 
 
-TEMPLATE_LIST_TEST_CASE("BranchAndPriceGAP", "[column-generation]", configurations) {
+TEMPLATE_LIST_TEST_CASE("BranchAndPrice: GAP", "[column-generation]", configurations) {
 
     using SolverT             = std::tuple_element_t<0, TestType>;
     using GenerationStrategyT = std::tuple_element_t<1, TestType>;
