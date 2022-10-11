@@ -54,7 +54,7 @@ Row CutGenerationSP::get_separation_objective(const Solution::Primal &t_primals)
 }
 
 void CutGenerationSP::update_separation_objective(const Row &t_objective) {
-    m_exact_solution_strategy->set_objective(t_objective);
+    m_exact_solution_strategy->update_objective(t_objective);
 }
 
 void CutGenerationSP::save_last_primal_solution() {

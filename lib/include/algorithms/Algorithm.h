@@ -13,7 +13,6 @@
 #include <list>
 
 class Node;
-class Solver;
 class Var;
 
 class AbstractAttributes;
@@ -107,8 +106,8 @@ public:
      * Sets the objective function of the optimization problem.
      * @param t_objective The desired objective.
      */
-    virtual void set_objective(const Row& t_objective) {
-        throw NotImplemented("Updating objective", "set_objective");
+    virtual void update_objective(const Row& t_objective) {
+        throw NotImplemented("Updating objective", "update_objective");
     }
 
     /**

@@ -17,9 +17,10 @@
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
+#include "algorithms/external-solver/Solvers_GLPK.h"
 
 template<
-        class SolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
+        class SolutionStrategyT = std::tuple_element_t<0, available_solvers>,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Heap,
@@ -39,8 +40,8 @@ BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_can
 }
 
 template<
-        class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-        class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
+        class RMPSolutionStrategyT = std::tuple_element_t<0, available_solvers>,
+        class SPSolutionStrategyT = std::tuple_element_t<0, available_solvers>,
         class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,

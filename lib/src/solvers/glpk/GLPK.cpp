@@ -438,18 +438,21 @@ void GLPK::compute_unbounded_ray() {
         set_rhs(ctr, 0.);
     }
 
+    // Solve
     glp_smcp parameters;
     glp_init_smcp(&parameters);
     parameters.msg_lev = GLP_MSG_ERR;
     glp_std_basis(m_model);
     glp_simplex(m_model, &parameters);
 
+    // Save ray
     m_ray = Solution::Primal();
     m_ray->set_status(algorithm_for_lp() == PrimalSimplex ? Optimal : Feasible);
     m_ray->set_objective_value(glp_get_obj_val(m_model));
     for (const auto& var : source_model().variables()) {
         m_ray->set(var, glp_get_col_prim(m_model, get(var)));
-        std::cout << var <<" = " << glp_get_col_prim(m_model, get(var)) << std::endl;
     }
+
+    std::cout << "UNBOUNDED RAY LEFT MODEL MODIFIED" << std::endl;
 
 }

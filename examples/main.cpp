@@ -20,6 +20,7 @@
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
 #include "solvers/glpk/GLPK.h"
 #include "algorithms.h"
+#include "algorithms/external-solver/Solvers_GLPK.h"
 
 void solve_with_mip() {
     Model model;
@@ -61,26 +62,30 @@ int main() {
     std::cout << subproblem << std::endl;
      */
 
-    Model model;
+    Model sp;
+    auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
+    auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
+    auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
 
-    auto x = model.add_variable(0., Inf, Continuous, -3, "x");
-    auto y = model.add_variable(0., Inf, Continuous, -2, "y");
-    auto c1 = model.add_constraint(x + -2 * y <= 1);
-    auto c2 = model.add_constraint(-2 * x + y <= 1);
-    auto c3 = model.add_constraint(x + y >= 2);
+    Model rmp;
+    auto alpha = rmp.add_variable(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
+    auto ctr_rmp = rmp.add_constraint( (-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
+    auto ctr_con = rmp.add_constraint( alpha == 1 , "rmp_convex");
 
-    GLPK solver(model);
-    solver.set_infeasible_or_unbounded_info(true);
+    BranchAndBound solver;
+    auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
+
+    auto& decomposition = solver.set_solution_strategy<Decomposition>();
+    decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(rmp);
+    auto& generation = decomposition.add_generation_strategy<ColumnGeneration>();
+    auto& subproblem = generation.add_subproblem(alpha);
+    subproblem.set_solution_strategy<Solvers::Gurobi>(sp);
+    auto& generator = subproblem.set_branching_scheme<ColumnGenerationBranchingSchemes::RMP>();
+
     solver.solve();
-
-    auto ray = solver.unbounded_ray();
-
-    std::cout << -3 * ray.get(x) -2 * ray.get(y) << std::endl;
-    std::cout << ray.get(x) - 2 * ray.get(y) << std::endl;
-    std::cout << -2 * ray.get(x) + ray.get(y) << std::endl;
-    std::cout << ray.get(x) + ray.get(y) << std::endl;
-
-    std::cout << ray << std::endl;
 
     return 0;
 }

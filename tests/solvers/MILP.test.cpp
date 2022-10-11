@@ -30,27 +30,6 @@ TEMPLATE_LIST_TEST_CASE("MILP", "[MILP][solvers]", available_solvers) {
 
         }
 
-        SECTION("Model constructed after the solver is declared") {
-
-            TestType solver(model);
-
-            auto x = model.add_variable(0., 1., Binary, -1, "x");
-            auto y = model.add_variable(0., 1., Binary, -1, "y");
-            auto z = model.add_variable(0., 1., Binary, -2, "z");
-            auto c1 = model.add_constraint(x + 2 * y + 3 * z <= 4);
-            auto c2 = model.add_constraint(x + y >= 1);
-
-            solver.solve();
-
-            const auto primal_solution = solver.primal_solution();
-
-            CHECK(primal_solution.status() == Optimal);
-            CHECK(primal_solution.get(x) == 1._a);
-            CHECK(primal_solution.get(y) == 0._a);
-            CHECK(primal_solution.get(z) == 1._a);
-
-        }
-
     }
 
 }

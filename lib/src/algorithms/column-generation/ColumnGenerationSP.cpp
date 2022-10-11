@@ -68,7 +68,7 @@ Row ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_duals) con
 
 
 void ColumnGenerationSP::update_pricing_objective(const Row &t_objective) {
-    m_exact_solution_strategy->set_objective(t_objective);
+    m_exact_solution_strategy->update_objective(t_objective);
 }
 
 

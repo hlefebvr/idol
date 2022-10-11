@@ -25,6 +25,7 @@ protected:
 public:
     explicit ExternalSolver(Model& t_model) : m_model(t_model), m_solver(t_model) {
 
+        /*
         m_attributes.template set_callback<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
             m_solver.set_infeasible_or_unbounded_info(t_value);
         });
@@ -32,7 +33,7 @@ public:
         m_attributes.template set_callback<Attr::Presolve>([this](bool t_value) {
            m_solver.set_presolve(t_value);
         });
-
+    */
     }
 
     ExternalSolver(const ExternalSolver& t_src) = delete;
@@ -57,7 +58,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    void set_objective(const Row &t_objective) override;
+    void update_objective(const Row &t_objective) override;
 
     Var add_column(TempVar t_temporary_variable) override;
 
@@ -88,7 +89,7 @@ void ExternalSolver<SolverT>::set_upper_bound(const Var &t_var, double t_ub) {
 }
 
 template<class SolverT>
-void ExternalSolver<SolverT>::set_objective(const Row &t_objective) {
+void ExternalSolver<SolverT>::update_objective(const Row &t_objective) {
     m_model.update_objective(t_objective);
 }
 

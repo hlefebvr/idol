@@ -36,10 +36,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
         node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
         auto& decomposition = solver.set_solution_strategy<Decomposition>();
-        decomposition.set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+        decomposition.set_rmp_solution_strategy<TestType>(rmp);
         auto& generation = decomposition.add_generation_strategy<ColumnGeneration>();
         auto& subproblem = generation.add_subproblem(alpha);
-        subproblem.set_solution_strategy<ExternalSolver<TestType>>(sp);
+        subproblem.set_solution_strategy<TestType>(sp);
         auto& generator = subproblem.set_branching_scheme<ColumnGenerationBranchingSchemes::SP>();
 
         solver.solve();
@@ -68,10 +68,10 @@ TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]
         node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
         auto& decomposition = solver.set_solution_strategy<Decomposition>();
-        decomposition.set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+        decomposition.set_rmp_solution_strategy<TestType>(rmp);
         auto& generation = decomposition.add_generation_strategy<ColumnGeneration>();
         auto& subproblem = generation.add_subproblem(alpha);
-        subproblem.set_solution_strategy<ExternalSolver<TestType>>(sp);
+        subproblem.set_solution_strategy<TestType>(sp);
         auto& generator = subproblem.set_branching_scheme<ColumnGenerationBranchingSchemes::RMP>();
 
         solver.solve();

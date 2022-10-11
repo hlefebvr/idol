@@ -25,10 +25,10 @@ TEMPLATE_LIST_TEST_CASE("CutGeneration", "[generation-strategies][algorithms]", 
         auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
 
         Decomposition decomposition;
-        decomposition.set_rmp_solution_strategy<ExternalSolver<TestType>>(rmp);
+        decomposition.set_rmp_solution_strategy<TestType>(rmp);
         auto& cut_generation = decomposition.add_generation_strategy<CutGeneration>();
         auto &subproblem = cut_generation.add_subproblem(ctr);
-        subproblem.set_solution_strategy<ExternalSolver<TestType>>(sp);
+        subproblem.set_solution_strategy<TestType>(sp);
 
         decomposition.solve();
 

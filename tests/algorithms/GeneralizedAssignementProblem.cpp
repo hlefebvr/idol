@@ -96,8 +96,8 @@ TEMPLATE_LIST_TEST_CASE("Dantzig-Wolfe", "[column-generation]", configurations) 
             // Algorithm
 
             auto solver = branch_and_price<
-                    ExternalSolver<SolverT>,
-                    ExternalSolver<SolverT>,
+                    SolverT,
+                    SolverT,
                     GenerationStrategyT,
                     BranchingStrategyT,
                     NodeStrategyT,
