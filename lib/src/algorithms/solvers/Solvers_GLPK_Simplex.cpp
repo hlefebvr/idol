@@ -88,9 +88,11 @@ int Solvers::GLPK_Simplex::create_variable_impl_with_objective_coefficient(const
     glp_set_obj_coef(m_model, index, value(t_var.obj()));
 
     switch (t_var.type()) {
-        case Integer: glp_set_col_kind(m_model, index, GLP_IV); break;
-        case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
+        case Binary: [[fallthrough]];
+        case Integer: throw Exception("GLPK_Simplex is an LP solver. Integer variable encountered. Variable: " + t_var.name() + ".");
+        //case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
+        //case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
         default: throw std::runtime_error("Unknown variable type.");
     }
 

@@ -5,7 +5,6 @@
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms/decomposition/Decomposition.h"
-#include "solvers/gurobi/Gurobi.h"
 #include "algorithms/cut-generation/CutGeneration.h"
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundVar.h"
@@ -18,23 +17,8 @@
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
-#include "solvers/glpk/GLPK.h"
 #include "algorithms.h"
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
-
-void solve_with_mip() {
-    Model model;
-    auto x_1 = model.add_variable(0., Inf, Continuous, 2., "x_1");
-    auto x_2 = model.add_variable(0., Inf, Continuous, 3., "x_2");
-    auto y = model.add_variable(0., Inf, Integer, 2., "y");
-    model.add_constraint(x_1 + 2 * x_2 + y >= 3.);
-    model.add_constraint(2 * x_1 + -1 * x_2 + 3 * y >= 4.);
-
-    ExternalSolver<Gurobi> solver(model);
-    solver.solve();
-
-    std::cout << "MIP -> " << solver.primal_solution().objective_value() << std::endl;
-}
 
 //// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!
 int main() {
