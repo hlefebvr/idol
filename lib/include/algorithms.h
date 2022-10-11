@@ -17,6 +17,7 @@
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
+#include <tuple>
 
 template<
         class SolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
