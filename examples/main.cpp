@@ -8,7 +8,7 @@
 #include "solvers/gurobi/Gurobi.h"
 #include "algorithms/cut-generation/CutGeneration.h"
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
-#include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
+#include "algorithms/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
 #include "algorithms/cut-generation/CutGenerationSP.h"
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
@@ -17,8 +17,8 @@
 #include "reformulations/DantzigWolfe.h"
 #include "solvers/lpsolve/Lpsolve.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
-#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
-#include "algorithms/branch-and-bound/ByBoundCtr.h"
+#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
+#include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
 
 void solve_with_mip() {
     Model model;

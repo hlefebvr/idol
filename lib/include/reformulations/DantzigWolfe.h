@@ -6,7 +6,7 @@
 #define OPTIMIZE_DANTZIGWOLFE_H
 
 #include "modeling/constraints/Constraint.h"
-#include "algorithms/column-generation/ColumnGenerators_Basic.h"
+#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
 #include <vector>
 #include <functional>
 

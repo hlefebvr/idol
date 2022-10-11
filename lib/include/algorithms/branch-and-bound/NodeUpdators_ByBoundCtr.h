@@ -2,8 +2,8 @@
 // Created by henri on 22/09/22.
 //
 
-#ifndef OPTIMIZE_BYBOUNDCTR_H
-#define OPTIMIZE_BYBOUNDCTR_H
+#ifndef OPTIMIZE_NODEUPDATORS_BYBOUNDCTR_H
+#define OPTIMIZE_NODEUPDATORS_BYBOUNDCTR_H
 
 
 #include "NodeUpdator.h"
@@ -89,4 +89,4 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
 }
 
 
-#endif //OPTIMIZE_BYBOUNDCTR_H
+#endif //OPTIMIZE_NODEUPDATORS_BYBOUNDCTR_H

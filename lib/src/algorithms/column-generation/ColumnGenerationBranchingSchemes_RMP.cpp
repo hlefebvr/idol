@@ -1,7 +1,7 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
+#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/column-generation/ColumnGenerationSP.h"
 
 

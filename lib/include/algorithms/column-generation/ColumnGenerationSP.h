@@ -7,7 +7,7 @@
 
 #include "algorithms/Algorithm.h"
 #include "algorithms/decomposition/Generator.h"
-#include "ColumnGenerators_Basic.h"
+#include "ColumnGenerationBranchingSchemes_SP.h"
 #include "algorithms/logs/Log.h"
 #include "containers/Set.h"
 #include <memory>

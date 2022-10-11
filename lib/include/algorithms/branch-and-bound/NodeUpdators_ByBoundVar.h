@@ -2,8 +2,8 @@
 // Created by henri on 21/09/22.
 //
 
-#ifndef OPTIMIZE_NODEUPDATORS_BYBOUND_H
-#define OPTIMIZE_NODEUPDATORS_BYBOUND_H
+#ifndef OPTIMIZE_NODEUPDATORS_BYBOUNDVAR_H
+#define OPTIMIZE_NODEUPDATORS_BYBOUNDVAR_H
 
 #include "NodeUpdator.h"
 #include "containers/Map.h"
@@ -95,4 +95,4 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT 
 
 }
 
-#endif //OPTIMIZE_NODEUPDATORS_BYBOUND_H
+#endif //OPTIMIZE_NODEUPDATORS_BYBOUNDVAR_H

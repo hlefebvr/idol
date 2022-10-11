@@ -9,9 +9,9 @@
 #include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
-#include "algorithms/branch-and-bound/NodeUpdators_ByBound.h"
-#include "algorithms/column-generation/ColumnGenerators_DantzigWolfeRMP.h"
-#include "algorithms/column-generation/ColumnGenerators_Basic.h"
+#include "algorithms/branch-and-bound/NodeUpdators_ByBoundVar.h"
+#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
+#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
 
 TEMPLATE_LIST_TEST_CASE("ColumnGeneration", "[generation-strategies][algorithms]", std::tuple<Gurobi>) {
 

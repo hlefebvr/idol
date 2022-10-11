@@ -2,8 +2,8 @@
 // Created by henri on 19/09/22.
 //
 
-#ifndef OPTIMIZE_COLUMNGENERATORS_DANTZIGWOLFERMP_H
-#define OPTIMIZE_COLUMNGENERATORS_DANTZIGWOLFERMP_H
+#ifndef OPTIMIZE_COLUMNGENERATIONBRANCHINGSCHEMES_RMP_H
+#define OPTIMIZE_COLUMNGENERATIONBRANCHINGSCHEMES_RMP_H
 
 #include "ColumnGenerationBranchingScheme.h"
 
@@ -25,4 +25,4 @@ public:
     std::optional<Ctr> contribute_to_add_constraint(TempCtr &t_temporary_constraint, ColumnGenerationSP &t_subproblem) override;
 };
 
-#endif //OPTIMIZE_COLUMNGENERATORS_DANTZIGWOLFERMP_H
+#endif //OPTIMIZE_COLUMNGENERATIONBRANCHINGSCHEMES_RMP_H
