@@ -10,6 +10,8 @@
 #include "containers/Optional.h"
 #include <stack>
 
+#ifdef USE_GLPK
+
 struct glp_prob;
 
 namespace Solvers {
@@ -70,5 +72,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 };
+
+#endif
 
 #endif //OPTIMIZE_SOLVERS_GLPK_H

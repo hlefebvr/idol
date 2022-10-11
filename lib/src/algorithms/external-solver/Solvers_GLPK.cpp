@@ -2,8 +2,9 @@
 // Created by henri on 11/10/22.
 //
 #include "algorithms/external-solver/Solvers_GLPK.h"
-#include <glpk.h>
 
+#ifdef USE_GLPK
+#include <glpk.h>
 
 Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver2(t_model) {
 
@@ -477,3 +478,4 @@ void Solvers::GLPK_Simplex::set_upper_bound(const Var &t_var, double t_ub) {
     model().update_ub(t_var, t_ub);
 }
 
+#endif

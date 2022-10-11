@@ -7,6 +7,8 @@
 
 #include "Solver.h"
 #include "algorithms/attributes/Attributes.h"
+
+#ifdef USE_GUROBI
 #include <gurobi_c++.h>
 
 namespace Solvers {
@@ -61,5 +63,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 };
+
+#endif
 
 #endif //OPTIMIZE_SOLVERS_GUROBI_H

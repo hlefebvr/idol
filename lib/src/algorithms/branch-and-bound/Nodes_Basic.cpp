@@ -3,7 +3,6 @@
 //
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms/Algorithm.h"
-#include "solvers/Solver.h"
 #include <iostream>
 
 Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)

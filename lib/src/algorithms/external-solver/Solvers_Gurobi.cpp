@@ -3,6 +3,8 @@
 //
 #include "algorithms/external-solver/Solvers_Gurobi.h"
 
+#ifdef USE_GUROBI
+
 GRBEnv Solvers::Gurobi::m_env = GRBEnv();
 
 Solvers::Gurobi::Gurobi(Model &t_model) : Solver2(t_model), m_model(m_env) {
@@ -234,3 +236,5 @@ void Solvers::Gurobi::set_upper_bound(const Var &t_var, double t_ub) {
     get(t_var).set(GRB_DoubleAttr_UB, t_ub);
     model().update_ub(t_var, t_ub);
 }
+
+#endif
