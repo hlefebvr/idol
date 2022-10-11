@@ -5,8 +5,9 @@
 #ifndef OPTIMIZE_DECOMPOSITION_H
 #define OPTIMIZE_DECOMPOSITION_H
 
-#include "algorithms/external-solver/ExternalSolver.h"
 #include "GenerationAlgorithm.h"
+#include "algorithms/attributes/Attributes.h"
+#include "algorithms/attributes/Attributes_Base.h"
 #include "DecompositionId.h"
 #include <functional>
 

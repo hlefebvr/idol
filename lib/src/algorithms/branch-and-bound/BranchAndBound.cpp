@@ -2,13 +2,7 @@
 // Created by henri on 13/09/22.
 //
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-
-// used for building default branch-and-bound
-#include "algorithms/external-solver/ExternalSolver.h"
-#include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
-#include "algorithms/branch-and-bound/Nodes_Basic.h"
-#include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
-//
+#include "algorithms/branch-and-bound/ActiveNodesManager.h"
 
 #include <iomanip>
 

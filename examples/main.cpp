@@ -20,7 +20,7 @@
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
 #include "solvers/glpk/GLPK.h"
 #include "algorithms.h"
-#include "algorithms/external-solver/Solvers_GLPK.h"
+#include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 
 void solve_with_mip() {
     Model model;

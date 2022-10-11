@@ -1,13 +1,13 @@
 //
 // Created by henri on 11/10/22.
 //
-#include "algorithms/external-solver/Solvers_Gurobi.h"
+#include "algorithms/solvers/Solvers_Gurobi.h"
 
 #ifdef USE_GUROBI
 
 GRBEnv Solvers::Gurobi::m_env = GRBEnv();
 
-Solvers::Gurobi::Gurobi(Model &t_model) : Solver2(t_model), m_model(m_env) {
+Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 

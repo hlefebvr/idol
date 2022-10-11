@@ -4,11 +4,25 @@
 
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/external-solver/ExternalSolver.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms.h"
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", available_solvers) {
+using configurations =
+        cartesian_product<
+                available_solvers,
+                std::tuple<BranchingStrategies::MostInfeasible>,
+                std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
+                std::tuple<ActiveNodesManagers::Heap>,
+                std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
+            >;
+
+TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]", configurations) {
+
+    using SolverT             = std::tuple_element_t<0, TestType>;
+    using BranchingStrategyT  = std::tuple_element_t<1, TestType>;
+    using NodeStrategyT       = std::tuple_element_t<2, TestType>;
+    using ActiveNodeManagerT  = std::tuple_element_t<3, TestType>;
+    using NodeUpdatorT        = std::tuple_element_t<4, TestType>;
 
     Model model;
 
@@ -23,7 +37,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             auto c1 = model.add_constraint(x + 2 * y + 3 * z <= 4);
             auto c2 = model.add_constraint(x + y >= 1);
 
-            auto solver = branch_and_bound(model, { x, y, z });
+            auto solver = branch_and_bound<
+                    SolverT,
+                    BranchingStrategyT,
+                    NodeStrategyT,
+                    ActiveNodeManagerT,
+                    NodeUpdatorT
+                >(model, { x, y, z });
             solver.solve();
 
             CHECK(solver.n_created_nodes() == 1);
@@ -45,7 +65,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             auto c1 = model.add_constraint(x + 2 * y + 2.5 * z <= 4);
             auto c2 = model.add_constraint(x + y >= 1);
 
-            auto solver = branch_and_bound(model, { x, y, z });
+            auto solver = branch_and_bound<
+                                SolverT,
+                                BranchingStrategyT,
+                                NodeStrategyT,
+                                ActiveNodeManagerT,
+                                NodeUpdatorT
+                        >(model, { x, y, z });
             solver.solve();
 
             CHECK(solver.n_created_nodes() == 3);
@@ -78,7 +104,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
             model.add_constraint(sum_weight <= capacity);
 
-            auto solver = branch_and_bound(model, x);
+            auto solver = branch_and_bound<
+                                SolverT,
+                                BranchingStrategyT,
+                                NodeStrategyT,
+                                ActiveNodeManagerT,
+                                NodeUpdatorT
+                        >(model, x);
             solver.solve();
 
             CHECK(solver.status() == Optimal);
@@ -103,7 +135,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x >= 1);
             model.add_constraint(x <= 0);
 
-            auto solver = branch_and_bound(model, { x });
+            auto solver = branch_and_bound<
+                                SolverT,
+                                BranchingStrategyT,
+                                NodeStrategyT,
+                                ActiveNodeManagerT,
+                                NodeUpdatorT
+                        >(model, { x });
             solver.solve();
 
             CHECK(solver.status() == Infeasible);
@@ -115,7 +153,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
             model.add_constraint(x >= .1);
             model.add_constraint(x <= .9);
 
-            auto solver = branch_and_bound(model, { x });
+            auto solver = branch_and_bound<
+                                SolverT,
+                                BranchingStrategyT,
+                                NodeStrategyT,
+                                ActiveNodeManagerT,
+                                NodeUpdatorT
+                        >(model, { x });
             solver.solve();
 
 
@@ -129,7 +173,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound", "[MILP][branch-and-bound][algorithms]"
 
         auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
 
-        auto solver = branch_and_bound(model, { x });
+        auto solver = branch_and_bound<
+                            SolverT,
+                            BranchingStrategyT,
+                            NodeStrategyT,
+                            ActiveNodeManagerT,
+                            NodeUpdatorT
+                    >(model, { x });
         solver.solve();
 
         CHECK(solver.status() == Unbounded);

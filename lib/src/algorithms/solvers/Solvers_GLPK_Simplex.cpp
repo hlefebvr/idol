@@ -1,12 +1,12 @@
 //
 // Created by henri on 11/10/22.
 //
-#include "algorithms/external-solver/Solvers_GLPK.h"
+#include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 
 #ifdef USE_GLPK
 #include <glpk.h>
 
-Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver2(t_model) {
+Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {
 
     m_model = glp_create_prob();
 

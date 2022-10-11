@@ -2,22 +2,33 @@
 // Created by henri on 11/10/22.
 //
 
-#ifndef OPTIMIZE_SOLVERS_GUROBI_H
-#define OPTIMIZE_SOLVERS_GUROBI_H
+#ifndef OPTIMIZE_SOLVERS_GLPK_H
+#define OPTIMIZE_SOLVERS_GLPK_H
 
 #include "Solver.h"
 #include "algorithms/attributes/Attributes.h"
+#include "containers/Optional.h"
+#include <stack>
 
-#ifdef USE_GUROBI
-#include <gurobi_c++.h>
+#ifdef USE_GLPK
+
+struct glp_prob;
 
 namespace Solvers {
-    class Gurobi;
+    class GLPK_Simplex;
 }
 
-class Solvers::Gurobi : public Solver2<GRBVar, GRBConstr> {
-    static GRBEnv m_env;
-    GRBModel m_model;
+class Solvers::GLPK_Simplex : public Solver<int, int> {
+
+    glp_prob* m_model;
+    double m_objective_offset = 0.;
+
+    Optional<SolutionStatus> m_solution_status;
+    Optional<Solution::Primal> m_ray;
+    Optional<Solution::Dual> m_farkas;
+
+    std::stack<int> m_deleted_variables;
+    std::stack<int> m_deleted_constraints;
 
     Attributes<AttributesSections::Base> m_attributes;
 protected:
@@ -25,31 +36,29 @@ protected:
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 
-    static char gurobi_type(CtrType t_type);
+    int create_variable_impl_with_objective_coefficient(const Var& t_var);
 
-    static char gurobi_type(VarType t_type);
-
-    GRBVar create_variable_impl_with_objective_coefficient(const Var& t_var);
-
-    GRBConstr create_constraint_impl_with_rhs(const Ctr& t_ctr);
+    int create_constraint_impl_with_rhs(const Ctr& t_ctr);
 
     void set_constraint_lhs(const Ctr& t_ctr);
 
     void set_variable_components(const Var& t_var);
 
-    [[nodiscard]] SolutionStatus solution_status() const;
+    void compute_farkas_certificate();
+
+    void compute_unbounded_ray();
 public:
-    explicit Gurobi(Model& t_model);
+    explicit GLPK_Simplex(Model& t_model);
 
     void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
 
     void remove_variable(const Var &t_variable) override;
 
-    [[nodiscard]] Solution::Primal primal_solution() const override;
+    Solution::Primal primal_solution() const override;
 
-    [[nodiscard]] Solution::Dual dual_solution() const override;
+    Solution::Dual dual_solution() const override;
 
-    [[nodiscard]] Solution::Dual farkas_certificate() const override;
+    Solution::Dual farkas_certificate() const override;
 
     void update_objective(const Row &t_objective) override;
 
@@ -66,4 +75,4 @@ public:
 
 #endif
 
-#endif //OPTIMIZE_SOLVERS_GUROBI_H
+#endif //OPTIMIZE_SOLVERS_GLPK_H
