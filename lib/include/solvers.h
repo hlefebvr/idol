@@ -28,5 +28,8 @@ using glpk_simplex_solver = std::tuple<>;
 
 using lp_solvers   = tuple_cat_t<gurobi_solver, glpk_simplex_solver>;
 using milp_solvers = tuple_cat_t<gurobi_solver>;
+using default_solver = std::conditional_t<std::tuple_size_v<milp_solvers> == 0,  std::tuple_element_t<0, lp_solvers>,
+                        std::conditional_t<std::tuple_size_v<lp_solvers> == 0, std::tuple_element_t<0, milp_solvers>, VoidAlgorithm>
+                       >;
 
 #endif //OPTIMIZE_SOLVERS_H

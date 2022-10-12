@@ -38,8 +38,8 @@ BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_can
 }
 
 template<
-        class RMPSolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
-        class SPSolutionStrategyT = std::tuple_element_t<0, milp_solvers>,
+        class RMPSolutionStrategyT = default_solver,
+        class SPSolutionStrategyT = default_solver,
         class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,

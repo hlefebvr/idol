@@ -186,6 +186,16 @@ public:
         }
         return ptr->template get<T>();
     }
+
+};
+
+class VoidAlgorithm final : public Algorithm {
+protected:
+    AbstractAttributes &attributes() override { throw Exception("Operation is not allowed."); }
+    const AbstractAttributes &attributes() const override { throw Exception("Operation is not allowed."); }
+    void execute() override { throw Exception("Operation is not allowed."); }
+public:
+    template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) { throw Exception("Operation is not allowed."); }
 };
 
 #endif //OPTIMIZE_ALGORITHM_H
