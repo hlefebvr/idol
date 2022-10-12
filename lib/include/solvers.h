@@ -26,10 +26,19 @@ using glpk_simplex_solver = std::tuple<Solvers::GLPK_Simplex>;
 using glpk_simplex_solver = std::tuple<>;
 #endif
 
-using lp_solvers   = tuple_cat_t<gurobi_solver, glpk_simplex_solver>;
-using milp_solvers = tuple_cat_t<gurobi_solver>;
-using default_solver = std::conditional_t<std::tuple_size_v<milp_solvers> == 0,  std::tuple_element_t<0, lp_solvers>,
-                        std::conditional_t<std::tuple_size_v<lp_solvers> == 0, std::tuple_element_t<0, milp_solvers>, VoidAlgorithm>
+namespace impl {
+    using lp_solvers = tuple_cat_t<gurobi_solver, glpk_simplex_solver>;
+    using milp_solvers = tuple_cat_t<gurobi_solver>;
+}
+
+constexpr bool has_lp_solver = std::tuple_size_v<impl::lp_solvers> > 0;
+constexpr bool has_milp_solver = std::tuple_size_v<impl::milp_solvers> > 0;
+
+using lp_solvers   = std::conditional_t< has_lp_solver,   impl::lp_solvers,   std::tuple<VoidAlgorithm>>;
+using milp_solvers = std::conditional_t< has_milp_solver, impl::milp_solvers, std::tuple<VoidAlgorithm>>;
+
+using default_solver = std::conditional_t<has_milp_solver, std::tuple_element_t<0, milp_solvers>,
+                        std::conditional_t<has_lp_solver, std::tuple_element_t<0, lp_solvers>, VoidAlgorithm>
                        >;
 
 #endif //OPTIMIZE_SOLVERS_H
