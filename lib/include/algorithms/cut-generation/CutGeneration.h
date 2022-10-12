@@ -5,9 +5,9 @@
 #ifndef OPTIMIZE_CUTGENERATION_H
 #define OPTIMIZE_CUTGENERATION_H
 
-#include "algorithms/decomposition/GenerationAlgorithm.h"
-#include "algorithms/attributes/Attributes_Base.h"
-#include "algorithms/attributes/Attributes.h"
+#include "../decomposition/GenerationAlgorithm.h"
+#include "../attributes/Attributes_Base.h"
+#include "../attributes/Attributes.h"
 #include "CutGenerationSP.h"
 #include <list>
 #include <memory>

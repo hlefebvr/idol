@@ -5,11 +5,11 @@
 #ifndef OPTIMIZE_ALGORITHM_H
 #define OPTIMIZE_ALGORITHM_H
 
-#include "modeling/solutions/Solution.h"
-#include "modeling/variables/TempVar.h"
-#include "modeling/constraints/TempCtr.h"
-#include "errors/NotImplemented.h"
-#include "algorithms/attributes/Timer.h"
+#include "../modeling/solutions/Solution.h"
+#include "../modeling/variables/TempVar.h"
+#include "../modeling/constraints/TempCtr.h"
+#include "../errors/NotImplemented.h"
+#include "attributes/Timer.h"
 #include <list>
 
 class Node;

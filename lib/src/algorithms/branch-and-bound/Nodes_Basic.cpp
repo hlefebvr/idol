@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/09/22.
 //
-#include "algorithms/branch-and-bound/Nodes_Basic.h"
-#include "algorithms/Algorithm.h"
+#include "../../../include/algorithms/branch-and-bound/Nodes_Basic.h"
+#include "../../../include/algorithms/Algorithm.h"
 #include <iostream>
 
 Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)

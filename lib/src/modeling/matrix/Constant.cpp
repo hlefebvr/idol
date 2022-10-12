@@ -1,9 +1,9 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "modeling/matrix/Constant.h"
-#include "modeling/numericals.h"
-#include "modeling/solutions/Solution.h"
+#include "../../../include/modeling/matrix/Constant.h"
+#include "../../../include/modeling/numericals.h"
+#include "../../../include/modeling/solutions/Solution.h"
 #include <memory>
 
 Constant Constant::Zero;

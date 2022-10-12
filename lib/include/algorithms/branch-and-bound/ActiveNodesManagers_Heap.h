@@ -6,7 +6,7 @@
 #define OPTIMIZE_ACTIVENODESMANAGERS_HEAP_H
 
 #include "ActiveNodesManager.h"
-#include "algorithms/logs/Log.h"
+#include "../logs/Log.h"
 #include <vector>
 #include <algorithm>
 

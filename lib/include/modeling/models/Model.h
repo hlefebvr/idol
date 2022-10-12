@@ -5,14 +5,13 @@
 #ifndef OPTIMIZE_MODEL_H
 #define OPTIMIZE_MODEL_H
 
-#include "modeling/environment/ObjectManager.h"
-#include "modeling/parameters/impl_Param.h"
-#include "modeling/variables/impl_Variable.h"
-#include "modeling/variables/TempVar.h"
-#include "modeling/constraints/impl_Constraint.h"
-#include "modeling/constraints/TempCtr.h"
-#include "containers/IteratorForward.h"
-#include "modeling/objective/Objective.h"
+#include "../environment/ObjectManager.h"
+#include "../variables/impl_Variable.h"
+#include "../variables/TempVar.h"
+#include "../constraints/impl_Constraint.h"
+#include "../constraints/TempCtr.h"
+#include "../../containers/IteratorForward.h"
+#include "../objective/Objective.h"
 #include "ListenerManager.h"
 #include <vector>
 

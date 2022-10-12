@@ -5,11 +5,11 @@
 #ifndef OPTIMIZE_COLUMNGENERATIONSP_H
 #define OPTIMIZE_COLUMNGENERATIONSP_H
 
-#include "algorithms/Algorithm.h"
-#include "algorithms/decomposition/Generator.h"
+#include "../Algorithm.h"
+#include "../decomposition/Generator.h"
 #include "ColumnGenerationBranchingSchemes_SP.h"
-#include "algorithms/logs/Log.h"
-#include "containers/Set.h"
+#include "../logs/Log.h"
+#include "../../containers/Set.h"
 #include <memory>
 #include <list>
 #include <iomanip>

@@ -2,7 +2,7 @@
 find_path(
         GLPK_INCLUDE_DIRS
         NAMES glpk.h
-        HINTS /usr/include/ ${LPSOLVE_DIR} $ENV{LPSOLVE_HOME}
+        HINTS /usr/include/ ${GLPK_DIR} $ENV{GLPK_HOME}
 )
 
 find_library(

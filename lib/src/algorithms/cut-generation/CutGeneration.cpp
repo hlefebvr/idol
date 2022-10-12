@@ -2,7 +2,7 @@
 // Created by henri on 05/10/22.
 //
 #include <iomanip>
-#include "algorithms/cut-generation/CutGeneration.h"
+#include "../../../include/algorithms/cut-generation/CutGeneration.h"
 
 CutGeneration::CutGeneration(DecompositionId &&t_id) : GenerationAlgorithm(std::move(t_id)){
 

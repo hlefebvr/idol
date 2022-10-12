@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.23)
-project(optimize)
+project(idol)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+set(PACKAGE_VERSION 0.0.1)
 
 add_subdirectory(lib)
 

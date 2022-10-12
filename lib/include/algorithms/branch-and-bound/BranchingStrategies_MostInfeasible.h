@@ -6,10 +6,10 @@
 #define OPTIMIZE_BRANCHINGSTRATEGIES_MOSTINFEASIBLE_H
 
 #include "BranchingStrategy.h"
-#include "modeling/variables/Variable.h"
-#include "modeling/numericals.h"
-#include "errors/Exception.h"
-#include "algorithms/logs/Log.h"
+#include "../../modeling/variables/Variable.h"
+#include "../../modeling/numericals.h"
+#include "../../errors/Exception.h"
+#include "../logs/Log.h"
 #include <vector>
 #include <list>
 #include <functional>

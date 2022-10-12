@@ -1,9 +1,9 @@
 //
 // Created by henri on 11/10/22.
 //
-#include "algorithms/solvers/Solvers_Gurobi.h"
+#include "../../../include/algorithms/solvers/Solvers_Gurobi.h"
 
-#ifdef USE_GUROBI
+#ifdef IDOL_USE_GUROBI
 
 GRBEnv Solvers::Gurobi::m_env = GRBEnv();
 

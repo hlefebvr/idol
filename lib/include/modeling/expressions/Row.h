@@ -6,7 +6,7 @@
 #define OPTIMIZE_ROW_H
 
 #include <memory>
-#include "modeling/matrix/AbstractMatrixCoefficient.h"
+#include "../matrix/AbstractMatrixCoefficient.h"
 #include "Expr.h"
 
 /**

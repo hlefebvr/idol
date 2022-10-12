@@ -6,8 +6,8 @@
 #define OPTIMIZE_DECOMPOSITION_H
 
 #include "GenerationAlgorithm.h"
-#include "algorithms/attributes/Attributes.h"
-#include "algorithms/attributes/Attributes_Base.h"
+#include "../attributes/Attributes.h"
+#include "../attributes/Attributes_Base.h"
 #include "DecompositionId.h"
 #include <functional>
 

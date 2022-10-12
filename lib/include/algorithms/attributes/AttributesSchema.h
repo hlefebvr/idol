@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ATTRIBUTESSCHEMA_H
 #define OPTIMIZE_ATTRIBUTESSCHEMA_H
 
-#include "errors/Exception.h"
+#include "../../errors/Exception.h"
 #include <string>
 
 template<class ...RequireT>

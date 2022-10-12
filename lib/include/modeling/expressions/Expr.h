@@ -5,13 +5,13 @@
 #ifndef OPTIMIZE_EXPR_H
 #define OPTIMIZE_EXPR_H
 
-#include "containers/Map.h"
-#include "containers/IteratorForward.h"
-#include "modeling/matrix/AbstractMatrixCoefficient.h"
-#include "modeling/matrix/Constant.h"
-#include "modeling/matrix/MatrixCoefficient.h"
-#include "modeling/variables/Variable.h"
-#include "errors/Exception.h"
+#include "../../containers/Map.h"
+#include "../../containers/IteratorForward.h"
+#include "../matrix/AbstractMatrixCoefficient.h"
+#include "../matrix/Constant.h"
+#include "../matrix/MatrixCoefficient.h"
+#include "../variables/Variable.h"
+#include "../../errors/Exception.h"
 #include <memory>
 #include <utility>
 #include <functional>

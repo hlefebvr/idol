@@ -6,11 +6,11 @@
 #define OPTIMIZE_SOLVERS_GLPK_H
 
 #include "Solver.h"
-#include "algorithms/attributes/Attributes.h"
-#include "containers/Optional.h"
+#include "../attributes/Attributes.h"
+#include "../../containers/Optional.h"
 #include <stack>
 
-#ifdef USE_GLPK
+#ifdef IDOL_USE_GLPK
 
 struct glp_prob;
 

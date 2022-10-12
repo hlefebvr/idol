@@ -1,7 +1,7 @@
 //
 // Created by henri on 10/10/22.
 //
-#include "algorithms/attributes/Timer.h"
+#include "../../../include/algorithms/attributes/Timer.h"
 #include <stdexcept>
 
 void Timer::start() {

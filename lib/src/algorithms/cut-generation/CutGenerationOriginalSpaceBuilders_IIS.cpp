@@ -1,10 +1,10 @@
 //
 // Created by henri on 06/10/22.
 //
-#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
-#include "algorithms/cut-generation/CutGenerationSP.h"
-#include "algorithms/Algorithm.h"
-#include "modeling/models/Model.h"
+#include "../../../include/algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
+#include "../../../include/algorithms/cut-generation/CutGenerationSP.h"
+#include "../../../include/algorithms/Algorithm.h"
+#include "../../../include/modeling/models/Model.h"
 
 CutGenerationOriginalSpaceBuilders::IIS::IIS(const Model& t_rmp)
     : m_rmp(t_rmp) {

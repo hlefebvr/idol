@@ -1,8 +1,8 @@
 //
 // Created by henri on 06/10/22.
 //
-#include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
-#include "algorithms/cut-generation/CutGenerationSP.h"
+#include "../../../include/algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
+#include "../../../include/algorithms/cut-generation/CutGenerationSP.h"
 
 Solution::Primal CutGenerationOriginalSpaceBuilders::Dual::primal_solution(const CutGenerationSP &t_subproblem,
                                                                         const Algorithm &t_rmp_solution_strategy) const {

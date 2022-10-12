@@ -1,8 +1,8 @@
 //
 // Created by henri on 08/09/22.
 //
-#include "modeling/constraints/TempCtr.h"
-#include "modeling/solutions/Solution.h"
+#include "../../../include/modeling/constraints/TempCtr.h"
+#include "../../../include/modeling/solutions/Solution.h"
 
 TempCtr operator<=(Expr<Var> t_expr, Constant t_rhs) {
     return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };

@@ -6,9 +6,9 @@
 #define OPTIMIZE_COLUMN_H
 
 #include <memory>
-#include "modeling/matrix/AbstractMatrixCoefficient.h"
+#include "../matrix/AbstractMatrixCoefficient.h"
 #include "Expr.h"
-#include "modeling/constraints/Constraint.h"
+#include "../constraints/Constraint.h"
 
 /**
  * Column modeling object.

@@ -8,7 +8,7 @@
 #include <list>
 #include <memory>
 #include "Listener.h"
-#include "modeling/Types.h"
+#include "../Types.h"
 
 class Var;
 class Ctr;

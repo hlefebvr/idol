@@ -2,8 +2,8 @@
 // Created by henri on 05/10/22.
 //
 #include <iomanip>
-#include "algorithms/cut-generation/CutGenerationSP.h"
-#include "algorithms/logs/Log.h"
+#include "../../../include/algorithms/cut-generation/CutGenerationSP.h"
+#include "../../../include/algorithms/logs/Log.h"
 
 CutGenerationSP::CutGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),

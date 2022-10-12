@@ -5,18 +5,17 @@
 #ifndef OPTIMIZE_ALGORITHMS_H
 #define OPTIMIZE_ALGORITHMS_H
 
-#include "./algorithms/branch-and-bound/BranchAndBound.h"
+#include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
 #include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
-#include "./solvers.h"
+#include "solvers.h"
 #include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
-#include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 
 template<
         class SolutionStrategyT = std::tuple_element_t<0, lp_solvers>,

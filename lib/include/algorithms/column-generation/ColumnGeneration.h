@@ -5,11 +5,11 @@
 #ifndef OPTIMIZE_COLUMNGENERATION_H
 #define OPTIMIZE_COLUMNGENERATION_H
 
-#include "algorithms/decomposition/GenerationAlgorithm.h"
-#include "modeling/models/Model.h"
+#include "../decomposition/GenerationAlgorithm.h"
+#include "../../modeling/models/Model.h"
 #include "ColumnGenerationSP.h"
-#include "algorithms/attributes/Attributes.h"
-#include "algorithms/attributes/Attributes_Base.h"
+#include "../attributes/Attributes.h"
+#include "../attributes/Attributes_Base.h"
 
 class ColumnGeneration : public GenerationAlgorithm {
     std::list<ColumnGenerationSP> m_subproblems;

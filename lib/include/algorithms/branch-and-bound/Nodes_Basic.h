@@ -6,9 +6,9 @@
 #define OPTIMIZE_NODES_BASIC_H
 
 #include "Node.h"
-#include "modeling/solutions/Solution.h"
-#include "containers/Map.h"
-#include "modeling/variables/Variable.h"
+#include "../../modeling/solutions/Solution.h"
+#include "../../containers/Map.h"
+#include "../../modeling/variables/Variable.h"
 
 namespace Nodes {
     class Basic;

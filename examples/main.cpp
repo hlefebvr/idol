@@ -13,7 +13,6 @@
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Dual.h"
 #include "algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_IIS.h"
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
-#include "reformulations/DantzigWolfe.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"

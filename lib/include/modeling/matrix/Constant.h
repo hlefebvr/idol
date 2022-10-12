@@ -7,7 +7,7 @@
 
 #include "../../containers/Map.h"
 #include "../parameters/Param.h"
-#include "modeling/numericals.h"
+#include "../numericals.h"
 
 namespace Solution {
     class Primal;

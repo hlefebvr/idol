@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_CUTGENERATIONSP_H
 #define OPTIMIZE_CUTGENERATIONSP_H
 
-#include "algorithms/Algorithm.h"
-#include "containers/Set.h"
+#include "../Algorithm.h"
+#include "../../containers/Set.h"
 #include "CutGenerationOriginalSpaceBuilder.h"
 #include <memory>
 #include <list>

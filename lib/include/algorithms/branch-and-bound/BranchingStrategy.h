@@ -5,6 +5,9 @@
 #ifndef OPTIMIZE_BRANCHINGSTRATEGY_H
 #define OPTIMIZE_BRANCHINGSTRATEGY_H
 
+#include <list>
+#include <functional>
+
 class BranchingStrategy {
 public:
     virtual ~BranchingStrategy() = default;

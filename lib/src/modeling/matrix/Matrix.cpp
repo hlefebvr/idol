@@ -2,12 +2,12 @@
 // Created by henri on 04/10/22.
 //
 #include <cassert>
-#include "modeling/matrix/Matrix.h"
-#include "modeling/variables/Variable.h"
-#include "modeling/expressions/Column.h"
-#include "modeling/expressions/Row.h"
-#include "modeling/environment/ObjectManager.h"
-#include "modeling/constraints/impl_Constraint.h"
+#include "../../../include/modeling/matrix/Matrix.h"
+#include "../../../include/modeling/variables/Variable.h"
+#include "../../../include/modeling/expressions/Column.h"
+#include "../../../include/modeling/expressions/Row.h"
+#include "../../../include/modeling/environment/ObjectManager.h"
+#include "../../../include/modeling/constraints/impl_Constraint.h"
 
 void Matrix::apply_on_column(const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function) {
     for (auto& [ctr, ptr_to_coeff] : t_var.column().components().m_map) {

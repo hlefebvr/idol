@@ -1,8 +1,8 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/column-generation/ColumnGenerationSP.h"
-#include "algorithms/Algorithm.h"
+#include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/algorithms/Algorithm.h"
 
 ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var)
         : m_rmp_strategy(t_rmp_strategy),

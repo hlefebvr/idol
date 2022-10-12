@@ -5,9 +5,9 @@
 #ifndef OPTIMIZE_SOLVER2_H
 #define OPTIMIZE_SOLVER2_H
 
-#include "algorithms/Algorithm.h"
-#include "modeling/models/Model.h"
-#include "algorithms/attributes/Attributes_Base.h"
+#include "../Algorithm.h"
+#include "../../modeling/models/Model.h"
+#include "../attributes/Attributes_Base.h"
 
 template<class VarT, class CtrT>
 class Solver : public Algorithm {

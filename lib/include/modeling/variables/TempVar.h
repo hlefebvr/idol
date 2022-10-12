@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_TEMPVAR_H
 #define OPTIMIZE_TEMPVAR_H
 
-#include "modeling/expressions/Column.h"
+#include "../expressions/Column.h"
 
 namespace impl {
     class Var;

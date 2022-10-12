@@ -6,7 +6,7 @@
 #define OPTIMIZE_VARIABLE_H
 
 #include "../objects/Object.h"
-#include "modeling/Types.h"
+#include "../Types.h"
 #include <iostream>
 
 namespace impl {

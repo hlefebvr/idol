@@ -6,7 +6,7 @@
 #define OPTIMIZE_CONSTRAINT_H
 
 #include "../objects/Object.h"
-#include "modeling/Types.h"
+#include "../Types.h"
 #include <string>
 #include <iostream>
 

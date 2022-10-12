@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDER_H
 #define OPTIMIZE_CUTGENERATIONORIGINALSPACEBUILDER_H
 
-#include "modeling/solutions/Solution.h"
+#include "../../modeling/solutions/Solution.h"
 
 class CutGenerationSP;
 class Algorithm;

@@ -2,8 +2,8 @@
 // Created by henri on 16/09/22.
 //
 #include <omp.h>
-#include "algorithms/column-generation/ColumnGeneration.h"
-#include "algorithms/logs/Log.h"
+#include "../../../include/algorithms/column-generation/ColumnGeneration.h"
+#include "../../../include/algorithms/logs/Log.h"
 
 ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithm(std::move(t_id)) {
 

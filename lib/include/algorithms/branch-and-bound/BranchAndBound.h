@@ -6,9 +6,9 @@
 #define OPTIMIZE_BRANCHANDBOUND_H
 
 #include "Node.h"
-#include "algorithms/Algorithm.h"
-#include "algorithms/attributes/Attributes.h"
-#include "algorithms/attributes/Attributes_Base.h"
+#include "../Algorithm.h"
+#include "../attributes/Attributes.h"
+#include "../attributes/Attributes_Base.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "NodeStrategy.h"

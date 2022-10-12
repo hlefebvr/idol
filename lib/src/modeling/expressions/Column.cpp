@@ -1,7 +1,7 @@
 //
 // Created by henri on 04/10/22.
 //
-#include "modeling/expressions/Column.h"
+#include "../../../include/modeling/expressions/Column.h"
 
 const Column Column::EmptyColumn;
 

@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ATTRIBUTESSECTION_H
 #define OPTIMIZE_ATTRIBUTESSECTION_H
 
-#include "algorithms/logs/Log.h"
+#include "../logs/Log.h"
 #include <array>
 #include <any>
 #include <optional>

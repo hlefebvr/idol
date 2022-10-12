@@ -1,8 +1,8 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "modeling/objects/ObjectId.h"
-#include "modeling/environment/Env.h"
+#include "../../../include/modeling/objects/ObjectId.h"
+#include "../../../include/modeling/environment/Env.h"
 
 unsigned int ObjectId::s_id = 0;
 

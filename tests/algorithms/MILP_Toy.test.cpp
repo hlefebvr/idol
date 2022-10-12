@@ -3,6 +3,7 @@
 //
 #include "../test_utils.h"
 
+/*
 TEMPLATE_LIST_TEST_CASE("MILP: Toy", "[MILP][solvers]", milp_solvers) {
 
     Model model;
@@ -33,3 +34,4 @@ TEMPLATE_LIST_TEST_CASE("MILP: Toy", "[MILP][solvers]", milp_solvers) {
     }
 
 }
+*/

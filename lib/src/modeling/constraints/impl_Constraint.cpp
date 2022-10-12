@@ -1,8 +1,8 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "modeling/constraints/impl_Constraint.h"
-#include "modeling/constraints/TempCtr.h"
+#include "../../../include/modeling/constraints/impl_Constraint.h"
+#include "../../../include/modeling/constraints/TempCtr.h"
 
 impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Constant&& t_rhs)
     : impl::Object(std::move(t_id)),

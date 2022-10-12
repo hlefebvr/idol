@@ -6,10 +6,10 @@
 #define OPTIMIZE_NODEUPDATORS_BYBOUNDVAR_H
 
 #include "NodeUpdator.h"
-#include "containers/Map.h"
-#include "modeling/variables/Variable.h"
-#include "modeling/numericals.h"
-#include "algorithms/Algorithm.h"
+#include "../../containers/Map.h"
+#include "../../modeling/variables/Variable.h"
+#include "../../modeling/numericals.h"
+#include "../Algorithm.h"
 #include <list>
 #include <functional>
 

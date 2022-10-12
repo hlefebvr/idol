@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_GENERATIONALGORITHM_H
 #define OPTIMIZE_GENERATIONALGORITHM_H
 
-#include "algorithms/Algorithm.h"
-#include "algorithms/decomposition/DecompositionId.h"
+#include "../Algorithm.h"
+#include "../decomposition/DecompositionId.h"
 
 class GenerationAlgorithm : public Algorithm {
     DecompositionId m_id;

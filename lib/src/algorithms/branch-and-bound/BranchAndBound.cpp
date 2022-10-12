@@ -1,8 +1,8 @@
 //
 // Created by henri on 13/09/22.
 //
-#include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/ActiveNodesManager.h"
+#include "../../../include/algorithms/branch-and-bound/BranchAndBound.h"
+#include "../../../include/algorithms/branch-and-bound/ActiveNodesManager.h"
 
 #include <iomanip>
 

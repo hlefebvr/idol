@@ -6,9 +6,9 @@
 #define OPTIMIZE_SOLVERS_GUROBI_H
 
 #include "Solver.h"
-#include "algorithms/attributes/Attributes.h"
+#include "../attributes/Attributes.h"
 
-#ifdef USE_GUROBI
+#ifdef IDOL_USE_GUROBI
 #include <gurobi_c++.h>
 
 namespace Solvers {

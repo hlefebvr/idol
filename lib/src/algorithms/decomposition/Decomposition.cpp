@@ -1,7 +1,7 @@
 //
 // Created by henri on 21/09/22.
 //
-#include "algorithms/decomposition/Decomposition.h"
+#include "../../../include/algorithms/decomposition/Decomposition.h"
 
 void Decomposition::build() {
 

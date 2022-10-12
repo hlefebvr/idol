@@ -6,11 +6,11 @@
 #define OPTIMIZE_NODESTRATEGIES_BASIC_H
 
 #include "NodeStrategy.h"
-#include "modeling/numericals.h"
-#include "algorithms/Algorithm.h"
-#include "algorithms/logs/Log.h"
+#include "../../modeling/numericals.h"
+#include "../Algorithm.h"
+#include "../logs/Log.h"
 #include "ActiveNodesManager.h"
-#include "algorithms/branch-and-bound/NodeUpdator.h"
+#include "NodeUpdator.h"
 #include "BranchingStrategy.h"
 #include <list>
 #include <vector>

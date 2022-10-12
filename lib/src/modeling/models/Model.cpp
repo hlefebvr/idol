@@ -1,8 +1,8 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "modeling/models/Model.h"
-#include "modeling/matrix/Matrix.h"
+#include "../../../include/modeling/models/Model.h"
+#include "../../../include/modeling/matrix/Matrix.h"
 
 unsigned int Model::s_id = 0;
 

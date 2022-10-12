@@ -1,8 +1,8 @@
 //
 // Created by henri on 19/09/22.
 //
-#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
-#include "algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
+#include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
 
 
 void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {

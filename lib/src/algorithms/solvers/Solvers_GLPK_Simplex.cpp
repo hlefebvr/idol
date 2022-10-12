@@ -1,9 +1,9 @@
 //
 // Created by henri on 11/10/22.
 //
-#include "algorithms/solvers/Solvers_GLPK_Simplex.h"
+#include "../../../include/algorithms/solvers/Solvers_GLPK_Simplex.h"
 
-#ifdef USE_GLPK
+#ifdef IDOL_USE_GLPK
 #include <glpk.h>
 
 Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {

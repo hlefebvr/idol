@@ -1,0 +1,24 @@
+include(CMakeFindDependencyMacro)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/Idol/")
+
+set(USE_GUROBI @USE_GUROBI@)
+set(USE_GLPK @USE_GLPK@)
+
+if (@USE_GUROBI@)
+
+    set(GUROBI_DIR "@GUROBI_DIR@")
+    find_dependency(GUROBI REQUIRED)
+    add_compile_definitions(IDOL_USE_GUROBI)
+
+endif()
+
+if (@USE_GLPK@)
+
+    set(GLPK_DIR "@GLPK_DIR@")
+    find_dependency(GLPK REQUIRED)
+    add_compile_definitions(IDOL_USE_GLPK)
+
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/IdolTargets.cmake")

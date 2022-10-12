@@ -1,8 +1,8 @@
 //
 // Created by henri on 15/09/22.
 //
-#include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
-#include "algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
+#include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
 
 void ColumnGenerationBranchingSchemes::SP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 

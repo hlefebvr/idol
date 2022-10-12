@@ -6,9 +6,9 @@
 #define OPTIMIZE_OBJECTIVE_H
 
 #include <vector>
-#include "modeling/variables/Variable.h"
-#include "modeling/expressions/Expr.h"
-#include "modeling/expressions/Column.h"
+#include "../variables/Variable.h"
+#include "../expressions/Expr.h"
+#include "../expressions/Column.h"
 
 class Model;
 class Var;

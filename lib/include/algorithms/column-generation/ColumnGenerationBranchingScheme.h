@@ -5,10 +5,10 @@
 #ifndef OPTIMIZE_COLUMNGENERATIONBRANCHINGSCHEME_H
 #define OPTIMIZE_COLUMNGENERATIONBRANCHINGSCHEME_H
 
-#include "modeling/numericals.h"
-#include "modeling/Types.h"
-#include "modeling/variables/TempVar.h"
-#include "modeling/constraints/Constraint.h"
+#include "../../modeling/numericals.h"
+#include "../../modeling/Types.h"
+#include "../../modeling/variables/TempVar.h"
+#include "../../modeling/constraints/Constraint.h"
 
 namespace Solution {
     class Primal;
