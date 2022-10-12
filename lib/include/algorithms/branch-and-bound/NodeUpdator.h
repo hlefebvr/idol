@@ -15,6 +15,7 @@ public:
 template<class NodeT>
 class NodeUpdatorWithNodeType {
 public:
+    virtual ~NodeUpdatorWithNodeType() = default;
     virtual void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) = 0;
 };
 
