@@ -6,7 +6,7 @@
 #include "algorithms/cut-generation/CutGeneration.h"
 
 
-TEMPLATE_LIST_TEST_CASE("CutGeneration: Toy", "[generation-strategies][algorithms]", lp_solvers) {
+TEMPLATE_LIST_TEST_CASE("CutGeneration: Toy", has_lp_solver ? "[generation-strategies][algorithms]" : "[.]", lp_solvers) {
 
     Model model;
 

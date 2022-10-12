@@ -13,7 +13,7 @@
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
 
-TEMPLATE_LIST_TEST_CASE("ColumnGeneration: Toy", "[generation-strategies][algorithms]", lp_solvers) {
+TEMPLATE_LIST_TEST_CASE("ColumnGeneration: Toy", has_lp_solver ? "[generation-strategies][algorithms]" : "[.]", lp_solvers) {
 
     Model model;
 
