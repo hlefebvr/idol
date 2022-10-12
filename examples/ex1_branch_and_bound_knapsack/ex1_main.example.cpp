@@ -4,6 +4,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "algorithms.h"
+#include "problems/kp/KP_Instance.h"
 
 int main() {
 
@@ -11,21 +12,24 @@ int main() {
 
     Model model;
 
-    const std::vector<std::pair<double, double>> items = { {2, 40}, {3.14, 50}, {1.98, 100}, {5, 95}, {3, 30} }; // (weight, value)
-    const double capacity = 10.;
+    using namespace ProblemSpecific::KP;
+
+    const auto instance = read_instance("demo.txt");
+
+    const unsigned int n_items = instance.n_items();
 
     std::vector<Var> x;
-    x.reserve(items.size());
+    x.reserve(n_items);
 
     Expr sum_weight;
 
-    for (const auto& [weight, profit] : items) {
-        auto var = model.add_variable(0., 1., Continuous, -profit);
-        sum_weight += weight * var;
+    for (unsigned int i = 0 ; i < n_items ; ++i) {
+        auto var = model.add_variable(0., 1., Continuous, -instance.p(i));
+        sum_weight += instance.w(i) * var;
         x.emplace_back(var);
     }
 
-    model.add_constraint(sum_weight <= capacity);
+    model.add_constraint(sum_weight <= instance.t());
 
     auto solver = branch_and_bound(model, x);
     solver.solve();

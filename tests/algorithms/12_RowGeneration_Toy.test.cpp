@@ -3,10 +3,10 @@
 //
 
 #include "../test_utils.h"
-#include "algorithms/cut-generation/CutGeneration.h"
+#include "algorithms/row-generation/RowGeneration.h"
 
 
-TEMPLATE_LIST_TEST_CASE("CutGeneration: Toy", has_lp_solver ? "[generation-strategies][algorithms]" : "[.]", lp_solvers) {
+TEMPLATE_LIST_TEST_CASE("13. RG: Toy", has_lp_solver ? "[generation-strategies][algorithms]" : "[.]", lp_solvers) {
 
     Model model;
 
@@ -26,7 +26,7 @@ TEMPLATE_LIST_TEST_CASE("CutGeneration: Toy", has_lp_solver ? "[generation-strat
 
         Decomposition decomposition;
         decomposition.set_rmp_solution_strategy<TestType>(rmp);
-        auto& cut_generation = decomposition.add_generation_strategy<CutGeneration>();
+        auto& cut_generation = decomposition.add_generation_strategy<RowGeneration>();
         auto &subproblem = cut_generation.add_subproblem(ctr);
         subproblem.set_solution_strategy<TestType>(sp);
 

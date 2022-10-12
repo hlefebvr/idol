@@ -3,9 +3,6 @@
 //
 
 #include "../test_utils.h"
-#include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/Nodes_Basic.h"
-#include "algorithms.h"
 
 using configurations =
         cartesian_product<
@@ -16,7 +13,7 @@ using configurations =
                 std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
             >;
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBound: Toy", has_lp_solver ? "[MILP][branch-and-bound][algorithms]" : "[.]", configurations) {
+TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound][algorithms]" : "[.]", configurations) {
 
     using SolverT             = std::tuple_element_t<0, TestType>;
     using BranchingStrategyT  = std::tuple_element_t<1, TestType>;

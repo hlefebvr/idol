@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-TEST_CASE("Expr", "[expressions][modeling]") {
+TEST_CASE("04. Expr", "[expressions][modeling]") {
 
     Model sp;
 

@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-TEMPLATE_LIST_TEST_CASE("LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", lp_solvers) {
+TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", lp_solvers) {
 
     Model model;
 

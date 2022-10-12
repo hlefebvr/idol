@@ -4,7 +4,7 @@
 
 #include "../test_utils.h"
 
-TEST_CASE("Var", "[attributes][modeling]") {
+TEST_CASE("03. Var", "[attributes][modeling]") {
 
     Model sp;
     Model model;

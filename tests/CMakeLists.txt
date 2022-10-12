@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests main.test.cpp test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp algorithms/LP_Toy.test.cpp algorithms/MILP_Toy.test.cpp algorithms/BranchAndBound_Toy.test.cpp algorithms/ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/BranchAndPrice_GAP.cpp main.test.cpp algorithms/CutGeneration_Toy.test.cpp)
+add_executable(tests main.test.cpp test_utils.h modeling/0_Constant.test.cpp modeling/4_Expr.test.cpp modeling/1_Var.test.cpp modeling/2_Ctr.test.cpp modeling/5_Model.test.cpp modeling/3_Param.test.cpp algorithms/6_LP_Toy.test.cpp algorithms/7_MILP_Toy.test.cpp algorithms/8_BranchAndBound_Toy.test.cpp algorithms/10_ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/11_BranchAndPrice_GAP.cpp main.test.cpp algorithms/12_RowGeneration_Toy.test.cpp algorithms/9_BranchAndBound_KP.test.cpp)
 target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 

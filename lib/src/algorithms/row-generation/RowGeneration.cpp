@@ -2,19 +2,19 @@
 // Created by henri on 05/10/22.
 //
 #include <iomanip>
-#include "../../../include/algorithms/cut-generation/CutGeneration.h"
+#include "../../../include/algorithms/row-generation/RowGeneration.h"
 
-CutGeneration::CutGeneration(DecompositionId &&t_id) : GenerationAlgorithm(std::move(t_id)){
+RowGeneration::RowGeneration(DecompositionId &&t_id) : GenerationAlgorithm(std::move(t_id)){
 
 }
 
-void CutGeneration::build() {
+void RowGeneration::build() {
     for (auto& subproblem : m_subproblems) {
         subproblem.build();
     }
 }
 
-void CutGeneration::execute() {
+void RowGeneration::execute() {
 
     initialize();
 
@@ -38,15 +38,15 @@ void CutGeneration::execute() {
 
 }
 
-void CutGeneration::initialize() {
+void RowGeneration::initialize() {
     m_is_terminated = false;
 }
 
-void CutGeneration::save_last_rmp_primal_solution() {
+void RowGeneration::save_last_rmp_primal_solution() {
     m_last_rmp_primals = std::make_unique<Solution::Primal>(rmp_solution_strategy().primal_solution());
 }
 
-void CutGeneration::analyze_last_rmp_primal_solution() {
+void RowGeneration::analyze_last_rmp_primal_solution() {
 
     if (rmp_is_infeasible()) {
         terminate_for_rmp_is_infeasible();
@@ -65,33 +65,33 @@ void CutGeneration::analyze_last_rmp_primal_solution() {
 
 }
 
-bool CutGeneration::rmp_is_unbounded() const {
+bool RowGeneration::rmp_is_unbounded() const {
     return m_last_rmp_primals->status() == Unbounded;
 }
 
-bool CutGeneration::rmp_is_infeasible() const {
+bool RowGeneration::rmp_is_infeasible() const {
     return m_last_rmp_primals->status() == Infeasible;
 }
 
-bool CutGeneration::rmp_could_not_be_solved_to_optimality() const {
+bool RowGeneration::rmp_could_not_be_solved_to_optimality() const {
     return m_last_rmp_primals->status() != Optimal;
 }
 
-void CutGeneration::terminate_for_rmp_is_infeasible() {
+void RowGeneration::terminate_for_rmp_is_infeasible() {
     EASY_LOG(Trace, "cut-generation", "Terminate. Infeasible RMP.");
     terminate();
 }
 
-void CutGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
+void RowGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
     EASY_LOG(Trace, "cut-generation", "Terminate. RMP returned with primal status \"" << m_last_rmp_primals->status() << "\".");
     terminate();
 }
 
-void CutGeneration::terminate() {
+void RowGeneration::terminate() {
     m_is_terminated = true;
 }
 
-void CutGeneration::update_subproblems() {
+void RowGeneration::update_subproblems() {
     if (is_terminated()) { return; }
 
     for (auto& subproblem : m_subproblems) {
@@ -101,7 +101,7 @@ void CutGeneration::update_subproblems() {
     }
 }
 
-void CutGeneration::solve_subproblems() {
+void RowGeneration::solve_subproblems() {
 
     if (is_terminated()) { return; }
 
@@ -121,7 +121,7 @@ void CutGeneration::solve_subproblems() {
 
 }
 
-void CutGeneration::add_cuts() {
+void RowGeneration::add_cuts() {
 
     if (is_terminated()) { return; }
 
@@ -142,13 +142,13 @@ void CutGeneration::add_cuts() {
 
 }
 
-void CutGeneration::terminate_for_no_violated_cut_found() {
+void RowGeneration::terminate_for_no_violated_cut_found() {
     EASY_LOG(Trace, "cut-generation", "Terminate. No violated cut found.");
     terminate();
 }
 
 void
-CutGeneration::analyze_last_subproblem_primal_solution(const CutGenerationSP &t_subproblem) {
+RowGeneration::analyze_last_subproblem_primal_solution(const RowGenerationSP &t_subproblem) {
 
     if (t_subproblem.is_unbounded()) {
         throw Exception("Did not know what to do with unbounded SP.");
@@ -167,18 +167,18 @@ CutGeneration::analyze_last_subproblem_primal_solution(const CutGenerationSP &t_
 
 }
 
-void CutGeneration::terminate_for_subproblem_is_infeasible() {
+void RowGeneration::terminate_for_subproblem_is_infeasible() {
     EASY_LOG(Trace, "cut-generation", "Terminate. Infeasible SP.");
     terminate();
 }
 
-void CutGeneration::terminate_for_subproblem_could_not_be_solved_to_optimality() {
+void RowGeneration::terminate_for_subproblem_could_not_be_solved_to_optimality() {
     EASY_LOG(Trace, "cut-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
                                          "Reported status: ...............");
     terminate();
 }
 
-void CutGeneration::log_last_rmp_primal_solution() const {
+void RowGeneration::log_last_rmp_primal_solution() const {
     EASY_LOG(Debug, "cut-generation",
              std::setw(5)
              << "RMP"
@@ -189,7 +189,7 @@ void CutGeneration::log_last_rmp_primal_solution() const {
     );
 }
 
-Solution::Primal CutGeneration::primal_solution() const {
+Solution::Primal RowGeneration::primal_solution() const {
     Solution::Primal result = rmp_solution_strategy().primal_solution();
     for (auto& subproblem : m_subproblems) {
         result.merge_without_conflict(subproblem.primal_solution());
@@ -197,7 +197,7 @@ Solution::Primal CutGeneration::primal_solution() const {
     return result;
 }
 
-void CutGeneration::set_lower_bound(const Var &t_var, double t_lb) {
+void RowGeneration::set_lower_bound(const Var &t_var, double t_lb) {
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
@@ -207,7 +207,7 @@ void CutGeneration::set_lower_bound(const Var &t_var, double t_lb) {
     rmp_solution_strategy().set_lower_bound(t_var, t_lb);
 }
 
-void CutGeneration::set_upper_bound(const Var &t_var, double t_ub) {
+void RowGeneration::set_upper_bound(const Var &t_var, double t_ub) {
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
@@ -217,7 +217,7 @@ void CutGeneration::set_upper_bound(const Var &t_var, double t_ub) {
     rmp_solution_strategy().set_upper_bound(t_var, t_ub);
 }
 
-CutGenerationSP &CutGeneration::add_subproblem(const Ctr &t_cut) {
+RowGenerationSP &RowGeneration::add_subproblem(const Ctr &t_cut) {
     m_subproblems.emplace_back(rmp_solution_strategy(), t_cut);
     return m_subproblems.back();
 }

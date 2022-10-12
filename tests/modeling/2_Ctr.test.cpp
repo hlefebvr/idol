@@ -4,7 +4,7 @@
 
 #include "../test_utils.h"
 
-TEST_CASE("Ctr", "[constraints][modeling]") {
+TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
     Model sp;
     Model model;

@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-TEST_CASE("Coefficient", "[expressions][modeling]") {
+TEST_CASE("00. Coefficient", "[expressions][modeling]") {
 
     Model sp;
     Model model;

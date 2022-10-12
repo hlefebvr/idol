@@ -8,12 +8,12 @@
 #include "../decomposition/GenerationAlgorithm.h"
 #include "../attributes/Attributes_Base.h"
 #include "../attributes/Attributes.h"
-#include "CutGenerationSP.h"
+#include "RowGenerationSP.h"
 #include <list>
 #include <memory>
 
-class CutGeneration : public GenerationAlgorithm {
-    std::list<CutGenerationSP> m_subproblems;
+class RowGeneration : public GenerationAlgorithm {
+    std::list<RowGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
     Attributes<AttributesSections::Base> m_attributes;
 
@@ -29,7 +29,7 @@ class CutGeneration : public GenerationAlgorithm {
     void update_subproblems();
     void solve_subproblems();
     void log_last_rmp_primal_solution() const;
-    void analyze_last_subproblem_primal_solution(const CutGenerationSP& t_subproblem);
+    void analyze_last_subproblem_primal_solution(const RowGenerationSP& t_subproblem);
     void add_cuts();
 
     void terminate();
@@ -44,7 +44,7 @@ protected:
     void execute() override;
 public:
 
-    explicit CutGeneration(DecompositionId&& t_id);
+    explicit RowGeneration(DecompositionId&& t_id);
 
     void build() override;
 
@@ -54,7 +54,7 @@ public:
 
     void set_upper_bound(const Var &t_var, double t_ub) override;
 
-    CutGenerationSP& add_subproblem(const Ctr& t_cut);
+    RowGenerationSP& add_subproblem(const Ctr& t_cut);
 };
 
 #endif //OPTIMIZE_CUTGENERATION_H

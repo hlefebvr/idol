@@ -4,7 +4,7 @@
 #include "../test_utils.h"
 
 
-TEMPLATE_LIST_TEST_CASE("MILP: Toy", has_milp_solver ? "[MILP][solvers]" : "[.]", milp_solvers) {
+TEMPLATE_LIST_TEST_CASE("07. MILP: Toy", has_milp_solver ? "[MILP][solvers]" : "[.]", milp_solvers) {
 
     Model model;
 

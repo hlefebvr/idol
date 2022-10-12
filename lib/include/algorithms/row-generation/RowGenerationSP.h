@@ -7,18 +7,18 @@
 
 #include "../Algorithm.h"
 #include "../../containers/Set.h"
-#include "CutGenerationOriginalSpaceBuilder.h"
+#include "RowGenerationOriginalSpaceBuilder.h"
 #include <memory>
 #include <list>
 
-class CutGenerationSP {
+class RowGenerationSP {
 
     TempCtr m_cut_template;
     Row m_objective_template;
 
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
-    std::unique_ptr<CutGenerationOriginalSpaceBuilder> m_original_space_builder;
+    std::unique_ptr<RowGenerationOriginalSpaceBuilder> m_original_space_builder;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
     Set<unsigned int> m_subproblem_ids;
 
@@ -34,7 +34,7 @@ class CutGenerationSP {
 
     void remove_cuts_violating_upper_bound(const Var& t_var, double t_ub);
 public:
-    explicit CutGenerationSP(Algorithm& t_rmp_strategy, const Ctr& t_cut);
+    explicit RowGenerationSP(Algorithm& t_rmp_strategy, const Ctr& t_cut);
 
     void build();
 
@@ -82,14 +82,14 @@ public:
 };
 
 template<class T, class... Args>
-T &CutGenerationSP::set_solution_strategy(Args &&... t_args) {
+T &RowGenerationSP::set_solution_strategy(Args &&... t_args) {
     auto* exact_solution_strategy = new T(std::forward<Args>(t_args)...);
     m_exact_solution_strategy.reset(exact_solution_strategy);
     return *exact_solution_strategy;
 }
 
 template<class T, class... Args>
-T &CutGenerationSP::set_original_space_builder(Args &&... t_args) {
+T &RowGenerationSP::set_original_space_builder(Args &&... t_args) {
     auto* generator = new T(std::forward<Args>(t_args)...);
     m_original_space_builder.reset(generator);
     return *generator;

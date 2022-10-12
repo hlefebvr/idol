@@ -1,11 +1,11 @@
 //
 // Created by henri on 06/10/22.
 //
-#include "../../../include/algorithms/cut-generation/CutGenerationOriginalSpaceBuilders_Generated.h"
-#include "../../../include/algorithms/cut-generation/CutGenerationSP.h"
+#include "../../../include/algorithms/row-generation/RowGenerationOriginalSpaceBuilders_Generated.h"
+#include "../../../include/algorithms/row-generation/RowGenerationSP.h"
 
 Solution::Primal
-CutGenerationOriginalSpaceBuilders::Generated::primal_solution(const CutGenerationSP &t_subproblem, const Algorithm &t_rmp_duals) const {
+RowGenerationOriginalSpaceBuilders::Generated::primal_solution(const RowGenerationSP &t_subproblem, const Algorithm &t_rmp_duals) const {
 
     Solution::Primal result;
 
