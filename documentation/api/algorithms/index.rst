@@ -9,8 +9,8 @@ Algorithms
 
     Algorithm
     Attributes
-    external-solver/index
+    solvers/index
     branch-and-bound/index
     decomposition/index
     column-generation/index
-    cut-generation/index
+    row-generation/index

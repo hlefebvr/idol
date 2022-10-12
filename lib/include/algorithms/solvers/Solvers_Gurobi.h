@@ -15,6 +15,9 @@ namespace Solvers {
     class Gurobi;
 }
 
+/**
+ * Interfaces with the commerical solver Gurobi.
+ */
 class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
     static GRBEnv m_env;
     GRBModel m_model;
