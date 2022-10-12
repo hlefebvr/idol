@@ -133,12 +133,12 @@ void Solvers::GLPK_Simplex::set_constraint_lhs(const Ctr &t_ctr) {
 
     int i = 1;
     for (const auto& [var, coeff] : t_ctr.row().lhs()) {
-        indices[i] = get(var);
+        indices[i] = raw(var);
         coefficients[i] = value(coeff);
         ++i;
     }
 
-    glp_set_mat_row(m_model, get(t_ctr), n, indices, coefficients);
+    glp_set_mat_row(m_model, raw(t_ctr), n, indices, coefficients);
 
     delete[] indices;
     delete[] coefficients;
@@ -152,12 +152,12 @@ void Solvers::GLPK_Simplex::set_variable_components(const Var &t_var) {
 
     int i = 1;
     for (const auto& [ctr, coeff] : t_var.column().components()) {
-        indices[i] = get(ctr);
+        indices[i] = raw(ctr);
         coefficients[i] = value(coeff);
         ++i;
     }
 
-    glp_set_mat_col(m_model, get(t_var), n, indices, coefficients);
+    glp_set_mat_col(m_model, raw(t_var), n, indices, coefficients);
 
     delete[] indices;
     delete[] coefficients;
@@ -168,12 +168,12 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
     std::list<std::pair<int, int>> basis_rows;
     std::list<std::pair<int, int>> basis_cols;
     for (const auto& ctr : model().constraints()) {
-        int index = get(ctr);
+        int index = raw(ctr);
         int status = glp_get_row_stat(m_model, index);
         basis_rows.emplace_back(index, status);
     }
     for (const auto& var : model().variables()) {
-        int index = get(var);
+        int index = raw(var);
         int status = glp_get_col_stat(m_model, index);
         basis_cols.emplace_back(index, status);
     }
@@ -189,7 +189,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
     for (const auto& ctr : model().constraints()) {
 
         auto* index = new int[2];
-        index[1] = get(ctr);
+        index[1] = raw(ctr);
         const auto type = ctr.type();
 
         if (type == LessOrEqual) {
@@ -220,7 +220,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
     // Set original variables' objective coefficient to zero
     for (const auto& var : model().variables()) {
-        glp_set_obj_coef(m_model, get(var), 0.);
+        glp_set_obj_coef(m_model, raw(var), 0.);
     }
 
     // Solve feasible model
@@ -233,7 +233,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
     m_farkas = Solution::Dual();
     double objective_value = m_objective_offset;
     for (const auto& ctr : model().constraints()) {
-        const double dual = glp_get_row_dual(m_model, get(ctr));
+        const double dual = glp_get_row_dual(m_model, raw(ctr));
         m_farkas->set(ctr, dual);
         objective_value += dual * value(ctr.rhs());
     }
@@ -244,7 +244,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
     // Restore objective function
     for (const auto& [var, constant] : model().objective()) {
-        glp_set_obj_coef(m_model, get(var), value(constant));
+        glp_set_obj_coef(m_model, raw(var), value(constant));
     }
 
     // Restore basis
@@ -276,7 +276,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
             coefficients.emplace_back(-1.);
         }
         coefficients.emplace_back(1.);
-        indices.emplace_back(get(var));
+        indices.emplace_back(raw(var));
     }
 
     int index = glp_add_rows(m_model, 1);
@@ -284,7 +284,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     glp_set_row_bnds(m_model, index, GLP_LO, 1., 0.);
 
     for (const auto& ctr : model().constraints()) {
-        update_constraint_rhs(ctr, 0.);
+        update_coefficient_rhs(ctr, 0.);
     }
 
     // Solve
@@ -299,15 +299,15 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     const double objective_value = m_objective_offset + glp_get_obj_val(m_model);
     m_ray->set_objective_value(objective_value);
     for (const auto& var : model().variables()) {
-        m_ray->set(var, glp_get_col_prim(m_model, get(var)));
+        m_ray->set(var, glp_get_col_prim(m_model, raw(var)));
     }
 
     std::cout << "UNBOUNDED RAY LEFT MODEL MODIFIED" << std::endl;
 }
 
-void Solvers::GLPK_Simplex::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+void Solvers::GLPK_Simplex::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
 
-    const int index = get(t_ctr);
+    const int index = raw(t_ctr);
 
     switch (t_ctr.type()) {
         case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_rhs)); break;
@@ -320,8 +320,8 @@ void Solvers::GLPK_Simplex::update_constraint_rhs(const Ctr &t_ctr, double t_rhs
 
 }
 
-void Solvers::GLPK_Simplex::remove_variable(const Var &t_variable) {
-    const int index = get(t_variable);
+void Solvers::GLPK_Simplex::remove(const Var &t_variable) {
+    const int index = raw(t_variable);
     glp_set_obj_coef(m_model, index, 0.);
     glp_set_mat_col(m_model, index, 0, NULL, NULL);
     m_deleted_variables.push(index);
@@ -330,8 +330,8 @@ void Solvers::GLPK_Simplex::remove_variable(const Var &t_variable) {
     model().remove(t_variable);
 }
 
-void Solvers::GLPK_Simplex::remove_constraint(const Ctr &t_constraint) {
-    const int index = get(t_constraint);
+void Solvers::GLPK_Simplex::remove(const Ctr &t_constraint) {
+    const int index = raw(t_constraint);
     glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
     glp_set_mat_row(m_model, index, 0, NULL, NULL);
     m_deleted_constraints.push(index);
@@ -369,7 +369,7 @@ Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
     }
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, glp_get_row_dual(m_model, get(ctr)));
+        result.set(ctr, glp_get_row_dual(m_model, raw(ctr)));
     }
 
     return result;
@@ -392,7 +392,7 @@ void Solvers::GLPK_Simplex::update_objective(const Row &t_objective) {
     m_objective_offset = value(t_objective.rhs());
     // TODO this must be better done after refacto of Objective and Rhs
     for (const auto& var : model().variables()) {
-        glp_set_obj_coef(m_model, get(var), value(t_objective.lhs().get(var)));
+        glp_set_obj_coef(m_model, raw(var), value(t_objective.lhs().get(var)));
     }
     model().update_objective(t_objective);
 }
@@ -422,7 +422,7 @@ Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
     result.set_objective_value(objective_value);
 
     for (const auto& var : model().variables()) {
-        result.set(var, glp_get_col_prim(m_model, get(var)));
+        result.set(var, glp_get_col_prim(m_model, raw(var)));
     }
 
     return result;
@@ -436,7 +436,7 @@ Var Solvers::GLPK_Simplex::add_column(TempVar t_temporary_variable) {
     return var;
 }
 
-Ctr Solvers::GLPK_Simplex::add_constraint(TempCtr t_temporary_constraint) {
+Ctr Solvers::GLPK_Simplex::add_row(TempCtr t_temporary_constraint) {
     auto ctr = model().add_constraint(std::move(t_temporary_constraint));
     auto impl = create_constraint_impl_with_rhs(ctr);
     add_constraint_impl(impl);
@@ -444,10 +444,10 @@ Ctr Solvers::GLPK_Simplex::add_constraint(TempCtr t_temporary_constraint) {
     return ctr;
 }
 
-void Solvers::GLPK_Simplex::set_lower_bound(const Var &t_var, double t_lb) {
+void Solvers::GLPK_Simplex::update_lb(const Var &t_var, double t_lb) {
 
     const bool has_ub = !is_pos_inf(t_var.ub());
-    const int index = get(t_var);
+    const int index = raw(t_var);
 
     if (has_ub) {
         if (equals(t_var.ub(), t_lb, ToleranceForIntegrality)) {
@@ -462,10 +462,10 @@ void Solvers::GLPK_Simplex::set_lower_bound(const Var &t_var, double t_lb) {
     model().update_lb(t_var, t_lb);
 }
 
-void Solvers::GLPK_Simplex::set_upper_bound(const Var &t_var, double t_ub) {
+void Solvers::GLPK_Simplex::update_ub(const Var &t_var, double t_ub) {
 
     const bool has_lb = !is_neg_inf(t_var.lb());
-    const int index = get(t_var);
+    const int index = raw(t_var);
 
     if (has_lb) {
         if (equals(t_var.lb(), t_ub, ToleranceForIntegrality)) {

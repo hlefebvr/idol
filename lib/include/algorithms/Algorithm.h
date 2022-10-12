@@ -10,12 +10,11 @@
 #include "../modeling/constraints/TempCtr.h"
 #include "../errors/NotImplemented.h"
 #include "attributes/Timer.h"
+#include "attributes/Attributes.h"
 #include <list>
 
 class Node;
 class Var;
-
-class AbstractAttributes;
 
 /**
  * Solution algorithm object.
@@ -78,7 +77,14 @@ public:
     }
 
     /**
-     * Returns the computed iis (after solve or solve_for_iis has been called).
+     * Returns the computed extreme ray (after solve has been called).
+     */
+    [[nodiscard]] virtual Solution::Primal extreme_ray() const {
+        throw NotImplemented("Retrieving extrme rays", "extreme_ray");
+    }
+
+    /**
+     * Returns the computed iis (after solve or compute_iis has been called).
      */
     [[nodiscard]] virtual Solution::Dual iis() const {
         throw NotImplemented("Retrieving IIS", "iis");
@@ -89,8 +95,8 @@ public:
      * @param t_var The queried variable.
      * @param t_lb The desired bound.
      */
-    virtual void set_lower_bound(const Var& t_var, double t_lb) {
-        throw NotImplemented("Updating variable LB", "set_lower_bound");
+    virtual void update_lb(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating variable LB", "update_lb");
     }
 
     /**
@@ -98,8 +104,8 @@ public:
      * @param t_var The queried variable.
      * @param t_lb The desired bound.
      */
-    virtual void set_upper_bound(const Var& t_var, double t_ub) {
-        throw NotImplemented("Updating variable UB", "set_upper_bound");
+    virtual void update_ub(const Var& t_var, double t_ub) {
+        throw NotImplemented("Updating variable UB", "update_ub");
     }
 
     /**
@@ -125,8 +131,8 @@ public:
      * Removes a variable from the optimization problem.
      * @param t_variable The desired variable to be removed.
      */
-    virtual void remove_variable(const Var& t_variable) {
-        throw NotImplemented("Removing variable", "remove_variable");
+    virtual void remove(const Var& t_variable) {
+        throw NotImplemented("Removing variable", "remove");
     }
 
     /**
@@ -134,8 +140,8 @@ public:
      * @param t_ctr The queried constraint.
      * @param t_rhs The desired right handside.
      */
-    virtual void update_constraint_rhs(const Ctr& t_ctr, double t_rhs) {
-        throw NotImplemented("Updating constraint RHS", "update_constraint_rhs");
+    virtual void update_coefficient_rhs(const Ctr& t_ctr, double t_rhs) {
+        throw NotImplemented("Updating constraint RHS coefficient", "update_coefficient_rhs");
     }
 
     /**
@@ -143,18 +149,16 @@ public:
      * @param t_temporary_constraint The temporary constraint to create (see TempCtr).
      * @return The created constraint.
      */
-    virtual Ctr add_constraint(TempCtr t_temporary_constraint) {
-        throw Exception("Adding constraints is not implemented. "
-                                 "If you wish to implement it, "
-                                 "please override the add_constraint method.");
+    virtual Ctr add_row(TempCtr t_temporary_constraint) {
+        throw NotImplemented("Adding a row", "add_row");
     }
 
     /**
      * Removes a constraint from the optimization problem.
      * @param t_constraint The desired constraint to be removed.
      */
-    virtual void remove_constraint(const Ctr& t_constraint) {
-        throw NotImplemented("Removing constraint", "remove_constraint");
+    virtual void remove(const Ctr& t_constraint) {
+        throw NotImplemented("Removing constraint", "remove");
     }
 
 
@@ -189,10 +193,16 @@ public:
 
 };
 
-class VoidAlgorithm final : public Algorithm {
+template<class ...AttrT>
+class AlgorithmWithAttributes : public Algorithm {
+    Attributes<AttrT...> m_attributes;
 protected:
-    AbstractAttributes &attributes() override { throw Exception("Operation is not allowed."); }
-    const AbstractAttributes &attributes() const override { throw Exception("Operation is not allowed."); }
+    AbstractAttributes &attributes() override { return m_attributes; }
+    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
+};
+
+class VoidAlgorithm final : public AlgorithmWithAttributes<> {
+protected:
     void execute() override { throw Exception("Operation is not allowed."); }
 public:
     template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) { throw Exception("Operation is not allowed."); }

@@ -50,9 +50,9 @@ protected:
 public:
     explicit GLPK_Simplex(Model& t_model);
 
-    void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
-    void remove_variable(const Var &t_variable) override;
+    void remove(const Var &t_variable) override;
 
     Solution::Primal primal_solution() const override;
 
@@ -64,13 +64,13 @@ public:
 
     Var add_column(TempVar t_temporary_variable) override;
 
-    Ctr add_constraint(TempCtr t_temporary_constraint) override;
+    Ctr add_row(TempCtr t_temporary_constraint) override;
 
-    void remove_constraint(const Ctr &t_constraint) override;
+    void remove(const Ctr &t_constraint) override;
 
-    void set_lower_bound(const Var &t_var, double t_lb) override;
+    void update_lb(const Var &t_var, double t_lb) override;
 
-    void set_upper_bound(const Var &t_var, double t_ub) override;
+    void update_ub(const Var &t_var, double t_ub) override;
 };
 
 #endif

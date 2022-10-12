@@ -1,12 +1,12 @@
 //
 // Created by henri on 16/09/22.
 //
-#include "../../../include/algorithms/decomposition/GenerationAlgorithm.h"
+#include "../../../include/algorithms/decomposition/GenerationAlgorithmWithAttributes.h"
 #include "../../../include/algorithms/decomposition/DecompositionId.h"
 #include "../../../include/modeling/models/Model.h"
 
 GenerationAlgorithm::GenerationAlgorithm(DecompositionId &&t_decomposition_id)
-     : m_id(std::move(t_decomposition_id)) {
+        : m_id(std::move(t_decomposition_id)) {
 
 }
 

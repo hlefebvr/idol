@@ -5,20 +5,17 @@
 #ifndef OPTIMIZE_DECOMPOSITION_H
 #define OPTIMIZE_DECOMPOSITION_H
 
-#include "GenerationAlgorithm.h"
+#include "GenerationAlgorithmWithAttributes.h"
 #include "../attributes/Attributes.h"
 #include "../attributes/Attributes_Base.h"
 #include "DecompositionId.h"
 #include <functional>
+#include <memory>
 
-class Decomposition : public Algorithm {
+class Decomposition : public AlgorithmWithAttributes<> {
     std::unique_ptr<Algorithm> m_rmp_strategy;
-    std::list<std::unique_ptr<GenerationAlgorithm>> m_generation_strategies;
-
-    Attributes<> m_attributes;
+    std::list<std::unique_ptr<Algorithm>> m_generation_strategies;
 protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 public:
 
@@ -30,15 +27,15 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    void set_lower_bound(const Var &t_var, double t_lb) override;
+    void update_lb(const Var &t_var, double t_lb) override;
 
-    void set_upper_bound(const Var &t_var, double t_ub) override;
+    void update_ub(const Var &t_var, double t_ub) override;
 
-    void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
-    Ctr add_constraint(TempCtr t_temporary_constraint) override;
+    Ctr add_row(TempCtr t_temporary_constraint) override;
 
-    void remove_constraint(const Ctr &t_constraint) override;
+    void remove(const Ctr &t_constraint) override;
 
     template<class T, class ...Args> T& set_rmp_solution_strategy(Args&& ...t_args) {
         auto* solution_strategy = new T(std::forward<Args>(t_args)...);
@@ -48,8 +45,6 @@ public:
     }
 
     template<class T, class ...Args> T& add_generation_strategy(Args&& ...t_args) {
-
-        static_assert(std::is_base_of_v<GenerationAlgorithm, T>);
 
         auto* rmp_strategy = m_generation_strategies.empty() ? m_rmp_strategy.get() : m_generation_strategies.back().get();
 

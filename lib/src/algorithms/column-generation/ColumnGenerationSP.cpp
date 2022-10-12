@@ -149,7 +149,7 @@ void ColumnGenerationSP::remove_column_if(const std::function<bool(const Var&, c
     while (it != end) {
         const auto& [column_variable, ptr_to_column] = *it;
         if (t_indicator_for_removal(column_variable, ptr_to_column)) {
-            m_rmp_strategy.remove_variable(column_variable);
+            m_rmp_strategy.remove(column_variable);
             it = m_currently_present_variables.erase(it);
         } else {
             ++it;
@@ -184,7 +184,7 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     if (!is_in_subproblem(t_ctr)) { return false; }
 
-    m_exact_solution_strategy->update_constraint_rhs(t_ctr, t_rhs);
+    m_exact_solution_strategy->update_coefficient_rhs(t_ctr, t_rhs);
 
     remove_columns_violating_constraint(TempCtr(Row(t_ctr.row()), t_ctr.type()));
 
@@ -199,7 +199,7 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
     }
 
     EASY_LOG(Trace, "column-generation", "Constraint " << t_ctr << " has been removed from SP.");
-    m_exact_solution_strategy->remove_constraint(t_ctr);
+    m_exact_solution_strategy->remove(t_ctr);
 
     return true;
 }
@@ -230,7 +230,7 @@ void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
 
 void ColumnGenerationSP::remove_var_template_from_rmp(const Var &t_var) {
     EASY_LOG(Trace, "column-generation", "Variable " << t_var << " has been removed from the RMP for it will be generated.");
-    rmp_solution_strategy().remove_variable(t_var);
+    rmp_solution_strategy().remove(t_var);
 }
 
 bool ColumnGenerationSP::is_in_subproblem(const Var &t_var) const {

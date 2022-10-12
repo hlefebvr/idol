@@ -71,13 +71,13 @@ GRBConstr Solvers::Gurobi::create_constraint_impl_with_rhs(const Ctr &t_ctr) {
 
 void Solvers::Gurobi::set_constraint_lhs(const Ctr &t_ctr) {
     for (const auto& [var, coeff] : t_ctr.row().lhs()) {
-        m_model.chgCoeff(get(t_ctr), get(var), value(coeff));
+        m_model.chgCoeff(raw(t_ctr), raw(var), value(coeff));
     }
 }
 
 void Solvers::Gurobi::set_variable_components(const Var &t_var) {
     for (const auto& [ctr, coeff] : t_var.column().components()) {
-        m_model.chgCoeff(get(ctr), get(t_var), value(coeff));
+        m_model.chgCoeff(raw(ctr), raw(t_var), value(coeff));
     }
 }
 
@@ -96,13 +96,13 @@ SolutionStatus Solvers::Gurobi::solution_status() const {
     return status;
 }
 
-void Solvers::Gurobi::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
-    get(t_ctr).set(GRB_DoubleAttr_RHS, t_rhs);
+void Solvers::Gurobi::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
+    raw(t_ctr).set(GRB_DoubleAttr_RHS, t_rhs);
     model().update_rhs(t_ctr, t_rhs);
 }
 
-void Solvers::Gurobi::remove_variable(const Var &t_variable) {
-    m_model.remove(get(t_variable));
+void Solvers::Gurobi::remove(const Var &t_variable) {
+    m_model.remove(raw(t_variable));
 
     remove_variable_impl(t_variable);
     model().remove(t_variable);
@@ -124,7 +124,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
 
     for (const auto& ctr : model().constraints()) {
         try {
-            result.set(ctr, -get(ctr).get(GRB_DoubleAttr_FarkasDual));
+            result.set(ctr, -raw(ctr).get(GRB_DoubleAttr_FarkasDual));
         } catch (const GRBException& t_err) {
             std::cout << t_err.getMessage() << std::endl;
             __throw_exception_again;
@@ -157,7 +157,7 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
     result.set_objective_value(m_model.get(GRB_DoubleAttr_ObjVal));
 
     for (const auto& var : model().variables()) {
-        result.set(var, get(var).get(GRB_DoubleAttr_X));
+        result.set(var, raw(var).get(GRB_DoubleAttr_X));
     }
 
     return result;
@@ -190,7 +190,7 @@ Solution::Dual Solvers::Gurobi::dual_solution() const {
     }
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, get(ctr).get(GRB_DoubleAttr_Pi));
+        result.set(ctr, raw(ctr).get(GRB_DoubleAttr_Pi));
     }
 
     return result;
@@ -200,7 +200,7 @@ void Solvers::Gurobi::update_objective(const Row &t_objective) {
     m_model.set(GRB_DoubleAttr_ObjCon, value(value(t_objective.rhs())));
     // TODO this must be better done after refacto of Objective and Rhs
     for (const auto& var : model().variables()) {
-        get(var).set(GRB_DoubleAttr_Obj, value(t_objective.lhs().get(var)));
+        raw(var).set(GRB_DoubleAttr_Obj, value(t_objective.lhs().get(var)));
     }
     model().update_objective(t_objective);
 }
@@ -213,7 +213,7 @@ Var Solvers::Gurobi::add_column(TempVar t_temporary_variable) {
     return var;
 }
 
-Ctr Solvers::Gurobi::add_constraint(TempCtr t_temporary_constraint) {
+Ctr Solvers::Gurobi::add_row(TempCtr t_temporary_constraint) {
     auto ctr = model().add_constraint(std::move(t_temporary_constraint));
     auto impl = create_constraint_impl_with_rhs(ctr);
     add_constraint_impl(impl);
@@ -221,19 +221,19 @@ Ctr Solvers::Gurobi::add_constraint(TempCtr t_temporary_constraint) {
     return ctr;
 }
 
-void Solvers::Gurobi::remove_constraint(const Ctr &t_constraint) {
-    m_model.remove(get(t_constraint));
+void Solvers::Gurobi::remove(const Ctr &t_constraint) {
+    m_model.remove(raw(t_constraint));
     remove_constraint_impl(t_constraint);
     model().remove(t_constraint);
 }
 
-void Solvers::Gurobi::set_lower_bound(const Var &t_var, double t_lb) {
-    get(t_var).set(GRB_DoubleAttr_LB, t_lb);
+void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
+    raw(t_var).set(GRB_DoubleAttr_LB, t_lb);
     model().update_lb(t_var, t_lb);
 }
 
-void Solvers::Gurobi::set_upper_bound(const Var &t_var, double t_ub) {
-    get(t_var).set(GRB_DoubleAttr_UB, t_ub);
+void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
+    raw(t_var).set(GRB_DoubleAttr_UB, t_ub);
     model().update_ub(t_var, t_ub);
 }
 

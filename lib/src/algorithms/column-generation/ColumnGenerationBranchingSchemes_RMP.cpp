@@ -49,7 +49,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
     if (it == t_bound_constraints.end()) {
 
         auto expanded = t_subproblem.expand(t_subproblem_variable);
-        auto ctr = rmp.add_constraint(t_ctr_builder(std::move(expanded), t_bound));
+        auto ctr = rmp.add_row(t_ctr_builder(std::move(expanded), t_bound));
         t_subproblem.add_linking_expr(ctr, t_subproblem_variable);
         t_bound_constraints.emplace(t_subproblem_variable, ctr);
         return;
@@ -60,11 +60,11 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
         auto constraint_to_remove = it->second;
         t_subproblem.reset_linking_expr(it->second);
         t_bound_constraints.erase(it);
-        rmp.remove_constraint(constraint_to_remove);
+        rmp.remove(constraint_to_remove);
         return;
     }
 
-    rmp.update_constraint_rhs(it->second, t_bound);
+    rmp.update_coefficient_rhs(it->second, t_bound);
 
 }
 
@@ -97,7 +97,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
         return {};
     });
 
-    auto result = t_subproblem.rmp_solution_strategy().add_constraint(std::move(t_temporary_constraint));
+    auto result = t_subproblem.rmp_solution_strategy().add_row(std::move(t_temporary_constraint));
 
     t_subproblem.add_linking_expr(result, original_space);
 

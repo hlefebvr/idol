@@ -36,23 +36,23 @@ Solution::Dual Decomposition::dual_solution() const {
 }
 
 
-void Decomposition::set_lower_bound(const Var &t_var, double t_lb) {
-    m_generation_strategies.front()->set_lower_bound(t_var, t_lb);
+void Decomposition::update_lb(const Var &t_var, double t_lb) {
+    m_generation_strategies.front()->update_lb(t_var, t_lb);
 }
 
 
-void Decomposition::set_upper_bound(const Var &t_var, double t_ub) {
-    m_generation_strategies.front()->set_upper_bound(t_var, t_ub);
+void Decomposition::update_ub(const Var &t_var, double t_ub) {
+    m_generation_strategies.front()->update_ub(t_var, t_ub);
 }
 
-void Decomposition::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
-    m_generation_strategies.front()->update_constraint_rhs(t_ctr, t_rhs);
+void Decomposition::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
+    m_generation_strategies.front()->update_coefficient_rhs(t_ctr, t_rhs);
 }
 
-Ctr Decomposition::add_constraint(TempCtr t_temporary_constraint) {
-    return m_generation_strategies.front()->add_constraint(std::move(t_temporary_constraint));
+Ctr Decomposition::add_row(TempCtr t_temporary_constraint) {
+    return m_generation_strategies.front()->add_row(std::move(t_temporary_constraint));
 }
 
-void Decomposition::remove_constraint(const Ctr &t_constraint) {
-    m_generation_strategies.front()->remove_constraint(t_constraint);
+void Decomposition::remove(const Ctr &t_constraint) {
+    m_generation_strategies.front()->remove(t_constraint);
 }

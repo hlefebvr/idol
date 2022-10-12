@@ -23,7 +23,7 @@ void RowGenerationSP::save_subproblem_ids() {
 
 void RowGenerationSP::remove_cut_template_from_rmp(const Ctr& t_cut) {
     EASY_LOG(Trace, "cut-generation", "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
-    rmp_solution_strategy().remove_constraint(t_cut);
+    rmp_solution_strategy().remove(t_cut);
 }
 
 void RowGenerationSP::build() {
@@ -79,7 +79,7 @@ bool RowGenerationSP::violated_cut_found() {
 void RowGenerationSP::add_cut_to_rmp() {
     auto* last_primal_solution = m_primal_solutions.back().get();
     auto temp_ctr = create_cut_from(*last_primal_solution);
-    auto constraint = m_rmp_strategy.add_constraint(std::move(temp_ctr));
+    auto constraint = m_rmp_strategy.add_row(std::move(temp_ctr));
     m_currently_present_cuts.template emplace_back(constraint, *last_primal_solution);
     EASY_LOG(Trace, "cut-generation", "Adding new constraint " << constraint << ".");
 }
@@ -113,7 +113,7 @@ bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
     if (!is_in_subproblem(t_var)) { return false; }
 
     remove_cuts_violating_lower_bound(t_var, t_lb);
-    exact_solution_strategy().set_lower_bound(t_var, t_lb);
+    exact_solution_strategy().update_lb(t_var, t_lb);
 
     return true;
 }
@@ -122,7 +122,7 @@ bool RowGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
     if (!is_in_subproblem(t_var)) { return false; }
 
     remove_cuts_violating_upper_bound(t_var, t_ub);
-    exact_solution_strategy().set_upper_bound(t_var, t_ub);
+    exact_solution_strategy().update_ub(t_var, t_ub);
 
     return true;
 }
@@ -135,7 +135,7 @@ void RowGenerationSP::remove_cut_if(const std::function<bool(const Ctr &, const 
     while (it != end) {
         const auto& [column_variable, ptr_to_column] = *it;
         if (t_indicator_for_removal(column_variable, ptr_to_column)) {
-            m_rmp_strategy.remove_constraint(column_variable);
+            m_rmp_strategy.remove(column_variable);
             it = m_currently_present_cuts.erase(it);
         } else {
             ++it;

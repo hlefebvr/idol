@@ -5,16 +5,15 @@
 #ifndef OPTIMIZE_COLUMNGENERATION_H
 #define OPTIMIZE_COLUMNGENERATION_H
 
-#include "../decomposition/GenerationAlgorithm.h"
+#include "../decomposition/GenerationAlgorithmWithAttributes.h"
 #include "../../modeling/models/Model.h"
 #include "ColumnGenerationSP.h"
 #include "../attributes/Attributes.h"
 #include "../attributes/Attributes_Base.h"
 
-class ColumnGeneration : public GenerationAlgorithm {
+class ColumnGeneration : public GenerationAlgorithmWithAttributes<AttributesSections::Base> {
     std::list<ColumnGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
-    Attributes<AttributesSections::Base> m_attributes;
 
     bool m_is_terminated = false;
 
@@ -40,8 +39,6 @@ class ColumnGeneration : public GenerationAlgorithm {
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
     void terminate_for_no_improving_column_found();
 protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 public:
     explicit ColumnGeneration(DecompositionId&& t_id);
@@ -52,15 +49,15 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    void set_lower_bound(const Var &t_var, double t_lb) override;
+    void update_lb(const Var &t_var, double t_lb) override;
 
-    void set_upper_bound(const Var &t_var, double t_ub) override;
+    void update_ub(const Var &t_var, double t_ub) override;
 
-    void update_constraint_rhs(const Ctr &t_ctr, double t_rhs) override;
+    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
-    Ctr add_constraint(TempCtr t_temporary_constraint) override;
+    Ctr add_row(TempCtr t_temporary_constraint) override;
 
-    void remove_constraint(const Ctr &t_constraint) override;
+    void remove(const Ctr &t_constraint) override;
 
     ColumnGenerationSP& add_subproblem(const Var& t_var);
 };

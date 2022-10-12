@@ -16,7 +16,7 @@
 #include <list>
 #include <memory>
 
-class BranchAndBound : public Algorithm {
+class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base> {
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
     bool m_is_terminated = false;
@@ -27,8 +27,6 @@ class BranchAndBound : public Algorithm {
     // User strategies
     std::unique_ptr<AbstractNodeStrategy> m_nodes;
     std::unique_ptr<Algorithm> m_solution_strategy;
-
-    Attributes<AttributesSections::Base> m_attributes;
 
     void initialize();
     void create_root_node();
@@ -70,8 +68,6 @@ class BranchAndBound : public Algorithm {
     [[nodiscard]] const Node& current_node() const;
 
 protected:
-    AbstractAttributes &attributes() override;
-    [[nodiscard]] const AbstractAttributes &attributes() const override;
     void execute() override;
 public:
 

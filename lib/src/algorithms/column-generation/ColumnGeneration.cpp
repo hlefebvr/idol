@@ -5,7 +5,7 @@
 #include "../../../include/algorithms/column-generation/ColumnGeneration.h"
 #include "../../../include/algorithms/logs/Log.h"
 
-ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithm(std::move(t_id)) {
+ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithmWithAttributes(std::move(t_id)) {
 
 }
 
@@ -57,24 +57,24 @@ Solution::Dual ColumnGeneration::dual_solution() const{
     return result;
 }
 
-void ColumnGeneration::set_lower_bound(const Var & t_var, double t_lb){
+void ColumnGeneration::update_lb(const Var & t_var, double t_lb){
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
         if(is_applied) { return; }
 
     }
-    rmp_solution_strategy().set_lower_bound(t_var, t_lb);
+    rmp_solution_strategy().update_lb(t_var, t_lb);
 }
 
-void ColumnGeneration::set_upper_bound(const Var & t_var, double t_ub){
+void ColumnGeneration::update_ub(const Var & t_var, double t_ub){
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
         if (is_applied) { return; }
 
     }
-    rmp_solution_strategy().set_upper_bound(t_var, t_ub);
+    rmp_solution_strategy().update_ub(t_var, t_ub);
 }
 
 void ColumnGeneration::initialize() {
@@ -237,7 +237,7 @@ void ColumnGeneration::log_last_rmp_dual_solution() const {
     );
 }
 
-Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
+Ctr ColumnGeneration::add_row(TempCtr t_temporary_constraint) {
 
     for (auto& subproblem : m_subproblems) {
 
@@ -253,7 +253,7 @@ Ctr ColumnGeneration::add_constraint(TempCtr t_temporary_constraint) {
 
 }
 
-void ColumnGeneration::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
+void ColumnGeneration::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
 
     for (auto& subproblem : m_subproblems) {
 
@@ -263,11 +263,11 @@ void ColumnGeneration::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     }
 
-    rmp_solution_strategy().update_constraint_rhs(t_ctr, t_rhs);
+    rmp_solution_strategy().update_coefficient_rhs(t_ctr, t_rhs);
 
 }
 
-void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
+void ColumnGeneration::remove(const Ctr &t_constraint) {
 
     for (auto& subproblem : m_subproblems) {
 
@@ -278,7 +278,7 @@ void ColumnGeneration::remove_constraint(const Ctr &t_constraint) {
     }
 
     EASY_LOG(Trace, "column-generation", "Constraint " << t_constraint << " has been removed from RMP.");
-    rmp_solution_strategy().remove_constraint(t_constraint);
+    rmp_solution_strategy().remove(t_constraint);
 
 }
 

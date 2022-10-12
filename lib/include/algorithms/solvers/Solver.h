@@ -28,13 +28,13 @@ public:
 
     [[nodiscard]] Model& model() { return m_src_model; }
 
-    VarT& get(const Var& t_var) { return m_variables[t_var.index()]; }
+    VarT& raw(const Var& t_var) { return m_variables[t_var.index()]; }
 
-    const VarT& get(const Var& t_var) const { return m_variables[t_var.index()]; }
+    const VarT& raw(const Var& t_var) const { return m_variables[t_var.index()]; }
 
-    CtrT& get(const Ctr& t_ctr) { return m_constraints[t_ctr.index()];}
+    CtrT& raw(const Ctr& t_ctr) { return m_constraints[t_ctr.index()];}
 
-    const CtrT& get(const Ctr& t_ctr) const { return m_constraints[t_ctr.index()]; }
+    const CtrT& raw(const Ctr& t_ctr) const { return m_constraints[t_ctr.index()]; }
 };
 
 template<class VarT, class CtrT>

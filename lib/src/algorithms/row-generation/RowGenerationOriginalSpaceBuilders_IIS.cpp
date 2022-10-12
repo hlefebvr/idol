@@ -20,12 +20,12 @@ Solution::Primal RowGenerationOriginalSpaceBuilders::IIS::primal_solution(const 
     }
 
     auto& rmp = const_cast<Algorithm&>(t_rmp_solution_strategy);
-    auto infeasible = rmp.add_constraint(objective <= rmp.primal_solution().objective_value() - 1e-2);
+    auto infeasible = rmp.add_row(objective <= rmp.primal_solution().objective_value() - 1e-2);
     rmp.compute_iis();
 
     const auto iis = rmp.iis();
 
-    rmp.remove_constraint(infeasible);
+    rmp.remove(infeasible);
 
     Solution::Primal result;
 

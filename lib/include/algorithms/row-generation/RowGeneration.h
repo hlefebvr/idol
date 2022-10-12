@@ -5,17 +5,16 @@
 #ifndef OPTIMIZE_CUTGENERATION_H
 #define OPTIMIZE_CUTGENERATION_H
 
-#include "../decomposition/GenerationAlgorithm.h"
+#include "../decomposition/GenerationAlgorithmWithAttributes.h"
 #include "../attributes/Attributes_Base.h"
 #include "../attributes/Attributes.h"
 #include "RowGenerationSP.h"
 #include <list>
 #include <memory>
 
-class RowGeneration : public GenerationAlgorithm {
+class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSections::Base> {
     std::list<RowGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
-    Attributes<AttributesSections::Base> m_attributes;
 
     bool m_is_terminated = false;
 
@@ -39,8 +38,6 @@ class RowGeneration : public GenerationAlgorithm {
     void terminate_for_subproblem_is_infeasible();
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
 protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 public:
 
@@ -50,9 +47,9 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    void set_lower_bound(const Var &t_var, double t_lb) override;
+    void update_lb(const Var &t_var, double t_lb) override;
 
-    void set_upper_bound(const Var &t_var, double t_ub) override;
+    void update_ub(const Var &t_var, double t_ub) override;
 
     RowGenerationSP& add_subproblem(const Ctr& t_cut);
 };

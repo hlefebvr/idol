@@ -360,14 +360,6 @@ double BranchAndBound::upper_bound() const {
     return m_best_upper_bound;
 }
 
-AbstractAttributes &BranchAndBound::attributes() {
-    return m_attributes;
-}
-
-const AbstractAttributes &BranchAndBound::attributes() const {
-    return m_attributes;
-}
-
 bool BranchAndBound::iteration_limit_is_reached() const {
     return m_iteration >= get<Attr::MaxIterations>();
 }

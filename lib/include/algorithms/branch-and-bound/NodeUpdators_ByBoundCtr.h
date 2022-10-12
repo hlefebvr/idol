@@ -65,13 +65,13 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
         auto result = t_node_bounds.find(var);
 
         if (result == t_node_bounds.end()) {
-            t_solution_strategy.remove_constraint(constraint);
+            t_solution_strategy.remove(constraint);
             it = t_current_constraints.erase(it);
             continue;
         }
 
         if (!equals(result->second, constraint.rhs().numerical(), ToleranceForIntegrality)) {
-            t_solution_strategy.update_constraint_rhs(constraint, result->second);
+            t_solution_strategy.update_coefficient_rhs(constraint, result->second);
         }
         ++it;
 
@@ -80,7 +80,7 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
     for (const auto& [var, bound] : t_node_bounds) {
         auto result = t_current_constraints.find(var);
         if (result == t_current_constraints.end()) {
-            auto constraint = t_solution_strategy.add_constraint(t_create_temp_ctr_function(var, bound));
+            auto constraint = t_solution_strategy.add_row(t_create_temp_ctr_function(var, bound));
             t_current_constraints.template emplace(var, constraint);
         }
     }

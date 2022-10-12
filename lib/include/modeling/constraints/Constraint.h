@@ -25,7 +25,7 @@ namespace Solution {
 /**
  * Constraint object.
  *
- * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_constraint method, rather than a constructor.
+ * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_row method, rather than a constructor.
  */
 class Ctr {
     friend class impl::ObjectManager;
@@ -62,7 +62,7 @@ public:
 
     /**
      * Returns the current right handside of the constraint.
-     * It may be modified by calling the Model::update_rhs method.
+     * It may be modified by calling the Model::update_coefficient_rhs method.
      */
     [[nodiscard]] const Constant& rhs() const;
 
