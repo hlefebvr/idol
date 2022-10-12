@@ -21,8 +21,6 @@ public:
 
     Decomposition() = default;
 
-    void build() override;
-
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
     [[nodiscard]] Solution::Dual dual_solution() const override;

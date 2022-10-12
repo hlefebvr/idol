@@ -9,12 +9,6 @@ ColumnGeneration::ColumnGeneration(DecompositionId&& t_id) : GenerationAlgorithm
 
 }
 
-void ColumnGeneration::build() {
-    for (auto& subproblem : m_subproblems) {
-        subproblem.build();
-    }
-}
-
 void ColumnGeneration::execute() {
 
     initialize();
@@ -79,6 +73,10 @@ void ColumnGeneration::update_ub(const Var & t_var, double t_ub){
 
 void ColumnGeneration::initialize() {
     m_is_terminated = false;
+
+    for (auto& subproblem : m_subproblems) {
+        subproblem.initialize();
+    }
 }
 void ColumnGeneration::save_last_rmp_dual_solution() {
     m_last_rmp_duals = std::make_unique<Solution::Dual>(rmp_solution_strategy().dual_solution());

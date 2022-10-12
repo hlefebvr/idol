@@ -69,8 +69,6 @@ void BranchAndBound::initialize() {
     }
 
     m_nodes->initialize();
-
-    m_solution_strategy->build();
 }
 
 void BranchAndBound::create_root_node() {

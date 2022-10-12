@@ -26,13 +26,12 @@ void RowGenerationSP::remove_cut_template_from_rmp(const Ctr& t_cut) {
     rmp_solution_strategy().remove(t_cut);
 }
 
-void RowGenerationSP::build() {
+void RowGenerationSP::initialize() {
 
     if (!m_exact_solution_strategy) {
         throw Exception("No exact solution strategy has been given.");
     }
 
-    m_exact_solution_strategy->build();
 }
 
 void RowGenerationSP::solve() {

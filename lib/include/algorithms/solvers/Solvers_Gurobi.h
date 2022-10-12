@@ -51,6 +51,8 @@ public:
 
     [[nodiscard]] Solution::Dual farkas_certificate() const override;
 
+    Solution::Primal unbounded_ray() const override;
+
     void update_objective(const Row &t_objective) override;
 
     Var add_column(TempVar t_temporary_variable) override;

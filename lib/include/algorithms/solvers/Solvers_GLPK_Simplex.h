@@ -27,6 +27,7 @@ class Solvers::GLPK_Simplex : public Solver<int, int> {
     Optional<Solution::Primal> m_ray;
     Optional<Solution::Dual> m_farkas;
 
+    bool m_rebuild_basis = false;
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
 
@@ -59,6 +60,8 @@ public:
     Solution::Dual dual_solution() const override;
 
     Solution::Dual farkas_certificate() const override;
+
+    Solution::Primal unbounded_ray() const override;
 
     void update_objective(const Row &t_objective) override;
 

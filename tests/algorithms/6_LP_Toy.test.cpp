@@ -39,8 +39,7 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
     }
 
     SECTION("Solving unbounded LP") {
-        // TODO
-/*
+
         auto x = model.add_variable(0., Inf, Continuous, -3, "x");
         auto y = model.add_variable(0., Inf, Continuous, -2, "y");
         auto c1 = model.add_constraint(x + -2 * y <= 1);
@@ -65,7 +64,7 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
         CHECK(-3. * extreme_ray.get(x) -2. * extreme_ray.get(y) <= 0._a);
         CHECK(-2. * extreme_ray.get(x) + extreme_ray.get(y) <= 0._a);
         CHECK(extreme_ray.get(x) + extreme_ray.get(y) >= 0_a);
-*/
+
     }
 
     SECTION("Solving infeasible LP") {

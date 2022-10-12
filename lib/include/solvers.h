@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_SOLVERS_H
 #define OPTIMIZE_SOLVERS_H
 
-#include "solvers/Types.h"
+#include "algorithms/solvers/SolutionStatus.h"
 #include <tuple>
 
 template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::declval<input_t>()... ));

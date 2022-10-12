@@ -43,8 +43,6 @@ public:
 
     explicit RowGeneration(DecompositionId&& t_id);
 
-    void build() override;
-
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
     void update_lb(const Var &t_var, double t_lb) override;

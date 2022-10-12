@@ -8,12 +8,6 @@ RowGeneration::RowGeneration(DecompositionId &&t_id) : GenerationAlgorithmWithAt
 
 }
 
-void RowGeneration::build() {
-    for (auto& subproblem : m_subproblems) {
-        subproblem.build();
-    }
-}
-
 void RowGeneration::execute() {
 
     initialize();
@@ -40,6 +34,10 @@ void RowGeneration::execute() {
 
 void RowGeneration::initialize() {
     m_is_terminated = false;
+
+    for (auto& subproblem : m_subproblems) {
+        subproblem.initialize();
+    }
 }
 
 void RowGeneration::save_last_rmp_primal_solution() {

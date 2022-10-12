@@ -36,7 +36,7 @@ class RowGenerationSP {
 public:
     explicit RowGenerationSP(Algorithm& t_rmp_strategy, const Ctr& t_cut);
 
-    void build();
+    void initialize();
 
     void solve();
 

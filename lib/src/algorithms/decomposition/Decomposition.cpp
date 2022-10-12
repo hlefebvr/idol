@@ -3,25 +3,17 @@
 //
 #include "../../../include/algorithms/decomposition/Decomposition.h"
 
-void Decomposition::build() {
+void Decomposition::execute () {
 
     if (!m_rmp_strategy) {
         throw Exception("No solution strategy was given for RMP.");
     }
 
-    m_rmp_strategy->build();
-
     if (m_generation_strategies.empty()) {
         throw Exception("No generation strategy was given to decomposition strategy.");
     }
 
-    for (auto& ptr_to_generator_strategy : m_generation_strategies) {
-        ptr_to_generator_strategy->build();
-    }
-}
 
-
-void Decomposition::execute () {
     m_generation_strategies.front()->solve();
 }
 

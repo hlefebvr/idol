@@ -8,28 +8,27 @@
 #include <string>
 #include <stdexcept>
 #include <ostream>
-#include "../errors/Exception.h"
+#include "../../errors/Exception.h"
 
 enum SolutionStatus {
     Unknown,
     Optimal,
     Feasible,
     Infeasible,
-    FeasibleTimeLimit,
-    InfeasibleTimeLimit,
     InfeasibleOrUnbounded,
     Unbounded,
     Fail
 };
 
-enum AlgorithmForLP {
-    Automatic,
-    PrimalSimplex,
-    DualSimplex,
-    Barrier
+enum Reason {
+    NotSpecified,
+    Proved,
+    TimeLimit,
+    IterationCount
 };
 
-static bool is_in(SolutionStatus t_status, std::initializer_list<SolutionStatus> t_list) {
+template<typename T>
+bool is_in(T t_status, std::initializer_list<T> t_list) {
     for (auto status : t_list) {
         if (status == t_status) {
             return true;
@@ -44,8 +43,6 @@ static SolutionStatus dual(SolutionStatus t_status) {
         case Optimal: return Optimal;
         case Feasible: return Feasible;
         case Infeasible: return Unbounded;
-        case FeasibleTimeLimit: return FeasibleTimeLimit;
-        case InfeasibleTimeLimit: return InfeasibleTimeLimit;
         case InfeasibleOrUnbounded: return InfeasibleOrUnbounded;
         case Unbounded: return Infeasible;
         case Fail: return Fail;
@@ -59,11 +56,20 @@ static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
         case Optimal: return t_os << "Optimal";
         case Feasible: return t_os << "Feasible";
         case Infeasible: return t_os << "Infeasible";
-        case FeasibleTimeLimit: return t_os << "FeasibleTimeLimit";
-        case InfeasibleTimeLimit: return t_os << "InfeasibleTimeLimit";
         case InfeasibleOrUnbounded: return t_os << "InfeasibleOrUnbounded";
         case Unbounded: return t_os << "Unbounded";
         case Fail: return t_os << "Fail";
+        default: throw Exception("Unexpected status: " + std::to_string(t_status));
+    }
+    return t_os;
+}
+
+static std::ostream &operator<<(std::ostream& t_os, Reason t_status) {
+    switch (t_status) {
+        case Proved: return t_os << "Proved";
+        case NotSpecified: return t_os << "NotSpecified";
+        case TimeLimit: return t_os << "TimeLimit";
+        case IterationCount: return t_os << "IterationCount";
         default: throw Exception("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;

@@ -72,7 +72,7 @@ void ColumnGenerationSP::update_pricing_objective(const Row &t_objective) {
 }
 
 
-void ColumnGenerationSP::build() {
+void ColumnGenerationSP::initialize() {
 
     if (!m_branching_scheme) {
         throw Exception("No branching scheme has been given.");
@@ -82,7 +82,6 @@ void ColumnGenerationSP::build() {
         throw Exception("No exact solution strategy has been given.");
     }
 
-    m_exact_solution_strategy->build();
 }
 
 

@@ -16,7 +16,7 @@
 
 enum LogLevel { Mute, Fatal, Error, Warn, Info, Debug, Trace };
 
-enum Color { NotSpecified, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White };
+enum Color { Default, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White };
 
 class Log {
 public:

@@ -36,7 +36,7 @@ class ColumnGenerationSP {
 public:
     explicit ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var);
 
-    void build();
+    void initialize();
 
     void solve();
 

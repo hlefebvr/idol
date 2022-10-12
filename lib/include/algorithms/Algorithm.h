@@ -35,11 +35,6 @@ public:
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
     /**
-     * This method is typically called to initialize/set up the algorithm before solving an optimization problem.
-     */
-    virtual void build() {}
-
-    /**
      * Executes the solution algorithm.
      */
     void solve() {
@@ -79,7 +74,7 @@ public:
     /**
      * Returns the computed extreme ray (after solve has been called).
      */
-    [[nodiscard]] virtual Solution::Primal extreme_ray() const {
+    [[nodiscard]] virtual Solution::Primal unbounded_ray() const {
         throw NotImplemented("Retrieving extrme rays", "extreme_ray");
     }
 

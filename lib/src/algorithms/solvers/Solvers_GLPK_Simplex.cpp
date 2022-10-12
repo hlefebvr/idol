@@ -28,8 +28,12 @@ void Solvers::GLPK_Simplex::execute() {
     glp_smcp parameters;
     glp_init_smcp(&parameters);
     parameters.msg_lev = GLP_MSG_ERR;
-    glp_std_basis(m_model);
-    std::cout << "WARNING: INITIAL BASIS IS ALWAYS RESTORED HERE" << std::endl;
+
+    if (m_rebuild_basis) {
+        glp_std_basis(m_model);
+        m_rebuild_basis = false;
+    }
+
     int result = glp_simplex(m_model, &parameters);
 
     if (result == GLP_ESING) {
@@ -51,7 +55,7 @@ void Solvers::GLPK_Simplex::execute() {
         m_solution_status = Unbounded;
     }
 
-    if (Algorithm::get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (get<Attr::InfeasibleOrUnboundedInfo>()) {
         if (m_solution_status == Infeasible) {
             compute_farkas_certificate();
         } else if (m_solution_status == Unbounded) {
@@ -322,6 +326,11 @@ void Solvers::GLPK_Simplex::update_coefficient_rhs(const Ctr &t_ctr, double t_rh
 
 void Solvers::GLPK_Simplex::remove(const Var &t_variable) {
     const int index = raw(t_variable);
+
+    if (glp_get_col_stat(m_model, index) != GLP_NF) {
+        m_rebuild_basis = true;
+    }
+
     glp_set_obj_coef(m_model, index, 0.);
     glp_set_mat_col(m_model, index, 0, NULL, NULL);
     m_deleted_variables.push(index);
@@ -332,6 +341,11 @@ void Solvers::GLPK_Simplex::remove(const Var &t_variable) {
 
 void Solvers::GLPK_Simplex::remove(const Ctr &t_constraint) {
     const int index = raw(t_constraint);
+
+    if (glp_get_row_stat(m_model, index) != GLP_NF) {
+        m_rebuild_basis = true;
+    }
+
     glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
     glp_set_mat_row(m_model, index, 0, NULL, NULL);
     m_deleted_constraints.push(index);
@@ -351,12 +365,12 @@ Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
         return result;
     }
 
-    if (is_in(dual_status, { Infeasible, InfeasibleTimeLimit })) {
+    if (dual_status == Infeasible) {
         result.set_objective_value(-Inf);
         return result;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         result.set_objective_value(0.);
         return result;
     }
@@ -364,7 +378,7 @@ Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
     const double objective_value = m_objective_offset + glp_get_obj_val(m_model);
     result.set_objective_value(objective_value);
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         return result;
     }
 
@@ -382,10 +396,23 @@ Solution::Dual Solvers::GLPK_Simplex::farkas_certificate() const {
     }
 
     if (!Algorithm::get<Attr::InfeasibleOrUnboundedInfo>()) {
-        throw Exception("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+        throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access farkas dual information.");
     }
 
     return m_farkas.value();
+}
+
+Solution::Primal Solvers::GLPK_Simplex::unbounded_ray() const {
+
+    if (m_solution_status != Unbounded) {
+        throw Exception("Only available for unbounded problems.");
+    }
+
+    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+        throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access extreme ray information.");
+    }
+
+    return m_ray.value();
 }
 
 void Solvers::GLPK_Simplex::update_objective(const Row &t_objective) {
@@ -408,12 +435,12 @@ Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
         return result;
     }
 
-    if (is_in(status, { Infeasible, InfeasibleTimeLimit })) {
+    if (status == Infeasible) {
         result.set_objective_value(+Inf);
         return result;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         result.set_objective_value(0.);
         return result;
     }

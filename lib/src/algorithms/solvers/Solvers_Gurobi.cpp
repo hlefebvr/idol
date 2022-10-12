@@ -89,7 +89,7 @@ SolutionStatus Solvers::Gurobi::solution_status() const {
         case GRB_INFEASIBLE: status = Infeasible; break;
         case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
         case GRB_UNBOUNDED: status = Unbounded; break;
-        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? FeasibleTimeLimit : InfeasibleTimeLimit; break;
+        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible; break;
         case GRB_NUMERIC: status = Fail; break;
         default: throw Exception("Did not know what to do with gurobi status: " + std::to_string(grb_status));
     }
@@ -114,8 +114,8 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
         throw Exception("Only available for infeasible problems.");
     }
 
-    if (!Algorithm::get<Attr::InfeasibleOrUnboundedInfo>()) {
-        throw Exception("Turn on infeasible_or_unbounded_info before solving your model to access farkas dual information.");
+    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+        throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access farkas dual information.");
     }
 
     Solution::Dual result;
@@ -123,12 +123,33 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
     result.set_objective_value(m_model.get(GRB_DoubleAttr_FarkasProof));
 
     for (const auto& ctr : model().constraints()) {
-        try {
-            result.set(ctr, -raw(ctr).get(GRB_DoubleAttr_FarkasDual));
-        } catch (const GRBException& t_err) {
-            std::cout << t_err.getMessage() << std::endl;
-            __throw_exception_again;
-        }
+        result.set(ctr, -raw(ctr).get(GRB_DoubleAttr_FarkasDual));
+    }
+
+    return result;
+}
+
+Solution::Primal Solvers::Gurobi::unbounded_ray() const {
+
+    if (solution_status() != Unbounded) {
+        throw Exception("Only available for unbounded problems.");
+    }
+
+    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+        throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access extreme ray information.");
+    }
+
+    Solution::Primal result;
+
+    double objective_value = 0.;
+    for (const auto& [var, coeff] : model().objective()) {
+        objective_value += raw(var).get(GRB_DoubleAttr_UnbdRay) * value(coeff);
+    }
+
+    result.set_objective_value(objective_value);
+
+    for (const auto& var : model().variables()) {
+        result.set(var, raw(var).get(GRB_DoubleAttr_UnbdRay));
     }
 
     return result;
@@ -144,12 +165,12 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
         return result;
     }
 
-    if (is_in(status, { Infeasible, InfeasibleTimeLimit })) {
+    if (status == Infeasible) {
         result.set_objective_value(+Inf);
         return result;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         result.set_objective_value(0.);
         return result;
     }
@@ -173,19 +194,19 @@ Solution::Dual Solvers::Gurobi::dual_solution() const {
         return result;
     }
 
-    if (is_in(dual_status, { Infeasible, InfeasibleTimeLimit })) {
+    if (is_in(dual_status, { Infeasible })) {
         result.set_objective_value(-Inf);
         return result;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         result.set_objective_value(0.);
         return result;
     }
 
     result.set_objective_value(m_model.get(GRB_DoubleAttr_ObjVal));
 
-    if (!is_in(result.status(), { Optimal, Feasible, FeasibleTimeLimit })) {
+    if (!is_in(result.status(), { Optimal, Feasible })) {
         return result;
     }
 

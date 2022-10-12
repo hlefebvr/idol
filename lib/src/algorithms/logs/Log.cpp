@@ -27,7 +27,7 @@ std::ostream &Log::os() {
 }
 
 Log::~Log() {
-    if (const auto c = color(m_tag) ; c == NotSpecified) {
+    if (const auto c = color(m_tag) ; c == Default) {
         os() << std::endl;
     } else {
         os() << "\033[0m" << std::endl;
@@ -45,7 +45,7 @@ std::string Log::current_time() {
 
 std::string Log::to_console_begin(Color t_color) {
     switch (t_color) {
-        case NotSpecified: return "";
+        case Default: return "";
         case Black:   return "\033[30m";
         case Red  :   return "\033[31m";
         case Green:   return "\033[32m";
@@ -61,7 +61,7 @@ std::string Log::to_console_begin(Color t_color) {
 
 Color Log::color(const std::string &t_tag) {
     auto it = s_colors.find(t_tag);
-    return it == s_colors.end() ? NotSpecified : it->second;
+    return it == s_colors.end() ? Default : it->second;
 }
 
 void Log::set_color(const std::string &t_tag, Color t_color) {
