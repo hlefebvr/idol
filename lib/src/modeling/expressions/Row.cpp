@@ -58,13 +58,13 @@ Row Row::transpose() const {
         result.rhs() -= constant.numerical() * !var;
 
         for (const auto& [param, coeff] : constant) {
-            result.lhs() += -coeff * !var * !param;
+            result.lhs() += -coeff * !var * param.as<Var>();
         }
 
     }
 
     for (const auto& [param, coeff] : m_rhs->value()) {
-        result.lhs() -= coeff * !param;
+        result.lhs() -= coeff * param.as<Var>();
     }
 
     return result;
