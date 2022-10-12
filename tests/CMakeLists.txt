@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests main.test.cpp test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp algorithms/LP_Toy.test.cpp algorithms/MILP_Toy.test.cpp algorithms/BranchAndBound_Toy.test.cpp algorithms/ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/BranchAndPrice_GAP.cpp main.test.cpp instances/generalized-assignment-problem/AbstractInstanceGAP.h instances/generalized-assignment-problem/InstanceGAP_1.h instances/generalized-assignment-problem/InstanceGAP_2.h instances/generalized-assignment-problem/InstanceGAP_3.h instances/generalized-assignment-problem/InstanceGAP_0.h instances/generalized-assignment-problem/InstanceGAP_4.h instances/generalized-assignment-problem/InstanceGAP_5.h instances/generalized-assignment-problem/InstanceGAP_6.h algorithms/CutGeneration_Toy.test.cpp)
+add_executable(tests main.test.cpp test_utils.h modeling/Coefficient.test.cpp modeling/Expr.test.cpp modeling/Var.test.cpp modeling/Ctr.test.cpp modeling/Model.test.cpp modeling/Param.test.cpp algorithms/LP_Toy.test.cpp algorithms/MILP_Toy.test.cpp algorithms/BranchAndBound_Toy.test.cpp algorithms/ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/BranchAndPrice_GAP.cpp main.test.cpp algorithms/CutGeneration_Toy.test.cpp)
 target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 
@@ -33,3 +33,8 @@ if (NOT ${Catch2_FOUND})
 endif()
 
 target_link_libraries(tests PRIVATE Catch2::Catch2)
+
+
+add_custom_command(TARGET tests POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/instances/ $<TARGET_FILE_DIR:tests>/instances/
+)

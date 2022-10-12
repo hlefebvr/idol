@@ -8,21 +8,15 @@
 #include "solve_with_external_solver.h"
 #include "solve_with_branch_and_price.h"
 
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_0.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_1.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_2.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_3.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_4.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_5.h"
-#include "../../tests/instances/generalized-assignment-problem/InstanceGAP_6.h"
-
 int main() {
 
-    Log::set_level(Trace);
+    Log::set_level(Debug);
     Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
-    InstanceGAP<0> instance;
+    using namespace ProblemSpecific::GAP;
+
+    auto instance = read_instance("demo.txt");
 
     solve_with_external_solver(instance);
     solve_with_branch_and_price(instance);

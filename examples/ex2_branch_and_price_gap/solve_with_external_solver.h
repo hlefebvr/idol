@@ -5,18 +5,13 @@
 #ifndef OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 #define OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 
-#include "Instance.h"
-
-#include "../../tests/instances/generalized-assignment-problem/AbstractInstanceGAP.h"
+#include "problems/gap/GAP_Instance.h"
 #include "solvers.h"
 
-void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
+void solve_with_external_solver(const ProblemSpecific::GAP::Instance& t_instance) {
 
     const unsigned int n_knapsacks = t_instance.n_knapsacks();
     const unsigned int n_items = t_instance.n_items();
-    const auto p = t_instance.p();
-    const auto w = t_instance.w();
-    const auto c = t_instance.c();
 
     Model model;
 
@@ -24,7 +19,7 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         x[i].reserve(n_items);
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(model.add_variable(0., 1., Binary, p[i][j], "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+            x[i].emplace_back(model.add_variable(0., 1., Binary, t_instance.p(i, j), "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
         }
     };
 
@@ -35,9 +30,9 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         Expr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            expr += w[i][j] * x[i][j];
+            expr += t_instance.w(i, j) * x[i][j];
         }
-        knapsack_constraints.emplace_back(model.add_constraint(expr <= c[i]) );
+        knapsack_constraints.emplace_back(model.add_constraint(expr <= t_instance.t(i)) );
     }
 
 
@@ -56,8 +51,11 @@ void solve_with_external_solver(const AbstractInstanceGAP& t_instance) {
     std::tuple_element_t<0, milp_solvers> solver(model);
     solver.solve();
 
-    std::cout << solver.primal_solution().status() << std::endl;
-    std::cout << solver.primal_solution().objective_value() << std::endl;
+    const auto primal_solution = solver.primal_solution();
+
+    std::cout << primal_solution.status() << std::endl;
+    std::cout << primal_solution.objective_value() << std::endl;
+    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
 
 }
 

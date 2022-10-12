@@ -5,18 +5,13 @@
 #ifndef OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
 #define OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
 
-#include "Instance.h"
+#include "problems/gap/GAP_Instance.h"
 #include "algorithms.h"
 
-#include "../../tests/instances/generalized-assignment-problem/AbstractInstanceGAP.h"
-
-void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
+void solve_with_branch_and_price(const ProblemSpecific::GAP::Instance& t_instance) {
 
     const unsigned int n_knapsacks = t_instance.n_knapsacks();
     const unsigned int n_items = t_instance.n_items();
-    const auto p = t_instance.p();
-    const auto w = t_instance.w();
-    const auto c = t_instance.c();
 
     std::vector<Var> branching_candidates;
 
@@ -39,16 +34,16 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
         for (unsigned int j = 0 ; j < n_items ; ++j) {
             x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
-            objective_cost += p[i][j] * !x[i][j];
+            objective_cost += t_instance.p(i, j) * !x[i][j];
 
             branching_candidates.emplace_back(x[i].back());
         }
 
         Expr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            expr += w[i][j] * x[i][j];
+            expr += t_instance.w(i, j) * x[i][j];
         }
-        subproblems.back().add_constraint(expr <= c[i]);
+        subproblems.back().add_constraint(expr <= t_instance.t(i));
 
         alpha.emplace_back( rmp.add_variable(0., 1., Continuous, std::move(objective_cost), "alpha") );
 
@@ -71,11 +66,11 @@ void solve_with_branch_and_price(const AbstractInstanceGAP& t_instance) {
 
     solver.solve();
 
-    std::cout << solver.status() << std::endl;
-    std::cout << solver.objective_value() << std::endl;
-    std::cout << "N. nodes: " << solver.n_created_nodes() << std::endl;
-    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
+    const auto primal_solution = solver.primal_solution();
 
+    std::cout << primal_solution.status() << std::endl;
+    std::cout << primal_solution.objective_value() << std::endl;
+    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
 }
 
 #endif //OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
