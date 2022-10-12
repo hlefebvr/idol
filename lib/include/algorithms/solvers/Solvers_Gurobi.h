@@ -62,6 +62,12 @@ public:
     void update_lb(const Var &t_var, double t_lb) override;
 
     void update_ub(const Var &t_var, double t_ub) override;
+
+    using Solver<GRBVar, GRBConstr>::raw;
+
+    GRBModel& raw() { return m_model; }
+
+    [[nodiscard]] const GRBModel& raw() const { return m_model; }
 };
 
 #endif

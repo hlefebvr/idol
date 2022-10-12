@@ -191,6 +191,28 @@ public:
         return ptr->template get<T>();
     }
 
+    /* CASTS */
+
+    template<class T> bool is() { return dynamic_cast<T*>(this) != nullptr; }
+
+    template<class T> [[nodiscard]] bool is() const { return dynamic_cast<const T*>(this) != nullptr; }
+
+    template<class T> T& as() {
+        auto* ptr = dynamic_cast<T*>(this);
+        if (!ptr) {
+            throw Exception("Bad cast.");
+        }
+        return *ptr;
+    }
+
+    template<class T> const T& as() const {
+        auto* ptr = dynamic_cast<const T*>(this);
+        if (!ptr) {
+            throw Exception("Bad cast.");
+        }
+        return *ptr;
+    }
+
 };
 
 template<class ...AttrT>

@@ -71,6 +71,12 @@ public:
     void update_lb(const Var &t_var, double t_lb) override;
 
     void update_ub(const Var &t_var, double t_ub) override;
+
+    using Solver<int, int>::raw;
+
+    glp_prob* raw() { return m_model; }
+
+    const glp_prob* raw() const { return m_model; }
 };
 
 #endif
