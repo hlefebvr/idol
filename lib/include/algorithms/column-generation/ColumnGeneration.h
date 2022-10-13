@@ -41,7 +41,7 @@ class ColumnGeneration : public GenerationAlgorithmWithAttributes<AttributesSect
 protected:
     void execute() override;
 public:
-    explicit ColumnGeneration(DecompositionId&& t_id);
+    explicit ColumnGeneration(Algorithm& t_rmp_solution_strategy);
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

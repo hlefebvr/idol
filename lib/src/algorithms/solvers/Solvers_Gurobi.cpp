@@ -42,6 +42,20 @@ void Solvers::Gurobi::execute() {
 
 }
 
+SolutionStatus Solvers::Gurobi::idol_status(int t_gurobi_status) const {
+    SolutionStatus status = Unknown;
+    switch (t_gurobi_status) {
+        case GRB_OPTIMAL: status = Optimal; break;
+        case GRB_INFEASIBLE: status = Infeasible; break;
+        case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
+        case GRB_UNBOUNDED: status = Unbounded; break;
+        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible; break;
+        case GRB_NUMERIC: status = Fail; break;
+        default: throw Exception("Did not know what to do with gurobi status: " + std::to_string(t_gurobi_status));
+    }
+    return status;
+}
+
 char Solvers::Gurobi::gurobi_type(CtrType t_type) {
     if (t_type == Equal) {
         return GRB_EQUAL;
@@ -82,18 +96,7 @@ void Solvers::Gurobi::set_variable_components(const Var &t_var) {
 }
 
 SolutionStatus Solvers::Gurobi::solution_status() const {
-    SolutionStatus status = Unknown;
-    auto grb_status = m_model.get(GRB_IntAttr_Status);
-    switch (grb_status) {
-        case GRB_OPTIMAL: status = Optimal; break;
-        case GRB_INFEASIBLE: status = Infeasible; break;
-        case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
-        case GRB_UNBOUNDED: status = Unbounded; break;
-        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible; break;
-        case GRB_NUMERIC: status = Fail; break;
-        default: throw Exception("Did not know what to do with gurobi status: " + std::to_string(grb_status));
-    }
-    return status;
+    return idol_status(m_model.get(GRB_IntAttr_Status));
 }
 
 void Solvers::Gurobi::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
@@ -155,33 +158,42 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
     return result;
 }
 
-Solution::Primal Solvers::Gurobi::primal_solution() const {
+Solution::Primal Solvers::Gurobi::primal_solution(SolutionStatus t_status,
+                                 const std::function<double()>& t_get_obj_val,
+                                 const std::function<double(const GRBVar&)>& t_get_primal_value) const {
     Solution::Primal result;
-    const auto status = solution_status();
-    result.set_status(status);
+    result.set_status(t_status);
 
-    if (status == Unbounded) {
+    if (t_status == Unbounded) {
         result.set_objective_value(-Inf);
         return result;
     }
 
-    if (status == Infeasible) {
+    if (t_status == Infeasible) {
         result.set_objective_value(+Inf);
         return result;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible })) {
+    if (!is_in(t_status, { Optimal, Feasible })) {
         result.set_objective_value(0.);
         return result;
     }
 
-    result.set_objective_value(m_model.get(GRB_DoubleAttr_ObjVal));
+    result.set_objective_value(t_get_obj_val());
 
     for (const auto& var : model().variables()) {
-        result.set(var, raw(var).get(GRB_DoubleAttr_X));
+        result.set(var, t_get_primal_value(raw(var)));
     }
 
     return result;
+}
+
+Solution::Primal Solvers::Gurobi::primal_solution() const {
+    return primal_solution(
+            solution_status(),
+            [this](){ return m_model.get(GRB_DoubleAttr_ObjVal); },
+            [](const GRBVar& t_var){ return t_var.get(GRB_DoubleAttr_X); }
+        );
 }
 
 Solution::Dual Solvers::Gurobi::dual_solution() const {

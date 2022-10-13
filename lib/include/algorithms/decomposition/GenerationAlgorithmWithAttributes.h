@@ -6,26 +6,25 @@
 #define OPTIMIZE_GENERATIONALGORITHM_H
 
 #include "../Algorithm.h"
-#include "../decomposition/DecompositionId.h"
 
 class GenerationAlgorithm {
-    DecompositionId m_id;
+    Algorithm& m_rmp_solution_strategy;
 protected:
     Algorithm& rmp_solution_strategy();
     [[nodiscard]] const Algorithm& rmp_solution_strategy() const;
 public:
-    GenerationAlgorithm(DecompositionId&& t_decomposition_id);
+    explicit GenerationAlgorithm(Algorithm& t_decomposition_id);
 };
 
 template<class ...AttrT>
 class GenerationAlgorithmWithAttributes : public AlgorithmWithAttributes<AttrT...>, public GenerationAlgorithm {
 public:
-    explicit GenerationAlgorithmWithAttributes(DecompositionId&& t_decomposition_id);
+    explicit GenerationAlgorithmWithAttributes(Algorithm& t_rmp_solution_strategy);
 };
 
 template<class ...AttrT>
-GenerationAlgorithmWithAttributes<AttrT...>::GenerationAlgorithmWithAttributes(DecompositionId &&t_decomposition_id)
-        : GenerationAlgorithm(std::move(t_decomposition_id)) {
+GenerationAlgorithmWithAttributes<AttrT...>::GenerationAlgorithmWithAttributes(Algorithm& t_rmp_solution_strategy)
+        : GenerationAlgorithm(t_rmp_solution_strategy) {
 
 }
 

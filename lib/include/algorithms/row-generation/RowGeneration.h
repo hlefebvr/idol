@@ -13,10 +13,12 @@
 #include <memory>
 
 class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSections::Base> {
+protected:
     std::list<RowGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
 
     bool m_is_terminated = false;
+    unsigned int m_iteration = 0;
 
     void initialize();
     void save_last_rmp_primal_solution();
@@ -27,9 +29,11 @@ class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSection
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
     void update_subproblems();
     void solve_subproblems();
+    virtual void solve_rmp();
     void log_last_rmp_primal_solution() const;
     void analyze_last_subproblem_primal_solution(const RowGenerationSP& t_subproblem);
     void add_cuts();
+    [[nodiscard]] bool iteration_limit_is_reached() const;
 
     void terminate();
     void terminate_for_rmp_is_infeasible();
@@ -37,11 +41,11 @@ class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSection
     void terminate_for_no_violated_cut_found();
     void terminate_for_subproblem_is_infeasible();
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
-protected:
+    void terminate_for_iteration_limit_is_reached();
+
     void execute() override;
 public:
-
-    explicit RowGeneration(DecompositionId&& t_id);
+    explicit RowGeneration(Algorithm& t_rmp_solution_strategy);
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

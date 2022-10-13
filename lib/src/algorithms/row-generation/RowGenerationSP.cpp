@@ -22,7 +22,7 @@ void RowGenerationSP::save_subproblem_ids() {
 }
 
 void RowGenerationSP::remove_cut_template_from_rmp(const Ctr& t_cut) {
-    EASY_LOG(Trace, "cut-generation", "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
+    EASY_LOG(Trace, "row-generation", "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
     rmp_solution_strategy().remove(t_cut);
 }
 
@@ -61,7 +61,7 @@ void RowGenerationSP::save_last_primal_solution() {
 }
 
 void RowGenerationSP::log_last_primal_solution() {
-    EASY_LOG(Debug, "cut-generation",
+    EASY_LOG(Debug, "row-generation",
              std::setw(5)
              << "SP"
              << std::setw(15)
@@ -80,7 +80,7 @@ void RowGenerationSP::add_cut_to_rmp() {
     auto temp_ctr = create_cut_from(*last_primal_solution);
     auto constraint = m_rmp_strategy.add_row(std::move(temp_ctr));
     m_currently_present_cuts.template emplace_back(constraint, *last_primal_solution);
-    EASY_LOG(Trace, "cut-generation", "Adding new constraint " << constraint << ".");
+    //TODO allow logs: EASY_LOG(Trace, "row-generation", "Adding new constraint " << constraint << ".");
 }
 
 bool RowGenerationSP::is_unbounded() const {
@@ -152,7 +152,7 @@ void RowGenerationSP::remove_cuts_violating_lower_bound(const Var &t_var, double
     remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "cut-generation",
+                     "row-generation",
                      "Cut " << t_cut << " was removed by contradiction with required "
                             << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
             return true;
@@ -167,7 +167,7 @@ void RowGenerationSP::remove_cuts_violating_upper_bound(const Var &t_var, double
     remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
             EASY_LOG(Trace,
-                     "cut-generation",
+                     "row-generation",
                      "Cut " << t_cut << " was removed by contradiction with required "
                             << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
             return true;

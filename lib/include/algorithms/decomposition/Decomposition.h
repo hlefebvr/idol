@@ -8,7 +8,6 @@
 #include "GenerationAlgorithmWithAttributes.h"
 #include "../attributes/Attributes.h"
 #include "../attributes/Attributes_Base.h"
-#include "DecompositionId.h"
 #include <functional>
 #include <memory>
 
@@ -46,7 +45,7 @@ public:
 
         auto* rmp_strategy = m_generation_strategies.empty() ? m_rmp_strategy.get() : m_generation_strategies.back().get();
 
-        auto* generation_strategy = new T(DecompositionId(*rmp_strategy), std::forward<Args>(t_args)...);
+        auto* generation_strategy = new T(*rmp_strategy, std::forward<Args>(t_args)...);
 
         m_generation_strategies.emplace_back(generation_strategy);
 

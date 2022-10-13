@@ -24,6 +24,7 @@ class Var;
  * By default, most of the methods are defined and throw a NotImplemented exception.
  */
 class Algorithm {
+    friend class AlgorithmInCallback;
     Timer m_timer;
 protected:
     virtual AbstractAttributes& attributes() = 0;
@@ -220,9 +221,9 @@ protected:
 
 class VoidAlgorithm final : public AlgorithmWithAttributes<> {
 protected:
-    void execute() override { throw Exception("Operation is not allowed."); }
+    void execute() override { throw Exception("Executing VoidAlgorithm is not allowed."); }
 public:
-    template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) { throw Exception("Operation is not allowed."); }
+    template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) {}
 };
 
 #endif //OPTIMIZE_ALGORITHM_H

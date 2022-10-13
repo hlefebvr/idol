@@ -33,6 +33,8 @@ class Ctr {
 
     explicit Ctr(impl::Ctr* t_impl) : m_impl(t_impl) {}
 public:
+    Ctr() = default;
+
     /**
      * Returns the constraint id.
      */
