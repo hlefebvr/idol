@@ -14,3 +14,4 @@ Algorithms
     decomposition/index
     column-generation/index
     row-generation/index
+    callbacks/index

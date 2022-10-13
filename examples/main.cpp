@@ -18,7 +18,7 @@
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"
 #include "algorithms.h"
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
-#include "algorithms/callbacks/Callbacks_LazyCuts.h"
+#include "algorithms/callbacks/Callbacks_RowGeneration.h"
 #include "algorithms/callbacks/AlgorithmInCallback.h"
 
 //// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!

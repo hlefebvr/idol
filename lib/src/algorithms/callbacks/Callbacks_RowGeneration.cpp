@@ -1,7 +1,7 @@
 //
 // Created by henri on 13/10/22.
 //
-#include "../../../include/algorithms/callbacks/Callbacks_LazyCuts.h"
+#include "../../../include/algorithms/callbacks/Callbacks_RowGeneration.h"
 #include "../../../include/algorithms/callbacks/AlgorithmInCallback.h"
 
 Callbacks::RowGeneration::RowGeneration(Algorithm &t_algorithm)
@@ -27,5 +27,9 @@ void Callbacks::RowGeneration::execute(Context &t_ctx) {
         m_proxy.set_in_callback(false);
         m_proxy.set_context(nullptr);
     }
+}
+
+RowGenerationSP &Callbacks::RowGeneration::add_subproblem(const Ctr &t_ctr) {
+    return ::RowGeneration::add_subproblem(t_ctr);
 }
 
