@@ -196,9 +196,10 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
         );
 }
 
-Solution::Dual Solvers::Gurobi::dual_solution() const {
+Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std::function<double()> &t_get_obj_val,
+                                              const std::function<double(const GRBConstr &)> &t_get_dual_value) const {
     Solution::Dual result;
-    const auto dual_status = dual(solution_status());
+    const auto dual_status = t_status;
     result.set_status(dual_status);
 
     if (dual_status == Unbounded) {
@@ -216,17 +217,33 @@ Solution::Dual Solvers::Gurobi::dual_solution() const {
         return result;
     }
 
-    result.set_objective_value(m_model.get(GRB_DoubleAttr_ObjVal));
+    result.set_objective_value(t_get_obj_val());
 
     if (!is_in(result.status(), { Optimal, Feasible })) {
         return result;
     }
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, raw(ctr).get(GRB_DoubleAttr_Pi));
+        result.set(ctr, t_get_dual_value(raw(ctr)));
     }
 
     return result;
+}
+
+Solution::Dual Solvers::Gurobi::dual_solution() const {
+    return dual_solution(
+            dual(solution_status()),
+            [this](){ return m_model.get(GRB_DoubleAttr_ObjVal); },
+            [this](const GRBConstr& t_ctr){ return t_ctr.get(GRB_DoubleAttr_Pi); }
+            );
+}
+
+Solution::Dual Solvers::Gurobi::iis() const {
+    return dual_solution(
+            Optimal,
+            [](){ return Inf; },
+            [this](const GRBConstr& t_ctr){ return t_ctr.get(GRB_IntAttr_IISConstr); }
+    );
 }
 
 void Solvers::Gurobi::update_objective(const Row &t_objective) {
@@ -268,6 +285,14 @@ void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
 void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
     raw(t_var).set(GRB_DoubleAttr_UB, t_ub);
     model().update_ub(t_var, t_ub);
+}
+
+void Solvers::Gurobi::write(const std::string &t_filename) {
+    m_model.write(t_filename + ".lp");
+}
+
+void Solvers::Gurobi::compute_iis() {
+    m_model.computeIIS();
 }
 
 #endif

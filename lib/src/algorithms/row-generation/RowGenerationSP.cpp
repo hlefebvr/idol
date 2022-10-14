@@ -10,15 +10,18 @@ RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
       m_cut_template(Row(t_cut.row()), t_cut.type()),
       m_objective_template(t_cut.row().transpose()) {
 
-    save_subproblem_ids();
+    save_subproblem_ids(t_cut);
     remove_cut_template_from_rmp(t_cut);
 
 }
 
-void RowGenerationSP::save_subproblem_ids() {
-    for (const auto& [var, constant] : m_objective_template.lhs()) {
-        m_subproblem_ids.emplace(var.model_id());
+void RowGenerationSP::save_subproblem_ids(const Ctr& t_cut) {
+    for (const auto& [var, constant] : t_cut.row().lhs()) {
+        for (const auto& [param, coeff] : constant) {
+            m_subproblem_ids.emplace(param.model_id());
+        }
     }
+
 }
 
 void RowGenerationSP::remove_cut_template_from_rmp(const Ctr& t_cut) {
@@ -144,7 +147,7 @@ void RowGenerationSP::remove_cut_if(const std::function<bool(const Ctr &, const 
 }
 
 bool RowGenerationSP::is_in_subproblem(const Var &t_var) const {
-    return m_subproblem_ids.find(t_var.id()) != m_subproblem_ids.end();
+    return m_subproblem_ids.find(t_var.model_id()) != m_subproblem_ids.end();
 }
 
 void RowGenerationSP::remove_cuts_violating_lower_bound(const Var &t_var, double t_lb) {

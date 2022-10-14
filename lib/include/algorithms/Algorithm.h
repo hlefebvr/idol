@@ -157,6 +157,14 @@ public:
         throw NotImplemented("Removing constraint", "remove");
     }
 
+    /**
+     * This function is used to write data to files.
+     * @param t_filename The desired destination indication
+     */
+    virtual void write(const std::string& t_filename) {
+        throw NotImplemented("Writing to files", "write");
+    }
+
 
     /* ATTRIBUTES */
 

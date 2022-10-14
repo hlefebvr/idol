@@ -5,7 +5,6 @@
 #include <stdexcept>
 
 void Timer::start() {
-    m_cumulative += in_seconds();
     m_starting_clock = std::chrono::high_resolution_clock::now();
     m_has_started = true;
     m_has_stopped = false;
@@ -18,6 +17,7 @@ void Timer::stop() {
 
     m_ending_clock = std::chrono::high_resolution_clock::now();
     m_has_stopped = true;
+    m_cumulative += in_seconds();
 }
 
 double Timer::in_seconds() const {
@@ -35,5 +35,8 @@ double Timer::in_seconds() const {
 }
 
 double Timer::cumulative_time_in_seconds() const {
+    if (!m_has_stopped) {
+        return m_cumulative + in_seconds();
+    }
     return m_cumulative;
 }

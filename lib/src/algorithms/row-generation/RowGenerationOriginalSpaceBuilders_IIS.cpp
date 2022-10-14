@@ -47,4 +47,3 @@ Solution::Primal RowGenerationOriginalSpaceBuilders::IIS::primal_solution(const 
 
     return result;
 }
-

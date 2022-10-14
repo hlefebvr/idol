@@ -57,7 +57,11 @@ void ActiveNodesManagers::Heap::Strategy<NodeT>::prune_by_bound(double t_upper_b
     while (it != end) {
 
         if (const auto* ptr_to_node = *it ; ptr_to_node->objective_value() >= t_upper_bound) {
-            EASY_LOG(Trace, "branch-and-bound", "[NODE_PRUNED] value = node " << ptr_to_node->id() << ".");
+            EASY_LOG(
+                    Trace,
+                    "branch-and-bound",
+                    "Node " << ptr_to_node->id() << " was pruned by bound."
+                    << "Best UB: " << t_upper_bound << ", Obj: " << ptr_to_node->objective_value() << ".");
             delete ptr_to_node;
             it = m_nodes.erase(it);
             end = m_nodes.end();

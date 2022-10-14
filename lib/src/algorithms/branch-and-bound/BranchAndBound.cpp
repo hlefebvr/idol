@@ -19,6 +19,10 @@ void BranchAndBound::execute() {
 
         update_best_lower_bound();
 
+        if (m_best_lower_bound > m_best_upper_bound) {
+            throw std::runtime_error("This should not happen.");
+        }
+
         ++m_iteration;
 
         if (gap_is_closed()) {

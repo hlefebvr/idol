@@ -221,7 +221,6 @@ void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
     for (const auto& [ctr, constant] : t_var.column().components()) {
         for (const auto& [param, coeff] : constant) {
             m_subproblem_ids.emplace(param.model_id());
-            m_subproblem_ids.emplace(param.model_id());
         }
     }
 

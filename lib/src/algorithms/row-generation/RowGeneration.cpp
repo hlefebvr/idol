@@ -222,6 +222,7 @@ void RowGeneration::update_ub(const Var &t_var, double t_ub) {
         if (is_applied) { return; }
 
     }
+    std::cout << "RMP -> " << t_var.name() << std::endl;
     rmp_solution_strategy().update_ub(t_var, t_ub);
 }
 

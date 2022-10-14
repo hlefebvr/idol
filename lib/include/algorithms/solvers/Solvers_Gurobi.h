@@ -30,6 +30,7 @@ class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
     Attributes<AttributesSections::Base> m_attributes;
 
     Solution::Primal primal_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
+    Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBConstr&)>& t_get_dual_value) const;
     [[nodiscard]] SolutionStatus idol_status(int t_gurobi_status) const;
     static char gurobi_type(CtrType t_type);
     static char gurobi_type(VarType t_type);
@@ -62,6 +63,8 @@ public:
 
     [[nodiscard]] Solution::Primal unbounded_ray() const override;
 
+    Solution::Dual iis() const override;
+
     void update_objective(const Row &t_objective) override;
 
     Var add_column(TempVar t_temporary_variable) override;
@@ -73,6 +76,10 @@ public:
     void update_lb(const Var &t_var, double t_lb) override;
 
     void update_ub(const Var &t_var, double t_ub) override;
+
+    void write(const std::string &t_filename) override;
+
+    void compute_iis() override;
 
     using Solver<GRBVar, GRBConstr>::raw;
 

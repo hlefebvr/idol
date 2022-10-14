@@ -26,7 +26,7 @@ class RowGenerationSP {
 
     PresentCutList m_currently_present_cuts;
 
-    void save_subproblem_ids();
+    void save_subproblem_ids(const Ctr& t_cut);
     void remove_cut_template_from_rmp(const Ctr& t_cut);
     bool is_in_subproblem(const Var& t_var) const;
 
