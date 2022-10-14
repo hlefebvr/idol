@@ -30,6 +30,9 @@ protected:
     virtual AbstractAttributes& attributes() = 0;
     [[nodiscard]] virtual const AbstractAttributes& attributes() const = 0;
     virtual void execute() = 0;
+    virtual void execute_iis() {
+        throw NotImplemented("Computing IIS", "execute_iis");
+    }
 public:
     virtual ~Algorithm() = default;
 
@@ -47,8 +50,10 @@ public:
     /**
      * Searches for an IIS of the optimization problem.
      */
-    virtual void compute_iis() {
-        throw NotImplemented("Computing IIS", "compute_iis");
+    void compute_iis() {
+        m_timer.start();
+        execute_iis();
+        m_timer.stop();
     }
 
     /**

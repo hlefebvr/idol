@@ -291,7 +291,7 @@ void Solvers::Gurobi::write(const std::string &t_filename) {
     m_model.write(t_filename + ".lp");
 }
 
-void Solvers::Gurobi::compute_iis() {
+void Solvers::Gurobi::execute_iis() {
     m_model.computeIIS();
 }
 

@@ -13,7 +13,6 @@ void RowGeneration::execute() {
     initialize();
 
     while (!is_terminated()) {
-
         solve_rmp();
 
         save_last_rmp_primal_solution();

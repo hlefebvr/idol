@@ -21,6 +21,8 @@ protected:
 public:
     explicit Object(Impl* t_impl) : m_impl(t_impl) {}
 
+    virtual ~Object() = default;
+
     [[nodiscard]] unsigned int id() const { return impl().id(); }
 
     [[nodiscard]] const std::string& name() const { return impl().name(); }
@@ -40,6 +42,12 @@ template<> \
 struct std::equal_to<name> { \
     std::size_t operator()(const name& t_a, const name& t_b) const { \
         return t_a.id() == t_b.id(); \
+    } \
+}; \
+template<> \
+struct std::less<name> { \
+    std::size_t operator()(const name& t_a, const name& t_b) const { \
+        return t_a.id() < t_b.id(); \
     } \
 };
 

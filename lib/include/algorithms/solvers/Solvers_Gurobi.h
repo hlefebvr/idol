@@ -38,6 +38,7 @@ protected:
     AbstractAttributes &attributes() override { return m_attributes; }
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
+    void execute_iis() override;
 
     GRBVar create_variable_impl_with_objective_coefficient(const Var& t_var);
 
@@ -78,8 +79,6 @@ public:
     void update_ub(const Var &t_var, double t_ub) override;
 
     void write(const std::string &t_filename) override;
-
-    void compute_iis() override;
 
     using Solver<GRBVar, GRBConstr>::raw;
 

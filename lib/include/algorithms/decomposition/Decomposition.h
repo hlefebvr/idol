@@ -17,7 +17,6 @@ class Decomposition : public AlgorithmWithAttributes<> {
 protected:
     void execute() override;
 public:
-
     Decomposition() = default;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;

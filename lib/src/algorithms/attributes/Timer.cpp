@@ -17,26 +17,40 @@ void Timer::stop() {
 
     m_ending_clock = std::chrono::high_resolution_clock::now();
     m_has_stopped = true;
-    m_cumulative += in_seconds();
+    m_cumulative += m_ending_clock - m_starting_clock;
 }
 
-double Timer::in_seconds() const {
-    constexpr double convert_factor = 0.001;
-
+Timer::duration Timer::as_duration() const {
     if (!m_has_started && !m_has_stopped) {
-        return 0.0;
+        return duration(0);
     }
 
     if (!m_has_stopped) {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - m_starting_clock).count() * convert_factor;
+        return std::chrono::high_resolution_clock::now() - m_starting_clock;
     }
 
-    return std::chrono::duration_cast<std::chrono::milliseconds>(m_ending_clock - m_starting_clock).count() * convert_factor;
+    return m_ending_clock - m_starting_clock;
 }
 
-double Timer::cumulative_time_in_seconds() const {
+double Timer::count(Unit t_unit) const {
+    return (double) std::chrono::duration_cast<std::chrono::microseconds>(as_duration()).count() / factor(t_unit);
+}
+
+double Timer::cumulative_count(Unit t_unit) const {
+    double result = 0.;
     if (!m_has_stopped) {
-        return m_cumulative + in_seconds();
+        result += count(t_unit);
     }
-    return m_cumulative;
+    result += (double) std::chrono::duration_cast<std::chrono::microseconds>(m_cumulative).count() / factor(t_unit);
+    return result;
+}
+
+double Timer::factor(Timer::Unit t_unit) const {
+    switch (t_unit) {
+        case Seconds:      return 1e+6;
+        case Milliseconds: return 1e+3;
+        case Microseconds: return 1e+1;
+        default:;
+    }
+    throw std::runtime_error("Enum out of bounds.");
 }

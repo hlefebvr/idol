@@ -10,13 +10,13 @@
 #include "../../../include/modeling/constraints/impl_Constraint.h"
 
 void Matrix::apply_on_column(const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function) {
-    for (auto& [ctr, ptr_to_coeff] : t_var.column().components().m_map) {
+    for (const auto& [ctr, ptr_to_coeff] : t_var.column().components().m_map) {
         t_function(ctr, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }
 
 void Matrix::apply_on_row(const Ctr &t_ctr, const std::function<void(const Var &, MatrixCoefficientReference&&)> &t_function) {
-    for (auto& [var, ptr_to_coeff] : t_ctr.row().lhs().m_map) {
+    for (const auto& [var, ptr_to_coeff] : t_ctr.row().lhs().m_map) {
         t_function(var, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }

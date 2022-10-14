@@ -13,7 +13,6 @@ void Decomposition::execute () {
         throw Exception("No generation strategy was given to decomposition strategy.");
     }
 
-
     m_generation_strategies.front()->solve();
 }
 

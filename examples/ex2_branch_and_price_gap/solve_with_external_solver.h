@@ -55,7 +55,7 @@ void solve_with_external_solver(const ProblemSpecific::GAP::Instance& t_instance
 
     std::cout << primal_solution.status() << std::endl;
     std::cout << primal_solution.objective_value() << std::endl;
-    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
+    std::cout << "Total time: " << solver.time().count() << " s" << std::endl;
 
 }
 

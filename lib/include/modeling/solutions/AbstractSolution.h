@@ -171,10 +171,18 @@ double AbstractSolution<KeyT, CRTP>::norm_inf() const {
 
 template<class KeyT, class CRTP>
 CRTP &AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
+    for (const auto& [key, value] : t_rhs.m_values) {
+        auto [it, success] = m_values.template emplace(key, value);
+        if (!success) {
+            throw Exception("Conflicts were found while trying to merge explicitly \"without conflict\".");
+        }
+    }
+    /*
     m_values.template merge(t_rhs.m_values);
     if (!t_rhs.m_values.empty()) {
         throw Exception("Conflicts were found while trying to merge explicitly \"without conflict\".");
     }
+    */
     return dynamic_cast<CRTP&>(*this);
 }
 

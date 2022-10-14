@@ -47,6 +47,9 @@ void Model::add_column_to_rows(const Var &t_var) {
 
 void Model::remove(const Var &t_var) {
     m_listeners.broadcast_remove(t_var);
+    for (const auto& [ctr, val] : t_var.column().components()) {
+        m_objects.impl(ctr).row().lhs().set(t_var, 0.);
+    }
     remove_object(m_variables, t_var);
 }
 
@@ -78,6 +81,9 @@ void Model::add_row_to_columns(const Ctr &t_ctr) {
 
 void Model::remove(const Ctr &t_ctr) {
     m_listeners.broadcast_remove(t_ctr);
+    for (const auto& [var, val] : t_ctr.row().lhs()) {
+        m_objects.impl(var).column().components().set(t_ctr, 0.);
+    }
     remove_object(m_constraints, t_ctr);
 }
 

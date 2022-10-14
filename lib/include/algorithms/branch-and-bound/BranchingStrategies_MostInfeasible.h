@@ -55,7 +55,7 @@ bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_valid(const NodeT 
 template<class NodeT>
 std::list<NodeT *> BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const {
 
-    double max_infeas = 0.;
+    double max_infeas = -1.;
     const Var* selected_var = nullptr;
 
     for (const auto& var : m_branching_candidates) {

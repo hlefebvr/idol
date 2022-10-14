@@ -70,7 +70,7 @@ void solve_with_branch_and_price(const ProblemSpecific::GAP::Instance& t_instanc
 
     std::cout << primal_solution.status() << std::endl;
     std::cout << primal_solution.objective_value() << std::endl;
-    std::cout << "Total time: " << solver.time().in_seconds() << " s" << std::endl;
+    std::cout << "Total time: " << solver.time().count() << " s" << std::endl;
 }
 
 #endif //OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
