@@ -60,6 +60,7 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base> 
     void terminate_for_unboundedness();
     void terminate_for_node_could_not_be_solved_to_optimality();
     void terminate_for_iteration_limit_is_reached();
+    void terminate_for_error_lb_greater_than_ub();
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 
@@ -85,7 +86,6 @@ public:
 
     [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
 
-    [[nodiscard]] SolutionStatus status() const;
     [[nodiscard]] double objective_value() const;
     [[nodiscard]] Solution::Primal primal_solution() const override;
 };

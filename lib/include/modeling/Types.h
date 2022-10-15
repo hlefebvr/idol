@@ -17,4 +17,9 @@ enum CtrType {
     Equal
 };
 
+enum ObjectStatus {
+    InModel,
+    Removed
+};
+
 #endif //OPTIMIZE_TYPES_H

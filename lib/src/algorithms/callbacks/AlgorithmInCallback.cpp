@@ -13,8 +13,7 @@ Solution::Primal AlgorithmInCallback::primal_solution() const {
 
 Ctr AlgorithmInCallback::add_row(TempCtr t_temporary_constraint) {
     if (m_is_in_callback) {
-        m_context->add_lazy_cut(std::move(t_temporary_constraint));
-        return {};
+        return m_context->add_lazy_cut(std::move(t_temporary_constraint));
     }
     return m_algorithm.add_row(std::move(t_temporary_constraint));
 }

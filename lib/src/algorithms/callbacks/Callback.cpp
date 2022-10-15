@@ -11,7 +11,6 @@ Solution::Dual Callback::Context::dual_solution() const {
     throw NotImplemented("Retrieving dual solution from callback", "dual_solution");
 }
 
-void Callback::Context::add_lazy_cut(TempCtr t_ctr) const {
+Ctr Callback::Context::add_lazy_cut(TempCtr t_ctr) {
     throw NotImplemented("Adding a lazy cut from callback", "add_lazy_cut");
 }
-

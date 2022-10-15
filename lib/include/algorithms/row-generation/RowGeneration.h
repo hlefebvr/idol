@@ -9,15 +9,18 @@
 #include "../attributes/Attributes_Base.h"
 #include "../attributes/Attributes.h"
 #include "RowGenerationSP.h"
+#include "Attributes_RowGeneration.h"
 #include <list>
 #include <memory>
 
-class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSections::Base> {
+class RowGeneration : public GenerationAlgorithmWithAttributes<AttributesSections::Base, AttributesSections::RowGeneration> {
 protected:
     std::list<RowGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
 
     bool m_is_terminated = false;
+    bool m_violated_cut_found_at_last_iteration = true;
+    bool m_rmp_solved_to_optimality = false;
     unsigned int m_iteration = 0;
 
     void initialize();

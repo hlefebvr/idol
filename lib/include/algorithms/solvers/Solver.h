@@ -8,6 +8,7 @@
 #include "../Algorithm.h"
 #include "../../modeling/models/Model.h"
 #include "../attributes/Attributes_Base.h"
+#include <cassert>
 
 template<class VarT, class CtrT>
 class Solver : public Algorithm {
@@ -15,12 +16,25 @@ class Solver : public Algorithm {
     std::vector<VarT> m_variables;
     std::vector<CtrT> m_constraints;
 
+    std::list<Ctr> m_constraint_updates;
 protected:
     void add_variable_impl(const VarT& t_var);
-    void add_constraint_impl(const CtrT& t_ctr);
     void remove_variable_impl(const Var& t_var);
+
+    void add_constraint_impl(const CtrT& t_ctr);
     void remove_constraint_impl(const Ctr& t_ctr);
+
+    void add_constraint_update_request(const Ctr& t_ctr) { m_constraint_updates.template emplace_back(t_ctr); }
+    void clear_constraint_update_requests() { m_constraint_updates.clear(); }
+    using ConstraintUpdateRequests = IteratorForward<std::list<Ctr>>;
+    ConstraintUpdateRequests constraint_update_requests() { return ConstraintUpdateRequests(m_constraint_updates); }
+
     [[nodiscard]] double value(const Constant& t_constant) const;
+
+    using Constraints = IteratorForward<std::vector<CtrT>>;
+    using ConstConstraints = ConstIteratorForward<std::vector<CtrT>>;
+    Constraints constraints() { return Constraints(m_constraints); }
+    ConstConstraints constraints() const { return ConstConstraints(m_constraints); }
 public:
     explicit Solver(Model& t_model);
 

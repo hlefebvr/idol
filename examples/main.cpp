@@ -20,6 +20,7 @@
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 #include "algorithms/callbacks/Callbacks_RowGeneration.h"
 #include "algorithms/callbacks/AlgorithmInCallback.h"
+#include "problems/kp/KP_Instance.h"
 
 //// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!
 int main() {
@@ -47,25 +48,14 @@ int main() {
     std::cout << subproblem << std::endl;
      */
 
-    Model sp;
-    auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
-    auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
-    sp.add_constraint(     w_1 +  2 * w_2 <= 2.);
-    sp.add_constraint( 2 * w_1 + -1 * w_2 <= 3.);
+    using namespace ProblemSpecific::KP;
 
-    Model rmp;
-    auto z = rmp.add_variable(0., Inf, Integer, 1., "z");
-    auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
-    auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
+    const auto instance = read_instance("./ex1_branch_and_bound_knapsack/demo.txt");
 
-    Solvers::Gurobi solver(rmp);
-    auto& cb = solver.add_callback<Callbacks::RowGeneration>();
-    auto& subproblem = cb.add_subproblem(ctr);
-    subproblem.set_solution_strategy<Solvers::Gurobi>(sp);
+    Model model;
 
-    solver.solve();
+    auto x = model.add_variable(0., 1., Binary, 0.);
 
-    std::cout << solver.primal_solution() << std::endl;
 
     return 0;
 }

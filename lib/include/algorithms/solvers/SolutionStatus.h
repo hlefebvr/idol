@@ -24,7 +24,8 @@ enum Reason {
     NotSpecified,
     Proved,
     TimeLimit,
-    IterationCount
+    IterationCount,
+    CutOff
 };
 
 template<typename T>
@@ -70,6 +71,7 @@ static std::ostream &operator<<(std::ostream& t_os, Reason t_status) {
         case NotSpecified: return t_os << "NotSpecified";
         case TimeLimit: return t_os << "TimeLimit";
         case IterationCount: return t_os << "IterationCount";
+        case CutOff: return t_os << "CutOff";
         default: throw Exception("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;

@@ -11,13 +11,13 @@
 #include <functional>
 #include <memory>
 
-class Decomposition : public AlgorithmWithAttributes<> {
+class Decomposition : public AlgorithmWithAttributes<AttributesSections::Base> {
     std::unique_ptr<Algorithm> m_rmp_strategy;
     std::list<std::unique_ptr<Algorithm>> m_generation_strategies;
 protected:
     void execute() override;
 public:
-    Decomposition() = default;
+    Decomposition();
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

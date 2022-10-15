@@ -48,7 +48,6 @@ class Model {
 
     template<class T> void add_object(std::vector<T>& t_vec, const T& t_value);
     template<class T> void remove_object(std::vector<T>& t_vec, const T& t_value);
-    template<class T> void free(std::vector<T>& t_vec);
     void add_column_to_rows(const Var& t_var);
     void add_row_to_columns(const Ctr& t_ctr);
 
@@ -56,13 +55,13 @@ class Model {
 public:
     explicit Model();
 
+    ~Model();
+
     Model(const Model&) = delete;
     Model(Model&&) noexcept = default;
 
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;
-
-    ~Model();
 
     [[nodiscard]] unsigned int id() const { return m_id; }
 
@@ -112,15 +111,8 @@ void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
     const auto index = t_value.index();
     t_vec[index] = t_vec.back();
     m_objects.impl(t_vec[index]).set_index(index);
-    m_objects.free(t_value);
+    m_objects.impl(t_value).set_status(Removed);
     t_vec.pop_back();
-}
-
-template<class T>
-void Model::free(std::vector<T> &t_vec) {
-    for (auto obj : t_vec) {
-        m_objects.template free(obj);
-    }
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {

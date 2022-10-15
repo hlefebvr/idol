@@ -1,16 +1,14 @@
 //
 // Created by henri on 07/09/22.
 //
+#include <utility>
+
 #include "../../../include/modeling/constraints/Constraint.h"
 #include "../../../include/modeling/constraints/impl_Constraint.h"
 #include "../../../include/modeling/solutions/Solution.h"
 
-unsigned int Ctr::id() const {
-    return m_impl->id();
-}
+Ctr::Ctr(impl::Ctr* t_impl) : m_impl(t_impl) {
 
-const std::string &Ctr::name() const {
-    return m_impl->name();
 }
 
 const Row &Ctr::row() const {
@@ -29,14 +27,6 @@ CtrType Ctr::type() const {
     return m_impl->type();
 }
 
-unsigned int Ctr::index() const {
-    return m_impl->index();
-}
-
-unsigned int Ctr::model_id() const {
-    return m_impl->model_id();
-}
-
 bool Ctr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_impl->row().rhs().numerical();
     double lhs = 0.;
@@ -49,6 +39,50 @@ bool Ctr::is_violated(const Solution::Primal &t_solution) const {
         default:;
     }
     return equals(lhs, rhs, ToleranceForIntegrality);
+}
+
+impl::Object &Ctr::impl() {
+    return *m_impl;
+}
+
+const impl::Object &Ctr::impl() const {
+    return *m_impl;
+}
+
+Ctr::~Ctr() {
+
+    if (m_impl == nullptr) {
+        return;
+    }
+
+    --m_impl->count();
+
+    if (m_impl->count() == 0) {
+        delete m_impl;
+    }
+
+}
+
+Ctr::Ctr(const Ctr &t_var) : m_impl(t_var.m_impl) {
+    ++m_impl->count();
+}
+
+Ctr::Ctr(Ctr &&t_var) noexcept : m_impl(t_var.m_impl) {
+    t_var.m_impl = nullptr;
+}
+
+Ctr &Ctr::operator=(const Ctr &t_var) {
+    if (this == &t_var) { return *this; }
+    m_impl = t_var.m_impl;
+    ++m_impl->count();
+    return *this;
+}
+
+Ctr &Ctr::operator=(Ctr &&t_var) noexcept {
+    if (this == &t_var) { return *this; }
+    m_impl = t_var.m_impl;
+    t_var.m_impl = nullptr;
+    return *this;
 }
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {

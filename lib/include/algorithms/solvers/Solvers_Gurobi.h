@@ -8,6 +8,7 @@
 #include "Solver.h"
 #include "../attributes/Attributes.h"
 #include "../callbacks/Callback.h"
+#include <utility>
 
 #ifdef IDOL_USE_GUROBI
 #include <gurobi_c++.h>
@@ -16,12 +17,26 @@ namespace Solvers {
     class Gurobi;
 }
 
+class GurobiCtr {
+    Ctr m_constraint;
+    std::optional<GRBConstr> m_impl;
+public:
+    explicit GurobiCtr(Ctr  t_ctr) : m_constraint(std::move(t_ctr)) {}
+    [[nodiscard]] bool has_impl() const { return m_impl.has_value(); }
+    GRBConstr& impl() { return m_impl.value(); }
+    [[nodiscard]] const GRBConstr& impl() const { return m_impl.value(); }
+    void update(Solvers::Gurobi& t_parent);
+};
+
 /**
- * Interfaces with the commerical solver Gurobi.
+ * Interfaces with the commercial solver Gurobi.
  */
-class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
+class Solvers::Gurobi : public Solver<GRBVar, GurobiCtr> {
+    friend class ::GurobiCtr;
+
     static GRBEnv m_env;
     GRBModel m_model;
+    bool m_is_built = false;
 
     std::list<std::unique_ptr<::Callback>> m_callbacks;
 
@@ -29,9 +44,9 @@ class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
 
     Attributes<AttributesSections::Base> m_attributes;
 
-    Solution::Primal primal_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
+    void analyze_status();
+    Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
     Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBConstr&)>& t_get_dual_value) const;
-    [[nodiscard]] SolutionStatus idol_status(int t_gurobi_status) const;
     static char gurobi_type(CtrType t_type);
     static char gurobi_type(VarType t_type);
 protected:
@@ -47,10 +62,10 @@ protected:
     void set_constraint_lhs(const Ctr& t_ctr);
 
     void set_variable_components(const Var& t_var);
-
-    [[nodiscard]] SolutionStatus solution_status() const;
 public:
     explicit Gurobi(Model& t_model);
+
+    void update();
 
     void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
@@ -64,7 +79,7 @@ public:
 
     [[nodiscard]] Solution::Primal unbounded_ray() const override;
 
-    Solution::Dual iis() const override;
+    [[nodiscard]] Solution::Dual iis() const override;
 
     void update_objective(const Row &t_objective) override;
 
@@ -80,7 +95,7 @@ public:
 
     void write(const std::string &t_filename) override;
 
-    using Solver<GRBVar, GRBConstr>::raw;
+    using ::Solver<GRBVar, GurobiCtr>::raw;
 
     GRBModel& raw() { return m_model; }
 
@@ -126,6 +141,10 @@ public:
         this->execute(ctx);
     }
 
+    [[nodiscard]] Solution::Primal help() const {
+        return CallbackT::help();
+    }
+
 };
 
 template<class CallbackT>
@@ -138,12 +157,12 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    void add_lazy_cut(TempCtr t_ctr) const override;
+    Ctr add_lazy_cut(TempCtr t_ctr) override;
 };
 
 template<class CallbackT>
 Event Solvers::Gurobi::Callback<CallbackT>::Context::event() const {
-    if (m_parent.where == GRB_CB_MIPNODE) {
+    if (m_parent.where == GRB_CB_MIPNODE && m_parent.where == GRB_OPTIMAL) {
         return RelaxationSolved;
     }
     if (m_parent.where == GRB_CB_MIPSOL) {
@@ -163,7 +182,7 @@ Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::primal_solution(
     }
     if (m_parent.where == GRB_CB_MIPNODE) {
         return m_parent.m_solver.primal_solution(
-                m_parent.m_solver.idol_status(m_parent.getIntInfo(GRB_CB_MIPNODE_STATUS)),
+                Optimal,
                 [this](){ return m_parent.getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
                 [this](const GRBVar &t_var) { return m_parent.getNodeRel(t_var); }
         );
@@ -172,7 +191,7 @@ Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::primal_solution(
 }
 
 template<class CallbackT>
-void Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) const {
+Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
     GRBLinExpr expr;
     for (const auto& [var, constant] : t_ctr.row().lhs()) {
         expr += m_parent.m_solver.value(constant) * m_parent.m_solver.raw(var);
@@ -182,6 +201,9 @@ void Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) 
             m_parent.m_solver.gurobi_type(t_ctr.type()),
             m_parent.m_solver.value(t_ctr.row().rhs())
     );
+    auto result = m_parent.m_solver.model().add_constraint(std::move(t_ctr));
+    // Add to updates
+    return result;
 }
 
 #endif

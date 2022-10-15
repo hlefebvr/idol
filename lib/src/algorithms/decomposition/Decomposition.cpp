@@ -3,6 +3,12 @@
 //
 #include "../../../include/algorithms/decomposition/Decomposition.h"
 
+Decomposition::Decomposition() {
+    set_callback_attribute<Attr::CutOff>([this](double t_cutoff) {
+        m_generation_strategies.front()->set<Attr::CutOff>(t_cutoff);
+    });
+}
+
 void Decomposition::execute () {
 
     if (!m_rmp_strategy) {

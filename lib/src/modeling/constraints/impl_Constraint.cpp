@@ -11,22 +11,31 @@ impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Constant&& t_rhs)
 
 }
 
+impl::Ctr::Ctr(ObjectId &&t_id, TempCtr &&t_temporary_constraint)
+        : impl::Object(std::move(t_id)),
+          m_row(std::move(t_temporary_constraint.m_row)),
+          m_type(t_temporary_constraint.m_type) {
+
+}
+
 const Row &impl::Ctr::row() const {
+    if (status() == Removed) {
+        throw Exception("Trying to access row of removed constraint.");
+    }
     return m_row;
 }
 
 Row &impl::Ctr::row() {
+    if (status() == Removed) {
+        throw Exception("Trying to access row of removed constraint.");
+    }
     return m_row;
 }
 
-impl::Ctr::Ctr(ObjectId &&t_id, TempCtr &&t_temporary_constraint)
-    : impl::Object(std::move(t_id)),
-      m_row(std::move(t_temporary_constraint.m_row)),
-      m_type(t_temporary_constraint.m_type) {
-
-}
-
 CtrType impl::Ctr::type() const {
+    if (status() == Removed) {
+        throw Exception("Trying to access type of removed constraint.");
+    }
     return m_type;
 }
 

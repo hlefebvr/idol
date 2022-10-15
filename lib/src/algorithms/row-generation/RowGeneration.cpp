@@ -6,6 +6,10 @@
 
 RowGeneration::RowGeneration(Algorithm &t_rmp_solution_strategy) : GenerationAlgorithmWithAttributes(t_rmp_solution_strategy){
 
+    set_callback_attribute<Attr::CutOff>([this](double t_cutoff){
+        rmp_solution_strategy().set<Attr::CutOff>(t_cutoff);
+    });
+
 }
 
 void RowGeneration::execute() {
@@ -13,6 +17,7 @@ void RowGeneration::execute() {
     initialize();
 
     while (!is_terminated()) {
+
         solve_rmp();
 
         save_last_rmp_primal_solution();
@@ -40,6 +45,12 @@ void RowGeneration::execute() {
 void RowGeneration::initialize() {
     m_is_terminated = false;
     m_iteration = 0;
+    m_violated_cut_found_at_last_iteration = true;
+
+    if (get<Attr::SubOptimalRMP>()) {
+        m_rmp_solved_to_optimality = false;
+        rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
+    }
 
     for (auto& subproblem : m_subproblems) {
         subproblem.initialize();
@@ -133,19 +144,26 @@ void RowGeneration::add_cuts() {
 
     if (is_terminated()) { return; }
 
-    bool improving_columns_found = false;
+    m_violated_cut_found_at_last_iteration = false;
 
     for (auto& subproblem : m_subproblems) {
 
         if (subproblem.violated_cut_found()) {
-            improving_columns_found = true;
+            m_violated_cut_found_at_last_iteration = true;
             subproblem.add_cut_to_rmp();
         }
 
     }
 
-    if (!improving_columns_found) {
-        terminate_for_no_violated_cut_found();
+    if (!m_violated_cut_found_at_last_iteration) {
+        if (!m_rmp_solved_to_optimality) {
+            rmp_solution_strategy().set<Attr::MipGap>(get<Attr::MipGap>());
+            m_rmp_solved_to_optimality = true;
+        } else {
+            terminate_for_no_violated_cut_found();
+        }
+    } else if (m_rmp_solved_to_optimality && get<Attr::SubOptimalRMP>()) {
+        rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
     }
 
 }
@@ -221,7 +239,6 @@ void RowGeneration::update_ub(const Var &t_var, double t_ub) {
         if (is_applied) { return; }
 
     }
-    std::cout << "RMP -> " << t_var.name() << std::endl;
     rmp_solution_strategy().update_ub(t_var, t_ub);
 }
 

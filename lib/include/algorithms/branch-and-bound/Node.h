@@ -25,6 +25,7 @@ public:
     virtual ~Node() = default;
 
     [[nodiscard]] virtual SolutionStatus status() const = 0;
+    [[nodiscard]] virtual Reason reason() const = 0;
     [[nodiscard]] virtual double objective_value() const = 0;
     [[nodiscard]] virtual const Solution::Primal& primal_solution() const = 0;
     [[nodiscard]] virtual const Solution::Dual& dual_solution() const = 0;

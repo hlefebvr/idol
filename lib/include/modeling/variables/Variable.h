@@ -22,32 +22,23 @@ class Ctr;
  *
  * A variable always belongs to a single Model. Note that you should be creating a variable using the Model::add_variable method, rather than a constructor.
  */
-class Var {
+class Var : public Object {
     friend class impl::ObjectManager;
     impl::Var* m_impl;
 
-    explicit Var(impl::Var* t_impl) : m_impl(t_impl) {}
+    impl::Object &impl() override;
+    [[nodiscard]] const impl::Object &impl() const override;
+
+    explicit Var(impl::Var* t_impl);
 public:
-    /**
-     * Returns the variable's id.
-     */
-    [[nodiscard]] unsigned int id() const;
 
-    /**
-     * Returns the parent model's id.
-     */
-    [[nodiscard]] unsigned int model_id() const;
+    Var(const Var& t_var);
+    Var(Var&& t_var) noexcept;
 
-    /**
-     * Returns the current index of the variable in the underlying model's matrix. The index may change over time, in particular,
-     * due to calls to Model::remove and others.
-     */
-    [[nodiscard]] unsigned int index() const;
+    Var& operator=(const Var& t_var);
+    Var& operator=(Var&& t_var) noexcept;
 
-    /**
-     * Returns the variable's given name.
-     */
-    [[nodiscard]] const std::string& name() const;
+    ~Var() override;
 
     /**
      * Returns the current lower bound for the variable.

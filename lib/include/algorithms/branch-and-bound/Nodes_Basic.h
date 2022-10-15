@@ -32,6 +32,7 @@ public:
     LocalBounds local_upper_bounds() const { return LocalBounds(m_local_upper_bounds); }
 
     SolutionStatus status() const override { return m_primal_solutions.status(); }
+    Reason reason() const override { return m_primal_solutions.reason(); }
     double objective_value() const override { return m_primal_solutions.objective_value(); }
     const Solution::Primal& primal_solution() const override { return m_primal_solutions; }
     const Solution::Dual& dual_solution() const override { throw Exception("Not available."); };

@@ -23,9 +23,8 @@ class ObjectId {
     const unsigned int m_id = ++s_id;
     unsigned int m_model_id;
     const std::string m_name;
-    const std::list<std::unique_ptr<impl::Object>>::iterator m_it;
 
-    ObjectId(const std::list<std::unique_ptr<impl::Object>>::iterator& t_it, unsigned int t_model_id, std::string&& t_name, const std::string& t_default_name);
+    ObjectId(unsigned int t_model_id, std::string&& t_name, const std::string& t_default_name);
 public:
     ObjectId(const ObjectId&) = delete;
     ObjectId(ObjectId&&) = default;

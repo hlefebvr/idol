@@ -26,6 +26,8 @@ class Var;
 class Algorithm {
     friend class AlgorithmInCallback;
     Timer m_timer;
+    SolutionStatus m_solution_status;
+    Reason m_reason;
 protected:
     virtual AbstractAttributes& attributes() = 0;
     [[nodiscard]] virtual const AbstractAttributes& attributes() const = 0;
@@ -33,10 +35,17 @@ protected:
     virtual void execute_iis() {
         throw NotImplemented("Computing IIS", "execute_iis");
     }
+    void set_status(SolutionStatus t_status) { m_solution_status = t_status; }
+
+    void set_reason(Reason t_reason) { m_reason = t_reason; }
 public:
     virtual ~Algorithm() = default;
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
+
+    [[nodiscard]] SolutionStatus status() const { return m_solution_status; }
+
+    [[nodiscard]] Reason reason() const { return m_reason; }
 
     /**
      * Executes the solution algorithm.
@@ -170,7 +179,6 @@ public:
         throw NotImplemented("Writing to files", "write");
     }
 
-
     /* ATTRIBUTES */
 
     /**
@@ -198,6 +206,15 @@ public:
             throw Exception("Wrong parameter type required: " + T::name() + ".");
         }
         return ptr->template get<T>();
+    }
+
+    template<class T>
+    void set_callback_attribute(std::function<void(typename T::value_type)> t_function) {
+        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
+        if (ptr == nullptr) {
+            throw Exception("Wrong parameter type required: " + T::name() + ".");
+        }
+        ptr->template set_callback<T>(t_function);
     }
 
     /* CASTS */

@@ -11,12 +11,20 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 
-    m_attributes.template set_callback<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
+    set_callback_attribute<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
         m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
     });
 
-    m_attributes.template set_callback<Attr::Presolve>([this](bool t_value) {
+    set_callback_attribute<Attr::Presolve>([this](bool t_value) {
         m_model.set(GRB_IntParam_Presolve, t_value);
+    });
+
+    set_callback_attribute<Attr::MipGap>([this](double t_value){
+        m_model.set(GRB_DoubleParam_MIPGap, t_value);
+    });
+
+    set_callback_attribute<Attr::CutOff>([this](double t_value){
+        m_model.set(GRB_DoubleParam_Cutoff, t_value);
     });
 
     for (const auto& var : t_model.variables()) {
@@ -25,14 +33,34 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
     }
 
     for (const auto& ctr : t_model.constraints()) {
-        auto impl = create_constraint_impl_with_rhs(ctr);
-        add_constraint_impl(impl);
-        set_constraint_lhs(ctr);
+        add_constraint_impl(GurobiCtr(ctr));
     }
 
 }
 
+void Solvers::Gurobi::update() {
+
+    if(!m_is_built) {
+
+        for (auto& gurobi_ctr : constraints()) {
+            gurobi_ctr.update(*this);
+        }
+
+        m_is_built = true;
+        return;
+    }
+
+    for (const auto& ctr : constraint_update_requests()) {
+        if (ctr.status() == Removed) { continue; }
+        raw(ctr).update(*this);
+    }
+    clear_constraint_update_requests();
+
+}
+
 void Solvers::Gurobi::execute() {
+
+    update();
 
     m_model.optimize();
 
@@ -40,20 +68,44 @@ void Solvers::Gurobi::execute() {
         m_model.computeIIS();
     }
 
+    analyze_status();
+
 }
 
-SolutionStatus Solvers::Gurobi::idol_status(int t_gurobi_status) const {
-    SolutionStatus status = Unknown;
-    switch (t_gurobi_status) {
-        case GRB_OPTIMAL: status = Optimal; break;
-        case GRB_INFEASIBLE: status = Infeasible; break;
-        case GRB_INF_OR_UNBD: status = InfeasibleOrUnbounded; break;
-        case GRB_UNBOUNDED: status = Unbounded; break;
-        case GRB_TIME_LIMIT: status = m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible; break;
-        case GRB_NUMERIC: status = Fail; break;
-        default: throw Exception("Did not know what to do with gurobi status: " + std::to_string(t_gurobi_status));
+void Solvers::Gurobi::analyze_status() {
+    auto gurobi_status = m_model.get(GRB_IntAttr_Status);
+    switch (gurobi_status) {
+        case GRB_OPTIMAL:
+            set_status(Optimal);
+            set_reason(Proved);
+        break;
+        case GRB_INFEASIBLE:
+            set_status(Infeasible);
+            set_reason(Proved);
+        break;
+        case GRB_INF_OR_UNBD:
+            set_status(InfeasibleOrUnbounded);
+            set_reason(Proved);
+        break;
+        case GRB_UNBOUNDED:
+            set_status(Unbounded);
+            set_reason(Proved);
+        break;
+        case GRB_CUTOFF:
+            set_status(Unknown);
+            set_reason(CutOff);
+        break;
+        case GRB_TIME_LIMIT:
+            set_status(m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible);
+            set_reason(TimeLimit);
+        break;
+        case GRB_NUMERIC:
+            set_status(Fail);
+            set_reason(NotSpecified);
+        break;
+        default:
+            throw Exception("Gurobi returned with status " + std::to_string(gurobi_status) + " which is not handled.");
     }
-    return status;
 }
 
 char Solvers::Gurobi::gurobi_type(CtrType t_type) {
@@ -75,32 +127,44 @@ char Solvers::Gurobi::gurobi_type(VarType t_type) {
     }
     return GRB_BINARY;
 }
+
 GRBVar Solvers::Gurobi::create_variable_impl_with_objective_coefficient(const Var &t_var) {
     return m_model.addVar(t_var.lb(), t_var.ub(), value(t_var.obj()), gurobi_type(t_var.type()), t_var.name());
 }
 
 GRBConstr Solvers::Gurobi::create_constraint_impl_with_rhs(const Ctr &t_ctr) {
-    return m_model.addConstr(0., gurobi_type(t_ctr.type()), value(t_ctr.rhs()), t_ctr.name());
+    auto result =  m_model.addConstr(0., gurobi_type(t_ctr.type()), value(t_ctr.rhs()), t_ctr.name());
+    return result;
+}
+
+void GurobiCtr::update(Solvers::Gurobi &t_parent) {
+
+    if (has_impl()) { return; }
+
+    GRBLinExpr expr;
+    for (const auto& [var, constant] : m_constraint.row().lhs()) {
+        expr += constant.numerical() * t_parent.raw(var);
+    }
+    m_impl = t_parent.m_model.addConstr(expr,
+                               t_parent.gurobi_type(m_constraint.type()),
+                               m_constraint.rhs().numerical());
+
 }
 
 void Solvers::Gurobi::set_constraint_lhs(const Ctr &t_ctr) {
     for (const auto& [var, coeff] : t_ctr.row().lhs()) {
-        m_model.chgCoeff(raw(t_ctr), raw(var), value(coeff));
+        m_model.chgCoeff(raw(t_ctr).impl(), raw(var), value(coeff));
     }
 }
 
 void Solvers::Gurobi::set_variable_components(const Var &t_var) {
     for (const auto& [ctr, coeff] : t_var.column().components()) {
-        m_model.chgCoeff(raw(ctr), raw(t_var), value(coeff));
+        m_model.chgCoeff(raw(ctr).impl(), raw(t_var), value(coeff));
     }
 }
 
-SolutionStatus Solvers::Gurobi::solution_status() const {
-    return idol_status(m_model.get(GRB_IntAttr_Status));
-}
-
 void Solvers::Gurobi::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
-    raw(t_ctr).set(GRB_DoubleAttr_RHS, t_rhs);
+    raw(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
     model().update_rhs(t_ctr, t_rhs);
 }
 
@@ -113,7 +177,7 @@ void Solvers::Gurobi::remove(const Var &t_variable) {
 
 Solution::Dual Solvers::Gurobi::farkas_certificate() const {
 
-    if (solution_status() != Infeasible) {
+    if (status() != Infeasible) {
         throw Exception("Only available for infeasible problems.");
     }
 
@@ -126,7 +190,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
     result.set_objective_value(m_model.get(GRB_DoubleAttr_FarkasProof));
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, -raw(ctr).get(GRB_DoubleAttr_FarkasDual));
+        result.set(ctr, -raw(ctr).impl().get(GRB_DoubleAttr_FarkasDual));
     }
 
     return result;
@@ -134,7 +198,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
 
 Solution::Primal Solvers::Gurobi::unbounded_ray() const {
 
-    if (solution_status() != Unbounded) {
+    if (status() != Unbounded) {
         throw Exception("Only available for unbounded problems.");
     }
 
@@ -158,11 +222,14 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
     return result;
 }
 
-Solution::Primal Solvers::Gurobi::primal_solution(SolutionStatus t_status,
-                                 const std::function<double()>& t_get_obj_val,
-                                 const std::function<double(const GRBVar&)>& t_get_primal_value) const {
+Solution::Primal Solvers::Gurobi::primal_solution(
+             SolutionStatus t_status,
+             Reason t_reason,
+             const std::function<double()>& t_get_obj_val,
+             const std::function<double(const GRBVar&)>& t_get_primal_value) const {
     Solution::Primal result;
     result.set_status(t_status);
+    result.set_reason(t_reason);
 
     if (t_status == Unbounded) {
         result.set_objective_value(-Inf);
@@ -185,12 +252,24 @@ Solution::Primal Solvers::Gurobi::primal_solution(SolutionStatus t_status,
         result.set(var, t_get_primal_value(raw(var)));
     }
 
+    for (auto& cb : m_callbacks) {
+        result.merge_without_conflict(cb->help());
+    }
+
     return result;
 }
 
 Solution::Primal Solvers::Gurobi::primal_solution() const {
+    /* if (m_current_solution != 0) {
+        return primal_solution(
+                solution_status(),
+                [this](){ return m_model.get(GRB_DoubleAttr_PoolObjVal); },
+                [this](const GRBVar& t_var){ return t_var.get(GRB_DoubleAttr_Xn); }
+        );
+    } */
     return primal_solution(
-            solution_status(),
+            status(),
+            reason(),
             [this](){ return m_model.get(GRB_DoubleAttr_ObjVal); },
             [](const GRBVar& t_var){ return t_var.get(GRB_DoubleAttr_X); }
         );
@@ -224,7 +303,7 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
     }
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, t_get_dual_value(raw(ctr)));
+        result.set(ctr, t_get_dual_value(raw(ctr).impl()));
     }
 
     return result;
@@ -232,7 +311,7 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
 
 Solution::Dual Solvers::Gurobi::dual_solution() const {
     return dual_solution(
-            dual(solution_status()),
+            dual(status()),
             [this](){ return m_model.get(GRB_DoubleAttr_ObjVal); },
             [this](const GRBConstr& t_ctr){ return t_ctr.get(GRB_DoubleAttr_Pi); }
             );
@@ -265,14 +344,16 @@ Var Solvers::Gurobi::add_column(TempVar t_temporary_variable) {
 
 Ctr Solvers::Gurobi::add_row(TempCtr t_temporary_constraint) {
     auto ctr = model().add_constraint(std::move(t_temporary_constraint));
-    auto impl = create_constraint_impl_with_rhs(ctr);
-    add_constraint_impl(impl);
-    set_constraint_lhs(ctr);
+    add_constraint_impl(GurobiCtr(ctr));
+    add_constraint_update_request(ctr);
     return ctr;
 }
 
 void Solvers::Gurobi::remove(const Ctr &t_constraint) {
-    m_model.remove(raw(t_constraint));
+    auto& gurobi_ctr = raw(t_constraint);
+    if (gurobi_ctr.has_impl()) {
+        m_model.remove(raw(t_constraint).impl());
+    }
     remove_constraint_impl(t_constraint);
     model().remove(t_constraint);
 }
@@ -280,11 +361,19 @@ void Solvers::Gurobi::remove(const Ctr &t_constraint) {
 void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
     raw(t_var).set(GRB_DoubleAttr_LB, t_lb);
     model().update_lb(t_var, t_lb);
+
+    for (auto& ptr_to_cb : m_callbacks) {
+        ptr_to_cb->update_lb(t_var, t_lb);
+    }
 }
 
 void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
     raw(t_var).set(GRB_DoubleAttr_UB, t_ub);
     model().update_ub(t_var, t_ub);
+
+    for (auto& ptr_to_cb : m_callbacks) {
+        ptr_to_cb->update_ub(t_var, t_ub);
+    }
 }
 
 void Solvers::Gurobi::write(const std::string &t_filename) {

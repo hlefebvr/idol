@@ -20,20 +20,20 @@ void BranchAndBound::execute() {
         update_best_lower_bound();
 
         if (m_best_lower_bound > m_best_upper_bound) {
-            throw std::runtime_error("This should not happen.");
+            terminate_for_error_lb_greater_than_ub();
         }
 
         ++m_iteration;
 
-        if (gap_is_closed()) {
+        if (!is_terminated() && gap_is_closed()) {
             terminate_for_gap_is_closed();
         }
 
-        if (no_active_nodes()) {
+        if (!is_terminated() && no_active_nodes()) {
             terminate_for_no_active_nodes();
         }
 
-        if (iteration_limit_is_reached()) {
+        if (!is_terminated() && iteration_limit_is_reached()) {
             terminate_for_iteration_limit_is_reached();
         }
 
@@ -97,7 +97,7 @@ void BranchAndBound::solve_queued_nodes() {
         prepare_node_solution();
         solve_current_node();
 
-        log_node(Debug, m_nodes->current_node());
+        log_node(Info, m_nodes->current_node()); // TODO Debug
 
         analyze_current_node();
 
@@ -175,6 +175,7 @@ void BranchAndBound::prepare_node_solution() {
 }
 
 void BranchAndBound::solve_current_node() {
+    m_solution_strategy->set<Attr::CutOff>(std::min(m_best_upper_bound, get<Attr::CutOff>()));
     m_solution_strategy->solve();
     m_nodes->save_current_node_solution(*m_solution_strategy);
 }
@@ -192,7 +193,11 @@ bool BranchAndBound::current_node_is_unbounded() const {
 }
 
 bool BranchAndBound::current_node_was_not_solved_to_optimality() const {
-    return current_node().status() != Optimal;
+    auto status = current_node().status();
+    if (status == Unknown) {
+        return current_node().reason() != CutOff;
+    }
+    return status != Optimal;
 }
 
 bool BranchAndBound::current_node_has_a_valid_solution() const {
@@ -217,7 +222,7 @@ void BranchAndBound::reset_current_node() {
 
 bool BranchAndBound::current_node_is_above_upper_bound() {
     const double objective_value = current_node().objective_value();
-    return is_pos_inf(objective_value) || objective_value > m_best_upper_bound;
+    return is_pos_inf(objective_value) || objective_value > std::min(get<Attr::CutOff>(), m_best_upper_bound);
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
@@ -233,7 +238,7 @@ void BranchAndBound::add_current_node_to_active_nodes() {
 }
 
 void BranchAndBound::prune_active_nodes_by_bound() {
-    m_nodes->active_nodes().prune_by_bound(m_best_upper_bound);
+    m_nodes->active_nodes().prune_by_bound(std::min(get<Attr::CutOff>(), m_best_upper_bound));
 }
 
 void BranchAndBound::update_best_lower_bound() {
@@ -266,34 +271,54 @@ void BranchAndBound::branch() {
 
 void BranchAndBound::terminate_for_no_active_nodes() {
     EASY_LOG(Trace, "branch-and-bound", "Terminate. No active node.");
+    set_status(m_nodes->has_incumbent() ? Optimal : Infeasible);
+    set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_gap_is_closed() {
     EASY_LOG(Trace, "branch-and-bound", "Terminate. Gap is closed.");
+    set_status(Optimal);
+    set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_infeasibility() {
     EASY_LOG(Trace, "branch-and-bound", "Terminate. Infeasibility detected.");
+    set_status(Infeasible);
+    set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_unboundedness() {
     m_best_upper_bound = -Inf;
     EASY_LOG(Trace, "branch-and-bound", "Terminate. Unboundedness detected.");
+    set_status(Unbounded);
+    set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
     EASY_LOG(Trace, "branch-and-bound", "Terminate. Current node could node be solved to optimality (node " << current_node().id() << ").");
+    set_status(Fail);
+    set_reason(NotSpecified);
     terminate();
 }
 
 void BranchAndBound::terminate_for_iteration_limit_is_reached() {
     EASY_LOG(Trace, "branch-and-bound", "Terminate. The maximum number of iterations has been reached.")
+    set_status(m_nodes->has_incumbent() ? Feasible : Infeasible);
+    set_reason(IterationCount);
     terminate();
 }
+
+void BranchAndBound::terminate_for_error_lb_greater_than_ub() {
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Best LB > Best UB.");
+    set_status(Fail);
+    set_reason(NotSpecified);
+    terminate();
+}
+
 void BranchAndBound::terminate() {
     m_is_terminated = true;
 }
@@ -315,28 +340,17 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
              << t_node.id() << sign
              << std::setw(15)
              << t_node.status()
-             << std::setw(10)
+             << std::setw(15)
+             << t_node.reason()
+             << std::setw(15)
              << t_node.objective_value()
-             << std::setw(10)
+             << std::setw(15)
              << m_best_lower_bound
-             << std::setw(10)
+             << std::setw(15)
              << m_best_upper_bound
-             << std::setw(10)
+             << std::setw(15)
              << (relative_gap() * 100.) << '%'
      );
-}
-
-SolutionStatus BranchAndBound::status() const {
-    if (is_neg_inf(m_best_upper_bound)) {
-        return Unbounded;
-    }
-    if (m_nodes->has_incumbent()) {
-        if (gap_is_closed()) {
-            return Optimal;
-        }
-        return Feasible;
-    }
-    return Infeasible;
 }
 
 double BranchAndBound::objective_value() const {

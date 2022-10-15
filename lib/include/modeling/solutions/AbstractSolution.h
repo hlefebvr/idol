@@ -18,6 +18,7 @@
 template<class KeyT, class CRTP>
 class AbstractSolution {
     SolutionStatus m_status = Unknown;
+    Reason m_reason = NotSpecified;
     double m_objective_value = Inf;
     Map<KeyT, double> m_values;
 
@@ -46,6 +47,10 @@ public:
      * Returns the stored solution status.
      */
     [[nodiscard]] SolutionStatus status() const { return m_status; }
+
+    void set_reason(Reason t_reason) { m_reason = t_reason; }
+
+    Reason reason() const { return m_reason; }
 
     /**
      * Sets the stored objective value.

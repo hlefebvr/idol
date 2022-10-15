@@ -6,28 +6,28 @@
 #define OPTIMIZE_OBJECT_H
 
 #include <string>
+#include "../Types.h"
 
 namespace impl {
     class ObjectManager;
+    class Object;
 }
 
-template<class Impl>
 class Object {
-    friend class impl::ObjectManager;
-    Impl* m_impl;
-protected:
-    Impl& impl() { return *m_impl; }
-    const Impl& impl() const { return *m_impl; }
+    virtual impl::Object& impl() = 0;
+    [[nodiscard]] virtual const impl::Object& impl() const = 0;
 public:
-    explicit Object(Impl* t_impl) : m_impl(t_impl) {}
-
     virtual ~Object() = default;
 
-    [[nodiscard]] unsigned int id() const { return impl().id(); }
+    [[nodiscard]] unsigned int id() const;
 
-    [[nodiscard]] const std::string& name() const { return impl().name(); }
+    [[nodiscard]] unsigned int model_id() const;
 
-    using impl_t = Impl;
+    [[nodiscard]] unsigned int index() const;
+
+    [[nodiscard]] const std::string& name() const;
+
+    [[nodiscard]] ObjectStatus status() const;
 };
 
 #define MAKE_HASHABLE(name) \

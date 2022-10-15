@@ -38,6 +38,8 @@ public:
 
     void initialize();
 
+    void experimental_set_cut_template(TempCtr t_cut_temp) { m_cut_template = std::move(t_cut_temp); }
+
     void solve();
 
     using PresentCuts = ConstIteratorForward<PresentCutList>;

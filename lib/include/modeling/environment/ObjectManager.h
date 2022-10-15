@@ -34,10 +34,9 @@ public:
 
 template<class T, class... Args>
 T impl::ObjectManager::create(unsigned int t_model_id, std::string&& t_name, Args ...t_args) {
-    auto it = create_placeholder();
-    ObjectId id(it, t_model_id, std::move(t_name), default_name_v<T>);
-    auto* ptr = new typename T::impl_t(std::move(id), std::forward<Args>(t_args)...);
-    it->reset(ptr);
+    using impl_t = typename T::impl_t;
+    ObjectId id(t_model_id, std::move(t_name), default_name_v<T>);
+    auto* ptr = new impl_t(std::move(id), std::forward<Args>(t_args)...);
     return T(ptr);
 }
 

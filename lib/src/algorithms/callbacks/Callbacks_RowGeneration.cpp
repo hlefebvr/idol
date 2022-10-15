@@ -33,3 +33,19 @@ RowGenerationSP &Callbacks::RowGeneration::add_subproblem(const Ctr &t_ctr) {
     return ::RowGeneration::add_subproblem(t_ctr);
 }
 
+Solution::Primal Callbacks::RowGeneration::help() const {
+    Solution::Primal result;
+    for (auto& subproblem : m_subproblems) {
+        result.merge_without_conflict(subproblem.primal_solution());
+    }
+    return result;
+
+}
+
+void Callbacks::RowGeneration::update_lb(const Var &t_var, double t_lb) {
+    ::RowGeneration::update_lb(t_var, t_lb);
+}
+
+void Callbacks::RowGeneration::update_ub(const Var &t_var, double t_ub) {
+    ::RowGeneration::update_ub(t_var, t_ub);
+}

@@ -27,34 +27,23 @@ namespace Solution {
  *
  * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_row method, rather than a constructor.
  */
-class Ctr {
+class Ctr : public Object {
     friend class impl::ObjectManager;
     impl::Ctr* m_impl;
 
-    explicit Ctr(impl::Ctr* t_impl) : m_impl(t_impl) {}
+    impl::Object &impl() override;
+    [[nodiscard]] const impl::Object &impl() const override;
+
+    explicit Ctr(impl::Ctr* t_impl);
 public:
-    Ctr() = default;
 
-    /**
-     * Returns the constraint id.
-     */
-    [[nodiscard]] unsigned int id() const;
+    Ctr(const Ctr& t_var);
+    Ctr(Ctr&& t_var) noexcept;
 
-    /**
-     * Returns the parent model's id.
-     */
-    [[nodiscard]] unsigned int model_id() const;
+    Ctr& operator=(const Ctr& t_var);
+    Ctr& operator=(Ctr&& t_var) noexcept;
 
-    /**
-     * Returns the current index of the constraint in the underlying model's matrix. The index may change over time, in particular,
-     * due to calls to Model::remove and others.
-     */
-    [[nodiscard]] unsigned int index() const;
-
-    /**
-     * Returns the constraint's given name.
-     */
-    [[nodiscard]] const std::string& name() const;
+    ~Ctr() override;
 
     /**
      * Returns the current type of the constraint (see also CtrType).

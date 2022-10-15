@@ -11,8 +11,8 @@ Model::Model() : m_objects(Env::get()) {
 }
 
 Model::~Model() {
-    free(m_variables);
-    free(m_constraints);
+    while (!m_variables.empty()) { remove(m_variables.back()); }
+    while (!m_constraints.empty()) { remove(m_constraints.back()); }
 }
 
 Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {

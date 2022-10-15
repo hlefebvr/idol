@@ -128,7 +128,7 @@ TEST_CASE("01. Var", "[variables][modeling]") {
         SECTION("without any given name") {
             auto x = model.add_variable(0., 1., Continuous, 0.);
             stream << x;
-            CHECK(stream.str() == "Var(" + std::to_string(x.id()) + ')');
+            CHECK(stream.str() == "Var__" + std::to_string(x.id()));
         }
 
     }

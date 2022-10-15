@@ -22,6 +22,17 @@ public:
     class Context;
 
     virtual void execute(Context& t_ctx) = 0;
+
+    virtual Solution::Primal help() const { throw std::runtime_error("experimental"); }
+
+    virtual void update_lb(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating lb from callback", "update_lb");
+    }
+
+    virtual void update_ub(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating ub from callback", "update_ub");
+    }
+
 };
 
 class Callback::Context {
@@ -34,7 +45,7 @@ public:
 
     [[nodiscard]] virtual Solution::Dual dual_solution() const;
 
-    virtual void add_lazy_cut(TempCtr t_ctr) const;
+    virtual Ctr add_lazy_cut(TempCtr t_ctr);
 
 };
 
