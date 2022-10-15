@@ -377,10 +377,12 @@ void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
 }
 
 void Solvers::Gurobi::write(const std::string &t_filename) {
+    update();
     m_model.write(t_filename + ".lp");
 }
 
 void Solvers::Gurobi::execute_iis() {
+    update();
     m_model.computeIIS();
 }
 

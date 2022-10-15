@@ -48,13 +48,17 @@ int main() {
     std::cout << subproblem << std::endl;
      */
 
-    using namespace ProblemSpecific::KP;
-
-    const auto instance = read_instance("./ex1_branch_and_bound_knapsack/demo.txt");
-
     Model model;
 
     auto x = model.add_variable(0., 1., Binary, 0.);
+
+    std::cout << Env::get().size() << std::endl;
+
+    model.remove(x);
+
+    std::cout << Env::get().size() << std::endl;
+
+    std::cout << x.status() << std::endl;
 
 
     return 0;

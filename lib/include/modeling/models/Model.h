@@ -112,6 +112,7 @@ void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
     t_vec[index] = t_vec.back();
     m_objects.impl(t_vec[index]).set_index(index);
     m_objects.impl(t_value).set_status(Removed);
+    m_objects.template free(t_value);
     t_vec.pop_back();
 }
 

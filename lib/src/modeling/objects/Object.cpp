@@ -16,10 +16,6 @@ const std::string &Object::name() const {
     return impl().name();
 }
 
-ObjectStatus Object::status() const {
-    return impl().status();
-}
-
 unsigned int Object::index() const {
     return impl().index();
 }

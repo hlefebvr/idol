@@ -27,7 +27,7 @@ public:
 
     [[nodiscard]] const std::string& name() const;
 
-    [[nodiscard]] ObjectStatus status() const;
+    [[nodiscard]] virtual ObjectStatus status() const = 0;
 };
 
 #define MAKE_HASHABLE(name) \

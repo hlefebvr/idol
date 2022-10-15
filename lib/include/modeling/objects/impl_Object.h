@@ -21,7 +21,6 @@ class impl::Object {
     ObjectId m_object_id;
     unsigned int m_index = 0;
     ObjectStatus m_status = InModel;
-    unsigned int m_count = 1;
 protected:
     explicit Object(ObjectId&& t_id);
 public:
@@ -46,8 +45,6 @@ public:
     void set_status(ObjectStatus t_status) { m_status = t_status; }
 
     [[nodiscard]] ObjectStatus status() const { return m_status; }
-
-    unsigned int& count() { return m_count; }
 };
 
 #endif //OPTIMIZE_IMPL_OBJECT_H

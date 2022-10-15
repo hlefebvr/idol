@@ -5,75 +5,44 @@
 
 #include "../../../include/modeling/variables/Variable.h"
 #include "../../../include/modeling/variables/impl_Variable.h"
+#include "../../../include/modeling/environment/Env.h"
 
-Var::Var(impl::Var* t_impl) : m_impl(t_impl) {
+Var::Var(const std::shared_ptr<impl::Var>& t_impl) : m_impl(t_impl) {
 
 }
 
 const Column &Var::column() const {
-    return m_impl->column();
+    return m_impl.lock()->column();
 }
 
 double Var::lb() const {
-    return m_impl->lb();
+    return m_impl.lock()->lb();
 }
 
 double Var::ub() const {
-    return m_impl->ub();
+    return m_impl.lock()->ub();
 }
 
 VarType Var::type() const {
-    return m_impl->type();
+    return m_impl.lock()->type();
 }
 
 const Constant& Var::obj() const {
-    return m_impl->column().objective_coefficient();
+    return m_impl.lock()->column().objective_coefficient();
 }
 
 const Constant &Var::get(const Ctr &t_ctr) const {
-    return m_impl->column().components().get(t_ctr);
+    return m_impl.lock()->column().components().get(t_ctr);
 }
 
 impl::Object &Var::impl() {
-    return *m_impl;
+    return *m_impl.lock();
 }
 
 const impl::Object &Var::impl() const {
-    return *m_impl;
+    return *m_impl.lock();
 }
 
-Var::~Var() {
-
-    if (m_impl == nullptr) {
-        return;
-    }
-
-    --m_impl->count();
-
-    if (m_impl->count() == 0) {
-        delete m_impl;
-    }
-
-}
-
-Var::Var(const Var &t_var) : m_impl(t_var.m_impl) {
-    ++m_impl->count();
-}
-
-Var::Var(Var &&t_var) noexcept : m_impl(t_var.m_impl) {
-    t_var.m_impl = nullptr;
-}
-
-Var &Var::operator=(const Var &t_var) {
-    if (this == &t_var) { return *this; }
-    m_impl = t_var.m_impl;
-    ++m_impl->count();
-    return *this;
-}
-
-Var &Var::operator=(Var &&t_var) noexcept {
-    if (this == &t_var) { return *this; }
-    m_impl = t_var.m_impl;
-    t_var.m_impl = nullptr;
-    return *this;
+ObjectStatus Var::status() const {
+    return m_impl.expired() ? Removed : InModel;
 }

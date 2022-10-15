@@ -6,6 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(PACKAGE_VERSION 0.0.1)
 
 add_subdirectory(lib)
+add_subdirectory(dev)
 
 if (${BUILD_EXAMPLES})
     add_subdirectory(examples)

@@ -8,6 +8,7 @@
 #include "../objects/Object.h"
 #include "../Types.h"
 #include <iostream>
+#include <memory>
 
 namespace impl {
     class Var;
@@ -24,21 +25,19 @@ class Ctr;
  */
 class Var : public Object {
     friend class impl::ObjectManager;
-    impl::Var* m_impl;
+    std::weak_ptr<impl::Var> m_impl;
 
     impl::Object &impl() override;
     [[nodiscard]] const impl::Object &impl() const override;
 
-    explicit Var(impl::Var* t_impl);
+    explicit Var(const std::shared_ptr<impl::Var>& t_impl);
 public:
 
-    Var(const Var& t_var);
-    Var(Var&& t_var) noexcept;
+    Var(const Var& t_var) = default;
+    Var(Var&& t_var) noexcept = default;
 
-    Var& operator=(const Var& t_var);
-    Var& operator=(Var&& t_var) noexcept;
-
-    ~Var() override;
+    Var& operator=(const Var& t_var) = default;
+    Var& operator=(Var&& t_var) noexcept = default;
 
     /**
      * Returns the current lower bound for the variable.
@@ -76,6 +75,8 @@ public:
      * It may be modified by calling the Model::update_coefficient method.
      */
     [[nodiscard]] const Column& column() const;
+
+    ObjectStatus status() const override;
 
     /**
      * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).

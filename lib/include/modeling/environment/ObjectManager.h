@@ -17,7 +17,7 @@ namespace impl {
 class impl::ObjectManager {
     Env& m_env;
 
-    std::list<std::unique_ptr<impl::Object>>::iterator create_placeholder();
+    std::list<std::shared_ptr<impl::Object>>::iterator create_placeholder();
 protected:
     explicit ObjectManager(Env& t_env) : m_env(t_env) {}
 
@@ -35,14 +35,16 @@ public:
 template<class T, class... Args>
 T impl::ObjectManager::create(unsigned int t_model_id, std::string&& t_name, Args ...t_args) {
     using impl_t = typename T::impl_t;
-    ObjectId id(t_model_id, std::move(t_name), default_name_v<T>);
+    auto it = create_placeholder();
+    ObjectId id(it, t_model_id, std::move(t_name), default_name_v<T>);
     auto* ptr = new impl_t(std::move(id), std::forward<Args>(t_args)...);
-    return T(ptr);
+    it->reset(ptr);
+    return T(std::static_pointer_cast<impl_t>(*it));
 }
 
 template<class T>
 typename T::impl_t& impl::ObjectManager::impl(const T &t_object) {
-    return *t_object.m_impl;
+    return *t_object.m_impl.lock();
 }
 
 template<class T>

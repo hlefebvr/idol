@@ -9,12 +9,13 @@
 #include <list>
 #include "../objects/impl_Object.h"
 
+class ObjectId;
 namespace impl {
     class ObjectManager;
 }
 
 class Env {
-    std::list<std::unique_ptr<impl::Object>> m_objects;
+    std::list<std::shared_ptr<impl::Object>> m_objects;
 
     static Env* s_unique_env;
     Env() = default;
@@ -26,6 +27,8 @@ public:
     Env& operator=(Env&&) noexcept = delete;
 
     static Env& get();
+
+    unsigned int size() const { return m_objects.size(); }
 
     friend class impl::ObjectManager;
 };

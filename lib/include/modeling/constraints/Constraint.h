@@ -9,6 +9,7 @@
 #include "../Types.h"
 #include <string>
 #include <iostream>
+#include <memory>
 
 namespace impl {
     class Ctr;
@@ -29,21 +30,19 @@ namespace Solution {
  */
 class Ctr : public Object {
     friend class impl::ObjectManager;
-    impl::Ctr* m_impl;
+    std::weak_ptr<impl::Ctr> m_impl;
 
     impl::Object &impl() override;
     [[nodiscard]] const impl::Object &impl() const override;
 
-    explicit Ctr(impl::Ctr* t_impl);
+    explicit Ctr(const std::shared_ptr<impl::Ctr>& t_impl);
 public:
 
-    Ctr(const Ctr& t_var);
-    Ctr(Ctr&& t_var) noexcept;
+    Ctr(const Ctr& t_var) = default;
+    Ctr(Ctr&& t_var) noexcept = default;
 
-    Ctr& operator=(const Ctr& t_var);
-    Ctr& operator=(Ctr&& t_var) noexcept;
-
-    ~Ctr() override;
+    Ctr& operator=(const Ctr& t_var) = default;
+    Ctr& operator=(Ctr&& t_var) noexcept = default;
 
     /**
      * Returns the current type of the constraint (see also CtrType).
@@ -75,6 +74,8 @@ public:
      * @param t_solution The solution to be checked for feasibility.
      */
     [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
+
+    ObjectStatus status() const override;
 
     /**
      * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).

@@ -21,6 +21,8 @@ int main() {
     solve_with_external_solver(instance);
     solve_with_branch_and_price(instance);
 
+    std::cout << Env::get().size() << std::endl;
+
     return 0;
 }
 

@@ -50,6 +50,7 @@ void Model::remove(const Var &t_var) {
     for (const auto& [ctr, val] : t_var.column().components()) {
         m_objects.impl(ctr).row().lhs().set(t_var, 0.);
     }
+    m_objects.impl(t_var).column() = Column();
     remove_object(m_variables, t_var);
 }
 
@@ -84,6 +85,7 @@ void Model::remove(const Ctr &t_ctr) {
     for (const auto& [var, val] : t_ctr.row().lhs()) {
         m_objects.impl(var).column().components().set(t_ctr, 0.);
     }
+    m_objects.impl(t_ctr).row() = Row();
     remove_object(m_constraints, t_ctr);
 }
 
