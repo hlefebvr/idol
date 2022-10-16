@@ -48,6 +48,12 @@ public:
      */
     TempCtr(Row&& t_row, CtrType t_type) : m_row(std::move(t_row)), m_type(t_type) {}
 
+    TempCtr(const TempCtr&) = default;
+    TempCtr(TempCtr&&) noexcept = default;
+
+    TempCtr& operator=(const TempCtr&) = default;
+    TempCtr& operator=(TempCtr&&) noexcept = default;
+
     /**
      * Returns the row for the constraint (see Row).
      */

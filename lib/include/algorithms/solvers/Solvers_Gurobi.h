@@ -176,6 +176,7 @@ Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::primal_solution(
     if (m_parent.where == GRB_CB_MIPSOL) {
         return m_parent.m_solver.primal_solution(
                 Optimal,
+                Proved,
                 [this](){ return m_parent.getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
                 [this](const GRBVar &t_var) { return m_parent.getSolution(t_var); }
         );
@@ -183,6 +184,7 @@ Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::primal_solution(
     if (m_parent.where == GRB_CB_MIPNODE) {
         return m_parent.m_solver.primal_solution(
                 Optimal,
+                Proved,
                 [this](){ return m_parent.getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
                 [this](const GRBVar &t_var) { return m_parent.getNodeRel(t_var); }
         );

@@ -50,16 +50,14 @@ int main() {
 
     Model model;
 
-    auto x = model.add_variable(0., 1., Binary, 0.);
+    auto x = model.add_variable(0., 1., Binary, 0., "x");
+    auto ctr = model.add_constraints(Dim<2>(5, 10), x <= 1, "c");
 
-    std::cout << Env::get().size() << std::endl;
-
-    model.remove(x);
-
-    std::cout << Env::get().size() << std::endl;
-
-    std::cout << x.status() << std::endl;
-
+    for (unsigned int i = 0 ; i < 5 ; ++i) {
+        for (unsigned int j = 0 ; j < 10 ; ++j) {
+            std::cout << ctr[i][j] << std::endl;
+        }
+    }
 
     return 0;
 }

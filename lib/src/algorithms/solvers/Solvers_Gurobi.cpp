@@ -20,7 +20,7 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
     });
 
     set_callback_attribute<Attr::MipGap>([this](double t_value){
-        m_model.set(GRB_DoubleParam_MIPGap, t_value);
+        //m_model.set(GRB_DoubleParam_MIPGap, t_value);
     });
 
     set_callback_attribute<Attr::CutOff>([this](double t_value){
@@ -352,6 +352,7 @@ Ctr Solvers::Gurobi::add_row(TempCtr t_temporary_constraint) {
 void Solvers::Gurobi::remove(const Ctr &t_constraint) {
     auto& gurobi_ctr = raw(t_constraint);
     if (gurobi_ctr.has_impl()) {
+        auto impl = raw(t_constraint);
         m_model.remove(raw(t_constraint).impl());
     }
     remove_constraint_impl(t_constraint);
