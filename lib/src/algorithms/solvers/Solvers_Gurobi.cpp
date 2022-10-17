@@ -41,9 +41,8 @@ void Solvers::Gurobi::execute() {
 
     update();
 
-    if (!m_callbacks.empty()) {
+    if (get<Attr::ResetBeforeSolving>()) {
         m_model.reset();
-        EASY_LOG(Warn, "gurobi", "Previous solution is discarded!");
     }
     m_model.optimize();
 

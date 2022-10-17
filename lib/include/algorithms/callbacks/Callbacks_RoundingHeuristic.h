@@ -31,6 +31,7 @@ public:
         auto result = advanced(t_ctx).primal_solution();
 
         if (result.status() == Optimal) {
+            result.set_status(Feasible);
             t_ctx.submit_solution(std::move(result));
         }
 

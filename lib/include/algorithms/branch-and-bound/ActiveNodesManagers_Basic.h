@@ -121,16 +121,16 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching(int 
             automatically_select_node_for_branching();
             break;
         case NodeSelections::WorstBound:
-            m_node_selected_for_branching = m_nodes.by_objective_value().begin(); // Worst bound first
+            m_node_selected_for_branching = m_nodes.by_objective_value().begin();
             break;
         case NodeSelections::BestBound:
-            m_node_selected_for_branching = --m_nodes.by_objective_value().end(); // Best bound first
+            m_node_selected_for_branching = --m_nodes.by_objective_value().end();
             break;
         case NodeSelections::DepthFirst:
-            m_node_selected_for_branching = --m_nodes.by_level().end(); // Depth-first
+            m_node_selected_for_branching = --m_nodes.by_level().end();
             break;
         case NodeSelections::BreadthFirst:
-            m_node_selected_for_branching = m_nodes.by_level().begin(); // Breadth-first
+            m_node_selected_for_branching = m_nodes.by_level().begin();
             break;
         default: throw Exception("Unknown specified node selection strategy.");
     }
