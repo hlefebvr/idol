@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ITERATORFORWARD_H
 #define OPTIMIZE_ITERATORFORWARD_H
 
-template<class T>
+template<class T, class IteratorT = typename T::iterator, class ConstIteratorT = typename T::const_iterator>
 class IteratorForward {
     T& m_container;
 public:
@@ -17,17 +17,17 @@ public:
     IteratorForward& operator=(const IteratorForward&) = delete;
     IteratorForward& operator=(IteratorForward&&) noexcept = delete;
 
-    typename T::iterator begin() { return m_container.begin(); }
-    typename T::iterator end() { return m_container.end(); }
-    [[nodiscard]] typename T::const_iterator begin() const { return m_container.begin(); }
-    [[nodiscard]] typename T::const_iterator end() const { return m_container.end(); }
-    [[nodiscard]] typename T::const_iterator cbegin() const { return m_container.begin(); }
-    [[nodiscard]] typename T::const_iterator cend() const { return m_container.end(); }
+    IteratorT begin() { return m_container.begin(); }
+    IteratorT end() { return m_container.end(); }
+    [[nodiscard]] ConstIteratorT begin() const { return m_container.begin(); }
+    [[nodiscard]] ConstIteratorT end() const { return m_container.end(); }
+    [[nodiscard]] ConstIteratorT cbegin() const { return m_container.begin(); }
+    [[nodiscard]] ConstIteratorT cend() const { return m_container.end(); }
 
     [[nodiscard]] unsigned int size() const { return m_container.size(); }
 };
 
-template<class T>
+template<class T, class ConstIteratorT = typename T::const_iterator>
 class ConstIteratorForward {
     const T& m_container;
 public:
@@ -39,11 +39,10 @@ public:
     ConstIteratorForward& operator=(const ConstIteratorForward&) = delete;
     ConstIteratorForward& operator=(ConstIteratorForward&&) noexcept = delete;
 
-
-    [[nodiscard]] typename T::const_iterator begin() const { return m_container.begin(); }
-    [[nodiscard]] typename T::const_iterator end() const { return m_container.end(); }
-    [[nodiscard]] typename T::const_iterator cbegin() const { return m_container.begin(); }
-    [[nodiscard]] typename T::const_iterator cend() const { return m_container.end(); }
+    [[nodiscard]] ConstIteratorT begin() const { return m_container.begin(); }
+    [[nodiscard]] ConstIteratorT end() const { return m_container.end(); }
+    [[nodiscard]] ConstIteratorT cbegin() const { return m_container.begin(); }
+    [[nodiscard]] ConstIteratorT cend() const { return m_container.end(); }
 
     [[nodiscard]] unsigned int size() const { return m_container.size(); }
 };

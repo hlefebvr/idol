@@ -36,14 +36,20 @@ public:
     [[nodiscard]] virtual Node* create_child(unsigned int t_id) const = 0;
     virtual void set_local_lower_bound(const Var& t_var, double t_lb) = 0;
     virtual void set_local_upper_bound(const Var& t_var, double t_ub) = 0;
-};
 
-template<>
-class std::greater<Node*> {
-public:
-    bool operator()(const Node* t_a, const Node* t_b) const {
-        return t_a->objective_value() > t_b->objective_value();
-    }
+    class ByObjectiveValue {
+    public:
+        bool operator()(const Node* t_a, const Node* t_b) const {
+            return t_a->objective_value() > t_b->objective_value();
+        }
+    };
+
+    class ByLevel {
+    public:
+        bool operator()(const Node* t_a, const Node* t_b) const {
+            return t_a->level() > t_b->level();
+        }
+    };
 };
 
 #endif //OPTIMIZE_NODE_H

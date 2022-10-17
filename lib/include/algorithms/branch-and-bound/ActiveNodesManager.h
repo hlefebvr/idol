@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_ACTIVENODESMANAGER_H
 #define OPTIMIZE_ACTIVENODESMANAGER_H
 
-class Node;
+#include "Node.h"
 
 class ActiveNodesManager {
 public:
