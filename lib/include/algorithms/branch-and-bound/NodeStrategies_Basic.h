@@ -23,6 +23,8 @@ namespace NodeStrategies {
 template<class NodeT>
 class NodeStrategies::Basic : public NodeStrategy {
 
+    BranchAndBound& m_parent;
+
     unsigned int m_node_id = 0;
 
     std::list<NodeT*> m_solution_pool;
@@ -37,7 +39,7 @@ class NodeStrategies::Basic : public NodeStrategy {
 
     template<class T> void free(T& t_container);
 public:
-    Basic() = default;
+    explicit Basic(BranchAndBound& t_parent) : m_parent(t_parent) {}
 
     Basic(const Basic&) = delete;
     Basic(Basic&&) noexcept = default;
@@ -200,7 +202,7 @@ const Node &NodeStrategies::Basic<NodeT>::incumbent() const {
 template<class NodeT>
 template<class T, class... Args>
 typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_active_node_manager_strategy(Args &&... t_args) {
-    auto* active_node_manager = new typename T::template Strategy<NodeT>(std::forward<Args>(t_args)...);
+    auto* active_node_manager = new typename T::template Strategy<NodeT>(m_parent, std::forward<Args>(t_args)...);
     m_active_nodes.reset(active_node_manager);
     return *active_node_manager;
 }

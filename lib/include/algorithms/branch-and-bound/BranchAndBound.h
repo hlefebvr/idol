@@ -12,13 +12,14 @@
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "NodeStrategy.h"
+#include "Attributes_BranchAndBound.h"
 #include <vector>
 #include <list>
 #include <memory>
 
 class Callback;
 
-class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base> {
+class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, AttributesSections::BranchAndBound> {
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
     bool m_is_terminated = false;
@@ -109,7 +110,7 @@ T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
 
 template<class T, class... Args>
 T &BranchAndBound::set_node_strategy(Args &&... t_args) {
-    auto* node_strategy = new T(std::forward<Args>(t_args)...);
+    auto* node_strategy = new T(*this, std::forward<Args>(t_args)...);
     m_nodes.reset(node_strategy);
     return *node_strategy;
 }

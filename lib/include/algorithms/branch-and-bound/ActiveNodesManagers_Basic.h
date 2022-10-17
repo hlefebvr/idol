@@ -8,6 +8,7 @@
 #include "ActiveNodesManager.h"
 #include "../logs/Log.h"
 #include "NodeSet.h"
+#include "Attributes_BranchAndBound.h"
 #include <algorithm>
 #include <variant>
 
@@ -20,9 +21,15 @@ public:
 
     template<class NodeT>
     class Strategy : public ActiveNodesManagerWithNodeType<NodeT> {
+        BranchAndBound& m_parent;
         NodeSet<NodeT> m_nodes;
         typename NodeSet<NodeT>::const_iterator m_node_selected_for_branching;
+
+        void select_node_for_branching(int t_strategy);
+        virtual void automatically_select_node_for_branching();
     public:
+        explicit Strategy(BranchAndBound& t_parent) : m_parent(t_parent) {}
+
         ~Strategy() override;
 
         void initialize() override;
@@ -107,11 +114,43 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::initialize() {
 }
 
 template<class NodeT>
+void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching(int t_strategy) {
+
+    switch (t_strategy) {
+        case NodeSelections::Automatic:
+            automatically_select_node_for_branching();
+            break;
+        case NodeSelections::WorstBound:
+            m_node_selected_for_branching = m_nodes.by_objective_value().begin(); // Worst bound first
+            break;
+        case NodeSelections::BestBound:
+            m_node_selected_for_branching = --m_nodes.by_objective_value().end(); // Best bound first
+            break;
+        case NodeSelections::DepthFirst:
+            m_node_selected_for_branching = --m_nodes.by_level().end(); // Depth-first
+            break;
+        case NodeSelections::BreadthFirst:
+            m_node_selected_for_branching = m_nodes.by_level().begin(); // Breadth-first
+            break;
+        default: throw Exception("Unknown specified node selection strategy.");
+    }
+
+}
+
+template<class NodeT>
+void ActiveNodesManagers::Basic::Strategy<NodeT>::automatically_select_node_for_branching() {
+    if (m_parent.relative_gap() <= 2e-2) {
+        return select_node_for_branching(NodeSelections::BestBound);
+    }
+    if (m_parent.relative_gap() >= 2e-1) {
+        return select_node_for_branching(NodeSelections::DepthFirst);
+    }
+    return select_node_for_branching(NodeSelections::WorstBound);
+}
+
+template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
-    m_node_selected_for_branching = m_nodes.by_objective_value().begin(); // Worst bound first
-    //m_node_selected_for_branching = --m_nodes.by_objective_value().end(); // Best bound first
-    //m_node_selected_for_branching = --m_nodes.by_level().end(); // Depth-first
-    //m_node_selected_for_branching = m_nodes.by_level().begin(); // Breadth-first
+    select_node_for_branching(m_parent.template get<Attr::NodeSelection>());
     EASY_LOG(Trace, "branch-and-bound", "Node " << node_selected_for_branching().id() << " has been selected for branching.");
 }
 
