@@ -41,11 +41,13 @@ public:
 
     [[nodiscard]] virtual Event event() const = 0;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution() const;
+    [[nodiscard]] virtual Solution::Primal node_primal_solution() const;
 
-    [[nodiscard]] virtual Solution::Dual dual_solution() const;
+    [[nodiscard]] virtual Solution::Dual node_dual_solution() const;
 
     virtual Ctr add_lazy_cut(TempCtr t_ctr);
+
+    virtual bool submit_solution(Solution::Primal&& t_solution);
 
 };
 

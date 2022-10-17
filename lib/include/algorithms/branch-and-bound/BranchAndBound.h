@@ -16,6 +16,8 @@
 #include <list>
 #include <memory>
 
+class Callback;
+
 class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base> {
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
@@ -25,8 +27,9 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base> 
     double m_best_upper_bound = +Inf;
 
     // User strategies
-    std::unique_ptr<AbstractNodeStrategy> m_nodes;
+    std::unique_ptr<NodeStrategy> m_nodes;
     std::unique_ptr<Algorithm> m_solution_strategy;
+    std::list<std::unique_ptr<::Callback>> m_callbacks;
 
     void initialize();
     void create_root_node();
@@ -88,6 +91,12 @@ public:
 
     [[nodiscard]] double objective_value() const;
     [[nodiscard]] Solution::Primal primal_solution() const override;
+
+    bool submit_solution(Solution::Primal&& t_solution);
+
+    template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
+
+    class Callback;
 };
 
 template<class T, class... Args>
@@ -104,5 +113,14 @@ T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     m_nodes.reset(node_strategy);
     return *node_strategy;
 }
+
+template<class T, class... ArgsT>
+T &BranchAndBound::add_callback(ArgsT&& ...t_args) {
+    auto cb = new T(std::forward<ArgsT>(t_args)...);
+    m_callbacks.template emplace_back(cb);
+    return *cb;
+}
+
+#include "../callbacks/BranchAndBoundCallback.h"
 
 #endif //OPTIMIZE_BRANCHANDBOUND_H

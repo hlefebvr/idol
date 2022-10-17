@@ -34,3 +34,7 @@ void Nodes::Basic::set_local_upper_bound(const Var &t_var, double t_ub) {
         it->second = t_ub;
     }
 }
+
+void Nodes::Basic::set_solution(Solution::Primal &&t_solution) {
+    m_primal_solutions = std::move(t_solution);
+}

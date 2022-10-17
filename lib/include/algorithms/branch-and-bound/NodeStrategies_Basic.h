@@ -21,7 +21,7 @@ namespace NodeStrategies {
 }
 
 template<class NodeT>
-class NodeStrategies::Basic : public AbstractNodeStrategy {
+class NodeStrategies::Basic : public NodeStrategy {
 
     unsigned int m_node_id = 0;
 
@@ -76,9 +76,11 @@ public:
 
     [[nodiscard]] const Node &incumbent() const override;
 
-    bool current_node_has_a_valid_solution() const override;
+    [[nodiscard]] bool current_node_has_a_valid_solution() const override;
 
     unsigned int create_child_nodes() override;
+
+    bool submit_solution(Solution::Primal &&t_solution, double t_best_upper_bound) override;
 
     template<class T, class ...Args>
     typename T::template Strategy<NodeT>& set_active_node_manager_strategy(Args&& ... t_args);
@@ -246,6 +248,21 @@ void NodeStrategies::Basic<NodeT>::create_root_node() {
 template<class NodeT>
 void NodeStrategies::Basic<NodeT>::apply_current_node_to(Algorithm &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
+}
+
+template<class NodeT>
+bool NodeStrategies::Basic<NodeT>::submit_solution(Solution::Primal &&t_solution, double t_best_upper_bound) {
+    NodeT* node = current_node().create_child(-1);
+    node->set_solution(std::move(t_solution));
+
+    if (!m_branching_strategy->is_valid(*node) || node->objective_value() >= t_best_upper_bound) {
+        delete node;
+        return false;
+    }
+
+    m_best_upper_bound_node = node;
+
+    return true;
 }
 
 #endif //OPTIMIZE_NODESTRATEGIES_BASIC_H

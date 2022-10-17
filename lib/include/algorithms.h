@@ -15,13 +15,13 @@
 #include "algorithms/decomposition/Decomposition.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
-#include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
+#include "algorithms/branch-and-bound/ActiveNodesManagers_Basic.h"
 
 template<
         class SolutionStrategyT = std::tuple_element_t<0, lp_solvers>,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
-        class ActiveNodeManagerT = ActiveNodesManagers::Heap,
+        class ActiveNodeManagerT = ActiveNodesManagers::Basic,
         class NodeUpdatorT = NodeUpdators::ByBoundVar
 >
 BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_candidates) {
@@ -43,7 +43,7 @@ template<
         class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
-        class ActiveNodeManagerT = ActiveNodesManagers::Heap,
+        class ActiveNodeManagerT = ActiveNodesManagers::Basic,
         class NodeUpdatorT = NodeUpdators::ByBoundVar
 >
 BranchAndBound branch_and_price(Model& t_rmp_model, const std::vector<Var>& t_variables, std::vector<Model>& t_subproblems, std::vector<Var> t_branching_candidates) {

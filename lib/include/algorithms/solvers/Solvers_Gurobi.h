@@ -131,7 +131,7 @@ public:
 
     [[nodiscard]] Event event() const override;
 
-    [[nodiscard]] Solution::Primal primal_solution() const override;
+    [[nodiscard]] Solution::Primal node_primal_solution() const override;
 
     Ctr add_lazy_cut(TempCtr t_ctr) override;
 };
@@ -148,7 +148,7 @@ Event Solvers::Gurobi::Callback<CallbackT>::Context::event() const {
 }
 
 template<class CallbackT>
-Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::primal_solution() const {
+Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::node_primal_solution() const {
     if (m_parent.where == GRB_CB_MIPSOL) {
         return m_parent.m_solver.primal_solution(
                 Optimal,

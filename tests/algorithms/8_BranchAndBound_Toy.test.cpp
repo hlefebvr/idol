@@ -9,7 +9,7 @@ using configurations =
                 lp_solvers,
                 std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
-                std::tuple<ActiveNodesManagers::Heap>,
+                std::tuple<ActiveNodesManagers::Basic>,
                 std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
             >;
 

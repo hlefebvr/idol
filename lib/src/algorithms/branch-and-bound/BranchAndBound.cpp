@@ -3,6 +3,8 @@
 //
 #include "../../../include/algorithms/branch-and-bound/BranchAndBound.h"
 #include "../../../include/algorithms/branch-and-bound/ActiveNodesManager.h"
+#include "../../../include/algorithms/callbacks/Callback.h"
+#include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
 
 #include <iomanip>
 
@@ -97,12 +99,12 @@ void BranchAndBound::solve_queued_nodes() {
         prepare_node_solution();
         solve_current_node();
 
-        log_node(Info, m_nodes->current_node()); // TODO Debug
+        log_node(Debug, m_nodes->current_node());
 
         analyze_current_node();
 
         if (m_nodes->has_current_node()) {
-            //apply_heuristics_on_current_node();
+            apply_heuristics_on_current_node();
             add_current_node_to_active_nodes();
         }
 
@@ -226,7 +228,13 @@ bool BranchAndBound::current_node_is_above_upper_bound() {
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
-    if (is_terminated()) { return; }
+
+    for (const auto& ptr_to_cb : m_callbacks) {
+        if (is_terminated()) { break; }
+        BranchAndBound::Callback::AdvancedContext ctx(*this, RelaxationSolved);
+        ptr_to_cb->execute(ctx);
+    }
+
 }
 
 void BranchAndBound::prune_current_node() {
@@ -326,6 +334,7 @@ void BranchAndBound::terminate() {
 void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
 
     const double objective_value = t_node.objective_value();
+    const unsigned int id = t_node.id();
     char sign = ' ';
 
     if (equals(objective_value, m_best_upper_bound, ToleranceForAbsoluteGapMIP)) {
@@ -337,7 +346,7 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
     EASY_LOG(t_msg_level,
              "branch-and-bound",
              std::setw(4)
-             << t_node.id() << sign
+             << (id == -1 ? "H" : std::to_string(id)) << sign
              << std::setw(15)
              << t_node.status()
              << std::setw(15)
@@ -378,4 +387,14 @@ double BranchAndBound::upper_bound() const {
 
 bool BranchAndBound::iteration_limit_is_reached() const {
     return m_iteration >= get<Attr::MaxIterations>();
+}
+
+bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
+    if (m_nodes->submit_solution(std::move(t_solution), m_best_upper_bound)) {
+        EASY_LOG(Debug, "branch-and-bound", "New incumbent solution found by submission.");
+        m_best_upper_bound = m_nodes->incumbent().objective_value();
+        log_node(Info, m_nodes->incumbent());
+        return true;
+    }
+    return false;
 }

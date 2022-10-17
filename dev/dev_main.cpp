@@ -12,7 +12,7 @@
 #include "algorithms/row-generation/RowGenerationSP.h"
 #include "algorithms/row-generation/RowGenerationOriginalSpaceBuilders_Dual.h"
 #include "algorithms/row-generation/RowGenerationOriginalSpaceBuilders_IIS.h"
-#include "algorithms/branch-and-bound/ActiveNodesManagers_Heap.h"
+#include "algorithms/branch-and-bound/ActiveNodesManagers_Basic.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/branch-and-bound/NodeUpdators_ByBoundCtr.h"

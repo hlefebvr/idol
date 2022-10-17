@@ -31,7 +31,7 @@ TEMPLATE_LIST_TEST_CASE("10. CG: Toy", has_lp_solver ? "[generation-strategies][
 
         BranchAndBound solver;
         auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
-        node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+        node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
         node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
         node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 
@@ -63,7 +63,7 @@ TEMPLATE_LIST_TEST_CASE("10. CG: Toy", has_lp_solver ? "[generation-strategies][
 
         BranchAndBound solver;
         auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
-        node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Heap>();
+        node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
         node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
         node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(std::vector<Var> {x_0, x_1 });
 

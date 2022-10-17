@@ -9,9 +9,9 @@ class Node;
 class Algorithm;
 class ActiveNodesManager;
 
-class AbstractNodeStrategy {
+class NodeStrategy {
 public:
-    virtual ~AbstractNodeStrategy() = default;
+    virtual ~NodeStrategy() = default;
     virtual void initialize() = 0;
     virtual bool has_current_node() = 0;
     [[nodiscard]] virtual const Node& current_node() const = 0;
@@ -30,6 +30,7 @@ public:
     virtual unsigned int create_child_nodes() = 0;
     virtual void create_root_node() = 0;
     virtual void apply_current_node_to(Algorithm& t_solution_strategy) = 0;
+    virtual bool submit_solution(Solution::Primal&& t_solution, double t_best_upper_bound) = 0;
 
     [[nodiscard]] virtual ActiveNodesManager& active_nodes() = 0;
     [[nodiscard]] virtual const ActiveNodesManager& active_nodes() const = 0;

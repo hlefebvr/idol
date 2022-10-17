@@ -4,14 +4,16 @@
 
 #include "../test_utils.h"
 #include "problems/kp/KP_Instance.h"
+#include "algorithms/callbacks/Callbacks_RoundingHeuristic.h"
 
 using configurations =
         cartesian_product<
                 lp_solvers,
                 std::tuple<BranchingStrategies::MostInfeasible>,
                 std::tuple<NodeStrategies::Basic<Nodes::Basic>>,
-                std::tuple<ActiveNodesManagers::Heap>,
-                std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>
+                std::tuple<ActiveNodesManagers::Basic>,
+                std::tuple<NodeUpdators::ByBoundVar, NodeUpdators::ByBoundCtr>,
+                std::tuple<std::true_type, std::false_type>
         >;
 
 TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound][algorithms]" : "[.]", configurations) {
@@ -21,6 +23,7 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
     using NodeStrategyT       = std::tuple_element_t<2, TestType>;
     using ActiveNodeManagerT  = std::tuple_element_t<3, TestType>;
     using NodeUpdatorT        = std::tuple_element_t<4, TestType>;
+    using RoundingHeuristicT  = std::tuple_element_t<5, TestType>;
 
     Model model;
 
@@ -54,6 +57,11 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
             ActiveNodeManagerT,
             NodeUpdatorT
     >(model, x);
+
+    if (RoundingHeuristicT {}) {
+        solver.template add_callback<Callbacks::RoundingHeuristic>(x);
+    }
+
     solver.solve();
 
     CHECK(solver.status() == Optimal);

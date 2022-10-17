@@ -5,6 +5,7 @@
 #include "modeling.h"
 #include "algorithms.h"
 #include "problems/kp/KP_Instance.h"
+#include "algorithms/callbacks/Callbacks_RoundingHeuristic.h"
 
 int main() {
 
@@ -32,6 +33,7 @@ int main() {
     model.add_constraint(sum_weight <= instance.t());
 
     auto solver = branch_and_bound(model, x);
+    solver.add_callback<Callbacks::RoundingHeuristic>(x);
     solver.solve();
 
     std::cout << "Solution status = " << solver.status() << std::endl;

@@ -27,6 +27,8 @@ public:
 
     void save_solution(const Algorithm& t_strategy) override;
 
+    void set_solution(Solution::Primal&& t_solution);
+
     using LocalBounds = ConstIteratorForward<Map<Var, double>>;
 
     LocalBounds local_lower_bounds() const { return LocalBounds(m_local_lower_bounds); }

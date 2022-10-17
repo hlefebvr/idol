@@ -8,7 +8,7 @@ AlgorithmInCallback::AlgorithmInCallback(Algorithm &t_rmp_solution_strategy) : m
 }
 
 Solution::Primal AlgorithmInCallback::primal_solution() const {
-    return m_is_in_callback ? m_context->primal_solution() : m_algorithm.primal_solution();
+    return m_is_in_callback ? m_context->node_primal_solution() : m_algorithm.primal_solution();
 }
 
 Ctr AlgorithmInCallback::add_row(TempCtr t_temporary_constraint) {

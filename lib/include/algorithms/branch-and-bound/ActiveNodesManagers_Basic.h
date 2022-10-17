@@ -12,10 +12,10 @@
 #include <variant>
 
 namespace ActiveNodesManagers {
-    class Heap;
+    class Basic;
 }
 
-class ActiveNodesManagers::Heap {
+class ActiveNodesManagers::Basic {
 public:
 
     template<class NodeT>
@@ -45,12 +45,12 @@ public:
 };
 
 template<class NodeT>
-void ActiveNodesManagers::Heap::Strategy<NodeT>::add(NodeT *t_node) {
+void ActiveNodesManagers::Basic::Strategy<NodeT>::add(NodeT *t_node) {
     m_nodes.emplace(t_node);
 }
 
 template<class NodeT>
-void ActiveNodesManagers::Heap::Strategy<NodeT>::prune_by_bound(double t_upper_bound) {
+void ActiveNodesManagers::Basic::Strategy<NodeT>::prune_by_bound(double t_upper_bound) {
 
     auto it = m_nodes.by_objective_value().begin();
     auto end = m_nodes.by_objective_value().end();
@@ -74,40 +74,40 @@ void ActiveNodesManagers::Heap::Strategy<NodeT>::prune_by_bound(double t_upper_b
 }
 
 template<class NodeT>
-const NodeT &ActiveNodesManagers::Heap::Strategy<NodeT>::lowest_node() const {
+const NodeT &ActiveNodesManagers::Basic::Strategy<NodeT>::lowest_node() const {
     return *m_nodes.by_objective_value().begin();
 }
 
 template<class NodeT>
-bool ActiveNodesManagers::Heap::Strategy<NodeT>::empty() const {
+bool ActiveNodesManagers::Basic::Strategy<NodeT>::empty() const {
     return m_nodes.empty();
 }
 
 template<class NodeT>
-const NodeT &ActiveNodesManagers::Heap::Strategy<NodeT>::node_selected_for_branching() const {
+const NodeT &ActiveNodesManagers::Basic::Strategy<NodeT>::node_selected_for_branching() const {
     return *m_node_selected_for_branching;
 }
 
 template<class NodeT>
-void ActiveNodesManagers::Heap::Strategy<NodeT>::remove_node_selected_for_branching() {
+void ActiveNodesManagers::Basic::Strategy<NodeT>::remove_node_selected_for_branching() {
     auto* ptr = m_node_selected_for_branching.operator->();
     m_nodes.erase(m_node_selected_for_branching);
     delete ptr;
 }
 
 template<class NodeT>
-ActiveNodesManagers::Heap::Strategy<NodeT>::~Strategy() {
+ActiveNodesManagers::Basic::Strategy<NodeT>::~Strategy() {
     for (auto& node : m_nodes.by_objective_value()) { delete &node; }
 }
 
 template<class NodeT>
-void ActiveNodesManagers::Heap::Strategy<NodeT>::initialize() {
+void ActiveNodesManagers::Basic::Strategy<NodeT>::initialize() {
     for (auto& node : m_nodes.by_objective_value()) { delete &node; }
     m_nodes.clear();
 }
 
 template<class NodeT>
-void ActiveNodesManagers::Heap::Strategy<NodeT>::select_node_for_branching() {
+void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
     m_node_selected_for_branching = m_nodes.by_objective_value().begin(); // Worst bound first
     //m_node_selected_for_branching = --m_nodes.by_objective_value().end(); // Best bound first
     //m_node_selected_for_branching = --m_nodes.by_level().end(); // Depth-first
