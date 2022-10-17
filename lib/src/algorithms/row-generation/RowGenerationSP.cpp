@@ -69,6 +69,8 @@ void RowGenerationSP::log_last_primal_solution() {
              << "SP"
              << std::setw(15)
              << m_primal_solutions.back()->status()
+             << std::setw(15)
+             << m_primal_solutions.back()->reason()
              << std::setw(10)
              << m_primal_solutions.back()->objective_value()
     );

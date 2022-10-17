@@ -7,6 +7,7 @@
 
 Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
     : Node(t_id),
+      m_level(t_src.m_level+1),
       m_local_upper_bounds(t_src.m_local_upper_bounds),
       m_local_lower_bounds(t_src.m_local_lower_bounds) {
 

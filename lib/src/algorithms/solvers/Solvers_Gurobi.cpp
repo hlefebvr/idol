@@ -28,33 +28,12 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
     });
 
     for (const auto& var : t_model.variables()) {
-        auto impl = create_variable_impl_with_objective_coefficient(var);
-        add_variable_impl(impl);
+        add_future(var, false);
     }
 
     for (const auto& ctr : t_model.constraints()) {
-        add_constraint_impl(GurobiCtr(ctr));
+        add_future(ctr);
     }
-
-}
-
-void Solvers::Gurobi::update() {
-
-    if(!m_is_built) {
-
-        for (auto& gurobi_ctr : constraints()) {
-            gurobi_ctr.update(*this);
-        }
-
-        m_is_built = true;
-        return;
-    }
-
-    for (const auto& ctr : constraint_update_requests()) {
-        if (ctr.status() == Removed) { continue; }
-        raw(ctr).update(*this);
-    }
-    clear_constraint_update_requests();
 
 }
 
@@ -62,6 +41,10 @@ void Solvers::Gurobi::execute() {
 
     update();
 
+    if (!m_callbacks.empty()) {
+        m_model.reset();
+        EASY_LOG(Warn, "gurobi", "Previous solution is discarded!");
+    }
     m_model.optimize();
 
     if (m_model.get(GRB_IntAttr_Status) == GRB_INFEASIBLE && m_model.get(GRB_IntParam_InfUnbdInfo)) {
@@ -128,51 +111,9 @@ char Solvers::Gurobi::gurobi_type(VarType t_type) {
     return GRB_BINARY;
 }
 
-GRBVar Solvers::Gurobi::create_variable_impl_with_objective_coefficient(const Var &t_var) {
-    return m_model.addVar(t_var.lb(), t_var.ub(), value(t_var.obj()), gurobi_type(t_var.type()), t_var.name());
-}
-
-GRBConstr Solvers::Gurobi::create_constraint_impl_with_rhs(const Ctr &t_ctr) {
-    auto result =  m_model.addConstr(0., gurobi_type(t_ctr.type()), value(t_ctr.rhs()), t_ctr.name());
-    return result;
-}
-
-void GurobiCtr::update(Solvers::Gurobi &t_parent) {
-
-    if (has_impl()) { return; }
-
-    GRBLinExpr expr;
-    for (const auto& [var, constant] : m_constraint.row().lhs()) {
-        expr += constant.numerical() * t_parent.raw(var);
-    }
-    m_impl = t_parent.m_model.addConstr(expr,
-                               t_parent.gurobi_type(m_constraint.type()),
-                               m_constraint.rhs().numerical());
-
-}
-
-void Solvers::Gurobi::set_constraint_lhs(const Ctr &t_ctr) {
-    for (const auto& [var, coeff] : t_ctr.row().lhs()) {
-        m_model.chgCoeff(raw(t_ctr).impl(), raw(var), value(coeff));
-    }
-}
-
-void Solvers::Gurobi::set_variable_components(const Var &t_var) {
-    for (const auto& [ctr, coeff] : t_var.column().components()) {
-        m_model.chgCoeff(raw(ctr).impl(), raw(t_var), value(coeff));
-    }
-}
-
 void Solvers::Gurobi::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
-    raw(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
+    future(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
     model().update_rhs(t_ctr, t_rhs);
-}
-
-void Solvers::Gurobi::remove(const Var &t_variable) {
-    m_model.remove(raw(t_variable));
-
-    remove_variable_impl(t_variable);
-    model().remove(t_variable);
 }
 
 Solution::Dual Solvers::Gurobi::farkas_certificate() const {
@@ -190,7 +131,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
     result.set_objective_value(m_model.get(GRB_DoubleAttr_FarkasProof));
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, -raw(ctr).impl().get(GRB_DoubleAttr_FarkasDual));
+        result.set(ctr, -future(ctr).impl().get(GRB_DoubleAttr_FarkasDual));
     }
 
     return result;
@@ -210,13 +151,13 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
 
     double objective_value = 0.;
     for (const auto& [var, coeff] : model().objective()) {
-        objective_value += raw(var).get(GRB_DoubleAttr_UnbdRay) * value(coeff);
+        objective_value += future(var).impl().get(GRB_DoubleAttr_UnbdRay) * value(coeff);
     }
 
     result.set_objective_value(objective_value);
 
     for (const auto& var : model().variables()) {
-        result.set(var, raw(var).get(GRB_DoubleAttr_UnbdRay));
+        result.set(var, future(var).impl().get(GRB_DoubleAttr_UnbdRay));
     }
 
     return result;
@@ -249,7 +190,7 @@ Solution::Primal Solvers::Gurobi::primal_solution(
     result.set_objective_value(t_get_obj_val());
 
     for (const auto& var : model().variables()) {
-        result.set(var, t_get_primal_value(raw(var)));
+        result.set(var, t_get_primal_value(future(var).impl()));
     }
 
     for (auto& cb : m_callbacks) {
@@ -303,7 +244,7 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
     }
 
     for (const auto& ctr : model().constraints()) {
-        result.set(ctr, t_get_dual_value(raw(ctr).impl()));
+        result.set(ctr, t_get_dual_value(future(ctr).impl()));
     }
 
     return result;
@@ -325,43 +266,13 @@ Solution::Dual Solvers::Gurobi::iis() const {
     );
 }
 
-void Solvers::Gurobi::update_objective(const Row &t_objective) {
-    m_model.set(GRB_DoubleAttr_ObjCon, value(value(t_objective.rhs())));
-    // TODO this must be better done after refacto of Objective and Rhs
-    for (const auto& var : model().variables()) {
-        raw(var).set(GRB_DoubleAttr_Obj, value(t_objective.lhs().get(var)));
-    }
-    model().update_objective(t_objective);
-}
-
-Var Solvers::Gurobi::add_column(TempVar t_temporary_variable) {
-    auto var = model().add_variable(std::move(t_temporary_variable));
-    auto impl = create_variable_impl_with_objective_coefficient(var);
-    add_variable_impl(impl);
-    set_variable_components(var);
-    return var;
-}
-
-Ctr Solvers::Gurobi::add_row(TempCtr t_temporary_constraint) {
-    auto ctr = model().add_constraint(std::move(t_temporary_constraint));
-    add_constraint_impl(GurobiCtr(ctr));
-    add_constraint_update_request(ctr);
-    return ctr;
-}
-
-void Solvers::Gurobi::remove(const Ctr &t_constraint) {
-    auto& gurobi_ctr = raw(t_constraint);
-    if (gurobi_ctr.has_impl()) {
-        auto impl = raw(t_constraint);
-        m_model.remove(raw(t_constraint).impl());
-    }
-    remove_constraint_impl(t_constraint);
-    model().remove(t_constraint);
-}
-
 void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
-    raw(t_var).set(GRB_DoubleAttr_LB, t_lb);
-    model().update_lb(t_var, t_lb);
+
+    if (t_var.model_id() == model().id()) {
+        future(t_var).impl().set(GRB_DoubleAttr_LB, t_lb);
+        model().update_lb(t_var, t_lb);
+        return;
+    }
 
     for (auto& ptr_to_cb : m_callbacks) {
         ptr_to_cb->update_lb(t_var, t_lb);
@@ -369,8 +280,12 @@ void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
 }
 
 void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
-    raw(t_var).set(GRB_DoubleAttr_UB, t_ub);
-    model().update_ub(t_var, t_ub);
+
+    if (t_var.model_id() == model().id()) {
+        future(t_var).impl().set(GRB_DoubleAttr_UB, t_ub);
+        model().update_ub(t_var, t_ub);
+        return;
+    }
 
     for (auto& ptr_to_cb : m_callbacks) {
         ptr_to_cb->update_ub(t_var, t_ub);
@@ -385,6 +300,55 @@ void Solvers::Gurobi::write(const std::string &t_filename) {
 void Solvers::Gurobi::execute_iis() {
     update();
     m_model.computeIIS();
+}
+
+GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
+
+    GRBLinExpr expr = 0.;
+    if (t_with_collaterals) {
+        for (const auto &[var, constant]: t_ctr.row().lhs()) {
+            expr += value(constant) * future(var).impl();
+        }
+    }
+
+    return m_model.addConstr(expr, gurobi_type(t_ctr.type()), value(t_ctr.row().rhs()), t_ctr.name());
+
+}
+
+GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
+
+    GRBColumn column;
+    if (t_with_collaterals) {
+        for (const auto& [ctr, constant] : t_var.column().components()) {
+            column.addTerm( value(constant), future(ctr).impl() );
+        }
+    }
+
+    return m_model.addVar(t_var.lb(), t_var.ub(), value(t_var.obj()), gurobi_type(t_var.type()), column, t_var.name());
+}
+
+void Solvers::Gurobi::remove(const Var &t_var, GRBVar &t_impl) {
+    m_model.remove(t_impl);
+}
+
+void Solvers::Gurobi::remove(const Ctr &t_ctr, GRBConstr &t_impl) {
+    m_model.remove(t_impl);
+}
+
+void Solvers::Gurobi::update(const Var &t_var, GRBVar &t_impl) {
+    std::cout << "SKIPPED UPDATE VAR" << std::endl;
+}
+
+void Solvers::Gurobi::update(const Ctr &t_ctr, GRBConstr &t_impl) {
+    std::cout << "SKIPPED UPDATE CTR" << std::endl;
+}
+
+void Solvers::Gurobi::update_obj() {
+    GRBLinExpr expr = value(model().objective().offset());
+    for (const auto& var : model().variables()) {
+        expr += value(var.column().objective_coefficient()) * future(var).impl();
+    }
+    m_model.setObjective(expr, GRB_MINIMIZE);
 }
 
 #endif

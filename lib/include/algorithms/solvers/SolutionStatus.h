@@ -28,8 +28,20 @@ enum Reason {
     CutOff
 };
 
+template<class T> bool is_in();
+
 template<typename T>
 bool is_in(T t_status, std::initializer_list<T> t_list) {
+    for (auto status : t_list) {
+        if (status == t_status) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
+bool is_in(typename T::value_type t_status, const T& t_list) {
     for (auto status : t_list) {
         if (status == t_status) {
             return true;

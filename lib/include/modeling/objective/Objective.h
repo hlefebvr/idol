@@ -28,7 +28,7 @@ public:
     Objective& operator=(const Objective&) = default;
     Objective& operator=(Objective&&) noexcept = default;
 
-    const Constant& offset() const { return *m_offset; }
+    [[nodiscard]] const Constant& offset() const { return *m_offset; }
 
     [[nodiscard]] const Constant& get(const Var& t_var) const { return t_var.column().objective_coefficient(); } // NOLINT(readability-convert-member-functions-to-static)
 

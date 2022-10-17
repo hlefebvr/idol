@@ -209,7 +209,9 @@ void RowGeneration::log_last_rmp_primal_solution() const {
              << "RMP"
              << std::setw(15)
              << m_last_rmp_primals->status()
-             << std::setw(10)
+             << std::setw(15)
+             << m_last_rmp_primals->reason()
+             << std::setw(15)
              << m_last_rmp_primals->objective_value()
     );
 }

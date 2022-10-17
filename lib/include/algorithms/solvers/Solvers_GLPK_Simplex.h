@@ -21,7 +21,6 @@ namespace Solvers {
 class Solvers::GLPK_Simplex : public Solver<int, int> {
 
     glp_prob* m_model;
-    double m_objective_offset = 0.;
 
     Optional<SolutionStatus> m_solution_status;
     Optional<Solution::Primal> m_ray;
@@ -37,23 +36,22 @@ protected:
     [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 
-    int create_variable_impl_with_objective_coefficient(const Var& t_var);
+    int create(const Var& t_var, bool t_with_collaterals) override;
+    int create(const Ctr& t_ctr, bool t_with_collaterals) override;
 
-    int create_constraint_impl_with_rhs(const Ctr& t_ctr);
+    void update(const Var& t_var, int& t_impl) override;
+    void update(const Ctr& t_ctr, int& t_impl) override;
 
-    void set_constraint_lhs(const Ctr& t_ctr);
+    void update_obj() override;
 
-    void set_variable_components(const Var& t_var);
+    void remove(const Var &t_var, int &t_impl) override;
+    void remove(const Ctr &t_ctr, int &t_impl) override;
 
     void compute_farkas_certificate();
 
     void compute_unbounded_ray();
 public:
     explicit GLPK_Simplex(Model& t_model);
-
-    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
-
-    void remove(const Var &t_variable) override;
 
     Solution::Primal primal_solution() const override;
 
@@ -63,23 +61,17 @@ public:
 
     Solution::Primal unbounded_ray() const override;
 
-    void update_objective(const Row &t_objective) override;
+    using Solver<int, int>::update;
 
-    Var add_column(TempVar t_temporary_variable) override;
-
-    Ctr add_row(TempCtr t_temporary_constraint) override;
-
-    void remove(const Ctr &t_constraint) override;
+    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
     void update_lb(const Var &t_var, double t_lb) override;
 
     void update_ub(const Var &t_var, double t_ub) override;
 
-    using Solver<int, int>::raw;
+    glp_prob* impl() { return m_model; }
 
-    glp_prob* raw() { return m_model; }
-
-    const glp_prob* raw() const { return m_model; }
+    const glp_prob* impl() const { return m_model; }
 };
 
 #endif

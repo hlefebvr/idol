@@ -17,28 +17,12 @@ namespace Solvers {
     class Gurobi;
 }
 
-class GurobiCtr {
-    Ctr m_constraint;
-    std::optional<GRBConstr> m_impl;
-public:
-    explicit GurobiCtr(Ctr  t_ctr) : m_constraint(std::move(t_ctr)) {}
-    [[nodiscard]] bool has_impl() const { return m_impl.has_value(); }
-    GRBConstr& impl() { return m_impl.value(); }
-    [[nodiscard]] const GRBConstr& impl() const { return m_impl.value(); }
-    void update(Solvers::Gurobi& t_parent);
-};
-
 /**
  * Interfaces with the commercial solver Gurobi.
  */
-class Solvers::Gurobi : public Solver<GRBVar, GurobiCtr> {
-    friend class ::GurobiCtr;
-
+class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
     static GRBEnv m_env;
     GRBModel m_model;
-    bool m_is_built = false;
-
-    std::list<std::unique_ptr<::Callback>> m_callbacks;
 
     template<class CallbackT> class Callback;
 
@@ -55,21 +39,21 @@ protected:
     void execute() override;
     void execute_iis() override;
 
-    GRBVar create_variable_impl_with_objective_coefficient(const Var& t_var);
+    GRBVar create(const Var& t_var, bool t_with_collaterals) override;
+    GRBConstr create(const Ctr& t_ctr, bool t_with_collaterals) override;
 
-    GRBConstr create_constraint_impl_with_rhs(const Ctr& t_ctr);
+    void update(const Var& t_var, GRBVar& t_impl) override;
+    void update(const Ctr& t_ctr, GRBConstr& t_impl) override;
 
-    void set_constraint_lhs(const Ctr& t_ctr);
+    void update_obj() override;
 
-    void set_variable_components(const Var& t_var);
+    void remove(const Var &t_var, GRBVar &t_impl) override;
+    void remove(const Ctr &t_ctr, GRBConstr &t_impl) override;
+
 public:
     explicit Gurobi(Model& t_model);
 
-    void update();
-
-    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
-
-    void remove(const Var &t_variable) override;
+    using Solver<GRBVar, GRBConstr>::update;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
@@ -81,13 +65,7 @@ public:
 
     [[nodiscard]] Solution::Dual iis() const override;
 
-    void update_objective(const Row &t_objective) override;
-
-    Var add_column(TempVar t_temporary_variable) override;
-
-    Ctr add_row(TempCtr t_temporary_constraint) override;
-
-    void remove(const Ctr &t_constraint) override;
+    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
 
     void update_lb(const Var &t_var, double t_lb) override;
 
@@ -95,11 +73,9 @@ public:
 
     void write(const std::string &t_filename) override;
 
-    using ::Solver<GRBVar, GurobiCtr>::raw;
+    GRBModel& impl() { return m_model; }
 
-    GRBModel& raw() { return m_model; }
-
-    [[nodiscard]] const GRBModel& raw() const { return m_model; }
+    [[nodiscard]] const GRBModel& impl() const { return m_model; }
 
     template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
 };
@@ -122,7 +98,7 @@ T &Solvers::Gurobi::add_callback(ArgsT &&... t_args) {
         cb = new Callback<T>(*this, std::forward<ArgsT>(t_args)...);
     }
 
-    m_callbacks.template emplace_back(cb);
+    save_callback(cb);
     m_model.setCallback(cb);
 
     return *cb;
@@ -196,7 +172,7 @@ template<class CallbackT>
 Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
     GRBLinExpr expr;
     for (const auto& [var, constant] : t_ctr.row().lhs()) {
-        expr += m_parent.m_solver.value(constant) * m_parent.m_solver.raw(var);
+        expr += m_parent.m_solver.value(constant) * m_parent.m_solver.future(var).impl();
     }
     m_parent.addLazy(
             expr,
@@ -204,7 +180,7 @@ Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
             m_parent.m_solver.value(t_ctr.row().rhs())
     );
     auto result = m_parent.m_solver.model().add_constraint(std::move(t_ctr));
-    // Add to updates
+    m_parent.m_solver.add_future(result);
     return result;
 }
 
