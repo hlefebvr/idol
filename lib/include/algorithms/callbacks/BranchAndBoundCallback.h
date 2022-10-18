@@ -31,6 +31,8 @@ public:
 
     void fix_variables(const std::list<std::pair<Var, double>>& t_fixations);
 
+    unsigned int level() const;
+
     void resolve();
 
     bool submit_solution(Solution::Primal &&t_solution) override;

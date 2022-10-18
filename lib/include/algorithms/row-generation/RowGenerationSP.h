@@ -11,6 +11,25 @@
 #include <memory>
 #include <list>
 
+template<class KeyT, class ValueT = Solution::Primal>
+class Pool {
+    std::list<std::pair<KeyT, ValueT>> m_values;
+public:
+    void add(KeyT t_key, ValueT t_value) {
+        m_values.template emplace_back(std::move(t_key), std::move(t_value));
+    }
+
+    [[nodiscard]] const ValueT& last_inserted() const { return m_values.back().second; }
+
+    void clear() { m_values.clear(); }
+
+    using Values = IteratorForward<std::list<std::pair<KeyT, ValueT>>>;
+    using ConstValues = ConstIteratorForward<std::list<std::pair<KeyT, ValueT>>>;
+
+    Values values() { return Values(m_values); }
+    [[nodiscard]] ConstValues values() const { return ConstValues(m_values); }
+};
+
 class RowGenerationSP {
 
     TempCtr m_cut_template;
@@ -19,10 +38,11 @@ class RowGenerationSP {
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<RowGenerationOriginalSpaceBuilder> m_original_space_builder;
-    std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
+    Pool<Ctr> m_pool;
+    std::optional<Solution::Primal> m_last_primal_solution;
     Set<unsigned int> m_subproblem_ids;
 
-    using PresentCutList = std::list<std::pair<Ctr, Solution::Primal&>>;
+    using PresentCutList = std::list<std::pair<Ctr, const Solution::Primal&>>;
 
     PresentCutList m_currently_present_cuts;
 

@@ -2,6 +2,8 @@
 // Created by henri on 17/10/22.
 //
 #include "../../../include/algorithms/branch-and-bound/BranchAndBound.h"
+#include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
+
 
 void BranchAndBound::Callback::AdvancedContext::fix_variables(const std::list<std::pair<Var, double>> &t_fixations) {
 
@@ -39,6 +41,10 @@ Solution::Primal BranchAndBound::Callback::AdvancedContext::primal_solution() co
 
 bool BranchAndBound::Callback::AdvancedContext::submit_solution(Solution::Primal &&t_solution) {
     return m_parent.submit_solution(std::move(t_solution));
+}
+
+unsigned int BranchAndBound::Callback::AdvancedContext::level() const {
+    return m_parent.current_node().level();
 }
 
 BranchAndBound::Callback::AdvancedContext &BranchAndBound::Callback::advanced(Callback::Context &t_ctx) {

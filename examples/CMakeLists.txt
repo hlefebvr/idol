@@ -1,2 +1,3 @@
 add_subdirectory(ex1_branch_and_bound_knapsack)
 add_subdirectory(ex2_branch_and_price_gap)
+add_subdirectory(ex3_row_generation)

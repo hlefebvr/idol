@@ -298,7 +298,9 @@ void Solvers::Gurobi::write(const std::string &t_filename) {
 
 void Solvers::Gurobi::execute_iis() {
     update();
+    m_model.set(GRB_DoubleParam_Cutoff, GRB_INFINITY);
     m_model.computeIIS();
+    set<Attr::CutOff>(get<Attr::CutOff>());
 }
 
 GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {

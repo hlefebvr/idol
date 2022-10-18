@@ -19,6 +19,10 @@ public:
 
     void execute(Context &t_ctx) override {
 
+        if (t_ctx.event() != RelaxationSolved) { return; }
+
+        //if (advanced(t_ctx).level() % 10 != 0) { return; }
+
         Solution::Primal primals = t_ctx.node_primal_solution();
 
         std::list<std::pair<Var, double>> rounded;

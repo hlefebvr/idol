@@ -35,6 +35,31 @@ void RowGenerationSP::initialize() {
         throw Exception("No exact solution strategy has been given.");
     }
 
+    /*
+    for (const auto& [ctr, primal_solution] : m_currently_present_cuts) {
+        rmp_solution_strategy().remove(ctr);
+    }
+    m_pool.clear();
+    m_urrently_present_cuts.clear();
+     */
+
+    /*
+    for (auto& [ctr, primal_solution] : m_pool.values()) {
+        if (ctr.status() == InModel) { continue; }
+        bool is_feasible = true;
+        for (const auto& [var, value] : primal_solution) {
+            if (!(var.lb() + 1e-3 <= value && value <= var.ub() - 1e-3)) {
+                is_feasible = false;
+                break;
+            }
+        }
+        if (is_feasible) {
+            ctr = m_rmp_strategy.add_row(create_cut_from(primal_solution));
+            m_currently_present_cuts.emplace_back(ctr, primal_solution);
+        }
+    }
+     */
+
 }
 
 void RowGenerationSP::solve() {
@@ -60,44 +85,45 @@ void RowGenerationSP::update_separation_objective(const Row &t_objective) {
 }
 
 void RowGenerationSP::save_last_primal_solution() {
-    m_primal_solutions.emplace_back(std::make_unique<Solution::Primal>(m_exact_solution_strategy->primal_solution()));
+    m_last_primal_solution = m_exact_solution_strategy->primal_solution();
 }
 
 void RowGenerationSP::log_last_primal_solution() {
     EASY_LOG(Debug, "row-generation",
              std::setw(5)
-             << "SP"
-             << std::setw(15)
-             << m_primal_solutions.back()->status()
-             << std::setw(15)
-             << m_primal_solutions.back()->reason()
-             << std::setw(10)
-             << m_primal_solutions.back()->objective_value()
+                     << "SP"
+                     << std::setw(15)
+                     << m_last_primal_solution.value().status()
+                     << std::setw(15)
+                     << m_last_primal_solution.value().reason()
+                     << std::setw(10)
+                     << m_last_primal_solution.value().objective_value()
     );
 }
 
 bool RowGenerationSP::violated_cut_found() {
-    return m_primal_solutions.back()->objective_value() < -ToleranceForAbsoluteGapPricing;
+    return m_last_primal_solution.value().objective_value() < -ToleranceForAbsoluteGapPricing;
 }
 
 void RowGenerationSP::add_cut_to_rmp() {
-    auto* last_primal_solution = m_primal_solutions.back().get();
-    auto temp_ctr = create_cut_from(*last_primal_solution);
+    auto& last_primal_solution = m_last_primal_solution.value();
+    auto temp_ctr = create_cut_from(last_primal_solution);
     auto constraint = m_rmp_strategy.add_row(std::move(temp_ctr));
-    m_currently_present_cuts.template emplace_back(constraint, *last_primal_solution);
-    //TODO allow logs: EASY_LOG(Trace, "row-generation", "Adding new constraint " << constraint << ".");
+    m_pool.add(constraint, std::move(m_last_primal_solution).value());
+    m_currently_present_cuts.emplace_back(constraint, m_pool.last_inserted());
+    EASY_LOG(Trace, "row-generation", "Adding new constraint " << constraint << ".");
 }
 
 bool RowGenerationSP::is_unbounded() const {
-    return m_primal_solutions.back()->status() == Unbounded;
+    return m_last_primal_solution.value().status() == Unbounded;
 }
 
 bool RowGenerationSP::is_infeasible() const {
-    return m_primal_solutions.back()->status() == Infeasible;
+    return m_last_primal_solution.value().status() == Infeasible;
 }
 
 bool RowGenerationSP::could_not_be_solved_to_optimality() const {
-    return m_primal_solutions.back()->status() != Optimal;
+    return m_last_primal_solution.value().status() != Optimal;
 }
 
 TempCtr RowGenerationSP::create_cut_from(const Solution::Primal &t_primals) const {
