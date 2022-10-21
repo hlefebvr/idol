@@ -127,6 +127,8 @@ void BranchAndBound::analyze_current_node() {
 
         }
 
+    } else if(m_iteration % 10 == 0) {
+        log_node(Info, current_node());
     }
 
     if (current_node_is_infeasible()) {
@@ -178,6 +180,7 @@ void BranchAndBound::prepare_node_solution() {
 
 void BranchAndBound::solve_current_node() {
     m_solution_strategy->set<Attr::CutOff>(std::min(m_best_upper_bound, get<Attr::CutOff>()));
+    //m_solution_strategy->set<Attr::CutOff>(std::max(m_best_lower_bound, get<Attr::CutOff>())); // TODO WARNING THIS IS EXPERIMENTAL FOR MIN-MAX-MIN
     m_solution_strategy->solve();
     m_nodes->save_current_node_solution(*m_solution_strategy);
 }
@@ -347,9 +350,11 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
              "branch-and-bound",
              std::setw(4)
              << (id == -1 ? "H" : std::to_string(id)) << sign
-             << std::setw(15)
+             << std::setw(5)
+             << m_nodes->active_nodes().size()
+             << std::setw(10)
              << t_node.status()
-             << std::setw(15)
+             << std::setw(10)
              << t_node.reason()
              << std::setw(15)
              << t_node.objective_value()
@@ -357,8 +362,10 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
              << m_best_lower_bound
              << std::setw(15)
              << m_best_upper_bound
-             << std::setw(15)
+             << std::setw(10)
              << (relative_gap() * 100.) << '%'
+             << std::setw(10)
+             << time().count()
      );
 }
 

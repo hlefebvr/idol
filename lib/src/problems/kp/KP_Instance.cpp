@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 
-ProblemSpecific::KP::Instance::Instance(unsigned int t_n_items) {
+Problems::KP::Instance::Instance(unsigned int t_n_items) {
 
     assert(t_n_items > 1);
 
@@ -15,7 +15,7 @@ ProblemSpecific::KP::Instance::Instance(unsigned int t_n_items) {
 }
 
 
-ProblemSpecific::KP::Instance ProblemSpecific::KP::read_instance(const std::string& t_filename) {
+Problems::KP::Instance Problems::KP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 

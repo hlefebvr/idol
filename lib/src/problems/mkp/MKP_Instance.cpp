@@ -5,9 +5,9 @@
 #include <cassert>
 #include <fstream>
 
-ProblemSpecific::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
+Problems::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
 
-    assert(t_n_knapsacks > 1);
+    assert(t_n_knapsacks >= 1);
     assert(t_n_items > 1);
 
     m_p.resize(t_n_items);
@@ -15,7 +15,7 @@ ProblemSpecific::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned in
     m_t.resize(t_n_knapsacks);
 }
 
-ProblemSpecific::MKP::Instance ProblemSpecific::MKP::read_instance(const std::string& t_filename) {
+Problems::MKP::Instance Problems::MKP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 

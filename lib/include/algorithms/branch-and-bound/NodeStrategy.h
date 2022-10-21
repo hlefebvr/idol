@@ -31,6 +31,7 @@ public:
     virtual void create_root_node() = 0;
     virtual void apply_current_node_to(Algorithm& t_solution_strategy) = 0;
     virtual bool submit_solution(Solution::Primal&& t_solution, double t_best_upper_bound) = 0;
+    virtual unsigned int size() const = 0;
 
     [[nodiscard]] virtual ActiveNodesManager& active_nodes() = 0;
     [[nodiscard]] virtual const ActiveNodesManager& active_nodes() const = 0;

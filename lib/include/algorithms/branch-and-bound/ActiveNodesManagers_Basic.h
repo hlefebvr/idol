@@ -47,6 +47,8 @@ public:
         void remove_node_selected_for_branching() override;
 
         void select_node_for_branching() override;
+
+        unsigned int size() const override;
     };
 
 };
@@ -139,8 +141,8 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching(int 
 
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::automatically_select_node_for_branching() {
-    if (m_parent.relative_gap() <= 2e-2) {
-        return select_node_for_branching(NodeSelections::BestBound);
+    if (m_parent.relative_gap() <= 3e-2) {
+        return select_node_for_branching(NodeSelections::DepthFirst);
     }
     if (m_parent.relative_gap() >= 2e-1) {
         return select_node_for_branching(NodeSelections::DepthFirst);
@@ -152,6 +154,11 @@ template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
     select_node_for_branching(m_parent.template get<Attr::NodeSelection>());
     EASY_LOG(Trace, "branch-and-bound", "Node " << node_selected_for_branching().id() << " has been selected for branching.");
+}
+
+template<class NodeT>
+unsigned int ActiveNodesManagers::Basic::Strategy<NodeT>::size() const {
+    return m_nodes.size();
 }
 
 #endif //OPTIMIZE_ACTIVENODESMANAGERS_HEAP_H

@@ -23,6 +23,8 @@ public:
 
     void clear() { m_values.clear(); }
 
+    [[nodiscard]] unsigned int size() const { return m_values.size(); }
+
     using Values = IteratorForward<std::list<std::pair<KeyT, ValueT>>>;
     using ConstValues = ConstIteratorForward<std::list<std::pair<KeyT, ValueT>>>;
 

@@ -14,7 +14,7 @@ int main() {
     Log::set_color("branch-and-bound", Color::Blue);
     Log::set_color("column-generation", Color::Yellow);
 
-    using namespace ProblemSpecific::GAP;
+    using namespace Problems::GAP;
 
     auto instance = read_instance("demo.txt");
 

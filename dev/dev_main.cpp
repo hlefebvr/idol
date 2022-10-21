@@ -21,6 +21,7 @@
 #include "algorithms/callbacks/Callbacks_RowGeneration.h"
 #include "algorithms/callbacks/AlgorithmInCallback.h"
 #include "problems/kp/KP_Instance.h"
+#include "problems/robust/RobustProblem.h"
 
 //// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!
 int main() {
@@ -30,34 +31,9 @@ int main() {
     Log::set_color("column-generation", Color::Yellow);
     Log::set_color("row-generation", Color::Green);
 
-    /*
-    Model rmp;
+    Problems::Robust<2> problem;
 
-    auto x = rmp.add_variable(0., 1., Continuous, 1., "x");
-    auto y = rmp.add_variable(0., 1., Continuous, 2., "y");
-    auto z = rmp.add_variable(0., 1., Continuous, 3., "z");
-
-    auto c1 = rmp.add_constraint(x + y + z <= 1, "c1");
-    auto c2 = rmp.add_constraint(    y + z >= 1, "c2");
-
-    Model subproblem;
-    auto illegal_terms = rmp.transform().move(subproblem, { c1, c2 });
-
-    std::cout << rmp << std::endl;
-
-    std::cout << subproblem << std::endl;
-     */
-
-    Model model;
-
-    auto x = model.add_variable(0., 1., Binary, 0., "x");
-    auto ctr = model.add_constraints(Dim<2>(5, 10), x <= 1, "c");
-
-    for (unsigned int i = 0 ; i < 5 ; ++i) {
-        for (unsigned int j = 0 ; j < 10 ; ++j) {
-            std::cout << ctr[i][j] << std::endl;
-        }
-    }
+    auto x = problem.stage(0).add_variable(0., 1., Continuous, 0.);
 
     return 0;
 }

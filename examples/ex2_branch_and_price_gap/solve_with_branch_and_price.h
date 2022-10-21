@@ -8,7 +8,7 @@
 #include "problems/gap/GAP_Instance.h"
 #include "algorithms.h"
 
-void solve_with_branch_and_price(const ProblemSpecific::GAP::Instance& t_instance) {
+void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
 
     const unsigned int n_knapsacks = t_instance.n_knapsacks();
     const unsigned int n_items = t_instance.n_items();

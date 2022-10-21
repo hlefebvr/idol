@@ -86,6 +86,20 @@ void RowGenerationSP::update_separation_objective(const Row &t_objective) {
 
 void RowGenerationSP::save_last_primal_solution() {
     m_last_primal_solution = m_exact_solution_strategy->primal_solution();
+
+    std::unordered_map<std::string, double> values;
+
+    for (const auto& [var, val] : m_last_primal_solution.value()) {
+        values.emplace(var.name(), val);
+    }
+
+    for (unsigned int j = 0 ; j < 30 ; ++j) {
+        const double y_j = values["y_" + std::to_string(j) + "_0"];
+        const double z_j = values["z_" + std::to_string(j) + "_0"];
+        if (y_j < .5 && z_j > .5) {
+            std::cout << y_j << ", " << z_j << std::endl;
+        }
+    }
 }
 
 void RowGenerationSP::log_last_primal_solution() {

@@ -8,12 +8,12 @@
 #include <vector>
 #include <string>
 
-namespace ProblemSpecific::KP {
+namespace Problems::KP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
 }
 
-class ProblemSpecific::KP::Instance {
+class Problems::KP::Instance {
 protected:
     std::vector<double> m_p;
     std::vector<double> m_w;

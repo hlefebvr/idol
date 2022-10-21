@@ -25,7 +25,7 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
     using ActiveNodeManagerT  = std::tuple_element_t<4, TestType>;
     using NodeUpdatorT        = std::tuple_element_t<5, TestType>;
 
-    using namespace ProblemSpecific::GAP;
+    using namespace Problems::GAP;
 
     auto test = GENERATE(
             std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance0.txt"), -233.),

@@ -27,7 +27,7 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
 
     Model model;
 
-    using namespace ProblemSpecific::KP;
+    using namespace Problems::KP;
 
     auto test = GENERATE(
             std::make_pair<Instance, double>(read_instance("instances/KP/KP_instance0.txt"), -235.)

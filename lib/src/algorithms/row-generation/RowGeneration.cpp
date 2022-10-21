@@ -6,9 +6,11 @@
 
 RowGeneration::RowGeneration(Algorithm &t_rmp_solution_strategy) : GenerationAlgorithmWithAttributes(t_rmp_solution_strategy){
 
+    /*
     set_callback_attribute<Attr::CutOff>([this](double t_cutoff){
         rmp_solution_strategy().set<Attr::CutOff>(t_cutoff);
     });
+    */
 
 }
 
@@ -163,7 +165,8 @@ void RowGeneration::add_cuts() {
             terminate_for_no_violated_cut_found();
         }
     } else if (m_rmp_solved_to_optimality && get<Attr::SubOptimalRMP>()) {
-        rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
+        //rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
+        //m_rmp_solved_to_optimality = false;
     }
 
 }

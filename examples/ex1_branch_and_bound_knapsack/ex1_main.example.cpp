@@ -13,7 +13,7 @@ int main() {
 
     Model model;
 
-    using namespace ProblemSpecific::KP;
+    using namespace Problems::KP;
 
     const auto instance = read_instance("demo.txt");
 

@@ -316,14 +316,30 @@ static Expr<Var> operator+(const Var& t_a, const Var& t_b) {
     return result;
 }
 
+static Expr<Var> operator-(const Var& t_a, const Var& t_b) {
+    Expr<Var> result(t_a);
+    result -= t_b;
+    return result;
+}
+
 static Expr<Var> operator+(Expr<Var> t_a, const Var& t_b) {
     Expr<Var> result(std::move(t_a));
     result += t_b;
     return result;
 }
 
+static Expr<Var> operator-(Expr<Var> t_a, const Var& t_b) {
+    Expr<Var> result(std::move(t_a));
+    result -= t_b;
+    return result;
+}
+
 static Expr<Var> operator+(const Var& t_b, Expr<Var> t_a) {
     return std::move(t_a) + t_b;
+}
+
+static Expr<Var> operator-(const Var& t_b, Expr<Var> t_a) {
+    return std::move(t_a) - t_b;
 }
 
 template<class Key>
@@ -355,6 +371,11 @@ Expr<Key> operator-(Expr<Key> t_a, const Expr<Key>& t_b) {
     Expr<Key> result(std::move(t_a));
     result -= t_b;
     return result;
+}
+
+template<class Key>
+Expr<Key> operator-(const Key& t_key) {
+    return Expr<Key>(-1., t_key);
 }
 
 template<class Key>

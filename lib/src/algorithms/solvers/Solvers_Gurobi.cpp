@@ -20,7 +20,7 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
     });
 
     set_callback_attribute<Attr::MipGap>([this](double t_value){
-        //m_model.set(GRB_DoubleParam_MIPGap, t_value);
+        m_model.set(GRB_DoubleParam_MIPGap, t_value);
     });
 
     set_callback_attribute<Attr::CutOff>([this](double t_value){
@@ -300,7 +300,6 @@ void Solvers::Gurobi::execute_iis() {
     update();
     m_model.set(GRB_DoubleParam_Cutoff, GRB_INFINITY);
     m_model.computeIIS();
-    set<Attr::CutOff>(get<Attr::CutOff>());
 }
 
 GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {

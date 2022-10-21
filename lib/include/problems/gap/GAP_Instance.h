@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-namespace ProblemSpecific::GAP {
+namespace Problems::GAP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
 }
@@ -16,7 +16,7 @@ namespace ProblemSpecific::GAP {
 /**
  * See also https://en.wikipedia.org/wiki/Generalized_assignment_problem.
  */
-class ProblemSpecific::GAP::Instance {
+class Problems::GAP::Instance {
 protected:
     std::vector<std::vector<double>> m_p;
     std::vector<std::vector<double>> m_w;

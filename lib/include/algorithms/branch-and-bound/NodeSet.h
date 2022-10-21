@@ -28,6 +28,8 @@ public:
 
     [[nodiscard]] bool empty() const;
 
+    [[nodiscard]] unsigned int size() const { return m_by_objective_value.size(); }
+
     const_iterator erase(const const_iterator& t_it);
 };
 

@@ -20,7 +20,7 @@ protected:
 
     bool m_is_terminated = false;
     bool m_violated_cut_found_at_last_iteration = true;
-    bool m_rmp_solved_to_optimality = false;
+    bool m_rmp_solved_to_optimality = true;
     unsigned int m_iteration = 0;
 
     void initialize();

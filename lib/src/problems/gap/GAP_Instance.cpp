@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 
-ProblemSpecific::GAP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
+Problems::GAP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
 
     assert(t_n_knapsacks > 1);
     assert(t_n_items > 1);
@@ -24,7 +24,7 @@ ProblemSpecific::GAP::Instance::Instance(unsigned int t_n_knapsacks, unsigned in
 
 }
 
-ProblemSpecific::GAP::Instance ProblemSpecific::GAP::read_instance(const std::string& t_filename) {
+Problems::GAP::Instance Problems::GAP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 

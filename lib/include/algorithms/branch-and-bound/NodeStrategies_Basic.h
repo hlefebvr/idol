@@ -96,6 +96,8 @@ public:
     void create_root_node() override;
 
     void apply_current_node_to(Algorithm &t_solution_strategy) override;
+
+    unsigned int size() const override;
 };
 
 template<class NodeT>
@@ -265,6 +267,11 @@ bool NodeStrategies::Basic<NodeT>::submit_solution(Solution::Primal &&t_solution
     m_best_upper_bound_node = node;
 
     return true;
+}
+
+template<class NodeT>
+unsigned int NodeStrategies::Basic<NodeT>::size() const {
+    return m_active_nodes->size();
 }
 
 #endif //OPTIMIZE_NODESTRATEGIES_BASIC_H
