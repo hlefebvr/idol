@@ -22,7 +22,7 @@ int main() {
     Model rmp;
     auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
     auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
-    auto ctr = rmp.add_constraint( z + (!w_1 + 3. * !w_2) * y >= 3. * !w_1 + 4. * !w_2 );
+    auto ctr = rmp.add_constraint( z >= (-!w_1 - 3. * !w_2) * y + 3. * !w_1 + 4. * !w_2 );
 
     Decomposition decomposition;
     decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(rmp);

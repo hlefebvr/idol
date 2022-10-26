@@ -35,14 +35,11 @@ Constant operator+(const Constant& t_a, const Constant& t_b);
 
 Constant operator-(const Constant& t_coefficient);
 
-Constant operator-(double t_a, Constant&& t_b);
 Constant operator-(double t_a, const Constant& t_b);
 Constant operator-(Constant&& t_b, double t_a);
 Constant operator-(const Constant& t_b, double t_a);
 Constant operator-(const Param& t_a, const Param& t_b);
 Constant operator-(Constant&& t_a, const Constant& t_b);
-Constant operator-(const Constant& t_a, Constant&& t_b);
-Constant operator-(Constant&& t_a, Constant&& t_b);
 Constant operator-(const Constant& t_a, const Constant& t_b);
 
 #endif //IDOL_OPERATORS_CONSTANT_H

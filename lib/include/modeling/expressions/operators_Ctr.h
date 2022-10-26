@@ -57,18 +57,7 @@ Expr<Ctr> operator+(const Expr<Ctr>& t_a, const Expr<Ctr>& t_b);
 
 /* DIFFERENCE */
 
-Constant operator-(const Constant& t_coefficient);
 LinExpr<Ctr> operator-(const LinExpr<Ctr>& t_lin_expr);
-
-Constant operator-(double t_a, Constant&& t_b);
-Constant operator-(double t_a, const Constant& t_b);
-Constant operator-(Constant&& t_b, double t_a);
-Constant operator-(const Constant& t_b, double t_a);
-Constant operator-(const Param& t_a, const Param& t_b);
-Constant operator-(Constant&& t_a, const Constant& t_b);
-Constant operator-(const Constant& t_a, Constant&& t_b);
-Constant operator-(Constant&& t_a, Constant&& t_b);
-Constant operator-(const Constant& t_a, const Constant& t_b);
 
 LinExpr<Ctr> operator-(const Ctr& t_a, const Ctr& t_b);
 LinExpr<Ctr> operator-(LinExpr<Ctr>&& t_lin_expr, const Ctr& t_ctr);

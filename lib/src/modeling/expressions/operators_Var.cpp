@@ -111,7 +111,7 @@ Expr<Var> operator+(Expr<Var>&& t_a, const Expr<Var>& t_b) {
 }
 
 Expr<Var> operator+(Expr<Var>&& t_a, Expr<Var>&& t_b) {
-    return t_b + std::move(t_b);
+    return std::move(t_a) + t_b;
 }
 
 Expr<Var> operator+(const Expr<Var>& t_a, const Expr<Var>& t_b) {

@@ -30,16 +30,6 @@ Expr<Var> operator*(const Expr<Var>& t_expr, double t_num);
 LinExpr<Var> operator+(LinExpr<Var>&& t_lin_expr);
 LinExpr<Var> operator+(const LinExpr<Var>& t_lin_expr);
 
-Constant operator+(double t_a, Constant&& t_b);
-Constant operator+(double t_a, const Constant& t_b);
-Constant operator+(Constant&& t_b, double t_a);
-Constant operator+(const Constant& t_b, double t_a);
-Constant operator+(const Param& t_a, const Param& t_b);
-Constant operator+(Constant&& t_a, const Constant& t_b);
-Constant operator+(const Constant& t_a, Constant&& t_b);
-Constant operator+(Constant&& t_a, Constant&& t_b);
-Constant operator+(const Constant& t_a, const Constant& t_b);
-
 LinExpr<Var> operator+(const Var& t_a, const Var& t_b);
 LinExpr<Var> operator+(LinExpr<Var>&& t_lin_expr, const Var& t_var);
 LinExpr<Var> operator+(const Var& t_var, LinExpr<Var>&& t_lin_expr);
@@ -57,18 +47,7 @@ Expr<Var> operator+(const Expr<Var>& t_a, const Expr<Var>& t_b);
 
 /* DIFFERENCE */
 
-Constant operator-(const Constant& t_coefficient);
 LinExpr<Var> operator-(const LinExpr<Var>& t_lin_expr);
-
-Constant operator-(double t_a, Constant&& t_b);
-Constant operator-(double t_a, const Constant& t_b);
-Constant operator-(Constant&& t_b, double t_a);
-Constant operator-(const Constant& t_b, double t_a);
-Constant operator-(const Param& t_a, const Param& t_b);
-Constant operator-(Constant&& t_a, const Constant& t_b);
-Constant operator-(const Constant& t_a, Constant&& t_b);
-Constant operator-(Constant&& t_a, Constant&& t_b);
-Constant operator-(const Constant& t_a, const Constant& t_b);
 
 LinExpr<Var> operator-(const Var& t_a, const Var& t_b);
 LinExpr<Var> operator-(LinExpr<Var>&& t_lin_expr, const Var& t_var);
