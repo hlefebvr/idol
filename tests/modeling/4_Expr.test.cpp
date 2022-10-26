@@ -5,119 +5,132 @@
 
 TEST_CASE("04. Expr", "[expressions][modeling]") {
 
-    Model sp;
-
     Model model;
 
-    auto a = Param( sp.add_variable(0., 1., Continuous, 0.) );
-    auto b = Param( sp.add_variable(0., 1., Continuous, 0.) );
     auto x = model.add_variable(0., 1., Continuous, 0.);
     auto y = model.add_variable(0., 1., Continuous, 0.);
 
-    SECTION("constructor with no argument") {
+    SECTION("Type deduction for operator+") {
 
-        Expr expr;
-        CHECK(expr.size() == 0);
+        CHECK(std::is_same_v<decltype(-x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x + y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x + y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x + 2 * y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x + 2 * y), LinExpr<Var>>);
 
-    }
+        CHECK(std::is_same_v<decltype(-!x), Constant>);
+        CHECK(std::is_same_v<decltype(!x + !y), Constant>);
+        CHECK(std::is_same_v<decltype(!x + 1), Constant>);
+        CHECK(std::is_same_v<decltype(1 + !x), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x + !y), Constant>);
+        CHECK(std::is_same_v<decltype(!x + 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x + 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 + 2 * !x + !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 + !x + 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 + 2 * !x + 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x + !y + 1), Constant>);
+        CHECK(std::is_same_v<decltype(!x + 2 * !y + 1), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x + 2 * !y + 1), Constant>);
 
-    SECTION("product between double and Var") {
+        Constant con1, con2;
 
-        SECTION("with zero") {
-            auto expr = 0 * x;
+        CHECK(std::is_same_v<decltype(con1 + 1), Constant>);
+        CHECK(std::is_same_v<decltype(1 + con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 + !x), Constant>);
+        CHECK(std::is_same_v<decltype(!x + con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 + 2 * !x), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x + con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 + con2), Constant>);
 
-            CHECK(expr.size() == 0);
-            CHECK(expr.get(x).numerical() == 0._a);
-        }
+        LinExpr<Var> lin1, lin2;
+        CHECK(std::is_same_v<decltype(lin1 + x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x + lin1), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(lin1 + 2 * x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x + lin1), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(lin1 + lin2), LinExpr<Var>>);
 
-        SECTION("with a non-zero value") {
-            auto expr = 2 * x;
+        Expr<Var> expr1, expr2;
+        CHECK(std::is_same_v<decltype(2 * expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 * 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + 1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(1 + expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(x + expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + !x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x + expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + 2 * x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x + expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + 2 * !x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * !x + expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 + expr2), Expr<Var>>);
 
-            CHECK(expr.size() == 1);
-            CHECK(expr.get(x).numerical() == 2._a);
-        }
-
-    }
-
-    SECTION("sum between Var and Var") {
-
-        auto expr = x + y;
-
-        CHECK(expr.size() == 2);
-        CHECK(expr.get(x).numerical() == 1._a);
-        CHECK(expr.get(y).numerical() == 1._a);
-
-    }
-
-    SECTION("sum between Expr and Var") {
-
-        auto expr = 2 * x + y;
-
-        CHECK(expr.size() == 2);
-        CHECK(expr.get(x).numerical() == 2._a);
-        CHECK(expr.get(y).numerical() == 1._a);
-
-    }
-
-    SECTION("sum between Var and Expr") {
-
-        auto expr = x + 2 * y;
-
-        CHECK(expr.size() == 2);
-        CHECK(expr.get(x).numerical() == 1._a);
-        CHECK(expr.get(y).numerical() == 2._a);
-
-    }
-
-
-    SECTION("sum between Var and Expr") {
-
-        auto expr = 3 * x + 2 * y;
-
-        CHECK(expr.size() == 2);
-        CHECK(expr.get(x).numerical() == 3._a);
-        CHECK(expr.get(y).numerical() == 2._a);
+        CHECK(std::is_same_v<decltype(x + !x + 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(x + 2 * !x + 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x + 2 + x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x + x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * (!x + x)), Expr<Var>>);
 
     }
 
-    SECTION("product between Param and Var") {
+    SECTION("Type deduction for operator-") {
 
-        auto expr = a * x;
-        CHECK(expr.size() == 1);
-        CHECK(expr.get(x).numerical() == 0._a);
-        CHECK(expr.get(x).get(a) == 1._a);
+        CHECK(std::is_same_v<decltype(+x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x - y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x - y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x - 2 * y), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x - 2 * y), LinExpr<Var>>);
 
-    }
+        CHECK(std::is_same_v<decltype(+!x), Constant>);
+        CHECK(std::is_same_v<decltype(!x - !y), Constant>);
+        CHECK(std::is_same_v<decltype(!x - 1), Constant>);
+        CHECK(std::is_same_v<decltype(1 - !x), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x - !y), Constant>);
+        CHECK(std::is_same_v<decltype(!x - 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x - 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 - 2 * !x - !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 - !x - 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(1 - 2 * !x - 2 * !y), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x - !y - 1), Constant>);
+        CHECK(std::is_same_v<decltype(!x - 2 * !y - 1), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x - 2 * !y - 1), Constant>);
 
-    SECTION("product between Coefficient and Var") {
+        Constant con1, con2;
 
-        auto expr = (1 + 2 * a) * x;
-        CHECK(expr.size() == 1);
-        CHECK(expr.get(x).numerical() == 1._a);
-        CHECK(expr.get(x).get(a) == 2._a);
+        CHECK(std::is_same_v<decltype(con1 - 1), Constant>);
+        CHECK(std::is_same_v<decltype(1 - con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 - !x), Constant>);
+        CHECK(std::is_same_v<decltype(!x - con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 - 2 * !x), Constant>);
+        CHECK(std::is_same_v<decltype(2 * !x - con1), Constant>);
+        CHECK(std::is_same_v<decltype(con1 - con2), Constant>);
 
-    }
+        LinExpr<Var> lin1, lin2;
+        CHECK(std::is_same_v<decltype(lin1 - x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(x - lin1), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(lin1 - 2 * x), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x - lin1), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(lin1 - lin2), LinExpr<Var>>);
 
-    SECTION("product between double and Expr") {
+        Expr<Var> expr1, expr2;
+        CHECK(std::is_same_v<decltype(2 * expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 * 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - 1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(1 - expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(x - expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - !x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x - expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - 2 * x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * x - expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - 2 * !x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * !x - expr1), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(expr1 - expr2), Expr<Var>>);
 
-        auto expr = 10 * ((1 + 2 * a) * x + y);
-
-        CHECK(expr.get(x).numerical() == 10._a);
-        CHECK(expr.get(x).get(a) == 20._a);
-        CHECK(expr.get(y).numerical() == 10._a);
-
-    }
-
-    SECTION("build a complex expression") {
-
-        auto expr = x + y + 2 * x + 3 * a * y + (2 + 3 * a + b) * x;
-
-        CHECK(expr.size() == 2);
-        CHECK(expr.get(x).numerical() == 5._a);
-        CHECK(expr.get(x).get(a) == 3._a);
-        CHECK(expr.get(x).get(b) == 1._a);
-        CHECK(expr.get(y).numerical() == 1._a);
-        CHECK(expr.get(y).get(a) == 3._a);
+        CHECK(std::is_same_v<decltype(x - !x - 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(x - 2 * !x - 2), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x - 2 - x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(!x - x), Expr<Var>>);
+        CHECK(std::is_same_v<decltype(2 * (!x - x)), Expr<Var>>);
 
     }
 

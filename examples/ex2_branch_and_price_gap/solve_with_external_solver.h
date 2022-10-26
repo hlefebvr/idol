@@ -28,7 +28,7 @@ void solve_with_external_solver(const Problems::GAP::Instance& t_instance) {
     knapsack_constraints.reserve(n_knapsacks);
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        Expr expr;
+        LinExpr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
             expr += t_instance.w(i, j) * x[i][j];
         }
@@ -41,7 +41,7 @@ void solve_with_external_solver(const Problems::GAP::Instance& t_instance) {
     assignment_constraints.reserve(n_items);
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
-        Expr expr;
+        LinExpr expr;
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             expr += x[i][j];
         }

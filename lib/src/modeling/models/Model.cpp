@@ -3,6 +3,7 @@
 //
 #include "../../../include/modeling/models/Model.h"
 #include "../../../include/modeling/matrix/Matrix.h"
+#include "../../../include/modeling/expressions/operators.h"
 
 unsigned int Model::s_id = 0;
 
@@ -64,12 +65,12 @@ Ctr Model::add_constraint(TempCtr t_temporary_constraint, std::string t_name) {
 
 Ctr Model::add_constraint(CtrType t_type, Constant t_rhs, std::string t_name) {
     if (t_type == Equal) {
-        return add_constraint(Expr() == std::move(t_rhs), std::move(t_name));
+        return add_constraint(LinExpr() == std::move(t_rhs), std::move(t_name));
     }
     if (t_type == LessOrEqual) {
-        return add_constraint(Expr() <= std::move(t_rhs), std::move(t_name));
+        return add_constraint(LinExpr() <= std::move(t_rhs), std::move(t_name));
     }
-    return add_constraint(Expr() >= std::move(t_rhs), std::move(t_name));
+    return add_constraint(LinExpr() >= std::move(t_rhs), std::move(t_name));
 }
 
 void Model::add_row_to_columns(const Ctr &t_ctr) {
@@ -176,8 +177,8 @@ void Model::Transform::hard_move(Model &t_destination, const Var &t_var) {
     hard_move(m_model.m_variables, t_destination.m_variables, t_destination.id(), t_var);
 }
 
-Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, const std::function<bool(const Ctr &)> &t_indicator) {
-    Map<Ctr, Expr<Var>> result;
+Map<Ctr, LinExpr<Var>> Model::Transform::move(Model &t_destination, const std::function<bool(const Ctr &)> &t_indicator) {
+    Map<Ctr, LinExpr<Var>> result;
 
     unsigned int i = 0;
     unsigned int n = m_model.m_constraints.size();
@@ -227,7 +228,7 @@ Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, const std::func
     return result;
 }
 
-Map<Ctr, Expr<Var>> Model::Transform::move(Model &t_destination, std::vector<Ctr> t_indicator) {
+Map<Ctr, LinExpr<Var>> Model::Transform::move(Model &t_destination, std::vector<Ctr> t_indicator) {
 
     std::sort(t_indicator.begin(), t_indicator.end(), [](const Ctr& t_a, const Ctr& t_b){
         return t_a.index() < t_b.index();

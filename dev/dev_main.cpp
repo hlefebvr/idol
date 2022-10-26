@@ -1,7 +1,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "algorithms/logs/Log.h"
-#include "modeling/expressions/Expr.h"
+#include "modeling/expressions/LinExpr.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/Nodes_Basic.h"
 #include "algorithms/decomposition/Decomposition.h"
@@ -22,6 +22,7 @@
 #include "algorithms/callbacks/AlgorithmInCallback.h"
 #include "problems/kp/KP_Instance.h"
 #include "problems/robust/RobustProblem.h"
+#include "modeling/expressions/Expr.h"
 
 //// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!
 int main() {
@@ -33,7 +34,25 @@ int main() {
 
     Problems::Robust<2> problem;
 
-    auto x = problem.stage(0).add_variable(0., 1., Continuous, 0.);
+    Model model;
+    auto x = model.add_variable(0., 1., Continuous, 0., "x");
+
+    Expr expr(2 * x);
+    expr + x;
+    expr + 2 * x;
+    expr + !x;
+    expr + 2 * !x;
+    x + expr;
+    2 * x + expr;
+    !x + expr;
+    2 * !x + expr;
+
+    2 * !x + 2 * x;
+    !x + 2 * x;
+    2 * !x + x;
+    !x + x;
+
+    std::cout << expr << std::endl;
 
     return 0;
 }

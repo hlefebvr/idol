@@ -65,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
             branching_candidates.emplace_back(x[i].back());
         }
 
-        Expr expr;
+        LinExpr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
             expr += instance.w(i, j) * x[i][j];
         }
@@ -76,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
     }
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
-        Expr expr;
+        LinExpr expr;
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             expr += !x[i][j] * alpha[i];
         }

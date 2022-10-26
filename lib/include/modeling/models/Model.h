@@ -230,9 +230,9 @@ public:
      * @param t_indicator The indicator function for constraints to be moved.
      * @return The illegal terms removed from the original model.
      */
-    Map<Ctr, Expr<Var>> move(Model& t_destination, const std::function<bool(const Ctr &)> &t_indicator);
+    Map<Ctr, LinExpr<Var>> move(Model& t_destination, const std::function<bool(const Ctr &)> &t_indicator);
 
-    Map<Ctr, Expr<Var>> move(Model& t_destination, std::vector<Ctr> t_indicator);
+    Map<Ctr, LinExpr<Var>> move(Model& t_destination, std::vector<Ctr> t_indicator);
 };
 
 template<class T>

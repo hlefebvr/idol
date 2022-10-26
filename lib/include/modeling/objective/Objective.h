@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "../variables/Variable.h"
-#include "../expressions/Expr.h"
+#include "../expressions/LinExpr.h"
 #include "../expressions/Column.h"
 
 class Model;

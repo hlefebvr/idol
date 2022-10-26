@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
 #include "../../../include/algorithms/logs/Log.h"
+#include "../../../include/modeling/expressions/operators.h"
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),

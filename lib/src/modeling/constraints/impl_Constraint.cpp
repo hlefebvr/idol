@@ -7,7 +7,7 @@
 impl::Ctr::Ctr(ObjectId &&t_id, CtrType t_type, Constant&& t_rhs)
     : impl::Object(std::move(t_id)),
       m_type(t_type),
-      m_row(Expr(), std::move(t_rhs)) {
+      m_row(LinExpr(), std::move(t_rhs)) {
 
 }
 

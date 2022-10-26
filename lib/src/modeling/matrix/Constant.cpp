@@ -1,7 +1,7 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "../../../include/modeling/matrix/Constant.h"
+#include "../../../include/modeling/expressions/Constant.h"
 #include "../../../include/modeling/numericals.h"
 #include "../../../include/modeling/solutions/Solution.h"
 #include <memory>
@@ -123,30 +123,5 @@ double Constant::fix(const Solution::Dual &t_primals) const {
     for (const auto& [param, coeff] : m_products) {
         result += coeff * t_primals.get(param.as<Ctr>());
     }
-    return result;
-}
-
-Constant operator*(double t_factor, const Param& t_param) {
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
-        return {};
-    }
-    return { t_param, t_factor };
-}
-
-Constant operator*(double t_factor, const Constant& t_coefficient) {
-    Constant result(t_coefficient);
-    result *= t_factor;
-    return result;
-}
-
-Constant operator+(Constant t_a, const Constant& t_b) {
-    Constant result(std::move(t_a));
-    result += t_b;
-    return result;
-}
-
-Constant operator-(const Constant& t_coefficient) {
-    Constant result;
-    result -= t_coefficient;
     return result;
 }

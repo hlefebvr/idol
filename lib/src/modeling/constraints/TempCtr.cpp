@@ -4,15 +4,15 @@
 #include "../../../include/modeling/constraints/TempCtr.h"
 #include "../../../include/modeling/solutions/Solution.h"
 
-TempCtr operator<=(Expr<Var> t_expr, Constant t_rhs) {
+TempCtr operator<=(LinExpr<Var> t_expr, Constant t_rhs) {
     return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
 }
 
-TempCtr operator>=(Expr<Var> t_expr, Constant t_rhs) {
+TempCtr operator>=(LinExpr<Var> t_expr, Constant t_rhs) {
     return { Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
 }
 
-TempCtr operator==(Expr<Var> t_expr, Constant t_rhs) {
+TempCtr operator==(LinExpr<Var> t_expr, Constant t_rhs) {
     return { Row(std::move(t_expr), std::move(t_rhs)), Equal };
 }
 

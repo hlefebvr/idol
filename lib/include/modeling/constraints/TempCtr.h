@@ -76,9 +76,9 @@ public:
     bool is_violated(const Solution::Primal& t_solution) const;
 };
 
-TempCtr operator<=(Expr<Var> t_expr, Constant t_rhs);
-TempCtr operator>=(Expr<Var> t_expr, Constant t_rhs);
-TempCtr operator==(Expr<Var> t_expr, Constant t_rhs);
+TempCtr operator<=(LinExpr<Var> t_expr, Constant t_rhs);
+TempCtr operator>=(LinExpr<Var> t_expr, Constant t_rhs);
+TempCtr operator==(LinExpr<Var> t_expr, Constant t_rhs);
 
 std::ostream& operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr);
 

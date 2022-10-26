@@ -2,7 +2,7 @@
 // Created by henri on 08/09/22.
 //
 #include "../../../include/modeling/matrix/MatrixCoefficientReference.h"
-#include "../../../include/modeling/matrix/Constant.h"
+#include "../../../include/modeling/expressions/Constant.h"
 
 void MatrixCoefficientReference::set_value(Constant &&t_coefficient) {
     *m_coefficient = std::move(t_coefficient);

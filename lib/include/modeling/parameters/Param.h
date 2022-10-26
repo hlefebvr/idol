@@ -60,7 +60,7 @@ static Param operator!(const Var& t_var) { return Param(t_var); }
 static Param operator!(const Ctr& t_ctr) { return Param(t_ctr); }
 
 static std::ostream& operator<<(std::ostream& t_os, const Param& t_param) {
-    return t_os << t_param.name();
+    return t_os << '!' << t_param.name();
 }
 
 MAKE_HASHABLE(Param)

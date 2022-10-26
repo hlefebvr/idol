@@ -6,6 +6,7 @@
 #define OPTIMIZE_TEST_UTILS_H
 
 #include "modeling.h"
+#include "modeling/expressions/Expr.h"
 #include "solvers.h"
 #include "algorithms.h"
 

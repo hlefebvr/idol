@@ -11,7 +11,7 @@ class MatrixCoefficientReference;
 class Var;
 class Ctr;
 class Constant;
-template<class> class Expr;
+template<class> class LinExpr;
 
 class Matrix {
     friend class Model;
@@ -20,7 +20,7 @@ class Matrix {
 
     static void apply_on_row(const Ctr &t_ctr, const std::function<void(const Var&, MatrixCoefficientReference&&)>& t_function);
 
-    static void update_coefficient(const Var& t_var, const Ctr& t_ctr, Expr<Ctr> &t_column, Expr<Var> &t_row, Constant &&t_coefficient);
+    static void update_coefficient(const Var& t_var, const Ctr& t_ctr, LinExpr<Ctr> &t_column, LinExpr<Var> &t_row, Constant &&t_coefficient);
 };
 
 #endif //OPTIMIZE_MATRIX_H

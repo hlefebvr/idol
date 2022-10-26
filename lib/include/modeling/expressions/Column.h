@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "../matrix/AbstractMatrixCoefficient.h"
-#include "Expr.h"
+#include "LinExpr.h"
 #include "../constraints/Constraint.h"
 
 /**
@@ -17,7 +17,7 @@
  * pairs representing the Constant coefficient of the column in each row Ctr. Such pairs are called components.
  */
 class Column {
-    Expr<Ctr> m_components;
+    LinExpr<Ctr> m_components;
     std::unique_ptr<AbstractMatrixCoefficient> m_objective_coefficient;
 public:
     /**
@@ -40,12 +40,12 @@ public:
     /**
      * Returns the components of the column.
      */
-    Expr<Ctr>& components() { return m_components; }
+    LinExpr<Ctr>& components() { return m_components; }
 
     /**
      * Returns the components of the column.
      */
-    const Expr<Ctr>& components() const { return m_components; }
+    const LinExpr<Ctr>& components() const { return m_components; }
 
     /**
      * Returns the objective coefficient of the column.
@@ -61,7 +61,7 @@ public:
      * Sets the components to the ones given as argument. This erases and replaces previous components.
      * @param t_components The desired new components.
      */
-    void set_components(Expr<Ctr> t_components);
+    void set_components(LinExpr<Ctr> t_components);
 
     /**
      * Sets the objective coefficient.

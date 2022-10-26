@@ -3,6 +3,7 @@
 //
 #include "../../../include/algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/modeling/expressions/operators.h"
 
 
 void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
@@ -12,7 +13,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, do
             t_var,
             t_lb,
             m_lower_bound_constraints,
-            [](Expr<Var>&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
+            [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
             [](const Var& t_var){ return t_var.lb(); },
             t_subproblem
     );
@@ -27,7 +28,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_upper_bound(const Var &t_var, do
             t_var,
             t_ub,
             m_upper_bound_constraints,
-            [](Expr<Var>&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
+            [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
             [](const Var& t_var){ return t_var.ub(); },
             t_subproblem
     );
@@ -38,7 +39,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_upper_bound(const Var &t_var, do
 void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproblem_variable,
                                                           double t_bound,
                                                           Map<Var, Ctr>& t_bound_constraints,
-                                                          const std::function<TempCtr(Expr<Var>&&, double)>& t_ctr_builder,
+                                                          const std::function<TempCtr(LinExpr<Var>&&, double)>& t_ctr_builder,
                                                           const std::function<double(const Var&)>& t_get_bound,
                                                           ColumnGenerationSP& t_subproblem) {
 
@@ -82,7 +83,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
     auto& row = t_temporary_constraint.row();
 
     // TODO this may be re-written in a better way after refacto of Row, Expr and Column
-    Expr original_space;
+    LinExpr original_space;
 
     for (const auto& [var, coefficient] : row.lhs()) {
         if (t_subproblem.is_in_subproblem(var)) {
@@ -90,7 +91,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
         }
     }
 
-    row.lhs().replace_if([&](const Var& t_var) -> std::optional<Expr<Var>> {
+    row.lhs().replace_if([&](const Var& t_var) -> std::optional<LinExpr<Var>> {
         if (t_subproblem.is_in_subproblem(t_var)) {
             return t_subproblem.expand(t_var);
         }

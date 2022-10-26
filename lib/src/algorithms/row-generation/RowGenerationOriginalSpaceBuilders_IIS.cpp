@@ -5,6 +5,7 @@
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
 #include "../../../include/algorithms/Algorithm.h"
 #include "../../../include/modeling/models/Model.h"
+#include "../../../include/modeling/expressions/operators.h"
 
 RowGenerationOriginalSpaceBuilders::IIS::IIS(const Model& t_rmp)
     : m_rmp(t_rmp) {
@@ -14,7 +15,7 @@ RowGenerationOriginalSpaceBuilders::IIS::IIS(const Model& t_rmp)
 Solution::Primal RowGenerationOriginalSpaceBuilders::IIS::primal_solution(const RowGenerationSP &t_subproblem,
                                                                           const Algorithm &t_rmp_solution_strategy) const {
 
-    Expr<Var> objective;
+    LinExpr<Var> objective;
     for (const auto& [var, coeff] : m_rmp.objective()) {
         objective += coeff * var;
     }

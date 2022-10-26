@@ -22,7 +22,7 @@ int main() {
     std::vector<Var> x;
     x.reserve(n_items);
 
-    Expr sum_weight;
+    LinExpr sum_weight;
 
     for (unsigned int i = 0 ; i < n_items ; ++i) {
         auto var = model.add_variable(0., 1., Continuous, -instance.p(i));

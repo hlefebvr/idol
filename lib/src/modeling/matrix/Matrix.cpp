@@ -21,7 +21,7 @@ void Matrix::apply_on_row(const Ctr &t_ctr, const std::function<void(const Var &
     }
 }
 
-void Matrix::update_coefficient(const Var& t_var, const Ctr& t_ctr, Expr<Ctr> &t_column, Expr<Var> &t_row, Constant &&t_coefficient) {
+void Matrix::update_coefficient(const Var& t_var, const Ctr& t_ctr, LinExpr<Ctr> &t_column, LinExpr<Var> &t_row, Constant &&t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         t_column.m_map.erase(t_ctr);

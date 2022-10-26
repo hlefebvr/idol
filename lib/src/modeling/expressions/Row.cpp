@@ -2,6 +2,7 @@
 // Created by henri on 04/10/22.
 //
 #include "../../../include/modeling/expressions/Row.h"
+#include "../../../include/modeling/expressions/operators.h"
 
 #include <memory>
 
@@ -11,7 +12,7 @@ Row::Row() : m_rhs(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
-Row::Row(Expr<Var> t_lhs, Constant t_rhs)
+Row::Row(LinExpr<Var> t_lhs, Constant t_rhs)
     : m_lhs(std::move(t_lhs)),
       m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs))) {
 
@@ -30,7 +31,7 @@ Row &Row::operator=(const Row &t_src) {
     return *this;
 }
 
-void Row::set_lhs(Expr<Var> t_lhs) {
+void Row::set_lhs(LinExpr<Var> t_lhs) {
     m_lhs = std::move(t_lhs);
 }
 

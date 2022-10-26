@@ -143,9 +143,9 @@ public:
      */
     Constant& operator+=(const Constant& t_term);
 
+    Constant& operator-=(const Constant& t_term);
     Constant& operator-=(double t_term);
     Constant& operator-=(Param t_term);
-    Constant& operator-=(const Constant& t_term);
 
     double fix(const Solution::Primal& t_primals) const;
 
@@ -153,14 +153,6 @@ public:
 
     static Constant Zero;
 };
-
-Constant operator*(double t_factor, const Param& t_param);
-
-Constant operator*(double t_factor, const Constant& t_coefficient);
-
-Constant operator+(Constant t_a, const Constant& t_b);
-
-Constant operator-(const Constant& t_coefficient);
 
 static std::ostream& operator<<(std::ostream& t_os, const Constant& t_coefficient) {
 

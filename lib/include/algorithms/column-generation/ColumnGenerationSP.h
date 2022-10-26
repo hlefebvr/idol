@@ -95,11 +95,11 @@ public:
 
     void remove_columns_violating_constraint(const TempCtr& t_ctr);
 
-    Expr<Var> expand(const Var &t_subproblem_variable) const;
+    LinExpr<Var> expand(const Var &t_subproblem_variable) const;
 
     void reset_linking_expr(const Ctr& t_ctr);
 
-    void add_linking_expr(const Ctr& t_ctr, const Expr<Var>& t_expr);
+    void add_linking_expr(const Ctr& t_ctr, const LinExpr<Var>& t_expr);
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 

@@ -2,6 +2,7 @@
 // Created by henri on 19/09/22.
 //
 #include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/modeling/expressions/operators.h"
 #include "../../../include/algorithms/Algorithm.h"
 
 ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var)
@@ -207,7 +208,7 @@ void ColumnGenerationSP::reset_linking_expr(const Ctr &t_ctr) {
     m_var_template.column().components().set(t_ctr, 0.);
 }
 
-void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const Expr<Var> &t_expr) {
+void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &t_expr) {
     Constant value;
     for (const auto& [var, constant] : t_expr) {
         value += constant.numerical() * !var;
@@ -278,8 +279,8 @@ void ColumnGenerationSP::remove_columns_violating_constraint(const TempCtr &t_ct
     });
 }
 
-Expr<Var> ColumnGenerationSP::expand(const Var &t_subproblem_variable) const {
-    Expr result;
+LinExpr<Var> ColumnGenerationSP::expand(const Var &t_subproblem_variable) const {
+    LinExpr result;
     for (const auto& [var, column] : m_currently_present_variables) {
         result += column.get(t_subproblem_variable) * var;
     }

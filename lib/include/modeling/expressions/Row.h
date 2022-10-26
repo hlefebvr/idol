@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "../matrix/AbstractMatrixCoefficient.h"
-#include "Expr.h"
+#include "LinExpr.h"
 
 /**
  * Row modeling object.
@@ -18,7 +18,7 @@
  * The whole left handside is stored as an Expr while the whole right handside is stored as a Constant.
  */
 class Row {
-    Expr<Var> m_lhs;
+    LinExpr<Var> m_lhs;
     std::unique_ptr<AbstractMatrixCoefficient> m_rhs;
 public:
     /**
@@ -31,7 +31,7 @@ public:
      * @param t_lhs The desired left handside.
      * @param t_rhs The desired right handside.
      */
-    Row(Expr<Var> t_lhs, Constant t_rhs);
+    Row(LinExpr<Var> t_lhs, Constant t_rhs);
 
     Row(const Row& t_src);
     Row(Row&& t_src) noexcept = default;
@@ -42,12 +42,12 @@ public:
     /**
      * Returns the left handside.
      */
-    Expr<Var>& lhs() { return m_lhs; }
+    LinExpr<Var>& lhs() { return m_lhs; }
 
     /**
      * Returns the left handisde.
      */
-    const Expr<Var>& lhs() const { return m_lhs; }
+    const LinExpr<Var>& lhs() const { return m_lhs; }
 
     /**
      * Returns the right handside.
@@ -63,7 +63,7 @@ public:
      * Sets the left handside to the expression given as argument.
      * @param t_lhs The desired left handside.
      */
-    void set_lhs(Expr<Var> t_lhs);
+    void set_lhs(LinExpr<Var> t_lhs);
 
     /**
      * Sets the right handside as the Constant given as argument.

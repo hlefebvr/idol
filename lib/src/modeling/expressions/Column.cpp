@@ -2,6 +2,7 @@
 // Created by henri on 04/10/22.
 //
 #include "../../../include/modeling/expressions/Column.h"
+#include "../../../include/modeling/expressions/operators_Ctr.h"
 
 const Column Column::EmptyColumn;
 
@@ -27,7 +28,7 @@ Column &Column::operator=(const Column &t_src) {
     return *this;
 }
 
-void Column::set_components(Expr<Ctr> t_components) {
+void Column::set_components(LinExpr<Ctr> t_components) {
     m_components = std::move(t_components);
 }
 
