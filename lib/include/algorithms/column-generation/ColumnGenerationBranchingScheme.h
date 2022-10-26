@@ -8,7 +8,7 @@
 #include "../../modeling/numericals.h"
 #include "../../modeling/Types.h"
 #include "../../modeling/variables/TempVar.h"
-#include "../../modeling/constraints/Constraint.h"
+#include "../../modeling/constraints/Ctr.h"
 
 namespace Solution {
     class Primal;

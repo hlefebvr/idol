@@ -7,8 +7,8 @@
 
 
 #include "NodeUpdator.h"
-#include "../../modeling/variables/Variable.h"
-#include "../../modeling/constraints/Constraint.h"
+#include "../../modeling/variables/Var.h"
+#include "../../modeling/constraints/Ctr.h"
 #include "../../modeling/constraints/TempCtr.h"
 #include "../../containers/Map.h"
 #include "../../modeling/numericals.h"

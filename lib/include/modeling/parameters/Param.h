@@ -7,8 +7,8 @@
 
 #include "../objects/Object.h"
 #include "../Types.h"
-#include "../variables/Variable.h"
-#include "../constraints/Constraint.h"
+#include "../variables/Var.h"
+#include "../constraints/Ctr.h"
 #include <iostream>
 #include <variant>
 

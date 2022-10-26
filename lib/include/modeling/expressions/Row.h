@@ -9,6 +9,8 @@
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "LinExpr.h"
 
+template<class Key> class Expr;
+
 /**
  * Row modeling object.
  *
@@ -32,6 +34,11 @@ public:
      * @param t_rhs The desired right handside.
      */
     Row(LinExpr<Var> t_lhs, Constant t_rhs);
+
+    Row(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs);
+    Row(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs);
+    Row(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs);
+    Row(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs);
 
     Row(const Row& t_src);
     Row(Row&& t_src) noexcept = default;

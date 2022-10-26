@@ -8,7 +8,7 @@
 #include "Node.h"
 #include "../../modeling/solutions/Solution.h"
 #include "../../containers/Map.h"
-#include "../../modeling/variables/Variable.h"
+#include "../../modeling/variables/Var.h"
 
 namespace Nodes {
     class Basic;

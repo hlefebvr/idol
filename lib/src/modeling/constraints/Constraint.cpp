@@ -3,7 +3,7 @@
 //
 #include <utility>
 
-#include "../../../include/modeling/constraints/Constraint.h"
+#include "../../../include/modeling/constraints/Ctr.h"
 #include "../../../include/modeling/constraints/impl_Constraint.h"
 #include "../../../include/modeling/solutions/Solution.h"
 #include "../../../include/modeling/environment/Env.h"

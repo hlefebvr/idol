@@ -3,18 +3,31 @@
 //
 #include "../../../include/modeling/constraints/TempCtr.h"
 #include "../../../include/modeling/solutions/Solution.h"
+#include "../../../include/modeling/expressions/operators.h"
 
-TempCtr operator<=(LinExpr<Var> t_expr, Constant t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), LessOrEqual };
+TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+    return { Row(std::move(t_lhs), std::move(t_rhs)), LessOrEqual };
 }
 
-TempCtr operator>=(LinExpr<Var> t_expr, Constant t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), GreaterOrEqual };
+TempCtr operator<=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) <= std::move(t_rhs); }
+TempCtr operator<=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) <= Expr<Var>(t_rhs); }
+TempCtr operator<=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) <= Expr<Var>(t_rhs); }
+
+TempCtr operator>=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+    return { Row(std::move(t_lhs), std::move(t_rhs)), GreaterOrEqual };
 }
 
-TempCtr operator==(LinExpr<Var> t_expr, Constant t_rhs) {
-    return { Row(std::move(t_expr), std::move(t_rhs)), Equal };
+TempCtr operator>=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) >= std::move(t_rhs); }
+TempCtr operator>=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) >= Expr<Var>(t_rhs); }
+TempCtr operator>=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) >= Expr<Var>(t_rhs); }
+
+TempCtr operator==(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+    return { Row(std::move(t_lhs), std::move(t_rhs)), Equal };
 }
+
+TempCtr operator==(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) == std::move(t_rhs); }
+TempCtr operator==(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) == Expr<Var>(t_rhs); }
+TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) == Expr<Var>(t_rhs); }
 
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_row.rhs().numerical();

@@ -7,7 +7,7 @@
 
 #include "NodeUpdator.h"
 #include "../../containers/Map.h"
-#include "../../modeling/variables/Variable.h"
+#include "../../modeling/variables/Var.h"
 #include "../../modeling/numericals.h"
 #include "../Algorithm.h"
 #include <list>

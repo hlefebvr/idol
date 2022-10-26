@@ -3,7 +3,7 @@
 //
 #include <cassert>
 #include "../../../include/modeling/matrix/Matrix.h"
-#include "../../../include/modeling/variables/Variable.h"
+#include "../../../include/modeling/variables/Var.h"
 #include "../../../include/modeling/expressions/Column.h"
 #include "../../../include/modeling/expressions/Row.h"
 #include "../../../include/modeling/environment/ObjectManager.h"

@@ -8,7 +8,7 @@
 #include <memory>
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "LinExpr.h"
-#include "../constraints/Constraint.h"
+#include "../constraints/Ctr.h"
 
 /**
  * Column modeling object.

@@ -82,3 +82,27 @@ Row Row::fix(const Solution::Primal &t_primals) const {
 
     return result;
 }
+
+Row::Row(Expr<Var> &&t_lhs, Expr<Var> &&t_rhs)
+    : m_lhs(std::move(t_lhs.linear()) - t_lhs.linear()),
+      m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs.constant()) - t_lhs.constant())) {
+
+}
+
+Row::Row(Expr<Var> &&t_lhs, const Expr<Var> &t_rhs)
+    : m_lhs(std::move(t_lhs.linear()) - t_lhs.linear()),
+      m_rhs(std::make_unique<MatrixCoefficient>(t_rhs.constant() - t_lhs.constant())){
+
+}
+
+Row::Row(const Expr<Var> &t_lhs, Expr<Var> &&t_rhs)
+    : m_lhs(t_lhs.linear() - t_lhs.linear()),
+      m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs.constant()) - t_lhs.constant())){
+
+}
+
+Row::Row(const Expr<Var> &t_lhs, const Expr<Var> &t_rhs)
+    : m_lhs(t_lhs.linear() - t_lhs.linear()),
+      m_rhs(std::make_unique<MatrixCoefficient>(t_rhs.constant() - t_lhs.constant())) {
+
+}

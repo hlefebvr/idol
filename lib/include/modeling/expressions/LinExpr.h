@@ -10,7 +10,7 @@
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "Constant.h"
 #include "../matrix/MatrixCoefficient.h"
-#include "../variables/Variable.h"
+#include "../variables/Var.h"
 #include "../../errors/Exception.h"
 #include <memory>
 #include <utility>

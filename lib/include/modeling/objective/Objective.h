@@ -6,7 +6,7 @@
 #define OPTIMIZE_OBJECTIVE_H
 
 #include <vector>
-#include "../variables/Variable.h"
+#include "../variables/Var.h"
 #include "../expressions/LinExpr.h"
 #include "../expressions/Column.h"
 
