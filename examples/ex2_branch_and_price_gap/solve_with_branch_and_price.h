@@ -6,6 +6,7 @@
 #define OPTIMIZE_SOLVE_WITH_BRANCH_AND_PRICE_H
 
 #include "problems/gap/GAP_Instance.h"
+#include "modeling.h"
 #include "algorithms.h"
 
 void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {

@@ -6,6 +6,7 @@
 #define OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 
 #include "problems/gap/GAP_Instance.h"
+#include "modeling.h"
 #include "solvers.h"
 
 void solve_with_external_solver(const Problems::GAP::Instance& t_instance) {
