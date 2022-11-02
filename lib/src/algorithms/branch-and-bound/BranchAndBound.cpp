@@ -180,7 +180,7 @@ void BranchAndBound::prepare_node_solution() {
 
 void BranchAndBound::solve_current_node() {
     if (m_solution_strategy->sense() == Minimize) {
-        m_solution_strategy->set<Attr::CutOff>(std::min(m_best_upper_bound, get<Attr::CutOff>()));
+        m_solution_strategy->set<Attr::BestBoundStop>(std::min(m_best_upper_bound, get<Attr::BestBoundStop>()));
     } else {
         m_solution_strategy->set<Attr::BestObjStop>(std::min(m_best_upper_bound, get<Attr::BestObjStop>()));
     }
