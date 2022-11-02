@@ -70,8 +70,6 @@ void RowGenerationSP::solve() {
 Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_primals) const {
     double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
 
-    std::cout << m_objective_template << std::endl;
-
     Expr<Var> result;
 
     for (const auto& [var, constant] : m_objective_template.lhs()) {

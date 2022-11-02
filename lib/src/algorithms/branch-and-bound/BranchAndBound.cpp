@@ -179,8 +179,11 @@ void BranchAndBound::prepare_node_solution() {
 }
 
 void BranchAndBound::solve_current_node() {
-    m_solution_strategy->set<Attr::CutOff>(std::min(m_best_upper_bound, get<Attr::CutOff>()));
-    //m_solution_strategy->set<Attr::CutOff>(std::max(m_best_lower_bound, get<Attr::CutOff>())); // TODO WARNING THIS IS EXPERIMENTAL FOR MIN-MAX-MIN
+    if (m_solution_strategy->sense() == Minimize) {
+        m_solution_strategy->set<Attr::CutOff>(std::min(m_best_upper_bound, get<Attr::CutOff>()));
+    } else {
+        m_solution_strategy->set<Attr::BestObjStop>(std::min(m_best_upper_bound, get<Attr::BestObjStop>()));
+    }
     m_solution_strategy->solve();
     m_nodes->save_current_node_solution(*m_solution_strategy);
 }

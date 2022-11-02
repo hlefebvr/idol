@@ -8,7 +8,7 @@
 #include "AttributesMacros.h"
 #include <thread>
 
-CREATE_ATTRIBUTE_SECTION(Base, 8);
+CREATE_ATTRIBUTE_SECTION(Base, 10);
 CREATE_ATTRIBUTE(Base, 0, double, TimeLimit, 3600., AttributesSchemaProperty::GreaterThan<0>);
 CREATE_ATTRIBUTE(Base, 1, unsigned int, MaxIterations, std::numeric_limits<unsigned int>::max(), AttributesSchemaProperty::GreaterThan<0>);
 CREATE_ATTRIBUTE(Base, 2, unsigned int, MaxThreads, std::thread::hardware_concurrency(), AttributesSchemaProperty::GreaterThan<0>);
@@ -17,5 +17,7 @@ CREATE_ATTRIBUTE(Base, 4, bool, Presolve, true);
 CREATE_ATTRIBUTE(Base, 5, bool, InfeasibleOrUnboundedInfo, false);
 CREATE_ATTRIBUTE(Base, 6, double, CutOff, Inf);
 CREATE_ATTRIBUTE(Base, 7, bool, ResetBeforeSolving, false);
+CREATE_ATTRIBUTE(Base, 8, double, BestObjStop, Inf);
+CREATE_ATTRIBUTE(Base, 9, double, BestBoundStop, -Inf);
 
 #endif //OPTIMIZE_ATTRIBUTES_BASE_H

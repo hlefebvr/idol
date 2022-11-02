@@ -66,6 +66,8 @@ protected:
 public:
     explicit Solver(Model& t_model);
 
+    ObjSense sense() const override;
+
     [[nodiscard]] const Model& model() const { return m_src_model; }
 
     [[nodiscard]] Model& model() { return m_src_model; }
@@ -227,6 +229,11 @@ template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update_objective(const Expr<Var> &t_objective) {
     m_src_model.update_obj(t_objective);
     add_future_obj();
+}
+
+template<class VarT, class CtrT>
+ObjSense Solver<VarT, CtrT>::sense() const {
+    return m_src_model.sense();
 }
 
 #endif //OPTIMIZE_SOLVER2_H

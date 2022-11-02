@@ -29,6 +29,14 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
         m_model.set(GRB_DoubleParam_Cutoff, t_value);
     });
 
+    set_callback_attribute<Attr::BestObjStop>([this](double t_value){
+        m_model.set(GRB_DoubleParam_BestObjStop, t_value);
+    });
+
+    set_callback_attribute<Attr::BestBoundStop>([this](double t_value){
+        m_model.set(GRB_DoubleParam_BestBdStop, t_value);
+    });
+
     for (const auto& var : t_model.variables()) {
         add_future(var, false);
     }
@@ -78,6 +86,10 @@ void Solvers::Gurobi::analyze_status() {
         case GRB_CUTOFF:
             set_status(Unknown);
             set_reason(CutOff);
+        break;
+        case GRB_USER_OBJ_LIMIT:
+            set_status(Unknown);
+            set_reason(UserObjLimit);
         break;
         case GRB_TIME_LIMIT:
             set_status(m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible);

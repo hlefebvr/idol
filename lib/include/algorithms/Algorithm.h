@@ -47,6 +47,8 @@ public:
 
     [[nodiscard]] Reason reason() const { return m_reason; }
 
+    virtual ObjSense sense() const { return Minimize; }
+
     /**
      * Executes the solution algorithm.
      */
