@@ -35,7 +35,6 @@ public:
 class RowGenerationSP {
 
     TempCtr m_cut_template;
-    Row m_objective_template;
 
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
@@ -59,8 +58,6 @@ public:
     explicit RowGenerationSP(Algorithm& t_rmp_strategy, const Ctr& t_cut);
 
     void initialize();
-
-    void experimental_set_cut_template(TempCtr t_cut_temp) { m_cut_template = std::move(t_cut_temp); }
 
     void solve();
 

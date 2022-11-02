@@ -70,37 +70,5 @@ BranchAndBound branch_and_price(Model& t_rmp_model, const std::vector<Var>& t_va
 
     return result;
 }
-/*
-template<
-    class RMPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-    class SPSolutionStrategyT = ExternalSolver< std::tuple_element_t<0, available_solvers> >,
-    class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
-    class BranchingStrategyT = BranchingStrategies::MostInfeasible,
-    class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
-    class ActiveNodeManagerT = ActiveNodesManagers::Heap,
-    class NodeUpdatorT = NodeUpdators::ByBoundVar
->
-BranchAndBound branch_and_price(Model& t_rmp_model, Model& t_subproblem, std::vector<Var> t_branching_candidates) {
 
-    class iterator {
-        bool m_is_begin;
-        Model* m_model;
-    public:
-        iterator(Model& t_model, bool t_is_begin) : m_is_begin(t_is_begin), m_model(&t_model) {}
-        bool operator!=(const iterator& t_rhs) const { return m_is_begin != t_rhs.m_is_begin; }
-        iterator& operator++() { m_is_begin = false; return *this; }
-        Model& operator*() { return *m_model; }
-    };
-
-    return branch_and_price<
-            RMPSolutionStrategyT,
-            SPSolutionStrategyT,
-            GenerationStrategyT,
-            BranchingStrategyT,
-            NodeStrategyT,
-            ActiveNodeManagerT,
-            NodeUpdatorT
-        >(t_rmp_model, iterator(t_subproblem, true), iterator(t_subproblem, false), std::move(t_branching_candidates));
-}
-*/
 #endif //OPTIMIZE_ALGORITHMS_H

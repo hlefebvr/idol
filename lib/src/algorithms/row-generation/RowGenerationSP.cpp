@@ -8,8 +8,11 @@
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),
-      m_cut_template(Row(t_cut.row()), t_cut.type()),
-      m_objective_template(t_cut.row().transpose()) {
+      m_cut_template(Row(t_cut.row()), t_cut.type()) {
+
+    if (m_cut_template.type() == Equal) {
+        throw Exception("Cannot separate equality constraints.");
+    }
 
     save_subproblem_ids(t_cut);
     remove_cut_template_from_rmp(t_cut);
@@ -68,15 +71,21 @@ void RowGenerationSP::solve() {
 }
 
 Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_primals) const {
+
     double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
 
-    Expr<Var> result;
+    Expr result = sign * m_cut_template.row().rhs().numerical();
 
-    for (const auto& [var, constant] : m_objective_template.lhs()) {
-        result += sign * constant.fix(t_primals) * var;
+    for (const auto& [param, coeff] : m_cut_template.row().rhs()) {
+        result += sign * coeff * param.as<Var>();
     }
 
-    result += sign * m_objective_template.rhs().fix(t_primals);
+    for (const auto &[var, constant]: m_cut_template.row().lhs()) {
+        result += -sign * constant.numerical() * t_primals.get(var);
+        for (const auto &[param, coeff]: constant) {
+            result += -sign * t_primals.get(var) * coeff * param.as<Var>();
+        }
+    }
 
     return result;
 }
