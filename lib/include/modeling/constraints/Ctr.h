@@ -46,13 +46,13 @@ public:
 
     /**
      * Returns the current type of the constraint (see also CtrType).
-     * It may be modified by calling the Model::update_type method.
+     * It may be modified by calling the Model::update_var_type method.
      */
     [[nodiscard]] CtrType type() const;
 
     /**
      * Returns the current right handside of the constraint.
-     * It may be modified by calling the Model::update_coefficient_rhs method.
+     * It may be modified by calling the Model::update_rhs_coeff method.
      */
     [[nodiscard]] const Constant& rhs() const;
 
@@ -64,7 +64,7 @@ public:
 
     /**
      * Returns the current row associated to the constraint.
-     * It may be modified by calling the Model::update_coefficient method.
+     * It may be modified by calling the Model::update_matrix_coeff method.
      * @return
      */
     [[nodiscard]] const Row& row() const;

@@ -25,12 +25,12 @@ public:
 
     virtual Solution::Primal help() const { throw std::runtime_error("experimental"); }
 
-    virtual void update_lb(const Var& t_var, double t_lb) {
-        throw NotImplemented("Updating lb from callback", "update_lb");
+    virtual void update_var_lb(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating lb from callback", "update_var_lb");
     }
 
-    virtual void update_ub(const Var& t_var, double t_lb) {
-        throw NotImplemented("Updating ub from callback", "update_ub");
+    virtual void update_var_ub(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating ub from callback", "update_var_ub");
     }
 
 };

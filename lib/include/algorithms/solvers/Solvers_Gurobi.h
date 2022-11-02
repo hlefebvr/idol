@@ -65,11 +65,11 @@ public:
 
     [[nodiscard]] Solution::Dual iis() const override;
 
-    void update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) override;
+    void update_rhs_coeff(const Ctr &t_ctr, double t_rhs) override;
 
-    void update_lb(const Var &t_var, double t_lb) override;
+    void update_var_lb(const Var &t_var, double t_lb) override;
 
-    void update_ub(const Var &t_var, double t_ub) override;
+    void update_var_ub(const Var &t_var, double t_ub) override;
 
     void write(const std::string &t_filename) override;
 

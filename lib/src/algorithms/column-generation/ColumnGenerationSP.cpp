@@ -47,20 +47,20 @@ Solution::Dual ColumnGenerationSP::dual_solution() const {
 }
 
 
-Row ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_duals) const {
+Expr<Var> ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_duals) const {
 
-    Row result;
+    Expr<Var> result;
 
     if (t_duals.status() == Optimal) {
         for (const auto &[param, coeff]: m_var_template.column().objective_coefficient()) {
-            result.lhs() += coeff * param.as<Var>();
+            result += coeff * param.as<Var>();
         }
     }
 
     for (const auto &[ctr, constant]: m_var_template.column().components()) {
-        result.rhs() += constant.numerical() * -t_duals.get(ctr);
+        result += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
-            result.lhs() += -t_duals.get(ctr) * coeff * param.as<Var>();
+            result += -t_duals.get(ctr) * coeff * param.as<Var>();
         }
     }
 
@@ -68,7 +68,7 @@ Row ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_duals) con
 }
 
 
-void ColumnGenerationSP::update_pricing_objective(const Row &t_objective) {
+void ColumnGenerationSP::update_pricing_objective(const Expr<Var> &t_objective) {
     m_exact_solution_strategy->update_objective(t_objective);
 }
 
@@ -184,7 +184,7 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     if (!is_in_subproblem(t_ctr)) { return false; }
 
-    m_exact_solution_strategy->update_coefficient_rhs(t_ctr, t_rhs);
+    m_exact_solution_strategy->update_rhs_coeff(t_ctr, t_rhs);
 
     remove_columns_violating_constraint(TempCtr(Row(t_ctr.row()), t_ctr.type()));
 

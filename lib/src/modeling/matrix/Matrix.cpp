@@ -6,6 +6,7 @@
 #include "../../../include/modeling/variables/Var.h"
 #include "../../../include/modeling/expressions/Column.h"
 #include "../../../include/modeling/expressions/Row.h"
+#include "../../../include/modeling/expressions/Expr.h"
 #include "../../../include/modeling/environment/ObjectManager.h"
 #include "../../../include/modeling/constraints/impl_Constraint.h"
 
@@ -38,6 +39,21 @@ void Matrix::update_coefficient(const Var& t_var, const Ctr& t_ctr, LinExpr<Ctr>
         assert(success_2);
     } else {
         it->second->value() = std::move(t_coefficient);
+    }
+
+}
+
+void Matrix::add_to_obj(Expr<Var> &t_objective, const Var &t_var, Column &t_column) {
+    if (!t_column.objective_coefficient().is_zero()) {
+        t_objective.linear().set(t_var, MatrixCoefficientReference(*t_column.m_objective_coefficient));
+    }
+}
+
+void Matrix::apply_obj(const Expr<Var> &t_objective,
+                       const std::function<void(const Var &, MatrixCoefficientReference &&)> &t_function) {
+
+    for (const auto& [var, ptr_to_coeff] : t_objective.linear().m_map) {
+        t_function(var, MatrixCoefficientReference(*ptr_to_coeff));
     }
 
 }

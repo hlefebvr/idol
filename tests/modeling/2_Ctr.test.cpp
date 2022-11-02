@@ -63,12 +63,12 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         SECTION("update RHS") {
 
-            model.update_rhs(ctr, 0.);
+            model.update_rhs_coeff(ctr, 0.);
 
             CHECK(ctr.rhs().numerical() == 0._a);
             CHECK(ctr.rhs().get(xi) == 0._a);
 
-            model.update_rhs(ctr, 1 + 2 * xi);
+            model.update_rhs_coeff(ctr, 1 + 2 * xi);
 
             CHECK(ctr.rhs().numerical() == 1._a);
             CHECK(ctr.rhs().get(xi) == 2._a);
@@ -78,17 +78,17 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
         SECTION("update type") {
 
             SECTION("GreaterOrEqual") {
-                model.update_type(ctr, GreaterOrEqual);
+                model.update_ctr_type(ctr, GreaterOrEqual);
                 CHECK(ctr.type() == GreaterOrEqual);
             }
 
             SECTION("LessOrEqual") {
-                model.update_type(ctr, LessOrEqual);
+                model.update_ctr_type(ctr, LessOrEqual);
                 CHECK(ctr.type() == LessOrEqual);
             }
 
             SECTION("Equal") {
-                model.update_type(ctr, Equal);
+                model.update_ctr_type(ctr, Equal);
                 CHECK(ctr.type() == Equal);
             }
 

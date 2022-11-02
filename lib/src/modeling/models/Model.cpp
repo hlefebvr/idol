@@ -7,7 +7,7 @@
 
 unsigned int Model::s_id = 0;
 
-Model::Model() : m_objects(Env::get()) {
+Model::Model(ObjSense t_sense) : m_objects(Env::get()), m_objective_sense(t_sense) {
 
 }
 
@@ -44,6 +44,8 @@ void Model::add_column_to_rows(const Var &t_var) {
     Matrix::apply_on_column(t_var, [&](const Ctr &t_ctr, MatrixCoefficientReference&& t_coefficient) {
         m_objects.impl(t_ctr).row().lhs().set(t_var, std::move(t_coefficient));
     });
+
+    Matrix::add_to_obj(m_objective, t_var, impl.column());
 }
 
 void Model::remove(const Var &t_var) {
@@ -51,6 +53,7 @@ void Model::remove(const Var &t_var) {
     for (const auto& [ctr, val] : t_var.column().components()) {
         m_objects.impl(ctr).row().lhs().set(t_var, 0.);
     }
+    m_objective.linear().set(t_var, 0.);
     m_objects.impl(t_var).column() = Column();
     remove_object(m_variables, t_var);
 }
@@ -90,7 +93,7 @@ void Model::remove(const Ctr &t_ctr) {
     remove_object(m_constraints, t_ctr);
 }
 
-void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
+void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
 
     m_listeners.broadcast_update_coefficient(t_ctr, t_var, t_coefficient);
 
@@ -104,146 +107,70 @@ void Model::update_coefficient(const Ctr &t_ctr, const Var &t_var, Constant t_co
 
 }
 
-void Model::update_objective(const Var &t_var, Constant t_coefficient) {
+void Model::update_obj_sense(ObjSense t_sense) {
+    m_objective_sense = t_sense;
+}
+
+void Model::update_obj_coeff(const Var &t_var, Constant t_coefficient) {
     m_listeners.broadcast_update_objective(t_var, t_coefficient);
+    if (t_coefficient.is_zero()) {
+        m_objective.linear().set(t_var, 0.);
+    }
     m_objects.impl(t_var).column().set_objective_coefficient(std::move(t_coefficient));
 }
 
-
-void Model::update_objective(const Row &t_row) {
-    update_objective_offset(t_row.rhs());
-    for (const auto& var : m_variables) {
-        update_objective(var, t_row.lhs().get(var)); // TODO this is inefficient as it is done even for zero values
+void Model::update_obj(Expr<Var> &&t_obj) {
+    for (const auto& [var, coeff] : m_objective.linear()) {
+        m_objects.impl(var).column().set_objective_coefficient(0.);
     }
+    m_objective = std::move(t_obj);
+    Matrix::apply_obj(m_objective, [&](const Var& t_var, MatrixCoefficientReference&& t_coeff){
+        m_objects.impl(t_var).column().set_objective_coefficient(std::move(t_coeff));
+    });
 }
 
-void Model::update_objective_offset(Constant t_offset) {
+void Model::update_obj(const Expr<Var> &t_obj) {
+    update_obj(Expr<Var>(t_obj));
+}
+/*
+void Model::update_obj(const Row &t_row) {
+    update_obj_const(t_row.rhs());
+    for (const auto& var : m_variables) {
+        update_obj_coeff(var, t_row.lhs().get(var)); // TODO this is inefficient as it is done even for zero values
+    }
+}
+*/
+void Model::update_obj_const(Constant t_offset) {
     m_listeners.broadcast_update_objective_offset(t_offset);
     m_objective_offset = std::move(t_offset);
 }
 
 
-void Model::update_rhs(const Ctr &t_ctr, Constant t_coefficient) {
+void Model::update_rhs_coeff(const Ctr &t_ctr, Constant t_coefficient) {
     m_listeners.broadcast_update_rhs(t_ctr, t_coefficient);
     m_objects.impl(t_ctr).row().set_rhs(std::move(t_coefficient));
 }
 
-void Model::update_lb(const Var &t_var, double t_lb) {
+void Model::update_var_lb(const Var &t_var, double t_lb) {
     m_listeners.broadcast_update_lb(t_var, t_lb);
     m_objects.impl(t_var).set_lb(t_lb);
 }
 
-void Model::update_ub(const Var &t_var, double t_ub) {
+void Model::update_var_ub(const Var &t_var, double t_ub) {
     m_listeners.broadcast_update_ub(t_var, t_ub);
     m_objects.impl(t_var).set_ub(t_ub);
 }
 
-void Model::update_type(const Var &t_var, VarType t_type) {
+void Model::update_var_type(const Var &t_var, VarType t_type) {
     m_listeners.broadcast_update_type(t_var, t_type);
     m_objects.impl(t_var).set_type(t_type);
 }
 
-void Model::update_type(const Ctr &t_ctr, CtrType t_type) {
+void Model::update_ctr_type(const Ctr &t_ctr, CtrType t_type) {
     m_listeners.broadcast_update_type(t_ctr, t_type);
     m_objects.impl(t_ctr).set_type(t_type);
 }
 
 void Model::add_listener(Listener &t_listener) const {
     m_listeners.add(t_listener);
-}
-
-Model::Transform Model::transform() {
-    return Model::Transform(*this);
-}
-
-
-Model::Transform::Transform(Model &t_model) : m_model(t_model) {
-
-}
-
-void Model::Transform::swap(const Var &t_a, const Var &t_b) {
-    swap(m_model.m_variables, t_a, t_b);
-}
-
-void Model::Transform::swap(const Ctr &t_a, const Ctr &t_b) {
-    swap(m_model.m_constraints, t_a, t_b);
-}
-
-void Model::Transform::hard_move(Model& t_destination, const Ctr& t_ctr) {
-    hard_move(m_model.m_constraints, t_destination.m_constraints, t_destination.id(), t_ctr);
-}
-
-void Model::Transform::hard_move(Model &t_destination, const Var &t_var) {
-    hard_move(m_model.m_variables, t_destination.m_variables, t_destination.id(), t_var);
-}
-
-Map<Ctr, LinExpr<Var>> Model::Transform::move(Model &t_destination, const std::function<bool(const Ctr &)> &t_indicator) {
-    Map<Ctr, LinExpr<Var>> result;
-
-    unsigned int i = 0;
-    unsigned int n = m_model.m_constraints.size();
-
-    // (Hard) Move every indicated constraint with their variables
-    while (i < n) {
-
-        auto ctr = m_model.m_constraints[i];
-
-        if (t_indicator(ctr)) {
-
-            for (const auto& [var, coeff] : ctr.row().lhs()) {
-                if (var.model_id() != m_model.m_id) { continue; }
-                hard_move(t_destination, var);
-            }
-
-            hard_move(t_destination, ctr);
-            --n;
-
-        } else {
-
-            ++i;
-
-        }
-    }
-
-    // Register illegal terms in variable columns for the new model
-    for (const auto& var : t_destination.m_variables) {
-        for (const auto& [ctr, coeff] : var.column().components()) {
-            if (ctr.model_id() == m_model.m_id) {
-                auto [it, success] = result.emplace(ctr, coeff * var);
-                if (!success) {
-                    it->second += coeff * var;
-                }
-            }
-        }
-    }
-
-    // Remove illegal terms from the new model
-    for (const auto& [ctr, expr] : result) {
-        for (const auto& [var, coeff] : expr) {
-            m_model.m_objects.impl(ctr).row().lhs().set(var, 0.);
-            t_destination.m_objects.impl(var).column().components().set(ctr, 0.);
-        }
-    }
-
-    return result;
-}
-
-Map<Ctr, LinExpr<Var>> Model::Transform::move(Model &t_destination, std::vector<Ctr> t_indicator) {
-
-    std::sort(t_indicator.begin(), t_indicator.end(), [](const Ctr& t_a, const Ctr& t_b){
-        return t_a.index() < t_b.index();
-    });
-
-    unsigned int i = 0;
-    const unsigned int n = t_indicator.size();
-
-    return move(t_destination, [&](const Ctr& t_ctr){
-        if (i >= n) { return false; }
-        if (t_ctr.index() == t_indicator[i].index()) {
-            ++i;
-            return true;
-        }
-        return false;
-    });
-
 }

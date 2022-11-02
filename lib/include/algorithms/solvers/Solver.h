@@ -88,7 +88,7 @@ public:
 
     Ctr add_row(TempCtr t_temporary_constraint) override;
 
-    void update_objective(const Row &t_objective) override;
+    void update_objective(const Expr<Var> &t_objective) override;
 };
 
 template<class VarT, class CtrT>
@@ -224,8 +224,8 @@ void Solver<VarT, CtrT>::save_callback(Callback *t_cb) {
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::update_objective(const Row &t_objective) {
-    m_src_model.update_objective(t_objective);
+void Solver<VarT, CtrT>::update_objective(const Expr<Var> &t_objective) {
+    m_src_model.update_obj(t_objective);
     add_future_obj();
 }
 

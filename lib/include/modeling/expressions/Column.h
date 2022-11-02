@@ -17,6 +17,7 @@
  * pairs representing the Constant coefficient of the column in each row Ctr. Such pairs are called components.
  */
 class Column {
+    friend class Matrix;
     LinExpr<Ctr> m_components;
     std::unique_ptr<AbstractMatrixCoefficient> m_objective_coefficient;
 public:
@@ -68,6 +69,8 @@ public:
      * @param t_objective_coefficient The desired new objective coefficient.
      */
     void set_objective_coefficient(Constant t_objective_coefficient);
+
+    void set_objective_coefficient(MatrixCoefficientReference&& t_objective_coefficient);
 
     Column fix(const Solution::Primal& t_primals) const;
 

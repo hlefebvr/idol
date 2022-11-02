@@ -105,8 +105,8 @@ public:
      * @param t_var The queried variable.
      * @param t_lb The desired bound.
      */
-    virtual void update_lb(const Var& t_var, double t_lb) {
-        throw NotImplemented("Updating variable LB", "update_lb");
+    virtual void update_var_lb(const Var& t_var, double t_lb) {
+        throw NotImplemented("Updating variable LB", "update_var_lb");
     }
 
     /**
@@ -114,16 +114,16 @@ public:
      * @param t_var The queried variable.
      * @param t_lb The desired bound.
      */
-    virtual void update_ub(const Var& t_var, double t_ub) {
-        throw NotImplemented("Updating variable UB", "update_ub");
+    virtual void update_var_ub(const Var& t_var, double t_ub) {
+        throw NotImplemented("Updating variable UB", "update_var_ub");
     }
 
     /**
      * Sets the objective function of the optimization problem.
      * @param t_objective The desired objective.
      */
-    virtual void update_objective(const Row& t_objective) {
-        throw NotImplemented("Updating objective", "update_objective");
+    virtual void update_objective(const Expr<Var>& t_objective) {
+        throw NotImplemented("Updating objective", "update_obj_coeff");
     }
 
     /**
@@ -150,8 +150,8 @@ public:
      * @param t_ctr The queried constraint.
      * @param t_rhs The desired right handside.
      */
-    virtual void update_coefficient_rhs(const Ctr& t_ctr, double t_rhs) {
-        throw NotImplemented("Updating constraint RHS coefficient", "update_coefficient_rhs");
+    virtual void update_rhs_coeff(const Ctr& t_ctr, double t_rhs) {
+        throw NotImplemented("Updating constraint RHS coefficient", "update_rhs_coeff");
     }
 
     /**

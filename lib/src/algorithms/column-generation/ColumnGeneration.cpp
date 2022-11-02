@@ -56,24 +56,24 @@ Solution::Dual ColumnGeneration::dual_solution() const{
     return result;
 }
 
-void ColumnGeneration::update_lb(const Var & t_var, double t_lb){
+void ColumnGeneration::update_var_lb(const Var & t_var, double t_lb){
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
         if(is_applied) { return; }
 
     }
-    rmp_solution_strategy().update_lb(t_var, t_lb);
+    rmp_solution_strategy().update_var_lb(t_var, t_lb);
 }
 
-void ColumnGeneration::update_ub(const Var & t_var, double t_ub){
+void ColumnGeneration::update_var_ub(const Var & t_var, double t_ub){
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
         if (is_applied) { return; }
 
     }
-    rmp_solution_strategy().update_ub(t_var, t_ub);
+    rmp_solution_strategy().update_var_ub(t_var, t_ub);
 }
 
 void ColumnGeneration::initialize() {
@@ -256,7 +256,7 @@ Ctr ColumnGeneration::add_row(TempCtr t_temporary_constraint) {
 
 }
 
-void ColumnGeneration::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
+void ColumnGeneration::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
 
     for (auto& subproblem : m_subproblems) {
 
@@ -266,7 +266,7 @@ void ColumnGeneration::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
 
     }
 
-    rmp_solution_strategy().update_coefficient_rhs(t_ctr, t_rhs);
+    rmp_solution_strategy().update_rhs_coeff(t_ctr, t_rhs);
 
 }
 

@@ -10,6 +10,7 @@
 #include "../variables/TempVar.h"
 #include "../constraints/impl_Constraint.h"
 #include "../constraints/TempCtr.h"
+#include "../expressions/Expr.h"
 #include "../../containers/IteratorForward.h"
 #include "../../containers/Vector.h"
 #include "../objective/Objective.h"
@@ -41,6 +42,10 @@ class Model {
     mutable ListenerManager m_listeners;
 
     Constant m_objective_offset;
+
+    ObjSense m_objective_sense;
+    Expr<Var> m_objective;
+    Expr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
@@ -55,7 +60,7 @@ class Model {
 
     void add_created_variable(const Var& t_var);
 public:
-    explicit Model();
+    explicit Model(ObjSense t_sense = Minimize);
 
     ~Model();
 
@@ -65,9 +70,16 @@ public:
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;
 
+    /* Gets */
+
     [[nodiscard]] unsigned int id() const { return m_id; }
 
-    [[nodiscard]] Objective objective() const { return Objective(m_variables, m_objective_offset); }
+    ObjSense sense() const { return m_objective_sense; }
+
+    const Expr<Var>& obj() const { return m_objective; }
+    //[[nodiscard]] Objective objective() const { return Objective(m_variables, m_objective_offset); }
+
+    const Expr<Ctr>& rhs() const { return m_rhs; }
 
     iterator_forward<Var> variables() { return iterator_forward<Var>(m_variables); }
     [[nodiscard]] const_iterator_forward<Var> variables() const { return const_iterator_forward<Var>(m_variables); }
@@ -75,34 +87,41 @@ public:
     iterator_forward<Ctr> constraints() { return iterator_forward<Ctr>(m_constraints); }
     [[nodiscard]] const_iterator_forward<Ctr> constraints() const { return const_iterator_forward<Ctr>(m_constraints); }
 
+    /* Adds */
     Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
     Var add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
     Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
     template<int N> Vector<Var, N> add_variables(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
     template<int N> Vector<Var, N> add_variables(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");
-    void remove(const Var& t_var);
 
     Ctr add_constraint(CtrType t_type, Constant t_rhs, std::string t_name = "");
     Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
     template<int N> Vector<Ctr, N> add_constraints(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
     template<int N> Vector<Ctr, N> add_constraints(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
-    void remove(const Ctr& t_ctr);
 
     void add_listener(Listener& t_listener) const;
 
-    void update_objective(const Row& t_row);
-    void update_objective_offset(Constant t_offset);
-    void update_objective(const Var& t_var, Constant t_coefficient);
-    void update_rhs(const Ctr& t_ctr, Constant t_coefficient);
-    void update_coefficient(const Ctr& t_ctr, const Var& t_var, Constant t_coefficient);
-    void update_lb(const Var& t_var, double t_lb);
-    void update_ub(const Var& t_var, double t_ub);
-    void update_type(const Var& t_var, VarType t_type);
-    void update_type(const Ctr& t_ctr, CtrType t_type);
+    /* Updates */
+    //void update_obj(const Row& t_row);
+    void update_obj(Expr<Var>&& t_obj);
+    void update_obj(const Expr<Var>& t_obj);
+    void update_obj_sense(ObjSense t_sense);
+    void update_obj_const(Constant t_offset);
+    void update_obj_coeff(const Var& t_var, Constant t_coefficient);
 
-    class Transform;
+    void update_rhs_coeff(const Ctr& t_ctr, Constant t_coefficient);
 
-    Transform transform();
+    void update_matrix_coeff(const Ctr& t_ctr, const Var& t_var, Constant t_coefficient);
+
+    void update_var_lb(const Var& t_var, double t_lb);
+    void update_var_ub(const Var& t_var, double t_ub);
+    void update_var_type(const Var& t_var, VarType t_type);
+
+    void update_ctr_type(const Ctr& t_ctr, CtrType t_type);
+
+    /* Removes */
+    void remove(const Var& t_var);
+    void remove(const Ctr& t_ctr);
 };
 
 template<class T>
@@ -169,7 +188,7 @@ Model::add_constraints(const Dim<N> &t_dim, const TempCtr &t_temporary_constrain
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
-    t_os << "Minimize " << t_model.objective() << "\nSubject to:\n";
+    t_os << t_model.sense() << " " << t_model.obj() << "\nSubject to:\n";
     for (const auto& ctr : t_model.constraints()) {
         t_os << ctr << '\n';
     }
@@ -178,85 +197,6 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
         t_os << var << '\n';
     }
     return t_os;
-}
-
-/**
- * Model transformation object.
- *
- * This class is used to provide more advanced model modifications than the "update" functions present in
- * Model. In particular, it provides tools to move modeling objects from one Model to another or to make
- * changes to the underlying matrix.
- *
- * Note that no public method leaves a Model in an undesirable state.
- */
-class Model::Transform {
-    friend class Model;
-    Model& m_model;
-
-    template<class T> void swap(std::vector<T>& t_container, const T& t_a, const T& t_b);
-
-    template<class T> void hard_move(std::vector<T>& t_source, std::vector<T>& t_dest, unsigned int t_dest_id, const T& t_object);
-    void hard_move(Model& t_destination, const Ctr& t_ctr);
-    void hard_move(Model& t_destination, const Var& t_var);
-
-    explicit Transform(Model& t_model);
-public:
-
-    /**
-     * Swaps two columns in the underlying matrix
-     */
-    void swap(const Var& t_a, const Var& t_b);
-
-    /**
-     * Swaps two rows in the underlying matrix
-     */
-    void swap(const Ctr& t_a, const Ctr& t_b);
-
-    /**
-     * Swaps two parameters in the underlying matrix
-     */
-    void swap(const Param& t_a, const Param& t_b);
-
-    /**
-     * Moves a set of constraints from the source model to the destination model given as parameter.
-     * The moved constraints are those for which the function given as parameter returns true.
-     *
-     * Note that every variable which appear in the indicated constraints are also moved to the destination
-     * model. Remaining illegal terms are removed from the original model and a map of such removals is returned
-     * by the method (e.g., consider moving only constraint `c2: x + y <= 1` while `y` also appears in constraint `c1: 2 y + z >= 1`.
-     * Then `y` is removed from the original model (since `y` does no longer belong to the original model)
-     * and an entry `(c1, 2 y)` is returned by the method.).
-     * @param t_destination The destination model.
-     * @param t_indicator The indicator function for constraints to be moved.
-     * @return The illegal terms removed from the original model.
-     */
-    Map<Ctr, LinExpr<Var>> move(Model& t_destination, const std::function<bool(const Ctr &)> &t_indicator);
-
-    Map<Ctr, LinExpr<Var>> move(Model& t_destination, std::vector<Ctr> t_indicator);
-};
-
-template<class T>
-void Model::Transform::swap(std::vector<T> &t_container, const T &t_a, const T &t_b) {
-
-    t_container[t_a.index()] = t_b;
-    t_container[t_b.index()] = t_a;
-
-    const unsigned int a_index = t_a.index();
-    m_model.m_objects.impl(t_a).set_index(t_b.index());
-    m_model.m_objects.impl(t_b).set_index(a_index);
-
-}
-
-template<class T>
-void Model::Transform::hard_move(std::vector<T> &t_source, std::vector<T> &t_dest, unsigned int t_dest_id, const T& t_object) {
-
-    swap(t_object, t_source.back());
-    t_source.pop_back();
-
-    m_model.m_objects.impl(t_object).set_model_id(t_dest_id);
-    m_model.m_objects.impl(t_object).set_index(t_dest.size());
-    t_dest.emplace_back(t_object);
-
 }
 
 #endif //OPTIMIZE_MODEL_H

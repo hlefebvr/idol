@@ -5,7 +5,6 @@
 
 TEST_CASE("05. Model", "[model][modeling]") {
 
-    Model sp;
     Model model;
 
     SECTION("remove a variable") {
@@ -75,7 +74,7 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_coefficient(c2, y, 2.);
+                model.update_matrix_coeff(c2, y, 2.);
 
                 CHECK(c2.get(x).numerical() == 1._a);
                 CHECK(c2.row().lhs().get(x).numerical() == 1._a);
@@ -94,7 +93,7 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_coefficient(c2, y, 0.);
+                model.update_matrix_coeff(c2, y, 0.);
 
                 CHECK(c2.get(x).numerical() == 1._a);
                 CHECK(c2.row().lhs().get(x).numerical() == 1._a);
@@ -117,7 +116,7 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_coefficient(c2, x, 2.);
+                model.update_matrix_coeff(c2, x, 2.);
 
                 CHECK(c2.get(x).numerical() == 2._a);
                 CHECK(c2.row().lhs().get(x).numerical() == 2._a);
@@ -136,7 +135,7 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_coefficient(c2, x, 0.);
+                model.update_matrix_coeff(c2, x, 0.);
 
                 CHECK(c2.get(x).numerical() == 0._a);
                 CHECK(c2.row().lhs().get(x).numerical() == 0._a);
@@ -152,6 +151,123 @@ TEST_CASE("05. Model", "[model][modeling]") {
                 CHECK(x.column().components().size() == 1);
 
             }
+
+        }
+
+    }
+
+    SECTION("create objective") {
+
+        SECTION("initial empty objective") {
+
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            auto y = model.add_variable(0., 1., Continuous, 0.);
+
+            CHECK(model.obj().linear().size() == 0);
+            CHECK(x.column().objective_coefficient().numerical() == 0._a);
+            CHECK(y.column().objective_coefficient().numerical() == 0._a);
+
+        }
+
+        SECTION("initial existing objective") {
+
+            auto x = model.add_variable(0., 1., Continuous, 1.);
+            auto y = model.add_variable(0., 1., Continuous, 2.);
+
+            CHECK(model.obj().linear().size() == 2);
+            CHECK(model.obj().linear().get(x).numerical() == 1._a);
+            CHECK(model.obj().linear().get(y).numerical() == 2._a);
+            CHECK(x.column().objective_coefficient().numerical() == 1._a);
+            CHECK(y.column().objective_coefficient().numerical() == 2._a);
+
+        }
+
+    }
+
+    SECTION("update objective") {
+
+        SECTION("update from 0 to full entries") {
+
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            auto y = model.add_variable(0., 1., Continuous, 0.);
+
+            Expr<Var> obj = x + 2 * y;
+
+            model.update_obj(obj);
+
+            CHECK(model.obj().linear().size() == 2);
+            CHECK(model.obj().linear().get(x).numerical() == 1._a);
+            CHECK(model.obj().linear().get(y).numerical() == 2._a);
+            CHECK(x.column().objective_coefficient().numerical() == 1._a);
+            CHECK(y.column().objective_coefficient().numerical() == 2._a);
+
+        }
+
+        SECTION("update from 0 to partial entries") {
+
+            auto x = model.add_variable(0., 1., Continuous, 0.);
+            auto y = model.add_variable(0., 1., Continuous, 0.);
+
+            Expr<Var> obj = 2 * y;
+
+            model.update_obj(obj);
+
+            CHECK(model.obj().linear().size() == 1);
+            CHECK(model.obj().linear().get(x).numerical() == 0._a);
+            CHECK(model.obj().linear().get(y).numerical() == 2._a);
+            CHECK(x.column().objective_coefficient().numerical() == 0._a);
+            CHECK(y.column().objective_coefficient().numerical() == 2._a);
+
+        }
+
+        SECTION("update from existing to 0.") {
+
+            auto x = model.add_variable(0., 1., Continuous, -1.);
+            auto y = model.add_variable(0., 1., Continuous, -1.);
+
+            Expr<Var> obj;
+
+            model.update_obj(obj);
+
+            CHECK(model.obj().linear().size() == 0);
+            CHECK(model.obj().linear().get(x).numerical() == 0._a);
+            CHECK(model.obj().linear().get(y).numerical() == 0._a);
+            CHECK(x.column().objective_coefficient().numerical() == 0._a);
+            CHECK(y.column().objective_coefficient().numerical() == 0._a);
+
+        }
+
+        SECTION("update from existing to full entries") {
+
+            auto x = model.add_variable(0., 1., Continuous, -1.);
+            auto y = model.add_variable(0., 1., Continuous, -1.);
+
+            Expr<Var> obj = x + 2 * y;
+
+            model.update_obj(obj);
+
+            CHECK(model.obj().linear().size() == 2);
+            CHECK(model.obj().linear().get(x).numerical() == 1._a);
+            CHECK(model.obj().linear().get(y).numerical() == 2._a);
+            CHECK(x.column().objective_coefficient().numerical() == 1._a);
+            CHECK(y.column().objective_coefficient().numerical() == 2._a);
+
+        }
+
+        SECTION("update from existing to partial entries") {
+
+            auto x = model.add_variable(0., 1., Continuous, -1.);
+            auto y = model.add_variable(0., 1., Continuous, -1.);
+
+            Expr<Var> obj = 2 * y;
+
+            model.update_obj(obj);
+
+            CHECK(model.obj().linear().size() == 1);
+            CHECK(model.obj().linear().get(x).numerical() == 0._a);
+            CHECK(model.obj().linear().get(y).numerical() == 2._a);
+            CHECK(x.column().objective_coefficient().numerical() == 0._a);
+            CHECK(y.column().objective_coefficient().numerical() == 2._a);
 
         }
 

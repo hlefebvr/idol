@@ -85,29 +85,29 @@ TEST_CASE("01. Var", "[variables][modeling]") {
         auto x = model.add_variable(0., 1., Continuous, 0.);
 
         SECTION("update lb") {
-            model.update_lb(x, -1.);
+            model.update_var_lb(x, -1.);
             CHECK(x.lb() == -1._a);
         }
 
         SECTION("update ub") {
-            model.update_ub(x, 3.);
+            model.update_var_ub(x, 3.);
             CHECK(x.ub() == 3._a);
         }
 
         SECTION("update type") {
 
             SECTION("Continuous") {
-                model.update_type(x, Continuous);
+                model.update_var_type(x, Continuous);
                 CHECK(x.type() == Continuous);
             }
 
             SECTION("Integer") {
-                model.update_type(x, Integer);
+                model.update_var_type(x, Integer);
                 CHECK(x.type() == Integer);
             }
 
             SECTION("Binary") {
-                model.update_type(x, Binary);
+                model.update_var_type(x, Binary);
                 CHECK(x.type() == Binary);
             }
         }

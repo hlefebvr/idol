@@ -33,17 +33,17 @@ Solution::Dual Decomposition::dual_solution() const {
 }
 
 
-void Decomposition::update_lb(const Var &t_var, double t_lb) {
-    m_generation_strategies.front()->update_lb(t_var, t_lb);
+void Decomposition::update_var_lb(const Var &t_var, double t_lb) {
+    m_generation_strategies.front()->update_var_lb(t_var, t_lb);
 }
 
 
-void Decomposition::update_ub(const Var &t_var, double t_ub) {
-    m_generation_strategies.front()->update_ub(t_var, t_ub);
+void Decomposition::update_var_ub(const Var &t_var, double t_ub) {
+    m_generation_strategies.front()->update_var_ub(t_var, t_ub);
 }
 
-void Decomposition::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
-    m_generation_strategies.front()->update_coefficient_rhs(t_ctr, t_rhs);
+void Decomposition::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
+    m_generation_strategies.front()->update_rhs_coeff(t_ctr, t_rhs);
 }
 
 Ctr Decomposition::add_row(TempCtr t_temporary_constraint) {

@@ -7,14 +7,14 @@
 void ColumnGenerationBranchingSchemes::SP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
 
     t_subproblem.remove_columns_violating_lower_bound(t_var, t_lb);
-    t_subproblem.exact_solution_strategy().update_lb(t_var, t_lb);
+    t_subproblem.exact_solution_strategy().update_var_lb(t_var, t_lb);
 
 }
 
 void ColumnGenerationBranchingSchemes::SP::set_upper_bound(const Var &t_var, double t_ub, ColumnGenerationSP &t_subproblem) {
 
     t_subproblem.remove_columns_violating_upper_bound(t_var, t_ub);
-    t_subproblem.exact_solution_strategy().update_ub(t_var, t_ub);
+    t_subproblem.exact_solution_strategy().update_var_ub(t_var, t_ub);
 
 }
 

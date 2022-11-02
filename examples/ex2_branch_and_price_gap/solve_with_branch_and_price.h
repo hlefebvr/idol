@@ -33,7 +33,7 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
         x[i].reserve(n_items);
 
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(subproblems.back().add_variable(0., 1., Binary, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+            x[i].emplace_back(subproblems.back().add_variable(0., 1., Continuous, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
             objective_cost += t_instance.p(i, j) * !x[i][j];
 
@@ -63,7 +63,7 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
     }
 
     // Algorithm
-    auto solver = branch_and_price(rmp, alpha, subproblems, branching_candidates);
+    auto solver = branch_and_price<Solvers::GLPK_Simplex, Solvers::GLPK_Simplex>(rmp, alpha, subproblems, branching_candidates);
 
     solver.solve();
 

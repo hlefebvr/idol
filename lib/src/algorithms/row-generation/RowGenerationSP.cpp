@@ -67,21 +67,23 @@ void RowGenerationSP::solve() {
     m_exact_solution_strategy->solve();
 }
 
-Row RowGenerationSP::get_separation_objective(const Solution::Primal &t_primals) const {
+Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_primals) const {
     double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
 
-    Row result;
+    std::cout << m_objective_template << std::endl;
+
+    Expr<Var> result;
 
     for (const auto& [var, constant] : m_objective_template.lhs()) {
-        result.lhs() += sign * constant.fix(t_primals) * var;
+        result += sign * constant.fix(t_primals) * var;
     }
 
-    result.rhs() = sign * m_objective_template.rhs().fix(t_primals);
+    result += sign * m_objective_template.rhs().fix(t_primals);
 
     return result;
 }
 
-void RowGenerationSP::update_separation_objective(const Row &t_objective) {
+void RowGenerationSP::update_separation_objective(const Expr<Var> &t_objective) {
     m_exact_solution_strategy->update_objective(t_objective);
 }
 
@@ -158,7 +160,7 @@ bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
     if (!is_in_subproblem(t_var)) { return false; }
 
     remove_cuts_violating_lower_bound(t_var, t_lb);
-    exact_solution_strategy().update_lb(t_var, t_lb);
+    exact_solution_strategy().update_var_lb(t_var, t_lb);
 
     return true;
 }
@@ -167,7 +169,7 @@ bool RowGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
     if (!is_in_subproblem(t_var)) { return false; }
 
     remove_cuts_violating_upper_bound(t_var, t_ub);
-    exact_solution_strategy().update_ub(t_var, t_ub);
+    exact_solution_strategy().update_var_ub(t_var, t_ub);
 
     return true;
 }

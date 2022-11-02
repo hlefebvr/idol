@@ -16,7 +16,7 @@ Solution::Primal RowGenerationOriginalSpaceBuilders::IIS::primal_solution(const 
                                                                           const Algorithm &t_rmp_solution_strategy) const {
 
     LinExpr<Var> objective;
-    for (const auto& [var, coeff] : m_rmp.objective()) {
+    for (const auto& [var, coeff] : m_rmp.obj().linear()) {
         objective += coeff * var;
     }
 

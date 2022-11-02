@@ -24,6 +24,11 @@ enum ObjectStatus {
     Removed
 };
 
+enum ObjSense {
+    Minimize,
+    Maximize
+};
+
 static std::ostream &operator<<(std::ostream& t_os, VarType t_type) {
     switch (t_type) {
         case Continuous: return t_os << "Continuous";
@@ -48,6 +53,15 @@ static std::ostream &operator<<(std::ostream& t_os, ObjectStatus t_type) {
     switch (t_type) {
         case InModel: return t_os << "InModel";
         case Removed: return t_os << "Removed";
+        default:;
+    }
+    throw Exception("Enum out of bounds.");
+}
+
+static std::ostream &operator<<(std::ostream& t_os, ObjSense t_type) {
+    switch (t_type) {
+        case Minimize: return t_os << "Minimize";
+        case Maximize: return t_os << "Maximize";
         default:;
     }
     throw Exception("Enum out of bounds.");

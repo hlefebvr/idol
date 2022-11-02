@@ -3,6 +3,7 @@
 //
 #include <iomanip>
 #include "../../../include/algorithms/row-generation/RowGeneration.h"
+#include "../../../include/modeling/expressions/Expr.h"
 
 RowGeneration::RowGeneration(Algorithm &t_rmp_solution_strategy) : GenerationAlgorithmWithAttributes(t_rmp_solution_strategy){
 
@@ -227,24 +228,24 @@ Solution::Primal RowGeneration::primal_solution() const {
     return result;
 }
 
-void RowGeneration::update_lb(const Var &t_var, double t_lb) {
+void RowGeneration::update_var_lb(const Var &t_var, double t_lb) {
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
         if(is_applied) { return; }
 
     }
-    rmp_solution_strategy().update_lb(t_var, t_lb);
+    rmp_solution_strategy().update_var_lb(t_var, t_lb);
 }
 
-void RowGeneration::update_ub(const Var &t_var, double t_ub) {
+void RowGeneration::update_var_ub(const Var &t_var, double t_ub) {
     for (auto& subproblem : m_subproblems) {
 
         const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
         if (is_applied) { return; }
 
     }
-    rmp_solution_strategy().update_ub(t_var, t_ub);
+    rmp_solution_strategy().update_var_ub(t_var, t_ub);
 }
 
 RowGenerationSP &RowGeneration::add_subproblem(const Ctr &t_cut) {

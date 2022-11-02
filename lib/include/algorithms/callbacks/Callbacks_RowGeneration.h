@@ -31,9 +31,9 @@ public:
 
     [[nodiscard]] Solution::Primal help() const override;
 
-    void update_lb(const Var &t_var, double t_lb) override;
+    void update_var_lb(const Var &t_var, double t_lb) override;
 
-    void update_ub(const Var &t_var, double t_lb) override;
+    void update_var_ub(const Var &t_var, double t_lb) override;
 
     static const bool uses_lazy_cuts = true;
     static const bool uses_advanced_constructor = true;

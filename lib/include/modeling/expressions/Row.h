@@ -20,6 +20,7 @@ template<class Key> class Expr;
  * The whole left handside is stored as an Expr while the whole right handside is stored as a Constant.
  */
 class Row {
+    friend class Matrix;
     LinExpr<Var> m_lhs;
     std::unique_ptr<AbstractMatrixCoefficient> m_rhs;
 public:

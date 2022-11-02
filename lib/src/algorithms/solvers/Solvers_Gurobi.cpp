@@ -110,9 +110,9 @@ char Solvers::Gurobi::gurobi_type(VarType t_type) {
     return GRB_BINARY;
 }
 
-void Solvers::Gurobi::update_coefficient_rhs(const Ctr &t_ctr, double t_rhs) {
+void Solvers::Gurobi::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
     future(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
-    model().update_rhs(t_ctr, t_rhs);
+    model().update_rhs_coeff(t_ctr, t_rhs);
 }
 
 Solution::Dual Solvers::Gurobi::farkas_certificate() const {
@@ -149,7 +149,7 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
     Solution::Primal result;
 
     double objective_value = 0.;
-    for (const auto& [var, coeff] : model().objective()) {
+    for (const auto& [var, coeff] : model().obj().linear()) {
         objective_value += future(var).impl().get(GRB_DoubleAttr_UnbdRay) * value(coeff);
     }
 
@@ -265,29 +265,29 @@ Solution::Dual Solvers::Gurobi::iis() const {
     );
 }
 
-void Solvers::Gurobi::update_lb(const Var &t_var, double t_lb) {
+void Solvers::Gurobi::update_var_lb(const Var &t_var, double t_lb) {
 
     if (t_var.model_id() == model().id()) {
         future(t_var).impl().set(GRB_DoubleAttr_LB, t_lb);
-        model().update_lb(t_var, t_lb);
+        model().update_var_lb(t_var, t_lb);
         return;
     }
 
     for (auto& ptr_to_cb : m_callbacks) {
-        ptr_to_cb->update_lb(t_var, t_lb);
+        ptr_to_cb->update_var_lb(t_var, t_lb);
     }
 }
 
-void Solvers::Gurobi::update_ub(const Var &t_var, double t_ub) {
+void Solvers::Gurobi::update_var_ub(const Var &t_var, double t_ub) {
 
     if (t_var.model_id() == model().id()) {
         future(t_var).impl().set(GRB_DoubleAttr_UB, t_ub);
-        model().update_ub(t_var, t_ub);
+        model().update_var_ub(t_var, t_ub);
         return;
     }
 
     for (auto& ptr_to_cb : m_callbacks) {
-        ptr_to_cb->update_ub(t_var, t_ub);
+        ptr_to_cb->update_var_ub(t_var, t_ub);
     }
 }
 
@@ -344,11 +344,11 @@ void Solvers::Gurobi::update(const Ctr &t_ctr, GRBConstr &t_impl) {
 }
 
 void Solvers::Gurobi::update_obj() {
-    GRBLinExpr expr = value(model().objective().offset());
-    for (const auto& var : model().variables()) {
-        expr += value(var.column().objective_coefficient()) * future(var).impl();
+    GRBLinExpr expr = value(model().obj().constant());
+    for (const auto& [var, constant] : model().obj().linear()) {
+        expr += value(constant) * future(var).impl();
     }
-    m_model.setObjective(expr, GRB_MINIMIZE);
+    m_model.setObjective(expr, model().sense() == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
 }
 
 #endif

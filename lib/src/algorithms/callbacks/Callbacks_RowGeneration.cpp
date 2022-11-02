@@ -33,10 +33,10 @@ Solution::Primal Callbacks::RowGeneration::help() const {
 
 }
 
-void Callbacks::RowGeneration::update_lb(const Var &t_var, double t_lb) {
-    ::RowGeneration::update_lb(t_var, t_lb);
+void Callbacks::RowGeneration::update_var_lb(const Var &t_var, double t_lb) {
+    ::RowGeneration::update_var_lb(t_var, t_lb);
 }
 
-void Callbacks::RowGeneration::update_ub(const Var &t_var, double t_ub) {
-    ::RowGeneration::update_ub(t_var, t_ub);
+void Callbacks::RowGeneration::update_var_ub(const Var &t_var, double t_ub) {
+    ::RowGeneration::update_var_ub(t_var, t_ub);
 }

@@ -71,7 +71,7 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
         }
 
         if (!equals(result->second, constraint.rhs().numerical(), ToleranceForIntegrality)) {
-            t_solution_strategy.update_coefficient_rhs(constraint, result->second);
+            t_solution_strategy.update_rhs_coeff(constraint, result->second);
         }
         ++it;
 
