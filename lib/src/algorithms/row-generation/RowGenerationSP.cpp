@@ -82,7 +82,7 @@ Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_pr
 }
 
 void RowGenerationSP::update_separation_objective(const Expr<Var> &t_objective) {
-    m_exact_solution_strategy->update_objective(t_objective);
+    m_exact_solution_strategy->update_obj(t_objective);
 }
 
 void RowGenerationSP::save_last_primal_solution() {
@@ -123,7 +123,7 @@ bool RowGenerationSP::violated_cut_found() {
 void RowGenerationSP::add_cut_to_rmp() {
     auto& last_primal_solution = m_last_primal_solution.value();
     auto temp_ctr = create_cut_from(last_primal_solution);
-    auto constraint = m_rmp_strategy.add_row(std::move(temp_ctr));
+    auto constraint = m_rmp_strategy.add_ctr(std::move(temp_ctr));
     m_pool.add(constraint, std::move(m_last_primal_solution).value());
     m_currently_present_cuts.emplace_back(constraint, m_pool.last_inserted());
     EASY_LOG(Trace, "row-generation", "Adding new constraint " << constraint << ".");

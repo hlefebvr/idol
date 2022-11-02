@@ -14,15 +14,15 @@ int main() {
 
 
     Model sp;
-    auto w_1 = sp.add_variable(0., Inf, Continuous, 0., "w_1");
-    auto w_2 = sp.add_variable(0., Inf, Continuous, 0., "w_2");
-    sp.add_constraint(     w_1 +  2 * w_2 <= 2.);
-    sp.add_constraint( 2 * w_1 + -1 * w_2 <= 3.);
+    auto w_1 = sp.add_var(0., Inf, Continuous, 0., "w_1");
+    auto w_2 = sp.add_var(0., Inf, Continuous, 0., "w_2");
+    sp.add_ctr(w_1 + 2 * w_2 <= 2.);
+    sp.add_ctr(2 * w_1 + -1 * w_2 <= 3.);
 
     Model rmp;
-    auto z = rmp.add_variable(0., Inf, Continuous, 1., "z");
-    auto y = rmp.add_variable(0., Inf, Continuous, 2., "y");
-    auto ctr = rmp.add_constraint( z >= (-!w_1 - 3. * !w_2) * y + 3. * !w_1 + 4. * !w_2 );
+    auto z = rmp.add_var(0., Inf, Continuous, 1., "z");
+    auto y = rmp.add_var(0., Inf, Continuous, 2., "y");
+    auto ctr = rmp.add_ctr(z >= (-!w_1 - 3. * !w_2) * y + 3. * !w_1 + 4. * !w_2);
 
     Decomposition decomposition;
     decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(rmp);

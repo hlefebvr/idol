@@ -4,3 +4,4 @@ coverage
 documentation/_build
 coverage/_build
 venv
+install

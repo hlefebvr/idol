@@ -8,28 +8,28 @@ TEST_CASE("05. Model", "[model][modeling]") {
     Model model;
 
     SECTION("remove a variable") {
-        auto x = model.add_variable(0., 1., Continuous, 0.);
-        CHECK(model.variables().size() == 1);
+        auto x = model.add_var(0., 1., Continuous, 0.);
+        CHECK(model.vars().size() == 1);
         model.remove(x);
-        CHECK(model.variables().size() == 0);
+        CHECK(model.vars().size() == 0);
     }
 
     SECTION("remove a constraint") {
-        auto ctr = model.add_constraint(GreaterOrEqual, 0.);
-        CHECK(model.constraints().size() == 1);
+        auto ctr = model.add_ctr(GreaterOrEqual, 0.);
+        CHECK(model.ctrs().size() == 1);
         model.remove(ctr);
-        CHECK(model.constraints().size() == 0);
+        CHECK(model.ctrs().size() == 0);
     }
 
     SECTION("iterate over variables") {
 
-        model.add_variable(0., 1., Continuous, 0., "x");
-        model.add_variable(0., 1., Continuous, 0., "y");
+        model.add_var(0., 1., Continuous, 0., "x");
+        model.add_var(0., 1., Continuous, 0., "y");
 
         bool x_has_been_found = false;
         bool y_has_been_found = false;
 
-        for (const auto& var : model.variables()) {
+        for (const auto& var : model.vars()) {
             if (var.name() == "x") {
                 x_has_been_found = true;
             } else if (var.name() == "y") {
@@ -44,13 +44,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
     SECTION("iterate over constraints") {
 
-        model.add_constraint(GreaterOrEqual, 0., "c1");
-        model.add_constraint(GreaterOrEqual, 0., "c2");
+        model.add_ctr(GreaterOrEqual, 0., "c1");
+        model.add_ctr(GreaterOrEqual, 0., "c2");
 
         bool c1_has_been_found = false;
         bool c2_has_been_found = false;
 
-        for (const auto& ctr : model.constraints()) {
+        for (const auto& ctr : model.ctrs()) {
             if (ctr.name() == "c1") {
                 c1_has_been_found = true;
             } else if (ctr.name() == "c2") {
@@ -65,10 +65,10 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
     SECTION("update coefficient") {
 
-        auto x = model.add_variable(0., 1., Continuous, 0.);
-        auto y = model.add_variable(0., 1., Continuous, 0.);
-        auto c1 = model.add_constraint(x + y >= 1);
-        auto c2 = model.add_constraint(x <= 1);
+        auto x = model.add_var(0., 1., Continuous, 0.);
+        auto y = model.add_var(0., 1., Continuous, 0.);
+        auto c1 = model.add_ctr(x + y >= 1);
+        auto c2 = model.add_ctr(x <= 1);
 
         SECTION("insert a new coefficient") {
 
@@ -160,8 +160,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("initial empty objective") {
 
-            auto x = model.add_variable(0., 1., Continuous, 0.);
-            auto y = model.add_variable(0., 1., Continuous, 0.);
+            auto x = model.add_var(0., 1., Continuous, 0.);
+            auto y = model.add_var(0., 1., Continuous, 0.);
 
             CHECK(model.obj().linear().size() == 0);
             CHECK(x.column().objective_coefficient().numerical() == 0._a);
@@ -171,8 +171,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("initial existing objective") {
 
-            auto x = model.add_variable(0., 1., Continuous, 1.);
-            auto y = model.add_variable(0., 1., Continuous, 2.);
+            auto x = model.add_var(0., 1., Continuous, 1.);
+            auto y = model.add_var(0., 1., Continuous, 2.);
 
             CHECK(model.obj().linear().size() == 2);
             CHECK(model.obj().linear().get(x).numerical() == 1._a);
@@ -188,8 +188,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("update from 0 to full entries") {
 
-            auto x = model.add_variable(0., 1., Continuous, 0.);
-            auto y = model.add_variable(0., 1., Continuous, 0.);
+            auto x = model.add_var(0., 1., Continuous, 0.);
+            auto y = model.add_var(0., 1., Continuous, 0.);
 
             Expr<Var> obj = x + 2 * y;
 
@@ -205,8 +205,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("update from 0 to partial entries") {
 
-            auto x = model.add_variable(0., 1., Continuous, 0.);
-            auto y = model.add_variable(0., 1., Continuous, 0.);
+            auto x = model.add_var(0., 1., Continuous, 0.);
+            auto y = model.add_var(0., 1., Continuous, 0.);
 
             Expr<Var> obj = 2 * y;
 
@@ -222,8 +222,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("update from existing to 0.") {
 
-            auto x = model.add_variable(0., 1., Continuous, -1.);
-            auto y = model.add_variable(0., 1., Continuous, -1.);
+            auto x = model.add_var(0., 1., Continuous, -1.);
+            auto y = model.add_var(0., 1., Continuous, -1.);
 
             Expr<Var> obj;
 
@@ -239,8 +239,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("update from existing to full entries") {
 
-            auto x = model.add_variable(0., 1., Continuous, -1.);
-            auto y = model.add_variable(0., 1., Continuous, -1.);
+            auto x = model.add_var(0., 1., Continuous, -1.);
+            auto y = model.add_var(0., 1., Continuous, -1.);
 
             Expr<Var> obj = x + 2 * y;
 
@@ -256,8 +256,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
         SECTION("update from existing to partial entries") {
 
-            auto x = model.add_variable(0., 1., Continuous, -1.);
-            auto y = model.add_variable(0., 1., Continuous, -1.);
+            auto x = model.add_var(0., 1., Continuous, -1.);
+            auto y = model.add_var(0., 1., Continuous, -1.);
 
             Expr<Var> obj = 2 * y;
 

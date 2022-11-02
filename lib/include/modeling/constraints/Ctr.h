@@ -26,7 +26,7 @@ namespace Solution {
 /**
  * Constraint object.
  *
- * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_row method, rather than a constructor.
+ * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_ctr method, rather than a constructor.
  */
 class Ctr : public Object {
     friend class impl::ObjectManager;

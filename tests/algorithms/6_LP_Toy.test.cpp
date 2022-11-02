@@ -15,14 +15,14 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
 
         SECTION("Model constructed before the solver is declared") {
 
-            auto x = model.add_variable(0., Inf, Continuous, sign * -143, "x");
-            auto y = model.add_variable(0., Inf, Continuous, sign * -60, "y");
+            auto x = model.add_var(0., Inf, Continuous, sign * -143, "x");
+            auto y = model.add_var(0., Inf, Continuous, sign * -60, "y");
 
             model.update_obj_sense(is_minimization ? Minimize : Maximize);
 
-            auto c1 = model.add_constraint(120 * x + 210 * y <= 15000);
-            auto c2 = model.add_constraint(110 * x + 30 * y <= 4000);
-            auto c3 = model.add_constraint(x + y <= 75);
+            auto c1 = model.add_ctr(120 * x + 210 * y <= 15000);
+            auto c2 = model.add_ctr(110 * x + 30 * y <= 4000);
+            auto c3 = model.add_ctr(x + y <= 75);
 
             TestType solver(model);
             solver.solve();
@@ -45,11 +45,11 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
 
     SECTION("Solving unbounded LP") {
 
-        auto x = model.add_variable(0., Inf, Continuous, -3, "x");
-        auto y = model.add_variable(0., Inf, Continuous, -2, "y");
-        auto c1 = model.add_constraint(x + -2 * y <= 1);
-        auto c2 = model.add_constraint(-2 * x + y <= 1);
-        auto c3 = model.add_constraint(x + y >= 2);
+        auto x = model.add_var(0., Inf, Continuous, -3, "x");
+        auto y = model.add_var(0., Inf, Continuous, -2, "y");
+        auto c1 = model.add_ctr(x + -2 * y <= 1);
+        auto c2 = model.add_ctr(-2 * x + y <= 1);
+        auto c3 = model.add_ctr(x + y >= 2);
 
         TestType solver(model);
         solver.template set<Attr::InfeasibleOrUnboundedInfo>(true);
@@ -74,11 +74,11 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
 
     SECTION("Solving infeasible LP") {
 
-        auto u = model.add_variable(0., Inf, Continuous, 1, "u");
-        auto v = model.add_variable(0., Inf, Continuous, 1, "v");
-        auto w = model.add_variable(0., Inf, Continuous, -2, "w");
-        auto c1 = model.add_constraint(u + -2 * v + -1 * w >= 3);
-        auto c2 = model.add_constraint(-2 * u + v + -1 * w >= 2);
+        auto u = model.add_var(0., Inf, Continuous, 1, "u");
+        auto v = model.add_var(0., Inf, Continuous, 1, "v");
+        auto w = model.add_var(0., Inf, Continuous, -2, "w");
+        auto c1 = model.add_ctr(u + -2 * v + -1 * w >= 3);
+        auto c2 = model.add_ctr(-2 * u + v + -1 * w >= 2);
 
         TestType solver(model);
         solver.template set<Attr::InfeasibleOrUnboundedInfo>(true);

@@ -179,7 +179,7 @@ Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
             m_parent.m_solver.gurobi_type(t_ctr.type()),
             m_parent.m_solver.value(t_ctr.row().rhs())
     );
-    auto result = m_parent.m_solver.model().add_constraint(std::move(t_ctr));
+    auto result = m_parent.m_solver.model().add_ctr(std::move(t_ctr));
     m_parent.m_solver.add_future(result);
     return result;
 }

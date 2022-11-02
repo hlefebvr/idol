@@ -20,14 +20,14 @@ TEMPLATE_LIST_TEST_CASE("10. CG: Toy", has_lp_solver ? "[generation-strategies][
     SECTION("Branching on SP") {
 
         Model sp;
-        auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
-        auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
-        auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
+        auto x_0 = sp.add_var(0., 10., Continuous, 0., "x_0");
+        auto x_1 = sp.add_var(0., 10., Continuous, 0., "x_1");
+        auto sp_ctr = sp.add_ctr(-8 * x_0 + 10. * x_1 <= 13.);
 
         Model rmp;
-        auto alpha = rmp.add_variable(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
-        auto ctr_rmp = rmp.add_constraint( (-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
-        auto ctr_con = rmp.add_constraint( alpha == 1 , "rmp_convex");
+        auto alpha = rmp.add_var(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
+        auto ctr_rmp = rmp.add_ctr((-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
+        auto ctr_con = rmp.add_ctr(alpha == 1, "rmp_convex");
 
         BranchAndBound solver;
         auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
@@ -52,14 +52,14 @@ TEMPLATE_LIST_TEST_CASE("10. CG: Toy", has_lp_solver ? "[generation-strategies][
     SECTION("Branching on RMP") {
 
         Model sp;
-        auto x_0 = sp.add_variable(0., 10., Continuous, 0., "x_0");
-        auto x_1 = sp.add_variable(0., 10., Continuous, 0., "x_1");
-        auto sp_ctr = sp.add_constraint(-8 * x_0 + 10. * x_1 <= 13.);
+        auto x_0 = sp.add_var(0., 10., Continuous, 0., "x_0");
+        auto x_1 = sp.add_var(0., 10., Continuous, 0., "x_1");
+        auto sp_ctr = sp.add_ctr(-8 * x_0 + 10. * x_1 <= 13.);
 
         Model rmp;
-        auto alpha = rmp.add_variable(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
-        auto ctr_rmp = rmp.add_constraint( (-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
-        auto ctr_con = rmp.add_constraint( alpha == 1 , "rmp_convex");
+        auto alpha = rmp.add_var(0., 1., Continuous, -1 * !x_0 + -1 * !x_1, "alpha");
+        auto ctr_rmp = rmp.add_ctr((-2 * !x_0 + 2 * !x_1) * alpha >= 1., "rmp_ctr");
+        auto ctr_con = rmp.add_ctr(alpha == 1, "rmp_convex");
 
         BranchAndBound solver;
         auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();

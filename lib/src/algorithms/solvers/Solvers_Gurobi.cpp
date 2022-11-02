@@ -37,11 +37,11 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
         m_model.set(GRB_DoubleParam_BestBdStop, t_value);
     });
 
-    for (const auto& var : t_model.variables()) {
+    for (const auto& var : t_model.vars()) {
         add_future(var, false);
     }
 
-    for (const auto& ctr : t_model.constraints()) {
+    for (const auto& ctr : t_model.ctrs()) {
         add_future(ctr);
     }
 
@@ -143,7 +143,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
 
     result.set_objective_value(m_model.get(GRB_DoubleAttr_FarkasProof));
 
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         result.set(ctr, -future(ctr).impl().get(GRB_DoubleAttr_FarkasDual));
     }
 
@@ -169,7 +169,7 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
 
     result.set_objective_value(objective_value);
 
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         result.set(var, future(var).impl().get(GRB_DoubleAttr_UnbdRay));
     }
 
@@ -202,7 +202,7 @@ Solution::Primal Solvers::Gurobi::primal_solution(
 
     result.set_objective_value(t_get_obj_val());
 
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         result.set(var, t_get_primal_value(future(var).impl()));
     }
 
@@ -256,7 +256,7 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
         return result;
     }
 
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         result.set(ctr, t_get_dual_value(future(ctr).impl()));
     }
 

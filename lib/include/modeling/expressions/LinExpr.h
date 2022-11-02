@@ -124,7 +124,7 @@ public:
      * If t_key already has a coefficient, the method throws an exception.
      *
      * Note that this method is used to create the internal matrix of a model by linking constraints and columns.
-     * A MatrixCoefficientReference should only be created by the Model iteself, when calling Model::add_row or Model::add_variable.
+     * A MatrixCoefficientReference should only be created by the Model iteself, when calling Model::add_ctr or Model::add_var.
      * @param t_key
      * @param t_coefficient
      * @return True (to agree with the description of template<class Key> Expr<Key>::set(const Key& t_key, Constant t_coefficient)).

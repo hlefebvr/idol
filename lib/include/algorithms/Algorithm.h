@@ -47,7 +47,7 @@ public:
 
     [[nodiscard]] Reason reason() const { return m_reason; }
 
-    virtual ObjSense sense() const { return Minimize; }
+    [[nodiscard]] virtual Sense sense() const { return Minimize; }
 
     /**
      * Executes the solution algorithm.
@@ -124,7 +124,7 @@ public:
      * Sets the objective function of the optimization problem.
      * @param t_objective The desired objective.
      */
-    virtual void update_objective(const Expr<Var>& t_objective) {
+    virtual void update_obj(const Expr<Var>& t_objective) {
         throw NotImplemented("Updating objective", "update_obj_coeff");
     }
 
@@ -133,10 +133,14 @@ public:
      * @param t_temporary_variable The temporary variable to create (see TempVar).
      * @return The created variable.
      */
-    virtual Var add_column(TempVar t_temporary_variable) {
+    virtual Var add_var(TempVar&& t_temporary_variable) {
         throw Exception("Adding columns is not implemented. "
                                "If you wish to implement it, "
-                               "please override the add_column method.");
+                               "please override the add_var method.");
+    }
+
+    virtual Var add_var(const TempVar& t_temporary_variable) {
+        return add_var(TempVar(t_temporary_variable));
     }
 
     /**
@@ -161,8 +165,12 @@ public:
      * @param t_temporary_constraint The temporary constraint to create (see TempCtr).
      * @return The created constraint.
      */
-    virtual Ctr add_row(TempCtr t_temporary_constraint) {
-        throw NotImplemented("Adding a row", "add_row");
+    virtual Ctr add_ctr(TempCtr&& t_temporary_constraint) {
+        throw NotImplemented("Adding a row", "add_ctr");
+    }
+
+    virtual Ctr add_ctr(const TempCtr& t_temporary_constraint) {
+        return add_ctr(TempCtr(t_temporary_constraint));
     }
 
     /**

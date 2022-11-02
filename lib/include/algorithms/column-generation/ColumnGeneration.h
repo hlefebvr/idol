@@ -53,7 +53,7 @@ public:
 
     void update_rhs_coeff(const Ctr &t_ctr, double t_rhs) override;
 
-    Ctr add_row(TempCtr t_temporary_constraint) override;
+    Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
     void remove(const Ctr &t_constraint) override;
 

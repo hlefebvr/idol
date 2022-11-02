@@ -12,11 +12,11 @@ Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {
 
     glp_set_obj_dir(m_model, t_model.sense() == Minimize ? GLP_MIN : GLP_MAX);
 
-    for (const auto& var : t_model.variables()) {
+    for (const auto& var : t_model.vars()) {
         add_future(var, false);
     }
 
-    for (const auto& ctr : t_model.constraints()) {
+    for (const auto& ctr : t_model.ctrs()) {
         add_future(ctr);
     }
 
@@ -173,26 +173,26 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
     std::list<std::pair<int, int>> basis_rows;
     std::list<std::pair<int, int>> basis_cols;
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         int index = future(ctr).impl();
         int status = glp_get_row_stat(m_model, index);
         basis_rows.emplace_back(index, status);
     }
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         int index = future(var).impl();
         int status = glp_get_col_stat(m_model, index);
         basis_cols.emplace_back(index, status);
     }
 
     std::vector<int> artificial_variables;
-    artificial_variables.reserve(2 * model().constraints().size() + 1);
+    artificial_variables.reserve(2 * model().ctrs().size() + 1);
     artificial_variables.emplace_back(0);
 
     auto* minus_one = new double[2]; minus_one[1] = -1.;
     auto* plus_one = new double[2]; plus_one[1] = 1.;
 
     // Add artificial variables
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
 
         auto* index = new int[2];
         index[1] = future(ctr).impl();
@@ -243,7 +243,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
     // Save dual values as Farkas certificate
     m_farkas = Solution::Dual();
     double objective_value = value(model().obj().constant());
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         const double dual = glp_get_row_dual(m_model, future(ctr).impl());
         m_farkas->set(ctr, dual);
         objective_value += dual * value(ctr.rhs());
@@ -270,7 +270,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
 void Solvers::GLPK_Simplex::compute_unbounded_ray() {
 
-    const auto n_variables = (int) model().variables().size();
+    const auto n_variables = (int) model().vars().size();
 
     std::vector<double> coefficients;
     coefficients.reserve(n_variables + 1);
@@ -280,7 +280,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     indices.reserve(n_variables + 1);
     indices.emplace_back(0);
 
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         if (var.lb() >= 0.) {
             coefficients.emplace_back(1.);
         } else {
@@ -294,7 +294,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     glp_set_mat_row(m_model, index, n_variables, indices.data(), coefficients.data());
     glp_set_row_bnds(m_model, index, GLP_LO, 1., 0.);
 
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         update_rhs_coeff(ctr, 0.);
     }
 
@@ -309,7 +309,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     m_ray = Solution::Primal();
     const double objective_value = value(model().obj().constant()) + glp_get_obj_val(m_model);
     m_ray->set_objective_value(objective_value);
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         m_ray->set(var, glp_get_col_prim(m_model, future(var).impl()));
     }
 
@@ -383,7 +383,7 @@ Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
         return result;
     }
 
-    for (const auto& ctr : model().constraints()) {
+    for (const auto& ctr : model().ctrs()) {
         result.set(ctr, glp_get_row_dual(m_model, future(ctr).impl()));
     }
 
@@ -417,7 +417,7 @@ Solution::Primal Solvers::GLPK_Simplex::unbounded_ray() const {
 }
 
 void Solvers::GLPK_Simplex::update_obj() {
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         glp_set_obj_coef(m_model, future(var).impl(), 0.);
     }
     for (const auto& [var, constant] : model().obj().linear()) {
@@ -450,7 +450,7 @@ Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
     const double objective_value = value(model().obj().constant()) + glp_get_obj_val(m_model);
     result.set_objective_value(objective_value);
 
-    for (const auto& var : model().variables()) {
+    for (const auto& var : model().vars()) {
         result.set(var, glp_get_col_prim(m_model, future(var).impl()));
     }
 

@@ -21,9 +21,9 @@ namespace impl {
  *
  * **Example 1**:
  * ```
- * model.add_variable(0., 1., Binary, 2.);
+ * model.add_var(0., 1., Binary, 2.);
  * // is the same as
- * model.add_variable(TempVar(0., 1., Binary, 2.));
+ * model.add_var(TempVar(0., 1., Binary, 2.));
  * ```
  */
 class TempVar {

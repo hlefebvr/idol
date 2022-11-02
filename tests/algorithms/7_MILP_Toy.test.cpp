@@ -13,11 +13,11 @@ TEMPLATE_LIST_TEST_CASE("07. MILP: Toy", has_milp_solver ? "[MILP][solvers]" : "
 
         SECTION("Model constructed before the solver is declared") {
 
-            auto x = model.add_variable(0., 1., Binary, -1, "x");
-            auto y = model.add_variable(0., 1., Binary, -1, "y");
-            auto z = model.add_variable(0., 1., Binary, -2, "z");
-            auto c1 = model.add_constraint(x + 2 * y + 3 * z <= 4);
-            auto c2 = model.add_constraint(x + y >= 1);
+            auto x = model.add_var(0., 1., Binary, -1, "x");
+            auto y = model.add_var(0., 1., Binary, -1, "y");
+            auto z = model.add_var(0., 1., Binary, -2, "z");
+            auto c1 = model.add_ctr(x + 2 * y + 3 * z <= 4);
+            auto c2 = model.add_ctr(x + y >= 1);
 
             TestType solver(model);
             solver.solve();

@@ -35,7 +35,7 @@ int main() {
     Problems::Robust<2> problem;
 
     Model model;
-    auto x = model.add_variable(0., 1., Continuous, 0., "x");
+    auto x = model.add_var(0., 1., Continuous, 0., "x");
 
     Expr expr(2 * x);
     expr + x;

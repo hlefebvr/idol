@@ -66,7 +66,7 @@ protected:
 public:
     explicit Solver(Model& t_model);
 
-    ObjSense sense() const override;
+    [[nodiscard]] Sense sense() const override;
 
     [[nodiscard]] const Model& model() const { return m_src_model; }
 
@@ -86,11 +86,11 @@ public:
 
     void remove(const Ctr &t_constraint) override;
 
-    Var add_column(TempVar t_temporary_variable) override;
+    Var add_var(TempVar&& t_temporary_variable) override;
 
-    Ctr add_row(TempCtr t_temporary_constraint) override;
+    Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
-    void update_objective(const Expr<Var> &t_objective) override;
+    void update_obj(const Expr<Var> &t_objective) override;
 };
 
 template<class VarT, class CtrT>
@@ -202,15 +202,15 @@ void Solver<VarT, CtrT>::remove(const Ctr &t_constraint) {
 }
 
 template<class VarT, class CtrT>
-Var Solver<VarT, CtrT>::add_column(TempVar t_temporary_variable) {
-    auto result = m_src_model.add_variable(std::move(t_temporary_variable));
+Var Solver<VarT, CtrT>::add_var(TempVar&& t_temporary_variable) {
+    auto result = m_src_model.add_var(std::move(t_temporary_variable));
     add_future(result);
     return result;
 }
 
 template<class VarT, class CtrT>
-Ctr Solver<VarT, CtrT>::add_row(TempCtr t_temporary_constraint) {
-    auto result = m_src_model.add_constraint(std::move(t_temporary_constraint));
+Ctr Solver<VarT, CtrT>::add_ctr(TempCtr&& t_temporary_constraint) {
+    auto result = m_src_model.add_ctr(std::move(t_temporary_constraint));
     add_future(result);
     return result;
 }
@@ -226,13 +226,13 @@ void Solver<VarT, CtrT>::save_callback(Callback *t_cb) {
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::update_objective(const Expr<Var> &t_objective) {
+void Solver<VarT, CtrT>::update_obj(const Expr<Var> &t_objective) {
     m_src_model.update_obj(t_objective);
     add_future_obj();
 }
 
 template<class VarT, class CtrT>
-ObjSense Solver<VarT, CtrT>::sense() const {
+Sense Solver<VarT, CtrT>::sense() const {
     return m_src_model.sense();
 }
 

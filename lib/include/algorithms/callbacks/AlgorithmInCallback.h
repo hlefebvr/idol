@@ -25,7 +25,8 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    Ctr add_row(TempCtr t_temporary_constraint) override;
+    Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
+    using Algorithm::add_ctr;
 
     void remove(const Ctr &t_constraint) override;
 };

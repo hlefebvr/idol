@@ -41,11 +41,9 @@ class Model {
     ObjectManager m_objects;
     mutable ListenerManager m_listeners;
 
-    Constant m_objective_offset;
-
-    ObjSense m_objective_sense;
+    Sense m_objective_sense;
     Expr<Var> m_objective;
-    Expr<Ctr> m_rhs;
+    //Expr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
@@ -59,8 +57,9 @@ class Model {
     void add_row_to_columns(const Ctr& t_ctr);
 
     void add_created_variable(const Var& t_var);
+    void add_created_constraint(const Ctr& t_ctr);
 public:
-    explicit Model(ObjSense t_sense = Minimize);
+    explicit Model(Sense t_sense = Minimize);
 
     ~Model();
 
@@ -74,38 +73,36 @@ public:
 
     [[nodiscard]] unsigned int id() const { return m_id; }
 
-    ObjSense sense() const { return m_objective_sense; }
+    Sense sense() const { return m_objective_sense; }
 
     const Expr<Var>& obj() const { return m_objective; }
-    //[[nodiscard]] Objective objective() const { return Objective(m_variables, m_objective_offset); }
 
-    const Expr<Ctr>& rhs() const { return m_rhs; }
+    //const Expr<Ctr>& rhs() const { return m_rhs; }
 
-    iterator_forward<Var> variables() { return iterator_forward<Var>(m_variables); }
-    [[nodiscard]] const_iterator_forward<Var> variables() const { return const_iterator_forward<Var>(m_variables); }
+    iterator_forward<Var> vars() { return iterator_forward<Var>(m_variables); }
+    [[nodiscard]] const_iterator_forward<Var> vars() const { return const_iterator_forward<Var>(m_variables); }
 
-    iterator_forward<Ctr> constraints() { return iterator_forward<Ctr>(m_constraints); }
-    [[nodiscard]] const_iterator_forward<Ctr> constraints() const { return const_iterator_forward<Ctr>(m_constraints); }
+    iterator_forward<Ctr> ctrs() { return iterator_forward<Ctr>(m_constraints); }
+    [[nodiscard]] const_iterator_forward<Ctr> ctrs() const { return const_iterator_forward<Ctr>(m_constraints); }
 
     /* Adds */
-    Var add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
-    Var add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
-    Var add_variable(TempVar t_temporary_variable, std::string t_name = "");
-    template<int N> Vector<Var, N> add_variables(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
-    template<int N> Vector<Var, N> add_variables(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
+    Var add_var(TempVar t_temporary_variable, std::string t_name = "");
+    template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
+    template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");
 
-    Ctr add_constraint(CtrType t_type, Constant t_rhs, std::string t_name = "");
-    Ctr add_constraint(TempCtr t_temporary_constraint, std::string t_name = "");
-    template<int N> Vector<Ctr, N> add_constraints(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
-    template<int N> Vector<Ctr, N> add_constraints(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
+    Ctr add_ctr(CtrType t_type, Constant t_rhs, std::string t_name = "");
+    Ctr add_ctr(TempCtr t_temporary_constraint, std::string t_name = "");
+    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
+    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
 
     void add_listener(Listener& t_listener) const;
 
     /* Updates */
-    //void update_obj(const Row& t_row);
     void update_obj(Expr<Var>&& t_obj);
     void update_obj(const Expr<Var>& t_obj);
-    void update_obj_sense(ObjSense t_sense);
+    void update_obj_sense(Sense t_sense);
     void update_obj_const(Constant t_offset);
     void update_obj_coeff(const Var& t_var, Constant t_coefficient);
 
@@ -158,42 +155,42 @@ Vector<T, N - I> Model::add_many(const Dim<N>& t_dims, const std::string& t_name
 }
 
 template<int N>
-Vector<Var, N> Model::add_variables(const Dim<N> &t_dim, double t_lb, double t_ub, VarType t_type,
-                                    const Constant &t_objective_coefficient, const std::string& t_name) {
+Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, double t_lb, double t_ub, VarType t_type,
+                               const Constant &t_objective_coefficient, const std::string& t_name) {
     return add_many<Var, N>(t_dim, t_name, [&](const std::string& t_name){
-        return add_variable(t_lb, t_ub, t_type, t_objective_coefficient, t_name);
+        return add_var(t_lb, t_ub, t_type, t_objective_coefficient, t_name);
     });
 }
 
 template<int N>
-Vector<Var, N> Model::add_variables(const Dim<N> &t_dim, const TempVar& t_temporary_variable, const std::string &t_name) {
+Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, const TempVar& t_temporary_variable, const std::string &t_name) {
     return add_many<Var, N>(t_dim, t_name, [&](const std::string& t_name){
-        return add_variable(TempVar(t_temporary_variable), t_name);
+        return add_var(TempVar(t_temporary_variable), t_name);
     });
 }
 
 template<int N>
-Vector<Ctr, N> Model::add_constraints(const Dim<N> &t_dim, CtrType t_type, const Constant& t_rhs, const std::string &t_name) {
+Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, CtrType t_type, const Constant& t_rhs, const std::string &t_name) {
     return add_many<Ctr, N>(t_dim, t_name, [&](const std::string& t_name){
-        return add_constraint(t_type, t_rhs, t_name);
+        return add_ctr(t_type, t_rhs, t_name);
     });
 }
 
 template<int N>
 Vector<Ctr, N>
-Model::add_constraints(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, const std::string &t_name) {
+Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, const std::string &t_name) {
     return add_many<Ctr, N>(t_dim, t_name, [&](const std::string& t_name){
-        return add_constraint(t_temporary_constraint, t_name);
+        return add_ctr(t_temporary_constraint, t_name);
     });
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
     t_os << t_model.sense() << " " << t_model.obj() << "\nSubject to:\n";
-    for (const auto& ctr : t_model.constraints()) {
+    for (const auto& ctr : t_model.ctrs()) {
         t_os << ctr << '\n';
     }
     t_os << "Variables:\n";
-    for (const auto& var : t_model.variables()) {
+    for (const auto& var : t_model.vars()) {
         t_os << var << '\n';
     }
     return t_os;

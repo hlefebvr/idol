@@ -46,8 +46,8 @@ void Decomposition::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
     m_generation_strategies.front()->update_rhs_coeff(t_ctr, t_rhs);
 }
 
-Ctr Decomposition::add_row(TempCtr t_temporary_constraint) {
-    return m_generation_strategies.front()->add_row(std::move(t_temporary_constraint));
+Ctr Decomposition::add_ctr(TempCtr&& t_temporary_constraint) {
+    return m_generation_strategies.front()->add_ctr(std::move(t_temporary_constraint));
 }
 
 void Decomposition::remove(const Ctr &t_constraint) {

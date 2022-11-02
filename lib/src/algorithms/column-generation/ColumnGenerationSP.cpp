@@ -69,7 +69,7 @@ Expr<Var> ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_dual
 
 
 void ColumnGenerationSP::update_pricing_objective(const Expr<Var> &t_objective) {
-    m_exact_solution_strategy->update_objective(t_objective);
+    m_exact_solution_strategy->update_obj(t_objective);
 }
 
 
@@ -126,7 +126,7 @@ bool ColumnGenerationSP::improving_column_found() const {
 void ColumnGenerationSP::add_column_to_rmp() {
     auto* last_primal_solution = m_primal_solutions.back().get();
     auto temp_var = create_column_from(*last_primal_solution);
-    auto variable = m_rmp_strategy.add_column(std::move(temp_var));
+    auto variable = m_rmp_strategy.add_var(std::move(temp_var));
     m_currently_present_variables.template emplace_back(variable, *last_primal_solution);
     EASY_LOG(Trace, "column-generation", "Adding new variable with name " << variable << ".");
 }

@@ -9,13 +9,13 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
     Model sp;
     Model model;
 
-    auto xi = Param( sp.add_variable(0., 1., Continuous, 0.) );
-    auto x = model.add_variable(0., 1., Continuous, 0.);
-    auto y = model.add_variable(0., 1., Continuous, 0.);
+    auto xi = Param(sp.add_var(0., 1., Continuous, 0.) );
+    auto x = model.add_var(0., 1., Continuous, 0.);
+    auto y = model.add_var(0., 1., Continuous, 0.);
 
     SECTION("create a new constraint with double RHS") {
 
-        auto ctr = model.add_constraint(GreaterOrEqual, 1.);
+        auto ctr = model.add_ctr(GreaterOrEqual, 1.);
 
         CHECK(ctr.type() == GreaterOrEqual);
         CHECK(ctr.rhs().numerical() == 1._a);
@@ -25,7 +25,7 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
     SECTION("create a new constraint with Param RHS") {
 
-        auto ctr = model.add_constraint(LessOrEqual, xi);
+        auto ctr = model.add_ctr(LessOrEqual, xi);
 
         CHECK(ctr.type() == LessOrEqual);
         CHECK(ctr.rhs().numerical() == 0._a);
@@ -35,7 +35,7 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
     SECTION("create a new constraint with Coefficient RHS") {
 
-        auto ctr = model.add_constraint(Equal, 1 + 2 * xi);
+        auto ctr = model.add_ctr(Equal, 1 + 2 * xi);
 
         CHECK(ctr.type() == Equal);
         CHECK(ctr.rhs().numerical() == 1._a);
@@ -45,7 +45,7 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
     SECTION("create a new constraint with Expr") {
 
-        auto ctr = model.add_constraint(2 * x + y <= 2 + xi);
+        auto ctr = model.add_ctr(2 * x + y <= 2 + xi);
 
         CHECK(ctr.type() == LessOrEqual);
         CHECK(ctr.rhs().numerical() == 2._a);
@@ -59,7 +59,7 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
     SECTION("update an existing constraint") {
 
-        auto ctr = model.add_constraint(x + y <= 2);
+        auto ctr = model.add_ctr(x + y <= 2);
 
         SECTION("update RHS") {
 

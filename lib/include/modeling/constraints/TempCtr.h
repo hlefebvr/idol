@@ -28,12 +28,12 @@ namespace Solution {
  * **Example 1**:
  * ```
  * ...
- * model.add_row(x + y <= 1.);
+ * model.add_ctr(x + y <= 1.);
  * ```
  * **Example 2** (equivalent to Example 1):
  * ```
  * ...
- * model.add_row(TempCtr(Row(x + y, 1.), LessOrEqual));
+ * model.add_ctr(TempCtr(Row(x + y, 1.), LessOrEqual));
  * ```
  */
 class TempCtr {

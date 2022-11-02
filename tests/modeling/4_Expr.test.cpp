@@ -7,8 +7,8 @@ TEST_CASE("04. Expr", "[expressions][modeling]") {
 
     Model model;
 
-    auto x = model.add_variable(0., 1., Continuous, 0.);
-    auto y = model.add_variable(0., 1., Continuous, 0.);
+    auto x = model.add_var(0., 1., Continuous, 0.);
+    auto y = model.add_var(0., 1., Continuous, 0.);
 
     SECTION("Type deduction for operator+") {
 

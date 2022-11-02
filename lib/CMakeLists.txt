@@ -43,7 +43,7 @@ install(TARGETS idol
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
         IdolConfigVersion.cmake
-        VERSION ${PACKAGE_VERSION}
+        VERSION ${CMAKE_PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 

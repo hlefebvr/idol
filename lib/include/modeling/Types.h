@@ -24,7 +24,7 @@ enum ObjectStatus {
     Removed
 };
 
-enum ObjSense {
+enum Sense {
     Minimize,
     Maximize
 };
@@ -58,7 +58,7 @@ static std::ostream &operator<<(std::ostream& t_os, ObjectStatus t_type) {
     throw Exception("Enum out of bounds.");
 }
 
-static std::ostream &operator<<(std::ostream& t_os, ObjSense t_type) {
+static std::ostream &operator<<(std::ostream& t_os, Sense t_type) {
     switch (t_type) {
         case Minimize: return t_os << "Minimize";
         case Maximize: return t_os << "Maximize";

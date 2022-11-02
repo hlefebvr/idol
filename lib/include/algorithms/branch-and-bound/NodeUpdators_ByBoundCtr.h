@@ -80,7 +80,7 @@ void NodeUpdators::ByBoundCtr::Strategy<NodeT>::update_bounds(Map<Var, Ctr>& t_c
     for (const auto& [var, bound] : t_node_bounds) {
         auto result = t_current_constraints.find(var);
         if (result == t_current_constraints.end()) {
-            auto constraint = t_solution_strategy.add_row(t_create_temp_ctr_function(var, bound));
+            auto constraint = t_solution_strategy.add_ctr(t_create_temp_ctr_function(var, bound));
             t_current_constraints.template emplace(var, constraint);
         }
     }

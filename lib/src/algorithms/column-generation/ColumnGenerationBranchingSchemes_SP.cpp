@@ -28,7 +28,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::SP::contribute_to_add_const
 
     t_subproblem.remove_columns_violating_constraint(t_temporary_constraint);
 
-    auto result = t_subproblem.exact_solution_strategy().add_row(std::move(t_temporary_constraint));
+    auto result = t_subproblem.exact_solution_strategy().add_ctr(std::move(t_temporary_constraint));
 
     EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to subproblem.")
 

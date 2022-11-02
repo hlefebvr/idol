@@ -240,7 +240,7 @@ void ColumnGeneration::log_last_rmp_dual_solution() const {
     );
 }
 
-Ctr ColumnGeneration::add_row(TempCtr t_temporary_constraint) {
+Ctr ColumnGeneration::add_ctr(TempCtr&& t_temporary_constraint) {
 
     for (auto& subproblem : m_subproblems) {
 

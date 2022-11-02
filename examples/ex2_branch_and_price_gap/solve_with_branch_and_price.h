@@ -33,7 +33,8 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
         x[i].reserve(n_items);
 
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(subproblems.back().add_variable(0., 1., Continuous, 0., "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
+            x[i].emplace_back(subproblems.back().add_var(0., 1., Continuous, 0.,
+                                                         "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
             objective_cost += t_instance.p(i, j) * !x[i][j];
 
@@ -44,9 +45,9 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
         for (unsigned int j = 0 ; j < n_items ; ++j) {
             expr += t_instance.w(i, j) * x[i][j];
         }
-        subproblems.back().add_constraint(expr <= t_instance.t(i));
+        subproblems.back().add_ctr(expr <= t_instance.t(i));
 
-        alpha.emplace_back( rmp.add_variable(0., 1., Continuous, std::move(objective_cost), "alpha") );
+        alpha.emplace_back(rmp.add_var(0., 1., Continuous, std::move(objective_cost), "alpha") );
 
     }
 
@@ -55,11 +56,11 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
         for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
             expr += !x[i][j] * alpha[i];
         }
-        rmp.add_constraint(expr == 1., "assign(" + std::to_string(j) + ")");
+        rmp.add_ctr(expr == 1., "assign(" + std::to_string(j) + ")");
     }
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        rmp.add_constraint( alpha[i] == 1., "convexity(" + std::to_string(i) + ")" );
+        rmp.add_ctr(alpha[i] == 1., "convexity(" + std::to_string(i) + ")");
     }
 
     // Algorithm

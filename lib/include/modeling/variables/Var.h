@@ -21,7 +21,7 @@ class Ctr;
 /**
  * Decision variable object.
  *
- * A variable always belongs to a single Model. Note that you should be creating a variable using the Model::add_variable method, rather than a constructor.
+ * A variable always belongs to a single Model. Note that you should be creating a variable using the Model::add_var method, rather than a constructor.
  */
 class Var : public Object {
     friend class impl::ObjectManager;

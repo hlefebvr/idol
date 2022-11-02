@@ -28,11 +28,11 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
         SECTION("solved at root node") {
             // Taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp
 
-            auto x = model.add_variable(0., 1., Continuous, -1, "x");
-            auto y = model.add_variable(0., 1., Continuous, -1, "y");
-            auto z = model.add_variable(0., 1., Continuous, -2, "z");
-            auto c1 = model.add_constraint(x + 2 * y + 3 * z <= 4);
-            auto c2 = model.add_constraint(x + y >= 1);
+            auto x = model.add_var(0., 1., Continuous, -1, "x");
+            auto y = model.add_var(0., 1., Continuous, -1, "y");
+            auto z = model.add_var(0., 1., Continuous, -2, "z");
+            auto c1 = model.add_ctr(x + 2 * y + 3 * z <= 4);
+            auto c2 = model.add_ctr(x + y >= 1);
 
             auto solver = branch_and_bound<
                     SolverT,
@@ -56,11 +56,11 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
 
         SECTION("solved at fist level") {
 
-            auto x = model.add_variable(0., 1., Continuous, -1, "x");
-            auto y = model.add_variable(0., 1., Continuous, -1, "y");
-            auto z = model.add_variable(0., 1., Continuous, -2, "z");
-            auto c1 = model.add_constraint(x + 2 * y + 2.5 * z <= 4);
-            auto c2 = model.add_constraint(x + y >= 1);
+            auto x = model.add_var(0., 1., Continuous, -1, "x");
+            auto y = model.add_var(0., 1., Continuous, -1, "y");
+            auto z = model.add_var(0., 1., Continuous, -2, "z");
+            auto c1 = model.add_ctr(x + 2 * y + 2.5 * z <= 4);
+            auto c2 = model.add_ctr(x + y >= 1);
 
             auto solver = branch_and_bound<
                                 SolverT,
@@ -94,12 +94,12 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
             LinExpr sum_weight;
 
             for (const auto& [weight, profit] : items) {
-                auto var = model.add_variable(0., 1., Continuous, -profit);
+                auto var = model.add_var(0., 1., Continuous, -profit);
                 sum_weight += weight * var;
                 x.emplace_back(var);
             }
 
-            model.add_constraint(sum_weight <= capacity);
+            model.add_ctr(sum_weight <= capacity);
 
             auto solver = branch_and_bound<
                                 SolverT,
@@ -128,9 +128,9 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
 
         SECTION("infeasible at root node") {
 
-            auto x = model.add_variable(0., 1., Continuous, 0.);
-            model.add_constraint(x >= 1);
-            model.add_constraint(x <= 0);
+            auto x = model.add_var(0., 1., Continuous, 0.);
+            model.add_ctr(x >= 1);
+            model.add_ctr(x <= 0);
 
             auto solver = branch_and_bound<
                                 SolverT,
@@ -146,9 +146,9 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
         }
 
         SECTION("infeasible at first level") {
-            auto x = model.add_variable(0., 1., Continuous, 0.);
-            model.add_constraint(x >= .1);
-            model.add_constraint(x <= .9);
+            auto x = model.add_var(0., 1., Continuous, 0.);
+            model.add_ctr(x >= .1);
+            model.add_ctr(x <= .9);
 
             auto solver = branch_and_bound<
                                 SolverT,
@@ -168,7 +168,7 @@ TEMPLATE_LIST_TEST_CASE("08. B&B: Toy", has_lp_solver ? "[MILP][branch-and-bound
 
     SECTION("Solving an unbounded MILP") {
 
-        auto x = model.add_variable(-Inf, Inf, Continuous, -1.);
+        auto x = model.add_var(-Inf, Inf, Continuous, -1.);
 
         auto solver = branch_and_bound<
                             SolverT,

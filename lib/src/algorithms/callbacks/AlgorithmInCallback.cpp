@@ -11,11 +11,11 @@ Solution::Primal AlgorithmInCallback::primal_solution() const {
     return m_is_in_callback ? m_context->node_primal_solution() : m_algorithm.primal_solution();
 }
 
-Ctr AlgorithmInCallback::add_row(TempCtr t_temporary_constraint) {
+Ctr AlgorithmInCallback::add_ctr(TempCtr&& t_temporary_constraint) {
     if (m_is_in_callback) {
         return m_context->add_lazy_cut(std::move(t_temporary_constraint));
     }
-    return m_algorithm.add_row(std::move(t_temporary_constraint));
+    return m_algorithm.add_ctr(std::move(t_temporary_constraint));
 }
 
 void AlgorithmInCallback::remove(const Ctr &t_constraint) {

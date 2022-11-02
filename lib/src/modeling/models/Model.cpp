@@ -7,7 +7,7 @@
 
 unsigned int Model::s_id = 0;
 
-Model::Model(ObjSense t_sense) : m_objects(Env::get()), m_objective_sense(t_sense) {
+Model::Model(Sense t_sense) : m_objects(Env::get()), m_objective_sense(t_sense) {
 
 }
 
@@ -16,20 +16,20 @@ Model::~Model() {
     while (!m_constraints.empty()) { remove(m_constraints.back()); }
 }
 
-Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
+Var Model::add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
     auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
     add_created_variable(variable);
     return variable;
 }
 
-Var Model::add_variable(TempVar t_temporary_variable, std::string t_name) {
+Var Model::add_var(TempVar t_temporary_variable, std::string t_name) {
     auto variable = m_objects.create<Var>(m_id, std::move(t_name), std::move(t_temporary_variable));
     add_created_variable(variable);
     return variable;
 }
 
-Var Model::add_variable(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name) {
-    return add_variable(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
+Var Model::add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name) {
+    return add_var(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
 }
 
 void Model::add_created_variable(const Var &t_var) {
@@ -58,22 +58,26 @@ void Model::remove(const Var &t_var) {
     remove_object(m_variables, t_var);
 }
 
-Ctr Model::add_constraint(TempCtr t_temporary_constraint, std::string t_name) {
+Ctr Model::add_ctr(TempCtr t_temporary_constraint, std::string t_name) {
     auto constraint = m_objects.create<Ctr>(m_id, std::move(t_name), std::move(t_temporary_constraint));
-    add_object(m_constraints, constraint);
-    m_listeners.broadcast_add(constraint);
-    add_row_to_columns(constraint);
+    add_created_constraint(constraint);
     return constraint;
 }
 
-Ctr Model::add_constraint(CtrType t_type, Constant t_rhs, std::string t_name) {
+Ctr Model::add_ctr(CtrType t_type, Constant t_rhs, std::string t_name) {
     if (t_type == Equal) {
-        return add_constraint(LinExpr() == std::move(t_rhs), std::move(t_name));
+        return add_ctr(LinExpr() == std::move(t_rhs), std::move(t_name));
     }
     if (t_type == LessOrEqual) {
-        return add_constraint(LinExpr() <= std::move(t_rhs), std::move(t_name));
+        return add_ctr(LinExpr() <= std::move(t_rhs), std::move(t_name));
     }
-    return add_constraint(LinExpr() >= std::move(t_rhs), std::move(t_name));
+    return add_ctr(LinExpr() >= std::move(t_rhs), std::move(t_name));
+}
+
+void Model::add_created_constraint(const Ctr &t_ctr) {
+    add_object(m_constraints, t_ctr);
+    m_listeners.broadcast_add(t_ctr);
+    add_row_to_columns(t_ctr);
 }
 
 void Model::add_row_to_columns(const Ctr &t_ctr) {
@@ -107,7 +111,7 @@ void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_c
 
 }
 
-void Model::update_obj_sense(ObjSense t_sense) {
+void Model::update_obj_sense(Sense t_sense) {
     m_objective_sense = t_sense;
 }
 
@@ -132,17 +136,10 @@ void Model::update_obj(Expr<Var> &&t_obj) {
 void Model::update_obj(const Expr<Var> &t_obj) {
     update_obj(Expr<Var>(t_obj));
 }
-/*
-void Model::update_obj(const Row &t_row) {
-    update_obj_const(t_row.rhs());
-    for (const auto& var : m_variables) {
-        update_obj_coeff(var, t_row.lhs().get(var)); // TODO this is inefficient as it is done even for zero values
-    }
-}
-*/
+
 void Model::update_obj_const(Constant t_offset) {
     m_listeners.broadcast_update_objective_offset(t_offset);
-    m_objective_offset = std::move(t_offset);
+    m_objective.constant() = std::move(t_offset);
 }
 
 
