@@ -7,13 +7,18 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
 
     Model model;
 
+    const bool is_minimization = GENERATE(true, false);
+    const double sign = is_minimization ? 1. : -1.;
+
     SECTION("solving bounded feasible LP") {
         // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
         SECTION("Model constructed before the solver is declared") {
 
-            auto x = model.add_variable(0., Inf, Continuous, -143, "x");
-            auto y = model.add_variable(0., Inf, Continuous, -60, "y");
+            auto x = model.add_variable(0., Inf, Continuous, sign * -143, "x");
+            auto y = model.add_variable(0., Inf, Continuous, sign * -60, "y");
+
+            model.update_obj_sense(is_minimization ? Minimize : Maximize);
 
             auto c1 = model.add_constraint(120 * x + 210 * y <= 15000);
             auto c2 = model.add_constraint(110 * x + 30 * y <= 4000);
@@ -31,8 +36,8 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
 
             CHECK(dual_solution.status() == Optimal);
             CHECK(dual_solution.get(c1) == 0._a);
-            CHECK(dual_solution.get(c2) == -1.0375_a);
-            CHECK(dual_solution.get(c3) == -28.875_a);
+            CHECK(dual_solution.get(c2) == Catch::Approx(sign * -1.0375));
+            CHECK(dual_solution.get(c3) == Catch::Approx(sign * -28.875));
 
         }
 

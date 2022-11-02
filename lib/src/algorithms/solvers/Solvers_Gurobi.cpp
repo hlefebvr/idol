@@ -11,6 +11,8 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 
+    m_model.set(GRB_IntAttr_ModelSense, t_model.sense() == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
+
     set_callback_attribute<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
         m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
     });

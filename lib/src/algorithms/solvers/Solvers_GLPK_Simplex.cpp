@@ -10,6 +10,8 @@ Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {
 
     m_model = glp_create_prob();
 
+    glp_set_obj_dir(m_model, t_model.sense() == Minimize ? GLP_MIN : GLP_MAX);
+
     for (const auto& var : t_model.variables()) {
         add_future(var, false);
     }
@@ -220,7 +222,12 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
             artificial_variables.emplace_back(art_var_index + 1);
         }
 
+        delete[] index;
+
     }
+
+    delete[] minus_one;
+    delete[] plus_one;
 
     // Set original variables' objective coefficient to zero
     for (const auto& [var, constant] : model().obj().linear()) {
