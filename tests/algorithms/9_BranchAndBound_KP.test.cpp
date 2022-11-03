@@ -3,7 +3,7 @@
 //
 
 #include "../test_utils.h"
-#include "problems/kp/KP_Instance.h"
+#include "problems/KP/KP_Instance.h"
 #include "algorithms/callbacks/Callbacks_RoundingHeuristic.h"
 
 using configurations =

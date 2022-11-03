@@ -20,7 +20,7 @@
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 #include "algorithms/callbacks/Callbacks_RowGeneration.h"
 #include "algorithms/callbacks/AlgorithmInCallback.h"
-#include "problems/kp/KP_Instance.h"
+#include "problems/KP/KP_Instance.h"
 #include "problems/robust/RobustProblem.h"
 #include "modeling/expressions/Expr.h"
 

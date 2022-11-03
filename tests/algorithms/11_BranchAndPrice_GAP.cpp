@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-#include "../../lib/include/problems/gap/GAP_Instance.h"
+#include "../../lib/include/problems/GAP/GAP_Instance.h"
 
 using configurations =
         cartesian_product<

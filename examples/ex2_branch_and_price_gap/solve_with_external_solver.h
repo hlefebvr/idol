@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 #define OPTIMIZE_SOLVE_WITH_EXTERNAL_SOLVER_H
 
-#include "problems/gap/GAP_Instance.h"
+#include "problems/GAP/GAP_Instance.h"
 #include "modeling.h"
 #include "solvers.h"
 

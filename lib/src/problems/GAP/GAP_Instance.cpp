@@ -1,7 +1,7 @@
 //
 // Created by henri on 12/10/22.
 //
-#include "../../../include/problems/gap/GAP_Instance.h"
+#include "../../../include/problems/GAP/GAP_Instance.h"
 #include <cassert>
 #include <fstream>
 

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "algorithms.h"
-#include "problems/kp/KP_Instance.h"
+#include "problems/KP/KP_Instance.h"
 #include "algorithms/callbacks/Callbacks_RoundingHeuristic.h"
 #include "algorithms/row-generation/RowGeneration.h"
 

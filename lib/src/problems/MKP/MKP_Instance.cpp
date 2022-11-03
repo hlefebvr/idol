@@ -1,7 +1,7 @@
 //
 // Created by henri on 12/10/22.
 //
-#include "../../../include/problems/mkp/MKP_Instance.h"
+#include "../../../include/problems/MKP/MKP_Instance.h"
 #include <cassert>
 #include <fstream>
 
