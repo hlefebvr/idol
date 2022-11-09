@@ -41,6 +41,10 @@ void RowGeneration::execute() {
             terminate_for_iteration_limit_is_reached();
         }
 
+        if (time_limit_is_reached() ) {
+            terminate_for_time_limit_is_reached();
+        }
+
     }
 
 }
@@ -61,6 +65,8 @@ void RowGeneration::initialize() {
 }
 
 void RowGeneration::solve_rmp() {
+    const double remaining_time = std::max(0., get<Attr::TimeLimit>() - time().count());
+    rmp_solution_strategy().set<Attr::TimeLimit>(remaining_time);
     rmp_solution_strategy().solve();
 }
 
@@ -259,6 +265,17 @@ bool RowGeneration::iteration_limit_is_reached() const {
 
 void RowGeneration::terminate_for_iteration_limit_is_reached() {
     EASY_LOG(Trace, "row-generation", "Terminate. The maximum number of iterations has been reached.")
+    terminate();
+}
+
+bool RowGeneration::time_limit_is_reached() const {
+    return get<Attr::TimeLimit>() <= time().count();
+}
+
+void RowGeneration::terminate_for_time_limit_is_reached() {
+    if (is_terminated()) { return; }
+    EASY_LOG(Trace, "row-generation", "Terminate. The time limit has been reached.");
+    std::cout << "TIME_LIMIT" << std::endl;
     terminate();
 }
 

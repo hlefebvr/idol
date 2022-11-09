@@ -17,7 +17,7 @@ Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_
 
 }
 
-Problems::FLP::Instance read_instance_2021_Cheng_et_al(const std::string &t_filename) {
+Problems::FLP::Instance Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename) {
 
     auto data = parse_delimited(t_filename, '\t');
 
@@ -57,7 +57,7 @@ Problems::FLP::Instance read_instance_2021_Cheng_et_al(const std::string &t_file
     return result;
 }
 
-Problems::FLP::Instance read_instance_1991_Cornuejols_et_al(const std::string& t_filename) {
+Problems::FLP::Instance Problems::FLP::read_instance_1991_Cornuejols_et_al(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 
@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& t_os, const Problems::FLP::Instance& t_in
     return t_os;
 }
 
-Problems::FLP::Instance generate_instance_1991_Cornuejols_et_al(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand) {
+Problems::FLP::Instance Problems::FLP::generate_instance_1991_Cornuejols_et_al(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand) {
 
     std::random_device rd;
     std::mt19937 engine(rd());

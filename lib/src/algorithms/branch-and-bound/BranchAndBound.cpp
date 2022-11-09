@@ -39,6 +39,10 @@ void BranchAndBound::execute() {
             terminate_for_iteration_limit_is_reached();
         }
 
+        if (!is_terminated() && time_limit_is_reached()) {
+            terminate_for_time_limit_is_reached();
+        }
+
         branch();
 
     }
@@ -184,6 +188,10 @@ void BranchAndBound::solve_current_node() {
     } else {
         m_solution_strategy->set<Attr::BestObjStop>(std::min(m_best_upper_bound, get<Attr::BestObjStop>()));
     }
+
+    const double remaining_time = std::max(0., get<Attr::TimeLimit>() - time().count());
+    m_solution_strategy->set<Attr::TimeLimit>(remaining_time);
+
     m_solution_strategy->solve();
     m_nodes->save_current_node_solution(*m_solution_strategy);
 }
@@ -203,7 +211,7 @@ bool BranchAndBound::current_node_is_unbounded() const {
 bool BranchAndBound::current_node_was_not_solved_to_optimality() const {
     auto status = current_node().status();
     if (status == Unknown) {
-        return current_node().reason() != CutOff;
+        return current_node().reason() != UserObjLimit && current_node().reason() != CutOff;
     }
     return status != Optimal;
 }
@@ -407,4 +415,16 @@ bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
         return true;
     }
     return false;
+}
+
+bool BranchAndBound::time_limit_is_reached() const {
+    return get<Attr::TimeLimit>() <= time().count();
+}
+
+void BranchAndBound::terminate_for_time_limit_is_reached() {
+    if (is_terminated()) { return; }
+    EASY_LOG(Trace, "branch-and-bound", "Terminate. Time limit is reached.");
+    set_status(m_nodes->has_incumbent() ? Feasible : Infeasible);
+    set_reason(TimeLimit);
+    terminate();
 }

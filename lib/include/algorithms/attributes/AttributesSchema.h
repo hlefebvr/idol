@@ -46,6 +46,16 @@ namespace AttributesSchemaProperty {
     };
 
     template<long int Value>
+    struct GreaterOrEqualTo {
+        template<class T>
+        void throw_if_not_valid(const T &t_value) {
+            if (t_value < Value) {
+                throw Exception("Value should be (stricly) greater than " + std::to_string(Value) + ".");
+            }
+        }
+    };
+
+    template<long int Value>
     struct LessThan {
         template<class T>
         void throw_if_not_valid(const T &t_value) {

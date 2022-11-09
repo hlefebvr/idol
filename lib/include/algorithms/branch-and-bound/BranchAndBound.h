@@ -56,6 +56,7 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, 
     bool no_active_nodes();
     void branch();
     [[nodiscard]] bool iteration_limit_is_reached() const;
+    [[nodiscard]] bool time_limit_is_reached() const;
 
     void terminate();
     void terminate_for_no_active_nodes();
@@ -65,6 +66,7 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, 
     void terminate_for_node_could_not_be_solved_to_optimality();
     void terminate_for_iteration_limit_is_reached();
     void terminate_for_error_lb_greater_than_ub();
+    void terminate_for_time_limit_is_reached();
 
     [[nodiscard]] bool gap_is_closed() const { return relative_gap() <= ToleranceForRelativeGapMIP || absolute_gap() <= ToleranceForAbsoluteGapMIP; }
 

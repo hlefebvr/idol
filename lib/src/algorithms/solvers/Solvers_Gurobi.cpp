@@ -54,6 +54,9 @@ void Solvers::Gurobi::execute() {
     if (get<Attr::ResetBeforeSolving>()) {
         m_model.reset();
     }
+
+    m_model.set(GRB_DoubleParam_TimeLimit, get<Attr::TimeLimit>());
+
     m_model.optimize();
 
     if (m_model.get(GRB_IntAttr_Status) == GRB_INFEASIBLE && m_model.get(GRB_IntParam_InfUnbdInfo)) {

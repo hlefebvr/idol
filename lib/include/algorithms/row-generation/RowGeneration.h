@@ -37,6 +37,7 @@ protected:
     void analyze_last_subproblem_primal_solution(const RowGenerationSP& t_subproblem);
     void add_cuts();
     [[nodiscard]] bool iteration_limit_is_reached() const;
+    [[nodiscard]] bool time_limit_is_reached() const;
 
     void terminate();
     void terminate_for_rmp_is_infeasible();
@@ -45,6 +46,7 @@ protected:
     void terminate_for_subproblem_is_infeasible();
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
     void terminate_for_iteration_limit_is_reached();
+    void terminate_for_time_limit_is_reached();
 
     void execute() override;
 public:
