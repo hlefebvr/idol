@@ -16,6 +16,7 @@
 #include <memory>
 #include <utility>
 #include <functional>
+#include <optional>
 #include <list>
 
 /**
