@@ -428,3 +428,9 @@ void BranchAndBound::terminate_for_time_limit_is_reached() {
     set_reason(TimeLimit);
     terminate();
 }
+
+BranchAndBound::BranchAndBound() {
+    set_callback_attribute<Attr::MaxThreads>([&](unsigned int t_n_threads){
+        m_solution_strategy->set<Attr::MaxThreads>(t_n_threads);
+    });
+}

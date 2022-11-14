@@ -37,6 +37,10 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
         m_model.set(GRB_DoubleParam_BestBdStop, t_value);
     });
 
+    set_callback_attribute<Attr::MaxThreads>([this](unsigned int t_num_threads) {
+        m_model.set(GRB_IntParam_Threads, (int) t_num_threads);
+    });
+
     for (const auto& var : t_model.vars()) {
         add_future(var, false);
     }

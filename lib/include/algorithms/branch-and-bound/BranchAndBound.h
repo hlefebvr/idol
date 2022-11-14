@@ -77,7 +77,7 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, 
 protected:
     void execute() override;
 public:
-    BranchAndBound() = default;
+    BranchAndBound();
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
