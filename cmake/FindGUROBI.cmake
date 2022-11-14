@@ -6,7 +6,7 @@ find_path(
 
 find_library(
         GUROBI_LIBRARY
-        NAMES gurobi gurobi81 gurobi90 gurobi95
+        NAMES gurobi gurobi81 gurobi90 gurobi95 gurobi1000
         HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
         PATH_SUFFIXES lib)
 
@@ -54,3 +54,6 @@ if (GUROBI_FOUND)
     target_link_libraries(gurobi INTERFACE ${GUROBI_LIBRARY})
     target_include_directories(gurobi INTERFACE ${GUROBI_INCLUDE_DIRS})
 endif()
+
+message("${GUROBI_CXX_LIBRARY}")
+message("${GUROBI_LIBRARY}")

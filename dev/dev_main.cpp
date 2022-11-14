@@ -52,7 +52,8 @@ int main() {
     2 * !x + x;
     !x + x;
 
-    std::cout << expr << std::endl;
+    Solvers::Gurobi gurobi(model);
+    gurobi.solve();
 
     return 0;
 }
