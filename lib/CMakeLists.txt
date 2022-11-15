@@ -28,7 +28,7 @@ endif()
 target_include_directories(
         idol
         PUBLIC
-        $<INSTALL_INTERFACE:include/idol>
+        $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/include>
 )
 
