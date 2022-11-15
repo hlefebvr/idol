@@ -52,9 +52,6 @@ int main() {
     2 * !x + x;
     !x + x;
 
-    Solvers::Gurobi gurobi(model);
-    gurobi.solve();
-
     return 0;
 }
 
