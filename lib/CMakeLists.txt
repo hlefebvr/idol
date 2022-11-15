@@ -25,6 +25,13 @@ if (${USE_GLPK})
 
 endif()
 
+target_include_directories(
+        idol
+        PUBLIC
+        $<INSTALL_INTERFACE:include/idol>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/idol/include>
+)
+
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/lib/include/"
         DESTINATION include/idol
         FILES_MATCHING
