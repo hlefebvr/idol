@@ -25,8 +25,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: sudo apt-get install doxygen sphinx
+      - name: Install doxygen
+        run: sudo apt-get install doxygen
+      - name: Install sphinx
+        run: sudo pip3 install sphinx
       - name: Create build directory
         run: mkdir ./build/
       - name: Build doc
