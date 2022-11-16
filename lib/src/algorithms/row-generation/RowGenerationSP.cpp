@@ -47,6 +47,7 @@ void RowGenerationSP::initialize() {
     m_urrently_present_cuts.clear();
      */
 
+    /*
     for (auto& [ctr, primal_solution] : m_pool.values()) {
         if (ctr.status() == InModel) { continue; }
         bool is_feasible = true;
@@ -61,6 +62,7 @@ void RowGenerationSP::initialize() {
             m_currently_present_cuts.emplace_back(ctr, primal_solution);
         }
     }
+     */
 
 }
 
