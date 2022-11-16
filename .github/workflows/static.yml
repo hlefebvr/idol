@@ -33,7 +33,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build
       - name: Build doc
         working-directory: ${{github.workspace}}/build/
-        run: make doc
+        run: cmake --build ${{github.workspace}}/build doc
     
   deploy:
     environment:
