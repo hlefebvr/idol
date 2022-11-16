@@ -54,6 +54,7 @@ public:
     explicit Gurobi(Model& t_model);
 
     using Solver<GRBVar, GRBConstr>::update;
+    using Solver<GRBVar, GRBConstr>::remove;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

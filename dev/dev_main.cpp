@@ -24,7 +24,6 @@
 #include "problems/robust/RobustProblem.h"
 #include "modeling/expressions/Expr.h"
 
-//// EXAMPLE TAKEN FROM http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/slotv2/!
 int main() {
 
     Log::set_level(Trace);
@@ -36,21 +35,14 @@ int main() {
 
     Model model;
     auto x = model.add_var(0., 1., Continuous, 0., "x");
+    auto y = model.add_var(0., 1., Continuous, 0., "y");
+    auto c = model.add_ctr(x + y <= 1);
 
-    Expr expr(2 * x);
-    expr + x;
-    expr + 2 * x;
-    expr + !x;
-    expr + 2 * !x;
-    x + expr;
-    2 * x + expr;
-    !x + expr;
-    2 * !x + expr;
+    ModelMirror mirror(model);
 
-    2 * !x + 2 * x;
-    !x + 2 * x;
-    2 * !x + x;
-    !x + x;
+    model.add_ctr(!y * x == 0);
+
+    std::cout << mirror << std::endl;
 
     return 0;
 }
