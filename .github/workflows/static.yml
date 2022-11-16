@@ -30,8 +30,10 @@ jobs:
       - name: Install sphinx
         run: sudo pip3 install sphinx
       - name: Create build directory
-        run: mkdir ./build/
+        working-directory: ${{github.workspace}}/
+        run: mkdir build
       - name: Build doc
+        working-directory: ${{github.workspace}}/build/
         run: (cd build && cmake .. && make doc)
     
   deploy:
