@@ -29,9 +29,11 @@ jobs:
         run: sudo apt-get install doxygen
       - name: Install sphinx
         run: sudo pip3 install sphinx
+      - name: Run CMake
+        run: cmake -B ${{github.workspace}}/build
       - name: Build doc
         working-directory: ${{github.workspace}}/build/
-        run: (mkdir build && cd build && cmake .. && make doc)
+        run: make doc
     
   deploy:
     environment:
