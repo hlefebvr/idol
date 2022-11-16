@@ -47,22 +47,20 @@ void RowGenerationSP::initialize() {
     m_urrently_present_cuts.clear();
      */
 
-    /*
     for (auto& [ctr, primal_solution] : m_pool.values()) {
         if (ctr.status() == InModel) { continue; }
         bool is_feasible = true;
         for (const auto& [var, value] : primal_solution) {
-            if (!(var.lb() + 1e-3 <= value && value <= var.ub() - 1e-3)) {
+            if (!(var.lb() <= value && value <= var.ub())) {
                 is_feasible = false;
                 break;
             }
         }
         if (is_feasible) {
-            ctr = m_rmp_strategy.add_row(create_cut_from(primal_solution));
+            ctr = m_rmp_strategy.add_ctr(create_cut_from(primal_solution));
             m_currently_present_cuts.emplace_back(ctr, primal_solution);
         }
     }
-     */
 
 }
 

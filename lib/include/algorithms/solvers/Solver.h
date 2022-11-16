@@ -91,6 +91,8 @@ public:
     Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
     void update_obj(const Expr<Var> &t_objective) override;
+
+    Callback& callback() { return *m_callbacks.front(); }
 };
 
 template<class VarT, class CtrT>

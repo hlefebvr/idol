@@ -59,6 +59,9 @@ public:
     void update_var_ub(const Var &t_var, double t_ub) override;
 
     RowGenerationSP& add_subproblem(const Ctr& t_cut);
+
+    using Subproblems = IteratorForward<std::list<RowGenerationSP>>;
+    Subproblems subproblems() { return Subproblems(m_subproblems);}
 };
 
 #endif //OPTIMIZE_CUTGENERATION_H

@@ -35,6 +35,8 @@ public:
 
     void update_var_ub(const Var &t_var, double t_lb) override;
 
+    using ::RowGeneration::subproblems;
+
     static const bool uses_lazy_cuts = true;
     static const bool uses_advanced_constructor = true;
 };
