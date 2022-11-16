@@ -32,7 +32,7 @@ jobs:
       - name: Create build directory
         run: mkdir ./build/
       - name: Build doc
-        run: cd build && cmake .. && make doc
+        run: (cd build && cmake .. && make doc)
     
   deploy:
     environment:
