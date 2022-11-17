@@ -61,13 +61,13 @@ highlight_language = 'c++'
 #
 html_theme = 'furo'
 html_theme_options = {
-    "source_repository": "https://github.com/hlefebvr/optimize",
+    "source_repository": "https://github.com/hlefebvr/idol",
     "source_branch": "main",
-    "source_directory": "documantation/",
+    "source_directory": "documentation/",
 }
 html_title = "Idol"
 # html_logo = ''
-github_url = 'https://github.com/hlefebvr/optimize'
+github_url = 'https://github.com/hlefebvr/idol'
 # html_baseurl = ''
 
 # Add any paths that contain custom static files (such as style sheets) here,
