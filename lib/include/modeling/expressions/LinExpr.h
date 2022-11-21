@@ -13,148 +13,35 @@
 #include "../matrix/MatrixCoefficient.h"
 #include "../variables/Var.h"
 #include "../../errors/Exception.h"
+#include "AbstractExpr.h"
 #include <memory>
 #include <utility>
 #include <functional>
 #include <optional>
 #include <list>
 
-/**
- * Numerical expression object.
- *
- * Typically represents the scalar product between a vector of Var and a vector of Constant.
- * This class is also used to create Row and Column.
- *
- * **Example 1**:
- * ```
- * Var x = ...;
- * Var y = ...;
- * Expr linear = 2 * x + 3 * y;
- * ```
- *
- * **Example 2**:
- * ```
- * Var x = ...;
- * Var y = ...;
- * Param xi = ...;
- * Expr linear = (2 + xi) * x + y:
- * ```
- *
- * **Example 3**:
- * ```
- * Ctr c1 = ...;
- * Ctr c2 = ...;
- * Expr<Ctr> linear = 2 * c1 + 3 * c2;
- * ```
- *
- * @tparam Key The type of elements for the first vector (the second vector type is always Constant).
- */
 template<class Key = Var>
-class LinExpr {
+struct LinTerm {
+    const Key& key;
+    const Constant& constant;
+    LinTerm(const Key& t_key, const Constant& t_constant)
+        : key(t_key), constant(t_constant) {}
+};
+
+template<class Key = Var>
+class LinExpr : public AbstractExpr<Key, LinTerm<Key>> {
     friend class Matrix;
-    using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>>;
-    MapType m_map;
 public:
     LinExpr() = default;
     LinExpr(const Key& t_key); // NOLINT(google-explicit-constructor)
     LinExpr(Constant&& t_factor, const Key& t_key);
     LinExpr(const Constant& t_factor, const Key& t_key);
 
-    /**
-     * Copy constructor. Every terms are copied by value.
-     * @param t_src The source object to copy.
-     */
-    LinExpr(const LinExpr<Key>& t_src);
+    bool set(const Key& t_key, const Constant& t_coefficient);
 
-    /**
-     * Move constructor. Every terms are moved.
-     * Meaning that MatrixCoefficientReference-s remain MatrixCoefficientReference-s, if any.
-     * @param t_src
-     */
-    LinExpr(LinExpr<Key>&& t_src) noexcept = default;
-
-    /**
-     * Assignment operator. Every term is copied by value.
-     * @param t_src The source object to assign.
-     * @return The object itself.
-     */
-    LinExpr<Key>& operator=(const LinExpr<Key>& t_src);
-
-    /**
-     * Assignment move operator. Every term is moved.
-     * Meaning that MatrixCoefficientReference-s remain MatrixCoefficientReference-s, if any.
-     * @param t_src The source object to assign.
-     * @return The object itself.
-     */
-    LinExpr<Key>& operator=(LinExpr<Key>&& t_src) noexcept = default;
-
-    /**
-     * Adds up every term of t_rhs to the Expr.
-     * Zero entries are removed from the resulting Expr.
-     * @param t_rhs The object whose terms are to be added up.
-     * @return The object itself.
-     */
-    LinExpr<Key>& operator+=(const LinExpr<Key>& t_rhs);
-
-    /**
-     * Subtracts every term of t_rhs to the Expr.
-     * Zero entries are removed from the resulting Expr.
-     * @param t_rhs The object whose terms are to be subtracted.
-     * @return The object itself.
-     */
-    LinExpr<Key>& operator-=(const LinExpr<Key>& t_rhs);
-
-    /**
-     * Multiplies every term of the Expr by t_factor. If t_factor equals zero with tolerance ToleranceForSparsity, then the Expr is emptied.
-     * @param t_factor The multiplying factor.
-     * @return The object itself.
-     */
-    LinExpr<Key>& operator*=(double t_factor);
-
-    /**
-     * Updates the coefficient associated to t_key.
-     * @param t_key The key for which the coefficient should be modified.
-     * @param t_coefficient The new value for the coefficient.
-     * @return True if the stored size has been changed (i.e., if an entry has been removed or added) ;
-     * False otherwise (i.e., if an entry has been modified).
-     */
-    bool set(const Key& t_key, Constant t_coefficient);
-
-    /**
-     * Updates the coefficient associated to t_key. The inserted coefficient is a reference to an existing coefficient in the matrix.
-     * If t_key already has a coefficient, the method throws an exception.
-     *
-     * Note that this method is used to create the internal matrix of a model by linking constraints and columns.
-     * A MatrixCoefficientReference should only be created by the Model iteself, when calling Model::add_ctr or Model::add_var.
-     * @param t_key
-     * @param t_coefficient
-     * @return True (to agree with the description of template<class Key> Expr<Key>::set(const Key& t_key, Constant t_coefficient)).
-     */
-    bool set(const Key& t_key, MatrixCoefficientReference&& t_coefficient);
-
-    /**
-     * Returns a const reference to the stored value associated to t_key. If no entry is found, a const-reference to Constant::Zero
-     * is returned.
-     * @param t_key The key for which a value is queried.
-     */
-    const Constant& get(const Key& t_key) const;
-
-    /**
-     * Returns the size of the Expr, i.e., the number of non-zero entries which are currently stored.
-     */
-    [[nodiscard]] unsigned int size() const { return m_map.size(); }
-
-    /**
-     * Returns True if the size is zero, False otherwise.
-     */
-    [[nodiscard]] bool empty() const { return m_map.empty(); }
-
-    virtual ~LinExpr() = default;
-
-    class const_iterator;
-
-    const_iterator begin() const { return const_iterator(m_map.begin()); }
-    const_iterator end() const { return const_iterator(m_map.end()); }
+    using AbstractExpr<Key, LinTerm<Key>>::get;
+    using AbstractExpr<Key, LinTerm<Key>>::set;
+    using AbstractExpr<Key, LinTerm<Key>>::remove;
 
     /**
      * Replaces every a Key with the returned expression (if any) by t_function.
@@ -164,11 +51,6 @@ public:
      */
     void replace_if(const std::function<std::optional<LinExpr<Key>>(const Key&)>& t_function);
 
-    /**
-     * Removes the entry associated to the given key.
-     * @param t_key The key for which the entry should be removed.
-     */
-    void remove(const Key& t_key);
 };
 
 template<class Key>
@@ -187,109 +69,21 @@ LinExpr<Key>::LinExpr(const Constant& t_factor, const Key &t_key) {
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(const LinExpr<Key> &t_src) {
-    for (const auto& [key, ptr_to_value] : t_src.m_map) {
-        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
-    }
-}
-
-template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator=(const LinExpr<Key> &t_src) {
-    if (this == &t_src) { return *this; }
-    m_map.clear();
-    for (const auto& [key, ptr_to_value] : t_src.m_map) {
-        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
-    }
-    return *this;
-}
-
-template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator+=(const LinExpr<Key> &t_rhs) {
-    for (const auto& [key, value] : t_rhs) {
-        auto it = m_map.find(key);
-        if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(value));
-        } else {
-            it->second->value() += value;
-        }
-    }
-    return *this;
-}
-
-template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator-=(const LinExpr<Key> &t_rhs) {
-    for (const auto& [key, value] : t_rhs) {
-        auto it = m_map.find(key);
-        if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-value));
-        } else {
-            it->second->value() -= value;
-        }
-    }
-    return *this;
-}
-
-template<class Key>
-LinExpr<Key> &LinExpr<Key>::operator*=(double t_factor) {
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
-        m_map.clear();
-        return *this;
-    }
-    for (const auto& [key, ptr_to_value] : m_map) {
-        ptr_to_value->value() *= t_factor;
-    }
-    return *this;
-}
-
-template<class Key>
-bool LinExpr<Key>::set(const Key &t_key, Constant t_coefficient) {
-
-    if (t_coefficient.is_zero()) {
-        m_map.erase(t_key);
-        return true;
-    }
-
-    auto it = m_map.find(t_key);
-    if (it == m_map.end()) {
-        m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
-        return true;
-    }
-
-    it->second->set_value(std::move(t_coefficient));
-    return false;
-}
-
-template<class Key>
-bool LinExpr<Key>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
-    if (t_coefficient.empty()) {
-        m_map.erase(t_key);
-        return true;
-    }
-
-    auto [it, success] = m_map.template emplace(t_key, std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)));
-    if (!success) {
-        throw Exception("Trying to insert a matrix coefficient by reference on an existing coefficient.");
-    }
-    return true;
-}
-
-template<class Key>
-const Constant &LinExpr<Key>::get(const Key &t_key) const {
-    auto it = m_map.find(t_key);
-    return it == m_map.end() ? Constant::Zero : it->second->value();
+bool LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
+    return AbstractExpr<Key, LinTerm<Key>>::set(t_key, Constant(t_coefficient));
 }
 
 template<class Key>
 void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(const Key &)> &t_function) {
     std::list<LinExpr<Key>> to_add;
 
-    auto it = m_map.begin();
-    const auto end = m_map.end();
+    auto it = this->m_map.begin();
+    const auto end = this->m_map.end();
     while (it != end) {
         if (auto result = t_function(it->first) ; result.has_value()) {
             auto expr = it->second->value().numerical() * result.value();
             to_add.template emplace_back(std::move(expr));
-            it = m_map.erase(it);
+            it = this->m_map.erase(it);
         } else {
             ++it;
         }
@@ -301,39 +95,19 @@ void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(co
 }
 
 template<class Key>
-void LinExpr<Key>::remove(const Key &t_key) {
-    m_map.erase(t_key);
-}
+std::ostream& operator<<(std::ostream& t_os, const LinTerm<Key>& t_term) {
 
-template<class Key>
-class LinExpr<Key>::const_iterator {
-    typename LinExpr<Key>::MapType::const_iterator m_it;
-public:
-    explicit const_iterator(const typename LinExpr<Key>::MapType::const_iterator& t_it) : m_it(t_it) {}
-    bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
-    bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
-    const_iterator operator++() { ++m_it; return *this; }
-    std::pair<const Key&, const Constant&> operator*() const {
-        return { m_it->first, m_it->second->value() };
-    }
-};
-
-template<class Key>
-std::ostream& operator<<(std::ostream& t_os, const LinExpr<Key>& t_expr) {
-    if (t_expr.empty()) {
-        return t_os << 0.;
+    if (t_term.constant.is_zero()) {
+        return t_os << "0";
     }
 
-    auto it = t_expr.begin();
-    const auto end = t_expr.end();
-
-    t_os << '{' << (*it).second << '}' << " " << (*it).first;
-
-    for (++it ; it != end ; ++it) {
-        t_os << " + " << '{' << (*it).second << '}' << " " << (*it).first;
+    if (t_term.constant.is_numerical()) {
+        t_os << t_term.constant.numerical();
+    } else {
+        t_os << '(' << t_term.constant << ')';
     }
 
-    return t_os;
+    return t_os << ' ' << t_term.key;
 }
 
 #endif //OPTIMIZE_EXPR_H
