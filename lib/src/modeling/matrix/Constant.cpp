@@ -81,7 +81,7 @@ Constant &Constant::operator-=(Param t_term) {
 }
 
 Constant &Constant::operator-=(const Constant &t_term) {
-    m_constant += t_term.m_constant;
+    m_constant -= t_term.m_constant;
     for (auto [param, value] : t_term) {
         insert_or_add(param, -value);
     }

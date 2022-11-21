@@ -148,12 +148,12 @@ AbstractExpr<Key, IteratorOutputT> &AbstractExpr<Key, IteratorOutputT>::operator
 
 template<class Key, class IteratorOutputT>
 AbstractExpr<Key, IteratorOutputT> &AbstractExpr<Key, IteratorOutputT>::operator+=(const AbstractExpr<Key, IteratorOutputT> &t_rhs) {
-    for (const auto& [key, value] : t_rhs) {
+    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(value));
+            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
         } else {
-            it->second->value() += value;
+            it->second->value() += ptr_to_value->value();
         }
     }
     return *this;
@@ -161,12 +161,12 @@ AbstractExpr<Key, IteratorOutputT> &AbstractExpr<Key, IteratorOutputT>::operator
 
 template<class Key, class IteratorOutputT>
 AbstractExpr<Key, IteratorOutputT> &AbstractExpr<Key, IteratorOutputT>::operator-=(const AbstractExpr<Key, IteratorOutputT> &t_rhs) {
-    for (const auto& [key, value] : t_rhs) {
+    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-value));
+            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-ptr_to_value->value()));
         } else {
-            it->second->value() -= value;
+            it->second->value() -= ptr_to_value->value();
         }
     }
     return *this;

@@ -48,6 +48,44 @@ LinExpr<Ctr> operator*(const Ctr& t_ctr, const Constant& t_constant) {
     return Constant(t_constant) * t_ctr;
 }
 
+
+QuadExpr<Ctr> operator*(const LinExpr<Ctr>& t_lin_expr, const Ctr& t_var) {
+    QuadExpr<Ctr> result;
+
+    for (auto&& [var, constant] : t_lin_expr) {
+        result.set(var, t_var, constant);
+    }
+
+    return result;
+}
+
+QuadExpr<Ctr> operator*(const Ctr& t_var, const LinExpr<Ctr>& t_lin_expr) {
+    return t_lin_expr * t_var;
+}
+
+QuadExpr<Ctr> operator*(const Ctr& t_var1, const Ctr& t_var2) {
+    return { t_var1, t_var2 };
+}
+
+QuadExpr<Ctr> operator*(double t_num, QuadExpr<Ctr>&& t_quad_expr) {
+    QuadExpr<Ctr> result(std::move(t_quad_expr));
+    result *= t_num;
+    return result;
+}
+
+QuadExpr<Ctr> operator*(double t_num, const QuadExpr<Ctr>& t_quad_expr) {
+    return t_num * QuadExpr<Ctr>(t_quad_expr);
+}
+
+QuadExpr<Ctr> operator*(QuadExpr<Ctr>&& t_quad_expr, double t_num) {
+    return t_num * std::move(t_quad_expr);
+}
+
+QuadExpr<Ctr> operator*(const QuadExpr<Ctr>& t_quad_expr, double t_num) {
+    return t_num * t_quad_expr;
+}
+
+
 /* ADDITION */
 
 LinExpr<Ctr> operator+(LinExpr<Ctr>&& t_lin_expr) {
