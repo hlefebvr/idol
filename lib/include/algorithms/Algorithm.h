@@ -124,7 +124,7 @@ public:
      * Sets the objective function of the optimization problem.
      * @param t_objective The desired objective.
      */
-    virtual void update_obj(const Expr<Var>& t_objective) {
+    virtual void update_obj(const Expr<Var, Var>& t_objective) {
         throw NotImplemented("Updating objective", "update_obj_coeff");
     }
 

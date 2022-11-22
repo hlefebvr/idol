@@ -9,6 +9,7 @@
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "LinExpr.h"
 #include "../constraints/Ctr.h"
+#include "QuadExpr.h"
 
 /**
  * Column modeling object.
@@ -19,6 +20,7 @@
 class Column {
     friend class Matrix;
     LinExpr<Ctr> m_components;
+    QuadExpr<Ctr, Var> m_quad_components;
     std::unique_ptr<AbstractMatrixCoefficient> m_objective_coefficient;
 public:
     /**

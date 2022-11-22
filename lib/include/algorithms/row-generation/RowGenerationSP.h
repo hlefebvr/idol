@@ -65,9 +65,9 @@ public:
 
     [[nodiscard]] PresentCuts currently_present_cuts() const { return PresentCuts(m_currently_present_cuts); }
 
-    [[nodiscard]] Expr<Var> get_separation_objective(const Solution::Primal &t_primals) const;
+    [[nodiscard]] Expr<Var, Var> get_separation_objective(const Solution::Primal &t_primals) const;
 
-    void update_separation_objective(const Expr<Var> &t_objective);
+    void update_separation_objective(const Expr<Var, Var> &t_objective);
 
     void save_last_primal_solution();
 

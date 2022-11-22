@@ -48,9 +48,9 @@ public:
 
     [[nodiscard]] Solution::Dual dual_solution() const;
 
-    [[nodiscard]] Expr<Var> get_pricing_objective(const Solution::Dual &t_duals) const;
+    [[nodiscard]] Expr<Var, Var> get_pricing_objective(const Solution::Dual &t_duals) const;
 
-    void update_pricing_objective(const Expr<Var>& t_objective);
+    void update_pricing_objective(const Expr<Var, Var>& t_objective);
 
     void log_last_primal_solution() const;
 

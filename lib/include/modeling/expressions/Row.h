@@ -9,7 +9,7 @@
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "LinExpr.h"
 
-template<class Key> class Expr;
+template<class Key1, class Key2> class Expr;
 
 /**
  * Row modeling object.
@@ -36,10 +36,10 @@ public:
      */
     Row(LinExpr<Var> t_lhs, Constant t_rhs);
 
-    Row(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs);
-    Row(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs);
-    Row(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs);
-    Row(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs);
+    Row(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
+    Row(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
+    Row(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
+    Row(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
 
     Row(const Row& t_src);
     Row(Row&& t_src) noexcept = default;

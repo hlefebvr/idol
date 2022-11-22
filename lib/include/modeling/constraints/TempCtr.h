@@ -76,22 +76,22 @@ public:
     bool is_violated(const Solution::Primal& t_solution) const;
 };
 
-template<class Key> class Expr;
+template<class Key1, class Key2> class Expr;
 
-TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator<=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator<=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs);
-TempCtr operator<=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs);
+TempCtr operator<=(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator<=(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator<=(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
+TempCtr operator<=(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
 
-TempCtr operator>=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator>=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator>=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs);
-TempCtr operator>=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs);
+TempCtr operator>=(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator>=(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator>=(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
+TempCtr operator>=(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
 
-TempCtr operator==(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator==(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs);
-TempCtr operator==(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs);
-TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs);
+TempCtr operator==(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator==(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
+TempCtr operator==(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
+TempCtr operator==(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
 
 std::ostream& operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr);
 
