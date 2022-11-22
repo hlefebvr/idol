@@ -49,25 +49,6 @@ struct std::less<name> { \
     std::size_t operator()(const name& t_a, const name& t_b) const { \
         return t_a.id() < t_b.id(); \
     } \
-};                          \
-template<> \
-struct std::hash<std::pair<name, name>> { \
-    std::size_t operator()(const std::pair<name, name>& t_pair) const { \
-        auto hash1 = std::hash<name>()(t_pair.first);      \
-        auto hash2 = std::hash<name>()(t_pair.second);     \
-        if (hash1 != hash2) {                              \
-            return hash1 ^ hash2;                    \
-        }                    \
-        return hash1; \
-    } \
-};                          \
-template<> \
-struct std::equal_to<std::pair<name, name>> { \
-    std::size_t operator()(const std::pair<name, name>& t_a, const std::pair<name, name>& t_b) const { \
-        auto hash1 = std::hash<std::pair<name, name>>()(t_a);      \
-        auto hash2 = std::hash<std::pair<name, name>>()(t_b);                    \
-        return hash1 == hash2; \
-    } \
 };
 
 #endif //OPTIMIZE_OBJECT_H

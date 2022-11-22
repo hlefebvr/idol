@@ -14,7 +14,7 @@ int main() {
     auto x = model.add_var(0., 1., Binary, 0., "x");
     auto y = model.add_var(0., 1., Binary, 0., "y");
 
-    Expr expr = x * (2 + !y) * x - x * x ;
+    Expr expr = x * y + y * x ;
 
     std::cout << expr << std::endl;
 
