@@ -20,7 +20,7 @@ RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
 }
 
 void RowGenerationSP::save_subproblem_ids(const Ctr& t_cut) {
-    for (const auto& [var, constant] : t_cut.row().lhs()) {
+    for (const auto& [var, constant] : t_cut.row().lhs().linear()) {
         for (const auto& [param, coeff] : constant) {
             m_subproblem_ids.emplace(param.model_id());
         }
@@ -80,7 +80,7 @@ Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_pr
         result += sign * coeff * param.as<Var>();
     }
 
-    for (const auto &[var, constant]: m_cut_template.row().lhs()) {
+    for (const auto &[var, constant]: m_cut_template.row().lhs().linear()) {
         result += -sign * constant.numerical() * t_primals.get(var);
         for (const auto &[param, coeff]: constant) {
             result += -sign * t_primals.get(var) * coeff * param.as<Var>();

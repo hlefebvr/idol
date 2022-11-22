@@ -17,7 +17,7 @@ void Matrix::apply_on_column(const Var &t_var, const std::function<void(const Ct
 }
 
 void Matrix::apply_on_row(const Ctr &t_ctr, const std::function<void(const Var &, MatrixCoefficientReference&&)> &t_function) {
-    for (const auto& [var, ptr_to_coeff] : t_ctr.row().lhs().m_map) {
+    for (const auto& [var, ptr_to_coeff] : t_ctr.row().lhs().linear().m_map) {
         t_function(var, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }

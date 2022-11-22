@@ -8,45 +8,20 @@
 
 const Row Row::EmptyRow;
 
-Row::Row() : m_rhs(std::make_unique<MatrixCoefficient>(0.)) {
-
-}
-
-Row::Row(LinExpr<Var> t_lhs, Constant t_rhs)
-    : m_lhs(std::move(t_lhs)),
-      m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs))) {
-
-}
-
-Row::Row(const Row &t_src)
-    : m_lhs(t_src.m_lhs),
-      m_rhs(t_src.m_rhs ? std::make_unique<MatrixCoefficient>(t_src.m_rhs->value()) : std::make_unique<MatrixCoefficient>(0.)) {
-
-}
-
-Row &Row::operator=(const Row &t_src) {
-    if (this == &t_src) { return *this; }
-    m_lhs = t_src.m_lhs;
-    m_rhs->value() = t_src.m_rhs->value();
-    return *this;
-}
-
 void Row::set_lhs(LinExpr<Var> t_lhs) {
     m_lhs = std::move(t_lhs);
 }
 
 void Row::set_rhs(Constant t_rhs) {
-    m_rhs->value() = std::move(t_rhs);
+    m_lhs.constant() = std::move(t_rhs);
 }
 
 Row Row::operator*=(double t_factor) {
-    m_rhs->value() *= t_factor;
     m_lhs *= t_factor;
     return *this;
 }
 
 Row Row::operator+=(const Row &t_factor) {
-    m_rhs->value() += t_factor.rhs();
     m_lhs += t_factor.m_lhs;
     return *this;
 }
@@ -54,7 +29,7 @@ Row Row::operator+=(const Row &t_factor) {
 Row Row::transpose() const {
     Row result;
 
-    for (const auto& [var, constant] : m_lhs) {
+    for (const auto& [var, constant] : m_lhs.linear()) {
 
         result.rhs() -= constant.numerical() * !var;
 
@@ -64,7 +39,7 @@ Row Row::transpose() const {
 
     }
 
-    for (const auto& [param, coeff] : m_rhs->value()) {
+    for (const auto& [param, coeff] : m_lhs.constant()) {
         result.lhs() -= coeff * param.as<Var>();
     }
 
@@ -74,35 +49,47 @@ Row Row::transpose() const {
 Row Row::fix(const Solution::Primal &t_primals) const {
     Row result;
 
-    for (const auto& [var, constant] : m_lhs) {
+    for (const auto& [var, constant] : m_lhs.linear()) {
         result.m_lhs += constant.fix(t_primals) * var;
     }
 
-    result.m_rhs->set_value(m_rhs->value().fix(t_primals));
+    result.m_lhs.constant() = m_lhs.constant().fix(t_primals);
 
     return result;
 }
 
 Row::Row(Expr<Var> &&t_lhs, Expr<Var> &&t_rhs)
-    : m_lhs(std::move(t_lhs.linear()) - t_rhs.linear()),
-      m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs.constant()) - t_lhs.constant())) {
+    : m_lhs(
+            std::move(t_lhs.linear()) - t_rhs.linear(),
+            std::move(t_lhs.quadratic()) - t_rhs.quadratic(),
+            std::move(t_rhs.constant()) - t_lhs.constant()
+        ) {
 
 }
 
 Row::Row(Expr<Var> &&t_lhs, const Expr<Var> &t_rhs)
-    : m_lhs(std::move(t_lhs.linear()) - t_rhs.linear()),
-      m_rhs(std::make_unique<MatrixCoefficient>(t_rhs.constant() - t_lhs.constant())){
+        : m_lhs(
+                std::move(t_lhs.linear()) - t_rhs.linear(),
+                std::move(t_lhs.quadratic()) - t_rhs.quadratic(),
+                t_rhs.constant() - t_lhs.constant()
+            ) {
 
 }
 
 Row::Row(const Expr<Var> &t_lhs, Expr<Var> &&t_rhs)
-    : m_lhs(t_lhs.linear() - t_rhs.linear()),
-      m_rhs(std::make_unique<MatrixCoefficient>(std::move(t_rhs.constant()) - t_lhs.constant())){
+    : m_lhs(
+        t_lhs.linear() - t_rhs.linear(),
+        t_lhs.quadratic() - t_rhs.quadratic(),
+        std::move(t_rhs.constant()) - t_lhs.constant()
+    ) {
 
 }
 
 Row::Row(const Expr<Var> &t_lhs, const Expr<Var> &t_rhs)
-    : m_lhs(t_lhs.linear() - t_rhs.linear()),
-      m_rhs(std::make_unique<MatrixCoefficient>(t_rhs.constant() - t_lhs.constant())) {
+    : m_lhs(
+        t_lhs.linear() - t_rhs.linear(),
+        t_lhs.quadratic() - t_rhs.quadratic(),
+        t_rhs.constant() - t_lhs.constant()
+    ) {
 
 }

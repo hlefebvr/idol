@@ -24,6 +24,7 @@ public:
     Expr(const QuadExpr<Key1>& t_expr) : m_quadratic(t_expr), m_constant(std::make_unique<MatrixCoefficient>(0.)) {} // NOLINT(google-explicit-constructor)
     Expr(Constant&& t_expr) : m_constant(std::make_unique<MatrixCoefficient>(std::move(t_expr))) {} // NOLINT(google-explicit-constructor)
     Expr(const Constant& t_expr) : m_constant(std::make_unique<MatrixCoefficient>(t_expr)) {} // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<Key1> t_lin_expr, QuadExpr<Key1, Key2> t_quad_expr, Constant t_constant) : m_linear(std::move(t_lin_expr)), m_quadratic(std::move(t_quad_expr)), m_constant(std::make_unique<MatrixCoefficient>(std::move(t_constant))) {}
 
     Expr(const Expr& t_src);
     Expr(Expr&&) noexcept = default;
@@ -38,8 +39,8 @@ public:
     LinExpr<Key1>& linear() { return m_linear; }
     [[nodiscard]] const LinExpr<Key1>& linear() const { return m_linear; }
 
-    QuadExpr<Key1>& quadratic() { return m_quadratic; }
-    const QuadExpr<Key1>& quadratic() const { return m_quadratic; }
+    QuadExpr<Key1, Key2>& quadratic() { return m_quadratic; }
+    const QuadExpr<Key1, Key2>& quadratic() const { return m_quadratic; }
 
     Constant& constant() { return m_constant->value(); }
     [[nodiscard]] const Constant& constant() const { return m_constant->value(); }

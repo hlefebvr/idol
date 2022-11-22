@@ -7,8 +7,7 @@
 
 #include <memory>
 #include "../matrix/AbstractMatrixCoefficient.h"
-#include "LinExpr.h"
-#include "QuadExpr.h"
+#include "Expr.h"
 
 template<class Key1, class Key2> class Expr;
 
@@ -22,52 +21,43 @@ template<class Key1, class Key2> class Expr;
  */
 class Row {
     friend class Matrix;
-    LinExpr<Var> m_lhs;
-    QuadExpr<Var, Ctr> m_quad_lhs;
-    std::unique_ptr<AbstractMatrixCoefficient> m_rhs;
+    Expr<Var, Var> m_lhs;
 public:
     /**
      * Creates an empty row.
      */
-    Row();
-
-    /**
-     * Creates a new row with the given left and right handsides
-     * @param t_lhs The desired left handside.
-     * @param t_rhs The desired right handside.
-     */
-    Row(LinExpr<Var> t_lhs, Constant t_rhs);
+    Row() = default;
 
     Row(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
     Row(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
     Row(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
     Row(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
 
-    Row(const Row& t_src);
+    Row(const Row& t_src) = default;
     Row(Row&& t_src) noexcept = default;
 
-    Row& operator=(const Row& t_src);
+    Row& operator=(const Row& t_src) = default;
     Row& operator=(Row&& t_src) noexcept = default;
 
     /**
      * Returns the left handside.
      */
-    LinExpr<Var>& lhs() { return m_lhs; }
+    Expr<Var, Var>& lhs() { return m_lhs; }
 
     /**
      * Returns the left handisde.
      */
-    const LinExpr<Var>& lhs() const { return m_lhs; }
+    const Expr<Var, Var>& lhs() const { return m_lhs; }
 
     /**
      * Returns the right handside.
      */
-    Constant& rhs() { return m_rhs->value(); }
+    Constant& rhs() { return m_lhs.constant(); }
 
     /**
      * Returns the right handside.
      */
-    const Constant& rhs() const { return m_rhs->value(); }
+    const Constant& rhs() const { return m_lhs.constant(); }
 
     /**
      * Sets the left handside to the expression given as argument.
@@ -100,7 +90,7 @@ public:
 };
 
 static std::ostream &operator<<(std::ostream& t_os, const Row& t_row) {
-    return t_os << '[' << t_row.lhs() << "] [" << t_row.rhs() << ']';
+    return t_os << '[' << t_row.lhs().linear() << "] [" << t_row.rhs() << ']';
 }
 
 #endif //OPTIMIZE_ROW_H

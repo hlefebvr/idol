@@ -327,7 +327,7 @@ GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     GRBLinExpr expr = 0.;
     if (t_with_collaterals) {
-        for (const auto &[var, constant]: t_ctr.row().lhs()) {
+        for (const auto &[var, constant]: t_ctr.row().lhs().linear()) {
             expr += value(constant) * future(var).impl();
         }
     }

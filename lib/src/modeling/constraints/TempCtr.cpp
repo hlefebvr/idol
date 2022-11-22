@@ -32,7 +32,7 @@ TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_row.rhs().numerical();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_row.lhs()) {
+    for (const auto& [var, coeff] : m_row.lhs().linear()) {
         lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_type) {

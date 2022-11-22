@@ -21,7 +21,7 @@ const Constant &Ctr::rhs() const {
 }
 
 const Constant &Ctr::get(const Var &t_var) const {
-    return m_impl.lock()->row().lhs().get(t_var);
+    return m_impl.lock()->row().lhs().linear().get(t_var);
 }
 
 CtrType Ctr::type() const {
@@ -31,7 +31,7 @@ CtrType Ctr::type() const {
 bool Ctr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_impl.lock()->row().rhs().numerical();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_impl.lock()->row().lhs()) {
+    for (const auto& [var, coeff] : m_impl.lock()->row().lhs().linear()) {
         lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_impl.lock()->type()) {

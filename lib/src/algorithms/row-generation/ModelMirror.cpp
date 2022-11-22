@@ -30,7 +30,7 @@ Ctr ModelMirror::add_ctr_clone(const Ctr &t_ctr) {
 }
 
 Row ModelMirror::clone(const Row &t_row) const {
-    return { clone(t_row.lhs()), clone(t_row.rhs()) };
+    return { clone(t_row.lhs().linear()), clone(t_row.rhs()) };
 }
 
 LinExpr<Var> ModelMirror::clone(const LinExpr<Var> &t_expr) const {
