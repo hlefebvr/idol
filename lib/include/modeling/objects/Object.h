@@ -28,6 +28,10 @@ public:
     [[nodiscard]] const std::string& name() const;
 
     [[nodiscard]] virtual ObjectStatus status() const = 0;
+
+    bool operator==(const Object& t_rhs) const { return id() == t_rhs.id(); }
+
+    bool operator!=(const Object& t_rhs) const { return id() != t_rhs.id(); }
 };
 
 #define MAKE_HASHABLE(name) \

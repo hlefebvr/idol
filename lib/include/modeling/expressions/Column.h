@@ -10,6 +10,7 @@
 #include "LinExpr.h"
 #include "../constraints/Ctr.h"
 #include "QuadExpr.h"
+#include "Expr.h"
 
 /**
  * Column modeling object.
@@ -19,9 +20,7 @@
  */
 class Column {
     friend class Matrix;
-    LinExpr<Ctr> m_components;
-    QuadExpr<Ctr, Var> m_quad_components;
-    std::unique_ptr<AbstractMatrixCoefficient> m_objective_coefficient;
+    Expr<Ctr, Var> m_components;
 public:
     /**
      * Creates an empty column.
@@ -43,22 +42,22 @@ public:
     /**
      * Returns the components of the column.
      */
-    LinExpr<Ctr>& components() { return m_components; }
+    Expr<Ctr, Var>& components() { return m_components; }
 
     /**
      * Returns the components of the column.
      */
-    const LinExpr<Ctr>& components() const { return m_components; }
+    const Expr<Ctr, Var>& components() const { return m_components; }
 
     /**
      * Returns the objective coefficient of the column.
      */
-    Constant& objective_coefficient() { return m_objective_coefficient->value(); }
+    Constant& objective_coefficient() { return m_components.constant(); }
 
     /**
      * Returns the objective coefficient of the column.
      */
-    const Constant& objective_coefficient() const { return m_objective_coefficient->value(); }
+    const Constant& objective_coefficient() const { return m_components.constant(); }
 
     /**
      * Sets the components to the ones given as argument. This erases and replaces previous components.

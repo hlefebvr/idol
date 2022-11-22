@@ -82,12 +82,12 @@ TEST_CASE("05. Model", "[model][modeling]") {
                 CHECK(c2.row().lhs().get(y).numerical() == 2._a);
 
                 CHECK(x.get(c2).numerical() == 1._a);
-                CHECK(x.column().components().get(c2).numerical() == 1._a);
+                CHECK(x.column().components().linear().get(c2).numerical() == 1._a);
                 CHECK(y.get(c2).numerical() == 2._a);
-                CHECK(y.column().components().get(c2).numerical() == 2._a);
+                CHECK(y.column().components().linear().get(c2).numerical() == 2._a);
 
                 CHECK(c2.row().lhs().size() == 2);
-                CHECK(y.column().components().size() == 2);
+                CHECK(y.column().components().linear().size() == 2);
 
             }
 
@@ -101,12 +101,12 @@ TEST_CASE("05. Model", "[model][modeling]") {
                 CHECK(c2.row().lhs().get(y).numerical() == 0._a);
 
                 CHECK(x.get(c2).numerical() == 1._a);
-                CHECK(x.column().components().get(c2).numerical() == 1._a);
+                CHECK(x.column().components().linear().get(c2).numerical() == 1._a);
                 CHECK(y.get(c2).numerical() == 0._a);
-                CHECK(y.column().components().get(c2).numerical() == 0._a);
+                CHECK(y.column().components().linear().get(c2).numerical() == 0._a);
 
                 CHECK(c2.row().lhs().size() == 1);
-                CHECK(y.column().components().size() == 1);
+                CHECK(y.column().components().linear().size() == 1);
 
             }
 
@@ -124,12 +124,12 @@ TEST_CASE("05. Model", "[model][modeling]") {
                 CHECK(c2.row().lhs().get(y).numerical() == 0._a);
 
                 CHECK(x.get(c2).numerical() == 2._a);
-                CHECK(x.column().components().get(c2).numerical() == 2._a);
+                CHECK(x.column().components().linear().get(c2).numerical() == 2._a);
                 CHECK(y.get(c2).numerical() == 0._a);
-                CHECK(y.column().components().get(c2).numerical() == 0._a);
+                CHECK(y.column().components().linear().get(c2).numerical() == 0._a);
 
                 CHECK(c2.row().lhs().size() == 1);
-                CHECK(x.column().components().size() == 2);
+                CHECK(x.column().components().linear().size() == 2);
 
             }
 
@@ -143,12 +143,12 @@ TEST_CASE("05. Model", "[model][modeling]") {
                 CHECK(c2.row().lhs().get(y).numerical() == 0._a);
 
                 CHECK(x.get(c2).numerical() == 0._a);
-                CHECK(x.column().components().get(c2).numerical() == 0._a);
+                CHECK(x.column().components().linear().get(c2).numerical() == 0._a);
                 CHECK(y.get(c2).numerical() == 0._a);
-                CHECK(y.column().components().get(c2).numerical() == 0._a);
+                CHECK(y.column().components().linear().get(c2).numerical() == 0._a);
 
                 CHECK(c2.row().lhs().size() == 0);
-                CHECK(x.column().components().size() == 1);
+                CHECK(x.column().components().linear().size() == 1);
 
             }
 

@@ -7,7 +7,8 @@
 
 #include <unordered_map>
 
-
+// Implements hash for pairs (non-symmetric by default (std::hash<std::pair<T, U>>) and symmetric impls)
+// See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
 namespace impl {
 
     template <typename T>

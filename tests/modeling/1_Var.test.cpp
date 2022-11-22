@@ -46,8 +46,8 @@ TEST_CASE("01. Var", "[variables][modeling]") {
     SECTION("create a new variable with Column") {
 
         Column column(xi);
-        column.components().set(c1, 1 + 2 * xi);
-        column.components().set(c2, 3);
+        column.components().linear().set(c1, 1 + 2 * xi);
+        column.components().linear().set(c2, 3);
 
         auto x = model.add_var(0., 1., Continuous, column);
 
@@ -60,7 +60,7 @@ TEST_CASE("01. Var", "[variables][modeling]") {
         CHECK(c1.get(x).get(xi) == 2._a);
         CHECK(c2.get(x).numerical() == 3._a);
 
-        column.components().set(c1, 0.);
+        column.components().linear().set(c1, 0.);
 
         CHECK(x.get(c1).numerical() == 1._a);
 

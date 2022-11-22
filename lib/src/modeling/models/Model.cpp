@@ -50,7 +50,7 @@ void Model::add_column_to_rows(const Var &t_var) {
 
 void Model::remove(const Var &t_var) {
     m_listeners.broadcast_remove(t_var);
-    for (const auto& [ctr, val] : t_var.column().components()) {
+    for (const auto& [ctr, val] : t_var.column().components().linear()) {
         m_objects.impl(ctr).row().lhs().set(t_var, 0.);
     }
     m_objective.linear().set(t_var, 0.);
@@ -84,14 +84,14 @@ void Model::add_row_to_columns(const Ctr &t_ctr) {
     auto& impl = m_objects.impl(t_ctr);
 
     Matrix::apply_on_row(t_ctr, [&](const Var& t_var, MatrixCoefficientReference&& t_coefficient){
-        m_objects.impl(t_var).column().components().set(t_ctr, std::move(t_coefficient));
+        m_objects.impl(t_var).column().components().linear().set(t_ctr, std::move(t_coefficient));
     });
 }
 
 void Model::remove(const Ctr &t_ctr) {
     m_listeners.broadcast_remove(t_ctr);
     for (const auto& [var, val] : t_ctr.row().lhs()) {
-        m_objects.impl(var).column().components().set(t_ctr, 0.);
+        m_objects.impl(var).column().components().linear().set(t_ctr, 0.);
     }
     m_objects.impl(t_ctr).row() = Row();
     remove_object(m_constraints, t_ctr);
@@ -104,7 +104,7 @@ void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_c
     Matrix::update_coefficient(
             t_var,
             t_ctr,
-            m_objects.impl(t_var).column().components(),
+            m_objects.impl(t_var).column().components().linear(),
             m_objects.impl(t_ctr).row().lhs(),
             std::move(t_coefficient)
         );

@@ -32,7 +32,7 @@ const Constant& Var::obj() const {
 }
 
 const Constant &Var::get(const Ctr &t_ctr) const {
-    return m_impl.lock()->column().components().get(t_ctr);
+    return m_impl.lock()->column().components().linear().get(t_ctr);
 }
 
 impl::Object &Var::impl() {

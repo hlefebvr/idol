@@ -8,6 +8,7 @@
 #include <memory>
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "LinExpr.h"
+#include "QuadExpr.h"
 
 template<class Key1, class Key2> class Expr;
 
@@ -22,6 +23,7 @@ template<class Key1, class Key2> class Expr;
 class Row {
     friend class Matrix;
     LinExpr<Var> m_lhs;
+    QuadExpr<Var, Ctr> m_quad_lhs;
     std::unique_ptr<AbstractMatrixCoefficient> m_rhs;
 public:
     /**

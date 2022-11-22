@@ -340,7 +340,7 @@ GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
 
     GRBColumn column;
     if (t_with_collaterals) {
-        for (const auto& [ctr, constant] : t_var.column().components()) {
+        for (const auto& [ctr, constant] : t_var.column().components().linear()) {
             column.addTerm( value(constant), future(ctr).impl() );
         }
     }

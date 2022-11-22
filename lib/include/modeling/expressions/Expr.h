@@ -5,13 +5,12 @@
 #ifndef IDOL_EXPR_H
 #define IDOL_EXPR_H
 
-#include "Row.h"
-#include "Column.h"
+#include "LinExpr.h"
 #include "QuadExpr.h"
 
 template<class Key1 = Var, class Key2 = Key1>
 class Expr {
-    //friend class Matrix;
+    friend class Matrix;
     LinExpr<Key1> m_linear;
     QuadExpr<Key1, Key2> m_quadratic;
     std::unique_ptr<AbstractMatrixCoefficient> m_constant;
@@ -37,13 +36,15 @@ public:
     Expr<Key1, Key2>& operator*=(double t_rhs);
 
     LinExpr<Key1>& linear() { return m_linear; }
-    const LinExpr<Key1>& linear() const { return m_linear; }
+    [[nodiscard]] const LinExpr<Key1>& linear() const { return m_linear; }
 
     QuadExpr<Key1>& quadratic() { return m_quadratic; }
     const QuadExpr<Key1>& quadratic() const { return m_quadratic; }
 
     Constant& constant() { return m_constant->value(); }
     [[nodiscard]] const Constant& constant() const { return m_constant->value(); }
+
+    void set_constant(MatrixCoefficientReference&& t_coefficient) { m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
 };
 
 template<class Key1, class Key2>

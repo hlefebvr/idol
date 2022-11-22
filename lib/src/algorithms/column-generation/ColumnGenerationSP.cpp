@@ -57,7 +57,7 @@ Expr<Var> ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_dual
         }
     }
 
-    for (const auto &[ctr, constant]: m_var_template.column().components()) {
+    for (const auto &[ctr, constant]: m_var_template.column().components().linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
             result += -t_duals.get(ctr) * coeff * param.as<Var>();
@@ -205,7 +205,7 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
 }
 
 void ColumnGenerationSP::reset_linking_expr(const Ctr &t_ctr) {
-    m_var_template.column().components().set(t_ctr, 0.);
+    m_var_template.column().components().linear().set(t_ctr, 0.);
 }
 
 void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &t_expr) {
@@ -214,12 +214,12 @@ void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &
         value += constant.numerical() * !var;
     }
 
-    m_var_template.column().components().set(t_ctr, value);
+    m_var_template.column().components().linear().set(t_ctr, value);
 }
 
 void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
 
-    for (const auto& [ctr, constant] : t_var.column().components()) {
+    for (const auto& [ctr, constant] : t_var.column().components().linear()) {
         for (const auto& [param, coeff] : constant) {
             m_subproblem_ids.emplace(param.model_id());
         }

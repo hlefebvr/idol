@@ -105,12 +105,12 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) t_var.column().components().size();
+        const auto n = (int) t_var.column().components().linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, coeff] : t_var.column().components()) {
+        for (const auto& [ctr, coeff] : t_var.column().components().linear()) {
             indices[i] = future(ctr).impl();
             coefficients[i] = value(coeff);
             ++i;

@@ -11,7 +11,7 @@
 #include "../../../include/modeling/constraints/impl_Constraint.h"
 
 void Matrix::apply_on_column(const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function) {
-    for (const auto& [ctr, ptr_to_coeff] : t_var.column().components().m_map) {
+    for (const auto& [ctr, ptr_to_coeff] : t_var.column().components().linear().m_map) {
         t_function(ctr, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }
@@ -45,7 +45,7 @@ void Matrix::update_coefficient(const Var& t_var, const Ctr& t_ctr, LinExpr<Ctr>
 
 void Matrix::add_to_obj(Expr<Var> &t_objective, const Var &t_var, Column &t_column) {
     if (!t_column.objective_coefficient().is_zero()) {
-        t_objective.linear().set(t_var, MatrixCoefficientReference(*t_column.m_objective_coefficient));
+        t_objective.linear().set(t_var, MatrixCoefficientReference(*t_column.m_components.m_constant));
     }
 }
 
