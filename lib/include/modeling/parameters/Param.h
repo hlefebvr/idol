@@ -46,11 +46,6 @@ public:
     [[nodiscard]] unsigned int id() const { return is<Var>() ? as<Var>().id() : as<Ctr>().id(); }
 
     /**
-     * Returns the model id of the parameter.
-     */
-    [[nodiscard]] unsigned int model_id() const { return is<Var>() ? as<Var>().model_id() : as<Ctr>().model_id(); }
-
-    /**
      * Returns the name of the parameter.
      */
     [[nodiscard]] const std::string& name() const { return is<Var>() ? as<Var>().name() : as<Ctr>().name(); }

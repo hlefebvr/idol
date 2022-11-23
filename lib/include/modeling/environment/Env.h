@@ -28,7 +28,7 @@ public:
 
     static Env& get();
 
-    unsigned int size() const { return m_objects.size(); }
+    [[nodiscard]] unsigned int size() const { return m_objects.size(); }
 
     friend class impl::ObjectManager;
 };

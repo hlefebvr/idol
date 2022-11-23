@@ -5,29 +5,21 @@
 #ifndef OPTIMIZE_OBJECT_H
 #define OPTIMIZE_OBJECT_H
 
-#include <string>
-#include "../Types.h"
-
-namespace impl {
-    class ObjectManager;
-    class Object;
-}
+#include "../environment/ObjectRef.h"
+#include <memory>
 
 class Object {
-    virtual impl::Object& impl() = 0;
-    [[nodiscard]] virtual const impl::Object& impl() const = 0;
+    std::shared_ptr<ObjectRef> m_ref{};
+protected:
+    explicit Object(ObjectRef&& t_ref) : m_ref(std::make_shared<ObjectRef>(std::move(t_ref))) {}
 public:
     virtual ~Object() = default;
 
-    [[nodiscard]] unsigned int id() const;
+    [[nodiscard]] unsigned int id() const { return m_ref->id(); }
 
-    [[nodiscard]] unsigned int model_id() const;
+    [[nodiscard]] unsigned int index() const { return m_ref->index(); }
 
-    [[nodiscard]] unsigned int index() const;
-
-    [[nodiscard]] const std::string& name() const;
-
-    [[nodiscard]] virtual ObjectStatus status() const = 0;
+    [[nodiscard]] const std::string& name() const { return m_ref->name(); }
 
     bool operator==(const Object& t_rhs) const { return id() == t_rhs.id(); }
 

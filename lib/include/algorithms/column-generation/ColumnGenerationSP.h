@@ -31,7 +31,6 @@ class ColumnGenerationSP {
 
     PresentColumnList m_currently_present_variables;
 
-    void save_subproblem_ids(const Var& t_var);
     void remove_var_template_from_rmp(const Var& t_var);
 public:
     explicit ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var);
@@ -85,11 +84,6 @@ public:
     bool update_constraint_rhs(const Ctr &t_ctr, double t_rhs);
 
     bool remove_constraint(const Ctr& t_ctr);
-
-
-    bool is_in_subproblem(const Var& t_var) const;
-
-    bool is_in_subproblem(const Ctr& t_ctr) const;
 
     void remove_columns_violating_lower_bound(const Var& t_var, double t_lb);
 

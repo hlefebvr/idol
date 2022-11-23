@@ -47,7 +47,6 @@ class RowGenerationSP {
 
     PresentCutList m_currently_present_cuts;
 
-    void save_subproblem_ids(const Ctr& t_cut);
     void remove_cut_template_from_rmp(const Ctr& t_cut);
 
     void remove_cuts_violating_lower_bound(const Var& t_var, double t_lb);
@@ -75,8 +74,6 @@ public:
     bool violated_cut_found();
 
     void add_cut_to_rmp();
-
-    bool is_in_subproblem(const Var& t_var) const;
 
     [[nodiscard]] bool is_unbounded() const;
 

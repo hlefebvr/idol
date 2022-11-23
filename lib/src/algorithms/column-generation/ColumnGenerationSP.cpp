@@ -15,7 +15,6 @@ ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_v
                   Column(t_rmp_strategy.get_column(t_var)))
               ) {
 
-    save_subproblem_ids(t_var);
     remove_var_template_from_rmp(t_var);
 
 }
@@ -166,7 +165,7 @@ void ColumnGenerationSP::remove_column_if(const std::function<bool(const Var&, c
 
 bool ColumnGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 
-    if (!is_in_subproblem(t_var)) { return false; }
+    if (!exact_solution_strategy().has(t_var)) { return false; }
 
     m_branching_scheme->set_lower_bound(t_var, t_lb, *this);
 
@@ -175,7 +174,7 @@ bool ColumnGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 
 bool ColumnGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
 
-    if (!is_in_subproblem(t_var)) { return false; }
+    if (!exact_solution_strategy().has(t_var)) { return false; }
 
     m_branching_scheme->set_upper_bound(t_var, t_ub, *this);
 
@@ -188,7 +187,7 @@ std::optional<Ctr> ColumnGenerationSP::add_constraint(TempCtr &t_temporay_constr
 
 bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
-    if (!is_in_subproblem(t_ctr)) { return false; }
+    if (!exact_solution_strategy().has(t_ctr)) { return false; }
 
     m_exact_solution_strategy->update_rhs_coeff(t_ctr, t_rhs);
 
@@ -199,7 +198,7 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
 bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
 
-    if (!is_in_subproblem(t_ctr)) {
+    if (!exact_solution_strategy().has(t_ctr)) {
         reset_linking_expr(t_ctr);
         return false;
     }
@@ -223,27 +222,9 @@ void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &
     m_var_template.column().components().linear().set(t_ctr, value);
 }
 
-void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
-
-    for (const auto& [ctr, constant] : rmp_solution_strategy().get_column(t_var).components().linear()) {
-        for (const auto& [param, coeff] : constant) {
-            m_subproblem_ids.emplace(param.model_id());
-        }
-    }
-
-}
-
 void ColumnGenerationSP::remove_var_template_from_rmp(const Var &t_var) {
     EASY_LOG(Trace, "column-generation", "Variable " << t_var << " has been removed from the RMP for it will be generated.");
     rmp_solution_strategy().remove(t_var);
-}
-
-bool ColumnGenerationSP::is_in_subproblem(const Var &t_var) const {
-    return m_subproblem_ids.find(t_var.model_id()) != m_subproblem_ids.end();
-}
-
-bool ColumnGenerationSP::is_in_subproblem(const Ctr &t_ctr) const {
-    return m_subproblem_ids.find(t_ctr.model_id()) != m_subproblem_ids.end();
 }
 
 void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, double t_lb) {

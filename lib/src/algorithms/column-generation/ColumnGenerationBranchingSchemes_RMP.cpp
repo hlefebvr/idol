@@ -74,7 +74,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
                                                                                        ColumnGenerationSP &t_subproblem) {
 
     for (const auto& [var, ctr] : t_temporary_constraint.row().lhs().linear()) {
-        if (!t_subproblem.is_in_subproblem(var)) {
+        if (!t_subproblem.exact_solution_strategy().has(var)) {
             return {};
         }
     }
@@ -87,13 +87,13 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
     LinExpr original_space;
 
     for (const auto& [var, coefficient] : row.lhs().linear()) {
-        if (t_subproblem.is_in_subproblem(var)) {
+        if (t_subproblem.exact_solution_strategy().has(var)) {
             original_space += coefficient * var;
         }
     }
 
     row.lhs().linear().replace_if([&](const Var& t_var) -> std::optional<LinExpr<Var>> {
-        if (t_subproblem.is_in_subproblem(t_var)) {
+        if (t_subproblem.exact_solution_strategy().has(t_var)) {
             return t_subproblem.expand(t_var);
         }
         return {};

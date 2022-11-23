@@ -14,17 +14,7 @@ RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
         throw Exception("Cannot separate equality constraints.");
     }
 
-    save_subproblem_ids(t_cut);
     remove_cut_template_from_rmp(t_cut);
-
-}
-
-void RowGenerationSP::save_subproblem_ids(const Ctr& t_cut) {
-    for (const auto& [var, constant] : m_rmp_strategy.get_row(t_cut).lhs().linear()) {
-        for (const auto& [param, coeff] : constant) {
-            m_subproblem_ids.emplace(param.model_id());
-        }
-    }
 
 }
 
@@ -164,7 +154,7 @@ Solution::Primal RowGenerationSP::primal_solution() const {
 }
 
 bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
-    if (!is_in_subproblem(t_var)) { return false; }
+    if (!exact_solution_strategy().has(t_var)) { return false; }
 
     remove_cuts_violating_lower_bound(t_var, t_lb);
     exact_solution_strategy().update_var_lb(t_var, t_lb);
@@ -173,7 +163,7 @@ bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 }
 
 bool RowGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
-    if (!is_in_subproblem(t_var)) { return false; }
+    if (!exact_solution_strategy().has(t_var)) { return false; }
 
     remove_cuts_violating_upper_bound(t_var, t_ub);
     exact_solution_strategy().update_var_ub(t_var, t_ub);
@@ -196,10 +186,6 @@ void RowGenerationSP::remove_cut_if(const std::function<bool(const Ctr &, const 
         }
     }
 
-}
-
-bool RowGenerationSP::is_in_subproblem(const Var &t_var) const {
-    return m_subproblem_ids.find(t_var.model_id()) != m_subproblem_ids.end();
 }
 
 void RowGenerationSP::remove_cuts_violating_lower_bound(const Var &t_var, double t_lb) {

@@ -39,8 +39,9 @@ namespace Solution {
 class TempCtr {
     friend class impl::Ctr;
     Row m_row;
-    CtrType m_type;
+    CtrType m_type = LessOrEqual;
 public:
+    TempCtr() = default;
     /**
      * Creates a new temporary constraint.
      * @param t_row The desired row.
@@ -68,6 +69,8 @@ public:
      * Returns the constraint type.
      */
     CtrType type() const { return m_type; }
+
+    void set_type(CtrType t_type) { m_type = t_type; }
 
     /**
      * Returns true if the temporary constraint is violated by the given solution, false otherwise.

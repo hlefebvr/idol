@@ -64,15 +64,21 @@ public:
      */
     [[nodiscard]] double lb() const { return m_lb; }
 
+    void set_lb(double t_lb) { m_lb = t_lb; }
+
     /**
      * Returns the upper bound associated to the temporary variable.
      */
     [[nodiscard]] double ub() const { return m_ub; }
 
+    void set_ub(double t_ub) { m_ub = t_ub; }
+
     /**
      * Returns the type associated to the temporary variable.
      */
     [[nodiscard]] VarType type() const { return m_type; }
+
+    void set_type(VarType t_type) { m_type = t_type; }
 };
 
 #endif //OPTIMIZE_TEMPVAR_H

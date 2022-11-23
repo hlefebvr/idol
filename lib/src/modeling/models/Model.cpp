@@ -5,63 +5,35 @@
 #include "../../../include/modeling/matrix/Matrix.h"
 #include "../../../include/modeling/expressions/operators.h"
 
-unsigned int Model::s_id = 0;
+Model::Model(Sense t_sense) : m_objective_sense(t_sense) {
 
-Model::Model(Sense t_sense) : m_objects(Env::get()), m_objective_sense(t_sense) {
-
-}
-
-Model::~Model() {
-    while (!m_variables.empty()) { remove(m_variables.back()); }
-    while (!m_constraints.empty()) { remove(m_constraints.back()); }
 }
 
 Var Model::add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), t_lb, t_ub, t_type, std::move(t_column));
-    add_created_variable(variable);
-    return variable;
-}
-
-Var Model::add_var(TempVar t_temporary_variable, std::string t_name) {
-    auto variable = m_objects.create<Var>(m_id, std::move(t_name), std::move(t_temporary_variable));
-    add_created_variable(variable);
-    return variable;
+    return add_var(TempVar(t_lb, t_ub, t_type, std::move(t_column)), std::move(t_name));
 }
 
 Var Model::add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name) {
-    return add_var(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient)), std::move(t_name));
+    return add_var(TempVar(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient))), std::move(t_name));
 }
 
-void Model::add_created_variable(const Var &t_var) {
-    add_object(m_variables, t_var);
-    m_listeners.broadcast_add(t_var);
-    add_column_to_rows(t_var);
-}
+Var Model::add_var(TempVar t_temporary_variable, std::string t_name) {
 
-void Model::add_column_to_rows(const Var &t_var) {
-    auto& impl = m_objects.impl(t_var);
+    auto ref = m_variables.add_attributes(std::move(t_name), "Var", std::move(t_temporary_variable));
+    Var variable(std::move(ref));
+    m_variables.add_object(variable);
 
-    Matrix::apply_on_column(*this, t_var, [&](const Ctr &t_ctr, MatrixCoefficientReference&& t_coefficient) {
-        m_objects.impl(t_ctr).row().lhs().linear().set(t_var, std::move(t_coefficient));
-    });
+    m_listeners.broadcast_add(variable);
+    add_column_to_rows(variable);
 
-    Matrix::add_to_obj(m_objective, t_var, impl.column());
+    return variable;
 }
 
 void Model::remove(const Var &t_var) {
     m_listeners.broadcast_remove(t_var);
-    for (const auto& [ctr, val] : t_var.column().components().linear()) {
-        m_objects.impl(ctr).row().lhs().linear().set(t_var, 0.);
-    }
-    m_objective.linear().set(t_var, 0.);
-    m_objects.impl(t_var).column() = Column();
-    remove_object(m_variables, t_var);
-}
-
-Ctr Model::add_ctr(TempCtr t_temporary_constraint, std::string t_name) {
-    auto constraint = m_objects.create<Ctr>(m_id, std::move(t_name), std::move(t_temporary_constraint));
-    add_created_constraint(constraint);
-    return constraint;
+    auto& attributes = m_variables.attributes(t_var);
+    remove_column_from_rows(t_var);
+    m_variables.remove(t_var);
 }
 
 Ctr Model::add_ctr(CtrType t_type, Constant t_rhs, std::string t_name) {
@@ -74,67 +46,43 @@ Ctr Model::add_ctr(CtrType t_type, Constant t_rhs, std::string t_name) {
     return add_ctr(LinExpr() >= std::move(t_rhs), std::move(t_name));
 }
 
-void Model::add_created_constraint(const Ctr &t_ctr) {
-    add_object(m_constraints, t_ctr);
-    m_listeners.broadcast_add(t_ctr);
-    add_row_to_columns(t_ctr);
-}
+Ctr Model::add_ctr(TempCtr t_temporary_constraint, std::string t_name) {
 
-void Model::add_row_to_columns(const Ctr &t_ctr) {
-    auto& impl = m_objects.impl(t_ctr);
+    auto ref = m_constraints.add_attributes(std::move(t_name), "Ctr", std::move(t_temporary_constraint));
+    Ctr constraint(std::move(ref));
+    m_constraints.add_object(constraint);
 
-    Matrix::apply_on_row(*this, t_ctr, [&](const Var& t_var, MatrixCoefficientReference&& t_coefficient){
-        m_objects.impl(t_var).column().components().linear().set(t_ctr, std::move(t_coefficient));
-    });
+    m_listeners.broadcast_add(constraint);
+    add_row_to_columns(constraint);
+
+    return constraint;
 }
 
 void Model::remove(const Ctr &t_ctr) {
     m_listeners.broadcast_remove(t_ctr);
-    for (const auto& [var, val] : t_ctr.row().lhs().linear()) {
-        m_objects.impl(var).column().components().linear().set(t_ctr, 0.);
-    }
-    m_objects.impl(t_ctr).row() = Row();
-    remove_object(m_constraints, t_ctr);
-}
-
-void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
-
-    m_listeners.broadcast_update_coefficient(t_ctr, t_var, t_coefficient);
-
-    Matrix::update_coefficient(
-            t_var,
-            t_ctr,
-            m_objects.impl(t_var).column().components().linear(),
-            m_objects.impl(t_ctr).row().lhs().linear(),
-            std::move(t_coefficient)
-        );
-
+    auto& attributes = m_constraints.attributes(t_ctr);
+    remove_row_from_columns(t_ctr);
+    m_constraints.remove(t_ctr);
 }
 
 void Model::update_obj_sense(Sense t_sense) {
     m_objective_sense = t_sense;
 }
 
-void Model::update_obj_coeff(const Var &t_var, Constant t_coefficient) {
-    m_listeners.broadcast_update_objective(t_var, t_coefficient);
-    if (t_coefficient.is_zero()) {
-        m_objective.linear().set(t_var, 0.);
-    }
-    m_objects.impl(t_var).column().set_objective_coefficient(std::move(t_coefficient));
-}
-
 void Model::update_obj(Expr<Var> &&t_obj) {
-    for (const auto& [var, coeff] : m_objective.linear()) {
-        m_objects.impl(var).column().set_objective_coefficient(0.);
-    }
-    m_objective = std::move(t_obj);
-    Matrix::apply_obj(m_objective, [&](const Var& t_var, MatrixCoefficientReference&& t_coeff){
-        m_objects.impl(t_var).column().set_objective_coefficient(std::move(t_coeff));
-    });
+    replace_objective(std::move(t_obj));
 }
 
 void Model::update_obj(const Expr<Var> &t_obj) {
     update_obj(Expr<Var>(t_obj));
+}
+
+void Model::update_rhs(LinExpr<Ctr> &&t_obj) {
+    replace_right_handside(std::move(t_obj));
+}
+
+void Model::update_rhs(const LinExpr<Ctr> &t_obj) {
+    update_rhs(LinExpr<Ctr>(t_obj));
 }
 
 void Model::update_obj_const(Constant t_offset) {
@@ -142,30 +90,34 @@ void Model::update_obj_const(Constant t_offset) {
     m_objective.constant() = std::move(t_offset);
 }
 
+void Model::update_obj_coeff(const Var &t_var, Constant t_coefficient) {
+    m_listeners.broadcast_update_objective(t_var, t_coefficient);
+    add_to_obj(t_var, std::move(t_coefficient));
+}
 
 void Model::update_rhs_coeff(const Ctr &t_ctr, Constant t_coefficient) {
     m_listeners.broadcast_update_rhs(t_ctr, t_coefficient);
-    m_objects.impl(t_ctr).row().set_rhs(std::move(t_coefficient));
+    add_to_rhs(t_ctr, std::move(t_coefficient));
 }
 
 void Model::update_var_lb(const Var &t_var, double t_lb) {
     m_listeners.broadcast_update_lb(t_var, t_lb);
-    m_objects.impl(t_var).set_lb(t_lb);
+    m_variables.attributes(t_var).set_lb(t_lb);
 }
 
 void Model::update_var_ub(const Var &t_var, double t_ub) {
     m_listeners.broadcast_update_ub(t_var, t_ub);
-    m_objects.impl(t_var).set_ub(t_ub);
+    m_variables.attributes(t_var).set_ub(t_ub);
 }
 
 void Model::update_var_type(const Var &t_var, VarType t_type) {
     m_listeners.broadcast_update_type(t_var, t_type);
-    m_objects.impl(t_var).set_type(t_type);
+    m_variables.attributes(t_var).set_type(t_type);
 }
 
 void Model::update_ctr_type(const Ctr &t_ctr, CtrType t_type) {
     m_listeners.broadcast_update_type(t_ctr, t_type);
-    m_objects.impl(t_ctr).set_type(t_type);
+    m_constraints.attributes(t_ctr).set_type(t_type);
 }
 
 void Model::add_listener(Listener &t_listener) const {
@@ -173,33 +125,49 @@ void Model::add_listener(Listener &t_listener) const {
 }
 
 double Model::get_lb(const Var &t_var) const {
-    return m_variables.at(t_var.index()).lb();
+    return m_variables.attributes(t_var).lb();
 }
 
 double Model::get_ub(const Var &t_var) const {
-    return m_variables.at(t_var.index()).ub();
+    return m_variables.attributes(t_var).ub();
 }
 
 VarType Model::get_type(const Var &t_var) const {
-    return m_variables.at(t_var.index()).type();
+    return m_variables.attributes(t_var).type();
 }
 
 const Column &Model::get_column(const Var &t_var) const {
-    return m_variables.at(t_var.index()).column();
+    return m_variables.attributes(t_var).column();
 }
 
 bool Model::has(const Var &t_var) const {
-    return t_var.index() < m_variables.size() && m_variables.at(t_var.index()).id() == t_var.id();
+    return m_variables.has(t_var);
 }
 
 const Row &Model::get_row(const Ctr &t_ctr) const {
-    return m_constraints.at(t_ctr.index()).row();
+    return m_constraints.attributes(t_ctr).row();
 }
 
 CtrType Model::get_type(const Ctr &t_ctr) const {
-    return m_constraints.at(t_ctr.index()).type();
+    return m_constraints.attributes(t_ctr).type();
 }
 
 bool Model::has(const Ctr &t_ctr) const {
-    return t_ctr.index() < m_constraints.size() && m_constraints.at(t_ctr.index()).id() == t_ctr.id();
+    return m_constraints.has(t_ctr);
+}
+
+Column &Model::access_column(const Var &t_var) {
+    return m_variables.attributes(t_var).column();
+}
+
+Row &Model::access_row(const Ctr &t_ctr) {
+    return m_constraints.attributes(t_ctr).row();
+}
+
+Expr<Var> &Model::access_obj() {
+    return m_objective;
+}
+
+LinExpr<Ctr> &Model::access_rhs() {
+    return m_rhs;
 }

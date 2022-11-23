@@ -171,7 +171,7 @@ template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update() {
 
     for (const auto& var : m_variables_to_update) {
-        if (var.status() == Dead) { continue; }
+        //if (var.status() == Dead) { continue; }
         if (auto& f = future(var) ; !f.has_impl()) {
             auto impl = create(var, m_is_built);
             f.set_impl(impl);
@@ -181,7 +181,7 @@ void Solver<VarT, CtrT>::update() {
     }
 
     for (const auto& ctr : m_constraints_to_update) {
-        if (ctr.status() == Dead) { continue; }
+        //if (ctr.status() == Dead) { continue; }
         if (auto& f = future(ctr) ; !f.has_impl()) {
             auto impl = create(ctr, true);
             f.set_impl(impl);

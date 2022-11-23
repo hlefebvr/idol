@@ -281,7 +281,7 @@ void RowGeneration::terminate_for_time_limit_is_reached() {
 
 double RowGeneration::get_lb(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
-        if (subproblem.is_in_subproblem(t_var)) {
+        if (subproblem.exact_solution_strategy().has(t_var)) {
             return subproblem.exact_solution_strategy().get_lb(t_var);
         }
     }
@@ -290,7 +290,7 @@ double RowGeneration::get_lb(const Var &t_var) const {
 
 double RowGeneration::get_ub(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
-        if (subproblem.is_in_subproblem(t_var)) {
+        if (subproblem.exact_solution_strategy().has(t_var)) {
             return subproblem.exact_solution_strategy().get_ub(t_var);
         }
     }
@@ -299,7 +299,7 @@ double RowGeneration::get_ub(const Var &t_var) const {
 
 VarType RowGeneration::get_type(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
-        if (subproblem.is_in_subproblem(t_var)) {
+        if (subproblem.exact_solution_strategy().has(t_var)) {
             return subproblem.exact_solution_strategy().get_type(t_var);
         }
     }
@@ -308,7 +308,7 @@ VarType RowGeneration::get_type(const Var &t_var) const {
 
 const Column &RowGeneration::get_column(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
-        if (subproblem.is_in_subproblem(t_var)) {
+        if (subproblem.exact_solution_strategy().has(t_var)) {
             return subproblem.exact_solution_strategy().get_column(t_var);
         }
     }
@@ -317,7 +317,7 @@ const Column &RowGeneration::get_column(const Var &t_var) const {
 
 bool RowGeneration::has(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
-        if (subproblem.is_in_subproblem(t_var)) {
+        if (subproblem.exact_solution_strategy().has(t_var)) {
             return true;
         }
     }

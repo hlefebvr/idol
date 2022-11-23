@@ -108,6 +108,8 @@ std::ostream &operator<<(std::ostream& t_os, const Expr<Key1, Key2>& t_expr) {
         if (!t_expr.quadratic().empty()) {
             return t_os << " + " << t_expr.quadratic();
         }
+
+        return t_os;
     }
 
     t_os << t_expr.constant();

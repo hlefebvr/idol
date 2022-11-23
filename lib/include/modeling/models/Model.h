@@ -15,6 +15,10 @@
 #include "../../containers/Vector.h"
 #include "../objective/Objective.h"
 #include "ListenerManager.h"
+#include "../variables/VarAttributes.h"
+#include "ObjectStore.h"
+#include "../constraints/CtrAttributes.h"
+#include "../matrix/Matrix.h"
 #include <vector>
 
 class Env;
@@ -33,35 +37,23 @@ class Column;
  *  & x_j \in \mathbb N \textrm{ for some } j
  * \f}
  */
-class Model {
-    static unsigned int s_id;
-
-    const unsigned int m_id = s_id++;
-
-    ObjectManager m_objects;
+class Model : public Matrix {
     mutable ListenerManager m_listeners;
 
     Sense m_objective_sense;
     Expr<Var> m_objective;
-    //Expr<Ctr> m_rhs;
-    std::vector<Var> m_variables;
-    std::vector<Ctr> m_constraints;
-
-    template<class T> using iterator_forward = IteratorForward<std::vector<T>>;
-    template<class T> using const_iterator_forward = ConstIteratorForward<std::vector<T>>;
+    LinExpr<Ctr> m_rhs;
+    ObjectStore<Var, VarAttributes> m_variables;
+    ObjectStore<Ctr, CtrAttributes> m_constraints;
 
     template<class T, int N, int I = 0> Vector<T, N-I> add_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one);
-    template<class T> void add_object(std::vector<T>& t_vec, const T& t_value);
-    template<class T> void remove_object(std::vector<T>& t_vec, const T& t_value);
-    void add_column_to_rows(const Var& t_var);
-    void add_row_to_columns(const Ctr& t_ctr);
 
-    void add_created_variable(const Var& t_var);
-    void add_created_constraint(const Ctr& t_ctr);
+    Expr<Var> &access_obj() override;
+    LinExpr<Ctr> &access_rhs() override;
+    Column &access_column(const Var &t_var) override;
+    Row &access_row(const Ctr &t_ctr) override;
 public:
     explicit Model(Sense t_sense = Minimize);
-
-    ~Model();
 
     Model(const Model&) = delete;
     Model(Model&&) noexcept = default;
@@ -70,20 +62,17 @@ public:
     Model& operator=(Model&&) noexcept = delete;
 
     /* Gets */
-
-    [[nodiscard]] unsigned int id() const { return m_id; }
-
     Sense sense() const { return m_objective_sense; }
 
     const Expr<Var>& obj() const { return m_objective; }
 
-    //const Expr<Ctr>& rhs() const { return m_rhs; }
+    const LinExpr<Ctr>& rhs() const { return m_rhs; }
 
-    iterator_forward<Var> vars() { return iterator_forward<Var>(m_variables); }
-    [[nodiscard]] const_iterator_forward<Var> vars() const { return const_iterator_forward<Var>(m_variables); }
+    auto vars() { return m_variables.objects(); }
+    [[nodiscard]] auto vars() const { return m_variables.objects(); }
 
-    iterator_forward<Ctr> ctrs() { return iterator_forward<Ctr>(m_constraints); }
-    [[nodiscard]] const_iterator_forward<Ctr> ctrs() const { return const_iterator_forward<Ctr>(m_constraints); }
+    auto ctrs() { return m_constraints.objects(); }
+    [[nodiscard]] auto ctrs() const { return m_constraints.objects(); }
 
     /* Adds */
     Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
@@ -100,6 +89,8 @@ public:
     void add_listener(Listener& t_listener) const;
 
     /* Updates */
+    void update_rhs(LinExpr<Ctr>&& t_obj);
+    void update_rhs(const LinExpr<Ctr>& t_obj);
     void update_obj(Expr<Var>&& t_obj);
     void update_obj(const Expr<Var>& t_obj);
     void update_obj_sense(Sense t_sense);
@@ -132,23 +123,6 @@ public:
     const Row& get_row(const Ctr& t_ctr) const;
     bool has(const Ctr& t_ctr) const;
 };
-
-template<class T>
-void Model::add_object(std::vector<T> &t_vec, const T &t_value) {
-    const unsigned int index = t_vec.size();
-    t_vec.template emplace_back(t_value);
-    m_objects.impl(t_value).set_index(index);
-}
-
-template<class T>
-void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
-    const auto index = t_value.index();
-    t_vec[index] = t_vec.back();
-    m_objects.impl(t_vec[index]).set_index(index);
-    m_objects.impl(t_value).set_status(Dead);
-    m_objects.template free(t_value);
-    t_vec.pop_back();
-}
 
 template<class T, int N, int I>
 Vector<T, N - I> Model::add_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one) {
@@ -199,7 +173,8 @@ Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, cons
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
     t_os << t_model.sense() << " " << t_model.obj() << "\nSubject to:\n";
     for (const auto& ctr : t_model.ctrs()) {
-        t_os << ctr << '\n';
+        const auto& row = t_model.get_row(ctr);
+        t_os << ctr << ": " << row.lhs().linear() << " ? " << row.rhs() << '\n';
     }
     t_os << "Variables:\n";
     for (const auto& var : t_model.vars()) {

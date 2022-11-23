@@ -7,8 +7,8 @@
 
 #include <list>
 #include <vector>
-#include "errors/Exception.h"
-#include "containers/IteratorForward.h"
+#include "../../errors/Exception.h"
+#include "../../containers/IteratorForward.h"
 
 template<class T, class AttributesT>
 class ObjectStore {
@@ -16,7 +16,8 @@ class ObjectStore {
     std::vector<AttributesT> m_attributes;
     std::list<T> m_objects;
 public:
-    template<class ...Args> void add(const T& t_object, Args&& ...t_attribute_args);
+    template<class ...Args> ObjectRef add_attributes(std::string&& t_name, std::string&& t_default_name, Args&& ...t_attribute_args);
+    void add_object(const T& t_object);
     void remove(const T& t_object);
 
     bool has(const T& t_object) const;
@@ -29,25 +30,28 @@ public:
 
 template<class T, class AttributesT>
 template<class... Args>
-void ObjectStore<T, AttributesT>::add(const T &t_object, Args &&... t_attribute_args) {
+ObjectRef ObjectStore<T, AttributesT>::add_attributes(std::string&& t_name, std::string&& t_default_name, Args &&... t_attribute_args) {
 
-    // Add object
-    m_objects.template emplace_back(t_object);
-    auto iterator = m_objects.begin()--;
+    const bool has_free_index = !m_free_indices.empty();
+    const unsigned int index = has_free_index ? m_free_indices.back() : m_attributes.size();
 
-    // Create attributes
-    unsigned int index;
-    if (m_free_indices.empty()) {
-        index = m_attributes.size();
-        m_attributes.template emplace_back(t_object.id(), std::move(iterator), std::forward<Args>(t_attribute_args)...);
-    } else {
-        index = m_free_indices.back();
+    ObjectRef result(index, std::move(t_name), std::move(t_default_name));
+
+    if (has_free_index) {
+        m_attributes.at(result.index()) = AttributesT(result.id(), result.index(), std::forward<Args>(t_attribute_args)...);
         m_free_indices.pop_back();
-        m_attributes.at(index) = AttributesT(t_object.id(), std::move(iterator), std::forward<Args>(t_attribute_args)...);
+    } else {
+        m_attributes.template emplace_back(result.id(), result.index(), std::forward<Args>(t_attribute_args)...);
     }
 
-    // Set index
-    m_objects.back().set_index(index);
+    return result;
+}
+
+template<class T, class AttributesT>
+void ObjectStore<T, AttributesT>::add_object(const T &t_object) {
+    m_objects.template emplace_front(t_object);
+    auto iterator = m_objects.begin();
+    attributes(t_object).set_iterator(std::move(iterator));
 }
 
 template<class T, class AttributesT>
@@ -55,6 +59,7 @@ void ObjectStore<T, AttributesT>::remove(const T &t_object) {
 
     auto& attr = attributes(t_object);
     m_objects.erase(attr.iterator());
+    m_free_indices.template emplace_back(attr.index());
     attr.reset();
 
 }

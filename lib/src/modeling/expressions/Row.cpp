@@ -16,6 +16,10 @@ void Row::set_rhs(Constant t_rhs) {
     m_lhs.constant() = std::move(t_rhs);
 }
 
+void Row::set_rhs(MatrixCoefficientReference &&t_rhs) {
+    m_lhs.set_constant(std::move(t_rhs));
+}
+
 Row Row::operator*=(double t_factor) {
     m_lhs *= t_factor;
     return *this;
