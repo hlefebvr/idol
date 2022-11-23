@@ -74,6 +74,8 @@ public:
 
     Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
 
+    const Algorithm& exact_solution_strategy() const { return *m_exact_solution_strategy; }
+
     Algorithm& rmp_solution_strategy() { return m_rmp_strategy; }
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);

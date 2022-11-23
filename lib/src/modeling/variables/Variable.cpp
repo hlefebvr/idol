@@ -44,5 +44,5 @@ const impl::Object &Var::impl() const {
 }
 
 ObjectStatus Var::status() const {
-    return m_impl.expired() ? Removed : InModel;
+    return m_impl.expired() ? Dead : Alive;
 }

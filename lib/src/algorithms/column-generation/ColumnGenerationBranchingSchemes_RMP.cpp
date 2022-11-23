@@ -4,6 +4,7 @@
 #include "../../../include/algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
 #include "../../../include/modeling/expressions/operators.h"
+#include "../../../include/modeling/models/Model.h"
 
 
 void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, double t_lb, ColumnGenerationSP &t_subproblem) {
@@ -14,7 +15,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, do
             t_lb,
             m_lower_bound_constraints,
             [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
-            [](const Var& t_var){ return t_var.lb(); },
+            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get_lb(t_var); },
             t_subproblem
     );
 
@@ -29,7 +30,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_upper_bound(const Var &t_var, do
             t_ub,
             m_upper_bound_constraints,
             [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
-            [](const Var& t_var){ return t_var.ub(); },
+            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get_ub(t_var); },
             t_subproblem
     );
 

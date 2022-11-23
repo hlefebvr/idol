@@ -119,6 +119,18 @@ public:
     /* Removes */
     void remove(const Var& t_var);
     void remove(const Ctr& t_ctr);
+
+    /* Variables */
+    double get_lb(const Var& t_var) const;
+    double get_ub(const Var& t_var) const;
+    VarType get_type(const Var& t_var) const;
+    const Column& get_column(const Var& t_var) const;
+    bool has(const Var& t_var) const;
+
+    /* Constraints */
+    CtrType get_type(const Ctr& t_ctr) const;
+    const Row& get_row(const Ctr& t_ctr) const;
+    bool has(const Ctr& t_ctr) const;
 };
 
 template<class T>
@@ -133,7 +145,7 @@ void Model::remove_object(std::vector<T> &t_vec, const T &t_value) {
     const auto index = t_value.index();
     t_vec[index] = t_vec.back();
     m_objects.impl(t_vec[index]).set_index(index);
-    m_objects.impl(t_value).set_status(Removed);
+    m_objects.impl(t_value).set_status(Dead);
     m_objects.template free(t_value);
     t_vec.pop_back();
 }

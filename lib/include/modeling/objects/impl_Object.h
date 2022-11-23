@@ -20,7 +20,7 @@ class impl::Object {
     friend class ::Object;
     ObjectId m_object_id;
     unsigned int m_index = 0;
-    ObjectStatus m_status = InModel;
+    ObjectStatus m_status = Alive;
 protected:
     explicit Object(ObjectId&& t_id);
 public:

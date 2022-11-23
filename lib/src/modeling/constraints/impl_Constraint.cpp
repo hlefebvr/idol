@@ -19,21 +19,21 @@ impl::Ctr::Ctr(ObjectId &&t_id, TempCtr &&t_temporary_constraint)
 }
 
 const Row &impl::Ctr::row() const {
-    if (status() == Removed) {
+    if (status() == Dead) {
         throw Exception("Trying to access row of removed constraint.");
     }
     return m_row;
 }
 
 Row &impl::Ctr::row() {
-    if (status() == Removed) {
+    if (status() == Dead) {
         throw Exception("Trying to access row of removed constraint.");
     }
     return m_row;
 }
 
 CtrType impl::Ctr::type() const {
-    if (status() == Removed) {
+    if (status() == Dead) {
         throw Exception("Trying to access type of removed constraint.");
     }
     return m_type;

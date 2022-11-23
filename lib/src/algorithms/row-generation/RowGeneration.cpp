@@ -279,3 +279,75 @@ void RowGeneration::terminate_for_time_limit_is_reached() {
     terminate();
 }
 
+double RowGeneration::get_lb(const Var &t_var) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.is_in_subproblem(t_var)) {
+            return subproblem.exact_solution_strategy().get_lb(t_var);
+        }
+    }
+    return rmp_solution_strategy().get_lb(t_var);
+}
+
+double RowGeneration::get_ub(const Var &t_var) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.is_in_subproblem(t_var)) {
+            return subproblem.exact_solution_strategy().get_ub(t_var);
+        }
+    }
+    return rmp_solution_strategy().get_ub(t_var);
+}
+
+VarType RowGeneration::get_type(const Var &t_var) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.is_in_subproblem(t_var)) {
+            return subproblem.exact_solution_strategy().get_type(t_var);
+        }
+    }
+    return rmp_solution_strategy().get_type(t_var);
+}
+
+const Column &RowGeneration::get_column(const Var &t_var) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.is_in_subproblem(t_var)) {
+            return subproblem.exact_solution_strategy().get_column(t_var);
+        }
+    }
+    return rmp_solution_strategy().get_column(t_var);
+}
+
+bool RowGeneration::has(const Var &t_var) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.is_in_subproblem(t_var)) {
+            return true;
+        }
+    }
+    return rmp_solution_strategy().has(t_var);
+}
+
+bool RowGeneration::has(const Ctr &t_ctr) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().has(t_ctr)) {
+            return true;
+        }
+    }
+    return rmp_solution_strategy().has(t_ctr);
+}
+
+const Row &RowGeneration::get_row(const Ctr &t_ctr) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().has(t_ctr)) {
+            return subproblem.exact_solution_strategy().get_row(t_ctr);
+        }
+    }
+    return rmp_solution_strategy().get_row(t_ctr);
+}
+
+CtrType RowGeneration::get_type(const Ctr &t_ctr) const {
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().has(t_ctr)) {
+            return subproblem.exact_solution_strategy().get_type(t_ctr);
+        }
+    }
+    return rmp_solution_strategy().get_type(t_ctr);
+}
+

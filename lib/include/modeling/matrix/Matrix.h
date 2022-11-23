@@ -8,6 +8,7 @@
 #include <functional>
 
 class MatrixCoefficientReference;
+class Model;
 class Var;
 class Ctr;
 class Constant;
@@ -18,9 +19,9 @@ class Column;
 class Matrix {
     friend class Model;
 
-    static void apply_on_column(const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function);
+    static void apply_on_column(const Model& t_model, const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function);
 
-    static void apply_on_row(const Ctr &t_ctr, const std::function<void(const Var&, MatrixCoefficientReference&&)>& t_function);
+    static void apply_on_row(const Model& t_model, const Ctr &t_ctr, const std::function<void(const Var&, MatrixCoefficientReference&&)>& t_function);
 
     static void add_to_obj(Expr<Var, Var>& t_objective, const Var& t_var, Column& t_column);
 

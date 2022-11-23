@@ -3,21 +3,16 @@
 //
 #include <cassert>
 #include "../../../include/modeling/matrix/Matrix.h"
-#include "../../../include/modeling/variables/Var.h"
-#include "../../../include/modeling/expressions/Column.h"
-#include "../../../include/modeling/expressions/Row.h"
-#include "../../../include/modeling/expressions/Expr.h"
-#include "../../../include/modeling/environment/ObjectManager.h"
-#include "../../../include/modeling/constraints/impl_Constraint.h"
+#include "../../../include/modeling/models/Model.h"
 
-void Matrix::apply_on_column(const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function) {
-    for (const auto& [ctr, ptr_to_coeff] : t_var.column().components().linear().m_map) {
+void Matrix::apply_on_column(const Model& t_model, const Var &t_var, const std::function<void(const Ctr&, MatrixCoefficientReference&&)>& t_function) {
+    for (const auto& [ctr, ptr_to_coeff] : t_model.get_column(t_var).components().linear().m_map) {
         t_function(ctr, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }
 
-void Matrix::apply_on_row(const Ctr &t_ctr, const std::function<void(const Var &, MatrixCoefficientReference&&)> &t_function) {
-    for (const auto& [var, ptr_to_coeff] : t_ctr.row().lhs().linear().m_map) {
+void Matrix::apply_on_row(const Model& t_model, const Ctr &t_ctr, const std::function<void(const Var &, MatrixCoefficientReference&&)> &t_function) {
+    for (const auto& [var, ptr_to_coeff] : t_model.get_row(t_ctr).lhs().linear().m_map) {
         t_function(var, MatrixCoefficientReference(*ptr_to_coeff));
     }
 }

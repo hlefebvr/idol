@@ -84,14 +84,14 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT 
             m_lower_bounds,
             t_node.m_local_lower_bounds,
             [&t_solution_strategy](const Var& t_var, double t_lb) { t_solution_strategy.update_var_lb(t_var, t_lb); },
-            [](const Var& t_var){ return t_var.lb(); }
+            [&t_solution_strategy](const Var& t_var){ return t_solution_strategy.get_lb(t_var); }
     );
 
     update_bounds(
             m_upper_bounds,
             t_node.m_local_upper_bounds,
             [&t_solution_strategy](const Var& t_var, double t_ub) { t_solution_strategy.update_var_ub(t_var, t_ub); },
-            [](const Var& t_var){ return t_var.ub(); }
+            [&t_solution_strategy](const Var& t_var){ return t_solution_strategy.get_ub(t_var); }
     );
 
 }

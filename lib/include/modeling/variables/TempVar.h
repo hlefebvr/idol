@@ -28,11 +28,12 @@ namespace impl {
  */
 class TempVar {
     friend class impl::Var;
-    double m_lb;
-    double m_ub;
-    VarType m_type;
+    double m_lb = 0.;
+    double m_ub = Inf;
+    VarType m_type = Continuous;
     Column m_column;
 public:
+    TempVar() = default;
     /**
      * Creates a new temporary variable.
      * @param t_lb The desired lower bound.
@@ -41,6 +42,12 @@ public:
      * @param t_column The desired column.
      */
     TempVar(double t_lb, double t_ub, VarType t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {}
+
+    TempVar(TempVar&&) = default;
+    TempVar(const TempVar&) = default;
+
+    TempVar& operator=(TempVar&&) = default;
+    TempVar& operator=(const TempVar&) = default;
 
     /**
      * Returns the column associated to the temporary variable (see Column).

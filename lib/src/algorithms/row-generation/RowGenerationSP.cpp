@@ -8,7 +8,7 @@
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),
-      m_cut_template(Row(t_cut.row()), t_cut.type()) {
+      m_cut_template(Row(t_rmp_strategy.get_row(t_cut)), t_rmp_strategy.get_type(t_cut)) {
 
     if (m_cut_template.type() == Equal) {
         throw Exception("Cannot separate equality constraints.");
@@ -20,7 +20,7 @@ RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
 }
 
 void RowGenerationSP::save_subproblem_ids(const Ctr& t_cut) {
-    for (const auto& [var, constant] : t_cut.row().lhs().linear()) {
+    for (const auto& [var, constant] : m_rmp_strategy.get_row(t_cut).lhs().linear()) {
         for (const auto& [param, coeff] : constant) {
             m_subproblem_ids.emplace(param.model_id());
         }

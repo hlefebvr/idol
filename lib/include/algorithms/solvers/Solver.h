@@ -93,6 +93,22 @@ public:
     void update_obj(const Expr<Var> &t_objective) override;
 
     Callback& callback() { return *m_callbacks.front(); }
+
+    double get_lb(const Var &t_var) const override;
+
+    double get_ub(const Var &t_var) const override;
+
+    VarType get_type(const Var &t_var) const override;
+
+    const Column &get_column(const Var &t_var) const override;
+
+    bool has(const Var &t_var) const override;
+
+    bool has(const Ctr &t_ctr) const override;
+
+    const Row &get_row(const Ctr &t_ctr) const override;
+
+    CtrType get_type(const Ctr &t_ctr) const override;
 };
 
 template<class VarT, class CtrT>
@@ -155,7 +171,7 @@ template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update() {
 
     for (const auto& var : m_variables_to_update) {
-        if (var.status() == Removed) { continue; }
+        if (var.status() == Dead) { continue; }
         if (auto& f = future(var) ; !f.has_impl()) {
             auto impl = create(var, m_is_built);
             f.set_impl(impl);
@@ -165,7 +181,7 @@ void Solver<VarT, CtrT>::update() {
     }
 
     for (const auto& ctr : m_constraints_to_update) {
-        if (ctr.status() == Removed) { continue; }
+        if (ctr.status() == Dead) { continue; }
         if (auto& f = future(ctr) ; !f.has_impl()) {
             auto impl = create(ctr, true);
             f.set_impl(impl);
@@ -236,6 +252,46 @@ void Solver<VarT, CtrT>::update_obj(const Expr<Var> &t_objective) {
 template<class VarT, class CtrT>
 Sense Solver<VarT, CtrT>::sense() const {
     return m_src_model.sense();
+}
+
+template<class VarT, class CtrT>
+double Solver<VarT, CtrT>::get_lb(const Var &t_var) const {
+    return m_src_model.get_lb(t_var);
+}
+
+template<class VarT, class CtrT>
+double Solver<VarT, CtrT>::get_ub(const Var &t_var) const {
+    return m_src_model.get_ub(t_var);
+}
+
+template<class VarT, class CtrT>
+VarType Solver<VarT, CtrT>::get_type(const Var &t_var) const {
+    return m_src_model.get_type(t_var);
+}
+
+template<class VarT, class CtrT>
+const Column &Solver<VarT, CtrT>::get_column(const Var &t_var) const {
+    return m_src_model.get_column(t_var);
+}
+
+template<class VarT, class CtrT>
+bool Solver<VarT, CtrT>::has(const Var &t_var) const {
+    return m_src_model.has(t_var);
+}
+
+template<class VarT, class CtrT>
+const Row &Solver<VarT, CtrT>::get_row(const Ctr &t_ctr) const {
+    return m_src_model.get_row(t_ctr);
+}
+
+template<class VarT, class CtrT>
+CtrType Solver<VarT, CtrT>::get_type(const Ctr &t_ctr) const {
+    return m_src_model.get_type(t_ctr);
+}
+
+template<class VarT, class CtrT>
+bool Solver<VarT, CtrT>::has(const Ctr &t_ctr) const {
+    return m_src_model.has(t_ctr);
 }
 
 #endif //OPTIMIZE_SOLVER2_H

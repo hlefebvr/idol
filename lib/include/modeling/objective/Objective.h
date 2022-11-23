@@ -5,6 +5,7 @@
 #ifndef OPTIMIZE_OBJECTIVE_H
 #define OPTIMIZE_OBJECTIVE_H
 
+/*
 #include <vector>
 #include "../variables/Var.h"
 #include "../expressions/LinExpr.h"
@@ -79,5 +80,5 @@ static std::ostream &operator<<(std::ostream& t_os, const Objective& t_obj) {
 
     return t_os;
 }
-
+*/
 #endif //OPTIMIZE_OBJECTIVE_H

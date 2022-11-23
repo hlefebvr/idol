@@ -434,3 +434,35 @@ BranchAndBound::BranchAndBound() {
         m_solution_strategy->set<Attr::MaxThreads>(t_n_threads);
     });
 }
+
+double BranchAndBound::get_lb(const Var &t_var) const {
+    return m_solution_strategy->get_lb(t_var);
+}
+
+double BranchAndBound::get_ub(const Var &t_var) const {
+    return m_solution_strategy->get_ub(t_var);
+}
+
+VarType BranchAndBound::get_type(const Var &t_var) const {
+    return m_solution_strategy->get_type(t_var);
+}
+
+const Column &BranchAndBound::get_column(const Var &t_var) const {
+    return m_solution_strategy->get_column(t_var);
+}
+
+bool BranchAndBound::has(const Var &t_var) const {
+    return m_solution_strategy->has(t_var);
+}
+
+const Row &BranchAndBound::get_row(const Ctr &t_ctr) const {
+    return m_solution_strategy->get_row(t_ctr);
+}
+
+CtrType BranchAndBound::get_type(const Ctr &t_ctr) const {
+    return m_solution_strategy->get_type(t_ctr);
+}
+
+bool BranchAndBound::has(const Ctr &t_ctr) const {
+    return m_solution_strategy->has(t_ctr);
+}

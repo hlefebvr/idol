@@ -17,8 +17,8 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(GreaterOrEqual, 1.);
 
-        CHECK(ctr.type() == GreaterOrEqual);
-        CHECK(ctr.rhs().numerical() == 1._a);
+        CHECK(model.get_type(ctr) == GreaterOrEqual);
+        CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
         CHECK(ctr.model_id() == model.id());
 
     }
@@ -27,9 +27,9 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(LessOrEqual, xi);
 
-        CHECK(ctr.type() == LessOrEqual);
-        CHECK(ctr.rhs().numerical() == 0._a);
-        CHECK(ctr.rhs().get(xi) == 1._a);
+        CHECK(model.get_type(ctr) == LessOrEqual);
+        CHECK(model.get_row(ctr).rhs().numerical() == 0._a);
+        CHECK(model.get_row(ctr).rhs().get(xi) == 1._a);
 
     }
 
@@ -37,9 +37,9 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(Equal, 1 + 2 * xi);
 
-        CHECK(ctr.type() == Equal);
-        CHECK(ctr.rhs().numerical() == 1._a);
-        CHECK(ctr.rhs().get(xi) == 2._a);
+        CHECK(model.get_type(ctr) == Equal);
+        CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
+        CHECK(model.get_row(ctr).rhs().get(xi) == 2._a);
 
     }
 
@@ -47,13 +47,11 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(2 * x + y <= 2 + xi);
 
-        CHECK(ctr.type() == LessOrEqual);
-        CHECK(ctr.rhs().numerical() == 2._a);
-        CHECK(ctr.rhs().get(xi) == 1._a);
-        CHECK(ctr.get(x).numerical() == 2._a);
-        CHECK(ctr.get(y).numerical() == 1._a);
-        CHECK(x.get(ctr).numerical() == 2._a);
-        CHECK(y.get(ctr).numerical() == 1._a);
+        CHECK(model.get_type(ctr) == LessOrEqual);
+        CHECK(model.get_row(ctr).rhs().numerical() == 2._a);
+        CHECK(model.get_row(ctr).rhs().get(xi) == 1._a);
+        CHECK(model.get_column(x).components().linear().get(ctr).numerical() == 2._a);
+        CHECK(model.get_column(y).components().linear().get(ctr).numerical() == 1._a);
 
     }
 
@@ -65,13 +63,13 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
             model.update_rhs_coeff(ctr, 0.);
 
-            CHECK(ctr.rhs().numerical() == 0._a);
-            CHECK(ctr.rhs().get(xi) == 0._a);
+            CHECK(model.get_row(ctr).rhs().numerical() == 0._a);
+            CHECK(model.get_row(ctr).rhs().get(xi) == 0._a);
 
             model.update_rhs_coeff(ctr, 1 + 2 * xi);
 
-            CHECK(ctr.rhs().numerical() == 1._a);
-            CHECK(ctr.rhs().get(xi) == 2._a);
+            CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
+            CHECK(model.get_row(ctr).rhs().get(xi) == 2._a);
 
         }
 
@@ -79,17 +77,17 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
             SECTION("GreaterOrEqual") {
                 model.update_ctr_type(ctr, GreaterOrEqual);
-                CHECK(ctr.type() == GreaterOrEqual);
+                CHECK(model.get_type(ctr) == GreaterOrEqual);
             }
 
             SECTION("LessOrEqual") {
                 model.update_ctr_type(ctr, LessOrEqual);
-                CHECK(ctr.type() == LessOrEqual);
+                CHECK(model.get_type(ctr) == LessOrEqual);
             }
 
             SECTION("Equal") {
                 model.update_ctr_type(ctr, Equal);
-                CHECK(ctr.type() == Equal);
+                CHECK(model.get_type(ctr) == Equal);
             }
 
         }

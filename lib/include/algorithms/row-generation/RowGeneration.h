@@ -62,6 +62,22 @@ public:
 
     using Subproblems = IteratorForward<std::list<RowGenerationSP>>;
     Subproblems subproblems() { return Subproblems(m_subproblems);}
+
+    double get_lb(const Var &t_var) const override;
+
+    double get_ub(const Var &t_var) const override;
+
+    VarType get_type(const Var &t_var) const override;
+
+    const Column &get_column(const Var &t_var) const override;
+
+    bool has(const Var &t_var) const override;
+
+    bool has(const Ctr &t_ctr) const override;
+
+    const Row &get_row(const Ctr &t_ctr) const override;
+
+    CtrType get_type(const Ctr &t_ctr) const override;
 };
 
 #endif //OPTIMIZE_CUTGENERATION_H

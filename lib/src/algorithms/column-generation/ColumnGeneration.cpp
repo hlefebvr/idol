@@ -289,3 +289,99 @@ ColumnGenerationSP &ColumnGeneration::add_subproblem(const Var& t_var) {
     m_subproblems.emplace_back(rmp_solution_strategy(), t_var);
     return m_subproblems.back();
 }
+
+bool ColumnGeneration::has(const Var &t_var) const {
+    if (rmp_solution_strategy().has(t_var)) {
+        return true;
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+double ColumnGeneration::get_lb(const Var &t_var) const {
+    if (rmp_solution_strategy().has(t_var)) {
+        return rmp_solution_strategy().get_lb(t_var);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_lb(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+double ColumnGeneration::get_ub(const Var &t_var) const {
+    if (rmp_solution_strategy().has(t_var)) {
+        return rmp_solution_strategy().get_ub(t_var);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_ub(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+VarType ColumnGeneration::get_type(const Var &t_var) const {
+    if (rmp_solution_strategy().has(t_var)) {
+        return rmp_solution_strategy().get_type(t_var);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_type(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+const Column &ColumnGeneration::get_column(const Var &t_var) const {
+    if (rmp_solution_strategy().has(t_var)) {
+        return rmp_solution_strategy().get_column(t_var);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_column(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+bool ColumnGeneration::has(const Ctr &t_ctr) const {
+    if (rmp_solution_strategy().has(t_ctr)) {
+        return true;
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const Row &ColumnGeneration::get_row(const Ctr &t_ctr) const {
+    if (rmp_solution_strategy().has(t_ctr)) {
+        return rmp_solution_strategy().get_row(t_ctr);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_row(t_ctr);
+        }
+    }
+    throw Exception("CG -> Variable not found.");
+}
+
+CtrType ColumnGeneration::get_type(const Ctr &t_ctr) const {
+    if (rmp_solution_strategy().has(t_ctr)) {
+        return rmp_solution_strategy().get_type(t_ctr);
+    }
+    for (auto& ptr_to_subproblem : m_subproblems) {
+        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
+            return ptr_to_subproblem.exact_solution_strategy().get_type(t_ctr);
+        }
+    }
+    throw Exception("CG::type -> Variable not found.");
+}

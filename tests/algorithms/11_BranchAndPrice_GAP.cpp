@@ -27,6 +27,11 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
 
     using namespace Problems::GAP;
 
+    std::cout << typeid(SolverT).name() << std::endl;
+    std::cout << typeid(GenerationStrategyT).name() << std::endl;
+    std::cout << typeid(BranchingStrategyT).name() << std::endl;
+    std::cout << typeid(NodeUpdatorT).name() << std::endl;
+
     auto test = GENERATE(
             std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance0.txt"), -233.),
             std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance1.txt"), -22.),

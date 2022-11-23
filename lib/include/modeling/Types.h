@@ -20,8 +20,8 @@ enum CtrType {
 };
 
 enum ObjectStatus {
-    InModel,
-    Removed
+    Alive,
+    Dead
 };
 
 enum Sense {
@@ -51,8 +51,8 @@ static std::ostream &operator<<(std::ostream& t_os, CtrType t_type) {
 
 static std::ostream &operator<<(std::ostream& t_os, ObjectStatus t_type) {
     switch (t_type) {
-        case InModel: return t_os << "InModel";
-        case Removed: return t_os << "Removed";
+        case Alive: return t_os << "InModel";
+        case Dead: return t_os << "Removed";
         default:;
     }
     throw Exception("Enum out of bounds.");

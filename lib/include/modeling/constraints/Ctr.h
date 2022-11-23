@@ -18,6 +18,7 @@ namespace impl {
 class Row;
 class Constant;
 class Var;
+class Model;
 
 namespace Solution {
     class Primal;
@@ -44,6 +45,8 @@ public:
     Ctr& operator=(const Ctr& t_var) = default;
     Ctr& operator=(Ctr&& t_var) noexcept = default;
 
+private:
+    friend Model;
     /**
      * Returns the current type of the constraint (see also CtrType).
      * It may be modified by calling the Model::update_var_type method.
@@ -75,7 +78,8 @@ public:
      */
     [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
 
-    ObjectStatus status() const override;
+public:
+    [[nodiscard]] ObjectStatus status() const override;
 
     /**
      * The underlying implementation class. See also [PIMPL idiom](https://en.cppreference.com/w/cpp/language/pimpl).

@@ -67,6 +67,18 @@ public:
         m_timer.stop();
     }
 
+    /* VARIABLES */
+    [[nodiscard]] virtual bool has(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_lb(const Var& t_var) const = 0;
+    [[nodiscard]] virtual double get_ub(const Var& t_var) const = 0;
+    [[nodiscard]] virtual VarType get_type(const Var& t_var) const = 0;
+    [[nodiscard]] virtual const Column& get_column(const Var& t_var) const = 0;
+
+    /* CONSTRAINTS */
+    [[nodiscard]] virtual bool has(const Ctr& t_ctr) const = 0;
+    [[nodiscard]] virtual const Row& get_row(const Ctr& t_ctr) const = 0;
+    [[nodiscard]] virtual CtrType get_type(const Ctr& t_ctr) const = 0;
+
     /**
      * Returns the computed primal solution (after solve has been called).
      */

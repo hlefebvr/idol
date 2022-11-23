@@ -51,15 +51,9 @@ const impl::Object &Ctr::impl() const {
 }
 
 ObjectStatus Ctr::status() const {
-    return m_impl.expired() ? Removed : InModel;
+    return m_impl.expired() ? Dead : Alive;
 }
 
 std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    t_os << t_ctr.name() << ": " << t_ctr.row().lhs();
-    switch (t_ctr.type()) {
-        case LessOrEqual: t_os << " <= "; break;
-        case GreaterOrEqual: t_os << " >= "; break;
-        case Equal: t_os << " == "; break;
-    }
-    return t_os << t_ctr.row().rhs();
+    return t_os << t_ctr.name();
 }

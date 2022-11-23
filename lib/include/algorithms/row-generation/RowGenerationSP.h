@@ -49,7 +49,6 @@ class RowGenerationSP {
 
     void save_subproblem_ids(const Ctr& t_cut);
     void remove_cut_template_from_rmp(const Ctr& t_cut);
-    bool is_in_subproblem(const Var& t_var) const;
 
     void remove_cuts_violating_lower_bound(const Var& t_var, double t_lb);
 
@@ -77,6 +76,8 @@ public:
 
     void add_cut_to_rmp();
 
+    bool is_in_subproblem(const Var& t_var) const;
+
     [[nodiscard]] bool is_unbounded() const;
 
     [[nodiscard]] bool is_infeasible() const;
@@ -92,6 +93,8 @@ public:
     bool set_upper_bound(const Var &t_var, double t_ub);
 
     Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
+
+    const Algorithm& exact_solution_strategy() const { return *m_exact_solution_strategy; }
 
     Algorithm& rmp_solution_strategy() { return m_rmp_strategy; }
 

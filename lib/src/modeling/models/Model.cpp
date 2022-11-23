@@ -41,7 +41,7 @@ void Model::add_created_variable(const Var &t_var) {
 void Model::add_column_to_rows(const Var &t_var) {
     auto& impl = m_objects.impl(t_var);
 
-    Matrix::apply_on_column(t_var, [&](const Ctr &t_ctr, MatrixCoefficientReference&& t_coefficient) {
+    Matrix::apply_on_column(*this, t_var, [&](const Ctr &t_ctr, MatrixCoefficientReference&& t_coefficient) {
         m_objects.impl(t_ctr).row().lhs().linear().set(t_var, std::move(t_coefficient));
     });
 
@@ -83,7 +83,7 @@ void Model::add_created_constraint(const Ctr &t_ctr) {
 void Model::add_row_to_columns(const Ctr &t_ctr) {
     auto& impl = m_objects.impl(t_ctr);
 
-    Matrix::apply_on_row(t_ctr, [&](const Var& t_var, MatrixCoefficientReference&& t_coefficient){
+    Matrix::apply_on_row(*this, t_ctr, [&](const Var& t_var, MatrixCoefficientReference&& t_coefficient){
         m_objects.impl(t_var).column().components().linear().set(t_ctr, std::move(t_coefficient));
     });
 }
@@ -170,4 +170,36 @@ void Model::update_ctr_type(const Ctr &t_ctr, CtrType t_type) {
 
 void Model::add_listener(Listener &t_listener) const {
     m_listeners.add(t_listener);
+}
+
+double Model::get_lb(const Var &t_var) const {
+    return m_variables.at(t_var.index()).lb();
+}
+
+double Model::get_ub(const Var &t_var) const {
+    return m_variables.at(t_var.index()).ub();
+}
+
+VarType Model::get_type(const Var &t_var) const {
+    return m_variables.at(t_var.index()).type();
+}
+
+const Column &Model::get_column(const Var &t_var) const {
+    return m_variables.at(t_var.index()).column();
+}
+
+bool Model::has(const Var &t_var) const {
+    return t_var.index() < m_variables.size() && m_variables.at(t_var.index()).id() == t_var.id();
+}
+
+const Row &Model::get_row(const Ctr &t_ctr) const {
+    return m_constraints.at(t_ctr.index()).row();
+}
+
+CtrType Model::get_type(const Ctr &t_ctr) const {
+    return m_constraints.at(t_ctr.index()).type();
+}
+
+bool Model::has(const Ctr &t_ctr) const {
+    return t_ctr.index() < m_constraints.size() && m_constraints.at(t_ctr.index()).id() == t_ctr.id();
 }

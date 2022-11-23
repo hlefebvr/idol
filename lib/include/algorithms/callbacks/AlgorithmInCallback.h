@@ -29,6 +29,22 @@ public:
     using Algorithm::add_ctr;
 
     void remove(const Ctr &t_constraint) override;
+
+    double get_lb(const Var &t_var) const override;
+
+    double get_ub(const Var &t_var) const override;
+
+    VarType get_type(const Var &t_var) const override;
+
+    const Column &get_column(const Var &t_var) const override;
+
+    const Row &get_row(const Ctr &t_ctr) const override;
+
+    CtrType get_type(const Ctr &t_ctr) const override;
+
+    bool has(const Var &t_var) const override;
+
+    bool has(const Ctr &t_ctr) const override;
 };
 
 #endif //IDOL_ALGORITHMINCALLBACK_H

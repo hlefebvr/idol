@@ -53,3 +53,99 @@ Ctr Decomposition::add_ctr(TempCtr&& t_temporary_constraint) {
 void Decomposition::remove(const Ctr &t_constraint) {
     m_generation_strategies.front()->remove(t_constraint);
 }
+
+double Decomposition::get_lb(const Var &t_var) const {
+    if (m_rmp_strategy->has(t_var)) {
+        return m_rmp_strategy->get_lb(t_var);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_var)) {
+            return ptr_to_generation_strategy->get_lb(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+double Decomposition::get_ub(const Var &t_var) const {
+    if (m_rmp_strategy->has(t_var)) {
+        return m_rmp_strategy->get_ub(t_var);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_var)) {
+            return ptr_to_generation_strategy->get_ub(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+VarType Decomposition::get_type(const Var &t_var) const {
+    if (m_rmp_strategy->has(t_var)) {
+        return m_rmp_strategy->get_type(t_var);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_var)) {
+            return ptr_to_generation_strategy->get_type(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+const Column &Decomposition::get_column(const Var &t_var) const {
+    if (m_rmp_strategy->has(t_var)) {
+        return m_rmp_strategy->get_column(t_var);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_var)) {
+            return ptr_to_generation_strategy->get_column(t_var);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+bool Decomposition::has(const Var &t_var) const {
+    if (m_rmp_strategy->has(t_var)) {
+        return true;
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_var)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const Row &Decomposition::get_row(const Ctr &t_ctr) const {
+    if (m_rmp_strategy->has(t_ctr)) {
+        return m_rmp_strategy->get_row(t_ctr);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_ctr)) {
+            return ptr_to_generation_strategy->get_row(t_ctr);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+CtrType Decomposition::get_type(const Ctr &t_ctr) const {
+    if (m_rmp_strategy->has(t_ctr)) {
+        return m_rmp_strategy->get_type(t_ctr);
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_ctr)) {
+            return ptr_to_generation_strategy->get_type(t_ctr);
+        }
+    }
+    throw Exception("Variable not found.");
+}
+
+bool Decomposition::has(const Ctr &t_ctr) const {
+    if (m_rmp_strategy->has(t_ctr)) {
+        return true;
+    }
+    for (auto& ptr_to_generation_strategy : m_generation_strategies) {
+        if (ptr_to_generation_strategy->has(t_ctr)) {
+            return true;
+        }
+    }
+    return false;
+}

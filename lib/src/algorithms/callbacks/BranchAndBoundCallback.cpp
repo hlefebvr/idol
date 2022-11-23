@@ -3,6 +3,7 @@
 //
 #include "../../../include/algorithms/branch-and-bound/BranchAndBound.h"
 #include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
+#include "../../../include/modeling/models/Model.h"
 
 
 void BranchAndBound::Callback::AdvancedContext::fix_variables(const std::list<std::pair<Var, double>> &t_fixations) {
@@ -12,7 +13,9 @@ void BranchAndBound::Callback::AdvancedContext::fix_variables(const std::list<st
     }
 
     for (const auto& [var, value] : t_fixations) {
-        m_temp_fixations.emplace_back(var, var.lb(), var.ub());
+        const double lb = m_parent.m_solution_strategy->get_lb(var);
+        const double ub = m_parent.m_solution_strategy->get_ub(var);
+        m_temp_fixations.emplace_back(var, lb, ub);
         m_parent.m_solution_strategy->update_var_lb(var, value);
         m_parent.m_solution_strategy->update_var_ub(var, value);
     }

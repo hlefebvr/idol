@@ -77,22 +77,22 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     glp_add_cols(m_model, 1);
 
-    const bool has_lb = !is_neg_inf(t_var.lb());
-    const bool has_ub = !is_pos_inf(t_var.ub());
+    const bool has_lb = !is_neg_inf(get_lb(t_var));
+    const bool has_ub = !is_pos_inf(get_ub(t_var));
 
     if (has_lb && has_ub) {
-        glp_set_col_bnds(m_model, index, GLP_DB, t_var.lb(), t_var.ub());
+        glp_set_col_bnds(m_model, index, GLP_DB, get_lb(t_var), get_ub(t_var));
     } else if (has_lb) {
-        glp_set_col_bnds(m_model, index, GLP_LO, t_var.lb(), 0.);
+        glp_set_col_bnds(m_model, index, GLP_LO, get_lb(t_var), 0.);
     } else if (has_ub) {
-        glp_set_col_bnds(m_model, index, GLP_UP, 0., t_var.ub());
+        glp_set_col_bnds(m_model, index, GLP_UP, 0., get_ub(t_var));
     } else {
         glp_set_col_bnds(m_model, index, GLP_FR, 0., 0.);
     }
 
-    glp_set_obj_coef(m_model, index, value(t_var.obj()));
+    glp_set_obj_coef(m_model, index, value(get_column(t_var).objective_coefficient()));
 
-    switch (t_var.type()) {
+    switch (get_type(t_var)) {
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
         case Binary: [[fallthrough]];
         case Integer: throw Exception("GLPK_Simplex is an LP solver. Integer variable encountered. Variable: " + t_var.name() + ".");
@@ -105,12 +105,12 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) t_var.column().components().linear().size();
+        const auto n = (int) get_column(t_var).components().linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, coeff] : t_var.column().components().linear()) {
+        for (const auto& [ctr, coeff] : get_column(t_var).components().linear()) {
             indices[i] = future(ctr).impl();
             coefficients[i] = value(coeff);
             ++i;
@@ -138,10 +138,10 @@ int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     glp_add_rows(m_model, 1);
 
-    switch (t_ctr.type()) {
-        case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_ctr.rhs())); break;
-        case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(t_ctr.rhs()), 0.); break;
-        case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(t_ctr.rhs()), 0.); break;
+    switch (model().get_type(t_ctr)) {
+        case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(model().get_row(t_ctr).rhs())); break;
+        case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(model().get_row(t_ctr).rhs()), 0.); break;
+        case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(model().get_row(t_ctr).rhs()), 0.); break;
         default: throw std::runtime_error("Unknown constraint type.");
     }
 
@@ -149,12 +149,12 @@ int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) t_ctr.row().lhs().linear().size();
+        const auto n = (int) model().get_row(t_ctr).lhs().linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [var, coeff] : t_ctr.row().lhs().linear()) {
+        for (const auto& [var, coeff] : model().get_row(t_ctr).lhs().linear()) {
             indices[i] = future(var).impl();
             coefficients[i] = value(coeff);
             ++i;
@@ -196,7 +196,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
         auto* index = new int[2];
         index[1] = future(ctr).impl();
-        const auto type = ctr.type();
+        const auto type = model().get_type(ctr);
 
         if (type == LessOrEqual) {
             int art_var_index = glp_add_cols(m_model, 1);
@@ -246,7 +246,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
     for (const auto& ctr : model().ctrs()) {
         const double dual = glp_get_row_dual(m_model, future(ctr).impl());
         m_farkas->set(ctr, dual);
-        objective_value += dual * value(ctr.rhs());
+        objective_value += dual * value(model().get_row(ctr).rhs());
     }
     m_farkas->set_objective_value(objective_value);
 
@@ -281,7 +281,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     indices.emplace_back(0);
 
     for (const auto& var : model().vars()) {
-        if (var.lb() >= 0.) {
+        if (get_lb(var) >= 0.) {
             coefficients.emplace_back(1.);
         } else {
             coefficients.emplace_back(-1.);
@@ -320,7 +320,7 @@ void Solvers::GLPK_Simplex::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
 
     const int index = future(t_ctr).impl();
 
-    switch (t_ctr.type()) {
+    switch (model().get_type(t_ctr)) {
         case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_rhs)); break;
         case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(t_rhs), 0.); break;
         case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(t_rhs), 0.); break;
@@ -459,14 +459,14 @@ Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
 
 void Solvers::GLPK_Simplex::update_var_lb(const Var &t_var, double t_lb) {
 
-    const bool has_ub = !is_pos_inf(t_var.ub());
+    const bool has_ub = !is_pos_inf(get_ub(t_var));
     const int index = future(t_var).impl();
 
     if (has_ub) {
-        if (equals(t_var.ub(), t_lb, ToleranceForIntegrality)) {
+        if (equals(get_ub(t_var), t_lb, ToleranceForIntegrality)) {
             glp_set_col_bnds(m_model, index, GLP_FX, t_lb, t_lb);
         } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, t_lb, t_var.ub());
+            glp_set_col_bnds(m_model, index, GLP_DB, t_lb, get_ub(t_var));
         }
     } else {
         glp_set_col_bnds(m_model, index, GLP_UP, t_lb, 0.);
@@ -477,14 +477,14 @@ void Solvers::GLPK_Simplex::update_var_lb(const Var &t_var, double t_lb) {
 
 void Solvers::GLPK_Simplex::update_var_ub(const Var &t_var, double t_ub) {
 
-    const bool has_lb = !is_neg_inf(t_var.lb());
+    const bool has_lb = !is_neg_inf(get_lb(t_var));
     const int index = future(t_var).impl();
 
     if (has_lb) {
-        if (equals(t_var.lb(), t_ub, ToleranceForIntegrality)) {
+        if (equals(get_lb(t_var), t_ub, ToleranceForIntegrality)) {
             glp_set_col_bnds(m_model, index, GLP_FX, t_ub, t_ub);
         } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, t_var.lb(), t_ub);
+            glp_set_col_bnds(m_model, index, GLP_DB, get_lb(t_var), t_ub);
         }
     } else {
         glp_set_col_bnds(m_model, index, GLP_UP, 0., t_ub);

@@ -17,6 +17,7 @@ namespace impl {
 class Column;
 class Constant;
 class Ctr;
+class Model;
 
 /**
  * Decision variable object.
@@ -39,6 +40,8 @@ public:
     Var& operator=(const Var& t_var) = default;
     Var& operator=(Var&& t_var) noexcept = default;
 
+private:
+    friend Model;
     /**
      * Returns the current lower bound for the variable.
      * It may be modified by calling the Model::update_var_lb method.
@@ -75,7 +78,7 @@ public:
      * It may be modified by calling the Model::update_matrix_coeff method.
      */
     [[nodiscard]] const Column& column() const;
-
+public:
     ObjectStatus status() const override;
 
     /**

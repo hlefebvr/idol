@@ -2,12 +2,18 @@
 // Created by henri on 19/09/22.
 //
 #include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
+#include "../../../include/modeling/models/Model.h"
 #include "../../../include/modeling/expressions/operators.h"
 #include "../../../include/algorithms/Algorithm.h"
 
 ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var)
         : m_rmp_strategy(t_rmp_strategy),
-          m_var_template(TempVar(t_var.lb(), t_var.ub(), t_var.type(), Column(t_var.column()))) {
+          m_var_template(TempVar(
+                  t_rmp_strategy.get_lb(t_var),
+                  t_rmp_strategy.get_ub(t_var),
+                  t_rmp_strategy.get_type(t_var),
+                  Column(t_rmp_strategy.get_column(t_var)))
+              ) {
 
     save_subproblem_ids(t_var);
     remove_var_template_from_rmp(t_var);
@@ -186,7 +192,7 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     m_exact_solution_strategy->update_rhs_coeff(t_ctr, t_rhs);
 
-    remove_columns_violating_constraint(TempCtr(Row(t_ctr.row()), t_ctr.type()));
+    remove_columns_violating_constraint(TempCtr(Row(m_exact_solution_strategy->get_row(t_ctr)), m_exact_solution_strategy->get_type(t_ctr)));
 
     return true;
 }
@@ -219,7 +225,7 @@ void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &
 
 void ColumnGenerationSP::save_subproblem_ids(const Var& t_var) {
 
-    for (const auto& [ctr, constant] : t_var.column().components().linear()) {
+    for (const auto& [ctr, constant] : rmp_solution_strategy().get_column(t_var).components().linear()) {
         for (const auto& [param, coeff] : constant) {
             m_subproblem_ids.emplace(param.model_id());
         }
