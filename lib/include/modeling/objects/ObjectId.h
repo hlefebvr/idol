@@ -1,46 +1,32 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 23/11/22.
 //
 
-#ifndef OPTIMIZE_OBJECTID_H
-#define OPTIMIZE_OBJECTID_H
+#ifndef IDOL_OBJECTID_H
+#define IDOL_OBJECTID_H
 
-#include <list>
-#include <memory>
 #include <string>
 
-class Env;
-
-namespace impl {
-    class Object;
-    class ObjectManager;
-}
-
 class ObjectId {
-    friend class impl::ObjectManager;
     static unsigned int s_id;
 
-    const unsigned int m_id = ++s_id;
-    unsigned int m_model_id;
+    const unsigned int m_id;
+    const unsigned int m_index;
     const std::string m_name;
-    const std::list<std::shared_ptr<impl::Object>>::iterator m_it;
-
-    ObjectId(const std::list<std::shared_ptr<impl::Object>>::iterator& t_it, unsigned int t_model_id, std::string&& t_name, const std::string& t_default_name);
 public:
-    ObjectId(const ObjectId&) = delete;
-    ObjectId(ObjectId&&) = default;
+    ObjectId(unsigned int t_index, std::string&& t_name, std::string&& t_default_name);
+
+    ObjectId(const ObjectId&) = default;
+    ObjectId(ObjectId&&) noexcept = default;
 
     ObjectId& operator=(const ObjectId&) = delete;
     ObjectId& operator=(ObjectId&&) noexcept = delete;
 
-    [[nodiscard]] const std::string& name() const;
+    [[nodiscard]] unsigned int id() const { return m_id; }
 
-    [[nodiscard]] unsigned int id() const;
+    [[nodiscard]] unsigned int index() const { return m_index; }
 
-    [[nodiscard]] unsigned int model_id() const;
-
-    void set_model_id(unsigned int t_id);
-
+    [[nodiscard]] const std::string& name() const { return m_name; }
 };
 
-#endif //OPTIMIZE_OBJECTID_H
+#endif //IDOL_OBJECTID_H

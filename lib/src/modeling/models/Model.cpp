@@ -3,7 +3,7 @@
 //
 #include "../../../include/modeling/models/Model.h"
 #include "../../../include/modeling/matrix/Matrix.h"
-#include "../../../include/modeling/expressions/operators.h"
+#include "../../../include/modeling/expressions/operations/operators.h"
 
 Model::Model(Sense t_sense) : m_objective_sense(t_sense) {
 

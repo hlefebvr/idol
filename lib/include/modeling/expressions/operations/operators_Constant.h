@@ -5,7 +5,7 @@
 #ifndef IDOL_OPERATORS_CONSTANT_H
 #define IDOL_OPERATORS_CONSTANT_H
 
-#include "Constant.h"
+#include "../Constant.h"
 
 /* PRODUCT */
 

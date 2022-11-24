@@ -16,7 +16,7 @@ class ObjectStore {
     std::vector<AttributesT> m_attributes;
     std::list<T> m_objects;
 public:
-    template<class ...Args> ObjectRef add_attributes(std::string&& t_name, std::string&& t_default_name, Args&& ...t_attribute_args);
+    template<class ...Args> ObjectId add_attributes(std::string&& t_name, std::string&& t_default_name, Args&& ...t_attribute_args);
     void add_object(const T& t_object);
     void remove(const T& t_object);
 
@@ -30,12 +30,12 @@ public:
 
 template<class T, class AttributesT>
 template<class... Args>
-ObjectRef ObjectStore<T, AttributesT>::add_attributes(std::string&& t_name, std::string&& t_default_name, Args &&... t_attribute_args) {
+ObjectId ObjectStore<T, AttributesT>::add_attributes(std::string&& t_name, std::string&& t_default_name, Args &&... t_attribute_args) {
 
     const bool has_free_index = !m_free_indices.empty();
     const unsigned int index = has_free_index ? m_free_indices.front() : m_attributes.size();
 
-    ObjectRef result(index, std::move(t_name), std::move(t_default_name));
+    ObjectId result(index, std::move(t_name), std::move(t_default_name));
 
     if (has_free_index) {
         m_attributes.at(result.index()) = AttributesT(result.id(), result.index(), std::forward<Args>(t_attribute_args)...);

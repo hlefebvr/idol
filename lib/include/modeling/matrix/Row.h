@@ -6,8 +6,8 @@
 #define OPTIMIZE_ROW_H
 
 #include <memory>
-#include "../matrix/AbstractMatrixCoefficient.h"
-#include "Expr.h"
+#include "AbstractMatrixCoefficient.h"
+#include "../expressions/Expr.h"
 
 template<class Key1, class Key2> class Expr;
 
@@ -20,7 +20,6 @@ template<class Key1, class Key2> class Expr;
  * The whole left handside is stored as an Expr while the whole right handside is stored as a Constant.
  */
 class Row {
-    friend class Matrix;
     Expr<Var, Var> m_lhs;
 public:
     /**

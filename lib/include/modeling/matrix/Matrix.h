@@ -7,17 +7,7 @@
 
 #include <functional>
 #include "../variables/VarAttributes.h"
-#include "../models/ObjectStore.h"
 #include "../constraints/CtrAttributes.h"
-
-class MatrixCoefficientReference;
-class Model;
-class Var;
-class Ctr;
-class Constant;
-template<class> class LinExpr;
-template<class, class> class Expr;
-class Column;
 
 class Matrix {
     virtual Expr<Var>& access_obj() = 0;

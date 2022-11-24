@@ -5,7 +5,7 @@
 #ifndef IDOL_OPERATORS_VAR_H
 #define IDOL_OPERATORS_VAR_H
 
-#include "Expr.h"
+#include "../Expr.h"
 
 /* PRODUCT */
 

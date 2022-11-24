@@ -6,11 +6,8 @@
 #define OPTIMIZE_COLUMN_H
 
 #include <memory>
-#include "../matrix/AbstractMatrixCoefficient.h"
-#include "LinExpr.h"
-#include "../constraints/Ctr.h"
-#include "QuadExpr.h"
-#include "Expr.h"
+#include "AbstractMatrixCoefficient.h"
+#include "../expressions/Expr.h"
 
 /**
  * Column modeling object.
@@ -19,7 +16,6 @@
  * pairs representing the Constant coefficient of the column in each row Ctr. Such pairs are called components.
  */
 class Column {
-    friend class Matrix;
     Expr<Ctr, Var> m_components;
 public:
     /**

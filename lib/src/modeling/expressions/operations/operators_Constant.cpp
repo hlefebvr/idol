@@ -1,7 +1,7 @@
 //
 // Created by henri on 26/10/22.
 //
-#include "../../../include/modeling/expressions/operators_Constant.h"
+#include "../../../../include/modeling/expressions/operations/operators_Constant.h"
 
 /* PRODUCT */
 

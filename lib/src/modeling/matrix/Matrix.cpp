@@ -5,31 +5,6 @@
 #include "../../../include/modeling/matrix/Matrix.h"
 #include "../../../include/modeling/models/Model.h"
 
-/*
-
-void Matrix::update_coefficient(const Var& t_var, const Ctr& t_ctr, LinExpr<Ctr> &t_column, LinExpr<Var> &t_row, Constant &&t_coefficient) {
-
-    if (t_coefficient.is_zero()) {
-        t_column.m_map.erase(t_ctr);
-        t_row.m_map.erase(t_var);
-        return;
-    }
-
-    auto it = t_column.m_map.find(t_ctr);
-
-    if (it == t_column.m_map.end()) {
-        auto [inserted, success] = t_column.m_map.emplace(t_ctr, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
-        assert(success);
-        auto [inserted_2, success_2] = t_row.m_map.emplace(t_var, std::make_unique<MatrixCoefficientReference>(*inserted->second));
-        assert(success_2);
-    } else {
-        it->second->value() = std::move(t_coefficient);
-    }
-
-}
-
-*/
-
 void Matrix::add_row_to_columns(const Ctr &t_ctr) {
     auto& row = access_row(t_ctr);
     for (const auto& [var, ptr_to_coeff] : row.lhs().linear().m_map) {

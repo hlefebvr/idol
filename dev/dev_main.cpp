@@ -1,7 +1,7 @@
 #include <iostream>
 #include "algorithms/logs/Log.h"
 #include "modeling.h"
-#include "modeling/models/ObjectStore.h"
+#include "modeling/objects/ObjectStore.h"
 #include "modeling/variables/VarAttributes.h"
 #include "algorithms/solvers/Solvers_GLPK_Simplex.h"
 

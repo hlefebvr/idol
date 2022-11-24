@@ -5,15 +5,10 @@
 #ifndef OPTIMIZE_CONSTRAINT_H
 #define OPTIMIZE_CONSTRAINT_H
 
-#include "../objects/Object.h"
 #include "../Types.h"
 #include <string>
 #include <iostream>
 #include <memory>
-
-namespace impl {
-    class Ctr;
-}
 
 class Row;
 class Constant;
@@ -31,7 +26,7 @@ namespace Solution {
  */
 class Ctr : public Object {
     friend class Model;
-    explicit Ctr(ObjectRef&& t_ref) : Object(std::move(t_ref)) {}
+    explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 public:
     Ctr(const Ctr& t_var) = default;
     Ctr(Ctr&& t_var) noexcept = default;
@@ -40,7 +35,9 @@ public:
     Ctr& operator=(Ctr&& t_var) noexcept = default;
 };
 
-std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr);
+static std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
+    return t_os << t_ctr.name();
+}
 
 MAKE_HASHABLE(Ctr)
 

@@ -5,18 +5,14 @@
 #ifndef OPTIMIZE_MODEL_H
 #define OPTIMIZE_MODEL_H
 
-#include "../environment/ObjectManager.h"
-#include "../variables/impl_Variable.h"
 #include "../variables/TempVar.h"
-#include "../constraints/impl_Constraint.h"
 #include "../constraints/TempCtr.h"
 #include "../expressions/Expr.h"
 #include "../../containers/IteratorForward.h"
 #include "../../containers/Vector.h"
-#include "../objective/Objective.h"
 #include "ListenerManager.h"
 #include "../variables/VarAttributes.h"
-#include "ObjectStore.h"
+#include "../objects/ObjectStore.h"
 #include "../constraints/CtrAttributes.h"
 #include "../matrix/Matrix.h"
 #include <vector>

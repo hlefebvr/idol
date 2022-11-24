@@ -9,7 +9,7 @@
 #include "../../containers/IteratorForward.h"
 #include "../matrix/AbstractMatrixCoefficient.h"
 #include "Constant.h"
-#include "operators_Constant.h"
+#include "./operations/operators_Constant.h"
 #include "../matrix/MatrixCoefficient.h"
 #include "../variables/Var.h"
 #include "../../errors/Exception.h"

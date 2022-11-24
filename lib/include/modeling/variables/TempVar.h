@@ -5,11 +5,7 @@
 #ifndef OPTIMIZE_TEMPVAR_H
 #define OPTIMIZE_TEMPVAR_H
 
-#include "../expressions/Column.h"
-
-namespace impl {
-    class Var;
-}
+#include "../matrix/Column.h"
 
 /**
  * Temporary variable object.
@@ -27,7 +23,6 @@ namespace impl {
  * ```
  */
 class TempVar {
-    friend class impl::Var;
     double m_lb = 0.;
     double m_ub = Inf;
     VarType m_type = Continuous;

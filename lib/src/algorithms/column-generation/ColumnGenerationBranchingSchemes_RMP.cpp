@@ -3,7 +3,7 @@
 //
 #include "../../../include/algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "../../../include/algorithms/column-generation/ColumnGenerationSP.h"
-#include "../../../include/modeling/expressions/operators.h"
+#include "../../../include/modeling/expressions/operations/operators.h"
 #include "../../../include/modeling/models/Model.h"
 
 

@@ -1,8 +1,8 @@
 //
 // Created by henri on 04/10/22.
 //
-#include "../../../include/modeling/expressions/Column.h"
-#include "../../../include/modeling/expressions/operators_Ctr.h"
+#include "../../../include/modeling/matrix/Column.h"
+#include "../../../include/modeling/expressions/operations/operators_Ctr.h"
 
 const Column Column::EmptyColumn;
 

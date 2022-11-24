@@ -5,11 +5,7 @@
 #ifndef OPTIMIZE_TEMPCTR_H
 #define OPTIMIZE_TEMPCTR_H
 
-#include "../expressions/Row.h"
-
-namespace impl {
-    class Ctr;
-}
+#include "../matrix/Row.h"
 
 namespace Solution {
     class Primal;
@@ -37,7 +33,6 @@ namespace Solution {
  * ```
  */
 class TempCtr {
-    friend class impl::Ctr;
     Row m_row;
     CtrType m_type = LessOrEqual;
 public:

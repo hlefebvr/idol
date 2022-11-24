@@ -7,7 +7,7 @@
 
 #include "../objects/Object.h"
 #include "../Types.h"
-#include "../environment/ObjectRef.h"
+#include "../objects/ObjectId.h"
 #include <iostream>
 #include <memory>
 
@@ -23,7 +23,7 @@ class Model;
  */
 class Var : public Object {
     friend class Model;
-    explicit Var(ObjectRef&& t_ref) : Object(std::move(t_ref)) {}
+    explicit Var(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 public:
     Var(const Var& t_var) = default;
     Var(Var&& t_var) noexcept = default;

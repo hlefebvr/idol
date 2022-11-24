@@ -3,7 +3,7 @@
 //
 #include "../../../include/modeling/constraints/TempCtr.h"
 #include "../../../include/modeling/solutions/Solution.h"
-#include "../../../include/modeling/expressions/operators.h"
+#include "../../../include/modeling/expressions/operations/operators.h"
 
 TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
     return { Row(std::move(t_lhs), std::move(t_rhs)), LessOrEqual };
