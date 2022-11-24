@@ -134,16 +134,18 @@ template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
 impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
-    // TODO remove if sum is zero
-
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
             m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
         } else {
             it->second->value() += ptr_to_value->value();
+            if (it->second->value().is_zero()) {
+                m_map.erase(it);
+            }
         }
     }
+
     return *this;
 
 }
@@ -153,14 +155,15 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
 impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
         const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
-    // TODO: remove if diff is zero
-
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
         if (it == m_map.end()) {
             m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-ptr_to_value->value()));
         } else {
             it->second->value() -= ptr_to_value->value();
+            if (it->second->value().is_zero()) {
+                m_map.erase(it);
+            }
         }
     }
     return *this;
