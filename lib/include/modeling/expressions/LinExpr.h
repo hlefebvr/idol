@@ -75,18 +75,26 @@ bool LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
 
 template<class Key>
 void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(const Key &)> &t_function) {
+
     std::list<LinExpr<Key>> to_add;
 
-    auto it = this->m_map.begin();
-    const auto end = this->m_map.end();
+    auto it = this->refs().begin();
+    const auto end = this->refs().end();
+
     while (it != end) {
-        if (auto result = t_function(it->first) ; result.has_value()) {
-            auto expr = it->second->value().numerical() * result.value();
+
+        const auto& [key, ref] = *it;
+
+        if (auto result = t_function(key) ; result.has_value()) {
+
+            auto expr = ref.value().numerical() * result.value();
             to_add.template emplace_back(std::move(expr));
-            it = this->m_map.erase(it);
+            it = this->refs().erase(it);
+
         } else {
             ++it;
         }
+
     }
 
     for (auto& expr : to_add) {

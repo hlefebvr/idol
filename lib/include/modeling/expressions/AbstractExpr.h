@@ -19,19 +19,25 @@
 #include <optional>
 #include <list>
 
+namespace impl {
+    template<class, class, class, class> class AbstractExpr;
+}
+
 template<class Key,
-        class IteratorOutputT = std::pair<const Key&, const Constant&>,
-        class Hash = std::hash<Key>,
-        class EqualTo = std::equal_to<Key>
->
-class AbstractExpr {
-protected:
+        class IteratorOutputT,
+        class Hash,
+        class EqualTo>
+class impl::AbstractExpr {
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
-
+protected:
     bool set(const Key& t_key, Constant&& t_coefficient);
+    bool set_ref(const Key& t_key, MatrixCoefficientReference&& t_coefficient);
     const Constant& get(const Key& t_key) const;
     void remove(const Key& t_key);
+
+    class References;
+    References refs();
 public:
     AbstractExpr() = default;
 
@@ -96,27 +102,90 @@ public:
      */
     [[nodiscard]] bool empty() const { return m_map.empty(); }
 
-
     class const_iterator;
 
     const_iterator begin() const { return const_iterator(m_map.begin()); }
     const_iterator end() const { return const_iterator(m_map.end()); }
 
-    /**
-     * Updates the coefficient associated to t_key. The inserted coefficient is a reference to an existing coefficient in the matrix.
-     * If t_key already has a coefficient, the method throws an exception.
-     *
-     * Note that this method is used to create the internal matrix of a model by linking constraints and columns.
-     * A MatrixCoefficientReference should only be created by the Model iteself, when calling Model::add_ctr or Model::add_var.
-     * @param t_key
-     * @param t_coefficient
-     * @return True (to agree with the description of template<class Key> Expr<Key>::set(const Key& t_key, Constant t_coefficient)).
-     */
-    bool set(const Key& t_key, MatrixCoefficientReference&& t_coefficient);
 };
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-bool AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
+
+    for (const auto& [key, ptr_to_value] : t_src.m_map) {
+        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
+    }
+
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
+
+    if (this == &t_src) { return *this; }
+    m_map.clear();
+    for (const auto& [key, ptr_to_value] : t_src.m_map) {
+        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
+    }
+    return *this;
+
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
+
+    // TODO remove if sum is zero
+
+    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
+        auto it = m_map.find(key);
+        if (it == m_map.end()) {
+            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
+        } else {
+            it->second->value() += ptr_to_value->value();
+        }
+    }
+    return *this;
+
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
+        const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
+
+    // TODO: remove if diff is zero
+
+    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
+        auto it = m_map.find(key);
+        if (it == m_map.end()) {
+            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-ptr_to_value->value()));
+        } else {
+            it->second->value() -= ptr_to_value->value();
+        }
+    }
+    return *this;
+
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
+
+    if (equals(t_factor, 0., ToleranceForSparsity)) {
+        m_map.clear();
+        return *this;
+    }
+
+    for (const auto& [key, ptr_to_value] : m_map) {
+        ptr_to_value->value() *= t_factor;
+    }
+
+    return *this;
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+bool impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
@@ -131,76 +200,12 @@ bool AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Co
 
     it->second->set_value(std::move(t_coefficient));
     return false;
+
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
-    for (const auto& [key, ptr_to_value] : t_src.m_map) {
-        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
-    }
-}
+bool impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set_ref(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
 
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
-    if (this == &t_src) { return *this; }
-    m_map.clear();
-    for (const auto& [key, ptr_to_value] : t_src.m_map) {
-        m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
-    }
-    return *this;
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
-    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
-        auto it = m_map.find(key);
-        if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
-        } else {
-            it->second->value() += ptr_to_value->value();
-        }
-    }
-    return *this;
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
-    for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
-        auto it = m_map.find(key);
-        if (it == m_map.end()) {
-            m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-ptr_to_value->value()));
-        } else {
-            it->second->value() -= ptr_to_value->value();
-        }
-    }
-    return *this;
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
-        m_map.clear();
-        return *this;
-    }
-    for (const auto& [key, ptr_to_value] : m_map) {
-        ptr_to_value->value() *= t_factor;
-    }
-    return *this;
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-void AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::remove(const Key &t_key) {
-    m_map.erase(t_key);
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-const Constant &AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
-    auto it = m_map.find(t_key);
-    return it == m_map.end() ? Constant::Zero : it->second->value();
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-bool AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
     if (t_coefficient.empty()) {
         this->m_map.erase(t_key);
         return true;
@@ -211,22 +216,99 @@ bool AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Ma
         throw Exception("Trying to insert a matrix coefficient by reference on an existing coefficient.");
     }
     return true;
+
 }
 
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+const Constant &impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
+    auto it = m_map.find(t_key);
+    return it == m_map.end() ? Constant::Zero : it->second->value();
+}
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-class AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::const_iterator {
+void impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::remove(const Key &t_key) {
+    m_map.erase(t_key);
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References {
+
+    friend class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
+    using ParentT = impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
+
+    ParentT* m_parent;
+
+    explicit References(ParentT* t_parent) : m_parent(t_parent) {}
+public:
+    class iterator {
+        friend class References;
+        typename ParentT::MapType::iterator m_it;
+    public:
+        explicit iterator(typename ParentT::MapType::iterator&& t_it) : m_it(std::move(t_it)) {}
+        explicit iterator(const typename ParentT::MapType::iterator& t_it) : m_it(t_it) {}
+        bool operator!=(const iterator& t_rhs) const { return m_it != t_rhs.m_it; }
+        bool operator==(const iterator& t_rhs) const { return m_it == t_rhs.m_it; }
+        iterator& operator++() { ++m_it; return *this; }
+        std::pair<Key, MatrixCoefficientReference> operator*() const {
+            return { m_it->first, MatrixCoefficientReference(*m_it->second) };
+        }
+    };
+
+    iterator begin() { return iterator(m_parent->m_map.begin()); }
+    iterator end() { return iterator(m_parent->m_map.end()); }
+
+    iterator find(const Key& t_key) { return iterator(m_parent->m_map.find(t_key)); }
+
+    iterator emplace(const Key& t_key, MatrixCoefficientReference&& t_coefficient) {
+        auto [inserted, success] = m_parent->m_map.emplace(t_key, std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)));
+        if (!success) { throw Exception("Could not insert reference."); }
+        return iterator(inserted);
+    }
+
+    void set(const Key& t_key, MatrixCoefficientReference&& t_coefficient) {
+        if (t_coefficient.value().is_zero()) {
+            m_parent->m_map.erase(t_key);
+            return;
+        }
+        emplace(t_key, std::move(t_coefficient));
+    }
+
+    iterator erase(const iterator& t_it) {
+        auto result = m_parent->m_map.erase(t_it.m_it);
+        return iterator(result);
+    }
+};
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+typename impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::refs() {
+    return References(this);
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::const_iterator {
     typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator m_it;
 public:
     explicit const_iterator(const typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator& t_it) : m_it(t_it) {}
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
-    IteratorOutputT operator*() const {
-        return { m_it->first, m_it->second->value() };
-    }
+    IteratorOutputT operator*() const { return { m_it->first, m_it->second->value() }; }
 };
 
+template<class Key,
+        class IteratorOutputT = std::pair<const Key&, const Constant&>,
+        class Hash = std::hash<Key>,
+        class EqualTo = std::equal_to<Key>
+>
+class AbstractExpr : public impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> {
+public:
+    AbstractExpr() = default;
+    AbstractExpr(const AbstractExpr& t_src) = default;
+    AbstractExpr(AbstractExpr&& t_src) noexcept = default;
+
+    AbstractExpr& operator=(const AbstractExpr& t_src) = default;
+    AbstractExpr& operator=(AbstractExpr&& t_src) noexcept = default;
+};
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 std::ostream& operator<<(std::ostream& t_os, const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_expr) {

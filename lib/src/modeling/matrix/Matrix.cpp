@@ -7,46 +7,46 @@
 
 void Matrix::add_row_to_columns(const Ctr &t_ctr) {
     auto& row = access_row(t_ctr);
-    for (const auto& [var, ptr_to_coeff] : row.lhs().linear().m_map) {
-        access_column(var).components().linear().set(t_ctr, MatrixCoefficientReference(*ptr_to_coeff));
+    for (auto [var, ref] : row.lhs().linear().refs()) {
+        access_column(var).components().linear().refs().set(t_ctr, std::move(ref));
     }
 
     if (!row.rhs().is_zero()) {
         auto &rhs = access_rhs();
-        rhs.set(t_ctr, row.lhs().get_constant_ref());
+        rhs.refs().set(t_ctr, row.lhs().get_constant_ref());
     }
 }
 
 void Matrix::add_column_to_rows(const Var &t_var) {
     auto& column = access_column(t_var);
-    for (const auto& [ctr, ptr_to_coeff] : column.components().linear().m_map) {
-        access_row(ctr).lhs().linear().set(t_var, MatrixCoefficientReference(*ptr_to_coeff));
+    for (auto [ctr, ref] : column.components().linear().refs()) {
+        access_row(ctr).lhs().linear().refs().set(t_var, std::move(ref));
     }
 
     if (!column.objective_coefficient().is_zero()) {
         auto &obj = access_obj();
-        obj.linear().set(t_var, column.components().get_constant_ref());
+        obj.linear().refs().set(t_var, column.components().get_constant_ref());
     }
 }
 
 void Matrix::remove_row_from_columns(const Ctr &t_ctr) {
     auto& row = access_row(t_ctr);
-    for (const auto& [var, ptr_to_coeff] : row.lhs().linear().m_map) {
-        access_column(var).components().linear().set(t_ctr, 0.);
+    for (const auto& [var, ptr_to_coeff] : row.lhs().linear().refs()) {
+        access_column(var).components().linear().remove(t_ctr);
     }
 
     auto& rhs = access_rhs();
-    rhs.set(t_ctr, 0.);
+    rhs.remove(t_ctr);
 }
 
 void Matrix::remove_column_from_rows(const Var &t_var) {
     auto& column = access_column(t_var);
-    for (const auto& [ctr, ptr_to_coeff] : column.components().linear().m_map) {
-        access_row(ctr).lhs().linear().set(t_var, 0.);
+    for (const auto& [ctr, ptr_to_coeff] : column.components().linear().refs()) {
+        access_row(ctr).lhs().linear().remove(t_var);
     }
 
     auto& obj = access_obj();
-    obj.linear().set(t_var, 0.);
+    obj.linear().remove(t_var);
 }
 
 void Matrix::replace_objective(Expr<Var> &&t_objective) {
@@ -58,8 +58,8 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
 
     obj = std::move(t_objective);
 
-    for (const auto& [var, ptr_to_coeff] : obj.linear().m_map) {
-        access_column(var).components().set_constant_ref(MatrixCoefficientReference(*ptr_to_coeff));
+    for (auto [var, ref] : obj.linear().refs()) {
+        access_column(var).components().set_constant_ref(std::move(ref));
     }
 }
 
@@ -72,8 +72,8 @@ void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
 
     rhs = std::move(t_right_handside);
 
-    for (const auto& [ctr, ptr_to_coeff] : rhs.m_map) {
-        access_row(ctr).lhs().set_constant_ref(MatrixCoefficientReference(*ptr_to_coeff));
+    for (auto [ctr, ref] : rhs.refs()) {
+        access_row(ctr).lhs().set_constant_ref(std::move(ref));
     }
 }
 
@@ -83,12 +83,12 @@ void Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
 
     if (column.objective_coefficient().is_zero()) {
         column.set_objective_coefficient(std::move(t_constant));
-        access_obj().linear().set(t_var, column.components().get_constant_ref());
+        access_obj().linear().refs().set(t_var, column.components().get_constant_ref());
         return;
     }
 
     if (t_constant.is_zero()) {
-        access_obj().linear().set(t_var, 0.);
+        access_obj().linear().remove(t_var);
     }
     column.set_objective_coefficient(std::move(t_constant));
 
@@ -100,12 +100,12 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
     if (row.rhs().is_zero() && !t_constant.is_zero()) {
         row.set_rhs(std::move(t_constant));
-        access_rhs().set(t_ctr, row.lhs().get_constant_ref());
+        access_rhs().refs().set(t_ctr, row.lhs().get_constant_ref());
         return;
     }
 
     if (t_constant.is_zero()) {
-        access_rhs().set(t_ctr, 0.);
+        access_rhs().remove(t_ctr);
     }
 
     row.set_rhs(std::move(t_constant));
@@ -115,22 +115,20 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 void Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, Constant &&t_constant) {
 
     if (t_constant.is_zero()) {
-        access_column(t_var).components().linear().set(t_ctr, 0.);
-        access_row(t_ctr).lhs().linear().set(t_var, 0.);
+        access_column(t_var).components().linear().remove(t_ctr);
+        access_row(t_ctr).lhs().linear().remove(t_var);
         return;
     }
 
     auto& column = access_column(t_var);
 
-    auto it = column.components().linear().m_map.find(t_ctr);
+    auto it = column.components().linear().refs().find(t_ctr);
 
-    if (it == column.components().linear().m_map.end()) {
-        auto [inserted, success] = column.components().linear().m_map.emplace(t_ctr, std::make_unique<MatrixCoefficient>(std::move(t_constant)));
-        assert(success);
-        auto [inserted_2, success_2] = access_row(t_ctr).lhs().linear().m_map.emplace(t_var, std::make_unique<MatrixCoefficientReference>(*inserted->second));
-        assert(success_2);
+    if (it == column.components().linear().refs().end()) {
+        auto inserted = column.components().linear().refs().emplace(t_ctr, MatrixCoefficient(std::move(t_constant)));
+        access_row(t_ctr).lhs().linear().refs().emplace(t_var, (*inserted).second);
     } else {
-        it->second->value() = std::move(t_constant);
+        (*it).second.value() = std::move(t_constant);
     }
 
 }
