@@ -33,10 +33,6 @@ void Column::set_objective_coefficient(Constant t_objective_coefficient) {
     m_components.constant() = std::move(t_objective_coefficient);
 }
 
-void Column::set_objective_coefficient(MatrixCoefficientReference &&t_objective_coefficient) {
-    m_components.set_constant(std::move(t_objective_coefficient));
-}
-
 Column Column::fix(const Solution::Primal &t_primals) const {
     Column result;
 

@@ -70,8 +70,6 @@ public:
      */
     void set_rhs(Constant t_rhs);
 
-    void set_rhs(MatrixCoefficientReference&& t_rhs);
-
     Row operator*=(double t_factor);
     Row operator+=(const Row& t_factor);
 

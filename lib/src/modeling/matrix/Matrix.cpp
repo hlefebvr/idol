@@ -13,7 +13,7 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
 
     if (!row.rhs().is_zero()) {
         auto &rhs = access_rhs();
-        rhs.set(t_ctr, MatrixCoefficientReference(*row.lhs().m_constant));
+        rhs.set(t_ctr, row.lhs().get_constant_ref());
     }
 }
 
@@ -25,7 +25,7 @@ void Matrix::add_column_to_rows(const Var &t_var) {
 
     if (!column.objective_coefficient().is_zero()) {
         auto &obj = access_obj();
-        obj.linear().set(t_var, MatrixCoefficientReference(*column.components().m_constant));
+        obj.linear().set(t_var, column.components().get_constant_ref());
     }
 }
 
@@ -59,7 +59,7 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
     obj = std::move(t_objective);
 
     for (const auto& [var, ptr_to_coeff] : obj.linear().m_map) {
-        access_column(var).set_objective_coefficient(MatrixCoefficientReference(*ptr_to_coeff));
+        access_column(var).components().set_constant_ref(MatrixCoefficientReference(*ptr_to_coeff));
     }
 }
 
@@ -73,7 +73,7 @@ void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     rhs = std::move(t_right_handside);
 
     for (const auto& [ctr, ptr_to_coeff] : rhs.m_map) {
-        access_row(ctr).set_rhs(MatrixCoefficientReference(*ptr_to_coeff));
+        access_row(ctr).lhs().set_constant_ref(MatrixCoefficientReference(*ptr_to_coeff));
     }
 }
 
@@ -83,7 +83,7 @@ void Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
 
     if (column.objective_coefficient().is_zero()) {
         column.set_objective_coefficient(std::move(t_constant));
-        access_obj().linear().set(t_var, MatrixCoefficientReference(*column.components().m_constant));
+        access_obj().linear().set(t_var, column.components().get_constant_ref());
         return;
     }
 
@@ -100,7 +100,7 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
     if (row.rhs().is_zero() && !t_constant.is_zero()) {
         row.set_rhs(std::move(t_constant));
-        access_rhs().set(t_ctr, MatrixCoefficientReference(*row.lhs().m_constant));
+        access_rhs().set(t_ctr, row.lhs().get_constant_ref());
         return;
     }
 

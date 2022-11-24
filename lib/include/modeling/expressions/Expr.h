@@ -8,23 +8,31 @@
 #include "LinExpr.h"
 #include "QuadExpr.h"
 
-template<class Key1 = Var, class Key2 = Key1>
-class Expr {
-    friend class Matrix;
+namespace impl {
+    template<class Key1, class Key2> class Expr;
+}
+
+template<class Key1, class Key2>
+class impl::Expr {
     LinExpr<Key1> m_linear;
     QuadExpr<Key1, Key2> m_quadratic;
     std::unique_ptr<AbstractMatrixCoefficient> m_constant;
+protected:
+    void set_constant_ref(MatrixCoefficientReference&& t_coefficient) { m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
+    [[nodiscard]] MatrixCoefficientReference get_constant_ref() const { return MatrixCoefficientReference(*m_constant); }
 public:
     Expr();
-    Expr(double t_num) : m_constant(std::make_unique<MatrixCoefficient>(t_num)) {} // NOLINT(google-explicit-constructor)
-    Expr(const Param& t_param) : m_constant(std::make_unique<MatrixCoefficient>(t_param)) {} // NOLINT(google-explicit-constructor)
-    Expr(const Key1& t_var) : m_linear(t_var), m_constant(std::make_unique<MatrixCoefficient>(0.)) {} // NOLINT(google-explicit-constructor)
-    Expr(LinExpr<Key1>&& t_expr) : m_linear(std::move(t_expr)), m_constant(std::make_unique<MatrixCoefficient>(0.)) {} // NOLINT(google-explicit-constructor)
-    Expr(const LinExpr<Key1>& t_expr) : m_linear(t_expr), m_constant(std::make_unique<MatrixCoefficient>(0.)) {} // NOLINT(google-explicit-constructor)
-    Expr(const QuadExpr<Key1>& t_expr) : m_quadratic(t_expr), m_constant(std::make_unique<MatrixCoefficient>(0.)) {} // NOLINT(google-explicit-constructor)
-    Expr(Constant&& t_expr) : m_constant(std::make_unique<MatrixCoefficient>(std::move(t_expr))) {} // NOLINT(google-explicit-constructor)
-    Expr(const Constant& t_expr) : m_constant(std::make_unique<MatrixCoefficient>(t_expr)) {} // NOLINT(google-explicit-constructor)
-    Expr(LinExpr<Key1> t_lin_expr, QuadExpr<Key1, Key2> t_quad_expr, Constant t_constant) : m_linear(std::move(t_lin_expr)), m_quadratic(std::move(t_quad_expr)), m_constant(std::make_unique<MatrixCoefficient>(std::move(t_constant))) {}
+    Expr(double t_num); // NOLINT(google-explicit-constructor)
+    Expr(const Param& t_param); // NOLINT(google-explicit-constructor)
+    Expr(Constant&& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(const Constant& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(const Key1& t_var); // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<Key1>&& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(const LinExpr<Key1>& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(QuadExpr<Key1>&& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(const QuadExpr<Key1>& t_expr); // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<Key1>&& t_lin_expr, QuadExpr<Key1, Key2>&& t_quad_expr, Constant&& t_constant);
+    Expr(const LinExpr<Key1>& t_lin_expr, const QuadExpr<Key1, Key2>& t_quad_expr, const Constant& t_constant);
 
     Expr(const Expr& t_src);
     Expr(Expr&&) noexcept = default;
@@ -44,44 +52,99 @@ public:
 
     Constant& constant() { return m_constant->value(); }
     [[nodiscard]] const Constant& constant() const { return m_constant->value(); }
-
-    void set_constant(MatrixCoefficientReference&& t_coefficient) { m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
 };
 
 template<class Key1, class Key2>
-Expr<Key1, Key2> &Expr<Key1, Key2>::operator+=(const Expr<Key1, Key2> &t_rhs) {
-    m_linear += t_rhs.m_linear;
-    m_quadratic += t_rhs.m_quadratic;
-    m_constant->value() += t_rhs.m_constant->value();
-    return *this;
-}
-
-template<class Key1, class Key2>
-Expr<Key1, Key2> &Expr<Key1, Key2>::operator-=(const Expr<Key1, Key2> &t_rhs) {
-    m_linear -= t_rhs.m_linear;
-    m_quadratic -= t_rhs.m_quadratic;
-    m_constant->value() -= t_rhs.m_constant->value();
-    return *this;
-}
-
-template<class Key1, class Key2>
-Expr<Key1, Key2> &Expr<Key1, Key2>::operator*=(double t_rhs) {
-    m_linear *= t_rhs;
-    m_quadratic *= t_rhs;
-    m_constant->value() *= t_rhs;
-    return *this;
-}
-
-template<class Key1, class Key2>
-Expr<Key1, Key2>::Expr(const Expr & t_src)
-    : m_linear(t_src.m_linear),
-      m_quadratic(t_src.m_quadratic),
-      m_constant(t_src.m_constant ? std::make_unique<MatrixCoefficient>(t_src.m_constant->value()) : std::make_unique<MatrixCoefficient>(0.)) {
+impl::Expr<Key1, Key2>::Expr()
+        : m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-Expr<Key1, Key2> &Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
+impl::Expr<Key1, Key2>::Expr(double t_num)
+        : m_constant(std::make_unique<MatrixCoefficient>(t_num)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const Param &t_param)
+        : m_constant(std::make_unique<MatrixCoefficient>(t_param)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(Constant &&t_expr)
+        : m_constant(std::make_unique<MatrixCoefficient>(std::move(t_expr))) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const Constant &t_expr)
+        : m_constant(std::make_unique<MatrixCoefficient>(t_expr)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const Key1 &t_var)
+        : m_linear(t_var),
+          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr)
+        : m_linear(std::move(t_expr)),
+          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr)
+        : m_linear(t_expr),
+          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(QuadExpr<Key1> &&t_expr)
+        : m_quadratic(std::move(t_expr)),
+          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr)
+        : m_quadratic(t_expr),
+          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_lin_expr, QuadExpr<Key1, Key2> &&t_quad_expr, Constant &&t_constant)
+        : m_linear(std::move(t_lin_expr)),
+          m_quadratic(std::move(t_quad_expr)),
+          m_constant(std::make_unique<MatrixCoefficient>(std::move(t_constant))){
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key1, Key2> &t_quad_expr, const Constant &t_constant)
+        : m_linear(t_lin_expr),
+          m_quadratic(t_quad_expr),
+          m_constant(std::make_unique<MatrixCoefficient>(t_constant)) {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
+        : m_linear(t_src.m_linear),
+          m_quadratic(t_src.m_quadratic),
+          m_constant(std::make_unique<MatrixCoefficient>(t_src.m_constant->value()))  {
+
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
     if (this == &t_rhs) { return *this; }
     m_linear = t_rhs.m_linear;
     m_quadratic = t_rhs.m_quadratic;
@@ -90,9 +153,52 @@ Expr<Key1, Key2> &Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
 }
 
 template<class Key1, class Key2>
-Expr<Key1, Key2>::Expr() : m_constant(std::make_unique<MatrixCoefficient>(0.)) {
-
+impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator+=(const impl::Expr<Key1, Key2> &t_rhs) {
+    m_linear += t_rhs.m_linear;
+    m_quadratic += t_rhs.m_quadratic;
+    m_constant->value() += t_rhs.m_constant->value();
+    return *this;
 }
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator-=(const impl::Expr<Key1, Key2> &t_rhs) {
+    m_linear -= t_rhs.m_linear;
+    m_quadratic -= t_rhs.m_quadratic;
+    m_constant->value() -= t_rhs.m_constant->value();
+    return *this;
+}
+
+template<class Key1, class Key2>
+impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator*=(double t_rhs) {
+    m_linear *= t_rhs;
+    m_quadratic *= t_rhs;
+    m_constant->value() *= t_rhs;
+    return *this;
+}
+
+template<class Key1 = Var, class Key2 = Key1>
+class Expr : public impl::Expr<Key1, Key2> {
+    friend class Matrix;
+public:
+    Expr() = default;
+    Expr(double t_num) : impl::Expr<Key1, Key2>(t_num) {} // NOLINT(google-explicit-constructor)
+    Expr(const Param& t_param) : impl::Expr<Key1, Key2>(t_param) {} // NOLINT(google-explicit-constructor)
+    Expr(Constant&& t_expr) : impl::Expr<Key1, Key2>(std::move(t_expr)) {} // NOLINT(google-explicit-constructor)
+    Expr(const Constant& t_expr) : impl::Expr<Key1, Key2>(t_expr) {} // NOLINT(google-explicit-constructor)
+    Expr(const Key1& t_var) : impl::Expr<Key1, Key2>(t_var) {} // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<Key1>&& t_expr) : impl::Expr<Key1, Key2>(std::move(t_expr)) {} // NOLINT(google-explicit-constructor)
+    Expr(const LinExpr<Key1>& t_expr) : impl::Expr<Key1, Key2>(t_expr) {} // NOLINT(google-explicit-constructor)
+    Expr(QuadExpr<Key1>&& t_expr) : impl::Expr<Key1, Key2>(std::move(t_expr)) {} // NOLINT(google-explicit-constructor)
+    Expr(const QuadExpr<Key1>& t_expr) : impl::Expr<Key1, Key2>(t_expr) {} // NOLINT(google-explicit-constructor)
+    Expr(LinExpr<Key1>&& t_lin_expr, QuadExpr<Key1, Key2>&& t_quad_expr, Constant&& t_constant) : impl::Expr<Key1, Key2>(std::move(t_lin_expr), std::move(t_quad_expr), std::move(t_constant)) {}
+    Expr(const LinExpr<Key1>& t_lin_expr, const QuadExpr<Key1, Key2>& t_quad_expr, const Constant& t_constant) : impl::Expr<Key1, Key2>(t_lin_expr, t_quad_expr, t_constant) {}
+
+    Expr(const Expr& t_src) = default;
+    Expr(Expr&&) noexcept = default;
+
+    Expr& operator=(const Expr& t_rhs) = default;
+    Expr& operator=(Expr&&) noexcept = default;
+};
 
 template<class Key1, class Key2>
 std::ostream &operator<<(std::ostream& t_os, const Expr<Key1, Key2>& t_expr) {
