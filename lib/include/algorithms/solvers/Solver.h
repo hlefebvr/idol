@@ -13,10 +13,11 @@
 
 template<class T, class SolverImplT>
 class Future {
-    bool m_with_collaterals;
-    T m_object;
+    bool m_with_collaterals = true;
+    std::optional<T> m_object;
     std::optional<SolverImplT> m_impl;
 public:
+    Future() = default;
     explicit Future(const T& t_object, bool t_with_collaterals) : m_object(t_object), m_with_collaterals(t_with_collaterals) {}
 
     [[nodiscard]] bool has_impl() const { return m_impl.has_value(); }
@@ -24,7 +25,7 @@ public:
     SolverImplT& impl() { return m_impl.value(); }
     [[nodiscard]] const SolverImplT& impl() const { return m_impl.value(); }
 
-    const T& object() const { return m_object; }
+    const T& object() const { return m_object.value(); }
 
     [[nodiscard]] bool with_collaterals() const { return m_with_collaterals; }
 };
@@ -32,6 +33,8 @@ public:
 template<class VarT, class CtrT>
 class Solver : public Algorithm {
     Model& m_src_model;
+
+    const unsigned int m_buffer_size = 200;
     std::vector<Future<Var, VarT>> m_variables;
     std::vector<Future<Ctr, CtrT>> m_constraints;
 
@@ -118,32 +121,46 @@ Solver<VarT, CtrT>::Solver(Model &t_model) : m_src_model(t_model) {
 
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::add_future(const Var &t_var, bool t_with_collaterals) {
-    m_variables.template emplace_back(Future<Var, VarT>(t_var, t_with_collaterals));
+
+    const unsigned int index = t_var.index();
+    const unsigned int size = m_variables.size();
+
+    if (index >= size) {
+        m_variables.resize(size + m_buffer_size );
+    }
+
+    m_variables.at(index) = Future<Var, VarT>(t_var, t_with_collaterals);
     m_variables_to_update.template emplace_back(t_var);
 }
 
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::add_future(const Ctr &t_ctr, bool t_with_collaterals) {
-    m_constraints.template emplace_back(Future<Ctr, CtrT>(t_ctr, t_with_collaterals));
+
+    const unsigned int index = t_ctr.index();
+    const unsigned int size = m_constraints.size();
+
+    if (index >= size) {
+        m_constraints.resize(size + m_buffer_size );
+    }
+
+    m_constraints.at(index) = Future<Ctr, CtrT>(t_ctr, t_with_collaterals);
     m_constraints_to_update.template emplace_back(t_ctr);
 }
 
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove_future(const Var &t_var) {
-    m_variables[t_var.index()] = std::move(m_variables.back());
-    m_variables.pop_back();
+    m_variables[t_var.index()] = Future<Var, VarT>();
 }
 
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove_future(const Ctr &t_ctr) {
-    m_constraints[t_ctr.index()] = std::move(m_constraints.back());
-    m_constraints.pop_back();
+    m_constraints[t_ctr.index()] = Future<Ctr, CtrT>();
 }
 
 template<class VarT, class CtrT>
 double Solver<VarT, CtrT>::value(const Constant &t_constant) const {
     if (!t_constant.is_numerical()) {
-        EASY_LOG(Warn, "external-solver", "Constant " << t_constant << ", found in external solver, was "
+        idol_Log(Warn, "external-solver", "Constant " << t_constant << ", found in external solver, was "
                                           "implicitly converted to " << t_constant.numerical());
     }
     return t_constant.numerical();
@@ -171,7 +188,7 @@ template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update() {
 
     for (const auto& var : m_variables_to_update) {
-        //if (var.status() == Dead) { continue; }
+        if (!m_src_model.has(var)) { continue; }
         if (auto& f = future(var) ; !f.has_impl()) {
             auto impl = create(var, m_is_built);
             f.set_impl(impl);
@@ -181,7 +198,7 @@ void Solver<VarT, CtrT>::update() {
     }
 
     for (const auto& ctr : m_constraints_to_update) {
-        //if (ctr.status() == Dead) { continue; }
+        if (!m_src_model.has(ctr)) { continue; }
         if (auto& f = future(ctr) ; !f.has_impl()) {
             auto impl = create(ctr, true);
             f.set_impl(impl);

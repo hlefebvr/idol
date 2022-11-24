@@ -64,7 +64,7 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
     }
 
     // Algorithm
-    auto solver = branch_and_price<Solvers::GLPK_Simplex, Solvers::GLPK_Simplex>(rmp, alpha, subproblems, branching_candidates);
+    auto solver = branch_and_price<Solvers::Gurobi, Solvers::Gurobi>(rmp, alpha, subproblems, branching_candidates);
 
     solver.solve();
 

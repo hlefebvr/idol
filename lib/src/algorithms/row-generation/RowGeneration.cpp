@@ -89,7 +89,7 @@ void RowGeneration::analyze_last_rmp_primal_solution() {
         terminate_for_rmp_could_not_be_solved_to_optimality();
     }
 
-    EASY_LOG(Trace, "row-generation", "Using primal solution for separation.");
+    idol_Log(Trace, "row-generation", "Using primal solution for separation.");
 
 }
 
@@ -106,12 +106,12 @@ bool RowGeneration::rmp_could_not_be_solved_to_optimality() const {
 }
 
 void RowGeneration::terminate_for_rmp_is_infeasible() {
-    EASY_LOG(Trace, "row-generation", "Terminate. Infeasible RMP.");
+    idol_Log(Trace, "row-generation", "Terminate. Infeasible RMP.");
     terminate();
 }
 
 void RowGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "row-generation", "Terminate. RMP returned with primal status \"" << m_last_rmp_primals->status() << "\".");
+    idol_Log(Trace, "row-generation", "Terminate. RMP returned with primal status \"" << m_last_rmp_primals->status() << "\".");
     terminate();
 }
 
@@ -124,7 +124,7 @@ void RowGeneration::update_subproblems() {
 
     for (auto& subproblem : m_subproblems) {
         auto row = subproblem.get_separation_objective(*m_last_rmp_primals);
-        EASY_LOG(Trace, "row-generation", "Setting separation objective to " << row);
+        idol_Log(Trace, "row-generation", "Setting separation objective to " << row);
         subproblem.update_separation_objective(row);
     }
 }
@@ -179,7 +179,7 @@ void RowGeneration::add_cuts() {
 }
 
 void RowGeneration::terminate_for_no_violated_cut_found() {
-    EASY_LOG(Trace, "row-generation", "Terminate. No violated cut found.");
+    idol_Log(Trace, "row-generation", "Terminate. No violated cut found.");
     terminate();
 }
 
@@ -203,18 +203,18 @@ RowGeneration::analyze_last_subproblem_primal_solution(const RowGenerationSP &t_
 }
 
 void RowGeneration::terminate_for_subproblem_is_infeasible() {
-    EASY_LOG(Trace, "row-generation", "Terminate. Infeasible SP.");
+    idol_Log(Trace, "row-generation", "Terminate. Infeasible SP.");
     terminate();
 }
 
 void RowGeneration::terminate_for_subproblem_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "row-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
+    idol_Log(Trace, "row-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
                                          "Reported status: ...............");
     terminate();
 }
 
 void RowGeneration::log_last_rmp_primal_solution() const {
-    EASY_LOG(Debug, "row-generation",
+    idol_Log(Debug, "row-generation",
              std::setw(5)
              << "RMP"
              << std::setw(15)
@@ -264,7 +264,7 @@ bool RowGeneration::iteration_limit_is_reached() const {
 }
 
 void RowGeneration::terminate_for_iteration_limit_is_reached() {
-    EASY_LOG(Trace, "row-generation", "Terminate. The maximum number of iterations has been reached.")
+    idol_Log(Trace, "row-generation", "Terminate. The maximum number of iterations has been reached.")
     terminate();
 }
 
@@ -274,7 +274,7 @@ bool RowGeneration::time_limit_is_reached() const {
 
 void RowGeneration::terminate_for_time_limit_is_reached() {
     if (is_terminated()) { return; }
-    EASY_LOG(Trace, "row-generation", "Terminate. The time limit has been reached.");
+    idol_Log(Trace, "row-generation", "Terminate. The time limit has been reached.");
     std::cout << "TIME_LIMIT" << std::endl;
     terminate();
 }

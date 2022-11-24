@@ -21,6 +21,7 @@ namespace Solvers {
 class Solvers::GLPK_Simplex : public Solver<int, int> {
 
     glp_prob* m_model;
+    unsigned int n_solved = 0;
 
     Optional<SolutionStatus> m_solution_status;
     Optional<Solution::Primal> m_ray;
@@ -72,6 +73,10 @@ public:
     glp_prob* impl() { return m_model; }
 
     const glp_prob* impl() const { return m_model; }
+
+    using Algorithm::remove;
+
+    void write(const std::string &t_filename) override;
 };
 
 #endif

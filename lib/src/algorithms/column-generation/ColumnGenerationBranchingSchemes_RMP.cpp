@@ -103,7 +103,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
 
     t_subproblem.add_linking_expr(result, original_space);
 
-    EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to RMP.")
+    idol_Log(Trace, "column-generation", "Constraint " << result << " was added to RMP.")
 
     return { result };
 }

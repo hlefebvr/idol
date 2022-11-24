@@ -171,3 +171,7 @@ Expr<Var> &Model::access_obj() {
 LinExpr<Ctr> &Model::access_rhs() {
     return m_rhs;
 }
+
+void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
+    throw Exception("Not implemented.");
+}

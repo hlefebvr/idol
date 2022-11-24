@@ -18,11 +18,11 @@
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Basic.h"
 
 template<
-        class SolutionStrategyT = std::tuple_element_t<0, lp_solvers>,
+        class SolutionStrategyT = std::tuple_element_t<1, lp_solvers>,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Basic,
-        class NodeUpdatorT = NodeUpdators::ByBoundVar
+        class NodeUpdatorT = NodeUpdators::ByBoundCtr
 >
 BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_candidates) {
     BranchAndBound result;

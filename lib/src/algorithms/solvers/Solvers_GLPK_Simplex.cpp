@@ -63,19 +63,19 @@ void Solvers::GLPK_Simplex::execute() {
             compute_unbounded_ray();
         }
     }
+
 }
 
 int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     int index;
     if (m_deleted_variables.empty()) {
-        index = (int) t_var.index() + 1;
+        index = (int) glp_get_num_cols(m_model) + 1;
+        glp_add_cols(m_model, 1);
     } else {
         index = m_deleted_variables.top();
         m_deleted_variables.pop();
     }
-
-    glp_add_cols(m_model, 1);
 
     const bool has_lb = !is_neg_inf(get_lb(t_var));
     const bool has_ub = !is_pos_inf(get_ub(t_var));
@@ -130,13 +130,12 @@ int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     int index;
     if (m_deleted_constraints.empty()) {
-        index = (int) t_ctr.index() + 1;
+        index = (int) glp_get_num_rows(m_model) + 1;
+        glp_add_rows(m_model, 1);
     } else {
         index = m_deleted_constraints.top();
         m_deleted_constraints.pop();
     }
-
-    glp_add_rows(m_model, 1);
 
     switch (model().get_type(t_ctr)) {
         case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(model().get_row(t_ctr).rhs())); break;
@@ -499,6 +498,11 @@ void Solvers::GLPK_Simplex::update(const Var &t_var, int &t_impl) {
 
 void Solvers::GLPK_Simplex::update(const Ctr &t_ctr, int &t_impl) {
     std::cout << "SKIPPED UPDATE CTR" << std::endl;
+}
+
+void Solvers::GLPK_Simplex::write(const std::string &t_filename) {
+    auto filename = std::to_string(n_solved++) + t_filename;
+    glp_write_lp(m_model, nullptr, filename.c_str());
 }
 
 #endif

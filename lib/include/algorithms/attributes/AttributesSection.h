@@ -21,7 +21,7 @@ public:
     template<class T>
     void set(typename T::value_type t_value) {
         typename T::schema().check(t_value);
-        EASY_LOG(Trace, "attributes", "Setting value of " << T::name() << " to " << t_value << ".");
+        idol_Log(Trace, "attributes", "Setting value of " << T::name() << " to " << t_value << ".");
         if (m_callbacks[T::index]) {
             m_callbacks[T::index](t_value);
         }

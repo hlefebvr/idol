@@ -112,7 +112,7 @@ bool ColumnGenerationSP::could_not_be_solved_to_optimality() const {
 
 
 void ColumnGenerationSP::log_last_primal_solution() const {
-    EASY_LOG(Debug, "column-generation",
+    idol_Log(Debug, "column-generation",
              std::setw(5)
                      << "SP"
                      << std::setw(15)
@@ -133,7 +133,7 @@ void ColumnGenerationSP::add_column_to_rmp() {
     auto temp_var = create_column_from(*last_primal_solution);
     auto variable = m_rmp_strategy.add_var(std::move(temp_var));
     m_currently_present_variables.template emplace_back(variable, *last_primal_solution);
-    EASY_LOG(Trace, "column-generation", "Adding new variable with name " << variable << ".");
+    idol_Log(Trace, "column-generation", "Adding new variable with name " << variable << ".");
 }
 
 
@@ -203,7 +203,7 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
         return false;
     }
 
-    EASY_LOG(Trace, "column-generation", "Constraint " << t_ctr << " has been removed from SP.");
+    idol_Log(Trace, "column-generation", "Constraint " << t_ctr << " has been removed from SP.");
     m_exact_solution_strategy->remove(t_ctr);
 
     return true;
@@ -223,14 +223,14 @@ void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &
 }
 
 void ColumnGenerationSP::remove_var_template_from_rmp(const Var &t_var) {
-    EASY_LOG(Trace, "column-generation", "Variable " << t_var << " has been removed from the RMP for it will be generated.");
+    idol_Log(Trace, "column-generation", "Variable " << t_var << " has been removed from the RMP for it will be generated.");
     rmp_solution_strategy().remove(t_var);
 }
 
 void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, double t_lb) {
     remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
-            EASY_LOG(Trace,
+            idol_Log(Trace,
                      "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
@@ -243,7 +243,7 @@ void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, 
 void ColumnGenerationSP::remove_columns_violating_upper_bound(const Var &t_var, double t_ub) {
     remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
         if (double value = t_column_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
-            EASY_LOG(Trace,
+            idol_Log(Trace,
                      "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
@@ -256,7 +256,7 @@ void ColumnGenerationSP::remove_columns_violating_upper_bound(const Var &t_var, 
 void ColumnGenerationSP::remove_columns_violating_constraint(const TempCtr &t_ctr) {
     remove_column_if([&](const Var& t_column_variable, const Solution::Primal& t_solution) {
         if (t_ctr.is_violated(t_solution)) {
-            EASY_LOG(Trace,
+            idol_Log(Trace,
                      "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
                                << "constraint " << t_ctr << '.');

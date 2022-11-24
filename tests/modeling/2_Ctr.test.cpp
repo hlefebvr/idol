@@ -19,7 +19,6 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         CHECK(model.get_type(ctr) == GreaterOrEqual);
         CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
-        CHECK(ctr.model_id() == model.id());
 
     }
 

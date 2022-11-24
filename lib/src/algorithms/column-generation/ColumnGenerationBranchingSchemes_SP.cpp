@@ -30,7 +30,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::SP::contribute_to_add_const
 
     auto result = t_subproblem.exact_solution_strategy().add_ctr(std::move(t_temporary_constraint));
 
-    EASY_LOG(Trace, "column-generation", "Constraint " << result << " was added to subproblem.")
+    idol_Log(Trace, "column-generation", "Constraint " << result << " was added to subproblem.")
 
     return { result };
 }

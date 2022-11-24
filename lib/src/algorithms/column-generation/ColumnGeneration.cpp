@@ -95,7 +95,7 @@ void ColumnGeneration::analyze_last_rmp_dual_solution() {
     }
 
     if (rmp_is_infeasible()) {
-        EASY_LOG(Trace, "column-generation", "Using Farkas certificate for pricing.");
+        idol_Log(Trace, "column-generation", "Using Farkas certificate for pricing.");
         save_rmp_farkas();
         return;
     }
@@ -104,7 +104,7 @@ void ColumnGeneration::analyze_last_rmp_dual_solution() {
         terminate_for_rmp_could_not_be_solved_to_optimality();
     }
 
-    EASY_LOG(Trace, "column-generation", "Using dual solution for pricing.");
+    idol_Log(Trace, "column-generation", "Using dual solution for pricing.");
 
 }
 
@@ -125,12 +125,12 @@ void ColumnGeneration::save_rmp_farkas() {
 }
 
 void ColumnGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "column-generation", "Terminate. RMP returned with dual status \"" << m_last_rmp_duals->status() << "\".");
+    idol_Log(Trace, "column-generation", "Terminate. RMP returned with dual status \"" << m_last_rmp_duals->status() << "\".");
     terminate();
 }
 
 void ColumnGeneration::terminate_for_rmp_is_unbounded() {
-    EASY_LOG(Trace, "column-generation", "Terminate. Unbounded RMP.");
+    idol_Log(Trace, "column-generation", "Terminate. Unbounded RMP.");
     terminate();
 }
 
@@ -143,7 +143,7 @@ void ColumnGeneration::update_subproblems() {
 
     for (auto& subproblem : m_subproblems) {
         auto row = subproblem.get_pricing_objective(*m_last_rmp_duals);
-        EASY_LOG(Trace, "column-generation", "Setting pricing objective to " << row);
+        idol_Log(Trace, "column-generation", "Setting pricing objective to " << row);
         subproblem.update_pricing_objective(row);
     }
 }
@@ -190,18 +190,18 @@ void ColumnGeneration::add_columns() {
 }
 
 void ColumnGeneration::terminate_for_subproblem_is_infeasible() {
-    EASY_LOG(Trace, "column-generation", "Terminate. Infeasible SP.");
+    idol_Log(Trace, "column-generation", "Terminate. Infeasible SP.");
     terminate();
 }
 
 void ColumnGeneration::terminate_for_subproblem_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "column-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
+    idol_Log(Trace, "column-generation", "Terminate. SP could not be solved to optimality using the provided exact method."
                                            "Reported status: ...............");
     terminate();
 }
 
 void ColumnGeneration::terminate_for_subproblem_is_unbounded() {
-    EASY_LOG(Trace, "column-generation", "Terminate. Unbounded SP.");
+    idol_Log(Trace, "column-generation", "Terminate. Unbounded SP.");
     terminate();
 }
 
@@ -225,12 +225,12 @@ void ColumnGeneration::analyze_last_subproblem_primal_solution(const ColumnGener
 }
 
 void ColumnGeneration::terminate_for_no_improving_column_found() {
-    EASY_LOG(Trace, "column-generation", "Terminate. No improving column found.");
+    idol_Log(Trace, "column-generation", "Terminate. No improving column found.");
     terminate();
 }
 
 void ColumnGeneration::log_last_rmp_dual_solution() const {
-    EASY_LOG(Debug, "column-generation",
+    idol_Log(Debug, "column-generation",
              std::setw(5)
              << "RMP"
              << std::setw(15)
@@ -280,7 +280,7 @@ void ColumnGeneration::remove(const Ctr &t_constraint) {
 
     }
 
-    EASY_LOG(Trace, "column-generation", "Constraint " << t_constraint << " has been removed from RMP.");
+    idol_Log(Trace, "column-generation", "Constraint " << t_constraint << " has been removed from RMP.");
     rmp_solution_strategy().remove(t_constraint);
 
 }

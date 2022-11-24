@@ -95,7 +95,7 @@ void BranchAndBound::solve_queued_nodes() {
 
         m_nodes->set_current_node_to_next_node_to_be_processed();
 
-        EASY_LOG(Trace,
+        idol_Log(Trace,
                  "branch-and-bound",
                  "Current node is now node " << m_nodes->current_node().id() << '.'
                  );
@@ -137,7 +137,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_infeasible()) {
 
-        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << m_nodes->current_node().id() << " (infeasible).");
+        idol_Log(Trace, "branch-and-bound", "Pruning node " << m_nodes->current_node().id() << " (infeasible).");
         prune_current_node();
         return;
 
@@ -154,13 +154,13 @@ void BranchAndBound::analyze_current_node() {
 
         add_current_node_to_solution_pool();
 
-        EASY_LOG(Trace, "branch-and-bound", "Valid solution found at node " << current_node().id() << '.');
+        idol_Log(Trace, "branch-and-bound", "Valid solution found at node " << current_node().id() << '.');
 
         if (current_node_is_below_upper_bound()) {
             set_current_node_as_incumbent();
             m_best_upper_bound = current_node().objective_value();
             log_node(Info, m_nodes->current_node());
-            EASY_LOG(Trace, "branch-and-bound", "Better incumbent found at node " << current_node().id() << ".");
+            idol_Log(Trace, "branch-and-bound", "Better incumbent found at node " << current_node().id() << ".");
         }
 
         reset_current_node();
@@ -170,7 +170,7 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_is_above_upper_bound()) {
 
-        EASY_LOG(Trace, "branch-and-bound", "Pruning node " << current_node().id() << " (by bound).");
+        idol_Log(Trace, "branch-and-bound", "Pruning node " << current_node().id() << " (by bound).");
         prune_current_node();
         return;
 
@@ -292,21 +292,21 @@ void BranchAndBound::branch() {
 }
 
 void BranchAndBound::terminate_for_no_active_nodes() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. No active node.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. No active node.");
     set_status(m_nodes->has_incumbent() ? Optimal : Infeasible);
     set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_gap_is_closed() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Gap is closed.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Gap is closed.");
     set_status(Optimal);
     set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_infeasibility() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Infeasibility detected.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Infeasibility detected.");
     set_status(Infeasible);
     set_reason(Proved);
     terminate();
@@ -314,28 +314,28 @@ void BranchAndBound::terminate_for_infeasibility() {
 
 void BranchAndBound::terminate_for_unboundedness() {
     m_best_upper_bound = -Inf;
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Unboundedness detected.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Unboundedness detected.");
     set_status(Unbounded);
     set_reason(Proved);
     terminate();
 }
 
 void BranchAndBound::terminate_for_node_could_not_be_solved_to_optimality() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Current node could node be solved to optimality (node " << current_node().id() << ").");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Current node could node be solved to optimality (node " << current_node().id() << ").");
     set_status(Fail);
     set_reason(NotSpecified);
     terminate();
 }
 
 void BranchAndBound::terminate_for_iteration_limit_is_reached() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. The maximum number of iterations has been reached.")
+    idol_Log(Trace, "branch-and-bound", "Terminate. The maximum number of iterations has been reached.")
     set_status(m_nodes->has_incumbent() ? Feasible : Infeasible);
     set_reason(IterationCount);
     terminate();
 }
 
 void BranchAndBound::terminate_for_error_lb_greater_than_ub() {
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Best LB > Best UB.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Best LB > Best UB.");
     set_status(Fail);
     set_reason(NotSpecified);
     terminate();
@@ -357,7 +357,7 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {
         sign = '+';
     }
 
-    EASY_LOG(t_msg_level,
+    idol_Log(t_msg_level,
              "branch-and-bound",
              std::setw(4)
              << (id == -1 ? "H" : std::to_string(id)) << sign
@@ -409,7 +409,7 @@ bool BranchAndBound::iteration_limit_is_reached() const {
 
 bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
     if (m_nodes->submit_solution(std::move(t_solution), m_best_upper_bound)) {
-        EASY_LOG(Debug, "branch-and-bound", "New incumbent solution found by submission.");
+        idol_Log(Debug, "branch-and-bound", "New incumbent solution found by submission.");
         m_best_upper_bound = m_nodes->incumbent().objective_value();
         log_node(Info, m_nodes->incumbent());
         return true;
@@ -423,7 +423,7 @@ bool BranchAndBound::time_limit_is_reached() const {
 
 void BranchAndBound::terminate_for_time_limit_is_reached() {
     if (is_terminated()) { return; }
-    EASY_LOG(Trace, "branch-and-bound", "Terminate. Time limit is reached.");
+    idol_Log(Trace, "branch-and-bound", "Terminate. Time limit is reached.");
     set_status(m_nodes->has_incumbent() ? Feasible : Infeasible);
     set_reason(TimeLimit);
     terminate();

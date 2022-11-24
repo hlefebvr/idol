@@ -52,7 +52,7 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
 
     if (!row.rhs().is_zero()) {
         auto &rhs = access_rhs();
-        rhs.set(t_ctr, MatrixCoefficientReference(MatrixCoefficientReference(*row.lhs().m_constant)));
+        rhs.set(t_ctr, MatrixCoefficientReference(*row.lhs().m_constant));
     }
 }
 
@@ -137,7 +137,7 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
     auto& row = access_row(t_ctr);
 
-    if (row.rhs().is_zero()) {
+    if (row.rhs().is_zero() && !t_constant.is_zero()) {
         row.set_rhs(std::move(t_constant));
         access_rhs().set(t_ctr, MatrixCoefficientReference(*row.lhs().m_constant));
         return;
@@ -146,6 +146,7 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
     if (t_constant.is_zero()) {
         access_rhs().set(t_ctr, 0.);
     }
+
     row.set_rhs(std::move(t_constant));
 
 }

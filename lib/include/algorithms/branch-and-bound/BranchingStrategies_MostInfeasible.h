@@ -44,7 +44,7 @@ bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_valid(const NodeT 
 
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
-            EASY_LOG(Trace, "branch-and-bound", "Node " << t_node.id() << " solution not valid (value = " << value << ")." );
+            idol_Log(Trace, "branch-and-bound", "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
             return false;
         }
     }
@@ -76,6 +76,15 @@ std::list<NodeT *> BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_
 
     auto* n2 = t_node.create_child( t_id_provider() );
     n2->set_local_upper_bound(*selected_var, std::floor(value));
+
+    idol_Log(Trace,
+             "branch-and-bound",
+             "Node " << t_node.id() << " has 2 child nodes: "
+                << "Node " << n1->id() << " with " << *selected_var << " >= " << std::ceil(value)
+                << " and "
+                << "Node " << n2->id() << " with " << *selected_var << " <= " << std::floor(value)
+                << " (current value of " << *selected_var << " is " << value << ").";
+             );
 
     return { n1, n2 };
 }

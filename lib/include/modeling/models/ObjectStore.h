@@ -33,13 +33,13 @@ template<class... Args>
 ObjectRef ObjectStore<T, AttributesT>::add_attributes(std::string&& t_name, std::string&& t_default_name, Args &&... t_attribute_args) {
 
     const bool has_free_index = !m_free_indices.empty();
-    const unsigned int index = has_free_index ? m_free_indices.back() : m_attributes.size();
+    const unsigned int index = has_free_index ? m_free_indices.front() : m_attributes.size();
 
     ObjectRef result(index, std::move(t_name), std::move(t_default_name));
 
     if (has_free_index) {
         m_attributes.at(result.index()) = AttributesT(result.id(), result.index(), std::forward<Args>(t_attribute_args)...);
-        m_free_indices.pop_back();
+        m_free_indices.pop_front();
     } else {
         m_attributes.template emplace_back(result.id(), result.index(), std::forward<Args>(t_attribute_args)...);
     }
@@ -49,8 +49,8 @@ ObjectRef ObjectStore<T, AttributesT>::add_attributes(std::string&& t_name, std:
 
 template<class T, class AttributesT>
 void ObjectStore<T, AttributesT>::add_object(const T &t_object) {
-    m_objects.template emplace_front(t_object);
-    auto iterator = m_objects.begin();
+    m_objects.template emplace_back(t_object);
+    auto iterator = --m_objects.end();
     attributes(t_object).set_iterator(std::move(iterator));
 }
 

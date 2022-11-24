@@ -68,7 +68,7 @@ static std::ostream& operator<<(std::ostream& t_os, LogLevel t_level) {
     throw Exception("Unexpected log_last_primal_solution level: " + std::to_string(t_level));
 }
 
-#define EASY_LOG(required_level, tag, then) \
+#define idol_Log(required_level, tag, then) \
 if (required_level <= Log::level()) { Log _log(required_level, tag); _log << then; }
 
 #endif //OPTIMIZE_LOG_H
