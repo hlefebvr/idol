@@ -276,6 +276,38 @@ protected:
     void execute() override { throw Exception("Executing VoidAlgorithm is not allowed."); }
 public:
     template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) {}
+
+    bool has(const Var &t_var) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    double get_lb(const Var &t_var) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    double get_ub(const Var &t_var) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    VarType get_type(const Var &t_var) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    const Column &get_column(const Var &t_var) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    bool has(const Ctr &t_ctr) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    const Row &get_row(const Ctr &t_ctr) const override {
+        throw std::runtime_error("Deprecated");
+    }
+
+    CtrType get_type(const Ctr &t_ctr) const override {
+        throw std::runtime_error("Deprecated");
+    }
 };
 
 #endif //OPTIMIZE_ALGORITHM_H
