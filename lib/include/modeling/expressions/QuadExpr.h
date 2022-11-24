@@ -49,7 +49,7 @@ public:
 
     virtual ~QuadExpr() = default;
 
-    bool set(const Key1& t_a, const Key2& t_b, Constant t_coefficient);
+    void set(const Key1& t_a, const Key2& t_b, Constant t_coefficient);
 
     const Constant& get(const Key1& t_a, const Key2& t_b) const;
 };
@@ -70,7 +70,7 @@ QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Constant &t_factor, const Ke
 }
 
 template<class Key1, class Key2, class Hash, class EqualTo>
-bool QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2& t_b, Constant t_coefficient) {
+void QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2& t_b, Constant t_coefficient) {
     return set(std::make_pair(t_a, t_b), std::move(t_coefficient));
 }
 

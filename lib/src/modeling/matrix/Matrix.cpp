@@ -1,7 +1,6 @@
 //
 // Created by henri on 04/10/22.
 //
-#include <cassert>
 #include "../../../include/modeling/matrix/Matrix.h"
 #include "../../../include/modeling/models/Model.h"
 
@@ -13,7 +12,7 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
 
     if (!row.rhs().is_zero()) {
         auto &rhs = access_rhs();
-        rhs.refs().set(t_ctr, row.lhs().get_constant_ref());
+        rhs.refs().set(t_ctr, row.lhs().refs().get_constant());
     }
 }
 
@@ -25,7 +24,7 @@ void Matrix::add_column_to_rows(const Var &t_var) {
 
     if (!column.objective_coefficient().is_zero()) {
         auto &obj = access_obj();
-        obj.linear().refs().set(t_var, column.components().get_constant_ref());
+        obj.linear().refs().set(t_var, column.components().refs().get_constant());
     }
 }
 
@@ -59,7 +58,7 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
     obj = std::move(t_objective);
 
     for (auto [var, ref] : obj.linear().refs()) {
-        access_column(var).components().set_constant_ref(std::move(ref));
+        access_column(var).components().refs().set_constant(std::move(ref));
     }
 }
 
@@ -73,7 +72,7 @@ void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     rhs = std::move(t_right_handside);
 
     for (auto [ctr, ref] : rhs.refs()) {
-        access_row(ctr).lhs().set_constant_ref(std::move(ref));
+        access_row(ctr).lhs().refs().set_constant(std::move(ref));
     }
 }
 
@@ -83,7 +82,7 @@ void Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
 
     if (column.objective_coefficient().is_zero()) {
         column.set_objective_coefficient(std::move(t_constant));
-        access_obj().linear().refs().set(t_var, column.components().get_constant_ref());
+        access_obj().linear().refs().set(t_var, column.components().refs().get_constant());
         return;
     }
 
@@ -100,7 +99,7 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
     if (row.rhs().is_zero() && !t_constant.is_zero()) {
         row.set_rhs(std::move(t_constant));
-        access_rhs().refs().set(t_ctr, row.lhs().get_constant_ref());
+        access_rhs().refs().set(t_ctr, row.lhs().refs().get_constant());
         return;
     }
 

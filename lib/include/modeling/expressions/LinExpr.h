@@ -37,7 +37,7 @@ public:
     LinExpr(Constant&& t_factor, const Key& t_key);
     LinExpr(const Constant& t_factor, const Key& t_key);
 
-    bool set(const Key& t_key, const Constant& t_coefficient);
+    void set(const Key& t_key, const Constant& t_coefficient);
 
     using AbstractExpr<Key, LinTerm<Key>>::get;
     using AbstractExpr<Key, LinTerm<Key>>::set;
@@ -69,8 +69,8 @@ LinExpr<Key>::LinExpr(const Constant& t_factor, const Key &t_key) {
 }
 
 template<class Key>
-bool LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
-    return AbstractExpr<Key, LinTerm<Key>>::set(t_key, Constant(t_coefficient));
+void LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
+    AbstractExpr<Key, LinTerm<Key>>::set(t_key, Constant(t_coefficient));
 }
 
 template<class Key>

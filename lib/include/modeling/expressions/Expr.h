@@ -18,8 +18,18 @@ class impl::Expr {
     QuadExpr<Key1, Key2> m_quadratic;
     std::unique_ptr<AbstractMatrixCoefficient> m_constant;
 protected:
-    void set_constant_ref(MatrixCoefficientReference&& t_coefficient) { m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
-    [[nodiscard]] MatrixCoefficientReference get_constant_ref() const { return MatrixCoefficientReference(*m_constant); }
+    class References {
+        friend class impl::Expr<Key1, Key2>;
+        using ParentT = impl::Expr<Key1, Key2>;
+
+        ParentT* m_parent;
+        explicit References(ParentT* t_parent) : m_parent(t_parent) {}
+    public:
+        void set_constant(MatrixCoefficientReference&& t_coefficient) { m_parent->m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
+        [[nodiscard]] MatrixCoefficientReference get_constant() const { return MatrixCoefficientReference(*m_parent->m_constant); }
+    };
+
+    References refs() { return References(this); }
 public:
     Expr();
     Expr(double t_num); // NOLINT(google-explicit-constructor)

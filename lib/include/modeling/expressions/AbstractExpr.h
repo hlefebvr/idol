@@ -31,8 +31,7 @@ class impl::AbstractExpr {
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
 protected:
-    bool set(const Key& t_key, Constant&& t_coefficient);
-    bool set_ref(const Key& t_key, MatrixCoefficientReference&& t_coefficient);
+    void set(const Key& t_key, Constant&& t_coefficient);
     const Constant& get(const Key& t_key) const;
     void remove(const Key& t_key);
 
@@ -185,37 +184,20 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_fac
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-bool impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
+void impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
-        return true;
+        return;
     }
 
     auto it = m_map.find(t_key);
     if (it == m_map.end()) {
         m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
-        return true;
+        return;
     }
 
     it->second->set_value(std::move(t_coefficient));
-    return false;
-
-}
-
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-bool impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set_ref(const Key &t_key, MatrixCoefficientReference &&t_coefficient) {
-
-    if (t_coefficient.empty()) {
-        this->m_map.erase(t_key);
-        return true;
-    }
-
-    auto [it, success] = m_map.template emplace(t_key, std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)));
-    if (!success) {
-        throw Exception("Trying to insert a matrix coefficient by reference on an existing coefficient.");
-    }
-    return true;
 
 }
 
