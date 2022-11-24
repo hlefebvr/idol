@@ -173,5 +173,5 @@ LinExpr<Ctr> &Model::access_rhs() {
 }
 
 void Model::update_matrix_coeff(const Ctr &t_ctr, const Var &t_var, Constant t_coefficient) {
-    throw Exception("Not implemented.");
+    update_matrix_coefficient(t_ctr, t_var, std::move(t_coefficient));
 }
