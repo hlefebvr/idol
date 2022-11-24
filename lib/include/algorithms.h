@@ -18,7 +18,7 @@
 #include "algorithms/branch-and-bound/ActiveNodesManagers_Basic.h"
 
 template<
-        class SolutionStrategyT = std::tuple_element_t<1, lp_solvers>,
+        class SolutionStrategyT = std::tuple_element_t<0, lp_solvers>,
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Basic,
