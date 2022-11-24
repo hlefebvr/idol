@@ -32,7 +32,7 @@ TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr
 bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_row.rhs().numerical();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_row.lhs().linear()) {
+    for (const auto& [var, coeff] : m_row.linear()) {
         lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_type) {
@@ -44,7 +44,7 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
 }
 
 std::ostream &operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
-    t_os << t_temp_ctr.row().lhs();
+    t_os << t_temp_ctr.row().linear();
     switch (t_temp_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;
         case GreaterOrEqual: t_os << " >= "; break;

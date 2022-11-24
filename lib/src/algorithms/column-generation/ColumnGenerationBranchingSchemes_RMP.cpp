@@ -73,7 +73,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
 std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_constraint(TempCtr &t_temporary_constraint,
                                                                                        ColumnGenerationSP &t_subproblem) {
 
-    for (const auto& [var, ctr] : t_temporary_constraint.row().lhs().linear()) {
+    for (const auto& [var, ctr] : t_temporary_constraint.row().linear()) {
         if (!t_subproblem.exact_solution_strategy().has(var)) {
             return {};
         }
@@ -86,13 +86,13 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
     // TODO this may be re-written in a better way after refacto of Row, Expr and Column
     LinExpr original_space;
 
-    for (const auto& [var, coefficient] : row.lhs().linear()) {
+    for (const auto& [var, coefficient] : row.linear()) {
         if (t_subproblem.exact_solution_strategy().has(var)) {
             original_space += coefficient * var;
         }
     }
 
-    row.lhs().linear().replace_if([&](const Var& t_var) -> std::optional<LinExpr<Var>> {
+    row.linear().replace_if([&](const Var& t_var) -> std::optional<LinExpr<Var>> {
         if (t_subproblem.exact_solution_strategy().has(t_var)) {
             return t_subproblem.expand(t_var);
         }

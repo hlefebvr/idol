@@ -17,7 +17,7 @@ TEST_CASE("01. Var", "[variables][modeling]") {
 
         auto x = model.add_var(0., 1., Continuous, 1.);
 
-        CHECK(model.get_column(x).objective_coefficient().numerical() == 1.);
+        CHECK(model.get_column(x).obj().numerical() == 1.);
         CHECK(model.get_lb(x) == 0._a);
         CHECK(model.get_ub(x) == 1._a);
         CHECK(model.get_type(x) == Continuous);
@@ -28,8 +28,8 @@ TEST_CASE("01. Var", "[variables][modeling]") {
 
         auto x = model.add_var(0., 1., Continuous, xi);
 
-        CHECK(model.get_column(x).objective_coefficient().numerical() == 0.);
-        CHECK(model.get_column(x).objective_coefficient().get(xi) == 1.);
+        CHECK(model.get_column(x).obj().numerical() == 0.);
+        CHECK(model.get_column(x).obj().get(xi) == 1.);
 
     }
 
@@ -37,31 +37,31 @@ TEST_CASE("01. Var", "[variables][modeling]") {
 
         auto x = model.add_var(0., 1., Continuous, 1 + 2 * xi);
 
-        CHECK(model.get_column(x).objective_coefficient().numerical() == 1.);
-        CHECK(model.get_column(x).objective_coefficient().get(xi) == 2.);
+        CHECK(model.get_column(x).obj().numerical() == 1.);
+        CHECK(model.get_column(x).obj().get(xi) == 2.);
 
     }
 
     SECTION("create a new variable with Column") {
 
         Column column(xi);
-        column.components().linear().set(c1, 1 + 2 * xi);
-        column.components().linear().set(c2, 3);
+        column.linear().set(c1, 1 + 2 * xi);
+        column.linear().set(c2, 3);
 
         auto x = model.add_var(0., 1., Continuous, column);
 
-        CHECK(model.get_column(x).objective_coefficient().numerical() == 0._a);
-        CHECK(model.get_column(x).objective_coefficient().get(xi) == 1._a);
-        CHECK(model.get_column(x).components().linear().get(c1).numerical() == 1._a);
-        CHECK(model.get_column(x).components().linear().get(c1).get(xi) == 2._a);
-        CHECK(model.get_column(x).components().linear().get(c2).numerical() == 3._a);
-        CHECK(model.get_row(c1).lhs().linear().get(x).numerical() == 1._a);
-        CHECK(model.get_row(c1).lhs().linear().get(x).get(xi) == 2._a);
-        CHECK(model.get_row(c2).lhs().linear().get(x).numerical() == 3._a);
+        CHECK(model.get_column(x).obj().numerical() == 0._a);
+        CHECK(model.get_column(x).obj().get(xi) == 1._a);
+        CHECK(model.get_column(x).linear().get(c1).numerical() == 1._a);
+        CHECK(model.get_column(x).linear().get(c1).get(xi) == 2._a);
+        CHECK(model.get_column(x).linear().get(c2).numerical() == 3._a);
+        CHECK(model.get_row(c1).linear().get(x).numerical() == 1._a);
+        CHECK(model.get_row(c1).linear().get(x).get(xi) == 2._a);
+        CHECK(model.get_row(c2).linear().get(x).numerical() == 3._a);
 
-        column.components().linear().set(c1, 0.);
+        column.linear().set(c1, 0.);
 
-        CHECK(model.get_column(x).components().linear().get(c1).numerical() == 1._a);
+        CHECK(model.get_column(x).linear().get(c1).numerical() == 1._a);
 
     }
 

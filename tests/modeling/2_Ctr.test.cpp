@@ -49,8 +49,8 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
         CHECK(model.get_type(ctr) == LessOrEqual);
         CHECK(model.get_row(ctr).rhs().numerical() == 2._a);
         CHECK(model.get_row(ctr).rhs().get(xi) == 1._a);
-        CHECK(model.get_column(x).components().linear().get(ctr).numerical() == 2._a);
-        CHECK(model.get_column(y).components().linear().get(ctr).numerical() == 1._a);
+        CHECK(model.get_column(x).linear().get(ctr).numerical() == 2._a);
+        CHECK(model.get_column(y).linear().get(ctr).numerical() == 1._a);
 
     }
 

@@ -170,7 +170,7 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
     t_os << t_model.sense() << " " << t_model.obj() << "\nSubject to:\n";
     for (const auto& ctr : t_model.ctrs()) {
         const auto& row = t_model.get_row(ctr);
-        t_os << ctr << ": " << row.lhs().linear() << " ? " << row.rhs() << '\n';
+        t_os << ctr << ": " << row.linear() << " ? " << row.rhs() << '\n';
     }
     t_os << "Variables:\n";
     for (const auto& var : t_model.vars()) {

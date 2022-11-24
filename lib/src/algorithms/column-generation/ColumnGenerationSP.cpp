@@ -57,12 +57,12 @@ Expr<Var> ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_dual
     Expr<Var> result;
 
     if (t_duals.status() == Optimal) {
-        for (const auto &[param, coeff]: m_var_template.column().objective_coefficient()) {
+        for (const auto &[param, coeff]: m_var_template.column().obj()) {
             result += coeff * param.as<Var>();
         }
     }
 
-    for (const auto &[ctr, constant]: m_var_template.column().components().linear()) {
+    for (const auto &[ctr, constant]: m_var_template.column().linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
             result += -t_duals.get(ctr) * coeff * param.as<Var>();
@@ -210,7 +210,7 @@ bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
 }
 
 void ColumnGenerationSP::reset_linking_expr(const Ctr &t_ctr) {
-    m_var_template.column().components().linear().set(t_ctr, 0.);
+    m_var_template.column().linear().set(t_ctr, 0.);
 }
 
 void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &t_expr) {
@@ -219,7 +219,7 @@ void ColumnGenerationSP::add_linking_expr(const Ctr &t_ctr, const LinExpr<Var> &
         value += constant.numerical() * !var;
     }
 
-    m_var_template.column().components().linear().set(t_ctr, value);
+    m_var_template.column().linear().set(t_ctr, value);
 }
 
 void ColumnGenerationSP::remove_var_template_from_rmp(const Var &t_var) {

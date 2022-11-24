@@ -90,7 +90,7 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
         glp_set_col_bnds(m_model, index, GLP_FR, 0., 0.);
     }
 
-    glp_set_obj_coef(m_model, index, value(get_column(t_var).objective_coefficient()));
+    glp_set_obj_coef(m_model, index, value(get_column(t_var).obj()));
 
     switch (get_type(t_var)) {
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
@@ -105,12 +105,12 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) get_column(t_var).components().linear().size();
+        const auto n = (int) get_column(t_var).linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, coeff] : get_column(t_var).components().linear()) {
+        for (const auto& [ctr, coeff] : get_column(t_var).linear()) {
             indices[i] = future(ctr).impl();
             coefficients[i] = value(coeff);
             ++i;
@@ -148,12 +148,12 @@ int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) model().get_row(t_ctr).lhs().linear().size();
+        const auto n = (int) model().get_row(t_ctr).linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [var, coeff] : model().get_row(t_ctr).lhs().linear()) {
+        for (const auto& [var, coeff] : model().get_row(t_ctr).linear()) {
             indices[i] = future(var).impl();
             coefficients[i] = value(coeff);
             ++i;

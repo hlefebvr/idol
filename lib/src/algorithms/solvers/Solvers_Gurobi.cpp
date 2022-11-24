@@ -327,7 +327,7 @@ GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     GRBLinExpr expr = 0.;
     if (t_with_collaterals) {
-        for (const auto &[var, constant]: model().get_row(t_ctr).lhs().linear()) {
+        for (const auto &[var, constant]: model().get_row(t_ctr).linear()) {
             expr += value(constant) * future(var).impl();
         }
     }
@@ -340,12 +340,12 @@ GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
 
     GRBColumn column;
     if (t_with_collaterals) {
-        for (const auto& [ctr, constant] : get_column(t_var).components().linear()) {
+        for (const auto& [ctr, constant] : get_column(t_var).linear()) {
             column.addTerm( value(constant), future(ctr).impl() );
         }
     }
 
-    return m_model.addVar(get_lb(t_var), get_ub(t_var), value(get_column(t_var).objective_coefficient()), gurobi_type(get_type(t_var)), column, t_var.name());
+    return m_model.addVar(get_lb(t_var), get_ub(t_var), value(get_column(t_var).obj()), gurobi_type(get_type(t_var)), column, t_var.name());
 }
 
 void Solvers::Gurobi::remove(const Var &t_var, GRBVar &t_impl) {

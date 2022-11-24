@@ -172,7 +172,7 @@ Solution::Primal Solvers::Gurobi::Callback<CallbackT>::Context::node_primal_solu
 template<class CallbackT>
 Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
     GRBLinExpr expr;
-    for (const auto& [var, constant] : t_ctr.row().lhs().linear()) {
+    for (const auto& [var, constant] : t_ctr.row().linear()) {
         expr += m_parent.m_solver.value(constant) * m_parent.m_solver.future(var).impl();
     }
     m_parent.addLazy(

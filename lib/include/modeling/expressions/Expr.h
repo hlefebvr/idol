@@ -44,6 +44,8 @@ public:
     Expr(LinExpr<Key1>&& t_lin_expr, QuadExpr<Key1, Key2>&& t_quad_expr, Constant&& t_constant);
     Expr(const LinExpr<Key1>& t_lin_expr, const QuadExpr<Key1, Key2>& t_quad_expr, const Constant& t_constant);
 
+    virtual ~Expr() = default;
+
     Expr(const Expr& t_src);
     Expr(Expr&&) noexcept = default;
 

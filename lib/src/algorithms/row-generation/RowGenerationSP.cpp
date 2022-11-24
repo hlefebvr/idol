@@ -70,7 +70,7 @@ Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_pr
         result += sign * coeff * param.as<Var>();
     }
 
-    for (const auto &[var, constant]: m_cut_template.row().lhs().linear()) {
+    for (const auto &[var, constant]: m_cut_template.row().linear()) {
         result += -sign * constant.numerical() * t_primals.get(var);
         for (const auto &[param, coeff]: constant) {
             result += -sign * t_primals.get(var) * coeff * param.as<Var>();

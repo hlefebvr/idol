@@ -76,16 +76,16 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
                 model.update_matrix_coeff(c2, y, 2.);
                 
-                CHECK(model.get_row(c2).lhs().linear().get(x).numerical() == 1._a);
-                CHECK(model.get_row(c2).lhs().linear().get(y).numerical() == 2._a);
+                CHECK(model.get_row(c2).linear().get(x).numerical() == 1._a);
+                CHECK(model.get_row(c2).linear().get(y).numerical() == 2._a);
 
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 2._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 2._a);
 
-                CHECK(model.get_row(c2).lhs().linear().size() == 2);
-                CHECK(model.get_column(y).components().linear().size() == 2);
+                CHECK(model.get_row(c2).linear().size() == 2);
+                CHECK(model.get_column(y).linear().size() == 2);
 
             }
 
@@ -93,16 +93,16 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
                 model.update_matrix_coeff(c2, y, 0.);
 
-                CHECK(model.get_row(c2).lhs().linear().get(x).numerical() == 1._a);
-                CHECK(model.get_row(c2).lhs().linear().get(y).numerical() == 0._a);
+                CHECK(model.get_row(c2).linear().get(x).numerical() == 1._a);
+                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).lhs().linear().size() == 1);
-                CHECK(model.get_column(y).components().linear().size() == 1);
+                CHECK(model.get_row(c2).linear().size() == 1);
+                CHECK(model.get_column(y).linear().size() == 1);
 
             }
 
@@ -114,16 +114,16 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
                 model.update_matrix_coeff(c2, x, 2.);
 
-                CHECK(model.get_row(c2).lhs().linear().get(x).numerical() == 2._a);
-                CHECK(model.get_row(c2).lhs().linear().get(y).numerical() == 0._a);
+                CHECK(model.get_row(c2).linear().get(x).numerical() == 2._a);
+                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).lhs().linear().size() == 1);
-                CHECK(model.get_column(x).components().linear().size() == 2);
+                CHECK(model.get_row(c2).linear().size() == 1);
+                CHECK(model.get_column(x).linear().size() == 2);
 
             }
 
@@ -131,16 +131,16 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
                 model.update_matrix_coeff(c2, x, 0.);
 
-                CHECK(model.get_row(c2).lhs().linear().get(x).numerical() == 0._a);
-                CHECK(model.get_row(c2).lhs().linear().get(y).numerical() == 0._a);
+                CHECK(model.get_row(c2).linear().get(x).numerical() == 0._a);
+                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(x).components().linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).components().linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(x).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).lhs().linear().size() == 0);
-                CHECK(model.get_column(x).components().linear().size() == 1);
+                CHECK(model.get_row(c2).linear().size() == 0);
+                CHECK(model.get_column(x).linear().size() == 1);
 
             }
 
@@ -156,8 +156,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             auto y = model.add_var(0., 1., Continuous, 0.);
 
             CHECK(model.obj().linear().size() == 0);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 0._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 0._a);
+            CHECK(model.get_column(x).obj().numerical() == 0._a);
+            CHECK(model.get_column(y).obj().numerical() == 0._a);
 
         }
 
@@ -169,8 +169,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 2);
             CHECK(model.obj().linear().get(x).numerical() == 1._a);
             CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 1._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 2._a);
+            CHECK(model.get_column(x).obj().numerical() == 1._a);
+            CHECK(model.get_column(y).obj().numerical() == 2._a);
 
         }
 
@@ -190,8 +190,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 2);
             CHECK(model.obj().linear().get(x).numerical() == 1._a);
             CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 1._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 2._a);
+            CHECK(model.get_column(x).obj().numerical() == 1._a);
+            CHECK(model.get_column(y).obj().numerical() == 2._a);
 
         }
 
@@ -207,8 +207,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 1);
             CHECK(model.obj().linear().get(x).numerical() == 0._a);
             CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 0._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 2._a);
+            CHECK(model.get_column(x).obj().numerical() == 0._a);
+            CHECK(model.get_column(y).obj().numerical() == 2._a);
 
         }
 
@@ -224,8 +224,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 0);
             CHECK(model.obj().linear().get(x).numerical() == 0._a);
             CHECK(model.obj().linear().get(y).numerical() == 0._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 0._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 0._a);
+            CHECK(model.get_column(x).obj().numerical() == 0._a);
+            CHECK(model.get_column(y).obj().numerical() == 0._a);
 
         }
 
@@ -241,8 +241,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 2);
             CHECK(model.obj().linear().get(x).numerical() == 1._a);
             CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 1._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 2._a);
+            CHECK(model.get_column(x).obj().numerical() == 1._a);
+            CHECK(model.get_column(y).obj().numerical() == 2._a);
 
         }
 
@@ -258,8 +258,8 @@ TEST_CASE("05. Model", "[model][modeling]") {
             CHECK(model.obj().linear().size() == 1);
             CHECK(model.obj().linear().get(x).numerical() == 0._a);
             CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).objective_coefficient().numerical() == 0._a);
-            CHECK(model.get_column(y).objective_coefficient().numerical() == 2._a);
+            CHECK(model.get_column(x).obj().numerical() == 0._a);
+            CHECK(model.get_column(y).obj().numerical() == 2._a);
 
         }
 

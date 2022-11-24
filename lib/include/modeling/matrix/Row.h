@@ -9,7 +9,49 @@
 #include "AbstractMatrixCoefficient.h"
 #include "../expressions/Expr.h"
 
-template<class Key1, class Key2> class Expr;
+namespace impl {
+    class Row;
+}
+
+class impl::Row {
+    ::Expr<Var, Var> m_impl;
+protected:
+    ::Expr<Var, Var>& impl() { return m_impl; }
+public:
+    Row() = default;
+    Row(::Expr<Var, Var>&& t_lhs, ::Expr<Var, Var>&& t_rhs);
+    Row(::Expr<Var, Var>&& t_lhs, const ::Expr<Var, Var>& t_rhs);
+    Row(const ::Expr<Var, Var>& t_lhs, ::Expr<Var, Var>&& t_rhs);
+    Row(const ::Expr<Var, Var>& t_lhs, const ::Expr<Var, Var>& t_rhs);
+
+    Row(const Row& t_src) = default;
+    Row(Row&& t_src) noexcept = default;
+
+    Row& operator=(const Row& t_src) = default;
+    Row& operator=(Row&& t_src) noexcept = default;
+
+    Constant& rhs() { return m_impl.constant(); }
+    const Constant& rhs() const { return m_impl.constant(); }
+
+    LinExpr<Var>& linear() { return m_impl.linear(); }
+    const LinExpr<Var>& linear() const { return m_impl.linear(); }
+
+    QuadExpr<Var, Var>& quadratic() { return m_impl.quadratic(); }
+    const QuadExpr<Var, Var>& quadratic() const { return m_impl.quadratic(); }
+
+    void set_linear(LinExpr<Var>&& t_lin_expr) {  m_impl.linear() = std::move(t_lin_expr); }
+    void set_linear(const LinExpr<Var>& t_lin_expr) {  m_impl.linear() = t_lin_expr; }
+
+    void set_quadratic(QuadExpr<Var, Var>&& t_quad_expr) { m_impl.quadratic() = std::move(t_quad_expr); }
+    void set_quadratic(const QuadExpr<Var, Var>& t_quad_expr) { m_impl.quadratic() = t_quad_expr; }
+
+    void set_rhs(Constant&& t_rhs) { m_impl.constant() = std::move(t_rhs); }
+    void set_rhs(const Constant& t_rhs) { m_impl.constant() = t_rhs; }
+
+    Row& operator+=(const Row& t_rhs) { m_impl += t_rhs.m_impl; return *this; }
+    Row& operator-=(const Row& t_rhs) { m_impl -= t_rhs.m_impl; return *this; }
+    Row& operator*=(double t_rhs) { m_impl *= t_rhs; return *this; }
+};
 
 /**
  * Row modeling object.
@@ -19,18 +61,14 @@ template<class Key1, class Key2> class Expr;
  *
  * The whole left handside is stored as an Expr while the whole right handside is stored as a Constant.
  */
-class Row {
-    Expr<Var, Var> m_lhs;
+class Row : public impl::Row {
+    friend class Matrix;
 public:
-    /**
-     * Creates an empty row.
-     */
     Row() = default;
-
-    Row(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
-    Row(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
-    Row(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
-    Row(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
+    Row(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs) : impl::Row(std::move(t_lhs), std::move(t_rhs)) {}
+    Row(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs) : impl::Row(std::move(t_lhs), t_rhs) {}
+    Row(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs) : impl::Row(t_lhs, std::move(t_rhs)) {}
+    Row(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs) : impl::Row(t_lhs, t_rhs) {}
 
     Row(const Row& t_src) = default;
     Row(Row&& t_src) noexcept = default;
@@ -38,58 +76,30 @@ public:
     Row& operator=(const Row& t_src) = default;
     Row& operator=(Row&& t_src) noexcept = default;
 
-    /**
-     * Returns the left handside.
-     */
-    Expr<Var, Var>& lhs() { return m_lhs; }
-
-    /**
-     * Returns the left handisde.
-     */
-    const Expr<Var, Var>& lhs() const { return m_lhs; }
-
-    /**
-     * Returns the right handside.
-     */
-    Constant& rhs() { return m_lhs.constant(); }
-
-    /**
-     * Returns the right handside.
-     */
-    const Constant& rhs() const { return m_lhs.constant(); }
-
-    /**
-     * Sets the left handside to the expression given as argument.
-     * @param t_lhs The desired left handside.
-     */
-    void set_lhs(LinExpr<Var> t_lhs);
-
-    /**
-     * Sets the right handside as the Constant given as argument.
-     * @param t_rhs The desired right handside.
-     */
-    void set_rhs(Constant t_rhs);
-
-    Row operator*=(double t_factor);
-    Row operator+=(const Row& t_factor);
-
-    /**
-     * Returns the transpose of the row.
-     *
-     * Variables therefore become parameters and parameters become variables.
-     *
-     * **Example 1**
-     * \f$ (f + Q\bar\xi)^Tx \le b^T\bar\xi \f$ gives \f$ (b + Q^T\bar x)^T\xi \le f^T\bar x \f$
-     */
-    Row transpose() const;
-
     Row fix(const Solution::Primal& t_primals) const;
 
     static const Row EmptyRow;
 };
 
 static std::ostream &operator<<(std::ostream& t_os, const Row& t_row) {
-    return t_os << '[' << t_row.lhs().linear() << "] [" << t_row.rhs() << ']';
+
+    t_os << '[';
+
+    if (t_row.linear().empty()) {
+
+        t_os << t_row.quadratic();
+
+    } else {
+
+        t_os << t_row.linear();
+
+        if (!t_row.quadratic().empty()) {
+            t_os << " + " << t_row.quadratic();
+        }
+
+    }
+
+    return t_os << "] [" << t_row.rhs() << ']';
 }
 
 #endif //OPTIMIZE_ROW_H
