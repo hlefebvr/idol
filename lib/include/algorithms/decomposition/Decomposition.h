@@ -5,19 +5,27 @@
 #ifndef OPTIMIZE_DECOMPOSITION_H
 #define OPTIMIZE_DECOMPOSITION_H
 
-#include "GenerationAlgorithmWithAttributes.h"
-#include "../attributes/Attributes.h"
-#include "../attributes/Attributes_Base.h"
+#include "GenerationAlgorithm.h"
 #include <functional>
 #include <memory>
 
-class Decomposition : public AlgorithmWithAttributes<AttributesSections::Base> {
+class Decomposition : public Algorithm {
     std::unique_ptr<Algorithm> m_rmp_strategy;
     std::list<std::unique_ptr<Algorithm>> m_generation_strategies;
 protected:
+    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
+
+    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
+
+    bool set_parameter_bool(const Parameter<bool> &t_param, bool t_value) override;
+
+    [[nodiscard]] std::optional<double> get_parameter_double(const Parameter<double> &t_param) const override;
+
+    [[nodiscard]] std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
+
     void execute() override;
 public:
-    Decomposition();
+    Decomposition() = default;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
@@ -52,7 +60,7 @@ public:
     template<class T, class ...Args> T& set_rmp_solution_strategy(Args&& ...t_args) {
         auto* solution_strategy = new T(std::forward<Args>(t_args)...);
         m_rmp_strategy.reset(solution_strategy);
-        m_rmp_strategy->set<Attr::InfeasibleOrUnboundedInfo>(true);
+        m_rmp_strategy->set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
         return *solution_strategy;
     }
 

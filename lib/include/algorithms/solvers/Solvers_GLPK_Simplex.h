@@ -6,7 +6,6 @@
 #define OPTIMIZE_SOLVERS_GLPK_H
 
 #include "Solver.h"
-#include "../attributes/Attributes.h"
 #include "../../containers/Optional.h"
 #include <stack>
 
@@ -30,11 +29,7 @@ class Solvers::GLPK_Simplex : public Solver<int, int> {
     bool m_rebuild_basis = false;
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
-
-    Attributes<AttributesSections::Base> m_attributes;
 protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
     void execute() override;
 
     int create(const Var& t_var, bool t_with_collaterals) override;

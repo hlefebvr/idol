@@ -13,34 +13,6 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntAttr_ModelSense, t_model.sense() == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
 
-    set_callback_attribute<Attr::InfeasibleOrUnboundedInfo>([this](bool t_value) {
-        m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
-    });
-
-    set_callback_attribute<Attr::Presolve>([this](bool t_value) {
-        m_model.set(GRB_IntParam_Presolve, t_value);
-    });
-
-    set_callback_attribute<Attr::MipGap>([this](double t_value){
-        m_model.set(GRB_DoubleParam_MIPGap, t_value);
-    });
-
-    set_callback_attribute<Attr::CutOff>([this](double t_value){
-        m_model.set(GRB_DoubleParam_Cutoff, t_value);
-    });
-
-    set_callback_attribute<Attr::BestObjStop>([this](double t_value){
-        m_model.set(GRB_DoubleParam_BestObjStop, t_value);
-    });
-
-    set_callback_attribute<Attr::BestBoundStop>([this](double t_value){
-        m_model.set(GRB_DoubleParam_BestBdStop, t_value);
-    });
-
-    set_callback_attribute<Attr::MaxThreads>([this](unsigned int t_num_threads) {
-        m_model.set(GRB_IntParam_Threads, (int) t_num_threads);
-    });
-
     for (const auto& var : t_model.vars()) {
         add_future(var, false);
     }
@@ -51,15 +23,59 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
 }
 
+bool Solvers::Gurobi::set_parameter_double(const Parameter<double> &t_param, double t_value) {
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::MIPGap) {
+            m_model.set(GRB_DoubleParam_MIPGap, t_value);
+        } else if (t_param == Param::Algorithm::CutOff) {
+            m_model.set(GRB_DoubleParam_Cutoff, t_value);
+        } else if (t_param == Param::Algorithm::BestObjStop) {
+            m_model.set(GRB_DoubleParam_BestObjStop, t_value);
+        } else if (t_param == Param::Algorithm::BestBoundStop) {
+            m_model.set(GRB_DoubleParam_BestBdStop, t_value);
+        }
+
+        return Algorithm::set_parameter_double(t_param, t_value);
+    }
+    return false;
+}
+
+bool Solvers::Gurobi::set_parameter_int(const Parameter<int> &t_param, int t_value) {
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::MaxThreads) {
+            m_model.set(GRB_IntParam_Threads, t_value);
+        }
+
+        return Algorithm::set_parameter_int(t_param, t_value);
+    }
+    return false;
+}
+
+bool Solvers::Gurobi::set_parameter_bool(const Parameter<bool> &t_param, bool t_value) {
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+            m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+        } else if (t_param == Param::Algorithm::Presolve) {
+            m_model.set(GRB_IntParam_Presolve, t_value);
+        }
+
+        return Algorithm::set_parameter_bool(t_param, t_value);
+    }
+    return false;
+}
+
 void Solvers::Gurobi::execute() {
 
     update();
 
-    if (get<Attr::ResetBeforeSolving>()) {
+    if (get(Param::Algorithm::ResetBeforeSolving)) {
         m_model.reset();
     }
 
-    m_model.set(GRB_DoubleParam_TimeLimit, get<Attr::TimeLimit>());
+    m_model.set(GRB_DoubleParam_TimeLimit, get(Param::Algorithm::TimeLimit));
 
     m_model.optimize();
 
@@ -142,7 +158,7 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
         throw Exception("Only available for infeasible problems.");
     }
 
-    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (!get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
         throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access farkas dual information.");
     }
 
@@ -163,7 +179,7 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
         throw Exception("Only available for unbounded problems.");
     }
 
-    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (!get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
         throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access extreme ray information.");
     }
 

@@ -47,7 +47,7 @@ Callbacks::RowGeneration::RowGeneration(Algorithm &t_algorithm, Event t_head, Ar
           m_proxy(dynamic_cast<AlgorithmInCallback&>(rmp_solution_strategy())),
           m_events({ t_head, t_triggers... }) {
 
-    RowGeneration::set<Attr::MaxIterations>(1);
+    RowGeneration::set(Param::Algorithm::MaxIterations, 1);
 
 }
 

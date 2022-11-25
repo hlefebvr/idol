@@ -56,7 +56,7 @@ void Solvers::GLPK_Simplex::execute() {
         m_solution_status = Unbounded;
     }
 
-    if (get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
         if (m_solution_status == Infeasible) {
             compute_farkas_certificate();
         } else if (m_solution_status == Unbounded) {
@@ -395,7 +395,7 @@ Solution::Dual Solvers::GLPK_Simplex::farkas_certificate() const {
         throw Exception("Only available for infeasible problems.");
     }
 
-    if (!Algorithm::get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (!Algorithm::get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
         throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access farkas dual information.");
     }
 
@@ -408,7 +408,7 @@ Solution::Primal Solvers::GLPK_Simplex::unbounded_ray() const {
         throw Exception("Only available for unbounded problems.");
     }
 
-    if (!get<Attr::InfeasibleOrUnboundedInfo>()) {
+    if (!get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
         throw Exception("Turn on InfeasibleOrUnboundedInfo before solving your model to access extreme ray information.");
     }
 

@@ -57,3 +57,19 @@ bool AlgorithmInCallback::has(const Ctr &t_ctr) const {
     return m_algorithm.has(t_ctr);
 }
 
+bool AlgorithmInCallback::set_parameter_double(const Parameter<double> &t_param, double t_value) {
+    return m_algorithm.set_parameter_double(t_param, t_value);
+}
+
+bool AlgorithmInCallback::set_parameter_int(const Parameter<int> &t_param, int t_value) {
+    return m_algorithm.set_parameter_int(t_param, t_value);
+}
+
+std::optional<double> AlgorithmInCallback::get_parameter_double(const Parameter<double> &t_param) const {
+    return m_algorithm.get_parameter_double(t_param);
+}
+
+std::optional<int> AlgorithmInCallback::get_parameter_int(const Parameter<int> &t_param) const {
+    return m_algorithm.get_parameter_int(t_param);
+}
+

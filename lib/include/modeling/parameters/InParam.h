@@ -24,17 +24,17 @@ class Var;
  *
  * A model cannot have a parameter referring to one of its own variables.
  */
-class Param {
+class InParam {
     std::variant<Var, Ctr> m_value;
 public:
-    explicit Param(const Var& t_var) : m_value(t_var) {}
-    explicit Param(const Ctr& t_ctr) : m_value(t_ctr) {}
+    explicit InParam(const Var& t_var) : m_value(t_var) {}
+    explicit InParam(const Ctr& t_ctr) : m_value(t_ctr) {}
 
-    Param(const Param& t_param) = default;
-    Param(Param&& t_param) noexcept = default;
+    InParam(const InParam& t_param) = default;
+    InParam(InParam&& t_param) noexcept = default;
 
-    Param& operator=(const Param& t_param) = default;
-    Param& operator=(Param&& t_param) noexcept = default;
+    InParam& operator=(const InParam& t_param) = default;
+    InParam& operator=(InParam&& t_param) noexcept = default;
 
     template<class T> [[nodiscard]] bool is() const { return std::holds_alternative<T>(m_value); }
 
@@ -51,13 +51,13 @@ public:
     [[nodiscard]] const std::string& name() const { return is<Var>() ? as<Var>().name() : as<Ctr>().name(); }
 };
 
-static Param operator!(const Var& t_var) { return Param(t_var); }
-static Param operator!(const Ctr& t_ctr) { return Param(t_ctr); }
+static InParam operator!(const Var& t_var) { return InParam(t_var); }
+static InParam operator!(const Ctr& t_ctr) { return InParam(t_ctr); }
 
-static std::ostream& operator<<(std::ostream& t_os, const Param& t_param) {
+static std::ostream& operator<<(std::ostream& t_os, const InParam& t_param) {
     return t_os << '!' << t_param.name();
 }
 
-MAKE_HASHABLE(Param)
+MAKE_HASHABLE(InParam)
 
 #endif //OPTIMIZE_IMPL_PARAM_H

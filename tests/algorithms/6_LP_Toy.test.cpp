@@ -52,7 +52,7 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
         auto c3 = model.add_ctr(x + y >= 2);
 
         TestType solver(model);
-        solver.template set<Attr::InfeasibleOrUnboundedInfo>(true);
+        solver.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
         solver.solve();
 
         const auto primal_solution = solver.primal_solution();
@@ -81,7 +81,7 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
         auto c2 = model.add_ctr(-2 * u + v + -1 * w >= 2);
 
         TestType solver(model);
-        solver.template set<Attr::InfeasibleOrUnboundedInfo>(true);
+        solver.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
         solver.solve();
 
         const auto primal_solution = solver.primal_solution();

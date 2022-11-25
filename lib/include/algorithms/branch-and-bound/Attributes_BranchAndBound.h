@@ -5,18 +5,19 @@
 #ifndef IDOL_ATTRIBUTES_BRANCHANDBOUND_H
 #define IDOL_ATTRIBUTES_BRANCHANDBOUND_H
 
+#include "../parameters/Parameters.h"
 
-#include "../attributes/AttributesMacros.h"
+IDOL_CREATE_PARAMETER_CLASS(BranchAndBound)
 
-CREATE_ATTRIBUTE_SECTION(BranchAndBound, 1);
-CREATE_ATTRIBUTE(BranchAndBound, 0, unsigned int, NodeSelection, 0);
+IDOL_CREATE_PARAMETER_TYPE(BranchAndBound, int, 1)
+IDOL_CREATE_PARAMETER(BranchAndBound, int, 0, NodeSelection, 0)
 
-namespace NodeSelections {
-    static constexpr unsigned int Automatic = 0;
-    static constexpr unsigned int WorstBound = 1;
-    static constexpr unsigned int BestBound = 2;
-    static constexpr unsigned int DepthFirst = 3;
-    static constexpr unsigned int BreadthFirst = 4;
-}
+enum NodeSelections : int {
+    Automatic,
+    WorstBound,
+    BestBound,
+    DepthFirst,
+    BreadthFirst
+};
 
 #endif //IDOL_ATTRIBUTES_BRANCHANDBOUND_H

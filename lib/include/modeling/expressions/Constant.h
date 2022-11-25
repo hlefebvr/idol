@@ -6,7 +6,7 @@
 #define OPTIMIZE_CONSTANT_H
 
 #include "../../containers/Map.h"
-#include "../parameters/Param.h"
+#include "../parameters/InParam.h"
 #include "../numericals.h"
 
 namespace Solution {
@@ -33,10 +33,10 @@ class Algorithm;
  * 2 * xi where xi is a Param will yield a Constant.
  */
 class Constant {
-    Map<Param, double> m_products;
+    Map<InParam, double> m_products;
     double m_constant = 0.;
 
-    void insert_or_add(const Param& t_param, double t_value);
+    void insert_or_add(const InParam& t_param, double t_value);
 public:
     /**
      * Create a new constant term equal to zero.
@@ -48,7 +48,7 @@ public:
      * @param t_param The parameter.
      * @param t_value The factor for the parameter.
      */
-    Constant(const Param& t_param, double t_value = 1.); // NOLINT(google-explicit-constructor)
+    Constant(const InParam& t_param, double t_value = 1.); // NOLINT(google-explicit-constructor)
 
     /**
      * Creates a new constant term equal to the constant given as argument.
@@ -69,7 +69,7 @@ public:
      * @param t_param The parameter.
      * @param t_value The factor associated to the parameter.
      */
-    void set(const Param& t_param, double t_value);
+    void set(const InParam& t_param, double t_value);
 
     /**
      * Returns the factor associated to the parameter given as argument.
@@ -77,7 +77,7 @@ public:
      * If no factor is found, zero is returned.
      * @param t_param The queried parameter.
      */
-    double get(const Param& t_param) const;
+    double get(const InParam& t_param) const;
 
     /**
      * Sets the numerical term equal to the constant given as parameter.
@@ -105,8 +105,8 @@ public:
      */
     bool is_numerical() const;
 
-    using iterator = Map<Param, double>::iterator;
-    using const_iterator = Map<Param, double>::const_iterator;
+    using iterator = Map<InParam, double>::iterator;
+    using const_iterator = Map<InParam, double>::const_iterator;
 
     iterator begin() { return m_products.begin(); }
     iterator end() { return m_products.end(); }
@@ -133,7 +133,7 @@ public:
      * Resulting zero entries are removed.
      * @param t_term The parameter to add.
      */
-    Constant& operator+=(Param t_term);
+    Constant& operator+=(InParam t_term);
 
     /**
      * Adds up another constant term (i.e., both the numerical terms and every Param-double pairs are added up).
@@ -145,7 +145,7 @@ public:
 
     Constant& operator-=(const Constant& t_term);
     Constant& operator-=(double t_term);
-    Constant& operator-=(Param t_term);
+    Constant& operator-=(InParam t_term);
 
     double fix(const Solution::Primal& t_primals) const;
 
@@ -156,7 +156,7 @@ public:
 
 static std::ostream& operator<<(std::ostream& t_os, const Constant& t_coefficient) {
 
-    const auto print_term = [&t_os](const Param& t_param, double t_coeff) {
+    const auto print_term = [&t_os](const InParam& t_param, double t_coeff) {
         if (!equals(t_coeff, 1., ToleranceForSparsity)) {
             t_os << t_coeff << ' ';
         }

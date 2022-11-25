@@ -10,7 +10,7 @@ TEST_CASE("03. Param", "[attributes][modeling]") {
 
     SECTION("create a new parameter with type Continuous") {
 
-        auto xi = Param(model.add_var(0., 1., Continuous, 0.) );
+        auto xi = InParam(model.add_var(0., 1., Continuous, 0.) );
 
         CHECK(model.get_lb(xi.as<Var>()) == 0._a);
         CHECK(model.get_ub(xi.as<Var>()) == 1._a);
@@ -20,14 +20,14 @@ TEST_CASE("03. Param", "[attributes][modeling]") {
 
     SECTION("create a new parameter with type Integer") {
 
-        auto xi = Param(model.add_var(0., 1., Integer, 0.) );
+        auto xi = InParam(model.add_var(0., 1., Integer, 0.) );
         CHECK(model.get_type(xi.as<Var>()) == Integer);
 
     }
 
     SECTION("create a new parameter with type Binary") {
 
-        auto xi = Param(model.add_var(0., 1., Binary, 0.) );
+        auto xi = InParam(model.add_var(0., 1., Binary, 0.) );
         CHECK(model.get_type(xi.as<Var>()) == Binary);
 
     }

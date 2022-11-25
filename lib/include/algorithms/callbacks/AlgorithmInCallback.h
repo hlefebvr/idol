@@ -13,8 +13,11 @@ class AlgorithmInCallback : public Algorithm {
     Algorithm& m_algorithm;
     Callback::Context* m_context = nullptr;
 protected:
-    AbstractAttributes &attributes() override { return m_algorithm.attributes(); }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_algorithm.attributes(); }
+    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
+    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
+    std::optional<double> get_parameter_double(const Parameter<double> &t_param) const override;
+    std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
+
     void execute() override {}
 public:
     explicit AlgorithmInCallback(Algorithm& t_rmp_solution_strategy);

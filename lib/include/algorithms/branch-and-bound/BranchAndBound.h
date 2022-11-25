@@ -7,8 +7,6 @@
 
 #include "Node.h"
 #include "../Algorithm.h"
-#include "../attributes/Attributes.h"
-#include "../attributes/Attributes_Base.h"
 #include "../../modeling/numericals.h"
 #include "../logs/Log.h"
 #include "NodeStrategy.h"
@@ -19,7 +17,7 @@
 
 class Callback;
 
-class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, AttributesSections::BranchAndBound> {
+class BranchAndBound : public Algorithm {
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
     bool m_is_terminated = false;
@@ -32,6 +30,13 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, 
     std::unique_ptr<Algorithm> m_solution_strategy;
     std::list<std::unique_ptr<::Callback>> m_callbacks;
 
+    Param::BranchAndBound::values<int> m_params_int;
+protected:
+    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
+
+    std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
+
+private:
     void initialize();
     void create_root_node();
     void solve_queued_nodes();
@@ -74,10 +79,9 @@ class BranchAndBound : public AlgorithmWithAttributes<AttributesSections::Base, 
 
     [[nodiscard]] const Node& current_node() const;
 
-protected:
     void execute() override;
 public:
-    BranchAndBound();
+    BranchAndBound() = default;
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 

@@ -8,7 +8,7 @@
 
 Constant Constant::Zero;
 
-Constant::Constant(const Param &t_param, double t_value) : m_products({ { t_param, t_value } }) {
+Constant::Constant(const InParam &t_param, double t_value) : m_products({ { t_param, t_value } }) {
     if (equals(t_value, 0., ToleranceForSparsity)) {
         m_products.clear();
     }
@@ -18,7 +18,7 @@ Constant::Constant(double t_constant) : m_constant(t_constant) {
 
 }
 
-void Constant::set(const Param &t_param, double t_value) {
+void Constant::set(const InParam &t_param, double t_value) {
 
     if (equals(t_value, 0., ToleranceForSparsity)) {
         m_products.erase(t_param);
@@ -31,7 +31,7 @@ void Constant::set(const Param &t_param, double t_value) {
     }
 }
 
-double Constant::get(const Param &t_param) const {
+double Constant::get(const InParam &t_param) const {
     auto it = m_products.find(t_param);
     return it == m_products.end() ? 0. : it->second;
 }
@@ -57,7 +57,7 @@ Constant &Constant::operator+=(double t_term) {
     return *this;
 }
 
-Constant &Constant::operator+=(Param t_term) {
+Constant &Constant::operator+=(InParam t_term) {
     insert_or_add(t_term, 1.);
     return *this;
 }
@@ -75,7 +75,7 @@ Constant &Constant::operator-=(double t_term) {
     return *this;
 }
 
-Constant &Constant::operator-=(Param t_term) {
+Constant &Constant::operator-=(InParam t_term) {
     insert_or_add(t_term, -1.);
     return *this;
 }
@@ -88,7 +88,7 @@ Constant &Constant::operator-=(const Constant &t_term) {
     return *this;
 }
 
-void Constant::insert_or_add(const Param &t_param, double t_value) {
+void Constant::insert_or_add(const InParam &t_param, double t_value) {
     if (equals(t_value, 0., ToleranceForSparsity)) {
         return;
     }

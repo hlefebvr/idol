@@ -6,7 +6,6 @@
 #define OPTIMIZE_SOLVERS_GUROBI_H
 
 #include "Solver.h"
-#include "../attributes/Attributes.h"
 #include "../callbacks/Callback.h"
 #include <utility>
 
@@ -26,16 +25,18 @@ class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
 
     template<class CallbackT> class Callback;
 
-    Attributes<AttributesSections::Base> m_attributes;
-
     void analyze_status();
     Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
     Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBConstr&)>& t_get_dual_value) const;
     static char gurobi_type(CtrType t_type);
     static char gurobi_type(VarType t_type);
 protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
+    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
+
+    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
+
+    bool set_parameter_bool(const Parameter<bool> &t_param, bool t_value) override;
+
     void execute() override;
     void execute_iis() override;
 

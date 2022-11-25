@@ -3,12 +3,6 @@
 //
 #include "../../../include/algorithms/decomposition/Decomposition.h"
 
-Decomposition::Decomposition() {
-    set_callback_attribute<Attr::CutOff>([this](double t_cutoff) {
-        m_generation_strategies.front()->set<Attr::CutOff>(t_cutoff);
-    });
-}
-
 void Decomposition::execute () {
 
     if (!m_rmp_strategy) {
@@ -148,4 +142,27 @@ bool Decomposition::has(const Ctr &t_ctr) const {
         }
     }
     return false;
+}
+
+bool Decomposition::set_parameter_double(const Parameter<double> &t_param, double t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+    return Algorithm::set_parameter_double(t_param, t_value);
+}
+
+bool Decomposition::set_parameter_int(const Parameter<int> &t_param, int t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+    return Algorithm::set_parameter_int(t_param, t_value);
+}
+
+bool Decomposition::set_parameter_bool(const Parameter<bool> &t_param, bool t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+    return Algorithm::set_parameter_bool(t_param, t_value);
+}
+
+std::optional<double> Decomposition::get_parameter_double(const Parameter<double> &t_param) const {
+    return Algorithm::get_parameter_double(t_param);
+}
+
+std::optional<int> Decomposition::get_parameter_int(const Parameter<int> &t_param) const {
+    return Algorithm::get_parameter_int(t_param);
 }

@@ -10,7 +10,8 @@
 #include "../modeling/constraints/TempCtr.h"
 #include "../errors/NotImplemented.h"
 #include "attributes/Timer.h"
-#include "attributes/Attributes.h"
+#include "parameters/Parameters_Algorithm.h"
+#include "logs/Log.h"
 #include <list>
 
 class Node;
@@ -25,23 +26,74 @@ class Var;
  */
 class Algorithm {
     friend class AlgorithmInCallback;
+
     Timer m_timer;
+    Param::Algorithm::values<double> m_params_double;
+    Param::Algorithm::values<int> m_params_int;
+    Param::Algorithm::values<bool> m_params_bool;
+
     SolutionStatus m_solution_status;
     Reason m_reason;
 protected:
-    virtual AbstractAttributes& attributes() = 0;
-    [[nodiscard]] virtual const AbstractAttributes& attributes() const = 0;
     virtual void execute() = 0;
     virtual void execute_iis() {
         throw NotImplemented("Computing IIS", "execute_iis");
     }
     void set_status(SolutionStatus t_status) { m_solution_status = t_status; }
-
     void set_reason(Reason t_reason) { m_reason = t_reason; }
+
+
+    virtual bool set_parameter_double(const Parameter<double>& t_param, double t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return false;
+        }
+        m_params_double.set(t_param, t_value);
+        return true;
+    }
+
+    virtual bool set_parameter_int(const Parameter<int>& t_param, int t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return false;
+        }
+        m_params_int.set(t_param, t_value);
+        return true;
+    }
+
+    virtual bool set_parameter_bool(const Parameter<bool>& t_param, bool t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return false;
+        }
+        m_params_bool.set(t_param, t_value);
+        return true;
+    }
+
+    [[nodiscard]] virtual std::optional<double> get_parameter_double(const Parameter<double>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return {};
+        }
+        return m_params_double.get(t_param);
+    }
+
+    [[nodiscard]] virtual std::optional<int> get_parameter_int(const Parameter<int>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return {};
+        }
+        return m_params_int.get(t_param);
+    }
+
+    [[nodiscard]] virtual std::optional<bool> get_parameter_bool(const Parameter<bool>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            return {};
+        }
+        return m_params_bool.get(t_param);
+    }
+
 public:
     virtual ~Algorithm() = default;
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
+
+    [[nodiscard]] double remaining_time(Timer::Unit t_unit = Timer::Seconds) const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count(t_unit)); }
 
     [[nodiscard]] SolutionStatus status() const { return m_solution_status; }
 
@@ -202,41 +254,43 @@ public:
     }
 
     /* ATTRIBUTES */
-
-    /**
-     * Sets the value of an attributes T with the value given as argument.
-     * @tparam T The attribute class.
-     * @param t_value The value for the attribute.
-     */
-    template<class T>
-    void set(typename T::value_type t_value) {
-        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
-        if (ptr == nullptr) {
-            throw Exception("Wrong parameter type required: " + T::name() + ".");
+    void set(const Parameter<double>& t_param, double t_value) {
+        if (!set_parameter_double(t_param, t_value)) {
+            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
         }
-        ptr->template set<T>(std::move(t_value));
     }
 
-    /**
-     * Returns the value of a given attribute.
-     * @tparam T The attribute class.
-     */
-    template<class T>
-    typename T::value_type get() const {
-        auto* ptr = dynamic_cast<const typename T::attr_type*>(&attributes());
-        if (ptr == nullptr) {
-            throw Exception("Wrong parameter type required: " + T::name() + ".");
+    void set(const Parameter<bool>& t_param, bool t_value) {
+        if (!set_parameter_bool(t_param, t_value)) {
+            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
         }
-        return ptr->template get<T>();
     }
 
-    template<class T>
-    void set_callback_attribute(std::function<void(typename T::value_type)> t_function) {
-        auto* ptr = dynamic_cast<typename T::attr_type*>(&attributes());
-        if (ptr == nullptr) {
-            throw Exception("Wrong parameter type required: " + T::name() + ".");
+    void set(const Parameter<int>& t_param, int t_value) {
+        if (!set_parameter_int(t_param, t_value)) {
+            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
         }
-        ptr->template set_callback<T>(t_function);
+    }
+
+    double get(const Parameter<double>& t_param) const {
+        if (const auto optional  = get_parameter_double(t_param) ; optional.has_value()) {
+            return optional.value();
+        }
+        throw Exception("Could not read parameter " + t_param.name() + ".");
+    }
+
+    bool get(const Parameter<bool>& t_param) const {
+        if (const auto optional  = get_parameter_bool(t_param) ; optional.has_value()) {
+            return optional.value();
+        }
+        throw Exception("Could not read parameter " + t_param.name() + ".");
+    }
+
+    int get(const Parameter<int>& t_param) const {
+        if (const auto optional  = get_parameter_int(t_param) ; optional.has_value()) {
+            return optional.value();
+        }
+        throw Exception("Could not read parameter " + t_param.name() + ".");
     }
 
     /* CASTS */
@@ -263,15 +317,7 @@ public:
 
 };
 
-template<class ...AttrT>
-class AlgorithmWithAttributes : public Algorithm {
-    Attributes<AttrT...> m_attributes;
-protected:
-    AbstractAttributes &attributes() override { return m_attributes; }
-    [[nodiscard]] const AbstractAttributes &attributes() const override { return m_attributes; }
-};
-
-class VoidAlgorithm final : public AlgorithmWithAttributes<> {
+class VoidAlgorithm final : public Algorithm {
 protected:
     void execute() override { throw Exception("Executing VoidAlgorithm is not allowed."); }
 public:

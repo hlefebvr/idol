@@ -184,13 +184,13 @@ void BranchAndBound::prepare_node_solution() {
 
 void BranchAndBound::solve_current_node() {
     if (m_solution_strategy->sense() == Minimize) {
-        m_solution_strategy->set<Attr::BestBoundStop>(std::min(m_best_upper_bound, get<Attr::BestBoundStop>()));
+        m_solution_strategy->set(Param::Algorithm::BestBoundStop, std::min(m_best_upper_bound, get(Param::Algorithm::BestBoundStop)));
     } else {
-        m_solution_strategy->set<Attr::BestObjStop>(std::min(m_best_upper_bound, get<Attr::BestObjStop>()));
+        m_solution_strategy->set(Param::Algorithm::BestObjStop, std::min(m_best_upper_bound, get(Param::Algorithm::BestObjStop)));
     }
 
-    const double remaining_time = std::max(0., get<Attr::TimeLimit>() - time().count());
-    m_solution_strategy->set<Attr::TimeLimit>(remaining_time);
+    const double remaining_time = std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
+    m_solution_strategy->set(Param::Algorithm::TimeLimit, remaining_time);
 
     m_solution_strategy->solve();
     m_nodes->save_current_node_solution(*m_solution_strategy);
@@ -238,7 +238,7 @@ void BranchAndBound::reset_current_node() {
 
 bool BranchAndBound::current_node_is_above_upper_bound() {
     const double objective_value = current_node().objective_value();
-    return is_pos_inf(objective_value) || objective_value > std::min(get<Attr::CutOff>(), m_best_upper_bound);
+    return is_pos_inf(objective_value) || objective_value > std::min(get(Param::Algorithm::CutOff), m_best_upper_bound);
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
@@ -260,7 +260,7 @@ void BranchAndBound::add_current_node_to_active_nodes() {
 }
 
 void BranchAndBound::prune_active_nodes_by_bound() {
-    m_nodes->active_nodes().prune_by_bound(std::min(get<Attr::CutOff>(), m_best_upper_bound));
+    m_nodes->active_nodes().prune_by_bound(std::min(get(Param::Algorithm::CutOff), m_best_upper_bound));
 }
 
 void BranchAndBound::update_best_lower_bound() {
@@ -404,7 +404,7 @@ double BranchAndBound::upper_bound() const {
 }
 
 bool BranchAndBound::iteration_limit_is_reached() const {
-    return m_iteration >= get<Attr::MaxIterations>();
+    return m_iteration >= get(Param::Algorithm::MaxIterations);
 }
 
 bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
@@ -418,7 +418,7 @@ bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
 }
 
 bool BranchAndBound::time_limit_is_reached() const {
-    return get<Attr::TimeLimit>() <= time().count();
+    return get(Param::Algorithm::TimeLimit) <= time().count();
 }
 
 void BranchAndBound::terminate_for_time_limit_is_reached() {
@@ -427,12 +427,6 @@ void BranchAndBound::terminate_for_time_limit_is_reached() {
     set_status(m_nodes->has_incumbent() ? Feasible : Infeasible);
     set_reason(TimeLimit);
     terminate();
-}
-
-BranchAndBound::BranchAndBound() {
-    set_callback_attribute<Attr::MaxThreads>([&](unsigned int t_n_threads){
-        m_solution_strategy->set<Attr::MaxThreads>(t_n_threads);
-    });
 }
 
 double BranchAndBound::get_lb(const Var &t_var) const {
@@ -465,4 +459,19 @@ CtrType BranchAndBound::get_type(const Ctr &t_ctr) const {
 
 bool BranchAndBound::has(const Ctr &t_ctr) const {
     return m_solution_strategy->has(t_ctr);
+}
+
+bool BranchAndBound::set_parameter_int(const Parameter<int> &t_param, int t_value) {
+    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
+        m_params_int.set(t_param, t_value);
+        return true;
+    }
+    return Algorithm::set_parameter_int(t_param, t_value);;
+}
+
+std::optional<int> BranchAndBound::get_parameter_int(const Parameter<int> &t_param) const {
+    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
+        return m_params_int.get(t_param);
+    }
+    return Algorithm::get_parameter_int(t_param);
 }

@@ -9,7 +9,7 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
     Model sp;
     Model model;
 
-    auto xi = Param(sp.add_var(0., 1., Continuous, 0.) );
+    auto xi = InParam(sp.add_var(0., 1., Continuous, 0.) );
     auto x = model.add_var(0., 1., Continuous, 0.);
     auto y = model.add_var(0., 1., Continuous, 0.);
 

@@ -9,7 +9,7 @@ TEST_CASE("01. Var", "[variables][modeling]") {
     Model sp;
     Model model;
 
-    auto xi = Param(sp.add_var(0., 1., Continuous, 0.) );
+    auto xi = InParam(sp.add_var(0., 1., Continuous, 0.) );
     auto c1 = model.add_ctr(GreaterOrEqual, 0.);
     auto c2 = model.add_ctr(GreaterOrEqual, 0.);
 

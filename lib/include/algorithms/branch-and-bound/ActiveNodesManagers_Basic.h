@@ -152,7 +152,7 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::automatically_select_node_for_
 
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
-    select_node_for_branching(m_parent.template get<Attr::NodeSelection>());
+    select_node_for_branching(m_parent.get(Param::BranchAndBound::NodeSelection));
     idol_Log(Trace, "branch-and-bound", "Node " << node_selected_for_branching().id() << " has been selected for branching.");
 }
 

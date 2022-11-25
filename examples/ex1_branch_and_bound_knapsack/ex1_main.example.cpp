@@ -33,8 +33,8 @@ int main() {
     model.add_ctr(sum_weight <= instance.t());
 
     auto solver = branch_and_bound(model, x);
-    //solver.set<Attr::MaxIterations>(4);
-    //solver.add_callback<Callbacks::RoundingHeuristic>(x);
+    solver.add_callback<Callbacks::RoundingHeuristic>(x);
+    //solver.set(Param::Algorithm::MaxIterations, 4);
     solver.solve();
 
     std::cout << "Solution status = " << solver.status() << std::endl;

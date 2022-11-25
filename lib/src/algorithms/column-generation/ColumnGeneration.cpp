@@ -5,7 +5,7 @@
 #include "../../../include/algorithms/column-generation/ColumnGeneration.h"
 #include "../../../include/algorithms/logs/Log.h"
 
-ColumnGeneration::ColumnGeneration(Algorithm& t_rmp_solution_strategy) : GenerationAlgorithmWithAttributes(t_rmp_solution_strategy) {
+ColumnGeneration::ColumnGeneration(Algorithm& t_rmp_solution_strategy) : GenerationAlgorithm(t_rmp_solution_strategy) {
 
 }
 

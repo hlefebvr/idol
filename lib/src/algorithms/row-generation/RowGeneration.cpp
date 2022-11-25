@@ -5,13 +5,7 @@
 #include "../../../include/algorithms/row-generation/RowGeneration.h"
 #include "../../../include/modeling/expressions/Expr.h"
 
-RowGeneration::RowGeneration(Algorithm &t_rmp_solution_strategy) : GenerationAlgorithmWithAttributes(t_rmp_solution_strategy){
-
-    /*
-    set_callback_attribute<Attr::CutOff>([this](double t_cutoff){
-        rmp_solution_strategy().set<Attr::CutOff>(t_cutoff);
-    });
-    */
+RowGeneration::RowGeneration(Algorithm &t_rmp_solution_strategy) : GenerationAlgorithm(t_rmp_solution_strategy){
 
 }
 
@@ -54,19 +48,13 @@ void RowGeneration::initialize() {
     m_iteration = 0;
     m_violated_cut_found_at_last_iteration = true;
 
-    if (get<Attr::SubOptimalRMP>()) {
-        m_rmp_solved_to_optimality = false;
-        rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
-    }
-
     for (auto& subproblem : m_subproblems) {
         subproblem.initialize();
     }
 }
 
 void RowGeneration::solve_rmp() {
-    const double remaining_time = std::max(0., get<Attr::TimeLimit>() - time().count());
-    rmp_solution_strategy().set<Attr::TimeLimit>(remaining_time);
+    rmp_solution_strategy().set(Param::Algorithm::TimeLimit, remaining_time());
     rmp_solution_strategy().solve();
 }
 
@@ -165,15 +153,7 @@ void RowGeneration::add_cuts() {
     }
 
     if (!m_violated_cut_found_at_last_iteration) {
-        if (!m_rmp_solved_to_optimality) {
-            rmp_solution_strategy().set<Attr::MipGap>(get<Attr::MipGap>());
-            m_rmp_solved_to_optimality = true;
-        } else {
-            terminate_for_no_violated_cut_found();
-        }
-    } else if (m_rmp_solved_to_optimality && get<Attr::SubOptimalRMP>()) {
-        //rmp_solution_strategy().set<Attr::MipGap>(get<Attr::SubOptimalRMP_Tolerance>());
-        //m_rmp_solved_to_optimality = false;
+        terminate_for_no_violated_cut_found();
     }
 
 }
@@ -260,7 +240,7 @@ RowGenerationSP &RowGeneration::add_subproblem(const Ctr &t_cut) {
 }
 
 bool RowGeneration::iteration_limit_is_reached() const {
-    return m_iteration >= get<Attr::MaxIterations>();
+    return m_iteration >= get(Param::Algorithm::MaxIterations);
 }
 
 void RowGeneration::terminate_for_iteration_limit_is_reached() {
@@ -269,7 +249,7 @@ void RowGeneration::terminate_for_iteration_limit_is_reached() {
 }
 
 bool RowGeneration::time_limit_is_reached() const {
-    return get<Attr::TimeLimit>() <= time().count();
+    return remaining_time() <= 0.;
 }
 
 void RowGeneration::terminate_for_time_limit_is_reached() {
