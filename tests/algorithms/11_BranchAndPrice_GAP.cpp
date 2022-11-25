@@ -34,6 +34,15 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
             //, std::make_pair<Instance, double>(read_instance("/home/henri/CLionProjects/optimize/tests/instances/GAP/GAP_instance3.txt"), 1698.)
     );
 
+    auto node_selection = GENERATE(
+            NodeSelections::Automatic,
+            NodeSelections::DepthFirst,
+            NodeSelections::BreadthFirst,
+            NodeSelections::BestBound,
+            NodeSelections::WorstBound
+    );
+
+
     const Instance& instance = test.first;
     const double optimum = test.second;
     const unsigned int n_knapsacks = instance.n_knapsacks();
@@ -99,6 +108,8 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
             ActiveNodeManagerT,
             NodeUpdatorT
     >(rmp, alpha, subproblems, branching_candidates);
+
+    solver.set(Param::BranchAndBound::NodeSelection, node_selection);
 
     solver.solve();
 

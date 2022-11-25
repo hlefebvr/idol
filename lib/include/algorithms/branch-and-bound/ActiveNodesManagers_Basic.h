@@ -118,6 +118,8 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::initialize() {
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching(int t_strategy) {
 
+    std::cout << "Using " << t_strategy << std::endl;
+
     switch (t_strategy) {
         case NodeSelections::Automatic:
             automatically_select_node_for_branching();

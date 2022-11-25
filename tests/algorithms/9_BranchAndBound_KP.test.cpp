@@ -33,6 +33,14 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
             std::make_pair<Instance, double>(read_instance("instances/KP/KP_instance0.txt"), -235.)
         );
 
+    auto node_selection = GENERATE(
+                               NodeSelections::Automatic,
+                               NodeSelections::DepthFirst,
+                               NodeSelections::BreadthFirst,
+                               NodeSelections::BestBound,
+                               NodeSelections::WorstBound
+                           );
+
     const auto& instance = test.first;
     const double optimum = test.second;
     const unsigned int n_items = instance.n_items();
@@ -61,6 +69,8 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
     if (RoundingHeuristicT {}) {
         solver.template add_callback<Callbacks::RoundingHeuristic>(x);
     }
+
+    solver.set(Param::BranchAndBound::NodeSelection, node_selection);
 
     solver.solve();
 
