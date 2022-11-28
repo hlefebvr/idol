@@ -100,7 +100,7 @@ void Model::set_attr_var_double(const Attribute<double> &t_attr, const Var &t_va
         return;
     }
 
-    AttributeManager::set_attr_var_double(t_attr, t_var, t_value);
+    AttributeManagers::Base::set_attr_var_double(t_attr, t_var, t_value);
 }
 
 double Model::get_attr_var_double(const Attribute<double> &t_attr, const Var &t_var) const {
@@ -113,7 +113,7 @@ double Model::get_attr_var_double(const Attribute<double> &t_attr, const Var &t_
         return m_variables.attributes(t_var).ub();
     }
 
-    return AttributeManager::get_attr_var_double(t_attr, t_var);
+    return AttributeManagers::Base::get_attr_var_double(t_attr, t_var);
 }
 
 const Column &Model::get_attr_var_Column(const Attribute<Column> &t_attr, const Var &t_var) const {
@@ -122,7 +122,7 @@ const Column &Model::get_attr_var_Column(const Attribute<Column> &t_attr, const 
         return m_variables.attributes(t_var).column();
     }
 
-    return AttributeManager::get_attr_var_Column(t_attr, t_var);
+    return AttributeManagers::Base::get_attr_var_Column(t_attr, t_var);
 }
 
 const Row &Model::get_attr_ctr_Row(const Attribute<Row> &t_attr, const Ctr &t_ctr) const {
@@ -131,7 +131,7 @@ const Row &Model::get_attr_ctr_Row(const Attribute<Row> &t_attr, const Ctr &t_ct
         return m_constraints.attributes(t_ctr).row();
     }
 
-    return AttributeManager::get_attr_ctr_Row(t_attr, t_ctr);
+    return AttributeManagers::Base::get_attr_ctr_Row(t_attr, t_ctr);
 }
 
 const Constant & Model::get_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
@@ -140,7 +140,7 @@ const Constant & Model::get_attr_ctr_var_Constant(const Attribute<Constant> &t_a
         return m_constraints.attributes(t_ctr).row().linear().get(t_var);
     }
 
-    return AttributeManager::get_attr_ctr_var_Constant(t_attr, t_ctr, t_var);
+    return AttributeManagers::Base::get_attr_ctr_var_Constant(t_attr, t_ctr, t_var);
 }
 
 void Model::set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var,
@@ -151,7 +151,7 @@ void Model::set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const C
         return;
     }
 
-    AttributeManager::set_attr_ctr_var_Constant(t_attr, t_ctr, t_var, std::move(t_value));
+    AttributeManagers::Base::set_attr_ctr_var_Constant(t_attr, t_ctr, t_var, std::move(t_value));
 }
 
 void Model::set_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
@@ -161,7 +161,7 @@ void Model::set_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &
         return;
     }
 
-    AttributeManager::set_attr_ctr_Constant(t_attr, t_ctr, std::move(t_value));
+    AttributeManagers::Base::set_attr_ctr_Constant(t_attr, t_ctr, std::move(t_value));
 }
 
 const Expr<Var, Var> &Model::get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr) const {
@@ -170,7 +170,7 @@ const Expr<Var, Var> &Model::get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var
         return m_objective;
     }
 
-    return AttributeManager::get_attr_Expr_Var_Var(t_attr);
+    return AttributeManagers::Base::get_attr_Expr_Var_Var(t_attr);
 }
 
 void Model::set_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr, Expr<Var, Var> &&t_value) {
@@ -180,7 +180,7 @@ void Model::set_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr, Expr<
         return;
     }
 
-    AttributeManager::set_attr_Expr_Var_Var(t_attr, std::move(t_value));
+    AttributeManagers::Base::set_attr_Expr_Var_Var(t_attr, std::move(t_value));
 }
 
 void Model::set_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr, LinExpr<Ctr> &&t_value) {
@@ -190,7 +190,7 @@ void Model::set_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr, LinExpr<
         return;
     }
 
-    AttributeManager::set_attr_LinExpr_Ctr(t_attr, std::move(t_value));
+    AttributeManagers::Base::set_attr_LinExpr_Ctr(t_attr, std::move(t_value));
 }
 
 const LinExpr<Ctr> &Model::get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr) const {
@@ -199,7 +199,7 @@ const LinExpr<Ctr> &Model::get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t
         return m_rhs;
     }
 
-    return AttributeManager::get_attr_LinExpr_Ctr(t_attr);
+    return AttributeManagers::Base::get_attr_LinExpr_Ctr(t_attr);
 }
 
 void Model::set_attr_Constant(const Attribute<Constant> &t_attr, Constant &&t_value) {
@@ -209,7 +209,7 @@ void Model::set_attr_Constant(const Attribute<Constant> &t_attr, Constant &&t_va
         return;
     }
 
-    AttributeManager::set_attr_Constant(t_attr, std::move(t_value));
+    AttributeManagers::Base::set_attr_Constant(t_attr, std::move(t_value));
 }
 
 void Model::set_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var, Constant &&t_value) {
@@ -219,7 +219,7 @@ void Model::set_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &
         return;
     }
 
-    AttributeManager::set_attr_var_Constant(t_attr, t_var, std::move(t_value));
+    AttributeManagers::Base::set_attr_var_Constant(t_attr, t_var, std::move(t_value));
 }
 
 void Model::set_attr_var_int(const Attribute<int> &t_attr, const Var &t_var, int t_value) {
@@ -229,7 +229,7 @@ void Model::set_attr_var_int(const Attribute<int> &t_attr, const Var &t_var, int
         return;
     }
 
-    AttributeManager::set_attr_var_int(t_attr, t_var, t_value);
+    AttributeManagers::Base::set_attr_var_int(t_attr, t_var, t_value);
 }
 
 void Model::set_attr_int(const Attribute<int> &t_attr, int t_value) {
@@ -242,7 +242,7 @@ void Model::set_attr_int(const Attribute<int> &t_attr, int t_value) {
         return;
     }
 
-    AttributeManager::set_attr_int(t_attr, t_value);
+    AttributeManagers::Base::set_attr_int(t_attr, t_value);
 }
 
 void Model::set_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr, int t_value) {
@@ -252,7 +252,7 @@ void Model::set_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr, int
         return;
     }
 
-    AttributeManager::set_attr_ctr_int(t_attr, t_ctr, t_value);
+    AttributeManagers::Base::set_attr_ctr_int(t_attr, t_ctr, t_value);
 }
 
 int Model::get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) const {
@@ -261,7 +261,7 @@ int Model::get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) cons
         return m_constraints.attributes(t_ctr).type();
     }
 
-    return AttributeManager::get_attr_ctr_int(t_attr, t_ctr);
+    return AttributeManagers::Base::get_attr_ctr_int(t_attr, t_ctr);
 }
 
 const Constant &Model::get_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr) const {
@@ -270,7 +270,7 @@ const Constant &Model::get_attr_ctr_Constant(const Attribute<Constant> &t_attr, 
         return m_constraints.attributes(t_ctr).row().rhs();
     }
 
-    return AttributeManager::get_attr_ctr_Constant(t_attr, t_ctr);
+    return AttributeManagers::Base::get_attr_ctr_Constant(t_attr, t_ctr);
 }
 
 const Constant &Model::get_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var) const {
@@ -279,7 +279,7 @@ const Constant &Model::get_attr_var_Constant(const Attribute<Constant> &t_attr, 
         return m_variables.attributes(t_var).column().obj();
     }
 
-    return AttributeManager::get_attr_var_Constant(t_attr, t_var);
+    return AttributeManagers::Base::get_attr_var_Constant(t_attr, t_var);
 }
 
 int Model::get_attr_int(const Attribute<int> &t_attr) const {
@@ -288,7 +288,7 @@ int Model::get_attr_int(const Attribute<int> &t_attr) const {
         return m_objective_sense;
     }
 
-    return AttributeManager::get_attr_int(t_attr);
+    return AttributeManagers::Base::get_attr_int(t_attr);
 }
 
 const Constant &Model::get_attr_Constant(const Attribute<Constant> &t_attr) const {
@@ -297,7 +297,7 @@ const Constant &Model::get_attr_Constant(const Attribute<Constant> &t_attr) cons
         return m_objective.constant();
     }
 
-    return AttributeManager::get_attr_Constant(t_attr);
+    return AttributeManagers::Base::get_attr_Constant(t_attr);
 }
 
 int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) const {
@@ -306,5 +306,5 @@ int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) cons
         return m_variables.attributes(t_var).type();
     }
 
-    return AttributeManager::get_attr_var_int(t_attr, t_var);
+    return AttributeManagers::Base::get_attr_var_int(t_attr, t_var);
 }

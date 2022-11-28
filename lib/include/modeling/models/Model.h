@@ -14,7 +14,7 @@
 #include "../objects/ObjectStore.h"
 #include "../constraints/CtrAttributes.h"
 #include "../matrix/Matrix.h"
-#include "AttributeManager.h"
+#include "AttributeManagers_Base.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "Attributes_Model.h"
 #include <vector>
@@ -34,7 +34,7 @@ class Column;
  *  & x_j \in \mathbb N \textrm{ for some } j
  * \f}
  */
-class Model : public Matrix, public AttributeManager {
+class Model : public Matrix, public AttributeManagers::Base {
 
     int m_objective_sense;
     Expr<Var> m_objective;
