@@ -105,23 +105,23 @@ protected:
 
     // Model
     [[nodiscard]] virtual int get_attr_int(const Attribute<int>& t_attr) const {
-        throw NotImplemented("getting attribute (int)", "get_attr_int");
+        throw Exception("Bad request. (Attribute: " + t_attr.name() + ")");
     }
 
     [[nodiscard]] virtual const LinExpr<Ctr>& get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>>& t_attr) const {
-        throw NotImplemented("getting attribute (LinExpr<Ctr>)", "get_attr_LinExpr_Ctr");
+        throw Exception("Bad request. (Attribute: " + t_attr.name() + ")");
     }
 
     [[nodiscard]] virtual const Expr<Var, Var>& get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>>& t_attr) const {
-        throw NotImplemented("getting attribute (Expr<Var>)", "get_attr_Expr_Var_Var");
+        throw Exception("Bad request. (Attribute: " + t_attr.name() + ")");
     }
 
     [[nodiscard]] virtual const Constant& get_attr_Constant(const Attribute<Constant>& t_attr) const {
-        throw NotImplemented("getting attribute (Constant)", "get_attr_Constant");
+        throw Exception("Bad request. (Attribute: " + t_attr.name() + ")");
     }
 
     [[nodiscard]] virtual const Constant& get_attr_ctr_var_Constant(const Attribute<Constant>& t_attr, const Ctr& t_ctr, const Var& t_var) const {
-        throw NotImplemented("getting attribute (Ctr, Var, double)", "get_attr_ctr_var_Constant");
+        throw Exception("Bad request. (Attribute: " + t_attr.name() + ")");
     }
 public:
     virtual ~AttributeManager() = default;
