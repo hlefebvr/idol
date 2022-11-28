@@ -3,7 +3,7 @@
 //
 #include <omp.h>
 #include "../../../include/algorithms/column-generation/ColumnGeneration.h"
-#include "../../../include/algorithms/logs/Log.h"
+#include "../../../include/algorithms/parameters/Log.h"
 
 ColumnGeneration::ColumnGeneration(Algorithm& t_rmp_solution_strategy) : GenerationAlgorithm(t_rmp_solution_strategy) {
 

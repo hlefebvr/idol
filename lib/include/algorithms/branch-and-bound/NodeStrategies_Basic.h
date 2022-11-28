@@ -8,7 +8,7 @@
 #include "NodeStrategy.h"
 #include "../../modeling/numericals.h"
 #include "../Algorithm.h"
-#include "../logs/Log.h"
+#include "algorithms/parameters/Log.h"
 #include "ActiveNodesManager.h"
 #include "NodeUpdator.h"
 #include "BranchingStrategy.h"

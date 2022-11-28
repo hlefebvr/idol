@@ -78,7 +78,7 @@ namespace impl::Param::t_algorithm {                                            
     struct reserve_index_##t_type##_##t_index {};                                                                                 \
     struct t_name : public ::impl::Parameter<Sections::t_algorithm, t_type, t_index> { \
         t_type default_value() const override { return t_default_value; } \
-        std::string name() const override { return std::string(#t_algorithm) + "::" + #t_name; } \
+        std::string name() const override { return std::string("Param::") + #t_algorithm + "::" + #t_name; } \
     }; \
 }                                                                                    \
 namespace Param::t_algorithm {                                                       \

@@ -12,12 +12,12 @@ IDOL_CREATE_PARAMETER_CLASS(BranchAndBound)
 IDOL_CREATE_PARAMETER_TYPE(BranchAndBound, int, 1)
 IDOL_CREATE_PARAMETER(BranchAndBound, int, 0, NodeSelection, 0)
 
-enum NodeSelections : int {
-    Automatic,
-    WorstBound,
-    BestBound,
-    DepthFirst,
-    BreadthFirst
-};
+namespace NodeSelections{
+    static constexpr int Automatic = 0;
+    static constexpr int WorstBound = 1;
+    static constexpr int BestBound = 2;
+    static constexpr int DepthFirst = 3;
+    static constexpr int BreadthFirst = 4;
+}
 
 #endif //IDOL_ATTRIBUTES_BRANCHANDBOUND_H

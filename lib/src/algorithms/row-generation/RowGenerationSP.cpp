@@ -3,7 +3,7 @@
 //
 #include <iomanip>
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
-#include "../../../include/algorithms/logs/Log.h"
+#include "../../../include/algorithms/parameters/Log.h"
 #include "../../../include/modeling/expressions/operations/operators.h"
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)

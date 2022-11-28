@@ -6,7 +6,7 @@
 #define OPTIMIZE_ACTIVENODESMANAGERS_HEAP_H
 
 #include "ActiveNodesManager.h"
-#include "../logs/Log.h"
+#include "algorithms/parameters/Log.h"
 #include "NodeSet.h"
 #include "Attributes_BranchAndBound.h"
 #include <algorithm>

@@ -9,7 +9,7 @@
 #include "../../modeling/variables/Var.h"
 #include "../../modeling/numericals.h"
 #include "../../errors/Exception.h"
-#include "../logs/Log.h"
+#include "algorithms/parameters/Log.h"
 #include <vector>
 #include <list>
 #include <functional>

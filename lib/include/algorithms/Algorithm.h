@@ -9,9 +9,9 @@
 #include "../modeling/variables/TempVar.h"
 #include "../modeling/constraints/TempCtr.h"
 #include "../errors/NotImplemented.h"
-#include "attributes/Timer.h"
+#include "parameters/Timer.h"
 #include "parameters/Parameters_Algorithm.h"
-#include "logs/Log.h"
+#include "parameters/Log.h"
 #include <list>
 
 class Node;

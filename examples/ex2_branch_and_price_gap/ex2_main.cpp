@@ -3,7 +3,7 @@
 //
 #include <iostream>
 
-#include "algorithms/logs/Log.h"
+#include "algorithms/parameters/Log.h"
 
 #include "solve_with_external_solver.h"
 #include "solve_with_branch_and_price.h"
@@ -20,8 +20,6 @@ int main() {
 
     solve_with_external_solver(instance);
     solve_with_branch_and_price(instance);
-
-    std::cout << Env::get().size() << std::endl;
 
     return 0;
 }

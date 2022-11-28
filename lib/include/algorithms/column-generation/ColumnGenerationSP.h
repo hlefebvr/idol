@@ -8,7 +8,7 @@
 #include "../Algorithm.h"
 #include "../decomposition/Generator.h"
 #include "ColumnGenerationBranchingSchemes_SP.h"
-#include "../logs/Log.h"
+#include "../parameters/Log.h"
 #include "../../containers/Set.h"
 #include <memory>
 #include <list>

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "algorithms/logs/Log.h"
+#include "algorithms/parameters/Log.h"
 #include "modeling.h"
 #include "modeling/objects/ObjectStore.h"
 #include "modeling/variables/VarAttributes.h"
