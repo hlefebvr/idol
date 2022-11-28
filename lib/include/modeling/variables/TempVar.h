@@ -25,7 +25,7 @@
 class TempVar {
     double m_lb = 0.;
     double m_ub = Inf;
-    VarType m_type = Continuous;
+    int m_type = Continuous;
     Column m_column;
 public:
     TempVar() = default;
@@ -36,7 +36,7 @@ public:
      * @param t_type The desired variable type.
      * @param t_column The desired column.
      */
-    TempVar(double t_lb, double t_ub, VarType t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {}
+    TempVar(double t_lb, double t_ub, int t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {}
 
     TempVar(TempVar&&) = default;
     TempVar(const TempVar&) = default;
@@ -71,9 +71,14 @@ public:
     /**
      * Returns the type associated to the temporary variable.
      */
-    [[nodiscard]] VarType type() const { return m_type; }
+    [[nodiscard]] int type() const { return m_type; }
 
-    void set_type(VarType t_type) { m_type = t_type; }
+    void set_type(int t_type) {
+        if (t_type < 0 || t_type > 2) {
+            throw Exception("Variable type out of bounds.");
+        }
+        m_type = t_type;
+    }
 };
 
 #endif //OPTIMIZE_TEMPVAR_H

@@ -11,7 +11,7 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 
-    m_model.set(GRB_IntAttr_ModelSense, t_model.sense() == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
+    m_model.set(GRB_IntAttr_ModelSense, t_model.get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
 
     for (const auto& var : t_model.vars()) {
         add_future(var, false);
@@ -127,7 +127,7 @@ void Solvers::Gurobi::analyze_status() {
     }
 }
 
-char Solvers::Gurobi::gurobi_type(CtrType t_type) {
+char Solvers::Gurobi::gurobi_ctr_type(int t_type) {
     if (t_type == Equal) {
         return GRB_EQUAL;
     }
@@ -137,7 +137,7 @@ char Solvers::Gurobi::gurobi_type(CtrType t_type) {
     return GRB_GREATER_EQUAL;
 }
 
-char Solvers::Gurobi::gurobi_type(VarType t_type) {
+char Solvers::Gurobi::gurobi_var_type(int t_type) {
     if (t_type == Continuous) {
         return GRB_CONTINUOUS;
     }
@@ -149,7 +149,7 @@ char Solvers::Gurobi::gurobi_type(VarType t_type) {
 
 void Solvers::Gurobi::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
     future(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
-    model().update_rhs_coeff(t_ctr, t_rhs);
+    model().set(Attr::Ctr::Rhs, t_ctr, t_rhs);
 }
 
 Solution::Dual Solvers::Gurobi::farkas_certificate() const {
@@ -186,7 +186,7 @@ Solution::Primal Solvers::Gurobi::unbounded_ray() const {
     Solution::Primal result;
 
     double objective_value = 0.;
-    for (const auto& [var, coeff] : model().obj().linear()) {
+    for (const auto& [var, coeff] : model().get(Attr::Obj::Expr).linear()) {
         objective_value += future(var).impl().get(GRB_DoubleAttr_UnbdRay) * value(coeff);
     }
 
@@ -306,7 +306,7 @@ void Solvers::Gurobi::update_var_lb(const Var &t_var, double t_lb) {
 
     if (model().has(t_var)) {
         future(t_var).impl().set(GRB_DoubleAttr_LB, t_lb);
-        model().update_var_lb(t_var, t_lb);
+        model().set(Attr::Var::Lb, t_var, t_lb);
         return;
     }
 
@@ -319,7 +319,7 @@ void Solvers::Gurobi::update_var_ub(const Var &t_var, double t_ub) {
 
     if (model().has(t_var)) {
         future(t_var).impl().set(GRB_DoubleAttr_UB, t_ub);
-        model().update_var_ub(t_var, t_ub);
+        model().set(Attr::Var::Ub, t_var, t_ub);
         return;
     }
 
@@ -343,12 +343,12 @@ GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     GRBLinExpr expr = 0.;
     if (t_with_collaterals) {
-        for (const auto &[var, constant]: model().get_row(t_ctr).linear()) {
+        for (const auto &[var, constant]: model().get(Attr::Ctr::Row, t_ctr).linear()) {
             expr += value(constant) * future(var).impl();
         }
     }
 
-    return m_model.addConstr(expr, gurobi_type(model().get_type(t_ctr)), value(model().get_row(t_ctr).rhs()), t_ctr.name());
+    return m_model.addConstr(expr, gurobi_ctr_type(model().get(Attr::Ctr::Type, t_ctr)), value(model().get(Attr::Ctr::Row, t_ctr).rhs()), t_ctr.name());
 
 }
 
@@ -361,7 +361,7 @@ GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
         }
     }
 
-    return m_model.addVar(get_lb(t_var), get_ub(t_var), value(get_column(t_var).obj()), gurobi_type(get_type(t_var)), column, t_var.name());
+    return m_model.addVar(get_lb(t_var), get_ub(t_var), value(get_column(t_var).obj()), gurobi_var_type(get_type(t_var)), column, t_var.name());
 }
 
 void Solvers::Gurobi::remove(const Var &t_var, GRBVar &t_impl) {
@@ -381,11 +381,11 @@ void Solvers::Gurobi::update(const Ctr &t_ctr, GRBConstr &t_impl) {
 }
 
 void Solvers::Gurobi::update_obj() {
-    GRBLinExpr expr = value(model().obj().constant());
-    for (const auto& [var, constant] : model().obj().linear()) {
+    GRBLinExpr expr = value(model().get(Attr::Obj::Const));
+    for (const auto& [var, constant] : model().get(Attr::Obj::Expr).linear()) {
         expr += value(constant) * future(var).impl();
     }
-    m_model.setObjective(expr, model().sense() == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
+    m_model.setObjective(expr, model().get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
 }
 
 #endif

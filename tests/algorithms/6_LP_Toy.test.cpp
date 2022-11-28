@@ -18,7 +18,7 @@ TEMPLATE_LIST_TEST_CASE("06. LP: Toy", has_lp_solver ? "[LP][solvers]" : "[.]", 
             auto x = model.add_var(0., Inf, Continuous, sign * -143, "x");
             auto y = model.add_var(0., Inf, Continuous, sign * -60, "y");
 
-            model.update_obj_sense(is_minimization ? Minimize : Maximize);
+            model.set(Attr::Obj::Sense, is_minimization ? Minimize : Maximize);
 
             auto c1 = model.add_ctr(120 * x + 210 * y <= 15000);
             auto c2 = model.add_ctr(110 * x + 30 * y <= 4000);

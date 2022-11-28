@@ -28,8 +28,8 @@ class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
     void analyze_status();
     Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
     Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBConstr&)>& t_get_dual_value) const;
-    static char gurobi_type(CtrType t_type);
-    static char gurobi_type(VarType t_type);
+    static char gurobi_var_type(int t_type);
+    static char gurobi_ctr_type(int t_type);
 protected:
     bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
 
@@ -178,7 +178,7 @@ Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
     }
     m_parent.addLazy(
             expr,
-            m_parent.m_solver.gurobi_type(t_ctr.type()),
+            m_parent.m_solver.gurobi_ctr_type(t_ctr.type()),
             m_parent.m_solver.value(t_ctr.row().rhs())
     );
     auto result = m_parent.m_solver.model().add_ctr(std::move(t_ctr));

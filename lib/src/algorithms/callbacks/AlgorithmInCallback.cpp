@@ -33,7 +33,7 @@ double AlgorithmInCallback::get_ub(const Var &t_var) const {
     return m_algorithm.get_ub(t_var);
 }
 
-VarType AlgorithmInCallback::get_type(const Var &t_var) const {
+int AlgorithmInCallback::get_type(const Var &t_var) const {
     return m_algorithm.get_type(t_var);
 }
 
@@ -49,7 +49,7 @@ const Row &AlgorithmInCallback::get_row(const Ctr &t_ctr) const {
     return m_algorithm.get_row(t_ctr);
 }
 
-CtrType AlgorithmInCallback::get_type(const Ctr &t_ctr) const {
+int AlgorithmInCallback::get_type(const Ctr &t_ctr) const {
     return m_algorithm.get_type(t_ctr);
 }
 

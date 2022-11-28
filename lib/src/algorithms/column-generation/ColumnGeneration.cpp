@@ -326,7 +326,7 @@ double ColumnGeneration::get_ub(const Var &t_var) const {
     throw Exception("Variable not found.");
 }
 
-VarType ColumnGeneration::get_type(const Var &t_var) const {
+int ColumnGeneration::get_type(const Var &t_var) const {
     if (rmp_solution_strategy().has(t_var)) {
         return rmp_solution_strategy().get_type(t_var);
     }
@@ -374,7 +374,7 @@ const Row &ColumnGeneration::get_row(const Ctr &t_ctr) const {
     throw Exception("CG -> Variable not found.");
 }
 
-CtrType ColumnGeneration::get_type(const Ctr &t_ctr) const {
+int ColumnGeneration::get_type(const Ctr &t_ctr) const {
     if (rmp_solution_strategy().has(t_ctr)) {
         return rmp_solution_strategy().get_type(t_ctr);
     }

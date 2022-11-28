@@ -12,23 +12,23 @@ TEST_CASE("03. Param", "[attributes][modeling]") {
 
         auto xi = InParam(model.add_var(0., 1., Continuous, 0.) );
 
-        CHECK(model.get_lb(xi.as<Var>()) == 0._a);
-        CHECK(model.get_ub(xi.as<Var>()) == 1._a);
-        CHECK(model.get_type(xi.as<Var>()) == Continuous);
+        CHECK(model.get(Attr::Var::Lb, xi.as<Var>()) == 0._a);
+        CHECK(model.get(Attr::Var::Ub, xi.as<Var>()) == 1._a);
+        CHECK(model.get(Attr::Var::Type, xi.as<Var>()) == Continuous);
 
     }
 
     SECTION("create a new parameter with type Integer") {
 
         auto xi = InParam(model.add_var(0., 1., Integer, 0.) );
-        CHECK(model.get_type(xi.as<Var>()) == Integer);
+        CHECK(model.get(Attr::Var::Type, xi.as<Var>()) == Integer);
 
     }
 
     SECTION("create a new parameter with type Binary") {
 
         auto xi = InParam(model.add_var(0., 1., Binary, 0.) );
-        CHECK(model.get_type(xi.as<Var>()) == Binary);
+        CHECK(model.get(Attr::Var::Type, xi.as<Var>()) == Binary);
 
     }
 

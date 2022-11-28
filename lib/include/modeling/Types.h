@@ -7,13 +7,13 @@
 
 #include "../errors/Exception.h"
 
-enum VarType {
+enum VarType : int {
     Continuous,
     Integer,
     Binary
 };
 
-enum CtrType {
+enum CtrType : int {
     LessOrEqual,
     GreaterOrEqual,
     Equal
@@ -24,7 +24,7 @@ enum ObjectStatus {
     Dead
 };
 
-enum Sense {
+enum Sense : int {
     Minimize,
     Maximize
 };

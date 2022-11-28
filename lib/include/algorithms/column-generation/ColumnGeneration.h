@@ -63,7 +63,7 @@ public:
 
     double get_ub(const Var &t_var) const override;
 
-    VarType get_type(const Var &t_var) const override;
+    int get_type(const Var &t_var) const override;
 
     const Column &get_column(const Var &t_var) const override;
 
@@ -71,7 +71,7 @@ public:
 
     const Row &get_row(const Ctr &t_ctr) const override;
 
-    CtrType get_type(const Ctr &t_ctr) const override;
+    int get_type(const Ctr &t_ctr) const override;
 };
 
 #endif //OPTIMIZE_COLUMNGENERATION_H

@@ -34,7 +34,7 @@ namespace Solution {
  */
 class TempCtr {
     Row m_row;
-    CtrType m_type = LessOrEqual;
+    int m_type = LessOrEqual;
 public:
     TempCtr() = default;
     /**
@@ -42,7 +42,7 @@ public:
      * @param t_row The desired row.
      * @param t_type The desired constraint type.
      */
-    TempCtr(Row&& t_row, CtrType t_type) : m_row(std::move(t_row)), m_type(t_type) {}
+    TempCtr(Row&& t_row, int t_type) : m_row(std::move(t_row)), m_type(t_type) {}
 
     TempCtr(const TempCtr&) = default;
     TempCtr(TempCtr&&) noexcept = default;
@@ -63,9 +63,14 @@ public:
     /**
      * Returns the constraint type.
      */
-    CtrType type() const { return m_type; }
+    int type() const { return m_type; }
 
-    void set_type(CtrType t_type) { m_type = t_type; }
+    void set_type(int t_type) {
+        if (t_type < 0 || t_type > 2) {
+            throw Exception("Constraint type out of bounds.");
+        }
+        m_type = t_type;
+    }
 
     /**
      * Returns true if the temporary constraint is violated by the given solution, false otherwise.

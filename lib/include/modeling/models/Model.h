@@ -10,14 +10,15 @@
 #include "../expressions/Expr.h"
 #include "../../containers/IteratorForward.h"
 #include "../../containers/Vector.h"
-#include "ListenerManager.h"
 #include "../variables/VarAttributes.h"
 #include "../objects/ObjectStore.h"
 #include "../constraints/CtrAttributes.h"
 #include "../matrix/Matrix.h"
+#include "AttributeManager.h"
+#include "../constraints/Attributes_Ctr.h"
+#include "Attributes_Model.h"
 #include <vector>
 
-class Env;
 class Column;
 
 /**
@@ -33,10 +34,9 @@ class Column;
  *  & x_j \in \mathbb N \textrm{ for some } j
  * \f}
  */
-class Model : public Matrix {
-    mutable ListenerManager m_listeners;
+class Model : public Matrix, public AttributeManager {
 
-    Sense m_objective_sense;
+    int m_objective_sense;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
     ObjectStore<Var, VarAttributes> m_variables;
@@ -48,6 +48,44 @@ class Model : public Matrix {
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
+
+protected:
+    /// Set
+    // Var
+    void set_attr_var_int(const Attribute<int> &t_attr, const Var &t_var, int t_value) override;
+    void set_attr_var_double(const Attribute<double> &t_attr, const Var &t_var, double t_value) override;
+    void set_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var, Constant &&t_value) override;
+
+    // Ctr
+    void set_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr, int t_value) override;
+    void set_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
+
+    // Model
+    void set_attr_int(const Attribute<int> &t_attr, int t_value) override;
+    void set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) override;
+    void set_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr, Expr<Var, Var> &&t_value) override;
+    void set_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr, LinExpr<Ctr> &&t_value) override;
+    void set_attr_Constant(const Attribute<Constant> &t_attr, Constant &&t_value) override;
+
+    /// Get
+    // Var
+    double get_attr_var_double(const Attribute<double> &t_attr, const Var &t_var) const override;
+    const Column &get_attr_var_Column(const Attribute<Column> &t_attr, const Var &t_var) const override;
+    const Constant &get_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var) const override;
+    int get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) const override;
+
+    // Ctr
+    int get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) const override;
+    const Row &get_attr_ctr_Row(const Attribute<Row> &t_attr, const Ctr &t_ctr) const override;
+    const Constant &get_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr) const override;
+
+    // Model
+    const Constant & get_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
+    const Expr<Var, Var> &get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr) const override;
+    const LinExpr<Ctr> &get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr) const override;
+    const Constant &get_attr_Constant(const Attribute<Constant> &t_attr) const override;
+    int get_attr_int(const Attribute<int> &t_attr) const override;
+
 public:
     explicit Model(Sense t_sense = Minimize);
 
@@ -57,13 +95,7 @@ public:
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;
 
-    /* Gets */
-    Sense sense() const { return m_objective_sense; }
-
-    const Expr<Var>& obj() const { return m_objective; }
-
-    const LinExpr<Ctr>& rhs() const { return m_rhs; }
-
+    /* Iterators */
     auto vars() { return m_variables.objects(); }
     [[nodiscard]] auto vars() const { return m_variables.objects(); }
 
@@ -82,41 +114,12 @@ public:
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
 
-    void add_listener(Listener& t_listener) const;
-
-    /* Updates */
-    void update_rhs(LinExpr<Ctr>&& t_obj);
-    void update_rhs(const LinExpr<Ctr>& t_obj);
-    void update_obj(Expr<Var>&& t_obj);
-    void update_obj(const Expr<Var>& t_obj);
-    void update_obj_sense(Sense t_sense);
-    void update_obj_const(Constant t_offset);
-    void update_obj_coeff(const Var& t_var, Constant t_coefficient);
-
-    void update_rhs_coeff(const Ctr& t_ctr, Constant t_coefficient);
-
-    void update_matrix_coeff(const Ctr& t_ctr, const Var& t_var, Constant t_coefficient);
-
-    void update_var_lb(const Var& t_var, double t_lb);
-    void update_var_ub(const Var& t_var, double t_ub);
-    void update_var_type(const Var& t_var, VarType t_type);
-
-    void update_ctr_type(const Ctr& t_ctr, CtrType t_type);
-
     /* Removes */
     void remove(const Var& t_var);
     void remove(const Ctr& t_ctr);
 
-    /* Variables */
-    double get_lb(const Var& t_var) const;
-    double get_ub(const Var& t_var) const;
-    VarType get_type(const Var& t_var) const;
-    const Column& get_column(const Var& t_var) const;
+    /* Hases */
     bool has(const Var& t_var) const;
-
-    /* Constraints */
-    CtrType get_type(const Ctr& t_ctr) const;
-    const Row& get_row(const Ctr& t_ctr) const;
     bool has(const Ctr& t_ctr) const;
 };
 
@@ -167,9 +170,9 @@ Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, cons
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
-    t_os << t_model.sense() << " " << t_model.obj() << "\nSubject to:\n";
+    t_os << t_model.get(Attr::Obj::Sense) << " " << t_model.get(Attr::Obj::Expr) << "\nSubject to:\n";
     for (const auto& ctr : t_model.ctrs()) {
-        const auto& row = t_model.get_row(ctr);
+        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
         t_os << ctr << ": " << row.linear() << " ? " << row.rhs() << '\n';
     }
     t_os << "Variables:\n";

@@ -437,7 +437,7 @@ double BranchAndBound::get_ub(const Var &t_var) const {
     return m_solution_strategy->get_ub(t_var);
 }
 
-VarType BranchAndBound::get_type(const Var &t_var) const {
+int BranchAndBound::get_type(const Var &t_var) const {
     return m_solution_strategy->get_type(t_var);
 }
 
@@ -453,7 +453,7 @@ const Row &BranchAndBound::get_row(const Ctr &t_ctr) const {
     return m_solution_strategy->get_row(t_ctr);
 }
 
-CtrType BranchAndBound::get_type(const Ctr &t_ctr) const {
+int BranchAndBound::get_type(const Ctr &t_ctr) const {
     return m_solution_strategy->get_type(t_ctr);
 }
 

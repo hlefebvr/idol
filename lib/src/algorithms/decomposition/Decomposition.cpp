@@ -72,7 +72,7 @@ double Decomposition::get_ub(const Var &t_var) const {
     throw Exception("Variable not found.");
 }
 
-VarType Decomposition::get_type(const Var &t_var) const {
+int Decomposition::get_type(const Var &t_var) const {
     if (m_rmp_strategy->has(t_var)) {
         return m_rmp_strategy->get_type(t_var);
     }
@@ -120,7 +120,7 @@ const Row &Decomposition::get_row(const Ctr &t_ctr) const {
     throw Exception("Variable not found.");
 }
 
-CtrType Decomposition::get_type(const Ctr &t_ctr) const {
+int Decomposition::get_type(const Ctr &t_ctr) const {
     if (m_rmp_strategy->has(t_ctr)) {
         return m_rmp_strategy->get_type(t_ctr);
     }

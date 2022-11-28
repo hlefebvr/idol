@@ -99,7 +99,7 @@ public:
 
     [[nodiscard]] Reason reason() const { return m_reason; }
 
-    [[nodiscard]] virtual Sense sense() const { return Minimize; }
+    [[nodiscard]] virtual int sense() const { return Minimize; }
 
     /**
      * Executes the solution algorithm.
@@ -123,13 +123,13 @@ public:
     [[nodiscard]] virtual bool has(const Var& t_var) const = 0;
     [[nodiscard]] virtual double get_lb(const Var& t_var) const = 0;
     [[nodiscard]] virtual double get_ub(const Var& t_var) const = 0;
-    [[nodiscard]] virtual VarType get_type(const Var& t_var) const = 0;
+    [[nodiscard]] virtual int get_type(const Var& t_var) const = 0;
     [[nodiscard]] virtual const Column& get_column(const Var& t_var) const = 0;
 
     /* CONSTRAINTS */
     [[nodiscard]] virtual bool has(const Ctr& t_ctr) const = 0;
     [[nodiscard]] virtual const Row& get_row(const Ctr& t_ctr) const = 0;
-    [[nodiscard]] virtual CtrType get_type(const Ctr& t_ctr) const = 0;
+    [[nodiscard]] virtual int get_type(const Ctr& t_ctr) const = 0;
 
     /**
      * Returns the computed primal solution (after solve has been called).
@@ -335,7 +335,7 @@ public:
         throw std::runtime_error("Deprecated");
     }
 
-    VarType get_type(const Var &t_var) const override {
+    int get_type(const Var &t_var) const override {
         throw std::runtime_error("Deprecated");
     }
 
@@ -351,7 +351,7 @@ public:
         throw std::runtime_error("Deprecated");
     }
 
-    CtrType get_type(const Ctr &t_ctr) const override {
+    int get_type(const Ctr &t_ctr) const override {
         throw std::runtime_error("Deprecated");
     }
 };

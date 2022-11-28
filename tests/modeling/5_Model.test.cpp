@@ -74,35 +74,35 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_matrix_coeff(c2, y, 2.);
+                model.set(Attr::Matrix::Coeff, c2, y, 2.);
                 
-                CHECK(model.get_row(c2).linear().get(x).numerical() == 1._a);
-                CHECK(model.get_row(c2).linear().get(y).numerical() == 2._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(x).numerical() == 1._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(y).numerical() == 2._a);
 
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 2._a);
 
-                CHECK(model.get_row(c2).linear().size() == 2);
-                CHECK(model.get_column(y).linear().size() == 2);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().size() == 2);
+                CHECK(model.get(Attr::Var::Column, y).linear().size() == 2);
 
             }
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_matrix_coeff(c2, y, 0.);
+                model.set(Attr::Matrix::Coeff, c2, y, 0.);
 
-                CHECK(model.get_row(c2).linear().get(x).numerical() == 1._a);
-                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(x).numerical() == 1._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 1._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 1._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).linear().size() == 1);
-                CHECK(model.get_column(y).linear().size() == 1);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().size() == 1);
+                CHECK(model.get(Attr::Var::Column, y).linear().size() == 1);
 
             }
 
@@ -112,35 +112,35 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_matrix_coeff(c2, x, 2.);
+                model.set(Attr::Matrix::Coeff, c2, x, 2.);
 
-                CHECK(model.get_row(c2).linear().get(x).numerical() == 2._a);
-                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(x).numerical() == 2._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 2._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 2._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).linear().size() == 1);
-                CHECK(model.get_column(x).linear().size() == 2);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().size() == 1);
+                CHECK(model.get(Attr::Var::Column, x).linear().size() == 2);
 
             }
 
             SECTION("with a non-zero coefficient") {
 
-                model.update_matrix_coeff(c2, x, 0.);
+                model.set(Attr::Matrix::Coeff, c2, x, 0.);
 
-                CHECK(model.get_row(c2).linear().get(x).numerical() == 0._a);
-                CHECK(model.get_row(c2).linear().get(y).numerical() == 0._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(x).numerical() == 0._a);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().get(y).numerical() == 0._a);
 
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(x).linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
-                CHECK(model.get_column(y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, x).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
+                CHECK(model.get(Attr::Var::Column, y).linear().get(c2).numerical() == 0._a);
 
-                CHECK(model.get_row(c2).linear().size() == 0);
-                CHECK(model.get_column(x).linear().size() == 1);
+                CHECK(model.get(Attr::Ctr::Row, c2).linear().size() == 0);
+                CHECK(model.get(Attr::Var::Column, x).linear().size() == 1);
 
             }
 
@@ -155,9 +155,9 @@ TEST_CASE("05. Model", "[model][modeling]") {
             auto x = model.add_var(0., 1., Continuous, 0.);
             auto y = model.add_var(0., 1., Continuous, 0.);
 
-            CHECK(model.obj().linear().size() == 0);
-            CHECK(model.get_column(x).obj().numerical() == 0._a);
-            CHECK(model.get_column(y).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 0);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 0._a);
 
         }
 
@@ -166,11 +166,11 @@ TEST_CASE("05. Model", "[model][modeling]") {
             auto x = model.add_var(0., 1., Continuous, 1.);
             auto y = model.add_var(0., 1., Continuous, 2.);
 
-            CHECK(model.obj().linear().size() == 2);
-            CHECK(model.obj().linear().get(x).numerical() == 1._a);
-            CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).obj().numerical() == 1._a);
-            CHECK(model.get_column(y).obj().numerical() == 2._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 2);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 1._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 2._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 1._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 2._a);
 
         }
 
@@ -185,13 +185,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             Expr<Var> obj = x + 2 * y;
 
-            model.update_obj(obj);
+            model.set(Attr::Obj::Expr, obj);
 
-            CHECK(model.obj().linear().size() == 2);
-            CHECK(model.obj().linear().get(x).numerical() == 1._a);
-            CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).obj().numerical() == 1._a);
-            CHECK(model.get_column(y).obj().numerical() == 2._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 2);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 1._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 2._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 1._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 2._a);
 
         }
 
@@ -202,13 +202,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             Expr<Var> obj = 2 * y;
 
-            model.update_obj(obj);
+            model.set(Attr::Obj::Expr, obj);
 
-            CHECK(model.obj().linear().size() == 1);
-            CHECK(model.obj().linear().get(x).numerical() == 0._a);
-            CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).obj().numerical() == 0._a);
-            CHECK(model.get_column(y).obj().numerical() == 2._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 1);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 0._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 2._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 2._a);
 
         }
 
@@ -219,13 +219,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             Expr<Var> obj;
 
-            model.update_obj(obj);
+            model.set(Attr::Obj::Expr, obj);
 
-            CHECK(model.obj().linear().size() == 0);
-            CHECK(model.obj().linear().get(x).numerical() == 0._a);
-            CHECK(model.obj().linear().get(y).numerical() == 0._a);
-            CHECK(model.get_column(x).obj().numerical() == 0._a);
-            CHECK(model.get_column(y).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 0);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 0._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 0._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 0._a);
 
         }
 
@@ -236,13 +236,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             Expr<Var> obj = x + 2 * y;
 
-            model.update_obj(obj);
+            model.set(Attr::Obj::Expr, obj);
 
-            CHECK(model.obj().linear().size() == 2);
-            CHECK(model.obj().linear().get(x).numerical() == 1._a);
-            CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).obj().numerical() == 1._a);
-            CHECK(model.get_column(y).obj().numerical() == 2._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 2);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 1._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 2._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 1._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 2._a);
 
         }
 
@@ -253,13 +253,13 @@ TEST_CASE("05. Model", "[model][modeling]") {
 
             Expr<Var> obj = 2 * y;
 
-            model.update_obj(obj);
+            model.set(Attr::Obj::Expr, obj);
 
-            CHECK(model.obj().linear().size() == 1);
-            CHECK(model.obj().linear().get(x).numerical() == 0._a);
-            CHECK(model.obj().linear().get(y).numerical() == 2._a);
-            CHECK(model.get_column(x).obj().numerical() == 0._a);
-            CHECK(model.get_column(y).obj().numerical() == 2._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().size() == 1);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(x).numerical() == 0._a);
+            CHECK(model.get(Attr::Obj::Expr).linear().get(y).numerical() == 2._a);
+            CHECK(model.get(Attr::Var::Column, x).obj().numerical() == 0._a);
+            CHECK(model.get(Attr::Var::Column, y).obj().numerical() == 2._a);
 
         }
 

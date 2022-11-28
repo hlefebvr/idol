@@ -277,7 +277,7 @@ double RowGeneration::get_ub(const Var &t_var) const {
     return rmp_solution_strategy().get_ub(t_var);
 }
 
-VarType RowGeneration::get_type(const Var &t_var) const {
+int RowGeneration::get_type(const Var &t_var) const {
     for (auto& subproblem : m_subproblems) {
         if (subproblem.exact_solution_strategy().has(t_var)) {
             return subproblem.exact_solution_strategy().get_type(t_var);
@@ -322,7 +322,7 @@ const Row &RowGeneration::get_row(const Ctr &t_ctr) const {
     return rmp_solution_strategy().get_row(t_ctr);
 }
 
-CtrType RowGeneration::get_type(const Ctr &t_ctr) const {
+int RowGeneration::get_type(const Ctr &t_ctr) const {
     for (auto& subproblem : m_subproblems) {
         if (subproblem.exact_solution_strategy().has(t_ctr)) {
             return subproblem.exact_solution_strategy().get_type(t_ctr);

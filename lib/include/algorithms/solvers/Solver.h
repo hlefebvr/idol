@@ -8,6 +8,8 @@
 #include "../Algorithm.h"
 #include "../../modeling/models/Model.h"
 #include "../callbacks/Callback.h"
+#include "../../modeling/variables/Attributes_Var.h"
+#include "../../modeling/models/Attributes_Model.h"
 #include <cassert>
 
 template<class T, class SolverImplT>
@@ -68,7 +70,7 @@ protected:
 public:
     explicit Solver(Model& t_model);
 
-    [[nodiscard]] Sense sense() const override;
+    [[nodiscard]] int sense() const override;
 
     [[nodiscard]] const Model& model() const { return m_src_model; }
 
@@ -100,7 +102,7 @@ public:
 
     double get_ub(const Var &t_var) const override;
 
-    VarType get_type(const Var &t_var) const override;
+    int get_type(const Var &t_var) const override;
 
     const Column &get_column(const Var &t_var) const override;
 
@@ -110,7 +112,7 @@ public:
 
     const Row &get_row(const Ctr &t_ctr) const override;
 
-    CtrType get_type(const Ctr &t_ctr) const override;
+    int get_type(const Ctr &t_ctr) const override;
 };
 
 template<class VarT, class CtrT>
@@ -261,33 +263,33 @@ void Solver<VarT, CtrT>::save_callback(Callback *t_cb) {
 
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update_obj(const Expr<Var> &t_objective) {
-    m_src_model.update_obj(t_objective);
+    m_src_model.set(Attr::Obj::Expr, t_objective);
     add_future_obj();
 }
 
 template<class VarT, class CtrT>
-Sense Solver<VarT, CtrT>::sense() const {
-    return m_src_model.sense();
+int Solver<VarT, CtrT>::sense() const {
+    return m_src_model.get(Attr::Obj::Sense);
 }
 
 template<class VarT, class CtrT>
 double Solver<VarT, CtrT>::get_lb(const Var &t_var) const {
-    return m_src_model.get_lb(t_var);
+    return m_src_model.get(Attr::Var::Lb, t_var);
 }
 
 template<class VarT, class CtrT>
 double Solver<VarT, CtrT>::get_ub(const Var &t_var) const {
-    return m_src_model.get_ub(t_var);
+    return m_src_model.get(Attr::Var::Ub, t_var);
 }
 
 template<class VarT, class CtrT>
-VarType Solver<VarT, CtrT>::get_type(const Var &t_var) const {
-    return m_src_model.get_type(t_var);
+int Solver<VarT, CtrT>::get_type(const Var &t_var) const {
+    return m_src_model.get(Attr::Var::Type, t_var);
 }
 
 template<class VarT, class CtrT>
 const Column &Solver<VarT, CtrT>::get_column(const Var &t_var) const {
-    return m_src_model.get_column(t_var);
+    return m_src_model.get(Attr::Var::Column, t_var);
 }
 
 template<class VarT, class CtrT>
@@ -297,12 +299,12 @@ bool Solver<VarT, CtrT>::has(const Var &t_var) const {
 
 template<class VarT, class CtrT>
 const Row &Solver<VarT, CtrT>::get_row(const Ctr &t_ctr) const {
-    return m_src_model.get_row(t_ctr);
+    return m_src_model.get(Attr::Ctr::Row, t_ctr);
 }
 
 template<class VarT, class CtrT>
-CtrType Solver<VarT, CtrT>::get_type(const Ctr &t_ctr) const {
-    return m_src_model.get_type(t_ctr);
+int Solver<VarT, CtrT>::get_type(const Ctr &t_ctr) const {
+    return m_src_model.get(Attr::Ctr::Type, t_ctr);
 }
 
 template<class VarT, class CtrT>

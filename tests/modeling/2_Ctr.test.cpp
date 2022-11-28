@@ -17,8 +17,8 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(GreaterOrEqual, 1.);
 
-        CHECK(model.get_type(ctr) == GreaterOrEqual);
-        CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
+        CHECK(model.get(Attr::Ctr::Type, ctr) == GreaterOrEqual);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 1._a);
 
     }
 
@@ -26,9 +26,9 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(LessOrEqual, xi);
 
-        CHECK(model.get_type(ctr) == LessOrEqual);
-        CHECK(model.get_row(ctr).rhs().numerical() == 0._a);
-        CHECK(model.get_row(ctr).rhs().get(xi) == 1._a);
+        CHECK(model.get(Attr::Ctr::Type, ctr) == LessOrEqual);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 0._a);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().get(xi) == 1._a);
 
     }
 
@@ -36,9 +36,9 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(Equal, 1 + 2 * xi);
 
-        CHECK(model.get_type(ctr) == Equal);
-        CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
-        CHECK(model.get_row(ctr).rhs().get(xi) == 2._a);
+        CHECK(model.get(Attr::Ctr::Type, ctr) == Equal);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 1._a);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().get(xi) == 2._a);
 
     }
 
@@ -46,11 +46,11 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         auto ctr = model.add_ctr(2 * x + y <= 2 + xi);
 
-        CHECK(model.get_type(ctr) == LessOrEqual);
-        CHECK(model.get_row(ctr).rhs().numerical() == 2._a);
-        CHECK(model.get_row(ctr).rhs().get(xi) == 1._a);
-        CHECK(model.get_column(x).linear().get(ctr).numerical() == 2._a);
-        CHECK(model.get_column(y).linear().get(ctr).numerical() == 1._a);
+        CHECK(model.get(Attr::Ctr::Type, ctr) == LessOrEqual);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 2._a);
+        CHECK(model.get(Attr::Ctr::Row, ctr).rhs().get(xi) == 1._a);
+        CHECK(model.get(Attr::Var::Column, x).linear().get(ctr).numerical() == 2._a);
+        CHECK(model.get(Attr::Var::Column, y).linear().get(ctr).numerical() == 1._a);
 
     }
 
@@ -60,33 +60,33 @@ TEST_CASE("02. Ctr", "[constraints][modeling]") {
 
         SECTION("update RHS") {
 
-            model.update_rhs_coeff(ctr, 0.);
+            model.set(Attr::Ctr::Rhs, ctr, 0.);
 
-            CHECK(model.get_row(ctr).rhs().numerical() == 0._a);
-            CHECK(model.get_row(ctr).rhs().get(xi) == 0._a);
+            CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 0._a);
+            CHECK(model.get(Attr::Ctr::Row, ctr).rhs().get(xi) == 0._a);
 
-            model.update_rhs_coeff(ctr, 1 + 2 * xi);
+            model.set(Attr::Ctr::Rhs, ctr, 1 + 2 * xi);
 
-            CHECK(model.get_row(ctr).rhs().numerical() == 1._a);
-            CHECK(model.get_row(ctr).rhs().get(xi) == 2._a);
+            CHECK(model.get(Attr::Ctr::Row, ctr).rhs().numerical() == 1._a);
+            CHECK(model.get(Attr::Ctr::Row, ctr).rhs().get(xi) == 2._a);
 
         }
 
         SECTION("update type") {
 
             SECTION("GreaterOrEqual") {
-                model.update_ctr_type(ctr, GreaterOrEqual);
-                CHECK(model.get_type(ctr) == GreaterOrEqual);
+                model.set(Attr::Ctr::Type, ctr, GreaterOrEqual);
+                CHECK(model.get(Attr::Ctr::Type, ctr) == GreaterOrEqual);
             }
 
             SECTION("LessOrEqual") {
-                model.update_ctr_type(ctr, LessOrEqual);
-                CHECK(model.get_type(ctr) == LessOrEqual);
+                model.set(Attr::Ctr::Type, ctr, LessOrEqual);
+                CHECK(model.get(Attr::Ctr::Type, ctr) == LessOrEqual);
             }
 
             SECTION("Equal") {
-                model.update_ctr_type(ctr, Equal);
-                CHECK(model.get_type(ctr) == Equal);
+                model.set(Attr::Ctr::Type, ctr, Equal);
+                CHECK(model.get(Attr::Ctr::Type, ctr) == Equal);
             }
 
         }
