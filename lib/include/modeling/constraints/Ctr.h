@@ -27,6 +27,9 @@ namespace Solution {
 class Ctr : public Object {
     friend class Model;
     explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
+protected:
+    [[nodiscard]] bool isVar() const override { return true; }
+    [[nodiscard]] bool isCtr() const override { return false; }
 public:
     Ctr(const Ctr& t_var) = default;
     Ctr(Ctr&& t_var) noexcept = default;

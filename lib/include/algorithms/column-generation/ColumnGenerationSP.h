@@ -6,7 +6,6 @@
 #define OPTIMIZE_COLUMNGENERATIONSP_H
 
 #include "../Algorithm.h"
-#include "../decomposition/Generator.h"
 #include "ColumnGenerationBranchingSchemes_SP.h"
 #include "../parameters/Log.h"
 #include "../../containers/Set.h"
@@ -25,7 +24,6 @@ class ColumnGenerationSP {
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<ColumnGenerationBranchingScheme> m_branching_scheme;
     std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
-    Set<unsigned int> m_subproblem_ids;
 
     using PresentColumnList = std::list<std::pair<Var, Solution::Primal&>>;
 

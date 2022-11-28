@@ -24,6 +24,9 @@ class Model;
 class Var : public Object {
     friend class Model;
     explicit Var(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
+protected:
+    [[nodiscard]] bool isVar() const override { return true; }
+    [[nodiscard]] bool isCtr() const override { return false; }
 public:
     Var(const Var& t_var) = default;
     Var(Var&& t_var) noexcept = default;

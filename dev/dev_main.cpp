@@ -25,5 +25,4 @@ int main() {
 
     solver.solve();
 
-    return 0;
 }
