@@ -16,13 +16,22 @@ class Object;
 class AttributeManagers::Delegate : public AttributeManager {
 protected:
     virtual AttributeManager& attribute_delegate() = 0;
-    [[nodiscard]] virtual const AttributeManager& attribute_delegate() const = 0;
+
+    [[nodiscard]] virtual const AttributeManager& attribute_delegate() const {
+        return const_cast<Delegate*>(this)->attribute_delegate();
+    }
 
     virtual AttributeManager& attribute_delegate(const Var& t_object) = 0;
-    [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Var& t_object) const = 0;
+
+    [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Var& t_object) const  {
+        return const_cast<Delegate*>(this)->attribute_delegate(t_object);
+    }
 
     virtual AttributeManager& attribute_delegate(const Ctr& t_object) = 0;
-    [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Ctr& t_object) const = 0;
+
+    [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Ctr& t_object) const  {
+        return const_cast<Delegate*>(this)->attribute_delegate(t_object);
+    }
 public:
     void set(const Attribute<double> &t_attr, const Var &t_var, double t_value) override {
         attribute_delegate(t_var).set(t_attr, t_var, t_value);
