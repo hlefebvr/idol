@@ -293,7 +293,7 @@ int Model::get_attr_int(const Attribute<int> &t_attr) const {
 
 const Constant &Model::get_attr_Constant(const Attribute<Constant> &t_attr) const {
 
-    if (t_attr == Attr::Obj::Sense) {
+    if (t_attr == Attr::Obj::Const) {
         return m_objective.constant();
     }
 
