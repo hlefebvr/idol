@@ -64,14 +64,6 @@ void Model::remove(const Ctr &t_ctr) {
     m_constraints.remove(t_ctr);
 }
 
-bool Model::has(const Var &t_var) const {
-    return m_variables.has(t_var);
-}
-
-bool Model::has(const Ctr &t_ctr) const {
-    return m_constraints.has(t_ctr);
-}
-
 Column &Model::access_column(const Var &t_var) {
     return m_variables.attributes(t_var).column();
 }
@@ -261,6 +253,10 @@ int Model::get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) cons
         return m_constraints.attributes(t_ctr).type();
     }
 
+    if (t_attr == Attr::Ctr::Status) {
+        return m_constraints.has(t_ctr);
+    }
+
     return AttributeManagers::Base::get_attr_ctr_int(t_attr, t_ctr);
 }
 
@@ -304,6 +300,10 @@ int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) cons
 
     if (t_attr == Attr::Var::Type) {
         return m_variables.attributes(t_var).type();
+    }
+
+    if (t_attr == Attr::Var::Status) {
+        return m_variables.has(t_var);
     }
 
     return AttributeManagers::Base::get_attr_var_int(t_attr, t_var);

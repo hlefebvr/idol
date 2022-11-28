@@ -117,10 +117,6 @@ public:
     /* Removes */
     void remove(const Var& t_var);
     void remove(const Ctr& t_ctr);
-
-    /* Hases */
-    bool has(const Var& t_var) const;
-    bool has(const Ctr& t_ctr) const;
 };
 
 template<class T, int N, int I>

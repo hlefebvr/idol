@@ -189,7 +189,7 @@ template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update() {
 
     for (const auto& var : m_variables_to_update) {
-        if (!m_src_model.has(var)) { continue; }
+        if (!m_src_model.get(Attr::Var::Status, var)) { continue; }
         if (auto& f = future(var) ; !f.has_impl()) {
             auto impl = create(var, m_is_built);
             f.set_impl(impl);
@@ -199,7 +199,7 @@ void Solver<VarT, CtrT>::update() {
     }
 
     for (const auto& ctr : m_constraints_to_update) {
-        if (!m_src_model.has(ctr)) { continue; }
+        if (!m_src_model.get(Attr::Ctr::Status, ctr)) { continue; }
         if (auto& f = future(ctr) ; !f.has_impl()) {
             auto impl = create(ctr, true);
             f.set_impl(impl);
@@ -294,7 +294,7 @@ const Column &Solver<VarT, CtrT>::get_column(const Var &t_var) const {
 
 template<class VarT, class CtrT>
 bool Solver<VarT, CtrT>::has(const Var &t_var) const {
-    return m_src_model.has(t_var);
+    return m_src_model.get(Attr::Var::Status, t_var);
 }
 
 template<class VarT, class CtrT>
@@ -309,7 +309,7 @@ int Solver<VarT, CtrT>::get_type(const Ctr &t_ctr) const {
 
 template<class VarT, class CtrT>
 bool Solver<VarT, CtrT>::has(const Ctr &t_ctr) const {
-    return m_src_model.has(t_ctr);
+    return m_src_model.get(Attr::Ctr::Status, t_ctr);
 }
 
 #endif //OPTIMIZE_SOLVER2_H

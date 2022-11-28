@@ -304,7 +304,7 @@ Solution::Dual Solvers::Gurobi::iis() const {
 
 void Solvers::Gurobi::update_var_lb(const Var &t_var, double t_lb) {
 
-    if (model().has(t_var)) {
+    if (model().get(Attr::Var::Status, t_var)) {
         future(t_var).impl().set(GRB_DoubleAttr_LB, t_lb);
         model().set(Attr::Var::Lb, t_var, t_lb);
         return;
@@ -317,7 +317,7 @@ void Solvers::Gurobi::update_var_lb(const Var &t_var, double t_lb) {
 
 void Solvers::Gurobi::update_var_ub(const Var &t_var, double t_ub) {
 
-    if (model().has(t_var)) {
+    if (model().get(Attr::Var::Status, t_var)) {
         future(t_var).impl().set(GRB_DoubleAttr_UB, t_ub);
         model().set(Attr::Var::Ub, t_var, t_ub);
         return;
