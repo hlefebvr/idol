@@ -58,14 +58,16 @@ void Solvers::GLPK::execute() {
     }
 
     if (glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
+
         glp_iocp parameters_integer;
         glp_init_iocp(&parameters_integer);
         parameters_integer.msg_lev = GLP_MSG_ERR;
         glp_intopt(m_model, &parameters_integer);
         m_solved_as_mip = true;
-    }
 
-    save_milp_solution_status();
+        save_milp_solution_status();
+
+    }
 
 }
 
