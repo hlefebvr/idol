@@ -1,12 +1,12 @@
 //
 // Created by henri on 11/10/22.
 //
-#include "../../../include/algorithms/solvers/Solvers_GLPK_Simplex.h"
+#include "../../../include/algorithms/solvers/Solvers_GLPK.h"
 
 #ifdef IDOL_USE_GLPK
 #include <glpk.h>
 
-Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {
+Solvers::GLPK::GLPK(Model &t_model) : Solver(t_model) {
 
     m_model = glp_create_prob();
 
@@ -22,9 +22,10 @@ Solvers::GLPK_Simplex::GLPK_Simplex(Model &t_model) : Solver(t_model) {
 
 }
 
-void Solvers::GLPK_Simplex::execute() {
+void Solvers::GLPK::execute() {
 
     update();
+
 
     glp_smcp parameters;
     glp_init_smcp(&parameters);
@@ -42,6 +43,33 @@ void Solvers::GLPK_Simplex::execute() {
         glp_simplex(m_model, &parameters);
     }
 
+    save_solution_status();
+
+    if (get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
+
+        if (m_solution_status == Infeasible) {
+            compute_farkas_certificate();
+            return;
+        } else if (m_solution_status == Unbounded) {
+            compute_unbounded_ray();
+            return;
+        }
+
+    }
+
+    if (glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
+        glp_iocp parameters_integer;
+        glp_init_iocp(&parameters_integer);
+        parameters_integer.msg_lev = GLP_MSG_ERR;
+        glp_intopt(m_model, &parameters_integer);
+    }
+
+    save_solution_status();
+
+}
+
+void Solvers::GLPK::save_solution_status() {
+
     int status = glp_get_status(m_model);
 
     if (status == GLP_UNDEF) {
@@ -54,19 +82,12 @@ void Solvers::GLPK_Simplex::execute() {
         m_solution_status = Infeasible;
     } else if (status == GLP_UNBND) {
         m_solution_status = Unbounded;
+    } else {
+        throw Exception("GLPK: Unhandled solution status: " + std::to_string(status));
     }
-
-    if (get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
-        if (m_solution_status == Infeasible) {
-            compute_farkas_certificate();
-        } else if (m_solution_status == Unbounded) {
-            compute_unbounded_ray();
-        }
-    }
-
 }
 
-int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
+int Solvers::GLPK::create(const Var &t_var, bool t_with_collaterals) {
 
     int index;
     if (m_deleted_variables.empty()) {
@@ -94,10 +115,10 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
 
     switch (get_type(t_var)) {
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
-        case Binary: [[fallthrough]];
-        case Integer: throw Exception("GLPK_Simplex is an LP solver. Integer variable encountered. Variable: " + t_var.name() + ".");
-            //case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
-            //case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
+        //case Binary: [[fallthrough]];
+        //case Integer: throw Exception("GLPK_Simplex is an LP solver. Integer variable encountered. Variable: " + t_var.name() + ".");
+        case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
+        case Integer: glp_set_col_kind(m_model, index, GLP_IV); break;
         default: throw std::runtime_error("Unknown variable type.");
     }
 
@@ -126,7 +147,7 @@ int Solvers::GLPK_Simplex::create(const Var &t_var, bool t_with_collaterals) {
     return index;
 }
 
-int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
+int Solvers::GLPK::create(const Ctr &t_ctr, bool t_with_collaterals) {
 
     int index;
     if (m_deleted_constraints.empty()) {
@@ -168,7 +189,7 @@ int Solvers::GLPK_Simplex::create(const Ctr &t_ctr, bool t_with_collaterals) {
     return index;
 }
 
-void Solvers::GLPK_Simplex::compute_farkas_certificate() {
+void Solvers::GLPK::compute_farkas_certificate() {
 
     std::list<std::pair<int, int>> basis_rows;
     std::list<std::pair<int, int>> basis_cols;
@@ -267,7 +288,7 @@ void Solvers::GLPK_Simplex::compute_farkas_certificate() {
 
 }
 
-void Solvers::GLPK_Simplex::compute_unbounded_ray() {
+void Solvers::GLPK::compute_unbounded_ray() {
 
     const auto n_variables = (int) model().vars().size();
 
@@ -315,7 +336,7 @@ void Solvers::GLPK_Simplex::compute_unbounded_ray() {
     std::cout << "UNBOUNDED RAY LEFT MODEL MODIFIED" << std::endl;
 }
 
-void Solvers::GLPK_Simplex::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
+void Solvers::GLPK::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
 
     const int index = future(t_ctr).impl();
 
@@ -330,7 +351,7 @@ void Solvers::GLPK_Simplex::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
 
 }
 
-void Solvers::GLPK_Simplex::remove(const Var &t_var, int &t_impl) {
+void Solvers::GLPK::remove(const Var &t_var, int &t_impl) {
     const int index = future(t_var).impl();
 
     if (glp_get_col_stat(m_model, index) != GLP_NF) {
@@ -342,7 +363,7 @@ void Solvers::GLPK_Simplex::remove(const Var &t_var, int &t_impl) {
     m_deleted_variables.push(index);
 }
 
-void Solvers::GLPK_Simplex::remove(const Ctr &t_ctr, int &t_impl) {
+void Solvers::GLPK::remove(const Ctr &t_ctr, int &t_impl) {
     const int index = future(t_ctr).impl();
 
     if (glp_get_row_stat(m_model, index) != GLP_NF) {
@@ -354,7 +375,7 @@ void Solvers::GLPK_Simplex::remove(const Ctr &t_ctr, int &t_impl) {
     m_deleted_constraints.push(index);
 }
 
-Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
+Solution::Dual Solvers::GLPK::dual_solution() const {
 
     Solution::Dual result;
     const auto dual_status = dual(m_solution_status.value());
@@ -389,7 +410,7 @@ Solution::Dual Solvers::GLPK_Simplex::dual_solution() const {
     return result;
 }
 
-Solution::Dual Solvers::GLPK_Simplex::farkas_certificate() const {
+Solution::Dual Solvers::GLPK::farkas_certificate() const {
 
     if (m_solution_status != Infeasible) {
         throw Exception("Only available for infeasible problems.");
@@ -402,7 +423,7 @@ Solution::Dual Solvers::GLPK_Simplex::farkas_certificate() const {
     return m_farkas.value();
 }
 
-Solution::Primal Solvers::GLPK_Simplex::unbounded_ray() const {
+Solution::Primal Solvers::GLPK::unbounded_ray() const {
 
     if (m_solution_status != Unbounded) {
         throw Exception("Only available for unbounded problems.");
@@ -415,7 +436,7 @@ Solution::Primal Solvers::GLPK_Simplex::unbounded_ray() const {
     return m_ray.value();
 }
 
-void Solvers::GLPK_Simplex::update_obj() {
+void Solvers::GLPK::update_obj() {
     for (const auto& var : model().vars()) {
         glp_set_obj_coef(m_model, future(var).impl(), 0.);
     }
@@ -425,7 +446,7 @@ void Solvers::GLPK_Simplex::update_obj() {
 }
 
 
-Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
+Solution::Primal Solvers::GLPK::primal_solution() const {
 
     Solution::Primal result;
     const auto status = m_solution_status.value();
@@ -456,7 +477,7 @@ Solution::Primal Solvers::GLPK_Simplex::primal_solution() const {
     return result;
 }
 
-void Solvers::GLPK_Simplex::update_var_lb(const Var &t_var, double t_lb) {
+void Solvers::GLPK::update_var_lb(const Var &t_var, double t_lb) {
 
     const bool has_ub = !is_pos_inf(get_ub(t_var));
     const int index = future(t_var).impl();
@@ -474,7 +495,7 @@ void Solvers::GLPK_Simplex::update_var_lb(const Var &t_var, double t_lb) {
     model().set(Attr::Var::Lb, t_var, t_lb);
 }
 
-void Solvers::GLPK_Simplex::update_var_ub(const Var &t_var, double t_ub) {
+void Solvers::GLPK::update_var_ub(const Var &t_var, double t_ub) {
 
     const bool has_lb = !is_neg_inf(get_lb(t_var));
     const int index = future(t_var).impl();
@@ -492,15 +513,15 @@ void Solvers::GLPK_Simplex::update_var_ub(const Var &t_var, double t_ub) {
     model().set(Attr::Var::Ub, t_var, t_ub);
 }
 
-void Solvers::GLPK_Simplex::update(const Var &t_var, int &t_impl) {
+void Solvers::GLPK::update(const Var &t_var, int &t_impl) {
     std::cout << "SKIPPED UPDATE VAR" << std::endl;
 }
 
-void Solvers::GLPK_Simplex::update(const Ctr &t_ctr, int &t_impl) {
+void Solvers::GLPK::update(const Ctr &t_ctr, int &t_impl) {
     std::cout << "SKIPPED UPDATE CTR" << std::endl;
 }
 
-void Solvers::GLPK_Simplex::write(const std::string &t_filename) {
+void Solvers::GLPK::write(const std::string &t_filename) {
     auto filename = std::to_string(n_solved++) + t_filename;
     glp_write_lp(m_model, nullptr, filename.c_str());
 }

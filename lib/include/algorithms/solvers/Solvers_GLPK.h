@@ -14,10 +14,10 @@
 struct glp_prob;
 
 namespace Solvers {
-    class GLPK_Simplex;
+    class GLPK;
 }
 
-class Solvers::GLPK_Simplex : public Solver<int, int> {
+class Solvers::GLPK : public Solver<int, int> {
 
     glp_prob* m_model;
     unsigned int n_solved = 0;
@@ -43,11 +43,11 @@ protected:
     void remove(const Var &t_var, int &t_impl) override;
     void remove(const Ctr &t_ctr, int &t_impl) override;
 
+    void save_solution_status();
     void compute_farkas_certificate();
-
     void compute_unbounded_ray();
 public:
-    explicit GLPK_Simplex(Model& t_model);
+    explicit GLPK(Model& t_model);
 
     Solution::Primal primal_solution() const override;
 

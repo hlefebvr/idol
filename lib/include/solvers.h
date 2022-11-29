@@ -19,9 +19,9 @@ using gurobi_solver = std::tuple<>;
 #endif
 
 #ifdef IDOL_USE_GLPK
-#include "algorithms/solvers/Solvers_GLPK_Simplex.h"
+#include "algorithms/solvers/Solvers_GLPK.h"
 
-using glpk_simplex_solver = std::tuple<Solvers::GLPK_Simplex>;
+using glpk_simplex_solver = std::tuple<Solvers::GLPK>;
 #else
 using glpk_simplex_solver = std::tuple<>;
 #endif
