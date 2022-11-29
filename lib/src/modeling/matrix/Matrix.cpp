@@ -5,9 +5,18 @@
 #include "../../../include/modeling/models/Model.h"
 
 void Matrix::add_row_to_columns(const Ctr &t_ctr) {
+
     auto& row = access_row(t_ctr);
+
     for (auto [var, ref] : row.linear().refs()) {
         access_column(var).linear().refs().set(t_ctr, std::move(ref));
+    }
+
+    for (auto [pair, ref] : row.quadratic().refs()) {
+        access_column(pair.first).quadratic().refs().set({ t_ctr, pair.second }, std::move(ref));
+    }
+    for (auto [pair, ref] : row.quadratic().refs()) {
+        access_column(pair.second).quadratic().refs().set({ t_ctr, pair.first }, std::move(ref));
     }
 
     if (!row.rhs().is_zero()) {
@@ -17,9 +26,18 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
 }
 
 void Matrix::add_column_to_rows(const Var &t_var) {
+
     auto& column = access_column(t_var);
+
     for (auto [ctr, ref] : column.linear().refs()) {
         access_row(ctr).linear().refs().set(t_var, std::move(ref));
+    }
+
+    for (auto [pair, ref] : column.quadratic().refs()) {
+        access_row(pair.first).quadratic().refs().set({ t_var, pair.second }, std::move(ref));
+    }
+    for (auto [pair, ref] : column.quadratic().refs()) {
+        access_column(pair.second).quadratic().refs().set({ pair.first, t_var }, std::move(ref));
     }
 
     if (!column.obj().is_zero()) {
@@ -33,6 +51,10 @@ void Matrix::remove_row_from_columns(const Ctr &t_ctr) {
     for (const auto& [var, ptr_to_coeff] : row.linear().refs()) {
         access_column(var).impl().linear().remove(t_ctr);
     }
+    for (const auto& [pair, ptr_to_coeff] : row.quadratic().refs()) {
+        access_column(pair.first).impl().quadratic().remove({ t_ctr, pair.second });
+        access_column(pair.second).impl().quadratic().remove({ t_ctr, pair.first });
+    }
 
     auto& rhs = access_rhs();
     rhs.remove(t_ctr);
@@ -42,6 +64,9 @@ void Matrix::remove_column_from_rows(const Var &t_var) {
     auto& column = access_column(t_var);
     for (const auto& [ctr, ptr_to_coeff] : column.impl().linear().refs()) {
         access_row(ctr).linear().remove(t_var);
+    }
+    for (const auto& [pair, ptr_to_coeff] : column.impl().quadratic().refs()) {
+        access_row(pair.first).quadratic().remove({ t_var, pair.second });
     }
 
     auto& obj = access_obj();

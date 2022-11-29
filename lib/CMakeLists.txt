@@ -29,10 +29,10 @@ target_include_directories(
         idol
         PUBLIC
         $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/include>
+        $<BUILD_INTERFACE:${idol_SOURCE_DIR}/lib/include>
 )
 
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/lib/include/"
+install(DIRECTORY "${idol_SOURCE_DIR}/lib/include/"
         DESTINATION include/idol
         FILES_MATCHING
         PATTERN "*.h"
@@ -63,7 +63,7 @@ configure_file(IdolConfig.cmake.in IdolConfig.cmake @ONLY)
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/IdolConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/IdolConfigVersion.cmake"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/FindGUROBI.cmake"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/FindGLPK.cmake"
+        "${idol_SOURCE_DIR}/cmake/FindGUROBI.cmake"
+        "${idol_SOURCE_DIR}/cmake/FindGLPK.cmake"
         DESTINATION lib/cmake/Idol
         )
