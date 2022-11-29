@@ -19,7 +19,7 @@ namespace Solvers {
 /**
  * Interfaces with the commercial solver Gurobi.
  */
-class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
+class Solvers::Gurobi : public Solver<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
     static GRBEnv m_env;
     GRBModel m_model;
 
@@ -27,7 +27,7 @@ class Solvers::Gurobi : public Solver<GRBVar, GRBConstr> {
 
     void analyze_status();
     Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
-    Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBConstr&)>& t_get_dual_value) const;
+    Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const std::variant<GRBConstr, GRBQConstr>&)>& t_get_dual_value) const;
     static char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
 protected:
@@ -41,21 +41,21 @@ protected:
     void execute_iis() override;
 
     GRBVar create(const Var& t_var, bool t_with_collaterals) override;
-    GRBConstr create(const Ctr& t_ctr, bool t_with_collaterals) override;
+    std::variant<GRBConstr, GRBQConstr> create(const Ctr& t_ctr, bool t_with_collaterals) override;
 
     void update(const Var& t_var, GRBVar& t_impl) override;
-    void update(const Ctr& t_ctr, GRBConstr& t_impl) override;
+    void update(const Ctr& t_ctr, std::variant<GRBConstr, GRBQConstr>& t_impl) override;
 
     void update_obj() override;
 
     void remove(const Var &t_var, GRBVar &t_impl) override;
-    void remove(const Ctr &t_ctr, GRBConstr &t_impl) override;
+    void remove(const Ctr &t_ctr, std::variant<GRBConstr, GRBQConstr> &t_impl) override;
 
 public:
     explicit Gurobi(Model& t_model);
 
-    using Solver<GRBVar, GRBConstr>::update;
-    using Solver<GRBVar, GRBConstr>::remove;
+    using Solver<GRBVar, std::variant<GRBConstr, GRBQConstr>>::update;
+    using Solver<GRBVar, std::variant<GRBConstr, GRBQConstr>>::remove;
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 

@@ -222,7 +222,7 @@ void Solver<VarT, CtrT>::update() {
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove(const Var &t_variable) {
     if (auto& f = future(t_variable) ; f.has_impl()) {
-        remove(t_variable, future(t_variable).impl());
+        remove(t_variable, f.impl());
     }
     remove_future(t_variable);
     m_src_model.remove(t_variable);
@@ -231,7 +231,7 @@ void Solver<VarT, CtrT>::remove(const Var &t_variable) {
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove(const Ctr &t_constraint) {
     if (auto& f = future(t_constraint) ; f.has_impl()) {
-        remove(t_constraint, future(t_constraint).impl());
+        remove(t_constraint, f.impl());
     }
     remove_future(t_constraint);
     m_src_model.remove(t_constraint);

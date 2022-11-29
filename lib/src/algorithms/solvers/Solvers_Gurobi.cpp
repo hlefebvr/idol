@@ -11,7 +11,11 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 
-    m_model.set(GRB_IntAttr_ModelSense, t_model.get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
+    if (t_model.get(Attr::Obj::Expr).quadratic().empty()) {
+        m_model.set(GRB_IntAttr_ModelSense, t_model.get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
+    } else {
+        add_future_obj();
+    }
 
     for (const auto& var : t_model.vars()) {
         add_future(var, false);
@@ -85,6 +89,8 @@ void Solvers::Gurobi::execute() {
 
     analyze_status();
 
+    write("model.lp");
+
 }
 
 void Solvers::Gurobi::analyze_status() {
@@ -148,7 +154,14 @@ char Solvers::Gurobi::gurobi_var_type(int t_type) {
 }
 
 void Solvers::Gurobi::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
-    future(t_ctr).impl().set(GRB_DoubleAttr_RHS, t_rhs);
+    auto& impl = future(t_ctr).impl();
+
+    if (std::holds_alternative<GRBConstr>(impl)) {
+        std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, t_rhs);
+    } else {
+        std::get<GRBQConstr>(impl).set(GRB_DoubleAttr_QCRHS, t_rhs);
+    }
+
     model().set(Attr::Ctr::Rhs, t_ctr, t_rhs);
 }
 
@@ -167,7 +180,12 @@ Solution::Dual Solvers::Gurobi::farkas_certificate() const {
     result.set_objective_value(m_model.get(GRB_DoubleAttr_FarkasProof));
 
     for (const auto& ctr : model().ctrs()) {
-        result.set(ctr, -future(ctr).impl().get(GRB_DoubleAttr_FarkasDual));
+        auto& impl = future(ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            result.set(ctr, -std::get<GRBConstr>(impl).get(GRB_DoubleAttr_FarkasDual));
+        } else {
+            throw Exception("Farkas certificate not available for QCQPs.");
+        }
     }
 
     return result;
@@ -253,7 +271,7 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
 }
 
 Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std::function<double()> &t_get_obj_val,
-                                              const std::function<double(const GRBConstr &)> &t_get_dual_value) const {
+                                              const std::function<double(const std::variant<GRBConstr, GRBQConstr> &)> &t_get_dual_value) const {
     Solution::Dual result;
     const auto dual_status = t_status;
     result.set_status(dual_status);
@@ -280,6 +298,7 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
     }
 
     for (const auto& ctr : model().ctrs()) {
+        auto& impl = future(ctr).impl();
         result.set(ctr, t_get_dual_value(future(ctr).impl()));
     }
 
@@ -290,7 +309,14 @@ Solution::Dual Solvers::Gurobi::dual_solution() const {
     return dual_solution(
             dual(status()),
             [this](){ return m_model.get(GRB_DoubleAttr_ObjVal); },
-            [this](const GRBConstr& t_ctr){ return t_ctr.get(GRB_DoubleAttr_Pi); }
+            [](const std::variant<GRBConstr, GRBQConstr>& t_ctr){
+
+                if (std::holds_alternative<GRBConstr>(t_ctr)) {
+                    return std::get<GRBConstr>(t_ctr).get(GRB_DoubleAttr_Pi);
+                }
+                return std::get<GRBQConstr>(t_ctr).get(GRB_DoubleAttr_QCPi);
+
+            }
             );
 }
 
@@ -298,7 +324,14 @@ Solution::Dual Solvers::Gurobi::iis() const {
     return dual_solution(
             Optimal,
             [](){ return Inf; },
-            [this](const GRBConstr& t_ctr){ return t_ctr.get(GRB_IntAttr_IISConstr); }
+            [](const std::variant<GRBConstr, GRBQConstr>& t_ctr){
+
+                if (std::holds_alternative<GRBConstr>(t_ctr)) {
+                    return std::get<GRBConstr>(t_ctr).get(GRB_IntAttr_IISConstr);
+                }
+                return std::get<GRBQConstr>(t_ctr).get(GRB_IntAttr_IISQConstr);
+
+            }
     );
 }
 
@@ -339,53 +372,106 @@ void Solvers::Gurobi::execute_iis() {
     m_model.computeIIS();
 }
 
-GRBConstr Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
+std::variant<GRBConstr, GRBQConstr> Solvers::Gurobi::create(const Ctr &t_ctr, bool t_with_collaterals) {
+
+    const auto& row = model().get(Attr::Ctr::Row, t_ctr);
+    const auto type = gurobi_ctr_type(model().get(Attr::Ctr::Type, t_ctr));
 
     GRBLinExpr expr = 0.;
     if (t_with_collaterals) {
-        for (const auto &[var, constant]: model().get(Attr::Ctr::Row, t_ctr).linear()) {
+
+        for (const auto &[var, constant]: row.linear()) {
             expr += value(constant) * future(var).impl();
         }
+
     }
 
-    return m_model.addConstr(expr, gurobi_ctr_type(model().get(Attr::Ctr::Type, t_ctr)), value(model().get(Attr::Ctr::Row, t_ctr).rhs()), t_ctr.name());
+    return m_model.addConstr(expr, type, value(row.rhs()), t_ctr.name());
 
 }
 
 GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
 
-    GRBColumn column;
+    const auto& column = get_column(t_var);
+    const auto lb = get_lb(t_var);
+    const auto ub = get_ub(t_var);
+    const auto objective = value(column.obj());
+    const auto type = gurobi_var_type(get_type(t_var));
+    const auto& name = t_var.name();
+
+    GRBColumn col;
     if (t_with_collaterals) {
-        for (const auto& [ctr, constant] : get_column(t_var).linear()) {
-            column.addTerm( value(constant), future(ctr).impl() );
+
+        for (const auto& [ctr, constant] : column.linear()) {
+
+            auto& impl = future(ctr).impl();
+
+            if (std::holds_alternative<GRBQConstr>(impl)) {
+                throw Exception("Cannot add column to quadratic constraints.");
+            }
+
+            col.addTerm( value(constant), std::get<GRBConstr>(impl) );
+
+        }
+
+        if (!column.quadratic().empty()) {
+            throw Exception("Cannot add column with quadratic terms.");
         }
     }
 
-    return m_model.addVar(get_lb(t_var), get_ub(t_var), value(get_column(t_var).obj()), gurobi_var_type(get_type(t_var)), column, t_var.name());
+    return m_model.addVar(lb, ub, objective, type, col, name);
 }
 
 void Solvers::Gurobi::remove(const Var &t_var, GRBVar &t_impl) {
     m_model.remove(t_impl);
 }
 
-void Solvers::Gurobi::remove(const Ctr &t_ctr, GRBConstr &t_impl) {
-    m_model.remove(t_impl);
+void Solvers::Gurobi::remove(const Ctr &t_ctr, std::variant<GRBConstr, GRBQConstr> &t_impl) {
+    if (std::holds_alternative<GRBConstr>(t_impl)) {
+        m_model.remove(std::get<GRBConstr>(t_impl));
+    } else {
+        m_model.remove(std::get<GRBQConstr>(t_impl));
+    }
 }
 
 void Solvers::Gurobi::update(const Var &t_var, GRBVar &t_impl) {
     std::cout << "SKIPPED UPDATE VAR" << std::endl;
 }
 
-void Solvers::Gurobi::update(const Ctr &t_ctr, GRBConstr &t_impl) {
+void Solvers::Gurobi::update(const Ctr &t_ctr, std::variant<GRBConstr, GRBQConstr> &t_impl) {
     std::cout << "SKIPPED UPDATE CTR" << std::endl;
 }
 
 void Solvers::Gurobi::update_obj() {
-    GRBLinExpr expr = value(model().get(Attr::Obj::Const));
-    for (const auto& [var, constant] : model().get(Attr::Obj::Expr).linear()) {
-        expr += value(constant) * future(var).impl();
+
+    const auto& objective = model().get(Attr::Obj::Expr);
+    const auto sense = model().get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE;
+
+    if (objective.quadratic().empty()) {
+
+        GRBLinExpr expr = value(objective.constant());
+
+        for (const auto& [var, constant] : objective.linear()) {
+            expr += value(constant) * future(var).impl();
+        }
+
+        m_model.setObjective(expr, sense);
+
+    } else {
+
+        GRBQuadExpr expr = value(objective.constant());
+
+        for (const auto& [var, constant] : objective.linear()) {
+            expr.addTerm(value(constant), future(var).impl());
+        }
+
+        for (const auto& [var1, var2, constant] : objective.quadratic()) {
+            expr.addTerm(value(constant), future(var1).impl(), future(var2).impl());
+        }
+
+        m_model.setObjective(expr, sense);
+
     }
-    m_model.setObjective(expr, model().get(Attr::Obj::Sense) == Minimize ? GRB_MINIMIZE : GRB_MAXIMIZE);
 }
 
 #endif
