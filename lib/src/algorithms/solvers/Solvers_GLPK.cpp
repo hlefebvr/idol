@@ -25,7 +25,7 @@ Solvers::GLPK::GLPK(Model &t_model) : Solver(t_model) {
 void Solvers::GLPK::execute() {
 
     update();
-
+    m_solved_as_mip = false;
 
     glp_smcp parameters;
     glp_init_smcp(&parameters);
@@ -43,7 +43,7 @@ void Solvers::GLPK::execute() {
         glp_simplex(m_model, &parameters);
     }
 
-    save_solution_status();
+    save_simplex_solution_status();
 
     if (get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
 
@@ -62,13 +62,14 @@ void Solvers::GLPK::execute() {
         glp_init_iocp(&parameters_integer);
         parameters_integer.msg_lev = GLP_MSG_ERR;
         glp_intopt(m_model, &parameters_integer);
+        m_solved_as_mip = true;
     }
 
-    save_solution_status();
+    save_milp_solution_status();
 
 }
 
-void Solvers::GLPK::save_solution_status() {
+void Solvers::GLPK::save_simplex_solution_status() {
 
     int status = glp_get_status(m_model);
 
@@ -85,6 +86,24 @@ void Solvers::GLPK::save_solution_status() {
     } else {
         throw Exception("GLPK: Unhandled solution status: " + std::to_string(status));
     }
+}
+
+void Solvers::GLPK::save_milp_solution_status() {
+
+    int status = glp_mip_status(m_model);
+
+    if (status == GLP_UNDEF) {
+        m_solution_status = Unknown;
+    } else if (status == GLP_OPT) {
+        m_solution_status = Optimal;
+    } else if (status == GLP_FEAS) {
+        m_solution_status = Feasible;
+    } else if (status == GLP_NOFEAS) {
+        m_solution_status = Infeasible;
+    } else {
+        throw Exception("GLPK: Unhandled solution status: " + std::to_string(status));
+    }
+
 }
 
 int Solvers::GLPK::create(const Var &t_var, bool t_with_collaterals) {
@@ -115,8 +134,6 @@ int Solvers::GLPK::create(const Var &t_var, bool t_with_collaterals) {
 
     switch (get_type(t_var)) {
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
-        //case Binary: [[fallthrough]];
-        //case Integer: throw Exception("GLPK_Simplex is an LP solver. Integer variable encountered. Variable: " + t_var.name() + ".");
         case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
         case Integer: glp_set_col_kind(m_model, index, GLP_IV); break;
         default: throw std::runtime_error("Unknown variable type.");
@@ -377,6 +394,10 @@ void Solvers::GLPK::remove(const Ctr &t_ctr, int &t_impl) {
 
 Solution::Dual Solvers::GLPK::dual_solution() const {
 
+    if (m_solved_as_mip) {
+        throw Exception("Not available for MIPs.");
+    }
+
     Solution::Dual result;
     const auto dual_status = dual(m_solution_status.value());
     result.set_status(dual_status);
@@ -467,11 +488,24 @@ Solution::Primal Solvers::GLPK::primal_solution() const {
         return result;
     }
 
-    const double objective_value = value(model().get(Attr::Obj::Const)) + glp_get_obj_val(m_model);
-    result.set_objective_value(objective_value);
+    const double obj_const = value(model().get(Attr::Obj::Const));
 
-    for (const auto& var : model().vars()) {
-        result.set(var, glp_get_col_prim(m_model, future(var).impl()));
+    if (m_solved_as_mip) {
+
+        result.set_objective_value(obj_const + glp_mip_obj_val(m_model));
+
+        for (const auto& var : model().vars()) {
+            result.set(var, glp_mip_col_val(m_model, future(var).impl()));
+        }
+
+    } else {
+
+        result.set_objective_value(obj_const + glp_get_obj_val(m_model));
+
+        for (const auto& var : model().vars()) {
+            result.set(var, glp_get_col_prim(m_model, future(var).impl()));
+        }
+
     }
 
     return result;

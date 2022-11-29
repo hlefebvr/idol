@@ -21,6 +21,7 @@ class Solvers::GLPK : public Solver<int, int> {
 
     glp_prob* m_model;
     unsigned int n_solved = 0;
+    bool m_solved_as_mip = false;
 
     Optional<SolutionStatus> m_solution_status;
     Optional<Solution::Primal> m_ray;
@@ -43,7 +44,8 @@ protected:
     void remove(const Var &t_var, int &t_impl) override;
     void remove(const Ctr &t_ctr, int &t_impl) override;
 
-    void save_solution_status();
+    void save_simplex_solution_status();
+    void save_milp_solution_status();
     void compute_farkas_certificate();
     void compute_unbounded_ray();
 public:
