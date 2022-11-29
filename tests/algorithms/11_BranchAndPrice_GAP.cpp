@@ -35,11 +35,11 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
     );
 
     auto node_selection = GENERATE(
-            NodeSelections::Automatic,
-            NodeSelections::DepthFirst,
-            NodeSelections::BreadthFirst,
-            NodeSelections::BestBound,
-            NodeSelections::WorstBound
+            NodeSelections::Automatic//,
+            //NodeSelections::DepthFirst,
+    //NodeSelections::BreadthFirst,
+//            NodeSelections::BestBound,
+    //          NodeSelections::WorstBound
     );
 
 

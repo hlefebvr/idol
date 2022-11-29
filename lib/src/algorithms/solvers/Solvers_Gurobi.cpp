@@ -89,8 +89,6 @@ void Solvers::Gurobi::execute() {
 
     analyze_status();
 
-    write("model.lp");
-
 }
 
 void Solvers::Gurobi::analyze_status() {
@@ -376,17 +374,34 @@ std::variant<GRBConstr, GRBQConstr> Solvers::Gurobi::create(const Ctr &t_ctr, bo
 
     const auto& row = model().get(Attr::Ctr::Row, t_ctr);
     const auto type = gurobi_ctr_type(model().get(Attr::Ctr::Type, t_ctr));
+    const auto rhs = value(row.rhs());
+    const auto& name = t_ctr.name();
 
-    GRBLinExpr expr = 0.;
+
     if (t_with_collaterals) {
 
-        for (const auto &[var, constant]: row.linear()) {
-            expr += value(constant) * future(var).impl();
+        if (row.quadratic().empty()) {
+
+            GRBLinExpr expr = 0.;
+            for (const auto &[var, constant]: row.linear()) {
+                expr += value(constant) * future(var).impl();
+            }
+            return m_model.addConstr(expr, type, rhs, name);
+
         }
+
+        GRBQuadExpr expr = 0.;
+        for (const auto &[var, constant]: row.linear()) {
+            expr.addTerm(value(constant), future(var).impl());
+        }
+        for (const auto& [var1, var2, constant] : row.quadratic()) {
+            expr.addTerm(value(constant), future(var1).impl(), future(var2).impl());
+        }
+        return m_model.addQConstr(expr, type, rhs, name);
 
     }
 
-    return m_model.addConstr(expr, type, value(row.rhs()), t_ctr.name());
+    return m_model.addConstr(0, type, rhs, name);
 
 }
 
