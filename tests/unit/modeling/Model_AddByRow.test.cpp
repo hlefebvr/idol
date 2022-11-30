@@ -4,7 +4,7 @@
 
 #include "../../test_utils.h"
 
-SCENARIO("Model: Add constraint by Row", "[unit][modeling][Model]") {
+SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
     Model model;
 

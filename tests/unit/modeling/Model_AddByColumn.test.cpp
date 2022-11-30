@@ -4,7 +4,7 @@
 
 #include "../../test_utils.h"
 
-SCENARIO("Model: Add variable by column", "[unit][modeling][Model]") {
+SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
     Model model;
 
