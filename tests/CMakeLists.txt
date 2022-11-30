@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests main.test.cpp test_utils.h modeling/0_Constant.test.cpp modeling/4_Expr.test.cpp modeling/1_Var.test.cpp modeling/2_Ctr.test.cpp modeling/5_Model.test.cpp modeling/3_Param.test.cpp algorithms/6_LP_Toy.test.cpp algorithms/7_MILP_Toy.test.cpp algorithms/8_BranchAndBound_Toy.test.cpp algorithms/10_ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/11_BranchAndPrice_GAP.cpp main.test.cpp algorithms/12_RowGeneration_Toy.test.cpp algorithms/9_BranchAndBound_KP.test.cpp modeling/Model_AddByColumn.test.cpp)
+add_executable(tests main.test.cpp test_utils.h modeling/0_Constant.test.cpp modeling/4_Expr.test.cpp modeling/1_Var.test.cpp modeling/2_Ctr.test.cpp modeling/5_Model.test.cpp modeling/3_Param.test.cpp algorithms/6_LP_Toy.test.cpp algorithms/7_MILP_Toy.test.cpp algorithms/8_BranchAndBound_Toy.test.cpp algorithms/10_ColumnGeneration_Toy.test.cpp cartesian_product.h algorithms/11_BranchAndPrice_GAP.cpp main.test.cpp algorithms/12_RowGeneration_Toy.test.cpp algorithms/9_BranchAndBound_KP.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_AddByRow.test.cpp)
 target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 
@@ -38,3 +38,5 @@ target_link_libraries(tests PRIVATE Catch2::Catch2)
 add_custom_command(TARGET tests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/instances/ $<TARGET_FILE_DIR:tests>/instances/
 )
+
+add_subdirectory(unit)

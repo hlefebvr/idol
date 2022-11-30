@@ -10,29 +10,31 @@ using namespace Problems::GAP;
 
 int main() {
 
-    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/gap_a/a05100");
-
-    const unsigned int n_knapsacks = instance.n_knapsacks();
-    const unsigned int n_items = instance.n_items();
-
     Model model;
 
-    auto x = model.add_vars(Dim<2>(n_knapsacks, n_items), 0., 1., Binary, 0.);
+    auto x = model.add_vars(Dim<1>(3), 0., 1., Continuous, 0.);
 
-    for (unsigned int k = 0 ; k < n_knapsacks ; ++k) {
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
-            model.set(Attr::Var::Obj, x[k][j], instance.p(k, j));
-        }
+    Row row;
+    row.set_rhs(100);
+    row.linear().set(x[0], 101);
+    row.linear().set(x[1], 102);
+    row.linear().set(x[2], 103);
+    row.quadratic().set(x[0], x[0], 104);
+    row.quadratic().set(x[0], x[1], 105);
+    row.quadratic().set(x[0], x[2], 106);
+    row.quadratic().set(x[1], x[0], 107);
+    row.quadratic().set(x[1], x[1], 108);
+    row.quadratic().set(x[1], x[2], 109);
+    row.quadratic().set(x[2], x[0], 110);
+    row.quadratic().set(x[2], x[1], 111);
+    row.quadratic().set(x[2], x[2], 112);
 
-        model.add_ctr(idol_Sum(j, Range(n_items), instance.w(k,j) * x[k][j]) <= instance.t(k));
-    }
+    auto ctr = model.add_ctr(TempCtr(std::move(row), LessOrEqual));
 
-    for (unsigned int j = 0 ; j < n_items ; ++j) {
-        model.add_ctr(idol_Sum(k, Range(n_knapsacks), x[k][j]) == 1);
-    }
+    model.get(Attr::Rhs::Expr).get(ctr).numerical() == 100;
+    model.get(Attr::Ctr::Rhs, ctr).numerical() == 100;
+    model.get(Attr::Ctr::Row, ctr).linear().get(x[0]).numerical() == 101;
+    model.get(Attr::Ctr::Row, ctr).linear().get(x[1]).numerical() == 102;
+    model.get(Attr::Ctr::Row, ctr).linear().get(x[2]).numerical() == 103;
 
-    Solvers::GLPK solver(model);
-    solver.solve();
-
-    std::cout << solver.primal_solution().objective_value() << std::endl;
 }

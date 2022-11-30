@@ -2,9 +2,9 @@
 // Created by henri on 30/11/22.
 //
 
-#include "../test_utils.h"
+#include "../../test_utils.h"
 
-TEST_CASE("Model", "[modeling][Model]") {
+SCENARIO("Model: Add variable by column", "[unit][modeling][Model]") {
 
     Model model;
 
@@ -54,12 +54,12 @@ TEST_CASE("Model", "[modeling][Model]") {
                     CHECK(model.get(Attr::Obj::Expr).linear().get(var).numerical() == 1_a);
                 }
 
-                THEN("The variable's objective coefficient should be updated") {
+                AND_THEN("The variable's objective coefficient should be updated") {
                     CHECK(model.get(Attr::Var::Obj, var).numerical() == 1_a);
                 }
             }
 
-            AND_WHEN("A constraint coefficient is changed in the model (nonzero)") {
+            AND_WHEN("A matrix coefficient is changed in the model (nonzero)") {
 
                 model.set(Attr::Matrix::Coeff, c[0], var, 1);
 
@@ -67,7 +67,7 @@ TEST_CASE("Model", "[modeling][Model]") {
                     CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 1_a);
                 }
 
-                THEN("The model's variable's column should be updated") {
+                AND_THEN("The model's variable's column should be updated") {
                     CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 1_a);
                 }
 
@@ -81,7 +81,7 @@ TEST_CASE("Model", "[modeling][Model]") {
                     CHECK(model.get(Attr::Obj::Expr).linear().empty());
                 }
 
-                THEN("The model's variable's column's objective coefficient should be zero") {
+                AND_THEN("The model's variable's column's objective coefficient should be zero") {
                     CHECK(model.get(Attr::Var::Obj, var).numerical() == 0_a);
                 }
 
@@ -95,7 +95,7 @@ TEST_CASE("Model", "[modeling][Model]") {
                     CHECK(model.get(Attr::Ctr::Row, c[0]).linear().empty());
                 }
 
-                THEN("The model's variable's column's coefficient should be zero") {
+                AND_THEN("The model's variable's column's coefficient should be zero") {
                     CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 0_a);
                 }
 

@@ -16,7 +16,9 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
         access_column(pair.first).quadratic().refs().set({ t_ctr, pair.second }, std::move(ref));
     }
     for (auto [pair, ref] : row.quadratic().refs()) {
-        access_column(pair.second).quadratic().refs().set({ t_ctr, pair.first }, std::move(ref));
+        if (pair.first != pair.second) {
+            access_column(pair.second).quadratic().refs().set({t_ctr, pair.first}, std::move(ref));
+        }
     }
 
     if (!row.rhs().is_zero()) {
@@ -53,7 +55,9 @@ void Matrix::remove_row_from_columns(const Ctr &t_ctr) {
     }
     for (const auto& [pair, ptr_to_coeff] : row.quadratic().refs()) {
         access_column(pair.first).impl().quadratic().remove({ t_ctr, pair.second });
-        access_column(pair.second).impl().quadratic().remove({ t_ctr, pair.first });
+        if (pair.first != pair.second) {
+            access_column(pair.second).impl().quadratic().remove({ t_ctr, pair.first });
+        }
     }
 
     auto& rhs = access_rhs();
