@@ -15,6 +15,7 @@ namespace impl {
 
 class impl::Column {
     ::Expr<Ctr, Var> m_impl;
+    ::LinExpr<Var> m_obj_quad;
 protected:
     ::Expr<Ctr, Var>& impl() { return m_impl; }
 public:
@@ -30,6 +31,9 @@ public:
 
     Constant& obj() { return m_impl.constant(); }
     const Constant& obj() const { return m_impl.constant(); }
+
+    ::LinExpr<Var>& obj_quadratic() { return m_obj_quad; }
+    const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
 
     LinExpr<Ctr>& linear() { return m_impl.linear(); }
     const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
