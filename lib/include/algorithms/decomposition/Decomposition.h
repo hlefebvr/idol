@@ -74,6 +74,20 @@ public:
 
         return *generation_strategy;
     }
+
+    class iterator {
+        friend class Decomposition;
+        std::list<std::unique_ptr<Algorithm>>::iterator m_it;
+        explicit iterator(std::list<std::unique_ptr<Algorithm>>::iterator t_it) : m_it(t_it) {}
+    public:
+        bool operator!=(const iterator& t_rhs) const { return m_it != t_rhs.m_it; }
+        iterator& operator++() { ++m_it; return *this; }
+        Algorithm& operator*() { return **m_it; }
+        const Algorithm& operator*() const { return **m_it; }
+    };
+
+    iterator begin() { return iterator(m_generation_strategies.begin()); }
+    iterator end() { return iterator(m_generation_strategies.end()); }
 };
 
 #endif //OPTIMIZE_DECOMPOSITION_H
