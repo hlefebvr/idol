@@ -5,14 +5,9 @@
 #ifndef OPTIMIZE_BRANCHINGSTRATEGIES_MOSTINFEASIBLE_H
 #define OPTIMIZE_BRANCHINGSTRATEGIES_MOSTINFEASIBLE_H
 
-#include "BranchingStrategy.h"
-#include "../../modeling/variables/Var.h"
-#include "../../modeling/numericals.h"
-#include "../../errors/Exception.h"
-#include "algorithms/parameters/Log.h"
+#include "BranchingStrategies_VariableBranchingBase.h"
 #include <vector>
 #include <list>
-#include <functional>
 
 namespace BranchingStrategies {
     class MostInfeasible;
@@ -24,39 +19,19 @@ public:
 };
 
 template<class NodeT>
-class BranchingStrategies::MostInfeasible::Strategy : public BranchingStrategyWithNodeType<NodeT> {
+class BranchingStrategies::MostInfeasible::Strategy : public BranchingStrategies::Base::OnVariables::Strategy<NodeT> {
     std::vector<Var> m_branching_candidates;
 protected:
     static double fractional_part(double t_x);
     static bool is_integer(double t_x);
-    virtual double score(const Var& t_var, const NodeT& t_node) const;
-    virtual std::pair<std::vector<Var>::const_iterator, double> select_variable_for_branching(const NodeT& t_node) const;
+    virtual double most_infeasible_score(const Var& t_var, const NodeT& t_node) const;
 public:
     explicit Strategy(std::vector<Var> t_branching_candidates) : m_branching_candidates(std::move(t_branching_candidates)) {}
 
     bool is_valid(const NodeT &t_node) const override;
 
-    std::list<NodeT *> create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const override;
+    std::list<NodeT *> create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) override;
 };
-
-template<class NodeT>
-std::pair<std::vector<Var>::const_iterator, double>
-BranchingStrategies::MostInfeasible::Strategy<NodeT>::select_variable_for_branching(const NodeT& t_node) const {
-
-    auto selected_variable = m_branching_candidates.end();
-    double maximum_score = -1.;
-
-    for (auto it = m_branching_candidates.begin(), end = m_branching_candidates.end() ; it != end ; ++it ) {
-
-        if (double variable_score = score(*it, t_node) ; variable_score > maximum_score) {
-            maximum_score = variable_score;
-            selected_variable = it;
-        }
-
-    }
-
-    return { selected_variable, maximum_score };
-}
 
 template<class NodeT>
 bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_valid(const NodeT &t_node) const {
@@ -76,32 +51,29 @@ template<class NodeT>
 std::list<NodeT *> BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_child_nodes(
         const NodeT &t_node,
         const std::function<unsigned int()>& t_id_provider
-    ) const {
+    ) {
 
-    const auto [selected_variable, variable_score] = select_variable_for_branching(t_node);
+    this->select_variable_for_branching(
+            m_branching_candidates.begin(),
+            m_branching_candidates.end(),
+            [&](const Var& t_var){ return most_infeasible_score(t_var, t_node); }
+        );
 
-    if (selected_variable == m_branching_candidates.end() || variable_score <= ToleranceForIntegrality) {
-        throw Exception("Maximum infeasibility is less than ToleranceForIntegrality");
+    if (!this->has_variable_selected_for_branching()) {
+        throw Exception("No variable selected for branching.");
     }
 
-    const double value = t_node.primal_solution().get(*selected_variable);
+    const auto [variable, score] = this->variable_selected_for_branching();
 
-    auto* n1 = t_node.create_child( t_id_provider() );
-    n1->set_local_lower_bound(*selected_variable, std::ceil(value));
+    if (score <= ToleranceForIntegrality) {
+        throw Exception("Maximum infeasibility is less than ToleranceForIntegrality.");
+    }
 
-    auto* n2 = t_node.create_child( t_id_provider() );
-    n2->set_local_upper_bound(*selected_variable, std::floor(value));
+    const double value = t_node.primal_solution().get(variable);
+    const double lb = std::ceil(value);
+    const double ub = std::floor(value);
 
-    idol_Log(Trace,
-             "branch-and-bound",
-             "Node " << t_node.id() << " has 2 child nodes: "
-                << "Node " << n1->id() << " with " << *selected_variable << " >= " << std::ceil(value)
-                << " and "
-                << "Node " << n2->id() << " with " << *selected_variable << " <= " << std::floor(value)
-                << " (current value of " << *selected_variable << " is " << value << ").";
-             );
-
-    return { n1, n2 };
+    return this->create_child_nodes_by_bound(t_node, t_id_provider, variable, value, lb, ub);
 }
 
 template<class NodeT>
@@ -115,7 +87,7 @@ bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_integer(double t_x
 }
 
 template<class NodeT>
-double BranchingStrategies::MostInfeasible::Strategy<NodeT>::score(const Var &t_var, const NodeT &t_node) const {
+double BranchingStrategies::MostInfeasible::Strategy<NodeT>::most_infeasible_score(const Var &t_var, const NodeT &t_node) const {
     const double frac_value = fractional_part(t_node.primal_solution().get(t_var));
     if (frac_value <= ToleranceForIntegrality) {
         return -Inf;
