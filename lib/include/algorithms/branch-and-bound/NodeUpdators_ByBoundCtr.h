@@ -38,12 +38,12 @@ public:
     void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) override {
 
         update_bounds(m_lower_bounds,
-                      t_node.m_local_lower_bounds,
+                      t_node.local_lower_bounds(),
                       [](const Var& t_x, double t_lb){ return t_x >= t_lb; },
                       t_solution_strategy);
 
         update_bounds(m_upper_bounds,
-                      t_node.m_local_upper_bounds,
+                      t_node.local_upper_bounds(),
                       [](const Var& t_x, double t_ub){ return t_x <= t_ub; },
                       t_solution_strategy);
 
