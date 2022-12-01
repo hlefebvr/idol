@@ -107,7 +107,7 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
             NodeStrategyT,
             ActiveNodeManagerT,
             NodeUpdatorT
-    >(rmp, alpha, subproblems, branching_candidates);
+    >(rmp, alpha.begin(), alpha.end(), subproblems.begin(), subproblems.end(), branching_candidates);
 
     solver.set(Param::BranchAndBound::NodeSelection, node_selection);
 

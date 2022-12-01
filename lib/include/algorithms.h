@@ -44,9 +44,19 @@ template<
         class BranchingStrategyT = BranchingStrategies::MostInfeasible,
         class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
         class ActiveNodeManagerT = ActiveNodesManagers::Basic,
-        class NodeUpdatorT = NodeUpdators::ByBoundVar
+        class NodeUpdatorT = NodeUpdators::ByBoundVar,
+        class VariableIteratorT,
+        class SubproblemIteratorT
 >
-BranchAndBound branch_and_price(Model& t_rmp_model, const std::vector<Var>& t_variables, std::vector<Model>& t_subproblems, std::vector<Var> t_branching_candidates) {
+BranchAndBound branch_and_price(
+        Model& t_rmp_model,
+        VariableIteratorT t_variable_begin,
+        VariableIteratorT t_variable_end,
+        SubproblemIteratorT t_subproblem_begin,
+        SubproblemIteratorT t_subproblem_end,
+        std::vector<Var> t_branching_candidates
+    ) {
+
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategyT>();
@@ -59,16 +69,66 @@ BranchAndBound branch_and_price(Model& t_rmp_model, const std::vector<Var>& t_va
 
     auto& column_generation = decomposition.template add_generation_strategy<ColumnGeneration>();
 
-    const unsigned int n_subproblems = t_variables.size();
-    if (n_subproblems != t_subproblems.size()) { throw Exception("Subproblems and Variables size do not match."); }
+    for (
+            ; t_variable_begin != t_variable_end && t_subproblem_begin != t_subproblem_end
+            ; ++t_variable_begin, ++t_subproblem_begin) {
 
-    for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        auto &subproblem = column_generation.add_subproblem(t_variables[i]);
-        subproblem.template set_solution_strategy<SPSolutionStrategyT>(t_subproblems[i]);
+        auto &subproblem = column_generation.add_subproblem(*t_variable_begin);
+        subproblem.template set_solution_strategy<SPSolutionStrategyT>(*t_subproblem_begin);
         subproblem.template set_branching_scheme<GenerationStrategyT>();
+
+    }
+
+    if (t_variable_begin != t_variable_end || t_subproblem_begin != t_subproblem_end) {
+        throw Exception("Variable and subproblem size do not match.");
     }
 
     return result;
+}
+
+template<
+        class RMPSolutionStrategyT = default_solver,
+        class SPSolutionStrategyT = default_solver,
+        class GenerationStrategyT = ColumnGenerationBranchingSchemes::RMP,
+        class BranchingStrategyT = BranchingStrategies::MostInfeasible,
+        class NodeStrategyT = NodeStrategies::Basic<Nodes::Basic>,
+        class ActiveNodeManagerT = ActiveNodesManagers::Basic,
+        class NodeUpdatorT = NodeUpdators::ByBoundVar
+>
+BranchAndBound branch_and_price(
+        Model& t_rmp_model,
+        const Var& t_variable,
+        Model& t_subproblem,
+        std::vector<Var> t_branching_candidates
+) {
+
+    std::initializer_list<Var> variables { t_variable };
+
+    class iterator {
+        bool m_is_end;
+        Model& m_model;
+    public:
+        iterator(Model& t_model, bool t_is_end) : m_is_end(t_is_end), m_model(t_model) {}
+        iterator& operator++() { m_is_end = m_is_end + 1; return *this; }
+        Model& operator*() { return m_model; }
+        bool operator!=(const iterator& t_rhs) const { return m_is_end != t_rhs.m_is_end; }
+    };
+
+    return branch_and_price<
+            RMPSolutionStrategyT,
+            SPSolutionStrategyT,
+            GenerationStrategyT,
+            BranchingStrategyT,
+            NodeStrategyT,
+            ActiveNodeManagerT,
+            NodeUpdatorT>(t_rmp_model,
+                          variables.begin(),
+                          variables.end(),
+                          iterator(t_subproblem, false),
+                          iterator(t_subproblem, true),
+                          std::move(t_branching_candidates)
+                          );
+
 }
 
 #endif //OPTIMIZE_ALGORITHMS_H
