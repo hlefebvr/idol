@@ -72,6 +72,12 @@ public:
     const Row &get_row(const Ctr &t_ctr) const override;
 
     int get_type(const Ctr &t_ctr) const override;
+
+    using Subproblems = IteratorForward<std::list<ColumnGenerationSP>>;
+    using ConstSubproblems = ConstIteratorForward<std::list<ColumnGenerationSP>>;
+
+    Subproblems subproblems() { return m_subproblems; }
+    [[nodiscard]] ConstSubproblems subproblems() const { return m_subproblems; }
 };
 
 #endif //OPTIMIZE_COLUMNGENERATION_H

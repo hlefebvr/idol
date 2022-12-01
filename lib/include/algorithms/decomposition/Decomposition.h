@@ -65,13 +65,9 @@ public:
     }
 
     template<class T, class ...Args> T& add_generation_strategy(Args&& ...t_args) {
-
         auto* rmp_strategy = m_generation_strategies.empty() ? m_rmp_strategy.get() : m_generation_strategies.back().get();
-
         auto* generation_strategy = new T(*rmp_strategy, std::forward<Args>(t_args)...);
-
         m_generation_strategies.emplace_back(generation_strategy);
-
         return *generation_strategy;
     }
 
@@ -84,10 +80,29 @@ public:
         iterator& operator++() { ++m_it; return *this; }
         Algorithm& operator*() { return **m_it; }
         const Algorithm& operator*() const { return **m_it; }
+        Algorithm* operator->() { return m_it->get(); }
+        const Algorithm* operator->() const { return m_it->get(); }
+    };
+
+    class const_iterator {
+        friend class Decomposition;
+        std::list<std::unique_ptr<Algorithm>>::const_iterator m_it;
+        explicit const_iterator(std::list<std::unique_ptr<Algorithm>>::const_iterator t_it) : m_it(t_it) {}
+    public:
+        bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
+        const_iterator& operator++() { ++m_it; return *this; }
+        const Algorithm& operator*() const { return **m_it; }
+        const Algorithm* operator->() const { return m_it->get(); }
     };
 
     iterator begin() { return iterator(m_generation_strategies.begin()); }
     iterator end() { return iterator(m_generation_strategies.end()); }
+
+    const_iterator cbegin() const { return const_iterator(m_generation_strategies.begin()); }
+    const_iterator cend() const { return const_iterator(m_generation_strategies.end()); }
+
+    const_iterator begin() const { return const_iterator(m_generation_strategies.begin()); }
+    const_iterator end() const { return const_iterator(m_generation_strategies.end()); }
 };
 
 #endif //OPTIMIZE_DECOMPOSITION_H
