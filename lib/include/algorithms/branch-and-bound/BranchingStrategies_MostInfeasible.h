@@ -84,6 +84,8 @@ std::list<NodeT *> BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_
         const std::function<unsigned int()>& t_id_provider
     ) {
 
+    this->reset_variable_selected_for_branching();
+
     select_integer_variable_for_branching(t_node);
 
     if (!this->has_variable_selected_for_branching()) {
