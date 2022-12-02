@@ -39,11 +39,9 @@ Solution::Primal ColumnGeneration::primal_solution() const{
     Solution::Primal result = rmp_solution_strategy().primal_solution();
     for (auto& subproblem : m_subproblems) {
         result.merge_without_conflict(subproblem.primal_solution());
-        /* TODO, here we remove every generated column variable from the solution
-           just clarify the situation, e.g., add primal(var) to Algorithm ? */
-        for (const auto& [var, column] : subproblem.currently_present_variables()) {
-            result.set(var, 0.);
-        }
+        //for (const auto& [var, column] : subproblem.currently_present_variables()) {
+        //    result.set(var, 0.);
+        //}
     }
     return result;
 }
