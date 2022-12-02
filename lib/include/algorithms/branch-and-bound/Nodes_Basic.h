@@ -15,13 +15,14 @@ namespace Nodes {
 }
 
 class Nodes::Basic : public Node {
-public: // TODO: remove this
     Solution::Primal m_primal_solutions;
     Map<Var, double> m_local_lower_bounds;
     Map<Var, double> m_local_upper_bounds;
     unsigned int m_level = 0;
 
+protected:
     Basic(unsigned int t_id, const Basic& t_src);
+    static std::optional<double> get_local_bound(const Var& t_var, const Map<Var, double>& t_local_bounds);
 public:
     explicit Basic(unsigned int t_id) : Node(t_id) {}
 
@@ -29,10 +30,11 @@ public:
 
     void set_solution(Solution::Primal&& t_solution);
 
-    using LocalBounds = ConstIteratorForward<Map<Var, double>>;
+    const Map<Var, double>& local_lower_bounds() const { return m_local_lower_bounds; }
+    const Map<Var, double>& local_upper_bounds() const { return m_local_upper_bounds; }
 
-    LocalBounds local_lower_bounds() const { return LocalBounds(m_local_lower_bounds); }
-    LocalBounds local_upper_bounds() const { return LocalBounds(m_local_upper_bounds); }
+    std::optional<double> get_local_lower_bound(const Var& t_var) const { return get_local_bound(t_var, m_local_lower_bounds); }
+    std::optional<double> get_local_upper_bound(const Var& t_var) const { return get_local_bound(t_var, m_local_upper_bounds); }
 
     SolutionStatus status() const override { return m_primal_solutions.status(); }
     Reason reason() const override { return m_primal_solutions.reason(); }

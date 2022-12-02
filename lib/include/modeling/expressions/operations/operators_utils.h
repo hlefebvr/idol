@@ -31,15 +31,15 @@ public:
 
 #define idol_Sum(iterator_name, iterator, expr) \
 [&]() {                                         \
-    Expr result;                                \
+    Expr _idol_result;                                \
     auto _idol_iterator = iterator;                                            \
     for (auto _idol_iterator_begin = _idol_iterator.begin(), _idol_iterator_end = _idol_iterator.end() ; \
          _idol_iterator_begin != _idol_iterator_end ;  \
          ++_idol_iterator_begin) {                         \
         decltype(*_idol_iterator_begin) iterator_name = *_idol_iterator_begin;                                        \
-        result += expr;                                            \
+        _idol_result += expr;                                            \
     }                                           \
-    return result;                                            \
+    return _idol_result;                                            \
 }()
 
 #endif //IDOL_OPERATORS_UTILS_H

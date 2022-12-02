@@ -85,6 +85,12 @@ public:
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
+    Algorithm& solution_strategy() { return *m_solution_strategy; }
+    [[nodiscard]] const Algorithm& solution_strategy() const { return *m_solution_strategy; }
+
+    NodeStrategy& node_strategy() { return *m_nodes; }
+    [[nodiscard]] const NodeStrategy& node_strategy() const { return *m_nodes; }
+
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
     template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);

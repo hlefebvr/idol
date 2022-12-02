@@ -18,7 +18,7 @@ class BranchingStrategyWithNodeType : public BranchingStrategy {
 public:
     virtual bool is_valid(const NodeT& t_node) const = 0;
 
-    virtual std::list<NodeT*> create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) const = 0;
+    virtual std::list<NodeT*> create_child_nodes(const NodeT &t_node, const std::function<unsigned int()>& t_id_provider) = 0;
 };
 
 #endif //OPTIMIZE_BRANCHINGSTRATEGY_H

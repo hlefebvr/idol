@@ -38,3 +38,11 @@ void Nodes::Basic::set_local_upper_bound(const Var &t_var, double t_ub) {
 void Nodes::Basic::set_solution(Solution::Primal &&t_solution) {
     m_primal_solutions = std::move(t_solution);
 }
+
+std::optional<double> Nodes::Basic::get_local_bound(const Var &t_var, const Map<Var, double> &t_local_bounds) {
+    auto it = t_local_bounds.find(t_var);
+    if (it == t_local_bounds.end()) {
+        return {};
+    }
+    return it->second;
+}
