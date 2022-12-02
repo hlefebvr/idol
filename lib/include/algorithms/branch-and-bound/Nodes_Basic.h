@@ -20,8 +20,8 @@ class Nodes::Basic : public Node {
     Map<Var, double> m_local_upper_bounds;
     unsigned int m_level = 0;
 
-    Basic(unsigned int t_id, const Basic& t_src);
 protected:
+    Basic(unsigned int t_id, const Basic& t_src);
     static std::optional<double> get_local_bound(const Var& t_var, const Map<Var, double>& t_local_bounds);
 public:
     explicit Basic(unsigned int t_id) : Node(t_id) {}
