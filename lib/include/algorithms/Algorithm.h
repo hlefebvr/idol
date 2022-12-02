@@ -301,7 +301,7 @@ public:
 
     template<class T> T& as() { return *static_cast<T*>(this); }
 
-    template<class T> const T& as() const { return *static_cast<T*>(this); }
+    template<class T> const T& as() const { return *static_cast<const T*>(this); }
 
 };
 
