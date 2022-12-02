@@ -25,7 +25,7 @@ protected:
     static double fractional_part(double t_x);
     static bool is_integer(double t_x);
     virtual double most_infeasible_score(const Var& t_var, const NodeT& t_node) const;
-    virtual void select_integer_variable_for_branching(const NodeT& t_node, const std::function<unsigned int()>& t_id_provider);
+    virtual void select_integer_variable_for_branching(const NodeT& t_node);
     virtual std::list<NodeT *> create_child_nodes_by_bound_for_integer_variable(
             const NodeT &t_node,
             const std::function<unsigned int()>& t_id_provider,
@@ -54,9 +54,7 @@ BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_child_nodes_by_boun
 }
 
 template<class NodeT>
-void BranchingStrategies::MostInfeasible::Strategy<NodeT>::select_integer_variable_for_branching(
-        const NodeT &t_node,
-        const std::function<unsigned int()> &t_id_provider) {
+void BranchingStrategies::MostInfeasible::Strategy<NodeT>::select_integer_variable_for_branching(const NodeT &t_node) {
 
     this->select_variable_for_branching(
             m_branching_candidates.begin(),
@@ -86,7 +84,7 @@ std::list<NodeT *> BranchingStrategies::MostInfeasible::Strategy<NodeT>::create_
         const std::function<unsigned int()>& t_id_provider
     ) {
 
-    select_integer_variable_for_branching(t_node, t_id_provider);
+    select_integer_variable_for_branching(t_node);
 
     if (!this->has_variable_selected_for_branching()) {
         throw Exception("No variable selected for branching.");
