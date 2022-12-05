@@ -2,11 +2,6 @@
 // Created by henri on 07/09/22.
 //
 #include "../../../include/modeling/models/Model.h"
-#include "../../../include/modeling/matrix/Matrix.h"
-#include "../../../include/modeling/expressions/operations/operators.h"
-#include "../../../include/modeling/variables/Attributes_Var.h"
-#include "../../../include/modeling/constraints/Attributes_Ctr.h"
-#include "../../../include/modeling/models/Attributes_Model.h"
 
 Model::Model(Sense t_sense) : m_objective_sense(t_sense) {
 
@@ -307,4 +302,8 @@ int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) cons
     }
 
     return AttributeManagers::Base::get_attr_var_int(t_attr, t_var);
+}
+
+Model Model::clone() const {
+    return *this;
 }

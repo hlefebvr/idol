@@ -9,6 +9,7 @@
 #include "../../modeling/solutions/Solution.h"
 #include "../../containers/Map.h"
 #include "../../modeling/variables/Var.h"
+#include <optional>
 
 namespace Nodes {
     class Basic;

@@ -16,6 +16,7 @@
 #include "../matrix/Matrix.h"
 #include "AttributeManagers_Base.h"
 #include "../constraints/Attributes_Ctr.h"
+#include "../variables/Attributes_Var.h"
 #include "Attributes_Model.h"
 #include <vector>
 
@@ -86,10 +87,10 @@ protected:
     const Constant &get_attr_Constant(const Attribute<Constant> &t_attr) const override;
     int get_attr_int(const Attribute<int> &t_attr) const override;
 
+    Model(const Model&) = default;
 public:
     explicit Model(Sense t_sense = Minimize);
 
-    Model(const Model&) = delete;
     Model(Model&&) noexcept = default;
 
     Model& operator=(const Model&) = delete;
@@ -117,6 +118,8 @@ public:
     /* Removes */
     void remove(const Var& t_var);
     void remove(const Ctr& t_ctr);
+
+    Model clone() const;
 };
 
 template<class T, int N, int I>
@@ -166,14 +169,57 @@ Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, cons
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
-    t_os << t_model.get(Attr::Obj::Sense) << " " << t_model.get(Attr::Obj::Expr) << "\nSubject to:\n";
-    for (const auto& ctr : t_model.ctrs()) {
-        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
-        t_os << ctr << ": " << row.linear() << " ? " << row.rhs() << '\n';
+
+    if (t_model.get(Attr::Obj::Sense) == Minimize) {
+        t_os << "Minimize";
+    } else {
+        t_os << "Maximize";
     }
+
+    t_os << " " << t_model.get(Attr::Obj::Expr) << "\nSubject to:\n";
+    for (const auto& ctr : t_model.ctrs()) {
+
+        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
+        const auto& linear = row.linear();
+        const auto& quadratic = row.quadratic();
+        const auto type = t_model.get(Attr::Ctr::Type, ctr);
+
+        t_os << ctr << ": ";
+
+        if (linear.empty()) {
+            t_os << quadratic;
+        } else {
+            t_os << linear;
+            if (!quadratic.empty()) {
+                t_os << " + " << quadratic;
+            }
+        }
+
+        switch (type) {
+            case LessOrEqual: t_os << " <= "; break;
+            case Equal: t_os << " = "; break;
+            case GreaterOrEqual: t_os << " >= "; break;
+            default: t_os << " ?undefined? ";
+        }
+
+        t_os << row.rhs() << '\n';
+    }
+
     t_os << "Variables:\n";
     for (const auto& var : t_model.vars()) {
-        t_os << var << '\n';
+
+        const double lb = t_model.get(Attr::Var::Lb, var);
+        const double ub = t_model.get(Attr::Var::Ub, var);
+
+        if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
+            t_os << lb << " <= " << var << " <= " << ub << '\n';
+        } else if (!is_pos_inf(ub)) {
+            t_os << var << " <= " << ub << '\n';
+        } else if (!is_neg_inf(lb)) {
+            t_os << var << " >= " << lb << '\n';
+        } else {
+            t_os << var << '\n';
+        }
     }
     return t_os;
 }
