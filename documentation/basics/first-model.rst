@@ -20,11 +20,13 @@ The :cpp:`Model` class is used to represent an optimization model of the followi
     \begin{array}{lll}
         \textrm{minimize } & \displaystyle \sum_{j=1}^n c_jx_j + \sum_{j=1}^n\sum_{k=1}^n d_{jk}x_jx_k \\
         \textrm{subject to } & \displaystyle \sum_{j=1}^n a_{ij}x_j + \sum_{j=1}^n\sum_{k=1}^n q^i_{jk}x_jx_k \le b_i & i=1,...,m \\
-        & l_j \le x_j \le u_j & j=1,...,m
+        & l_j \le x_j \le u_j & j=1,...,m \\
+        & x_j\in\mathbb Z & j\in J_I
     \end{array}
 
 Here, :math:`x_j` are the variables of this optimization problem while :math:`c_j, d_{jk}, a_{ij}` and :math:`q_{jk}^i` are given
-input parameters for this model.
+input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is a set of variable indices
+whose value must be integral.
 
 The default constructor of :cpp:`Model` can be used to create a new optimization model in idol.
 
