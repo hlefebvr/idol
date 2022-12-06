@@ -75,7 +75,7 @@ LinExpr<Ctr> &Model::access_rhs() {
     return m_rhs;
 }
 
-void Model::set_attr_var_double(const Attribute<double> &t_attr, const Var &t_var, double t_value) {
+void Model::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     if (t_attr == Attr::Var::Lb) {
         m_variables.attributes(t_var).set_lb(t_value);
@@ -87,10 +87,10 @@ void Model::set_attr_var_double(const Attribute<double> &t_attr, const Var &t_va
         return;
     }
 
-    AttributeManagers::Base::set_attr_var_double(t_attr, t_var, t_value);
+    AttributeManagers::Base::set(t_attr, t_var, t_value);
 }
 
-double Model::get_attr_var_double(const Attribute<double> &t_attr, const Var &t_var) const {
+double Model::get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Lb) {
         return m_variables.attributes(t_var).lb();
@@ -100,37 +100,37 @@ double Model::get_attr_var_double(const Attribute<double> &t_attr, const Var &t_
         return m_variables.attributes(t_var).ub();
     }
 
-    return AttributeManagers::Base::get_attr_var_double(t_attr, t_var);
+    return AttributeManagers::Base::get(t_attr, t_var);
 }
 
-const Column &Model::get_attr_var_Column(const Attribute<Column> &t_attr, const Var &t_var) const {
+const Column &Model::get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Column) {
         return m_variables.attributes(t_var).column();
     }
 
-    return AttributeManagers::Base::get_attr_var_Column(t_attr, t_var);
+    return AttributeManagers::Base::get(t_attr, t_var);
 }
 
-const Row &Model::get_attr_ctr_Row(const Attribute<Row> &t_attr, const Ctr &t_ctr) const {
+const Row &Model::get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Row) {
         return m_constraints.attributes(t_ctr).row();
     }
 
-    return AttributeManagers::Base::get_attr_ctr_Row(t_attr, t_ctr);
+    return AttributeManagers::Base::get(t_attr, t_ctr);
 }
 
-const Constant & Model::get_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
+const Constant & Model::get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
 
     if (t_attr == Attr::Matrix::Coeff) {
         return m_constraints.attributes(t_ctr).row().linear().get(t_var);
     }
 
-    return AttributeManagers::Base::get_attr_ctr_var_Constant(t_attr, t_ctr, t_var);
+    return AttributeManagers::Base::get(t_attr, t_ctr, t_var);
 }
 
-void Model::set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var,
+void Model::set(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var,
                                       Constant &&t_value) {
 
     if (t_attr == Attr::Matrix::Coeff) {
@@ -138,88 +138,88 @@ void Model::set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const C
         return;
     }
 
-    AttributeManagers::Base::set_attr_ctr_var_Constant(t_attr, t_ctr, t_var, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, t_ctr, t_var, std::move(t_value));
 }
 
-void Model::set_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+void Model::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
 
     if (t_attr == Attr::Ctr::Rhs) {
         add_to_rhs(t_ctr, std::move(t_value));
         return;
     }
 
-    AttributeManagers::Base::set_attr_ctr_Constant(t_attr, t_ctr, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, t_ctr, std::move(t_value));
 }
 
-const Expr<Var, Var> &Model::get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr) const {
+const Expr<Var, Var> &Model::get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Expr) {
         return m_objective;
     }
 
-    return AttributeManagers::Base::get_attr_Expr_Var_Var(t_attr);
+    return AttributeManagers::Base::get(t_attr);
 }
 
-void Model::set_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr, Expr<Var, Var> &&t_value) {
+void Model::set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
 
     if (t_attr == Attr::Obj::Expr) {
         replace_objective(std::move(t_value));
         return;
     }
 
-    AttributeManagers::Base::set_attr_Expr_Var_Var(t_attr, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, std::move(t_value));
 }
 
-void Model::set_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr, LinExpr<Ctr> &&t_value) {
+void Model::set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
         replace_right_handside(std::move(t_value));
         return;
     }
 
-    AttributeManagers::Base::set_attr_LinExpr_Ctr(t_attr, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, std::move(t_value));
 }
 
-const LinExpr<Ctr> &Model::get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr) const {
+const LinExpr<Ctr> &Model::get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const {
 
     if (t_attr == Attr::Rhs::Expr) {
         return m_rhs;
     }
 
-    return AttributeManagers::Base::get_attr_LinExpr_Ctr(t_attr);
+    return AttributeManagers::Base::get(t_attr);
 }
 
-void Model::set_attr_Constant(const Attribute<Constant> &t_attr, Constant &&t_value) {
+void Model::set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) {
 
     if (t_attr == Attr::Obj::Const) {
         m_objective.constant() = std::move(t_value);
         return;
     }
 
-    AttributeManagers::Base::set_attr_Constant(t_attr, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, std::move(t_value));
 }
 
-void Model::set_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var, Constant &&t_value) {
+void Model::set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
 
     if (t_attr == Attr::Var::Obj) {
         add_to_obj(t_var, std::move(t_value));
         return;
     }
 
-    AttributeManagers::Base::set_attr_var_Constant(t_attr, t_var, std::move(t_value));
+    AttributeManagers::Base::set(t_attr, t_var, std::move(t_value));
 }
 
-void Model::set_attr_var_int(const Attribute<int> &t_attr, const Var &t_var, int t_value) {
+void Model::set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) {
 
     if (t_attr == Attr::Var::Type) {
         m_variables.attributes(t_var).set_type(t_value);
         return;
     }
 
-    AttributeManagers::Base::set_attr_var_int(t_attr, t_var, t_value);
+    AttributeManagers::Base::set(t_attr, t_var, t_value);
 }
 
-void Model::set_attr_int(const Attribute<int> &t_attr, int t_value) {
+void Model::set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) {
 
     if (t_attr == Attr::Obj::Sense) {
         if (t_value < 0 || t_value > 1) {
@@ -229,20 +229,20 @@ void Model::set_attr_int(const Attribute<int> &t_attr, int t_value) {
         return;
     }
 
-    AttributeManagers::Base::set_attr_int(t_attr, t_value);
+    AttributeManagers::Base::set(t_attr, t_value);
 }
 
-void Model::set_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr, int t_value) {
+void Model::set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
 
     if (t_attr == Attr::Ctr::Type) {
         m_constraints.attributes(t_ctr).set_type(t_value);
         return;
     }
 
-    AttributeManagers::Base::set_attr_ctr_int(t_attr, t_ctr, t_value);
+    AttributeManagers::Base::set(t_attr, t_ctr, t_value);
 }
 
-int Model::get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) const {
+int Model::get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Type) {
         return m_constraints.attributes(t_ctr).type();
@@ -252,46 +252,46 @@ int Model::get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) cons
         return m_constraints.has(t_ctr);
     }
 
-    return AttributeManagers::Base::get_attr_ctr_int(t_attr, t_ctr);
+    return AttributeManagers::Base::get(t_attr, t_ctr);
 }
 
-const Constant &Model::get_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr) const {
+const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Rhs) {
         return m_constraints.attributes(t_ctr).row().rhs();
     }
 
-    return AttributeManagers::Base::get_attr_ctr_Constant(t_attr, t_ctr);
+    return AttributeManagers::Base::get(t_attr, t_ctr);
 }
 
-const Constant &Model::get_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var) const {
+const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Obj) {
         return m_variables.attributes(t_var).column().obj();
     }
 
-    return AttributeManagers::Base::get_attr_var_Constant(t_attr, t_var);
+    return AttributeManagers::Base::get(t_attr, t_var);
 }
 
-int Model::get_attr_int(const Attribute<int> &t_attr) const {
+int Model::get(const AttributeWithTypeAndArguments<int, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Sense) {
         return m_objective_sense;
     }
 
-    return AttributeManagers::Base::get_attr_int(t_attr);
+    return AttributeManagers::Base::get(t_attr);
 }
 
-const Constant &Model::get_attr_Constant(const Attribute<Constant> &t_attr) const {
+const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Const) {
         return m_objective.constant();
     }
 
-    return AttributeManagers::Base::get_attr_Constant(t_attr);
+    return AttributeManagers::Base::get(t_attr);
 }
 
-int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) const {
+int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Type) {
         return m_variables.attributes(t_var).type();
@@ -301,7 +301,7 @@ int Model::get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) cons
         return m_variables.has(t_var);
     }
 
-    return AttributeManagers::Base::get_attr_var_int(t_attr, t_var);
+    return AttributeManagers::Base::get(t_attr, t_var);
 }
 
 Model Model::clone() const {

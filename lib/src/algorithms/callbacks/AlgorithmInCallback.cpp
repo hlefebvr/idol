@@ -72,4 +72,3 @@ std::optional<double> AlgorithmInCallback::get_parameter_double(const Parameter<
 std::optional<int> AlgorithmInCallback::get_parameter_int(const Parameter<int> &t_param) const {
     return m_algorithm.get_parameter_int(t_param);
 }
-

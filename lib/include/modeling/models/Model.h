@@ -51,42 +51,6 @@ class Model : public Matrix, public AttributeManagers::Base {
     Row &access_row(const Ctr &t_ctr) override;
 
 protected:
-    /// Set
-    // Var
-    void set_attr_var_int(const Attribute<int> &t_attr, const Var &t_var, int t_value) override;
-    void set_attr_var_double(const Attribute<double> &t_attr, const Var &t_var, double t_value) override;
-    void set_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var, Constant &&t_value) override;
-
-    // Ctr
-    void set_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr, int t_value) override;
-    void set_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
-
-    // Model
-    void set_attr_int(const Attribute<int> &t_attr, int t_value) override;
-    void set_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) override;
-    void set_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr, Expr<Var, Var> &&t_value) override;
-    void set_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr, LinExpr<Ctr> &&t_value) override;
-    void set_attr_Constant(const Attribute<Constant> &t_attr, Constant &&t_value) override;
-
-    /// Get
-    // Var
-    double get_attr_var_double(const Attribute<double> &t_attr, const Var &t_var) const override;
-    const Column &get_attr_var_Column(const Attribute<Column> &t_attr, const Var &t_var) const override;
-    const Constant &get_attr_var_Constant(const Attribute<Constant> &t_attr, const Var &t_var) const override;
-    int get_attr_var_int(const Attribute<int> &t_attr, const Var &t_var) const override;
-
-    // Ctr
-    int get_attr_ctr_int(const Attribute<int> &t_attr, const Ctr &t_ctr) const override;
-    const Row &get_attr_ctr_Row(const Attribute<Row> &t_attr, const Ctr &t_ctr) const override;
-    const Constant &get_attr_ctr_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr) const override;
-
-    // Model
-    const Constant & get_attr_ctr_var_Constant(const Attribute<Constant> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
-    const Expr<Var, Var> &get_attr_Expr_Var_Var(const Attribute<Expr<Var, Var>> &t_attr) const override;
-    const LinExpr<Ctr> &get_attr_LinExpr_Ctr(const Attribute<LinExpr<Ctr>> &t_attr) const override;
-    const Constant &get_attr_Constant(const Attribute<Constant> &t_attr) const override;
-    int get_attr_int(const Attribute<int> &t_attr) const override;
-
     Model(const Model&) = default;
 public:
     explicit Model(Sense t_sense = Minimize);
@@ -120,6 +84,46 @@ public:
     void remove(const Ctr& t_ctr);
 
     Model clone() const;
+
+    using AttributeManagers::Base::set;
+    using AttributeManagers::Base::get;
+
+    /// Set
+    // Var
+    void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
+    void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
+
+    // Ctr
+    void set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
+
+    // Model
+    void set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) override;
+
+    /// Get
+    // Var
+    double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
+    const Column &get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const override;
+    const Constant &get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const override;
+    int get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const override;
+
+    // Ctr
+    int get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const override;
+    const Row &get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const override;
+    const Constant &get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const override;
+
+    // Model
+    const Constant & get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
+    const Expr<Var, Var> &get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const override;
+    const LinExpr<Ctr> &get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const override;
+    const Constant &get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const override;
+    int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
+
 };
 
 template<class T, int N, int I>

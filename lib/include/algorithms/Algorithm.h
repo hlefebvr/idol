@@ -11,6 +11,7 @@
 #include "../errors/NotImplemented.h"
 #include "parameters/Timer.h"
 #include "parameters/Parameters_Algorithm.h"
+#include "modeling/models/AttributeManager_Delegate.h"
 #include "parameters/Log.h"
 #include <list>
 
@@ -24,7 +25,7 @@ class Var;
  * It is an abstract class used to share a common interface between every solution algorithm.
  * By default, most of the methods are defined and throw a NotImplemented exception.
  */
-class Algorithm {
+class Algorithm /* : public AttributeManagers::Delegate */ {
     friend class AlgorithmInCallback;
 
     Timer m_timer;

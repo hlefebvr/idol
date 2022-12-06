@@ -8,30 +8,37 @@
 #include <typeinfo>
 #include <string>
 
-template<class TypeT>
 class Attribute {
-    [[nodiscard]] virtual const std::type_info& underlying_type() const = 0;
+    [[nodiscard]] virtual const std::type_info& section() const = 0;
+    [[nodiscard]] virtual const std::type_info& type() const = 0;
 public:
     [[nodiscard]] virtual unsigned int index() const = 0;
     [[nodiscard]] virtual std::string name() const = 0;
 
-    template<class T> bool operator==(const Attribute<T>& t_param) const {
-        if constexpr (!std::is_same_v<T, TypeT>) {
+    bool operator==(const Attribute& t_rhs) const {
+        if (type() != t_rhs.type()) {
             return false;
-        } else {
-            return t_param.underlying_type() == underlying_type() && t_param.index() == index();
         }
+        return t_rhs.section() == section() && t_rhs.index() == index();
     }
 
-    template<class T> bool operator!=(const Attribute<T>& t_param) const { return !operator==(t_param); }
+    bool operator!=(const Attribute& t_rhs) const { return !operator==(t_rhs); }
 
-    template<class T> bool is_in_section(const T& t_section) const { return underlying_type() == typeid(t_section); }
+    template<class T> bool is_in_section(const T& t_section) const { return section() == typeid(t_section); }
 };
 
+template<class TypeT>
+class AttributeWithType : public Attribute {
+    [[nodiscard]] const std::type_info& type() const override { return typeid(TypeT); }
+};
+
+template<class TypeT, class ...ArgsT>
+class AttributeWithTypeAndArguments : public AttributeWithType<TypeT> {};
+
 namespace impl {
-    template<class AlgorithmT, class TypeT, unsigned int Index>
-    class Attribute : public ::Attribute<TypeT> {
-        [[nodiscard]] const std::type_info &underlying_type() const override { return typeid(AlgorithmT); }
+    template<class AlgorithmT, class TypeT, unsigned int Index, class ...ArgsT>
+    class AttributeWithType : public ::AttributeWithTypeAndArguments<TypeT, ArgsT...> {
+        [[nodiscard]] const std::type_info &section() const override { return typeid(AlgorithmT); }
     public:
         [[nodiscard]] unsigned int index() const override { return Index; }
     };
@@ -57,13 +64,13 @@ namespace impl::Attr { \
     };           \
 }
 
-#define IDOL_CREATE_ATTRIBUTE(t_attr_class, t_type, t_index, t_name) \
+#define IDOL_CREATE_ATTRIBUTE(t_attr_class, t_type, t_index, t_name, ...) \
 namespace impl::Attr {                                               \
     static_assert((t_index) < ::impl::Attr::n_attributes<::impl::Attr::Sections::t_attr_class, t_type>::value); \
     template<> struct reserve_index<::impl::Attr::Sections::t_attr_class, t_type, t_index> {};   \
 }                                                                     \
 namespace impl::Attr::t_attr_class {                                                 \
-    struct t_name : public ::impl::Attribute<Sections::t_attr_class, ::t_type, t_index> { \
+    struct t_name : public ::impl::AttributeWithType<Sections::t_attr_class, ::t_type, t_index, __VA_ARGS__> { \
         std::string name() const override { return std::string("Attr::") + #t_attr_class + "::" + #t_name; } \
     }; \
 }                                                                                    \

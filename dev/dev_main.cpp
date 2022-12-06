@@ -15,6 +15,9 @@ int main() {
     auto x = model.add_vars(Dim<1>(2), 0., 1., Binary, 0., "x");
     auto c = model.add_ctr(x[0] + x[1] <= 2);
 
+    Expr objective = x[0];
+    model.set(Attr::Obj::Expr, objective);
+
     auto cloned = model.clone();
 
     model.set(Attr::Matrix::Coeff, c, x[0], 1900);
