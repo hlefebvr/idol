@@ -489,4 +489,24 @@ void Solvers::Gurobi::update_obj() {
     }
 }
 
+double Solvers::Gurobi::get_lb(const Var &t_var) const {
+    if (model().get(Attr::Var::Status, t_var)) {
+        return Solver::get_lb(t_var);
+    }
+    if (!m_callbacks.empty()) {
+        return m_callbacks.front()->get_lb(t_var);
+    }
+    throw Exception("Wrong request.");
+}
+
+double Solvers::Gurobi::get_ub(const Var &t_var) const {
+    if (model().get(Attr::Var::Status, t_var)) {
+        return Solver::get_ub(t_var);
+    }
+    if (!m_callbacks.empty()) {
+        return m_callbacks.front()->get_ub(t_var);
+    }
+    throw Exception("Wrong request.");
+}
+
 #endif

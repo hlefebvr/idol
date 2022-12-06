@@ -35,6 +35,10 @@ public:
 
     void update_var_ub(const Var &t_var, double t_lb) override;
 
+    double get_lb(const Var &t_var) const override;
+
+    double get_ub(const Var &t_var) const override;
+
     using ::RowGeneration::subproblems;
 
     static const bool uses_lazy_cuts = true;

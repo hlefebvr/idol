@@ -40,3 +40,11 @@ void Callbacks::RowGeneration::update_var_lb(const Var &t_var, double t_lb) {
 void Callbacks::RowGeneration::update_var_ub(const Var &t_var, double t_ub) {
     ::RowGeneration::update_var_ub(t_var, t_ub);
 }
+
+double Callbacks::RowGeneration::get_lb(const Var &t_var) const {
+    return ::RowGeneration::get_lb(t_var);
+}
+
+double Callbacks::RowGeneration::get_ub(const Var &t_var) const {
+    return ::RowGeneration::get_ub(t_var);
+}

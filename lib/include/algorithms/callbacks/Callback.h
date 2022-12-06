@@ -33,6 +33,14 @@ public:
         throw NotImplemented("Updating ub from callback", "update_var_ub");
     }
 
+    [[nodiscard]] virtual double get_lb(const Var& t_var) const {
+        throw NotImplemented("Getting lb from callback", "get_lb");
+    }
+
+    [[nodiscard]] virtual double get_ub(const Var& t_var) const {
+        throw NotImplemented("Getting ub from callback", "get_ub");
+    }
+
 };
 
 class Callback::Context {
