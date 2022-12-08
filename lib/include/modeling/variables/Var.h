@@ -26,7 +26,6 @@ class Var : public Object {
     explicit Var(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 protected:
     [[nodiscard]] bool isVar() const override { return true; }
-    [[nodiscard]] bool isCtr() const override { return false; }
 public:
     Var(const Var& t_var) = default;
     Var(Var&& t_var) noexcept = default;
@@ -34,10 +33,6 @@ public:
     Var& operator=(const Var& t_var) = default;
     Var& operator=(Var&& t_var) noexcept = default;
 };
-
-static std::ostream& operator<<(std::ostream& t_os, const Var& t_var) {
-    return t_os << t_var.name();
-}
 
 MAKE_HASHABLE(Var)
 

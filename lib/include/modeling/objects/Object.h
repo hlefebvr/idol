@@ -10,13 +10,15 @@
 
 class Var;
 class Ctr;
+class UserAttr;
 
 class Object {
     std::shared_ptr<ObjectId> m_object_id{};
 protected:
     explicit Object(ObjectId&& t_ref) : m_object_id(std::make_shared<ObjectId>(std::move(t_ref))) {}
-    [[nodiscard]] virtual bool isVar() const = 0;
-    [[nodiscard]] virtual bool isCtr() const = 0;
+    [[nodiscard]] virtual bool isVar() const { return false; }
+    [[nodiscard]] virtual bool isCtr() const { return false; }
+    [[nodiscard]] virtual bool isAnnotation() const { return false; }
 public:
     virtual ~Object() = default;
 
@@ -33,8 +35,12 @@ public:
     template<class T> [[nodiscard]] bool is() const {
         if constexpr (std::is_same_v<T, Var>) {
             return isVar();
-        } else if (std::is_same_v<T, Ctr>) {
+        }
+        if (std::is_same_v<T, Ctr>) {
             return isCtr();
+        }
+        if (std::is_same_v<T, UserAttr>) {
+            return isAnnotation();
         } else {
             return false;
         }
@@ -44,6 +50,10 @@ public:
         return static_cast<const T&>(*this);
     }
 };
+
+static std::ostream& operator<<(std::ostream& t_os, const Object& t_var) {
+    return t_os << t_var.name();
+}
 
 #define MAKE_HASHABLE(name) \
 template<> \

@@ -18,6 +18,8 @@
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
 #include "Attributes_Model.h"
+#include "modeling/annotation/UserAttr.h"
+#include "modeling/annotation/UserAttrAttributes.h"
 #include <vector>
 
 class Column;
@@ -42,6 +44,7 @@ class Model : public Matrix, public AttributeManagers::Base {
     LinExpr<Ctr> m_rhs;
     ObjectStore<Var, VarAttributes> m_variables;
     ObjectStore<Ctr, CtrAttributes> m_constraints;
+    ObjectStore<UserAttr, UserAttrAttributes> m_user_attributes;
 
     template<class T, int N, int I = 0> Vector<T, N-I> add_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one);
 
@@ -67,6 +70,9 @@ public:
     auto ctrs() { return m_constraints.objects(); }
     [[nodiscard]] auto ctrs() const { return m_constraints.objects(); }
 
+    auto annotations() { return m_user_attributes.objects(); }
+    [[nodiscard]] auto annotations() const { return m_user_attributes.objects(); }
+
     /* Adds */
     Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
     Var add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
@@ -79,9 +85,12 @@ public:
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
 
+    UserAttr add_user_attr(int t_default_value, std::string t_name = "");
+
     /* Removes */
     void remove(const Var& t_var);
     void remove(const Ctr& t_ctr);
+    void remove(const UserAttr& t_user_attr);
 
     Model clone() const;
 
@@ -89,6 +98,9 @@ public:
     using AttributeManagers::Base::get;
 
     /// Set
+
+    void set(const UserAttr& t_annotation, const Ctr& t_ctr, int t_value);
+
     // Var
     void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
     void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
@@ -106,6 +118,9 @@ public:
     void set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) override;
 
     /// Get
+
+    int get(const UserAttr& t_annotation, const Ctr& t_ctr);
+
     // Var
     double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
     const Column &get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const override;
@@ -145,21 +160,21 @@ Vector<T, N - I> Model::add_many(const Dim<N>& t_dims, const std::string& t_name
 template<int N>
 Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, double t_lb, double t_ub, VarType t_type,
                                const Constant &t_objective_coefficient, const std::string& t_name) {
-    return add_many<Var, N>(t_dim, t_name, [&](const std::string& t_name){
+    return add_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
         return add_var(t_lb, t_ub, t_type, t_objective_coefficient, t_name);
     });
 }
 
 template<int N>
 Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, const TempVar& t_temporary_variable, const std::string &t_name) {
-    return add_many<Var, N>(t_dim, t_name, [&](const std::string& t_name){
+    return add_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
         return add_var(TempVar(t_temporary_variable), t_name);
     });
 }
 
 template<int N>
 Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, CtrType t_type, const Constant& t_rhs, const std::string &t_name) {
-    return add_many<Ctr, N>(t_dim, t_name, [&](const std::string& t_name){
+    return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
         return add_ctr(t_type, t_rhs, t_name);
     });
 }
@@ -167,7 +182,7 @@ Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, CtrType t_type, const Consta
 template<int N>
 Vector<Ctr, N>
 Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, const std::string &t_name) {
-    return add_many<Ctr, N>(t_dim, t_name, [&](const std::string& t_name){
+    return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
         return add_ctr(t_temporary_constraint, t_name);
     });
 }

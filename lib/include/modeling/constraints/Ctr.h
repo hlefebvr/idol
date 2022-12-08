@@ -28,8 +28,7 @@ class Ctr : public Object {
     friend class Model;
     explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 protected:
-    [[nodiscard]] bool isVar() const override { return true; }
-    [[nodiscard]] bool isCtr() const override { return false; }
+    [[nodiscard]] bool isCtr() const override { return true; }
 public:
     Ctr(const Ctr& t_var) = default;
     Ctr(Ctr&& t_var) noexcept = default;
@@ -37,10 +36,6 @@ public:
     Ctr& operator=(const Ctr& t_var) = default;
     Ctr& operator=(Ctr&& t_var) noexcept = default;
 };
-
-static std::ostream& operator<<(std::ostream& t_os, const Ctr& t_ctr) {
-    return t_os << t_ctr.name();
-}
 
 MAKE_HASHABLE(Ctr)
 

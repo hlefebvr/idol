@@ -6,15 +6,15 @@
 #define IDOL_CTRATTRIBUTES_H
 
 #include "TempCtr.h"
+#include "modeling/annotation/UserAttr.h"
+#include <any>
 
-class CtrAttributes : public TempCtr {
-    unsigned int m_id = std::numeric_limits<unsigned int>::max();
-    unsigned int m_index = std::numeric_limits<unsigned int>::max();
-    std::list<Ctr>::iterator m_it;
+class CtrAttributes : public TempCtr, public ObjectAttributes<Ctr> {
+    std::vector<std::optional<int>> m_annotations;
 public:
     CtrAttributes() = default;
     CtrAttributes(unsigned int t_id, unsigned int t_index, TempCtr&& t_temp_var)
-            : m_id(t_id), m_index(t_index), TempCtr(std::move(t_temp_var)) {}
+            : TempCtr(std::move(t_temp_var)), ObjectAttributes<Ctr>(t_id, t_index) {}
 
     CtrAttributes(const CtrAttributes&) = default;
     CtrAttributes(CtrAttributes&&) noexcept = default;
@@ -22,15 +22,19 @@ public:
     CtrAttributes& operator=(const CtrAttributes&) = default;
     CtrAttributes& operator=(CtrAttributes&&) noexcept = default;
 
-    unsigned int id() const { return m_id; }
+    void set_user_attribute(const UserAttr& t_annotation, int t_value) {
+        if (m_annotations.size() >= t_annotation.index()) {
+            m_annotations.resize(t_annotation.index()+1);
+        }
+        m_annotations.at(t_annotation.index()) = t_value;
+    }
 
-    unsigned int index() const { return m_index; }
-
-    void reset() { *this = CtrAttributes(); }
-
-    const std::list<Ctr>::iterator& iterator() const { return m_it; }
-
-    void set_iterator(std::list<Ctr>::iterator&& t_it) { m_it = t_it; }
+    int get_user_attribute(const UserAttr& t_annotation) const {
+        if (t_annotation.index() >= m_annotations.size()) {
+            return t_annotation.default_value();
+        }
+        return m_annotations.at(t_annotation.index()).value_or(t_annotation.default_value());
+    }
 };
 
 #endif //IDOL_CTRATTRIBUTES_H

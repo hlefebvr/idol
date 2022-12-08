@@ -27,7 +27,6 @@ Var Model::add_var(TempVar t_temporary_variable, std::string t_name) {
 }
 
 void Model::remove(const Var &t_var) {
-    auto& attributes = m_variables.attributes(t_var);
     remove_column_from_rows(t_var);
     m_variables.remove(t_var);
 }
@@ -54,9 +53,12 @@ Ctr Model::add_ctr(TempCtr t_temporary_constraint, std::string t_name) {
 }
 
 void Model::remove(const Ctr &t_ctr) {
-    auto& attributes = m_constraints.attributes(t_ctr);
     remove_row_from_columns(t_ctr);
     m_constraints.remove(t_ctr);
+}
+
+void Model::remove(const UserAttr &t_user_attr) {
+    m_user_attributes.remove(t_user_attr);
 }
 
 Column &Model::access_column(const Var &t_var) {
@@ -306,4 +308,21 @@ int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var 
 
 Model Model::clone() const {
     return *this;
+}
+
+UserAttr Model::add_user_attr(int t_default_value, std::string t_name) {
+
+    auto ref = m_user_attributes.add_attributes(std::move(t_name), "Annotation");
+    UserAttr user_attribute(std::move(ref), t_default_value);
+    m_user_attributes.add_object(user_attribute);
+
+    return user_attribute;
+}
+
+void Model::set(const UserAttr &t_annotation, const Ctr &t_ctr, int t_value) {
+    m_constraints.attributes(t_ctr).set_user_attribute(t_annotation, t_value);
+}
+
+int Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) {
+    return m_constraints.attributes(t_ctr).get_user_attribute(t_annotation);
 }
