@@ -8,23 +8,21 @@
 
 using namespace Problems::GAP;
 
+void f(const Attribute& t_attr) {
+    if (t_attr == Attr::Var::Lb) {
+        std::cout << "OK" << std::endl;
+    }
+}
+
 int main() {
+
+    f(Attr::Var::Lb);
+    f(Attr::Var::Ub);
 
     Model model;
 
-    auto x = model.add_vars(Dim<1>(2), 0., 1., Binary, 0., "x");
-    auto c = model.add_ctr(x[0] + x[1] <= 2);
+    auto x = model.add_var(0., 1., Binary, 0);
 
-    Expr objective = x[0];
-    model.set(Attr::Obj::Expr, objective);
-
-    auto cloned = model.clone();
-
-    model.set(Attr::Matrix::Coeff, c, x[0], 1900);
-    model.remove(x[0]);
-    model.add_var(0., 9., Integer, 2, "y");
-
-    std::cout << model << std::endl;
-    std::cout << cloned << std::endl;
+    model.get(Attr::Var::Lb, x);
 
 }

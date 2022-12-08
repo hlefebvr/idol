@@ -429,38 +429,6 @@ void BranchAndBound::terminate_for_time_limit_is_reached() {
     terminate();
 }
 
-double BranchAndBound::get_lb(const Var &t_var) const {
-    return m_solution_strategy->get_lb(t_var);
-}
-
-double BranchAndBound::get_ub(const Var &t_var) const {
-    return m_solution_strategy->get_ub(t_var);
-}
-
-int BranchAndBound::get_type(const Var &t_var) const {
-    return m_solution_strategy->get_type(t_var);
-}
-
-const Column &BranchAndBound::get_column(const Var &t_var) const {
-    return m_solution_strategy->get_column(t_var);
-}
-
-bool BranchAndBound::has(const Var &t_var) const {
-    return m_solution_strategy->has(t_var);
-}
-
-const Row &BranchAndBound::get_row(const Ctr &t_ctr) const {
-    return m_solution_strategy->get_row(t_ctr);
-}
-
-int BranchAndBound::get_type(const Ctr &t_ctr) const {
-    return m_solution_strategy->get_type(t_ctr);
-}
-
-bool BranchAndBound::has(const Ctr &t_ctr) const {
-    return m_solution_strategy->has(t_ctr);
-}
-
 bool BranchAndBound::set_parameter_int(const Parameter<int> &t_param, int t_value) {
     if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
         m_params_int.set(t_param, t_value);
@@ -474,4 +442,16 @@ std::optional<int> BranchAndBound::get_parameter_int(const Parameter<int> &t_par
         return m_params_int.get(t_param);
     }
     return Algorithm::get_parameter_int(t_param);
+}
+
+AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribute) {
+    return *m_solution_strategy;
+}
+
+AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
+    return *m_solution_strategy;
+}
+
+AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
+    return *m_solution_strategy;
 }

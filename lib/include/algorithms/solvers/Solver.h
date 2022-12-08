@@ -67,6 +67,11 @@ protected:
     virtual CtrT create(const Ctr& t_ctr, bool t_with_collaterals) = 0;
 
     [[nodiscard]] double value(const Constant& t_constant) const;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override { return m_src_model; }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override { return m_src_model; }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override { return m_src_model; }
+
 public:
     explicit Solver(Model& t_model);
 
@@ -98,21 +103,6 @@ public:
 
     Callback& callback() { return *m_callbacks.front(); }
 
-    double get_lb(const Var &t_var) const override;
-
-    double get_ub(const Var &t_var) const override;
-
-    int get_type(const Var &t_var) const override;
-
-    const Column &get_column(const Var &t_var) const override;
-
-    bool has(const Var &t_var) const override;
-
-    bool has(const Ctr &t_ctr) const override;
-
-    const Row &get_row(const Ctr &t_ctr) const override;
-
-    int get_type(const Ctr &t_ctr) const override;
 };
 
 template<class VarT, class CtrT>
@@ -270,46 +260,6 @@ void Solver<VarT, CtrT>::update_obj(const Expr<Var> &t_objective) {
 template<class VarT, class CtrT>
 int Solver<VarT, CtrT>::sense() const {
     return m_src_model.get(Attr::Obj::Sense);
-}
-
-template<class VarT, class CtrT>
-double Solver<VarT, CtrT>::get_lb(const Var &t_var) const {
-    return m_src_model.get(Attr::Var::Lb, t_var);
-}
-
-template<class VarT, class CtrT>
-double Solver<VarT, CtrT>::get_ub(const Var &t_var) const {
-    return m_src_model.get(Attr::Var::Ub, t_var);
-}
-
-template<class VarT, class CtrT>
-int Solver<VarT, CtrT>::get_type(const Var &t_var) const {
-    return m_src_model.get(Attr::Var::Type, t_var);
-}
-
-template<class VarT, class CtrT>
-const Column &Solver<VarT, CtrT>::get_column(const Var &t_var) const {
-    return m_src_model.get(Attr::Var::Column, t_var);
-}
-
-template<class VarT, class CtrT>
-bool Solver<VarT, CtrT>::has(const Var &t_var) const {
-    return m_src_model.get(Attr::Var::Status, t_var);
-}
-
-template<class VarT, class CtrT>
-const Row &Solver<VarT, CtrT>::get_row(const Ctr &t_ctr) const {
-    return m_src_model.get(Attr::Ctr::Row, t_ctr);
-}
-
-template<class VarT, class CtrT>
-int Solver<VarT, CtrT>::get_type(const Ctr &t_ctr) const {
-    return m_src_model.get(Attr::Ctr::Type, t_ctr);
-}
-
-template<class VarT, class CtrT>
-bool Solver<VarT, CtrT>::has(const Ctr &t_ctr) const {
-    return m_src_model.get(Attr::Ctr::Status, t_ctr);
 }
 
 #endif //OPTIMIZE_SOLVER2_H

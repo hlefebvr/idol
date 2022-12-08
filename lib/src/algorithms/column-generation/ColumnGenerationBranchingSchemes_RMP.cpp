@@ -15,7 +15,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_lower_bound(const Var &t_var, do
             t_lb,
             m_lower_bound_constraints,
             [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) >= t_b; },
-            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get_lb(t_var); },
+            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get(Attr::Var::Lb, t_var); },
             t_subproblem
     );
 
@@ -30,7 +30,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_upper_bound(const Var &t_var, do
             t_ub,
             m_upper_bound_constraints,
             [](LinExpr<Var>&& t_expr, double t_b) { return std::move(t_expr) <= t_b; },
-            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get_ub(t_var); },
+            [&](const Var& t_var){ return t_subproblem.exact_solution_strategy().get(Attr::Var::Ub, t_var); },
             t_subproblem
     );
 
@@ -74,7 +74,7 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
                                                                                        ColumnGenerationSP &t_subproblem) {
 
     for (const auto& [var, ctr] : t_temporary_constraint.row().linear()) {
-        if (!t_subproblem.exact_solution_strategy().has(var)) {
+        if (!t_subproblem.exact_solution_strategy().get(Attr::Var::Status, var)) {
             return {};
         }
     }
@@ -87,13 +87,13 @@ std::optional<Ctr> ColumnGenerationBranchingSchemes::RMP::contribute_to_add_cons
     LinExpr original_space;
 
     for (const auto& [var, coefficient] : row.linear()) {
-        if (t_subproblem.exact_solution_strategy().has(var)) {
+        if (t_subproblem.exact_solution_strategy().get(Attr::Var::Status, var)) {
             original_space += coefficient * var;
         }
     }
 
     row.linear().replace_if([&](const Var& t_var) -> std::optional<LinExpr<Var>> {
-        if (t_subproblem.exact_solution_strategy().has(t_var)) {
+        if (t_subproblem.exact_solution_strategy().get(Attr::Var::Status, t_var)) {
             return t_subproblem.expand(t_var);
         }
         return {};

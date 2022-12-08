@@ -33,8 +33,13 @@ class BranchAndBound : public Algorithm {
     Param::BranchAndBound::values<int> m_params_int;
 protected:
     bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-
     std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
 private:
     void initialize();
@@ -104,22 +109,6 @@ public:
 
     [[nodiscard]] double objective_value() const;
     [[nodiscard]] Solution::Primal primal_solution() const override;
-
-    double get_lb(const Var &t_var) const override;
-
-    double get_ub(const Var &t_var) const override;
-
-    int get_type(const Var &t_var) const override;
-
-    const Column &get_column(const Var &t_var) const override;
-
-    bool has(const Var &t_var) const override;
-
-    const Row &get_row(const Ctr &t_ctr) const override;
-
-    int get_type(const Ctr &t_ctr) const override;
-
-    bool has(const Ctr &t_ctr) const override;
 
     bool submit_solution(Solution::Primal&& t_solution);
 

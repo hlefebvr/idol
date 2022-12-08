@@ -25,38 +25,6 @@ void AlgorithmInCallback::remove(const Ctr &t_constraint) {
     m_algorithm.remove(t_constraint);
 }
 
-double AlgorithmInCallback::get_lb(const Var &t_var) const {
-    return m_algorithm.get_lb(t_var);
-}
-
-double AlgorithmInCallback::get_ub(const Var &t_var) const {
-    return m_algorithm.get_ub(t_var);
-}
-
-int AlgorithmInCallback::get_type(const Var &t_var) const {
-    return m_algorithm.get_type(t_var);
-}
-
-const Column &AlgorithmInCallback::get_column(const Var &t_var) const {
-    return m_algorithm.get_column(t_var);
-}
-
-bool AlgorithmInCallback::has(const Var &t_var) const {
-    return m_algorithm.has(t_var);
-}
-
-const Row &AlgorithmInCallback::get_row(const Ctr &t_ctr) const {
-    return m_algorithm.get_row(t_ctr);
-}
-
-int AlgorithmInCallback::get_type(const Ctr &t_ctr) const {
-    return m_algorithm.get_type(t_ctr);
-}
-
-bool AlgorithmInCallback::has(const Ctr &t_ctr) const {
-    return m_algorithm.has(t_ctr);
-}
-
 bool AlgorithmInCallback::set_parameter_double(const Parameter<double> &t_param, double t_value) {
     return m_algorithm.set_parameter_double(t_param, t_value);
 }

@@ -75,10 +75,6 @@ public:
 
     void write(const std::string &t_filename) override;
 
-    [[nodiscard]] double get_lb(const Var &t_var) const override;
-
-    [[nodiscard]] double get_ub(const Var &t_var) const override;
-
     GRBModel& impl() { return m_model; }
 
     [[nodiscard]] const GRBModel& impl() const { return m_model; }

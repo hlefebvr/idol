@@ -34,11 +34,11 @@ namespace impl {
 constexpr bool has_lp_solver = std::tuple_size_v<impl::lp_solvers> > 0;
 constexpr bool has_milp_solver = std::tuple_size_v<impl::milp_solvers> > 0;
 
-using lp_solvers   = std::conditional_t< has_lp_solver,   impl::lp_solvers,   std::tuple<VoidAlgorithm>>;
-using milp_solvers = std::conditional_t< has_milp_solver, impl::milp_solvers, std::tuple<VoidAlgorithm>>;
+using lp_solvers   = std::conditional_t< has_lp_solver,   impl::lp_solvers,   std::tuple<EmptyAlgorithm>>;
+using milp_solvers = std::conditional_t< has_milp_solver, impl::milp_solvers, std::tuple<EmptyAlgorithm>>;
 
 using default_solver = std::conditional_t<has_milp_solver, std::tuple_element_t<0, milp_solvers>,
-                        std::conditional_t<has_lp_solver, std::tuple_element_t<0, lp_solvers>, VoidAlgorithm>
+                        std::conditional_t<has_lp_solver, std::tuple_element_t<0, lp_solvers>, EmptyAlgorithm>
                        >;
 
 #endif //OPTIMIZE_SOLVERS_H

@@ -288,98 +288,30 @@ ColumnGenerationSP &ColumnGeneration::add_subproblem(const Var& t_var) {
     return m_subproblems.back();
 }
 
-bool ColumnGeneration::has(const Var &t_var) const {
-    if (rmp_solution_strategy().has(t_var)) {
-        return true;
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
-            return true;
-        }
-    }
-    return false;
+AttributeManager &ColumnGeneration::attribute_delegate(const Attribute &t_attribute) {
+    return rmp_solution_strategy();
 }
 
-double ColumnGeneration::get_lb(const Var &t_var) const {
-    if (rmp_solution_strategy().has(t_var)) {
-        return rmp_solution_strategy().get_lb(t_var);
+AttributeManager &ColumnGeneration::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
+    if (rmp_solution_strategy().get(Attr::Var::Status, t_object)) {
+        return rmp_solution_strategy();
     }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_lb(t_var);
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().get(Attr::Var::Status, t_object)) {
+            return subproblem.exact_solution_strategy();
         }
     }
-    throw Exception("Variable not found.");
+    return Delegate::attribute_delegate(t_attribute, t_object);
 }
 
-double ColumnGeneration::get_ub(const Var &t_var) const {
-    if (rmp_solution_strategy().has(t_var)) {
-        return rmp_solution_strategy().get_ub(t_var);
+AttributeManager &ColumnGeneration::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
+    if (rmp_solution_strategy().get(Attr::Ctr::Status, t_object)) {
+        return rmp_solution_strategy();
     }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_ub(t_var);
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().get(Attr::Ctr::Status, t_object)) {
+            return subproblem.exact_solution_strategy();
         }
     }
-    throw Exception("Variable not found.");
-}
-
-int ColumnGeneration::get_type(const Var &t_var) const {
-    if (rmp_solution_strategy().has(t_var)) {
-        return rmp_solution_strategy().get_type(t_var);
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_type(t_var);
-        }
-    }
-    throw Exception("Variable not found.");
-}
-
-const Column &ColumnGeneration::get_column(const Var &t_var) const {
-    if (rmp_solution_strategy().has(t_var)) {
-        return rmp_solution_strategy().get_column(t_var);
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_var)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_column(t_var);
-        }
-    }
-    throw Exception("Variable not found.");
-}
-
-bool ColumnGeneration::has(const Ctr &t_ctr) const {
-    if (rmp_solution_strategy().has(t_ctr)) {
-        return true;
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-const Row &ColumnGeneration::get_row(const Ctr &t_ctr) const {
-    if (rmp_solution_strategy().has(t_ctr)) {
-        return rmp_solution_strategy().get_row(t_ctr);
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_row(t_ctr);
-        }
-    }
-    throw Exception("CG -> Variable not found.");
-}
-
-int ColumnGeneration::get_type(const Ctr &t_ctr) const {
-    if (rmp_solution_strategy().has(t_ctr)) {
-        return rmp_solution_strategy().get_type(t_ctr);
-    }
-    for (auto& ptr_to_subproblem : m_subproblems) {
-        if (ptr_to_subproblem.exact_solution_strategy().has(t_ctr)) {
-            return ptr_to_subproblem.exact_solution_strategy().get_type(t_ctr);
-        }
-    }
-    throw Exception("CG::type -> Variable not found.");
+    return Delegate::attribute_delegate(t_attribute, t_object);
 }

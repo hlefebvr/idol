@@ -13,8 +13,8 @@ void BranchAndBound::Callback::AdvancedContext::fix_variables(const std::list<st
     }
 
     for (const auto& [var, value] : t_fixations) {
-        const double lb = m_parent.m_solution_strategy->get_lb(var);
-        const double ub = m_parent.m_solution_strategy->get_ub(var);
+        const double lb = m_parent.m_solution_strategy->get(Attr::Var::Lb, var);
+        const double ub = m_parent.m_solution_strategy->get(Attr::Var::Ub, var);
         m_temp_fixations.emplace_back(var, lb, ub);
         m_parent.m_solution_strategy->update_var_lb(var, value);
         m_parent.m_solution_strategy->update_var_ub(var, value);

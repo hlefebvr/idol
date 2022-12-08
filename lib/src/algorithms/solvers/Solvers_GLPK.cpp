@@ -119,22 +119,22 @@ int Solvers::GLPK::create(const Var &t_var, bool t_with_collaterals) {
         m_deleted_variables.pop();
     }
 
-    const bool has_lb = !is_neg_inf(get_lb(t_var));
-    const bool has_ub = !is_pos_inf(get_ub(t_var));
+    const bool has_lb = !is_neg_inf(get(Attr::Var::Lb, t_var));
+    const bool has_ub = !is_pos_inf(get(Attr::Var::Ub, t_var));
 
     if (has_lb && has_ub) {
-        glp_set_col_bnds(m_model, index, GLP_DB, get_lb(t_var), get_ub(t_var));
+        glp_set_col_bnds(m_model, index, GLP_DB, get(Attr::Var::Lb, t_var), get(Attr::Var::Ub, t_var));
     } else if (has_lb) {
-        glp_set_col_bnds(m_model, index, GLP_LO, get_lb(t_var), 0.);
+        glp_set_col_bnds(m_model, index, GLP_LO, get(Attr::Var::Lb, t_var), 0.);
     } else if (has_ub) {
-        glp_set_col_bnds(m_model, index, GLP_UP, 0., get_ub(t_var));
+        glp_set_col_bnds(m_model, index, GLP_UP, 0., get(Attr::Var::Ub, t_var));
     } else {
         glp_set_col_bnds(m_model, index, GLP_FR, 0., 0.);
     }
 
-    glp_set_obj_coef(m_model, index, value(get_column(t_var).obj()));
+    glp_set_obj_coef(m_model, index, value(get(Attr::Var::Column, t_var).obj()));
 
-    switch (get_type(t_var)) {
+    switch (get(Attr::Var::Type, t_var)) {
         case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
         case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
         case Integer: glp_set_col_kind(m_model, index, GLP_IV); break;
@@ -145,12 +145,12 @@ int Solvers::GLPK::create(const Var &t_var, bool t_with_collaterals) {
 
     if (t_with_collaterals) {
 
-        const auto n = (int) get_column(t_var).linear().size();
+        const auto n = (int) get(Attr::Var::Column, t_var).linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, coeff] : get_column(t_var).linear()) {
+        for (const auto& [ctr, coeff] : get(Attr::Var::Column, t_var).linear()) {
             indices[i] = future(ctr).impl();
             coefficients[i] = value(coeff);
             ++i;
@@ -320,7 +320,7 @@ void Solvers::GLPK::compute_unbounded_ray() {
     indices.emplace_back(0);
 
     for (const auto& var : model().vars()) {
-        if (get_lb(var) >= 0.) {
+        if (get(Attr::Var::Lb, var) >= 0.) {
             coefficients.emplace_back(1.);
         } else {
             coefficients.emplace_back(-1.);
@@ -515,14 +515,14 @@ Solution::Primal Solvers::GLPK::primal_solution() const {
 
 void Solvers::GLPK::update_var_lb(const Var &t_var, double t_lb) {
 
-    const bool has_ub = !is_pos_inf(get_ub(t_var));
+    const bool has_ub = !is_pos_inf(get(Attr::Var::Ub, t_var));
     const int index = future(t_var).impl();
 
     if (has_ub) {
-        if (equals(get_ub(t_var), t_lb, ToleranceForIntegrality)) {
+        if (equals(get(Attr::Var::Ub, t_var), t_lb, ToleranceForIntegrality)) {
             glp_set_col_bnds(m_model, index, GLP_FX, t_lb, t_lb);
         } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, t_lb, get_ub(t_var));
+            glp_set_col_bnds(m_model, index, GLP_DB, t_lb, get(Attr::Var::Ub, t_var));
         }
     } else {
         glp_set_col_bnds(m_model, index, GLP_UP, t_lb, 0.);
@@ -533,14 +533,14 @@ void Solvers::GLPK::update_var_lb(const Var &t_var, double t_lb) {
 
 void Solvers::GLPK::update_var_ub(const Var &t_var, double t_ub) {
 
-    const bool has_lb = !is_neg_inf(get_lb(t_var));
+    const bool has_lb = !is_neg_inf(get(Attr::Var::Lb, t_var));
     const int index = future(t_var).impl();
 
     if (has_lb) {
-        if (equals(get_lb(t_var), t_ub, ToleranceForIntegrality)) {
+        if (equals(get(Attr::Var::Lb, t_var), t_ub, ToleranceForIntegrality)) {
             glp_set_col_bnds(m_model, index, GLP_FX, t_ub, t_ub);
         } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, get_lb(t_var), t_ub);
+            glp_set_col_bnds(m_model, index, GLP_DB, get(Attr::Var::Lb, t_var), t_ub);
         }
     } else {
         glp_set_col_bnds(m_model, index, GLP_UP, 0., t_ub);

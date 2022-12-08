@@ -6,6 +6,7 @@
 #define IDOL_ATTRIBUTEMANAGER_DELEGATE_H
 
 #include "AttributeManager.h"
+#include "../../errors/AttributeBadRequest.h"
 
 namespace AttributeManagers {
     class Delegate;
@@ -15,19 +16,25 @@ class Object;
 
 class AttributeManagers::Delegate : public AttributeManager {
 protected:
-    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute) = 0;
+    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute) {
+        throw AttributeBadRequest(t_attribute);
+    }
 
     [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Attribute& t_attribute) const {
         return const_cast<Delegate*>(this)->attribute_delegate(t_attribute);
     }
 
-    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute, const Var& t_object) = 0;
+    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute, const Var& t_object)  {
+        throw AttributeBadRequest(t_attribute);
+    }
 
     [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Attribute& t_attribute, const Var& t_object) const  {
         return const_cast<Delegate*>(this)->attribute_delegate(t_attribute, t_object);
     }
 
-    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute, const Ctr& t_object) = 0;
+    virtual AttributeManager& attribute_delegate(const Attribute& t_attribute, const Ctr& t_object)  {
+        throw AttributeBadRequest(t_attribute);
+    }
 
     [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Attribute& t_attribute, const Ctr& t_object) const  {
         return const_cast<Delegate*>(this)->attribute_delegate(t_attribute, t_object);

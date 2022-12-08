@@ -5,10 +5,12 @@
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
 #include "../../../include/algorithms/parameters/Log.h"
 #include "../../../include/modeling/expressions/operations/operators.h"
+#include "modeling/constraints/Attributes_Ctr.h"
+#include "modeling/variables/Attributes_Var.h"
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),
-      m_cut_template(Row(t_rmp_strategy.get_row(t_cut)), t_rmp_strategy.get_type(t_cut)) {
+      m_cut_template(Row(t_rmp_strategy.get(Attr::Ctr::Row, t_cut)), t_rmp_strategy.get(Attr::Ctr::Type, t_cut)) {
 
     if (m_cut_template.type() == Equal) {
         throw Exception("Cannot separate equality constraints.");
@@ -154,7 +156,7 @@ Solution::Primal RowGenerationSP::primal_solution() const {
 }
 
 bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
-    if (!exact_solution_strategy().has(t_var)) { return false; }
+    if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     remove_cuts_violating_lower_bound(t_var, t_lb);
     exact_solution_strategy().update_var_lb(t_var, t_lb);
@@ -163,7 +165,7 @@ bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 }
 
 bool RowGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
-    if (!exact_solution_strategy().has(t_var)) { return false; }
+    if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     remove_cuts_violating_upper_bound(t_var, t_ub);
     exact_solution_strategy().update_var_ub(t_var, t_ub);

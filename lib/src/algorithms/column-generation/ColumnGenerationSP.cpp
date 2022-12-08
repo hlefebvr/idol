@@ -9,10 +9,10 @@
 ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var)
         : m_rmp_strategy(t_rmp_strategy),
           m_var_template(TempVar(
-                  t_rmp_strategy.get_lb(t_var),
-                  t_rmp_strategy.get_ub(t_var),
-                  t_rmp_strategy.get_type(t_var),
-                  Column(t_rmp_strategy.get_column(t_var)))
+                  t_rmp_strategy.get(Attr::Var::Lb, t_var),
+                  t_rmp_strategy.get(Attr::Var::Ub, t_var),
+                  t_rmp_strategy.get(Attr::Var::Type, t_var),
+                  Column(t_rmp_strategy.get(Attr::Var::Column, t_var)))
               ) {
 
     remove_var_template_from_rmp(t_var);
@@ -165,7 +165,7 @@ void ColumnGenerationSP::remove_column_if(const std::function<bool(const Var&, c
 
 bool ColumnGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 
-    if (!exact_solution_strategy().has(t_var)) { return false; }
+    if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     m_branching_scheme->set_lower_bound(t_var, t_lb, *this);
 
@@ -174,7 +174,7 @@ bool ColumnGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
 
 bool ColumnGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
 
-    if (!exact_solution_strategy().has(t_var)) { return false; }
+    if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     m_branching_scheme->set_upper_bound(t_var, t_ub, *this);
 
@@ -187,18 +187,18 @@ std::optional<Ctr> ColumnGenerationSP::add_constraint(TempCtr &t_temporay_constr
 
 bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
-    if (!exact_solution_strategy().has(t_ctr)) { return false; }
+    if (!exact_solution_strategy().get(Attr::Ctr::Status, t_ctr)) { return false; }
 
     m_exact_solution_strategy->update_rhs_coeff(t_ctr, t_rhs);
 
-    remove_columns_violating_constraint(TempCtr(Row(m_exact_solution_strategy->get_row(t_ctr)), m_exact_solution_strategy->get_type(t_ctr)));
+    remove_columns_violating_constraint(TempCtr(Row(m_exact_solution_strategy->get(Attr::Ctr::Row, t_ctr)), m_exact_solution_strategy->get(Attr::Ctr::Type, t_ctr)));
 
     return true;
 }
 
 bool ColumnGenerationSP::remove_constraint(const Ctr &t_ctr) {
 
-    if (!exact_solution_strategy().has(t_ctr)) {
+    if (!exact_solution_strategy().get(Attr::Ctr::Status, t_ctr)) {
         reset_linking_expr(t_ctr);
         return false;
     }

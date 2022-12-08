@@ -25,7 +25,7 @@ class Var;
  * It is an abstract class used to share a common interface between every solution algorithm.
  * By default, most of the methods are defined and throw a NotImplemented exception.
  */
-class Algorithm /* : public AttributeManagers::Delegate */ {
+class Algorithm : public AttributeManagers::Delegate {
     friend class AlgorithmInCallback;
 
     Timer m_timer;
@@ -90,8 +90,6 @@ protected:
     }
 
 public:
-    virtual ~Algorithm() = default;
-
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
     [[nodiscard]] double remaining_time(Timer::Unit t_unit = Timer::Seconds) const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count(t_unit)); }
@@ -119,18 +117,6 @@ public:
         execute_iis();
         m_timer.stop();
     }
-
-    /* VARIABLES */
-    [[nodiscard]] virtual bool has(const Var& t_var) const = 0;
-    [[nodiscard]] virtual double get_lb(const Var& t_var) const = 0;
-    [[nodiscard]] virtual double get_ub(const Var& t_var) const = 0;
-    [[nodiscard]] virtual int get_type(const Var& t_var) const = 0;
-    [[nodiscard]] virtual const Column& get_column(const Var& t_var) const = 0;
-
-    /* CONSTRAINTS */
-    [[nodiscard]] virtual bool has(const Ctr& t_ctr) const = 0;
-    [[nodiscard]] virtual const Row& get_row(const Ctr& t_ctr) const = 0;
-    [[nodiscard]] virtual int get_type(const Ctr& t_ctr) const = 0;
 
     /**
      * Returns the computed primal solution (after solve has been called).
@@ -273,6 +259,9 @@ public:
         }
     }
 
+    using AttributeManagers::Delegate::get;
+    using AttributeManagers::Delegate::set;
+
     double get(const Parameter<double>& t_param) const {
         if (const auto optional  = get_parameter_double(t_param) ; optional.has_value()) {
             return optional.value();
@@ -306,43 +295,11 @@ public:
 
 };
 
-class VoidAlgorithm final : public Algorithm {
+class EmptyAlgorithm final : public Algorithm {
 protected:
-    void execute() override { throw Exception("Executing VoidAlgorithm is not allowed."); }
+    void execute() override { throw Exception("Trying to execute EmptyAlgorithm."); }
 public:
-    template<class ...Args> explicit VoidAlgorithm(Args&& ...t_args) {}
-
-    bool has(const Var &t_var) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    double get_lb(const Var &t_var) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    double get_ub(const Var &t_var) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    int get_type(const Var &t_var) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    const Column &get_column(const Var &t_var) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    bool has(const Ctr &t_ctr) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    const Row &get_row(const Ctr &t_ctr) const override {
-        throw std::runtime_error("Deprecated");
-    }
-
-    int get_type(const Ctr &t_ctr) const override {
-        throw std::runtime_error("Deprecated");
-    }
+    template<class ...Args> explicit EmptyAlgorithm(Args&& ...t_args) {}
 };
 
 #endif //OPTIMIZE_ALGORITHM_H

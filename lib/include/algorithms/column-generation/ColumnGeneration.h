@@ -37,6 +37,12 @@ class ColumnGeneration : public GenerationAlgorithm {
     void terminate_for_subproblem_could_not_be_solved_to_optimality();
     void terminate_for_no_improving_column_found();
 protected:
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
+
     void execute() override;
 public:
     explicit ColumnGeneration(Algorithm& t_rmp_solution_strategy);
@@ -56,22 +62,6 @@ public:
     void remove(const Ctr &t_constraint) override;
 
     ColumnGenerationSP& add_subproblem(const Var& t_var);
-
-    bool has(const Var &t_var) const override;
-
-    double get_lb(const Var &t_var) const override;
-
-    double get_ub(const Var &t_var) const override;
-
-    int get_type(const Var &t_var) const override;
-
-    const Column &get_column(const Var &t_var) const override;
-
-    bool has(const Ctr &t_ctr) const override;
-
-    const Row &get_row(const Ctr &t_ctr) const override;
-
-    int get_type(const Ctr &t_ctr) const override;
 
     using Subproblems = IteratorForward<std::list<ColumnGenerationSP>>;
     using ConstSubproblems = ConstIteratorForward<std::list<ColumnGenerationSP>>;

@@ -407,11 +407,11 @@ std::variant<GRBConstr, GRBQConstr> Solvers::Gurobi::create(const Ctr &t_ctr, bo
 
 GRBVar Solvers::Gurobi::create(const Var &t_var, bool t_with_collaterals) {
 
-    const auto& column = get_column(t_var);
-    const auto lb = get_lb(t_var);
-    const auto ub = get_ub(t_var);
+    const auto& column = get(Attr::Var::Column, t_var);
+    const auto lb = get(Attr::Var::Lb, t_var);
+    const auto ub = get(Attr::Var::Ub, t_var);
     const auto objective = value(column.obj());
-    const auto type = gurobi_var_type(get_type(t_var));
+    const auto type = gurobi_var_type(get(Attr::Var::Type, t_var));
     const auto& name = t_var.name();
 
     GRBColumn col;
@@ -487,26 +487,6 @@ void Solvers::Gurobi::update_obj() {
         m_model.setObjective(expr, sense);
 
     }
-}
-
-double Solvers::Gurobi::get_lb(const Var &t_var) const {
-    if (model().get(Attr::Var::Status, t_var)) {
-        return Solver::get_lb(t_var);
-    }
-    if (!m_callbacks.empty()) {
-        return m_callbacks.front()->get_lb(t_var);
-    }
-    throw Exception("Wrong request.");
-}
-
-double Solvers::Gurobi::get_ub(const Var &t_var) const {
-    if (model().get(Attr::Var::Status, t_var)) {
-        return Solver::get_ub(t_var);
-    }
-    if (!m_callbacks.empty()) {
-        return m_callbacks.front()->get_ub(t_var);
-    }
-    throw Exception("Wrong request.");
 }
 
 #endif

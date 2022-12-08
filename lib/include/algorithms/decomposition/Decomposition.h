@@ -14,10 +14,14 @@ class Decomposition : public Algorithm {
     std::list<std::unique_ptr<Algorithm>> m_generation_strategies;
 protected:
     bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
-
     bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-
     bool set_parameter_bool(const Parameter<bool> &t_param, bool t_value) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
     [[nodiscard]] std::optional<double> get_parameter_double(const Parameter<double> &t_param) const override;
 
@@ -40,22 +44,6 @@ public:
     Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
     void remove(const Ctr &t_constraint) override;
-
-    double get_lb(const Var &t_var) const override;
-
-    double get_ub(const Var &t_var) const override;
-
-    int get_type(const Var &t_var) const override;
-
-    const Column &get_column(const Var &t_var) const override;
-
-    bool has(const Var &t_var) const override;
-
-    bool has(const Ctr &t_ctr) const override;
-
-    const Row &get_row(const Ctr &t_ctr) const override;
-
-    int get_type(const Ctr &t_ctr) const override;
 
     template<class T, class ...Args> T& set_rmp_solution_strategy(Args&& ...t_args) {
         auto* solution_strategy = new T(std::forward<Args>(t_args)...);
