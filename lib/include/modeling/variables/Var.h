@@ -27,6 +27,8 @@ class Var : public Object {
 protected:
     [[nodiscard]] bool isVar() const override { return true; }
 public:
+    Var() = default;
+
     Var(const Var& t_var) = default;
     Var(Var&& t_var) noexcept = default;
 

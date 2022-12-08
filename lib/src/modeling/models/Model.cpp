@@ -309,20 +309,3 @@ int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var 
 Model Model::clone() const {
     return *this;
 }
-
-UserAttr Model::add_user_attr(int t_default_value, std::string t_name) {
-
-    auto ref = m_user_attributes.add_attributes(std::move(t_name), "Annotation");
-    UserAttr user_attribute(std::move(ref), t_default_value);
-    m_user_attributes.add_object(user_attribute);
-
-    return user_attribute;
-}
-
-void Model::set(const UserAttr &t_annotation, const Ctr &t_ctr, int t_value) {
-    m_constraints.attributes(t_ctr).set_user_attribute(t_annotation, t_value);
-}
-
-int Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) {
-    return m_constraints.attributes(t_ctr).get_user_attribute(t_annotation);
-}

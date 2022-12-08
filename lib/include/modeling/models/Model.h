@@ -24,6 +24,15 @@
 
 class Column;
 
+template <class T>
+struct explicit_template_param
+{
+    using type = T;
+};
+
+template <class T>
+using explicit_template_param_t = typename explicit_template_param<T>::type;
+
 /**
  * Optimization model object.
  *
@@ -85,7 +94,7 @@ public:
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
 
-    UserAttr add_user_attr(int t_default_value, std::string t_name = "");
+    template<class T> UserAttr add_user_attr(const explicit_template_param_t<T>& t_default_value, std::string t_name = "");
 
     /* Removes */
     void remove(const Var& t_var);
@@ -99,7 +108,8 @@ public:
 
     /// Set
 
-    void set(const UserAttr& t_annotation, const Ctr& t_ctr, int t_value);
+    template<class T> void set(const UserAttr& t_annotation, const Ctr& t_ctr, const T& t_value);
+    template<class T> void set(const UserAttr& t_annotation, const Var& t_var, const T& t_value);
 
     // Var
     void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
@@ -119,7 +129,8 @@ public:
 
     /// Get
 
-    int get(const UserAttr& t_annotation, const Ctr& t_ctr);
+    template<class T> const T& get(const UserAttr& t_annotation, const Ctr& t_ctr);
+    template<class T> const T& get(const UserAttr& t_annotation, const Var& t_var);
 
     // Var
     double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
@@ -185,6 +196,48 @@ Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, cons
     return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
         return add_ctr(t_temporary_constraint, t_name);
     });
+}
+
+template<class T>
+UserAttr Model::add_user_attr(const explicit_template_param_t<T>& t_default_value, std::string t_name) {
+
+    auto ref = m_user_attributes.add_attributes(std::move(t_name), "Annotation");
+    UserAttr user_attribute(std::move(ref), t_default_value);
+    m_user_attributes.add_object(user_attribute);
+
+    return user_attribute;
+}
+
+template<class T>
+const T& Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) {
+    if (t_annotation.type() != typeid(T)) {
+        throw AttributeBadRequest(t_annotation);
+    }
+    return m_constraints.attributes(t_ctr).get_user_attribute<T>(t_annotation);
+}
+
+template<class T>
+void Model::set(const UserAttr &t_annotation, const Ctr &t_ctr, const T &t_value) {
+    if (t_annotation.type() != typeid(T)) {
+        throw AttributeBadRequest(t_annotation);
+    }
+    m_constraints.attributes(t_ctr).set_user_attribute<T>(t_annotation, t_value);
+}
+
+template<class T>
+const T &Model::get(const UserAttr &t_annotation, const Var &t_var) {
+    if (t_annotation.type() != typeid(T)) {
+        throw AttributeBadRequest(t_annotation);
+    }
+    return m_variables.attributes(t_var).get_user_attribute<T>(t_annotation);
+}
+
+template<class T>
+void Model::set(const UserAttr &t_annotation, const Var &t_var, const T &t_value) {
+    if (t_annotation.type() != typeid(T)) {
+        throw AttributeBadRequest(t_annotation);
+    }
+    m_variables.attributes(t_var).set_user_attribute<T>(t_annotation, t_value);
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {

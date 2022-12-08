@@ -20,6 +20,8 @@ protected:
     [[nodiscard]] virtual bool isCtr() const { return false; }
     [[nodiscard]] virtual bool isAnnotation() const { return false; }
 public:
+    Object() = default;
+
     virtual ~Object() = default;
 
     [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
@@ -28,9 +30,11 @@ public:
 
     [[nodiscard]] const std::string& name() const { return m_object_id->name(); }
 
-    bool operator==(const Object& t_rhs) const { return id() == t_rhs.id(); }
+    [[nodiscard]] bool operator==(const Object& t_rhs) const { return id() == t_rhs.id(); }
 
-    bool operator!=(const Object& t_rhs) const { return id() != t_rhs.id(); }
+    [[nodiscard]] bool operator!=(const Object& t_rhs) const { return id() != t_rhs.id(); }
+
+    [[nodiscard]] bool is_valid() const { return !!m_object_id; }
 
     template<class T> [[nodiscard]] bool is() const {
         if constexpr (std::is_same_v<T, Var>) {

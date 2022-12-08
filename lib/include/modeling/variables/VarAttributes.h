@@ -6,13 +6,13 @@
 #define IDOL_VARATTRIBUTES_H
 
 #include "TempVar.h"
-#include "modeling/objects/ObjectAttributes.h"
+#include "modeling/objects/ObjectAttributesWithUserAttr.h"
 
-class VarAttributes : public TempVar, public ObjectAttributes<Var> {
+class VarAttributes : public TempVar, public ObjectAttributesWithUserAttr<Var> {
 public:
     VarAttributes() = default;
     VarAttributes(unsigned int t_id, unsigned int t_index, TempVar&& t_temp_var)
-        : TempVar(std::move(t_temp_var)), ObjectAttributes<Var>(t_id, t_index) {}
+        : TempVar(std::move(t_temp_var)), ObjectAttributesWithUserAttr<Var>(t_id, t_index) {}
 
     VarAttributes(const VarAttributes&) = default;
     VarAttributes(VarAttributes&&) noexcept = default;

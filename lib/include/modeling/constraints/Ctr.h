@@ -30,6 +30,8 @@ class Ctr : public Object {
 protected:
     [[nodiscard]] bool isCtr() const override { return true; }
 public:
+    Ctr() = default;
+
     Ctr(const Ctr& t_var) = default;
     Ctr(Ctr&& t_var) noexcept = default;
 

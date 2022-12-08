@@ -10,9 +10,10 @@
 
 class UserAttr : public Object {
     friend class Model;
-    int m_default_value;
+    const std::type_info& m_type;
+    std::any m_default_value;
     template<class T> UserAttr(ObjectId&& t_ref, const T& t_default_value)
-        : Object(std::move(t_ref)), m_default_value(t_default_value) {}
+        : Object(std::move(t_ref)), m_default_value(t_default_value), m_type(typeid(T)) {}
 protected:
     [[nodiscard]] bool isAnnotation() const override { return true; }
 public:
@@ -22,7 +23,9 @@ public:
     UserAttr& operator=(const UserAttr& t_annotation) = default;
     UserAttr& operator=(UserAttr&& t_annotation) noexcept = default;
 
-    int default_value() const { return m_default_value; }
+    template<class T> const T& default_value() const { return std::any_cast<const T&>(m_default_value); }
+
+    [[nodiscard]] const std::type_info& type() const { return m_type; }
 };
 
 MAKE_HASHABLE(UserAttr)
