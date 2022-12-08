@@ -9,6 +9,7 @@
 #include "NodeUpdator.h"
 #include "../../modeling/variables/Var.h"
 #include "../../modeling/constraints/Ctr.h"
+#include "../../modeling/constraints/Attributes_Ctr.h"
 #include "../../modeling/constraints/TempCtr.h"
 #include "../../containers/Map.h"
 #include "../../modeling/numericals.h"
