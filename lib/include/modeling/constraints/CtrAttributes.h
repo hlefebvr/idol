@@ -6,7 +6,7 @@
 #define IDOL_CTRATTRIBUTES_H
 
 #include "TempCtr.h"
-#include "modeling/annotation/UserAttr.h"
+#include "../user_attributes/UserAttr.h"
 #include <any>
 
 class CtrAttributes : public TempCtr, public ObjectAttributes<Ctr> {

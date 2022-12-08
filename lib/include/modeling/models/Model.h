@@ -18,8 +18,8 @@
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
 #include "Attributes_Model.h"
-#include "modeling/annotation/UserAttr.h"
-#include "modeling/annotation/UserAttrAttributes.h"
+#include "../user_attributes/UserAttr.h"
+#include "../user_attributes/UserAttrAttributes.h"
 #include <vector>
 
 class Column;
