@@ -7,11 +7,11 @@ Model::Model(Sense t_sense) : m_objective_sense(t_sense) {
 
 }
 
-Var Model::add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
+Var Model::add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name) {
     return add_var(TempVar(t_lb, t_ub, t_type, std::move(t_column)), std::move(t_name));
 }
 
-Var Model::add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name) {
+Var Model::add_var(double t_lb, double t_ub, int t_type, Constant t_objective_coefficient, std::string t_name) {
     return add_var(TempVar(t_lb, t_ub, t_type, Column(std::move(t_objective_coefficient))), std::move(t_name));
 }
 

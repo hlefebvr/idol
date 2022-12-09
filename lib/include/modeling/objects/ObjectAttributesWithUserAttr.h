@@ -20,7 +20,7 @@ public:
 
     template<class T>
     void set_user_attribute(const UserAttr& t_annotation, const T& t_value) {
-        if (m_annotations.size() >= t_annotation.index()) {
+        if (m_annotations.size() <= t_annotation.index()) {
             m_annotations.resize(t_annotation.index()+1);
         }
         m_annotations.at(t_annotation.index()) = t_value;

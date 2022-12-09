@@ -20,7 +20,7 @@ public:
 
 namespace impl {
 
-    template<class T, int N>
+    template<class T, unsigned int N>
     struct Vector {
         using type = std::vector<typename Vector<T, N - 1>::type>;
     };
@@ -32,6 +32,63 @@ namespace impl {
 
 }
 
-template<class T, int N = 1> using Vector = typename impl::Vector<T, N>::type;
+template<class T, unsigned int N = 1> using Vector = typename impl::Vector<T, N>::type;
+
+template<class T, unsigned int Size>
+unsigned int n_entries(const Vector<T, Size>& t_vector) {
+
+    if constexpr (Size == 1) {
+
+        return t_vector.size();
+
+    } else {
+
+        unsigned int result = 0;
+        for (const auto& vec : t_vector) {
+            result += n_entries<T, Size - 1>(vec);
+        }
+
+        return result;
+    }
+
+}
+
+template<class T, unsigned int Size>
+void append(std::vector<T>& t_dest, const Vector<T, Size>& t_vector) {
+    if constexpr (Size == 1) {
+
+        for (const T& elem : t_vector) {
+            t_dest.emplace_back(elem);
+        }
+
+    } else {
+
+        for (const auto& vec : t_vector) {
+            append(t_dest, vec);
+        }
+
+    }
+}
+
+template<class T, unsigned int Size>
+std::vector<T> flatten(const Vector<T, Size>& t_vector) {
+
+    if constexpr (Size == 1) {
+
+        return t_vector;
+
+    } else {
+
+        std::vector<T> result;
+        result.reserve(n_entries<T, Size>(t_vector));
+
+        for (const auto &vec: t_vector) {
+            append<T, Size - 1>(result, vec);
+        }
+
+        return result;
+    }
+}
+
 
 #endif //IDOL_VECTOR_H

@@ -67,7 +67,7 @@ void ObjectStore<T, AttributesT>::remove(const T &t_object) {
 template<class T, class AttributesT>
 AttributesT &ObjectStore<T, AttributesT>::attributes(const T &t_object) {
     if (!has(t_object)) {
-        throw Exception("Object not found.");
+        throw Exception("Object not found: " + t_object.name() + ".");
     }
     return m_attributes.at(t_object.index());
 }

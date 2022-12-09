@@ -83,8 +83,8 @@ public:
     [[nodiscard]] auto annotations() const { return m_user_attributes.objects(); }
 
     /* Adds */
-    Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
-    Var add_var(double t_lb, double t_ub, VarType t_type, Constant t_objective_coefficient, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, int t_type, Constant t_objective_coefficient, std::string t_name = "");
     Var add_var(TempVar t_temporary_variable, std::string t_name = "");
     template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
     template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");

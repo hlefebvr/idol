@@ -2,70 +2,68 @@
 #include <utility>
 #include "modeling.h"
 #include "algorithms.h"
-
-namespace Reformulations {
-    class DantzigWolfe;
-}
-
-class Reformulations::DantzigWolfe {
-
-    Model& m_original_formulation;
-    UserAttr m_subproblem_id;
-
-    Model m_restricted_master_problem;
-    std::vector<Model> m_subproblems;
-    std::vector<Var> m_alphas;
-    std::vector<Ctr> m_convexity_constraints;
-    UserAttr m_reformulated_variable;
-public:
-    DantzigWolfe(Model& t_original_formulation, UserAttr t_subproblem_ids)
-        : m_original_formulation(t_original_formulation),
-          m_subproblem_id(std::move(t_subproblem_ids)),
-          m_reformulated_variable(t_original_formulation.add_user_attr<Var>(Var(), "SubProbVar")) {}
-
-    const Model& original_formulation() const { return m_original_formulation; }
-
-    Model& restricted_master_problem() { return m_restricted_master_problem; }
-
-    const Model& restricted_master_problem() const { return m_restricted_master_problem; }
-
-    auto subproblems() { return IteratorForward<std::vector<Model>>(m_subproblems); }
-    auto subproblems() const { return ConstIteratorForward<std::vector<Model>>(m_subproblems); }
-
-    auto alphas() { return IteratorForward<std::vector<Var>>(m_alphas); }
-    auto alphas() const { return ConstIteratorForward<std::vector<Var>>(m_alphas); }
-
-    auto convexity_constraints() { return IteratorForward<std::vector<Ctr>>(m_convexity_constraints); }
-    auto convexity_constraints() const { return ConstIteratorForward<std::vector<Ctr>>(m_convexity_constraints); }
-
-    Model& subproblem(unsigned int t_index) { return m_subproblems.at(t_index); }
-    const Model& subproblem(unsigned int t_index) const { return m_subproblems.at(t_index); }
-
-    const Var& alpha(unsigned int t_index) const { return m_alphas.at(t_index); }
-
-    const Ctr& convexity_constraint(unsigned int t_index) const { return m_convexity_constraints.at(t_index); }
-
-    const UserAttr& reformulated_variable() const { return m_reformulated_variable; }
-};
+#include "problems/GAP/GAP_Instance.h"
+#include "reformulations/Reformulations_DantzigWolfe.h"
 
 int main(int t_argc, const char** t_argv) {
 
+    using namespace Problems::GAP;
+
+    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+
+    const unsigned int n_knapsacks = instance.n_knapsacks();
+    const unsigned int n_items = instance.n_items();
+
     Model model;
-    auto x = model.add_vars(Dim<1>(2), 0., 1., Binary, 0., "x");
-    auto y = model.add_vars(Dim<1>(2), 0., 1., Binary, 0., "y");
+    auto complicating_constraint = model.add_user_attr<unsigned int>(0);
 
-    auto sp_id = model.add_user_attr<int>(0);
+    // Variables
+    auto x = model.add_vars(Dim<2>(n_knapsacks, n_items), 0., 1., Binary, 0., "x");
 
-    auto c1 = model.add_ctr(x[0] + x[1] >= 1);
-    auto c2 = model.add_ctr(x[0] + y[1] <= 2);
-    auto c3 = model.add_ctr(y[0] + y[1] >= 1);
+    // Objective function
+    Expr objective = idol_Sum(
+                i, Range(n_knapsacks),
+                idol_Sum(j, Range(n_items), instance.p(i, j) * x[i][j])
+            );
+    model.set(Attr::Obj::Expr, objective);
 
-    model.set<int>(sp_id, c2, 1);
-    model.set<int>(sp_id, c3, 1);
+    // Knapsack constraints
+    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+        auto ctr = model.add_ctr( idol_Sum(j, Range(n_items), instance.w(i, j) * x[i][j]) <= instance.t(i) );
+        model.set<unsigned int>(complicating_constraint, ctr, i+1);
+    }
 
-    Reformulations::DantzigWolfe dw(model, sp_id);
+    // Assignment constraints
+    for (unsigned int j = 0 ; j < n_items ; ++j) {
+        model.add_ctr(idol_Sum(i, Range(n_knapsacks), x[i][j]) == 1);
+    }
 
-    model.get<Var>(dw.reformulated_variable(), x[0]);
+    // DW reformulation
+    Reformulations::DantzigWolfe reformulation(model, complicating_constraint);
+
+    // Branching candidates
+    std::vector<Var> branching_candidates;
+    branching_candidates.reserve(n_entries<Var, 2>(x));
+
+    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+        for (unsigned int j = 0 ; j < n_items ; ++j) {
+            branching_candidates.emplace_back(model.get<Var>(reformulation.reformulated_variable(), x[i][j]) );
+        }
+    }
+
+    // Branch and price
+    auto solver = branch_and_price(
+                reformulation.restricted_master_problem(),
+                reformulation.alphas().begin(),
+                reformulation.alphas().end(),
+                reformulation.subproblems().begin(),
+                reformulation.subproblems().end(),
+                branching_candidates
+            );
+
+    solver.solve();
+
+    std::cout << "Optimum: " << solver.primal_solution().objective_value() << std::endl;
 
     return 0;
 }
