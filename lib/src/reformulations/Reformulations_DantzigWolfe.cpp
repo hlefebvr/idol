@@ -53,8 +53,8 @@ void Reformulations::DantzigWolfe::detect_subproblem_variables() {
 
 }
 
-void Reformulations::DantzigWolfe::throw_if_inconsistently_dispatch(const Ctr &t_ctr, const Var &t_var,
-                                                                    unsigned int t_model_id) {
+void Reformulations::DantzigWolfe::throw_if_inconsistently_dispatched(const Ctr &t_ctr, const Var &t_var,
+                                                                      unsigned int t_model_id) {
 
     if (unsigned int id = m_original_formulation.get<unsigned int>(m_is_complicating, t_var) ; id != 0 && id != t_model_id) {
         throw Exception("Inconsistent decomposition found. (Variable " + t_var.name()
@@ -70,15 +70,15 @@ void Reformulations::DantzigWolfe::detect_subproblem_variables(const Ctr &t_ctr,
 
     for (const auto& [var, constant] : row.linear()) {
 
-        throw_if_inconsistently_dispatch(t_ctr, var, t_model_id);
+        throw_if_inconsistently_dispatched(t_ctr, var, t_model_id);
 
         m_original_formulation.set<unsigned int>(m_is_complicating, var, t_model_id);
     }
 
     for (const auto& [var1, var2, constant] : row.quadratic()) {
 
-        throw_if_inconsistently_dispatch(t_ctr, var1, t_model_id);
-        throw_if_inconsistently_dispatch(t_ctr, var2, t_model_id);
+        throw_if_inconsistently_dispatched(t_ctr, var1, t_model_id);
+        throw_if_inconsistently_dispatched(t_ctr, var2, t_model_id);
 
         m_original_formulation.set<unsigned int>(m_is_complicating, var1, t_model_id);
         m_original_formulation.set<unsigned int>(m_is_complicating, var2, t_model_id);

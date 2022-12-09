@@ -15,7 +15,7 @@ int main(int t_argc, const char** t_argv) {
     const unsigned int n_items = instance.n_items();
 
     Model model;
-    auto complicating_constraint = model.add_user_attr<unsigned int>(0);
+    auto complicating_constraint = model.add_user_attr<unsigned int>(0, "complicating_constraint");
 
     // Variables
     auto x = model.add_vars(Dim<2>(n_knapsacks, n_items), 0., 1., Binary, 0., "x");
@@ -39,7 +39,7 @@ int main(int t_argc, const char** t_argv) {
     }
 
     // DW reformulation
-    Reformulations::DantzigWolfe reformulation(model, complicating_constraint);
+    Reformulations::DantzigWolfe result(model, complicating_constraint);
 
     // Branching candidates
     std::vector<Var> branching_candidates;
@@ -47,18 +47,18 @@ int main(int t_argc, const char** t_argv) {
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            branching_candidates.emplace_back(model.get<Var>(reformulation.reformulated_variable(), x[i][j]) );
+            branching_candidates.emplace_back(model.get<Var>(result.reformulated_variable(), x[i][j]) );
         }
     }
 
     // Branch and price
     auto solver = branch_and_price(
-                reformulation.restricted_master_problem(),
-                reformulation.alphas().begin(),
-                reformulation.alphas().end(),
-                reformulation.subproblems().begin(),
-                reformulation.subproblems().end(),
-                branching_candidates
+            result.restricted_master_problem(),
+            result.alphas().begin(),
+            result.alphas().end(),
+            result.subproblems().begin(),
+            result.subproblems().end(),
+            branching_candidates
             );
 
     solver.solve();
