@@ -15,4 +15,7 @@ nested approaches, ...) or to design complex algorithmic schemes for solving $\S
 
 Visit our [online documentation](https://hlefebvr.github.io/idol/).
 
+**IMPORTANT: This library is under active development and has no stable feature (nor interface) for the moment.
+Use it with care and with precise release reference only.**
+
 
