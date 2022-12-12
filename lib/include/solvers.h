@@ -23,7 +23,7 @@ using gurobi_solver = std::tuple<>;
 
 using glpk_solver = std::tuple<Solvers::GLPK>;
 #else
-using glpk_simplex_solver = std::tuple<>;
+using glpk_solver = std::tuple<>;
 #endif
 
 namespace impl {
