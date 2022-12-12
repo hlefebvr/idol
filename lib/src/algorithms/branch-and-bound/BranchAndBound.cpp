@@ -67,8 +67,8 @@ void BranchAndBound::initialize() {
     m_is_terminated = false;
     m_n_created_nodes = 0;
     m_iteration = 0;
-    m_best_lower_bound = -Inf;
-    m_best_upper_bound = std::min(+Inf, m_solution_strategy->get(Param::Algorithm::BestObjStop));
+    m_best_lower_bound = std::max(-Inf, get(Param::Algorithm::BestBoundStop));
+    m_best_upper_bound = std::min(+Inf, get(Param::Algorithm::BestObjStop));
 
     if (!m_solution_strategy) {
         throw Exception("No solution strategy was given.");
