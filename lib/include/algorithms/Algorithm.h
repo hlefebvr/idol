@@ -33,8 +33,8 @@ class Algorithm : public AttributeManagers::Delegate {
     Param::Algorithm::values<int> m_params_int;
     Param::Algorithm::values<bool> m_params_bool;
 
-    SolutionStatus m_solution_status;
-    Reason m_reason;
+    SolutionStatus m_solution_status = Unknown;
+    Reason m_reason = NotSpecified;
 protected:
     virtual void execute() = 0;
     virtual void execute_iis() {
@@ -107,32 +107,6 @@ public:
     }
 
     /**
-     * Sets the lower bound of a variable.
-     * @param t_var The queried variable.
-     * @param t_lb The desired bound.
-     */
-    virtual void update_var_lb(const Var& t_var, double t_lb) {
-        throw NotImplemented("Updating variable LB", "update_var_lb");
-    }
-
-    /**
-     * Sets the upper bound of a variable.
-     * @param t_var The queried variable.
-     * @param t_lb The desired bound.
-     */
-    virtual void update_var_ub(const Var& t_var, double t_ub) {
-        throw NotImplemented("Updating variable UB", "update_var_ub");
-    }
-
-    /**
-     * Sets the objective function of the optimization problem.
-     * @param t_objective The desired objective.
-     */
-    virtual void update_obj(const Expr<Var, Var>& t_objective) {
-        throw NotImplemented("Updating objective", "update_obj_coeff");
-    }
-
-    /**
      * Adds a new variable to the optimization problem.
      * @param t_temporary_variable The temporary variable to create (see TempVar).
      * @return The created variable.
@@ -153,15 +127,6 @@ public:
      */
     virtual void remove(const Var& t_variable) {
         throw NotImplemented("Removing variable", "remove");
-    }
-
-    /**
-     * Sets the right handside of a constraint in the optimization problem.
-     * @param t_ctr The queried constraint.
-     * @param t_rhs The desired right handside.
-     */
-    virtual void update_rhs_coeff(const Ctr& t_ctr, double t_rhs) {
-        throw NotImplemented("Updating constraint RHS coefficient", "update_rhs_coeff");
     }
 
     /**

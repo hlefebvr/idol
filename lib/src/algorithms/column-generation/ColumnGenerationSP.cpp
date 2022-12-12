@@ -74,9 +74,8 @@ Expr<Var> ColumnGenerationSP::get_pricing_objective(const Solution::Dual &t_dual
 
 
 void ColumnGenerationSP::update_pricing_objective(const Expr<Var> &t_objective) {
-    m_exact_solution_strategy->update_obj(t_objective);
+    m_exact_solution_strategy->set(Attr::Obj::Expr, t_objective);
 }
-
 
 void ColumnGenerationSP::initialize() {
 
@@ -189,7 +188,7 @@ bool ColumnGenerationSP::update_constraint_rhs(const Ctr &t_ctr, double t_rhs) {
 
     if (!exact_solution_strategy().get(Attr::Ctr::Status, t_ctr)) { return false; }
 
-    m_exact_solution_strategy->update_rhs_coeff(t_ctr, t_rhs);
+    m_exact_solution_strategy->set(Attr::Ctr::Rhs, t_ctr, t_rhs);
 
     remove_columns_violating_constraint(TempCtr(Row(m_exact_solution_strategy->get(Attr::Ctr::Row, t_ctr)), m_exact_solution_strategy->get(Attr::Ctr::Type, t_ctr)));
 

@@ -66,7 +66,7 @@ void ColumnGenerationBranchingSchemes::RMP::set_bound_rmp(const Var& t_subproble
         return;
     }
 
-    rmp.update_rhs_coeff(it->second, t_bound);
+    rmp.set(Attr::Ctr::Rhs, it->second, t_bound);
 
 }
 

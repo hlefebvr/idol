@@ -50,10 +50,6 @@ public:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    void update_var_lb(const Var &t_var, double t_lb) override;
-
-    void update_var_ub(const Var &t_var, double t_ub) override;
-
     RowGenerationSP& add_subproblem(const Ctr& t_cut);
 
     using Subproblems = IteratorForward<std::list<RowGenerationSP>>;

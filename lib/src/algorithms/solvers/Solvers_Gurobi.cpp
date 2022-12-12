@@ -107,18 +107,6 @@ char Solvers::Gurobi::gurobi_var_type(int t_type) {
     return GRB_BINARY;
 }
 
-void Solvers::Gurobi::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
-    auto& impl = future(t_ctr).impl();
-
-    if (std::holds_alternative<GRBConstr>(impl)) {
-        std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, t_rhs);
-    } else {
-        std::get<GRBQConstr>(impl).set(GRB_DoubleAttr_QCRHS, t_rhs);
-    }
-
-    model().set(Attr::Ctr::Rhs, t_ctr, t_rhs);
-}
-
 Solution::Dual Solvers::Gurobi::farkas_certificate() const {
 
     if (status() != Infeasible) {
@@ -287,32 +275,6 @@ Solution::Dual Solvers::Gurobi::iis() const {
 
             }
     );
-}
-
-void Solvers::Gurobi::update_var_lb(const Var &t_var, double t_lb) {
-
-    if (model().get(Attr::Var::Status, t_var)) {
-        future(t_var).impl().set(GRB_DoubleAttr_LB, t_lb);
-        model().set(Attr::Var::Lb, t_var, t_lb);
-        return;
-    }
-
-    for (auto& ptr_to_cb : m_callbacks) {
-        ptr_to_cb->update_var_lb(t_var, t_lb);
-    }
-}
-
-void Solvers::Gurobi::update_var_ub(const Var &t_var, double t_ub) {
-
-    if (model().get(Attr::Var::Status, t_var)) {
-        future(t_var).impl().set(GRB_DoubleAttr_UB, t_ub);
-        model().set(Attr::Var::Ub, t_var, t_ub);
-        return;
-    }
-
-    for (auto& ptr_to_cb : m_callbacks) {
-        ptr_to_cb->update_var_ub(t_var, t_ub);
-    }
 }
 
 void Solvers::Gurobi::write(const std::string &t_filename) {
@@ -492,6 +454,51 @@ void Solvers::Gurobi::set(const Parameter<int> &t_param, int t_value) {
     }
 
     Algorithm::set(t_param, t_value);
+}
+
+void
+Solvers::Gurobi::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+
+    if (t_attr == Attr::Ctr::Rhs) {
+
+        auto& impl = future(t_ctr).impl();
+
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, value(t_value));
+        } else {
+            std::get<GRBQConstr>(impl).set(GRB_DoubleAttr_QCRHS, value(t_value));
+        }
+
+        model().set(Attr::Ctr::Rhs, t_ctr, std::move(t_value));
+
+        return;
+
+    }
+
+    Delegate::set(t_attr, t_ctr, t_value);
+}
+
+void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
+
+        auto gurobi_attr = t_attr == Attr::Var::Lb ? GRB_DoubleAttr_LB : GRB_DoubleAttr_UB;
+
+        if (model().get(Attr::Var::Status, t_var)) {
+            future(t_var).impl().set(gurobi_attr, t_value);
+            model().set(t_attr, t_var, t_value);
+            return;
+        }
+
+        for (auto& ptr_to_cb : m_callbacks) {
+            ptr_to_cb->update_var_lb(t_var, t_value);
+        }
+
+        return;
+
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
 }
 
 #endif

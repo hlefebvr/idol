@@ -38,9 +38,7 @@ class ColumnGeneration : public GenerationAlgorithm {
     void terminate_for_no_improving_column_found();
 protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
     void execute() override;
@@ -50,12 +48,6 @@ public:
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
     [[nodiscard]] Solution::Dual dual_solution() const override;
-
-    void update_var_lb(const Var &t_var, double t_lb) override;
-
-    void update_var_ub(const Var &t_var, double t_ub) override;
-
-    void update_rhs_coeff(const Ctr &t_ctr, double t_rhs) override;
 
     Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
@@ -68,6 +60,8 @@ public:
 
     Subproblems subproblems() { return m_subproblems; }
     [[nodiscard]] ConstSubproblems subproblems() const { return m_subproblems; }
+
+    void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
 };
 
 #endif //OPTIMIZE_COLUMNGENERATION_H

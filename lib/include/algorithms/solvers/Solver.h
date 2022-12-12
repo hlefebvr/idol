@@ -99,10 +99,12 @@ public:
 
     Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
-    void update_obj(const Expr<Var> &t_objective) override;
-
     Callback& callback() { return *m_callbacks.front(); }
 
+    using Algorithm::set;
+    using Algorithm::get;
+
+    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
 };
 
 template<class VarT, class CtrT>
@@ -252,9 +254,13 @@ void Solver<VarT, CtrT>::save_callback(Callback *t_cb) {
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::update_obj(const Expr<Var> &t_objective) {
-    m_src_model.set(Attr::Obj::Expr, t_objective);
-    add_future_obj();
+void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        add_future_obj();
+    }
+
+    Delegate::set(t_attr, std::move(t_value));
 }
 
 template<class VarT, class CtrT>

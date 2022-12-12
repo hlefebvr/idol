@@ -16,8 +16,8 @@ void BranchAndBound::Callback::AdvancedContext::fix_variables(const std::list<st
         const double lb = m_parent.m_solution_strategy->get(Attr::Var::Lb, var);
         const double ub = m_parent.m_solution_strategy->get(Attr::Var::Ub, var);
         m_temp_fixations.emplace_back(var, lb, ub);
-        m_parent.m_solution_strategy->update_var_lb(var, value);
-        m_parent.m_solution_strategy->update_var_ub(var, value);
+        m_parent.m_solution_strategy->set(Attr::Var::Lb, var, value);
+        m_parent.m_solution_strategy->set(Attr::Var::Ub, var, value);
     }
 }
 
@@ -28,8 +28,8 @@ void BranchAndBound::Callback::AdvancedContext::resolve() {
 BranchAndBound::Callback::AdvancedContext::~AdvancedContext() {
 
     for (const auto& [var, lb, ub] : m_temp_fixations) {
-        m_parent.m_solution_strategy->update_var_lb(var, lb);
-        m_parent.m_solution_strategy->update_var_ub(var, ub);
+        m_parent.m_solution_strategy->set(Attr::Var::Lb, var, lb);
+        m_parent.m_solution_strategy->set(Attr::Var::Ub, var, ub);
     }
 
 }

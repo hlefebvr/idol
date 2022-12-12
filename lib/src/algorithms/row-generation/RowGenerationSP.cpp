@@ -7,6 +7,7 @@
 #include "../../../include/modeling/expressions/operations/operators.h"
 #include "modeling/constraints/Attributes_Ctr.h"
 #include "modeling/variables/Attributes_Var.h"
+#include "modeling/models/Attributes_Model.h"
 
 RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
     : m_rmp_strategy(t_rmp_strategy),
@@ -83,7 +84,7 @@ Expr<Var> RowGenerationSP::get_separation_objective(const Solution::Primal &t_pr
 }
 
 void RowGenerationSP::update_separation_objective(const Expr<Var> &t_objective) {
-    m_exact_solution_strategy->update_obj(t_objective);
+    m_exact_solution_strategy->set(Attr::Obj::Expr, t_objective);
 }
 
 void RowGenerationSP::save_last_primal_solution() {
@@ -159,7 +160,7 @@ bool RowGenerationSP::set_lower_bound(const Var &t_var, double t_lb) {
     if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     remove_cuts_violating_lower_bound(t_var, t_lb);
-    exact_solution_strategy().update_var_lb(t_var, t_lb);
+    exact_solution_strategy().set(Attr::Var::Lb, t_var, t_lb);
 
     return true;
 }
@@ -168,7 +169,7 @@ bool RowGenerationSP::set_upper_bound(const Var &t_var, double t_ub) {
     if (!exact_solution_strategy().get(Attr::Var::Status, t_var)) { return false; }
 
     remove_cuts_violating_upper_bound(t_var, t_ub);
-    exact_solution_strategy().update_var_ub(t_var, t_ub);
+    exact_solution_strategy().set(Attr::Var::Ub, t_var, t_ub);
 
     return true;
 }

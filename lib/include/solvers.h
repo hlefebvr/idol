@@ -21,14 +21,14 @@ using gurobi_solver = std::tuple<>;
 #ifdef IDOL_USE_GLPK
 #include "algorithms/solvers/Solvers_GLPK.h"
 
-using glpk_simplex_solver = std::tuple<Solvers::GLPK>;
+using glpk_solver = std::tuple<Solvers::GLPK>;
 #else
 using glpk_simplex_solver = std::tuple<>;
 #endif
 
 namespace impl {
-    using lp_solvers = tuple_cat_t<gurobi_solver, glpk_simplex_solver>;
-    using milp_solvers = tuple_cat_t<gurobi_solver>;
+    using lp_solvers = tuple_cat_t<gurobi_solver, glpk_solver>;
+    using milp_solvers = tuple_cat_t<gurobi_solver, glpk_solver>;
 }
 
 constexpr bool has_lp_solver = std::tuple_size_v<impl::lp_solvers> > 0;

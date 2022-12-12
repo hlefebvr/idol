@@ -334,7 +334,7 @@ void Solvers::GLPK::compute_unbounded_ray() {
     glp_set_row_bnds(m_model, index, GLP_LO, 1., 0.);
 
     for (const auto& ctr : model().ctrs()) {
-        update_rhs_coeff(ctr, 0.);
+        set(Attr::Ctr::Rhs, ctr, 0.);
     }
 
     // Solve
@@ -353,21 +353,6 @@ void Solvers::GLPK::compute_unbounded_ray() {
     }
 
     std::cout << "UNBOUNDED RAY LEFT MODEL MODIFIED" << std::endl;
-}
-
-void Solvers::GLPK::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
-
-    const int index = future(t_ctr).impl();
-
-    switch (model().get(Attr::Ctr::Type, t_ctr)) {
-        case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_rhs)); break;
-        case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(t_rhs), 0.); break;
-        case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(t_rhs), 0.); break;
-        default: throw std::runtime_error("Unknown constraint type.");
-    }
-
-    model().set(Attr::Ctr::Rhs, t_ctr, t_rhs);
-
 }
 
 void Solvers::GLPK::remove(const Var &t_var, int &t_impl) {
@@ -513,42 +498,6 @@ Solution::Primal Solvers::GLPK::primal_solution() const {
     return result;
 }
 
-void Solvers::GLPK::update_var_lb(const Var &t_var, double t_lb) {
-
-    const bool has_ub = !is_pos_inf(get(Attr::Var::Ub, t_var));
-    const int index = future(t_var).impl();
-
-    if (has_ub) {
-        if (equals(get(Attr::Var::Ub, t_var), t_lb, ToleranceForIntegrality)) {
-            glp_set_col_bnds(m_model, index, GLP_FX, t_lb, t_lb);
-        } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, t_lb, get(Attr::Var::Ub, t_var));
-        }
-    } else {
-        glp_set_col_bnds(m_model, index, GLP_UP, t_lb, 0.);
-    }
-
-    model().set(Attr::Var::Lb, t_var, t_lb);
-}
-
-void Solvers::GLPK::update_var_ub(const Var &t_var, double t_ub) {
-
-    const bool has_lb = !is_neg_inf(get(Attr::Var::Lb, t_var));
-    const int index = future(t_var).impl();
-
-    if (has_lb) {
-        if (equals(get(Attr::Var::Lb, t_var), t_ub, ToleranceForIntegrality)) {
-            glp_set_col_bnds(m_model, index, GLP_FX, t_ub, t_ub);
-        } else {
-            glp_set_col_bnds(m_model, index, GLP_DB, get(Attr::Var::Lb, t_var), t_ub);
-        }
-    } else {
-        glp_set_col_bnds(m_model, index, GLP_UP, 0., t_ub);
-    }
-
-    model().set(Attr::Var::Ub, t_var, t_ub);
-}
-
 void Solvers::GLPK::update(const Var &t_var, int &t_impl) {
     std::cout << "SKIPPED UPDATE VAR" << std::endl;
 }
@@ -560,6 +509,73 @@ void Solvers::GLPK::update(const Ctr &t_ctr, int &t_impl) {
 void Solvers::GLPK::write(const std::string &t_filename) {
     auto filename = std::to_string(n_solved++) + t_filename;
     glp_write_lp(m_model, nullptr, filename.c_str());
+}
+
+void Solvers::GLPK::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (t_attr == Attr::Var::Lb) {
+
+        const bool has_ub = !is_pos_inf(get(Attr::Var::Ub, t_var));
+        const int index = future(t_var).impl();
+
+        if (has_ub) {
+            if (equals(get(Attr::Var::Ub, t_var), t_value, ToleranceForIntegrality)) {
+                glp_set_col_bnds(m_model, index, GLP_FX, t_value, t_value);
+            } else {
+                glp_set_col_bnds(m_model, index, GLP_DB, t_value, get(Attr::Var::Ub, t_var));
+            }
+        } else {
+            glp_set_col_bnds(m_model, index, GLP_UP, t_value, 0.);
+        }
+
+        model().set(Attr::Var::Lb, t_var, t_value);
+
+        return;
+    }
+
+    if (t_attr == Attr::Var::Ub) {
+
+        const bool has_lb = !is_neg_inf(get(Attr::Var::Lb, t_var));
+        const int index = future(t_var).impl();
+
+        if (has_lb) {
+            if (equals(get(Attr::Var::Lb, t_var), t_value, ToleranceForIntegrality)) {
+                glp_set_col_bnds(m_model, index, GLP_FX, t_value, t_value);
+            } else {
+                glp_set_col_bnds(m_model, index, GLP_DB, get(Attr::Var::Lb, t_var), t_value);
+            }
+        } else {
+            glp_set_col_bnds(m_model, index, GLP_UP, 0., t_value);
+        }
+
+        model().set(Attr::Var::Ub, t_var, t_value);
+
+        return;
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
+}
+
+void
+Solvers::GLPK::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+
+    if (t_attr == Attr::Ctr::Rhs) {
+
+        const int index = future(t_ctr).impl();
+
+        switch (model().get(Attr::Ctr::Type, t_ctr)) {
+            case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_value)); break;
+            case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(t_value), 0.); break;
+            case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(t_value), 0.); break;
+            default: throw std::runtime_error("Unknown constraint type.");
+        }
+
+        model().set(Attr::Ctr::Rhs, t_ctr, std::move(t_value));
+
+        return;
+    }
+
+    Delegate::set(t_attr, t_ctr, t_value);
 }
 
 #endif

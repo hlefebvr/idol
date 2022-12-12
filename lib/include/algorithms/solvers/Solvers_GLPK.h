@@ -61,12 +61,6 @@ public:
 
     using Solver<int, int>::update;
 
-    void update_rhs_coeff(const Ctr &t_ctr, double t_rhs) override;
-
-    void update_var_lb(const Var &t_var, double t_lb) override;
-
-    void update_var_ub(const Var &t_var, double t_ub) override;
-
     glp_prob* impl() { return m_model; }
 
     const glp_prob* impl() const { return m_model; }
@@ -74,6 +68,13 @@ public:
     using Algorithm::remove;
 
     void write(const std::string &t_filename) override;
+
+    using Solver::set;
+    using Solver::get;
+
+    void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
+
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
 };
 
 #endif

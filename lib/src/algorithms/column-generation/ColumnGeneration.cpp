@@ -54,26 +54,6 @@ Solution::Dual ColumnGeneration::dual_solution() const{
     return result;
 }
 
-void ColumnGeneration::update_var_lb(const Var & t_var, double t_lb){
-    for (auto& subproblem : m_subproblems) {
-
-        const bool is_applied = subproblem.set_lower_bound(t_var, t_lb);
-        if(is_applied) { return; }
-
-    }
-    rmp_solution_strategy().update_var_lb(t_var, t_lb);
-}
-
-void ColumnGeneration::update_var_ub(const Var & t_var, double t_ub){
-    for (auto& subproblem : m_subproblems) {
-
-        const bool is_applied = subproblem.set_upper_bound(t_var, t_ub);
-        if (is_applied) { return; }
-
-    }
-    rmp_solution_strategy().update_var_ub(t_var, t_ub);
-}
-
 void ColumnGeneration::initialize() {
     m_is_terminated = false;
 
@@ -254,20 +234,6 @@ Ctr ColumnGeneration::add_ctr(TempCtr&& t_temporary_constraint) {
 
 }
 
-void ColumnGeneration::update_rhs_coeff(const Ctr &t_ctr, double t_rhs) {
-
-    for (auto& subproblem : m_subproblems) {
-
-        if (subproblem.update_constraint_rhs(t_ctr, t_rhs)) {
-            return;
-        }
-
-    }
-
-    rmp_solution_strategy().update_rhs_coeff(t_ctr, t_rhs);
-
-}
-
 void ColumnGeneration::remove(const Ctr &t_constraint) {
 
     for (auto& subproblem : m_subproblems) {
@@ -314,4 +280,37 @@ AttributeManager &ColumnGeneration::attribute_delegate(const Attribute &t_attrib
         }
     }
     return Delegate::attribute_delegate(t_attribute, t_object);
+}
+
+void ColumnGeneration::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (rmp_solution_strategy().get(Attr::Var::Status, t_var)) {
+        return rmp_solution_strategy().set(t_attr, t_var, t_value);
+    }
+
+    ColumnGenerationSP* sp = nullptr;
+
+    for (auto& subproblem : m_subproblems) {
+        if (subproblem.exact_solution_strategy().get(Attr::Var::Status, t_var)) {
+            sp = &subproblem;
+            break;
+        }
+    }
+
+    if (sp == nullptr) {
+        Delegate::set(t_attr, t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Lb) {
+        sp->set_lower_bound(t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Ub) {
+        sp->set_upper_bound(t_var, t_value);
+        return;
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
 }

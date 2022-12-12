@@ -51,7 +51,7 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
-    Log::set_level(Debug);
+    Log::set_level(Trace);
 
     // Branch and price
     auto solver = branch_and_price(

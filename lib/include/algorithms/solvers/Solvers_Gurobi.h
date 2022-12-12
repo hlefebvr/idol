@@ -61,12 +61,6 @@ public:
 
     [[nodiscard]] Solution::Dual iis() const override;
 
-    void update_rhs_coeff(const Ctr &t_ctr, double t_rhs) override;
-
-    void update_var_lb(const Var &t_var, double t_lb) override;
-
-    void update_var_ub(const Var &t_var, double t_ub) override;
-
     void write(const std::string &t_filename) override;
 
     GRBModel& impl() { return m_model; }
@@ -81,6 +75,10 @@ public:
     void set(const Parameter<double> &t_param, double t_value) override;
     void set(const Parameter<bool> &t_param, bool t_value) override;
     void set(const Parameter<int> &t_param, int t_value) override;
+
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
+    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
+
 };
 
 template<class T, class... ArgsT>
