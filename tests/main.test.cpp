@@ -5,7 +5,7 @@
 
 int main( int argc, char* argv[] ) {
 
-    Log::set_level(Mute);
+    Log::set_level(Debug);
 
     int result = Catch::Session().run( argc, argv );
 
