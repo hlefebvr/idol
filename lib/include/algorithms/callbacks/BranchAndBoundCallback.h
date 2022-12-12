@@ -13,7 +13,7 @@ public:
     class AdvancedContext;
 
     AdvancedContext& advanced(Context& t_ctx);
-    const AdvancedContext& advanced(const Context& t_ctx) const;
+    [[nodiscard]] const AdvancedContext& advanced(const Context& t_ctx) const;
 };
 
 class BranchAndBound::Callback::AdvancedContext : public ::Callback::Context {
@@ -25,19 +25,21 @@ public:
 
     [[nodiscard]] Event event() const override { return m_event; }
 
-    Solution::Primal node_primal_solution() const override;
+    const Node& node() { return m_parent.current_node(); }
 
-    Solution::Primal primal_solution() const;
+    [[nodiscard]] Solution::Primal node_primal_solution() const override;
+
+    [[nodiscard]] Solution::Primal primal_solution() const;
 
     void fix_variables(const std::list<std::pair<Var, double>>& t_fixations);
 
-    unsigned int level() const;
+    [[nodiscard]] unsigned int level() const;
 
     void resolve();
 
     bool submit_solution(Solution::Primal &&t_solution) override;
 
-    ~AdvancedContext();
+    ~AdvancedContext() override;
 };
 
 #endif //IDOL_BRANCHANDBOUNDCALLBACK_H

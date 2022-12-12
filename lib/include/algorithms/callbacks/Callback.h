@@ -90,6 +90,7 @@ namespace Callbacks {
 static std::ostream& operator<<(std::ostream& t_os, Event t_event) {
     switch (t_event) {
         case NewIncumbentFound: return t_os << "NewIncumbentFound";
+        case RelaxationSolved: return t_os << "RelaxationSolved";
         case Unsupported: return t_os << "Unsupported";
         default:;
     }
