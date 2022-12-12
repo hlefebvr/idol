@@ -198,6 +198,8 @@ public:
      * @return The user attribute
      */
     [[nodiscard]] const UserAttr& reformulated_constraint() const { return m_reformulated_constraint; }
+
+    template<unsigned int Size> Vector<Var, Size> operator[](const Vector<Var, Size>& t_vec) const;
 };
 
 #endif //IDOL_REFORMULATIONS_DANTZIGWOLFE_H
