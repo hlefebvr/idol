@@ -42,53 +42,6 @@ protected:
     }
     void set_status(SolutionStatus t_status) { m_solution_status = t_status; }
     void set_reason(Reason t_reason) { m_reason = t_reason; }
-
-
-    virtual bool set_parameter_double(const Parameter<double>& t_param, double t_value) {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return false;
-        }
-        m_params_double.set(t_param, t_value);
-        return true;
-    }
-
-    virtual bool set_parameter_int(const Parameter<int>& t_param, int t_value) {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return false;
-        }
-        m_params_int.set(t_param, t_value);
-        return true;
-    }
-
-    virtual bool set_parameter_bool(const Parameter<bool>& t_param, bool t_value) {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return false;
-        }
-        m_params_bool.set(t_param, t_value);
-        return true;
-    }
-
-    [[nodiscard]] virtual std::optional<double> get_parameter_double(const Parameter<double>& t_param) const {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return {};
-        }
-        return m_params_double.get(t_param);
-    }
-
-    [[nodiscard]] virtual std::optional<int> get_parameter_int(const Parameter<int>& t_param) const {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return {};
-        }
-        return m_params_int.get(t_param);
-    }
-
-    [[nodiscard]] virtual std::optional<bool> get_parameter_bool(const Parameter<bool>& t_param) const {
-        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
-            return {};
-        }
-        return m_params_bool.get(t_param);
-    }
-
 public:
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
@@ -240,47 +193,50 @@ public:
         throw NotImplemented("Writing to files", "write");
     }
 
-    /* ATTRIBUTES */
-    void set(const Parameter<double>& t_param, double t_value) {
-        if (!set_parameter_double(t_param, t_value)) {
-            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
-        }
-    }
-
-    void set(const Parameter<bool>& t_param, bool t_value) {
-        if (!set_parameter_bool(t_param, t_value)) {
-            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
-        }
-    }
-
-    void set(const Parameter<int>& t_param, int t_value) {
-        if (!set_parameter_int(t_param, t_value)) {
-            idol_Log(Warn, "algorithm", "Parameter " << t_param.name() << " was ignored.")
-        }
-    }
-
-    using AttributeManagers::Delegate::get;
+    /* PARAMETERS AND ATTRIBUTES */
     using AttributeManagers::Delegate::set;
+    using AttributeManagers::Delegate::get;
 
-    double get(const Parameter<double>& t_param) const {
-        if (const auto optional  = get_parameter_double(t_param) ; optional.has_value()) {
-            return optional.value();
+    virtual void set(const Parameter<double>& t_param, double t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
         }
-        throw Exception("Could not read parameter " + t_param.name() + ".");
+        m_params_double.set(t_param, t_value);
     }
 
-    bool get(const Parameter<bool>& t_param) const {
-        if (const auto optional  = get_parameter_bool(t_param) ; optional.has_value()) {
-            return optional.value();
+    virtual void set(const Parameter<bool>& t_param, bool t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
         }
-        throw Exception("Could not read parameter " + t_param.name() + ".");
+        m_params_bool.set(t_param, t_value);
     }
 
-    int get(const Parameter<int>& t_param) const {
-        if (const auto optional  = get_parameter_int(t_param) ; optional.has_value()) {
-            return optional.value();
+    virtual void set(const Parameter<int>& t_param, int t_value) {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
         }
-        throw Exception("Could not read parameter " + t_param.name() + ".");
+        m_params_int.set(t_param, t_value);
+    }
+
+    [[nodiscard]] virtual double get(const Parameter<double>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
+        }
+        return m_params_double.get(t_param);
+    }
+
+    [[nodiscard]] virtual bool get(const Parameter<bool>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
+        }
+        return m_params_bool.get(t_param);
+    }
+
+    [[nodiscard]] virtual int get(const Parameter<int>& t_param) const {
+        if (!t_param.is_in_section(Param::Sections::Algorithm)) {
+            throw Exception("Could not handle parameter " + t_param.name() + ".");
+        }
+        return m_params_int.get(t_param);
     }
 
     /* CASTS */

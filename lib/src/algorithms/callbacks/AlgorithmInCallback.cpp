@@ -25,18 +25,26 @@ void AlgorithmInCallback::remove(const Ctr &t_constraint) {
     m_algorithm.remove(t_constraint);
 }
 
-bool AlgorithmInCallback::set_parameter_double(const Parameter<double> &t_param, double t_value) {
-    return m_algorithm.set_parameter_double(t_param, t_value);
+void AlgorithmInCallback::set(const Parameter<double> &t_param, double t_value) {
+    m_algorithm.set(t_param, t_value);
 }
 
-bool AlgorithmInCallback::set_parameter_int(const Parameter<int> &t_param, int t_value) {
-    return m_algorithm.set_parameter_int(t_param, t_value);
+void AlgorithmInCallback::set(const Parameter<bool> &t_param, bool t_value) {
+    m_algorithm.set(t_param, t_value);
 }
 
-std::optional<double> AlgorithmInCallback::get_parameter_double(const Parameter<double> &t_param) const {
-    return m_algorithm.get_parameter_double(t_param);
+void AlgorithmInCallback::set(const Parameter<int> &t_param, int t_value) {
+    m_algorithm.set(t_param, t_value);
 }
 
-std::optional<int> AlgorithmInCallback::get_parameter_int(const Parameter<int> &t_param) const {
-    return m_algorithm.get_parameter_int(t_param);
+double AlgorithmInCallback::get(const Parameter<double> &t_param) const {
+    return m_algorithm.get(t_param);
+}
+
+bool AlgorithmInCallback::get(const Parameter<bool> &t_param) const {
+    return m_algorithm.get(t_param);
+}
+
+int AlgorithmInCallback::get(const Parameter<int> &t_param) const {
+    return m_algorithm.get(t_param);
 }

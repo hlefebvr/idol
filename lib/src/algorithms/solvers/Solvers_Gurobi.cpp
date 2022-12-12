@@ -27,50 +27,6 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
 }
 
-bool Solvers::Gurobi::set_parameter_double(const Parameter<double> &t_param, double t_value) {
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::MIPGap) {
-            m_model.set(GRB_DoubleParam_MIPGap, t_value);
-        } else if (t_param == Param::Algorithm::CutOff) {
-            m_model.set(GRB_DoubleParam_Cutoff, t_value);
-        } else if (t_param == Param::Algorithm::BestObjStop) {
-            m_model.set(GRB_DoubleParam_BestObjStop, t_value);
-        } else if (t_param == Param::Algorithm::BestBoundStop) {
-            m_model.set(GRB_DoubleParam_BestBdStop, t_value);
-        }
-
-        return Algorithm::set_parameter_double(t_param, t_value);
-    }
-    return false;
-}
-
-bool Solvers::Gurobi::set_parameter_int(const Parameter<int> &t_param, int t_value) {
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::MaxThreads) {
-            m_model.set(GRB_IntParam_Threads, t_value);
-        }
-
-        return Algorithm::set_parameter_int(t_param, t_value);
-    }
-    return false;
-}
-
-bool Solvers::Gurobi::set_parameter_bool(const Parameter<bool> &t_param, bool t_value) {
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-            m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
-        } else if (t_param == Param::Algorithm::Presolve) {
-            m_model.set(GRB_IntParam_Presolve, t_value);
-        }
-
-        return Algorithm::set_parameter_bool(t_param, t_value);
-    }
-    return false;
-}
-
 void Solvers::Gurobi::execute() {
 
     update();
@@ -487,6 +443,55 @@ void Solvers::Gurobi::update_obj() {
         m_model.setObjective(expr, sense);
 
     }
+}
+
+void Solvers::Gurobi::set(const Parameter<double> &t_param, double t_value) {
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::MIPGap) {
+            m_model.set(GRB_DoubleParam_MIPGap, t_value);
+        } else if (t_param == Param::Algorithm::CutOff) {
+            m_model.set(GRB_DoubleParam_Cutoff, t_value);
+        } else if (t_param == Param::Algorithm::BestObjStop) {
+            m_model.set(GRB_DoubleParam_BestObjStop, t_value);
+        } else if (t_param == Param::Algorithm::BestBoundStop) {
+            m_model.set(GRB_DoubleParam_BestBdStop, t_value);
+        }
+
+    }
+
+    Algorithm::set(t_param, t_value);
+
+}
+
+void Solvers::Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+            m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+        } else if (t_param == Param::Algorithm::Presolve) {
+            m_model.set(GRB_IntParam_Presolve, t_value);
+        }
+
+    }
+
+    Algorithm::set(t_param, t_value);
+
+}
+
+void Solvers::Gurobi::set(const Parameter<int> &t_param, int t_value) {
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+
+        if (t_param == Param::Algorithm::MaxThreads) {
+            m_model.set(GRB_IntParam_Threads, t_value);
+        }
+
+    }
+
+    Algorithm::set(t_param, t_value);
 }
 
 #endif

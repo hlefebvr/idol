@@ -429,21 +429,6 @@ void BranchAndBound::terminate_for_time_limit_is_reached() {
     terminate();
 }
 
-bool BranchAndBound::set_parameter_int(const Parameter<int> &t_param, int t_value) {
-    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
-        m_params_int.set(t_param, t_value);
-        return true;
-    }
-    return Algorithm::set_parameter_int(t_param, t_value);;
-}
-
-std::optional<int> BranchAndBound::get_parameter_int(const Parameter<int> &t_param) const {
-    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
-        return m_params_int.get(t_param);
-    }
-    return Algorithm::get_parameter_int(t_param);
-}
-
 AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribute) {
     return *m_solution_strategy;
 }
@@ -456,9 +441,21 @@ AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribut
     return *m_solution_strategy;
 }
 
-bool BranchAndBound::set_parameter_double(const Parameter<double> &t_param, double t_value) {
-    if (t_param == Param::Algorithm::BestObjStop) {
-        m_best_upper_bound = t_value;
+void BranchAndBound::set(const Parameter<int> &t_param, int t_value) {
+
+    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
+        m_params_int.set(t_param, t_value);
+        return;
     }
-    return Algorithm::set_parameter_double(t_param, t_value);
+
+    Algorithm::set(t_param, t_value);
+}
+
+int BranchAndBound::get(const Parameter<int> &t_param) const {
+
+    if (t_param.is_in_section(Param::Sections::BranchAndBound)) {
+        return m_params_int.get(t_param);
+    }
+
+    return Algorithm::get(t_param);
 }

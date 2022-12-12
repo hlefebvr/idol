@@ -13,19 +13,9 @@ class Decomposition : public Algorithm {
     std::unique_ptr<Algorithm> m_rmp_strategy;
     std::list<std::unique_ptr<Algorithm>> m_generation_strategies;
 protected:
-    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
-    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-    bool set_parameter_bool(const Parameter<bool> &t_param, bool t_value) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
-
-    [[nodiscard]] std::optional<double> get_parameter_double(const Parameter<double> &t_param) const override;
-
-    [[nodiscard]] std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
 
     void execute() override;
 public:
@@ -58,6 +48,18 @@ public:
         m_generation_strategies.emplace_back(generation_strategy);
         return *generation_strategy;
     }
+
+    void set(const Parameter<double> &t_param, double t_value) override;
+
+    void set(const Parameter<bool> &t_param, bool t_value) override;
+
+    void set(const Parameter<int> &t_param, int t_value) override;
+
+    double get(const Parameter<double> &t_param) const override;
+
+    bool get(const Parameter<bool> &t_param) const override;
+
+    int get(const Parameter<int> &t_param) const override;
 
     class iterator {
         friend class Decomposition;

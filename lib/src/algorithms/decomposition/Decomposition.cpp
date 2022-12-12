@@ -48,29 +48,6 @@ void Decomposition::remove(const Ctr &t_constraint) {
     m_generation_strategies.front()->remove(t_constraint);
 }
 
-bool Decomposition::set_parameter_double(const Parameter<double> &t_param, double t_value) {
-    m_generation_strategies.front()->set(t_param, t_value);
-    return Algorithm::set_parameter_double(t_param, t_value);
-}
-
-bool Decomposition::set_parameter_int(const Parameter<int> &t_param, int t_value) {
-    m_generation_strategies.front()->set(t_param, t_value);
-    return Algorithm::set_parameter_int(t_param, t_value);
-}
-
-bool Decomposition::set_parameter_bool(const Parameter<bool> &t_param, bool t_value) {
-    m_generation_strategies.front()->set(t_param, t_value);
-    return Algorithm::set_parameter_bool(t_param, t_value);
-}
-
-std::optional<double> Decomposition::get_parameter_double(const Parameter<double> &t_param) const {
-    return Algorithm::get_parameter_double(t_param);
-}
-
-std::optional<int> Decomposition::get_parameter_int(const Parameter<int> &t_param) const {
-    return Algorithm::get_parameter_int(t_param);
-}
-
 AttributeManager &Decomposition::attribute_delegate(const Attribute &t_attribute) {
     return *m_generation_strategies.front();
 }
@@ -81,4 +58,28 @@ AttributeManager &Decomposition::attribute_delegate(const Attribute &t_attribute
 
 AttributeManager &Decomposition::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
     return *m_generation_strategies.front();
+}
+
+void Decomposition::set(const Parameter<double> &t_param, double t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+}
+
+void Decomposition::set(const Parameter<bool> &t_param, bool t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+}
+
+void Decomposition::set(const Parameter<int> &t_param, int t_value) {
+    m_generation_strategies.front()->set(t_param, t_value);
+}
+
+double Decomposition::get(const Parameter<double> &t_param) const {
+    return m_generation_strategies.front()->get(t_param);
+}
+
+bool Decomposition::get(const Parameter<bool> &t_param) const {
+    return m_generation_strategies.front()->get(t_param);
+}
+
+int Decomposition::get(const Parameter<int> &t_param) const {
+    return m_generation_strategies.front()->get(t_param);
 }

@@ -31,15 +31,6 @@ class BranchAndBound : public Algorithm {
     std::list<std::unique_ptr<::Callback>> m_callbacks;
 
     Param::BranchAndBound::values<int> m_params_int;
-protected:
-    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
-    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-    std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
-
-    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
-
 private:
     void initialize();
     void create_root_node();
@@ -84,6 +75,10 @@ private:
     [[nodiscard]] const Node& current_node() const;
 
     void execute() override;
+protected:
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 public:
     BranchAndBound() = default;
 
@@ -112,6 +107,12 @@ public:
     bool submit_solution(Solution::Primal&& t_solution);
 
     template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
+
+    using Algorithm::set;
+    using Algorithm::get;
+
+    void set(const Parameter<int>& t_param, int t_value) override;
+    [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 
     class Callback;
 };

@@ -31,12 +31,6 @@ class Solvers::Gurobi : public Solver<GRBVar, std::variant<GRBConstr, GRBQConstr
     static char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
 protected:
-    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
-
-    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-
-    bool set_parameter_bool(const Parameter<bool> &t_param, bool t_value) override;
-
     void execute() override;
     void execute_iis() override;
 
@@ -80,6 +74,13 @@ public:
     [[nodiscard]] const GRBModel& impl() const { return m_model; }
 
     template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
+
+    using Solver::set;
+    using Solver::get;
+
+    void set(const Parameter<double> &t_param, double t_value) override;
+    void set(const Parameter<bool> &t_param, bool t_value) override;
+    void set(const Parameter<int> &t_param, int t_value) override;
 };
 
 template<class T, class... ArgsT>

@@ -13,11 +13,6 @@ class AlgorithmInCallback : public Algorithm {
     Algorithm& m_algorithm;
     Callback::Context* m_context = nullptr;
 protected:
-    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
-    bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
-    std::optional<double> get_parameter_double(const Parameter<double> &t_param) const override;
-    std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
-
     void execute() override {}
 public:
     explicit AlgorithmInCallback(Algorithm& t_rmp_solution_strategy);
@@ -32,6 +27,18 @@ public:
     using Algorithm::add_ctr;
 
     void remove(const Ctr &t_constraint) override;
+
+    void set(const Parameter<double> &t_param, double t_value) override;
+
+    void set(const Parameter<bool> &t_param, bool t_value) override;
+
+    void set(const Parameter<int> &t_param, int t_value) override;
+
+    double get(const Parameter<double> &t_param) const override;
+
+    bool get(const Parameter<bool> &t_param) const override;
+
+    int get(const Parameter<int> &t_param) const override;
 };
 
 #endif //IDOL_ALGORITHMINCALLBACK_H
