@@ -129,8 +129,8 @@ public:
 
     /// Get
 
-    template<class T> const T& get(const UserAttr& t_annotation, const Ctr& t_ctr);
-    template<class T> const T& get(const UserAttr& t_annotation, const Var& t_var);
+    template<class T> const T& get(const UserAttr& t_annotation, const Ctr& t_ctr) const;
+    template<class T> const T& get(const UserAttr& t_annotation, const Var& t_var) const;
 
     // Var
     double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
@@ -209,7 +209,7 @@ UserAttr Model::add_user_attr(const explicit_template_param_t<T>& t_default_valu
 }
 
 template<class T>
-const T& Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) {
+const T& Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) const {
     if (t_annotation.type() != typeid(T)) {
         throw AttributeBadRequest(t_annotation);
     }
@@ -225,7 +225,7 @@ void Model::set(const UserAttr &t_annotation, const Ctr &t_ctr, const T &t_value
 }
 
 template<class T>
-const T &Model::get(const UserAttr &t_annotation, const Var &t_var) {
+const T &Model::get(const UserAttr &t_annotation, const Var &t_var) const {
     if (t_annotation.type() != typeid(T)) {
         throw AttributeBadRequest(t_annotation);
     }
