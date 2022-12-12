@@ -32,13 +32,12 @@ class BranchAndBound : public Algorithm {
 
     Param::BranchAndBound::values<int> m_params_int;
 protected:
+    bool set_parameter_double(const Parameter<double> &t_param, double t_value) override;
     bool set_parameter_int(const Parameter<int> &t_param, int t_value) override;
     std::optional<int> get_parameter_int(const Parameter<int> &t_param) const override;
 
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
-
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
 private:

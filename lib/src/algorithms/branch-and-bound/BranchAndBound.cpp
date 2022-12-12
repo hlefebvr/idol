@@ -68,7 +68,7 @@ void BranchAndBound::initialize() {
     m_n_created_nodes = 0;
     m_iteration = 0;
     m_best_lower_bound = -Inf;
-    m_best_upper_bound = +Inf;
+    m_best_upper_bound = std::min(+Inf, m_solution_strategy->get(Param::Algorithm::BestObjStop));
 
     if (!m_solution_strategy) {
         throw Exception("No solution strategy was given.");
@@ -454,4 +454,11 @@ AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribut
 
 AttributeManager &BranchAndBound::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
     return *m_solution_strategy;
+}
+
+bool BranchAndBound::set_parameter_double(const Parameter<double> &t_param, double t_value) {
+    if (t_param == Param::Algorithm::BestObjStop) {
+        m_best_upper_bound = t_value;
+    }
+    return Algorithm::set_parameter_double(t_param, t_value);
 }
