@@ -36,16 +36,16 @@ void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
             x[i].emplace_back(subproblems.back().add_var(0., 1., Continuous, 0.,
                                                          "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
-            objective_cost += t_instance.p(i, j) * !x[i][j];
+            objective_cost += t_instance.cost(i, j) * !x[i][j];
 
             branching_candidates.emplace_back(x[i].back());
         }
 
         LinExpr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            expr += t_instance.w(i, j) * x[i][j];
+            expr += t_instance.resource_consumption(i, j) * x[i][j];
         }
-        subproblems.back().add_ctr(expr <= t_instance.t(i));
+        subproblems.back().add_ctr(expr <= t_instance.capacity(i));
 
         alpha.emplace_back(rmp.add_var(0., 1., Continuous, std::move(objective_cost), "alpha") );
 

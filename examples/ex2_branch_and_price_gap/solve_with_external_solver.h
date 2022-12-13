@@ -20,7 +20,7 @@ void solve_with_external_solver(const Problems::GAP::Instance& t_instance) {
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         x[i].reserve(n_items);
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            x[i].emplace_back(model.add_var(0., 1., Binary, t_instance.p(i, j),
+            x[i].emplace_back(model.add_var(0., 1., Binary, t_instance.cost(i, j),
                                             "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
         }
     };
@@ -32,9 +32,9 @@ void solve_with_external_solver(const Problems::GAP::Instance& t_instance) {
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         Expr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            expr += t_instance.w(i, j) * x[i][j];
+            expr += t_instance.resource_consumption(i, j) * x[i][j];
         }
-        knapsack_constraints.emplace_back(model.add_ctr(expr <= t_instance.t(i)) );
+        knapsack_constraints.emplace_back(model.add_ctr(expr <= t_instance.capacity(i)) );
     }
 
 

@@ -86,27 +86,45 @@ void ColumnGenerationSP::initialize() {
     if (!m_exact_solution_strategy) {
         throw Exception("No exact solution strategy has been given.");
     }
+    /*
+    for (auto& [alpha, primal_solution] : m_pool.values()) {
+        if (m_exact_solution_strategy->get(Attr::Var::Status, alpha)) { continue; }
+        bool is_feasible = true;
+        for (const auto& [var, value] : primal_solution) {
+            const double lb = m_exact_solution_strategy->get(Attr::Var::Lb, var);
+            const double ub = m_exact_solution_strategy->get(Attr::Var::Ub, var);
+            std::cout << lb << " / " << ub << std::endl;
+            if (!(lb <= value && value <= ub)) {
+                is_feasible = false;
+                break;
+            }
+        }
+        if (is_feasible) {
+            alpha = m_rmp_strategy.add_var(create_column_from(primal_solution));
+            m_currently_present_variables.emplace_back(alpha, primal_solution);
+        }
+    }
+     */
 
 }
 
 
 void ColumnGenerationSP::save_last_primal_solution() {
-    m_primal_solutions.emplace_back(std::make_unique<Solution::Primal>(m_exact_solution_strategy->primal_solution()));
+    m_last_primal_solution = m_exact_solution_strategy->primal_solution();
 }
 
-
 bool ColumnGenerationSP::is_unbounded() const {
-    return m_primal_solutions.back()->status() == Unbounded;
+    return m_last_primal_solution->status() == Unbounded;
 }
 
 
 bool ColumnGenerationSP::is_infeasible() const {
-    return m_primal_solutions.back()->status() == Infeasible;
+    return m_last_primal_solution->status() == Infeasible;
 }
 
 
 bool ColumnGenerationSP::could_not_be_solved_to_optimality() const {
-    return m_primal_solutions.back()->status() != Optimal;
+    return m_last_primal_solution->status() != Optimal;
 }
 
 
@@ -115,23 +133,24 @@ void ColumnGenerationSP::log_last_primal_solution() const {
              std::setw(5)
                      << "SP"
                      << std::setw(15)
-                     << m_primal_solutions.back()->status()
+                     << m_last_primal_solution->status()
                      << std::setw(10)
-                     << m_primal_solutions.back()->objective_value()
+                     << m_last_primal_solution->objective_value()
     );
 }
 
 
 bool ColumnGenerationSP::improving_column_found() const {
-    return m_primal_solutions.back()->objective_value() < -ToleranceForAbsoluteGapPricing;
+    return m_last_primal_solution->objective_value() < -ToleranceForAbsoluteGapPricing;
 }
 
 
 void ColumnGenerationSP::add_column_to_rmp() {
-    auto* last_primal_solution = m_primal_solutions.back().get();
-    auto temp_var = create_column_from(*last_primal_solution);
+    auto& last_primal_solution = m_last_primal_solution.value();
+    auto temp_var = create_column_from(last_primal_solution);
     auto variable = m_rmp_strategy.add_var(std::move(temp_var));
-    m_currently_present_variables.template emplace_back(variable, *last_primal_solution);
+    m_pool.add(variable, std::move(m_last_primal_solution).value());
+    m_currently_present_variables.template emplace_back(variable, m_pool.last_inserted());
     idol_Log(Trace, "column-generation", "Adding new variable with name " << variable << ".");
 }
 
@@ -228,7 +247,7 @@ void ColumnGenerationSP::remove_var_template_from_rmp(const Var &t_var) {
 
 void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, double t_lb) {
     remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
-        if (double value = t_column_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
+        if (double value = t_column_primal_solution.get(t_var) ; value < t_lb /* + ToleranceForIntegrality */) {
             idol_Log(Trace,
                      "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "
@@ -241,7 +260,7 @@ void ColumnGenerationSP::remove_columns_violating_lower_bound(const Var &t_var, 
 
 void ColumnGenerationSP::remove_columns_violating_upper_bound(const Var &t_var, double t_ub) {
     remove_column_if([&](const Var& t_column_variable, const auto& t_column_primal_solution){
-        if (double value = t_column_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
+        if (double value = t_column_primal_solution.get(t_var) ; value > t_ub /* - ToleranceForIntegrality */) {
             idol_Log(Trace,
                      "column-generation",
                      "Column " << t_column_variable << " was removed by contradiction with required "

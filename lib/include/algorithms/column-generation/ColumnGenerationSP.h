@@ -9,6 +9,7 @@
 #include "ColumnGenerationBranchingSchemes_SP.h"
 #include "../parameters/Log.h"
 #include "../../containers/Set.h"
+#include "algorithms/generation/Pool.h"
 #include <memory>
 #include <list>
 #include <iomanip>
@@ -23,9 +24,10 @@ class ColumnGenerationSP {
     Algorithm& m_rmp_strategy;
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
     std::unique_ptr<ColumnGenerationBranchingScheme> m_branching_scheme;
-    std::list<std::unique_ptr<Solution::Primal>> m_primal_solutions;
+    std::optional<Solution::Primal> m_last_primal_solution;
+    Pool<Var> m_pool;
 
-    using PresentColumnList = std::list<std::pair<Var, Solution::Primal&>>;
+    using PresentColumnList = std::list<std::pair<Var, const Solution::Primal&>>;
 
     PresentColumnList m_currently_present_variables;
 
