@@ -231,7 +231,6 @@ void Solver<VarT, CtrT>::remove(const Ctr &t_constraint) {
 
 template<class VarT, class CtrT>
 Var Solver<VarT, CtrT>::add_var(TempVar&& t_temporary_variable) {
-    update(); // TODO remove this!
     auto result = m_src_model.add_var(std::move(t_temporary_variable));
     add_future(result);
     return result;

@@ -23,13 +23,13 @@ int main(int t_argc, const char** t_argv) {
     // Objective function
     Expr objective = idol_Sum(
                 i, Range(n_knapsacks),
-                idol_Sum(j, Range(n_items), instance.p(i, j) * x[i][j])
+                idol_Sum(j, Range(n_items), instance.cost(i, j) * x[i][j])
             );
     model.set(Attr::Obj::Expr, objective);
 
     // Knapsack constraints
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        auto ctr = model.add_ctr( idol_Sum(j, Range(n_items), instance.w(i, j) * x[i][j]) <= instance.t(i) );
+        auto ctr = model.add_ctr( idol_Sum(j, Range(n_items), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i) );
         model.set<unsigned int>(complicating_constraint, ctr, i+1);
     }
 
