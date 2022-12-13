@@ -12,7 +12,7 @@ namespace Problems::GAP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
 
-    Instance generate_instance_Chu_and_Beasley_A(unsigned int t_n_machines, unsigned int t_n_jobs);
+    Instance generate_instance_Chu_and_Beasley_1997_C(unsigned int t_n_machines, unsigned int t_n_jobs);
 }
 
 /**
