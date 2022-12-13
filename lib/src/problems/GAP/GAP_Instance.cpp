@@ -6,22 +6,22 @@
 #include <fstream>
 #include <random>
 
-Problems::GAP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
+Problems::GAP::Instance::Instance(unsigned int t_n_agents, unsigned int t_n_jobs) {
 
-    assert(t_n_knapsacks > 1);
-    assert(t_n_items > 1);
+    assert(t_n_agents > 1);
+    assert(t_n_jobs > 1);
 
-    m_costs.resize(t_n_knapsacks);
-    for (unsigned int i = 0 ; i < t_n_knapsacks ; ++i) {
-        m_costs[i].resize(t_n_items);
+    m_costs.resize(t_n_agents);
+    for (unsigned int i = 0 ; i < t_n_agents ; ++i) {
+        m_costs[i].resize(t_n_jobs);
     }
 
-    m_resource_consumptions.resize(t_n_knapsacks);
-    for (unsigned int i = 0 ; i < t_n_knapsacks ; ++i) {
-        m_resource_consumptions[i].resize(t_n_items);
+    m_resource_consumptions.resize(t_n_agents);
+    for (unsigned int i = 0 ; i < t_n_agents ; ++i) {
+        m_resource_consumptions[i].resize(t_n_jobs);
     }
 
-    m_capacities.resize(t_n_knapsacks);
+    m_capacities.resize(t_n_agents);
 
 }
 
@@ -33,28 +33,28 @@ Problems::GAP::Instance Problems::GAP::read_instance(const std::string& t_filena
         throw std::runtime_error("Could not open file.");
     }
 
-    unsigned int n_knapsacks, n_items;
+    unsigned int n_agents, n_jobs;
     double x;
 
-    file >> n_knapsacks >> n_items;
+    file >> n_agents >> n_jobs;
 
-    Instance result(n_knapsacks, n_items);
+    Instance result(n_agents, n_jobs);
 
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        for (unsigned int j = 0 ; j < n_jobs ; ++j) {
             file >> x;
             result.set_cost(i, j, x);
         }
     }
 
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        for (unsigned int j = 0 ; j < n_jobs ; ++j) {
             file >> x;
             result.set_resource_consumption(i, j, x);
         }
     }
 
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
         file >> x;
         result.set_capacity(i, x);
     }
@@ -62,6 +62,34 @@ Problems::GAP::Instance Problems::GAP::read_instance(const std::string& t_filena
     file.close();
 
     return result;
+}
+
+std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_instance) {
+
+    const unsigned int n_agents = t_instance.n_agents();
+    const unsigned int n_jobs = t_instance.n_jobs();
+
+    t_os << n_agents << '\t' << n_jobs << '\n';
+
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        for (unsigned int j = 0; j < n_jobs; ++j) {
+            t_os << t_instance.cost(i,j) << '\t';
+        }
+        t_os << '\n';
+    }
+
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        for (unsigned int j = 0; j < n_jobs; ++j) {
+            t_os << t_instance.resource_consumption(i,j) << '\t';
+        }
+        t_os << '\n';
+    }
+
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        t_os << t_instance.capacity(i) << '\t';
+    }
+
+    return t_os;
 }
 
 Problems::GAP::Instance

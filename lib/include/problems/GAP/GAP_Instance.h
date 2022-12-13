@@ -24,7 +24,7 @@ protected:
     std::vector<std::vector<double>> m_resource_consumptions;
     std::vector<double> m_capacities;
 public:
-    Instance(unsigned int t_n_knapsacks, unsigned int t_n_items);
+    Instance(unsigned int t_n_agents, unsigned int t_n_jobs);
 
     Instance(const Instance&) = default;
     Instance(Instance&&) noexcept = default;
@@ -44,5 +44,6 @@ public:
     void set_capacity(unsigned int t_agent, double t_value) { m_capacities[t_agent] = t_value; }
 };
 
+std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_instance);
 
 #endif //OPTIMIZE_INSTANCE_H
