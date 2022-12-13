@@ -4,6 +4,8 @@
 #include "algorithms.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
+#include "algorithms/generation/ColGenSP.h"
+#include "algorithms/generation/ColGen.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -53,6 +55,23 @@ int main(int t_argc, const char** t_argv) {
 
     Log::set_level(Trace);
 
+    Solvers::Gurobi rmp(result.restricted_master_problem());
+    rmp.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+
+    ColGen col_gen(rmp);
+
+    for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
+        auto& sp = col_gen.add_subproblem(result.alpha(i));
+        sp.set_exact_solution_strategy<Solvers::Gurobi>(result.subproblem(i));
+    }
+
+    col_gen.solve();
+
+    std::cout << "DONE!" << std::endl;
+
+    /*
+     OLD STYLE
+
     // Branch and price
     auto solver = branch_and_price(
             result.restricted_master_problem(),
@@ -66,6 +85,8 @@ int main(int t_argc, const char** t_argv) {
     solver.solve();
 
     std::cout << "Optimum: " << solver.primal_solution().objective_value() << std::endl;
+
+     */
 
     return 0;
 }

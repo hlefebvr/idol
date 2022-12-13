@@ -55,8 +55,6 @@ Solution::Dual ColumnGeneration::dual_solution() const{
 }
 
 void ColumnGeneration::initialize() {
-    m_is_terminated = false;
-
     for (auto& subproblem : m_subproblems) {
         subproblem.initialize();
     }
@@ -110,10 +108,6 @@ void ColumnGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
 void ColumnGeneration::terminate_for_rmp_is_unbounded() {
     idol_Log(Trace, "column-generation", "Terminate. Unbounded RMP.");
     terminate();
-}
-
-void ColumnGeneration::terminate() {
-    m_is_terminated = true;
 }
 
 void ColumnGeneration::update_subproblems() {

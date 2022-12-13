@@ -20,7 +20,6 @@ class Callback;
 class BranchAndBound : public Algorithm {
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
-    bool m_is_terminated = false;
 
     double m_best_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
@@ -58,7 +57,6 @@ private:
     [[nodiscard]] bool iteration_limit_is_reached() const;
     [[nodiscard]] bool time_limit_is_reached() const;
 
-    void terminate();
     void terminate_for_no_active_nodes();
     void terminate_for_gap_is_closed();
     void terminate_for_infeasibility();
@@ -81,8 +79,6 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 public:
     BranchAndBound() = default;
-
-    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
     Algorithm& solution_strategy() { return *m_solution_strategy; }
     [[nodiscard]] const Algorithm& solution_strategy() const { return *m_solution_strategy; }

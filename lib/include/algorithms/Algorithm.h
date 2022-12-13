@@ -35,6 +35,7 @@ class Algorithm : public AttributeManagers::Delegate {
 
     SolutionStatus m_solution_status = Unknown;
     Reason m_reason = NotSpecified;
+    bool m_is_terminated = false;
 protected:
     virtual void execute() = 0;
     virtual void execute_iis() {
@@ -43,6 +44,10 @@ protected:
     void set_status(SolutionStatus t_status) { m_solution_status = t_status; }
     void set_reason(Reason t_reason) { m_reason = t_reason; }
 public:
+    void terminate() { m_is_terminated = true; }
+
+    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
+
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
     [[nodiscard]] double remaining_time(Timer::Unit t_unit = Timer::Seconds) const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count(t_unit)); }
@@ -57,6 +62,7 @@ public:
      * Executes the solution algorithm.
      */
     void solve() {
+        m_is_terminated = false;
         m_timer.start();
         execute();
         m_timer.stop();
@@ -66,6 +72,7 @@ public:
      * Searches for an IIS of the optimization problem.
      */
     void compute_iis() {
+        m_is_terminated = false;
         m_timer.start();
         execute_iis();
         m_timer.stop();

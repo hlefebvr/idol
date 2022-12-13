@@ -44,7 +44,6 @@ void RowGeneration::execute() {
 }
 
 void RowGeneration::initialize() {
-    m_is_terminated = false;
     m_iteration = 0;
     m_violated_cut_found_at_last_iteration = true;
 
@@ -101,10 +100,6 @@ void RowGeneration::terminate_for_rmp_is_infeasible() {
 void RowGeneration::terminate_for_rmp_could_not_be_solved_to_optimality() {
     idol_Log(Trace, "row-generation", "Terminate. RMP returned with primal status \"" << m_last_rmp_primals->status() << "\".");
     terminate();
-}
-
-void RowGeneration::terminate() {
-    m_is_terminated = true;
 }
 
 void RowGeneration::update_subproblems() {

@@ -13,15 +13,12 @@ class ColumnGeneration : public GenerationAlgorithm {
     std::list<ColumnGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Dual> m_last_rmp_duals;
 
-    bool m_is_terminated = false;
-
     void initialize();
     void save_last_rmp_dual_solution();
     void analyze_last_rmp_dual_solution();
     [[nodiscard]] bool rmp_is_unbounded() const;
     [[nodiscard]] bool rmp_is_infeasible() const;
     [[nodiscard]] bool rmp_could_not_be_solved_to_optimality() const;
-    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
     void save_rmp_farkas();
     void update_subproblems();
     void solve_subproblems();
@@ -29,7 +26,6 @@ class ColumnGeneration : public GenerationAlgorithm {
     void analyze_last_subproblem_primal_solution(const ColumnGenerationSP& t_subproblem);
     void add_columns();
 
-    void terminate();
     void terminate_for_rmp_is_unbounded();
     void terminate_for_rmp_could_not_be_solved_to_optimality();
     void terminate_for_subproblem_is_infeasible();

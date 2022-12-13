@@ -9,11 +9,11 @@
 
 class GenerationAlgorithm : public Algorithm {
     Algorithm& m_rmp_solution_strategy;
-protected:
-    Algorithm& rmp_solution_strategy();
-    [[nodiscard]] const Algorithm& rmp_solution_strategy() const;
 public:
     explicit GenerationAlgorithm(Algorithm& t_decomposition_id);
+
+    Algorithm& rmp_solution_strategy();
+    [[nodiscard]] const Algorithm& rmp_solution_strategy() const;
 };
 
 #endif //OPTIMIZE_GENERATIONALGORITHM_H

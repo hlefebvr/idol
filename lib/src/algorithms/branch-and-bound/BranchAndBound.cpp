@@ -64,7 +64,6 @@ double BranchAndBound::absolute_gap() const {
 }
 
 void BranchAndBound::initialize() {
-    m_is_terminated = false;
     m_n_created_nodes = 0;
     m_iteration = 0;
     m_best_lower_bound = std::max(-Inf, get(Param::Algorithm::BestBoundStop));
@@ -339,10 +338,6 @@ void BranchAndBound::terminate_for_error_lb_greater_than_ub() {
     set_status(Fail);
     set_reason(NotSpecified);
     terminate();
-}
-
-void BranchAndBound::terminate() {
-    m_is_terminated = true;
 }
 
 void BranchAndBound::log_node(LogLevel t_msg_level, const Node& t_node) const {

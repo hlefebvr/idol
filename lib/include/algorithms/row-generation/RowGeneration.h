@@ -15,7 +15,6 @@ protected:
     std::list<RowGenerationSP> m_subproblems;
     std::unique_ptr<Solution::Primal> m_last_rmp_primals;
 
-    bool m_is_terminated = false;
     bool m_violated_cut_found_at_last_iteration = true;
     unsigned int m_iteration = 0;
 
@@ -25,7 +24,6 @@ protected:
     [[nodiscard]] bool rmp_is_unbounded() const;
     [[nodiscard]] bool rmp_is_infeasible() const;
     [[nodiscard]] bool rmp_could_not_be_solved_to_optimality() const;
-    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
     void update_subproblems();
     void solve_subproblems();
     virtual void solve_rmp();
@@ -35,7 +33,6 @@ protected:
     [[nodiscard]] bool iteration_limit_is_reached() const;
     [[nodiscard]] bool time_limit_is_reached() const;
 
-    void terminate();
     void terminate_for_rmp_is_infeasible();
     void terminate_for_rmp_could_not_be_solved_to_optimality();
     void terminate_for_no_violated_cut_found();
