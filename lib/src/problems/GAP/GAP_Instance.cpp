@@ -93,7 +93,7 @@ std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_in
 }
 
 Problems::GAP::Instance
-generate_instance_Chu_and_Beasley_1997_C(unsigned int t_n_agents, unsigned int t_n_jobs) {
+Problems::GAP::generate_instance_Chu_and_Beasley_1997_C(unsigned int t_n_agents, unsigned int t_n_jobs) {
 
     Problems::GAP::Instance result(t_n_agents, t_n_jobs);
 
