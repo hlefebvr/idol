@@ -43,7 +43,7 @@ TEMPLATE_LIST_TEST_CASE("09. B&B: KP", has_lp_solver ? "[MILP][branch-and-bound]
 
     const auto& instance = test.first;
     const double optimum = test.second;
-    const unsigned int n_items = instance.n_items();
+    const unsigned int n_items = instance.n_jobs();
 
     std::vector<Var> x;
     x.reserve(n_items);

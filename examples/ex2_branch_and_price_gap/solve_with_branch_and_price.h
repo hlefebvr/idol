@@ -11,8 +11,8 @@
 
 void solve_with_branch_and_price(const Problems::GAP::Instance& t_instance) {
 
-    const unsigned int n_knapsacks = t_instance.n_knapsacks();
-    const unsigned int n_items = t_instance.n_items();
+    const unsigned int n_knapsacks = t_instance.n_agents();
+    const unsigned int n_items = t_instance.n_jobs();
 
     std::vector<Var> branching_candidates;
 

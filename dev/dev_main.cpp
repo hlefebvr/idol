@@ -11,8 +11,8 @@ int main(int t_argc, const char** t_argv) {
 
     auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
 
-    const unsigned int n_knapsacks = instance.n_knapsacks();
-    const unsigned int n_items = instance.n_items();
+    const unsigned int n_knapsacks = instance.n_agents();
+    const unsigned int n_items = instance.n_jobs();
 
     Model model;
     auto complicating_constraint = model.add_user_attr<unsigned int>(0, "complicating_constraint");

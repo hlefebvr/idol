@@ -45,8 +45,8 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
 
     const Instance& instance = test.first;
     const double optimum = test.second;
-    const unsigned int n_knapsacks = instance.n_knapsacks();
-    const unsigned int n_items = instance.n_items();
+    const unsigned int n_knapsacks = instance.n_agents();
+    const unsigned int n_items = instance.n_jobs();
 
     std::vector<Var> branching_candidates;
 

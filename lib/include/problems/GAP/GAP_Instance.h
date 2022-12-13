@@ -11,6 +11,8 @@
 namespace Problems::GAP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
+
+    Instance generate_instance_Chu_and_Beasley_A(unsigned int t_n_machines, unsigned int t_n_jobs);
 }
 
 /**
@@ -18,9 +20,9 @@ namespace Problems::GAP {
  */
 class Problems::GAP::Instance {
 protected:
-    std::vector<std::vector<double>> m_p;
-    std::vector<std::vector<double>> m_w;
-    std::vector<double> m_t;
+    std::vector<std::vector<double>> m_costs;
+    std::vector<std::vector<double>> m_resource_consumptions;
+    std::vector<double> m_capacities;
 public:
     Instance(unsigned int t_n_knapsacks, unsigned int t_n_items);
 
@@ -31,15 +33,15 @@ public:
     Instance& operator=(Instance&&) noexcept = default;
 
     ~Instance() = default;
-    [[nodiscard]] unsigned int n_knapsacks() const { return m_p.size(); }
-    [[nodiscard]] unsigned int n_items() const { return m_p[0].size(); }
-    [[nodiscard]] double p(unsigned int t_knapsack, unsigned int t_item) const { return m_p[t_knapsack][t_item]; }
-    [[nodiscard]] double w(unsigned int t_knapsack, unsigned int t_item) const { return m_w[t_knapsack][t_item]; }
-    [[nodiscard]] double t(unsigned int t_knapsack) const { return m_t[t_knapsack]; }
+    [[nodiscard]] unsigned int n_agents() const { return m_costs.size(); }
+    [[nodiscard]] unsigned int n_jobs() const { return m_costs[0].size(); }
+    [[nodiscard]] double cost(unsigned int t_agent, unsigned int t_job) const { return m_costs[t_agent][t_job]; }
+    [[nodiscard]] double resource_consumption(unsigned int t_agent, unsigned int t_job) const { return m_resource_consumptions[t_agent][t_job]; }
+    [[nodiscard]] double capacity(unsigned int t_agent) const { return m_capacities[t_agent]; }
 
-    void set_p(unsigned int t_knapsack, unsigned int t_item, double t_value) { m_p[t_knapsack][t_item] = t_value; }
-    void set_w(unsigned int t_knapsack, unsigned int t_item, double t_value) { m_w[t_knapsack][t_item] = t_value; }
-    void set_t(unsigned int t_knapsack, double t_value) { m_t[t_knapsack] = t_value; }
+    void set_cost(unsigned int t_agent, unsigned int t_job, double t_value) { m_costs[t_agent][t_job] = t_value; }
+    void set_resource_consumption(unsigned int t_agent, unsigned int t_job, double t_value) { m_resource_consumptions[t_agent][t_job] = t_value; }
+    void set_capacity(unsigned int t_agent, double t_value) { m_capacities[t_agent] = t_value; }
 };
 
 
