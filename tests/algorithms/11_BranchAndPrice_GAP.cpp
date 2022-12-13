@@ -70,16 +70,16 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
             x[i].emplace_back(subproblems.back().add_var(0., 1., Continuous, 0.,
                                                          "x(" + std::to_string(i) + "," + std::to_string(j) + ")") );
 
-            objective_cost += instance.p(i, j) * !x[i][j];
+            objective_cost += instance.cost(i, j) * !x[i][j];
 
             branching_candidates.emplace_back(x[i].back());
         }
 
         LinExpr expr;
         for (unsigned int j = 0 ; j < n_items ; ++j) {
-            expr += instance.w(i, j) * x[i][j];
+            expr += instance.resource_consumption(i, j) * x[i][j];
         }
-        subproblems.back().add_ctr(expr <= instance.t(i));
+        subproblems.back().add_ctr(expr <= instance.capacity(i));
 
         alpha.emplace_back(rmp.add_var(0., 1., Continuous, std::move(objective_cost), "alpha") );
 
