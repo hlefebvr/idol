@@ -261,6 +261,13 @@ public:
 
     // Model
     /**
+     * Returns the value of an attribute of type double
+     * @param t_attr the attribute to retrieve
+     * @return the value of the attribute
+     */
+    [[nodiscard]] virtual double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const = 0;
+
+    /**
      * Returns the value of an attribute of type int
      * @param t_attr the attribute to retrieve
      * @return the value of the attribute

@@ -3,7 +3,7 @@
 //
 #include "algorithms/generation/ColGen.h"
 
-ColGen::ColGen(Algorithm &t_rmp_solution_strategy) : Generation<ColGenSP>(t_rmp_solution_strategy) {
+ColGen::ColGen(Algorithm &t_rmp_solution_strategy) : Generation(t_rmp_solution_strategy) {
 
 }
 

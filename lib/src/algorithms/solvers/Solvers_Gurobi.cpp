@@ -501,4 +501,19 @@ void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<double, Var> &t_at
     Delegate::set(t_attr, t_var, t_value);
 }
 
+double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
+
+    if (t_attr == Attr::Solution::ObjVal) {
+        if (status() == Unbounded) {
+            return -Inf;
+        }
+        if (status() == Infeasible) {
+            return +Inf;
+        }
+        return m_model.get(GRB_DoubleAttr_ObjVal);
+    }
+
+    return Delegate::get(t_attr);
+}
+
 #endif

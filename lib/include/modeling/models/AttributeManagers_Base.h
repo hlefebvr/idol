@@ -50,6 +50,7 @@ public:
     [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override { throw AttributeBadRequest(t_attr); }
 
     // Model
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const override { throw AttributeBadRequest(t_attr); }
     [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, void>& t_attr) const override { throw AttributeBadRequest(t_attr); }
     [[nodiscard]] const LinExpr<Ctr>& get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr) const override { throw AttributeBadRequest(t_attr); }
     [[nodiscard]] const Expr<Var, Var>& get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void>& t_attr) const override { throw AttributeBadRequest(t_attr); }

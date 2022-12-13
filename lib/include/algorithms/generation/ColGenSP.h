@@ -8,16 +8,23 @@
 #include "SP.h"
 #include "../../modeling/variables/TempVar.h"
 
-class ColGenSP : public SP<Generation<ColGenSP>> {
+class ColGen;
+
+class ColGenSP : public SP<ColGen, Var> {
     TempVar m_column_template;
+protected:
+    std::pair<Var, Solution::Primal> enrich_master_problem_hook() override;
+
+    void update_local_bound_hook(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var& t_var, double t_value) override;
+
 public:
-    ColGenSP(Generation<ColGenSP>& t_parent, const Var& t_var);
+    ColGenSP(ColGen& t_parent, const Var& t_var);
 
     void initialize() override;
 
     void update() override;
 
-    void enrich_master_problem() override;
+    void contribute_to_primal_solution(Solution::Primal &t_primal) const override;
 };
 
 #endif //IDOL_COLGENSP_H

@@ -4,7 +4,6 @@
 #include "algorithms.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
-#include "algorithms/generation/ColGenSP.h"
 #include "algorithms/generation/ColGen.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -55,19 +54,26 @@ int main(int t_argc, const char** t_argv) {
 
     Log::set_level(Trace);
 
-    Solvers::Gurobi rmp(result.restricted_master_problem());
-    rmp.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+    BranchAndBound solver;
 
-    ColGen col_gen(rmp);
+    auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(branching_candidates);
+    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+
+    auto& decomposition = solver.set_solution_strategy<Decomposition>();
+    decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(result.restricted_master_problem());
+
+    auto& column_generation = decomposition.add_generation_strategy<ColGen>();
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
-        auto& sp = col_gen.add_subproblem(result.alpha(i));
+        auto& sp = column_generation.add_subproblem(result.alpha(i));
         sp.set_exact_solution_strategy<Solvers::Gurobi>(result.subproblem(i));
     }
 
-    col_gen.solve();
+    solver.solve();
 
-    std::cout << "DONE!" << std::endl;
+    std::cout << solver.primal_solution().objective_value() << std::endl;
 
     /*
      OLD STYLE

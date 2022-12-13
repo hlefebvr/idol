@@ -87,9 +87,16 @@ class Constant;
 class Row;
 class Column;
 
+namespace Solution {
+    class Primal;
+    class Dual;
+}
+
 using Rhs = LinExpr<Ctr>;
 using Obj = Expr<Var, Var>;
 using IDOL_int = int;
 using IDOL_double = double;
+using IDOL_Solution_Primal = Solution::Primal;
+using IDOL_Solution_Dual = Solution::Dual;
 
 #endif //IDOL_ATTRIBUTES_H

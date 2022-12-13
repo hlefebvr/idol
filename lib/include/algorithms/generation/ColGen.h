@@ -8,13 +8,15 @@
 #include "Generation.h"
 #include "ColGenSP.h"
 
-class ColGen : public Generation<ColGenSP> {
+class ColGen : public Generation<ColGen, ColGenSP> {
 protected:
     void analyze_master_problem_solution() override;
     void solve_subproblems() override;
     void analyze_subproblems_solution() override;
 public:
     explicit ColGen(Algorithm& t_rmp_solution_strategy);
+
+    using generated_object_t = Var;
 };
 
 #endif //IDOL_COLGEN_H

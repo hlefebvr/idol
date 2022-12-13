@@ -2,6 +2,7 @@
 // Created by henri on 13/12/22.
 //
 #include "algorithms/generation/ColGenSP.h"
+#include "algorithms/generation/ColGen.h"
 #include "algorithms/generation/Generation.h"
 #include "modeling/variables/Attributes_Var.h"
 #include "modeling/models/Attributes_Model.h"
@@ -21,7 +22,7 @@ TempVar create_column_template(Algorithm& t_rmp, const Var& t_var) {
     };
 }
 
-ColGenSP::ColGenSP(Generation<ColGenSP> &t_parent, const Var &t_var)
+ColGenSP::ColGenSP(ColGen &t_parent, const Var &t_var)
     : SP(t_parent),
       m_column_template(create_column_template(t_parent.rmp_solution_strategy(), t_var)) {
 
@@ -63,10 +64,11 @@ void ColGenSP::update() {
 
 }
 
-void ColGenSP::enrich_master_problem() {
+std::pair<Var, Solution::Primal> ColGenSP::enrich_master_problem_hook() {
 
     auto& master = parent().rmp_solution_strategy();
     auto last_pricing_solution = exact_solution_strategy().primal_solution();
+
     auto alpha = master.add_var(
                 TempVar(
                     m_column_template.lb(),
@@ -75,5 +77,23 @@ void ColGenSP::enrich_master_problem() {
                     m_column_template.column().fix(last_pricing_solution)
                 )
             );
+
+    return { alpha, std::move(last_pricing_solution) };
+}
+
+void ColGenSP::contribute_to_primal_solution(Solution::Primal &t_primal) const {
+
+    const auto& rmp = parent().rmp_solution_strategy();
+    const auto primals = rmp.primal_solution();
+
+    for (const auto& [alpha, generator] : present_generators()) {
+        t_primal += primals.get(alpha) * generator;
+    }
+
+}
+
+void ColGenSP::update_local_bound_hook(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var& t_var, double t_value) {
+
+    exact_solution_strategy().set(t_attr, t_var, t_value);
 
 }

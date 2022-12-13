@@ -152,6 +152,10 @@ public:
         return attribute_delegate(t_attr).get(t_attr);
     }
 
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void> &t_attr) const override {
+        return attribute_delegate(t_attr).get(t_attr);
+    }
+
     [[nodiscard]] const LinExpr<Ctr> &get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const override {
         return attribute_delegate(t_attr).get(t_attr);
     }
