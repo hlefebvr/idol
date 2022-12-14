@@ -3,7 +3,7 @@
 //
 #include "algorithms/generation/DantzigWolfeSP.h"
 #include "algorithms/generation/DantzigWolfe.h"
-#include "algorithms/generation/BranchingManagers_OnPricing.h"
+#include "algorithms/generation/BranchingManagers_OnMaster.h"
 
 TempVar extract_column_template(Reformulations::DantzigWolfe& t_reformulation, unsigned int t_index) {
 
@@ -36,7 +36,7 @@ void DantzigWolfeSP::initialize() {
     }
 
     if (!m_branching_manager) {
-        m_branching_manager = std::make_unique<BranchingManagers::OnPricing>(*this);
+        m_branching_manager = std::make_unique<BranchingManagers::OnMaster>(*this);
     } else {
         restore_column_from_pool();
     }
@@ -208,4 +208,19 @@ void DantzigWolfeSP::restore_column_from_pool() {
 
     }
 
+}
+
+LinExpr<Var> DantzigWolfeSP::expand_variable(const Var &t_var) const {
+
+    LinExpr<Var> result;
+
+    if (m_parent.reformulation().master_problem().get(Attr::Var::Status, t_var)) {
+        throw Exception("Expanding a variable expressed in the original space is not implemented yet.");
+    }
+
+    for (const auto& [alpha, generator] : present_generators()) {
+        result += generator.get(t_var) * alpha;
+    }
+
+    return result;
 }

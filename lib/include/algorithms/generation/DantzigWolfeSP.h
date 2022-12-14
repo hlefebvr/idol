@@ -35,6 +35,8 @@ public:
 
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_exact_solution_strategy(ArgsT&& ...t_args);
 
+    template<class ManagerT, class ...ArgsT> ManagerT& set_branching_manager(ArgsT&& ...t_args);
+
     void initialize();
     void update();
     void solve();
@@ -52,12 +54,27 @@ public:
     void apply_bound_expressed_in_original_space(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
 
     TempVar create_column_from_generator(const Solution::Primal& t_generator) const;
+
+    TempVar& column_template() { return m_column_template; }
+    const TempVar& column_template() const { return m_column_template; }
+
+    DantzigWolfe& parent() { return m_parent; }
+    const DantzigWolfe& parent() const { return m_parent; }
+
+    LinExpr<Var> expand_variable(const Var& t_var) const;
 };
 
 template<class AlgorithmT, class... ArgsT>
 AlgorithmT &DantzigWolfeSP::set_exact_solution_strategy(ArgsT &&... t_args) {
     auto* result = new AlgorithmT(model(), std::forward<ArgsT>(t_args)...);
     m_exact_solution_strategy.reset(result);
+    return *result;
+}
+
+template<class ManagerT, class... ArgsT>
+ManagerT &DantzigWolfeSP::set_branching_manager(ArgsT &&... t_args) {
+    auto* result = new ManagerT(*this, std::forward<ArgsT>(t_args)...);
+    m_branching_manager.reset(result);
     return *result;
 }
 

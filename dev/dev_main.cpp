@@ -5,6 +5,7 @@
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
 #include "algorithms/generation/DantzigWolfe.h"
+#include "algorithms/generation/BranchingManagers_OnMaster.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -53,17 +54,18 @@ int main(int t_argc, const char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
-
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
         dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
+        dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnMaster>();
     }
 
     solver.solve();
 
     std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
+    std::cout << solver.time().count() << std::endl;
 
     /*
 
