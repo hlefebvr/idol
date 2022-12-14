@@ -163,8 +163,6 @@ Solution::Primal DantzigWolfe::primal_solution() const {
         subproblem.contribute_to_primal_solution(result);
     }
 
-    std::cout << result << std::endl;
-
     return result;
 }
 
@@ -196,12 +194,7 @@ void DantzigWolfe::set_original_formulation(const AttributeWithTypeAndArguments<
     if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
 
         auto& subproblem = m_subproblems[m_reformulation.problem_id(t_var) - 1];
-
-        if (get(Param::DantzigWolfe::BranchingOnMaster)) {
-            subproblem.apply_original_space_bound_on_master(t_attr, t_var, t_value);
-        } else {
-            subproblem.apply_original_space_bound_on_pricing(t_attr, t_var, t_value);
-        }
+        subproblem.apply_bound_expressed_in_original_space(t_attr, t_var, t_value);
 
         return;
     }
@@ -218,23 +211,3 @@ double DantzigWolfe::get_original_formulation(const AttributeWithTypeAndArgument
 
     throw Exception("Getting attribute " + t_attr.name() + " on variables from original formulation is not available.");
 }
-
-bool DantzigWolfe::get(const Parameter<bool> &t_param) const {
-
-    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
-        return m_bool_parameters.get(t_param);
-    }
-
-    return Algorithm::get(t_param);
-}
-
-void DantzigWolfe::set(const Parameter<bool> &t_param, bool t_value) {
-
-    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
-        m_bool_parameters.set(t_param, t_value);
-        return;
-    }
-
-    Algorithm::set(t_param, t_value);
-}
-

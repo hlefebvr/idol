@@ -9,8 +9,8 @@ class Var;
 
 class BranchingManager {
 public:
-    virtual void get_lb(const Var& t_var) const = 0;
-    virtual void get_ub(const Var& t_var) const = 0;
+    virtual double get_lb(const Var& t_var) const = 0;
+    virtual double get_ub(const Var& t_var) const = 0;
     virtual void set_lb(const Var& t_var, double t_lb) = 0;
     virtual void set_ub(const Var& t_var, double t_ub) = 0;
 };

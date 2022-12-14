@@ -4,7 +4,6 @@
 #include "algorithms.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
-#include "algorithms/generation/ColGen.h"
 #include "algorithms/generation/DantzigWolfe.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -53,7 +52,7 @@ int main(int t_argc, const char** t_argv) {
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
-    dantzig_wolfe.set(Param::DantzigWolfe::BranchingOnMaster, false);
+
 
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);

@@ -14,8 +14,6 @@ class DantzigWolfe : public Algorithm {
     Reformulations::DantzigWolfe m_reformulation;
     std::vector<DantzigWolfeSP> m_subproblems;
     std::unique_ptr<Algorithm> m_master_solution_strategy;
-
-    Param::DantzigWolfe::values<bool> m_bool_parameters;
 protected:
     virtual void initialize();
     virtual void solve_master_problem();
@@ -55,8 +53,6 @@ public:
 
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
     double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
-    void set(const Parameter<bool>& t_param, bool t_value) override;
-    bool get(const Parameter<bool>& t_param) const override;
 };
 
 template<class AlgorithmT, class... ArgsT>

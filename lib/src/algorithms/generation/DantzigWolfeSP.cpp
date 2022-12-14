@@ -3,6 +3,7 @@
 //
 #include "algorithms/generation/DantzigWolfeSP.h"
 #include "algorithms/generation/DantzigWolfe.h"
+#include "algorithms/generation/BranchingManagers_OnPricing.h"
 
 TempVar extract_column_template(Reformulations::DantzigWolfe& t_reformulation, unsigned int t_index) {
 
@@ -32,6 +33,12 @@ void DantzigWolfeSP::initialize() {
 
     if (!m_exact_solution_strategy) {
         throw Exception("No solution strategy at hand for subproblem " + std::to_string(m_index) + ".");
+    }
+
+    if (!m_branching_manager) {
+        m_branching_manager = std::make_unique<BranchingManagers::OnPricing>(*this);
+    } else {
+        restore_column_from_pool();
     }
 
 }
@@ -75,19 +82,21 @@ bool DantzigWolfeSP::can_enrich_master() {
     return m_exact_solution_strategy->get(Attr::Solution::ObjVal) < -ToleranceForAbsoluteGapPricing;
 }
 
+TempVar DantzigWolfeSP::create_column_from_generator(const Solution::Primal &t_generator) const {
+    return {
+        m_column_template.lb(),
+        m_column_template.ub(),
+        m_column_template.type(),
+        m_column_template.column().fix(t_generator)
+    };
+}
+
 void DantzigWolfeSP::enrich_master_problem() {
 
     auto& master = m_parent.master_solution_strategy();
     auto generator = m_exact_solution_strategy->primal_solution();
 
-    auto alpha = master.add_var(
-            TempVar(
-                    m_column_template.lb(),
-                    m_column_template.ub(),
-                    m_column_template.type(),
-                    m_column_template.column().fix(generator)
-            )
-    );
+    auto alpha = master.add_var( create_column_from_generator(generator) );
 
     m_pool.add(alpha, std::move(generator));
     m_present_generators.emplace_back(alpha, m_pool.last_inserted());
@@ -123,18 +132,10 @@ Solution::Primal DantzigWolfeSP::in_original_space(const Solution::Primal &t_pri
     return result;
 }
 
-void DantzigWolfeSP::apply_original_space_bound_on_master(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
-    throw Exception("Apply bound on master");
-}
-
-void DantzigWolfeSP::apply_original_space_bound_on_pricing(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
-
-    std::cout << "Applying bound for " << t_var << std::endl;
+void DantzigWolfeSP::apply_bound_expressed_in_original_space(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     const auto& reformulation = m_parent.reformulation();
     const auto& reformulated_var = reformulation.original_formulation().get<Var>(reformulation.reformulated_variable(), t_var);
-
-    std::cout << "i.e., " << reformulated_var << std::endl;
 
     if (t_attr == Attr::Var::Lb) {
 
@@ -142,19 +143,22 @@ void DantzigWolfeSP::apply_original_space_bound_on_pricing(const AttributeWithTy
             return t_generator.get(reformulated_var) < t_value;
         });
 
-    } else if (t_attr == Attr::Var::Ub) {
+        m_branching_manager->set_lb(reformulated_var, t_value);
+        return;
+
+    }
+
+    if (t_attr == Attr::Var::Ub) {
 
         remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
             return t_generator.get(reformulated_var) > t_value;
         });
 
-    } else {
-
-        throw Exception("Unexpected attribute " + t_attr.name() + ".");
-
+        m_branching_manager->set_ub(reformulated_var, t_value);
+        return;
     }
 
-    m_exact_solution_strategy->set(t_attr, reformulated_var, t_value);
+    throw Exception("Unexpected attribute " + t_attr.name() + ".");
 
 }
 
@@ -173,6 +177,35 @@ void DantzigWolfeSP::remove_column_if(const std::function<bool(const Var &, cons
         } else {
             ++it;
         }
+    }
+
+}
+
+void DantzigWolfeSP::restore_column_from_pool() {
+
+    for (auto& [alpha, primal_solution] : m_pool.values()) {
+
+        if (m_exact_solution_strategy->get(Attr::Var::Status, alpha)) { continue; }
+
+        bool is_feasible = true;
+        for (const auto& var : m_parent.reformulation().subproblem(m_index).vars()) {
+
+            const double lb = m_branching_manager->get_lb(var);
+            const double ub = m_branching_manager->get_ub(var);
+            const double value = primal_solution.get(var);
+
+            if (!(lb <= value && value <= ub)) {
+                is_feasible = false;
+                break;
+            }
+
+        }
+
+        if (is_feasible) {
+            alpha = m_parent.master_solution_strategy().add_var(create_column_from_generator(primal_solution));
+            m_present_generators.emplace_back(alpha, primal_solution);
+        }
+
     }
 
 }
