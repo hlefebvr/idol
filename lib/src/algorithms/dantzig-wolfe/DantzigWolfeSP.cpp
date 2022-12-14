@@ -224,3 +224,43 @@ LinExpr<Var> DantzigWolfeSP::expand_variable(const Var &t_var) const {
 
     return result;
 }
+
+void DantzigWolfeSP::clean_up() {
+
+    const unsigned int threshold = m_parent.get(Param::DantzigWolfe::CleanUpThreshold);
+
+    if (m_pool.size() < threshold) {
+        return;
+    }
+
+    auto& master = m_parent.master_solution_strategy();
+    const auto& primal = master.primal_solution();
+    const double ratio = m_parent.get(Param::DantzigWolfe::CleanUpRatio);
+    const auto n_to_remove = (unsigned int) (m_pool.size() * (1 - ratio));
+    unsigned int removed = 0;
+
+    m_present_generators.clear();
+
+    for (auto it = m_pool.values().begin(), end = m_pool.values().end() ; it != end ; ) {
+
+        if (master.get(Attr::Var::Status, it->first)) {
+
+            if (primal.get(it->first) > 0) { // We always keep active columns
+                m_present_generators.emplace_back(std::move(*it));
+                ++it;
+                continue;
+            }
+
+            master.remove(it->first);
+
+        }
+        it = m_pool.erase(it);
+        ++removed;
+
+        if (removed >= n_to_remove) {
+            break;
+        }
+
+    }
+
+}

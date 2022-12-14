@@ -55,6 +55,8 @@ int main(int t_argc, const char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
+    dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 150);
+
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 

@@ -46,6 +46,8 @@ void DantzigWolfe::execute() {
 
         if (is_terminated()) { break; }
 
+        clean_up();
+
         enrich_master_problem();
 
     }
@@ -209,4 +211,50 @@ double DantzigWolfe::get_original_formulation(const AttributeWithTypeAndArgument
     }
 
     throw Exception("Getting attribute " + t_attr.name() + " on variables from original formulation is not available.");
+}
+
+void DantzigWolfe::clean_up() {
+
+    for (auto& subproblem : m_subproblems) {
+        subproblem.clean_up();
+    }
+
+}
+
+void DantzigWolfe::set(const Parameter<double> &t_param, double t_value) {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        m_double_parameters.set(t_param, t_value);
+        return;
+    }
+
+    Algorithm::set(t_param, t_value);
+}
+
+void DantzigWolfe::set(const Parameter<int> &t_param, int t_value) {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        m_int_parameters.set(t_param, t_value);
+        return;
+    }
+
+    Algorithm::set(t_param, t_value);
+}
+
+double DantzigWolfe::get(const Parameter<double> &t_param) const {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        return m_double_parameters.get(t_param);
+    }
+
+    return Algorithm::get(t_param);
+}
+
+int DantzigWolfe::get(const Parameter<int> &t_param) const {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        return m_int_parameters.get(t_param);
+    }
+
+    return Algorithm::get(t_param);
 }

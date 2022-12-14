@@ -14,6 +14,9 @@ class DantzigWolfe : public Algorithm {
     Reformulations::DantzigWolfe m_reformulation;
     std::vector<DantzigWolfeSP> m_subproblems;
     std::unique_ptr<Algorithm> m_master_solution_strategy;
+
+    Param::DantzigWolfe::values<int> m_int_parameters;
+    Param::DantzigWolfe::values<double> m_double_parameters;
 protected:
     virtual void initialize();
     virtual void solve_master_problem();
@@ -22,6 +25,7 @@ protected:
     virtual void solve_subproblems();
     virtual void analyze_subproblems_solution();
     virtual void enrich_master_problem();
+    void clean_up();
 
     void execute() override;
 
@@ -53,6 +57,10 @@ public:
 
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
     double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
+    void set(const Parameter<double>& t_param, double t_value) override;
+    void set(const Parameter<int>& t_param, int t_value) override;
+    double get(const Parameter<double>& t_param) const override;
+    int get(const Parameter<int>& t_param) const override;
 };
 
 template<class AlgorithmT, class... ArgsT>

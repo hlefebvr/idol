@@ -42,6 +42,7 @@ public:
     void solve();
     bool can_enrich_master();
     void enrich_master_problem();
+    void clean_up();
     SolutionStatus status() const;
 
     PresentGenerators present_generators() const { return m_present_generators; }

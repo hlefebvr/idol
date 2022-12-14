@@ -6,6 +6,7 @@
 #define IDOL_POOL_H
 
 #include "../../modeling/solutions/Solution.h"
+#include <list>
 
 template<class KeyT, class ValueT = Solution::Primal>
 class Pool {
@@ -13,6 +14,10 @@ class Pool {
 public:
     void add(KeyT t_key, ValueT t_value) {
         m_values.template emplace_back(std::move(t_key), std::move(t_value));
+    }
+
+    typename std::list<std::pair<KeyT, ValueT>>::iterator erase(const typename std::list<std::pair<KeyT, ValueT>>::iterator & t_it) {
+        return m_values.erase(t_it);
     }
 
     [[nodiscard]] const ValueT& last_inserted() const { return m_values.back().second; }
