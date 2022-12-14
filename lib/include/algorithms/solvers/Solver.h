@@ -72,6 +72,8 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override { return m_src_model; }
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override { return m_src_model; }
 
+    virtual void update_variables();
+    virtual void update_constraints();
 public:
     explicit Solver(Model& t_model);
 
@@ -106,6 +108,7 @@ public:
 
     void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
 };
+
 
 template<class VarT, class CtrT>
 Solver<VarT, CtrT>::Solver(Model &t_model) : m_src_model(t_model) {
@@ -180,15 +183,20 @@ bool Solver<VarT, CtrT>::has_future(const Var &t_ctr) const {
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::update() {
 
-    for (const auto& var : m_variables_to_update) {
-        if (!m_src_model.get(Attr::Var::Status, var)) { continue; }
-        if (auto& f = future(var) ; !f.has_impl()) {
-            auto impl = create(var, m_is_built);
-            f.set_impl(impl);
-        } else {
-            update(var, f.impl());
-        }
+    update_variables();
+    update_constraints();
+
+    if (m_update_objective) {
+        update_obj();
+        m_update_objective = false;
     }
+
+    m_is_built = true;
+
+}
+
+template<class VarT, class CtrT>
+void Solver<VarT, CtrT>::update_constraints() {
 
     for (const auto& ctr : m_constraints_to_update) {
         if (!m_src_model.get(Attr::Ctr::Status, ctr)) { continue; }
@@ -200,17 +208,25 @@ void Solver<VarT, CtrT>::update() {
         }
     }
 
-    if (m_update_objective) {
-        update_obj();
-        m_update_objective = false;
-    }
-
-    m_variables_to_update.clear();
     m_constraints_to_update.clear();
-    m_is_built = true;
 
 }
 
+template<class VarT, class CtrT>
+void Solver<VarT, CtrT>::update_variables() {
+
+    for (const auto& var : m_variables_to_update) {
+        if (!m_src_model.get(Attr::Var::Status, var)) { continue; }
+        if (auto& f = future(var) ; !f.has_impl()) {
+            auto impl = create(var, m_is_built);
+            f.set_impl(impl);
+        } else {
+            update(var, f.impl());
+        }
+    }
+
+    m_variables_to_update.clear();
+}
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove(const Var &t_variable) {
     if (auto& f = future(t_variable) ; f.has_impl()) {
@@ -231,6 +247,7 @@ void Solver<VarT, CtrT>::remove(const Ctr &t_constraint) {
 
 template<class VarT, class CtrT>
 Var Solver<VarT, CtrT>::add_var(TempVar&& t_temporary_variable) {
+    update_constraints();
     auto result = m_src_model.add_var(std::move(t_temporary_variable));
     add_future(result);
     return result;
@@ -238,6 +255,7 @@ Var Solver<VarT, CtrT>::add_var(TempVar&& t_temporary_variable) {
 
 template<class VarT, class CtrT>
 Ctr Solver<VarT, CtrT>::add_ctr(TempCtr&& t_temporary_constraint) {
+    update_variables();
     auto result = m_src_model.add_ctr(std::move(t_temporary_constraint));
     add_future(result);
     return result;
