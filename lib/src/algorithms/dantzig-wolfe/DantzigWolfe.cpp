@@ -16,6 +16,11 @@ DantzigWolfe::DantzigWolfe(Model &t_model, const UserAttr &t_complicating_constr
 
 void DantzigWolfe::initialize() {
 
+    m_lower_bound = -Inf;
+    m_upper_bound = +Inf;
+    m_iteration_count = 0;
+    m_n_generated_columns_at_last_iteration = 0;
+
     if (!m_master_solution_strategy) {
         throw Exception("No solution strategy at hand for solving master problem.");
     }
@@ -34,6 +39,8 @@ void DantzigWolfe::execute() {
 
         solve_master_problem();
 
+        log_master_solution();
+
         analyze_master_problem_solution();
 
         if (is_terminated()) { break; }
@@ -50,7 +57,10 @@ void DantzigWolfe::execute() {
 
         enrich_master_problem();
 
+        ++m_iteration_count;
     }
+
+    log_master_solution(true);
 
 }
 
@@ -64,7 +74,12 @@ void DantzigWolfe::analyze_master_problem_solution() {
 
     auto status = m_master_solution_strategy->status();
 
-    if (status == Optimal || status == Infeasible) {
+    if (status == Optimal) {
+        m_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_upper_bound);
+        return;
+    }
+
+    if (status == Infeasible) {
         return;
     }
 
@@ -73,14 +88,14 @@ void DantzigWolfe::analyze_master_problem_solution() {
         set_status(Unbounded);
         set_reason(Proved);
 
-        idol_Log(Trace, "column-generation", "Terminate. Unbounded master problem.");
+        idol_Log(Trace, DantzigWolfe, "Terminate. Unbounded master problem.");
 
     } else {
 
         set_status(Fail);
         set_reason(NotSpecified);
 
-        idol_Log(Trace, "column-generation", "Terminate. Master problem could not be solved to optimality.");
+        idol_Log(Trace, DantzigWolfe, "Terminate. Master problem could not be solved to optimality.");
 
     }
 
@@ -108,12 +123,26 @@ void DantzigWolfe::solve_subproblems() {
 
 void DantzigWolfe::analyze_subproblems_solution() {
 
+    double reduced_costs = 0;
+
     for (auto& subproblem : m_subproblems) {
-        if (auto status = subproblem.status() ; status != Optimal) {
+        const auto status = subproblem.status();
+
+        if (status == Optimal) {
+            reduced_costs += subproblem.last_computed_reduced_cost();
+        } else {
             set_status(status);
             set_reason(Proved);
             return;
         }
+
+    }
+
+    if (m_master_solution_strategy->status() == Optimal) {
+
+        const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
+        m_lower_bound = std::max(lower_bound, m_lower_bound);
+
     }
 
 }
@@ -121,18 +150,18 @@ void DantzigWolfe::analyze_subproblems_solution() {
 void DantzigWolfe::enrich_master_problem() {
 
 
-    bool master_has_been_enriched = false;
+    m_n_generated_columns_at_last_iteration = 0;
 
     for (auto& subproblem : m_subproblems) {
 
-        if (subproblem.can_enrich_master()) {
+        if (subproblem.last_computed_reduced_cost() < -ToleranceForAbsoluteGapPricing) {
             subproblem.enrich_master_problem();
-            master_has_been_enriched = true;
+            ++m_n_generated_columns_at_last_iteration;
         }
 
     }
 
-    if (!master_has_been_enriched) {
+    if (m_n_generated_columns_at_last_iteration == 0) {
         set_reason(Proved);
         terminate();
     }
@@ -257,4 +286,27 @@ int DantzigWolfe::get(const Parameter<int> &t_param) const {
     }
 
     return Algorithm::get(t_param);
+}
+
+void DantzigWolfe::log_master_solution(bool t_force) {
+
+    if (!t_force && m_iteration_count % get(Param::DantzigWolfe::LogFrequency) != 0) {
+        return;
+    }
+
+    idol_Log(Info,
+             DantzigWolfe,
+             "<Type=Master> "
+             << "<Iter=" << m_iteration_count << "> "
+             << "<Time=" << time().count() << "> "
+             << "<Stat=" << m_master_solution_strategy->status() << "> "
+             << "<Reas=" << m_master_solution_strategy->reason() << "> "
+             << "<ObjV=" << m_master_solution_strategy->get(Attr::Solution::ObjVal) << "> "
+             << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
+             << "<Lb=" << m_lower_bound << "> "
+             << "<Ub=" << m_upper_bound << "> "
+             << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
+             << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
+             );
+
 }

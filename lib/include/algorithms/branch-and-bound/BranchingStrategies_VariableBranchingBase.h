@@ -9,7 +9,7 @@
 #include "modeling/variables/Var.h"
 #include "../../modeling/numericals.h"
 #include "../../errors/Exception.h"
-#include "algorithms/parameters/Log.h"
+#include "algorithms/parameters/Logs.h"
 #include <optional>
 
 namespace BranchingStrategies::Base {
@@ -63,7 +63,7 @@ std::list<NodeT *> BranchingStrategies::Base::OnVariables::Strategy<NodeT>::crea
     n2->set_local_upper_bound(t_variable_selected_for_branching, t_ub);
 
     idol_Log(Trace,
-             "branch-and-bound",
+             BranchAndBound,
              "Node " << t_node.id() << " has 2 child nodes: "
                      << "Node " << n1->id() << " with " << t_variable_selected_for_branching << " >= " << t_lb
                      << " and "

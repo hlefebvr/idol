@@ -78,8 +78,8 @@ void DantzigWolfeSP::solve() {
 
 }
 
-bool DantzigWolfeSP::can_enrich_master() {
-    return m_exact_solution_strategy->get(Attr::Solution::ObjVal) < -ToleranceForAbsoluteGapPricing;
+double DantzigWolfeSP::last_computed_reduced_cost() const {
+    return m_exact_solution_strategy->get(Attr::Solution::ObjVal);
 }
 
 TempVar DantzigWolfeSP::create_column_from_generator(const Solution::Primal &t_generator) const {

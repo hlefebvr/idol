@@ -3,7 +3,7 @@
 //
 #include <iomanip>
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
-#include "../../../include/algorithms/parameters/Log.h"
+#include "../../../include/algorithms/parameters/Logs.h"
 #include "../../../include/modeling/expressions/operations/operators.h"
 #include "modeling/constraints/Attributes_Ctr.h"
 #include "modeling/variables/Attributes_Var.h"
@@ -22,7 +22,7 @@ RowGenerationSP::RowGenerationSP(Algorithm &t_rmp_strategy, const Ctr& t_cut)
 }
 
 void RowGenerationSP::remove_cut_template_from_rmp(const Ctr& t_cut) {
-    idol_Log(Trace, "row-generation", "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
+    idol_Log(Trace, RowGenerationSP, "Constraint " << t_cut << " has been removed from the RMP for it will be generated.");
     rmp_solution_strategy().remove(t_cut);
 }
 
@@ -106,7 +106,7 @@ void RowGenerationSP::save_last_primal_solution() {
 }
 
 void RowGenerationSP::log_last_primal_solution() {
-    idol_Log(Debug, "row-generation",
+    idol_Log(Debug, RowGenerationSP,
              std::setw(5)
                      << "SP"
                      << std::setw(15)
@@ -128,7 +128,7 @@ void RowGenerationSP::add_cut_to_rmp() {
     auto constraint = m_rmp_strategy.add_ctr(std::move(temp_ctr));
     m_pool.add(constraint, std::move(m_last_primal_solution).value());
     m_currently_present_cuts.emplace_back(constraint, m_pool.last_inserted());
-    idol_Log(Trace, "row-generation", "Adding new constraint " << constraint << ".");
+    idol_Log(Trace, RowGenerationSP, "Adding new constraint " << constraint << ".");
 }
 
 bool RowGenerationSP::is_unbounded() const {
@@ -196,7 +196,7 @@ void RowGenerationSP::remove_cuts_violating_lower_bound(const Var &t_var, double
     remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value < t_lb + ToleranceForIntegrality) {
             idol_Log(Trace,
-                     "row-generation",
+                     RowGenerationSP,
                      "Cut " << t_cut << " was removed by contradiction with required "
                             << "bound " << t_var << " >= " << t_lb << " (" << t_var << " = " << value << ").");
             return true;
@@ -211,7 +211,7 @@ void RowGenerationSP::remove_cuts_violating_upper_bound(const Var &t_var, double
     remove_cut_if([&](const Ctr& t_cut, const auto& t_cut_primal_solution){
         if (double value = t_cut_primal_solution.get(t_var) ; value > t_ub - ToleranceForIntegrality) {
             idol_Log(Trace,
-                     "row-generation",
+                     RowGenerationSP,
                      "Cut " << t_cut << " was removed by contradiction with required "
                             << "bound " << t_var << " <= " << t_ub << " (" << t_var << " = " << value << ").");
             return true;

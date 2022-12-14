@@ -8,7 +8,7 @@
 #include "Node.h"
 #include "../Algorithm.h"
 #include "../../modeling/numericals.h"
-#include "../parameters/Log.h"
+#include "../parameters/Logs.h"
 #include "NodeStrategy.h"
 #include "Attributes_BranchAndBound.h"
 #include <vector>

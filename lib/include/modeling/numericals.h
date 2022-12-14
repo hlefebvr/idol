@@ -31,4 +31,18 @@ static bool equals(double t_a, double t_b, double t_tolerance) {
     return std::abs(t_a - t_b) <= t_tolerance;
 }
 
+static double relative_gap(double t_lb, double t_ub) {
+    if (is_pos_inf(t_lb) || is_neg_inf(t_ub)) {
+        return Inf;
+    }
+    return std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub));
+}
+
+static double absolute_gap(double t_lb, double t_ub) {
+    if (is_pos_inf(t_ub) || is_neg_inf(t_lb)) {
+        return Inf;
+    }
+    return std::abs(t_ub - t_lb);
+}
+
 #endif //OPTIMIZE_NUMERICALS_H

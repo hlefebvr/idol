@@ -12,7 +12,7 @@
 #include "parameters/Timer.h"
 #include "parameters/Parameters_Algorithm.h"
 #include "modeling/models/AttributeManager_Delegate.h"
-#include "parameters/Log.h"
+#include "parameters/Logs.h"
 #include <list>
 
 class Node;

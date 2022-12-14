@@ -8,7 +8,7 @@
 #include "NodeStrategy.h"
 #include "../../modeling/numericals.h"
 #include "../Algorithm.h"
-#include "algorithms/parameters/Log.h"
+#include "algorithms/parameters/Logs.h"
 #include "ActiveNodesManager.h"
 #include "NodeUpdator.h"
 #include "BranchingStrategy.h"
@@ -237,7 +237,7 @@ unsigned int NodeStrategies::Basic<NodeT>::create_child_nodes() {
     auto child_nodes = m_branching_strategy->create_child_nodes(selected_node, [&](){ return m_node_id++; });
 
     for (auto* node : child_nodes) {
-        idol_Log(Trace, "branch-and-bound", "Node " << node->id() << " has been created from " << selected_node.id() << '.');
+        idol_Log(Trace, BranchAndBound, "Node " << node->id() << " has been created from " << selected_node.id() << '.');
         m_nodes_to_be_processed.emplace_back(node);
     }
 

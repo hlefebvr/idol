@@ -40,7 +40,7 @@ public:
     void initialize();
     void update();
     void solve();
-    bool can_enrich_master();
+    double last_computed_reduced_cost() const;
     void enrich_master_problem();
     void clean_up();
     SolutionStatus status() const;

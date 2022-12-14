@@ -70,7 +70,7 @@ bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_valid(const NodeT 
 
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
-            idol_Log(Trace, "branch-and-bound", "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
+            idol_Log(Trace, BranchAndBound, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
             return false;
         }
     }

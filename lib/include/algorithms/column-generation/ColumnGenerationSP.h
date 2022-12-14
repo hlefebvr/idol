@@ -7,7 +7,7 @@
 
 #include "../Algorithm.h"
 #include "ColumnGenerationBranchingSchemes_SP.h"
-#include "../parameters/Log.h"
+#include "../parameters/Logs.h"
 #include "../../containers/Set.h"
 #include "algorithms/dantzig-wolfe/Pool.h"
 #include <memory>

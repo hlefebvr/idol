@@ -9,8 +9,9 @@
 
 IDOL_CREATE_PARAMETER_CLASS(DantzigWolfe)
 
-IDOL_CREATE_PARAMETER_TYPE(DantzigWolfe, int, 1)
+IDOL_CREATE_PARAMETER_TYPE(DantzigWolfe, int, 2)
 IDOL_CREATE_PARAMETER(DantzigWolfe, int, 0, CleanUpThreshold, 10000)
+IDOL_CREATE_PARAMETER(DantzigWolfe, int, 1, LogFrequency, 10)
 
 IDOL_CREATE_PARAMETER_TYPE(DantzigWolfe, double, 1)
 IDOL_CREATE_PARAMETER(DantzigWolfe, double, 0, CleanUpRatio, 2./3.)

@@ -15,11 +15,17 @@ class DantzigWolfe : public Algorithm {
     std::vector<DantzigWolfeSP> m_subproblems;
     std::unique_ptr<Algorithm> m_master_solution_strategy;
 
+    double m_lower_bound = -Inf;
+    double m_upper_bound = +Inf;
+    unsigned int m_iteration_count = 0;
+    unsigned int m_n_generated_columns_at_last_iteration = 0;
+
     Param::DantzigWolfe::values<int> m_int_parameters;
     Param::DantzigWolfe::values<double> m_double_parameters;
 protected:
     virtual void initialize();
     virtual void solve_master_problem();
+    virtual void log_master_solution(bool t_force = false);
     virtual void analyze_master_problem_solution();
     virtual void update_subproblems();
     virtual void solve_subproblems();

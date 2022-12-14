@@ -6,7 +6,7 @@
 #define OPTIMIZE_ACTIVENODESMANAGERS_HEAP_H
 
 #include "ActiveNodesManager.h"
-#include "algorithms/parameters/Log.h"
+#include "algorithms/parameters/Logs.h"
 #include "NodeSet.h"
 #include "Attributes_BranchAndBound.h"
 #include <algorithm>
@@ -69,7 +69,7 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::prune_by_bound(double t_upper_
         if (const auto& node = *it ; node.objective_value() >= t_upper_bound) {
             idol_Log(
                     Trace,
-                    "branch-and-bound",
+                    BranchAndBound,
                     "Node " << node.id() << " was pruned by bound."
                     << "Best UB: " << t_upper_bound << ", Obj: " << node.objective_value() << ".");
             it = m_nodes.erase(it);
@@ -153,7 +153,7 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::automatically_select_node_for_
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
     select_node_for_branching(m_parent.get(Param::BranchAndBound::NodeSelection));
-    idol_Log(Trace, "branch-and-bound", "Node " << node_selected_for_branching().id() << " has been selected for branching.");
+    idol_Log(Trace, BranchAndBound, "Node " << node_selected_for_branching().id() << " has been selected for branching.");
 }
 
 template<class NodeT>

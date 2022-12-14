@@ -10,7 +10,9 @@
 #include "../callbacks/Callback.h"
 #include "../../modeling/variables/Attributes_Var.h"
 #include "../../modeling/models/Attributes_Model.h"
+#include "../../algorithms/parameters/Logs.h"
 #include <cassert>
+#include <sstream>
 
 template<class T, class SolverImplT>
 class Future {
@@ -156,8 +158,10 @@ void Solver<VarT, CtrT>::remove_future(const Ctr &t_ctr) {
 template<class VarT, class CtrT>
 double Solver<VarT, CtrT>::value(const Constant &t_constant) const {
     if (!t_constant.is_numerical()) {
-        idol_Log(Warn, "external-solver", "Constant " << t_constant << ", found in external solver, was "
-                                          "implicitly converted to " << t_constant.numerical());
+        std::stringstream ss;
+        ss << "Constant " << t_constant << ", found in external solver, was "
+                                           "implicitly converted to " << t_constant.numerical();
+        throw Exception(ss.str());
     }
     return t_constant.numerical();
 }

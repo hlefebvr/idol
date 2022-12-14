@@ -44,7 +44,11 @@ int main(int t_argc, const char** t_argv) {
     // DW reformulation
     Reformulations::DantzigWolfe result(model, complicating_constraint);
 
-    Log::set_level(Trace);
+    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_color<BranchAndBound>(Blue);
+
+    Logs::set_level<DantzigWolfe>(Mute);
+    Logs::set_color<DantzigWolfe>(Yellow);
 
     BranchAndBound solver;
 
@@ -65,7 +69,7 @@ int main(int t_argc, const char** t_argv) {
         dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnMaster>();
     }
 
-    solver.set(Param::BranchAndBound::NodeSelection, NodeSelections::DepthFirst);
+    //solver.set(Param::BranchAndBound::NodeSelection, NodeSelections::DepthFirst);
 
     solver.solve();
 
