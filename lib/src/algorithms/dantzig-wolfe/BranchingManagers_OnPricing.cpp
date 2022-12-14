@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/12/22.
 //
-#include "algorithms/generation/BranchingManagers_OnPricing.h"
-#include "algorithms/generation/DantzigWolfeSP.h"
+#include "algorithms/dantzig-wolfe/BranchingManagers_OnPricing.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfeSP.h"
 #include "modeling/variables/Attributes_Var.h"
 
 double BranchingManagers::OnPricing::get_lb(const Var &t_var) const {

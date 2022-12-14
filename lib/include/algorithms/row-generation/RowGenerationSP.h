@@ -8,7 +8,7 @@
 #include "../Algorithm.h"
 #include "../../containers/Set.h"
 #include "RowGenerationOriginalSpaceBuilder.h"
-#include "../generation/Pool.h"
+#include "../dantzig-wolfe/Pool.h"
 #include <memory>
 #include <list>
 

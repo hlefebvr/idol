@@ -9,7 +9,7 @@
 #include "ColumnGenerationBranchingSchemes_SP.h"
 #include "../parameters/Log.h"
 #include "../../containers/Set.h"
-#include "algorithms/generation/Pool.h"
+#include "algorithms/dantzig-wolfe/Pool.h"
 #include <memory>
 #include <list>
 #include <iomanip>

@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/12/22.
 //
-#include "algorithms/generation/BranchingManagers_OnMaster.h"
-#include "algorithms/generation/DantzigWolfe.h"
+#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 
 double BranchingManagers::OnMaster::get_bound(const Map<Var, Ctr>& t_container,
                                               const AttributeWithTypeAndArguments<double, Var> &t_attr,

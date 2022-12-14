@@ -1,8 +1,7 @@
 //
 // Created by henri on 14/12/22.
 //
-#include "algorithms/generation/DantzigWolfe.h"
-#include "algorithms/generation/Generation.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 
 DantzigWolfe::DantzigWolfe(Model &t_model, const UserAttr &t_complicating_constraint)
     : m_reformulation(t_model, t_complicating_constraint) {

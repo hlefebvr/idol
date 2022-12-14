@@ -1,9 +1,9 @@
 //
 // Created by henri on 14/12/22.
 //
-#include "algorithms/generation/DantzigWolfeSP.h"
-#include "algorithms/generation/DantzigWolfe.h"
-#include "algorithms/generation/BranchingManagers_OnMaster.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfeSP.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfe.h"
+#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
 
 TempVar extract_column_template(Reformulations::DantzigWolfe& t_reformulation, unsigned int t_index) {
 

@@ -4,14 +4,15 @@
 #include "algorithms.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
-#include "algorithms/generation/DantzigWolfe.h"
-#include "algorithms/generation/BranchingManagers_OnMaster.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfe.h"
+#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
 
 int main(int t_argc, const char** t_argv) {
 
     using namespace Problems::GAP;
 
-    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__3.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -61,6 +62,8 @@ int main(int t_argc, const char** t_argv) {
         dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
         dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnMaster>();
     }
+
+    solver.set(Param::BranchAndBound::NodeSelection, NodeSelections::DepthFirst);
 
     solver.solve();
 
