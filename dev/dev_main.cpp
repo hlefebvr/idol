@@ -53,6 +53,7 @@ int main(int t_argc, const char** t_argv) {
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
+    dantzig_wolfe.set(Param::DantzigWolfe::BranchingOnMaster, false);
 
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
@@ -75,7 +76,7 @@ int main(int t_argc, const char** t_argv) {
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
     auto& decomposition = solver.set_solution_strategy<Decomposition>();
-    decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(result.restricted_master_problem());
+    decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(result.master_problem());
 
     auto& column_generation = decomposition.add_generation_strategy<ColGen>();
 
@@ -93,7 +94,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Branch and price
     auto solver = branch_and_price(
-            result.restricted_master_problem(),
+            result.master_problem(),
             result.alphas().begin(),
             result.alphas().end(),
             result.subproblems().begin(),

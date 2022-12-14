@@ -25,6 +25,8 @@ class DantzigWolfeSP {
     PresentGeneratorsList m_present_generators;
 protected:
     Model& model();
+    Solution::Primal in_original_space(const Solution::Primal& t_primals) const;
+    void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
 public:
     DantzigWolfeSP(DantzigWolfe& t_parent, unsigned int t_index);
 
@@ -43,6 +45,10 @@ public:
     const Algorithm& exact_solution_strategy() const { return *m_exact_solution_strategy; }
 
     void contribute_to_primal_solution(Solution::Primal &t_primal) const;
+
+    void apply_original_space_bound_on_master(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
+
+    void apply_original_space_bound_on_pricing(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
 };
 
 template<class AlgorithmT, class... ArgsT>

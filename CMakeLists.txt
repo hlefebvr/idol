@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${idol_SOURCE_DIR}/cmake")
 
 add_subdirectory(lib)
-add_subdirectory(dev)
+
+if (${BUILD_DEV})
+    add_subdirectory(dev)
+endif()
 
 if (${BUILD_EXAMPLES})
     add_subdirectory(examples)

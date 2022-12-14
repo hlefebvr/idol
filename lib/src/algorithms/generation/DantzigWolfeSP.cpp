@@ -103,7 +103,76 @@ void DantzigWolfeSP::contribute_to_primal_solution(Solution::Primal &t_primal) c
     const auto primals = rmp.primal_solution();
 
     for (const auto& [alpha, generator] : present_generators()) {
-        t_primal += primals.get(alpha) * generator;
+        t_primal += primals.get(alpha) * in_original_space(generator);
+    }
+
+}
+
+Solution::Primal DantzigWolfeSP::in_original_space(const Solution::Primal &t_primals) const {
+
+    const auto& reformulation = m_parent.reformulation();
+    const auto& model = reformulation.subproblem(m_index);
+    const auto& original_space_variable = reformulation.original_space_variable(m_index);
+
+    Solution::Primal result;
+
+    for (const auto& [var, val] : t_primals) {
+        result.set(model.get<Var>(original_space_variable, var), val);
+    }
+
+    return result;
+}
+
+void DantzigWolfeSP::apply_original_space_bound_on_master(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+    throw Exception("Apply bound on master");
+}
+
+void DantzigWolfeSP::apply_original_space_bound_on_pricing(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    std::cout << "Applying bound for " << t_var << std::endl;
+
+    const auto& reformulation = m_parent.reformulation();
+    const auto& reformulated_var = reformulation.original_formulation().get<Var>(reformulation.reformulated_variable(), t_var);
+
+    std::cout << "i.e., " << reformulated_var << std::endl;
+
+    if (t_attr == Attr::Var::Lb) {
+
+        remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+            return t_generator.get(reformulated_var) < t_value;
+        });
+
+    } else if (t_attr == Attr::Var::Ub) {
+
+        remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+            return t_generator.get(reformulated_var) > t_value;
+        });
+
+    } else {
+
+        throw Exception("Unexpected attribute " + t_attr.name() + ".");
+
+    }
+
+    m_exact_solution_strategy->set(t_attr, reformulated_var, t_value);
+
+}
+
+void DantzigWolfeSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto& rmp = m_parent.master_solution_strategy();
+
+    auto it = m_present_generators.begin();
+    const auto end = m_present_generators.end();
+
+    while (it != end) {
+        const auto& [column_variable, ptr_to_column] = *it;
+        if (t_indicator_for_removal(column_variable, ptr_to_column)) {
+            rmp.remove(column_variable);
+            it = m_present_generators.erase(it);
+        } else {
+            ++it;
+        }
     }
 
 }

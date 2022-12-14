@@ -16,10 +16,22 @@ Reformulations::DantzigWolfe::DantzigWolfe(Model &t_original_formulation, UserAt
     m_subproblems.resize(n_subproblems);
     m_alphas.resize(n_subproblems);
     m_convexity_constraints.resize(n_subproblems);
+    m_original_variable.reserve(n_subproblems);
+    m_original_constraint.reserve(n_subproblems);
 
+    create_original_space_user_attributes();
     create_alphas();
     create_variables();
     create_constraints();
+
+}
+
+void Reformulations::DantzigWolfe::create_original_space_user_attributes() {
+
+    for (auto& subproblem : subproblems()) {
+        m_original_variable.emplace_back(subproblem.add_user_attr<Var>(Var(), "original_space_var"));
+        m_original_constraint.emplace_back(subproblem.add_user_attr<Ctr>(Ctr(), "original_space_Ctr"));
+    }
 
 }
 
@@ -108,7 +120,7 @@ void Reformulations::DantzigWolfe::create_variables() {
         const int type = m_original_formulation.get(Attr::Var::Type, var);
         const auto& obj_coeff = m_original_formulation.get(Attr::Var::Obj, var);
 
-        auto created_var = model(model_id).add_var(lb, ub, type, 0, var.name());
+        auto created_var = model(model_id).add_var(lb, ub, type, 0, var.name() + "__r" + std::to_string(model_id));
 
         m_original_formulation.set<Var>(m_reformulated_variable, var, created_var);
 
@@ -119,6 +131,7 @@ void Reformulations::DantzigWolfe::create_variables() {
                 throw Exception("Unable to handle parametrized constant for subproblem variables.");
             }
             objective += obj_coeff.numerical() * !created_var * alpha(model_id);
+            model(model_id).set<Var>(m_original_variable[model_id-1], created_var, var);
         }
 
     }
@@ -180,5 +193,7 @@ void Reformulations::DantzigWolfe::create_subproblem_constraint(const Ctr &t_ctr
 
     auto created_constraint = model(t_model_id).add_ctr(TempCtr(Row(std::move(lhs), row.rhs()), type), t_ctr.name());
     m_original_formulation.set<Ctr>(m_reformulated_constraint, t_ctr, created_constraint);
+    model(t_model_id).set<Ctr>(m_original_constraint[t_model_id-1], created_constraint, t_ctr);
 
 }
+

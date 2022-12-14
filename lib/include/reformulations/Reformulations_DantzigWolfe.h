@@ -37,6 +37,8 @@ class Reformulations::DantzigWolfe {
     std::vector<Model> m_subproblems;
     std::vector<Var> m_alphas;
     std::vector<Ctr> m_convexity_constraints;
+    std::vector<UserAttr> m_original_variable;
+    std::vector<UserAttr> m_original_constraint;
     UserAttr m_reformulated_variable;
     UserAttr m_reformulated_constraint;
 
@@ -87,6 +89,8 @@ class Reformulations::DantzigWolfe {
      */
     void create_variables();
 
+    void create_original_space_user_attributes();
+
     /**
      * Create the reformulated constraints in the RMP and subproblems.
      * Sets the user attribute returned by Reformulations::DantzigWolfe::reformulated_constraint accordingly.
@@ -134,7 +138,7 @@ public:
      * Returns the model for the RMP
      * @return The model for the RMP
      */
-    [[nodiscard]] const Model& restricted_master_problem() const { return m_restricted_master_problem; }
+    [[nodiscard]] const Model& master_problem() const { return m_restricted_master_problem; }
 
     /**
      * Returns an indirection to iterators to the subproblems' model
@@ -202,7 +206,9 @@ public:
      */
     [[nodiscard]] const UserAttr& reformulated_constraint() const { return m_reformulated_constraint; }
 
-    template<unsigned int Size> Vector<Var, Size> operator[](const Vector<Var, Size>& t_vec) const;
+    const UserAttr& original_space_variable(unsigned int t_index) const { return m_original_variable[t_index - 1]; }
+
+    const UserAttr& original_space_constraint(unsigned int t_index) const { return m_original_constraint[t_index - 1]; }
 };
 
 #endif //IDOL_REFORMULATIONS_DANTZIGWOLFE_H

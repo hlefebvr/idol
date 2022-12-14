@@ -143,13 +143,17 @@ AttributeManager &DantzigWolfe::attribute_delegate(const Attribute &t_attribute)
 }
 
 AttributeManager &DantzigWolfe::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
-    const unsigned int problem_id = m_reformulation.problem_id(t_object);
-    return problem_id == 0 ? *m_master_solution_strategy : subproblem(problem_id).exact_solution_strategy();
+    if (m_reformulation.problem_id(t_object) == 0) {
+        return *m_master_solution_strategy;
+    }
+    throw Exception("Accessing attribute " + t_attribute.name() + " on sub problem variable is not available.");
 }
 
 AttributeManager &DantzigWolfe::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
-    const unsigned int problem_id = m_reformulation.problem_id(t_object);
-    return problem_id == 0 ? *m_master_solution_strategy : subproblem(problem_id).exact_solution_strategy();
+    if (m_reformulation.problem_id(t_object) == 0) {
+        return *m_master_solution_strategy;
+    }
+    throw Exception("Accessing attribute " + t_attribute.name() + " on sub problem constraint is not available.");
 }
 
 Solution::Primal DantzigWolfe::primal_solution() const {
@@ -159,9 +163,78 @@ Solution::Primal DantzigWolfe::primal_solution() const {
         subproblem.contribute_to_primal_solution(result);
     }
 
+    std::cout << result << std::endl;
+
     return result;
 }
 
 Solution::Dual DantzigWolfe::dual_solution() const {
     return m_master_solution_strategy->dual_solution();
 }
+
+double DantzigWolfe::get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const {
+
+    if (m_reformulation.original_formulation().get(Attr::Var::Status, t_var)) {
+        return get_original_formulation(t_attr, t_var);
+    }
+
+    return Delegate::get(t_attr, t_var);
+}
+
+void DantzigWolfe::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (m_reformulation.original_formulation().get(Attr::Var::Status, t_var)) {
+        set_original_formulation(t_attr, t_var, t_value);
+        return;
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
+}
+
+void DantzigWolfe::set_original_formulation(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
+
+        auto& subproblem = m_subproblems[m_reformulation.problem_id(t_var) - 1];
+
+        if (get(Param::DantzigWolfe::BranchingOnMaster)) {
+            subproblem.apply_original_space_bound_on_master(t_attr, t_var, t_value);
+        } else {
+            subproblem.apply_original_space_bound_on_pricing(t_attr, t_var, t_value);
+        }
+
+        return;
+    }
+
+    throw Exception("Setting attribute " + t_attr.name() + " on variables from original formulation is not available.");
+
+}
+
+double DantzigWolfe::get_original_formulation(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const {
+
+    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
+        return m_reformulation.original_formulation().get(t_attr, t_var);
+    }
+
+    throw Exception("Getting attribute " + t_attr.name() + " on variables from original formulation is not available.");
+}
+
+bool DantzigWolfe::get(const Parameter<bool> &t_param) const {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        return m_bool_parameters.get(t_param);
+    }
+
+    return Algorithm::get(t_param);
+}
+
+void DantzigWolfe::set(const Parameter<bool> &t_param, bool t_value) {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        m_bool_parameters.set(t_param, t_value);
+        return;
+    }
+
+    Algorithm::set(t_param, t_value);
+}
+
