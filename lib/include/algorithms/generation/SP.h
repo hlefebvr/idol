@@ -11,6 +11,7 @@
 #include "../../modeling/models/Attributes_Model.h"
 #include "../../modeling/variables/Attributes_Var.h"
 #include "Pool.h"
+#include "BranchingManager.h"
 
 template<class CRTP, class SubProblemT> class Generation;
 
@@ -26,6 +27,7 @@ class SP {
 
     // Solution strategies
     std::unique_ptr<Algorithm> m_exact_solution_strategy;
+    std::unique_ptr<BranchingManager> m_branching_manager;
 
     // Generated objects
     Pool<ObjectT> m_pool;
@@ -43,11 +45,14 @@ public:
     explicit SP(ParentT& t_parent) : m_parent(t_parent) {}
 
     [[nodiscard]] bool has_exact_solution_strategy() const { return (bool) m_exact_solution_strategy; }
+    [[nodiscard]] bool has_branching_manager() const { return (bool) m_branching_manager; }
 
     Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
     [[nodiscard]] const Algorithm& exact_solution_strategy() const { return *m_exact_solution_strategy; }
 
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_exact_solution_strategy(ArgsT&&... t_args);
+
+    template<class BranchingManagerT, class ...ArgsT> BranchingManagerT& set_branching_manager(ArgsT&&... t_args);
 
     virtual void initialize() = 0;
 
@@ -102,6 +107,14 @@ public:
 
     void set_local(bool t_is_global) { m_is_local = t_is_global; }
 };
+
+template<class ParentT, class ObjectT>
+template<class BranchingManagerT, class... ArgsT>
+BranchingManagerT &SP<ParentT, ObjectT>::set_branching_manager(ArgsT &&... t_args) {
+    auto* manager = new BranchingManagerT(std::forward<ArgsT>(t_args)...);
+    m_branching_manager.reset(manager);
+    return *manager;
+}
 
 template<class ParentT, class ObjectT>
 void SP<ParentT, ObjectT>::remove_object_if(const std::function<bool(const ObjectT &, const Solution::Primal &)> &t_indicator_for_removal) {

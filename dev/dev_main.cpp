@@ -5,6 +5,7 @@
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
 #include "algorithms/generation/ColGen.h"
+#include "algorithms/generation/DantzigWolfe.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -42,17 +43,29 @@ int main(int t_argc, const char** t_argv) {
     // DW reformulation
     Reformulations::DantzigWolfe result(model, complicating_constraint);
 
-    // Branching candidates
-    std::vector<Var> branching_candidates;
-    branching_candidates.reserve(n_entries<Var, 2>(x));
+    Log::set_level(Trace);
 
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
-            branching_candidates.emplace_back(model.get<Var>(result.reformulated_variable(), x[i][j]) );
-        }
+    BranchAndBound solver;
+
+    auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
+    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(flatten<Var, 2>(x));
+    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+
+    auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
+
+    auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
+    master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+
+    for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
+        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
     }
 
-    Log::set_level(Trace);
+    solver.solve();
+
+    std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
+
+    /*
 
     BranchAndBound solver;
 
@@ -74,7 +87,7 @@ int main(int t_argc, const char** t_argv) {
     solver.solve();
 
     std::cout << solver.primal_solution().objective_value() << std::endl;
-
+    */
     /*
      OLD STYLE
 

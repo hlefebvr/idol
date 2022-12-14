@@ -15,8 +15,6 @@ protected:
     void analyze_subproblems_solution() override;
 public:
     explicit ColGen(Algorithm& t_rmp_solution_strategy);
-
-    using generated_object_t = Var;
 };
 
 #endif //IDOL_COLGEN_H
