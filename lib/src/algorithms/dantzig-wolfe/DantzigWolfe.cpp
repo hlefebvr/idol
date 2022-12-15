@@ -53,6 +53,12 @@ void DantzigWolfe::execute() {
 
             log_master_solution();
 
+        } else if (m_current_is_farkas_pricing) {
+
+            set_status(Infeasible);
+            set_reason(Proved);
+            terminate();
+
         }
 
         if (is_terminated() || stopping_condition()) { break; }
@@ -197,7 +203,7 @@ void DantzigWolfe::analyze_subproblems_solution() {
 
     }
 
-    if (!m_current_is_farkas_pricing /* && reduced_costs < 0 */) {
+    if (!m_current_is_farkas_pricing) {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
         m_lower_bound = std::max(lower_bound, m_lower_bound);
