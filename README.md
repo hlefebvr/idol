@@ -20,26 +20,37 @@ Visit our [online documentation](https://hlefebvr.github.io/idol/).
 **IMPORTANT: This library is under active development and has no stable feature (nor interface) for the moment.
 Use it with care and with precise release reference only.**
 
-- Branch-and-bound
-  - Agnostic on solution method (e.g., LP, Dantzig-Wolfe, ...) ;
-  - Agnostic on node type and on branching type, yet the following are ready to be used:
-    - Branching on variables by bound ;
-  - Agnostic on branching strategy, yet the following are ready to be used:
-    - Most infeasible branching ;
-    - **TODO** Pseudo-cost branching ;
-    - **TODO** Strong branching ;
-    - **TODO** Reliability branching ;
-  - Agnostic on node selection strategy, yet the following are ready to be used:
-      - Depth first ;
-      - Breadth first ;
-      - Best bound first ;
-      - Worst bound first ;
-      - Hybrid strategy ;
-- Dantzig-Wolfe decomposition
+### Branch-and-bound
+
+- Agnostic on solution method (e.g., LP, Dantzig-Wolfe, ...) ;
+- Agnostic on node type and on branching type, yet the following are ready to be used:
+  - Branching on variables by bound ;
+- Agnostic on branching strategy, yet the following are ready to be used:
+  - Most infeasible branching ;
+  - *TODO Pseudo-cost branching* ;
+  - *TODO Strong branching* ;
+  - *TODO Reliability branching* ;
+- Agnostic on node selection strategy, yet the following are ready to be used:
+    - Depth first ;
+    - Breadth first ;
+    - Best bound first ;
+    - Worst bound first ;
+    - Hybrid strategy ;
+
+### Dantzig-Wolfe decomposition
   - Automatic reformulation ;
   - Branching applied to master problem (default) or pricing problem ;
   - Restoring feasible columns from pool after branching ;
   - Cleaning up pool after user-defined threshold ;
-  - **TODO** Stabilization via smoothing of dual values ;
-- **TODO** Benders ;
-- **TODO** Cut generation ;
+  - Stabilization via smoothing of dual values ;
+  - Dealing with infeasible initial master methods:
+    - Artificial variables (default) ;
+    - Farkas pricing ;
+
+### Benders decomposition
+
+*TODO*
+
+### Cut generation
+
+*TODO*

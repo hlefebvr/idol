@@ -12,7 +12,7 @@ int main(int t_argc, const char** t_argv) {
     using namespace Problems::GAP;
 
     //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
-    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__3.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__1.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -52,7 +52,7 @@ int main(int t_argc, const char** t_argv) {
     Logs::set_level<BranchAndBound>(Debug);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<DantzigWolfe>(Info);
+    Logs::set_level<DantzigWolfe>(Debug);
     Logs::set_color<DantzigWolfe>(Yellow);
 
     BranchAndBound solver;
@@ -67,8 +67,10 @@ int main(int t_argc, const char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
-    dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 200);
-    //dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, true);
+    //dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 200);
+    dantzig_wolfe.set(Param::DantzigWolfe::SmoothingFactor, .3);
+    dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, true);
+    dantzig_wolfe.set(Param::DantzigWolfe::LogFrequency, 1);
 
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);

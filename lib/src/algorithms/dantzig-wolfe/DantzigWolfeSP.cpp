@@ -48,30 +48,21 @@ Model &DantzigWolfeSP::model() {
     return m_parent.reformulation().subproblem(m_index);
 }
 
-void DantzigWolfeSP::update() {
-
-    auto& master = m_parent.master_solution_strategy();
-    const bool use_farkas_pricing = master.status() == Infeasible;
-
-    if (use_farkas_pricing && !m_parent.get(Param::DantzigWolfe::FarkasPricing)) {
-        idol_Log(Fatal, DantzigWolfe, "The master problem has been reported as infeasible while artificial variables should have been added to ensure feasibility.")
-        m_parent.terminate();
-        return;
-    }
-
-    const Solution::Dual duals = use_farkas_pricing ? master.farkas_certificate() : master.dual_solution();
+void DantzigWolfeSP::update(bool t_farkas_pricing, const Solution::Dual& t_duals) {
 
     Expr objective;
 
-    for (const auto &[ctr, constant] : m_column_template.column().linear()) {
-        objective += constant.numerical() * -duals.get(ctr);
+    const auto& column = m_column_template.column();
+
+    for (const auto &[ctr, constant] : column.linear()) {
+        objective += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
-            objective += -duals.get(ctr) * coeff * param.as<Var>();
+            objective += -t_duals.get(ctr) * coeff * param.as<Var>();
         }
     }
 
-    if (!use_farkas_pricing) {
-        for (const auto &[param, coeff] : m_column_template.column().obj()) {
+    if (!t_farkas_pricing) {
+        for (const auto &[param, coeff] : column.obj()) {
             objective += coeff * param.as<Var>();
         }
     }
@@ -80,13 +71,34 @@ void DantzigWolfeSP::update() {
 
 }
 
+double DantzigWolfeSP::reduced_cost(const Solution::Dual &t_duals) const {
+
+    double result = 0.;
+
+    const auto& column = m_column_template.column();
+    const auto& primals = m_exact_solution_strategy->primal_solution();
+
+    for (const auto &[ctr, constant] : column.linear()) {
+        result += constant.numerical() * -t_duals.get(ctr);
+        for (const auto &[param, coeff]: constant) {
+            result += -t_duals.get(ctr) * coeff * primals.get(param.as<Var>());
+        }
+    }
+
+    for (const auto &[param, coeff] : column.obj()) {
+        result += coeff * primals.get(param.as<Var>());
+    }
+
+    return result;
+}
+
 void DantzigWolfeSP::solve() {
 
     m_exact_solution_strategy->solve();
 
 }
 
-double DantzigWolfeSP::last_computed_reduced_cost() const {
+double DantzigWolfeSP::objective_value() const {
     return m_exact_solution_strategy->get(Attr::Solution::ObjVal);
 }
 
@@ -285,3 +297,4 @@ void DantzigWolfeSP::clean_up() {
     }
 
 }
+

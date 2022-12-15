@@ -22,6 +22,10 @@ class DantzigWolfe : public Algorithm {
     SolutionStatus m_status = Unknown;
 
     std::list<Var> m_artificial_variables;
+    bool m_current_is_farkas_pricing = false;
+
+    std::optional<Solution::Dual> m_current_dual_solution;
+    std::optional<Solution::Dual> m_adjusted_dual_solution;
 
     Param::DantzigWolfe::values<bool> m_bool_parameters;
     Param::DantzigWolfe::values<int> m_int_parameters;
@@ -30,7 +34,7 @@ protected:
     virtual void initialize();
     virtual void add_artificial_variables();
     virtual void solve_master_problem();
-    virtual void log_master_solution(bool t_force = false);
+    void log_master_solution(bool t_force = false);
     virtual void analyze_master_problem_solution();
     virtual void update_subproblems();
     virtual void solve_subproblems();
@@ -39,6 +43,7 @@ protected:
     virtual void clean_up();
     virtual void analyze_feasibility_with_artificial_variables();
     virtual void remove_artificial_variables();
+    [[nodiscard]] virtual bool stopping_condition() const;
 
     void execute() override;
 
@@ -47,35 +52,35 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
     void set_original_formulation(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
-    double get_original_formulation(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const;
+    [[nodiscard]] double get_original_formulation(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const;
 public:
     DantzigWolfe(Model& t_model, const UserAttr& t_complicating_constraint);
 
     Reformulations::DantzigWolfe& reformulation() { return m_reformulation; }
-    const Reformulations::DantzigWolfe& reformulation() const { return m_reformulation; }
+    [[nodiscard]] const Reformulations::DantzigWolfe& reformulation() const { return m_reformulation; }
 
     DantzigWolfeSP& subproblem(unsigned int t_index) { return m_subproblems[t_index-1]; }
-    const DantzigWolfeSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index-1]; }
+    [[nodiscard]] const DantzigWolfeSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index-1]; }
 
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_master_solution_strategy(ArgsT&& ...t_args);
 
     Algorithm& master_solution_strategy() { return *m_master_solution_strategy; }
-    const Algorithm& master_solution_strategy() const { return *m_master_solution_strategy; }
+    [[nodiscard]] const Algorithm& master_solution_strategy() const { return *m_master_solution_strategy; }
 
-    Solution::Primal primal_solution() const override;
-    Solution::Dual dual_solution() const override;
+    [[nodiscard]] Solution::Primal primal_solution() const override;
+    [[nodiscard]] Solution::Dual dual_solution() const override;
 
     using Algorithm::set;
     using Algorithm::get;
 
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
     void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;
     void set(const Parameter<int>& t_param, int t_value) override;
-    bool get(const Parameter<bool>& t_param) const override;
-    double get(const Parameter<double>& t_param) const override;
-    int get(const Parameter<int>& t_param) const override;
+    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
+    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
+    [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 };
 
 template<class AlgorithmT, class... ArgsT>

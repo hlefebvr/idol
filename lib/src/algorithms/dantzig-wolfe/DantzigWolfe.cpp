@@ -1,6 +1,7 @@
 //
 // Created by henri on 14/12/22.
 //
+#include <cassert>
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 
 DantzigWolfe::DantzigWolfe(Model &t_model, const UserAttr &t_complicating_constraint)
@@ -20,6 +21,9 @@ void DantzigWolfe::initialize() {
     m_upper_bound = +Inf;
     m_iteration_count = 0;
     m_n_generated_columns_at_last_iteration = 0;
+    m_current_dual_solution.reset();
+    m_adjusted_dual_solution.reset();
+    m_current_is_farkas_pricing = false;
 
     if (!m_master_solution_strategy) {
         throw Exception("No solution strategy at hand for solving master problem.");
@@ -41,13 +45,17 @@ void DantzigWolfe::execute() {
 
     while (true) {
 
-        solve_master_problem();
+        if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
-        analyze_master_problem_solution();
+            solve_master_problem();
 
-        log_master_solution();
+            analyze_master_problem_solution();
 
-        if (is_terminated()) { break; }
+            log_master_solution();
+
+        }
+
+        if (is_terminated() || stopping_condition()) { break; }
 
         update_subproblems();
 
@@ -55,7 +63,7 @@ void DantzigWolfe::execute() {
 
         analyze_subproblems_solution();
 
-        if (is_terminated()) { break; }
+        if (is_terminated() || stopping_condition()) { break; }
 
         clean_up();
 
@@ -84,6 +92,14 @@ void DantzigWolfe::analyze_master_problem_solution() {
 
         m_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_upper_bound);
 
+        m_current_dual_solution = m_master_solution_strategy->dual_solution();
+
+        if (m_current_is_farkas_pricing) {
+            m_adjusted_dual_solution.reset();
+        }
+
+        m_current_is_farkas_pricing = false;
+
         if (!get(Param::DantzigWolfe::FarkasPricing)) {
             analyze_feasibility_with_artificial_variables();
         }
@@ -92,6 +108,22 @@ void DantzigWolfe::analyze_master_problem_solution() {
     }
 
     if (m_status == Infeasible) {
+
+        if (get(Param::DantzigWolfe::FarkasPricing)) {
+
+            m_current_is_farkas_pricing = true;
+            m_current_dual_solution = m_master_solution_strategy->farkas_certificate();
+            m_adjusted_dual_solution.reset();
+
+        } else {
+
+            idol_Log(Fatal, DantzigWolfe, "Master problem should not be infeasible when using artificial variables.");
+            set_status(Infeasible);
+            set_reason(NotSpecified);
+            terminate();
+
+        }
+
         return;
     }
 
@@ -116,8 +148,23 @@ void DantzigWolfe::analyze_master_problem_solution() {
 
 void DantzigWolfe::update_subproblems() {
 
+    if (!m_adjusted_dual_solution) {
+
+        m_adjusted_dual_solution = m_current_dual_solution;
+
+    } else {
+
+        const double factor = get(Param::DantzigWolfe::SmoothingFactor);
+        if (factor == 0.) {
+            m_adjusted_dual_solution = m_current_dual_solution.value();
+        } else {
+            m_adjusted_dual_solution = factor * m_adjusted_dual_solution.value() + (1. - factor) * m_current_dual_solution.value();
+        }
+
+    }
+
     for (auto& subproblem : m_subproblems) {
-        subproblem.update();
+        subproblem.update(m_current_is_farkas_pricing, m_adjusted_dual_solution.value());
     }
 
 }
@@ -141,7 +188,7 @@ void DantzigWolfe::analyze_subproblems_solution() {
         const auto status = subproblem.status();
 
         if (status == Optimal) {
-            reduced_costs += subproblem.last_computed_reduced_cost();
+            reduced_costs += subproblem.objective_value();
         } else {
             set_status(status);
             set_reason(Proved);
@@ -150,10 +197,12 @@ void DantzigWolfe::analyze_subproblems_solution() {
 
     }
 
-    if (m_master_solution_strategy->status() == Optimal) {
+    if (!m_current_is_farkas_pricing /* && reduced_costs < 0 */) {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
         m_lower_bound = std::max(lower_bound, m_lower_bound);
+
+        assert(m_lower_bound <= m_upper_bound + ToleranceForAbsoluteGapPricing);
 
     }
 
@@ -161,21 +210,23 @@ void DantzigWolfe::analyze_subproblems_solution() {
 
 void DantzigWolfe::enrich_master_problem() {
 
-
     m_n_generated_columns_at_last_iteration = 0;
 
     for (auto& subproblem : m_subproblems) {
 
-        if (subproblem.last_computed_reduced_cost() < -ToleranceForAbsoluteGapPricing) {
+        bool can_enrich_master;
+
+        if (m_current_is_farkas_pricing) {
+            can_enrich_master = subproblem.objective_value() < 0;
+        } else {
+            can_enrich_master = subproblem.reduced_cost(m_current_dual_solution.value()) < 0;
+        }
+
+        if (can_enrich_master) {
             subproblem.enrich_master_problem();
             ++m_n_generated_columns_at_last_iteration;
         }
 
-    }
-
-    if (m_n_generated_columns_at_last_iteration == 0) {
-        set_reason(Proved);
-        terminate();
     }
 
 }
@@ -413,4 +464,10 @@ void DantzigWolfe::analyze_feasibility_with_artificial_variables() {
         remove_artificial_variables();
     }
 
+}
+
+bool DantzigWolfe::stopping_condition() const {
+    return absolute_gap(m_lower_bound, m_upper_bound) <= ToleranceForAbsoluteGapPricing
+        || relative_gap(m_lower_bound, m_upper_bound) <= ToleranceForRelativeGapPricing
+        || remaining_time() == 0;
 }
