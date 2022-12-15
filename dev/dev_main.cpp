@@ -11,8 +11,8 @@ int main(int t_argc, const char** t_argv) {
 
     using namespace Problems::GAP;
 
-    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
-    //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__3.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__3.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -58,6 +58,7 @@ int main(int t_argc, const char** t_argv) {
     BranchAndBound solver;
 
     //solver.set(Param::BranchAndBound::NodeSelection, NodeSelections::DepthFirst);
+    //solver.set(Param::Algorithm::MaxIterations, 10);
 
     auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
     node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
@@ -66,7 +67,7 @@ int main(int t_argc, const char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
-    //dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 200);
+    dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 200);
     //dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, true);
 
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
@@ -81,7 +82,6 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << solver.time().count() << std::endl;
-    std::cout << solver.primal_solution() << std::endl;
 
     /*
 

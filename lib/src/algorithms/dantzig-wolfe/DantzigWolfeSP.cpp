@@ -189,6 +189,21 @@ void DantzigWolfeSP::remove_column_if(const std::function<bool(const Var &, cons
 
 }
 
+LinExpr<Var> DantzigWolfeSP::expand_variable(const Var &t_var) const {
+
+    LinExpr<Var> result;
+
+    if (m_parent.reformulation().master_problem().get(Attr::Var::Status, t_var)) {
+        throw Exception("Expanding a variable expressed in the original space is not implemented yet.");
+    }
+
+    for (const auto& [alpha, generator] : present_generators()) {
+        result += generator.get(t_var) * alpha;
+    }
+
+    return result;
+}
+
 void DantzigWolfeSP::restore_column_from_pool() {
 
     auto& master = m_parent.master_solution_strategy();
@@ -222,21 +237,6 @@ void DantzigWolfeSP::restore_column_from_pool() {
 
 }
 
-LinExpr<Var> DantzigWolfeSP::expand_variable(const Var &t_var) const {
-
-    LinExpr<Var> result;
-
-    if (m_parent.reformulation().master_problem().get(Attr::Var::Status, t_var)) {
-        throw Exception("Expanding a variable expressed in the original space is not implemented yet.");
-    }
-
-    for (const auto& [alpha, generator] : present_generators()) {
-        result += generator.get(t_var) * alpha;
-    }
-
-    return result;
-}
-
 void DantzigWolfeSP::clean_up() {
 
     const unsigned int threshold = m_parent.get(Param::DantzigWolfe::CleanUpThreshold);
@@ -259,23 +259,28 @@ void DantzigWolfeSP::clean_up() {
 
     for (auto it = m_pool.values().begin(), end = m_pool.values().end() ; it != end ; ) {
 
-        if (master.get(Attr::Var::Status, it->first)) {
+        const bool is_already_in_master = master.get(Attr::Var::Status, it->first);
 
-            if (primal.get(it->first) > 0) { // We always keep active columns
+        // We always keep active columns
+        if (is_already_in_master && primal.get(it->first) > 0) {
+
                 m_present_generators.emplace_back(it->first, it->second);
                 ++it;
                 continue;
-            }
 
+        }
+
+        // Avoid removing too many columns
+        if (n_removed >= n_to_remove) {
+            ++it;
+            continue;
+        }
+
+        if (is_already_in_master) {
             master.remove(it->first);
-
         }
         it = m_pool.erase(it);
         ++n_removed;
-
-        if (n_removed >= n_to_remove) {
-            break;
-        }
 
     }
 
