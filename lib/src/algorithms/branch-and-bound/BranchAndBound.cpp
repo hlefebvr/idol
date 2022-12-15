@@ -5,6 +5,7 @@
 #include "../../../include/algorithms/branch-and-bound/ActiveNodesManager.h"
 #include "../../../include/algorithms/callbacks/Callback.h"
 #include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
+#include "modeling/models/Attributes_Model.h"
 
 #include <iomanip>
 
@@ -442,4 +443,13 @@ int BranchAndBound::get(const Parameter<int> &t_param) const {
     }
 
     return Algorithm::get(t_param);
+}
+
+double BranchAndBound::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
+
+    if (t_attr == Attr::Solution::ObjVal) {
+        return objective_value();
+    }
+
+    return Delegate::get(t_attr);
 }

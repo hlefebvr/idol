@@ -14,6 +14,7 @@ class Parameter {
     static_assert(std::is_trivial_v<TypeT>);
     [[nodiscard]] virtual const std::type_info& underlying_type() const = 0;
 public:
+    virtual ~Parameter() = default;
     [[nodiscard]] virtual unsigned int index() const = 0;
     [[nodiscard]] virtual TypeT default_value() const = 0;
     [[nodiscard]] virtual std::string name() const = 0;

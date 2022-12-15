@@ -12,6 +12,8 @@ class Attribute {
     [[nodiscard]] virtual const std::type_info& section() const = 0;
     [[nodiscard]] virtual const std::type_info& type() const = 0;
 public:
+    virtual ~Attribute() = default;
+
     [[nodiscard]] virtual unsigned int index() const = 0;
     [[nodiscard]] virtual std::string name() const = 0;
 

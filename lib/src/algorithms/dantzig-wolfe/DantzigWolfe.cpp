@@ -25,6 +25,10 @@ void DantzigWolfe::initialize() {
         throw Exception("No solution strategy at hand for solving master problem.");
     }
 
+    if (!get(Param::DantzigWolfe::FarkasPricing)) {
+        add_artificial_variables();
+    }
+
     for (auto& subproblem : m_subproblems) {
         subproblem.initialize();
     }
@@ -39,9 +43,9 @@ void DantzigWolfe::execute() {
 
         solve_master_problem();
 
-        log_master_solution();
-
         analyze_master_problem_solution();
+
+        log_master_solution();
 
         if (is_terminated()) { break; }
 
@@ -62,6 +66,8 @@ void DantzigWolfe::execute() {
 
     log_master_solution(true);
 
+    remove_artificial_variables();
+
 }
 
 void DantzigWolfe::solve_master_problem() {
@@ -72,18 +78,24 @@ void DantzigWolfe::solve_master_problem() {
 
 void DantzigWolfe::analyze_master_problem_solution() {
 
-    auto status = m_master_solution_strategy->status();
+    m_status = m_master_solution_strategy->status();
 
-    if (status == Optimal) {
+    if (m_status == Optimal) {
+
         m_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_upper_bound);
+
+        if (!get(Param::DantzigWolfe::FarkasPricing)) {
+            analyze_feasibility_with_artificial_variables();
+        }
+
         return;
     }
 
-    if (status == Infeasible) {
+    if (m_status == Infeasible) {
         return;
     }
 
-    if (status == Unbounded) {
+    if (m_status == Unbounded) {
 
         set_status(Unbounded);
         set_reason(Proved);
@@ -189,6 +201,12 @@ AttributeManager &DantzigWolfe::attribute_delegate(const Attribute &t_attribute,
 Solution::Primal DantzigWolfe::primal_solution() const {
     auto result = m_master_solution_strategy->primal_solution();
 
+    result.set_status(m_status);
+
+    for (const auto& var : m_artificial_variables) {
+        result.set(var, 0.);
+    }
+
     for (const auto& subproblem : m_subproblems) {
         subproblem.contribute_to_primal_solution(result);
     }
@@ -197,7 +215,8 @@ Solution::Primal DantzigWolfe::primal_solution() const {
 }
 
 Solution::Dual DantzigWolfe::dual_solution() const {
-    return m_master_solution_strategy->dual_solution();
+    auto result = m_master_solution_strategy->dual_solution();
+    return result;
 }
 
 double DantzigWolfe::get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const {
@@ -270,6 +289,25 @@ void DantzigWolfe::set(const Parameter<int> &t_param, int t_value) {
     Algorithm::set(t_param, t_value);
 }
 
+void DantzigWolfe::set(const Parameter<bool> &t_param, bool t_value) {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        m_bool_parameters.set(t_param, t_value);
+        return;
+    }
+
+    Algorithm::set(t_param, t_value);
+}
+
+bool DantzigWolfe::get(const Parameter<bool> &t_param) const {
+
+    if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
+        return m_bool_parameters.get(t_param);
+    }
+
+    return Algorithm::get(t_param);
+}
+
 double DantzigWolfe::get(const Parameter<double> &t_param) const {
 
     if (t_param.is_in_section(Param::Sections::DantzigWolfe)) {
@@ -297,9 +335,9 @@ void DantzigWolfe::log_master_solution(bool t_force) {
     idol_Log(Info,
              DantzigWolfe,
              "<Type=Master> "
-             << "<Iter=" << m_iteration_count << "> "
-             << "<Time=" << time().count() << "> "
-             << "<Stat=" << m_master_solution_strategy->status() << "> "
+                     << "<Iter=" << m_iteration_count << "> "
+                     << "<Time=" << time().count() << "> "
+                     << "<Stat=" << m_status << "> "
              << "<Reas=" << m_master_solution_strategy->reason() << "> "
              << "<ObjV=" << m_master_solution_strategy->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
@@ -308,5 +346,71 @@ void DantzigWolfe::log_master_solution(bool t_force) {
              << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
              << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
              );
+
+}
+
+void DantzigWolfe::add_artificial_variables() {
+
+    const auto& master = m_reformulation.master_problem();
+    const double artificial_cost = get(Param::DantzigWolfe::ArtificialVarCost);
+    const auto add_to = [&](const Ctr& t_ctr, double t_sign) {
+
+        Column column(artificial_cost);
+        column.linear().set(t_ctr, t_sign);
+
+        auto var = m_master_solution_strategy->add_var(
+                TempVar(0., Inf, Continuous, std::move(column))
+        );
+
+        m_artificial_variables.emplace_back(var);
+
+    };
+
+    for (const auto& ctr : master.ctrs()) {
+
+        const auto type = master.get(Attr::Ctr::Type, ctr);
+
+        if (type == LessOrEqual) {
+            add_to(ctr, -1);
+        } else if (type == GreaterOrEqual) {
+            add_to(ctr, 1);
+        } else {
+            add_to(ctr, -1);
+            add_to(ctr, 1);
+        }
+
+    }
+
+}
+
+void DantzigWolfe::remove_artificial_variables() {
+
+    for (const Var& var : m_artificial_variables) {
+        m_master_solution_strategy->remove(var);
+    }
+
+    m_artificial_variables.clear();
+
+}
+
+void DantzigWolfe::analyze_feasibility_with_artificial_variables() {
+
+    if (m_artificial_variables.empty()) { return; }
+
+    const auto& primals = m_master_solution_strategy->primal_solution();
+    bool has_positive_artificial_variable = false;
+
+    for (const auto& var : m_artificial_variables) {
+        if (primals.get(var) > 0) {
+            has_positive_artificial_variable = true;
+            break;
+        }
+    }
+
+    if (has_positive_artificial_variable) {
+        m_status = Infeasible;
+    } else {
+        remove_artificial_variables();
+    }
 
 }

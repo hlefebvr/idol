@@ -19,11 +19,16 @@ class DantzigWolfe : public Algorithm {
     double m_upper_bound = +Inf;
     unsigned int m_iteration_count = 0;
     unsigned int m_n_generated_columns_at_last_iteration = 0;
+    SolutionStatus m_status = Unknown;
 
+    std::list<Var> m_artificial_variables;
+
+    Param::DantzigWolfe::values<bool> m_bool_parameters;
     Param::DantzigWolfe::values<int> m_int_parameters;
     Param::DantzigWolfe::values<double> m_double_parameters;
 protected:
     virtual void initialize();
+    virtual void add_artificial_variables();
     virtual void solve_master_problem();
     virtual void log_master_solution(bool t_force = false);
     virtual void analyze_master_problem_solution();
@@ -31,7 +36,9 @@ protected:
     virtual void solve_subproblems();
     virtual void analyze_subproblems_solution();
     virtual void enrich_master_problem();
-    void clean_up();
+    virtual void clean_up();
+    virtual void analyze_feasibility_with_artificial_variables();
+    virtual void remove_artificial_variables();
 
     void execute() override;
 
@@ -63,8 +70,10 @@ public:
 
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
     double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
+    void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;
     void set(const Parameter<int>& t_param, int t_value) override;
+    bool get(const Parameter<bool>& t_param) const override;
     double get(const Parameter<double>& t_param) const override;
     int get(const Parameter<int>& t_param) const override;
 };

@@ -213,6 +213,7 @@ void Solver<VarT, CtrT>::update_constraints() {
     }
 
     m_constraints_to_update.clear();
+    m_is_built = true;
 
 }
 
@@ -230,6 +231,7 @@ void Solver<VarT, CtrT>::update_variables() {
     }
 
     m_variables_to_update.clear();
+    m_is_built = true;
 }
 template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::remove(const Var &t_variable) {

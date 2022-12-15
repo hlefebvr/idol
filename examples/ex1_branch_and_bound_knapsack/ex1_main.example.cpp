@@ -9,6 +9,8 @@
 
 int main() {
 
+    Logs::set_level<BranchAndBound>(Info);
+
     Model model;
 
     using namespace Problems::KP;

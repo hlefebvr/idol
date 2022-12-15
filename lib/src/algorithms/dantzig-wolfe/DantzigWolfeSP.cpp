@@ -1,6 +1,7 @@
 //
 // Created by henri on 14/12/22.
 //
+#include <cassert>
 #include "algorithms/dantzig-wolfe/DantzigWolfeSP.h"
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 #include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
@@ -51,6 +52,13 @@ void DantzigWolfeSP::update() {
 
     auto& master = m_parent.master_solution_strategy();
     const bool use_farkas_pricing = master.status() == Infeasible;
+
+    if (use_farkas_pricing && !m_parent.get(Param::DantzigWolfe::FarkasPricing)) {
+        idol_Log(Fatal, DantzigWolfe, "The master problem has been reported as infeasible while artificial variables should have been added to ensure feasibility.")
+        m_parent.terminate();
+        return;
+    }
+
     const Solution::Dual duals = use_farkas_pricing ? master.farkas_certificate() : master.dual_solution();
 
     Expr objective;
@@ -183,9 +191,13 @@ void DantzigWolfeSP::remove_column_if(const std::function<bool(const Var &, cons
 
 void DantzigWolfeSP::restore_column_from_pool() {
 
+    auto& master = m_parent.master_solution_strategy();
+
     for (auto& [alpha, primal_solution] : m_pool.values()) {
 
-        if (m_exact_solution_strategy->get(Attr::Var::Status, alpha)) { continue; }
+        if (master.get(Attr::Var::Status, alpha)) {
+            continue;
+        }
 
         bool is_feasible = true;
         for (const auto& var : m_parent.reformulation().subproblem(m_index).vars()) {
@@ -202,7 +214,7 @@ void DantzigWolfeSP::restore_column_from_pool() {
         }
 
         if (is_feasible) {
-            alpha = m_parent.master_solution_strategy().add_var(create_column_from_generator(primal_solution));
+            alpha = master.add_var(create_column_from_generator(primal_solution));
             m_present_generators.emplace_back(alpha, primal_solution);
         }
 
@@ -237,7 +249,11 @@ void DantzigWolfeSP::clean_up() {
     const auto& primal = master.primal_solution();
     const double ratio = m_parent.get(Param::DantzigWolfe::CleanUpRatio);
     const auto n_to_remove = (unsigned int) (m_pool.size() * (1 - ratio));
-    unsigned int removed = 0;
+    unsigned int n_removed = 0;
+
+    for (const auto& [alpha, generator] : m_present_generators) {
+        assert(master.get(Attr::Var::Status, alpha) == 1);
+    }
 
     m_present_generators.clear();
 
@@ -246,7 +262,7 @@ void DantzigWolfeSP::clean_up() {
         if (master.get(Attr::Var::Status, it->first)) {
 
             if (primal.get(it->first) > 0) { // We always keep active columns
-                m_present_generators.emplace_back(std::move(*it));
+                m_present_generators.emplace_back(it->first, it->second);
                 ++it;
                 continue;
             }
@@ -255,9 +271,9 @@ void DantzigWolfeSP::clean_up() {
 
         }
         it = m_pool.erase(it);
-        ++removed;
+        ++n_removed;
 
-        if (removed >= n_to_remove) {
+        if (n_removed >= n_to_remove) {
             break;
         }
 

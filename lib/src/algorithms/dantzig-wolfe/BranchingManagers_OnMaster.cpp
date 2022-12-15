@@ -54,6 +54,7 @@ void BranchingManagers::OnMaster::set_bound(Map<Var, Ctr> &t_container,
 
         auto ctr = master.add_ctr(t_attr == Attr::Var::Lb ? std::move(expanded) >= t_value : std::move(expanded) <= t_value);
         m_parent.column_template().column().linear().set(ctr, !t_var);
+
         t_container.emplace(t_var, ctr);
 
         return;

@@ -61,27 +61,8 @@ struct std::hash<std::pair<Key1, Key2>> {
     }
 };
 
- template<
-        class Key,
-        class T,
-        class Hash = std::hash<Key>,
-        class KeyEqual = std::equal_to<Key>,
-        class Allocator = std::allocator< std::pair<const Key, T> >
->
-using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
+#if __has_include(<robin_hood/robin_hood.h>)
 
-/*
-#include <map>
-
-template<
-        class Key,
-        class T,
-        class Compare = std::less<Key>,
-        class Allocator = std::allocator< std::pair<const Key, T> >
->
-using Map = std::map<Key, T, Compare, Allocator>;
-*/
-/*
 #include <robin_hood/robin_hood.h>
 
 template<
@@ -91,6 +72,18 @@ template<
         class KeyEqual = std::equal_to<Key>
 >
 using Map = robin_hood::unordered_map<Key, T, Hash, KeyEqual>;
-*/
+
+#else
+
+template<
+        class Key,
+        class T,
+        class Hash = std::hash<Key>,
+        class KeyEqual = std::equal_to<Key>,
+        class Allocator = std::allocator< std::pair<const Key, T> >
+>
+using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
+
+#endif
 
 #endif //OPTIMIZE_MAP_H

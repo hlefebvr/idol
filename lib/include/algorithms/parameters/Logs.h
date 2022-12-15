@@ -50,7 +50,7 @@ namespace impl {
         }
     };
 
-    template<class T> LogLevel Log<T>::level = Mute;
+    template<class T> LogLevel Log<T>::level = Warn;
     template<class T> Color Log<T>::color = Default;
     template<class T> std::ostream& Log<T>::ostream = std::cout;
 }

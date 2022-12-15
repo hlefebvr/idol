@@ -84,15 +84,15 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT 
     update_bounds(
             m_lower_bounds,
             t_node.local_lower_bounds(),
-            [&t_solution_strategy](const Var& t_var, double t_lb) { t_solution_strategy.set(Attr::Var::Lb, t_var, t_lb); },
-            [&t_solution_strategy](const Var& t_var){ return t_solution_strategy.get(Attr::Var::Lb, t_var); }
+            [&](const Var& t_var, double t_lb) { t_solution_strategy.set(Attr::Var::Lb, t_var, t_lb); },
+            [&](const Var& t_var){ return t_solution_strategy.get(Attr::Var::Lb, t_var); }
     );
 
     update_bounds(
             m_upper_bounds,
             t_node.local_upper_bounds(),
-            [&t_solution_strategy](const Var& t_var, double t_ub) { t_solution_strategy.set(Attr::Var::Ub, t_var, t_ub); },
-            [&t_solution_strategy](const Var& t_var){ return t_solution_strategy.get(Attr::Var::Ub, t_var); }
+            [&](const Var& t_var, double t_ub) { t_solution_strategy.set(Attr::Var::Ub, t_var, t_ub); },
+            [&](const Var& t_var){ return t_solution_strategy.get(Attr::Var::Ub, t_var); }
     );
 
 }
