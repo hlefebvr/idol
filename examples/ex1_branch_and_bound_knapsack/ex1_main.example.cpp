@@ -9,8 +9,6 @@
 
 int main() {
 
-    Log::set_level(Trace);
-
     Model model;
 
     using namespace Problems::KP;

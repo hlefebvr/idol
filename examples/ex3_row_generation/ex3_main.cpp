@@ -11,9 +11,6 @@
 
 int main() {
 
-    Log::set_level(Trace);
-
-
     Model sp;
     auto w_1 = sp.add_var(0., Inf, Continuous, 0., "w_1");
     auto w_2 = sp.add_var(0., Inf, Continuous, 0., "w_2");
