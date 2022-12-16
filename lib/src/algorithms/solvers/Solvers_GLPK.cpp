@@ -68,7 +68,7 @@ void Solvers::GLPK::execute() {
 
         parameters_integer.msg_lev = GLP_MSG_ERR;
         parameters_integer.fp_heur = GLP_OFF;
-        parameters_integer.gmi_cuts = GLP_ON;
+        parameters_integer.gmi_cuts = GLP_OFF;
         if (const double time_limit = get(Param::Algorithm::TimeLimit) ; !is_pos_inf(time_limit)) {
             parameters_integer.tm_lim = get(Param::Algorithm::TimeLimit);
         }
