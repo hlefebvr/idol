@@ -181,6 +181,8 @@ void DantzigWolfe::solve_subproblems() {
 
         subproblem.solve();
 
+        log_subproblem_solution(subproblem);
+
         if (is_terminated()) { break; }
     }
 
@@ -191,6 +193,7 @@ void DantzigWolfe::analyze_subproblems_solution() {
     double reduced_costs = 0;
 
     for (auto& subproblem : m_subproblems) {
+
         const auto status = subproblem.status();
 
         if (status == Optimal) {
@@ -392,9 +395,10 @@ void DantzigWolfe::log_master_solution(bool t_force) {
     idol_Log(Info,
              DantzigWolfe,
              "<Type=Master> "
-                     << "<Iter=" << m_iteration_count << "> "
-                     << "<Time=" << time().count() << "> "
-                     << "<Stat=" << m_status << "> "
+             << "<Iter=" << m_iteration_count << "> "
+             << "<TimT=" << time().count() << "> "
+             << "<TimI=" << m_master_solution_strategy->time().count() << "> "
+             << "<Stat=" << m_status << "> "
              << "<Reas=" << m_master_solution_strategy->reason() << "> "
              << "<ObjV=" << m_master_solution_strategy->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
@@ -403,6 +407,32 @@ void DantzigWolfe::log_master_solution(bool t_force) {
              << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
              << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
              );
+
+}
+
+void DantzigWolfe::log_subproblem_solution(const DantzigWolfeSP &t_subproblem, bool t_force) {
+
+    if (!t_force && m_iteration_count % get(Param::DantzigWolfe::LogFrequency) != 0) {
+        return;
+    }
+
+    const auto& pricing = t_subproblem.exact_solution_strategy();
+
+    idol_Log(Debug,
+             DantzigWolfe,
+             "<Type=Pricing> "
+                     << "<Iter=" << m_iteration_count << "> "
+                     << "<TimT=" << time().count() << "> "
+                     << "<TimI=" << pricing.time().count() << "> "
+                     << "<Stat=" << pricing.status() << "> "
+                     << "<Reas=" << pricing.reason() << "> "
+                     << "<ObjV=" << pricing.get(Attr::Solution::ObjVal) << "> "
+                     << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
+                     << "<Lb=" << m_lower_bound << "> "
+                     << "<Ub=" << m_upper_bound << "> "
+                     << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
+                     << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
+    );
 
 }
 

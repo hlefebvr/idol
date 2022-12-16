@@ -35,6 +35,7 @@ protected:
     virtual void add_artificial_variables();
     virtual void solve_master_problem();
     void log_master_solution(bool t_force = false);
+    void log_subproblem_solution(const DantzigWolfeSP& t_subproblem, bool t_force = false);
     virtual void analyze_master_problem_solution();
     virtual void update_subproblems();
     virtual void solve_subproblems();

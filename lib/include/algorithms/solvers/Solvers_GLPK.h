@@ -23,7 +23,6 @@ class Solvers::GLPK : public Solver<int, int> {
     unsigned int n_solved = 0;
     bool m_solved_as_mip = false;
 
-    Optional<SolutionStatus> m_solution_status;
     Optional<Solution::Primal> m_ray;
     Optional<Solution::Dual> m_farkas;
 
@@ -48,6 +47,7 @@ protected:
     void save_milp_solution_status();
     void compute_farkas_certificate();
     void compute_unbounded_ray();
+    [[nodiscard]] double objective_value() const;
 public:
     explicit GLPK(Model& t_model);
 
@@ -73,8 +73,9 @@ public:
     using Solver::get;
 
     void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
-
     void set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
+
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const override;
 };
 
 #endif

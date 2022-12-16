@@ -44,20 +44,21 @@ void Solvers::GLPK::execute() {
     }
 
     save_simplex_solution_status();
+    auto status = this->status();
 
     if (get(Param::Algorithm::InfeasibleOrUnboundedInfo)) {
 
-        if (m_solution_status == Infeasible) {
+        if (status == Infeasible) {
             compute_farkas_certificate();
             return;
-        } else if (m_solution_status == Unbounded) {
+        } else if (status == Unbounded) {
             compute_unbounded_ray();
             return;
         }
 
     }
 
-    if (glp_get_num_int(m_model) > 0 && m_solution_status == Optimal) {
+    if (glp_get_num_int(m_model) > 0 && status == Optimal) {
 
         glp_iocp parameters_integer;
         glp_init_iocp(&parameters_integer);
@@ -76,15 +77,15 @@ void Solvers::GLPK::save_simplex_solution_status() {
     int status = glp_get_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Unknown;
+        set_status(Unknown);
     } else if (status == GLP_OPT) {
-        m_solution_status = Optimal;
+        set_status(Optimal);
     } else if (status == GLP_FEAS) {
-        m_solution_status = Feasible;
+        set_status(Feasible);
     } else if (status == GLP_INFEAS || status == GLP_NOFEAS) {
-        m_solution_status = Infeasible;
+        set_status(Infeasible);
     } else if (status == GLP_UNBND) {
-        m_solution_status = Unbounded;
+        set_status(Unbounded);
     } else {
         throw Exception("GLPK: Unhandled solution status: " + std::to_string(status));
     }
@@ -95,13 +96,13 @@ void Solvers::GLPK::save_milp_solution_status() {
     int status = glp_mip_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Unknown;
+        set_status(Unknown);
     } else if (status == GLP_OPT) {
-        m_solution_status = Optimal;
+        set_status(Optimal);
     } else if (status == GLP_FEAS) {
-        m_solution_status = Feasible;
+        set_status(Feasible);
     } else if (status == GLP_NOFEAS) {
-        m_solution_status = Infeasible;
+        set_status(Infeasible);
     } else {
         throw Exception("GLPK: Unhandled solution status: " + std::to_string(status));
     }
@@ -386,7 +387,7 @@ Solution::Dual Solvers::GLPK::dual_solution() const {
     }
 
     Solution::Dual result;
-    const auto dual_status = dual(m_solution_status.value());
+    const auto dual_status = dual(status());
     result.set_status(dual_status);
 
     if (dual_status == Unbounded) {
@@ -420,7 +421,7 @@ Solution::Dual Solvers::GLPK::dual_solution() const {
 
 Solution::Dual Solvers::GLPK::farkas_certificate() const {
 
-    if (m_solution_status != Infeasible) {
+    if (status() != Infeasible) {
         throw Exception("Only available for infeasible problems.");
     }
 
@@ -433,7 +434,7 @@ Solution::Dual Solvers::GLPK::farkas_certificate() const {
 
 Solution::Primal Solvers::GLPK::unbounded_ray() const {
 
-    if (m_solution_status != Unbounded) {
+    if (status() != Unbounded) {
         throw Exception("Only available for unbounded problems.");
     }
 
@@ -453,41 +454,49 @@ void Solvers::GLPK::update_obj() {
     }
 }
 
+double Solvers::GLPK::objective_value() const {
 
-Solution::Primal Solvers::GLPK::primal_solution() const {
-
-    Solution::Primal result;
-    const auto status = m_solution_status.value();
-    result.set_status(status);
+    const auto status = this->status();
 
     if (status == Unbounded) {
-        result.set_objective_value(-Inf);
-        return result;
+        return -Inf;
     }
 
     if (status == Infeasible) {
-        result.set_objective_value(+Inf);
-        return result;
+        return +Inf;
     }
 
-    if (!is_in(result.status(), { Optimal, Feasible })) {
-        result.set_objective_value(0.);
-        return result;
+    if (!is_in(status, { Optimal, Feasible })) {
+        return 0.;
     }
 
     const double obj_const = value(model().get(Attr::Obj::Const));
 
     if (m_solved_as_mip) {
+        return obj_const + glp_mip_obj_val(m_model);
+    }
 
-        result.set_objective_value(obj_const + glp_mip_obj_val(m_model));
+    return obj_const + glp_get_obj_val(m_model);
+}
+
+Solution::Primal Solvers::GLPK::primal_solution() const {
+
+    Solution::Primal result;
+    const auto status = this->status();
+    result.set_status(status);
+    result.set_objective_value(objective_value());
+
+    if (!is_in(status, { Optimal, Feasible })) {
+        return result;
+    }
+
+    if (m_solved_as_mip) {
 
         for (const auto& var : model().vars()) {
             result.set(var, glp_mip_col_val(m_model, future(var).impl()));
         }
 
     } else {
-
-        result.set_objective_value(obj_const + glp_get_obj_val(m_model));
 
         for (const auto& var : model().vars()) {
             result.set(var, glp_get_col_prim(m_model, future(var).impl()));
@@ -576,6 +585,15 @@ Solvers::GLPK::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, c
     }
 
     Delegate::set(t_attr, t_ctr, t_value);
+}
+
+double Solvers::GLPK::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
+
+    if (t_attr == Attr::Solution::ObjVal) {
+        return objective_value();
+    }
+
+    return Delegate::get(t_attr);
 }
 
 #endif

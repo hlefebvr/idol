@@ -67,7 +67,7 @@ int main(int t_argc, const char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
-    //dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 200);
+    dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 500);
     dantzig_wolfe.set(Param::DantzigWolfe::SmoothingFactor, .3);
     dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, true);
     dantzig_wolfe.set(Param::DantzigWolfe::LogFrequency, 1);
@@ -76,7 +76,7 @@ int main(int t_argc, const char** t_argv) {
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
-        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
+        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::GLPK>();
         dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnMaster>();
     }
 
