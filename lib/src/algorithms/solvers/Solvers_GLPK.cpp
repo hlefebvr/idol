@@ -31,7 +31,7 @@ void Solvers::GLPK::execute() {
     glp_init_smcp(&parameters);
     parameters.msg_lev = GLP_MSG_ERR;
     if (const double time_limit = get(Param::Algorithm::TimeLimit) ; !is_pos_inf(time_limit)) {
-        parameters.tm_lim = get(Param::Algorithm::TimeLimit);
+        parameters.tm_lim = get(Param::Algorithm::TimeLimit) * 1e3;
     }
 
     if (m_rebuild_basis) {
@@ -70,7 +70,7 @@ void Solvers::GLPK::execute() {
         parameters_integer.fp_heur = GLP_OFF;
         parameters_integer.gmi_cuts = GLP_OFF;
         if (const double time_limit = get(Param::Algorithm::TimeLimit) ; !is_pos_inf(time_limit)) {
-            parameters_integer.tm_lim = get(Param::Algorithm::TimeLimit);
+            parameters_integer.tm_lim = get(Param::Algorithm::TimeLimit) * 1e3;
         }
 
         glp_intopt(m_model, &parameters_integer);
