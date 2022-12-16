@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/hlefebvr/idol)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hlefebvr/idol?label=version)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/hlefebvr/idol/CMake/main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/cmake.yml?branch=main)
 ![GitHub issues](https://img.shields.io/github/issues-raw/hlefebvr/idol)
 
 Idol is a C++ library for implementing complex decomposition algorithms for
