@@ -94,6 +94,8 @@ double DantzigWolfeSP::reduced_cost(const Solution::Dual &t_duals) const {
 
 void DantzigWolfeSP::solve() {
 
+    const double remaining_time = m_parent.remaining_time();
+    m_exact_solution_strategy->set(Param::Algorithm::TimeLimit, remaining_time);
     m_exact_solution_strategy->solve();
 
 }
