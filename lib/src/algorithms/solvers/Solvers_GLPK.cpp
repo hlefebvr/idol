@@ -30,6 +30,9 @@ void Solvers::GLPK::execute() {
     glp_smcp parameters;
     glp_init_smcp(&parameters);
     parameters.msg_lev = GLP_MSG_ERR;
+    if (const double time_limit = get(Param::Algorithm::TimeLimit) ; !is_pos_inf(time_limit)) {
+        parameters.tm_lim = get(Param::Algorithm::TimeLimit);
+    }
 
     if (m_rebuild_basis) {
         glp_std_basis(m_model);
@@ -62,7 +65,14 @@ void Solvers::GLPK::execute() {
 
         glp_iocp parameters_integer;
         glp_init_iocp(&parameters_integer);
+
         parameters_integer.msg_lev = GLP_MSG_ERR;
+        parameters_integer.fp_heur = GLP_OFF;
+        parameters_integer.gmi_cuts = GLP_ON;
+        if (const double time_limit = get(Param::Algorithm::TimeLimit) ; !is_pos_inf(time_limit)) {
+            parameters_integer.tm_lim = get(Param::Algorithm::TimeLimit);
+        }
+
         glp_intopt(m_model, &parameters_integer);
         m_solved_as_mip = true;
 

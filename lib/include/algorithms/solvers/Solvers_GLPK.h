@@ -51,19 +51,19 @@ protected:
 public:
     explicit GLPK(Model& t_model);
 
-    Solution::Primal primal_solution() const override;
+    [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    Solution::Dual dual_solution() const override;
+    [[nodiscard]] Solution::Dual dual_solution() const override;
 
-    Solution::Dual farkas_certificate() const override;
+    [[nodiscard]] Solution::Dual farkas_certificate() const override;
 
-    Solution::Primal unbounded_ray() const override;
+    [[nodiscard]] Solution::Primal unbounded_ray() const override;
 
     using Solver<int, int>::update;
 
     glp_prob* impl() { return m_model; }
 
-    const glp_prob* impl() const { return m_model; }
+    [[nodiscard]] const glp_prob* impl() const { return m_model; }
 
     using Algorithm::remove;
 
