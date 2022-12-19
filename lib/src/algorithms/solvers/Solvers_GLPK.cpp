@@ -580,13 +580,23 @@ Solvers::GLPK::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, c
 
     if (t_attr == Attr::Ctr::Rhs) {
 
-        const int index = future(t_ctr).impl();
+        if (auto& future = this->future(t_ctr) ; future.has_impl()) {
 
-        switch (model().get(Attr::Ctr::Type, t_ctr)) {
-            case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_value)); break;
-            case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(t_value), 0.); break;
-            case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(t_value), 0.); break;
-            default: throw std::runtime_error("Unknown constraint type.");
+            const int index = future.impl();
+
+            switch (model().get(Attr::Ctr::Type, t_ctr)) {
+                case LessOrEqual:
+                    glp_set_row_bnds(m_model, index, GLP_UP, 0., value(t_value));
+                    break;
+                case GreaterOrEqual:
+                    glp_set_row_bnds(m_model, index, GLP_LO, value(t_value), 0.);
+                    break;
+                case Equal:
+                    glp_set_row_bnds(m_model, index, GLP_FX, value(t_value), 0.);
+                    break;
+                default:
+                    throw std::runtime_error("Unknown constraint type.");
+            }
         }
 
         model().set(Attr::Ctr::Rhs, t_ctr, std::move(t_value));
