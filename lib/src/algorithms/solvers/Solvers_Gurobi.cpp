@@ -461,12 +461,16 @@ Solvers::Gurobi::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr,
 
     if (t_attr == Attr::Ctr::Rhs) {
 
-        auto& impl = future(t_ctr).impl();
+        if (auto& future = this->future(t_ctr) ; future.has_impl()) {
 
-        if (std::holds_alternative<GRBConstr>(impl)) {
-            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, value(t_value));
-        } else {
-            std::get<GRBQConstr>(impl).set(GRB_DoubleAttr_QCRHS, value(t_value));
+            auto &impl = future.impl();
+
+            if (std::holds_alternative<GRBConstr>(impl)) {
+                std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, value(t_value));
+            } else {
+                std::get<GRBQConstr>(impl).set(GRB_DoubleAttr_QCRHS, value(t_value));
+            }
+
         }
 
         model().set(Attr::Ctr::Rhs, t_ctr, std::move(t_value));
