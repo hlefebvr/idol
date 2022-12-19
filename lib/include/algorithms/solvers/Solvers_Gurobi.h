@@ -70,6 +70,7 @@ public:
     template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
 
     using Solver::set;
+
     using Solver::get;
 
     void set(const Parameter<double> &t_param, double t_value) override;

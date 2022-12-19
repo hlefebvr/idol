@@ -265,6 +265,7 @@ bool NodeStrategies::Basic<NodeT>::submit_solution(Solution::Primal &&t_solution
     }
 
     m_best_upper_bound_node = node;
+    m_solution_pool.emplace_back(node);
 
     return true;
 }

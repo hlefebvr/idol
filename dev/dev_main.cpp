@@ -11,8 +11,8 @@ int main(int t_argc, const char** t_argv) {
 
     using namespace Problems::GAP;
 
-    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
-    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/generated/instance_n3_50__1.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_50__1.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
