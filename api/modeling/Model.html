@@ -1,0 +1,1000 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Row" href="Row.html" /><link rel="prev" title="InParam" href="InParam.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Model - Idol</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Idol</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Idol</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">IDOL’s documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../basics/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/installation.html">Global installation guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/local_installation.html">Local installation guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/first-model.html">Introduction to the modeling interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/knapsack.html">Using an external solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/column_generation.html">Using column generation and Branch-and-Price</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/row_generation.html">Using row generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basics/custom_branch_and_bound.html">Customizing Branch-and-Bound algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Modeling</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InParam.html">InParam</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../reformulations/index.html">Reformulations</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reformulations/DantzigWolfe.html">Dantzig-Wolfe</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algorithms/Algorithm.html">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithms/Attributes.html">Attributes</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/solvers/index.html">Solvers</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/solvers/Gurobi.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/solvers/GLPK_Simplex.html">GLPK</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/branch-and-bound/index.html">Branch-and-Bound</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/branch-and-bound/BranchAndBound.html">BranchAndBound</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/decomposition/index.html">Decomposition</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/decomposition/Decomposition.html">Decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/column-generation/index.html">Column generation</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/column-generation/ColumnGeneration.html">ColumnGeneration</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/row-generation/index.html">Row Generation</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/row-generation/RowGeneration.html">RowGeneration</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../algorithms/callbacks/index.html">Callbacks</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/callbacks/Callback.html">Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../algorithms/callbacks/RowGeneration.html">RowGeneration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../attributes/index.html">Attributes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../attributes/Var_Lb.html">Attr::Var::Lb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../attributes/Var_Ub.html">Attr::Var::Ub</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dev/index.html">Developer guide</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/build-the-doc.html">Build the doc!</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/hlefebvr/idol/edit/main/documentation/api/modeling/Model.rst" title="Edit this page">
+    <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="model">
+<span id="api-model"></span><h1>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv45Model">
+<span id="_CPPv35Model"></span><span id="_CPPv25Model"></span><span id="Model"></span><span class="target" id="classModel"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Model</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeManagers</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Base</span></span><a class="headerlink" href="#_CPPv45Model" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Optimization model object.</p>
+<p>This class represents an optimization model and is <em>mainly</em> composed of attributes (see Param), variables (see <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a>) and constraints (see <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a>). It is used to represent an optimization problem given in the following form:</p>
+<p><div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align} \textrm{minimize } &amp; c^Tx \\ \textrm{subject to } &amp; Ax \ge b \\ &amp; x \in \mathbb R \\ &amp; x_j \in \mathbb N \textrm{ for some } j \end{align}\end{split}\]</div>
+</div>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model5ModelE5Sense">
+<span id="_CPPv3N5Model5ModelE5Sense"></span><span id="_CPPv2N5Model5ModelE5Sense"></span><span id="Model::Model__Sense"></span><span class="target" id="classModel_1a96a869ff8b01e29cc198aeaeb43df5c2"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Model</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Sense</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_sense</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Minimize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model5ModelE5Sense" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model5ModelERR5Model">
+<span id="_CPPv3N5Model5ModelERR5Model"></span><span id="_CPPv2N5Model5ModelERR5Model"></span><span id="Model::Model__ModelRR"></span><span class="target" id="classModel_1acf1754f305bcc8a421d30f476dbc8271"></span><span class="sig-name descname"><span class="n"><span class="pre">Model</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5Model5ModelERR5Model" title="Model::Model"><span class="n"><span class="pre">Model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5Model5ModelERR5Model" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5ModelaSERK5Model">
+<span id="_CPPv3N5ModelaSERK5Model"></span><span id="_CPPv2N5ModelaSERK5Model"></span><span id="Model::assign-operator__ModelCR"></span><span class="target" id="classModel_1abb9bbe3b9a3acf68b46d65c762b4da1b"></span><a class="reference internal" href="#_CPPv45Model" title="Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv45Model" title="Model"><span class="n"><span class="pre">Model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5ModelaSERK5Model" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5ModelaSERR5Model">
+<span id="_CPPv3N5ModelaSERR5Model"></span><span id="_CPPv2N5ModelaSERR5Model"></span><span id="Model::assign-operator__ModelRR"></span><span class="target" id="classModel_1abb2b6de2825d98dbc61a7e933205168c"></span><a class="reference internal" href="#_CPPv45Model" title="Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45Model" title="Model"><span class="n"><span class="pre">Model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N5ModelaSERR5Model" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model4varsEv">
+<span id="_CPPv3N5Model4varsEv"></span><span id="_CPPv2N5Model4varsEv"></span><span id="Model::vars"></span><span class="target" id="classModel_1ac2eb0ad4cfe821b05b0adaece2eb3272"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model4varsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model4varsEv">
+<span id="_CPPv3NK5Model4varsEv"></span><span id="_CPPv2NK5Model4varsEv"></span><span id="Model::varsC"></span><span class="target" id="classModel_1a9896fabe38831dd33564e94206ffa957"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5Model4varsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model4ctrsEv">
+<span id="_CPPv3N5Model4ctrsEv"></span><span id="_CPPv2N5Model4ctrsEv"></span><span id="Model::ctrs"></span><span class="target" id="classModel_1abdfe965c71a2c1a6734ac5a99c5aec0a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ctrs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model4ctrsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model4ctrsEv">
+<span id="_CPPv3NK5Model4ctrsEv"></span><span id="_CPPv2NK5Model4ctrsEv"></span><span id="Model::ctrsC"></span><span class="target" id="classModel_1a9f43d68d629de4bda131f1e39bda6374"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ctrs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5Model4ctrsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model11annotationsEv">
+<span id="_CPPv3N5Model11annotationsEv"></span><span id="_CPPv2N5Model11annotationsEv"></span><span id="Model::annotations"></span><span class="target" id="classModel_1adcdecde5b66181150a26da84f0e8af44"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">annotations</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model11annotationsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model11annotationsEv">
+<span id="_CPPv3NK5Model11annotationsEv"></span><span id="_CPPv2NK5Model11annotationsEv"></span><span id="Model::annotationsC"></span><span class="target" id="classModel_1ac17bc9dfcf579c15419f65b43394aa09"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">annotations</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5Model11annotationsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model7add_varEddi6ColumnNSt6stringE">
+<span id="_CPPv3N5Model7add_varEddi6ColumnNSt6stringE"></span><span id="_CPPv2N5Model7add_varEddi6ColumnNSt6stringE"></span><span id="Model::add_var__double.double.i.Column.ss"></span><span class="target" id="classModel_1a24d8266e4c6db4407b101edd74049040"></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_var</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_column</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model7add_varEddi6ColumnNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model7add_varEddi8ConstantNSt6stringE">
+<span id="_CPPv3N5Model7add_varEddi8ConstantNSt6stringE"></span><span id="_CPPv2N5Model7add_varEddi8ConstantNSt6stringE"></span><span id="Model::add_var__double.double.i.Constant.ss"></span><span class="target" id="classModel_1a1463d774ce8c4cbb61b5cca1e8b7f9b1"></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_var</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_objective_coefficient</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model7add_varEddi8ConstantNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model7add_varE7TempVarNSt6stringE">
+<span id="_CPPv3N5Model7add_varE7TempVarNSt6stringE"></span><span id="_CPPv2N5Model7add_varE7TempVarNSt6stringE"></span><span id="Model::add_var__TempVar.ss"></span><span class="target" id="classModel_1a772e6a3ae417ccb0e2d07b63a1bd1df5"></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_var</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="TempVar.html#_CPPv47TempVar" title="TempVar"><span class="n"><span class="pre">TempVar</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_temporary_variable</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model7add_varE7TempVarNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE">
+<span id="_CPPv3I_iEN5Model8add_varsERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE"></span><span id="_CPPv2I_iEN5Model8add_varsERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a4f2a50323e75fcd1bf89cf8b4006f60d"></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE" title="Model::add_vars::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_vars</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE" title="Model::add_vars::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <span class="n"><span class="pre">VarType</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_objective_coefficient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NEdd7VarTypeRK8ConstantRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NERK7TempVarRKNSt6stringE">
+<span id="_CPPv3I_iEN5Model8add_varsERK3DimI1NERK7TempVarRKNSt6stringE"></span><span id="_CPPv2I_iEN5Model8add_varsERK3DimI1NERK7TempVarRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a154d02332088b8c4a71b2fd03c31692f"></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NERK7TempVarRKNSt6stringE" title="Model::add_vars::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_vars</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NERK7TempVarRKNSt6stringE" title="Model::add_vars::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="TempVar.html#_CPPv47TempVar" title="TempVar"><span class="n"><span class="pre">TempVar</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_temporary_variable</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN5Model8add_varsE6VectorI3Var1NERK3DimI1NERK7TempVarRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model7add_ctrE7CtrType8ConstantNSt6stringE">
+<span id="_CPPv3N5Model7add_ctrE7CtrType8ConstantNSt6stringE"></span><span id="_CPPv2N5Model7add_ctrE7CtrType8ConstantNSt6stringE"></span><span id="Model::add_ctr__CtrType.Constant.ss"></span><span class="target" id="classModel_1a8ce6d1b5a70b95ff137d229e73f9893f"></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_ctr</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">CtrType</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model7add_ctrE7CtrType8ConstantNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model7add_ctrE7TempCtrNSt6stringE">
+<span id="_CPPv3N5Model7add_ctrE7TempCtrNSt6stringE"></span><span id="_CPPv2N5Model7add_ctrE7TempCtrNSt6stringE"></span><span id="Model::add_ctr__TempCtr.ss"></span><span class="target" id="classModel_1a5070f3853341cebb0425bb4ff44ec93a"></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_ctr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="TempCtr.html#_CPPv47TempCtr" title="TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_temporary_constraint</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model7add_ctrE7TempCtrNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE">
+<span id="_CPPv3I_iEN5Model8add_ctrsERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE"></span><span id="_CPPv2I_iEN5Model8add_ctrsERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a01089b0b531b971f7eda5775b4dbb387"></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="Model::add_ctrs::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_ctrs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="Model::add_ctrs::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <span class="n"><span class="pre">CtrType</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NERK7TempCtrRKNSt6stringE">
+<span id="_CPPv3I_iEN5Model8add_ctrsERK3DimI1NERK7TempCtrRKNSt6stringE"></span><span id="_CPPv2I_iEN5Model8add_ctrsERK3DimI1NERK7TempCtrRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a3527cf34d6361bf2584a3075ddc758f6"></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NERK7TempCtrRKNSt6stringE" title="Model::add_ctrs::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_ctrs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NERK7TempCtrRKNSt6stringE" title="Model::add_ctrs::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="TempCtr.html#_CPPv47TempCtr" title="TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_temporary_constraint</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN5Model8add_ctrsE6VectorI3Ctr1NERK3DimI1NERK7TempCtrRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5Model13add_user_attrE8UserAttrRK25explicit_template_param_tI1TENSt6stringE">
+<span id="_CPPv3I0EN5Model13add_user_attrERK25explicit_template_param_tI1TENSt6stringE"></span><span id="_CPPv2I0EN5Model13add_user_attrERK25explicit_template_param_tI1TENSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a768b524eba067baf05f5a374563a43f5"></span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_user_attr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">explicit_template_param_t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5Model13add_user_attrE8UserAttrRK25explicit_template_param_tI1TENSt6stringE" title="Model::add_user_attr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_default_value</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5Model13add_user_attrE8UserAttrRK25explicit_template_param_tI1TENSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model6removeERK3Var">
+<span id="_CPPv3N5Model6removeERK3Var"></span><span id="_CPPv2N5Model6removeERK3Var"></span><span id="Model::remove__VarCR"></span><span class="target" id="classModel_1aa741a3b34fc39f7f69830df42f4586d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model6removeERK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model6removeERK3Ctr">
+<span id="_CPPv3N5Model6removeERK3Ctr"></span><span id="_CPPv2N5Model6removeERK3Ctr"></span><span id="Model::remove__CtrCR"></span><span class="target" id="classModel_1afff3afda8a47b6b812b69586ad6250a8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model6removeERK3Ctr" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model6removeERK8UserAttr">
+<span id="_CPPv3N5Model6removeERK8UserAttr"></span><span id="_CPPv2N5Model6removeERK8UserAttr"></span><span id="Model::remove__UserAttrCR"></span><span class="target" id="classModel_1a24e38865eb838087af56a95f5dca7245"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_user_attr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model6removeERK8UserAttr" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model5cloneEv">
+<span id="_CPPv3NK5Model5cloneEv"></span><span id="_CPPv2NK5Model5cloneEv"></span><span id="Model::cloneC"></span><span class="target" id="classModel_1ae87638947b414d44e860b9e5673e8aa6"></span><a class="reference internal" href="#_CPPv45Model" title="Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5Model5cloneEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5Model3setEvRK8UserAttrRK3CtrRK1T">
+<span id="_CPPv3I0EN5Model3setERK8UserAttrRK3CtrRK1T"></span><span id="_CPPv2I0EN5Model3setERK8UserAttrRK3CtrRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a6fa2eb2c0c5a8fae88b62c1739298768"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5Model3setEvRK8UserAttrRK3CtrRK1T" title="Model::set::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5Model3setEvRK8UserAttrRK3CtrRK1T" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5Model3setEvRK8UserAttrRK3VarRK1T">
+<span id="_CPPv3I0EN5Model3setERK8UserAttrRK3VarRK1T"></span><span id="_CPPv2I0EN5Model3setERK8UserAttrRK3VarRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a5b5e1223fd143c19aea51f813901bb13"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5Model3setEvRK8UserAttrRK3VarRK1T" title="Model::set::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5Model3setEvRK8UserAttrRK3VarRK1T" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIi3VarERK3Vari">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsIi3VarERK3Vari"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsIi3VarERK3Vari"></span><span id="Model::set__AttributeWithTypeAndArguments:i.Var:CR.VarCR.i"></span><span class="target" id="classModel_1a92366b2a8e296f648a251d839431ab7b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIi3VarERK3Vari" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type int with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsId3VarERK3Vard">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsId3VarERK3Vard"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsId3VarERK3Vard"></span><span id="Model::set__AttributeWithTypeAndArguments:double.Var:CR.VarCR.double"></span><span class="target" id="classModel_1ae12f018f00e987230189985597abebd1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsId3VarERK3Vard" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRR8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRR8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRR8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Var:CR.VarCR.ConstantRR"></span><span class="target" id="classModel_1aaa098c5c66c8e8e5ecd6c809614dfc83"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRR8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctri">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctri"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctri"></span><span id="Model::set__AttributeWithTypeAndArguments:i.Ctr:CR.CtrCR.i"></span><span class="target" id="classModel_1ad1857977928785590185632e6381dc15"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctri" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type int with a <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRR8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRR8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRR8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Ctr:CR.CtrCR.ConstantRR"></span><span class="target" id="classModel_1a8a089c58e23f87d6889780bfbdfe07d0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRR8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with a <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIivEi">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsIivEi"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsIivEi"></span><span id="Model::set__AttributeWithTypeAndArguments:i.void:CR.i"></span><span class="target" id="classModel_1a3818ed1e728e12218bd2da342eb9771c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsIivEi" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type int </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRR8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRR8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRR8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Ctr.Var:CR.CtrCR.VarCR.ConstantRR"></span><span class="target" id="classModel_1a1a18001f751d725ce30f8ce9eb281beb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRR8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with arguments of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> and <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERR4ExprI3Var3VarE">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERR4ExprI3Var3VarE"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERR4ExprI3Var3VarE"></span><span id="Model::set__AttributeWithTypeAndArguments:Expr:Var.Var:.void:CR.Expr:Var.Var:RR"></span><span class="target" id="classModel_1ab84a17869e45246779a52bf83d62f4c9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERR4ExprI3Var3VarE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type Expr&lt;Var, Var&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERR7LinExprI3CtrE">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERR7LinExprI3CtrE"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERR7LinExprI3CtrE"></span><span id="Model::set__AttributeWithTypeAndArguments:LinExpr:Ctr:.void:CR.LinExpr:Ctr:RR"></span><span class="target" id="classModel_1af698eaf4e224dac08d6cbdcdc587ef51"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERR7LinExprI3CtrE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type LinExpr&lt;Ctr&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERR8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERR8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERR8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.void:CR.ConstantRR"></span><span class="target" id="classModel_1a8b035d3d08a8033a81ce6b12c2043462"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERR8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Ctr">
+<span id="_CPPv3I0EN5Model3getERK8UserAttrRK3Ctr"></span><span id="_CPPv2I0EN5Model3getERK8UserAttrRK3Ctr"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1ae22f87cef97611ba429243ed142ef450"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Ctr" title="Model::get::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Ctr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Var">
+<span id="_CPPv3I0EN5Model3getERK8UserAttrRK3Var"></span><span id="_CPPv2I0EN5Model3getERK8UserAttrRK3Var"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1aa005533cc88f7b0b6237b055c83811af"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Var" title="Model::get::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UserAttr</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5Model3getERK1TRK8UserAttrRK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsId3VarERK3Var">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsId3VarERK3Var"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsId3VarERK3Var"></span><span id="Model::get__AttributeWithTypeAndArguments:double.Var:CR.VarCRC"></span><span class="target" id="classModel_1ae0cd3f000490f575f19dcc1ca4be2c21"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsId3VarERK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI6Column3VarERK3Var">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI6Column3VarERK3Var"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI6Column3VarERK3Var"></span><span id="Model::get__AttributeWithTypeAndArguments:Column.Var:CR.VarCRC"></span><span class="target" id="classModel_1aa4530566f4f9d5e04e0316af92daf09b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI6Column3VarERK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Column.html#classColumn"><span class="std std-ref">Column</span></a> with argument of type <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3Var">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3Var"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3Var"></span><span id="Model::get__AttributeWithTypeAndArguments:Constant.Var:CR.VarCRC"></span><span class="target" id="classModel_1a6863a209249644d86f2a2077ada5c9ef"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with argument of type <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIi3VarERK3Var">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsIi3VarERK3Var"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsIi3VarERK3Var"></span><span id="Model::get__AttributeWithTypeAndArguments:i.Var:CR.VarCRC"></span><span class="target" id="classModel_1af4290ed35ea83ebea2191d0c7b43df3b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIi3VarERK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type int with argument of type <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctr">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctr"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctr"></span><span id="Model::get__AttributeWithTypeAndArguments:i.Ctr:CR.CtrCRC"></span><span class="target" id="classModel_1ad4fbad7318656418379145bb0a244907"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIi3CtrERK3Ctr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type int with argument of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_ctr</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3Ctr">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3Ctr"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3Ctr"></span><span id="Model::get__AttributeWithTypeAndArguments:Row.Ctr:CR.CtrCRC"></span><span class="target" id="classModel_1ae0f8d1b3f0be1cb314a12b7d9cbb2010"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3Ctr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Row.html#classRow"><span class="std std-ref">Row</span></a> with argument of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_ctr</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3Ctr">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3Ctr"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3Ctr"></span><span id="Model::get__AttributeWithTypeAndArguments:Constant.Ctr:CR.CtrCRC"></span><span class="target" id="classModel_1a0863eae49bcb253fa3cffcd53bc9d767"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3Ctr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with argument of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_ctr</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3Var">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3Var"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3Var"></span><span id="Model::get__AttributeWithTypeAndArguments:Constant.Ctr.Var:CR.CtrCR.VarCRC"></span><span class="target" id="classModel_1a7add45a1aa429c47840dfc12aa87ec8b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3Var" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with arguments of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> and <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvE">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvE"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvE"></span><span id="Model::get__AttributeWithTypeAndArguments:Expr:Var.Var:.void:CRC"></span><span class="target" id="classModel_1a37cc88d39ddeec64a826a41df2976196"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type Expr&lt;Var, Var&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_attr</strong> – the attribute to retrieve </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvE">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvE"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvE"></span><span id="Model::get__AttributeWithTypeAndArguments:LinExpr:Ctr:.void:CRC"></span><span class="target" id="classModel_1a3d6790616072b615a4fbbff1e5e63604"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type LinExpr&lt;Ctr&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_attr</strong> – the attribute to retrieve </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8ConstantvE">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsI8ConstantvE"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsI8ConstantvE"></span><span id="Model::get__AttributeWithTypeAndArguments:Constant.void:CRC"></span><span class="target" id="classModel_1a5b8f659a58b454842debc6f0f1d63691"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsI8ConstantvE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_attr</strong> – the attribute to retrieve </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIivE">
+<span id="_CPPv3NK5Model3getERK29AttributeWithTypeAndArgumentsIivE"></span><span id="_CPPv2NK5Model3getERK29AttributeWithTypeAndArgumentsIivE"></span><span id="Model::get__AttributeWithTypeAndArguments:i.void:CRC"></span><span class="target" id="classModel_1a3586b7d765d13ec2448adcb44afd9986"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK5Model3getERK29AttributeWithTypeAndArgumentsIivE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of an attribute of type int </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_attr</strong> – the attribute to retrieve </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE">
+<span id="_CPPv3I0_i_iEN5Model8add_manyERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE"></span><span id="_CPPv2I0_i_iEN5Model8add_manyERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classModel_1a4a0005397d9ad4bd8855b935383490ed"></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Model::add_many::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Model::add_many::N"><span class="n"><span class="pre">N</span></span></a><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Model::add_many::I"><span class="n"><span class="pre">I</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_many</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Model::add_many::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dims</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Model::add_many::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n"><span class="pre">t_name</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_add_one</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_i_iEN5Model8add_manyE6VectorI1TXmi1N1IEERK3DimI1NERKNSt6stringERKNSt8functionIF1TRKNSt6stringEEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRR6Column">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRR6Column"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRR6Column"></span><span id="Model::set__AttributeWithTypeAndArguments:Column.Var:CR.VarCR.ColumnRR"></span><span class="target" id="classAttributeManagers_1_1Base_1a700b051e30c0c0f3ece25e63f92fa8f7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRR6Column" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Column.html#classColumn"><span class="std std-ref">Column</span></a> with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRR3Row">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRR3Row"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRR3Row"></span><span id="Model::set__AttributeWithTypeAndArguments:Row.Ctr:CR.CtrCR.RowRR"></span><span class="target" id="classAttributeManagers_1_1Base_1af7f8a557b2cfeac6ee10ab510a29bdf3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRR3Row" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Row.html#classRow"><span class="std std-ref">Row</span></a> with a <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classAttributeManagers_1_1Base_1a3148acf15b6830286d7b4de25aebd5e7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>Set. </p>
+<p>Sets the value of an attribute of type double with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRK6Column">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRK6Column"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRK6Column"></span><span id="Model::set__AttributeWithTypeAndArguments:Column.Var:CR.VarCR.ColumnCR"></span><span class="target" id="classAttributeManager_1a1300638c17fac2de0955b130e12aa3f2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Column.html#_CPPv46Column" title="Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI6Column3VarERK3VarRK6Column" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Column.html#classColumn"><span class="std std-ref">Column</span></a> with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRK8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRK8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRK8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Var:CR.VarCR.ConstantCR"></span><span class="target" id="classAttributeManager_1ab4b11826acda858427aa18bd2128e215"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3VarERK3VarRK8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with a <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRK3Row">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRK3Row"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRK3Row"></span><span id="Model::set__AttributeWithTypeAndArguments:Row.Ctr:CR.CtrCR.RowCR"></span><span class="target" id="classAttributeManager_1aafc31c7dce3f6c0353529899ef5d8c4f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Row.html#_CPPv43Row" title="Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI3Row3CtrERK3CtrRK3Row" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Row.html#classRow"><span class="std std-ref">Row</span></a> with a <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRK8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRK8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRK8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Ctr:CR.CtrCR.ConstantCR"></span><span class="target" id="classAttributeManager_1ad70a00f57d55a8f9e67739d04fbd0883"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3CtrERK3CtrRK8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with a <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> argument </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERK7LinExprI3CtrE">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERK7LinExprI3CtrE"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERK7LinExprI3CtrE"></span><span id="Model::set__AttributeWithTypeAndArguments:LinExpr:Ctr:.void:CR.LinExpr:Ctr:CR"></span><span class="target" id="classAttributeManager_1a1c6121541efbd29d99ffe205fb3f2a12"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">LinExpr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI7LinExprI3CtrEvERK7LinExprI3CtrE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type LinExpr&lt;Ctr&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERK4ExprI3Var3VarE">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERK4ExprI3Var3VarE"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERK4ExprI3Var3VarE"></span><span id="Model::set__AttributeWithTypeAndArguments:Expr:Var.Var:.void:CR.Expr:Var.Var:CR"></span><span class="target" id="classAttributeManager_1ac5255229947a5d6a23f28dcf40d9da6d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Expr.html#_CPPv4I00E4Expr" title="Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI4ExprI3Var3VarEvERK4ExprI3Var3VarE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type Expr&lt;Var, Var&gt; </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERK8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERK8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERK8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.void:CR.ConstantCR"></span><span class="target" id="classAttributeManager_1a39daebb7501c4fc66785d67e7e55850e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8ConstantvERK8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRK8Constant">
+<span id="_CPPv3N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRK8Constant"></span><span id="_CPPv2N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRK8Constant"></span><span id="Model::set__AttributeWithTypeAndArguments:Constant.Ctr.Var:CR.CtrCR.VarCR.ConstantCR"></span><span class="target" id="classAttributeManager_1a8fc2d449a2434b51ab68a6ae3f9c7d18"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Ctr.html#_CPPv43Ctr" title="Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_ctr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv48Constant" title="Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Model3setERK29AttributeWithTypeAndArgumentsI8Constant3Ctr3VarERK3CtrRK3VarRK8Constant" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets the value of an attribute of type <a class="reference internal" href="Constant.html#classConstant"><span class="std std-ref">Constant</span></a> with arguments of type <a class="reference internal" href="Ctr.html#classCtr"><span class="std std-ref">Ctr</span></a> and <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to update </p></li>
+<li><p><strong>t_ctr</strong> – the constraint argument </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+<li><p><strong>t_value</strong> – the new value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classAttributeManagers_1_1Base_1a801888cec74302cdde9facb1c29f50f3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">AttributeWithTypeAndArguments</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_attr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv43Var" title="Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>Get. </p>
+<p>Returns the value of an attribute of type double with argument of type <a class="reference internal" href="Var.html#classVar"><span class="std std-ref">Var</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_attr</strong> – the attribute to retrieve </p></li>
+<li><p><strong>t_var</strong> – the variable argument </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the value of the attribute </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="Row.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Row</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="InParam.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">InParam</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Henri Lefebvre
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
