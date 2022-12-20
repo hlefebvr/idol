@@ -125,8 +125,8 @@ public:
      */
     [[nodiscard]] const Model& original_formulation() const { return m_original_formulation; }
 
-    unsigned int problem_id(const Var& t_var) const { return m_original_formulation.get<unsigned int>(m_is_complicating, t_var); }
-    unsigned int problem_id(const Ctr& t_ctr) const { return m_original_formulation.get<unsigned int>(m_is_complicating, t_ctr); }
+    [[nodiscard]] unsigned int problem_id(const Var& t_var) const { return m_original_formulation.get<unsigned int>(m_is_complicating, t_var); }
+    [[nodiscard]] unsigned int problem_id(const Ctr& t_ctr) const { return m_original_formulation.get<unsigned int>(m_is_complicating, t_ctr); }
 
     /**
      * Returns the model for the RMP

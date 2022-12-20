@@ -96,6 +96,8 @@ void DantzigWolfe::analyze_master_problem_solution() {
 
     if (m_status == Optimal) {
 
+        set_status(Optimal);
+
         m_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_upper_bound);
 
         m_current_dual_solution = m_master_solution_strategy->dual_solution();
@@ -201,6 +203,7 @@ void DantzigWolfe::analyze_subproblems_solution() {
         } else {
             set_status(status);
             set_reason(Proved);
+            terminate();
             return;
         }
 
@@ -210,8 +213,6 @@ void DantzigWolfe::analyze_subproblems_solution() {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
         m_lower_bound = std::max(lower_bound, m_lower_bound);
-
-        assert(m_lower_bound <= m_upper_bound + ToleranceForAbsoluteGapPricing);
 
     }
 

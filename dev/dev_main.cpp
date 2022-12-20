@@ -6,13 +6,14 @@
 #include "reformulations/Reformulations_DantzigWolfe.h"
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 #include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
+#include "algorithms/dantzig-wolfe/BranchingManagers_OnPricing.h"
 
 int main(int t_argc, const char** t_argv) {
 
     using namespace Problems::GAP;
 
-    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
-    //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_50__1.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/tiny/instance_n2_30__2.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -49,7 +50,7 @@ int main(int t_argc, const char** t_argv) {
     // DW reformulation
     Reformulations::DantzigWolfe result(model, complicating_constraint);
 
-    Logs::set_level<BranchAndBound>(Debug);
+    Logs::set_level<BranchAndBound>(Trace);
     Logs::set_color<BranchAndBound>(Blue);
 
     Logs::set_level<DantzigWolfe>(Debug);
@@ -72,62 +73,24 @@ int main(int t_argc, const char** t_argv) {
     dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, false);
     dantzig_wolfe.set(Param::DantzigWolfe::LogFrequency, 1);
 
-    auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::GLPK>();
+    auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
-        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::GLPK>();
-        dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnMaster>();
+        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
+        dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnPricing>();
     }
 
     solver.set(Param::Algorithm::TimeLimit, 600);
 
-    solver.solve();
+    try {
+        solver.solve();
+    } catch (const GRBException& err) {
+        std::cout << err.getErrorCode() << ": " << err.getMessage() << std::endl;
+    }
 
     std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << solver.time().count() << std::endl;
-
-    /*
-
-    BranchAndBound solver;
-
-    auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
-    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
-    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(branching_candidates);
-    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
-
-    auto& decomposition = solver.set_solution_strategy<Decomposition>();
-    decomposition.set_rmp_solution_strategy<Solvers::Gurobi>(result.master_problem());
-
-    auto& column_generation = decomposition.add_generation_strategy<ColGen>();
-
-    for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
-        auto& sp = column_generation.add_subproblem(result.alpha(i));
-        sp.set_exact_solution_strategy<Solvers::Gurobi>(result.subproblem(i));
-    }
-
-    solver.solve();
-
-    std::cout << solver.primal_solution().objective_value() << std::endl;
-    */
-    /*
-     OLD STYLE
-
-    // Branch and price
-    auto solver = branch_and_price(
-            result.master_problem(),
-            result.alphas().begin(),
-            result.alphas().end(),
-            result.subproblems().begin(),
-            result.subproblems().end(),
-            branching_candidates
-            );
-
-    solver.solve();
-
-    std::cout << "Optimum: " << solver.primal_solution().objective_value() << std::endl;
-
-     */
 
     return 0;
 }

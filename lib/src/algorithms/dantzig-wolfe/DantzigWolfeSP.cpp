@@ -134,7 +134,9 @@ void DantzigWolfeSP::contribute_to_primal_solution(Solution::Primal &t_primal) c
     const auto primals = rmp.primal_solution();
 
     for (const auto& [alpha, generator] : present_generators()) {
-        t_primal += primals.get(alpha) * in_original_space(generator);
+        if (const double alpha_value = primals.get(alpha) ; alpha_value > 0) {
+            t_primal += alpha_value * in_original_space(generator);
+        }
     }
 
 }
@@ -162,6 +164,7 @@ void DantzigWolfeSP::apply_bound_expressed_in_original_space(const AttributeWith
     if (t_attr == Attr::Var::Lb) {
 
         remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+            return true;
             return t_generator.get(reformulated_var) < t_value;
         });
 
@@ -173,6 +176,7 @@ void DantzigWolfeSP::apply_bound_expressed_in_original_space(const AttributeWith
     if (t_attr == Attr::Var::Ub) {
 
         remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+            return true;
             return t_generator.get(reformulated_var) > t_value;
         });
 
@@ -274,25 +278,33 @@ void DantzigWolfeSP::clean_up() {
     for (auto it = m_pool.values().begin(), end = m_pool.values().end() ; it != end ; ) {
 
         const bool is_already_in_master = master.get(Attr::Var::Status, it->first);
+        const bool done_removing = n_removed >= n_to_remove;
 
-        // We always keep active columns
-        if (is_already_in_master && primal.get(it->first) > 0) {
+        if (done_removing) {
+
+            if (is_already_in_master) {
+                m_present_generators.emplace_back(it->first, it->second);
+            }
+
+            ++it;
+            continue;
+
+        }
+
+        if (is_already_in_master) {
+
+            if (primal.get(it->first) > 0) {
 
                 m_present_generators.emplace_back(it->first, it->second);
                 ++it;
                 continue;
 
-        }
+            }
 
-        // Avoid removing too many columns
-        if (n_removed >= n_to_remove) {
-            ++it;
-            continue;
-        }
-
-        if (is_already_in_master) {
             master.remove(it->first);
+
         }
+
         it = m_pool.erase(it);
         ++n_removed;
 
