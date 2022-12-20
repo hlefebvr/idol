@@ -17,8 +17,9 @@ DantzigWolfe::DantzigWolfe(Model &t_model, const UserAttr &t_complicating_constr
 
 void DantzigWolfe::initialize() {
 
-    m_lower_bound = -Inf;
-    m_upper_bound = +Inf;
+    m_best_lower_bound = -Inf;
+    m_best_upper_bound = +Inf;
+    m_last_lower_bound = -Inf;
     m_iteration_count = 0;
     m_n_generated_columns_at_last_iteration = 0;
     m_current_dual_solution.reset();
@@ -43,6 +44,8 @@ void DantzigWolfe::execute() {
 
     initialize();
 
+    call_callback(Begin);
+
     while (true) {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
@@ -52,6 +55,8 @@ void DantzigWolfe::execute() {
             analyze_master_problem_solution();
 
             log_master_solution();
+
+            call_callback(MasterProblemSolved);
 
         } else if (m_current_is_farkas_pricing) {
 
@@ -69,6 +74,8 @@ void DantzigWolfe::execute() {
 
         analyze_subproblems_solution();
 
+        call_callback(PricingProblemSolved);
+
         if (is_terminated() || stopping_condition()) { break; }
 
         clean_up();
@@ -80,8 +87,9 @@ void DantzigWolfe::execute() {
 
     log_master_solution(true);
 
-    remove_artificial_variables();
+    call_callback(End);
 
+    remove_artificial_variables();
 }
 
 void DantzigWolfe::solve_master_problem() {
@@ -92,13 +100,13 @@ void DantzigWolfe::solve_master_problem() {
 
 void DantzigWolfe::analyze_master_problem_solution() {
 
-    m_status = m_master_solution_strategy->status();
+    auto status = m_master_solution_strategy->status();
 
-    if (m_status == Optimal) {
+    set_status(status);
 
-        set_status(Optimal);
+    if (status == Optimal) {
 
-        m_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_upper_bound);
+        m_best_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_best_upper_bound);
 
         m_current_dual_solution = m_master_solution_strategy->dual_solution();
 
@@ -115,7 +123,7 @@ void DantzigWolfe::analyze_master_problem_solution() {
         return;
     }
 
-    if (m_status == Infeasible) {
+    if (status == Infeasible) {
 
         if (get(Param::DantzigWolfe::FarkasPricing)) {
 
@@ -126,7 +134,7 @@ void DantzigWolfe::analyze_master_problem_solution() {
         } else {
 
             idol_Log(Fatal, DantzigWolfe, "Master problem should not be infeasible when using artificial variables.");
-            set_status(Infeasible);
+            set_status(Fail);
             set_reason(NotSpecified);
             terminate();
 
@@ -135,9 +143,8 @@ void DantzigWolfe::analyze_master_problem_solution() {
         return;
     }
 
-    if (m_status == Unbounded) {
+    if (status == Unbounded) {
 
-        set_status(Unbounded);
         set_reason(Proved);
 
         idol_Log(Trace, DantzigWolfe, "Terminate. Unbounded master problem.");
@@ -212,7 +219,8 @@ void DantzigWolfe::analyze_subproblems_solution() {
     if (!m_current_is_farkas_pricing) {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
-        m_lower_bound = std::max(lower_bound, m_lower_bound);
+        m_last_lower_bound = lower_bound;
+        m_best_lower_bound = std::max(lower_bound, m_best_lower_bound);
 
     }
 
@@ -262,7 +270,7 @@ AttributeManager &DantzigWolfe::attribute_delegate(const Attribute &t_attribute,
 Solution::Primal DantzigWolfe::primal_solution() const {
     auto result = m_master_solution_strategy->primal_solution();
 
-    result.set_status(m_status);
+    result.set_status(status());
 
     for (const auto& var : m_artificial_variables) {
         result.set(var, 0.);
@@ -396,17 +404,17 @@ void DantzigWolfe::log_master_solution(bool t_force) {
     idol_Log(Info,
              DantzigWolfe,
              "<Type=Master> "
-             << "<Iter=" << m_iteration_count << "> "
-             << "<TimT=" << time().count() << "> "
-             << "<TimI=" << m_master_solution_strategy->time().count() << "> "
-             << "<Stat=" << m_status << "> "
-             << "<Reas=" << m_master_solution_strategy->reason() << "> "
-             << "<ObjV=" << m_master_solution_strategy->get(Attr::Solution::ObjVal) << "> "
-             << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
-             << "<Lb=" << m_lower_bound << "> "
-             << "<Ub=" << m_upper_bound << "> "
-             << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
-             << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
+                     << "<Iter=" << m_iteration_count << "> "
+                     << "<TimT=" << time().count() << "> "
+                     << "<TimI=" << m_master_solution_strategy->time().count() << "> "
+                     << "<Stat=" << status() << "> "
+                     << "<Reas=" << m_master_solution_strategy->reason() << "> "
+                     << "<ObjV=" << m_master_solution_strategy->get(Attr::Solution::ObjVal) << "> "
+                     << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
+                     << "<Lb=" << m_best_lower_bound << "> "
+                     << "<Ub=" << m_best_upper_bound << "> "
+                     << "<RGap=" << relative_gap(m_best_lower_bound, m_best_upper_bound) * 100 << "> "
+                     << "<AGap=" << absolute_gap(m_best_lower_bound, m_best_upper_bound) << "> "
              );
 
 }
@@ -429,10 +437,10 @@ void DantzigWolfe::log_subproblem_solution(const DantzigWolfeSP &t_subproblem, b
                      << "<Reas=" << pricing.reason() << "> "
                      << "<ObjV=" << pricing.get(Attr::Solution::ObjVal) << "> "
                      << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
-                     << "<Lb=" << m_lower_bound << "> "
-                     << "<Ub=" << m_upper_bound << "> "
-                     << "<RGap=" << relative_gap(m_lower_bound, m_upper_bound) * 100 << "> "
-                     << "<AGap=" << absolute_gap(m_lower_bound, m_upper_bound) << "> "
+                     << "<Lb=" << m_best_lower_bound << "> "
+                     << "<Ub=" << m_best_upper_bound << "> "
+                     << "<RGap=" << relative_gap(m_best_lower_bound, m_best_upper_bound) * 100 << "> "
+                     << "<AGap=" << absolute_gap(m_best_lower_bound, m_best_upper_bound) << "> "
     );
 
 }
@@ -496,7 +504,7 @@ void DantzigWolfe::analyze_feasibility_with_artificial_variables() {
     }
 
     if (has_positive_artificial_variable) {
-        m_status = Infeasible;
+        set_status(Infeasible);
     } else {
         remove_artificial_variables();
     }
@@ -504,7 +512,45 @@ void DantzigWolfe::analyze_feasibility_with_artificial_variables() {
 }
 
 bool DantzigWolfe::stopping_condition() const {
-    return absolute_gap(m_lower_bound, m_upper_bound) <= ToleranceForAbsoluteGapPricing
-        || relative_gap(m_lower_bound, m_upper_bound) <= ToleranceForRelativeGapPricing
+    return absolute_gap(m_best_lower_bound, m_best_upper_bound) <= ToleranceForAbsoluteGapPricing
+        || relative_gap(m_best_lower_bound, m_best_upper_bound) <= ToleranceForRelativeGapPricing
         || remaining_time() == 0;
+}
+
+void DantzigWolfe::call_callback(DantzigWolfe::Event t_event) {
+
+    if (!m_callback) { return; }
+
+    Callback::Context ctx(*this, t_event);
+    m_callback->execute(ctx);
+
+}
+
+double DantzigWolfe::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
+
+    if (t_attr.is_in_section(Attr::Sections::DantzigWolfe)) {
+
+        if (t_attr == Attr::DantzigWolfe::BestLb) {
+            return m_best_lower_bound;
+        }
+
+        if (t_attr == Attr::DantzigWolfe::BestUb) {
+            return m_best_upper_bound;
+        }
+
+        if (t_attr == Attr::DantzigWolfe::LastLb) {
+            return m_last_lower_bound;
+        }
+
+        if (t_attr == Attr::DantzigWolfe::RelativeGap) {
+            return relative_gap(m_best_lower_bound, m_best_upper_bound);
+        }
+
+        if (t_attr == Attr::DantzigWolfe::AbsoluteGap) {
+            return absolute_gap(m_best_lower_bound, m_best_upper_bound);
+        }
+
+    }
+
+    return Delegate::get(t_attr);
 }
