@@ -7,13 +7,14 @@
 
 #include "../../modeling/models/AttributeManager.h"
 
-IDOL_CREATE_ATTRIBUTE_CLASS(DantzigWolfe)
+IDOL_CREATE_ATTRIBUTE_CLASS(Algorithm)
 
-IDOL_CREATE_ATTRIBUTE_TYPE(DantzigWolfe, IDOL_double, 5)
-IDOL_CREATE_ATTRIBUTE(DantzigWolfe, IDOL_double, 0, BestLb, void)
-IDOL_CREATE_ATTRIBUTE(DantzigWolfe, IDOL_double, 1, BestUb, void)
-IDOL_CREATE_ATTRIBUTE(DantzigWolfe, IDOL_double, 2, LastLb, void)
-IDOL_CREATE_ATTRIBUTE(DantzigWolfe, IDOL_double, 3, RelativeGap, void)
-IDOL_CREATE_ATTRIBUTE(DantzigWolfe, IDOL_double, 4, AbsoluteGap, void)
+IDOL_CREATE_ATTRIBUTE_TYPE(Algorithm, IDOL_double, 6)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 0, BestLb, void)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 1, BestUb, void)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 2, IterLb, void)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 3, IterUb, void)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 4, RelativeGap, void)
+IDOL_CREATE_ATTRIBUTE(Algorithm, IDOL_double, 5, AbsoluteGap, void)
 
 #endif //IDOL_ATTRIBUTES_DANTZIGWOLFE_H

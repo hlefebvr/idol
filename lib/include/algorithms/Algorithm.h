@@ -17,6 +17,20 @@
 
 class Node;
 class Var;
+class EventType;
+
+class AbstractCallback {
+    const EventType* m_event = nullptr;
+    friend class Algorithm;
+public:
+    virtual Algorithm& parent() = 0;
+
+    [[nodiscard]] virtual const Algorithm& parent() const = 0;
+
+    [[nodiscard]] virtual const EventType& event() const  { return *m_event; }
+
+    virtual void execute() = 0;
+};
 
 /**
  * Solution algorithm object.
@@ -33,6 +47,8 @@ class Algorithm : public AttributeManagers::Delegate {
     Param::Algorithm::values<int> m_params_int;
     Param::Algorithm::values<bool> m_params_bool;
 
+    std::unique_ptr<AbstractCallback> m_callback;
+
     SolutionStatus m_solution_status = Unknown;
     Reason m_reason = NotSpecified;
     bool m_is_terminated = false;
@@ -43,6 +59,8 @@ protected:
     }
     void set_status(SolutionStatus t_status) { m_solution_status = t_status; }
     void set_reason(Reason t_reason) { m_reason = t_reason; }
+
+    void call_callback(const EventType& t_event);
 public:
     void terminate() { m_is_terminated = true; }
 
@@ -221,6 +239,18 @@ public:
 
     template<class T> const T& as() const { return *static_cast<const T*>(this); }
 
+    template<class CallbackT, class ...ArgsT> CallbackT& set_user_callback(ArgsT&& ...t_args) {
+        auto* result = new CallbackT(std::forward<ArgsT>(t_args)...);
+
+        auto* cast = dynamic_cast<typename CallbackT::type*>(this);
+        if (!cast) {
+            throw Exception("Incompatible callback given.");
+        }
+
+        result->m_parent = cast;
+        m_callback.reset(result);
+        return *result;
+    }
 };
 
 class EmptyAlgorithm final : public Algorithm {

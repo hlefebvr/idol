@@ -54,11 +54,11 @@ protected:
     void remove_future(const Ctr& t_ctr);
     [[nodiscard]] bool has_future(const Ctr& t_ctr) const;
 
-    std::list<std::unique_ptr<Callback>> m_callbacks; // TODO make this private
+    std::list<std::unique_ptr<::Callback>> m_callbacks; // TODO make this private
 
     void add_future_obj();
 
-    void save_callback(Callback* t_cb);
+    void save_callback(::Callback* t_cb);
 
     virtual void update(const Var& t_var, VarT& t_impl) = 0;
     virtual void update(const Ctr& t_var, CtrT& t_impl) = 0;
@@ -103,7 +103,7 @@ public:
 
     Ctr add_ctr(TempCtr&& t_temporary_constraint) override;
 
-    Callback& callback() { return *m_callbacks.front(); }
+    ::Callback& callback() { return *m_callbacks.front(); }
 
     using Algorithm::set;
     using Algorithm::get;
@@ -273,7 +273,7 @@ void Solver<VarT, CtrT>::add_future_obj() {
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::save_callback(Callback *t_cb) {
+void Solver<VarT, CtrT>::save_callback(::Callback *t_cb) {
     m_callbacks.template emplace_back(t_cb);
 }
 

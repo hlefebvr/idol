@@ -8,6 +8,7 @@
 #ifdef IDOL_USE_ROOT
 
 #include "DantzigWolfe.h"
+#include "algorithms/callbacks/Algorithm_Events.h"
 
 #include <TApplication.h>
 #include <TGraph.h>
@@ -17,11 +18,11 @@
 #include <TAxis.h>
 #include <TSystem.h>
 
-namespace Callbacks::DantzigWolfe {
+namespace Callbacks {
     class PlotOptimalityGap;
 }
 
-class Callbacks::DantzigWolfe::PlotOptimalityGap : public ::DantzigWolfe::Callback {
+class Callbacks::PlotOptimalityGap : public UserCallback<::Algorithm> {
 
     std::string m_filename;
 
@@ -29,7 +30,8 @@ class Callbacks::DantzigWolfe::PlotOptimalityGap : public ::DantzigWolfe::Callba
     std::unique_ptr<TMultiGraph> m_graph;
     std::unique_ptr<TGraph> m_best_upper_bound;
     std::unique_ptr<TGraph> m_best_lower_bound;
-    std::unique_ptr<TGraph> m_last_lower_bound;
+    std::unique_ptr<TGraph> m_iter_lower_bound;
+    std::unique_ptr<TGraph> m_iter_upper_bound;
     std::unique_ptr<TLegend> m_legend;
 
     unsigned int m_number_of_points = 0;
@@ -57,7 +59,8 @@ class Callbacks::DantzigWolfe::PlotOptimalityGap : public ::DantzigWolfe::Callba
 
             m_best_lower_bound = std::unique_ptr<TGraph>();
             m_best_upper_bound = std::unique_ptr<TGraph>();
-            m_last_lower_bound = std::unique_ptr<TGraph>();
+            m_iter_lower_bound = std::unique_ptr<TGraph>();
+            m_iter_upper_bound = std::unique_ptr<TGraph>();
 
             m_canvas->Close();
         }
@@ -67,13 +70,15 @@ class Callbacks::DantzigWolfe::PlotOptimalityGap : public ::DantzigWolfe::Callba
 
         m_canvas->SetWindowSize(800, 400);
 
+        m_iter_upper_bound = std::make_unique<TGraph>();
         m_best_upper_bound = std::make_unique<TGraph>();
-        m_last_lower_bound = std::make_unique<TGraph>();
+        m_iter_lower_bound = std::make_unique<TGraph>();
         m_best_lower_bound = std::make_unique<TGraph>();
         m_legend = std::make_unique<TLegend>();
 
+        initialize(m_iter_upper_bound.get(), "Iter UB", 1, t_min, t_max);
         initialize(m_best_upper_bound.get(), "Best UB", 2, t_min, t_max);
-        initialize(m_last_lower_bound.get(), "Last LB", 3, t_min, t_max);
+        initialize(m_iter_lower_bound.get(), "Iter LB", 3, t_min, t_max);
         initialize(m_best_lower_bound.get(), "Best LB", 4, t_min, t_max);
 
         m_graph->Draw("L");
@@ -82,20 +87,20 @@ class Callbacks::DantzigWolfe::PlotOptimalityGap : public ::DantzigWolfe::Callba
 public:
     explicit PlotOptimalityGap(std::string t_filename = "") : m_filename(std::move(t_filename)) {}
 
-    void execute(Context &t_ctx) override {
+    void execute() override {
 
         if (m_number_of_rendered_plots >= m_max_number_of_rendered_plots) {
             return;
         }
 
-        const auto event = t_ctx.event();
+        const auto& event = this->event();
 
-        if (event == ::DantzigWolfe::Begin) {
+        if (event == Event_::Algorithm::Begin) {
             m_number_of_points = 0;
             return;
         }
 
-        if (event == ::DantzigWolfe::End) {
+        if (event == Event_::Algorithm::End) {
 
             if (m_number_of_points > 0 && !m_filename.empty()) {
                 m_canvas->Print(m_filename.c_str());
@@ -107,20 +112,21 @@ public:
             return;
         }
 
-        const auto& parent = t_ctx.parent();
+        const auto& parent = this->parent();
 
         if (parent.status() != Optimal) {
             return;
         }
 
-        if (parent.get(Attr::DantzigWolfe::RelativeGap) > 1) {
+        if (parent.get(Attr::Algorithm::RelativeGap) > 1) {
             return;
         }
 
         const double t = parent.time().count(Timer::Milliseconds);
-        const double best_ub = parent.get(Attr::DantzigWolfe::BestUb);
-        const double best_lb = parent.get(Attr::DantzigWolfe::BestLb);
-        const double last_lb = parent.get(Attr::DantzigWolfe::LastLb);
+        const double best_ub = parent.get(Attr::Algorithm::BestUb);
+        const double best_lb = parent.get(Attr::Algorithm::BestLb);
+        const double iter_ub = parent.get(Attr::Algorithm::IterUb);
+        const double iter_lb = parent.get(Attr::Algorithm::IterLb);
 
         if (m_number_of_points == 0) {
             initialize(best_lb, best_ub);
@@ -130,7 +136,8 @@ public:
 
         m_best_upper_bound->AddPoint(t, best_ub);
         m_best_lower_bound->AddPoint(t, best_lb);
-        m_last_lower_bound->AddPoint(t, last_lb);
+        m_iter_lower_bound->AddPoint(t, iter_lb);
+        m_iter_upper_bound->AddPoint(t, iter_ub);
 
         m_canvas->Update();
     }

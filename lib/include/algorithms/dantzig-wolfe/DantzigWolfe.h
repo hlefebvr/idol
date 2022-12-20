@@ -12,19 +12,15 @@
 #include "Attributes_DantzigWolfe.h"
 
 class DantzigWolfe : public Algorithm {
-public:
-    enum Event { MasterProblemSolved, PricingProblemSolved, Begin, End };
-    class Callback;
 private:
     Reformulations::DantzigWolfe m_reformulation;
     std::vector<DantzigWolfeSP> m_subproblems;
     std::unique_ptr<Algorithm> m_master_solution_strategy;
 
-    std::unique_ptr<Callback> m_callback;
-
     double m_best_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
-    double m_last_lower_bound = -Inf;
+    double m_iter_lower_bound = -Inf;
+    double m_iter_upper_bound = +Inf;
     unsigned int m_iteration_count = 0;
     unsigned int m_n_generated_columns_at_last_iteration = 0;
 
@@ -37,8 +33,6 @@ private:
     Param::DantzigWolfe::values<bool> m_bool_parameters;
     Param::DantzigWolfe::values<int> m_int_parameters;
     Param::DantzigWolfe::values<double> m_double_parameters;
-
-    void call_callback(Event t_event);
 protected:
     virtual void initialize();
     virtual void add_artificial_variables();
@@ -74,8 +68,6 @@ public:
 
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_master_solution_strategy(ArgsT&& ...t_args);
 
-    template<class CallbackT, class ...ArgsT> CallbackT& set_callback(ArgsT&& ...t_args);
-
     Algorithm& master_solution_strategy() { return *m_master_solution_strategy; }
     [[nodiscard]] const Algorithm& master_solution_strategy() const { return *m_master_solution_strategy; }
 
@@ -100,13 +92,6 @@ template<class AlgorithmT, class... ArgsT>
 AlgorithmT &DantzigWolfe::set_master_solution_strategy(ArgsT &&... t_args) {
     auto* result = new AlgorithmT(m_reformulation.master_problem(), std::forward<ArgsT>(t_args)...);
     m_master_solution_strategy.reset(result);
-    return *result;
-}
-
-template<class CallbackT, class... ArgsT>
-CallbackT &DantzigWolfe::set_callback(ArgsT &&... t_args) {
-    auto* result = new CallbackT(std::forward<ArgsT>(t_args)...);
-    m_callback.reset(result);
     return *result;
 }
 

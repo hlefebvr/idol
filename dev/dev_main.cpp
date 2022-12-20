@@ -10,6 +10,8 @@
 #include "algorithms/dantzig-wolfe/Attributes_DantzigWolfe.h"
 #include "algorithms/dantzig-wolfe/Callbacks_DantzigWolfe_PlotOptimalityGap.h"
 
+#include "algorithms/callbacks/Algorithm_Events.h"
+
 #include <TApplication.h>
 
 int main(int t_argc, char** t_argv) {
@@ -75,7 +77,7 @@ int main(int t_argc, char** t_argv) {
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 
-    dantzig_wolfe.set_callback<Callbacks::DantzigWolfe::PlotOptimalityGap>();
+    dantzig_wolfe.set_user_callback<Callbacks::PlotOptimalityGap>();
 
     dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 1500);
     dantzig_wolfe.set(Param::DantzigWolfe::SmoothingFactor, 0);

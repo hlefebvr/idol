@@ -11,13 +11,13 @@
 class AlgorithmInCallback : public Algorithm {
     bool m_is_in_callback = false;
     Algorithm& m_algorithm;
-    Callback::Context* m_context = nullptr;
+    ::Callback::Context* m_context = nullptr;
 protected:
     void execute() override {}
 public:
     explicit AlgorithmInCallback(Algorithm& t_rmp_solution_strategy);
 
-    void set_context(Callback::Context* t_ctx) { m_context = t_ctx; }
+    void set_context(::Callback::Context* t_ctx) { m_context = t_ctx; }
 
     void set_in_callback(bool t_is_in_callback) { m_is_in_callback = t_is_in_callback; }
 

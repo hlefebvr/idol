@@ -2,20 +2,14 @@
 // Created by henri on 20/12/22.
 //
 
-class DantzigWolfe::Callback {
+template<class ParentT>
+class UserCallback : public AbstractCallback {
+    ParentT* m_parent = nullptr;
+    friend class Algorithm;
 public:
-    class Context;
+    ParentT &parent() final { return *m_parent; }
 
-    virtual void execute(Context& t_ctx) = 0;
-};
+    [[nodiscard]] const ParentT &parent() const final { return *m_parent; }
 
-class DantzigWolfe::Callback::Context {
-    DantzigWolfe::Event m_event;
-    DantzigWolfe& m_parent;
-public:
-    explicit Context(DantzigWolfe& t_parent, DantzigWolfe::Event t_event) : m_parent(t_parent), m_event(t_event) {}
-
-    [[nodiscard]] Event event() const { return m_event; }
-
-    const DantzigWolfe& parent() const { return m_parent; }
+    using type = ParentT;
 };

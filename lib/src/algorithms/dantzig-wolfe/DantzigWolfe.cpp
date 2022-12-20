@@ -3,6 +3,7 @@
 //
 #include <cassert>
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
+#include "algorithms/callbacks/Algorithm_Events.h"
 
 DantzigWolfe::DantzigWolfe(Model &t_model, const UserAttr &t_complicating_constraint)
     : m_reformulation(t_model, t_complicating_constraint) {
@@ -19,7 +20,8 @@ void DantzigWolfe::initialize() {
 
     m_best_lower_bound = -Inf;
     m_best_upper_bound = +Inf;
-    m_last_lower_bound = -Inf;
+    m_iter_lower_bound = -Inf;
+    m_iter_upper_bound = +Inf;
     m_iteration_count = 0;
     m_n_generated_columns_at_last_iteration = 0;
     m_current_dual_solution.reset();
@@ -44,7 +46,7 @@ void DantzigWolfe::execute() {
 
     initialize();
 
-    call_callback(Begin);
+    call_callback(Event_::Algorithm::Begin);
 
     while (true) {
 
@@ -56,7 +58,7 @@ void DantzigWolfe::execute() {
 
             log_master_solution();
 
-            call_callback(MasterProblemSolved);
+            call_callback(Event_::Algorithm::Iter);
 
         } else if (m_current_is_farkas_pricing) {
 
@@ -74,7 +76,7 @@ void DantzigWolfe::execute() {
 
         analyze_subproblems_solution();
 
-        call_callback(PricingProblemSolved);
+        call_callback(Event_::Algorithm::Iter);
 
         if (is_terminated() || stopping_condition()) { break; }
 
@@ -87,7 +89,7 @@ void DantzigWolfe::execute() {
 
     log_master_solution(true);
 
-    call_callback(End);
+    call_callback(Event_::Algorithm::End);
 
     remove_artificial_variables();
 }
@@ -106,7 +108,9 @@ void DantzigWolfe::analyze_master_problem_solution() {
 
     if (status == Optimal) {
 
-        m_best_upper_bound = std::min(m_master_solution_strategy->get(Attr::Solution::ObjVal), m_best_upper_bound);
+        m_iter_upper_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal);
+
+        m_best_upper_bound = std::min(m_iter_upper_bound, m_best_upper_bound);
 
         m_current_dual_solution = m_master_solution_strategy->dual_solution();
 
@@ -219,7 +223,7 @@ void DantzigWolfe::analyze_subproblems_solution() {
     if (!m_current_is_farkas_pricing) {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
-        m_last_lower_bound = lower_bound;
+        m_iter_lower_bound = lower_bound;
         m_best_lower_bound = std::max(lower_bound, m_best_lower_bound);
 
     }
@@ -517,36 +521,31 @@ bool DantzigWolfe::stopping_condition() const {
         || remaining_time() == 0;
 }
 
-void DantzigWolfe::call_callback(DantzigWolfe::Event t_event) {
-
-    if (!m_callback) { return; }
-
-    Callback::Context ctx(*this, t_event);
-    m_callback->execute(ctx);
-
-}
-
 double DantzigWolfe::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
 
-    if (t_attr.is_in_section(Attr::Sections::DantzigWolfe)) {
+    if (t_attr.is_in_section(Attr::Sections::Algorithm)) {
 
-        if (t_attr == Attr::DantzigWolfe::BestLb) {
+        if (t_attr == Attr::Algorithm::BestLb) {
             return m_best_lower_bound;
         }
 
-        if (t_attr == Attr::DantzigWolfe::BestUb) {
+        if (t_attr == Attr::Algorithm::BestUb) {
             return m_best_upper_bound;
         }
 
-        if (t_attr == Attr::DantzigWolfe::LastLb) {
-            return m_last_lower_bound;
+        if (t_attr == Attr::Algorithm::IterLb) {
+            return m_iter_lower_bound;
         }
 
-        if (t_attr == Attr::DantzigWolfe::RelativeGap) {
+        if (t_attr == Attr::Algorithm::IterUb) {
+            return m_iter_upper_bound;
+        }
+
+        if (t_attr == Attr::Algorithm::RelativeGap) {
             return relative_gap(m_best_lower_bound, m_best_upper_bound);
         }
 
-        if (t_attr == Attr::DantzigWolfe::AbsoluteGap) {
+        if (t_attr == Attr::Algorithm::AbsoluteGap) {
             return absolute_gap(m_best_lower_bound, m_best_upper_bound);
         }
 
