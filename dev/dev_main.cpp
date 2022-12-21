@@ -8,9 +8,10 @@
 #include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
 #include "algorithms/dantzig-wolfe/BranchingManagers_OnPricing.h"
 #include "algorithms/dantzig-wolfe/Attributes_DantzigWolfe.h"
-#include "algorithms/dantzig-wolfe/Callbacks_DantzigWolfe_PlotOptimalityGap.h"
+#include "algorithms/callbacks/Callbacks_PlotOptimalityGap.h"
 
 #include "algorithms/callbacks/Algorithm_Events.h"
+#include "algorithms/callbacks/Callbacks_RoundingHeuristic.h"
 
 #include <TApplication.h>
 
@@ -59,13 +60,15 @@ int main(int t_argc, char** t_argv) {
     // DW reformulation
     Reformulations::DantzigWolfe result(model, complicating_constraint);
 
-    Logs::set_level<BranchAndBound>(Trace);
+    Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<DantzigWolfe>(Info);
+    Logs::set_level<DantzigWolfe>(Warn);
     Logs::set_color<DantzigWolfe>(Yellow);
 
     BranchAndBound solver;
+
+    solver.set_user_callback<Callbacks::PlotOptimalityGap>();
 
     //solver.set(Param::BranchAndBound::NodeSelection, NodeSelections::DepthFirst);
     //solver.set(Param::Algorithm::MaxIterations, 10);
@@ -92,14 +95,12 @@ int main(int t_argc, char** t_argv) {
         dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnPricing>();
     }
 
+    //solver.add_callback<Callbacks::RoundingHeuristic>(flatten<Var, 2>(x));
+
     solver.set(Param::Algorithm::TimeLimit, 600);
     solver.set(Param::Algorithm::MaxIterations, 100000);
 
-    try {
-        solver.solve();
-    } catch (const GRBException& err) {
-        std::cout << err.getErrorCode() << ": " << err.getMessage() << std::endl;
-    }
+    solver.solve();
 
     std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << solver.time().count() << std::endl;

@@ -6,6 +6,8 @@
 #include "../../../include/algorithms/callbacks/Callback.h"
 #include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
 #include "modeling/models/Attributes_Model.h"
+#include "algorithms/callbacks/Algorithm_Events.h"
+#include "algorithms/dantzig-wolfe/Attributes_DantzigWolfe.h"
 
 #include <iomanip>
 
@@ -13,6 +15,8 @@ void BranchAndBound::execute() {
 
     initialize();
     create_root_node();
+
+    call_callback(Event_::Algorithm::Begin);
 
     while(!is_terminated()) {
 
@@ -48,6 +52,8 @@ void BranchAndBound::execute() {
 
     }
 
+    call_callback(Event_::Algorithm::End);
+
 }
 
 double BranchAndBound::relative_gap() const {
@@ -61,8 +67,8 @@ double BranchAndBound::absolute_gap() const {
 void BranchAndBound::initialize() {
     m_n_created_nodes = 0;
     m_iteration = 0;
-    m_best_lower_bound = std::max(-Inf, get(Param::Algorithm::BestBoundStop));
-    m_best_upper_bound = std::min(+Inf, get(Param::Algorithm::BestObjStop));
+    m_best_lower_bound = std::max(-Inf, get(Param::Algorithm::BestObjStop));
+    m_best_upper_bound = std::min(+Inf, get(Param::Algorithm::BestBoundStop));
 
     if (!m_solution_strategy) {
         throw Exception("No solution strategy was given.");
@@ -144,6 +150,10 @@ void BranchAndBound::analyze_current_node() {
 
     }
 
+    m_iter_lower_bound = current_node().objective_value();
+
+    call_callback(Event_::Algorithm::NewIterLb);
+
     if (current_node_has_a_valid_solution()) {
 
         add_current_node_to_solution_pool();
@@ -155,6 +165,8 @@ void BranchAndBound::analyze_current_node() {
             m_best_upper_bound = current_node().objective_value();
             log_node(Info, m_nodes->current_node());
             idol_Log(Trace, BranchAndBound, "Better incumbent found at node " << current_node().id() << ".");
+
+            call_callback(Event_::Algorithm::NewBestUb);
         }
 
         reset_current_node();
@@ -260,6 +272,7 @@ void BranchAndBound::prune_active_nodes_by_bound() {
 void BranchAndBound::update_best_lower_bound() {
     if (m_nodes->active_nodes().empty()) {
         m_best_lower_bound = m_best_upper_bound;
+        call_callback(Event_::Algorithm::NewBestLb);
         return;
     }
 
@@ -267,6 +280,7 @@ void BranchAndBound::update_best_lower_bound() {
     if (double lb = lowest_node.objective_value() ; lb > m_best_lower_bound) {
         m_best_lower_bound = lb;
         log_node(Info, lowest_node);
+        call_callback(Event_::Algorithm::NewBestLb);
     }
 }
 
@@ -397,6 +411,7 @@ bool BranchAndBound::submit_solution(Solution::Primal &&t_solution) {
         idol_Log(Debug, BranchAndBound, "New incumbent solution found by submission.");
         m_best_upper_bound = m_nodes->incumbent().objective_value();
         log_node(Info, m_nodes->incumbent());
+        call_callback(Event_::Algorithm::NewBestUb);
         return true;
     }
     return false;
@@ -449,6 +464,22 @@ double BranchAndBound::get(const AttributeWithTypeAndArguments<double, void> &t_
 
     if (t_attr == Attr::Solution::ObjVal) {
         return objective_value();
+    }
+
+    if (t_attr == Attr::Algorithm::BestLb) {
+        return m_best_lower_bound;
+    }
+
+    if (t_attr == Attr::Algorithm::BestUb) {
+        return m_best_upper_bound;
+    }
+
+    if (t_attr == Attr::Algorithm::IterLb) {
+        return m_iter_lower_bound;
+    }
+
+    if (t_attr == Attr::Algorithm::IterUb) {
+        return m_iter_upper_bound;
     }
 
     return Delegate::get(t_attr);

@@ -22,7 +22,9 @@ class BranchAndBound : public Algorithm {
     unsigned int m_iteration = 0;
 
     double m_best_lower_bound = -Inf;
+    double m_iter_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
+    double m_iter_upper_bound = +Inf;
 
     // User strategies
     std::unique_ptr<NodeStrategy> m_nodes;

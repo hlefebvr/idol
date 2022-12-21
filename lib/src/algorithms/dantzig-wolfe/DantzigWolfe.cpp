@@ -58,8 +58,6 @@ void DantzigWolfe::execute() {
 
             log_master_solution();
 
-            call_callback(Event_::Algorithm::Iter);
-
         } else if (m_current_is_farkas_pricing) {
 
             set_status(Infeasible);
@@ -75,8 +73,6 @@ void DantzigWolfe::execute() {
         solve_subproblems();
 
         analyze_subproblems_solution();
-
-        call_callback(Event_::Algorithm::Iter);
 
         if (is_terminated() || stopping_condition()) { break; }
 
@@ -121,7 +117,19 @@ void DantzigWolfe::analyze_master_problem_solution() {
         m_current_is_farkas_pricing = false;
 
         if (!get(Param::DantzigWolfe::FarkasPricing)) {
+
             analyze_feasibility_with_artificial_variables();
+
+            if (this->status() != Infeasible) {
+                call_callback(Event_::Algorithm::NewIterUb);
+                call_callback(Event_::Algorithm::NewBestUb);
+            }
+
+        } else {
+
+            call_callback(Event_::Algorithm::NewIterUb);
+            call_callback(Event_::Algorithm::NewBestUb);
+
         }
 
         return;
@@ -223,8 +231,28 @@ void DantzigWolfe::analyze_subproblems_solution() {
     if (!m_current_is_farkas_pricing) {
 
         const double lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal) + reduced_costs;
+
         m_iter_lower_bound = lower_bound;
-        m_best_lower_bound = std::max(lower_bound, m_best_lower_bound);
+
+        call_callback(Event_::Algorithm::NewIterLb);
+
+        if (m_best_lower_bound < lower_bound) {
+            m_best_lower_bound = lower_bound;
+            call_callback(Event_::Algorithm::NewBestLb);
+        }
+
+        //m_best_lower_bound = std::max(lower_bound, m_best_lower_bound);
+
+        const double best_bound_stop = get(Param::Algorithm::BestBoundStop);
+        if (m_best_lower_bound > best_bound_stop) {
+            set_reason(Reason::UserObjLimit);
+            terminate();
+            idol_Log(Trace,
+                     DantzigWolfe,
+                     "Terminate. Given Param::Algorithm::BestBoundStop is " << best_bound_stop
+                     << " while current lower bound is " << m_best_lower_bound
+            )
+        }
 
     }
 

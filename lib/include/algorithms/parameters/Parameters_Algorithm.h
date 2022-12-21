@@ -15,8 +15,8 @@ IDOL_CREATE_PARAMETER_TYPE(Algorithm, double, 5)
 IDOL_CREATE_PARAMETER(Algorithm, double, 0, TimeLimit, std::numeric_limits<double>::max())
 IDOL_CREATE_PARAMETER(Algorithm, double, 1, MIPGap, 1e-4)
 IDOL_CREATE_PARAMETER(Algorithm, double, 2, CutOff, std::numeric_limits<double>::max())
-IDOL_CREATE_PARAMETER(Algorithm, double, 3, BestObjStop, std::numeric_limits<double>::max())
-IDOL_CREATE_PARAMETER(Algorithm, double, 4, BestBoundStop, std::numeric_limits<double>::lowest())
+IDOL_CREATE_PARAMETER(Algorithm, double, 3, BestObjStop, -Inf)
+IDOL_CREATE_PARAMETER(Algorithm, double, 4, BestBoundStop, +Inf)
 
 IDOL_CREATE_PARAMETER_TYPE(Algorithm, int, 2)
 IDOL_CREATE_PARAMETER(Algorithm, int, 0, MaxIterations, std::numeric_limits<int>::max());

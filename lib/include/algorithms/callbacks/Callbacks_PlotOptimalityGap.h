@@ -2,12 +2,12 @@
 // Created by henri on 20/12/22.
 //
 
-#ifndef IDOL_CALLBACKS_DANTZIGWOLFE_PLOTOPTIMALITYGAP_H
-#define IDOL_CALLBACKS_DANTZIGWOLFE_PLOTOPTIMALITYGAP_H
+#ifndef IDOL_CALLBACKS_PLOTOPTIMALITYGAP_H
+#define IDOL_CALLBACKS_PLOTOPTIMALITYGAP_H
 
 #ifdef IDOL_USE_ROOT
 
-#include "DantzigWolfe.h"
+#include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 #include "algorithms/callbacks/Algorithm_Events.h"
 
 #include <TApplication.h>
@@ -24,7 +24,10 @@ namespace Callbacks {
 
 class Callbacks::PlotOptimalityGap : public UserCallback<::Algorithm> {
 
+    static unsigned int s_id;
+
     std::string m_filename;
+    unsigned int m_id = ++s_id;
 
     std::unique_ptr<TCanvas> m_canvas;
     std::unique_ptr<TMultiGraph> m_graph;
@@ -65,7 +68,8 @@ class Callbacks::PlotOptimalityGap : public UserCallback<::Algorithm> {
             m_canvas->Close();
         }
 
-        m_canvas = std::make_unique<TCanvas>("c1", "Dantzig-Wolfe optimality gap");
+        std::string canvas_name = "c" + std::to_string(m_id);
+        m_canvas = std::make_unique<TCanvas>(canvas_name.c_str(), "Dantzig-Wolfe optimality gap");
         m_graph = std::make_unique<TMultiGraph>();
 
         m_canvas->SetWindowSize(800, 400);
@@ -112,11 +116,14 @@ public:
             return;
         }
 
-        const auto& parent = this->parent();
-
-        if (parent.status() != Optimal) {
+        if (event != Event_::Algorithm::NewBestLb
+            && event != Event_::Algorithm::NewBestUb
+            && event != Event_::Algorithm::NewIterLb
+            && event != Event_::Algorithm::NewIterUb) {
             return;
         }
+
+        const auto& parent = this->parent();
 
         if (parent.get(Attr::Algorithm::RelativeGap) > 1) {
             return;
@@ -127,6 +134,10 @@ public:
         const double best_lb = parent.get(Attr::Algorithm::BestLb);
         const double iter_ub = parent.get(Attr::Algorithm::IterUb);
         const double iter_lb = parent.get(Attr::Algorithm::IterLb);
+
+        if (is_pos_inf(best_ub) || is_neg_inf(best_lb)) {
+            return;
+        }
 
         if (m_number_of_points == 0) {
             initialize(best_lb, best_ub);
@@ -146,4 +157,4 @@ public:
 
 #endif
 
-#endif //IDOL_CALLBACKS_DANTZIGWOLFE_PLOTOPTIMALITYGAP_H
+#endif //IDOL_CALLBACKS_PLOTOPTIMALITYGAP_H
