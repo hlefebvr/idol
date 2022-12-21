@@ -69,7 +69,7 @@ int main(int t_argc, char** t_argv) {
     BranchAndBound solver;
 
     //solver.set_user_callback<Callbacks::PlotOptimalityGap>();
-    solver.set_user_callback<Callbacks::FeasiblityPump>(model);
+    solver.set_user_callback<Callbacks::FeasibilityPump>(model);
 
     for (const auto& x_ij : flatten<Var, 2>(x)) {
         model.set(Attr::Var::Type, x_ij, Continuous);

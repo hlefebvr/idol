@@ -5,19 +5,32 @@
 #ifndef IDOL_CALLBACKS_FEASIBILITYPUMP_H
 #define IDOL_CALLBACKS_FEASIBILITYPUMP_H
 
+#include <random>
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/BranchAndBound_Events.h"
 
 namespace Callbacks {
-    class FeasiblityPump;
+    class FeasibilityPump;
 }
 
-class Callbacks::FeasiblityPump : public UserCallback<BranchAndBound> {
-    unsigned int m_T = 5;
+IDOL_CREATE_PARAMETER_CLASS(FeasibilityPump);
+
+IDOL_CREATE_PARAMETER_TYPE(FeasibilityPump, int, 3)
+
+IDOL_CREATE_PARAMETER(FeasibilityPump, int, 0, CallFrequency, 10)
+IDOL_CREATE_PARAMETER(FeasibilityPump, int, 1, MaxLevel, 10)
+IDOL_CREATE_PARAMETER(FeasibilityPump, int, 2, NumberOfVariableFlip, 10)
+
+class Callbacks::FeasibilityPump : public UserCallback<BranchAndBound> {
+    Param::FeasibilityPump::values<int> m_int_parameters;
+
     std::list<Var> m_binary_variables;
     std::list<Var> m_integer_variables;
+
+    std::random_device m_device;
+    std::mt19937 m_generator;
 public:
-    explicit FeasiblityPump(const Model& t_model) {
+    explicit FeasibilityPump(const Model& t_model) : m_generator(m_device()) {
 
         for (const auto& var : t_model.vars()) {
             if (const auto type = t_model.get(Attr::Var::Type, var) ; type == Binary) {
@@ -31,6 +44,24 @@ public:
             throw NotImplemented("Applying feasibility pump with integer variables", "Callbacks::FeasibilityPump::execute");
         }
 
+    }
+
+    void set(const Parameter<int> &t_param, int t_value) override {
+
+        if (t_param.is_in_section(Param::Sections::FeasibilityPump)) {
+            m_int_parameters.set(t_param, t_value);
+        }
+
+        AbstractCallback::set(t_param, t_value);
+    }
+
+    int get(const Parameter<int> &t_param) const override {
+
+        if (t_param.is_in_section(Param::Sections::FeasibilityPump)) {
+            return m_int_parameters.get(t_param);
+        }
+
+        return AbstractCallback::get(t_param);
     }
 
     Solution::Primal round(const Solution::Primal& t_primals) {
@@ -82,7 +113,7 @@ public:
 
     }
 
-    std::vector<std::pair<double, Var>> get_to_flip(const Solution::Primal& t_x_star, const Solution::Primal& t_x_tilde) {
+    std::vector<std::pair<double, Var>> get_to_flip(unsigned int t_n, const Solution::Primal& t_x_star, const Solution::Primal& t_x_tilde) {
         std::vector<std::pair<double, Var>> result;
 
         for (const auto& var : m_binary_variables) {
@@ -93,7 +124,7 @@ public:
             return t_a.first > t_b.first;
         });
 
-        result.erase(result.begin() + m_T, result.end());
+        result.erase(result.begin() + t_n, result.end());
 
         return result;
     }
@@ -104,11 +135,16 @@ public:
             return;
         }
 
-        if (parent().current_node().level() > 10) {
+        const auto level = parent().current_node().level();
+
+        if (level > get(Param::FeasibilityPump::MaxLevel) || level % get(Param::FeasibilityPump::CallFrequency) != 0) {
             return;
         }
 
-        idol_Log(Trace, FeasiblityPump, "Begin feasibility pump heuristic.");
+        idol_Log(Trace, FeasibilityPump, "Begin feasibility pump heuristic.");
+
+        const auto number_of_flips = get(Param::FeasibilityPump::NumberOfVariableFlip);
+        std::uniform_int_distribution<unsigned int> distribution(number_of_flips / 2, 3 * number_of_flips / 2);
 
         auto& solver = parent().solution_strategy();
 
@@ -134,7 +170,7 @@ public:
             if (not_equal(x_star_rounded, x_tilde)) {
                 x_tilde = std::move(x_star_rounded);
             } else {
-                auto to_flip = get_to_flip(x_star, x_tilde);
+                auto to_flip = get_to_flip(distribution(m_generator), x_star, x_tilde);
 
                 for (const auto& [score, var] : to_flip) {
                     x_tilde.set(var, 1 - x_tilde.get(var));
@@ -156,7 +192,7 @@ public:
 
         parent().submit_solution(std::move(x_star));
 
-        idol_Log(Trace, FeasiblityPump, "End feasibility pump heuristic.");
+        idol_Log(Trace, FeasibilityPump, "End feasibility pump heuristic.");
 
     }
 };

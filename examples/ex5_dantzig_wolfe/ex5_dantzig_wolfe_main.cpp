@@ -66,7 +66,7 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<DantzigWolfe>(Debug);
     Logs::set_color<DantzigWolfe>(Yellow);
 
-    Logs::set_level<Callbacks::FeasiblityPump>(Trace);;
+    Logs::set_level<Callbacks::FeasibilityPump>(Trace);;
 
     BranchAndBound solver;
 

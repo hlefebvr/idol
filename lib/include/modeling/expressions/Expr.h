@@ -64,6 +64,8 @@ public:
 
     Constant& constant() { return m_constant->value(); }
     [[nodiscard]] const Constant& constant() const { return m_constant->value(); }
+
+    [[nodiscard]] bool is_zero() const { return constant().is_zero() && linear().empty() && quadratic().empty(); }
 };
 
 template<class Key1, class Key2>

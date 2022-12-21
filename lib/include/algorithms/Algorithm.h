@@ -27,6 +27,30 @@ public:
     [[nodiscard]] virtual const Algorithm& parent() const = 0;
 
     virtual void execute(const EventType& t_event) = 0;
+
+    virtual void set(const Parameter<double>& t_param, double t_value) {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
+
+    virtual void set(const Parameter<bool>& t_param, bool t_value) {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
+
+    virtual void set(const Parameter<int>& t_param, int t_value) {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
+
+    [[nodiscard]] virtual double get(const Parameter<double>& t_param) const {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
+
+    [[nodiscard]] virtual bool get(const Parameter<bool>& t_param) const {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
+
+    [[nodiscard]] virtual int get(const Parameter<int>& t_param) const {
+        throw Exception("Could not handle parameter " + t_param.name());
+    }
 };
 
 /**
