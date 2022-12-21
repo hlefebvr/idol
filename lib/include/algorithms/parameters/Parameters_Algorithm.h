@@ -23,7 +23,7 @@ IDOL_CREATE_PARAMETER(Algorithm, int, 0, MaxIterations, std::numeric_limits<int>
 IDOL_CREATE_PARAMETER(Algorithm, int, 1, MaxThreads, std::thread::hardware_concurrency());
 
 IDOL_CREATE_PARAMETER_TYPE(Algorithm, bool, 3)
-IDOL_CREATE_PARAMETER(Algorithm, bool, 0, Presolve, false);
+IDOL_CREATE_PARAMETER(Algorithm, bool, 0, Presolve, true);
 IDOL_CREATE_PARAMETER(Algorithm, bool, 1, InfeasibleOrUnboundedInfo, false);
 IDOL_CREATE_PARAMETER(Algorithm, bool, 2, ResetBeforeSolving, false);
 

@@ -87,11 +87,11 @@ int main(int t_argc, char** t_argv) {
 
     dantzig_wolfe.set(Param::DantzigWolfe::CleanUpThreshold, 1500);
     dantzig_wolfe.set(Param::DantzigWolfe::SmoothingFactor, 0);
-    dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, false);
+    dantzig_wolfe.set(Param::DantzigWolfe::FarkasPricing, true);
     dantzig_wolfe.set(Param::DantzigWolfe::LogFrequency, 1);
 
-    auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
-    //master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+    auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::GLPK>();
+    master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
         dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
