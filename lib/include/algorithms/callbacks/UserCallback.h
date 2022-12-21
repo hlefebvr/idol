@@ -2,6 +2,9 @@
 // Created by henri on 20/12/22.
 //
 
+#ifndef IDOL_USERCALLBACK
+#define IDOL_USERCALLBACK
+
 template<class ParentT>
 class UserCallback : public AbstractCallback {
     ParentT* m_parent = nullptr;
@@ -13,3 +16,5 @@ public:
 
     using type = ParentT;
 };
+
+#endif

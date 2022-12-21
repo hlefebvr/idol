@@ -12,6 +12,7 @@
 #include "algorithms/callbacks/Callbacks_PlotOptimalityGap.h"
 
 #include "algorithms/callbacks/Callbacks_FeasibilityPump.h"
+#include "algorithms/callbacks/Callbacks_IntegerMasterProblem.h"
 
 #include <TApplication.h>
 
@@ -98,6 +99,7 @@ int main(int t_argc, char** t_argv) {
     }
 
     //solver.add_callback<Callbacks::RoundingHeuristic>(flatten<Var, 2>(x));
+    solver.set_user_callback<Callbacks::IntegerMasterProblem>();
 
     solver.set(Param::Algorithm::TimeLimit, 600);
     solver.set(Param::Algorithm::MaxIterations, 100000);
