@@ -15,7 +15,9 @@ namespace Callbacks {
 }
 
 class Callbacks::IntegerMasterProblem : public UserCallback<BranchAndBound> {
+    std::list<Var> m_integer_variables;
 public:
+
     void execute(const EventType &t_event) override {
 
         if (t_event != Event_::BranchAndBound::RelaxationSolved) {
@@ -24,8 +26,6 @@ public:
 
         auto& solver = parent().solution_strategy().as<DantzigWolfe>();
         auto& master = solver.master_solution_strategy();
-
-        std::list<Var> m_integer_variables;
 
         for (const auto& subproblem : solver.subproblems()) {
             for (const auto& [var, generator] : subproblem.present_generators()) {
@@ -36,15 +36,20 @@ public:
 
         master.solve();
 
-        if (master.status() != Optimal || master.status() != Feasible) {
+        const auto status = master.status();
+
+        std::cout << status << std::endl;
+
+        if (status == Optimal || status == Feasible) {
+            parent().submit_solution(master.primal_solution());
+        } else if (status != Infeasible) {
             throw Exception("Unexpected master problem status.");
         }
-
-        parent().submit_solution(master.primal_solution());
 
         for (const auto& var : m_integer_variables) {
             master.set(Attr::Var::Type, var, Continuous);
         }
+
 
     }
 };

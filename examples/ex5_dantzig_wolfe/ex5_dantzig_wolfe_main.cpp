@@ -22,9 +22,9 @@ int main(int t_argc, char** t_argv) {
 
     using namespace Problems::GAP;
 
-    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
     //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/tiny/instance_n2_30__2.txt");
-    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_40__0.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_40__0.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -101,7 +101,7 @@ int main(int t_argc, char** t_argv) {
     //solver.add_callback<Callbacks::RoundingHeuristic>(flatten<Var, 2>(x));
     solver.set_user_callback<Callbacks::IntegerMasterProblem>();
 
-    solver.set(Param::Algorithm::TimeLimit, 600);
+    solver.set(Param::Algorithm::TimeLimit, 30);
     solver.set(Param::Algorithm::MaxIterations, 100000);
 
     solver.solve();
