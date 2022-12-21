@@ -241,8 +241,6 @@ void DantzigWolfe::analyze_subproblems_solution() {
             call_callback(Event_::Algorithm::NewBestLb);
         }
 
-        //m_best_lower_bound = std::max(lower_bound, m_best_lower_bound);
-
         const double best_bound_stop = get(Param::Algorithm::BestBoundStop);
         if (m_best_lower_bound > best_bound_stop) {
             set_reason(Reason::UserObjLimit);
