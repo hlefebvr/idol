@@ -34,9 +34,15 @@ public:
             }
         }
 
+        const auto infeasible_or_unbounded_info = master.get(Param::Algorithm::InfeasibleOrUnboundedInfo);
+
+        master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, false);
+
         master.set(Param::Algorithm::BestBoundStop, parent().upper_bound());
         master.set(Param::Algorithm::TimeLimit, 600);
         master.solve();
+
+        master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, infeasible_or_unbounded_info);
 
         const auto status = master.status();
 
