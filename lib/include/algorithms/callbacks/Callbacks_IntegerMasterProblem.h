@@ -41,7 +41,7 @@ public:
         const auto status = master.status();
 
         if (status == Optimal || status == Feasible) {
-            parent().submit_solution(master.primal_solution());
+            parent().submit_solution(solver.primal_solution());
         } else if (status != Infeasible) {
             throw Exception("Unexpected master problem status.");
         }
