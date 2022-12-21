@@ -72,8 +72,6 @@ private:
 
     void log_node(LogLevel t_msg_level, const Node& t_node) const;
 
-    [[nodiscard]] const Node& current_node() const;
-
     void execute() override;
 protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
@@ -96,6 +94,8 @@ public:
     [[nodiscard]] double upper_bound() const;
     [[nodiscard]] double relative_gap() const;
     [[nodiscard]] double absolute_gap() const;
+
+    [[nodiscard]] const Node& current_node() const;
 
     [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
 

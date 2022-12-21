@@ -20,16 +20,13 @@ class Var;
 class EventType;
 
 class AbstractCallback {
-    const EventType* m_event = nullptr;
     friend class Algorithm;
 public:
     virtual Algorithm& parent() = 0;
 
     [[nodiscard]] virtual const Algorithm& parent() const = 0;
 
-    [[nodiscard]] virtual const EventType& event() const  { return *m_event; }
-
-    virtual void execute() = 0;
+    virtual void execute(const EventType& t_event) = 0;
 };
 
 /**

@@ -8,6 +8,7 @@
 #include "modeling/models/Attributes_Model.h"
 #include "algorithms/callbacks/Algorithm_Events.h"
 #include "algorithms/dantzig-wolfe/Attributes_DantzigWolfe.h"
+#include "algorithms/branch-and-bound/BranchAndBound_Events.h"
 
 #include <iomanip>
 
@@ -248,6 +249,8 @@ bool BranchAndBound::current_node_is_above_upper_bound() {
 }
 
 void BranchAndBound::apply_heuristics_on_current_node() {
+
+    call_callback(Event_::BranchAndBound::RelaxationSolved);
 
     for (const auto& ptr_to_cb : m_callbacks) {
         if (is_terminated()) { break; }

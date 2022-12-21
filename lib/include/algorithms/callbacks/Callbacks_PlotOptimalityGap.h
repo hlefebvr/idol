@@ -9,6 +9,7 @@
 
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 #include "algorithms/callbacks/Algorithm_Events.h"
+#include "UserCallback.h"
 
 #include <TApplication.h>
 #include <TGraph.h>
@@ -22,7 +23,7 @@ namespace Callbacks {
     class PlotOptimalityGap;
 }
 
-class Callbacks::PlotOptimalityGap : public UserCallback<::Algorithm> {
+class Callbacks::PlotOptimalityGap : public UserCallback<Algorithm> {
 
     static unsigned int s_id;
 
@@ -91,20 +92,18 @@ class Callbacks::PlotOptimalityGap : public UserCallback<::Algorithm> {
 public:
     explicit PlotOptimalityGap(std::string t_filename = "") : m_filename(std::move(t_filename)) {}
 
-    void execute() override {
+    void execute(const EventType& t_event) override {
 
         if (m_number_of_rendered_plots >= m_max_number_of_rendered_plots) {
             return;
         }
 
-        const auto& event = this->event();
-
-        if (event == Event_::Algorithm::Begin) {
+        if (t_event == Event_::Algorithm::Begin) {
             m_number_of_points = 0;
             return;
         }
 
-        if (event == Event_::Algorithm::End) {
+        if (t_event == Event_::Algorithm::End) {
 
             if (m_number_of_points > 0 && !m_filename.empty()) {
                 m_canvas->Print(m_filename.c_str());
@@ -116,10 +115,10 @@ public:
             return;
         }
 
-        if (event != Event_::Algorithm::NewBestLb
-            && event != Event_::Algorithm::NewBestUb
-            && event != Event_::Algorithm::NewIterLb
-            && event != Event_::Algorithm::NewIterUb) {
+        if (t_event != Event_::Algorithm::NewBestLb
+            && t_event != Event_::Algorithm::NewBestUb
+            && t_event != Event_::Algorithm::NewIterLb
+            && t_event != Event_::Algorithm::NewIterUb) {
             return;
         }
 

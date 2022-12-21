@@ -66,6 +66,9 @@ public:
     DantzigWolfeSP& subproblem(unsigned int t_index) { return m_subproblems[t_index-1]; }
     [[nodiscard]] const DantzigWolfeSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index-1]; }
 
+    IteratorForward<std::vector<DantzigWolfeSP>> subproblems() { return m_subproblems; }
+    ConstIteratorForward<std::vector<DantzigWolfeSP>> subproblems() const { return m_subproblems; }
+
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_master_solution_strategy(ArgsT&& ...t_args);
 
     Algorithm& master_solution_strategy() { return *m_master_solution_strategy; }
@@ -94,7 +97,5 @@ AlgorithmT &DantzigWolfe::set_master_solution_strategy(ArgsT &&... t_args) {
     m_master_solution_strategy.reset(result);
     return *result;
 }
-
-#include "DantzigWolfe_Callback.h"
 
 #endif //IDOL_DANTZIGWOLFE_H

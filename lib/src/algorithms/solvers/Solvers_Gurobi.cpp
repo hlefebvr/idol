@@ -505,6 +505,19 @@ void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<double, Var> &t_at
     Delegate::set(t_attr, t_var, t_value);
 }
 
+void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) {
+
+    if (t_attr == Attr::Var::Type) {
+
+        future(t_var).impl().set(GRB_CharAttr_VType, gurobi_var_type(t_value));
+        model().set(t_attr, t_var, t_value);
+        return;
+
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
+}
+
 double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
