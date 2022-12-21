@@ -67,7 +67,7 @@ public:
     [[nodiscard]] const DantzigWolfeSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index-1]; }
 
     IteratorForward<std::vector<DantzigWolfeSP>> subproblems() { return m_subproblems; }
-    ConstIteratorForward<std::vector<DantzigWolfeSP>> subproblems() const { return m_subproblems; }
+    [[nodiscard]] ConstIteratorForward<std::vector<DantzigWolfeSP>> subproblems() const { return m_subproblems; }
 
     template<class AlgorithmT, class ...ArgsT> AlgorithmT& set_master_solution_strategy(ArgsT&& ...t_args);
 

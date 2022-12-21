@@ -616,4 +616,23 @@ double Solvers::GLPK::get(const AttributeWithTypeAndArguments<double, void> &t_a
     return Delegate::get(t_attr);
 }
 
+void Solvers::GLPK::set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) {
+
+    if (t_attr == Attr::Var::Type) {
+
+        const auto index = future(t_var).impl();
+
+        switch (get(Attr::Var::Type, t_var)) {
+            case Continuous: glp_set_col_kind(m_model, index, GLP_CV); break;
+            case Binary: glp_set_col_kind(m_model, index, GLP_BV); break;
+            case Integer: glp_set_col_kind(m_model, index, GLP_IV); break;
+            default: throw std::runtime_error("Unknown variable type.");
+        }
+
+        return;
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
+}
+
 #endif
