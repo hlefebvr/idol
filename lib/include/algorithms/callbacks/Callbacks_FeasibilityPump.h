@@ -8,6 +8,7 @@
 #include <random>
 #include "algorithms/branch-and-bound/BranchAndBound.h"
 #include "algorithms/branch-and-bound/BranchAndBound_Events.h"
+#include "UserCallback.h"
 
 namespace Callbacks {
     class FeasibilityPump;

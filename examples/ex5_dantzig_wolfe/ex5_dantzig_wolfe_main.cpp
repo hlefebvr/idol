@@ -14,11 +14,11 @@
 #include "algorithms/callbacks/Callbacks_FeasibilityPump.h"
 #include "algorithms/callbacks/Callbacks_IntegerMasterProblem.h"
 
-#include <TApplication.h>
+//#include <TApplication.h>
 
 int main(int t_argc, char** t_argv) {
 
-    TApplication app("app", &t_argc, t_argv);
+    //TApplication app("app", &t_argc, t_argv);
 
     using namespace Problems::GAP;
 

@@ -22,6 +22,8 @@ class EventType;
 class AbstractCallback {
     friend class Algorithm;
 public:
+    virtual ~AbstractCallback() = default;
+
     virtual Algorithm& parent() = 0;
 
     [[nodiscard]] virtual const Algorithm& parent() const = 0;

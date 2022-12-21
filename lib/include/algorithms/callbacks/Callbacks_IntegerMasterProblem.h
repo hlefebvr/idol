@@ -29,16 +29,16 @@ public:
 
         for (const auto& subproblem : solver.subproblems()) {
             for (const auto& [var, generator] : subproblem.present_generators()) {
-                master.set(Attr::Var::Type, var, Integer);
+                master.set(Attr::Var::Type, var, Binary);
                 m_integer_variables.emplace_back(var);
             }
         }
 
+        master.set(Param::Algorithm::BestBoundStop, parent().upper_bound());
+        master.set(Param::Algorithm::TimeLimit, 600);
         master.solve();
 
         const auto status = master.status();
-
-        std::cout << status << std::endl;
 
         if (status == Optimal || status == Feasible) {
             parent().submit_solution(master.primal_solution());
@@ -49,6 +49,8 @@ public:
         for (const auto& var : m_integer_variables) {
             master.set(Attr::Var::Type, var, Continuous);
         }
+
+        m_integer_variables.clear();
 
 
     }
