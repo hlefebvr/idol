@@ -22,9 +22,9 @@ int main(int t_argc, char** t_argv) {
 
     using namespace Problems::GAP;
 
-    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
     //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/tiny/instance_n2_30__2.txt");
-    //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_40__0.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_40__2.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
@@ -91,7 +91,7 @@ int main(int t_argc, char** t_argv) {
     dantzig_wolfe.set(Param::DantzigWolfe::LogFrequency, 1);
 
     auto& master = dantzig_wolfe.set_master_solution_strategy<Solvers::Gurobi>();
-    master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+    //master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
         dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();

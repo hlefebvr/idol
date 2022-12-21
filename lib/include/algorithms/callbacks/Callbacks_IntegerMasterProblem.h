@@ -42,8 +42,6 @@ public:
 
         if (status == Optimal || status == Feasible) {
             parent().submit_solution(solver.primal_solution());
-        } else if (status != Infeasible) {
-            throw Exception("Unexpected master problem status.");
         }
 
         for (const auto& var : m_integer_variables) {
