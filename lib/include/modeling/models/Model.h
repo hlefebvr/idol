@@ -89,9 +89,9 @@ public:
     template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
     template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");
 
-    Ctr add_ctr(CtrType t_type, Constant t_rhs, std::string t_name = "");
+    Ctr add_ctr(int t_type, Constant t_rhs, std::string t_name = "");
     Ctr add_ctr(TempCtr t_temporary_constraint, std::string t_name = "");
-    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, CtrType t_type, const Constant& t_rhs, const std::string& t_name = "");
+    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, int t_type, const Constant& t_rhs, const std::string& t_name = "");
     template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
 
     template<class T> UserAttr add_user_attr(const explicit_template_param_t<T>& t_default_value, std::string t_name = "");
@@ -119,6 +119,7 @@ public:
     // Ctr
     void set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
     void set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
 
     // Model
     void set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) override;
@@ -184,7 +185,7 @@ Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, const TempVar& t_temporary_v
 }
 
 template<int N>
-Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, CtrType t_type, const Constant& t_rhs, const std::string &t_name) {
+Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, int t_type, const Constant& t_rhs, const std::string &t_name) {
     return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
         return add_ctr(t_type, t_rhs, t_name);
     });

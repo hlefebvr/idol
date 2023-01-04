@@ -31,14 +31,17 @@ void Model::remove(const Var &t_var) {
     m_variables.remove(t_var);
 }
 
-Ctr Model::add_ctr(CtrType t_type, Constant t_rhs, std::string t_name) {
+Ctr Model::add_ctr(int t_type, Constant t_rhs, std::string t_name) {
     if (t_type == Equal) {
         return add_ctr(LinExpr() == std::move(t_rhs), std::move(t_name));
     }
     if (t_type == LessOrEqual) {
         return add_ctr(LinExpr() <= std::move(t_rhs), std::move(t_name));
     }
-    return add_ctr(LinExpr() >= std::move(t_rhs), std::move(t_name));
+    if (t_type == GreaterOrEqual) {
+        return add_ctr(LinExpr() >= std::move(t_rhs), std::move(t_name));
+    }
+    throw Exception("Unexpected constraint type " + std::to_string(t_type));
 }
 
 Ctr Model::add_ctr(TempCtr t_temporary_constraint, std::string t_name) {
@@ -308,4 +311,16 @@ int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var 
 
 Model Model::clone() const {
     return *this;
+}
+
+void Model::set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
+
+    if (t_attr == Attr::Ctr::Row) {
+        remove_row_from_columns(t_ctr);
+        m_constraints.attributes(t_ctr).row() = std::move(t_value);
+        add_row_to_columns(t_ctr);
+        return;
+    }
+
+    Base::set(t_attr, t_ctr, t_value);
 }

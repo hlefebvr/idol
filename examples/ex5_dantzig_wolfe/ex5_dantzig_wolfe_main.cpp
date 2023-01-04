@@ -53,7 +53,7 @@ int main(int t_argc, char** t_argv) {
         model.add_ctr(idol_Sum(i, Range(n_knapsacks), x[i][j]) == 1);
     }
 
-    Solvers::Gurobi gurobi(model);
+    Solvers::GLPK gurobi(model);
     gurobi.solve();
 
     std::cout << gurobi.get(Attr::Solution::ObjVal) << std::endl;
@@ -61,7 +61,7 @@ int main(int t_argc, char** t_argv) {
     // DW reformulation
     Reformulations::DantzigWolfe result(model, complicating_constraint);
 
-    Logs::set_level<BranchAndBound>(Debug);
+    Logs::set_level<BranchAndBound>(Trace);
     Logs::set_color<BranchAndBound>(Blue);
 
     Logs::set_level<DantzigWolfe>(Debug);
@@ -94,20 +94,21 @@ int main(int t_argc, char** t_argv) {
     master.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
     for (unsigned int i = 1 ; i <= n_knapsacks ; ++i) {
-        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::Gurobi>();
+        dantzig_wolfe.subproblem(i).set_exact_solution_strategy<Solvers::GLPK>();
         dantzig_wolfe.subproblem(i).set_branching_manager<BranchingManagers::OnPricing>();
     }
 
     //solver.add_callback<Callbacks::RoundingHeuristic>(flatten<Var, 2>(x));
     solver.set_user_callback<Callbacks::IntegerMasterProblem>();
 
-    solver.set(Param::Algorithm::TimeLimit, 30);
+    solver.set(Param::Algorithm::TimeLimit, 600);
     solver.set(Param::Algorithm::MaxIterations, 100000);
 
     solver.solve();
 
     std::cout << solver.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << solver.time().count() << std::endl;
+    std::cout << solver.primal_solution() << std::endl;
 
     //app.Run();
 

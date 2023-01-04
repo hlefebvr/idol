@@ -206,9 +206,9 @@ public:
      */
     [[nodiscard]] const UserAttr& reformulated_constraint() const { return m_reformulated_constraint; }
 
-    const UserAttr& original_space_variable(unsigned int t_index) const { return m_original_variable[t_index - 1]; }
+    [[nodiscard]] const UserAttr& original_space_variable(unsigned int t_index) const { return m_original_variable[t_index - 1]; }
 
-    const UserAttr& original_space_constraint(unsigned int t_index) const { return m_original_constraint[t_index - 1]; }
+    [[nodiscard]] const UserAttr& original_space_constraint(unsigned int t_index) const { return m_original_constraint[t_index - 1]; }
 };
 
 #endif //IDOL_REFORMULATIONS_DANTZIGWOLFE_H
