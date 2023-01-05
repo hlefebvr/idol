@@ -324,3 +324,15 @@ void Model::set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr
 
     Base::set(t_attr, t_ctr, t_value);
 }
+
+void Model::set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) {
+
+    if (t_attr == Attr::Ctr::Row) {
+        remove_column_from_rows(t_var);
+        m_variables.attributes(t_var).column() = std::move(t_value);
+        add_column_to_rows(t_var);
+        return;
+    }
+
+    Base::set(t_attr, t_var, t_value);
+}
