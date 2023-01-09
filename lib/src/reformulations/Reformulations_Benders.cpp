@@ -114,7 +114,7 @@ void Reformulations::Benders::create_constraints() {
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         m_thetas[i] = m_master_problem.add_var(-Inf, Inf, Continuous, 1., "_bnd_" + std::to_string(i+1));
-        m_master_problem.add_ctr(m_thetas.at(i) >= benders_cut_expressions.at(i), "_bnd_cut_" + std::to_string(i+1));
+        m_benders_cuts[i] = m_master_problem.add_ctr(m_thetas.at(i) >= benders_cut_expressions.at(i), "_bnd_cut_" + std::to_string(i+1));
     }
 
 }

@@ -2,6 +2,7 @@
 // Created by henri on 11/10/22.
 //
 #include "../../../include/algorithms/solvers/Solvers_Gurobi.h"
+#include "algorithms/branch-and-bound/BranchAndBound_Events.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -29,7 +30,15 @@ Solvers::Gurobi::Gurobi(Model &t_model) : Solver(t_model), m_model(m_env) {
 
 void Solvers::Gurobi::execute() {
 
+    m_is_in_callback = false;
+
     update();
+
+    if (Algorithm::has_callback()) {
+        m_callback = std::make_unique<CallbackProxy>(*this);
+        m_model.set(GRB_IntParam_LazyConstraints, 1);
+        m_model.setCallback(m_callback.get());
+    }
 
     if (get(Param::Algorithm::ResetBeforeSolving)) {
         m_model.reset();
@@ -94,7 +103,10 @@ char Solvers::Gurobi::gurobi_ctr_type(int t_type) {
     if (t_type == LessOrEqual) {
         return GRB_LESS_EQUAL;
     }
-    return GRB_GREATER_EQUAL;
+    if (t_type == GreaterOrEqual) {
+        return GRB_GREATER_EQUAL;
+    }
+    throw Exception("Unknown constraint type " + std::to_string(t_type));
 }
 
 char Solvers::Gurobi::gurobi_var_type(int t_type) {
@@ -197,13 +209,32 @@ Solution::Primal Solvers::Gurobi::primal_solution(
 }
 
 Solution::Primal Solvers::Gurobi::primal_solution() const {
-    /* if (m_current_solution != 0) {
-        return primal_solution(
-                solution_status(),
-                [this](){ return m_model.get(GRB_DoubleAttr_PoolObjVal); },
-                [this](const GRBVar& t_var){ return t_var.get(GRB_DoubleAttr_Xn); }
-        );
-    } */
+
+    if (m_is_in_callback) {
+
+        switch (m_callback->where) {
+            case GRB_CB_MIPSOL:
+                return primal_solution(
+                        Optimal,
+                        Proved,
+                        [this]() { return m_callback->getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
+                        [this](const GRBVar &t_var) { return m_callback->getSolution(t_var); }
+                );
+            case GRB_CB_MIPNODE:
+                return primal_solution(
+                        Optimal,
+                        Proved,
+                        [this]() { return m_callback->getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
+                        [this](const GRBVar &t_var) { return m_callback->getNodeRel(t_var); }
+                );
+            default:
+                throw NotImplemented("Retrieving primal solution from callback with where = " + std::to_string(m_callback->where),
+                                     "Solvers::Gurobi::primal_solution");
+        }
+
+    }
+
+    std::cout << "Out of callback" << std::endl;
     return primal_solution(
             status(),
             reason(),
@@ -531,6 +562,51 @@ double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t
     }
 
     return Delegate::get(t_attr);
+}
+
+Ctr Solvers::Gurobi::add_ctr(TempCtr&& t_temporary_constraint) {
+
+    if (m_is_in_callback) {
+        update_variables();
+
+        GRBLinExpr expr;
+        for (const auto& [var, constant] : t_temporary_constraint.row().linear()) {
+            expr += value(constant) * future(var).impl();
+        }
+
+        try {
+            m_callback->addLazy(
+                    expr,
+                    gurobi_ctr_type(t_temporary_constraint.type()),
+                    value(t_temporary_constraint.row().rhs())
+            );
+        } catch (const GRBException& t_err) {
+            std::cout << t_err.getErrorCode() << ": " << t_err.getMessage() << std::endl;
+            __throw_exception_again;
+        }
+        auto result = model().add_ctr(std::move(t_temporary_constraint));
+        add_future(result);
+
+        return result;
+    }
+
+    return Solver::add_ctr(std::move(t_temporary_constraint));
+}
+
+void Solvers::Gurobi::CallbackProxy::callback() {
+
+    m_parent.m_is_in_callback = true;
+
+    switch (where) {
+        case GRB_CB_MIPNODE:
+            m_parent.call_callback(Event_::BranchAndBound::NewIncumbentFound);
+        case GRB_CB_MIPSOL:
+            m_parent.call_callback(Event_::BranchAndBound::RelaxationSolved);
+        default:;
+    }
+
+    m_parent.m_is_in_callback = false;
+
 }
 
 #endif

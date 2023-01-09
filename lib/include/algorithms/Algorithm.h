@@ -84,6 +84,8 @@ protected:
     void set_reason(Reason t_reason) { m_reason = t_reason; }
 
     void call_callback(const EventType& t_event);
+
+    [[nodiscard]] bool has_callback() const { return !!m_callback; }
 public:
     void terminate() { m_is_terminated = true; }
 

@@ -101,7 +101,7 @@ public:
     void remove(const Ctr& t_ctr);
     void remove(const UserAttr& t_user_attr);
 
-    Model clone() const;
+    [[nodiscard]] Model clone() const;
 
     using AttributeManagers::Base::set;
     using AttributeManagers::Base::get;
@@ -135,22 +135,22 @@ public:
     template<class T> const T& get(const UserAttr& t_annotation, const Var& t_var) const;
 
     // Var
-    double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
-    const Column &get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const override;
-    const Constant &get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const override;
-    int get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const override;
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
+    [[nodiscard]] const Column &get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const override;
+    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const override;
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const override;
 
     // Ctr
-    int get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const override;
-    const Row &get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const override;
-    const Constant &get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const override;
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const override;
+    [[nodiscard]] const Row &get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const override;
+    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const override;
 
     // Model
-    const Constant & get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
-    const Expr<Var, Var> &get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const override;
-    const LinExpr<Ctr> &get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const override;
-    const Constant &get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const override;
-    int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
+    [[nodiscard]] const Constant & get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
+    [[nodiscard]] const Expr<Var, Var> &get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const override;
+    [[nodiscard]] const LinExpr<Ctr> &get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const override;
+    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const override;
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
 
 };
 

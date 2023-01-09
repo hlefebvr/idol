@@ -327,7 +327,7 @@ void Model::set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr
 
 void Model::set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) {
 
-    if (t_attr == Attr::Ctr::Row) {
+    if (t_attr == Attr::Var::Column) {
         remove_column_from_rows(t_var);
         m_variables.attributes(t_var).column() = std::move(t_value);
         add_column_to_rows(t_var);
