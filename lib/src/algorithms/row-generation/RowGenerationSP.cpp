@@ -125,6 +125,7 @@ bool RowGenerationSP::violated_cut_found() {
 void RowGenerationSP::add_cut_to_rmp() {
     auto& last_primal_solution = m_last_primal_solution.value();
     auto temp_ctr = create_cut_from(last_primal_solution);
+    std::cout << "Adding " << temp_ctr << std::endl;
     auto constraint = m_rmp_strategy.add_ctr(std::move(temp_ctr));
     m_pool.add(constraint, std::move(m_last_primal_solution).value());
     m_currently_present_cuts.emplace_back(constraint, m_pool.last_inserted());

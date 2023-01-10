@@ -7,7 +7,7 @@
 
 #include "../callbacks/Events.h"
 
-IDOL_CREATE_EVENT_CLASS(BranchAndBound, 6)
+IDOL_CREATE_EVENT_CLASS(BranchAndBound, 3)
 
 IDOL_CREATE_EVENT(BranchAndBound, RootNodeSolved, 0)
 IDOL_CREATE_EVENT(BranchAndBound, RelaxationSolved, 1)

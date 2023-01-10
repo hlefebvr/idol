@@ -20,6 +20,18 @@ Row Row::fix(const Solution::Primal &t_primals) const {
     return result;
 }
 
+Row Row::fix(const Solution::Dual &t_duals) const {
+    Row result;
+
+    for (const auto& [var, constant] : linear()) {
+        result.linear() += constant.fix(t_duals) * var;
+    }
+
+    result.rhs() = rhs().fix(t_duals);
+
+    return result;
+}
+
 impl::Row::Row(::Expr<Var> &&t_lhs, ::Expr<Var> &&t_rhs)
     : m_impl(
             std::move(t_lhs.linear()) - t_rhs.linear(),

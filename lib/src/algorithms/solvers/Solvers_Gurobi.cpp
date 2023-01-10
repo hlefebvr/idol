@@ -52,13 +52,13 @@ void Solvers::Gurobi::execute() {
         m_model.computeIIS();
     }
 
-    analyze_status();
+    analyze_status(m_model.get(GRB_IntAttr_Status));
 
 }
 
-void Solvers::Gurobi::analyze_status() {
-    auto gurobi_status = m_model.get(GRB_IntAttr_Status);
-    switch (gurobi_status) {
+void Solvers::Gurobi::analyze_status(int t_status) {
+
+    switch (t_status) {
         case GRB_OPTIMAL:
             set_status(Optimal);
             set_reason(Proved);
@@ -92,7 +92,7 @@ void Solvers::Gurobi::analyze_status() {
             set_reason(NotSpecified);
         break;
         default:
-            throw Exception("Gurobi returned with status " + std::to_string(gurobi_status) + " which is not handled.");
+            throw Exception("Gurobi returned with status " + std::to_string(t_status) + " which is not handled.");
     }
 }
 
@@ -220,13 +220,24 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
                         [this]() { return m_callback->getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
                         [this](const GRBVar &t_var) { return m_callback->getSolution(t_var); }
                 );
-            case GRB_CB_MIPNODE:
-                return primal_solution(
+            case GRB_CB_MIPNODE: {
+                auto result = primal_solution(
                         Optimal,
                         Proved,
-                        [this]() { return m_callback->getDoubleInfo(GRB_CB_MIPSOL_OBJ); },
+                        [this]() { return 0.; },
                         [this](const GRBVar &t_var) { return m_callback->getNodeRel(t_var); }
                 );
+
+                const auto &objective = model().get(Attr::Obj::Expr);
+                double value = objective.constant().numerical();
+                for (const auto &[var, coeff]: objective.linear()) {
+                    value += result.get(var) * coeff.numerical();
+                }
+                std::cout << "Computed = " << value << std::endl;
+
+                result.set_objective_value(value);
+                return result;
+            }
             default:
                 throw NotImplemented("Retrieving primal solution from callback with where = " + std::to_string(m_callback->where),
                                      "Solvers::Gurobi::primal_solution");
@@ -234,7 +245,6 @@ Solution::Primal Solvers::Gurobi::primal_solution() const {
 
     }
 
-    std::cout << "Out of callback" << std::endl;
     return primal_solution(
             status(),
             reason(),
@@ -438,6 +448,19 @@ void Solvers::Gurobi::update_obj() {
     }
 }
 
+void Solvers::Gurobi::update_rhs() {
+
+    const auto& rhs = model().get(Attr::Rhs::Expr);
+
+    for (const auto& [ctr, constant] : rhs) {
+        auto& impl = future(ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, value(constant));
+        }
+    }
+
+}
+
 void Solvers::Gurobi::set(const Parameter<double> &t_param, double t_value) {
 
     if (t_param.is_in_section(Param::Sections::Algorithm)) {
@@ -552,11 +575,27 @@ void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<int, Var> &t_attr,
 double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
+
         if (status() == Unbounded) {
             return -Inf;
         }
+
         if (status() == Infeasible) {
             return +Inf;
+        }
+
+        if (m_is_in_callback) {
+
+            switch (m_callback->where) {
+                case GRB_CB_MIPSOL:
+                    return m_callback->getDoubleInfo(GRB_CB_MIPSOL_OBJ);
+                case GRB_CB_MIPNODE:
+                    return primal_solution().objective_value();
+                default:
+                    throw NotImplemented("Retrieving primal objective value from callback with where = " + std::to_string(m_callback->where),
+                                         "Solvers::Gurobi::get(Attr::Solution::ObjVal");
+            }
+
         }
         return m_model.get(GRB_DoubleAttr_ObjVal);
     }
@@ -567,23 +606,19 @@ double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t
 Ctr Solvers::Gurobi::add_ctr(TempCtr&& t_temporary_constraint) {
 
     if (m_is_in_callback) {
-        update_variables();
+        //update_variables();
 
         GRBLinExpr expr;
         for (const auto& [var, constant] : t_temporary_constraint.row().linear()) {
             expr += value(constant) * future(var).impl();
         }
 
-        try {
-            m_callback->addLazy(
-                    expr,
-                    gurobi_ctr_type(t_temporary_constraint.type()),
-                    value(t_temporary_constraint.row().rhs())
-            );
-        } catch (const GRBException& t_err) {
-            std::cout << t_err.getErrorCode() << ": " << t_err.getMessage() << std::endl;
-            __throw_exception_again;
-        }
+        m_callback->addLazy(
+                expr,
+                gurobi_ctr_type(t_temporary_constraint.type()),
+                value(t_temporary_constraint.row().rhs())
+        );
+
         auto result = model().add_ctr(std::move(t_temporary_constraint));
         add_future(result);
 
@@ -593,15 +628,38 @@ Ctr Solvers::Gurobi::add_ctr(TempCtr&& t_temporary_constraint) {
     return Solver::add_ctr(std::move(t_temporary_constraint));
 }
 
+void Solvers::Gurobi::clear_rhs() {
+
+    const auto& rhs = model().get(Attr::Rhs::Expr);
+
+    for (const auto& [ctr, constant] : rhs) {
+        auto& impl = future(ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, 0.);
+        }
+    }
+
+    for (const auto& [ctr, constant] : rhs) {
+        model().set(Attr::Ctr::Rhs, ctr, 0.);
+    }
+}
+
 void Solvers::Gurobi::CallbackProxy::callback() {
 
     m_parent.m_is_in_callback = true;
 
     switch (where) {
-        case GRB_CB_MIPNODE:
-            m_parent.call_callback(Event_::BranchAndBound::NewIncumbentFound);
         case GRB_CB_MIPSOL:
-            m_parent.call_callback(Event_::BranchAndBound::RelaxationSolved);
+            m_parent.set_status(Optimal);
+            m_parent.set_reason(Proved);
+            m_parent.call_callback(Event_::BranchAndBound::NewIncumbentFound);
+            break;
+        case GRB_CB_MIPNODE:
+            if (getIntInfo(GRB_CB_MIPNODE_STATUS) == GRB_OPTIMAL) {
+                m_parent.analyze_status(getIntInfo(GRB_CB_MIPNODE_STATUS));
+                m_parent.call_callback(Event_::BranchAndBound::RelaxationSolved);
+            }
+            break;
         default:;
     }
 

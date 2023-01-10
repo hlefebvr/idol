@@ -28,7 +28,7 @@ class Solvers::Gurobi : public Solver<GRBVar, std::variant<GRBConstr, GRBQConstr
     bool m_is_in_callback = false;
     std::unique_ptr<CallbackProxy> m_callback;
 
-    void analyze_status();
+    void analyze_status(int t_status);
     Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
     Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const std::variant<GRBConstr, GRBQConstr>&)>& t_get_dual_value) const;
     static char gurobi_var_type(int t_type);
@@ -44,6 +44,8 @@ protected:
     void update(const Ctr& t_ctr, std::variant<GRBConstr, GRBQConstr>& t_impl) override;
 
     void update_obj() override;
+    void update_rhs() override;
+    void clear_rhs() override;
 
     void remove(const Var &t_var, GRBVar &t_impl) override;
     void remove(const Ctr &t_ctr, std::variant<GRBConstr, GRBQConstr> &t_impl) override;
@@ -97,24 +99,6 @@ public:
     }
 };
 
-/*
-
-template<class CallbackT>
-Ctr Solvers::Gurobi::Callback<CallbackT>::Context::add_lazy_cut(TempCtr t_ctr) {
-    GRBLinExpr expr;
-    for (const auto& [var, constant] : t_ctr.row().linear()) {
-        expr += m_parent.m_solver.value(constant) * m_parent.m_solver.future(var).impl();
-    }
-    m_parent.addLazy(
-            expr,
-            m_parent.m_solver.gurobi_ctr_type(t_ctr.type()),
-            m_parent.m_solver.value(t_ctr.row().rhs())
-    );
-    auto result = m_parent.m_solver.model().add_ctr(std::move(t_ctr));
-    m_parent.m_solver.add_future(result);
-    return result;
-}
-*/
 #endif
 
 #endif //OPTIMIZE_SOLVERS_GUROBI_H

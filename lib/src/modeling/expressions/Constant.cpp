@@ -118,10 +118,10 @@ double Constant::fix(const Solution::Primal &t_primals) const {
     return result;
 }
 
-double Constant::fix(const Solution::Dual &t_primals) const {
+double Constant::fix(const Solution::Dual &t_duals) const {
     double result = m_constant;
     for (const auto& [param, coeff] : m_products) {
-        result += coeff * t_primals.get(param.as<Ctr>());
+        result += coeff * t_duals.get(param.as<Ctr>());
     }
     return result;
 }

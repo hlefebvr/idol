@@ -48,7 +48,7 @@ void DantzigWolfe::execute() {
 
     call_callback(Event_::Algorithm::Begin);
 
-    while (true) {
+    do {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
@@ -81,7 +81,8 @@ void DantzigWolfe::execute() {
         enrich_master_problem();
 
         ++m_iteration_count;
-    }
+
+    } while (true);
 
     log_master_solution(true);
 

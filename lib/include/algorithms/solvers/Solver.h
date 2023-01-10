@@ -43,6 +43,7 @@ class Solver : public Algorithm {
 
     bool m_is_built = false;
     bool m_update_objective = false;
+    bool m_update_rhs = false;
     std::list<Ctr> m_constraints_to_update;
     std::list<Var> m_variables_to_update;
 protected:
@@ -57,12 +58,15 @@ protected:
     std::list<std::unique_ptr<::Callback>> m_callbacks; // TODO make this private
 
     void add_future_obj();
+    void add_future_rhs();
 
     void save_callback(::Callback* t_cb);
 
     virtual void update(const Var& t_var, VarT& t_impl) = 0;
     virtual void update(const Ctr& t_var, CtrT& t_impl) = 0;
     virtual void update_obj() = 0;
+    virtual void update_rhs() = 0;
+    virtual void clear_rhs() = 0;
     virtual void remove(const Var& t_var, VarT& t_impl) = 0;
     virtual void remove(const Ctr& t_var, CtrT& t_impl) = 0;
     virtual VarT create(const Var& t_var, bool t_with_collaterals) = 0;
@@ -109,8 +113,8 @@ public:
     using Algorithm::get;
 
     void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
 };
-
 
 template<class VarT, class CtrT>
 Solver<VarT, CtrT>::Solver(Model &t_model) : m_src_model(t_model) {
@@ -195,6 +199,11 @@ void Solver<VarT, CtrT>::update() {
         m_update_objective = false;
     }
 
+    if (m_update_rhs) {
+        update_rhs();
+        m_update_rhs = true;
+    }
+
     m_is_built = true;
 
 }
@@ -273,6 +282,11 @@ void Solver<VarT, CtrT>::add_future_obj() {
 }
 
 template<class VarT, class CtrT>
+void Solver<VarT, CtrT>::add_future_rhs() {
+    m_update_rhs = true;
+}
+
+template<class VarT, class CtrT>
 void Solver<VarT, CtrT>::save_callback(::Callback *t_cb) {
     m_callbacks.template emplace_back(t_cb);
 }
@@ -282,6 +296,19 @@ void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<Expr<Var, Var>,
 
     if (t_attr == Attr::Obj::Expr) {
         add_future_obj();
+    }
+
+    Delegate::set(t_attr, std::move(t_value));
+}
+
+template<class VarT, class CtrT>
+void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
+
+    if (t_attr == Attr::Rhs::Expr) {
+        if (!m_update_rhs) {
+            clear_rhs();
+        }
+        add_future_rhs();
     }
 
     Delegate::set(t_attr, std::move(t_value));
