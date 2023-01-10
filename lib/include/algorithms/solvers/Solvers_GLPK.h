@@ -39,6 +39,8 @@ protected:
     void update(const Ctr& t_ctr, int& t_impl) override;
 
     void update_obj() override;
+    void update_rhs() override;
+    void clear_rhs() override;
 
     void remove(const Var &t_var, int &t_impl) override;
     void remove(const Ctr &t_ctr, int &t_impl) override;

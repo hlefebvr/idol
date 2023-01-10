@@ -635,4 +635,45 @@ void Solvers::GLPK::set(const AttributeWithTypeAndArguments<int, Var> &t_attr, c
     Delegate::set(t_attr, t_var, t_value);
 }
 
+void Solvers::GLPK::update_rhs() {
+
+    update_constraints();
+
+    const auto& rhs = model().get(Attr::Rhs::Expr);
+
+    for (const auto& [ctr, constant] : rhs) {
+        auto& index = future(ctr).impl();
+        switch (model().get(Attr::Ctr::Type, ctr)) {
+            case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(constant)); break;
+            case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(constant), 0.); break;
+            case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(model().get(Attr::Ctr::Row, ctr).rhs()), 0.); break;
+            default: throw std::runtime_error("Unknown constraint type.");
+        }
+    }
+
+}
+
+void Solvers::GLPK::clear_rhs() {
+
+    update_constraints();
+
+    const auto& rhs = model().get(Attr::Rhs::Expr);
+
+    for (const auto& [ctr, constant] : rhs) {
+        auto& impl = future(ctr).impl();
+        auto& index = future(ctr).impl();
+        switch (model().get(Attr::Ctr::Type, ctr)) {
+            case LessOrEqual: glp_set_row_bnds(m_model, index, GLP_UP, 0., value(constant)); break;
+            case GreaterOrEqual: glp_set_row_bnds(m_model, index, GLP_LO, value(constant), 0.); break;
+            case Equal: glp_set_row_bnds(m_model, index, GLP_FX, value(model().get(Attr::Ctr::Row, ctr).rhs()), 0.); break;
+            default: throw std::runtime_error("Unknown constraint type.");
+        }
+    }
+
+    for (const auto& [ctr, constant] : rhs) {
+        model().set(Attr::Ctr::Rhs, ctr, 0.);
+    }
+
+}
+
 #endif
