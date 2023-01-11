@@ -23,6 +23,7 @@ class Model;
  */
 class Var : public Object {
     friend class Model;
+    friend class Env;
     explicit Var(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 protected:
     [[nodiscard]] bool isVar() const override { return true; }

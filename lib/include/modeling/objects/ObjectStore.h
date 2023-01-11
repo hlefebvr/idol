@@ -9,6 +9,7 @@
 #include <vector>
 #include "../../errors/Exception.h"
 #include "../../containers/IteratorForward.h"
+#include "ObjectId.h"
 
 template<class T, class AttributesT>
 class ObjectStore {

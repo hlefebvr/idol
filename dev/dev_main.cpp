@@ -5,6 +5,7 @@
 #include "reformulations/Reformulations_Benders.h"
 #include "algorithms/benders/Benders.h"
 #include "problems/FLP/FLP_Instance.h"
+#include "modeling/models/Env.h"
 
 int main(int t_argc, char** t_argv) {
 

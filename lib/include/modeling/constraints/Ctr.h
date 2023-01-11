@@ -25,6 +25,7 @@ namespace Solution {
  * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_ctr method, rather than a constructor.
  */
 class Ctr : public Object {
+    friend class Env;
     friend class Model;
     explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
 protected:

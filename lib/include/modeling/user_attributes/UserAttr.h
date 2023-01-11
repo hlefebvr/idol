@@ -10,6 +10,7 @@
 
 class UserAttr : public Object {
     friend class Model;
+    friend class Env;
     const std::type_info& m_type;
     std::any m_default_value;
     template<class T> UserAttr(ObjectId&& t_ref, const T& t_default_value)

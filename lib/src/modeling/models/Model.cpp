@@ -3,7 +3,10 @@
 //
 #include "../../../include/modeling/models/Model.h"
 
-Model::Model(Sense t_sense) : m_objective_sense(t_sense) {
+Model::Model(Env& t_env, Sense t_sense)
+    : m_env(t_env),
+      m_index_user_attr(t_env.add_user_attr<unsigned int>(-1, "index")),
+      m_objective_sense(t_sense) {
 
 }
 

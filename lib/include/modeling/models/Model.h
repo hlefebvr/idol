@@ -5,6 +5,7 @@
 #ifndef OPTIMIZE_MODEL_H
 #define OPTIMIZE_MODEL_H
 
+#include "Env.h"
 #include "../variables/TempVar.h"
 #include "../constraints/TempCtr.h"
 #include "../expressions/Expr.h"
@@ -24,15 +25,6 @@
 
 class Column;
 
-template <class T>
-struct explicit_template_param
-{
-    using type = T;
-};
-
-template <class T>
-using explicit_template_param_t = typename explicit_template_param<T>::type;
-
 /**
  * Optimization model object.
  *
@@ -47,10 +39,13 @@ using explicit_template_param_t = typename explicit_template_param<T>::type;
  * \f}
  */
 class Model : public Matrix, public AttributeManagers::Base {
+    Env& m_env;
+    UserAttr m_index_user_attr;
 
     int m_objective_sense;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
+    //std::vector<VarAttributes> m_variables;
     ObjectStore<Var, VarAttributes> m_variables;
     ObjectStore<Ctr, CtrAttributes> m_constraints;
     ObjectStore<UserAttr, UserAttrAttributes> m_user_attributes;
@@ -65,7 +60,7 @@ class Model : public Matrix, public AttributeManagers::Base {
 protected:
     Model(const Model&) = default;
 public:
-    explicit Model(Sense t_sense = Minimize);
+    explicit Model(Env& t_env = Env::global(), Sense t_sense = Minimize);
 
     Model(Model&&) noexcept = default;
 
