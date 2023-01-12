@@ -57,6 +57,9 @@ protected:
 
     std::list<std::unique_ptr<::Callback>> m_callbacks; // TODO make this private
 
+    [[nodiscard]] double infeasible_objective_value() const { return m_src_model.get(Attr::Obj::Sense) == Minimize ? +Inf : -Inf; }
+    [[nodiscard]] double unbounded_objective_value() const { return m_src_model.get(Attr::Obj::Sense) == Minimize ? -Inf : +Inf; }
+
     void add_future_obj();
     void add_future_rhs();
 

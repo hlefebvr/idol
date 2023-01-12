@@ -25,7 +25,9 @@ class BendersSP {
     Pool<Ctr> m_pool;
     PresentGeneratorsList m_present_generators;
 protected:
-    Model& model();
+    void remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal);
+    void set_lower_bound(const Var& t_var, double t_lb);
+    void set_upper_bound(const Var& t_var, double t_ub);
 public:
     BendersSP(Benders& t_parent, unsigned int t_index, Model& t_model, const Ctr& t_cut, const Var& t_epigraph);
 
@@ -37,7 +39,11 @@ public:
 
     void enrich_master_problem();
 
+    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_bound);
+
     [[nodiscard]] SolutionStatus status() const;
+
+    [[nodiscard]] PresentGenerators present_generators() const { return m_present_generators; }
 
     [[nodiscard]] double objective_value() const;
 
@@ -45,6 +51,9 @@ public:
 
     Algorithm& exact_solution_strategy() { return *m_exact_solution_strategy; }
     [[nodiscard]] const Algorithm& exact_solution_strategy() const { return *m_exact_solution_strategy; }
+
+    Model& model() { return m_model; }
+    [[nodiscard]] const Model& model() const { return m_model; }
 
     [[nodiscard]] const Var& epigraph_variable() const { return m_epigraph_variable; }
 

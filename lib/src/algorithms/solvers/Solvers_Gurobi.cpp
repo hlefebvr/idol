@@ -181,12 +181,12 @@ Solution::Primal Solvers::Gurobi::primal_solution(
     result.set_reason(t_reason);
 
     if (t_status == Unbounded) {
-        result.set_objective_value(-Inf);
+        result.set_objective_value(unbounded_objective_value());
         return result;
     }
 
     if (t_status == Infeasible) {
-        result.set_objective_value(+Inf);
+        result.set_objective_value(infeasible_objective_value());
         return result;
     }
 
@@ -260,12 +260,12 @@ Solution::Dual Solvers::Gurobi::dual_solution(SolutionStatus t_status, const std
     result.set_status(dual_status);
 
     if (dual_status == Unbounded) {
-        result.set_objective_value(+Inf);
+        result.set_objective_value(infeasible_objective_value());
         return result;
     }
 
     if (is_in(dual_status, { Infeasible })) {
-        result.set_objective_value(-Inf);
+        result.set_objective_value(unbounded_objective_value());
         return result;
     }
 
@@ -306,7 +306,7 @@ Solution::Dual Solvers::Gurobi::dual_solution() const {
 Solution::Dual Solvers::Gurobi::iis() const {
     return dual_solution(
             Optimal,
-            [](){ return Inf; },
+            [this](){ return infeasible_objective_value(); },
             [](const std::variant<GRBConstr, GRBQConstr>& t_ctr){
 
                 if (std::holds_alternative<GRBConstr>(t_ctr)) {
@@ -543,7 +543,15 @@ void Solvers::Gurobi::set(const AttributeWithTypeAndArguments<double, Var> &t_at
         auto gurobi_attr = t_attr == Attr::Var::Lb ? GRB_DoubleAttr_LB : GRB_DoubleAttr_UB;
 
         if (model().get(Attr::Var::Status, t_var)) {
-            future(t_var).impl().set(gurobi_attr, t_value);
+
+            double value = t_value;
+            if (is_pos_inf(value)) {
+                value = GRB_INFINITY;
+            } else if (is_neg_inf(value)) {
+                value = -GRB_INFEASIBLE;
+            }
+
+            future(t_var).impl().set(gurobi_attr, value);
             model().set(t_attr, t_var, t_value);
             return;
         }
@@ -577,11 +585,11 @@ double Solvers::Gurobi::get(const AttributeWithTypeAndArguments<double, void> &t
     if (t_attr == Attr::Solution::ObjVal) {
 
         if (status() == Unbounded) {
-            return -Inf;
+            return unbounded_objective_value();
         }
 
         if (status() == Infeasible) {
-            return +Inf;
+            return infeasible_objective_value();
         }
 
         if (m_is_in_callback) {

@@ -33,6 +33,9 @@ protected:
     void initialize();
 
     void main_loop(bool t_solve_master = false);
+
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+
 public:
     explicit Benders(Model& t_model, bool t_is_nested = true);
 
@@ -78,6 +81,8 @@ public:
 
     using Algorithm::set;
     using Algorithm::get;
+
+    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
 };
 
 template<class AlgorithmT, class... ArgsT>

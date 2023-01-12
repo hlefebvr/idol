@@ -50,6 +50,7 @@ void Benders::main_loop(bool t_solve_master) {
 
         if (t_solve_master) {
 
+            std::cout << "Solve master" << std::endl;
             solve_master_problem();
 
             if (m_is_nested) {
@@ -212,7 +213,7 @@ void Benders::analyze_subproblems_solution() {
         const auto status = subproblem.status();
 
         if (status == Optimal) {
-            upper_bound += -subproblem.objective_value();
+            upper_bound += subproblem.objective_value();
         } else if (status == Unbounded) {
             m_current_subproblems_are_all_feasible = false;
             break;
@@ -231,6 +232,7 @@ void Benders::analyze_subproblems_solution() {
     if (m_current_subproblems_are_all_feasible) {
 
         m_iter_upper_bound = upper_bound;
+        std::cout << m_iter_upper_bound << std::endl;
         if (!m_is_nested && m_best_upper_bound >= upper_bound) {
             m_best_upper_bound = upper_bound;
         }
@@ -249,7 +251,7 @@ void Benders::enrich_master_problem() {
 
     for (auto &subproblem: m_subproblems) {
 
-        bool can_enrich_master = subproblem.objective_value() < 0;
+        bool can_enrich_master = subproblem.objective_value() > 0;
 
         if (can_enrich_master) {
             subproblem.enrich_master_problem();
@@ -291,4 +293,26 @@ void Benders::log_subproblem_solution(const BendersSP &t_subproblem, bool t_forc
 BendersSP &Benders::add_subproblem(Model &t_model, const Ctr &t_cut, const Var &t_epigraph) {
     m_subproblems.emplace_back(*this, m_subproblems.size(), t_model, t_cut, t_epigraph);
     return m_subproblems.back();
+}
+
+AttributeManager &Benders::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
+
+    if (m_model.get(Attr::Var::Status, t_object)) {
+        return m_model;
+    }
+
+    if (m_subproblems.size() > 1) {
+        throw Exception("Accessing subproblem attributes with more than one subproblem is not yet implemented.");
+    }
+    return m_subproblems.front().model();
+}
+
+void Benders::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (m_subproblems.front().model().get(Attr::Var::Status, t_var)) {
+        m_subproblems.front().set(t_attr, t_var, t_value);
+        return;
+    }
+
+    Delegate::set(t_attr, t_var, t_value);
 }

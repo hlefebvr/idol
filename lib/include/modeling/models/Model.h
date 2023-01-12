@@ -45,7 +45,6 @@ class Model : public Matrix, public AttributeManagers::Base {
     int m_objective_sense;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
-    //std::vector<VarAttributes> m_variables;
     ObjectStore<Var, VarAttributes> m_variables;
     ObjectStore<Ctr, CtrAttributes> m_constraints;
     ObjectStore<UserAttr, UserAttrAttributes> m_user_attributes;

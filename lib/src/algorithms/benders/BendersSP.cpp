@@ -26,10 +26,6 @@ BendersSP::BendersSP(Benders &t_parent, unsigned int t_index, Model& t_model, co
 
 }
 
-Model &BendersSP::model() {
-    return m_model;
-}
-
 void BendersSP::initialize() {
 
     if (!m_exact_solution_strategy) {
@@ -42,27 +38,32 @@ void BendersSP::update(const Solution::Primal &t_master_solution) {
 
     double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
 
-    Expr objective = sign * m_cut_template.row().rhs().numerical();
+    Expr objective = -sign * m_cut_template.row().rhs().numerical();
 
     for (const auto& [param, coeff] : m_cut_template.row().rhs()) {
-        objective += sign * coeff * param.as<Var>();
+        objective += -sign * coeff * param.as<Var>();
     }
 
     for (const auto &[var, constant]: m_cut_template.row().linear()) {
-        objective += -sign * constant.numerical() * t_master_solution.get(var);
+        const double value = t_master_solution.get(var);
+        objective += sign * constant.numerical() * value;
         for (const auto &[param, coeff]: constant) {
-            objective += -sign * t_master_solution.get(var) * coeff * param.as<Var>();
+            objective += sign * value * coeff * param.as<Var>();
         }
     }
+
+    std::cout << objective << std::endl;
 
     m_exact_solution_strategy->set(Attr::Obj::Expr, objective);
 }
 
 void BendersSP::solve() {
 
+    std::cout << "Solve separation" << std::endl;
     const double remaining_time = m_parent.remaining_time();
     m_exact_solution_strategy->set(Param::Algorithm::TimeLimit, remaining_time);
     m_exact_solution_strategy->solve();
+    //m_exact_solution_strategy->write("subproblem");
 
 }
 
@@ -81,6 +82,8 @@ void BendersSP::enrich_master_problem() {
     auto& master = m_parent.master_solution_strategy();
     auto generator = use_ray ? m_exact_solution_strategy->unbounded_ray() : m_exact_solution_strategy->primal_solution();
 
+    std::cout << "SOLVE[\n" << generator << "\n]" << std::endl;
+
     auto temp_cut = create_cut_from_generator(generator);
     if (use_ray) {
         temp_cut.row().linear().remove(m_epigraph_variable);
@@ -97,4 +100,62 @@ TempCtr BendersSP::create_cut_from_generator(const Solution::Primal &t_generator
       m_cut_template.row().fix(t_generator),
       m_cut_template.type()
     };
+}
+
+void BendersSP::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_bound) {
+
+    if (t_attr == Attr::Var::Lb) {
+        set_lower_bound(t_var, t_bound);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Ub) {
+        set_upper_bound(t_var, t_bound);
+        return;
+    }
+
+    m_exact_solution_strategy->set(t_attr, t_var, t_bound);
+
+}
+
+void BendersSP::set_lower_bound(const Var &t_var, double t_lb) {
+
+    remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
+        return true;
+        return t_generator.get(t_var) < t_lb;
+    });
+
+    m_exact_solution_strategy->set(Attr::Var::Lb, t_var, t_lb);
+
+}
+
+void BendersSP::set_upper_bound(const Var &t_var, double t_ub) {
+
+    remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
+        return true;
+        return t_generator.get(t_var) > t_ub;
+    });
+
+    m_exact_solution_strategy->set(Attr::Var::Ub, t_var, t_ub);
+
+}
+
+void
+BendersSP::remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto& rmp = m_parent.master_solution_strategy();
+
+    auto it = m_present_generators.begin();
+    const auto end = m_present_generators.end();
+
+    while (it != end) {
+        const auto& [cut, generator] = *it;
+        if (t_indicator_for_removal(cut, generator)) {
+            rmp.remove(cut);
+            it = m_present_generators.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
 }
