@@ -80,16 +80,9 @@ int main(int t_argc, char** t_argv) {
     auto cut = rmp.add_ctr(z >= expr);
     rmp.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * y[i]) + z);
 
-    BranchAndBound branch_and_bound;
+    Benders solver(rmp, true);
 
-    auto& node_strategy = branch_and_bound.set_node_strategy<NodeStrategies::Basic<Nodes::BendersIIS>>();
-    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
-    node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(w);
-    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
-
-    auto& solver = branch_and_bound.set_solution_strategy<Benders>(rmp, true);
-
-    solver.set(Param::Algorithm::MaxIterations, 0);
+    //solver.set(Param::Algorithm::MaxIterations, 0);
 
     auto& master_solver = solver.set_master_solution_strategy<Solvers::Gurobi>();
     master_solver.set(Param::Algorithm::ResetBeforeSolving, true);
@@ -98,7 +91,7 @@ int main(int t_argc, char** t_argv) {
     benders_subproblem.set_exact_solution_strategy<Solvers::Gurobi>();
     benders_subproblem.exact_solution_strategy().set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 
-    branch_and_bound.solve();
+    solver.solve();
 
     std::cout << "--------------" << std::endl;
     std::cout << solver.primal_solution() << std::endl;
