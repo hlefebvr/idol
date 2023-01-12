@@ -6,71 +6,7 @@
 #include "algorithms/benders/Benders.h"
 #include "problems/FLP/FLP_Instance.h"
 #include "modeling/models/Env.h"
-
-
-namespace Nodes {
-    class BendersIIS;
-}
-
-class Nodes::BendersIIS : public Nodes::Basic {
-    BendersIIS(unsigned int t_id, const BendersIIS& t_src) : Nodes::Basic(t_id, t_src) {}
-public:
-    explicit BendersIIS(unsigned int t_id) : Nodes::Basic(t_id) {}
-
-    void save_solution(const Algorithm &t_strategy) override {
-
-        auto& benders = const_cast<Benders&>(t_strategy.as<Benders>());
-
-        auto& gurobi = benders.master_solution_strategy().as<Solvers::Gurobi>();
-
-        const double optimal_node_value = gurobi.primal_solution().objective_value();
-
-        auto& rmp = gurobi.model();
-        Solvers::Gurobi solver(rmp);
-
-        // TODO: for minimization only!
-        auto infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) <= optimal_node_value - 1e-1);
-
-        solver.compute_iis();
-
-        const auto iis = solver.iis();
-
-        solver.remove(infeasible_constraint);
-
-        Solution::Primal solution;
-
-        solution.set_status(t_strategy.status());
-        solution.set_reason(t_strategy.reason());
-        solution.set_objective_value(optimal_node_value);
-
-
-        // Save reconstructed X
-        unsigned int n_cuts = 0;
-        for (const auto& sp : benders.subproblems()) {
-            for (const auto& [cut, primal_solution] : sp.present_generators()) {
-                if (primal_solution.status() != Optimal) {
-                    continue;
-                }
-                std::cout << "{{\n" << primal_solution << "\n}}" << std::endl;
-                if (equals(iis.get(cut), 1., ToleranceForIntegrality)) {
-                    solution += primal_solution;
-                    n_cuts += 1;
-                }
-            }
-        }
-
-        solution *= 1. / n_cuts;
-
-        std::cout << solution << std::endl;
-
-        set_solution(std::move(solution));
-    }
-
-    [[nodiscard]] BendersIIS *create_child(unsigned int t_id) const override {
-        return new BendersIIS(t_id, *this);
-    }
-};
-
+#include "algorithms/benders/Nodes_BendersIIS.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -151,7 +87,7 @@ int main(int t_argc, char** t_argv) {
     node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(w);
     node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
 
-    auto& solver = branch_and_bound.set_solution_strategy<Benders>(rmp, false);
+    auto& solver = branch_and_bound.set_solution_strategy<Benders>(rmp, true);
 
     solver.set(Param::Algorithm::MaxIterations, 0);
 
