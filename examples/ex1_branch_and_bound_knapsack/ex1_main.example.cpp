@@ -9,7 +9,7 @@
 
 int main() {
 
-    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_level<BranchAndBound>(Trace);
 
     Model model;
 
