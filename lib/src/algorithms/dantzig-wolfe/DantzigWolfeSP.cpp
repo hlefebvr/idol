@@ -164,7 +164,7 @@ void DantzigWolfeSP::apply_bound_expressed_in_original_space(const AttributeWith
     if (t_attr == Attr::Var::Lb) {
 
         remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
-            return true;
+            //return true;
             return t_generator.get(reformulated_var) < t_value;
         });
 
@@ -176,7 +176,7 @@ void DantzigWolfeSP::apply_bound_expressed_in_original_space(const AttributeWith
     if (t_attr == Attr::Var::Ub) {
 
         remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
-            return true;
+            //return true;
             return t_generator.get(reformulated_var) > t_value;
         });
 

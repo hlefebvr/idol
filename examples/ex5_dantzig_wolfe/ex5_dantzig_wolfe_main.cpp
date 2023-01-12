@@ -24,7 +24,7 @@ int main(int t_argc, char** t_argv) {
 
     //auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
     //auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/tiny/instance_n2_30__2.txt");
-    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/small/instance_n3_40__2.txt");
+    auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_40__2.txt");
 
     const unsigned int n_knapsacks = instance.n_agents();
     const unsigned int n_items = instance.n_jobs();
