@@ -68,8 +68,6 @@ template<class NodeT>
 bool BranchingStrategies::MostInfeasible::Strategy<NodeT>::is_valid(const NodeT &t_node) const {
     const auto& primal = t_node.primal_solution();
 
-    std::cout << "Node " << t_node.id() << "{\n" << t_node.primal_solution() << "\n}" << std::endl;
-
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
             idol_Log(Trace, BranchAndBound, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );

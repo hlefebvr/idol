@@ -31,13 +31,12 @@ public:
         auto& rmp = gurobi.model();
         Solvers::Gurobi solver(rmp);
 
-        CtrType type = rmp.get(Attr::Obj::Sense) == Minimize ? LessOrEqual : GreaterOrEqual;
-        auto infeasible_constraint = solver.add_ctr(
-                TempCtr(
-                    Row(rmp.get(Attr::Obj::Expr), optimal_node_value - 1e-1),
-                    type
-                )
-            );
+        Ctr infeasible_constraint;
+        if (rmp.get(Attr::Obj::Sense) == Minimize) {
+            infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) <= optimal_node_value - 1e-1);
+        } else {
+            infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) >= optimal_node_value + 1e-1);
+        }
 
         solver.compute_iis();
 
@@ -59,7 +58,6 @@ public:
                 if (primal_solution.status() != Optimal) {
                     continue;
                 }
-                std::cout << "{{\n" << primal_solution << "\n}}" << std::endl;
                 if (equals(iis.get(cut), 1., ToleranceForIntegrality)) {
                     solution += primal_solution;
                     n_cuts += 1;
@@ -68,8 +66,6 @@ public:
         }
 
         solution *= 1. / n_cuts;
-
-        std::cout << solution << std::endl;
 
         set_solution(std::move(solution));
     }

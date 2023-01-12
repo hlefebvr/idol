@@ -18,6 +18,7 @@ class Benders : public Algorithm {
     std::unique_ptr<Algorithm> m_master_solution_strategy;
     const bool m_is_nested;
 
+    int m_sense = Minimize;
     double m_best_lower_bound = -Inf;
     double m_best_upper_bound = +Inf;
     double m_iter_lower_bound = -Inf;

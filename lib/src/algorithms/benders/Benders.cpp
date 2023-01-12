@@ -12,6 +12,7 @@ Benders::Benders(Model &t_model, bool t_is_nested)
 
 void Benders::initialize() {
 
+    m_sense = m_model.get(Attr::Obj::Sense);
     m_best_lower_bound = -Inf;
     m_best_upper_bound = +Inf;
     m_iter_lower_bound = -Inf;
@@ -50,7 +51,6 @@ void Benders::main_loop(bool t_solve_master) {
 
         if (t_solve_master) {
 
-            std::cout << "Solve master" << std::endl;
             solve_master_problem();
 
             if (m_is_nested) {
@@ -103,10 +103,18 @@ void Benders::analyze_master_problem_solution() {
 
     if (status == Optimal) {
 
-        m_iter_lower_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal);
+        double& iter_bound = m_sense == Minimize ? m_iter_lower_bound : m_iter_upper_bound;
+
+        iter_bound = m_master_solution_strategy->get(Attr::Solution::ObjVal);
 
         if (!m_is_nested) {
-            m_best_lower_bound = std::max(m_iter_lower_bound, m_best_lower_bound);
+
+            if (m_sense == Minimize) {
+                m_best_lower_bound = std::max(m_iter_lower_bound, m_best_lower_bound);
+            } else {
+                m_best_upper_bound = std::min(m_iter_upper_bound, m_best_upper_bound);
+            }
+
         }
 
         m_current_primal_solution = m_master_solution_strategy->primal_solution();
@@ -231,10 +239,15 @@ void Benders::analyze_subproblems_solution() {
 
     if (m_current_subproblems_are_all_feasible) {
 
-        m_iter_upper_bound = upper_bound;
-        std::cout << m_iter_upper_bound << std::endl;
-        if (!m_is_nested && m_best_upper_bound >= upper_bound) {
-            m_best_upper_bound = upper_bound;
+        double& iter_bound = m_sense == Minimize ? m_iter_upper_bound : m_iter_lower_bound;
+        iter_bound = upper_bound;
+
+        if (!m_is_nested) {
+            if (m_sense == Minimize) {
+                m_best_upper_bound = std::min(m_best_upper_bound, m_iter_upper_bound);
+            } else {
+                m_best_lower_bound = std::max(m_best_lower_bound, m_iter_lower_bound);
+            }
         }
 
     }
@@ -251,7 +264,7 @@ void Benders::enrich_master_problem() {
 
     for (auto &subproblem: m_subproblems) {
 
-        bool can_enrich_master = subproblem.objective_value() > 0;
+        bool can_enrich_master = subproblem.objective_value() < 0;
 
         if (can_enrich_master) {
             subproblem.enrich_master_problem();

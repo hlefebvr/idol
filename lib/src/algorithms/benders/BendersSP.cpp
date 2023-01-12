@@ -36,34 +36,28 @@ void BendersSP::initialize() {
 
 void BendersSP::update(const Solution::Primal &t_master_solution) {
 
-    double sign = m_cut_template.type() == LessOrEqual ? 1. : -1.;
-
-    Expr objective = -sign * m_cut_template.row().rhs().numerical();
+    Expr objective = m_cut_template.row().rhs().numerical();
 
     for (const auto& [param, coeff] : m_cut_template.row().rhs()) {
-        objective += -sign * coeff * param.as<Var>();
+        objective += coeff * param.as<Var>();
     }
 
     for (const auto &[var, constant]: m_cut_template.row().linear()) {
         const double value = t_master_solution.get(var);
-        objective += sign * constant.numerical() * value;
+        objective += -constant.numerical() * value;
         for (const auto &[param, coeff]: constant) {
-            objective += sign * value * coeff * param.as<Var>();
+            objective += -value * coeff * param.as<Var>();
         }
     }
-
-    std::cout << objective << std::endl;
 
     m_exact_solution_strategy->set(Attr::Obj::Expr, objective);
 }
 
 void BendersSP::solve() {
 
-    std::cout << "Solve separation" << std::endl;
     const double remaining_time = m_parent.remaining_time();
     m_exact_solution_strategy->set(Param::Algorithm::TimeLimit, remaining_time);
     m_exact_solution_strategy->solve();
-    //m_exact_solution_strategy->write("subproblem");
 
 }
 
@@ -81,8 +75,6 @@ void BendersSP::enrich_master_problem() {
 
     auto& master = m_parent.master_solution_strategy();
     auto generator = use_ray ? m_exact_solution_strategy->unbounded_ray() : m_exact_solution_strategy->primal_solution();
-
-    std::cout << "SOLVE[\n" << generator << "\n]" << std::endl;
 
     auto temp_cut = create_cut_from_generator(generator);
     if (use_ray) {
