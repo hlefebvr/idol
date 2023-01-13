@@ -80,10 +80,13 @@ public:
 
     void enrich_master_problem();
 
+    int sense() const override;
+
     using Algorithm::set;
     using Algorithm::get;
 
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Parameter<double>& t_param, double t_value) override;
 };
 
 template<class AlgorithmT, class... ArgsT>

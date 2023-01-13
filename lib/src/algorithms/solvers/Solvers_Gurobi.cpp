@@ -652,6 +652,10 @@ void Solvers::Gurobi::clear_rhs() {
     }
 }
 
+int Solvers::Gurobi::sense() const {
+    return model().get(Attr::Obj::Sense);
+}
+
 void Solvers::Gurobi::CallbackProxy::callback() {
 
     m_parent.m_is_in_callback = true;

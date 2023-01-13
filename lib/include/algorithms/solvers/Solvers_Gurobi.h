@@ -36,6 +36,7 @@ class Solvers::Gurobi : public Solver<GRBVar, std::variant<GRBConstr, GRBQConstr
 protected:
     void execute() override;
     void execute_iis() override;
+protected:
 
     GRBVar create(const Var& t_var, bool t_with_collaterals) override;
     std::variant<GRBConstr, GRBQConstr> create(const Ctr& t_ctr, bool t_with_collaterals) override;
@@ -64,6 +65,8 @@ public:
     [[nodiscard]] Solution::Primal unbounded_ray() const override;
 
     [[nodiscard]] Solution::Dual iis() const override;
+
+    [[nodiscard]] int sense() const override;
 
     void write(const std::string &t_filename) override;
 

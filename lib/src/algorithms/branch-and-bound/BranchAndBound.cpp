@@ -193,7 +193,7 @@ void BranchAndBound::solve_current_node() {
     if (m_solution_strategy->sense() == Minimize) {
         m_solution_strategy->set(Param::Algorithm::BestBoundStop, std::min(m_best_upper_bound, get(Param::Algorithm::BestBoundStop)));
     } else {
-        m_solution_strategy->set(Param::Algorithm::BestObjStop, std::min(m_best_upper_bound, get(Param::Algorithm::BestObjStop)));
+        m_solution_strategy->set(Param::Algorithm::BestObjStop, std::max(m_best_upper_bound, get(Param::Algorithm::BestObjStop)));
     }
 
     const double remaining_time = std::max(0., get(Param::Algorithm::TimeLimit) - time().count());

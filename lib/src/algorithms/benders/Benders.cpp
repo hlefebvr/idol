@@ -329,3 +329,12 @@ void Benders::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, cons
 
     Delegate::set(t_attr, t_var, t_value);
 }
+
+void Benders::set(const Parameter<double> &t_param, double t_value) {
+    m_master_solution_strategy->set(t_param, t_value);
+    Algorithm::set(t_param, t_value);
+}
+
+int Benders::sense() const {
+    return m_master_solution_strategy->sense();
+}
