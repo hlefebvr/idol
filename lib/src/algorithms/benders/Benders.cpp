@@ -264,7 +264,12 @@ void Benders::enrich_master_problem() {
 
     for (auto &subproblem: m_subproblems) {
 
-        bool can_enrich_master = subproblem.objective_value() < 0;
+        bool can_enrich_master;
+        if (m_sense == Maximize) {
+            can_enrich_master = subproblem.objective_value() < 0;
+        } else {
+            can_enrich_master = subproblem.objective_value() > 0;
+        }
 
         if (can_enrich_master) {
             subproblem.enrich_master_problem();

@@ -113,7 +113,6 @@ void BendersSP::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, co
 void BendersSP::set_lower_bound(const Var &t_var, double t_lb) {
 
     remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
-        return true;
         return t_generator.get(t_var) < t_lb;
     });
 
@@ -124,7 +123,6 @@ void BendersSP::set_lower_bound(const Var &t_var, double t_lb) {
 void BendersSP::set_upper_bound(const Var &t_var, double t_ub) {
 
     remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
-        return true;
         return t_generator.get(t_var) > t_ub;
     });
 
