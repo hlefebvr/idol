@@ -23,51 +23,85 @@ public:
     void save_solution(const Algorithm &t_strategy) override {
 
         auto& benders = const_cast<Benders&>(t_strategy.as<Benders>());
-
         auto& gurobi = benders.master_solution_strategy().as<Solvers::Gurobi>();
 
         const double optimal_node_value = gurobi.primal_solution().objective_value();
 
-        auto& rmp = gurobi.model();
-        Solvers::Gurobi solver(rmp);
-
-        Ctr infeasible_constraint;
-        if (rmp.get(Attr::Obj::Sense) == Minimize) {
-            infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) <= optimal_node_value - 1e-1);
-        } else {
-            infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) >= optimal_node_value + 1e-1);
+        unsigned int n_generators = 0;
+        for (auto& sp : benders.subproblems()) {
+            n_generators += sp.present_generators().size();
         }
 
-        solver.compute_iis();
+        if (n_generators < 200) {
 
-        const auto iis = solver.iis();
+            auto& rmp = gurobi.model();
+            Solvers::Gurobi solver(rmp);
+            solver.set(Param::Algorithm::TimeLimit, benders.remaining_time());
+            solver.set(Param::Algorithm::MaxThreads, benders.get(Param::Algorithm::MaxThreads));
 
-        solver.remove(infeasible_constraint);
+            Ctr infeasible_constraint;
+            if (rmp.get(Attr::Obj::Sense) == Minimize) {
+                infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) <= optimal_node_value - 1e-1);
+            } else {
+                infeasible_constraint = solver.add_ctr(rmp.get(Attr::Obj::Expr) >= optimal_node_value + 1e-1);
+            }
 
-        Solution::Primal solution;
+            solver.compute_iis();
 
-        solution.set_status(t_strategy.status());
-        solution.set_reason(t_strategy.reason());
-        solution.set_objective_value(optimal_node_value);
+            const auto iis = solver.iis();
+
+            solver.remove(infeasible_constraint);
+
+            Solution::Primal solution;
+
+            solution.set_status(t_strategy.status());
+            solution.set_reason(t_strategy.reason());
+            solution.set_objective_value(optimal_node_value);
 
 
-        // Save reconstructed X
-        unsigned int n_cuts = 0;
-        for (const auto& sp : benders.subproblems()) {
-            for (const auto& [cut, primal_solution] : sp.present_generators()) {
-                if (primal_solution.status() != Optimal) {
-                    continue;
+            // Save reconstructed X
+            unsigned int n_cuts = 0;
+            for (const auto& sp : benders.subproblems()) {
+                for (const auto& [cut, primal_solution] : sp.present_generators()) {
+                    if (primal_solution.status() != Optimal) {
+                        continue;
+                    }
+                    if (equals(iis.get(cut), 1., ToleranceForIntegrality)) {
+                        solution += primal_solution;
+                        n_cuts += 1;
+                    }
                 }
-                if (equals(iis.get(cut), 1., ToleranceForIntegrality)) {
+            }
+
+            solution *= 1. / n_cuts;
+
+            set_solution(std::move(solution));
+
+        } else {
+
+            Solution::Primal solution;
+
+            solution.set_status(t_strategy.status());
+            solution.set_reason(t_strategy.reason());
+            solution.set_objective_value(optimal_node_value);
+
+            unsigned int n_cuts = 0;
+            for (const auto& sp : benders.subproblems()) {
+                for (const auto& [cut, primal_solution] : sp.present_generators()) {
+                    if (primal_solution.status() != Optimal) {
+                        continue;
+                    }
                     solution += primal_solution;
                     n_cuts += 1;
                 }
             }
+
+            solution *= 1. / n_cuts;
+
+            set_solution(std::move(solution));
+
         }
 
-        solution *= 1. / n_cuts;
-
-        set_solution(std::move(solution));
     }
 
     [[nodiscard]] BendersIIS *create_child(unsigned int t_id) const override {

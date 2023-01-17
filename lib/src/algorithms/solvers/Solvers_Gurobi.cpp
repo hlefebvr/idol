@@ -325,7 +325,11 @@ void Solvers::Gurobi::write(const std::string &t_filename) {
 
 void Solvers::Gurobi::execute_iis() {
     update();
+    m_model.set(GRB_IntParam_IISMethod, 0);
     m_model.set(GRB_DoubleParam_Cutoff, GRB_INFINITY);
+    m_model.set(GRB_DoubleParam_TimeLimit, get(Param::Algorithm::TimeLimit));
+
+
     m_model.computeIIS();
 }
 
