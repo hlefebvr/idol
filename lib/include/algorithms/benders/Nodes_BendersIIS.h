@@ -32,7 +32,7 @@ public:
             n_generators += sp.present_generators().size();
         }
 
-        if (n_generators < 200) {
+        if (n_generators < 250) {
 
             auto& rmp = gurobi.model();
             Solvers::Gurobi solver(rmp);
@@ -49,8 +49,6 @@ public:
             solver.compute_iis();
 
             const auto iis = solver.iis();
-
-            solver.remove(infeasible_constraint);
 
             Solution::Primal solution;
 
@@ -76,6 +74,8 @@ public:
             solution *= 1. / n_cuts;
 
             set_solution(std::move(solution));
+
+            solver.remove(infeasible_constraint);
 
         } else {
 

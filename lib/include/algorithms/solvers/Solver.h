@@ -131,7 +131,7 @@ void Solver<VarT, CtrT>::add_future(const Var &t_var, bool t_with_collaterals) {
     const unsigned int size = m_variables.size();
 
     if (index >= size) {
-        m_variables.resize(size + m_buffer_size );
+        m_variables.resize( std::max(size, index) + m_buffer_size );
     }
 
     m_variables.at(index) = Future<Var, VarT>(t_var, t_with_collaterals);
@@ -145,7 +145,7 @@ void Solver<VarT, CtrT>::add_future(const Ctr &t_ctr, bool t_with_collaterals) {
     const unsigned int size = m_constraints.size();
 
     if (index >= size) {
-        m_constraints.resize(size + m_buffer_size );
+        m_constraints.resize( std::max(size, index) + m_buffer_size );
     }
 
     m_constraints.at(index) = Future<Ctr, CtrT>(t_ctr, t_with_collaterals);
