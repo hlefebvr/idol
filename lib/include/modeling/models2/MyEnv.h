@@ -24,32 +24,54 @@ class impl::MyEnv {
     std::list<unsigned int> m_free_model_ids;
 
     std::list<MyVersions<VarVersion>> m_variables; /// Every version of each variable in the environment is stored here
-    std::list<MyVersions<CtrVersion>> m_constraints; /// Every version of each variable in the environment is stored here
+    std::list<MyVersions<CtrVersion>> m_constraints; /// Every version of each constraint in the environment is stored here
 protected:
     unsigned int create_model_id();
 
     void free_model_id(const ::MyModel& t_model);
 
     template<class T, class ...ArgsT>
-    void create_version(const MyModel& t_model, const T& t_var, unsigned int t_index, ArgsT&& ...t_args) {
-        t_var.create_version(t_model, t_index, std::forward<ArgsT>(t_args)...);
+    void create_version(const MyModel& t_model, const T& t_object, unsigned int t_index, ArgsT&& ...t_args) {
+        t_object.create_version(t_model, t_index, std::forward<ArgsT>(t_args)...);
     }
 
-    void remove_version(const MyModel& t_model, const MyVar& t_var);
+    template<class T>
+    void remove_version(const MyModel& t_model, const T& t_object) {
+        t_object.remove_version(t_model);
+    }
 
-    void remove_version(const MyModel& t_model, const MyCtr& t_ctr);
+    template<class T>
+    const auto& version(const MyModel& t_model, const T& t_object) const {
+        return t_object.versions().get(t_model);
+    }
 
-    [[nodiscard]] VarVersion& version(const MyModel& t_model, const MyVar& t_var);
+    template<class T>
+    auto& version(const MyModel& t_model, const T& t_object) {
+        return const_cast<T&>(t_object).versions().get(t_model);
+    }
 
-    [[nodiscard]] const VarVersion& version(const MyModel& t_model, const MyVar& t_var) const;
+    template<class T>
+    T create(std::string t_name) {
 
-    [[nodiscard]] CtrVersion& version(const MyModel& t_model, const MyCtr& t_ctr);
+        const unsigned int id = m_max_object_id++;
 
-    [[nodiscard]] const CtrVersion& version(const MyModel& t_model, const MyCtr& t_ctr) const;
+        if constexpr (std::is_same_v<T, MyVar>) {
 
-    MyVar create_var(std::string t_name);
+            std::string name = t_name.empty() ? "Var_" + std::to_string(id) : std::move(t_name);
+            m_variables.emplace_front();
+            return { m_variables.begin(), m_max_object_id, std::move(name) };
 
-    MyCtr create_ctr(std::string t_name);
+        } else if constexpr (std::is_same_v<T, MyCtr>) {
+
+            std::string name = t_name.empty() ? "Ctr_" + std::to_string(id) : std::move(t_name);
+            m_constraints.emplace_front();
+            return { m_constraints.begin(), m_max_object_id, std::move(name) };
+
+        }
+
+        throw Exception("Wrong type requested.");
+
+    }
 
 public:
     MyEnv() = default;

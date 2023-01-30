@@ -16,7 +16,7 @@ MyModel::~MyModel() {
 }
 
 MyVar MyModel::create_var(double t_lb, double t_ub, int t_type, Column &&t_column, std::string t_name) {
-    auto result = m_env.create_var(std::move(t_name));
+    auto result = m_env.create<MyVar>(std::move(t_name));
     add_var(result, t_lb, t_ub, t_type, std::move(t_column));
     return result;
 }
@@ -55,7 +55,7 @@ const VarVersion &MyModel::get(const MyVar &t_var) const {
 }
 
 MyCtr MyModel::create_ctr(TempCtr &&t_temp_ctr, std::string t_name) {
-    auto result = m_env.create_ctr(std::move(t_name));
+    auto result = m_env.create<MyCtr>(std::move(t_name));
     add_ctr(result, std::move(t_temp_ctr));
     return result;
 }
