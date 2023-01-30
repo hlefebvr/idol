@@ -5,10 +5,12 @@
 #ifndef IDOL_MYCTRVERSION_H
 #define IDOL_MYCTRVERSION_H
 
+class TempCtr;
+
 class CtrVersion {
     unsigned int m_index;
 public:
-    explicit CtrVersion(unsigned int t_index) : m_index(t_index) {}
+    explicit CtrVersion(unsigned int t_index, TempCtr&& t_temp_ctr) : m_index(t_index) {}
 
     [[nodiscard]] unsigned int index() const { return m_index; }
 

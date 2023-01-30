@@ -17,13 +17,13 @@ int main(int t_argc, char** t_argv) {
     MyEnv env;
     MyModel model(env);
 
-    auto y = model.create_var(10, 9, "y");
-    auto x = model.create_var(-1., 1., "x");
+    auto y = model.create_var(10, 9, Continuous, "y");
+    auto x = model.create_var(-1., 1., Continuous, "x");
 
     model.remove(y);
 
     MyModel model2(env);
-    model2.add_var(x, 0., 1.);
+    model2.add_var(x, 0., 1., Integer);
 
     std::cout << model.get(x).index() << std::endl;
     std::cout << model2.get(x).index() << std::endl;
