@@ -1,155 +1,129 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 27/01/23.
 //
 
-#ifndef OPTIMIZE_MODEL_H
-#define OPTIMIZE_MODEL_H
+#ifndef IDOL_MODEL_H
+#define IDOL_MODEL_H
 
-#include "Env.h"
-#include "../variables/TempVar.h"
-#include "../constraints/TempCtr.h"
-#include "../expressions/Expr.h"
-#include "../../containers/IteratorForward.h"
-#include "../../containers/Vector.h"
-#include "../variables/VarAttributes.h"
-#include "../objects/ObjectStore.h"
-#include "../constraints/CtrAttributes.h"
-#include "../matrix/Matrix.h"
-#include "AttributeManagers_Base.h"
+#include <vector>
+#include <string>
+#include <functional>
+
+#include "containers/Vector.h"
+
+#include "modeling/matrix/Matrix.h"
+#include "modeling/constraints/CtrVersion.h"
+#include "modeling/variables/VarVersion.h"
+#include "modeling/expressions/Expr.h"
+
+#include "../attributes/AttributeManagers_Base.h"
+#include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
-#include "Attributes_Model.h"
-#include "../user_attributes/UserAttr.h"
-#include "../user_attributes/UserAttrAttributes.h"
-#include <vector>
 
+class Env;
 class Column;
+class TempCtr;
 
 /**
- * Optimization model object.
- *
- * This class represents an optimization model and is *mainly* composed of attributes (see Param), variables (see Var) and constraints (see Ctr).
- * It is used to represent an optimization problem given in the following form:
- *
- * \f{align}{
- *  \textrm{minimize } & c^Tx \\
- *  \textrm{subject to } & Ax \ge b \\
- *  & x \in \mathbb R \\
- *  & x_j \in \mathbb N \textrm{ for some } j
- * \f}
+ * This class is used to represent a mathematical optimization model.
  */
 class Model : public Matrix, public AttributeManagers::Base {
     Env& m_env;
-    UserAttr m_index_user_attr;
+    const unsigned int m_id;
 
-    int m_objective_sense;
+    int m_sense = Minimize;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
-    ObjectStore<Var, VarAttributes> m_variables;
-    ObjectStore<Ctr, CtrAttributes> m_constraints;
-    ObjectStore<UserAttr, UserAttrAttributes> m_user_attributes;
 
-    template<class T, int N, int I = 0> Vector<T, N-I> add_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one);
+    std::vector<Var> m_variables;
+    std::vector<Ctr> m_constraints;
 
+    // Matrix hooks
     Expr<Var> &access_obj() override;
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
 
-protected:
-    Model(const Model&) = default;
+    template<class T, int N, int I = 0> Vector<T, N-I> create_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one);
 public:
-    explicit Model(Env& t_env = Env::global(), Sense t_sense = Minimize);
+    explicit Model(Env& t_env);
 
+    Model(const Model&) = delete;
     Model(Model&&) noexcept = default;
 
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;
 
-    /* Iterators */
-    auto vars() { return m_variables.objects(); }
-    [[nodiscard]] auto vars() const { return m_variables.objects(); }
+    ~Model() override;
 
-    auto ctrs() { return m_constraints.objects(); }
-    [[nodiscard]] auto ctrs() const { return m_constraints.objects(); }
+    // Variables
+    Var create_var(double t_lb, double t_ub, int t_type, Column&& t_column, std::string t_name = "");
+    Var create_var(double t_lb, double t_ub, int t_type, const Column& t_column, std::string t_name = "");
+    Var create_var(double t_lb, double t_ub, int t_type, std::string t_name = "");
+    template<int N> Vector<Var, N> create_vars(const Dim<N>& t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name = "");
 
-    auto annotations() { return m_user_attributes.objects(); }
-    [[nodiscard]] auto annotations() const { return m_user_attributes.objects(); }
+    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column);
+    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column);
+    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type);
+    //template<int N> void add_vars(const Vector<MyVar, N>& t_vars, double t_lb, double t_ub, int t_type);
 
-    /* Adds */
-    Var add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name = "");
-    Var add_var(double t_lb, double t_ub, int t_type, Constant t_objective_coefficient, std::string t_name = "");
-    Var add_var(TempVar t_temporary_variable, std::string t_name = "");
-    template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const Constant& t_objective_coefficient, const std::string& t_name = "");
-    template<int N> Vector<Var, N> add_vars(const Dim<N>& t_dim, const TempVar& t_temporary_variable, const std::string& t_name = "");
-
-    Ctr add_ctr(int t_type, Constant t_rhs, std::string t_name = "");
-    Ctr add_ctr(TempCtr t_temporary_constraint, std::string t_name = "");
-    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, int t_type, const Constant& t_rhs, const std::string& t_name = "");
-    template<int N> Vector<Ctr, N> add_ctrs(const Dim<N>& t_dim, const TempCtr& t_temporary_constraint, const std::string& t_name = "");
-
-    template<class T> UserAttr add_user_attr(const explicit_template_param_t<T>& t_default_value, std::string t_name = "");
-
-    /* Removes */
     void remove(const Var& t_var);
-    void remove(const Ctr& t_ctr);
-    void remove(const UserAttr& t_user_attr);
 
-    [[nodiscard]] Model clone() const;
+    [[nodiscard]] auto vars() const { return ConstIteratorForward<std::vector<Var>>(m_variables); }
+
+    // Constraints
+    Ctr create_ctr(TempCtr&& t_temp_ctr, std::string t_name = "");
+    Ctr create_ctr(const TempCtr& t_temp_ctr, std::string t_name = "");
+    Ctr create_ctr(int t_type, std::string t_name = "");
+
+    void add_ctr(const Ctr& t_ctr, TempCtr&& t_temp_ctr);
+    void add_ctr(const Ctr& t_ctr, const TempCtr& t_temp_ctr);
+    void add_ctr(const Ctr& t_ctr, int t_type);
+
+    void remove(const Ctr& t_ctr);
+
+    [[nodiscard]] auto ctrs() const { return ConstIteratorForward<std::vector<Ctr>>(m_constraints); }
+
+    // Model
+    [[nodiscard]] unsigned int id() const { return m_id; }
 
     using AttributeManagers::Base::set;
     using AttributeManagers::Base::get;
 
-    /// Set
+    // Models' attributes
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
+    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, void>& t_attr) const override;
+    [[nodiscard]] const Expr<Var, Var>& get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void>& t_attr) const override;
+    [[nodiscard]] const LinExpr<Ctr>& get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr) const override;
+    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
+    void set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) override;
+    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
 
-    template<class T> void set(const UserAttr& t_annotation, const Ctr& t_ctr, const T& t_value);
-    template<class T> void set(const UserAttr& t_annotation, const Var& t_var, const T& t_value);
-
-    // Var
-    void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
-
-    // Ctr
+    // Constraints' attributes
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Row& get(const AttributeWithTypeAndArguments<Row, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    void set(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
     void set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
     void set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
 
-    // Model
-    void set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) override;
-
-    /// Get
-
-    template<class T> const T& get(const UserAttr& t_annotation, const Ctr& t_ctr) const;
-    template<class T> const T& get(const UserAttr& t_annotation, const Var& t_var) const;
-
-    // Var
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const override;
-    [[nodiscard]] const Column &get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const override;
-    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const override;
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const override;
-
-    // Ctr
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const override;
-    [[nodiscard]] const Row &get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const override;
-    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const override;
-
-    // Model
-    [[nodiscard]] const Constant & get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const override;
-    [[nodiscard]] const Expr<Var, Var> &get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const override;
-    [[nodiscard]] const LinExpr<Ctr> &get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const override;
-    [[nodiscard]] const Constant &get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const override;
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
-
+    // Variables' attributes
+    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Var>& t_attr, const Var& t_ctr) const override;
+    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] const Column& get(const AttributeWithTypeAndArguments<Column, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Var>& t_attr, const Var& t_var) const override;
+    void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
+    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
+    void set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 };
 
 template<class T, int N, int I>
-Vector<T, N - I> Model::add_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one) {
+Vector<T, N - I> Model::create_many(const Dim<N> &t_dims, const std::string &t_name,
+                                      const std::function<T(const std::string &)> &t_add_one) {
     Vector<T, N - I> result;
     const unsigned int size = t_dims[I];
     result.reserve(size);
@@ -158,82 +132,17 @@ Vector<T, N - I> Model::add_many(const Dim<N>& t_dims, const std::string& t_name
         if constexpr (I == N - 1) {
             result.emplace_back( t_add_one(name) );
         } else {
-            result.emplace_back( add_many<T, N, I+1>(t_dims, name, t_add_one) );
+            result.emplace_back( create_many<T, N, I+1>(t_dims, name, t_add_one) );
         }
     }
     return result;
 }
 
 template<int N>
-Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, double t_lb, double t_ub, VarType t_type,
-                               const Constant &t_objective_coefficient, const std::string& t_name) {
-    return add_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
-        return add_var(t_lb, t_ub, t_type, t_objective_coefficient, t_name);
+Vector<Var, N> Model::create_vars(const Dim<N> &t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name) {
+    return create_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
+        return create_var(t_lb, t_ub, t_type, t_name);
     });
-}
-
-template<int N>
-Vector<Var, N> Model::add_vars(const Dim<N> &t_dim, const TempVar& t_temporary_variable, const std::string &t_name) {
-    return add_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
-        return add_var(TempVar(t_temporary_variable), t_name);
-    });
-}
-
-template<int N>
-Vector<Ctr, N> Model::add_ctrs(const Dim<N> &t_dim, int t_type, const Constant& t_rhs, const std::string &t_name) {
-    return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
-        return add_ctr(t_type, t_rhs, t_name);
-    });
-}
-
-template<int N>
-Vector<Ctr, N>
-Model::add_ctrs(const Dim<N> &t_dim, const TempCtr &t_temporary_constraint, const std::string &t_name) {
-    return add_many<Ctr, N>(t_dim, t_name.empty() ? "Ctr" : t_name, [&](const std::string& t_name){
-        return add_ctr(t_temporary_constraint, t_name);
-    });
-}
-
-template<class T>
-UserAttr Model::add_user_attr(const explicit_template_param_t<T>& t_default_value, std::string t_name) {
-
-    auto ref = m_user_attributes.add_attributes(std::move(t_name), "Annotation");
-    UserAttr user_attribute(std::move(ref), t_default_value);
-    m_user_attributes.add_object(user_attribute);
-
-    return user_attribute;
-}
-
-template<class T>
-const T& Model::get(const UserAttr &t_annotation, const Ctr &t_ctr) const {
-    if (t_annotation.type() != typeid(T)) {
-        throw AttributeBadRequest(t_annotation);
-    }
-    return m_constraints.attributes(t_ctr).get_user_attribute<T>(t_annotation);
-}
-
-template<class T>
-void Model::set(const UserAttr &t_annotation, const Ctr &t_ctr, const T &t_value) {
-    if (t_annotation.type() != typeid(T)) {
-        throw AttributeBadRequest(t_annotation);
-    }
-    m_constraints.attributes(t_ctr).set_user_attribute<T>(t_annotation, t_value);
-}
-
-template<class T>
-const T &Model::get(const UserAttr &t_annotation, const Var &t_var) const {
-    if (t_annotation.type() != typeid(T)) {
-        throw AttributeBadRequest(t_annotation);
-    }
-    return m_variables.attributes(t_var).get_user_attribute<T>(t_annotation);
-}
-
-template<class T>
-void Model::set(const UserAttr &t_annotation, const Var &t_var, const T &t_value) {
-    if (t_annotation.type() != typeid(T)) {
-        throw AttributeBadRequest(t_annotation);
-    }
-    m_variables.attributes(t_var).set_user_attribute<T>(t_annotation, t_value);
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
@@ -292,4 +201,5 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
     return t_os;
 }
 
-#endif //OPTIMIZE_MODEL_H
+
+#endif //IDOL_MODEL_H

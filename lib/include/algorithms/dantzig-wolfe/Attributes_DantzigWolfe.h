@@ -5,7 +5,7 @@
 #ifndef IDOL_ATTRIBUTES_DANTZIGWOLFE_H
 #define IDOL_ATTRIBUTES_DANTZIGWOLFE_H
 
-#include "../../modeling/models/AttributeManager.h"
+#include "../../modeling/attributes/AttributeManager.h"
 
 IDOL_CREATE_ATTRIBUTE_CLASS(Algorithm)
 

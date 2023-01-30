@@ -1,45 +1,27 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 27/01/23.
 //
 
-#ifndef OPTIMIZE_CONSTRAINT_H
-#define OPTIMIZE_CONSTRAINT_H
+#ifndef IDOL_CTR_H
+#define IDOL_CTR_H
 
-#include "../Types.h"
-#include <string>
-#include <iostream>
-#include <memory>
+#include "modeling/objects/Object.h"
 
-class Row;
-class Constant;
-class Var;
-class Model;
+class CtrVersion;
 
-namespace Solution {
-    class Primal;
+template<class T> class Versions;
+
+namespace impl {
+    class Env;
 }
 
-/**
- * Constraint object.
- *
- * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_ctr method, rather than a constructor.
- */
-class Ctr : public Object {
-    friend class Env;
-    friend class Model;
-    explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
-protected:
-    [[nodiscard]] bool isCtr() const override { return true; }
-public:
-    Ctr() = default;
+class Ctr : public Object<CtrVersion> {
+    friend class impl::Env;
 
-    Ctr(const Ctr& t_var) = default;
-    Ctr(Ctr&& t_var) noexcept = default;
-
-    Ctr& operator=(const Ctr& t_var) = default;
-    Ctr& operator=(Ctr&& t_var) noexcept = default;
+    Ctr(std::list<Versions<CtrVersion>>::iterator t_it, unsigned int t_id, std::string t_name)
+            : Object<CtrVersion>(t_it, t_id, std::move(t_name)) {}
 };
 
-MAKE_HASHABLE(Ctr)
+IDOL_MAKE_HASHABLE(Ctr)
 
-#endif //OPTIMIZE_CONSTRAINT_H
+#endif //IDOL_CTR_H

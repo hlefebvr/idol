@@ -1,34 +1,28 @@
 #include <iostream>
-#include <utility>
 #include "modeling.h"
-#include "algorithms.h"
-#include "reformulations/Reformulations_Benders.h"
-#include "algorithms/benders/Benders.h"
-#include "problems/FLP/FLP_Instance.h"
-#include "modeling/models/Env.h"
-#include "algorithms/benders/Nodes_BendersIIS.h"
-#include "modeling/models2/MyEnv.h"
-#include "modeling/models2/MyModel.h"
 
-class MyModel;
+class Model;
 
 int main(int t_argc, char** t_argv) {
 
-    MyEnv env;
-    MyModel model(env);
+    Env env;
 
-    auto y = model.create_var(10, 9, Continuous, "y");
-    auto x = model.create_var(-1., 1., Continuous, "x");
+    Model model(env);
 
-    model.remove(y);
+    auto x = model.create_vars(Dim<1>(5), 0., 1., Continuous, "x");
 
-    MyModel model2(env);
-    model2.add_var(x, 0., 1., Integer);
+    auto ctr = model.create_ctr(x[0] + 2 * x[1] <= 3, "my_ctr");
 
-    std::cout << model.get(x).index() << std::endl;
-    std::cout << model2.get(x).index() << std::endl;
+    std::cout << x[0].name() << std::endl;
+    std::cout << ctr << std::endl;
 
-    std::cout << x.name() << std::endl;
+    std::cout << model.get(Attr::Matrix::Coeff, ctr, x[0]) << std::endl;
+
+    model.set(Attr::Obj::Sense, Maximize);
+    model.set(Attr::Obj::Expr, x[3] - 3 * x[1]);
+    model.set(Attr::Var::Lb, x[4], -10);
+
+    std::cout << model << std::endl;
 
     return 0;
 

@@ -5,8 +5,8 @@
 #ifndef IDOL_ATTRIBUTES_MODEL_H
 #define IDOL_ATTRIBUTES_MODEL_H
 
-#include "Attributes.h"
-#include "../solutions/Solution.h"
+#include "modeling/attributes/Attributes.h"
+#include "modeling/solutions/Solution.h"
 
 namespace Solutions {
     class Primal;

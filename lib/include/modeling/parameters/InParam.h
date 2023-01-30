@@ -58,6 +58,6 @@ static std::ostream& operator<<(std::ostream& t_os, const InParam& t_param) {
     return t_os << '!' << t_param.name();
 }
 
-MAKE_HASHABLE(InParam)
+IDOL_MAKE_HASHABLE(InParam)
 
 #endif //OPTIMIZE_IMPL_PARAM_H

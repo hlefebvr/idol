@@ -5,7 +5,7 @@
 #ifndef IDOL_ATTRIBUTES_CTR_H
 #define IDOL_ATTRIBUTES_CTR_H
 
-#include "../models/Attributes.h"
+#include "../attributes/Attributes.h"
 
 IDOL_CREATE_ATTRIBUTE_CLASS(Ctr)
 

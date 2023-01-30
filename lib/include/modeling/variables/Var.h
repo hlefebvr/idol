@@ -1,42 +1,27 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 27/01/23.
 //
 
-#ifndef OPTIMIZE_VARIABLE_H
-#define OPTIMIZE_VARIABLE_H
+#ifndef IDOL_VAR_H
+#define IDOL_VAR_H
 
-#include "../objects/Object.h"
-#include "../Types.h"
-#include "../objects/ObjectId.h"
-#include <iostream>
-#include <memory>
+#include "modeling/objects/Object.h"
 
-class Column;
-class Constant;
-class Ctr;
-class Model;
+class VarVersion;
 
-/**
- * Decision variable object.
- *
- * A variable always belongs to a single Model. Note that you should be creating a variable using the Model::add_var method, rather than a constructor.
- */
-class Var : public Object {
-    friend class Model;
-    friend class Env;
-    explicit Var(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
-protected:
-    [[nodiscard]] bool isVar() const override { return true; }
-public:
-    Var() = default;
+template<class T> class Versions;
 
-    Var(const Var& t_var) = default;
-    Var(Var&& t_var) noexcept = default;
+namespace impl {
+    class Env;
+}
 
-    Var& operator=(const Var& t_var) = default;
-    Var& operator=(Var&& t_var) noexcept = default;
+class Var : public Object<VarVersion> {
+    friend class impl::Env;
+
+    Var(std::list<Versions<VarVersion>>::iterator t_it, unsigned int t_id, std::string t_name)
+        : Object<VarVersion>(t_it, t_id, std::move(t_name)) {}
 };
 
-MAKE_HASHABLE(Var)
+IDOL_MAKE_HASHABLE(Var)
 
-#endif //OPTIMIZE_VARIABLE_H
+#endif //IDOL_VAR_H

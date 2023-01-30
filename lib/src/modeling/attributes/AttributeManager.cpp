@@ -1,7 +1,7 @@
 //
 // Created by henri on 06/12/22.
 //
-#include "modeling/models/AttributeManager.h"
+#include "modeling/attributes/AttributeManager.h"
 #include "modeling/matrix/Column.h"
 #include "modeling/matrix/Row.h"
 

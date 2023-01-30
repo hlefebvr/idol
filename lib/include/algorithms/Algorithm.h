@@ -11,7 +11,7 @@
 #include "../errors/NotImplemented.h"
 #include "parameters/Timer.h"
 #include "parameters/Parameters_Algorithm.h"
-#include "modeling/models/AttributeManager_Delegate.h"
+#include "modeling/attributes/AttributeManager_Delegate.h"
 #include "parameters/Logs.h"
 #include <list>
 

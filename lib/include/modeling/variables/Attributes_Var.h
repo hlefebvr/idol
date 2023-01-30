@@ -5,7 +5,7 @@
 #ifndef IDOL_ATTRIBUTES_VAR_H
 #define IDOL_ATTRIBUTES_VAR_H
 
-#include "../models/Attributes.h"
+#include "../attributes/Attributes.h"
 
 IDOL_CREATE_ATTRIBUTE_CLASS(Var)
 

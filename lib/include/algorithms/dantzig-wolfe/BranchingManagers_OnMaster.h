@@ -6,7 +6,7 @@
 #define IDOL_BRANCHINGMANAGERS_ONMASTER_H
 
 #include "BranchingManager.h"
-#include "../../modeling/models/Attributes.h"
+#include "../../modeling/attributes/Attributes.h"
 #include "../../modeling/variables/Var.h"
 #include "../../modeling/constraints/Ctr.h"
 #include "../../containers/Map.h"

@@ -1,65 +1,56 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 27/01/23.
 //
 
-#ifndef OPTIMIZE_OBJECT_H
-#define OPTIMIZE_OBJECT_H
+#ifndef IDOL_OBJECT_H
+#define IDOL_OBJECT_H
 
-#include "ObjectId.h"
 #include <memory>
+#include "ObjectId.h"
 
-class Var;
-class Ctr;
-class UserAttr;
+class Model;
 
+template<class T>
 class Object {
-    std::shared_ptr<ObjectId> m_object_id{};
+    std::shared_ptr<ObjectId<T>> m_object_id;
 protected:
-    explicit Object(ObjectId&& t_ref) : m_object_id(std::make_shared<ObjectId>(std::move(t_ref))) {}
-    [[nodiscard]] virtual bool isVar() const { return false; }
-    [[nodiscard]] virtual bool isCtr() const { return false; }
-    [[nodiscard]] virtual bool isAnnotation() const { return false; }
+    [[nodiscard]] auto& versions() { return m_object_id->versions(); }
+
+    [[nodiscard]] const auto& versions() const { return m_object_id->versions(); }
+
+    template<class ...ArgsT>
+    void create_version(const Model& t_model, unsigned int t_index, ArgsT&& ...t_args) const {
+        m_object_id->versions().create(t_model, t_index, std::forward<ArgsT>(t_args)...);
+    }
+
+    void remove_version(const Model& t_model) const {
+        m_object_id->versions().remove(t_model);
+    }
 public:
-    Object() = default;
+    Object(typename std::list<Versions<T>>::iterator t_it, unsigned int t_id, std::string t_name)
+    : m_object_id(std::make_shared<ObjectId<T>>(t_it, t_id, std::move(t_name))) {}
 
-    virtual ~Object() = default;
+    Object(const Object&) = default;
+    Object(Object&&) noexcept = default;
 
-    [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
-
-    [[nodiscard]] unsigned int index() const { return m_object_id->index(); }
+    Object& operator=(const Object&) = default;
+    Object& operator=(Object&&) noexcept = default;
 
     [[nodiscard]] const std::string& name() const { return m_object_id->name(); }
 
-    [[nodiscard]] bool operator==(const Object& t_rhs) const { return id() == t_rhs.id(); }
+    [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
 
-    [[nodiscard]] bool operator!=(const Object& t_rhs) const { return id() != t_rhs.id(); }
+    bool operator==(const Object<T>& t_rhs) const { return id() == t_rhs.id(); }
 
-    [[nodiscard]] bool is_valid() const { return !!m_object_id; }
-
-    template<class T> [[nodiscard]] bool is() const {
-        if constexpr (std::is_same_v<T, Var>) {
-            return isVar();
-        }
-        if (std::is_same_v<T, Ctr>) {
-            return isCtr();
-        }
-        if (std::is_same_v<T, UserAttr>) {
-            return isAnnotation();
-        } else {
-            return false;
-        }
-    }
-
-    template<class T> T as() const {
-        return static_cast<const T&>(*this);
-    }
+    bool operator!=(const Object<T>& t_rhs) const { return id() != t_rhs.id(); }
 };
 
-static std::ostream& operator<<(std::ostream& t_os, const Object& t_var) {
+template<class T>
+static std::ostream& operator<<(std::ostream& t_os, const Object<T>& t_var) {
     return t_os << t_var.name();
 }
 
-#define MAKE_HASHABLE(name) \
+#define IDOL_MAKE_HASHABLE(name) \
 template<> \
 struct std::hash<name> { \
     std::size_t operator()(const name& t_variable) const { \
@@ -80,4 +71,4 @@ struct std::less<name> { \
     } \
 };
 
-#endif //OPTIMIZE_OBJECT_H
+#endif //IDOL_OBJECT_H

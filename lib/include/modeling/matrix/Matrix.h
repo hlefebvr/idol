@@ -6,8 +6,8 @@
 #define OPTIMIZE_MATRIX_H
 
 #include <functional>
-#include "../variables/VarAttributes.h"
-#include "../constraints/CtrAttributes.h"
+#include "../variables/VarVersion.h"
+#include "../constraints/CtrVersion.h"
 
 class Matrix {
     virtual Expr<Var>& access_obj() = 0;
