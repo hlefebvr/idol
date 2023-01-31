@@ -244,4 +244,8 @@ void Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Consta
 
 }
 
+void Gurobi::hook_update() {
+    m_model.update();
+}
+
 #endif

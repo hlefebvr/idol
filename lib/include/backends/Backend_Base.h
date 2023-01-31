@@ -82,6 +82,7 @@ protected:
     void update() final;
     void update(const Var& t_var) final;
     void update(const Ctr& t_ctr) final;
+    virtual void hook_update() = 0;
     virtual void hook_update(const Var& t_var) = 0;
     virtual void hook_update(const Ctr& t_ctr) = 0;
 
@@ -110,6 +111,13 @@ protected:
     void set_rhs_to_be_updated() { m_is_rhs_to_be_updated = true; }
     [[nodiscard]] bool is_rhs_to_be_updated() const { return m_is_rhs_to_be_updated; }
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
+
+public:
+    VarImplT& operator[](const Var& t_var) { return lazy(t_var).impl(); }
+    const VarImplT& operator[](const Var& t_var) const { return lazy(t_var).impl(); }
+
+    CtrImplT& operator[](const Ctr& t_ctr) { return lazy(t_ctr).impl(); }
+    const CtrImplT& operator[](const Ctr& t_ctr) const { return lazy(t_ctr).impl(); }
 };
 
 template<class VarImplT, class CtrImplT>
@@ -156,6 +164,8 @@ void LazyBackend<VarImplT, CtrImplT>::update() {
         hook_update_rhs();
         set_rhs_as_updated();
     }
+
+    hook_update();
 
     m_is_initialized = true;
 }

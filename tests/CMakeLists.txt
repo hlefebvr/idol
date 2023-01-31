@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests main.test.cpp test_utils.h main.test.cpp unit/modeling/Model_AddByRow.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_UpdateVariables.test.cpp unit/modeling/Expr_OperatorsTypeDeduction.cpp)
+add_executable(tests main.test.cpp test_utils.h main.test.cpp unit/modeling/Model_AddByRow.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_UpdateVariables.test.cpp unit/modeling/Expr_OperatorsTypeDeduction.test.cpp unit/backends/Gurobi_CreateVariableWithBackend.test.cpp unit/backends/Gurobi_CreateVariableWithoutBackend.cpp)
 target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 

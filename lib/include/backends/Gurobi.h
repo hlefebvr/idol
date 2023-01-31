@@ -47,6 +47,8 @@ protected:
 
     void hook_update_rhs() override;
 
+    void hook_update() override;
+
     void hook_remove(const Var& t_var) override;
 
     void hook_remove(const Ctr& t_ctr) override;
@@ -57,6 +59,10 @@ public:
     GRBEnv& env() { return m_env; }
 
     [[nodiscard]] const GRBEnv& env() const { return m_env; }
+
+    GRBModel& model() { return m_model; }
+
+    [[nodiscard]] const GRBModel& model() const { return m_model; }
 };
 
 #endif
