@@ -151,7 +151,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
         auto c = Ctr::Array(env, Dim<1>(3), LessOrEqual);
         model.add<Ctr, 1>(c);
 
-        auto x = Var::Array(env, Dim<1>(3), 0., 1., Continuous);
+        auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
         model.add<Var, 1>(x);
 
         WHEN("Adding a variable by column (linear and quadratic)") {

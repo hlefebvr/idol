@@ -1,6 +1,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "problems/FLP/FLP_Instance.h"
+#include "backends/Gurobi.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -11,10 +12,13 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    auto x = Var::Array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = Var::Array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
+    auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
 
     Model model(env);
+
+    model.set_backend<Gurobi>();
+
     model.add<Var, 1>(x);
     model.add<Var, 2>(y);
 
@@ -28,7 +32,12 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
-    std::cout << model << std::endl;
+    model.write("model.lp");
+
+    model.set(Attr::Var::Type, x[0], Continuous);
+    model.set(Attr::Matrix::Coeff, *model.ctrs().begin(), x[0], 999);
+
+    model.write("model.lp");
 
     return 0;
 

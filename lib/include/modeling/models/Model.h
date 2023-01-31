@@ -21,6 +21,8 @@
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
 
+#include "backends/Backend.h"
+
 class Env;
 class Column;
 class TempCtr;
@@ -38,6 +40,10 @@ class Model : public Matrix, public AttributeManagers::Base {
 
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
+
+    // Backend
+    std::unique_ptr<Backend> m_backend;
+    void throw_if_no_backend() const;
 
     // Matrix hooks
     Expr<Var> &access_obj() override;
@@ -107,6 +113,14 @@ public:
     void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     void set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
+
+    // Backend
+    template<class T, class ...ArgsT> T& set_backend(ArgsT&& ...t_args);
+    void reset_backend() { m_backend.reset(); }
+    bool has_backend() { return (bool) m_backend; }
+    void optimize();
+    void update();
+    void write(const std::string& t_name);
 };
 
 template<class T, unsigned int N>
@@ -120,6 +134,18 @@ void Model::add(const Vector<T, N>& t_vector) {
             add<T, N - 1>(x);
         }
     }
+}
+
+template<class T, class... ArgsT>
+T &Model::set_backend(ArgsT &&... t_args) {
+    static_assert(std::is_base_of_v<Backend, T>);
+    if (m_backend) {
+        throw Exception("Backend already exists.");
+    }
+    auto* result = new T(*this, std::forward<ArgsT>(t_args)...);
+    m_backend.reset(result);
+    m_backend->initialize();
+    return *result;
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
