@@ -152,7 +152,18 @@ void Gurobi::hook_update(const Ctr& t_ctr) {
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
 
-    throw Exception("Updating a constraint is not implemented.");
+    if (std::holds_alternative<GRBConstr>(impl)) {
+
+        auto& linear_impl = std::get<GRBConstr>(impl);
+        const auto& rhs = model.get(Attr::Ctr::Rhs, t_ctr);
+        const auto type = model.get(Attr::Ctr::Type, t_ctr);
+
+        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(as_numeric(rhs)));
+        linear_impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
+
+    } else {
+        throw Exception("Updating an SOCP constraint is not implemented.");
+    }
 
 }
 

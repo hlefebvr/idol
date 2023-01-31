@@ -36,6 +36,15 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
                 CHECK(backend[x].get(GRB_CharAttr_VType) == GRB_CONTINUOUS);
             }
 
+            WHEN("The variable is removed") {
+                model.remove(x);
+                model.update();
+
+                THEN("The variable should not be part of the model") {
+                    CHECK_THROWS(backend[x]);
+                }
+            }
+
         }
 
         WHEN("An integer variable (lb=-inf,ub=inf) is added to the model") {
@@ -62,6 +71,15 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
                 CHECK(backend[x].get(GRB_CharAttr_VType) == GRB_INTEGER);
             }
 
+            WHEN("The variable is removed") {
+                model.remove(x);
+                model.update();
+
+                THEN("The variable should not be part of the model") {
+                    CHECK_THROWS(backend[x]);
+                }
+            }
+
         }
 
         WHEN("A binary variable (lb=1,ub=1) is added to the model") {
@@ -86,6 +104,15 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
             AND_THEN("The variable's type should be integer") {
                 CHECK(backend[x].get(GRB_CharAttr_VType) == GRB_BINARY);
+            }
+
+            WHEN("The variable is removed") {
+                model.remove(x);
+                model.update();
+
+                THEN("The variable should not be part of the model") {
+                    CHECK_THROWS(backend[x]);
+                }
             }
 
         }
@@ -149,6 +176,15 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
             AND_THEN("The variable's objective coefficient should be 1") {
                 CHECK(backend[x].get(GRB_DoubleAttr_Obj) == 1._a);
+            }
+
+            WHEN("The variable is removed") {
+                model.remove(x);
+                model.update();
+
+                THEN("The variable should not be part of the model") {
+                    CHECK_THROWS(backend[x]);
+                }
             }
 
         }

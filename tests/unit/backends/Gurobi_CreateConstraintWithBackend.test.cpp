@@ -31,6 +31,15 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
                 CHECK(std::get<GRBConstr>(backend[c]).get(GRB_DoubleAttr_RHS) == 10_a);
             }
 
+            WHEN("The constraint is removed") {
+                model.remove(c);
+                model.update();
+
+                THEN("The constraint should not be part of the model") {
+                    CHECK_THROWS(backend[c]);
+                }
+            }
+
         }
 
         WHEN("A >=-constraint (rhs=-5) is added to the model") {
@@ -50,6 +59,15 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
 
             AND_THEN("The constraint rhs should be 10") {
                 CHECK(std::get<GRBConstr>(backend[c]).get(GRB_DoubleAttr_RHS) == -5_a);
+            }
+
+            WHEN("The constraint is removed") {
+                model.remove(c);
+                model.update();
+
+                THEN("The constraint should not be part of the model") {
+                    CHECK_THROWS(backend[c]);
+                }
             }
 
         }
@@ -72,6 +90,15 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
 
             AND_THEN("The constraint rhs should be 10") {
                 CHECK(std::get<GRBConstr>(backend[c]).get(GRB_DoubleAttr_RHS) == 0_a);
+            }
+
+            WHEN("The constraint is removed") {
+                model.remove(c);
+                model.update();
+
+                THEN("The constraint should not be part of the model") {
+                    CHECK_THROWS(backend[c]);
+                }
             }
 
         }
@@ -120,6 +147,16 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
                 const auto& gurobi_ctr = std::get<GRBConstr>(backend[c]);
                 CHECK(backend.model().getCoeff(gurobi_ctr, backend[x[2]]) == 2_a);
             }
+
+            WHEN("The constraint is removed") {
+                model.remove(c);
+                model.update();
+
+                THEN("The constraint should not be part of the model") {
+                    CHECK_THROWS(backend[c]);
+                }
+            }
+
         }
 
 
