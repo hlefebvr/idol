@@ -251,6 +251,9 @@ void LazyBackend<VarImplT, CtrImplT>::optimize() {
 
 template<class VarImplT, class CtrImplT>
 void LazyBackend<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
+    if (m_is_initialized) {
+        update_vars();
+    }
     const unsigned int index = m_constraints.size();
     m_constraints_to_update.emplace_front(index);
     m_constraints.emplace_back(t_ctr, m_constraints_to_update.begin());
@@ -258,6 +261,9 @@ void LazyBackend<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
 
 template<class VarImplT, class CtrImplT>
 void LazyBackend<VarImplT, CtrImplT>::add(const Var &t_var) {
+    if (m_is_initialized) {
+        update_ctrs();
+    }
     const unsigned int index = m_variables.size();
     m_variables_to_update.emplace_front(index);
     m_variables.emplace_back(t_var, m_variables_to_update.begin());

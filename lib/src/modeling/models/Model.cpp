@@ -26,11 +26,12 @@ Model::~Model() {
 void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type, Column &&t_column) {
     m_env.create_version(*this, t_var, m_variables.size(), t_lb, t_ub, t_type, std::move(t_column));
     m_variables.emplace_back(t_var);
-    add_column_to_rows(t_var);
 
     if (m_backend) {
         m_backend->add(t_var);
     }
+
+    add_column_to_rows(t_var);
 }
 
 void Model::add(const Var &t_var) {
@@ -77,11 +78,12 @@ void Model::remove(const Ctr &t_ctr) {
 void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
     m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
     m_constraints.emplace_back(t_ctr);
-    add_row_to_columns(t_ctr);
 
     if (m_backend) {
         m_backend->add(t_ctr);
     }
+
+    add_row_to_columns(t_ctr);
 }
 
 void Model::add(const Ctr &t_ctr, const TempCtr &t_temp_ctr) {
