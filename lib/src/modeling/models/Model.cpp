@@ -41,6 +41,7 @@ void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type) {
 }
 
 void Model::remove(const Var &t_var) {
+    remove_column_from_rows(t_var);
     const auto index = m_env.version(*this, t_var).index();
     m_env.version(*this, m_variables.back()).set_index(index);
     m_variables[index] = m_variables.back();
@@ -49,6 +50,7 @@ void Model::remove(const Var &t_var) {
 }
 
 void Model::remove(const Ctr &t_ctr) {
+    remove_row_from_columns(t_ctr);
     const auto index = m_env.version(*this, t_ctr).index();
     m_env.version(*this, m_constraints.back()).set_index(index);
     m_constraints[index] = m_constraints.back();
@@ -120,6 +122,10 @@ int Model::get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr 
         return m_env.version(*this, t_ctr).type();
     }
 
+    if (t_attr == Attr::Ctr::Status) {
+        return m_env.has_version(*this, t_ctr);
+    }
+
     return Base::get(t_attr, t_ctr);
 }
 
@@ -186,6 +192,10 @@ int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var 
 
     if (t_attr == Attr::Var::Type) {
         return m_env.version(*this, t_var).type();
+    }
+
+    if (t_attr == Attr::Var::Status) {
+        return m_env.has_version(*this, t_var);
     }
 
     return Base::get(t_attr, t_var);
@@ -322,4 +332,13 @@ void Model::set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const 
     }
 
     Base::set(t_attr, t_var, t_value);
+}
+
+const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const {
+
+    if (t_attr == Attr::Ctr::Rhs) {
+        return m_env.version(*this, t_ctr).row().rhs();
+    }
+
+    return Base::get(t_attr, t_ctr);
 }

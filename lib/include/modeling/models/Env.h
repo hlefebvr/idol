@@ -50,6 +50,11 @@ protected:
     }
 
     template<class T>
+    bool has_version(const Model& t_model, const T& t_object) const {
+        return t_object.is_in(t_model);
+    }
+
+    template<class T>
     const auto& version(const Model& t_model, const T& t_object) const {
         return t_object.versions().get(t_model);
     }

@@ -6,11 +6,13 @@
 
 SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
-    Model model;
+    Env env;
+    Model model(env);
 
     GIVEN("An initial model with some variables and no constraint") {
 
-        auto x = model.add_vars(Dim<1>(3), 0., 1., Continuous, 0.);
+        auto x = Var::Array(env, Dim<1>(3), 0., 1., Continuous);
+        model.add<Var, 1>(x);
 
         WHEN("Adding a constraint by row (linear and quadratic)") {
 
@@ -26,10 +28,19 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
             row.quadratic().set(x[1], x[2], 108);
             row.quadratic().set(x[2], x[2], 109);
 
-            auto ctr = model.add_ctr(TempCtr(std::move(row), LessOrEqual));
+            Ctr ctr(env, TempCtr(std::move(row), LessOrEqual));
+            model.add(ctr);
 
             THEN("The number of constraints should be one") {
                 CHECK(model.ctrs().size() == 1);
+            }
+
+            AND_THEN("The constraint status should be 1") {
+                CHECK(model.get(Attr::Ctr::Status, ctr) == 1);
+            }
+
+            AND_THEN("The constraint should be in the model") {
+                CHECK(ctr.is_in(model));
             }
 
             AND_THEN("The row rhs should be added to the model's rhs") {
@@ -137,6 +148,10 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
                 AND_THEN("The constraint should have status 0 in the model") {
                     CHECK(model.get(Attr::Ctr::Status, ctr) == 0);
+                }
+
+                AND_THEN("The constraint should not be part of the model") {
+                    CHECK(!ctr.is_in(model));
                 }
 
                 AND_THEN("The model's rhs should be empty") {

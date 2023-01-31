@@ -6,11 +6,14 @@
 
 SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
-    Model model;
+    Env env;
+
+    Model model(env);
 
     GIVEN("An initial model with some constraints and no variable") {
 
-        auto c = model.add_ctrs(Dim<1>(3), LessOrEqual, 0.);
+        auto c = Ctr::Array(env, Dim<1>(3), LessOrEqual);
+        model.add<Ctr, 1>(c);
 
         WHEN("Adding a variable by column (linear only)") {
 
@@ -20,10 +23,15 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
             column.linear().set(c[1], 102);
             column.linear().set(c[2], 103);
 
-            auto var = model.add_var(0., 1, Continuous, column);
+            Var var(env, 0., 1, Continuous, column);
+            model.add(var);
 
             THEN("The number of variables should be one") {
                 CHECK(model.vars().size() == 1);
+            }
+
+            AND_THEN("The model should be in the model") {
+                CHECK(var.is_in(model));
             }
 
             AND_THEN("The column objective should have been added to the model's variable objective") {
@@ -113,6 +121,10 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                     CHECK(model.get(Attr::Var::Status, var) == 0);
                 }
 
+                AND_THEN("The variable should not be part of the model") {
+                    CHECK(!var.is_in(model));
+                }
+
                 AND_THEN("The model's objective should be empty") {
                     CHECK(model.get(Attr::Obj::Expr).linear().empty());
                 }
@@ -136,8 +148,11 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
     GIVEN("An initial model with some constraints and some variables") {
 
-        auto c = model.add_ctrs(Dim<1>(3), LessOrEqual, 0.);
-        auto x = model.add_vars(Dim<1>(3), 0., 1., Continuous, 0);
+        auto c = Ctr::Array(env, Dim<1>(3), LessOrEqual);
+        model.add<Ctr, 1>(c);
+
+        auto x = Var::Array(env, Dim<1>(3), 0., 1., Continuous);
+        model.add<Var, 1>(x);
 
         WHEN("Adding a variable by column (linear and quadratic)") {
 
@@ -156,7 +171,8 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
             column.quadratic().set(c[2], x[1], 111);
             column.quadratic().set(c[2], x[2], 112);
 
-            auto var = model.add_var(0., 1, Continuous, column);
+            Var var(env, 0., 1., Continuous, column);
+            model.add(var);
 
             THEN("The number of variables should increase by one") {
                 CHECK(model.vars().size() == 4);

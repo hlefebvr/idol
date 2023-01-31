@@ -6,14 +6,17 @@
 
 SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
 
-    Model model;
+    Env env;
+
+    Model model(env);
 
     GIVEN("An initial model with no variable and no constraint") {
 
 
         WHEN("Adding a continuous variable with infinite lower and upper bound and no objective function") {
 
-            auto x = model.add_var(-Inf, Inf, Continuous, 0., "x");
+            Var x(env, -Inf, Inf, Continuous, "x");
+            model.add(x);
 
             THEN("The variabe's objective coefficient should be zero") {
                 CHECK(model.get(Attr::Var::Obj, x).numerical() == 0);

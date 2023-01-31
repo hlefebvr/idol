@@ -43,6 +43,8 @@ public:
     bool operator==(const Object<T>& t_rhs) const { return id() == t_rhs.id(); }
 
     bool operator!=(const Object<T>& t_rhs) const { return id() != t_rhs.id(); }
+
+    [[nodiscard]] bool is_in(const Model& t_model) const { return m_object_id->versions().has(t_model); }
 };
 
 template<class T>

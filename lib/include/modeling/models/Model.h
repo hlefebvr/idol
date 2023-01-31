@@ -93,6 +93,7 @@ public:
     // Constraints' attributes
     [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Ctr>& t_attr, const Ctr& t_ctr) const override;
     [[nodiscard]] const Row& get(const AttributeWithTypeAndArguments<Row, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override;
     void set(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
     void set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
     void set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
