@@ -96,7 +96,7 @@ SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
         Model model(env);
         const auto& backend = model.set_backend<Gurobi>();
 
-        auto c = Ctr::array(env, Dim<1>(3), LessOrEqual);
+        auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
         model.add<Ctr, 1>(c);
 
         WHEN("A continuous variable (lb=0,ub=inf) is added with a Column") {
