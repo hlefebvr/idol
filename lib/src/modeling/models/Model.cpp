@@ -3,7 +3,6 @@
 //
 #include "modeling/models/Model.h"
 #include "modeling/models/Env.h"
-#include "modeling/constraints/TempCtr.h"
 
 Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 
@@ -22,32 +21,23 @@ Model::~Model() {
     m_env.free_model_id(*this);
 }
 
-Var Model::create_var(double t_lb, double t_ub, int t_type, Column &&t_column, std::string t_name) {
-    auto result = m_env.create<Var>(std::move(t_name));
-    add_var(result, t_lb, t_ub, t_type, std::move(t_column));
-    return result;
-}
-
-Var Model::create_var(double t_lb, double t_ub, int t_type, const Column &t_column, std::string t_name) {
-    return create_var(t_lb, t_ub, t_type, Column(t_column), std::move(t_name));
-}
-
-Var Model::create_var(double t_lb, double t_ub, int t_type, std::string t_name) {
-    return create_var(t_lb, t_ub, t_type, Column(0.), std::move(t_name));
-}
-
-void Model::add_var(const Var &t_var, double t_lb, double t_ub, int t_type, Column&& t_column) {
-    m_env.create_version(*this, t_var, m_variables.size(), TempVar(t_lb, t_ub, t_type, std::move(t_column)));
+void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type, Column &&t_column) {
+    m_env.create_version(*this, t_var, m_variables.size(), t_lb, t_ub, t_type, std::move(t_column));
     m_variables.emplace_back(t_var);
     add_column_to_rows(t_var);
 }
 
-void Model::add_var(const Var &t_var, double t_lb, double t_ub, int t_type, const Column &t_column) {
-    add_var(t_var, t_lb, t_ub, t_type, Column(t_column));
+void Model::add(const Var &t_var) {
+    const auto& default_version = m_env[t_var];
+    add(t_var, default_version.lb(), default_version.ub(), default_version.type(), Column(default_version.column()));
 }
 
-void Model::add_var(const Var &t_var, double t_lb, double t_ub, int t_type) {
-    add_var(t_var, t_lb, t_ub, t_type, Column(0.));
+void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type, const Column &t_column) {
+    add(t_var, t_lb, t_ub, t_type, Column(t_column));
+}
+
+void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type) {
+    add(t_var, t_lb, t_ub, t_type, Column(0));
 }
 
 void Model::remove(const Var &t_var) {
@@ -66,32 +56,19 @@ void Model::remove(const Ctr &t_ctr) {
     m_env.remove_version(*this, t_ctr);
 }
 
-Ctr Model::create_ctr(TempCtr &&t_temp_ctr, std::string t_name) {
-    auto result = m_env.create<Ctr>(std::move(t_name));
-    add_ctr(result, std::move(t_temp_ctr));
-    return result;
-}
-
-Ctr Model::create_ctr(const TempCtr &t_temp_ctr, std::string t_name) {
-    return create_ctr(TempCtr(t_temp_ctr), std::move(t_name));
-}
-
-Ctr Model::create_ctr(int t_type, std::string t_name) {
-    return create_ctr(TempCtr(Row(0, 0), t_type), std::move(t_name));
-}
-
-void Model::add_ctr(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
+void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
     m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
     m_constraints.emplace_back(t_ctr);
     add_row_to_columns(t_ctr);
 }
 
-void Model::add_ctr(const Ctr &t_ctr, const TempCtr &t_temp_ctr) {
-    return add_ctr(t_ctr, TempCtr(t_temp_ctr));
+void Model::add(const Ctr &t_ctr, const TempCtr &t_temp_ctr) {
+    add(t_ctr, TempCtr(t_temp_ctr));
 }
 
-void Model::add_ctr(const Ctr &t_ctr, int t_type) {
-    return add_ctr(t_ctr, TempCtr(Row(0., 0.), t_type));
+void Model::add(const Ctr &t_ctr) {
+    const auto& default_version = m_env[t_ctr];
+    add(t_ctr, TempCtr(Row(default_version.row()), default_version.type()));
 }
 
 Expr<Var> &Model::access_obj() {

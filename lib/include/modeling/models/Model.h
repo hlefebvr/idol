@@ -44,8 +44,6 @@ class Model : public Matrix, public AttributeManagers::Base {
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
-
-    template<class T, int N, int I = 0> Vector<T, N-I> create_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<T(const std::string& t_name)>& t_add_one);
 public:
     explicit Model(Env& t_env);
 
@@ -58,32 +56,21 @@ public:
     ~Model() override;
 
     // Variables
-    Var create_var(double t_lb, double t_ub, int t_type, Column&& t_column, std::string t_name = "");
-    Var create_var(double t_lb, double t_ub, int t_type, const Column& t_column, std::string t_name = "");
-    Var create_var(double t_lb, double t_ub, int t_type, std::string t_name = "");
-    template<int N> Vector<Var, N> create_vars(const Dim<N>& t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name = "");
-
-    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column);
-    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column);
-    void add_var(const Var& t_var, double t_lb, double t_ub, int t_type);
-    //template<int N> void add_vars(const Vector<MyVar, N>& t_vars, double t_lb, double t_ub, int t_type);
-
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column);
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column);
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type);
+    void add(const Var& t_var);
     void remove(const Var& t_var);
-
     [[nodiscard]] auto vars() const { return ConstIteratorForward<std::vector<Var>>(m_variables); }
 
     // Constraints
-    Ctr create_ctr(TempCtr&& t_temp_ctr, std::string t_name = "");
-    Ctr create_ctr(const TempCtr& t_temp_ctr, std::string t_name = "");
-    Ctr create_ctr(int t_type, std::string t_name = "");
-
-    void add_ctr(const Ctr& t_ctr, TempCtr&& t_temp_ctr);
-    void add_ctr(const Ctr& t_ctr, const TempCtr& t_temp_ctr);
-    void add_ctr(const Ctr& t_ctr, int t_type);
-
+    void add(const Ctr& t_ctr);
+    void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr);
+    void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr);
     void remove(const Ctr& t_ctr);
-
     [[nodiscard]] auto ctrs() const { return ConstIteratorForward<std::vector<Ctr>>(m_constraints); }
+
+    template<class T, unsigned int N> void add(const Vector<T, N>& t_vector);
 
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
@@ -121,28 +108,17 @@ public:
     void set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 };
 
-template<class T, int N, int I>
-Vector<T, N - I> Model::create_many(const Dim<N> &t_dims, const std::string &t_name,
-                                      const std::function<T(const std::string &)> &t_add_one) {
-    Vector<T, N - I> result;
-    const unsigned int size = t_dims[I];
-    result.reserve(size);
-    for (unsigned int i = 0 ; i < size ; ++i) {
-        const std::string name = t_name + "_" + std::to_string(i);
-        if constexpr (I == N - 1) {
-            result.emplace_back( t_add_one(name) );
-        } else {
-            result.emplace_back( create_many<T, N, I+1>(t_dims, name, t_add_one) );
+template<class T, unsigned int N>
+void Model::add(const Vector<T, N>& t_vector) {
+    if constexpr (N == 1) {
+        for (const auto& x : t_vector) {
+            add(x);
+        }
+    } else  {
+        for (const auto& x : t_vector) {
+            add<T, N - 1>(x);
         }
     }
-    return result;
-}
-
-template<int N>
-Vector<Var, N> Model::create_vars(const Dim<N> &t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name) {
-    return create_many<Var, N>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name){
-        return create_var(t_lb, t_ub, t_type, t_name);
-    });
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
@@ -187,16 +163,25 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
 
         const double lb = t_model.get(Attr::Var::Lb, var);
         const double ub = t_model.get(Attr::Var::Ub, var);
+        const int type = t_model.get(Attr::Var::Type, var);
 
         if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
-            t_os << lb << " <= " << var << " <= " << ub << '\n';
+            t_os << lb << " <= " << var << " <= " << ub;
         } else if (!is_pos_inf(ub)) {
-            t_os << var << " <= " << ub << '\n';
+            t_os << var << " <= " << ub;
         } else if (!is_neg_inf(lb)) {
-            t_os << var << " >= " << lb << '\n';
+            t_os << var << " >= " << lb;
         } else {
-            t_os << var << '\n';
+            t_os << var;
         }
+
+        if (type == Binary) {
+            t_os << " [binary]";
+        } else if (type == Integer) {
+            t_os << " [integer]";
+        }
+
+        t_os << '\n';
     }
     return t_os;
 }

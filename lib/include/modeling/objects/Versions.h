@@ -22,6 +22,14 @@ class Versions {
 
     std::vector<std::optional<T>> m_versions; /// Every versions are stored here, the index corresponds to the id of the model to which the version is associated
 public:
+    template<class ...ArgsT> explicit Versions(ArgsT&& ...t_args) : m_versions({ std::make_optional<T>(std::forward<ArgsT&&>(t_args)...) }) {}
+
+    Versions(const Versions&) = delete;
+    Versions(Versions&&) noexcept = delete;
+
+    Versions& operator=(const Versions&) = delete;
+    Versions& operator=(Versions&&) noexcept = delete;
+
     template<class ...ArgsT> void create(const Model& t_model, unsigned int t_index, ArgsT&& ...t_args);
 
     void remove(const Model& t_model);
@@ -30,8 +38,22 @@ public:
 
     [[nodiscard]] const T& get(const Model& t_model) const;
 
-    [[nodiscard]] T& get(const Model& t_model);
+    T& get(const Model& t_model);
+
+    [[nodiscard]] const T& get_default() const;
+
+    T& get_default();
 };
+
+template<class T>
+const T &Versions<T>::get_default() const {
+    return m_versions.front().value();
+}
+
+template<class T>
+T &Versions<T>::get_default() {
+    return m_versions.front().value();
+}
 
 template<class T>
 template<class ...ArgsT>
@@ -41,7 +63,7 @@ void Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT&& ...
     if (m_versions.size() <= index) {
         m_versions.resize(index + s_buffer_size);
     } else if (m_versions[index].has_value()) {
-        throw Exception("Trying to add twice a given object to model.");
+        throw Exception("Object already in model.");
     }
 
     m_versions[index] = T(t_index, std::forward<ArgsT>(t_args)...);
@@ -49,12 +71,20 @@ void Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT&& ...
 
 template<class T>
 const T &Versions<T>::get(const Model &t_model) const {
-    return m_versions[t_model.id()].value();
+    const unsigned int id = t_model.id();
+    if (!m_versions[id].has_value()) {
+        throw Exception("Object not part of model.");
+    }
+    return m_versions[id].value();
 }
 
 template<class T>
 T &Versions<T>::get(const Model &t_model) {
-    return m_versions[t_model.id()].value();
+    const unsigned int id = t_model.id();
+    if (!m_versions[id].has_value()) {
+        throw Exception("Object not part of model.");
+    }
+    return m_versions[id].value();
 }
 
 template<class T>

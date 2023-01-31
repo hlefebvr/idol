@@ -9,7 +9,7 @@
 #include <vector>
 #include <functional>
 
-template<int N>
+template<unsigned int N>
 class Dim : public std::array<unsigned int, N> {
     friend class Dim<N+1>;
 public:

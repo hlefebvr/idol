@@ -1,26 +1,32 @@
 #include <iostream>
 #include "modeling.h"
-
-class Model;
+#include "problems/FLP/FLP_Instance.h"
 
 int main(int t_argc, char** t_argv) {
 
+    auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/optimize/dev/flp_instance.txt");
+
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
+
     Env env;
 
+    auto x = Var::Array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
+    auto y = Var::Array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+
     Model model(env);
+    model.add<Var, 1>(x);
+    model.add<Var, 2>(y);
 
-    auto x = model.create_vars(Dim<1>(5), 0., 1., Continuous, "x");
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
+    }
 
-    auto ctr = model.create_ctr(x[0] + 2 * x[1] <= 3, "my_ctr");
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
+    }
 
-    std::cout << x[0].name() << std::endl;
-    std::cout << ctr << std::endl;
-
-    std::cout << model.get(Attr::Matrix::Coeff, ctr, x[0]) << std::endl;
-
-    model.set(Attr::Obj::Sense, Maximize);
-    model.set(Attr::Obj::Expr, x[3] - 3 * x[1]);
-    model.set(Attr::Var::Lb, x[4], -10);
+    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     std::cout << model << std::endl;
 

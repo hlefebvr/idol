@@ -7,6 +7,7 @@
 
 #include <memory>
 #include "ObjectId.h"
+#include "containers/Vector.h"
 
 class Model;
 
@@ -27,8 +28,7 @@ protected:
         m_object_id->versions().remove(t_model);
     }
 public:
-    Object(typename std::list<Versions<T>>::iterator t_it, unsigned int t_id, std::string t_name)
-    : m_object_id(std::make_shared<ObjectId<T>>(t_it, t_id, std::move(t_name))) {}
+    explicit Object(ObjectId<T>&& t_object_id) : m_object_id(std::make_shared<ObjectId<T>>(std::move(t_object_id))) {}
 
     Object(const Object&) = default;
     Object(Object&&) noexcept = default;
@@ -48,6 +48,26 @@ public:
 template<class T>
 static std::ostream& operator<<(std::ostream& t_os, const Object<T>& t_var) {
     return t_os << t_var.name();
+}
+
+namespace impl {
+
+    template<class U, unsigned int N, unsigned int I = 0>
+    static ::Vector<U, N - I> create_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<U(const std::string& t_name)>& t_add_one) {
+        ::Vector<U, N - I> result;
+        const unsigned int size = t_dims[I];
+        result.reserve(size);
+        for (unsigned int i = 0 ; i < size ; ++i) {
+            const std::string name = t_name + "_" + std::to_string(i);
+            if constexpr (I == N - 1) {
+                result.emplace_back( t_add_one(name) );
+            } else {
+                result.emplace_back( create_many<U, N, I+1>(t_dims, name, t_add_one) );
+            }
+        }
+        return result;
+    }
+
 }
 
 #define IDOL_MAKE_HASHABLE(name) \
