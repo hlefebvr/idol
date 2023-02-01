@@ -23,8 +23,8 @@ class BranchingManagers::OnMaster : public BranchingManager {
     Map<Var, Ctr> m_lower_bound_constraints; // SP Var -> LB Ctr
     Map<Var, Ctr> m_upper_bound_constraints; // SP Var -> UB Ctr
 
-    [[nodiscard]] double get_bound(const Map<Var, Ctr>& t_container, const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const;
-    void set_bound(Map<Var, Ctr>& t_container, const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
+    [[nodiscard]] double get_bound(const Map<Var, Ctr>& t_container, const Req<double, Var>& t_attr, const Var& t_var) const;
+    void set_bound(Map<Var, Ctr>& t_container, const Req<double, Var>& t_attr, const Var& t_var, double t_value);
 public:
     explicit OnMaster(DantzigWolfeSP &t_parent) : m_parent(t_parent) {}
 

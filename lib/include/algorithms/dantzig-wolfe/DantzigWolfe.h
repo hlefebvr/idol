@@ -55,8 +55,8 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 
-    void set_original_formulation(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
-    [[nodiscard]] double get_original_formulation(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const;
+    void set_original_formulation(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
+    [[nodiscard]] double get_original_formulation(const Req<double, Var>& t_attr, const Var& t_var) const;
 public:
     DantzigWolfe(Model& t_model, const UserAttr& t_complicating_constraint);
 
@@ -80,12 +80,12 @@ public:
     using Algorithm::set;
     using Algorithm::get;
 
-    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
     void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;
     void set(const Parameter<int>& t_param, int t_value) override;
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const override;
+    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;

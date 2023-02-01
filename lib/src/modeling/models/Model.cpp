@@ -111,34 +111,34 @@ Row &Model::access_row(const Ctr &t_ctr) {
     return m_env.version(*this, t_ctr).row();
 }
 
-int Model::get(const AttributeWithTypeAndArguments<int, void> &t_attr) const {
+int Model::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Sense) {
         return m_sense;
     }
 
-    return Base::get(t_attr);
+    return AttributeManagers::Delegate::get(t_attr);
 }
 
-const Expr<Var, Var> &Model::get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr) const {
+const Expr<Var, Var> &Model::get(const Req<Expr<Var, Var>, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Expr) {
         return m_objective;
     }
 
-    return Base::get(t_attr);
+    return AttributeManagers::Delegate::get(t_attr);
 }
 
-const Row &Model::get(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr) const {
+const Row &Model::get(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Row) {
         return m_env.version(*this, t_ctr).row();
     }
 
-    return Base::get(t_attr, t_ctr);
+    return AttributeManagers::Delegate::get(t_attr, t_ctr);
 }
 
-int Model::get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr) const {
+int Model::get(const Req<int, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Type) {
         return m_env.version(*this, t_ctr).type();
@@ -148,14 +148,10 @@ int Model::get(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr 
         return (int) m_env.version(*this, t_ctr).index();
     }
 
-    if (t_attr == Attr::Ctr::Status) {
-        return m_env.has_version(*this, t_ctr);
-    }
-
-    return Base::get(t_attr, t_ctr);
+    return AttributeManagers::Delegate::get(t_attr, t_ctr);
 }
 
-double Model::get(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var) const {
+double Model::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Lb) {
         return m_env.version(*this, t_var).lb();
@@ -165,56 +161,56 @@ double Model::get(const AttributeWithTypeAndArguments<double, Var> &t_attr, cons
         return m_env.version(*this, t_var).ub();
     }
 
-    return Base::get(t_attr, t_var);
+    return AttributeManagers::Delegate::get(t_attr, t_var);
 }
 
-const Column &Model::get(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var) const {
+const Column &Model::get(const Req<Column, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Column) {
         return m_env.version(*this, t_var).column();
     }
 
-    return Base::get(t_attr, t_var);
+    return AttributeManagers::Delegate::get(t_attr, t_var);
 }
 
 const Constant &
-Model::get(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
+Model::get(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
 
     if (t_attr == Attr::Matrix::Coeff) {
         return m_env.version(*this, t_ctr).row().linear().get(t_var);
     }
 
-    return Base::get(t_attr, t_ctr, t_var);
+    return AttributeManagers::Delegate::get(t_attr, t_ctr, t_var);
 }
 
-const LinExpr<Ctr> &Model::get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr) const {
+const LinExpr<Ctr> &Model::get(const Req<LinExpr<Ctr>, void> &t_attr) const {
 
     if (t_attr == Attr::Rhs::Expr) {
         return m_rhs;
     }
 
-    return Base::get(t_attr);
+    return AttributeManagers::Delegate::get(t_attr);
 }
 
-const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var) const {
+const Constant &Model::get(const Req<Constant, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Obj) {
         return m_env.version(*this, t_var).column().obj();
     }
 
-    return Base::get(t_attr, t_var);
+    return AttributeManagers::Delegate::get(t_attr, t_var);
 }
 
-const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, void> &t_attr) const {
+const Constant &Model::get(const Req<Constant, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Const) {
         return m_objective.constant();
     }
 
-    return Base::get(t_attr);
+    return AttributeManagers::Delegate::get(t_attr);
 }
 
-int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var) const {
+int Model::get(const Req<int, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Type) {
         return m_env.version(*this, t_var).type();
@@ -224,37 +220,33 @@ int Model::get(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var 
         return (int) m_env.version(*this, t_var).index();
     }
 
-    if (t_attr == Attr::Var::Status) {
-        return m_env.has_version(*this, t_var);
-    }
-
-    return Base::get(t_attr, t_var);
+    return AttributeManagers::Delegate::get(t_attr, t_var);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<double, Var> &t_attr, const Var &t_var, double t_value) {
+void Model::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     if (t_attr == Attr::Var::Lb) {
         m_env.version(*this, t_var).set_lb(t_value);
-        if (m_backend) { m_backend->update(t_var); }
+        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
         return;
     }
 
     if (t_attr == Attr::Var::Ub) {
         m_env.version(*this, t_var).set_ub(t_value);
-        if (m_backend) { m_backend->update(t_var); }
+        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
         return;
     }
 
-    Base::set(t_attr, t_var, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) {
+void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) {
 
     if (t_attr == Attr::Matrix::Coeff) {
 
         if (m_backend) {
             m_backend->update();
-            m_backend->update_matrix(t_ctr, t_var, t_value);
+            m_backend->set(t_attr, t_ctr, t_var, t_value);
         }
 
         update_matrix_coefficient(t_ctr, t_var, std::move(t_value));
@@ -262,135 +254,165 @@ void Model::set(const AttributeWithTypeAndArguments<Constant, Ctr, Var> &t_attr,
         return;
     }
 
-    AttributeManagers::Base::set(t_attr, t_ctr, t_var, std::move(t_value));
+    AttributeManagers::Delegate::set(t_attr, t_ctr, t_var, std::move(t_value));
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+void Model::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
 
     if (t_attr == Attr::Ctr::Rhs) {
-        add_to_rhs(t_ctr, std::move(t_value));
-        if (m_backend) { m_backend->update(t_ctr); }
+        if (m_backend) {
+            add_to_rhs(t_ctr, Constant(t_value));
+            m_backend->set(t_attr, t_ctr, std::move(t_value));
+        } else {
+            add_to_rhs(t_ctr, std::move(t_value));
+        }
         return;
     }
 
-    Base::set(t_attr, t_ctr, std::move(t_value));
+    AttributeManagers::Delegate::set(t_attr, t_ctr, std::move(t_value));
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+void Model::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
 
     if (t_attr == Attr::Obj::Expr) {
-        replace_objective(std::move(t_value));
-        if (m_backend) { m_backend->update_objective(); }
+
+        if (m_backend) {
+            replace_objective(Expr<Var, Var>(t_value));
+            m_backend->set(t_attr, std::move(t_value));
+        } else {
+            replace_objective(std::move(t_value));
+        }
+
         return;
     }
 
-    Base::set(t_attr, std::move(t_value));
+    AttributeManagers::Delegate::set(t_attr, std::move(t_value));
 }
 
-void Model::set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
+void Model::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
-        replace_right_handside(std::move(t_value));
-        if (m_backend) { m_backend->update_rhs(); }
+
+        if (m_backend) {
+            replace_right_handside(LinExpr<Ctr>(t_value));
+            m_backend->set(t_attr, std::move(t_value));
+        } else {
+            replace_right_handside(std::move(t_value));
+        }
+
         return;
     }
 
-    Base::set(t_attr, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) {
+void Model::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
 
     if (t_attr == Attr::Obj::Const) {
-        m_objective.constant() = std::move(t_value);
-        if (m_backend) { m_backend->update_objective(); }
+
+        if (m_backend) {
+            m_objective.constant() = Constant(t_value);
+            m_backend->set(t_attr, std::move(t_value));
+        } else {
+            m_objective.constant() = std::move(t_value);
+        }
+
         return;
     }
 
-    Base::set(t_attr, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
+void Model::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
 
     if (t_attr == Attr::Var::Obj) {
-        add_to_obj(t_var, std::move(t_value));
-        if (m_backend) { m_backend->update(t_var); }
+
+        if (m_backend) {
+            add_to_obj(t_var, Constant(t_value));
+            m_backend->set(t_attr, t_var, std::move(t_value));
+        } else {
+            add_to_obj(t_var, std::move(t_value));
+        }
+
         return;
     }
 
-    Base::set(t_attr, t_var, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) {
+void Model::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
 
     if (t_attr == Attr::Var::Type) {
+
         m_env.version(*this, t_var).set_type(t_value);
-        if (m_backend) { m_backend->update(t_var); }
+        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
         return;
     }
 
-    return Base::set(t_attr, t_var, t_value);
+    return AttributeManagers::Delegate::set(t_attr, t_var, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) {
+void Model::set(const Req<int, void> &t_attr, int t_value) {
 
     if (t_attr == Attr::Obj::Sense) {
-        if (t_value < 0 || t_value > 1) {
-            throw Exception("Objective sense out of bounds.");
+        if (t_value != Minimize && t_value != Maximize) {
+            throw Exception("Unsupported objective sense.");
         }
         m_sense = t_value;
-        if (m_backend) { m_backend->update_objective_sense(); }
+        if (m_backend) { m_backend->set(t_attr, t_value); }
         return;
     }
 
-    Base::set(t_attr, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
+void Model::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
 
     if (t_attr == Attr::Ctr::Type) {
         m_env.version(*this, t_ctr).set_type(t_value);
-        if (m_backend) { m_backend->update(t_ctr); }
+        if (m_backend) { m_backend->set(t_attr, t_ctr, t_value); }
         return;
     }
 
-    Base::set(t_attr, t_ctr, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_ctr, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
+void Model::set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
 
     if (t_attr == Attr::Ctr::Row) {
 
         remove_row_from_columns(t_ctr);
         m_env.version(*this, t_ctr).row() = std::move(t_value);
         add_row_to_columns(t_ctr);
-        // TODO
+        throw Exception("Updating row is not implemented.");
 
         return;
     }
 
-    Base::set(t_attr, t_ctr, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_ctr, t_value);
 }
 
-void Model::set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) {
+void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) {
 
     if (t_attr == Attr::Var::Column) {
         remove_column_from_rows(t_var);
         m_env.version(*this, t_var).column() = std::move(t_value);
         add_column_to_rows(t_var);
-        // TODO
+        throw Exception("Updating column is not implemented.");
+
         return;
     }
 
-    Base::set(t_attr, t_var, t_value);
+    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
 }
 
-const Constant &Model::get(const AttributeWithTypeAndArguments<Constant, Ctr> &t_attr, const Ctr &t_ctr) const {
+const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Ctr::Rhs) {
         return m_env.version(*this, t_ctr).row().rhs();
     }
 
-    return Base::get(t_attr, t_ctr);
+    return AttributeManagers::Delegate::get(t_attr, t_ctr);
 }
 
 void Model::optimize() {
@@ -412,4 +434,27 @@ void Model::update() {
 void Model::write(const std::string &t_name) {
     throw_if_no_backend();
     m_backend->write(t_name);
+}
+
+AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+bool Model::has(const Var &t_var) const {
+    return m_env.has_version(*this, t_var);
+}
+
+bool Model::has(const Ctr &t_ctr) const {
+    return m_env.has_version(*this, t_ctr);
 }

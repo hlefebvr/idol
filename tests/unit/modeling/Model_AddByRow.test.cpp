@@ -35,8 +35,8 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
                 CHECK(model.ctrs().size() == 1);
             }
 
-            AND_THEN("The constraint status should be 1") {
-                CHECK(model.get(Attr::Ctr::Status, ctr) == 1);
+            AND_THEN("The model should have the constraint") {
+                CHECK(model.has(ctr));
             }
 
             AND_THEN("The constraint should be in the model") {
@@ -146,8 +146,8 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
                     CHECK(model.ctrs().size() == 0);
                 }
 
-                AND_THEN("The constraint should have status 0 in the model") {
-                    CHECK(model.get(Attr::Ctr::Status, ctr) == 0);
+                AND_THEN("The model should not have the constraint") {
+                    CHECK(!model.has(ctr));
                 }
 
                 AND_THEN("The constraint should not be part of the model") {

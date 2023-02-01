@@ -2,12 +2,12 @@
 // Created by henri on 31/01/23.
 //
 
-#ifndef IDOL_BACKEND_BASE_H
-#define IDOL_BACKEND_BASE_H
+#ifndef IDOL_LAZYBACKEND_H
+#define IDOL_LAZYBACKEND_H
 
-#include "Backend.h"
+#include "backends/Backend.h"
 
-#include "../modeling/models/Model.h"
+#include "modeling/models/Model.h"
 
 #include <vector>
 #include <list>
@@ -55,6 +55,13 @@ class LazyBackend : public Backend {
 
     void update_vars();
     void update_ctrs();
+
+    void update_objective_sense();
+    void update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant);
+    void update(const Var& t_var);
+    void update(const Ctr& t_ctr);
+    void update_objective();
+    void update_rhs();
 protected:
     explicit LazyBackend(const Model& t_parent);
 
@@ -73,23 +80,16 @@ protected:
     void add(const Ctr &t_ctr) final;
     virtual CtrImplT hook_add(const Ctr& t_ctr) = 0;
 
-    void update_objective_sense() final;
     virtual void hook_update_objective_sense() = 0;
-
-    void update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant) final;
     virtual void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) = 0;
 
     void update() final;
-    void update(const Var& t_var) final;
-    void update(const Ctr& t_ctr) final;
     virtual void hook_update() = 0;
     virtual void hook_update(const Var& t_var) = 0;
     virtual void hook_update(const Ctr& t_ctr) = 0;
 
-    void update_objective() override;
     virtual void hook_update_objective() = 0;
 
-    void update_rhs() override;
     virtual void hook_update_rhs() = 0;
 
     void remove(const Var& t_var) final;
@@ -112,6 +112,24 @@ protected:
     [[nodiscard]] bool is_rhs_to_be_updated() const { return m_is_rhs_to_be_updated; }
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
 
+    using Backend::set;
+    using Backend::get;
+
+    // Model
+    void set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) override;
+    void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
+    void set(const Req<int, void> &t_attr, int t_value) override;
+
+    // Variables
+    void set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) override;
+    void set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
+    void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
+    void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;
+
+    // Constraints
+    void set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
+    void set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) override;
+    void set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
 public:
     VarImplT& operator[](const Var& t_var) { return lazy(t_var).impl(); }
     const VarImplT& operator[](const Var& t_var) const { return lazy(t_var).impl(); }
@@ -303,4 +321,115 @@ void LazyBackend<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
     m_constraints.pop_back();
 }
 
-#endif //IDOL_BACKEND_BASE_H
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
+
+    if (t_attr == Attr::Ctr::Type) {
+        update(t_ctr);
+        return;
+    }
+
+    Base::set(t_attr, t_ctr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, void> &t_attr, int t_value) {
+
+    if (t_attr == Attr::Obj::Sense) {
+        update_objective_sense();
+        return;
+    }
+
+    Base::set(t_attr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
+
+    if (t_attr == Attr::Var::Type) {
+        update(t_var);
+        return;
+    }
+
+    Base::set(t_attr, t_var, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
+
+    if (t_attr == Attr::Var::Obj) {
+        update(t_var);
+        return;
+    }
+
+    Base::set(t_attr, t_var, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
+
+    if (t_attr == Attr::Obj::Const) {
+        update_objective();
+        return;
+    }
+
+    Base::set(t_attr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
+
+    if (t_attr == Attr::Rhs::Expr) {
+        update_rhs();
+        return;
+    }
+
+    Base::set(t_attr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        update_objective();
+        return;
+    }
+
+    Base::set(t_attr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+
+    if (t_attr == Attr::Ctr::Rhs) {
+        update(t_ctr);
+        return;
+    }
+
+    Base::set(t_attr, t_ctr, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) {
+
+    if (t_attr == Attr::Matrix::Coeff) {
+        update_matrix(t_ctr, t_var, t_value);
+        return;
+    }
+
+    Base::set(t_attr, t_ctr, t_var, t_value);
+}
+
+template<class VarImplT, class CtrImplT>
+void LazyBackend<VarImplT, CtrImplT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
+        update(t_var);
+        return;
+    }
+
+    Base::set(t_attr, t_var, t_value);
+}
+
+#endif //IDOL_LAZYBACKEND_H

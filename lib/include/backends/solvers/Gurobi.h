@@ -10,7 +10,7 @@
 #include <memory>
 #include <variant>
 
-#include "Backend_Base.h"
+#include "LazyBackend.h"
 
 class Gurobi : public LazyBackend<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
     static std::unique_ptr<GRBEnv> s_global_env;
@@ -24,6 +24,7 @@ class Gurobi : public LazyBackend<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
     static char gurobi_ctr_type(int t_type);
     static char gurobi_obj_sense(int t_sense);
     static double gurobi_numeric(double t_value);
+    [[nodiscard]] std::pair<char, char> gurobi_status(int t_status) const;
 protected:
     void hook_initialize() override;
 
@@ -52,6 +53,15 @@ protected:
     void hook_remove(const Var& t_var) override;
 
     void hook_remove(const Ctr& t_ctr) override;
+
+    using LazyBackend::get;
+    using LazyBackend::set;
+
+    // Solution
+    [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
+    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
 public:
     Gurobi(const Model& t_model, GRBEnv& t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {}
     explicit Gurobi(const Model& t_model) : Gurobi(t_model, Gurobi::get_global_env()) {}

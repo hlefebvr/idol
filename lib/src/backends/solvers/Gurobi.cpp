@@ -3,7 +3,7 @@
 //
 #ifdef IDOL_USE_GUROBI
 
-#include "backends/Gurobi.h"
+#include "backends/solvers/Gurobi.h"
 #include "algorithms/parameters/Logs.h"
 
 std::unique_ptr<GRBEnv> Gurobi::s_global_env;
@@ -44,6 +44,20 @@ char Gurobi::gurobi_obj_sense(int t_sense) {
     throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
 }
 
+std::pair<char, char> Gurobi::gurobi_status(int t_status) const {
+    switch (t_status) {
+        case GRB_OPTIMAL: return { Optimal, Proved };
+        case GRB_INFEASIBLE: return { Infeasible, Proved };
+        case GRB_INF_OR_UNBD: return { InfeasibleOrUnbounded, Proved };
+        case GRB_UNBOUNDED: return { Unbounded, Proved };
+        case GRB_CUTOFF: return { Unknown, CutOff };
+        case GRB_USER_OBJ_LIMIT: return { Feasible, UserObjLimit };
+        case GRB_TIME_LIMIT: return { m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible, TimeLimit };
+        case GRB_NUMERIC: return { Fail, NotSpecified };
+        default:;
+    }
+    throw Exception("Unsupported status: " + std::to_string(t_status));
+}
 double Gurobi::gurobi_numeric(double t_value) {
     if (is_pos_inf(t_value)) {
         return GRB_INFINITY;
@@ -257,6 +271,64 @@ void Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Consta
 
 void Gurobi::hook_update() {
     m_model.update();
+}
+
+int Gurobi::get(const Req<int, void> &t_attr) const {
+
+    if (t_attr == Attr::Solution::Status) {
+        return gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+    }
+
+    if (t_attr == Attr::Solution::Reason) {
+        return gurobi_status(m_model.get(GRB_IntAttr_Status)).second;
+    }
+
+    return Base::get(t_attr);
+}
+
+double Gurobi::get(const Req<double, void> &t_attr) const {
+
+    if (t_attr == Attr::Solution::ObjVal) {
+        return m_model.get(GRB_DoubleAttr_ObjVal);
+    }
+
+    return Base::get(t_attr);
+}
+
+double Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+
+    if (t_attr == Attr::Var::Value) {
+        return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+    }
+
+    if (t_attr == Attr::Var::RedCost) {
+        return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
+    }
+
+    return Base::get(t_attr, t_var);
+}
+
+double Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+
+    if (t_attr == Attr::Ctr::Value) {
+        const auto& impl = lazy(t_ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Pi);
+        } else {
+            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
+        }
+    }
+
+    if (t_attr == Attr::Ctr::Slack) {
+        const auto& impl = lazy(t_ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Slack);
+        } else {
+            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_QCSlack);
+        }
+    }
+
+    return Base::get(t_attr, t_ctr);
 }
 
 #endif

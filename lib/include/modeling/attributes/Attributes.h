@@ -35,11 +35,11 @@ class AttributeWithType : public Attribute {
 };
 
 template<class TypeT, class ...ArgsT>
-class AttributeWithTypeAndArguments : public AttributeWithType<TypeT> {};
+class Req : public AttributeWithType<TypeT> {};
 
 namespace impl {
     template<class AlgorithmT, class TypeT, unsigned int Index, class ...ArgsT>
-    class AttributeWithType : public ::AttributeWithTypeAndArguments<TypeT, ArgsT...> {
+    class AttributeWithType : public ::Req<TypeT, ArgsT...> {
         [[nodiscard]] const std::type_info &section() const override { return typeid(AlgorithmT); }
     public:
         [[nodiscard]] unsigned int index() const override { return Index; }

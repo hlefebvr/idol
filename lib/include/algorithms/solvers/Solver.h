@@ -115,8 +115,8 @@ public:
     using Algorithm::set;
     using Algorithm::get;
 
-    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
+    void set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
+    void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
 };
 
 template<class VarT, class CtrT>
@@ -295,7 +295,7 @@ void Solver<VarT, CtrT>::save_callback(::Callback *t_cb) {
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+void Solver<VarT, CtrT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
 
     if (t_attr == Attr::Obj::Expr) {
         add_future_obj();
@@ -305,7 +305,7 @@ void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<Expr<Var, Var>,
 }
 
 template<class VarT, class CtrT>
-void Solver<VarT, CtrT>::set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
+void Solver<VarT, CtrT>::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
         if (!m_update_rhs) {

@@ -2,22 +2,22 @@
 // Created by henri on 31/01/23.
 //
 
-#include "../../test_utils.h"
-#include "backends/Gurobi.h"
+#include "../../../../test_utils.h"
+#include "backends/solvers/Gurobi.h"
 
-SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]") {
+SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
 
-    GIVEN("A initially empty model with no backend") {
+    GIVEN("A initially empty model with a Gurobi backend") {
 
         Env env;
         Model model(env);
+        auto& backend = model.set_backend<Gurobi>();
 
         WHEN("A continuous variable (lb=-15,ub=15) is added to the model") {
 
             Var x(env, -15, 30, Continuous, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -52,7 +52,6 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -Inf, Inf, Integer, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -87,7 +86,6 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 1, 1, Binary, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -119,10 +117,11 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
     }
 
-    GIVEN("A model with some constraints and no backend") {
+    GIVEN("A model with some constraints and a Gurobi backend") {
 
         Env env;
         Model model(env);
+        const auto& backend = model.set_backend<Gurobi>();
 
         auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
         model.add<Ctr, 1>(c);
@@ -137,7 +136,6 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 0, Inf, Continuous, std::move(column), "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added variable") {

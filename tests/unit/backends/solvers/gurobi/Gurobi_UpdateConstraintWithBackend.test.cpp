@@ -2,8 +2,8 @@
 // Created by henri on 31/01/23.
 //
 
-#include "../../test_utils.h"
-#include "backends/Gurobi.h"
+#include "../../../../test_utils.h"
+#include "backends/solvers/Gurobi.h"
 
 SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") {
 

@@ -111,7 +111,7 @@ public:
 
     void set(const Parameter<int>& t_param, int t_value) override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const override;
+    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
 
     class Callback;
 };

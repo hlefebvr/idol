@@ -16,7 +16,7 @@
 #include "modeling/variables/VarVersion.h"
 #include "modeling/expressions/Expr.h"
 
-#include "../attributes/AttributeManagers_Base.h"
+#include "modeling/attributes/AttributeManager_Delegate.h"
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
@@ -30,7 +30,7 @@ class TempCtr;
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class Model : public Matrix, public AttributeManagers::Base {
+class Model : public Matrix, public AttributeManagers::Delegate {
     Env& m_env;
     const unsigned int m_id;
 
@@ -50,6 +50,11 @@ class Model : public Matrix, public AttributeManagers::Base {
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
+protected:
+    // Attribute delegate
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 public:
     explicit Model(Env& t_env);
 
@@ -66,6 +71,7 @@ public:
     void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column);
     void add(const Var& t_var, double t_lb, double t_ub, int t_type);
     void add(const Var& t_var);
+    [[nodiscard]] bool has(const Var& t_var) const;
     void remove(const Var& t_var);
     [[nodiscard]] auto vars() const { return ConstIteratorForward<std::vector<Var>>(m_variables); }
 
@@ -73,6 +79,7 @@ public:
     void add(const Ctr& t_ctr);
     void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr);
     void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr);
+    [[nodiscard]] bool has(const Ctr& t_ctr) const;
     void remove(const Ctr& t_ctr);
     [[nodiscard]] auto ctrs() const { return ConstIteratorForward<std::vector<Ctr>>(m_constraints); }
 
@@ -81,38 +88,38 @@ public:
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
 
-    using AttributeManagers::Base::set;
-    using AttributeManagers::Base::get;
+    using AttributeManagers::Delegate::set;
+    using AttributeManagers::Delegate::get;
 
     // Models' attributes
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, void> &t_attr) const override;
-    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, void>& t_attr) const override;
-    [[nodiscard]] const Expr<Var, Var>& get(const AttributeWithTypeAndArguments<Expr<Var, Var>, void>& t_attr) const override;
-    [[nodiscard]] const LinExpr<Ctr>& get(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr) const override;
-    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
-    void set(const AttributeWithTypeAndArguments<int, void> &t_attr, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
-    void set(const AttributeWithTypeAndArguments<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, void> &t_attr, Constant &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
+    [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
+    [[nodiscard]] const Constant& get(const Req<Constant, void>& t_attr) const override;
+    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override;
+    [[nodiscard]] const LinExpr<Ctr>& get(const Req<LinExpr<Ctr>, void>& t_attr) const override;
+    [[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
+    void set(const Req<int, void> &t_attr, int t_value) override;
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+    void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
+    void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
+    void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
 
     // Constraints' attributes
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    [[nodiscard]] const Row& get(const AttributeWithTypeAndArguments<Row, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    void set(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
-    void set(const AttributeWithTypeAndArguments<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
+    [[nodiscard]] int get(const Req<int, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Row& get(const Req<Row, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Constant& get(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
+    void set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
+    void set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
 
     // Variables' attributes
-    [[nodiscard]] int get(const AttributeWithTypeAndArguments<int, Var>& t_attr, const Var& t_ctr) const override;
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] const Column& get(const AttributeWithTypeAndArguments<Column, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] const Constant& get(const AttributeWithTypeAndArguments<Constant, Var>& t_attr, const Var& t_var) const override;
-    void set(const AttributeWithTypeAndArguments<int, Var> &t_attr, const Var &t_var, int t_value) override;
-    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    void set(const AttributeWithTypeAndArguments<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
-    void set(const AttributeWithTypeAndArguments<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
+    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_ctr) const override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] const Column& get(const Req<Column, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] const Constant& get(const Req<Constant, Var>& t_attr, const Var& t_var) const override;
+    void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
+    void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 
     // Backend
     template<class T, class ...ArgsT> T& set_backend(ArgsT&& ...t_args);

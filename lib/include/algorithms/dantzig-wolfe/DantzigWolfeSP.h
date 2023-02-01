@@ -53,7 +53,7 @@ public:
 
     void contribute_to_primal_solution(Solution::Primal &t_primal) const;
 
-    void apply_bound_expressed_in_original_space(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value);
+    void apply_bound_expressed_in_original_space(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
 
     [[nodiscard]] TempVar create_column_from_generator(const Solution::Primal& t_generator) const;
 

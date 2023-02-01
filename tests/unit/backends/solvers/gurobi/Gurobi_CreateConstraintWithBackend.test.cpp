@@ -1,22 +1,22 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "../../test_utils.h"
-#include "backends/Gurobi.h"
+#include "../../../../test_utils.h"
+#include "backends/solvers/Gurobi.h"
 
-SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]") {
+SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") {
 
     GIVEN("A initially empty model with a Gurobi backend") {
 
         Env env;
         Model model(env);
+        auto& backend = model.set_backend<Gurobi>();
 
         WHEN("A <=-constraint (rhs=10) is added to the model") {
 
             Ctr c(env, LessOrEqual, 10, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -42,12 +42,11 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
 
         }
 
-        AND_WHEN("A >=-constraint (rhs=-5) is added to the model") {
+        WHEN("A >=-constraint (rhs=-5) is added to the model") {
 
             Ctr c(env, GreaterOrEqual, -5, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -74,12 +73,11 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
         }
 
 
-        AND_WHEN("An ==-constraint (rhs=0) is added to the model") {
+        WHEN("An ==-constraint (rhs=0) is added to the model") {
 
             Ctr c(env, Equal, 0, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -111,6 +109,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
 
         Env env;
         Model model(env);
+        const auto& backend = model.set_backend<Gurobi>();
 
         auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
         model.add<Var, 1>(x);
@@ -120,7 +119,6 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, 0 * x[0] + 1 * x[1] + 2 * x[2] <= 1);
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
             model.update();
 
             THEN("The backend's model should have the added constraint") {

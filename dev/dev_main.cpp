@@ -1,7 +1,7 @@
 #include <iostream>
 #include "modeling.h"
 #include "problems/FLP/FLP_Instance.h"
-#include "backends/Gurobi.h"
+#include "backends/solvers/Gurobi.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -32,12 +32,12 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
-    model.write("model.lp");
+    model.optimize();
 
-    model.set(Attr::Var::Type, x[0], Continuous);
-    model.set(Attr::Matrix::Coeff, *model.ctrs().begin(), x[0], 999);
-
-    model.write("model.lp");
+    std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
+    std::cout << (Reason) model.get(Attr::Solution::Reason) << std::endl;
+    std::cout << model.get(Attr::Solution::ObjVal) << std::endl;
+    std::cout << model.get(Attr::Var::Value, x[0]) << std::endl;
 
     return 0;
 

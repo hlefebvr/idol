@@ -117,8 +117,8 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                     CHECK(model.vars().size() == 0);
                 }
 
-                AND_THEN("The variable should have status 0 in the model") {
-                    CHECK(model.get(Attr::Var::Status, var) == 0);
+                AND_THEN("The model should not have the variable") {
+                    CHECK(!model.has(var));
                 }
 
                 AND_THEN("The variable should not be part of the model") {
@@ -224,8 +224,8 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                     CHECK(model.vars().size() == 3);
                 }
 
-                AND_THEN("The variable should have status 0 in the model") {
-                    CHECK(model.get(Attr::Var::Status, var) == 0);
+                AND_THEN("The model should not have the variable") {
+                    CHECK(!model.has(var));
                 }
 
                 AND_THEN("The model's objective should be empty") {

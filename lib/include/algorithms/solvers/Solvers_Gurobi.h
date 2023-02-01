@@ -83,11 +83,11 @@ public:
     void set(const Parameter<bool> &t_param, bool t_value) override;
     void set(const Parameter<int> &t_param, int t_value) override;
 
-    void set(const AttributeWithTypeAndArguments<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
-    void set(const AttributeWithTypeAndArguments<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    void set(const AttributeWithTypeAndArguments<int, Var>& t_attr, const Var& t_var, int t_value) override;
+    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value) override;
 
-    [[nodiscard]] double get(const AttributeWithTypeAndArguments<double, void>& t_attr) const override;
+    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
 
 };
 
