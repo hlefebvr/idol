@@ -6,6 +6,7 @@
 #define IDOL_PARAMETERS_ALGORITHM_H
 
 #include "Parameters.h"
+#include "modeling/numericals.h"
 #include <limits>
 #include <thread>
 

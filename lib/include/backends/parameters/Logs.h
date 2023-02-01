@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_LOG_H
 #define OPTIMIZE_LOG_H
 
-#include "../../modeling/numericals.h"
-#include "../../errors/Exception.h"
+#include "modeling/numericals.h"
+#include "errors/Exception.h"
 #include <ostream>
 #include <iomanip>
 

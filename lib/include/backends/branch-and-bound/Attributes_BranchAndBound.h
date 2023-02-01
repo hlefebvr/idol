@@ -5,7 +5,7 @@
 #ifndef IDOL_ATTRIBUTES_BRANCHANDBOUND_H
 #define IDOL_ATTRIBUTES_BRANCHANDBOUND_H
 
-#include "../parameters/Parameters.h"
+#include "backends/parameters/Parameters.h"
 
 IDOL_CREATE_PARAMETER_CLASS(BranchAndBound)
 

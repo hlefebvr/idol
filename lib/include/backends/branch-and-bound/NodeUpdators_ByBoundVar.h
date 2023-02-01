@@ -6,11 +6,10 @@
 #define OPTIMIZE_NODEUPDATORS_BYBOUNDVAR_H
 
 #include "NodeUpdator.h"
-#include "../../containers/Map.h"
-#include "../../modeling/variables/Var.h"
-#include "../../modeling/variables/Attributes_Var.h"
-#include "../../modeling/numericals.h"
-#include "../Algorithm.h"
+#include "containers/Map.h"
+#include "modeling/variables/Var.h"
+#include "modeling/variables/Attributes_Var.h"
+#include "modeling/numericals.h"
 #include <list>
 #include <functional>
 
@@ -37,7 +36,7 @@ class NodeUpdators::ByBoundVar::Strategy : public NodeUpdatorWithNodeType<NodeT>
 public:
     Strategy() = default;
 
-    void apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy);
+    void apply_local_changes(const NodeT &t_node, Model &t_solution_strategy);
 };
 
 template<class NodeT>
@@ -79,7 +78,7 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
 }
 
 template<class NodeT>
-void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Algorithm &t_solution_strategy) {
+void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Model &t_solution_strategy) {
 
     update_bounds(
             m_lower_bounds,

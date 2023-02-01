@@ -5,7 +5,7 @@
 #ifndef IDOL_NODES_BENDERSIIS_H
 #define IDOL_NODES_BENDERSIIS_H
 
-#include "../branch-and-bound/Nodes_Basic.h"
+#include "backends/branch-and-bound/Nodes_Basic.h"
 #include "Benders.h"
 #include "../solvers/Solvers_Gurobi.h"
 

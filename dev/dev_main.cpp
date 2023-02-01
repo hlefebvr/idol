@@ -2,10 +2,53 @@
 #include "modeling.h"
 #include "problems/FLP/FLP_Instance.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/branch-and-bound/BranchAndBound.h"
+#include "backends/branch-and-bound/NodeStrategies_Basic.h"
+#include "backends/branch-and-bound/Nodes_Basic.h"
+#include "backends/branch-and-bound/BranchingStrategies_MostInfeasible.h"
+#include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
+#include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
+
+namespace Relaxations {
+    class None;
+}
+
+struct Relaxations::None {
+    static void apply(Model& t_model) {}
+};
+
+namespace Relaxations {
+    class Continuous;
+}
+
+struct Relaxations::Continuous {
+
+    static std::vector<Var> apply(Model& t_model) {
+
+        std::vector<Var> result;
+
+        for (const auto& var : t_model.vars()) {
+
+            if (const int type = t_model.get(Attr::Var::Type, var) ; type == Integer || type == Binary) {
+
+                result.emplace_back(var);
+                t_model.set(Attr::Var::Type, var, ::Continuous);
+
+            }
+
+        }
+
+        return result;
+    }
+};
 
 int main(int t_argc, char** t_argv) {
 
-    auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/optimize/dev/flp_instance.txt");
+    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_color<BranchAndBound>(Blue);
+
+    auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/idol_robust_binary/DisruptionFLP/data/instance_F15_C70__1.txt");
+    //auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/optimize/dev/flp_instance.txt");
 
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
@@ -16,8 +59,6 @@ int main(int t_argc, char** t_argv) {
     auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
 
     Model model(env);
-
-    model.set_backend<Gurobi>();
 
     model.add<Var, 1>(x);
     model.add<Var, 2>(y);
@@ -32,14 +73,35 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
+    model.set_backend<Gurobi>();
+
     model.optimize();
 
+    std::cout << "Gurobi: " << model.get(Attr::Solution::ObjVal) << std::endl;
+
+    model.reset_backend();
+
+    auto& branch_and_bound = model.set_backend<BranchAndBound>();
+    auto branching_candidates = branch_and_bound.relax<Relaxations::Continuous>();
+    branch_and_bound.set_node_backend<Gurobi>();
+    auto& nodes_manager = branch_and_bound.set_nodes_manager<NodeStrategies::Basic<Nodes::Basic>>();
+    nodes_manager.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
+    nodes_manager.set_branching_strategy<BranchingStrategies::MostInfeasible>(branching_candidates);
+    nodes_manager.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+
+    model.optimize();
+
+    std::cout << "B&B: " << model.get(Attr::Solution::BestObj) << std::endl;
+
+    /*
     std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
     std::cout << (Reason) model.get(Attr::Solution::Reason) << std::endl;
     std::cout << model.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << model.get(Attr::Var::Value, x[0]) << std::endl;
 
     std::cout << save(model, Attr::Var::Value) << std::endl;
+
+     */
 
     return 0;
 

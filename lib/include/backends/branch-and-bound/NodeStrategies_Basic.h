@@ -6,9 +6,8 @@
 #define OPTIMIZE_NODESTRATEGIES_BASIC_H
 
 #include "NodeStrategy.h"
-#include "../../modeling/numericals.h"
-#include "../Algorithm.h"
-#include "algorithms/parameters/Logs.h"
+#include "modeling/numericals.h"
+#include "backends/parameters/Logs.h"
 #include "ActiveNodesManager.h"
 #include "NodeUpdator.h"
 #include "BranchingStrategy.h"
@@ -19,6 +18,8 @@
 namespace NodeStrategies {
     template<class NodeT> class Basic;
 }
+
+class BranchAndBound;
 
 template<class NodeT>
 class NodeStrategies::Basic : public NodeStrategy {
@@ -60,7 +61,7 @@ public:
 
     void set_current_node_to_next_node_to_be_processed() override;
 
-    void save_current_node_solution(const Algorithm &t_solution_strategy) override;
+    void save_current_node_solution(const Model &t_solution_strategy) override;
 
     void add_node_to_be_processed(Node *t_node) override;
 
@@ -95,9 +96,9 @@ public:
 
     void create_root_node() override;
 
-    void apply_current_node_to(Algorithm &t_solution_strategy) override;
+    void apply_current_node_to(Model &t_solution_strategy) override;
 
-    unsigned int size() const override;
+    [[nodiscard]] unsigned int size() const override;
 };
 
 template<class NodeT>
@@ -150,7 +151,7 @@ void NodeStrategies::Basic<NodeT>::set_current_node_to_next_node_to_be_processed
 }
 
 template<class NodeT>
-void NodeStrategies::Basic<NodeT>::save_current_node_solution(const Algorithm & t_solution_strategy){
+void NodeStrategies::Basic<NodeT>::save_current_node_solution(const Model & t_solution_strategy){
     m_current_node->save_solution(t_solution_strategy);
 }
 
@@ -250,7 +251,7 @@ void NodeStrategies::Basic<NodeT>::create_root_node() {
 }
 
 template<class NodeT>
-void NodeStrategies::Basic<NodeT>::apply_current_node_to(Algorithm &t_solution_strategy) {
+void NodeStrategies::Basic<NodeT>::apply_current_node_to(Model &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
 }
 

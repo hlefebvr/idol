@@ -1,14 +1,17 @@
 //
 // Created by henri on 13/09/22.
 //
+/*
 #include "../../../include/algorithms/branch-and-bound/BranchAndBound.h"
-#include "../../../include/algorithms/branch-and-bound/ActiveNodesManager.h"
+#include "backends/branch-and-bound/ActiveNodesManager.h"
 #include "../../../include/algorithms/callbacks/Callback.h"
 #include "../../../include/algorithms/callbacks/BranchAndBoundCallback.h"
 #include "modeling/models/Attributes_Model.h"
 #include "algorithms/callbacks/Algorithm_Events.h"
 #include "algorithms/dantzig-wolfe/Attributes_DantzigWolfe.h"
 #include "algorithms/branch-and-bound/BranchAndBound_Events.h"
+#include "backends/branch-and-bound/BranchAndBound.h"
+
 
 #include <iomanip>
 
@@ -487,3 +490,4 @@ double BranchAndBound::get(const AttributeWithTypeAndArguments<double, void> &t_
 
     return Delegate::get(t_attr);
 }
+*/

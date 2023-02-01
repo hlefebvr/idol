@@ -3,7 +3,7 @@
 //
 #include <iomanip>
 #include "../../../include/algorithms/row-generation/RowGenerationSP.h"
-#include "../../../include/algorithms/parameters/Logs.h"
+#include "../../../include/backends/parameters/Logs.h"
 #include "../../../include/modeling/expressions/operations/operators.h"
 #include "modeling/constraints/Attributes_Ctr.h"
 #include "modeling/variables/Attributes_Var.h"

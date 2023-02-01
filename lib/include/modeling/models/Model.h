@@ -22,6 +22,7 @@
 #include "../variables/Attributes_Var.h"
 
 #include "backends/Backend.h"
+#include "backends/parameters/Timer.h"
 
 class Env;
 class Column;
@@ -33,6 +34,8 @@ class TempCtr;
 class Model : public Matrix, public AttributeManagers::Delegate {
     Env& m_env;
     const unsigned int m_id;
+
+    Timer m_timer;
 
     int m_sense = Minimize;
     Expr<Var> m_objective;
@@ -55,6 +58,10 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
+    // Parameter delegate
+    AttributeManager &parameter_delegate(const Parameter<double> &t_param) override;
+    AttributeManager &parameter_delegate(const Parameter<int> &t_param) override;
+    AttributeManager &parameter_delegate(const Parameter<bool> &t_param) override;
 public:
     explicit Model(Env& t_env);
 
@@ -87,6 +94,7 @@ public:
 
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
+    [[nodiscard]] Model clone() const;
 
     using AttributeManagers::Delegate::set;
     using AttributeManagers::Delegate::get;
@@ -128,6 +136,8 @@ public:
     void optimize();
     void update();
     void write(const std::string& t_name);
+    const Timer& time() const { return m_timer; }
+    double remaining_time(Timer::Unit t_unit = Timer::Unit::Seconds) const;
 };
 
 template<class T, unsigned int N>

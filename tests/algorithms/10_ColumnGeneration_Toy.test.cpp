@@ -4,12 +4,12 @@
 
 #include "../test_utils.h"
 #include "algorithms/branch-and-bound/BranchAndBound.h"
-#include "algorithms/branch-and-bound/NodeStrategies_Basic.h"
+#include "backends/branch-and-bound/NodeStrategies_Basic.h"
 #include "algorithms/column-generation/ColumnGeneration.h"
 #include "algorithms/decomposition/Decomposition.h"
-#include "algorithms/branch-and-bound/BranchingStrategies_MostInfeasible.h"
-#include "algorithms/branch-and-bound/Nodes_Basic.h"
-#include "algorithms/branch-and-bound/NodeUpdators_ByBoundVar.h"
+#include "backends/branch-and-bound/BranchingStrategies_MostInfeasible.h"
+#include "backends/branch-and-bound/Nodes_Basic.h"
+#include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_RMP.h"
 #include "algorithms/column-generation/ColumnGenerationBranchingSchemes_SP.h"
 

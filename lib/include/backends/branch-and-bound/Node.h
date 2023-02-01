@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_NODE_H
 #define OPTIMIZE_NODE_H
 
-#include "../solvers/SolutionStatus.h"
+#include "algorithms/solvers/SolutionStatus.h"
 #include <functional>
 
 namespace Solution {
@@ -24,15 +24,15 @@ public:
 
     virtual ~Node() = default;
 
-    [[nodiscard]] virtual SolutionStatus status() const = 0;
-    [[nodiscard]] virtual Reason reason() const = 0;
+    [[nodiscard]] virtual int status() const = 0;
+    [[nodiscard]] virtual int reason() const = 0;
     [[nodiscard]] virtual double objective_value() const = 0;
     [[nodiscard]] virtual const Solution::Primal& primal_solution() const = 0;
     [[nodiscard]] virtual const Solution::Dual& dual_solution() const = 0;
     [[nodiscard]] unsigned int id() const { return m_id; }
     [[nodiscard]] virtual unsigned int level() const = 0;
 
-    virtual void save_solution(const Algorithm& t_strategy) = 0;
+    virtual void save_solution(const Model& t_strategy) = 0;
     [[nodiscard]] virtual Node* create_child(unsigned int t_id) const = 0;
     virtual void set_local_lower_bound(const Var& t_var, double t_lb) = 0;
     virtual void set_local_upper_bound(const Var& t_var, double t_ub) = 0;

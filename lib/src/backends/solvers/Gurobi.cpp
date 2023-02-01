@@ -4,7 +4,8 @@
 #ifdef IDOL_USE_GUROBI
 
 #include "backends/solvers/Gurobi.h"
-#include "algorithms/parameters/Logs.h"
+#include "backends/parameters/Logs.h"
+#include "backends/parameters/Parameters_Algorithm.h"
 
 std::unique_ptr<GRBEnv> Gurobi::s_global_env;
 
@@ -58,6 +59,7 @@ std::pair<char, char> Gurobi::gurobi_status(int t_status) const {
     }
     throw Exception("Unsupported status: " + std::to_string(t_status));
 }
+
 double Gurobi::gurobi_numeric(double t_value) {
     if (is_pos_inf(t_value)) {
         return GRB_INFINITY;
@@ -66,6 +68,12 @@ double Gurobi::gurobi_numeric(double t_value) {
         return -GRB_INFINITY;
     }
     return t_value;
+}
+
+Gurobi::Gurobi(const Model &t_model, GRBEnv &t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {
+
+    m_model.set(GRB_IntParam_OutputFlag, 0);
+
 }
 
 void Gurobi::hook_initialize() {
@@ -329,6 +337,39 @@ double Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
     }
 
     return Base::get(t_attr, t_ctr);
+}
+
+double Gurobi::get(const Parameter<double> &t_param) const {
+
+    if (t_param == Param::Algorithm::BestBoundStop) {
+        return m_model.get(GRB_DoubleParam_BestBdStop);
+    }
+
+    if (t_param == Param::Algorithm::BestObjStop) {
+        return m_model.get(GRB_DoubleParam_BestObjStop);
+    }
+
+    return Base::get(t_param);
+}
+
+void Gurobi::set(const Parameter<double> &t_param, double t_value) {
+
+    if (t_param == Param::Algorithm::BestBoundStop) {
+        m_model.set(GRB_DoubleParam_BestBdStop, t_value);
+        return;
+    }
+
+    if (t_param == Param::Algorithm::BestObjStop) {
+        m_model.set(GRB_DoubleParam_BestObjStop, t_value);
+        return;
+    }
+
+    if (t_param == Param::Algorithm::TimeLimit) {
+        m_model.set(GRB_DoubleParam_TimeLimit, t_value);
+        return;
+    }
+
+    Base::set(t_param, t_value);
 }
 
 #endif

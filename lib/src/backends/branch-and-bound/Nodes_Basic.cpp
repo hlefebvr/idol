@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/09/22.
 //
-#include "../../../include/algorithms/branch-and-bound/Nodes_Basic.h"
-#include "../../../include/algorithms/Algorithm.h"
+#include "backends/branch-and-bound/Nodes_Basic.h"
+#include "modeling/models/Model.h"
 #include <iostream>
 
 Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
@@ -13,8 +13,8 @@ Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
 
 }
 
-void Nodes::Basic::save_solution(const Algorithm& t_strategy) {
-    m_primal_solutions = t_strategy.primal_solution();
+void Nodes::Basic::save_solution(const Model& t_strategy) {
+    m_primal_solutions = save(t_strategy, Attr::Var::Value);
 }
 
 Nodes::Basic *Nodes::Basic::create_child(unsigned int t_id) const {

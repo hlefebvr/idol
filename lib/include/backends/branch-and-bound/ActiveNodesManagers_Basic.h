@@ -6,9 +6,10 @@
 #define OPTIMIZE_ACTIVENODESMANAGERS_HEAP_H
 
 #include "ActiveNodesManager.h"
-#include "algorithms/parameters/Logs.h"
+#include "backends/parameters/Logs.h"
 #include "NodeSet.h"
 #include "Attributes_BranchAndBound.h"
+#include "BranchAndBound.h"
 #include <algorithm>
 #include <variant>
 
@@ -48,7 +49,7 @@ public:
 
         void select_node_for_branching() override;
 
-        unsigned int size() const override;
+        [[nodiscard]] unsigned int size() const override;
     };
 
 };
@@ -141,18 +142,23 @@ void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching(int 
 
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::automatically_select_node_for_branching() {
-    if (m_parent.relative_gap() <= 3e-2) {
+
+    const double rel_gap = m_parent.parent().get(Attr::Solution::RelGap);
+
+    if (rel_gap <= 3e-2) {
         return select_node_for_branching(NodeSelections::DepthFirst);
     }
-    if (m_parent.relative_gap() >= 2e-1) {
+
+    if (rel_gap >= 2e-1) {
         return select_node_for_branching(NodeSelections::DepthFirst);
     }
+
     return select_node_for_branching(NodeSelections::WorstBound);
 }
 
 template<class NodeT>
 void ActiveNodesManagers::Basic::Strategy<NodeT>::select_node_for_branching() {
-    select_node_for_branching(m_parent.get(Param::BranchAndBound::NodeSelection));
+    select_node_for_branching(m_parent.parent().get(Param::BranchAndBound::NodeSelection));
     idol_Log(Trace, BranchAndBound, "Node " << node_selected_for_branching().id() << " has been selected for branching.");
 }
 

@@ -3,6 +3,7 @@
 //
 #include "modeling/models/Model.h"
 #include "modeling/models/Env.h"
+#include "backends/parameters/Parameters_Algorithm.h"
 
 Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 
@@ -384,7 +385,9 @@ void Model::set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
         remove_row_from_columns(t_ctr);
         m_env.version(*this, t_ctr).row() = std::move(t_value);
         add_row_to_columns(t_ctr);
-        throw Exception("Updating row is not implemented.");
+        if (m_backend) {
+            throw Exception("Updating row is not implemented.");
+        }
 
         return;
     }
@@ -398,7 +401,9 @@ void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_val
         remove_column_from_rows(t_var);
         m_env.version(*this, t_var).column() = std::move(t_value);
         add_column_to_rows(t_var);
-        throw Exception("Updating column is not implemented.");
+        if (m_backend) {
+            throw Exception("Updating column is not implemented.");
+        }
 
         return;
     }
@@ -417,7 +422,9 @@ const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) c
 
 void Model::optimize() {
     throw_if_no_backend();
+    m_timer.start();
     m_backend->optimize();
+    m_timer.stop();
 }
 
 void Model::throw_if_no_backend() const {
@@ -457,4 +464,44 @@ bool Model::has(const Var &t_var) const {
 
 bool Model::has(const Ctr &t_ctr) const {
     return m_env.has_version(*this, t_ctr);
+}
+
+Model Model::clone() const {
+    Model result(m_env);
+
+    for (const auto& var : vars()) {
+        result.add(var);
+        result.set(Attr::Var::Lb, var, get(Attr::Var::Lb, var));
+        result.set(Attr::Var::Ub, var, get(Attr::Var::Ub, var));
+        result.set(Attr::Var::Type, var, get(Attr::Var::Type, var));
+    }
+
+    for (const auto& ctr : ctrs()) {
+        result.add(ctr);
+        result.set(Attr::Ctr::Type, ctr, get(Attr::Ctr::Type, ctr));
+        result.set(Attr::Ctr::Row, ctr, get(Attr::Ctr::Row, ctr));
+    }
+
+    result.set(Attr::Obj::Expr, get(Attr::Obj::Expr));
+
+    return result;
+}
+
+AttributeManager &Model::parameter_delegate(const Parameter<double> &t_param) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+AttributeManager &Model::parameter_delegate(const Parameter<int> &t_param) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
+    throw_if_no_backend();
+    return *m_backend;
+}
+
+double Model::remaining_time(Timer::Unit t_unit) const {
+    return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
 }

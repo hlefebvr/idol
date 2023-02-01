@@ -10,7 +10,7 @@
 #include "../callbacks/Callback.h"
 #include "../../modeling/variables/Attributes_Var.h"
 #include "modeling/models/Attributes_Model.h"
-#include "../../algorithms/parameters/Logs.h"
+#include "../../backends/parameters/Logs.h"
 #include <cassert>
 #include <sstream>
 

@@ -62,8 +62,11 @@ protected:
     [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
     [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
     [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
+
+    void set(const Parameter<double>& t_param, double t_value) override;
+    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
 public:
-    Gurobi(const Model& t_model, GRBEnv& t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {}
+    Gurobi(const Model& t_model, GRBEnv& t_env);
     explicit Gurobi(const Model& t_model) : Gurobi(t_model, Gurobi::get_global_env()) {}
 
     GRBEnv& env() { return m_env; }

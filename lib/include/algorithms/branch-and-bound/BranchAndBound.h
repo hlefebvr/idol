@@ -5,12 +5,13 @@
 #ifndef OPTIMIZE_BRANCHANDBOUND_H
 #define OPTIMIZE_BRANCHANDBOUND_H
 
-#include "Node.h"
+/*
+#include "backends/branch-and-bound/Node.h"
 #include "../Algorithm.h"
 #include "../../modeling/numericals.h"
 #include "../parameters/Logs.h"
-#include "NodeStrategy.h"
-#include "Attributes_BranchAndBound.h"
+#include "backends/branch-and-bound/NodeStrategy.h"
+#include "backends/branch-and-bound/Attributes_BranchAndBound.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -27,7 +28,7 @@ class BranchAndBound : public Algorithm {
     double m_iter_upper_bound = +Inf;
 
     // User strategies
-    std::unique_ptr<NodeStrategy> m_nodes;
+    std::unique_ptr<NodeStrategy> m_nodes_manager;
     std::unique_ptr<Algorithm> m_solution_strategy;
     std::list<std::unique_ptr<::Callback>> m_callbacks;
 
@@ -83,8 +84,8 @@ public:
     Algorithm& solution_strategy() { return *m_solution_strategy; }
     [[nodiscard]] const Algorithm& solution_strategy() const { return *m_solution_strategy; }
 
-    NodeStrategy& node_strategy() { return *m_nodes; }
-    [[nodiscard]] const NodeStrategy& node_strategy() const { return *m_nodes; }
+    NodeStrategy& node_strategy() { return *m_nodes_manager; }
+    [[nodiscard]] const NodeStrategy& node_strategy() const { return *m_nodes_manager; }
 
     template<class T, class ...Args> T& set_solution_strategy(Args&& ...t_args);
 
@@ -127,7 +128,7 @@ T& BranchAndBound::set_solution_strategy(Args &&... t_args) {
 template<class T, class... Args>
 T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     auto* node_strategy = new T(*this, std::forward<Args>(t_args)...);
-    m_nodes.reset(node_strategy);
+    m_nodes_manager.reset(node_strategy);
     return *node_strategy;
 }
 
@@ -139,5 +140,5 @@ T &BranchAndBound::add_callback(ArgsT&& ...t_args) {
 }
 
 #include "../callbacks/BranchAndBoundCallback.h"
-
+*/
 #endif //OPTIMIZE_BRANCHANDBOUND_H

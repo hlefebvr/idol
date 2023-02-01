@@ -7,9 +7,9 @@
 
 #include "BranchingStrategy.h"
 #include "modeling/variables/Var.h"
-#include "../../modeling/numericals.h"
-#include "../../errors/Exception.h"
-#include "algorithms/parameters/Logs.h"
+#include "modeling/numericals.h"
+#include "errors/Exception.h"
+#include "backends/parameters/Logs.h"
 #include <optional>
 
 namespace BranchingStrategies::Base {

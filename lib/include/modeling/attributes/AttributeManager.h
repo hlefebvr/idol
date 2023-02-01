@@ -14,6 +14,7 @@ class Row;
 class Column;
 template<class> class LinExpr;
 template<class Key1, class Key2> class Expr;
+template<class T> class Parameter;
 
 /**
  * An AttributeManager is a class which stores and updates attributes of modeling objects.
@@ -320,6 +321,15 @@ public:
      * @return the value of the attribute
      */
     [[nodiscard]] virtual const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const = 0;
+
+    virtual void set(const Parameter<double>& t_param, double t_value) = 0;
+    virtual void set(const Parameter<bool>& t_param, bool t_value) = 0;
+    virtual void set(const Parameter<int>& t_param, int t_value) = 0;
+
+    [[nodiscard]] virtual double get(const Parameter<double>& t_param) const = 0;
+    [[nodiscard]] virtual bool get(const Parameter<bool>& t_param) const = 0;
+    [[nodiscard]] virtual int get(const Parameter<int>& t_param) const = 0;
+
 };
 
 #endif //IDOL_ATTRIBUTEMANAGER_H
