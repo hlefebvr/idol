@@ -155,6 +155,33 @@ T &Model::set_backend(ArgsT &&... t_args) {
     return *result;
 }
 
+template<class ObjectT>
+auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
+
+    std::conditional_t<std::is_same_v<ObjectT, Var>, Solution::Primal, Solution::Dual> result;
+
+    const int sense = t_model.get(Attr::Obj::Sense);
+    const int status = t_model.get(Attr::Solution::Status);
+    const int reason = t_model.get(Attr::Solution::Reason);
+
+    result.set_status(status);
+    result.set_reason(reason);
+
+    if (status == Infeasible) {
+        result.set_objective_value(sense == Minimize ? Inf : -Inf);
+    } else if (status == Unbounded) {
+        result.set_objective_value(sense == Minimize ? -Inf : Inf);
+    } else {
+        result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
+    }
+
+    for (const auto& var : t_model.vars()) {
+        result.set(var, t_model.get(t_attr, var));
+    }
+
+    return result;
+}
+
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
 
     if (t_model.get(Attr::Obj::Sense) == Minimize) {

@@ -39,6 +39,8 @@ int main(int t_argc, char** t_argv) {
     std::cout << model.get(Attr::Solution::ObjVal) << std::endl;
     std::cout << model.get(Attr::Var::Value, x[0]) << std::endl;
 
+    std::cout << save(model, Attr::Var::Value) << std::endl;
+
     return 0;
 
     /*

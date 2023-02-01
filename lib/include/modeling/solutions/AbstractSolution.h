@@ -17,9 +17,9 @@
  */
 template<class KeyT, class CRTP>
 class AbstractSolution {
-    SolutionStatus m_status = Unknown;
-    Reason m_reason = NotSpecified;
-    double m_objective_value = Inf;
+    int m_status = Unknown;
+    int m_reason = NotSpecified;
+    std::optional<double> m_objective_value;
     Map<KeyT, double> m_values;
 
     [[nodiscard]] double norm_inf() const;
@@ -41,16 +41,16 @@ public:
      * Sets the solution status.
      * @param t_status The desired solution status.
      */
-    void set_status(SolutionStatus t_status) { m_status = t_status; }
+    void set_status(int t_status) { m_status = t_status; }
 
     /**
      * Returns the stored solution status.
      */
-    [[nodiscard]] SolutionStatus status() const { return m_status; }
+    [[nodiscard]] int status() const { return m_status; }
 
-    void set_reason(Reason t_reason) { m_reason = t_reason; }
+    void set_reason(int t_reason) { m_reason = t_reason; }
 
-    Reason reason() const { return m_reason; }
+    int reason() const { return m_reason; }
 
     /**
      * Sets the stored objective value.
@@ -61,7 +61,11 @@ public:
     /**
      * Returns the stored objective value.
      */
-    [[nodiscard]] double objective_value() const { return m_objective_value; }
+    [[nodiscard]] double objective_value() const { return m_objective_value.value(); }
+
+    [[nodiscard]] bool has_objective_value() const { return m_objective_value.has_value(); }
+
+    void reset_objective_value() { m_objective_value.reset(); }
 
     /**
      * Sets the value associated to the key given as argument.
@@ -139,7 +143,9 @@ CRTP& AbstractSolution<KeyT, CRTP>::normalize(double t_p) {
 
     const double scale = norm(t_p);
 
-    m_objective_value /= scale;
+    if (m_objective_value.has_value()) {
+        m_objective_value.value() /= scale;
+    }
 
     for (auto& [key, value] : m_values) {
         value /= scale;
