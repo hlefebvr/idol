@@ -77,9 +77,9 @@ int main(int t_argc, char** t_argv) {
     //solver.set(Param::Algorithm::MaxIterations, 10);
 
     auto& node_strategy = solver.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
-    node_strategy.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
+    node_strategy.set_active_node_manager<ActiveNodesManagers::Basic>();
     node_strategy.set_branching_strategy<BranchingStrategies::MostInfeasible>(flatten<Var, 2>(x));
-    node_strategy.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    node_strategy.set_node_updator<NodeUpdators::ByBoundVar>();
 
     auto& dantzig_wolfe = solver.set_solution_strategy<DantzigWolfe>(model, complicating_constraint);
 

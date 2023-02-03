@@ -28,9 +28,9 @@ BranchAndBound branch_and_bound(Model& t_model, std::vector<Var> t_branching_can
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategyT>();
-    node_strategy.template set_active_node_manager_strategy<ActiveNodeManagerT>();
+    node_strategy.template set_active_node_manager<ActiveNodeManagerT>();
     node_strategy.template set_branching_strategy<BranchingStrategyT>(std::move(t_branching_candidates));
-    node_strategy.template set_node_updator_strategy<NodeUpdatorT>();
+    node_strategy.template set_node_updator<NodeUpdatorT>();
 
     result.set_solution_strategy<SolutionStrategyT>(t_model);
 
@@ -60,9 +60,9 @@ BranchAndBound branch_and_price(
     BranchAndBound result;
 
     auto& node_strategy = result.set_node_strategy<NodeStrategyT>();
-    node_strategy.template set_active_node_manager_strategy<ActiveNodeManagerT>();
+    node_strategy.template set_active_node_manager<ActiveNodeManagerT>();
     node_strategy.template set_branching_strategy<BranchingStrategyT>(std::move(t_branching_candidates));
-    node_strategy.template set_node_updator_strategy<NodeUpdatorT>();
+    node_strategy.template set_node_updator<NodeUpdatorT>();
 
     auto& decomposition = result.set_solution_strategy<Decomposition>();
     decomposition.template set_rmp_solution_strategy<RMPSolutionStrategyT>(t_rmp_model);

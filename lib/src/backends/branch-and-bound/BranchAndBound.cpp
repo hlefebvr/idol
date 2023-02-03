@@ -133,11 +133,11 @@ void BranchAndBound::solve_queued_nodes() {
 }
 
 void BranchAndBound::prepare_node_solution() {
-    m_nodes_manager->apply_current_node_to(m_lower_bounding_models.front());
+    m_nodes_manager->apply_current_node_to(m_relaxations->at(0).model());
 }
 
 void BranchAndBound::solve_current_node() {
-    auto& lower_bounding_model = m_lower_bounding_models.front();
+    auto& lower_bounding_model = m_relaxations->at(0).model();
     if (lower_bounding_model.get(Attr::Obj::Sense) == Minimize) {
         lower_bounding_model.set(Param::Algorithm::BestBoundStop, std::min(best_obj(), get(Param::Algorithm::BestBoundStop)));
     } else {
@@ -400,17 +400,17 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node &t_node) const {
     idol_Log(t_msg_level,
              BranchAndBound,
              "<Node=" << (id == -1 ? "H" : std::to_string(id)) << sign << "> "
-                      << "<Iter=" << m_iteration << "> "
-                      << "<Time=" << parent().time().count() << "> "
-                      << "<Levl=" << t_node.level() << "> "
-                      << "<Unex=" << m_nodes_manager->active_nodes().size() << "> "
-                      << "<Stat=" << t_node.status() << "> "
-                      << "<Reas=" << t_node.reason() << "> "
-                      << "<ObjV=" << t_node.objective_value() << "> "
-                      << "<Lb=" << best_bound() << "> "
-                      << "<Ub=" << best_obj() << "> "
-                      << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
-                      << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
+              << "<Iter=" << m_iteration << "> "
+              << "<Time=" << parent().time().count() << "> "
+              << "<Levl=" << t_node.level() << "> "
+              << "<Unex=" << m_nodes_manager->active_nodes().size() << "> "
+              << "<Stat=" << (SolutionStatus) t_node.status() << "> "
+              << "<Reas=" << (Reason) t_node.reason() << "> "
+              << "<ObjV=" << t_node.objective_value() << "> "
+              << "<Lb=" << best_bound() << "> "
+              << "<Ub=" << best_obj() << "> "
+              << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
+              << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
     );
 
 }

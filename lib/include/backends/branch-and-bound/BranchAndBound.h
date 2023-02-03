@@ -13,10 +13,11 @@
 #include "NodeStrategy.h"
 #include "backends/parameters/Logs.h"
 #include "Attributes_BranchAndBound.h"
+#include "RelaxationManager.h"
 
 class BranchAndBound : public Algorithm {
     const unsigned int m_n_models = 1;
-    std::vector<Model> m_lower_bounding_models;
+    std::unique_ptr<impl::RelaxationManager> m_relaxations;
 
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
@@ -83,58 +84,43 @@ protected:
     using Algorithm::set;
 
     void set(const Parameter<int>& t_param, int t_value) override;
-    int get(const Parameter<int>& t_param) const override;
+    [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
     explicit BranchAndBound(const Model& t_model);
 
-    template<class T, class ...ArgsT>
-    decltype(T::apply(std::declval<Model&>())) relax(ArgsT&& ...t_args);
+    template<class T, class ...ArgsT> RelaxationManager<T>& set_relaxation(ArgsT&& ...t_args);
 
     template<class T, class ...ArgsT> std::vector<std::reference_wrapper<T>> set_node_backend(ArgsT&& ...t_args);
 
-    template<class T, class ...Args> T& set_nodes_manager(Args&& ...t_args);
+    template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
 };
 
 template<class T, class... ArgsT>
-decltype(T::apply(std::declval<Model&>())) BranchAndBound::relax(ArgsT&& ...t_args) {
+RelaxationManager<T>& BranchAndBound::set_relaxation(ArgsT&& ...t_args) {
 
-    if constexpr (std::is_same_v<decltype(T::apply(std::declval<Model&>())), void>) {
+    auto* result = new RelaxationManager<T>(parent(), m_n_models, std::forward<ArgsT>(t_args)...);
+    m_relaxations.reset(result);
+    return *result;
 
-        m_lower_bounding_models.emplace_back(parent().clone());
-
-        for (unsigned int i = 1 ; i < m_n_models ; ++i) {
-            m_lower_bounding_models.emplace_back(m_lower_bounding_models.front().clone());
-        }
-
-    } else {
-
-        m_lower_bounding_models.emplace_back(parent().clone());
-        auto result = T::apply(m_lower_bounding_models.back(), std::forward<ArgsT>(t_args)...);
-
-        for (unsigned int i = 1; i < m_n_models; ++i) {
-            m_lower_bounding_models.emplace_back(m_lower_bounding_models.front().clone());
-        }
-
-        return result;
-
-    }
 }
 
 template<class T, class... ArgsT>
 std::vector<std::reference_wrapper<T>> BranchAndBound::set_node_backend(ArgsT &&... t_args) {
 
-    std::vector<std::reference_wrapper<T>> result;
-    result.reserve(m_lower_bounding_models.size());
+    unsigned int n = m_relaxations->size();
 
-    for (auto& model : m_lower_bounding_models) {
-        result.emplace_back(model.set_backend<T>(std::forward<ArgsT>(t_args)...));
+    std::vector<std::reference_wrapper<T>> result;
+    result.reserve(m_relaxations->size());
+
+    for (unsigned int i = 0 ; i < n ; ++i) {
+        result.emplace_back((*m_relaxations)[i].model().set_backend<T>(std::forward<ArgsT>(t_args)...));
     }
 
     return result;
 }
 
 template<class T, class... Args>
-T &BranchAndBound::set_nodes_manager(Args &&... t_args) {
+T &BranchAndBound::set_node_strategy(Args &&... t_args) {
     auto* result = new T(*this, std::forward<Args>(t_args)...);
     m_nodes_manager.reset(result);
     return *result;

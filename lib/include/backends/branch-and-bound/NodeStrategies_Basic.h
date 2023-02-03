@@ -86,13 +86,13 @@ public:
     bool submit_solution(Solution::Primal &&t_solution, double t_best_upper_bound) override;
 
     template<class T, class ...Args>
-    typename T::template Strategy<NodeT>& set_active_node_manager_strategy(Args&& ... t_args);
+    typename T::template Strategy<NodeT>& set_active_node_manager(Args&& ... t_args);
 
     template<class T, class ...Args>
     typename T::template Strategy<NodeT>& set_branching_strategy(Args&& ... t_args);
 
     template<class T, class ...Args>
-    typename T::template Strategy<NodeT>& set_node_updator_strategy(Args&& ... t_args);
+    typename T::template Strategy<NodeT>& set_node_updator(Args&& ... t_args);
 
     void create_root_node() override;
 
@@ -204,7 +204,7 @@ const Node &NodeStrategies::Basic<NodeT>::incumbent() const {
 
 template<class NodeT>
 template<class T, class... Args>
-typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_active_node_manager_strategy(Args &&... t_args) {
+typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_active_node_manager(Args &&... t_args) {
     auto* active_node_manager = new typename T::template Strategy<NodeT>(m_parent, std::forward<Args>(t_args)...);
     m_active_nodes.reset(active_node_manager);
     return *active_node_manager;
@@ -220,7 +220,7 @@ typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_branchin
 
 template<class NodeT>
 template<class T, class... Args>
-typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_node_updator_strategy(Args &&... t_args) {
+typename T::template Strategy<NodeT> &NodeStrategies::Basic<NodeT>::set_node_updator(Args &&... t_args) {
     auto* node_updator = new typename T::template Strategy<NodeT>(std::forward<Args>(t_args)...);
     m_node_updator.reset(node_updator);
     return *node_updator;

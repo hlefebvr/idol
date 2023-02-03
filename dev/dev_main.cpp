@@ -8,39 +8,7 @@
 #include "backends/branch-and-bound/BranchingStrategies_MostInfeasible.h"
 #include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
-
-namespace Relaxations {
-    class None;
-}
-
-struct Relaxations::None {
-    static void apply(Model& t_model) {}
-};
-
-namespace Relaxations {
-    class Continuous;
-}
-
-struct Relaxations::Continuous {
-
-    static std::vector<Var> apply(Model& t_model) {
-
-        std::vector<Var> result;
-
-        for (const auto& var : t_model.vars()) {
-
-            if (const int type = t_model.get(Attr::Var::Type, var) ; type == Integer || type == Binary) {
-
-                result.emplace_back(var);
-                t_model.set(Attr::Var::Type, var, ::Continuous);
-
-            }
-
-        }
-
-        return result;
-    }
-};
+#include "backends/branch-and-bound/Relaxations_Continuous.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -82,12 +50,14 @@ int main(int t_argc, char** t_argv) {
     model.reset_backend();
 
     auto& branch_and_bound = model.set_backend<BranchAndBound>();
-    auto branching_candidates = branch_and_bound.relax<Relaxations::Continuous>();
-    branch_and_bound.set_node_backend<Gurobi>();
-    auto& nodes_manager = branch_and_bound.set_nodes_manager<NodeStrategies::Basic<Nodes::Basic>>();
-    nodes_manager.set_active_node_manager_strategy<ActiveNodesManagers::Basic>();
-    nodes_manager.set_branching_strategy<BranchingStrategies::MostInfeasible>(branching_candidates);
-    nodes_manager.set_node_updator_strategy<NodeUpdators::ByBoundVar>();
+    auto& relaxation = branch_and_bound.set_relaxation<Relaxations::Continuous>();
+
+    relaxation.set_backend<Gurobi>();
+
+    auto& nodes_manager = branch_and_bound.set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
+    nodes_manager.set_active_node_manager<ActiveNodesManagers::Basic>();
+    nodes_manager.set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.result().branching_candidates());
+    nodes_manager.set_node_updator<NodeUpdators::ByBoundVar>();
 
     model.optimize();
 
