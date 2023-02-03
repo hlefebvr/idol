@@ -95,6 +95,7 @@ public:
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
     [[nodiscard]] Model clone() const;
+    [[nodiscard]] Env& env() const { return const_cast<Model*>(this)->m_env; }
 
     using AttributeManagers::Delegate::set;
     using AttributeManagers::Delegate::get;
@@ -136,8 +137,8 @@ public:
     void optimize();
     void update();
     void write(const std::string& t_name);
-    const Timer& time() const { return m_timer; }
-    double remaining_time(Timer::Unit t_unit = Timer::Unit::Seconds) const;
+    [[nodiscard]] const Timer& time() const { return m_timer; }
+    [[nodiscard]] double remaining_time(Timer::Unit t_unit = Timer::Unit::Seconds) const;
 };
 
 template<class T, unsigned int N>

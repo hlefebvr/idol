@@ -28,7 +28,7 @@ public:
 template<class T>
 class RelaxationManager : public impl::RelaxationManager {
     std::vector<T> m_relaxations;
-    typename T::Result m_result;
+    std::optional<typename T::Result> m_result;
 public:
     template<class ...ArgsT> explicit RelaxationManager(const Model& t_model, unsigned int t_n_models, ArgsT&& ...t_args) {
 
@@ -36,7 +36,8 @@ public:
             throw Exception("Not implemented.");
         }
 
-        m_relaxations.emplace_back(t_model, m_result, std::forward<ArgsT>(t_args)...);
+        m_relaxations.emplace_back(t_model, std::forward<ArgsT>(t_args)...);
+        m_result = m_relaxations.back().build();
 
     }
 
@@ -52,7 +53,7 @@ public:
         return m_relaxations.size();
     }
 
-    const typename T::Result& result() const { return m_result; }
+    const typename T::Result& result() const { return m_result.value(); }
 
     template<class BackendT, class ...ArgsT> void set_backend(const ArgsT& ...t_args) {
         for (auto& relaxation : m_relaxations) {

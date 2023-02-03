@@ -15,25 +15,36 @@ class Relaxations::Continuous : public Relaxation {
 public:
     class Result : public Relaxation::Result {
         friend class Continuous;
-        std::vector<Var> m_branching_candidates;
+
+        std::list<Var> m_branching_candidates;
+
+        explicit Result(std::list<Var>&& t_branching_candidates) : m_branching_candidates(t_branching_candidates) {}
     public:
-        [[nodiscard]] const std::vector<Var>& branching_candidates() const { return m_branching_candidates; }
+        [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
     };
 private:
     Model m_model;
 public:
-    explicit Continuous(const Model& t_model, Result& t_result) : m_model(t_model.clone()) {
+    explicit Continuous(const Model& t_model) : m_model(t_model.clone()) {}
+
+    Result build() {
+
+        std::list<Var> branching_candidates;
 
         for (const auto& var : m_model.vars()) {
 
-            if (const int type = m_model.get(Attr::Var::Type, var) ; type == Integer || type == Binary) {
+            const int type = m_model.get(Attr::Var::Type, var);
 
-                t_result.m_branching_candidates.emplace_back(var);
+            if (type == Integer || type == Binary) {
+
+                branching_candidates.emplace_back(var);
                 m_model.set(Attr::Var::Type, var, ::Continuous);
 
             }
 
         }
+
+        return Result(std::move(branching_candidates));
 
     }
 

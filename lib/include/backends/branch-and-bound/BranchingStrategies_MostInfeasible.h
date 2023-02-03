@@ -20,7 +20,7 @@ public:
 
 template<class NodeT>
 class BranchingStrategies::MostInfeasible::Strategy : public BranchingStrategies::Base::OnVariables::Strategy<NodeT> {
-    std::vector<Var> m_branching_candidates;
+    std::list<Var> m_branching_candidates;
 protected:
     static double fractional_part(double t_x);
     static bool is_integer(double t_x);
@@ -32,7 +32,7 @@ protected:
             const Var& t_var,
             double t_value);
 public:
-    explicit Strategy(std::vector<Var> t_branching_candidates) : m_branching_candidates(std::move(t_branching_candidates)) {}
+    explicit Strategy(std::list<Var> t_branching_candidates) : m_branching_candidates(std::move(t_branching_candidates)) {}
 
     bool is_valid(const NodeT &t_node) const override;
 
