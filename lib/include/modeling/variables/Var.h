@@ -16,7 +16,7 @@ namespace impl {
     class Env;
 }
 
-class Var : public Object<VarVersion> {
+class Var : public Object<VarVersion, Var> {
     friend class impl::Env;
 public:
     Var(Env& t_env, double t_lb, double t_ub, int t_type, std::string t_name = "");

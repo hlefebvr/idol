@@ -17,7 +17,7 @@ namespace impl {
     class Env;
 }
 
-class Ctr : public Object<CtrVersion> {
+class Ctr : public Object<CtrVersion, Ctr> {
     friend class impl::Env;
 public:
     Ctr(Env& t_env, TempCtr&& t_temp_ctr, std::string t_name = "");

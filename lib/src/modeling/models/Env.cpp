@@ -4,16 +4,14 @@
 #include "modeling/models/Env.h"
 #include "modeling/models/Model.h"
 
-unsigned int impl::Env::create_model_id() {
-    if (m_free_model_ids.empty()) {
-        return m_max_model_id++;
-    }
-
-    auto result = m_free_model_ids.back();
-    m_free_model_ids.pop_back();
-    return result;
+void impl::Env::free_model_id(const Model &t_model) {
+    m_model_ids.free(t_model.id());
 }
 
-void impl::Env::free_model_id(const ::Model &t_model)  {
-    m_free_model_ids.emplace_back(t_model.id());
+void impl::Env::free_annotation_id(const impl::Annotation &t_annotation) {
+    if (t_annotation.is_var_annotation()) {
+        m_var_annotation_ids.free(t_annotation.id());
+    } else {
+        m_ctr_annotation_ids.free(t_annotation.id());
+    }
 }

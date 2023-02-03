@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <optional>
+#include <any>
 #include "errors/Exception.h"
 #include "modeling/models/Model.h"
 
@@ -21,6 +22,7 @@ class Versions {
     static const unsigned int s_buffer_size = 10;
 
     std::vector<std::optional<T>> m_versions; /// Every versions are stored here, the index corresponds to the id of the model to which the version is associated
+    std::vector<std::any> m_annotations;
 public:
     template<class ...ArgsT> explicit Versions(ArgsT&& ...t_args) : m_versions({ std::make_optional<T>(std::forward<ArgsT&&>(t_args)...) }) {}
 
@@ -43,7 +45,25 @@ public:
     [[nodiscard]] const T& get_default() const;
 
     T& get_default();
+
+    template<class ValueT> const ValueT& get_annotation(unsigned int t_index) const;
+
+    template<class ValueT, class ...ArgsT> void set_annotation(unsigned int t_index, ArgsT&& ...t_args) {
+        if (t_index >= m_annotations.size()) {
+            m_annotations.resize(t_index + s_buffer_size);
+        }
+        m_annotations[t_index] = ValueT(std::forward<ArgsT>(t_args)...);
+    }
 };
+
+template<class T>
+template<class ValueT>
+const ValueT &Versions<T>::get_annotation(unsigned int t_index) const {
+    if (t_index >= m_annotations.size() || !m_annotations[t_index].has_value()) {
+        throw Exception("No value for requested annotation.");
+    }
+    return std::any_cast<const ValueT&>(m_annotations[t_index]);
+}
 
 template<class T>
 const T &Versions<T>::get_default() const {

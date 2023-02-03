@@ -8,10 +8,11 @@
 #include <memory>
 #include "ObjectId.h"
 #include "containers/Vector.h"
+#include "modeling/annotations/Annotation.h"
 
 class Model;
 
-template<class T>
+template<class T, class CRTP>
 class Object {
     std::shared_ptr<ObjectId<T>> m_object_id;
 protected:
@@ -40,15 +41,19 @@ public:
 
     [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
 
-    bool operator==(const Object<T>& t_rhs) const { return id() == t_rhs.id(); }
+    bool operator==(const Object<T, CRTP>& t_rhs) const { return id() == t_rhs.id(); }
 
-    bool operator!=(const Object<T>& t_rhs) const { return id() != t_rhs.id(); }
+    bool operator!=(const Object<T, CRTP>& t_rhs) const { return id() != t_rhs.id(); }
 
     [[nodiscard]] bool is_in(const Model& t_model) const { return m_object_id->versions().has(t_model); }
+
+    template<class ValueT> const ValueT& get(const Annotation<CRTP, ValueT>& t_annotation) const { return m_object_id->versions().template get_annotation<ValueT>(t_annotation.id()); }
+
+    template<class ValueT, class ...ArgsT> void set(const Annotation<CRTP, ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
 };
 
-template<class T>
-static std::ostream& operator<<(std::ostream& t_os, const Object<T>& t_var) {
+template<class T, class CRTP>
+static std::ostream& operator<<(std::ostream& t_os, const Object<T, CRTP>& t_var) {
     return t_os << t_var.name();
 }
 
