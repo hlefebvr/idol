@@ -297,7 +297,11 @@ int Gurobi::get(const Req<int, void> &t_attr) const {
 double Gurobi::get(const Req<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
-        return m_model.get(GRB_DoubleAttr_ObjVal);
+        switch (gurobi_status(m_model.get(GRB_IntAttr_Status)).first) {
+            case Unbounded: return -Inf;
+            case Infeasible: return +Inf;
+            default: return m_model.get(GRB_DoubleAttr_ObjVal);
+        }
     }
 
     return Base::get(t_attr);
@@ -337,6 +341,15 @@ double Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
             return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Slack);
         } else {
             return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCSlack);
+        }
+    }
+
+    if (t_attr == Attr::Solution::Farkas) {
+        const auto& impl = lazy(t_ctr).impl();
+        if (std::holds_alternative<GRBConstr>(impl)) {
+            return -std::get<GRBConstr>(impl).get(GRB_DoubleAttr_FarkasDual);
+        } else {
+            throw UnsupportedRequest(t_attr);
         }
     }
 

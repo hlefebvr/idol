@@ -8,7 +8,7 @@ TEST_CASE("LP solvers: solve toy example", "[integration][backend][solver]") {
 
     Env env;
 
-    WHEN("A bounded and feasible LP is solved") {
+    WHEN("A bounded and feasible LP is solved") { // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
         Var x(env, 0, Inf, Continuous, "x");
         Var y(env, 0, Inf, Continuous, "y");
@@ -101,6 +101,55 @@ TEST_CASE("LP solvers: solve toy example", "[integration][backend][solver]") {
             CHECK(x_val + y_val >= 0_a);
 
         }
+
+    }
+    
+    WHEN("An infeasible LP is solved") {
+
+        Var u(env, 0., Inf, Continuous, "u");
+        Var v(env, 0., Inf, Continuous, "v");
+        Var w(env, 0., Inf, Continuous, "w");
+        Ctr c1(env, u + -2 * v + -1 * w >= 3);
+        Ctr c2(env, -2 * u + v + -1 * w >= 2);
+        auto objective = u + v - 2 * w;
+
+        Model model(env);
+        model.add_many(u, v, w, c1, c2);
+        model.set(Attr::Obj::Expr, objective);
+
+        model.set_backend<Gurobi>();
+        model.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+
+        model.optimize();
+
+
+        THEN("The solution status should be Infeasible") {
+
+            CHECK(model.get(Attr::Solution::Status) == Infeasible);
+
+        }
+
+        AND_THEN("The objective value should be -Inf") {
+
+            CHECK(is_pos_inf(model.get(Attr::Solution::ObjVal)));
+
+        }
+
+        AND_THEN("The returned certificate should be valid") {
+
+            const auto farkas = save(model, Attr::Solution::Farkas);
+
+            CHECK(farkas.status() == Infeasible);
+
+            const double c1_val = farkas.get(c1);
+            const double c2_val = farkas.get(c2);
+
+            CHECK(1. * c1_val - 2. * c2_val <= 0. );
+            CHECK(-2. * c1_val + 1. * c2_val <= 0. );
+            CHECK(-1. * c1_val + -1. * c2_val <= 0. );
+
+        }
+
 
     }
 
