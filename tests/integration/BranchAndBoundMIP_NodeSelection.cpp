@@ -4,8 +4,9 @@
 
 #include "../test_utils.h"
 #include "problems/KP/KP_Instance.h"
+#include "problems/FLP/FLP_Instance.h"
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack problem with different node selection strategies",
+TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with different node selection strategies",
                         "[integration][backend][solver]",
                         std::tuple<Gurobi>) {
 
@@ -41,7 +42,9 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack problem with differen
 
     WHEN("The instance \"" + filename + "\" is solved") {
 
+        std::cout << "Solving " << filename << "..." << std::endl;
         model.optimize();
+        std::cout << "Done." << std::endl;
 
         THEN("The solution status is Optimal") {
 
@@ -52,6 +55,83 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack problem with differen
         AND_THEN("The objective value is " + std::to_string(objective_value)) {
 
             CHECK(model.get(Attr::Solution::ObjVal) == objective_value);
+
+        }
+
+    }
+
+
+}
+
+
+TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection strategies",
+                        "[integration][backend][solver]",
+                        std::tuple<Gurobi>) {
+
+    Env env;
+
+    using namespace Problems::FLP;
+
+    // Generate parameters
+    const auto [filename, objective_value] = GENERATE(
+            std::make_pair<std::string, double>("instance_F10_C20__0.txt", 235.114),
+            std::make_pair<std::string, double>("instance_F10_C20__1.txt", 245.29),
+            std::make_pair<std::string, double>("instance_F10_C20__2.txt", 287.37),
+            std::make_pair<std::string, double>("instance_F10_C20__3.txt", 333.86),
+            std::make_pair<std::string, double>("instance_F10_C20__4.txt", 202.11)
+    );
+
+    auto node_selection = GENERATE(
+            NodeSelections::Automatic,
+            NodeSelections::DepthFirst,
+            NodeSelections::BreadthFirst,
+            NodeSelections::BestBound,
+            NodeSelections::WorstBound
+    );
+
+    // Read instance
+    const auto instance = read_instance_1991_Cornuejols_et_al("instances/facility-location-problem/" + filename);
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
+
+    // Make model
+    auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
+    auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+
+    Model model(env);
+
+    model.add<Var, 1>(x);
+    model.add<Var, 2>(y);
+
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
+    }
+
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
+    }
+
+    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
+
+    // Set backend options
+    model.set_backend<BranchAndBoundMIP<TestType>>();
+    model.set(Param::BranchAndBound::NodeSelection, node_selection);
+
+    WHEN("The instance \"" + filename + "\" is solved") {
+
+        std::cout << "Solving " << filename << "..." << std::endl;
+        model.optimize();
+        std::cout << "Done." << std::endl;
+
+        THEN("The solution status is Optimal") {
+
+            CHECK(model.get(Attr::Solution::Status) == Optimal);
+
+        }
+
+        AND_THEN("The objective value is " + std::to_string(objective_value)) {
+
+            CHECK(model.get(Attr::Solution::ObjVal) == Catch::Approx(objective_value));
 
         }
 
