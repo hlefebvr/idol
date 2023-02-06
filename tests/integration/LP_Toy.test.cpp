@@ -4,7 +4,9 @@
 
 #include "../test_utils.h"
 
-TEST_CASE("LP solvers: solve toy example", "[integration][backend][solver]") {
+TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
+                        "[integration][backend][solver]",
+                        lp_solvers) {
 
     Env env;
 
@@ -20,7 +22,7 @@ TEST_CASE("LP solvers: solve toy example", "[integration][backend][solver]") {
         Model model(env);
         model.add_many(x, y, c1, c2, c3);
         model.set(Attr::Obj::Expr, -143 * x - 60 * y);
-        model.set_backend<Gurobi>();
+        model.set_backend<TestType>();
 
         model.optimize();
 

@@ -433,3 +433,16 @@ void BranchAndBound::set(const Parameter<int> &t_param, int t_value) {
 
     return Algorithm::set(t_param, t_value);
 }
+
+double BranchAndBound::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+
+    if (t_attr == Attr::Solution::Primal) {
+        if (m_nodes_manager->has_incumbent()) {
+            return m_nodes_manager->incumbent().primal_solution().get(t_var);
+        } else {
+            throw Exception("No incumbent found.");
+        }
+    }
+
+    return Base::get(t_attr, t_var);
+}

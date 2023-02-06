@@ -8,6 +8,7 @@
 #include "modeling.h"
 
 #include "backends/solvers/Gurobi.h"
+#include "backends/BranchAndBoundMIP.h"
 #include "backends/parameters/Parameters_Algorithm.h"
 
 #include "./cartesian_product.h"
@@ -15,5 +16,8 @@
 #include <catch2/catch_all.hpp>
 
 using namespace Catch::literals;
+
+using lp_solvers = std::tuple<Gurobi>;
+using milp_solvers = std::tuple<Gurobi, BranchAndBoundMIP<Gurobi>>;
 
 #endif //OPTIMIZE_TEST_UTILS_H

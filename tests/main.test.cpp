@@ -5,6 +5,8 @@
 
 int main( int argc, char* argv[] ) {
 
+    Logs::set_level<BranchAndBound>(Info);
+
     int result = Catch::Session().run( argc, argv );
 
     return result;

@@ -9,8 +9,8 @@ Problems::KP::Instance::Instance(unsigned int t_n_items) {
 
     assert(t_n_items > 1);
 
-    m_p.resize(t_n_items);
-    m_w.resize(t_n_items);
+    m_profit.resize(t_n_items);
+    m_weight.resize(t_n_items);
 
 }
 
@@ -32,16 +32,16 @@ Problems::KP::Instance Problems::KP::read_instance(const std::string& t_filename
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
         file >> x;
-        result.set_p(j, x);
+        result.set_profit(j, x);
     }
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
         file >> x;
-        result.set_w(j, x);
+        result.set_weight(j, x);
     }
 
     file >> x;
-    result.set_t(x);
+    result.set_capacity(x);
 
     file.close();
 

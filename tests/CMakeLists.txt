@@ -1,6 +1,6 @@
 enable_testing()
 
-add_executable(tests main.test.cpp test_utils.h main.test.cpp unit/modeling/Model_AddByRow.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_UpdateVariables.test.cpp unit/modeling/Expr_OperatorsTypeDeduction.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableWithoutBackend.cpp unit/backends/solvers/gurobi/Gurobi_CreateConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateConstraintWithoutBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateVariableWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableAndConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateObjectiveWithBackend.test.cpp integration/LP_toy.test.cpp integration/MILP_toy.test.cpp)
+add_executable(tests main.test.cpp test_utils.h main.test.cpp unit/modeling/Model_AddByRow.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_UpdateVariables.test.cpp unit/modeling/Expr_OperatorsTypeDeduction.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableWithoutBackend.cpp unit/backends/solvers/gurobi/Gurobi_CreateConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateConstraintWithoutBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateVariableWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_CreateVariableAndConstraintWithBackend.test.cpp unit/backends/solvers/gurobi/Gurobi_UpdateObjectiveWithBackend.test.cpp integration/LP_Toy.test.cpp integration/MILP_Toy.test.cpp integration/BranchAndBoundMIP_NodeSelection.cpp)
 target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 
@@ -32,7 +32,7 @@ if (NOT ${Catch2_FOUND})
 
 endif()
 
-target_link_libraries(tests PRIVATE Catch2::Catch2)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
 
 add_custom_command(TARGET tests POST_BUILD

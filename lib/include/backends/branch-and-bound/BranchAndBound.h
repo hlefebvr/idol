@@ -83,6 +83,8 @@ protected:
     using Algorithm::get;
     using Algorithm::set;
 
+    double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+
     void set(const Parameter<int>& t_param, int t_value) override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:

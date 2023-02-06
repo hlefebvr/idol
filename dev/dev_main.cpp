@@ -10,6 +10,7 @@
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
 #include "modeling/models/Decomposition.h"
+#include "backends/BranchAndBoundMIP.h"
 
 int main(int t_argc, char** t_argv) {
 

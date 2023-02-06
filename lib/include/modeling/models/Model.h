@@ -189,11 +189,15 @@ auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
 
     if (status == Infeasible) {
         result.set_objective_value(sense == Minimize ? Inf : -Inf);
-    } else if (status == Unbounded) {
-        result.set_objective_value(sense == Minimize ? -Inf : Inf);
-    } else {
-        result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
+        return result;
     }
+
+    if (status == Unbounded) {
+        result.set_objective_value(sense == Minimize ? -Inf : Inf);
+        return result;
+    }
+
+    result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
 
     if constexpr (std::is_same_v<ObjectT, Var>) {
         for (const auto &var: t_model.vars()) {

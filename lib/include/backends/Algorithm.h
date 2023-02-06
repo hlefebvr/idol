@@ -42,6 +42,7 @@ protected:
     using Backend::set;
     using Backend::get;
 
+    [[nodiscard]] int get(const Req<int, void>& t_attr) const override;
     [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
 
     void set(const Parameter<int>& t_param, int t_value) override;
