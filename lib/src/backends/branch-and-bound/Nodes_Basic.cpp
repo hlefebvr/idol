@@ -14,7 +14,7 @@ Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
 }
 
 void Nodes::Basic::save_solution(const Model& t_strategy) {
-    m_primal_solutions = save(t_strategy, Attr::Var::Value);
+    m_primal_solutions = save(t_strategy, Attr::Solution::Primal);
 }
 
 Nodes::Basic *Nodes::Basic::create_child(unsigned int t_id) const {

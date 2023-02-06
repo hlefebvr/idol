@@ -91,6 +91,7 @@ public:
     [[nodiscard]] auto ctrs() const { return ConstIteratorForward<std::vector<Ctr>>(m_constraints); }
 
     template<class T, unsigned int N> void add(const Vector<T, N>& t_vector);
+    template<class T, class ...ArgsT> void add_many(const T& t_object, const ArgsT& ...t_args);
 
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
@@ -155,6 +156,14 @@ void Model::add(const Vector<T, N>& t_vector) {
 }
 
 template<class T, class... ArgsT>
+void Model::add_many(const T &t_object, const ArgsT &... t_args) {
+    add(t_object);
+    if constexpr (sizeof...(t_args) > 0) {
+        add_many(t_args...);
+    }
+}
+
+template<class T, class... ArgsT>
 T &Model::set_backend(ArgsT &&... t_args) {
     static_assert(std::is_base_of_v<Backend, T>);
     if (m_backend) {
@@ -186,8 +195,14 @@ auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
         result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
     }
 
-    for (const auto& var : t_model.vars()) {
-        result.set(var, t_model.get(t_attr, var));
+    if constexpr (std::is_same_v<ObjectT, Var>) {
+        for (const auto &var: t_model.vars()) {
+            result.set(var, t_model.get(t_attr, var));
+        }
+    } else {
+        for (const auto &ctr: t_model.ctrs()) {
+            result.set(ctr, t_model.get(t_attr, ctr));
+        }
     }
 
     return result;

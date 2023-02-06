@@ -305,12 +305,16 @@ double Gurobi::get(const Req<double, void> &t_attr) const {
 
 double Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
-    if (t_attr == Attr::Var::Value) {
+    if (t_attr == Attr::Solution::Primal) {
         return lazy(t_var).impl().get(GRB_DoubleAttr_X);
     }
 
-    if (t_attr == Attr::Var::RedCost) {
+    if (t_attr == Attr::Solution::RedCost) {
         return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
+    }
+
+    if (t_attr == Attr::Solution::Ray) {
+        return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
     }
 
     return Base::get(t_attr, t_var);
@@ -318,21 +322,21 @@ double Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
 double Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
-    if (t_attr == Attr::Ctr::Value) {
+    if (t_attr == Attr::Solution::Dual) {
         const auto& impl = lazy(t_ctr).impl();
         if (std::holds_alternative<GRBConstr>(impl)) {
-            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Pi);
-        } else {
             return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
+        } else {
+            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Pi);
         }
     }
 
-    if (t_attr == Attr::Ctr::Slack) {
+    if (t_attr == Attr::Solution::Slack) {
         const auto& impl = lazy(t_ctr).impl();
         if (std::holds_alternative<GRBConstr>(impl)) {
-            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Slack);
+            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Slack);
         } else {
-            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_QCSlack);
+            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCSlack);
         }
     }
 
@@ -370,6 +374,25 @@ void Gurobi::set(const Parameter<double> &t_param, double t_value) {
     }
 
     Base::set(t_param, t_value);
+}
+
+void Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
+
+    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+        m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+        return;
+    }
+
+    Base::set(t_param, t_value);
+}
+
+bool Gurobi::get(const Parameter<bool> &t_param) const {
+
+    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+        return m_model.get(GRB_IntParam_InfUnbdInfo);
+    }
+
+    return Base::get(t_param);
 }
 
 #endif

@@ -9,6 +9,7 @@
 #include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
+#include "modeling/models/Decomposition.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -22,6 +23,8 @@ int main(int t_argc, char** t_argv) {
     const unsigned int n_facilities = instance.n_facilities();
 
     Env env;
+
+    Decomposition<Ctr> decomposition(env, 3);
 
     auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
     auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");

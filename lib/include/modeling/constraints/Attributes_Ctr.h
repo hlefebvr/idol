@@ -14,10 +14,6 @@ IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 0, Type, ::Ctr)
 IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 1, Status, ::Ctr)
 IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 2, Index, ::Ctr)
 
-IDOL_CREATE_ATTRIBUTE_TYPE(Ctr, IDOL_double, 2)
-IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_double, 0, Value, ::Ctr)
-IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_double, 1, Slack, ::Ctr)
-
 IDOL_CREATE_ATTRIBUTE_TYPE(Ctr, Row, 1)
 IDOL_CREATE_ATTRIBUTE(Ctr, Row, 0, Row, ::Ctr)
 

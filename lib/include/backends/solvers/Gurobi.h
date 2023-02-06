@@ -65,6 +65,8 @@ protected:
 
     void set(const Parameter<double>& t_param, double t_value) override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
+    void set(const Parameter<bool>& t_param, bool t_value) override;
+    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
 public:
     Gurobi(const Model& t_model, GRBEnv& t_env);
     explicit Gurobi(const Model& t_model) : Gurobi(t_model, Gurobi::get_global_env()) {}

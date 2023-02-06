@@ -7,6 +7,9 @@
 
 #include "modeling.h"
 
+#include "backends/solvers/Gurobi.h"
+#include "backends/parameters/Parameters_Algorithm.h"
+
 #include "./cartesian_product.h"
 
 #include <catch2/catch_all.hpp>
