@@ -16,7 +16,7 @@ class Decomposition {
     using GenerationPatternT = std::conditional_t<std::is_same_v<AxisT, Ctr>, Column, Row>;
 
     Annotation<AxisT, unsigned int> m_axis_subproblem;
-    Annotation<OppositeAxisT, unsigned int> m_opposite_axis_subproblem;
+    std::optional<Annotation<OppositeAxisT, unsigned int>> m_opposite_axis_subproblem;
     std::vector<std::optional<AxisT>> m_epigraphs;
     std::vector<Model> m_subproblems;
     std::vector<GenerationPatternT> m_pattern;
@@ -25,6 +25,8 @@ public:
     Decomposition(Env& t_env, unsigned int t_n_subproblems);
 
     Decomposition(Env& t_env, unsigned int t_n_subproblems, Annotation<AxisT, unsigned int> t_axis_subproblem);
+
+    void build_opposite_axis();
 
     [[nodiscard]] unsigned int n_subproblems() const { return m_subproblems.size(); }
 
@@ -52,7 +54,7 @@ public:
 
     [[nodiscard]] const auto& axis_annotation() const { return m_axis_subproblem; }
 
-    [[nodiscard]] const auto& opposite_axis_annotation() const { return m_opposite_axis_subproblem; }
+    [[nodiscard]] const auto& opposite_axis_annotation() const { return m_opposite_axis_subproblem.value(); }
 
     void set_epigraph(unsigned int t_index, const AxisT& t_axis);
 

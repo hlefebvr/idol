@@ -40,6 +40,8 @@ void Relaxations::DantzigWolfe::decompose_original_formulation() {
         add_variables_to_subproblem(ctr);
     }
 
+    m_decomposition->build_opposite_axis();
+
     for (const auto& ctr : m_original_model.ctrs()) {
         dispatch_constraint(ctr);
     }
@@ -73,19 +75,7 @@ void Relaxations::DantzigWolfe::add_variables_to_subproblem(const Row &t_row, un
 }
 
 void Relaxations::DantzigWolfe::add_variable_to_subproblem(const Var &t_var, unsigned int t_subproblem_id) {
-
-    const auto& annotation = m_decomposition->opposite_axis_annotation();
-
-    if (t_var.get(annotation) != MasterId) {
-        if (m_decomposition->subproblem(t_subproblem_id).has(t_var)) {
-            return;
-        }
-        throw Exception("Inconsistent decomposition inferred by annotation " + m_decomposition->axis_annotation().name());
-    }
-
     m_decomposition->subproblem(t_subproblem_id).add(t_var);
-    t_var.set(annotation, t_subproblem_id);
-
 }
 
 void Relaxations::DantzigWolfe::dispatch_constraint(const Ctr &t_ctr) {
