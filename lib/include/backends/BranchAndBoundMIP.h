@@ -19,12 +19,12 @@ public:
     explicit BranchAndBoundMIP(const Model& t_model) : BranchAndBound(t_model) {
 
         auto& relaxation = set_relaxation<Relaxations::Continuous>();
-
-        relaxation.template set_backend<RelaxationBackendT>();
+        relaxation.build();
+        relaxation.model().template set_backend<RelaxationBackendT>();
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
         nodes_manager.template set_active_node_manager<ActiveNodesManagers::Basic>();
-        nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.result().branching_candidates());
+        nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.branching_candidates());
         nodes_manager.template set_node_updator<NodeUpdators::ByBoundVar>();
 
     }

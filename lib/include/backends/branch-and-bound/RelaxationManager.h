@@ -4,61 +4,24 @@
 
 #ifndef IDOL_RELAXATIONMANAGER_H
 #define IDOL_RELAXATIONMANAGER_H
+
 #include "backends/Relaxation.h"
 
-namespace impl {
-    class RelaxationManager;
-}
-
-class impl::RelaxationManager {
+class RelaxationManager {
+    std::unique_ptr<Relaxation> m_relaxation;
 public:
-    virtual ~RelaxationManager() = default;
+    RelaxationManager() = default;
 
-    virtual Relaxation& operator[](unsigned int t_index) = 0;
+    Relaxation& get() { return *m_relaxation; }
 
-    virtual const Relaxation& operator[](unsigned int t_index) const = 0;
+    [[nodiscard]] const Relaxation& get() const { return *m_relaxation; }
 
-    Relaxation& at(unsigned int t_index) { return operator[](t_index); }
+    void build() { /* Here, create copies of relaxation for multi thread */ }
 
-    [[nodiscard]] const Relaxation& at(unsigned int t_index) const { return operator[](t_index); }
-
-    [[nodiscard]] virtual unsigned int size() const = 0;
-};
-
-template<class T>
-class RelaxationManager : public impl::RelaxationManager {
-    std::vector<T> m_relaxations;
-    std::optional<typename T::Result> m_result;
-public:
-    template<class ...ArgsT> explicit RelaxationManager(const Model& t_model, unsigned int t_n_models, ArgsT&& ...t_args) {
-
-        if (t_n_models != 1) {
-            throw Exception("Not implemented.");
-        }
-
-        m_relaxations.emplace_back(t_model, std::forward<ArgsT>(t_args)...);
-        m_result = m_relaxations.back().build();
-
-    }
-
-    T &operator[](unsigned int t_index) override {
-        return m_relaxations[t_index];
-    }
-
-    const T &operator[](unsigned int t_index) const override {
-        return m_relaxations[t_index];
-    }
-
-    [[nodiscard]] unsigned int size() const override {
-        return m_relaxations.size();
-    }
-
-    const typename T::Result& result() const { return m_result.value(); }
-
-    template<class BackendT, class ...ArgsT> void set_backend(const ArgsT& ...t_args) {
-        for (auto& relaxation : m_relaxations) {
-            relaxation.model().template set_backend<BackendT>(t_args...);
-        }
+    template<class T, class ...ArgsT> T& set_relaxation(ArgsT&& ...t_args) {
+        auto* result = new T(std::forward<ArgsT>(t_args)...);
+        m_relaxation.reset(result);
+        return *result;
     }
 };
 

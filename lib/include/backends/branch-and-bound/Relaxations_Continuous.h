@@ -12,45 +12,38 @@ namespace Relaxations {
 }
 
 class Relaxations::Continuous : public Relaxation {
+    const Model& m_original_model;
+    std::optional<Model> m_relaxed_model;
+    std::list<Var> m_branching_candidates;
 public:
-    class Result : public Relaxation::Result {
-        friend class Continuous;
+    explicit Continuous(const Model& t_model) : m_original_model(t_model) {}
 
-        std::list<Var> m_branching_candidates;
+    void build() override {
 
-        explicit Result(std::list<Var>&& t_branching_candidates) : m_branching_candidates(t_branching_candidates) {}
-    public:
-        [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
-    };
-private:
-    Model m_model;
-public:
-    explicit Continuous(const Model& t_model) : m_model(t_model.clone()) {}
+        m_branching_candidates.clear();
 
-    Result build() {
+        m_relaxed_model.emplace(m_original_model.clone());
 
-        std::list<Var> branching_candidates;
+        for (const auto& var : m_relaxed_model->vars()) {
 
-        for (const auto& var : m_model.vars()) {
-
-            const int type = m_model.get(Attr::Var::Type, var);
+            const int type = m_relaxed_model->get(Attr::Var::Type, var);
 
             if (type == Integer || type == Binary) {
 
-                branching_candidates.emplace_back(var);
-                m_model.set(Attr::Var::Type, var, ::Continuous);
+                m_branching_candidates.emplace_back(var);
+                m_relaxed_model->set(Attr::Var::Type, var, ::Continuous);
 
             }
 
         }
 
-        return Result(std::move(branching_candidates));
-
     }
 
-    Model &model() override { return m_model; }
+    [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
 
-    [[nodiscard]] const Model &model() const override { return m_model; }
+    Model &model() override { return *m_relaxed_model; }
+
+    [[nodiscard]] const Model &model() const override { return *m_relaxed_model; }
 };
 
 #endif //IDOL_RELAXATIONS_CONTINUOUS_H

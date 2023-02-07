@@ -17,7 +17,7 @@
 
 class BranchAndBound : public Algorithm {
     const unsigned int m_n_models = 1;
-    std::unique_ptr<impl::RelaxationManager> m_relaxations;
+    RelaxationManager m_relaxations;
 
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
@@ -83,42 +83,21 @@ protected:
     using Algorithm::get;
     using Algorithm::set;
 
-    double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
 
     void set(const Parameter<int>& t_param, int t_value) override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
     explicit BranchAndBound(const Model& t_model);
 
-    template<class T, class ...ArgsT> RelaxationManager<T>& set_relaxation(ArgsT&& ...t_args);
-
-    template<class T, class ...ArgsT> std::vector<std::reference_wrapper<T>> set_node_backend(ArgsT&& ...t_args);
+    template<class T, class ...ArgsT> T& set_relaxation(ArgsT&& ...t_args);
 
     template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
 };
 
 template<class T, class... ArgsT>
-RelaxationManager<T>& BranchAndBound::set_relaxation(ArgsT&& ...t_args) {
-
-    auto* result = new RelaxationManager<T>(parent(), m_n_models, std::forward<ArgsT>(t_args)...);
-    m_relaxations.reset(result);
-    return *result;
-
-}
-
-template<class T, class... ArgsT>
-std::vector<std::reference_wrapper<T>> BranchAndBound::set_node_backend(ArgsT &&... t_args) {
-
-    unsigned int n = m_relaxations->size();
-
-    std::vector<std::reference_wrapper<T>> result;
-    result.reserve(m_relaxations->size());
-
-    for (unsigned int i = 0 ; i < n ; ++i) {
-        result.emplace_back((*m_relaxations)[i].model().set_backend<T>(std::forward<ArgsT>(t_args)...));
-    }
-
-    return result;
+T& BranchAndBound::set_relaxation(ArgsT&& ...t_args) {
+    return m_relaxations.set_relaxation<T>(parent(), std::forward<ArgsT>(t_args)...);
 }
 
 template<class T, class... Args>

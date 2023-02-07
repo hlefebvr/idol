@@ -11,39 +11,62 @@
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
 #include "modeling/models/Decomposition.h"
 #include "backends/BranchAndBoundMIP.h"
+/*
+namespace Relaxations {
+    class DantzigWolfe;
+}
 
+class Relaxations::DantzigWolfe : public Relaxation {
+    Annotation<Ctr, unsigned int> m_annotation;
+    std::optional<Decomposition<Ctr>> m_decomposition;
+public:
+    class Result {
+        const Decomposition<Ctr>& m_decomposition;
+    public:
+        explicit Result(const Decomposition<Ctr>& t_decomposition) : m_decomposition(t_decomposition) {  }
+        [[nodiscard]] const Decomposition<Ctr>& decomposition() const { return m_decomposition; }
+    };
+
+    explicit DantzigWolfe(const Model& t_model, Annotation<Ctr, unsigned int>&& t_annotation) : m_annotation(std::move(t_annotation)) {
+
+    }
+
+    Result build() {
+
+        unsigned int n_subproblems = 0;
+        for (const auto& ctr : ) {
+
+        }
+
+        return Result(m_decomposition.value());
+    }
+
+    Model &model() override { return m_decomposition->master_problem(); }
+
+    [[nodiscard]] const Model &model() const override { return m_decomposition->master_problem(); }
+};
+*/
 int main(int t_argc, char** t_argv) {
 
     Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
-    auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/idol_robust_binary/DisruptionFLP/data/instance_F15_C70__1.txt");
-    //auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/optimize/dev/flp_instance.txt");
-
-    const unsigned int n_customers = instance.n_customers();
-    const unsigned int n_facilities = instance.n_facilities();
-
     Env env;
 
-    Decomposition<Ctr> decomposition(env, 3);
-
-    auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    Var x(env, 0., 1., Binary, "x");
+    Var y(env, 0., 1., Binary, "y");
+    Var z(env, 0., 1., Binary, "z");
+    Ctr c1(env, x + 2 * y + 3 * z <= 4);
+    Ctr c2(env, x + y >= 1);
+    auto objective = -x - y - 2 * z;
 
     Model model(env);
+    model.add_many(x, y, z, c1, c2);
+    model.set(Attr::Obj::Expr, objective);
+    auto& bb = model.set_backend<BranchAndBoundMIP<Gurobi>>();
 
-    model.add<Var, 1>(x);
-    model.add<Var, 2>(y);
+    model.optimize();
 
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
-    }
-
-    for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
-    }
-
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     return 0;
 

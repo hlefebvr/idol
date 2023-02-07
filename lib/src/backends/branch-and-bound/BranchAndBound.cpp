@@ -133,11 +133,11 @@ void BranchAndBound::solve_queued_nodes() {
 }
 
 void BranchAndBound::prepare_node_solution() {
-    m_nodes_manager->apply_current_node_to(m_relaxations->at(0).model());
+    m_nodes_manager->apply_current_node_to(m_relaxations.get().model());
 }
 
 void BranchAndBound::solve_current_node() {
-    auto& lower_bounding_model = m_relaxations->at(0).model();
+    auto& lower_bounding_model = m_relaxations.get().model();
     if (lower_bounding_model.get(Attr::Obj::Sense) == Minimize) {
         lower_bounding_model.set(Param::Algorithm::BestBoundStop, std::min(best_obj(), get(Param::Algorithm::BestBoundStop)));
     } else {

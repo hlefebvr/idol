@@ -15,11 +15,7 @@ public:
 
     [[nodiscard]] virtual const Model& model() const = 0;
 
-    class Result {
-    public:
-        virtual ~Result() = default;
-    };
-
+    virtual void build() = 0;
 };
 
 #endif //IDOL_RELAXATION_H
