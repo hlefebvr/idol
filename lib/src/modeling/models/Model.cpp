@@ -9,8 +9,6 @@ Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 
 Model::~Model() {
 
-    m_backend.reset();
-
     for (const auto& var : m_variables) {
         m_env.remove_version(*this, var);
     }
@@ -24,34 +22,29 @@ Model::~Model() {
     m_env.free_model_id(*this);
 }
 
-void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type, Column &&t_column) {
-    m_env.create_version(*this, t_var, m_variables.size(), t_lb, t_ub, t_type, std::move(t_column));
+void Model::add(const Var &t_var) {
+    const auto& default_version = m_env[t_var];
+    m_env.create_version(*this,
+                         t_var,
+                         m_variables.size(),
+                         default_version.lb(),
+                         default_version.ub(),
+                         default_version.type(),
+                         Column(default_version.column())
+                         );
     m_variables.emplace_back(t_var);
 
-    if (m_backend) {
-        m_backend->add(t_var);
+    if (has_backend()) {
+        backend().add(t_var);
     }
 
     add_column_to_rows(t_var);
 }
 
-void Model::add(const Var &t_var) {
-    const auto& default_version = m_env[t_var];
-    add(t_var, default_version.lb(), default_version.ub(), default_version.type(), Column(default_version.column()));
-}
-
-void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type, const Column &t_column) {
-    add(t_var, t_lb, t_ub, t_type, Column(t_column));
-}
-
-void Model::add(const Var &t_var, double t_lb, double t_ub, int t_type) {
-    add(t_var, t_lb, t_ub, t_type, Column(0));
-}
-
 void Model::remove(const Var &t_var) {
 
-    if (m_backend) {
-        m_backend->remove(t_var);
+    if (has_backend()) {
+        backend().remove(t_var);
     }
 
     remove_column_from_rows(t_var);
@@ -64,8 +57,8 @@ void Model::remove(const Var &t_var) {
 
 void Model::remove(const Ctr &t_ctr) {
 
-    if (m_backend) {
-        m_backend->remove(t_ctr);
+    if (has_backend()) {
+        backend().remove(t_ctr);
     }
 
     remove_row_from_columns(t_ctr);
@@ -76,24 +69,16 @@ void Model::remove(const Ctr &t_ctr) {
     m_env.remove_version(*this, t_ctr);
 }
 
-void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
-    m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
+void Model::add(const Ctr &t_ctr) {
+    const auto& default_version = m_env[t_ctr];
+    m_env.create_version(*this, t_ctr, m_constraints.size(), TempCtr(Row(default_version.row()), default_version.type()));
     m_constraints.emplace_back(t_ctr);
 
-    if (m_backend) {
-        m_backend->add(t_ctr);
+    if (has_backend()) {
+        backend().add(t_ctr);
     }
 
     add_row_to_columns(t_ctr);
-}
-
-void Model::add(const Ctr &t_ctr, const TempCtr &t_temp_ctr) {
-    add(t_ctr, TempCtr(t_temp_ctr));
-}
-
-void Model::add(const Ctr &t_ctr) {
-    const auto& default_version = m_env[t_ctr];
-    add(t_ctr, TempCtr(Row(default_version.row()), default_version.type()));
 }
 
 Expr<Var> &Model::access_obj() {
@@ -228,13 +213,13 @@ void Model::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value
 
     if (t_attr == Attr::Var::Lb) {
         m_env.version(*this, t_var).set_lb(t_value);
-        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
+        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
         return;
     }
 
     if (t_attr == Attr::Var::Ub) {
         m_env.version(*this, t_var).set_ub(t_value);
-        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
+        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
         return;
     }
 
@@ -245,9 +230,9 @@ void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const V
 
     if (t_attr == Attr::Matrix::Coeff) {
 
-        if (m_backend) {
-            m_backend->update();
-            m_backend->set(t_attr, t_ctr, t_var, t_value);
+        if (has_backend()) {
+            backend().update();
+            backend().set(t_attr, t_ctr, t_var, t_value);
         }
 
         update_matrix_coefficient(t_ctr, t_var, std::move(t_value));
@@ -261,9 +246,9 @@ void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const V
 void Model::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
 
     if (t_attr == Attr::Ctr::Rhs) {
-        if (m_backend) {
+        if (has_backend()) {
             add_to_rhs(t_ctr, Constant(t_value));
-            m_backend->set(t_attr, t_ctr, std::move(t_value));
+            backend().set(t_attr, t_ctr, std::move(t_value));
         } else {
             add_to_rhs(t_ctr, std::move(t_value));
         }
@@ -277,9 +262,9 @@ void Model::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_valu
 
     if (t_attr == Attr::Obj::Expr) {
 
-        if (m_backend) {
+        if (has_backend()) {
             replace_objective(Expr<Var, Var>(t_value));
-            m_backend->set(t_attr, std::move(t_value));
+            backend().set(t_attr, std::move(t_value));
         } else {
             replace_objective(std::move(t_value));
         }
@@ -294,9 +279,9 @@ void Model::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
 
-        if (m_backend) {
+        if (has_backend()) {
             replace_right_handside(LinExpr<Ctr>(t_value));
-            m_backend->set(t_attr, std::move(t_value));
+            backend().set(t_attr, std::move(t_value));
         } else {
             replace_right_handside(std::move(t_value));
         }
@@ -311,9 +296,9 @@ void Model::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
 
     if (t_attr == Attr::Obj::Const) {
 
-        if (m_backend) {
+        if (has_backend()) {
             m_objective.constant() = Constant(t_value);
-            m_backend->set(t_attr, std::move(t_value));
+            backend().set(t_attr, std::move(t_value));
         } else {
             m_objective.constant() = std::move(t_value);
         }
@@ -328,9 +313,9 @@ void Model::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t
 
     if (t_attr == Attr::Var::Obj) {
 
-        if (m_backend) {
+        if (has_backend()) {
             add_to_obj(t_var, Constant(t_value));
-            m_backend->set(t_attr, t_var, std::move(t_value));
+            backend().set(t_attr, t_var, std::move(t_value));
         } else {
             add_to_obj(t_var, std::move(t_value));
         }
@@ -346,7 +331,7 @@ void Model::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
     if (t_attr == Attr::Var::Type) {
 
         m_env.version(*this, t_var).set_type(t_value);
-        if (m_backend) { m_backend->set(t_attr, t_var, t_value); }
+        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
         return;
     }
 
@@ -360,7 +345,7 @@ void Model::set(const Req<int, void> &t_attr, int t_value) {
             throw Exception("Unsupported objective sense.");
         }
         m_sense = t_value;
-        if (m_backend) { m_backend->set(t_attr, t_value); }
+        if (has_backend()) { backend().set(t_attr, t_value); }
         return;
     }
 
@@ -371,7 +356,7 @@ void Model::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
 
     if (t_attr == Attr::Ctr::Type) {
         m_env.version(*this, t_ctr).set_type(t_value);
-        if (m_backend) { m_backend->set(t_attr, t_ctr, t_value); }
+        if (has_backend()) { backend().set(t_attr, t_ctr, t_value); }
         return;
     }
 
@@ -385,7 +370,7 @@ void Model::set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
         remove_row_from_columns(t_ctr);
         m_env.version(*this, t_ctr).row() = std::move(t_value);
         add_row_to_columns(t_ctr);
-        if (m_backend) {
+        if (has_backend()) {
             throw Exception("Updating row is not implemented.");
         }
 
@@ -401,7 +386,7 @@ void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_val
         remove_column_from_rows(t_var);
         m_env.version(*this, t_var).column() = std::move(t_value);
         add_column_to_rows(t_var);
-        if (m_backend) {
+        if (has_backend()) {
             throw Exception("Updating column is not implemented.");
         }
 
@@ -420,42 +405,24 @@ const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) c
     return AttributeManagers::Delegate::get(t_attr, t_ctr);
 }
 
-void Model::optimize() {
-    throw_if_no_backend();
-    m_timer.start();
-    m_backend->optimize();
-    m_timer.stop();
-}
-
-void Model::throw_if_no_backend() const {
-    if (!m_backend) {
-        throw Exception("No backend was found.");
-    }
-}
-
 void Model::update() {
-    throw_if_no_backend();
-    m_backend->update();
+    backend().update();
 }
 
 void Model::write(const std::string &t_name) {
-    throw_if_no_backend();
-    m_backend->write(t_name);
+    backend().write(t_name);
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
-    throw_if_no_backend();
-    return *m_backend;
+    return backend();
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
-    throw_if_no_backend();
-    return *m_backend;
+    return backend();
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
-    throw_if_no_backend();
-    return *m_backend;
+    return backend();
 }
 
 bool Model::has(const Var &t_var) const {
@@ -488,25 +455,13 @@ Model* Model::clone() const {
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<double> &t_param) {
-    throw_if_no_backend();
-    return *m_backend;
+    return backend();
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<int> &t_param) {
-    throw_if_no_backend();
-    return *m_backend;
+    return backend();
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
-    throw_if_no_backend();
-    return *m_backend;
-}
-
-double Model::remaining_time() const {
-    return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
-}
-
-void Model::set_backend(Backend *t_backend) {
-    m_backend.reset(t_backend);
-    m_backend->initialize();
+    return backend();
 }

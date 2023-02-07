@@ -5,23 +5,32 @@
 #ifndef IDOL_ABSTRACTMODEL_H
 #define IDOL_ABSTRACTMODEL_H
 
+#include "backends/Backend.h"
+
 #include "modeling/attributes/AttributeManager_Delegate.h"
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
+#include "backends/parameters/Timer.h"
+#include "backends/parameters/Parameters_Algorithm.h"
 
-class Timer;
 class Backend;
 
 class AbstractModel : public AttributeManagers::Delegate {
     friend class Idol;
+
+    Timer m_timer;
+    std::unique_ptr<Backend> m_backend;
 protected:
-    virtual void set_backend(Backend*) = 0;
+    // Backend
+    virtual void set_backend(Backend* t_backend) { m_backend.reset(t_backend); m_backend->initialize(); }
+    virtual void throw_if_no_backend() const { if (!m_backend) { throw Exception("No backend was found."); } }
+    Backend& backend() { throw_if_no_backend(); return *m_backend; }
+    [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }
+    void reset_backend() { m_backend.reset(); }
+    bool has_backend() { return (bool) m_backend; }
 public:
     // Variables
-    virtual void add(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column) = 0;
-    virtual void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column) = 0;
-    virtual void add(const Var& t_var, double t_lb, double t_ub, int t_type) = 0;
     virtual void add(const Var& t_var) = 0;
     [[nodiscard]] virtual bool has(const Var& t_var) const = 0;
     virtual void remove(const Var& t_var) = 0;
@@ -29,8 +38,6 @@ public:
 
     // Constraints
     virtual void add(const Ctr& t_ctr) = 0;
-    virtual void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr) = 0;
-    virtual void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr) = 0;
     [[nodiscard]] virtual bool has(const Ctr& t_ctr) const = 0;
     virtual void remove(const Ctr& t_ctr) = 0;
     [[nodiscard]] virtual ConstIteratorForward<std::vector<Ctr>> ctrs() const = 0;
@@ -44,9 +51,14 @@ public:
     [[nodiscard]] virtual AbstractModel* clone() const = 0;
 
     // Backend
-    virtual void optimize() = 0;
-    [[nodiscard]] virtual const Timer& time() const = 0;
-    [[nodiscard]] virtual double remaining_time() const = 0;
+    void optimize() {
+        throw_if_no_backend();
+        m_timer.start();
+        backend().optimize();
+        m_timer.stop();
+    }
+    [[nodiscard]] const Timer& time() const { return m_timer; }
+    [[nodiscard]] double remaining_time() const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count()); }
 
     using AttributeManagers::Delegate::get;
     using AttributeManagers::Delegate::set;

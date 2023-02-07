@@ -25,71 +25,41 @@ private:
     std::optional<Annotation<AxisT, unsigned int>> m_axis_annotation;
     std::optional<Annotation<OppositeAxisT, unsigned int>> m_opposite_axis_annotation;
 protected:
-    void set_backend(Backend *backend) override {  }
+    Annotation<AxisT, unsigned int> annotation(const AxisT&) const { return m_axis_annotation.value(); }
+    Annotation<OppositeAxisT, unsigned int> annotation(const OppositeAxisT&) const { return m_opposite_axis_annotation.value(); }
+
+    Model& model(const Var& t_var);
+    [[nodiscard]] const Model& model(const Var& t_var) const { return const_cast<BlockModel<AxisT>*>(this)->model(t_var); }
+
+    Model& model(const Ctr& t_ctr);
+    [[nodiscard]] const Model& model(const Ctr& t_ctr) const { return const_cast<BlockModel<AxisT>*>(this)->model(t_ctr); }
+
+    // Attribute delegate
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override { return m_master; }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override { return model(t_object); }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override { return model(t_object); }
+    // Parameter delegate
+    AttributeManager &parameter_delegate(const Parameter<double> &t_param) override { return m_master; }
+    AttributeManager &parameter_delegate(const Parameter<int> &t_param) override { return m_master; }
+    AttributeManager &parameter_delegate(const Parameter<bool> &t_param) override { return m_master; }
 public:
     BlockModel(Env& t_env, unsigned int t_n_blocks);
 
     BlockModel(Env& t_env, unsigned int t_n_blocks, Annotation<AxisT, unsigned int> t_axis_annotation);
 
-    void optimize() override {
+    void add(const Var &t_var) override { m_master.add(t_var); }
 
-    }
+    [[nodiscard]] bool has(const Var &t_var) const override { return model(t_var).has(t_var); }
 
-    void add(const Var &t_var, double t_lb, double t_ub, int t_type, Column &&t_column) override {
+    void remove(const Var &t_var) override { model(t_var).remove(t_var); }
 
-    }
+    void add(const Ctr &t_ctr) override { m_master.add(t_ctr); }
 
-    void add(const Var &t_var, double t_lb, double t_ub, int t_type, const Column &t_column) override {
+    [[nodiscard]] bool has(const Ctr &t_ctr) const override { return model(t_ctr).has(t_ctr); }
 
-    }
+    void remove(const Ctr &t_ctr) override { model(t_ctr).remove(t_ctr); }
 
-    void add(const Var &t_var, double t_lb, double t_ub, int t_type) override {
-
-    }
-
-    void add(const Var &t_var) override {
-
-    }
-
-    [[nodiscard]] bool has(const Var &t_var) const override {
-        return false;
-    }
-
-    void remove(const Var &t_var) override {
-
-    }
-
-    void add(const Ctr &t_ctr) override {
-
-    }
-
-    void add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) override {
-
-    }
-
-    void add(const Ctr &t_ctr, const TempCtr &t_temp_ctr) override {
-
-    }
-
-    bool has(const Ctr &t_ctr) const override {
-        return false;
-    }
-
-    void remove(const Ctr &t_ctr) override {
-
-    }
-
-    const Timer &time() const override {
-        return m_master.time();
-    }
-
-    double remaining_time() const override {
-        return m_master.remaining_time();
-    }
-
-    BlockModel<AxisT> *clone() const override {
-        return nullptr;
-    }
+    BlockModel<AxisT> *clone() const override { throw Exception("Not implemented."); }
 
     [[nodiscard]] unsigned int id() const override { return m_master.id(); }
 
@@ -122,6 +92,18 @@ public:
     using AbstractModel::get;
     using AbstractModel::set;
 };
+
+template<class AxisT>
+Model &BlockModel<AxisT>::model(const Ctr &t_ctr) {
+    const unsigned int block_id = t_ctr.get(annotation(t_ctr));
+    return block_id == MasterId ? m_master : block(block_id).model();
+}
+
+template<class AxisT>
+Model &BlockModel<AxisT>::model(const Var &t_var) {
+    const unsigned int block_id = t_var.get(annotation(t_var));
+    return block_id == MasterId ? m_master : block(block_id).model();
+}
 
 template<class AxisT>
 BlockModel<AxisT>::BlockModel(Env &t_env, unsigned int t_n_blocks, Annotation<AxisT, unsigned int> t_axis_annotation)

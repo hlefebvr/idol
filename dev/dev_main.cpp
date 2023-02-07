@@ -50,12 +50,7 @@ int main(int t_argc, char** t_argv) {
 
     Idol::using_backend<BranchAndPriceMIP<Gurobi>>(model, decomposition);
 
-    Relaxations::DantzigWolfe dw(model, decomposition);
-    dw.build();
-
-    std::cout << dw.model() << std::endl;
-
-    //model.optimize();
+    model.optimize();
 
     return 0;
 

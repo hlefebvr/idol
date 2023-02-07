@@ -18,8 +18,6 @@
 
 #include "AbstractModel.h"
 
-
-#include "backends/Backend.h"
 #include "backends/parameters/Timer.h"
 
 class Env;
@@ -34,18 +32,12 @@ class Model : public Matrix, public AbstractModel {
     Env& m_env;
     const unsigned int m_id;
 
-    Timer m_timer;
-
     int m_sense = Minimize;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
 
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
-
-    // Backend
-    std::unique_ptr<Backend> m_backend;
-    void throw_if_no_backend() const;
 
     // Matrix hooks
     Expr<Var> &access_obj() override;
@@ -61,8 +53,6 @@ protected:
     AttributeManager &parameter_delegate(const Parameter<double> &t_param) override;
     AttributeManager &parameter_delegate(const Parameter<int> &t_param) override;
     AttributeManager &parameter_delegate(const Parameter<bool> &t_param) override;
-    // Backend
-    void set_backend(Backend* t_backend) override;
 public:
     explicit Model(Env& t_env);
 
@@ -75,9 +65,6 @@ public:
     ~Model() override;
 
     // Variables
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column) override;
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column) override;
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type) override;
     void add(const Var& t_var) override;
     [[nodiscard]] bool has(const Var& t_var) const override;
     void remove(const Var& t_var) override;
@@ -85,8 +72,6 @@ public:
 
     // Constraints
     void add(const Ctr& t_ctr) override;
-    void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr) override;
-    void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr) override;
     [[nodiscard]] bool has(const Ctr& t_ctr) const override;
     void remove(const Ctr& t_ctr) override;
     [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_constraints; }
@@ -130,13 +115,8 @@ public:
     void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 
     // Backend
-    void reset_backend() { m_backend.reset(); }
-    bool has_backend() { return (bool) m_backend; }
-    void optimize() override;
     void update();
     void write(const std::string& t_name);
-    [[nodiscard]] const Timer& time() const override { return m_timer; }
-    [[nodiscard]] double remaining_time() const override;
 };
 
 #endif //IDOL_MODEL_H
