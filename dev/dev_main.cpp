@@ -11,62 +11,53 @@
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
 #include "modeling/models/Decomposition.h"
 #include "backends/BranchAndBoundMIP.h"
-/*
-namespace Relaxations {
-    class DantzigWolfe;
-}
+#include "problems/GAP/GAP_Instance.h"
+#include "backends/column-generation/Relaxations_DantzigWolfe.h"
 
-class Relaxations::DantzigWolfe : public Relaxation {
-    Annotation<Ctr, unsigned int> m_annotation;
-    std::optional<Decomposition<Ctr>> m_decomposition;
-public:
-    class Result {
-        const Decomposition<Ctr>& m_decomposition;
-    public:
-        explicit Result(const Decomposition<Ctr>& t_decomposition) : m_decomposition(t_decomposition) {  }
-        [[nodiscard]] const Decomposition<Ctr>& decomposition() const { return m_decomposition; }
-    };
-
-    explicit DantzigWolfe(const Model& t_model, Annotation<Ctr, unsigned int>&& t_annotation) : m_annotation(std::move(t_annotation)) {
-
-    }
-
-    Result build() {
-
-        unsigned int n_subproblems = 0;
-        for (const auto& ctr : ) {
-
-        }
-
-        return Result(m_decomposition.value());
-    }
-
-    Model &model() override { return m_decomposition->master_problem(); }
-
-    [[nodiscard]] const Model &model() const override { return m_decomposition->master_problem(); }
-};
-*/
 int main(int t_argc, char** t_argv) {
 
     Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
+    using namespace Problems::GAP;
+
+    const auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    const unsigned int n_agents = instance.n_agents();
+    const unsigned int n_jobs = instance.n_jobs();
+
     Env env;
 
-    Var x(env, 0., 1., Binary, "x");
-    Var y(env, 0., 1., Binary, "y");
-    Var z(env, 0., 1., Binary, "z");
-    Ctr c1(env, x + 2 * y + 3 * z <= 4);
-    Ctr c2(env, x + y >= 1);
-    auto objective = -x - y - 2 * z;
+    Annotation<Ctr, unsigned int> subproblem(env, "subproblem");
 
     Model model(env);
-    model.add_many(x, y, z, c1, c2);
-    model.set(Attr::Obj::Expr, objective);
-    auto& bb = model.set_backend<BranchAndBoundMIP<Gurobi>>();
 
-    model.optimize();
+    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
+    model.add<Var, 2>(x);
 
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i));
+        capacity.set(subproblem, i);
+        model.add(capacity);
+    }
+
+    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
+        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1);
+        assignment.set(subproblem, MasterId);
+        model.add(assignment);
+    }
+
+    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+
+    Relaxations::DantzigWolfe dantzig_wolfe(model, subproblem);
+    dantzig_wolfe.build();
+
+    std::cout << dantzig_wolfe.decomposition().master_problem() << std::endl;
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        std::cout << "Pricing " << i << std::endl;
+        std::cout << dantzig_wolfe.decomposition().subproblem(i) << std::endl;
+        std::cout << "Column " << i << std::endl;
+        std::cout << dantzig_wolfe.decomposition().generation_pattern(i) << std::endl;
+    }
 
     return 0;
 

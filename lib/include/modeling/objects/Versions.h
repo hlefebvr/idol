@@ -46,7 +46,7 @@ public:
 
     T& get_default();
 
-    template<class ValueT> const ValueT& get_annotation(unsigned int t_index) const;
+    template<class ValueT> const ValueT* get_annotation(unsigned int t_index) const;
 
     template<class ValueT, class ...ArgsT> void set_annotation(unsigned int t_index, ArgsT&& ...t_args) {
         if (t_index >= m_annotations.size()) {
@@ -58,11 +58,11 @@ public:
 
 template<class T>
 template<class ValueT>
-const ValueT &Versions<T>::get_annotation(unsigned int t_index) const {
+const ValueT* Versions<T>::get_annotation(unsigned int t_index) const {
     if (t_index >= m_annotations.size() || !m_annotations[t_index].has_value()) {
-        throw Exception("No value for requested annotation.");
+        return nullptr;
     }
-    return std::any_cast<const ValueT&>(m_annotations[t_index]);
+    return &std::any_cast<const ValueT&>(m_annotations[t_index]);
 }
 
 template<class T>

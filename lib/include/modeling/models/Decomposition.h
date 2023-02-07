@@ -13,14 +13,18 @@ template<typename AxisT>
 class Decomposition {
     static_assert(std::is_same_v<AxisT, Var> || std::is_same_v<AxisT, Ctr>);
     using OppositeAxisT = std::conditional_t<std::is_same_v<AxisT, Var>, Ctr, Var>;
+    using GenerationPatternT = std::conditional_t<std::is_same_v<AxisT, Ctr>, Column, Row>;
 
     Annotation<AxisT, unsigned int> m_axis_subproblem;
     Annotation<OppositeAxisT, unsigned int> m_opposite_axis_subproblem;
     std::vector<std::optional<AxisT>> m_epigraphs;
     std::vector<Model> m_subproblems;
+    std::vector<GenerationPatternT> m_pattern;
     Model m_master_problem;
 public:
     Decomposition(Env& t_env, unsigned int t_n_subproblems);
+
+    Decomposition(Env& t_env, unsigned int t_n_subproblems, Annotation<AxisT, unsigned int> t_axis_subproblem);
 
     [[nodiscard]] unsigned int n_subproblems() const { return m_subproblems.size(); }
 
@@ -51,6 +55,10 @@ public:
     [[nodiscard]] const auto& opposite_axis_annotation() const { return m_opposite_axis_subproblem; }
 
     void set_epigraph(unsigned int t_index, const AxisT& t_axis);
+
+    GenerationPatternT& generation_pattern(unsigned int t_index) { return m_pattern[t_index]; }
+
+    [[nodiscard]] const GenerationPatternT& generation_pattern(unsigned int t_index) const { return m_pattern[t_index]; }
 };
 
 template class Decomposition<Var>;

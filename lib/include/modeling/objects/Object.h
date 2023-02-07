@@ -9,6 +9,7 @@
 #include "ObjectId.h"
 #include "containers/Vector.h"
 #include "modeling/annotations/Annotation.h"
+#include "errors/Exception.h"
 
 class Model;
 
@@ -47,7 +48,16 @@ public:
 
     [[nodiscard]] bool is_in(const Model& t_model) const { return m_object_id->versions().has(t_model); }
 
-    template<class ValueT> const ValueT& get(const Annotation<CRTP, ValueT>& t_annotation) const { return m_object_id->versions().template get_annotation<ValueT>(t_annotation.id()); }
+    template<class ValueT> const ValueT& get(const Annotation<CRTP, ValueT>& t_annotation) const {
+        const auto& result = m_object_id->versions().template get_annotation<ValueT>(t_annotation.id());
+        if (result) {
+            return *result;
+        }
+        if (t_annotation.has_default()) {
+            return t_annotation.default_value();
+        }
+        throw Exception("No value could be found and no default value was given for annotation " + t_annotation.name());
+    }
 
     template<class ValueT, class ...ArgsT> void set(const Annotation<CRTP, ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
 };

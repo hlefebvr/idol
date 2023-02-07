@@ -74,9 +74,20 @@ public:
     Column& operator=(const Column& t_src) = default;
     Column& operator=(Column&& t_src) noexcept = default;
 
-    Column fix(const Solution::Primal& t_primals) const;
+    [[nodiscard]] Column fix(const Solution::Primal& t_primals) const;
 
     static const Column EmptyColumn;
 };
+
+static std::ostream &operator<<(std::ostream& t_os, const Column& t_column) {
+
+    t_os << "[Obj: " << t_column.obj() << "]\n";
+
+    for (const auto& [ctr, constant] : t_column.linear()) {
+        t_os << '[' << ctr.name() << ": " << constant << "]\n";
+    }
+
+    return t_os;
+}
 
 #endif //OPTIMIZE_COLUMN_H
