@@ -125,7 +125,7 @@ auto save(const AbstractModel& t_model, const Req<double, ObjectT>& t_attr) {
 struct Idol {
 
     template<class T, class ModelT, class ...ArgsT>
-    static T &using_backend(ModelT &t_model, ArgsT &&...t_args) {
+    static T &set_optimizer(ModelT &t_model, ArgsT &&...t_args) {
         auto *result = new T(t_model, std::forward<ArgsT>(t_args)...);
         ((AbstractModel&) t_model).set_backend(result);
         return *result;

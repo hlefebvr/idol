@@ -37,7 +37,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     model.add(c);
     model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    Idol::using_backend<BranchAndBoundMIP<TestType>>(model);
+    Idol::set_optimizer<BranchAndBoundMIP<TestType>>(model);
     model.set(Param::BranchAndBound::NodeSelection, node_selection);
 
     WHEN("The instance \"" + filename + "\" is solved") {
@@ -114,7 +114,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     // Set backend options
-    Idol::using_backend<BranchAndBoundMIP<TestType>>(model);
+    Idol::set_optimizer<BranchAndBoundMIP<TestType>>(model);
     model.set(Param::BranchAndBound::NodeSelection, node_selection);
 
     WHEN("The instance \"" + filename + "\" is solved") {

@@ -11,7 +11,7 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
 
         Env env;
         Model model(env);
-        auto& backend = Idol::using_backend<Gurobi>(model);
+        auto& backend = Idol::set_optimizer<Gurobi>(model);
 
         WHEN("A <=-constraint (rhs=1) is added") {
 

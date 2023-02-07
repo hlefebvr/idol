@@ -48,7 +48,7 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::using_backend<BranchAndPriceMIP<Gurobi>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<Gurobi>>(model, decomposition);
 
     model.optimize();
 

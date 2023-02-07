@@ -18,7 +18,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         model.add(x);
         model.add(y);
 
-        auto& backend = Idol::using_backend<Gurobi>(model);
+        auto& backend = Idol::set_optimizer<Gurobi>(model);
         model.update();
 
         WHEN("Model::update() is called") {
