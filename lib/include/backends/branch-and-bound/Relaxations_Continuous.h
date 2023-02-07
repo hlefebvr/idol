@@ -28,7 +28,7 @@ public:
 
             const int type = m_relaxed_model->get(Attr::Var::Type, var);
 
-            if (type == Integer || type == Binary) {
+            if (type != ::Continuous) {
 
                 m_branching_candidates.emplace_back(var);
                 m_relaxed_model->set(Attr::Var::Type, var, ::Continuous);

@@ -16,6 +16,7 @@ class Relaxations::DantzigWolfe : public Relaxation {
     const AbstractModel& m_original_model;
     Annotation<Ctr, unsigned int> m_complicating_constraint_annotation;
     std::optional<BlockModel<Ctr>> m_decomposition;
+    std::list<Var> m_branching_candidates;
 protected:
     [[nodiscard]] unsigned int compute_number_of_blocks() const;
     void decompose_original_formulation();
@@ -29,6 +30,9 @@ protected:
     void add_objective_to_master();
     std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_master_expression(const LinExpr<Var>& t_expr);
     void add_convexity_constraints();
+    void make_continuous_relaxation();
+    void make_continuous_relaxation_of_master(Model& t_model);
+    void add_integer_variables_to_branching_candidates(Model& t_model);
 public:
     DantzigWolfe(const AbstractModel& t_original_model, Annotation<Ctr, unsigned int> t_complicating_constraint_annotation);
 
@@ -37,6 +41,8 @@ public:
     BlockModel<Ctr> &model() override { return m_decomposition.value(); }
 
     [[nodiscard]] const BlockModel<Ctr> &model() const override { return m_decomposition.value(); }
+
+    [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
 };
 
 #endif //IDOL_RELAXATIONS_DANTZIGWOLFE_H

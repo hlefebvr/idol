@@ -19,6 +19,7 @@ void Relaxations::DantzigWolfe::build() {
 
     decompose_original_formulation();
     add_convexity_constraints();
+    make_continuous_relaxation();
 
 }
 
@@ -180,6 +181,36 @@ void Relaxations::DantzigWolfe::add_convexity_constraints() {
         Ctr convexity(env, TempCtr(Row(0, 1), Equal), "_convexity_" + std::to_string(i));
         m_decomposition->master().add(convexity);
         m_decomposition->block(i).set_aggregator(convexity);
+    }
+
+}
+
+void Relaxations::DantzigWolfe::make_continuous_relaxation() {
+
+    make_continuous_relaxation_of_master(m_decomposition->master());
+    for (auto& block : m_decomposition->blocks()) {
+        add_integer_variables_to_branching_candidates(block.model());
+    }
+
+}
+
+void Relaxations::DantzigWolfe::make_continuous_relaxation_of_master(Model &t_model) {
+
+    for (const auto& var : t_model.vars()) {
+        if (t_model.get(Attr::Var::Type, var) != Continuous) {
+            t_model.set(Attr::Var::Type, var, Continuous);
+            m_branching_candidates.emplace_back(var);
+        }
+    }
+
+}
+
+void Relaxations::DantzigWolfe::add_integer_variables_to_branching_candidates(Model &t_model) {
+
+    for (const auto& var : t_model.vars()) {
+        if (t_model.get(Attr::Var::Type, var) != Continuous) {
+            m_branching_candidates.emplace_back(var);
+        }
     }
 
 }

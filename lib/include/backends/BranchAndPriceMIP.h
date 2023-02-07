@@ -33,10 +33,8 @@ public:
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
         nodes_manager.template set_active_node_manager<ActiveNodesManagers::Basic>();
-        nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(std::list<Var>{});
+        nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.branching_candidates());
         nodes_manager.template set_node_updator<NodeUpdators::ByBoundVar>();
-
-        std::cout << "WARNING: Branching candidates are not built!" << std::endl;
 
     }
 };
