@@ -5,7 +5,7 @@
 #include "backends/branch-and-bound/ActiveNodesManager.h"
 #include "backends/branch-and-bound/Node.h"
 
-BranchAndBound::BranchAndBound(const Model &t_model) : Algorithm(t_model) {
+BranchAndBound::BranchAndBound(const AbstractModel &t_model) : Algorithm(t_model) {
 
 }
 

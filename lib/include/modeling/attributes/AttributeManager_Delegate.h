@@ -7,6 +7,8 @@
 
 #include "AttributeManager.h"
 #include "../../errors/UnsupportedRequest.h"
+#include "modeling/matrix/Column.h"
+#include "modeling/matrix/Row.h"
 
 namespace AttributeManagers {
     class Delegate;

@@ -12,7 +12,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
     GIVEN("An initial model with some variables and no constraint") {
 
         auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
-        model.add<Var, 1>(x);
+        model.add_array<Var, 1>(x);
 
         WHEN("Adding a constraint by row (linear and quadratic)") {
 

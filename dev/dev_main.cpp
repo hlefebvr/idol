@@ -33,7 +33,7 @@ int main(int t_argc, char** t_argv) {
     Model model(env);
 
     auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-    model.add<Var, 2>(x);
+    model.add_array<Var, 2>(x);
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i));
@@ -50,7 +50,12 @@ int main(int t_argc, char** t_argv) {
 
     Idol::using_backend<BranchAndPriceMIP<Gurobi>>(model, decomposition);
 
-    model.optimize();
+    Relaxations::DantzigWolfe dw(model, decomposition);
+    dw.build();
+
+    std::cout << dw.model() << std::endl;
+
+    //model.optimize();
 
     return 0;
 

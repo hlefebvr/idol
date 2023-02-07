@@ -13,7 +13,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
     GIVEN("An initial model with some constraints and no variable") {
 
         auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
-        model.add<Ctr, 1>(c);
+        model.add_array<Ctr, 1>(c);
 
         WHEN("Adding a variable by column (linear only)") {
 
@@ -149,10 +149,10 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
     GIVEN("An initial model with some constraints and some variables") {
 
         auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
-        model.add<Ctr, 1>(c);
+        model.add_array<Ctr, 1>(c);
 
         auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
-        model.add<Var, 1>(x);
+        model.add_array<Var, 1>(x);
 
         WHEN("Adding a variable by column (linear and quadratic)") {
 

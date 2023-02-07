@@ -16,10 +16,8 @@
 #include "modeling/variables/VarVersion.h"
 #include "modeling/expressions/Expr.h"
 
-#include "modeling/attributes/AttributeManager_Delegate.h"
-#include "Attributes_Model.h"
-#include "../constraints/Attributes_Ctr.h"
-#include "../variables/Attributes_Var.h"
+#include "AbstractModel.h"
+
 
 #include "backends/Backend.h"
 #include "backends/parameters/Timer.h"
@@ -32,7 +30,7 @@ class Idol;
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class Model : public Matrix, public AttributeManagers::Delegate {
+class Model : public Matrix, public AbstractModel {
     Env& m_env;
     const unsigned int m_id;
 
@@ -63,6 +61,8 @@ protected:
     AttributeManager &parameter_delegate(const Parameter<double> &t_param) override;
     AttributeManager &parameter_delegate(const Parameter<int> &t_param) override;
     AttributeManager &parameter_delegate(const Parameter<bool> &t_param) override;
+    // Backend
+    void set_backend(Backend* t_backend) override;
 public:
     explicit Model(Env& t_env);
 
@@ -75,29 +75,26 @@ public:
     ~Model() override;
 
     // Variables
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column);
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column);
-    void add(const Var& t_var, double t_lb, double t_ub, int t_type);
-    void add(const Var& t_var);
-    [[nodiscard]] bool has(const Var& t_var) const;
-    void remove(const Var& t_var);
-    [[nodiscard]] auto vars() const { return ConstIteratorForward<std::vector<Var>>(m_variables); }
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type, Column&& t_column) override;
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type, const Column& t_column) override;
+    void add(const Var& t_var, double t_lb, double t_ub, int t_type) override;
+    void add(const Var& t_var) override;
+    [[nodiscard]] bool has(const Var& t_var) const override;
+    void remove(const Var& t_var) override;
+    [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_variables; }
 
     // Constraints
-    void add(const Ctr& t_ctr);
-    void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr);
-    void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr);
-    [[nodiscard]] bool has(const Ctr& t_ctr) const;
-    void remove(const Ctr& t_ctr);
-    [[nodiscard]] auto ctrs() const { return ConstIteratorForward<std::vector<Ctr>>(m_constraints); }
-
-    template<class T, unsigned int N> void add(const Vector<T, N>& t_vector);
-    template<class T, class ...ArgsT> void add_many(const T& t_object, const ArgsT& ...t_args);
+    void add(const Ctr& t_ctr) override;
+    void add(const Ctr& t_ctr, TempCtr&& t_temp_ctr) override;
+    void add(const Ctr& t_ctr, const TempCtr& t_temp_ctr) override;
+    [[nodiscard]] bool has(const Ctr& t_ctr) const override;
+    void remove(const Ctr& t_ctr) override;
+    [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_constraints; }
 
     // Model
-    [[nodiscard]] unsigned int id() const { return m_id; }
-    [[nodiscard]] Model clone() const;
-    [[nodiscard]] Env& env() const { return const_cast<Model*>(this)->m_env; }
+    [[nodiscard]] unsigned int id() const override { return m_id; }
+    [[nodiscard]] Model* clone() const override;
+    [[nodiscard]] Env& env() const override { return const_cast<Model*>(this)->m_env; }
 
     using AttributeManagers::Delegate::set;
     using AttributeManagers::Delegate::get;
@@ -133,149 +130,13 @@ public:
     void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 
     // Backend
-    void set_backend(Backend* t_backend);
     void reset_backend() { m_backend.reset(); }
     bool has_backend() { return (bool) m_backend; }
-    void optimize();
+    void optimize() override;
     void update();
     void write(const std::string& t_name);
-    [[nodiscard]] const Timer& time() const { return m_timer; }
-    [[nodiscard]] double remaining_time(Timer::Unit t_unit = Timer::Unit::Seconds) const;
+    [[nodiscard]] const Timer& time() const override { return m_timer; }
+    [[nodiscard]] double remaining_time() const override;
 };
-
-template<class T, unsigned int N>
-void Model::add(const Vector<T, N>& t_vector) {
-    if constexpr (N == 1) {
-        for (const auto& x : t_vector) {
-            add(x);
-        }
-    } else  {
-        for (const auto& x : t_vector) {
-            add<T, N - 1>(x);
-        }
-    }
-}
-
-template<class T, class... ArgsT>
-void Model::add_many(const T &t_object, const ArgsT &... t_args) {
-    add(t_object);
-    if constexpr (sizeof...(t_args) > 0) {
-        add_many(t_args...);
-    }
-}
-
-template<class ObjectT>
-auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
-
-    std::conditional_t<std::is_same_v<ObjectT, Var>, Solution::Primal, Solution::Dual> result;
-
-    const int sense = t_model.get(Attr::Obj::Sense);
-    const int status = t_model.get(Attr::Solution::Status);
-    const int reason = t_model.get(Attr::Solution::Reason);
-
-    result.set_status(status);
-    result.set_reason(reason);
-
-    if (status == Infeasible) {
-        result.set_objective_value(sense == Minimize ? Inf : -Inf);
-        return result;
-    }
-
-    if (status == Unbounded) {
-        result.set_objective_value(sense == Minimize ? -Inf : Inf);
-        return result;
-    }
-
-    result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
-
-    if constexpr (std::is_same_v<ObjectT, Var>) {
-        for (const auto &var: t_model.vars()) {
-            result.set(var, t_model.get(t_attr, var));
-        }
-    } else {
-        for (const auto &ctr: t_model.ctrs()) {
-            result.set(ctr, t_model.get(t_attr, ctr));
-        }
-    }
-
-    return result;
-}
-
-struct Idol {
-
-    template<class T, class ModelT, class ...ArgsT>
-    static T &using_backend(ModelT &t_model, ArgsT &&...t_args) {
-        auto *result = new T(t_model, std::forward<ArgsT>(t_args)...);
-        t_model.set_backend(result);
-        return *result;
-    }
-
-};
-
-static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
-
-    if (t_model.get(Attr::Obj::Sense) == Minimize) {
-        t_os << "Minimize";
-    } else {
-        t_os << "Maximize";
-    }
-
-    t_os << " " << t_model.get(Attr::Obj::Expr) << "\nSubject to:\n";
-    for (const auto& ctr : t_model.ctrs()) {
-
-        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
-        const auto& linear = row.linear();
-        const auto& quadratic = row.quadratic();
-        const auto type = t_model.get(Attr::Ctr::Type, ctr);
-
-        t_os << ctr << ": ";
-
-        if (linear.empty()) {
-            t_os << quadratic;
-        } else {
-            t_os << linear;
-            if (!quadratic.empty()) {
-                t_os << " + " << quadratic;
-            }
-        }
-
-        switch (type) {
-            case LessOrEqual: t_os << " <= "; break;
-            case Equal: t_os << " = "; break;
-            case GreaterOrEqual: t_os << " >= "; break;
-            default: t_os << " ?undefined? ";
-        }
-
-        t_os << row.rhs() << '\n';
-    }
-
-    t_os << "Variables:\n";
-    for (const auto& var : t_model.vars()) {
-
-        const double lb = t_model.get(Attr::Var::Lb, var);
-        const double ub = t_model.get(Attr::Var::Ub, var);
-        const int type = t_model.get(Attr::Var::Type, var);
-
-        if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
-            t_os << lb << " <= " << var << " <= " << ub;
-        } else if (!is_pos_inf(ub)) {
-            t_os << var << " <= " << ub;
-        } else if (!is_neg_inf(lb)) {
-            t_os << var << " >= " << lb;
-        } else {
-            t_os << var;
-        }
-
-        if (type == Binary) {
-            t_os << " [binary]";
-        } else if (type == Integer) {
-            t_os << " [integer]";
-        }
-
-        t_os << '\n';
-    }
-    return t_os;
-}
-
 
 #endif //IDOL_MODEL_H

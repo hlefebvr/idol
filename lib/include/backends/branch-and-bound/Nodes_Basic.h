@@ -27,7 +27,7 @@ protected:
 public:
     explicit Basic(unsigned int t_id) : Node(t_id) {}
 
-    void save_solution(const Model& t_strategy) override;
+    void save_solution(const AbstractModel& t_strategy) override;
 
     void set_solution(Solution::Primal&& t_solution);
 

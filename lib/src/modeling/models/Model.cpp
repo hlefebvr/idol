@@ -466,23 +466,23 @@ bool Model::has(const Ctr &t_ctr) const {
     return m_env.has_version(*this, t_ctr);
 }
 
-Model Model::clone() const {
-    Model result(m_env);
+Model* Model::clone() const {
+    auto* result = new Model(m_env);
 
     for (const auto& var : vars()) {
-        result.add(var);
-        result.set(Attr::Var::Lb, var, get(Attr::Var::Lb, var));
-        result.set(Attr::Var::Ub, var, get(Attr::Var::Ub, var));
-        result.set(Attr::Var::Type, var, get(Attr::Var::Type, var));
+        result->add(var);
+        result->set(Attr::Var::Lb, var, get(Attr::Var::Lb, var));
+        result->set(Attr::Var::Ub, var, get(Attr::Var::Ub, var));
+        result->set(Attr::Var::Type, var, get(Attr::Var::Type, var));
     }
 
     for (const auto& ctr : ctrs()) {
-        result.add(ctr);
-        result.set(Attr::Ctr::Type, ctr, get(Attr::Ctr::Type, ctr));
-        result.set(Attr::Ctr::Row, ctr, get(Attr::Ctr::Row, ctr));
+        result->add(ctr);
+        result->set(Attr::Ctr::Type, ctr, get(Attr::Ctr::Type, ctr));
+        result->set(Attr::Ctr::Row, ctr, get(Attr::Ctr::Row, ctr));
     }
 
-    result.set(Attr::Obj::Expr, get(Attr::Obj::Expr));
+    result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));
 
     return result;
 }
@@ -502,7 +502,7 @@ AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
     return *m_backend;
 }
 
-double Model::remaining_time(Timer::Unit t_unit) const {
+double Model::remaining_time() const {
     return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
 }
 

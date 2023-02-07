@@ -17,12 +17,13 @@
 template<class RelaxationBackendT>
 class BranchAndPriceMIP : public BranchAndBound {
 public:
-    explicit BranchAndPriceMIP(const Model& t_original_formulation,
+    explicit BranchAndPriceMIP(const AbstractModel& t_original_formulation,
                                const Annotation<Ctr, unsigned int>& t_annotation)
         : BranchAndBound(t_original_formulation) {
 
         auto& relaxation = set_relaxation<Relaxations::DantzigWolfe>(t_annotation);
         relaxation.build();
+
         Idol::using_backend<ColumnGeneration>(relaxation.model());
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();

@@ -36,7 +36,7 @@ class NodeUpdators::ByBoundVar::Strategy : public NodeUpdatorWithNodeType<NodeT>
 public:
     Strategy() = default;
 
-    void apply_local_changes(const NodeT &t_node, Model &t_solution_strategy);
+    void apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) override;
 };
 
 template<class NodeT>
@@ -78,7 +78,7 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
 }
 
 template<class NodeT>
-void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, Model &t_solution_strategy) {
+void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) {
 
     update_bounds(
             m_lower_bounds,

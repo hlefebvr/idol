@@ -9,7 +9,7 @@
 
 #include "../modeling/attributes/AttributeManagers_Base.h"
 
-class Model;
+class AbstractModel;
 class Var;
 class Ctr;
 class Constant;
@@ -19,7 +19,7 @@ namespace impl {
 }
 
 class impl::Backend : protected AttributeManagers::Base {
-    const ::Model& m_parent;
+    const ::AbstractModel& m_parent;
 protected:
     virtual void initialize() = 0;
 
@@ -37,15 +37,16 @@ protected:
 
     static double as_numeric(const Constant& t_constant);
 public:
-    explicit Backend(const ::Model& t_parent) : m_parent(t_parent) {}
+    explicit Backend(const ::AbstractModel& t_parent) : m_parent(t_parent) {}
 
-    [[nodiscard]] const ::Model& parent() const { return m_parent; }
+    [[nodiscard]] const ::AbstractModel& parent() const { return m_parent; }
 };
 
 class Backend : public impl::Backend {
+    friend class AbstractModel;
     friend class Model;
 public:
-    explicit Backend(const Model& t_parent) : impl::Backend(t_parent) {}
+    explicit Backend(const AbstractModel& t_parent) : impl::Backend(t_parent) {}
 };
 
 #endif //IDOL_BACKEND_H

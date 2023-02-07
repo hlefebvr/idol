@@ -13,7 +13,7 @@ Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
 
 }
 
-void Nodes::Basic::save_solution(const Model& t_strategy) {
+void Nodes::Basic::save_solution(const AbstractModel& t_strategy) {
     m_primal_solutions = save(t_strategy, Attr::Solution::Primal);
 }
 

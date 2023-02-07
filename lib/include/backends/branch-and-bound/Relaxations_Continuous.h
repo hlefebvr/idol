@@ -12,17 +12,17 @@ namespace Relaxations {
 }
 
 class Relaxations::Continuous : public Relaxation {
-    const Model& m_original_model;
-    std::optional<Model> m_relaxed_model;
+    const AbstractModel& m_original_model;
+    std::unique_ptr<AbstractModel> m_relaxed_model;
     std::list<Var> m_branching_candidates;
 public:
-    explicit Continuous(const Model& t_model) : m_original_model(t_model) {}
+    explicit Continuous(const AbstractModel& t_model) : m_original_model(t_model) {}
 
     void build() override {
 
         m_branching_candidates.clear();
 
-        m_relaxed_model.emplace(m_original_model.clone());
+        m_relaxed_model.reset(m_original_model.clone());
 
         for (const auto& var : m_relaxed_model->vars()) {
 
@@ -41,9 +41,9 @@ public:
 
     [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
 
-    Model &model() override { return *m_relaxed_model; }
+    AbstractModel &model() override { return *m_relaxed_model; }
 
-    [[nodiscard]] const Model &model() const override { return *m_relaxed_model; }
+    [[nodiscard]] const AbstractModel &model() const override { return *m_relaxed_model; }
 };
 
 #endif //IDOL_RELAXATIONS_CONTINUOUS_H

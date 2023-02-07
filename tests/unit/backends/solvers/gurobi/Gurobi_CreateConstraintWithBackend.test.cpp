@@ -112,7 +112,7 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
         auto& backend = Idol::using_backend<Gurobi>(model);
 
         auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
-        model.add<Var, 1>(x);
+        model.add_array<Var, 1>(x);
 
         WHEN("A <=-constraint (rhs=1) is added with a Row") {
 

@@ -61,7 +61,7 @@ public:
 
     void set_current_node_to_next_node_to_be_processed() override;
 
-    void save_current_node_solution(const Model &t_solution_strategy) override;
+    void save_current_node_solution(const AbstractModel &t_solution_strategy) override;
 
     void add_node_to_be_processed(Node *t_node) override;
 
@@ -96,7 +96,7 @@ public:
 
     void create_root_node() override;
 
-    void apply_current_node_to(Model &t_solution_strategy) override;
+    void apply_current_node_to(AbstractModel &t_solution_strategy) override;
 
     [[nodiscard]] unsigned int size() const override;
 };
@@ -151,7 +151,7 @@ void NodeStrategies::Basic<NodeT>::set_current_node_to_next_node_to_be_processed
 }
 
 template<class NodeT>
-void NodeStrategies::Basic<NodeT>::save_current_node_solution(const Model & t_solution_strategy){
+void NodeStrategies::Basic<NodeT>::save_current_node_solution(const AbstractModel & t_solution_strategy){
     m_current_node->save_solution(t_solution_strategy);
 }
 
@@ -251,7 +251,7 @@ void NodeStrategies::Basic<NodeT>::create_root_node() {
 }
 
 template<class NodeT>
-void NodeStrategies::Basic<NodeT>::apply_current_node_to(Model &t_solution_strategy) {
+void NodeStrategies::Basic<NodeT>::apply_current_node_to(AbstractModel &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
 }
 

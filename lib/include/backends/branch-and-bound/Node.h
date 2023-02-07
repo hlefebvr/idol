@@ -13,7 +13,7 @@ namespace Solution {
     class Dual;
 }
 
-class Model;
+class AbstractModel;
 class Var;
 class Algorithm;
 
@@ -32,7 +32,7 @@ public:
     [[nodiscard]] unsigned int id() const { return m_id; }
     [[nodiscard]] virtual unsigned int level() const = 0;
 
-    virtual void save_solution(const Model& t_strategy) = 0;
+    virtual void save_solution(const AbstractModel& t_strategy) = 0;
     [[nodiscard]] virtual Node* create_child(unsigned int t_id) const = 0;
     virtual void set_local_lower_bound(const Var& t_var, double t_lb) = 0;
     virtual void set_local_upper_bound(const Var& t_var, double t_ub) = 0;

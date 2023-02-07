@@ -53,7 +53,7 @@ protected:
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
 public:
-    explicit Algorithm(const Model& t_model);
+    explicit Algorithm(const AbstractModel& t_model);
 };
 
 #endif //IDOL_ALGORITHM_H

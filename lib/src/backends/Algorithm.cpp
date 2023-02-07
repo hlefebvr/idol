@@ -4,7 +4,7 @@
 #include "backends/Algorithm.h"
 #include "modeling/models/Attributes_Model.h"
 
-Algorithm::Algorithm(const Model &t_model) : Backend(t_model) {
+Algorithm::Algorithm(const AbstractModel &t_model) : Backend(t_model) {
 
 }
 

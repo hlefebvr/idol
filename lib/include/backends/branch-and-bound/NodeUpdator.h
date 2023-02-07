@@ -16,7 +16,7 @@ template<class NodeT>
 class NodeUpdatorWithNodeType {
 public:
     virtual ~NodeUpdatorWithNodeType() = default;
-    virtual void apply_local_changes(const NodeT &t_node, Model &t_solution_strategy) = 0;
+    virtual void apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) = 0;
 };
 
 #endif //OPTIMIZE_NODEUPDATOR_H

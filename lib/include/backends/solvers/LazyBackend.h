@@ -63,7 +63,7 @@ class LazyBackend : public Backend {
     void update_objective();
     void update_rhs();
 protected:
-    explicit LazyBackend(const Model& t_parent);
+    explicit LazyBackend(const AbstractModel& t_parent);
 
     void initialize() final;
     virtual void hook_initialize() = 0;
@@ -139,7 +139,7 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-LazyBackend<VarImplT, CtrImplT>::LazyBackend(const Model &t_parent) : Backend(t_parent) {
+LazyBackend<VarImplT, CtrImplT>::LazyBackend(const AbstractModel &t_parent) : Backend(t_parent) {
 
 }
 

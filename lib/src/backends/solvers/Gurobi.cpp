@@ -70,7 +70,7 @@ double Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
-Gurobi::Gurobi(const Model &t_model, GRBEnv &t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {
+Gurobi::Gurobi(const AbstractModel &t_model, GRBEnv &t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 

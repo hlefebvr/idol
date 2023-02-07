@@ -5,7 +5,7 @@
 #include "modeling/objects/Versions.h"
 #include "modeling/expressions/operations/operators.h"
 
-Relaxations::DantzigWolfe::DantzigWolfe(const Model &t_original_model,
+Relaxations::DantzigWolfe::DantzigWolfe(const AbstractModel &t_original_model,
                                         Annotation<Ctr, unsigned int> t_complicating_constraint_annotation)
         : m_original_model(t_original_model),
           m_complicating_constraint_annotation(std::move(t_complicating_constraint_annotation)) {
@@ -108,7 +108,7 @@ void Relaxations::DantzigWolfe::add_constraint_and_variables_to_master(const Ctr
 
     auto [lhs, coefficients] = decompose_master_expression(row.linear());
 
-    m_decomposition->add(Ctr(m_original_model.env(), TempCtr(Row(std::move(lhs), row.rhs()), type)));
+    m_decomposition->master().add(Ctr(m_original_model.env(), TempCtr(Row(std::move(lhs), row.rhs()), type)));
 
     for (unsigned int i = 0 ; i < n_blocks ; ++i) {
         m_decomposition->block(i).generation_pattern().linear().set(t_ctr, std::move(coefficients[i]));
@@ -123,7 +123,7 @@ void Relaxations::DantzigWolfe::add_objective_to_master() {
 
     auto [master_objective, coefficients] = decompose_master_expression(objective.linear());
 
-    m_decomposition->set(Attr::Obj::Expr, std::move(master_objective));
+    m_decomposition->master().set(Attr::Obj::Expr, std::move(master_objective));
 
     for (unsigned int i = 0 ; i < n_blocks ; ++i) {
         m_decomposition->block(i).generation_pattern().set_obj(std::move(coefficients[i]));
@@ -133,7 +133,7 @@ void Relaxations::DantzigWolfe::add_objective_to_master() {
 
 void Relaxations::DantzigWolfe::add_variable_to_master(const Var &t_var) {
     if (!m_decomposition->has(t_var)) {
-        m_decomposition->add(t_var);
+        m_decomposition->master().add(t_var);
     }
 }
 
@@ -178,7 +178,7 @@ void Relaxations::DantzigWolfe::add_convexity_constraints() {
 
     for (unsigned int i = 0 ; i < n_blocks ; ++i) {
         Ctr convexity(env, TempCtr(Row(0, 1), Equal), "_convexity_" + std::to_string(i));
-        m_decomposition->add(convexity);
+        m_decomposition->master().add(convexity);
         m_decomposition->block(i).set_aggregator(convexity);
     }
 

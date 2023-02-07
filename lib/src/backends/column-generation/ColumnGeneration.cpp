@@ -12,7 +12,7 @@ void ColumnGeneration::hook_optimize() {
 }
 
 void ColumnGeneration::initialize() {
-
+    
 }
 
 void ColumnGeneration::add(const Var &t_var) {

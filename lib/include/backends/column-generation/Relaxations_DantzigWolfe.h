@@ -13,7 +13,7 @@ namespace Relaxations {
 }
 
 class Relaxations::DantzigWolfe : public Relaxation {
-    const Model& m_original_model;
+    const AbstractModel& m_original_model;
     Annotation<Ctr, unsigned int> m_complicating_constraint_annotation;
     std::optional<BlockModel<Ctr>> m_decomposition;
 protected:
@@ -30,7 +30,7 @@ protected:
     std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_master_expression(const LinExpr<Var>& t_expr);
     void add_convexity_constraints();
 public:
-    DantzigWolfe(const Model& t_original_model, Annotation<Ctr, unsigned int> t_complicating_constraint_annotation);
+    DantzigWolfe(const AbstractModel& t_original_model, Annotation<Ctr, unsigned int> t_complicating_constraint_annotation);
 
     void build() override;
 

@@ -9,6 +9,7 @@
 #include "modeling/models/BlockModel.h"
 
 class ColumnGeneration : public Algorithm {
+
 protected:
     void initialize() override;
 

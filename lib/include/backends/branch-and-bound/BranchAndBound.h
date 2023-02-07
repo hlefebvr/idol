@@ -88,7 +88,7 @@ protected:
     void set(const Parameter<int>& t_param, int t_value) override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
-    explicit BranchAndBound(const Model& t_model);
+    explicit BranchAndBound(const AbstractModel& t_model);
 
     template<class T, class ...ArgsT> T& set_relaxation(ArgsT&& ...t_args);
 

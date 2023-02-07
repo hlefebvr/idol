@@ -33,7 +33,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     Ctr c(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
     Model model(env);
-    model.add<Var, 1>(x);
+    model.add_array<Var, 1>(x);
     model.add(c);
     model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
@@ -100,8 +100,8 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
 
     Model model(env);
 
-    model.add<Var, 1>(x);
-    model.add<Var, 2>(y);
+    model.add_array<Var, 1>(x);
+    model.add_array<Var, 2>(y);
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
