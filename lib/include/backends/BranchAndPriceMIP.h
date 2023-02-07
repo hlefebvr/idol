@@ -24,9 +24,12 @@ public:
         auto& relaxation = set_relaxation<Relaxations::DantzigWolfe>(t_annotation);
         relaxation.build();
 
-        Idol::set_optimizer<ColumnGeneration>(relaxation.model());
+        auto& column_generation = Idol::set_optimizer<ColumnGeneration>(relaxation.model());
 
-        Idol::set_optimizer<RelaxationBackendT>(relaxation.model().master());
+        column_generation.template set_master_backend<RelaxationBackendT>();
+        for (unsigned int i = 0, n = relaxation.model().n_blocks() ; i < n ; ++i) {
+            column_generation.template set_subproblem_backend<RelaxationBackendT>(i);
+        }
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
         nodes_manager.template set_active_node_manager<ActiveNodesManagers::Basic>();

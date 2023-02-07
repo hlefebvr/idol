@@ -10,6 +10,8 @@
 #include "../modeling/attributes/AttributeManagers_Base.h"
 
 class AbstractModel;
+class Model;
+template<class AxisT> class BlockModel;
 class Var;
 class Ctr;
 class Constant;
@@ -39,12 +41,14 @@ protected:
 public:
     explicit Backend(const ::AbstractModel& t_parent) : m_parent(t_parent) {}
 
-    [[nodiscard]] const ::AbstractModel& parent() const { return m_parent; }
+    [[nodiscard]] virtual const ::AbstractModel& parent() const { return m_parent; }
 };
 
 class Backend : public impl::Backend {
     friend class AbstractModel;
     friend class Model;
+    friend class BlockModel<Ctr>;
+    friend class BlockModel<Var>;
 public:
     explicit Backend(const AbstractModel& t_parent) : impl::Backend(t_parent) {}
 };

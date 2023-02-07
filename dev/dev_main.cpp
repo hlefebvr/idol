@@ -20,6 +20,9 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
+    Logs::set_level<ColumnGeneration>(Info);
+    Logs::set_color<ColumnGeneration>(Yellow);
+
     using namespace Problems::GAP;
 
     const auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
