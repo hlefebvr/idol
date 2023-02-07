@@ -9,7 +9,6 @@
 #include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
-#include "modeling/models/Decomposition.h"
 #include "backends/BranchAndBoundMIP.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "backends/column-generation/Relaxations_DantzigWolfe.h"

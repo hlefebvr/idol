@@ -6,7 +6,7 @@
 #define IDOL_COLUMNGENERATION_H
 
 #include "../Algorithm.h"
-#include "modeling/models/Decomposition.h"
+#include "modeling/models/BlockModel.h"
 
 class ColumnGeneration : public Algorithm {
 protected:
@@ -26,7 +26,7 @@ protected:
 
     void hook_optimize() override;
 public:
-    explicit ColumnGeneration(const BlockModel& t_model);
+    explicit ColumnGeneration(const BlockModel<Ctr>& t_model);
 };
 
 #endif //IDOL_COLUMNGENERATION_H

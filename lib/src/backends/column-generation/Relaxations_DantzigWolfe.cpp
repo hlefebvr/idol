@@ -14,21 +14,21 @@ Relaxations::DantzigWolfe::DantzigWolfe(const Model &t_original_model,
 
 void Relaxations::DantzigWolfe::build() {
 
-    const unsigned int n_subproblems = compute_number_of_subproblems();
-    m_decomposition.emplace(m_original_model.env(), n_subproblems, m_complicating_constraint_annotation);
+    const unsigned int n_blocks = compute_number_of_blocks();
+    m_decomposition.emplace(m_original_model.env(), n_blocks, m_complicating_constraint_annotation);
 
     decompose_original_formulation();
     add_convexity_constraints();
 
 }
 
-unsigned int Relaxations::DantzigWolfe::compute_number_of_subproblems() const {
+unsigned int Relaxations::DantzigWolfe::compute_number_of_blocks() const {
 
     unsigned int result = 0;
     for (const auto& ctr : m_original_model.ctrs()) {
-        const unsigned int subproblem_id = ctr.get(m_complicating_constraint_annotation);
-        if (subproblem_id == MasterId) { continue; }
-        if (subproblem_id > result) { result = subproblem_id; }
+        const unsigned int block_id = ctr.get(m_complicating_constraint_annotation);
+        if (block_id == MasterId) { continue; }
+        if (block_id > result) { result = block_id; }
     }
 
     return result+1;
@@ -37,7 +37,7 @@ unsigned int Relaxations::DantzigWolfe::compute_number_of_subproblems() const {
 void Relaxations::DantzigWolfe::decompose_original_formulation() {
 
     for (const auto& ctr : m_original_model.ctrs()) {
-        add_variables_to_subproblem(ctr);
+        add_variables_to_block(ctr);
     }
 
     m_decomposition->build_opposite_axis();
@@ -50,52 +50,52 @@ void Relaxations::DantzigWolfe::decompose_original_formulation() {
 
 }
 
-void Relaxations::DantzigWolfe::add_variables_to_subproblem(const Ctr &t_ctr) {
+void Relaxations::DantzigWolfe::add_variables_to_block(const Ctr &t_ctr) {
 
-    const unsigned int subproblem_id = t_ctr.get(m_complicating_constraint_annotation);
+    const unsigned int block_id = t_ctr.get(m_complicating_constraint_annotation);
     const auto& row = m_original_model.get(Attr::Ctr::Row, t_ctr);
 
-    if (subproblem_id != MasterId) {
-        add_variables_to_subproblem(row, subproblem_id);
+    if (block_id != MasterId) {
+        add_variables_to_block(row, block_id);
     }
 
 }
 
-void Relaxations::DantzigWolfe::add_variables_to_subproblem(const Row &t_row, unsigned int t_subproblem_id) {
+void Relaxations::DantzigWolfe::add_variables_to_block(const Row &t_row, unsigned int t_block_id) {
 
     for (const auto& [var, constant] : t_row.linear()) {
-        add_variable_to_subproblem(var, t_subproblem_id);
+        add_variable_to_block(var, t_block_id);
     }
 
     for (const auto& [var1, var2, constant] : t_row.quadratic()) {
-        add_variable_to_subproblem(var1, t_subproblem_id);
-        add_variable_to_subproblem(var2, t_subproblem_id);
+        add_variable_to_block(var1, t_block_id);
+        add_variable_to_block(var2, t_block_id);
     }
 
 }
 
-void Relaxations::DantzigWolfe::add_variable_to_subproblem(const Var &t_var, unsigned int t_subproblem_id) {
-    m_decomposition->subproblem(t_subproblem_id).add(t_var);
+void Relaxations::DantzigWolfe::add_variable_to_block(const Var &t_var, unsigned int t_block_id) {
+    m_decomposition->block(t_block_id).model().add(t_var);
 }
 
 void Relaxations::DantzigWolfe::dispatch_constraint(const Ctr &t_ctr) {
 
-    const unsigned int subproblem_id = t_ctr.get(m_complicating_constraint_annotation);
+    const unsigned int block_id = t_ctr.get(m_complicating_constraint_annotation);
 
-    if (subproblem_id == MasterId) {
+    if (block_id == MasterId) {
         add_constraint_and_variables_to_master(t_ctr);
     } else {
-        add_constraint_to_subproblem(t_ctr, subproblem_id);
+        add_constraint_to_block(t_ctr, block_id);
     }
 
 }
 
-void Relaxations::DantzigWolfe::add_constraint_to_subproblem(const Ctr &t_ctr, unsigned int t_subproblem_id) {
+void Relaxations::DantzigWolfe::add_constraint_to_block(const Ctr &t_ctr, unsigned int t_block_id) {
 
     const auto& row = m_original_model.get(Attr::Ctr::Row, t_ctr);
-    auto& subproblem = m_decomposition->subproblem(t_subproblem_id);
-    subproblem.add(t_ctr);
-    subproblem.set(Attr::Ctr::Row, t_ctr, row);
+    auto& block = m_decomposition->block(t_block_id);
+    block.model().add(t_ctr);
+    block.model().set(Attr::Ctr::Row, t_ctr, row);
 
 }
 
@@ -104,14 +104,14 @@ void Relaxations::DantzigWolfe::add_constraint_and_variables_to_master(const Ctr
     const auto& row = m_original_model.get(Attr::Ctr::Row, t_ctr);
     const auto type = m_original_model.get(Attr::Ctr::Type, t_ctr);
 
-    const unsigned int n_subproblems = m_decomposition->n_subproblems();
+    const unsigned int n_blocks = m_decomposition->n_blocks();
 
     auto [lhs, coefficients] = decompose_master_expression(row.linear());
 
-    m_decomposition->master_problem().add(Ctr(m_original_model.env(), TempCtr(Row(std::move(lhs), row.rhs()), type)));
+    m_decomposition->add(Ctr(m_original_model.env(), TempCtr(Row(std::move(lhs), row.rhs()), type)));
 
-    for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        m_decomposition->generation_pattern(i).linear().set(t_ctr, std::move(coefficients[i]));
+    for (unsigned int i = 0 ; i < n_blocks ; ++i) {
+        m_decomposition->block(i).generation_pattern().linear().set(t_ctr, std::move(coefficients[i]));
     }
 
 }
@@ -119,39 +119,38 @@ void Relaxations::DantzigWolfe::add_constraint_and_variables_to_master(const Ctr
 void Relaxations::DantzigWolfe::add_objective_to_master() {
 
     const auto& objective = m_original_model.get(Attr::Obj::Expr);
-    const unsigned int n_subproblems = m_decomposition->n_subproblems();
+    const unsigned int n_blocks = m_decomposition->n_blocks();
 
     auto [master_objective, coefficients] = decompose_master_expression(objective.linear());
 
-    m_decomposition->master_problem().set(Attr::Obj::Expr, std::move(master_objective));
+    m_decomposition->set(Attr::Obj::Expr, std::move(master_objective));
 
-    for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        m_decomposition->generation_pattern(i).set_obj(std::move(coefficients[i]));
+    for (unsigned int i = 0 ; i < n_blocks ; ++i) {
+        m_decomposition->block(i).generation_pattern().set_obj(std::move(coefficients[i]));
     }
 
 }
 
 void Relaxations::DantzigWolfe::add_variable_to_master(const Var &t_var) {
-    auto& master = m_decomposition->master_problem();
-    if (!master.has(t_var)) {
-        master.add(t_var);
+    if (!m_decomposition->has(t_var)) {
+        m_decomposition->add(t_var);
     }
 }
 
 std::pair<Expr<Var, Var>, std::vector<Constant>> Relaxations::DantzigWolfe::decompose_master_expression(const LinExpr<Var> &t_expr) {
 
-    const unsigned int n_subproblems = m_decomposition->n_subproblems();
+    const unsigned int n_blocks = m_decomposition->n_blocks();
 
     Expr<Var, Var> master_expr;
-    std::vector<Constant> coefficients(n_subproblems);
+    std::vector<Constant> coefficients(n_blocks);
 
-    const auto& var_annotation = m_decomposition->opposite_axis_annotation();
+    const auto& var_annotation = m_decomposition->opposite_axis();
 
     for (const auto& [var, constant] : t_expr) {
 
-        const unsigned int subproblem_id = var.get(var_annotation);
+        const unsigned int block_id = var.get(var_annotation);
 
-        if (subproblem_id == MasterId) {
+        if (block_id == MasterId) {
 
             add_variable_to_master(var);
             master_expr += constant * var;
@@ -162,7 +161,7 @@ std::pair<Expr<Var, Var>, std::vector<Constant>> Relaxations::DantzigWolfe::deco
                 throw Exception("Non-numerical constant found.");
             }
 
-            coefficients[subproblem_id] += constant.numerical() * !var;
+            coefficients[block_id] += constant.numerical() * !var;
 
         }
 
@@ -175,13 +174,12 @@ std::pair<Expr<Var, Var>, std::vector<Constant>> Relaxations::DantzigWolfe::deco
 void Relaxations::DantzigWolfe::add_convexity_constraints() {
 
     auto& env = m_original_model.env();
-    auto& master = m_decomposition->master_problem();
-    const unsigned int n_subproblems = m_decomposition->n_subproblems();
+    const unsigned int n_blocks = m_decomposition->n_blocks();
 
-    for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
+    for (unsigned int i = 0 ; i < n_blocks ; ++i) {
         Ctr convexity(env, TempCtr(Row(0, 1), Equal), "_convexity_" + std::to_string(i));
-        master.add(convexity);
-        m_decomposition->set_epigraph(i, convexity);
+        m_decomposition->add(convexity);
+        m_decomposition->block(i).set_aggregator(convexity);
     }
 
 }

@@ -6,7 +6,7 @@
 #define IDOL_RELAXATIONS_DANTZIGWOLFE_H
 
 #include "backends/Relaxation.h"
-#include "modeling/models/Decomposition.h"
+#include "modeling/models/BlockModel.h"
 
 namespace Relaxations {
     class DantzigWolfe;
@@ -15,15 +15,15 @@ namespace Relaxations {
 class Relaxations::DantzigWolfe : public Relaxation {
     const Model& m_original_model;
     Annotation<Ctr, unsigned int> m_complicating_constraint_annotation;
-    std::optional<Decomposition<Ctr>> m_decomposition;
+    std::optional<BlockModel<Ctr>> m_decomposition;
 protected:
-    [[nodiscard]] unsigned int compute_number_of_subproblems() const;
+    [[nodiscard]] unsigned int compute_number_of_blocks() const;
     void decompose_original_formulation();
-    void add_variables_to_subproblem(const Ctr& t_ctr);
-    void add_variables_to_subproblem(const Row& t_row, unsigned int t_subproblem_id);
-    void add_variable_to_subproblem(const Var& t_var, unsigned int t_subproblem_id);
+    void add_variables_to_block(const Ctr& t_ctr);
+    void add_variables_to_block(const Row& t_row, unsigned int t_block_id);
+    void add_variable_to_block(const Var& t_var, unsigned int t_block_id);
     void dispatch_constraint(const Ctr& t_ctr);
-    void add_constraint_to_subproblem(const Ctr& t_ctr, unsigned int t_subproblem_id);
+    void add_constraint_to_block(const Ctr& t_ctr, unsigned int t_block_id);
     void add_constraint_and_variables_to_master(const Ctr& t_ctr);
     void add_variable_to_master(const Var& t_var);
     void add_objective_to_master();
@@ -34,13 +34,9 @@ public:
 
     void build() override;
 
-    Decomposition<Ctr>& decomposition() { return m_decomposition.value(); }
+    BlockModel<Ctr> &model() override { return m_decomposition.value(); }
 
-    [[nodiscard]] const Decomposition<Ctr>& decomposition() const { return m_decomposition.value(); }
-
-    BlockModel &model() override { return m_decomposition->master_problem(); }
-
-    [[nodiscard]] const BlockModel &model() const override { return m_decomposition->master_problem(); }
+    [[nodiscard]] const BlockModel<Ctr> &model() const override { return m_decomposition.value(); }
 };
 
 #endif //IDOL_RELAXATIONS_DANTZIGWOLFE_H

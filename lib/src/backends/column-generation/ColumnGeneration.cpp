@@ -3,7 +3,7 @@
 //
 #include "backends/column-generation/ColumnGeneration.h"
 
-ColumnGeneration::ColumnGeneration(const BlockModel &t_model) : Algorithm(t_model) {
+ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model) : Algorithm(t_model) {
 
 }
 
