@@ -38,9 +38,9 @@ public:
 
     [[nodiscard]] const Decomposition<Ctr>& decomposition() const { return m_decomposition.value(); }
 
-    Model &model() override { return m_decomposition->master_problem(); }
+    BlockModel &model() override { return m_decomposition->master_problem(); }
 
-    [[nodiscard]] const Model &model() const override { return m_decomposition->master_problem(); }
+    [[nodiscard]] const BlockModel &model() const override { return m_decomposition->master_problem(); }
 };
 
 #endif //IDOL_RELAXATIONS_DANTZIGWOLFE_H

@@ -16,7 +16,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, LessOrEqual, 10, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -47,7 +47,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, GreaterOrEqual, -5, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -79,7 +79,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, Equal, 0, "c");
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -120,7 +120,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, 0 * x[0] + 1 * x[1] + 2 * x[2] <= 1);
             model.add(c);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added constraint") {

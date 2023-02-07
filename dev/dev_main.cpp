@@ -13,6 +13,8 @@
 #include "backends/BranchAndBoundMIP.h"
 #include "problems/GAP/GAP_Instance.h"
 #include "backends/column-generation/Relaxations_DantzigWolfe.h"
+#include "backends/column-generation/ColumnGeneration.h"
+#include "backends/BranchAndPriceMIP.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -27,7 +29,7 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    Annotation<Ctr, unsigned int> subproblem(env, "subproblem");
+    auto decomposition = Annotation<Ctr, unsigned int>::make_with_default_value(env, "by_machines", MasterId);
 
     Model model(env);
 
@@ -36,28 +38,20 @@ int main(int t_argc, char** t_argv) {
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i));
-        capacity.set(subproblem, i);
+        capacity.set(decomposition, i);
         model.add(capacity);
     }
 
     for (unsigned int j = 0 ; j < n_jobs ; ++j) {
         Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1);
-        assignment.set(subproblem, MasterId);
         model.add(assignment);
     }
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Relaxations::DantzigWolfe dantzig_wolfe(model, subproblem);
-    dantzig_wolfe.build();
+    Idol::using_backend<BranchAndPriceMIP<Gurobi>>(model, decomposition);
 
-    std::cout << dantzig_wolfe.decomposition().master_problem() << std::endl;
-    for (unsigned int i = 0 ; i < n_agents ; ++i) {
-        std::cout << "Pricing " << i << std::endl;
-        std::cout << dantzig_wolfe.decomposition().subproblem(i) << std::endl;
-        std::cout << "Column " << i << std::endl;
-        std::cout << dantzig_wolfe.decomposition().generation_pattern(i) << std::endl;
-    }
+    model.optimize();
 
     return 0;
 

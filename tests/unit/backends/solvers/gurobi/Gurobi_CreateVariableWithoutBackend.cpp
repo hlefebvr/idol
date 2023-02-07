@@ -17,7 +17,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -15, 30, Continuous, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -52,7 +52,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -Inf, Inf, Integer, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -87,7 +87,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 1, 1, Binary, "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added variable") {
@@ -137,7 +137,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 0, Inf, Continuous, std::move(column), "x");
             model.add(x);
 
-            auto& backend = model.set_backend<Gurobi>();
+            auto& backend = Idol::using_backend<Gurobi>(model);
             model.update();
 
             THEN("The backend's model should have the added variable") {

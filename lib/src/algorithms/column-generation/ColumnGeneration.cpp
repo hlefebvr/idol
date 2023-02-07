@@ -4,6 +4,8 @@
 #include <omp.h>
 #include "../../../include/algorithms/column-generation/ColumnGeneration.h"
 #include "../../../include/backends/parameters/Logs.h"
+#include "backends/column-generation/ColumnGeneration.h"
+
 
 ColumnGeneration::ColumnGeneration(Algorithm& t_rmp_solution_strategy) : GenerationAlgorithm(t_rmp_solution_strategy) {
 

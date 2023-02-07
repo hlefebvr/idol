@@ -20,7 +20,7 @@ public:
 
         auto& relaxation = set_relaxation<Relaxations::Continuous>();
         relaxation.build();
-        relaxation.model().template set_backend<RelaxationBackendT>();
+        Idol::using_backend<RelaxationBackendT>(relaxation.model());
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();
         nodes_manager.template set_active_node_manager<ActiveNodesManagers::Basic>();

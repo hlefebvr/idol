@@ -27,6 +27,7 @@
 class Env;
 class Column;
 class TempCtr;
+class Idol;
 
 /**
  * This class is used to represent a mathematical optimization model.
@@ -132,7 +133,7 @@ public:
     void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 
     // Backend
-    template<class T, class ...ArgsT> T& set_backend(ArgsT&& ...t_args);
+    void set_backend(Backend* t_backend);
     void reset_backend() { m_backend.reset(); }
     bool has_backend() { return (bool) m_backend; }
     void optimize();
@@ -161,18 +162,6 @@ void Model::add_many(const T &t_object, const ArgsT &... t_args) {
     if constexpr (sizeof...(t_args) > 0) {
         add_many(t_args...);
     }
-}
-
-template<class T, class... ArgsT>
-T &Model::set_backend(ArgsT &&... t_args) {
-    static_assert(std::is_base_of_v<Backend, T>);
-    if (m_backend) {
-        throw Exception("Backend already exists.");
-    }
-    auto* result = new T(*this, std::forward<ArgsT>(t_args)...);
-    m_backend.reset(result);
-    m_backend->initialize();
-    return *result;
 }
 
 template<class ObjectT>
@@ -211,6 +200,17 @@ auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
 
     return result;
 }
+
+struct Idol {
+
+    template<class T, class ModelT, class ...ArgsT>
+    static T &using_backend(ModelT &t_model, ArgsT &&...t_args) {
+        auto *result = new T(t_model, std::forward<ArgsT>(t_args)...);
+        t_model.set_backend(result);
+        return *result;
+    }
+
+};
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
 

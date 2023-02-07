@@ -10,7 +10,7 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
 
         Env env;
         Model model(env);
-        auto& backend = model.set_backend<Gurobi>();
+        auto& backend = Idol::using_backend<Gurobi>(model);
 
         WHEN("A <=-constraint (rhs=10) is added to the model") {
 
@@ -109,7 +109,7 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
 
         Env env;
         Model model(env);
-        const auto& backend = model.set_backend<Gurobi>();
+        auto& backend = Idol::using_backend<Gurobi>(model);
 
         auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
         model.add<Var, 1>(x);

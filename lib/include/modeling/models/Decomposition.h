@@ -6,6 +6,7 @@
 #define IDOL_DECOMPOSITION_H
 
 #include "modeling/models/Model.h"
+#include "BlockModel.h"
 
 static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
 
@@ -20,7 +21,7 @@ class Decomposition {
     std::vector<std::optional<AxisT>> m_epigraphs;
     std::vector<Model> m_subproblems;
     std::vector<GenerationPatternT> m_pattern;
-    Model m_master_problem;
+    BlockModel m_master_problem;
 public:
     Decomposition(Env& t_env, unsigned int t_n_subproblems);
 

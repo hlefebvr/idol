@@ -505,3 +505,8 @@ AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
 double Model::remaining_time(Timer::Unit t_unit) const {
     return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
 }
+
+void Model::set_backend(Backend *t_backend) {
+    m_backend.reset(t_backend);
+    m_backend->initialize();
+}

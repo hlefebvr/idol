@@ -24,7 +24,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Model model(env);
             model.add_many(x, y, z, c1, c2);
             model.set(Attr::Obj::Expr, objective);
-            model.set_backend<TestType>();
+            Idol::using_backend<TestType>(model);
 
             model.optimize();
 
@@ -61,7 +61,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Model model(env);
             model.add_many(x, y, z, c1, c2);
             model.set(Attr::Obj::Expr, objective);
-            model.set_backend<TestType>();
+            Idol::using_backend<TestType>(model);
 
             model.optimize();
 
@@ -99,7 +99,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, c1, c2);
-            model.set_backend<TestType>();
+            Idol::using_backend<TestType>(model);
             model.optimize();
 
             THEN("The solution status should be Infeasible") {
@@ -124,7 +124,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, c1, c2);
-            model.set_backend<TestType>();
+            Idol::using_backend<TestType>(model);
             model.optimize();
 
             THEN("The solution status should be Infeasible") {
@@ -149,7 +149,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
         Model model(env);
         model.add(x);
         model.set(Attr::Obj::Expr, -x);
-        model.set_backend<TestType>();
+        Idol::using_backend<TestType>(model);
         model.optimize();
 
         THEN("The solution status should be Unbounded") {

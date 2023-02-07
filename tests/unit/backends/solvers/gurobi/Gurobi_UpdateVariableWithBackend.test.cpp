@@ -11,7 +11,7 @@ SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
 
         Env env;
         Model model(env);
-        auto &backend = model.set_backend<Gurobi>();
+        auto& backend = Idol::using_backend<Gurobi>(model);
 
         WHEN("A continuous variable (lb=0,ub=1) is added") {
 

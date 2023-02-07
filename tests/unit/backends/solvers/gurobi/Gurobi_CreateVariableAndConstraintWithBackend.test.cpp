@@ -11,7 +11,7 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
 
         Env env;
         Model model(env);
-        auto &backend = model.set_backend<Gurobi>();
+        auto& backend = Idol::using_backend<Gurobi>(model);
 
         Var y(env, 0., 1., Continuous, "y");
         model.add(y);
