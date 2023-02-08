@@ -7,8 +7,8 @@
 #include "problems/GAP/GAP_Instance.h"
 #include "reformulations/Reformulations_DantzigWolfe.h"
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
-#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
-#include "algorithms/dantzig-wolfe/BranchingManagers_OnPricing.h"
+#include "backends/column-generation/BranchingManagers_OnMaster.h"
+#include "backends/column-generation/BranchingManagers_OnPricing.h"
 #include "algorithms/callbacks/Callbacks_PlotOptimalityGap.h"
 
 #include "algorithms/callbacks/Callbacks_FeasibilityPump.h"

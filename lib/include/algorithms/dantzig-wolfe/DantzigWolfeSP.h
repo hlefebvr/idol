@@ -8,7 +8,7 @@
 #include <memory>
 #include "../Algorithm.h"
 #include "Pool.h"
-#include "BranchingManager.h"
+#include "backends/column-generation/BranchingManager.h"
 
 class DantzigWolfe;
 

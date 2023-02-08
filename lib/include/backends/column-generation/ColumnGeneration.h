@@ -70,6 +70,7 @@ public:
 
     // Variables
     [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     // Parameters
     void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;

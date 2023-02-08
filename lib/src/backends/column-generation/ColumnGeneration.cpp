@@ -109,6 +109,10 @@ void ColumnGeneration::hook_before_optimize() {
         add_artificial_variables();
     }
 
+    for (auto& subproblem : m_subproblems) {
+        subproblem.hook_before_solve();
+    }
+
     Algorithm::hook_before_optimize();
 }
 
@@ -492,14 +496,43 @@ bool ColumnGeneration::stopping_condition() const {
 
 double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
-    if (t_attr == Attr::Solution::Primal) {
-        const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
-        if (subproblem_id == MasterId) {
-            return m_master->get(Attr::Solution::Primal, t_var);
-        } else {
-            return m_subproblems[subproblem_id].compute_original_space_primal(t_var);
-        }
+    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+
+    if (subproblem_id == MasterId) {
+        return m_master->get(t_attr, t_var);
     }
 
-    return Base::get(t_attr, t_var);
+    if (t_attr == Attr::Solution::Primal) {
+        return m_subproblems[subproblem_id].compute_original_space_primal(t_var);
+    }
+
+    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
+        return parent().block(subproblem_id).model().get(t_attr, t_var);
+    }
+
+    return m_subproblems[subproblem_id].model().get(t_attr, t_var);
+
+}
+
+void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+
+    if (subproblem_id == MasterId) {
+        m_master->set(t_attr, t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Lb) {
+        m_subproblems[subproblem_id].apply_lb(t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Ub) {
+        m_subproblems[subproblem_id].apply_ub(t_var, t_value);
+        return;
+    }
+
+    Algorithm::set(t_attr, t_var, t_value);
+
 }

@@ -4,7 +4,7 @@
 #include <cassert>
 #include "algorithms/dantzig-wolfe/DantzigWolfeSP.h"
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
-#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
+#include "backends/column-generation/BranchingManagers_OnMaster.h"
 
 TempVar extract_column_template(Reformulations::DantzigWolfe& t_reformulation, unsigned int t_index) {
 

@@ -7,16 +7,18 @@
 
 #include "BranchingManager.h"
 
-class DantzigWolfeSP;
+namespace impl {
+    class ColumnGenerationSP;
+}
 
 namespace BranchingManagers {
     class OnPricing;
 }
 
 class BranchingManagers::OnPricing : public BranchingManager {
-    DantzigWolfeSP& m_parent;
+    impl::ColumnGenerationSP& m_parent;
 public:
-    explicit OnPricing(DantzigWolfeSP& t_parent) : m_parent(t_parent) {}
+    explicit OnPricing(impl::ColumnGenerationSP& t_parent) : m_parent(t_parent) {}
 
     [[nodiscard]] double get_lb(const Var &t_var) const override;
 

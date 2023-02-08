@@ -1,7 +1,7 @@
 //
 // Created by henri on 14/12/22.
 //
-#include "algorithms/dantzig-wolfe/BranchingManagers_OnMaster.h"
+#include "backends/column-generation/BranchingManagers_OnMaster.h"
 #include "algorithms/dantzig-wolfe/DantzigWolfe.h"
 
 double BranchingManagers::OnMaster::get_bound(const Map<Var, Ctr>& t_container,
