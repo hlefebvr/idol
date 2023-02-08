@@ -22,16 +22,16 @@ Model::~Model() {
     m_env.free_model_id(*this);
 }
 
-void Model::add(const Var &t_var) {
-    const auto& default_version = m_env[t_var];
+
+void Model::add(const Var &t_var, TempVar &&t_temp_var) {
     m_env.create_version(*this,
                          t_var,
                          m_variables.size(),
-                         default_version.lb(),
-                         default_version.ub(),
-                         default_version.type(),
-                         Column(default_version.column())
-                         );
+                         t_temp_var.lb(),
+                         t_temp_var.ub(),
+                         t_temp_var.type(),
+                         std::move(t_temp_var.column())
+    );
     m_variables.emplace_back(t_var);
 
     if (has_backend()) {
@@ -39,6 +39,16 @@ void Model::add(const Var &t_var) {
     }
 
     add_column_to_rows(t_var);
+}
+
+void Model::add(const Var &t_var) {
+    const auto& default_version = m_env[t_var];
+    add(t_var, TempVar(
+             default_version.lb(),
+             default_version.ub(),
+             default_version.type(),
+             Column(default_version.column())
+    ));
 }
 
 void Model::remove(const Var &t_var) {
@@ -69,9 +79,8 @@ void Model::remove(const Ctr &t_ctr) {
     m_env.remove_version(*this, t_ctr);
 }
 
-void Model::add(const Ctr &t_ctr) {
-    const auto& default_version = m_env[t_ctr];
-    m_env.create_version(*this, t_ctr, m_constraints.size(), TempCtr(Row(default_version.row()), default_version.type()));
+void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
+    m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
     m_constraints.emplace_back(t_ctr);
 
     if (has_backend()) {
@@ -79,6 +88,14 @@ void Model::add(const Ctr &t_ctr) {
     }
 
     add_row_to_columns(t_ctr);
+}
+
+void Model::add(const Ctr &t_ctr) {
+    const auto& default_version = m_env[t_ctr];
+    add(t_ctr, TempCtr(
+            Row(default_version.row()),
+            default_version.type())
+        );
 }
 
 Expr<Var> &Model::access_obj() {
@@ -437,16 +454,19 @@ Model* Model::clone() const {
     auto* result = new Model(m_env);
 
     for (const auto& var : vars()) {
-        result->add(var);
-        result->set(Attr::Var::Lb, var, get(Attr::Var::Lb, var));
-        result->set(Attr::Var::Ub, var, get(Attr::Var::Ub, var));
-        result->set(Attr::Var::Type, var, get(Attr::Var::Type, var));
+        result->add(var, TempVar(
+                    get(Attr::Var::Lb, var),
+                    get(Attr::Var::Ub, var),
+                    get(Attr::Var::Type, var),
+                    Column()
+                ));
     }
 
     for (const auto& ctr : ctrs()) {
-        result->add(ctr);
-        result->set(Attr::Ctr::Type, ctr, get(Attr::Ctr::Type, ctr));
-        result->set(Attr::Ctr::Row, ctr, get(Attr::Ctr::Row, ctr));
+        result->add(ctr, TempCtr(
+                Row(get(Attr::Ctr::Row, ctr)),
+                get(Attr::Ctr::Type, ctr)
+            ));
     }
 
     result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));

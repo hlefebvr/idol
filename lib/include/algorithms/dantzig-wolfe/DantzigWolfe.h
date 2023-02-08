@@ -8,7 +8,7 @@
 #include "../../reformulations/Reformulations_DantzigWolfe.h"
 #include "../Algorithm.h"
 #include "DantzigWolfeSP.h"
-#include "backends/column-generation/Parameters_DantzigWolfe.h"
+#include "backends/column-generation/Parameters_ColumnGeneration.h"
 #include "Attributes_DantzigWolfe.h"
 
 class DantzigWolfe : public Algorithm {

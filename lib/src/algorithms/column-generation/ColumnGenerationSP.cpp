@@ -5,6 +5,8 @@
 #include "../../../include/modeling/models/Model.h"
 #include "../../../include/modeling/expressions/operations/operators.h"
 #include "../../../include/algorithms/Algorithm.h"
+#include "backends/column-generation/ColumnGenerationSP.h"
+
 
 ColumnGenerationSP::ColumnGenerationSP(Algorithm& t_rmp_strategy, const Var& t_var)
         : m_rmp_strategy(t_rmp_strategy),

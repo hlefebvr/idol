@@ -17,10 +17,10 @@
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_level<BranchAndBound>(Trace);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Info);
+    Logs::set_level<ColumnGeneration>(Trace);
     Logs::set_color<ColumnGeneration>(Yellow);
 
     using namespace Problems::GAP;
@@ -39,13 +39,13 @@ int main(int t_argc, char** t_argv) {
     model.add_array<Var, 2>(x);
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
-        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i));
+        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
         capacity.set(decomposition, i);
         model.add(capacity);
     }
 
     for (unsigned int j = 0 ; j < n_jobs ; ++j) {
-        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1);
+        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
         model.add(assignment);
     }
 

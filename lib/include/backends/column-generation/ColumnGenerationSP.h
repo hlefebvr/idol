@@ -6,43 +6,46 @@
 #define IDOL_COLUMNGENERATIONSP_H
 
 #include "modeling/models/AbstractModel.h"
+#include "containers/GeneratorPool.h"
+
+class ColumnGeneration;
 
 namespace impl {
     class ColumnGenerationSP;
 }
 
 class impl::ColumnGenerationSP {
+    using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
+    using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
+
+    ColumnGeneration& m_parent;
+    const unsigned int m_index;
     std::unique_ptr<AbstractModel> m_model;
+
+    GeneratorPool<Var> m_pool;
+    PresentGeneratorsList m_present_generators;
 protected:
-    explicit ColumnGenerationSP(AbstractModel* t_ptr) : m_model(t_ptr) {}
+    explicit ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index);
 
     [[nodiscard]] const AbstractModel& model() const { return *m_model; }
 
-    void update(bool t_farkas_pricing, const Solution::Dual& t_duals) {
-        throw Exception("TODO SP::update");
-    }
+    void update_objective(bool t_farkas_pricing, const Solution::Dual& t_duals);
 
-    void solve() {
-        throw Exception("TODO SP::solve");
-    }
+    void solve();
 
-    [[nodiscard]] double compute_reduced_cost(const Solution::Dual& t_duals) const {
-        throw Exception("TODO SP::comptue_reduced_cost");
-    }
+    [[nodiscard]] double compute_reduced_cost(const Solution::Dual& t_duals) const;
 
-    void enrich_master_problem() {
-        throw Exception("TODO SP::enrich_master_problem");
-    }
+    [[nodiscard]] Var create_column_from_generator(const Solution::Primal& t_primals) const;
 
-    void clean_up() {
-        throw Exception("TODO SP::clean_up");
-    }
+    void enrich_master_problem();
+
+    void clean_up();
 };
 
 class ColumnGenerationSP : public impl::ColumnGenerationSP {
     friend class ColumnGeneration;
 public:
-    explicit ColumnGenerationSP(AbstractModel* t_ptr) : impl::ColumnGenerationSP(t_ptr) {}
+    explicit ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index) : impl::ColumnGenerationSP(t_parent, t_index) {}
 };
 
 #endif //IDOL_COLUMNGENERATIONSP_H

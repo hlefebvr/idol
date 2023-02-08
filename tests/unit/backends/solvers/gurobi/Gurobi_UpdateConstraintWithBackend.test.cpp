@@ -18,11 +18,11 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
             Ctr c(env, LessOrEqual, 1, "c");
             model.add(c);
 
-            WHEN("The constraint is removed before Model::update() is called") {
+            WHEN("The constraint is removed before Model::update_objective() is called") {
 
                 model.remove(c);
 
-                WHEN("Model::update() is called") {
+                WHEN("Model::update_objective() is called") {
 
                     model.update();
 
@@ -34,11 +34,11 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
 
             }
 
-            AND_WHEN("The rhs is updated to 0 before Model::update() is called") {
+            AND_WHEN("The rhs is updated to 0 before Model::update_objective() is called") {
 
                 model.set(Attr::Ctr::Rhs, c, 0);
 
-                WHEN("Model::update() is called") {
+                WHEN("Model::update_objective() is called") {
 
                     model.update();
 

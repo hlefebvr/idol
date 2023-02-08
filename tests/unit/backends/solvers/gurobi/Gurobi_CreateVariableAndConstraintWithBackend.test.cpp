@@ -29,7 +29,7 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
             Ctr c2(env, 2 * y + x <= 10, "c2");
             model.add(c2);
 
-            WHEN("Model::update() is called") {
+            WHEN("Model::update_objective() is called") {
 
                 model.update();
 
@@ -74,7 +74,7 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
             Var x(env, 0., 1., Continuous, std::move(column), "x");
             model.add(x);
 
-            WHEN("Model::update() is called") {
+            WHEN("Model::update_objective() is called") {
 
                 model.update();
 

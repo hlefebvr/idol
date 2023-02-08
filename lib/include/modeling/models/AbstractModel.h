@@ -15,6 +15,7 @@
 #include "backends/parameters/Parameters_Algorithm.h"
 
 class Backend;
+class TempVar;
 
 class AbstractModel : public AttributeManagers::Delegate {
     friend class Idol;
@@ -32,12 +33,14 @@ protected:
 public:
     // Variables
     virtual void add(const Var& t_var) = 0;
+    virtual void add(const Var& t_var, TempVar&& t_temp_var) = 0;
     [[nodiscard]] virtual bool has(const Var& t_var) const = 0;
     virtual void remove(const Var& t_var) = 0;
     [[nodiscard]] virtual ConstIteratorForward<std::vector<Var>> vars() const = 0;
 
     // Constraints
     virtual void add(const Ctr& t_ctr) = 0;
+    virtual void add(const Ctr& t_ctr, TempCtr&& t_row) = 0;
     [[nodiscard]] virtual bool has(const Ctr& t_ctr) const = 0;
     virtual void remove(const Ctr& t_ctr) = 0;
     [[nodiscard]] virtual ConstIteratorForward<std::vector<Ctr>> ctrs() const = 0;

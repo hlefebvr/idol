@@ -49,12 +49,14 @@ public:
 
     // Variables
     void add(const Var &t_var) override { m_master.add(t_var); }
+    void add(const Var &t_var, TempVar&& t_temp_var) override { m_master.add(t_var, std::move(t_temp_var)); }
     [[nodiscard]] bool has(const Var &t_var) const override { return model(t_var).has(t_var); }
     void remove(const Var &t_var) override { model(t_var).remove(t_var); }
     [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_master.vars(); }
 
     // Constraints
     void add(const Ctr &t_ctr) override { m_master.add(t_ctr); }
+    void add(const Ctr &t_ctr, TempCtr &&t_row) override { m_master.add(t_ctr, std::move(t_row)); }
     [[nodiscard]] bool has(const Ctr &t_ctr) const override { return model(t_ctr).has(t_ctr); }
     void remove(const Ctr &t_ctr) override { model(t_ctr).remove(t_ctr); }
     [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_master.ctrs(); }

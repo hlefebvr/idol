@@ -43,7 +43,7 @@ public:
 
     /**
      * Sets the value of an attribute of type double with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -51,7 +51,7 @@ public:
 
     /**
      * Sets the value of an attribute of type int with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -59,7 +59,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Column with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -67,7 +67,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Column with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -75,7 +75,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Constant with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -83,7 +83,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Constant with a Var argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_var the variable argument
      * @param t_value the new value
      */
@@ -93,7 +93,7 @@ public:
 
     /**
      * Sets the value of an attribute of type int with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -102,7 +102,7 @@ public:
 
     /**
      * Sets the value of an attribute of type double with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -110,7 +110,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Row with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -118,7 +118,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Row with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -126,7 +126,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Constant with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -134,7 +134,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Constant with a Ctr argument
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_value the new value
      */
@@ -144,56 +144,56 @@ public:
 
     /**
      * Sets the value of an attribute of type int
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<int, void>& t_attr, int t_value) = 0;
 
     /**
      * Sets the value of an attribute of type LinExpr<Ctr>
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) = 0;
 
     /**
      * Sets the value of an attribute of type LinExpr<Ctr>
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<LinExpr<Ctr>, void>& t_attr, const LinExpr<Ctr>& t_value);
 
     /**
      * Sets the value of an attribute of type Expr<Var, Var>
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) = 0;
 
     /**
      * Sets the value of an attribute of type Expr<Var, Var>
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<Expr<Var, Var>, void>& t_attr, const Expr<Var, Var>& t_value);
 
     /**
      * Sets the value of an attribute of type Constant
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<Constant, void>& t_attr, Constant&& t_value) = 0;
 
     /**
      * Sets the value of an attribute of type Constant
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_value the new value
      */
     virtual void set(const Req<Constant, void>& t_attr, const Constant& t_value);
 
     /**
      * Sets the value of an attribute of type Constant with arguments of type Ctr and Var
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_var the variable argument
      * @param t_value the new value
@@ -202,7 +202,7 @@ public:
 
     /**
      * Sets the value of an attribute of type Constant with arguments of type Ctr and Var
-     * @param t_attr the attribute to update
+     * @param t_attr the attribute to update_objective
      * @param t_ctr the constraint argument
      * @param t_var the variable argument
      * @param t_value the new value

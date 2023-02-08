@@ -2,14 +2,14 @@
 // Created by henri on 13/12/22.
 //
 
-#ifndef IDOL_POOL_H
-#define IDOL_POOL_H
+#ifndef IDOL_GENERATORPOOL_H
+#define IDOL_GENERATORPOOL_H
 
-#include "../../modeling/solutions/Solution.h"
+#include "../modeling/solutions/Solution.h"
 #include <list>
 
 template<class KeyT, class ValueT = Solution::Primal>
-class Pool {
+class GeneratorPool {
     std::list<std::pair<KeyT, ValueT>> m_values;
 public:
     void add(KeyT t_key, ValueT t_value) {
@@ -33,4 +33,4 @@ public:
     [[nodiscard]] ConstValues values() const { return ConstValues(m_values); }
 };
 
-#endif //IDOL_POOL_H
+#endif //IDOL_GENERATORPOOL_H

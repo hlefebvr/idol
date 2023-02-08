@@ -8,9 +8,10 @@ ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model) : Algorithm(t
 
     m_master.reset(t_model.master().clone());
 
-    m_subproblems.reserve(t_model.n_blocks());
-    for (const auto& block : t_model.blocks()) {
-        m_subproblems.emplace_back(block.model().clone());
+    const unsigned int n_blocks = t_model.n_blocks();
+    m_subproblems.reserve(n_blocks);
+    for (unsigned int i = 0 ; i < n_blocks ; ++i) {
+        m_subproblems.emplace_back(*this, i);
     }
 
 }
@@ -221,8 +222,8 @@ void ColumnGeneration::log_master_solution(bool t_force) const {
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
              << "<TimI=" << m_master->time().count() << "> "
-             << "<Stat=" << m_master->get(Attr::Solution::Status) << "> "
-             << "<Reas=" << m_master->get(Attr::Solution::Status) << "> "
+             << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
+             << "<Reas=" << (Reason) m_master->get(Attr::Solution::Reason) << "> "
              << "<Obj=" << m_master->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
@@ -247,8 +248,8 @@ void ColumnGeneration::log_subproblem_solution(const ColumnGenerationSP& t_subpr
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
              << "<TimI=" << pricing.time().count() << "> "
-             << "<Stat=" << pricing.get(Attr::Solution::Status) << "> "
-             << "<Reas=" << pricing.get(Attr::Solution::Reason) << "> "
+             << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
+             << "<Reas=" << (Reason) pricing.get(Attr::Solution::Reason) << "> "
              << "<Obj=" << pricing.get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
@@ -355,7 +356,7 @@ void ColumnGeneration::update_subproblems() {
     }
 
     for (auto& subproblem : m_subproblems) {
-        subproblem.update(m_current_is_farkas_pricing, m_adjusted_dual_solution.value());
+        subproblem.update_objective(m_current_is_farkas_pricing, m_adjusted_dual_solution.value());
     }
 
 }

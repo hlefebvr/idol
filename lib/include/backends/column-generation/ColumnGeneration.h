@@ -7,7 +7,7 @@
 
 #include "../Algorithm.h"
 #include "modeling/models/BlockModel.h"
-#include "Parameters_DantzigWolfe.h"
+#include "Parameters_ColumnGeneration.h"
 #include "ColumnGenerationSP.h"
 
 class ColumnGeneration : public Algorithm {
@@ -58,6 +58,8 @@ public:
     explicit ColumnGeneration(const BlockModel<Ctr>& t_model);
 
     [[nodiscard]] const BlockModel<Ctr>& parent() const override;
+
+    AbstractModel& master() { return *m_master; } // TODO make this private
 
     template<class T, class ...ArgsT> T& set_master_backend(ArgsT&& ...t_args) { return Idol::set_optimizer<T>(*m_master, std::forward<ArgsT>(t_args)...); }
 

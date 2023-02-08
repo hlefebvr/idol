@@ -21,7 +21,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         auto& backend = Idol::set_optimizer<Gurobi>(model);
         model.update();
 
-        WHEN("Model::update() is called") {
+        WHEN("Model::update_objective() is called") {
 
             THEN("The objective coefficient for x should be 0") {
                 CHECK(backend[x].get(GRB_DoubleAttr_Obj) == 0._a);
@@ -33,7 +33,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
 
         }
 
-        WHEN("The objective coefficient for x is changed to 1 and Model::update() is called") {
+        WHEN("The objective coefficient for x is changed to 1 and Model::update_objective() is called") {
 
             model.set(Attr::Var::Obj, x, 1);
             model.update();
@@ -50,7 +50,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         }
 
 
-        WHEN("The objective is set to 1 * x and Model::update() is called") {
+        WHEN("The objective is set to 1 * x and Model::update_objective() is called") {
 
             model.set(Attr::Obj::Expr, x);
             model.update();
@@ -64,7 +64,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
                 CHECK(backend[y].get(GRB_DoubleAttr_Obj) == 0._a);
             }
 
-            AND_WHEN("The objective is set to 1 * y and Model::update() is called") {
+            AND_WHEN("The objective is set to 1 * y and Model::update_objective() is called") {
 
                 model.set(Attr::Obj::Expr, y);
                 model.update();

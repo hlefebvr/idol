@@ -66,12 +66,14 @@ public:
 
     // Variables
     void add(const Var& t_var) override;
+    void add(const Var& t_var, TempVar&& t_temp_var) override;
     [[nodiscard]] bool has(const Var& t_var) const override;
     void remove(const Var& t_var) override;
     [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_variables; }
 
     // Constraints
     void add(const Ctr& t_ctr) override;
+    void add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) override;
     [[nodiscard]] bool has(const Ctr& t_ctr) const override;
     void remove(const Ctr& t_ctr) override;
     [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_constraints; }

@@ -2,8 +2,8 @@
 // Created by henri on 14/12/22.
 //
 
-#ifndef IDOL_PARAMETERS_DANTZIGWOLFE_H
-#define IDOL_PARAMETERS_DANTZIGWOLFE_H
+#ifndef IDOL_PARAMETERS_COLUMNGENERATION_H
+#define IDOL_PARAMETERS_COLUMNGENERATION_H
 
 #include "../parameters/Parameters.h"
 
@@ -21,4 +21,4 @@ IDOL_CREATE_PARAMETER(ColumnGeneration, double, 0, CleanUpRatio, 2./3.)
 IDOL_CREATE_PARAMETER(ColumnGeneration, double, 1, ArtificialVarCost, 1e+9)
 IDOL_CREATE_PARAMETER(ColumnGeneration, double, 2, SmoothingFactor, 0.)
 
-#endif //IDOL_PARAMETERS_DANTZIGWOLFE_H
+#endif //IDOL_PARAMETERS_COLUMNGENERATION_H
