@@ -13,8 +13,9 @@ IDOL_CREATE_PARAMETER_TYPE(ColumnGeneration, int, 2)
 IDOL_CREATE_PARAMETER(ColumnGeneration, int, 0, CleanUpThreshold, 10000)
 IDOL_CREATE_PARAMETER(ColumnGeneration, int, 1, LogFrequency, 10)
 
-IDOL_CREATE_PARAMETER_TYPE(ColumnGeneration, bool, 1)
+IDOL_CREATE_PARAMETER_TYPE(ColumnGeneration, bool, 2)
 IDOL_CREATE_PARAMETER(ColumnGeneration, bool, 0, FarkasPricing, false)
+IDOL_CREATE_PARAMETER(ColumnGeneration, bool, 1, BranchingOnMaster, false)
 
 IDOL_CREATE_PARAMETER_TYPE(ColumnGeneration, double, 3)
 IDOL_CREATE_PARAMETER(ColumnGeneration, double, 0, CleanUpRatio, 2./3.)

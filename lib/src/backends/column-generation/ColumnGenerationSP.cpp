@@ -4,8 +4,6 @@
 #include "backends/column-generation/ColumnGenerationSP.h"
 #include "backends/column-generation/ColumnGeneration.h"
 #include "modeling/expressions/operations/operators.h"
-#include "backends/column-generation/BranchingManagers_OnMaster.h"
-#include "backends/column-generation/BranchingManagers_OnPricing.h" // TODO remove and use OnMaster by default
 
 impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index)
     : m_parent(t_parent),
@@ -15,13 +13,7 @@ impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigne
 }
 
 void impl::ColumnGenerationSP::hook_before_solve() {
-
-    if (!m_branching_manager) {
-        m_branching_manager = std::make_unique<BranchingManagers::OnPricing>(*this);
-    } else {
-        restore_column_from_pool();
-    }
-
+    restore_column_from_pool();
 }
 
 void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
@@ -170,7 +162,12 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
         return t_generator.get(t_var) < t_value;
     });
 
-    m_branching_manager->set_lb(t_var, t_value);
+    if (!m_parent.get(::Param::ColumnGeneration::BranchingOnMaster)) {
+        m_model->set(::Attr::Var::Lb, t_var, t_value);
+        return;
+    }
+
+    throw Exception("Branching on master is not implemented.");
 
 }
 
@@ -180,7 +177,12 @@ void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
         return t_generator.get(t_var) > t_value;
     });
 
-    m_branching_manager->set_ub(t_var, t_value);
+    if (!m_parent.get(::Param::ColumnGeneration::BranchingOnMaster)) {
+        m_model->set(::Attr::Var::Ub, t_var, t_value);
+        return;
+    }
+
+    throw Exception("Branching on master is not implemented.");
 }
 
 void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
@@ -215,8 +217,8 @@ void impl::ColumnGenerationSP::restore_column_from_pool() {
         bool is_feasible = true;
         for (const auto& var : m_parent.parent().block(m_index).model().vars()) {
 
-            const double lb = m_branching_manager->get_lb(var);
-            const double ub = m_branching_manager->get_ub(var);
+            const double lb = m_parent.parent().block(m_index).model().get(::Attr::Var::Lb, var);
+            const double ub = m_parent.parent().block(m_index).model().get(::Attr::Var::Ub, var);
             const double value = primal_solution.get(var);
 
             if (!(lb <= value && value <= ub)) {
