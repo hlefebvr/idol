@@ -55,6 +55,8 @@ int main(int t_argc, char** t_argv) {
 
     model.optimize();
 
+    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
     return 0;
 
 }

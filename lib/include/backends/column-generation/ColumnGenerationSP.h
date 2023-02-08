@@ -35,6 +35,8 @@ protected:
 
     [[nodiscard]] double compute_reduced_cost(const Solution::Dual& t_duals) const;
 
+    [[nodiscard]] double compute_original_space_primal(const Var& t_var) const;
+
     [[nodiscard]] Var create_column_from_generator(const Solution::Primal& t_primals) const;
 
     void enrich_master_problem();

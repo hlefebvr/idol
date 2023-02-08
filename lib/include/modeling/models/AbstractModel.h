@@ -89,11 +89,11 @@ void AbstractModel::add_array(const Vector<T, N> &t_vector) {
 }
 
 template<class ObjectT>
-auto save(const AbstractModel& t_model, const Req<double, ObjectT>& t_attr) {
+auto save(const AbstractModel& t_original_model, const Req<double, ObjectT>& t_attr, const AbstractModel& t_model) {
 
     std::conditional_t<std::is_same_v<ObjectT, Var>, Solution::Primal, Solution::Dual> result;
 
-    const int sense = t_model.get(Attr::Obj::Sense);
+    const int sense = t_original_model.get(Attr::Obj::Sense);
     const int status = t_model.get(Attr::Solution::Status);
     const int reason = t_model.get(Attr::Solution::Reason);
 
@@ -113,16 +113,21 @@ auto save(const AbstractModel& t_model, const Req<double, ObjectT>& t_attr) {
     result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
 
     if constexpr (std::is_same_v<ObjectT, Var>) {
-        for (const auto &var: t_model.vars()) {
+        for (const auto &var: t_original_model.vars()) {
             result.set(var, t_model.get(t_attr, var));
         }
     } else {
-        for (const auto &ctr: t_model.ctrs()) {
+        for (const auto &ctr: t_original_model.ctrs()) {
             result.set(ctr, t_model.get(t_attr, ctr));
         }
     }
 
     return result;
+}
+
+template<class ObjectT>
+auto save(const AbstractModel& t_model, const Req<double, ObjectT>& t_attr) {
+    return save(t_model, t_attr, t_model);
 }
 
 struct Idol {

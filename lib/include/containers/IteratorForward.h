@@ -5,11 +5,13 @@
 #ifndef OPTIMIZE_ITERATORFORWARD_H
 #define OPTIMIZE_ITERATORFORWARD_H
 
+#include <memory>
+
 template<class T, class IteratorT = typename T::iterator, class ConstIteratorT = typename T::const_iterator>
 class IteratorForward {
     T& m_container;
 public:
-    IteratorForward(T& t_container) : m_container(t_container) {}
+    IteratorForward(T& t_container) : m_container(t_container) {} // NOLINT(google-explicit-constructor)
 
     IteratorForward(const IteratorForward& t_src) = default;
     IteratorForward(IteratorForward&&) noexcept = default;
@@ -31,7 +33,7 @@ template<class T, class ConstIteratorT = typename T::const_iterator>
 class ConstIteratorForward {
     const T& m_container;
 public:
-    ConstIteratorForward(const T& t_container) : m_container(t_container) {}
+    ConstIteratorForward(const T& t_container) : m_container(t_container) {} // NOLINT(google-explicit-constructor)
 
     ConstIteratorForward(const ConstIteratorForward&) = default;
     ConstIteratorForward(ConstIteratorForward&&) noexcept = default;

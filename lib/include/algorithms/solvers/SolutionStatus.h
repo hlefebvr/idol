@@ -20,7 +20,7 @@ enum SolutionStatus {
     Fail
 };
 
-enum Reason {
+enum SolutionReason {
     NotSpecified,
     Proved,
     TimeLimit,
@@ -78,7 +78,7 @@ static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
     return t_os;
 }
 
-static std::ostream &operator<<(std::ostream& t_os, Reason t_status) {
+static std::ostream &operator<<(std::ostream& t_os, SolutionReason t_status) {
     switch (t_status) {
         case Proved: return t_os << "Proved";
         case NotSpecified: return t_os << "NotSpecified";

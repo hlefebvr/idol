@@ -29,7 +29,7 @@ class Solvers::Gurobi : public Solver<GRBVar, std::variant<GRBConstr, GRBQConstr
     std::unique_ptr<CallbackProxy> m_callback;
 
     void analyze_status(int t_status);
-    Solution::Primal primal_solution(SolutionStatus t_status, Reason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
+    Solution::Primal primal_solution(SolutionStatus t_status, SolutionReason t_reason, const std::function<double()>& t_get_obj_val, const std::function<double(const GRBVar&)>& t_get_primal_value) const;
     Solution::Dual dual_solution(SolutionStatus t_status, const std::function<double()>& t_get_obj_val, const std::function<double(const std::variant<GRBConstr, GRBQConstr>&)>& t_get_dual_value) const;
     static char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);

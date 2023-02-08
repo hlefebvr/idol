@@ -61,7 +61,7 @@ public:
 
     void set_current_node_to_next_node_to_be_processed() override;
 
-    void save_current_node_solution(const AbstractModel &t_solution_strategy) override;
+    void save_current_node_solution(const AbstractModel& t_original_model, const AbstractModel &t_relaxed_model) override;
 
     void add_node_to_be_processed(Node *t_node) override;
 
@@ -151,8 +151,8 @@ void NodeStrategies::Basic<NodeT>::set_current_node_to_next_node_to_be_processed
 }
 
 template<class NodeT>
-void NodeStrategies::Basic<NodeT>::save_current_node_solution(const AbstractModel & t_solution_strategy){
-    m_current_node->save_solution(t_solution_strategy);
+void NodeStrategies::Basic<NodeT>::save_current_node_solution(const AbstractModel& t_original_model, const AbstractModel & t_relaxed_model){
+    m_current_node->save_solution(t_original_model, t_relaxed_model);
 }
 
 template<class NodeT>

@@ -114,7 +114,6 @@ public:
     //void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     //void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     //void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
-
 };
 
 template class BlockModel<Ctr>;

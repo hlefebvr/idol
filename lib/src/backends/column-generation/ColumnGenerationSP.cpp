@@ -140,3 +140,14 @@ void impl::ColumnGenerationSP::clean_up() {
 
 
 }
+
+double impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var) const {
+    double result = 0;
+    for (const auto& [alpha, generator] : m_present_generators) {
+        const double alpha_val = m_parent.master().get(::Attr::Solution::Primal, alpha);
+        if (alpha_val > 0) {
+            result += alpha_val * generator.get(t_var);
+        }
+    }
+    return result;
+}

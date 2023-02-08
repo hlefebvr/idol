@@ -13,8 +13,8 @@ Nodes::Basic::Basic(unsigned int t_id, const Basic &t_src)
 
 }
 
-void Nodes::Basic::save_solution(const AbstractModel& t_strategy) {
-    m_primal_solutions = save(t_strategy, Attr::Solution::Primal);
+void Nodes::Basic::save_solution(const AbstractModel& t_original_model, const AbstractModel& t_relaxed_model) {
+    m_primal_solutions = save(t_original_model, Attr::Solution::Primal, t_relaxed_model);
 }
 
 Nodes::Basic *Nodes::Basic::create_child(unsigned int t_id) const {

@@ -17,7 +17,7 @@ public:
     [[nodiscard]] virtual const Node& current_node() const = 0;
     [[nodiscard]] virtual bool has_node_to_be_processed() const = 0;
     virtual void set_current_node_to_next_node_to_be_processed() = 0;
-    virtual void save_current_node_solution(const AbstractModel& t_solution_strategy) = 0;
+    virtual void save_current_node_solution(const AbstractModel& t_original_model, const AbstractModel& t_relaxed_model) = 0;
     virtual void add_node_to_be_processed(Node* t_node) = 0;
     virtual void set_current_node_as_incumbent() = 0;
     virtual void add_current_node_to_solution_pool() = 0;

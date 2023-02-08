@@ -3,6 +3,7 @@
 //
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/parameters/Logs.h"
+#include "modeling/objects/Versions.h"
 
 ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model) : Algorithm(t_model) {
 
@@ -219,11 +220,11 @@ void ColumnGeneration::log_master_solution(bool t_force) const {
     idol_Log(Info,
              ColumnGeneration,
              "<Type=Master> "
-             << "<Iter=" << m_iteration_count << "> "
-             << "<TimT=" << parent().time().count() << "> "
-             << "<TimI=" << m_master->time().count() << "> "
-             << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
-             << "<Reas=" << (Reason) m_master->get(Attr::Solution::Reason) << "> "
+                     << "<Iter=" << m_iteration_count << "> "
+                     << "<TimT=" << parent().time().count() << "> "
+                     << "<TimI=" << m_master->time().count() << "> "
+                     << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
+                     << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
              << "<Obj=" << m_master->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
@@ -245,11 +246,11 @@ void ColumnGeneration::log_subproblem_solution(const ColumnGenerationSP& t_subpr
     idol_Log(Debug,
              ColumnGeneration,
              "<Type=Pricing> "
-             << "<Iter=" << m_iteration_count << "> "
-             << "<TimT=" << parent().time().count() << "> "
-             << "<TimI=" << pricing.time().count() << "> "
-             << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
-             << "<Reas=" << (Reason) pricing.get(Attr::Solution::Reason) << "> "
+                     << "<Iter=" << m_iteration_count << "> "
+                     << "<TimT=" << parent().time().count() << "> "
+                     << "<TimI=" << pricing.time().count() << "> "
+                     << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
+                     << "<Reas=" << (SolutionReason) pricing.get(Attr::Solution::Reason) << "> "
              << "<Obj=" << pricing.get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
@@ -408,7 +409,7 @@ void ColumnGeneration::analyze_subproblems_solution() {
 
         const double best_bound_stop = get(Param::Algorithm::BestBoundStop);
         if (best_obj() > best_bound_stop) {
-            set_reason(Reason::UserObjLimit);
+            set_reason(SolutionReason::UserObjLimit);
             terminate();
             idol_Log(Trace,
                      ColumnGeneration,
@@ -487,4 +488,18 @@ bool ColumnGeneration::stopping_condition() const {
     return get(Attr::Solution::AbsGap) <= ToleranceForAbsoluteGapPricing
            || get(Attr::Solution::RelGap) <= ToleranceForRelativeGapPricing
            || parent().remaining_time() == 0;
+}
+
+double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+
+    if (t_attr == Attr::Solution::Primal) {
+        const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+        if (subproblem_id == MasterId) {
+            return m_master->get(Attr::Solution::Primal, t_var);
+        } else {
+            return m_subproblems[subproblem_id].compute_original_space_primal(t_var);
+        }
+    }
+
+    return Base::get(t_attr, t_var);
 }

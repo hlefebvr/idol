@@ -147,7 +147,7 @@ void BranchAndBound::solve_current_node() {
     lower_bounding_model.set(Param::Algorithm::TimeLimit, parent().remaining_time());
 
     lower_bounding_model.optimize();
-    m_nodes_manager->save_current_node_solution(lower_bounding_model);
+    m_nodes_manager->save_current_node_solution(parent(), lower_bounding_model);
 }
 
 void BranchAndBound::analyze_current_node() {
@@ -400,12 +400,12 @@ void BranchAndBound::log_node(LogLevel t_msg_level, const Node &t_node) const {
     idol_Log(t_msg_level,
              BranchAndBound,
              "<Node=" << (id == -1 ? "H" : std::to_string(id)) << sign << "> "
-              << "<Iter=" << m_iteration << "> "
-              << "<Time=" << parent().time().count() << "> "
-              << "<Levl=" << t_node.level() << "> "
-              << "<Unex=" << m_nodes_manager->active_nodes().size() << "> "
-              << "<Stat=" << (SolutionStatus) t_node.status() << "> "
-              << "<Reas=" << (Reason) t_node.reason() << "> "
+                      << "<Iter=" << m_iteration << "> "
+                      << "<Time=" << parent().time().count() << "> "
+                      << "<Levl=" << t_node.level() << "> "
+                      << "<Unex=" << m_nodes_manager->active_nodes().size() << "> "
+                      << "<Stat=" << (SolutionStatus) t_node.status() << "> "
+                      << "<Reas=" << (SolutionReason) t_node.reason() << "> "
               << "<ObjV=" << t_node.objective_value() << "> "
               << "<Lb=" << best_bound() << "> "
               << "<Ub=" << best_obj() << "> "
