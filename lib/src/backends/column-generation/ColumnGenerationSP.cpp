@@ -8,7 +8,8 @@
 impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index)
     : m_parent(t_parent),
       m_index(t_index),
-      m_model(t_parent.parent().block(t_index).model().clone()) {
+      m_model(t_parent.parent().block(t_index).model().clone()),
+      m_generation_pattern(t_parent.parent().block(t_index).generation_pattern()) {
 
 }
 
@@ -20,9 +21,7 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
 
     ::Expr<Var, Var> objective;
 
-    const auto& column = m_parent.parent().block(m_index).generation_pattern();
-
-    for (const auto &[ctr, constant] : column.linear()) {
+    for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         objective += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
             objective += -t_duals.get(ctr) * coeff * param.as<Var>();
@@ -30,7 +29,7 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
     }
 
     if (!t_farkas_pricing) {
-        for (const auto &[param, coeff] : column.obj()) {
+        for (const auto &[param, coeff] : m_generation_pattern.obj()) {
             objective += coeff * param.as<Var>();
         }
     }
@@ -51,17 +50,16 @@ double impl::ColumnGenerationSP::compute_reduced_cost(const Solution::Dual &t_du
 
     double result = 0.;
 
-    const auto& column = m_parent.parent().block(m_index).generation_pattern();
     const auto& primals = save(*m_model, ::Attr::Solution::Primal);
 
-    for (const auto &[ctr, constant] : column.linear()) {
+    for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff]: constant) {
             result += -t_duals.get(ctr) * coeff * primals.get(param.as<Var>());
         }
     }
 
-    for (const auto &[param, coeff] : column.obj()) {
+    for (const auto &[param, coeff] : m_generation_pattern.obj()) {
         result += coeff * primals.get(param.as<Var>());
     }
 
@@ -87,7 +85,7 @@ TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::P
         0.,
         Inf,
         Continuous,
-        m_parent.parent().block(m_index).generation_pattern().fix(t_primals)
+        m_generation_pattern.fix(t_primals)
     };
 
 }
@@ -167,7 +165,7 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
         return;
     }
 
-    throw Exception("Branching on master is not implemented.");
+    apply_bound_on_master(t_var, ::Attr::Var::Lb, t_value);
 
 }
 
@@ -182,7 +180,60 @@ void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
         return;
     }
 
-    throw Exception("Branching on master is not implemented.");
+    apply_bound_on_master(t_var, ::Attr::Var::Ub, t_value);
+}
+
+LinExpr<Var> impl::ColumnGenerationSP::expand(const Var &t_var) const {
+
+    LinExpr<Var> result;
+
+    for (const auto& [alpha, generator] : m_present_generators) {
+        result += generator.get(t_var) * alpha;
+    }
+
+    return result;
+}
+
+void impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req<double, Var> &t_attr, double t_value) {
+
+    auto& master = m_parent.master();
+
+    auto& applied_bounds = t_attr == ::Attr::Var::Lb ? m_lower_bound_constraints : m_upper_bound_constraints;
+    const auto it = applied_bounds.find(t_var);
+
+    if (it == applied_bounds.end()) { // Create a new constraint
+
+        auto expanded = expand(t_var);
+        const int type = t_attr == ::Attr::Var::Lb ? GreaterOrEqual : LessOrEqual;
+
+        Ctr bound_constraint(master.env(), Equal, 0);
+
+        master.add(bound_constraint, TempCtr(::Row(expanded, t_value), type));
+        m_generation_pattern.linear().set(bound_constraint, !t_var);
+
+        applied_bounds.emplace(t_var, bound_constraint);
+
+        return;
+    }
+
+    const auto& current_rhs = master.get(::Attr::Ctr::Rhs, it->second);
+
+    if (!current_rhs.is_numerical()) {
+        throw Exception("Unexpected RHS with non-numerical terms.");
+    }
+
+    if (equals(t_value, current_rhs.numerical(), ToleranceForIntegrality)) { // Remove existing constraint for it is not useful anymore
+
+        m_generation_pattern.linear().remove(it->second);
+        master.remove(it->second);
+        applied_bounds.erase(it);
+
+        return;
+    }
+
+    master.set(::Attr::Ctr::Rhs, it->second, t_value);
+
+
 }
 
 void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {

@@ -22,7 +22,12 @@ class impl::ColumnGenerationSP {
     ColumnGeneration& m_parent;
     const unsigned int m_index;
     std::unique_ptr<AbstractModel> m_model;
-    std::unique_ptr<BranchingManager> m_branching_manager;
+    ::Column m_generation_pattern;
+
+    // Branching on master
+    Map<Var, Ctr> m_lower_bound_constraints;
+    Map<Var, Ctr> m_upper_bound_constraints;
+    void apply_bound_on_master(const Var& t_var, const Req<double, Var>& t_bound, double t_value);
 
     GeneratorPool<Var> m_pool;
     PresentGeneratorsList m_present_generators;
@@ -32,6 +37,8 @@ protected:
     [[nodiscard]] const AbstractModel& model() const { return *m_model; }
 
     void update_objective(bool t_farkas_pricing, const Solution::Dual& t_duals);
+
+    [[nodiscard]] LinExpr<Var> expand(const Var& t_var) const;
 
     void hook_before_solve();
 
