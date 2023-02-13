@@ -431,7 +431,7 @@ void BranchAndBound::set(const Parameter<int> &t_param, int t_value) {
         return;
     }
 
-    return Algorithm::set(t_param, t_value);
+    m_relaxations.get().model().set(t_param, t_value);
 }
 
 double BranchAndBound::get(const Req<double, Var> &t_attr, const Var &t_var) const {
@@ -445,4 +445,12 @@ double BranchAndBound::get(const Req<double, Var> &t_attr, const Var &t_var) con
     }
 
     return Base::get(t_attr, t_var);
+}
+
+void BranchAndBound::set(const Parameter<bool> &t_param, bool t_value) {
+    m_relaxations.get().model().set(t_param, t_value);
+}
+
+void BranchAndBound::set(const Parameter<double> &t_param, double t_value) {
+    m_relaxations.get().model().set(t_param, t_value);
 }

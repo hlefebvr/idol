@@ -53,6 +53,10 @@ int main(int t_argc, char** t_argv) {
 
     Idol::set_optimizer<BranchAndPriceMIP<Gurobi>>(model, decomposition);
 
+    model.set(Param::ColumnGeneration::FarkasPricing, true);
+    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
+    model.set(Param::ColumnGeneration::SmoothingFactor, .0);
+
     model.optimize();
 
     std::cout << save(model, Attr::Solution::Primal) << std::endl;

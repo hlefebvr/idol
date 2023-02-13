@@ -81,7 +81,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
             std::make_pair<std::string, double>("instance_F10_C20__4.txt", 202.11)
     );
 
-    auto node_selection = GENERATE(
+    const auto node_selection = GENERATE(
             NodeSelections::Automatic,
             NodeSelections::DepthFirst,
             NodeSelections::BreadthFirst,

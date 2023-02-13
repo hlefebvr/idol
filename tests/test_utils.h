@@ -11,6 +11,8 @@
 #include "backends/BranchAndBoundMIP.h"
 #include "backends/parameters/Parameters_Algorithm.h"
 
+#include "backends/BranchAndPriceMIP.h"
+
 #include "./cartesian_product.h"
 
 #include <catch2/catch_all.hpp>

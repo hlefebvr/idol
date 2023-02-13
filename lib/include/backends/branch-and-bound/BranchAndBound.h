@@ -85,6 +85,8 @@ protected:
 
     [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
 
+    void set(const Parameter<bool>& t_param, bool t_value) override;
+    void set(const Parameter<double>& t_param, double t_value) override;
     void set(const Parameter<int>& t_param, int t_value) override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:

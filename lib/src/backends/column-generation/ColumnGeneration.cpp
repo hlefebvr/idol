@@ -153,7 +153,13 @@ void ColumnGeneration::add_artificial_variables() {
 void ColumnGeneration::set(const Parameter<bool> &t_param, bool t_value) {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
+
         m_bool_parameters.set(t_param, t_value);
+
+        if (t_param == Param::ColumnGeneration::FarkasPricing) {
+            m_master->set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+        }
+
         return;
     }
 
@@ -314,7 +320,7 @@ void ColumnGeneration::analyze_master_problem_solution() {
 
         } else {
 
-            idol_Log(Fatal, ColumnGeneration, "Master problem should not be infeasible when using artificial variables.");
+            idol_Log(Fatal, ColumnGeneration, "ERROR. Master problem should not be infeasible when using artificial variables.");
             set_status(Fail);
             set_reason(NotSpecified);
             terminate();

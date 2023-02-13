@@ -101,16 +101,42 @@ auto save(const AbstractModel& t_original_model, const Req<double, ObjectT>& t_a
     result.set_reason(reason);
 
     if (status == Infeasible) {
+
         result.set_objective_value(sense == Minimize ? Inf : -Inf);
-        return result;
-    }
 
-    if (status == Unbounded) {
+        if constexpr (std::is_same_v<ObjectT, Var>) {
+            if (t_attr == Attr::Solution::Primal) {
+                return result;
+            }
+        }
+
+        if constexpr (std::is_same_v<ObjectT, Ctr>) {
+            if (t_attr == Attr::Solution::Dual) {
+                return result;
+            }
+        }
+
+    } else if (status == Unbounded) {
+
         result.set_objective_value(sense == Minimize ? -Inf : Inf);
-        return result;
-    }
 
-    result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
+        if constexpr (std::is_same_v<ObjectT, Var>) {
+            if (t_attr == Attr::Solution::Primal) {
+                return result;
+            }
+        }
+
+        if constexpr (std::is_same_v<ObjectT, Ctr>) {
+            if (t_attr == Attr::Solution::Dual) {
+                return result;
+            }
+        }
+
+    } else {
+
+        result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
+
+    }
 
     if constexpr (std::is_same_v<ObjectT, Var>) {
         for (const auto &var: t_original_model.vars()) {
