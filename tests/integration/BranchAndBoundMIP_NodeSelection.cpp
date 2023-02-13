@@ -3,8 +3,8 @@
 //
 
 #include "../test_utils.h"
-#include "problems/KP/KP_Instance.h"
-#include "problems/FLP/FLP_Instance.h"
+#include "problems/knapsack-problem/KP_Instance.h"
+#include "problems/facility-location-problem/FLP_Instance.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with different node selection strategies",
                         "[integration][backend][solver]",

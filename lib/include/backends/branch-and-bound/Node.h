@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_NODE_H
 #define OPTIMIZE_NODE_H
 
-#include "algorithms/solvers/SolutionStatus.h"
+#include "modeling/solutions/types.h"
 #include <functional>
 
 namespace Solution {

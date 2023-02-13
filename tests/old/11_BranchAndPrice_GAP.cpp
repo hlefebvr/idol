@@ -3,7 +3,7 @@
 //
 #include "../test_utils.h"
 
-#include "../../lib/include/problems/GAP/GAP_Instance.h"
+#include "../../lib/include/problems/generalized-assignment-problem/GAP_Instance.h"
 
 using configurations =
         cartesian_product<
@@ -28,10 +28,10 @@ TEMPLATE_LIST_TEST_CASE("11. B&P: GAP", has_lp_solver ? "[column-generation]" : 
     using namespace Problems::GAP;
 
     auto test = GENERATE(
-            std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance0.txt"), -233.),
-            std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance1.txt"), -22.),
-            std::make_pair<Instance, double>(read_instance("instances/GAP/GAP_instance2.txt"), -40.)
-            //, std::make_pair<Instance, double>(read_instance("/home/henri/CLionProjects/optimize/tests/instances/GAP/GAP_instance3.txt"), 1698.)
+            std::make_pair<Instance, double>(read_instance("instances/generalized-assignment-problem/GAP_instance0.txt"), -233.),
+            std::make_pair<Instance, double>(read_instance("instances/generalized-assignment-problem/GAP_instance1.txt"), -22.),
+            std::make_pair<Instance, double>(read_instance("instances/generalized-assignment-problem/GAP_instance2.txt"), -40.)
+            //, std::make_pair<Instance, double>(read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance3.txt"), 1698.)
     );
 
     auto node_selection = GENERATE(

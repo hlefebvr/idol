@@ -2,7 +2,7 @@
 // Created by henri on 07/02/23.
 //
 #include "modeling/models/BlockModel.h"
-#include "modeling/models/Env.h"
+#include "modeling/objects/Env.h"
 
 template<class AxisT>
 BlockModel<AxisT>::BlockModel(Env &t_env, unsigned int t_n_blocks, Annotation<AxisT, unsigned int> t_axis_annotation)

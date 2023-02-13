@@ -1,6 +1,6 @@
 #include <iostream>
 #include "modeling.h"
-#include "problems/FLP/FLP_Instance.h"
+#include "problems/facility-location-problem/FLP_Instance.h"
 #include "backends/solvers/Gurobi.h"
 #include "backends/branch-and-bound/BranchAndBound.h"
 #include "backends/branch-and-bound/NodeStrategies_Basic.h"
@@ -10,7 +10,7 @@
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "backends/branch-and-bound/Relaxations_Continuous.h"
 #include "backends/BranchAndBoundMIP.h"
-#include "problems/GAP/GAP_Instance.h"
+#include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "backends/column-generation/Relaxations_DantzigWolfe.h"
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/BranchAndPriceMIP.h"
@@ -25,7 +25,7 @@ int main(int t_argc, char** t_argv) {
 
     using namespace Problems::GAP;
 
-    const auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    const auto instance = read_instance("../tests/instances/generalized-assignment-problem/GAP_instance0.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 

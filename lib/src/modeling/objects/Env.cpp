@@ -1,7 +1,7 @@
 //
 // Created by henri on 27/01/23.
 //
-#include "modeling/models/Env.h"
+#include "modeling/objects/Env.h"
 #include "modeling/models/Model.h"
 
 void impl::Env::free_model_id(const Model &t_model) {

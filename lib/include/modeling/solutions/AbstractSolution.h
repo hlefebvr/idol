@@ -7,7 +7,7 @@
 
 #include "../../containers/Map.h"
 #include "../../containers/IteratorForward.h"
-#include "../../algorithms/solvers/SolutionStatus.h"
+#include "types.h"
 #include "../numericals.h"
 
 /**

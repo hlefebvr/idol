@@ -2,10 +2,10 @@
 // Created by henri on 03/11/22.
 //
 
-#include "../../../include/problems/FLP/FLP_Instance.h"
+#include "../../../include/problems/facility-location-problem/FLP_Instance.h"
 #include "../../../include/errors/Exception.h"
-#include "../../../include/utilities/parse_delimited.h"
-#include "../../../include/utilities/distances.h"
+#include "problems/helpers/parse_delimited.h"
+#include "problems/helpers/distances.h"
 #include <random>
 
 Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_customers)

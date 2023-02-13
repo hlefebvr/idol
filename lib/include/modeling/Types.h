@@ -19,11 +19,6 @@ enum CtrType : int {
     Equal
 };
 
-enum ObjectStatus {
-    Alive,
-    Dead
-};
-
 enum Sense : int {
     Minimize,
     Maximize
@@ -44,15 +39,6 @@ static std::ostream &operator<<(std::ostream& t_os, CtrType t_type) {
         case LessOrEqual: return t_os << "<=";
         case GreaterOrEqual: return t_os << ">=";
         case Equal: return t_os << "=";
-        default:;
-    }
-    throw Exception("Enum out of bounds.");
-}
-
-static std::ostream &operator<<(std::ostream& t_os, ObjectStatus t_type) {
-    switch (t_type) {
-        case Alive: return t_os << "InModel";
-        case Dead: return t_os << "Removed";
         default:;
     }
     throw Exception("Enum out of bounds.");

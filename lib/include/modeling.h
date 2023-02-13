@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_MODELING_H
 #define OPTIMIZE_MODELING_H
 
-#include "modeling/models/Env.h"
+#include "modeling/objects/Env.h"
 #include "modeling/models/Model.h"
 
 #include "modeling/expressions/operations/operators.h"

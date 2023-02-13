@@ -1,7 +1,7 @@
 //
 // Created by henri on 12/10/22.
 //
-#include "../../../include/problems/KP/KP_Instance.h"
+#include "../../../include/problems/knapsack-problem/KP_Instance.h"
 #include <cassert>
 #include <fstream>
 

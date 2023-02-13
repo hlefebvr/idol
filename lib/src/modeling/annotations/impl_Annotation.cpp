@@ -3,7 +3,7 @@
 //
 
 #include "modeling/annotations/impl_Annotation.h"
-#include "modeling/models/Env.h"
+#include "modeling/objects/Env.h"
 
 impl::Annotation::Annotation(::Env &t_env, bool t_is_var_annotation, std::string &&t_name)
         : m_id([&]() {
