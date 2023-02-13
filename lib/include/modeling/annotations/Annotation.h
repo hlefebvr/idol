@@ -10,11 +10,18 @@
 class Var;
 class Ctr;
 
-template<class ObjectT, class ValueT>
+template<class ObjectT, class ValueT = unsigned int>
 class Annotation : public impl::Annotation {
     static_assert(std::is_same_v<ObjectT, Var> || std::is_same_v<ObjectT, Ctr>);
 public:
     Annotation(Env& t_env, std::string t_name) : impl::Annotation(t_env, std::is_same_v<ObjectT, Var>, std::move(t_name)) {}
+
+    template<class ...ArgsT> Annotation(Env& t_env, std::string t_name, ArgsT&& ...t_args)
+        : impl::Annotation(t_env, std::is_same_v<ObjectT, Var>, std::move(t_name)) {
+
+        set_default_value<ValueT>(std::forward<ArgsT>(t_args)...);
+
+    }
 
     template<class ...ArgsT>
     static Annotation<ObjectT, ValueT> make_with_default_value(Env& t_env, std::string t_name, ArgsT&& ...t_args) {

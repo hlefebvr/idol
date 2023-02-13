@@ -31,7 +31,7 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    auto decomposition = Annotation<Ctr, unsigned int>::make_with_default_value(env, "by_machines", MasterId);
+    Annotation<Ctr> decomposition(env, "by_machines", MasterId);
 
     Model model(env);
 
