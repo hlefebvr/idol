@@ -10,19 +10,22 @@
 #ifdef IDOL_USE_GLPK
 
 #include "LazyBackend.h"
-
-struct glp_prob;
+#include <glpk.h>
 
 class GLPK  : public LazyBackend<int, int> {
 
     glp_prob* m_model;
+    glp_smcp m_simplex_parameters;
+    glp_iocp m_mip_parameters;
     bool m_solved_as_mip = false;
+    bool m_rebuild_basis = false;
+    bool m_infeasible_or_unbounded_info = false;
+
     SolutionStatus m_solution_status = Unknown;
     SolutionReason m_solution_reason = NotSpecified;
+    std::optional<Solution::Primal> m_unbounded_ray;
+    std::optional<Solution::Dual> m_farkas_certificate;
 
-    Param::Algorithm::values<bool> m_bool_params;
-
-    bool m_rebuild_basis = false;
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
 protected:
@@ -54,13 +57,19 @@ protected:
 
     void hook_remove(const Ctr &t_ctr) override;
 
+    void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
+
+    void set_ctr_attr(int t_index, int t_type, double t_rhs);
+
     void save_simplex_solution_status();
     void compute_farkas_certificate();
     void compute_unbounded_ray();
     void save_milp_solution_status();
 
     void set(const Parameter<bool>& t_param, bool t_value) override;
+    void set(const Parameter<double>& t_param, double t_value) override;
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
+    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
 
     [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
     [[nodiscard]] double get(const Req<double, void> &t_attr) const override;

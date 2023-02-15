@@ -18,30 +18,6 @@
 
 int main(int t_argc, char** t_argv) {
 
-
-    Env env;
-
-    Var x(env, 0, Inf, Continuous, "x");
-    Var y(env, 0, Inf, Continuous, "y");
-
-    Ctr c1(env, 120 * x + 210 * y <= 15000);
-    Ctr c2(env, 110 * x +  30 * y <=  4000);
-    Ctr c3(env,       x +       y <=    75);
-
-    Model model(env);
-    model.add_many(x, y, c1, c2, c3);
-    model.set(Attr::Obj::Expr, -143 * x - 60 * y);
-
-    Idol::set_optimizer<GLPK>(model);
-
-    model.optimize();
-
-
-    return 0;
-
-    /*COLUMN GENERATION
-
-
     Logs::set_level<BranchAndBound>(Trace);
     Logs::set_color<BranchAndBound>(Blue);
 
@@ -76,7 +52,7 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<Gurobi>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
 
     model.set(Param::ColumnGeneration::FarkasPricing, true);
     model.set(Param::ColumnGeneration::BranchingOnMaster, true);
@@ -87,6 +63,4 @@ int main(int t_argc, char** t_argv) {
     std::cout << save(model, Attr::Solution::Primal) << std::endl;
 
     return 0;
-
-     */
 }

@@ -7,7 +7,7 @@
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
-                        std::tuple<Gurobi>) {
+                        branch_and_price_solvers) {
 
     Env env;
 
