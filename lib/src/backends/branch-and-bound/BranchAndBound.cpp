@@ -15,26 +15,39 @@ void BranchAndBound::initialize() {
 
 void BranchAndBound::add(const Var &t_var) {
 
+    const auto& model = parent();
+    const auto& column = model.get(Attr::Var::Column, t_var);
+    const double lb = model.get(Attr::Var::Lb, t_var);
+    const double ub = model.get(Attr::Var::Ub, t_var);
+    const int type = model.get(Attr::Var::Type, t_var);
+
+    m_relaxations.get().model().add(t_var, TempVar(lb, ub, type, Column(column)));
+
 }
 
 void BranchAndBound::add(const Ctr &t_ctr) {
 
+    const auto& model = parent();
+    const auto& row = model.get(Attr::Ctr::Row, t_ctr);
+    const int type = model.get(Attr::Ctr::Type, t_ctr);
+
+    m_relaxations.get().model().add(t_ctr, TempCtr(Row(row), type));
 }
 
 void BranchAndBound::remove(const Var &t_var) {
-
+    m_relaxations.get().model().remove(t_var);
 }
 
 void BranchAndBound::remove(const Ctr &t_ctr) {
-
+    m_relaxations.get().model().remove(t_ctr);
 }
 
 void BranchAndBound::update() {
-
+    m_relaxations.get().model().update();
 }
 
 void BranchAndBound::write(const std::string &t_name) {
-
+    m_relaxations.get().model().write(t_name);
 }
 
 void BranchAndBound::hook_before_optimize() {
@@ -447,10 +460,30 @@ double BranchAndBound::get(const Req<double, Var> &t_attr, const Var &t_var) con
     return Base::get(t_attr, t_var);
 }
 
+double BranchAndBound::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+    return m_relaxations.get().model().get(t_attr, t_ctr);
+}
+
 void BranchAndBound::set(const Parameter<bool> &t_param, bool t_value) {
     m_relaxations.get().model().set(t_param, t_value);
 }
 
 void BranchAndBound::set(const Parameter<double> &t_param, double t_value) {
     m_relaxations.get().model().set(t_param, t_value);
+}
+
+const Expr<Var, Var> &BranchAndBound::get(const Req<Expr<Var, Var>, void> &t_attr) const {
+    return m_relaxations.get().model().get(t_attr);
+}
+
+void BranchAndBound::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+    m_relaxations.get().model().set(t_attr, std::move(t_value));
+}
+
+void BranchAndBound::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+    m_relaxations.get().model().set(t_attr, t_var, t_value);
+}
+
+void BranchAndBound::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+    m_relaxations.get().model().set(t_attr, t_ctr, std::move(t_value));
 }

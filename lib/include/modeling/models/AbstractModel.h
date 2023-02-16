@@ -60,7 +60,19 @@ public:
         backend().optimize();
         m_timer.stop();
     }
+
+    void write(const std::string& t_name) {
+        throw_if_no_backend();
+        backend().write(t_name);
+    }
+
+    void update() {
+        throw_if_no_backend();
+        backend().update();
+    }
+
     [[nodiscard]] const Timer& time() const { return m_timer; }
+
     [[nodiscard]] double remaining_time() const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count()); }
 
     using AttributeManagers::Delegate::get;

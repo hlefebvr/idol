@@ -72,7 +72,7 @@ void impl::ColumnGenerationSP::enrich_master_problem() {
     auto generator = save(*m_model, ::Attr::Solution::Primal);
     auto column = create_column_from_generator(generator);
 
-    Var alpha(m_model->env(), 0., Inf, Continuous);
+    Var alpha(m_model->env(), 0., Inf, Continuous, "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
 
     master.add(alpha, std::move(column));
     m_pool.add(alpha, std::move(generator));
@@ -157,6 +157,7 @@ double impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var)
 void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
 
     remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+        //return true;
         return t_generator.get(t_var) < t_value;
     });
 
@@ -172,6 +173,7 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
 void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
 
     remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
+        //return true;
         return t_generator.get(t_var) > t_value;
     });
 

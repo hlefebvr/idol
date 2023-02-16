@@ -39,6 +39,17 @@ void GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, doubl
     const bool has_lb = !is_neg_inf(t_lb);
     const bool has_ub = !is_pos_inf(t_ub);
 
+    // Set obj
+    glp_set_obj_coef(m_model, t_index, t_obj);
+
+    // Set type
+    switch (t_type) {
+        case Continuous: glp_set_col_kind(m_model, t_index, GLP_CV); break;
+        case Binary: glp_set_col_kind(m_model, t_index, GLP_BV); break;
+        case Integer: glp_set_col_kind(m_model, t_index, GLP_IV); break;
+        default: throw std::runtime_error("Unknown variable type.");
+    }
+
     // Set bounds
     if (has_lb && has_ub) {
         if (equals(t_lb, t_ub, ToleranceForIntegrality)) {
@@ -52,17 +63,6 @@ void GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, doubl
         glp_set_col_bnds(m_model, t_index, GLP_UP, 0., t_ub);
     } else {
         glp_set_col_bnds(m_model, t_index, GLP_FR, 0., 0.);
-    }
-
-    // Set obj
-    glp_set_obj_coef(m_model, t_index, t_obj);
-
-    // Set type
-    switch (t_type) {
-        case Continuous: glp_set_col_kind(m_model, t_index, GLP_CV); break;
-        case Binary: glp_set_col_kind(m_model, t_index, GLP_BV); break;
-        case Integer: glp_set_col_kind(m_model, t_index, GLP_IV); break;
-        default: throw std::runtime_error("Unknown variable type.");
     }
 
 }
@@ -224,6 +224,7 @@ void GLPK::hook_remove(const Var &t_var) {
 
     glp_set_obj_coef(m_model, index, 0.);
     glp_set_mat_col(m_model, index, 0, NULL, NULL);
+    glp_set_col_name(m_model, index, ("_removed_" + t_var.name()).c_str());
     m_deleted_variables.push(index);
 
 }
@@ -238,6 +239,7 @@ void GLPK::hook_remove(const Ctr &t_ctr) {
 
     glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
     glp_set_mat_row(m_model, index, 0, NULL, NULL);
+    glp_set_col_name(m_model, index, ("_removed_" + t_ctr.name()).c_str());
     m_deleted_constraints.push(index);
 
 }
@@ -391,10 +393,7 @@ void GLPK::compute_farkas_certificate() {
     }
 
     // Solve feasible model
-    glp_smcp parameters;
-    glp_init_smcp(&parameters);
-    parameters.msg_lev = GLP_MSG_ERR;
-    glp_simplex(m_model, &parameters);
+    glp_simplex(m_model, &m_simplex_parameters);
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = Solution::Dual();

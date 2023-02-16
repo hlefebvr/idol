@@ -16,7 +16,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto [filename, objective_value] = GENERATE(
             std::make_pair<std::string, double>("GAP_instance0.txt", -233.)
     );
-    const auto farkas_pricing = GENERATE(true, false);
+    const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
 
@@ -45,7 +45,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<Gurobi>>(model, decomposition);
+    Idol::set_optimizer<TestType>(model, decomposition);
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);

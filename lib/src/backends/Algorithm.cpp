@@ -9,6 +9,7 @@ Algorithm::Algorithm(const AbstractModel &t_model) : Backend(t_model) {
 }
 
 void Algorithm::optimize() {
+    m_is_terminated = false;
     hook_before_optimize();
     hook_optimize();
     hook_after_optimize();

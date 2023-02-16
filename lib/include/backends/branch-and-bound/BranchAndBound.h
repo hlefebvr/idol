@@ -84,6 +84,11 @@ protected:
     using Algorithm::set;
 
     [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
 
     void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;

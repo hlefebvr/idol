@@ -16,7 +16,7 @@
 template<class RelaxationBackendT>
 class BranchAndBoundMIP : public BranchAndBound {
 public:
-    explicit BranchAndBoundMIP(const Model& t_model) : BranchAndBound(t_model) {
+    explicit BranchAndBoundMIP(const AbstractModel& t_model) : BranchAndBound(t_model) {
 
         auto& relaxation = set_relaxation<Relaxations::Continuous>();
         relaxation.build();

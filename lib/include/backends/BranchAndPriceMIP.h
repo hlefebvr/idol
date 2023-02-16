@@ -14,7 +14,7 @@
 #include "backends/branch-and-bound/Nodes_Basic.h"
 #include "backends/column-generation/ColumnGeneration.h"
 
-template<class RelaxationBackendT>
+template<class SubProblemBackendT>
 class BranchAndPriceMIP : public BranchAndBound {
 public:
     explicit BranchAndPriceMIP(const AbstractModel& t_original_formulation,
@@ -26,9 +26,9 @@ public:
 
         auto& column_generation = Idol::set_optimizer<ColumnGeneration>(relaxation.model());
 
-        column_generation.template set_master_backend<RelaxationBackendT>();
+        column_generation.template set_master_backend<SubProblemBackendT>();
         for (unsigned int i = 0, n = relaxation.model().n_blocks() ; i < n ; ++i) {
-            column_generation.template set_subproblem_backend<RelaxationBackendT>(i);
+            column_generation.template set_subproblem_backend<SubProblemBackendT>(i);
         }
 
         auto& nodes_manager = set_node_strategy<NodeStrategies::Basic<Nodes::Basic>>();

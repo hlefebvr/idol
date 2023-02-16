@@ -8,7 +8,7 @@
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with different node selection strategies",
                         "[integration][backend][solver]",
-                        std::tuple<Gurobi>) {
+                        lp_solvers) {
 
     Env env;
 
@@ -66,7 +66,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection strategies",
                         "[integration][backend][solver]",
-                        std::tuple<Gurobi>) {
+                        lp_solvers) {
 
     Env env;
 
