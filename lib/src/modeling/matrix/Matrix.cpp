@@ -1,6 +1,7 @@
 //
 // Created by henri on 04/10/22.
 //
+#include <sstream>
 #include "../../../include/modeling/matrix/Matrix.h"
 #include "../../../include/modeling/models/Model.h"
 
@@ -81,7 +82,7 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
     auto& obj = access_obj();
 
     for (const auto& [var, coeff] : obj.linear()) {
-        access_column(var).set_obj(0.);
+        access_column(var).impl().refs().reset_constant();
     }
 
     obj = std::move(t_objective);
@@ -89,13 +90,14 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
     for (auto [var, ref] : obj.linear().refs()) {
         access_column(var).impl().refs().set_constant(std::move(ref));
     }
+
 }
 
 void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     auto& rhs = access_rhs();
 
     for (const auto& [ctr, coeff] : rhs) {
-        access_row(ctr).set_rhs(0.);
+        access_row(ctr).impl().refs().reset_constant();
     }
 
     rhs = std::move(t_right_handside);

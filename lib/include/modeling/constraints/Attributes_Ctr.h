@@ -5,13 +5,14 @@
 #ifndef IDOL_ATTRIBUTES_CTR_H
 #define IDOL_ATTRIBUTES_CTR_H
 
-#include "../models/Attributes.h"
+#include "../attributes/Attributes.h"
 
 IDOL_CREATE_ATTRIBUTE_CLASS(Ctr)
 
-IDOL_CREATE_ATTRIBUTE_TYPE(Ctr, IDOL_int, 2)
+IDOL_CREATE_ATTRIBUTE_TYPE(Ctr, IDOL_int, 3)
 IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 0, Type, ::Ctr)
 IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 1, Status, ::Ctr)
+IDOL_CREATE_ATTRIBUTE(Ctr, IDOL_int, 2, Index, ::Ctr)
 
 IDOL_CREATE_ATTRIBUTE_TYPE(Ctr, Row, 1)
 IDOL_CREATE_ATTRIBUTE(Ctr, Row, 0, Row, ::Ctr)

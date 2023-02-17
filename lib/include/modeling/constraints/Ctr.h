@@ -1,44 +1,38 @@
 //
-// Created by henri on 07/09/22.
+// Created by henri on 27/01/23.
 //
 
-#ifndef OPTIMIZE_CONSTRAINT_H
-#define OPTIMIZE_CONSTRAINT_H
+#ifndef IDOL_CTR_H
+#define IDOL_CTR_H
 
-#include "../Types.h"
-#include <string>
-#include <iostream>
-#include <memory>
+#include "modeling/objects/Object.h"
 
-class Row;
+class CtrVersion;
+class Env;
+template<class T> class Versions;
+class TempCtr;
 class Constant;
-class Var;
-class Model;
 
-namespace Solution {
-    class Primal;
+namespace impl {
+    class Env;
 }
 
-/**
- * Constraint object.
- *
- * A constraint always belong to a single Model. Note that you should be creating a constraint using the Model::add_ctr method, rather than a constructor.
- */
-class Ctr : public Object {
-    friend class Model;
-    explicit Ctr(ObjectId&& t_ref) : Object(std::move(t_ref)) {}
-protected:
-    [[nodiscard]] bool isCtr() const override { return true; }
+class Ctr : public Object<CtrVersion, Ctr> {
+    friend class impl::Env;
 public:
-    Ctr() = default;
+    Ctr(Env& t_env, TempCtr&& t_temp_ctr, std::string t_name = "");
+    Ctr(Env& t_env, const TempCtr& t_temp_ctr, std::string t_name = "");
+    Ctr(Env& t_env, int t_type, Constant&& t_constant, std::string t_name = "");
+    Ctr(Env& t_env, int t_type, const Constant& t_constant, std::string t_name = "");
 
-    Ctr(const Ctr& t_var) = default;
-    Ctr(Ctr&& t_var) noexcept = default;
-
-    Ctr& operator=(const Ctr& t_var) = default;
-    Ctr& operator=(Ctr&& t_var) noexcept = default;
+    template<unsigned int N = 1, unsigned int I = 0>
+    static Vector<Ctr, N - I> array(Env& t_env, const Dim<N>& t_dim, int t_type, const Constant& t_constant, const std::string& t_name = "") {
+        return impl::create_many<Ctr, N, I>(t_dim, t_name, [&](const std::string& t_name_i) {
+            return Ctr(t_env, t_type, t_constant, t_name_i);
+        });
+    }
 };
 
-MAKE_HASHABLE(Ctr)
+IDOL_MAKE_HASHABLE(Ctr)
 
-#endif //OPTIMIZE_CONSTRAINT_H
+#endif //IDOL_CTR_H

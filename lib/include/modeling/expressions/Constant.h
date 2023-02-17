@@ -6,7 +6,7 @@
 #define OPTIMIZE_CONSTANT_H
 
 #include "../../containers/Map.h"
-#include "../parameters/InParam.h"
+#include "../input-parameters/InParam.h"
 #include "../numericals.h"
 
 namespace Solution {

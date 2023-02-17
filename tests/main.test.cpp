@@ -5,7 +5,8 @@
 
 int main( int argc, char* argv[] ) {
 
-    Log::set_level(Mute);
+    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_level<ColumnGeneration>(Info);
 
     int result = Catch::Session().run( argc, argv );
 

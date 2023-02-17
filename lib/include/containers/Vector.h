@@ -7,8 +7,9 @@
 
 #include <array>
 #include <vector>
+#include <functional>
 
-template<int N>
+template<unsigned int N>
 class Dim : public std::array<unsigned int, N> {
     friend class Dim<N+1>;
 public:
@@ -90,5 +91,67 @@ std::vector<T> flatten(const Vector<T, Size>& t_vector) {
     }
 }
 
+template<class T, unsigned int Size>
+void apply(Vector<T, Size>& t_vec, const std::function<void(T&)>& t_function) {
+
+    if constexpr (Size == 1) {
+
+        for (auto& elem : t_vec) {
+            t_function(elem);
+        }
+
+    } else {
+
+        for (auto& elem : t_vec) {
+            apply<T, Size - 1>(elem, t_function);
+        }
+
+    }
+
+}
+
+
+template<class T, unsigned int Size>
+void apply(const Vector<T, Size>& t_vec, const std::function<void(const T&)>& t_function) {
+
+    if constexpr (Size == 1) {
+
+        for (const auto& elem : t_vec) {
+            t_function(elem);
+        }
+
+    } else {
+
+        for (const auto& elem : t_vec) {
+            apply<T, Size - 1>(elem, t_function);
+        }
+
+    }
+
+}
+
+template<class T, class U, unsigned int Size>
+Vector<U, Size> transform(const Vector<T, Size>& t_vec, const std::function<U(const T&)>& t_function) {
+
+    Vector<U, Size> result;
+    result.reserve(t_vec.size());
+
+    if constexpr (Size == 1) {
+
+        for (const auto& elem : t_vec) {
+            result.emplace_back(t_function(elem));
+        }
+
+    } else {
+
+        for (const auto& elem : t_vec) {
+            result.emplace_back(transform<T, U, Size - 1>(elem, t_function));
+        }
+
+    }
+
+    return result;
+
+}
 
 #endif //IDOL_VECTOR_H

@@ -15,6 +15,8 @@ public:
 
     virtual Constant& value() = 0;
 
+    virtual bool is_ref() const = 0;
+
     [[nodiscard]] virtual const Constant& value() const = 0;
 
     virtual AbstractMatrixCoefficient& operator*=(double t_factor) = 0;

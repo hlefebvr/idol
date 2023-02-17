@@ -5,9 +5,12 @@
 #ifndef OPTIMIZE_MODELING_H
 #define OPTIMIZE_MODELING_H
 
+#include "modeling/objects/Env.h"
 #include "modeling/models/Model.h"
 
 #include "modeling/expressions/operations/operators.h"
+
+#include "modeling/constraints/TempCtr.h"
 
 #include "modeling/variables/Attributes_Var.h"
 #include "modeling/constraints/Attributes_Ctr.h"

@@ -76,7 +76,8 @@ public:
     Row& operator=(const Row& t_src) = default;
     Row& operator=(Row&& t_src) noexcept = default;
 
-    Row fix(const Solution::Primal& t_primals) const;
+    [[nodiscard]] Row fix(const Solution::Primal& t_primals) const;
+    [[nodiscard]] Row fix(const Solution::Dual& t_duals) const;
 
     static const Row EmptyRow;
 };

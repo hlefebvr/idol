@@ -1,69 +1,67 @@
 #include <iostream>
-#include <utility>
 #include "modeling.h"
-#include "algorithms.h"
-#include "problems/GAP/GAP_Instance.h"
-#include "reformulations/Reformulations_DantzigWolfe.h"
+#include "problems/facility-location-problem/FLP_Instance.h"
+#include "backends/solvers/Gurobi.h"
+#include "backends/branch-and-bound/BranchAndBound.h"
+#include "backends/branch-and-bound/NodeStrategies_Basic.h"
+#include "backends/branch-and-bound/Nodes_Basic.h"
+#include "backends/branch-and-bound/BranchingStrategies_MostInfeasible.h"
+#include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
+#include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
+#include "backends/branch-and-bound/Relaxations_Continuous.h"
+#include "backends/BranchAndBoundMIP.h"
+#include "problems/generalized-assignment-problem/GAP_Instance.h"
+#include "backends/column-generation/Relaxations_DantzigWolfe.h"
+#include "backends/column-generation/ColumnGeneration.h"
+#include "backends/BranchAndPriceMIP.h"
+#include "backends/solvers/GLPK.h"
 
-int main(int t_argc, const char** t_argv) {
+int main(int t_argc, char** t_argv) {
+
+    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_color<BranchAndBound>(Blue);
+
+    Logs::set_level<ColumnGeneration>(Mute);
+    Logs::set_color<ColumnGeneration>(Yellow);
 
     using namespace Problems::GAP;
 
-    auto instance = read_instance("/home/henri/CLionProjects/optimize/examples/ex2_branch_and_price_gap/demo.txt");
+    const auto instance = read_instance("../tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const unsigned int n_agents = instance.n_agents();
+    const unsigned int n_jobs = instance.n_jobs();
 
-    const unsigned int n_knapsacks = instance.n_knapsacks();
-    const unsigned int n_items = instance.n_items();
+    Env env;
 
-    Model model;
-    auto complicating_constraint = model.add_user_attr<unsigned int>(0, "complicating_constraint");
+    Annotation<Ctr> decomposition(env, "by_machines", MasterId);
 
-    // Variables
-    auto x = model.add_vars(Dim<2>(n_knapsacks, n_items), 0., 1., Binary, 0., "x");
+    Model model(env);
 
-    // Objective function
-    Expr objective = idol_Sum(
-                i, Range(n_knapsacks),
-                idol_Sum(j, Range(n_items), instance.p(i, j) * x[i][j])
-            );
-    model.set(Attr::Obj::Expr, objective);
+    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
+    model.add_array<Var, 2>(x);
 
-    // Knapsack constraints
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        auto ctr = model.add_ctr( idol_Sum(j, Range(n_items), instance.w(i, j) * x[i][j]) <= instance.t(i) );
-        model.set<unsigned int>(complicating_constraint, ctr, i+1);
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
+        capacity.set(decomposition, i);
+        model.add(capacity);
     }
 
-    // Assignment constraints
-    for (unsigned int j = 0 ; j < n_items ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_knapsacks), x[i][j]) == 1);
+    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
+        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
+        model.add(assignment);
     }
 
-    // DW reformulation
-    Reformulations::DantzigWolfe result(model, complicating_constraint);
+    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    // Branching candidates
-    std::vector<Var> branching_candidates;
-    branching_candidates.reserve(n_entries<Var, 2>(x));
+    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
 
-    for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
-        for (unsigned int j = 0 ; j < n_items ; ++j) {
-            branching_candidates.emplace_back(model.get<Var>(result.reformulated_variable(), x[i][j]) );
-        }
-    }
+    model.set(Param::ColumnGeneration::LogFrequency, 1);
+    model.set(Param::ColumnGeneration::FarkasPricing, true);
+    model.set(Param::ColumnGeneration::BranchingOnMaster, false);
+    model.set(Param::ColumnGeneration::SmoothingFactor, 0);
 
-    // Branch and price
-    auto solver = branch_and_price(
-            result.restricted_master_problem(),
-            result.alphas().begin(),
-            result.alphas().end(),
-            result.subproblems().begin(),
-            result.subproblems().end(),
-            branching_candidates
-            );
+    model.optimize();
 
-    solver.solve();
-
-    std::cout << "Optimum: " << solver.primal_solution().objective_value() << std::endl;
+    std::cout << save(model, Attr::Solution::Primal) << std::endl;
 
     return 0;
 }

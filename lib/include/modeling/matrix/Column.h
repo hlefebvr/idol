@@ -30,16 +30,16 @@ public:
     Column& operator=(Column&& t_src) noexcept = default;
 
     Constant& obj() { return m_impl.constant(); }
-    const Constant& obj() const { return m_impl.constant(); }
+    [[nodiscard]] const Constant& obj() const { return m_impl.constant(); }
 
     ::LinExpr<Var>& obj_quadratic() { return m_obj_quad; }
-    const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
+    [[nodiscard]] const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
 
     LinExpr<Ctr>& linear() { return m_impl.linear(); }
-    const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
+    [[nodiscard]] const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
 
     QuadExpr<Ctr, Var>& quadratic() { return m_impl.quadratic(); }
-    const QuadExpr<Ctr, Var>& quadratic() const { return m_impl.quadratic(); }
+    [[nodiscard]] const QuadExpr<Ctr, Var>& quadratic() const { return m_impl.quadratic(); }
 
     void set_linear(LinExpr<Ctr>&& t_lin_expr) {  m_impl.linear() = std::move(t_lin_expr); }
     void set_linear(const LinExpr<Ctr>& t_lin_expr) {  m_impl.linear() = t_lin_expr; }
@@ -74,9 +74,20 @@ public:
     Column& operator=(const Column& t_src) = default;
     Column& operator=(Column&& t_src) noexcept = default;
 
-    Column fix(const Solution::Primal& t_primals) const;
+    [[nodiscard]] Column fix(const Solution::Primal& t_primals) const;
 
     static const Column EmptyColumn;
 };
+
+static std::ostream &operator<<(std::ostream& t_os, const Column& t_column) {
+
+    t_os << "[Obj: " << t_column.obj() << "]\n";
+
+    for (const auto& [ctr, constant] : t_column.linear()) {
+        t_os << '[' << ctr.name() << ": " << constant << "]\n";
+    }
+
+    return t_os;
+}
 
 #endif //OPTIMIZE_COLUMN_H
