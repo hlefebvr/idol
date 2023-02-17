@@ -181,7 +181,7 @@ void BranchAndBound::analyze_current_node() {
 
         }
 
-    } else if(m_iteration % 10 == 0) {
+    } else if(m_iteration % get(Param::BranchAndBound::LogFrequency) == 0) {
         log_node(Info, current_node());
     }
 

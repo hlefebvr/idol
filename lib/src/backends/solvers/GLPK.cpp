@@ -180,13 +180,6 @@ void GLPK::hook_update(const Var &t_var) {
     const int type = model.get(Attr::Var::Type, t_var);
     const Constant& obj = model.get(Attr::Var::Obj, t_var);
 
-
-    if (lb > ub) {
-        std::cout << t_var << ": " << lb << " / " << ub << std::endl;
-        throw Exception("Inconsistent bounds applied.");
-    }
-
-
     set_var_attr(impl, type, lb, ub, as_numeric(obj));
 
 }

@@ -162,12 +162,6 @@ void Gurobi::hook_update(const Var& t_var) {
     const int type = model.get(Attr::Var::Type, t_var);
     const Constant& obj = model.get(Attr::Var::Obj, t_var);
 
-    std::cout << t_var << ": " << lb << " / " << ub << std::endl;
-    if (lb > ub) {
-        std::cout << "Inconsistent" << std::endl;
-        //throw Exception("Inconsistent bounds applied.");
-    }
-
     impl.set(GRB_DoubleAttr_LB, gurobi_numeric(lb));
     impl.set(GRB_DoubleAttr_UB, gurobi_numeric(ub));
     impl.set(GRB_CharAttr_VType, gurobi_var_type(type));
