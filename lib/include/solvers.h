@@ -21,6 +21,7 @@ using branch_and_price_with_gurobi = std::tuple<BranchAndPriceMIP<Gurobi>, Branc
 #else
 using gurobi_solver = std::tuple<>;
 using branch_and_bound_with_gurobi = std::tuple<>;
+using branch_and_price_with_gurobi = std::tuple<>;
 #endif
 
 #ifdef IDOL_USE_GLPK
@@ -32,6 +33,7 @@ using branch_and_price_with_glpk = std::tuple<BranchAndPriceMIP<GLPK>, BranchAnd
 #else
 using glpk_solver = std::tuple<>;
 using branch_and_bound_with_glpk = std::tuple<>;
+using branch_and_price_with_glpk = std::tuple<>;
 #endif
 
 namespace impl {
