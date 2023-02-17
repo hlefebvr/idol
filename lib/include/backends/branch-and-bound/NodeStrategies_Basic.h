@@ -98,6 +98,8 @@ public:
 
     void apply_current_node_to(AbstractModel &t_solution_strategy) override;
 
+    void revert_local_changes(AbstractModel &t_solution_strategy) override;
+
     [[nodiscard]] unsigned int size() const override;
 };
 
@@ -253,6 +255,11 @@ void NodeStrategies::Basic<NodeT>::create_root_node() {
 template<class NodeT>
 void NodeStrategies::Basic<NodeT>::apply_current_node_to(AbstractModel &t_solution_strategy) {
     m_node_updator->apply_local_changes(current_node(), t_solution_strategy);
+}
+
+template<class NodeT>
+void NodeStrategies::Basic<NodeT>::revert_local_changes(AbstractModel &t_solution_strategy) {
+    m_node_updator->revert_local_changes(t_solution_strategy);
 }
 
 template<class NodeT>

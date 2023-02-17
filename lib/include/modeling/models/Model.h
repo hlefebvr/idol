@@ -115,10 +115,6 @@ public:
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
-
-    // Backend
-    void update();
-    void write(const std::string& t_name);
 };
 
 #endif //IDOL_MODEL_H

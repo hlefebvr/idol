@@ -106,6 +106,8 @@ void BranchAndBound::hook_optimize() {
 
     }
 
+    m_nodes_manager->revert_local_changes(m_relaxations.get().model());
+
     //call_callback(Event_::Algorithm::End);
 
 }
@@ -129,7 +131,7 @@ void BranchAndBound::solve_queued_nodes() {
                  "Current node is now node " << m_nodes_manager->current_node().id() << '.'
         );
 
-        prepare_node_solution();
+        prepare_to_solve_current_node();
         solve_current_node();
 
         log_node(Debug, m_nodes_manager->current_node());
@@ -145,7 +147,7 @@ void BranchAndBound::solve_queued_nodes() {
 
 }
 
-void BranchAndBound::prepare_node_solution() {
+void BranchAndBound::prepare_to_solve_current_node() {
     m_nodes_manager->apply_current_node_to(m_relaxations.get().model());
 }
 

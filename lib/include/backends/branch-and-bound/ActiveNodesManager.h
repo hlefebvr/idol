@@ -25,7 +25,7 @@ public:
 
     virtual void remove_node_selected_for_branching() = 0;
 
-    virtual unsigned int size() const = 0;
+    [[nodiscard]] virtual unsigned int size() const = 0;
 };
 
 template<class NodeT>

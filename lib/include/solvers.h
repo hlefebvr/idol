@@ -17,7 +17,7 @@ template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::
 
 using gurobi_solver = std::tuple<Gurobi>;
 using branch_and_bound_with_gurobi = std::tuple<BranchAndBoundMIP<Gurobi>>;
-using branch_and_price_with_gurobi = std::tuple<BranchAndPriceMIP<Gurobi>>;//, BranchAndPriceMIP<BranchAndBoundMIP<Gurobi>>>;
+using branch_and_price_with_gurobi = std::tuple<BranchAndPriceMIP<Gurobi>, BranchAndPriceMIP<BranchAndBoundMIP<Gurobi>>>;
 #else
 using gurobi_solver = std::tuple<>;
 using branch_and_bound_with_gurobi = std::tuple<>;
@@ -28,7 +28,7 @@ using branch_and_bound_with_gurobi = std::tuple<>;
 
 using glpk_solver = std::tuple<GLPK>;
 using branch_and_bound_with_glpk = std::tuple<BranchAndBoundMIP<GLPK>>;
-using branch_and_price_with_glpk = std::tuple<BranchAndPriceMIP<GLPK>>;//, BranchAndPriceMIP<BranchAndBoundMIP<GLPK>>>;
+using branch_and_price_with_glpk = std::tuple<BranchAndPriceMIP<GLPK>, BranchAndPriceMIP<BranchAndBoundMIP<GLPK>>>;
 #else
 using glpk_solver = std::tuple<>;
 using branch_and_bound_with_glpk = std::tuple<>;

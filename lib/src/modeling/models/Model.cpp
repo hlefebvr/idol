@@ -423,14 +423,6 @@ const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) c
     return AttributeManagers::Delegate::get(t_attr, t_ctr);
 }
 
-void Model::update() {
-    backend().update();
-}
-
-void Model::write(const std::string &t_name) {
-    backend().write(t_name);
-}
-
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
     return backend();
 }

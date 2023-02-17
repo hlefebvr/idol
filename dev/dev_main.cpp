@@ -52,7 +52,7 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<BranchAndBoundMIP<GLPK>>>(model, decomposition);
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::FarkasPricing, true);

@@ -30,6 +30,7 @@ public:
     virtual unsigned int create_child_nodes() = 0;
     virtual void create_root_node() = 0;
     virtual void apply_current_node_to(AbstractModel& t_solution_strategy) = 0;
+    virtual void revert_local_changes(AbstractModel& t_solution_strategy) = 0;
     virtual bool submit_solution(Solution::Primal&& t_solution, double t_best_upper_bound) = 0;
     [[nodiscard]] virtual unsigned int size() const = 0;
 

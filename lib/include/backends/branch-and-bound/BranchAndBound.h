@@ -44,7 +44,7 @@ protected:
 
     void create_root_node();
     void solve_queued_nodes();
-    void prepare_node_solution();
+    void prepare_to_solve_current_node();
     void solve_current_node();
     void analyze_current_node();
     [[nodiscard]] bool current_node_is_root_node() const;

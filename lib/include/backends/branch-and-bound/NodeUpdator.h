@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_NODEUPDATOR_H
 #define OPTIMIZE_NODEUPDATOR_H
 
-class Algorithm;
+class AbstractModel;
 
 class NodeUpdator {
 public:
@@ -16,7 +16,8 @@ template<class NodeT>
 class NodeUpdatorWithNodeType {
 public:
     virtual ~NodeUpdatorWithNodeType() = default;
-    virtual void apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) = 0;
+    virtual void apply_local_changes(const NodeT &t_node, AbstractModel &t_model) = 0;
+    virtual void revert_local_changes(AbstractModel& t_model) = 0;
 };
 
 #endif //OPTIMIZE_NODEUPDATOR_H

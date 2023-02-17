@@ -7,9 +7,7 @@
 
 #include "NodeUpdator.h"
 #include "containers/Map.h"
-#include "modeling/variables/Var.h"
-#include "modeling/variables/Attributes_Var.h"
-#include "modeling/numericals.h"
+#include "modeling/models/AbstractModel.h"
 #include <list>
 #include <functional>
 
@@ -37,7 +35,33 @@ public:
     Strategy() = default;
 
     void apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) override;
+
+    void revert_local_changes(AbstractModel &t_model) override;
 };
+
+template<class NodeT>
+void NodeUpdators::ByBoundVar::Strategy<NodeT>::revert_local_changes(AbstractModel &t_model) {
+
+    Map<Var, double> empty;
+
+    update_bounds(
+            m_lower_bounds,
+            empty,
+            [&](const Var& t_var, double t_lb) { t_model.set(Attr::Var::Lb, t_var, t_lb); },
+            [&](const Var& t_var){ return t_model.get(Attr::Var::Lb, t_var); }
+    );
+
+    update_bounds(
+            m_upper_bounds,
+            empty,
+            [&](const Var& t_var, double t_ub) { t_model.set(Attr::Var::Ub, t_var, t_ub); },
+            [&](const Var& t_var){ return t_model.get(Attr::Var::Ub, t_var); }
+    );
+
+    m_lower_bounds.clear();
+    m_upper_bounds.clear();
+
+}
 
 template<class NodeT>
 void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
@@ -79,6 +103,18 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
 
 template<class NodeT>
 void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) {
+
+    std::cout << "Node " << t_node.id() << std::endl;
+
+    for (const auto& [var, lb] : m_lower_bounds) {
+        std::cout << var << " >= " << lb << std::endl;
+    }
+
+    for (const auto& [var, ub] : m_upper_bounds) {
+        std::cout << var << " <= " << ub << std::endl;
+    }
+
+    std::cout << "--" << std::endl;
 
     update_bounds(
             m_lower_bounds,
