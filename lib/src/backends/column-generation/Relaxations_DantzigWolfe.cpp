@@ -76,7 +76,12 @@ void Relaxations::DantzigWolfe::add_variables_to_block(const Row &t_row, unsigne
 }
 
 void Relaxations::DantzigWolfe::add_variable_to_block(const Var &t_var, unsigned int t_block_id) {
-    m_decomposition->block(t_block_id).model().add(t_var);
+
+    const double lb = m_original_model.get(Attr::Var::Lb, t_var);
+    const double ub = m_original_model.get(Attr::Var::Ub, t_var);
+    const int type = m_original_model.get(Attr::Var::Type, t_var);
+
+    m_decomposition->block(t_block_id).model().add(t_var, TempVar(lb, ub, type, Column()));
 }
 
 void Relaxations::DantzigWolfe::dispatch_constraint(const Ctr &t_ctr) {
@@ -94,9 +99,9 @@ void Relaxations::DantzigWolfe::dispatch_constraint(const Ctr &t_ctr) {
 void Relaxations::DantzigWolfe::add_constraint_to_block(const Ctr &t_ctr, unsigned int t_block_id) {
 
     const auto& row = m_original_model.get(Attr::Ctr::Row, t_ctr);
+    const auto type = m_original_model.get(Attr::Ctr::Type, t_ctr);
     auto& block = m_decomposition->block(t_block_id);
-    block.model().add(t_ctr);
-    block.model().set(Attr::Ctr::Row, t_ctr, row);
+    block.model().add(t_ctr, TempCtr(Row(row), type));
 
 }
 
@@ -134,7 +139,10 @@ void Relaxations::DantzigWolfe::add_objective_to_master() {
 
 void Relaxations::DantzigWolfe::add_variable_to_master(const Var &t_var) {
     if (!m_decomposition->has(t_var)) {
-        m_decomposition->master().add(t_var);
+        const double lb = m_original_model.get(Attr::Var::Lb, t_var);
+        const double ub = m_original_model.get(Attr::Var::Ub, t_var);
+        const int type = m_original_model.get(Attr::Var::Type, t_var);
+        m_decomposition->master().add(t_var, TempVar(lb, ub, type, Column()));
     }
 }
 

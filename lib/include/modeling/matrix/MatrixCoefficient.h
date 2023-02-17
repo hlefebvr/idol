@@ -18,6 +18,8 @@ public:
     MatrixCoefficient& operator=(const MatrixCoefficient&) = delete;
     MatrixCoefficient& operator=(MatrixCoefficient&&) noexcept = default;
 
+    bool is_ref() const override { return false; }
+
     ~MatrixCoefficient() override;
 };
 

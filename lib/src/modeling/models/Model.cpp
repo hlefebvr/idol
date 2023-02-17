@@ -198,6 +198,7 @@ const LinExpr<Ctr> &Model::get(const Req<LinExpr<Ctr>, void> &t_attr) const {
 const Constant &Model::get(const Req<Constant, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Var::Obj) {
+        //return m_objective.linear().get(t_var);
         return m_env.version(*this, t_var).column().obj();
     }
 

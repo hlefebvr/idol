@@ -22,6 +22,8 @@ public:
     MatrixCoefficientReference& operator=(const MatrixCoefficientReference&) = delete;
     MatrixCoefficientReference& operator=(MatrixCoefficientReference&&) noexcept = default;
 
+    bool is_ref() const override { return true; }
+
     [[nodiscard]] bool empty() const { return !m_coefficient; }
 
     void set_value(Constant &&t_coefficient) override;

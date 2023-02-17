@@ -199,13 +199,10 @@ void GLPK::hook_update(const Ctr &t_ctr) {
 void GLPK::hook_update_objective() {
 
     const auto& model = parent();
-    const auto& objective = model.get(Attr::Obj::Expr);
 
     for (const auto& var : model.vars()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
-    }
-    for (const auto& [var, constant] : objective.linear()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(constant));
+        const auto& obj = model.get(Attr::Var::Obj, var);
+        glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(obj));
     }
 
 }

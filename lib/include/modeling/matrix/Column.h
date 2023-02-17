@@ -30,16 +30,16 @@ public:
     Column& operator=(Column&& t_src) noexcept = default;
 
     Constant& obj() { return m_impl.constant(); }
-    const Constant& obj() const { return m_impl.constant(); }
+    [[nodiscard]] const Constant& obj() const { return m_impl.constant(); }
 
     ::LinExpr<Var>& obj_quadratic() { return m_obj_quad; }
-    const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
+    [[nodiscard]] const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
 
     LinExpr<Ctr>& linear() { return m_impl.linear(); }
-    const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
+    [[nodiscard]] const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
 
     QuadExpr<Ctr, Var>& quadratic() { return m_impl.quadratic(); }
-    const QuadExpr<Ctr, Var>& quadratic() const { return m_impl.quadratic(); }
+    [[nodiscard]] const QuadExpr<Ctr, Var>& quadratic() const { return m_impl.quadratic(); }
 
     void set_linear(LinExpr<Ctr>&& t_lin_expr) {  m_impl.linear() = std::move(t_lin_expr); }
     void set_linear(const LinExpr<Ctr>& t_lin_expr) {  m_impl.linear() = t_lin_expr; }

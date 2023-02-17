@@ -35,6 +35,7 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
     }
 
     m_model->set(::Attr::Obj::Expr, std::move(objective));
+    //m_model->set(::Attr::Obj::Expr, std::move(objective));
 
 }
 

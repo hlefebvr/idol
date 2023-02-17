@@ -26,6 +26,7 @@ protected:
         explicit References(ParentT* t_parent) : m_parent(t_parent) {}
     public:
         void set_constant(MatrixCoefficientReference&& t_coefficient) { m_parent->m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
+        void reset_constant() { m_parent->m_constant = std::make_unique<MatrixCoefficient>(0.); }
         [[nodiscard]] MatrixCoefficientReference get_constant() const { return MatrixCoefficientReference(*m_parent->m_constant); }
     };
 
@@ -66,6 +67,12 @@ public:
     [[nodiscard]] const Constant& constant() const { return m_constant->value(); }
 
     [[nodiscard]] bool is_zero() const { return constant().is_zero() && linear().empty() && quadratic().empty(); }
+
+    void clear() {
+        constant() = 0;
+        m_linear.clear();
+        m_quadratic.clear();
+    }
 };
 
 template<class Key1, class Key2>

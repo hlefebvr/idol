@@ -1,6 +1,7 @@
 //
 // Created by henri on 07/02/23.
 //
+#include <cassert>
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/parameters/Logs.h"
 #include "modeling/objects/Versions.h"

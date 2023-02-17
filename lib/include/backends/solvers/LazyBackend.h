@@ -146,6 +146,8 @@ LazyBackend<VarImplT, CtrImplT>::LazyBackend(const AbstractModel &t_parent) : Ba
 template<class VarImplT, class CtrImplT>
 void LazyBackend<VarImplT, CtrImplT>::initialize() {
 
+    std::cout << "Initialize" << std::endl;
+
     for (const auto& var : parent().vars()) {
         add(var);
     }
