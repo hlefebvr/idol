@@ -9,6 +9,7 @@
 #include "../../containers/IteratorForward.h"
 #include "types.h"
 #include "../numericals.h"
+#include <optional>
 
 /**
  * Base class for Solution::Primal and Solution::Dual. Stores a sparse vector of values associated to a given key.
