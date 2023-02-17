@@ -3,7 +3,7 @@
 .. role:: cpp(code)
    :language: cpp
 
-Using column generation and Branch-and-Price
-============================================
+Using the Branch-and-Price solver
+=================================
 
 # TODO

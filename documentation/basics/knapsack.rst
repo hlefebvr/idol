@@ -45,8 +45,11 @@ A direct way to model our knapsack problem is as follows.
 
 .. code-block:: cpp
 
+    // Create environemnt
+    Env env;
+
     // Create a new model
-    Model model;
+    Model model(env);
 
     // Create a vector for storing the x variables
     std::vector<Var> x;
@@ -54,7 +57,8 @@ A direct way to model our knapsack problem is as follows.
 
     // Create x variables as binary with p_j as objective coefficient
     for (unsigned int j = 0 ; j < n ; ++j) {
-        auto x_j = model.add_var(0., 1., Binary, p[j], "x_" + std::to_string(j));
+        Var x_j(env, 0., 1., Binary, p[j], "x_" + std::to_string(j));
+        model.add(x_j);
         x.emplace_back( x_j );
     }
 
@@ -65,7 +69,8 @@ A direct way to model our knapsack problem is as follows.
     }
 
     // Create the knapsack constraint
-    model.add_ctr(knapsack_constraint <= W);
+    Ctr c(knapsack_constraint <= W);
+    model.add(c);
 
     // Define objective sense
     model.set(Attr::Obj::Sense, Maximize);
@@ -81,47 +86,58 @@ and further calls to the :cpp:`Model::set` method.
 
 .. code-block:: cpp
 
+    // Create environemnt
+    Env env;
+
     // Create a new model
-    Model model;
+    Model model(env);
 
     // Create x variables
-    auto x = model.add_vars(Dim<1>(n), 0., 1., Binary, 0., "x");
-
-    // Define objective function
-    for (unsigned int j = 0 ; j < n ; ++j) {
-        model.set(Attr::Var::Obj, p[i]);
-    }
+    auto x = Var::array(env, Dim<1>(n), 0., 1., Binary, "x");
+    model.add_array<Var, 1>(x);
 
     // Create the knapsack constraint
-    model.add_ctr(idol_Sum(j, Range(n), w[j] * x[j] ) <= W);
+    Ctr c(env, idol_Sum(j, Range(n), w[j] * x[j] ) <= W);
+    model.add(c);
 
     // Define objective sense
     model.set(Attr::Obj::Sense, Maximize);
+    model.set(Attr::Obj::Expr, idol_Sum(j, Range(n), p[i] * x[i]);
 
-Here, we directly add :math:`n` variables with a no objective coefficient. Then, we set the :cpp:`Attr::Var::Obj`
-variable attribute to :math:`p_j` for each variable :math:`j`.
-
+Here, we directly add :math:`n` variables with the right types and bounds.
 Then, we use the :cpp:`idol_Sum` macro to create the knapsack constraint.
 This macro is used as follows :cpp:`idol_Sum({name}, {iteratable}, {expression})` where :cpp:`{name}` will be the name of an index
 taking value in the :cpp:`{iteratable}` (here, :cpp:`Range(n)`) while :cpp:`{expression}` is the piece of expression which will be accumulated.
 Here, :cpp:`Range` is used to define an iteratable ranging from :math:`0` to :math:`n` (note that it is also possible to range from :math:`l` to :math:`n` for :math:`l < n`
-by calling :cpp:`Range(l, n)`).
+by calling :cpp:`Range(l, n)`). The objective function is created similarly.
 
 Solving the model using an external solver
 -----------------------------------------
 
-We can now call an external solver like Gurobi or GLPK to solve our model. Every available solvers can be found under the
-:cpp:`Solvers` namespace. For instance, the following will call Gurobi to solve our model.
+We can now solve our optimization model.
+Idol offers different approaches for solving optimization problems. To select the desired approach for a given model,
+one must call the :cpp:`Idol::set_optimizer<>` method and set its template argument as the desired "backend solver".
+For instance, the following will set the optimizer to Gurobi for solving our model.
 
 .. code-block:: cpp
 
-    Solvers::Gurobi solver(model);
-    solver.solve();
+    Idol::set_optimizer<Gurobi>(model);
 
-Once done, informations regarding the executaion and solution can be accessed through the :cpp:`solver` variable. For instance,
+    model.optimize();
+
+Once done, informations regarding the executation and solution can be accessed through the :cpp:`model` variable itself. For instance,
 we may ask for the solution status, the primal values and the execution time as follows.
 
 .. code-block:: cpp
 
+    std::cout << "Solution: " << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
+    std::cout << "Value of x_0: " << model.get(Attr::Solution::Primal, x[O]) << std::endl;
     std::cout << "Time: " << solver.time().count(Seconds) << " s" << std::endl;
-    std::cout << "Solution: " << solver.primal_solution() << std::endl;
+
+Note that a more compact way of saving primal values is available and is as follows.
+
+.. code-block:: cpp
+
+    auto primals = save(model, Attr::Solution::Primal);
+
+    std::cout << primals << std::endl;

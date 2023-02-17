@@ -8,6 +8,4 @@ API
     :glob:
 
     modeling/index
-    reformulations/index
-    algorithms/index
     attributes/index

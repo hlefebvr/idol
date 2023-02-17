@@ -44,9 +44,12 @@ Then, here is a starting :bash:`main.cpp`.
 
     int main(int t_argc, const char** t_argv) {
 
-        Model model;
+        Env env;
 
-        auto x = model.add_var(0., 1., Continuous, 0., "x");
+        Model model(env);
+
+        Var x(env, 0., 1., Binary, "x");
+        model.add(x);
 
         // ...
 

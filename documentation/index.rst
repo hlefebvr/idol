@@ -33,10 +33,8 @@ input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is 
 whose value must be integral.
 
 Idol provides a structured and rigorous way to write custom or new algorithms based on - but not limited to - the current
-state-of-the-art algorithms (e.g., Branch-and-price, Benders decomposition with local cuts, ...) by combining and interconnecting
+state-of-the-art algorithms (e.g., Branch-and-price, Benders decomposition, ...) by combining and interconnecting
 each algorithm together.
-
-An Algorithm in idol is viewed as a "black-box" which can be chained with any other algorithm in any relevant way.
 
 External solvers
 ----------------

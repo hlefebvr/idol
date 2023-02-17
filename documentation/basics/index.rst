@@ -12,5 +12,3 @@ Getting started
    first-model
    knapsack
    column_generation
-   row_generation
-   custom_branch_and_bound

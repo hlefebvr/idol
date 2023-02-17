@@ -28,13 +28,18 @@ Here, :math:`x_j` are the variables of this optimization problem while :math:`c_
 input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is a set of variable indices
 whose value must be integral.
 
-The default constructor of :cpp:`Model` can be used to create a new optimization model in idol.
+The default constructor of :cpp:`Model` can be used to create a new optimization model in idol. It takes a single argument
+which is the "optimization environment" to be used. An optimization environment manages optimization objects throughout its
+lifetime. It is thanks to the environment that variables can be added to different models and that idol manages multi-threading
+implementations. Typically, users should define only one optimization environment.
 
 .. code-block:: cpp
 
     int main(int t_argc, const char** t_argv) {
 
-        Model model;
+        Env env;
+
+        Model model(env);
 
         // The model has been created!
 
@@ -47,41 +52,52 @@ Variables
 ---------
 
 Any variable in idol is associated to at least one :cpp:`Model` object. Typically, exactly one.
-We can easily create a new variable by using the :cpp:`Model::add_var` method. For instance, the following piece of code
+We can easily create a new variable by using the constructor of the :cpp:`Var` class and add it to a model by calling the :cpp:`Model::add` method.
+For instance, the following piece of code
 will create a new variable, called "x", which is continuous, non-negative and has an objective coefficient of 2.
 
 .. code-block:: cpp
 
-    auto x = model.add_var(0., Inf, Continuous, 2, "x");
+    Var x(0., Inf, Continuous, 2, "x");
 
     std::cout << x << std::endl; // "x"
 
-Note that it is also possible to create multiple variables at once by calling :cpp:`Model::add_vars`. This method requires
+    model.add(x); // Variable x is added to the model
+
+Note that it is also possible to create multiple variables at once by calling :cpp:`Var::array`. This method requires
 an extra parameter specifying the dimension of the new variable. For instance, the following code creates variables :math:`y_{ij}`
 with :math:`i=1,...,K` and :math:`j=1,...,T`.
 
 .. code-block:: cpp
 
-    auto y = model.add_vars(Dim<2>(K, T), 0., Inf, Continuous, 0., "y);
+    auto y = Var::array(env, Dim<2>(K, T), 0., Inf, Continuous, 0., "y");
 
     std::cout << y[0][0] << std::endl; // "y_0_0"
 
+    model.add_array<Var, 2>(y); // Variables y_ij are added to the model
+
 Another possible way to add a variable is to add it "by column", i.e., by specifying the matrix coefficients of the new variable.
-This is done by first defining a :cpp:`Column` object and to give it to the :cpp:`Model::add_var` method. We will not discuss
-it here for brevity.
+This is done by first defining a :cpp:`Column` object and to give it to the :cpp:`Var` constructor. We will not discuss it here for brevity.
 
 Constraints
 -----------
 
-Similar to variables, any constraint in idol is associated to at least one :cpp:`Model` object and, typically, exactly one.
+Similar to variables, any constraint in idol is associated to at least one :cpp:`Model` object.
 
-It is created by calling the :cpp:`Model::add_ctr` method. See for instance.
+It is created by calling the constructor of the :cpp:`Ctr` class and added to method by means of :cpp:`Model::add`. See for instance.
 
 .. code-block:: cpp
 
-    Model model;
-    auto x = model.add_vars(Dim<1>(2), 0., Inf, Continuous, 1, "x");
-    auto constraint = model.add_ctr(x[0] + x[1] >= 1);
+    Env env;
+    Model model(env);
+
+    Var x(env, 0., Inf, Continuous, "x");
+    Var y(env, 0., Inf, Continuous, "y");
+    Ctr constraint(env, x + y >= 1);
+
+    model.add(x);
+    model.add(y);
+    model.add(constraint);
 
 As you can see, a constraint is created using the pattern :code:`{expression} {sign} {expression}` where :code:`{sign}` is one of
 :code:`<=`, :code:`>=` and :code:`==`, and where :code:`{expression}` is an instance of :code:`Expr`.
@@ -117,7 +133,7 @@ As mentioned, you can access parts of an expression as follows.
     */
 
 Without diving into too much detail, we should here precise that each constant multiplying a variable in an :cpp:`Expr`
-can actually be composite (See the tutorial on column generation for details, or see the :cpp:`InParam` and :cpp:`Constant` classes).
+can actually be composite (e.g., a coefficient may refer to an external optimization variable whose value is fixed in the current model).
 Accessing the actual :cpp:`double` which represents the constant can be done by calling :cpp:`Constant::numerical`.
 
 In the following example, we make use of the :cpp:`LinExpr::get` function to retrieve the coefficient of a variable inside

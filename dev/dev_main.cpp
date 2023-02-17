@@ -21,18 +21,19 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Mute);
+    Logs::set_level<ColumnGeneration>(Debug);
     Logs::set_color<ColumnGeneration>(Yellow);
 
     using namespace Problems::GAP;
 
-    const auto instance = read_instance("../tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
     Env env;
 
     Annotation<Ctr> decomposition(env, "by_machines", MasterId);
+    Annotation<Ctr> decomposition2(env, "by_machines", MasterId);
 
     Model model(env);
 
@@ -42,6 +43,7 @@ int main(int t_argc, char** t_argv) {
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
         capacity.set(decomposition, i);
+        capacity.set(decomposition2, 0);
         model.add(capacity);
     }
 
@@ -52,7 +54,7 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition2);
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::FarkasPricing, true);
