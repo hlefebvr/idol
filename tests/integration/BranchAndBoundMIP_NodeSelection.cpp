@@ -18,7 +18,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
             std::make_pair<std::string, double>("KP_instance0.txt", -235.)
     );
 
-    const auto instance = read_instance("instances/KP/" + filename);
+    const auto instance = read_instance("instances/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();
 
     auto node_selection = GENERATE(
