@@ -5,6 +5,8 @@
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
 
+#ifdef IDOL_USE_GUROBI
+
 SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[unit][backend][Gurobi]") {
 
     GIVEN("A model with a variable y, a constraint c1 (y >= 2), and an initialized Gurobi backend") {
@@ -99,3 +101,5 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
     }
 
 }
+
+#endif

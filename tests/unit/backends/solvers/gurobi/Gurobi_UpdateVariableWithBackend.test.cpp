@@ -5,6 +5,8 @@
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
 
+#ifdef IDOL_USE_GUROBI
+
 SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
 
     GIVEN("An initially empty model with a Gurobi backend") {
@@ -55,3 +57,5 @@ SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
     }
 
 }
+
+#endif

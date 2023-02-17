@@ -4,6 +4,8 @@
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
 
+#ifdef IDOL_USE_GUROBI
+
 SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") {
 
     GIVEN("A initially empty model with a Gurobi backend") {
@@ -163,3 +165,5 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
     }
 
 }
+
+#endif
