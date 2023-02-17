@@ -112,8 +112,6 @@ auto save(const AbstractModel& t_original_model, const Req<double, ObjectT>& t_a
     result.set_status(status);
     result.set_reason(reason);
 
-    std::cout << (SolutionStatus) status << " / " << (SolutionReason) reason << std::endl;
-
     if (status == Infeasible) {
 
         result.set_objective_value(sense == Minimize ? Inf : -Inf);

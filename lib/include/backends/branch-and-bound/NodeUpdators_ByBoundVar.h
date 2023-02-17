@@ -104,18 +104,6 @@ void NodeUpdators::ByBoundVar::Strategy<NodeT>::update_bounds(
 template<class NodeT>
 void NodeUpdators::ByBoundVar::Strategy<NodeT>::apply_local_changes(const NodeT &t_node, AbstractModel &t_solution_strategy) {
 
-    std::cout << "Node " << t_node.id() << std::endl;
-
-    for (const auto& [var, lb] : m_lower_bounds) {
-        std::cout << var << " >= " << lb << std::endl;
-    }
-
-    for (const auto& [var, ub] : m_upper_bounds) {
-        std::cout << var << " <= " << ub << std::endl;
-    }
-
-    std::cout << "--" << std::endl;
-
     update_bounds(
             m_lower_bounds,
             t_node.local_lower_bounds(),
