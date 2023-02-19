@@ -419,7 +419,7 @@ void ColumnGeneration::analyze_subproblems_solution() {
         }
 
         const double best_bound_stop = get(Param::Algorithm::BestBoundStop);
-        if (best_obj() > best_bound_stop) {
+        if (best_bound() > best_bound_stop) {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
             idol_Log(Trace,

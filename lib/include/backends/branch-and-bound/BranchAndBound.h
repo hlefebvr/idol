@@ -109,7 +109,7 @@ public:
 
     template<class T, class ...ArgsT> T& set_callback(ArgsT&& ...t_args);
 
-    void submit_solution(Solution::Primal t_solution);
+    bool submit_solution(Solution::Primal t_solution);
 };
 
 template<class T, class... ArgsT>

@@ -16,49 +16,18 @@
 #include "backends/BranchAndPriceMIP.h"
 #include "backends/solvers/GLPK.h"
 
-template<class BackendT>
-class IntegerMaster : public Callback {
-public:
-    void execute(Event t_event) override {
-
-        if (t_event != Event::NodeSolved) {
-            return;
-        }
-
-        const auto& node = node_model();
-
-        const auto& column_generation = node.backend().template as<ColumnGeneration>();
-
-        auto integer_master = std::unique_ptr<AbstractModel>(column_generation.master().clone());
-
-        for (const auto& subproblem : column_generation.subproblems()) {
-            for (const auto &[alpha, generator]: subproblem.present_generators()) {
-                integer_master->set(Attr::Var::Type, alpha, Binary);
-            }
-        }
-
-        Idol::set_optimizer<BackendT>(*integer_master);
-
-        integer_master->optimize();
-
-        auto solution = save(*integer_master, Attr::Solution::Primal);
-
-        submit(std::move(solution));
-
-    }
-};
-
 int main(int t_argc, char** t_argv) {
 
     Logs::set_level<BranchAndBound>(Info);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Info);
+    Logs::set_level<ColumnGeneration>(Mute);
     Logs::set_color<ColumnGeneration>(Yellow);
 
     using namespace Problems::GAP;
 
-    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    //const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__1.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
@@ -86,9 +55,10 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    auto& optimizer = Idol::set_optimizer<BranchAndPriceMIP<Gurobi>>(model, decomposition);
-    optimizer.set_callback<IntegerMaster<Gurobi>>();
+    auto& optimizer = Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    optimizer.set_callback<Callbacks::BranchAndPrice::IntegerMaster<GLPK>>();
 
+    model.set(Param::BranchAndBound::LogFrequency, 1);
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::FarkasPricing, true);
     model.set(Param::ColumnGeneration::BranchingOnMaster, false);

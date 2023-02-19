@@ -13,6 +13,7 @@
 #include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
 #include "backends/branch-and-bound/Nodes_Basic.h"
 #include "backends/column-generation/ColumnGeneration.h"
+#include "backends/column-generation/Callbacks_IntegerMaster.h"
 
 template<class SubProblemBackendT>
 class BranchAndPriceMIP : public BranchAndBound {
@@ -36,6 +37,7 @@ public:
         nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.branching_candidates());
         nodes_manager.template set_node_updator<NodeUpdators::ByBoundVar>();
 
+        set_callback<Callbacks::BranchAndPrice::IntegerMaster<SubProblemBackendT>>();
     }
 };
 

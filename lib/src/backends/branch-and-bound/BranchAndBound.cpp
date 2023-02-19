@@ -500,6 +500,13 @@ const AbstractModel &BranchAndBound::relaxed_model() const {
     return m_relaxations.get().model();
 }
 
-void BranchAndBound::submit_solution(Solution::Primal t_solution) {
-    m_nodes_manager->submit_solution(std::move(t_solution), best_obj());
+bool BranchAndBound::submit_solution(Solution::Primal t_solution) {
+    if (m_nodes_manager->submit_solution(std::move(t_solution), best_obj())) {
+        idol_Log(Debug, BranchAndBound, "New incumbent solution found by submission.");
+        set_best_obj(m_nodes_manager->incumbent().objective_value());
+        log_node(Info, m_nodes_manager->incumbent());
+        //call_callback(Event_::Algorithm::NewBestUb);
+        return true;
+    }
+    return false;
 }

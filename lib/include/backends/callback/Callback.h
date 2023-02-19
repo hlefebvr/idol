@@ -27,7 +27,7 @@ protected:
 
     [[nodiscard]] const AbstractModel& original_model() const;
 
-    void submit(Solution::Primal&& t_solution);
+    bool submit(Solution::Primal&& t_solution) const;
 };
 
 class Callback : public impl::Callback {

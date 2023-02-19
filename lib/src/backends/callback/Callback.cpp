@@ -9,6 +9,6 @@ const AbstractModel &impl::Callback::original_model() const {
     return m_parent->parent();
 }
 
-void impl::Callback::submit(Solution::Primal &&t_solution) {
-    m_parent->submit_solution(std::move(t_solution));
+bool impl::Callback::submit(Solution::Primal &&t_solution) const {
+    return m_parent->submit_solution(std::move(t_solution));
 }
