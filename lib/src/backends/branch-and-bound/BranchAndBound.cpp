@@ -216,7 +216,7 @@ void BranchAndBound::analyze_current_node() {
             log_node(Info, m_nodes_manager->current_node());
             idol_Log(Trace, BranchAndBound, "Better incumbent found at node " << current_node().id() << ".");
 
-            //call_callback(Event_::Algorithm::NewBestUb);
+            call_callback(Callback::IncumbentFound);
         }
 
         reset_current_node();
@@ -288,6 +288,7 @@ bool BranchAndBound::current_node_is_above_upper_bound() {
 
 void BranchAndBound::apply_heuristics_on_current_node() {
     // call_callback(Event_::BranchAndBound::RelaxationSolved);
+    call_callback(Callback::NodeSolved);
 }
 
 void BranchAndBound::prune_current_node() {
@@ -488,4 +489,17 @@ void BranchAndBound::set(const Req<double, Var> &t_attr, const Var &t_var, doubl
 
 void BranchAndBound::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
     m_relaxations.get().model().set(t_attr, t_ctr, std::move(t_value));
+}
+
+void BranchAndBound::call_callback(Callback::Event t_event) {
+    if (!m_callback) { return; }
+    m_callback->execute(t_event);
+}
+
+const AbstractModel &BranchAndBound::relaxed_model() const {
+    return m_relaxations.get().model();
+}
+
+void BranchAndBound::submit_solution(Solution::Primal t_solution) {
+    m_nodes_manager->submit_solution(std::move(t_solution), best_obj());
 }

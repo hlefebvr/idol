@@ -42,6 +42,22 @@ public:
     explicit Backend(const ::AbstractModel& t_parent) : m_parent(t_parent) {}
 
     [[nodiscard]] virtual const ::AbstractModel& parent() const { return m_parent; }
+
+    template<class T> T& as() {
+        auto* result = dynamic_cast<T*>(this);
+        if (!result) {
+            throw Exception("Bad cast.");
+        }
+        return *result;
+    }
+
+    template<class T> const T& as() const {
+        auto* result = dynamic_cast<const T*>(this);
+        if (!result) {
+            throw Exception("Bad cast.");
+        }
+        return *result;
+    }
 };
 
 class Backend : public impl::Backend {

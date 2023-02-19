@@ -2,6 +2,8 @@
 // Created by henri on 13/10/22.
 //
 #include "../../../include/algorithms/callbacks/Callback.h"
+#include "backends/callback/Callback.h"
+
 
 Solution::Primal Callback::Context::node_primal_solution() const {
     throw NotImplemented("Retrieving primal solution from callback", "primal_solution");

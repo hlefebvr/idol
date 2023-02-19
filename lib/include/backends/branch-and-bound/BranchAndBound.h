@@ -16,6 +16,7 @@
 #include "RelaxationManager.h"
 
 class BranchAndBound : public Algorithm {
+private:
     const unsigned int m_n_models = 1;
     RelaxationManager m_relaxations;
 
@@ -28,6 +29,10 @@ class BranchAndBound : public Algorithm {
     Param::BranchAndBound::values<int> m_int_parameters;
 
     std::unique_ptr<NodeStrategy> m_nodes_manager;
+
+    friend class impl::Callback;
+    std::unique_ptr<Callback> m_callback;
+    void call_callback(Callback::Event t_event);
 protected:
     void initialize() override;
     void add(const Var &t_var) override;
@@ -41,6 +46,7 @@ protected:
     void hook_optimize() override;
 
     [[nodiscard]] const Node& current_node() const;
+    [[nodiscard]] const AbstractModel& relaxed_model() const;
 
     void create_root_node();
     void solve_queued_nodes();
@@ -99,7 +105,11 @@ public:
 
     template<class T, class ...ArgsT> T& set_relaxation(ArgsT&& ...t_args);
 
-    template<class T, class ...Args> T& set_node_strategy(Args&& ...t_args);
+    template<class T, class ...ArgsT> T& set_node_strategy(ArgsT&& ...t_args);
+
+    template<class T, class ...ArgsT> T& set_callback(ArgsT&& ...t_args);
+
+    void submit_solution(Solution::Primal t_solution);
 };
 
 template<class T, class... ArgsT>
@@ -107,10 +117,18 @@ T& BranchAndBound::set_relaxation(ArgsT&& ...t_args) {
     return m_relaxations.set_relaxation<T>(parent(), std::forward<ArgsT>(t_args)...);
 }
 
-template<class T, class... Args>
-T &BranchAndBound::set_node_strategy(Args &&... t_args) {
-    auto* result = new T(*this, std::forward<Args>(t_args)...);
+template<class T, class... ArgsT>
+T &BranchAndBound::set_node_strategy(ArgsT &&... t_args) {
+    auto* result = new T(*this, std::forward<ArgsT>(t_args)...);
     m_nodes_manager.reset(result);
+    return *result;
+}
+
+template<class T, class... ArgsT>
+T &BranchAndBound::set_callback(ArgsT &&... t_args) {
+    auto* result = new T(std::forward<ArgsT>(t_args)...);
+    ((impl::Callback*) result)->m_parent = this;
+    m_callback.reset(result);
     return *result;
 }
 

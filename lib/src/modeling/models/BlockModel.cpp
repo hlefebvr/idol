@@ -79,6 +79,16 @@ int BlockModel<AxisT>::get(const Req<int, void> &t_attr) const {
 }
 
 template<class AxisT>
+double BlockModel<AxisT>::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+
+    if (has_backend()) {
+        return backend().get(t_attr, t_var);
+    }
+
+    return Delegate::get(t_attr, t_var);
+}
+
+template<class AxisT>
 void BlockModel<AxisT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     if (has_backend()) {

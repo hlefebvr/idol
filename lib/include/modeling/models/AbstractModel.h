@@ -6,13 +6,14 @@
 #define IDOL_ABSTRACTMODEL_H
 
 #include "backends/Backend.h"
+#include "backends/parameters/Timer.h"
+#include "backends/parameters/Parameters_Algorithm.h"
+#include "backends/callback/Callback.h"
 
 #include "modeling/attributes/AttributeManager_Delegate.h"
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
-#include "backends/parameters/Timer.h"
-#include "backends/parameters/Parameters_Algorithm.h"
 
 class Backend;
 class TempVar;
@@ -22,14 +23,14 @@ class AbstractModel : public AttributeManagers::Delegate {
 
     Timer m_timer;
     std::unique_ptr<Backend> m_backend;
+    std::unique_ptr<Callback> m_callback;
 protected:
     // Backend
     virtual void set_backend(Backend* t_backend) { m_backend.reset(t_backend); m_backend->initialize(); }
     virtual void throw_if_no_backend() const { if (!m_backend) { throw Exception("No backend was found."); } }
     Backend& backend() { throw_if_no_backend(); return *m_backend; }
-    [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }
     void reset_backend() { m_backend.reset(); }
-    bool has_backend() { return (bool) m_backend; }
+    [[nodiscard]] bool has_backend() const { return (bool) m_backend; }
 public:
     // Variables
     virtual void add(const Var& t_var) = 0;
@@ -70,6 +71,8 @@ public:
         throw_if_no_backend();
         backend().update();
     }
+
+    [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
 

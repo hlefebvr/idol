@@ -93,14 +93,14 @@ TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::P
 
 void impl::ColumnGenerationSP::clean_up() {
 
-    const unsigned int threshold = m_parent.get(::Param::ColumnGeneration::CleanUpThreshold);
+    const unsigned int threshold = m_parent.parent().get(::Param::ColumnGeneration::CleanUpThreshold);
 
     if (m_pool.size() < threshold) {
         return;
     }
 
     auto& master = m_parent.master();
-    const double ratio = m_parent.get(::Param::ColumnGeneration::CleanUpRatio);
+    const double ratio = m_parent.parent().get(::Param::ColumnGeneration::CleanUpRatio);
     const auto n_to_remove = (unsigned int) (m_pool.size() * (1 - ratio));
     unsigned int n_removed = 0;
 
@@ -162,7 +162,7 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
         return t_generator.get(t_var) < t_value;
     });
 
-    if (!m_parent.get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_parent.parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
         m_model->set(::Attr::Var::Lb, t_var, t_value);
         return;
     }
@@ -178,7 +178,7 @@ void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
         return t_generator.get(t_var) > t_value;
     });
 
-    if (!m_parent.get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_parent.parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
         m_model->set(::Attr::Var::Ub, t_var, t_value);
         return;
     }

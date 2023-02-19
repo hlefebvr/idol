@@ -107,7 +107,7 @@ public:
 
     // Variables' attributes
     //[[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_ctr) const override;
-    //[[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
     //[[nodiscard]] const Column& get(const Req<Column, Var>& t_attr, const Var& t_var) const override;
     //[[nodiscard]] const Constant& get(const Req<Constant, Var>& t_attr, const Var& t_var) const override;
     //void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;

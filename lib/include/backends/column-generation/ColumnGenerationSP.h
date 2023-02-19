@@ -34,11 +34,7 @@ class impl::ColumnGenerationSP {
 protected:
     explicit ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index);
 
-    [[nodiscard]] const AbstractModel& model() const { return *m_model; }
-
     void update_objective(bool t_farkas_pricing, const Solution::Dual& t_duals);
-
-    [[nodiscard]] LinExpr<Var> expand(const Var& t_var) const;
 
     void hook_before_solve();
 
@@ -62,7 +58,11 @@ protected:
 
     void clean_up();
 public:
-    [[nodiscard]] AbstractModel& model() { return *m_model; } // TODO remove this, this is needed by BranchingManagers only!!
+    [[nodiscard]] const AbstractModel& model() const { return *m_model; }
+
+    [[nodiscard]] auto present_generators() const { return PresentGenerators(m_present_generators); }
+
+    [[nodiscard]] LinExpr<Var> expand(const Var& t_var) const;
 };
 
 class ColumnGenerationSP : public impl::ColumnGenerationSP {

@@ -54,16 +54,6 @@ protected:
 
     void hook_before_optimize() override;
     void hook_optimize() override;
-public:
-    explicit ColumnGeneration(const BlockModel<Ctr>& t_model);
-
-    [[nodiscard]] const BlockModel<Ctr>& parent() const override;
-
-    AbstractModel& master() { return *m_master; } // TODO make this private
-
-    template<class T, class ...ArgsT> T& set_master_backend(ArgsT&& ...t_args) { return Idol::set_optimizer<T>(*m_master, std::forward<ArgsT>(t_args)...); }
-
-    template<class T, class ...ArgsT> T& set_subproblem_backend(unsigned int t_index, ArgsT&& ...t_args) { return Idol::set_optimizer<T>(m_subproblems[t_index].model(), std::forward<ArgsT>(t_args)...); }
 
     using Algorithm::set;
     using Algorithm::get;
@@ -78,6 +68,22 @@ public:
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
+public:
+    explicit ColumnGeneration(const BlockModel<Ctr>& t_model);
+
+    [[nodiscard]] const BlockModel<Ctr>& parent() const override;
+
+    AbstractModel& master() { return *m_master; } // TODO make this private
+
+    [[nodiscard]] const AbstractModel& master() const { return *m_master; }
+
+    [[nodiscard]] auto subproblems() const { return ConstIteratorForward<std::vector<ColumnGenerationSP>>(m_subproblems); }
+
+    [[nodiscard]] const ColumnGenerationSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index]; }
+
+    template<class T, class ...ArgsT> T& set_master_backend(ArgsT&& ...t_args) { return Idol::set_optimizer<T>(*m_master, std::forward<ArgsT>(t_args)...); }
+
+    template<class T, class ...ArgsT> T& set_subproblem_backend(unsigned int t_index, ArgsT&& ...t_args) { return Idol::set_optimizer<T>(m_subproblems[t_index].model(), std::forward<ArgsT>(t_args)...); }
 };
 
 #endif //IDOL_COLUMNGENERATION_H
