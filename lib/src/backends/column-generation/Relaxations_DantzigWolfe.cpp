@@ -81,7 +81,11 @@ void Relaxations::DantzigWolfe::add_variable_to_block(const Var &t_var, unsigned
     const double ub = m_original_model.get(Attr::Var::Ub, t_var);
     const int type = m_original_model.get(Attr::Var::Type, t_var);
 
-    m_decomposition->block(t_block_id).model().add(t_var, TempVar(lb, ub, type, Column()));
+    auto& block_model = m_decomposition->block(t_block_id).model();
+
+    if (!block_model.has(t_var)) {
+        block_model.add(t_var, TempVar(lb, ub, type, Column()));
+    }
 }
 
 void Relaxations::DantzigWolfe::dispatch_constraint(const Ctr &t_ctr) {
