@@ -73,6 +73,7 @@ double Gurobi::gurobi_numeric(double t_value) {
 Gurobi::Gurobi(const AbstractModel &t_model, GRBEnv &t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
+    m_model.set(GRB_IntParam_QCPDual, 1);
 
 }
 
@@ -331,7 +332,7 @@ double Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
         if (std::holds_alternative<GRBConstr>(impl)) {
             return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
         } else {
-            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_Pi);
+            return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCPi);
         }
     }
 

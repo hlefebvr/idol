@@ -1,6 +1,7 @@
 //
 // Created by henri on 08/02/23.
 //
+#include <cassert>
 #include "backends/column-generation/ColumnGenerationSP.h"
 #include "backends/column-generation/ColumnGeneration.h"
 #include "modeling/expressions/operations/operators.h"
@@ -35,7 +36,6 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
     }
 
     m_model->set(::Attr::Obj::Expr, std::move(objective));
-    //m_model->set(::Attr::Obj::Expr, std::move(objective));
 
 }
 
