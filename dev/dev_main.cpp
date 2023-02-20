@@ -19,16 +19,16 @@
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBound>(Info);
+    Logs::set_level<BranchAndBound>(Debug);
     Logs::set_color<BranchAndBound>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Mute);
+    Logs::set_level<ColumnGeneration>(Debug);
     Logs::set_color<ColumnGeneration>(Yellow);
 
     using namespace Problems::GAP;
 
-    //const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    //const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
@@ -56,19 +56,13 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    /*
     Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
 
     model.set(Param::BranchAndBound::LogFrequency, 1);
     model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::FarkasPricing, false);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, false);
-    model.set(Param::ColumnGeneration::SmoothingFactor, 0);
-     */
-
-    Idol::set_optimizer<BranchAndBoundMIP<Mosek>>(model);
-
-    model.write("model.lp");
+    model.set(Param::ColumnGeneration::FarkasPricing, true);
+    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
+    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
 
     model.optimize();
 

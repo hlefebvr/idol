@@ -42,11 +42,17 @@ public:
 
         integer_master->optimize();
 
-        auto solution = save(*integer_master, Attr::Solution::Primal);
+        const int status = integer_master->get(Attr::Solution::Status);
 
-        if (solution.status() != Optimal) {
+        if (status == Fail) {
+            idol_Log(Warn, BranchAndBound, "Heuristic returned status \"Fail\".");
+        }
+
+        if (status != Optimal) {
             return;
         }
+
+        auto solution = save(*integer_master, Attr::Solution::Primal);
 
         for (const auto& subproblem : column_generation.subproblems()) {
             for (const auto &[alpha, generator]: subproblem.present_generators()) {

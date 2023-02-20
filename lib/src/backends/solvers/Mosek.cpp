@@ -56,12 +56,27 @@ void Mosek::hook_optimize() {
         m_solution_status = Infeasible;
         m_solution_reason = Proved;
 
+    } else if (problem_status == mosek::fusion::ProblemStatus::PrimalInfeasible
+               && primal_status == mosek::fusion::SolutionStatus::Undefined
+               && dual_status == mosek::fusion::SolutionStatus::Undefined
+               ) {
+
+        m_solution_status = Infeasible;
+        m_solution_reason = Proved;
+
     } else if (problem_status == mosek::fusion::ProblemStatus::DualInfeasible
                && primal_status == mosek::fusion::SolutionStatus::Certificate
                && dual_status == mosek::fusion::SolutionStatus::Undefined) {
 
         m_solution_status = Unbounded;
         m_solution_reason = Proved;
+
+    } else if (problem_status == mosek::fusion::ProblemStatus::Unknown
+               && primal_status == mosek::fusion::SolutionStatus::Unknown
+               && dual_status == mosek::fusion::SolutionStatus::Undefined) {
+
+        m_solution_status = Fail;
+        m_solution_reason = NotSpecified;
 
     } else {
         std::cout << problem_status << ", " << primal_status << ", " << dual_status << std::endl;
@@ -77,7 +92,7 @@ MosekVar Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
     MosekVar result;
 
-    result.variable = m_model->variable(t_var.name(), 1, mosek::fusion::Domain::unbounded());
+    result.variable = m_model->variable(1, mosek::fusion::Domain::unbounded());
 
     const double lb = parent().get(Attr::Var::Lb, t_var);
     const double ub = parent().get(Attr::Var::Ub, t_var);
@@ -87,7 +102,14 @@ MosekVar Mosek::hook_add(const Var &t_var, bool t_add_column) {
     set_var_attr(result, type, lb, ub, as_numeric(column.obj()));
 
     if (t_add_column) {
-        throw Exception("Not implemented: add variable by column.");
+
+        for (const auto& [ctr, constant] : column.linear()) {
+            lazy(ctr).impl().constraint->index(0)->update(
+                    mosek::fusion::Expr::mul(as_numeric(constant), result.variable->index(0)),
+                    result.variable->index(0)
+                );
+        }
+
     }
 
     return result;
@@ -119,13 +141,13 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
     // Set constraint type
     switch (type) {
         case LessOrEqual:
-            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::lessThan(0.));
+            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::lessThan(0.));
         break;
         case GreaterOrEqual:
-            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::greaterThan(0.));
+            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::greaterThan(0.));
             break;
         case Equal:
-            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::equalsTo(0.));
+            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::equalsTo(0.));
             break;
         default: throw Exception("Enum out of bounds.");
     }
@@ -159,11 +181,38 @@ void Mosek::hook_update(const Var &t_var) {
 }
 
 void Mosek::hook_update(const Ctr &t_ctr) {
-    throw Exception("Not implemented hook_update");
+
+    const auto& row = parent().get(Attr::Ctr::Row, t_ctr);
+
+    auto rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -as_numeric(row.rhs()));
+    lazy(t_ctr).impl().constraint->index(0)->update(rhs);
+
 }
 
 void Mosek::hook_update_objective() {
-    throw Exception("Not implemented hook_update_objective");
+
+    const auto& model = parent();
+    const auto& objective = model.get(Attr::Obj::Expr);
+    const int sense = model.get(Attr::Obj::Sense);
+
+    auto expr = mosek::fusion::Expr::constTerm(as_numeric(objective.constant()));
+
+    for (const auto& [var, constant] : objective.linear()) {
+        expr = mosek::fusion::Expr::add(
+                std::move(expr),
+                mosek::fusion::Expr::mul(
+                        as_numeric(constant),
+                        lazy(var).impl().variable
+                )
+        );
+    }
+
+    if (sense == Minimize) {
+        m_model->objective(mosek::fusion::ObjectiveSense::Minimize, std::move(expr));
+    } else {
+        m_model->objective(mosek::fusion::ObjectiveSense::Maximize, std::move(expr));
+    }
+
 }
 
 void Mosek::hook_update_rhs() {
@@ -171,11 +220,27 @@ void Mosek::hook_update_rhs() {
 }
 
 void Mosek::hook_remove(const Var &t_var) {
-    throw Exception("Not implemented hook_remove");
+
+    auto& impl = lazy(t_var).impl();
+
+    m_model->updateObjective(mosek::fusion::Expr::constTerm(0), impl.variable);
+
+    impl.variable->remove();
+
+    if (impl.lower_bound.get()) {
+        impl.lower_bound->remove();
+        impl.lower_bound = nullptr;
+    }
+
+    if (impl.upper_bound.get()) {
+        impl.upper_bound->remove();
+        impl.upper_bound = nullptr;
+    }
 }
 
 void Mosek::hook_remove(const Ctr &t_ctr) {
-    throw Exception("Not implemented hook_remove");
+    auto& impl = lazy(t_ctr).impl();
+    impl.constraint->remove();
 }
 
 void Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
@@ -288,7 +353,7 @@ double Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
         if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
             throw Exception("Not available.");
         }
-        return lazy(t_ctr).impl().constraint->level()->operator[](0);
+        return lazy(t_ctr).impl().constraint->dual()->operator[](0);
     }
 
     return Base::get(t_attr, t_ctr);

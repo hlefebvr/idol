@@ -15,7 +15,7 @@
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/column-generation/Callbacks_IntegerMaster.h"
 
-template<class SubProblemBackendT>
+template<class MasterProblemBackendT, class SubProblemBackendT = MasterProblemBackendT>
 class BranchAndPriceMIP : public BranchAndBound {
 public:
     explicit BranchAndPriceMIP(const AbstractModel& t_original_formulation,
@@ -27,7 +27,7 @@ public:
 
         auto& column_generation = Idol::set_optimizer<ColumnGeneration>(relaxation.model());
 
-        column_generation.template set_master_backend<SubProblemBackendT>();
+        column_generation.template set_master_backend<MasterProblemBackendT>();
         for (unsigned int i = 0, n = relaxation.model().n_blocks() ; i < n ; ++i) {
             column_generation.template set_subproblem_backend<SubProblemBackendT>(i);
         }
@@ -37,7 +37,7 @@ public:
         nodes_manager.template set_branching_strategy<BranchingStrategies::MostInfeasible>(relaxation.branching_candidates());
         nodes_manager.template set_node_updator<NodeUpdators::ByBoundVar>();
 
-        set_callback<Callbacks::BranchAndPrice::IntegerMaster<SubProblemBackendT>>();
+        set_callback<Callbacks::BranchAndPrice::IntegerMaster<MasterProblemBackendT>>();
     }
 };
 
