@@ -3,6 +3,8 @@
 //
 #include "backends/solvers/GLPK.h"
 
+#ifdef IDOL_USE_GLPK
+
 GLPK::GLPK(const AbstractModel &t_model) : LazyBackend(t_model), m_model(glp_create_prob()) {
 
     glp_init_smcp(&m_simplex_parameters);
@@ -712,3 +714,5 @@ double GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     return Base::get(t_attr, t_ctr);
 }
+
+#endif
