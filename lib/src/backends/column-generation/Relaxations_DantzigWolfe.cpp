@@ -118,6 +118,14 @@ void Relaxations::DantzigWolfe::add_constraint_and_variables_to_master(const Ctr
 
     auto [lhs, coefficients] = decompose_master_expression(row.linear());
 
+    for (const auto& [var1, var2, constant] : row.quadratic()) {
+
+        add_variable_to_master(var1);
+        add_variable_to_master(var2);
+
+        lhs += constant * var1 * var2;
+    }
+
     m_decomposition->master().add(t_ctr, TempCtr(Row(std::move(lhs), row.rhs()), type));
 
     for (unsigned int i = 0 ; i < n_blocks ; ++i) {
@@ -132,6 +140,13 @@ void Relaxations::DantzigWolfe::add_objective_to_master() {
     const unsigned int n_blocks = m_decomposition->n_blocks();
 
     auto [master_objective, coefficients] = decompose_master_expression(objective.linear());
+
+    for (const auto& [var1, var2, constant] : objective.quadratic()) {
+        add_variable_to_master(var1);
+        add_variable_to_master(var2);
+
+        master_objective += constant * var1 * var2;
+    }
 
     m_decomposition->master().set(Attr::Obj::Expr, std::move(master_objective));
 

@@ -442,7 +442,7 @@ void ColumnGeneration::enrich_master_problem() {
         bool can_enrich_master;
 
         if (m_current_is_farkas_pricing) {
-            can_enrich_master = subproblem.model().get(Attr::Solution::ObjVal) < 0;
+            can_enrich_master = subproblem.model().get(Attr::Solution::ObjVal) < -1e-6;
         } else {
             can_enrich_master = subproblem.compute_reduced_cost(m_current_dual_solution.value()) < 0;
         }
