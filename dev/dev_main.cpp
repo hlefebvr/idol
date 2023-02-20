@@ -15,6 +15,7 @@
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/BranchAndPriceMIP.h"
 #include "backends/solvers/GLPK.h"
+#include "backends/solvers/Mosek.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -27,7 +28,7 @@ int main(int t_argc, char** t_argv) {
     using namespace Problems::GAP;
 
     //const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__1.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
@@ -55,17 +56,19 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    auto& optimizer = Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
-    optimizer.set_callback<Callbacks::BranchAndPrice::IntegerMaster<GLPK>>();
+    /*
+    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
 
     model.set(Param::BranchAndBound::LogFrequency, 1);
     model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::FarkasPricing, true);
+    model.set(Param::ColumnGeneration::FarkasPricing, false);
     model.set(Param::ColumnGeneration::BranchingOnMaster, false);
     model.set(Param::ColumnGeneration::SmoothingFactor, 0);
+     */
 
-    //auto& optimizer = Idol::set_optimizer<BranchAndBoundMIP<GLPK>>(model);
-    //optimizer.set_callback<MyCallback>();
+    Idol::set_optimizer<BranchAndBoundMIP<Mosek>>(model);
+
+    model.write("model.lp");
 
     model.optimize();
 

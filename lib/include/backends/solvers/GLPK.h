@@ -66,6 +66,9 @@ protected:
     void compute_unbounded_ray();
     void save_milp_solution_status();
 
+    using LazyBackend::get;
+    using LazyBackend::set;
+
     void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
