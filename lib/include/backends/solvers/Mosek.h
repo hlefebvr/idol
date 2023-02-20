@@ -22,6 +22,8 @@ struct MosekCtr {
 
 class Mosek : public LazyBackend<MosekVar, MosekCtr> {
     mosek::fusion::Model::t m_model;
+    SolutionStatus m_solution_status = Unknown;
+    SolutionReason m_solution_reason = NotSpecified;
 protected:
     void set_var_attr(MosekVar& t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj);
     void set_var_lb(MosekVar& t_mosek_var, double t_bound);
@@ -58,9 +60,9 @@ protected:
     using LazyBackend::get;
     using LazyBackend::set;
 
-    //void set(const Parameter<bool>& t_param, bool t_value) override;
+    void set(const Parameter<bool>& t_param, bool t_value) override;
     void set(const Parameter<double>& t_param, double t_value) override;
-    //[[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
+    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
 
     [[nodiscard]] int get(const Req<int, void> &t_attr) const override;

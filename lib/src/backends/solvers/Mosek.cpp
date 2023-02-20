@@ -1,3 +1,5 @@
+#ifdef IDOL_USE_MOSEK
+
 #include "backends/solvers/Mosek.h"
 
 Mosek::Mosek(const AbstractModel &t_model)
@@ -26,7 +28,45 @@ void Mosek::hook_initialize() {
 }
 
 void Mosek::hook_optimize() {
+
     m_model->solve();
+
+    auto problem_status = m_model->getProblemStatus();
+    auto primal_status = m_model->getPrimalSolutionStatus();
+    auto dual_status = m_model->getDualSolutionStatus();
+
+    if (problem_status == mosek::fusion::ProblemStatus::PrimalAndDualFeasible
+        && primal_status == mosek::fusion::SolutionStatus::Optimal
+        && dual_status == mosek::fusion::SolutionStatus::Optimal) {
+
+        m_solution_status = Optimal;
+        m_solution_reason = Proved;
+
+    } else if(problem_status == mosek::fusion::ProblemStatus::PrimalFeasible
+              && primal_status == mosek::fusion::SolutionStatus::Optimal
+              && dual_status == mosek::fusion::SolutionStatus::Undefined) {
+
+        m_solution_status = Optimal;
+        m_solution_reason = Proved;
+
+    } else if (problem_status == mosek::fusion::ProblemStatus::PrimalInfeasible
+               && primal_status == mosek::fusion::SolutionStatus::Undefined
+               && dual_status == mosek::fusion::SolutionStatus::Certificate) {
+
+        m_solution_status = Infeasible;
+        m_solution_reason = Proved;
+
+    } else if (problem_status == mosek::fusion::ProblemStatus::DualInfeasible
+               && primal_status == mosek::fusion::SolutionStatus::Certificate
+               && dual_status == mosek::fusion::SolutionStatus::Undefined) {
+
+        m_solution_status = Unbounded;
+        m_solution_reason = Proved;
+
+    } else {
+        std::cout << problem_status << ", " << primal_status << ", " << dual_status << std::endl;
+        throw Exception("Unknown problem-solution status combination.");
+    }
 }
 
 void Mosek::hook_write(const std::string &t_name) {
@@ -201,30 +241,11 @@ void Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 int Mosek::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::Status) {
-        auto problem_status = m_model->getProblemStatus();
-        auto primal_status = m_model->getPrimalSolutionStatus();
-        auto dual_status = m_model->getDualSolutionStatus();
-
-        if (problem_status == mosek::fusion::ProblemStatus::PrimalAndDualFeasible
-            && primal_status == mosek::fusion::SolutionStatus::Optimal
-            && dual_status == mosek::fusion::SolutionStatus::Optimal) {
-            return Optimal;
-        } else if(problem_status == mosek::fusion::ProblemStatus::PrimalFeasible
-                  && primal_status == mosek::fusion::SolutionStatus::Optimal
-                  && dual_status == mosek::fusion::SolutionStatus::Undefined) {
-            return Optimal;
-        } else if (problem_status == mosek::fusion::ProblemStatus::PrimalInfeasible
-                  && primal_status == mosek::fusion::SolutionStatus::Undefined
-                  && dual_status == mosek::fusion::SolutionStatus::Certificate) {
-            return Infeasible;
-        } else {
-            std::cout << problem_status << ", " << primal_status << ", " << dual_status << std::endl;
-            throw Exception("Unknown problem-solution status combination.");
-        }
+        return m_solution_status;
     }
 
     if (t_attr == Attr::Solution::Reason) {
-        return Proved;
+        return m_solution_reason;
     }
 
     return Base::get(t_attr);
@@ -233,6 +254,8 @@ int Mosek::get(const Req<int, void> &t_attr) const {
 double Mosek::get(const Req<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
+        if (m_solution_status == Infeasible) { return Inf; }
+        if (m_solution_status == Unbounded) { return -Inf; }
         return m_model->primalObjValue();
     }
 
@@ -245,12 +268,26 @@ double Mosek::get(const Req<double, Var> &t_attr, const Var &t_var) const {
         return lazy(t_var).impl().variable->level()->operator[](0);
     }
 
+    if (t_attr == Attr::Solution::Ray) {
+        if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
+            throw Exception("Not available.");
+        }
+        return lazy(t_var).impl().variable->level()->operator[](0);
+    }
+
     return Base::get(t_attr, t_var);
 }
 
 double Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Solution::Dual) {
+        return lazy(t_ctr).impl().constraint->dual()->operator[](0);
+    }
+
+    if (t_attr == Attr::Solution::Farkas) {
+        if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
+            throw Exception("Not available.");
+        }
         return lazy(t_ctr).impl().constraint->level()->operator[](0);
     }
 
@@ -293,3 +330,24 @@ void Mosek::set(const Parameter<double> &t_param, double t_value) {
 
     Base::set(t_param, t_value);
 }
+
+void Mosek::set(const Parameter<bool> &t_param, bool t_value) {
+
+    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+        m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
+        return;
+    }
+
+    Base::set(t_param, t_value);
+}
+
+bool Mosek::get(const Parameter<bool> &t_param) const {
+
+    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
+        return m_model->getAcceptedSolutionStatus() == mosek::fusion::AccSolutionStatus::Anything;
+    }
+
+    return Base::get(t_param);
+}
+
+#endif

@@ -36,10 +36,22 @@ using branch_and_bound_with_glpk = std::tuple<>;
 using branch_and_price_with_glpk = std::tuple<>;
 #endif
 
+#ifdef IDOL_USE_MOSEK
+#include "backends/solvers/Mosek.h"
+
+using mosek_solver = std::tuple<Mosek>;
+using branch_and_bound_with_mosek = std::tuple<BranchAndBoundMIP<Mosek>>;
+using branch_and_price_with_mosek = std::tuple<BranchAndPriceMIP<Mosek>, BranchAndPriceMIP<BranchAndBoundMIP<Mosek>>>;
+#else
+using mosek_solver = std::tuple<>;
+using branch_and_bound_with_mosek = std::tuple<>;
+using branch_and_price_with_mosek = std::tuple<>;
+#endif
+
 namespace impl {
-    using lp_solvers = tuple_cat_t<gurobi_solver, glpk_solver>;
-    using milp_solvers = tuple_cat_t<gurobi_solver, branch_and_bound_with_gurobi, glpk_solver, branch_and_bound_with_glpk>;
-    using branch_and_bound_solvers = tuple_cat_t<branch_and_bound_with_gurobi, branch_and_bound_with_glpk>;
+    using lp_solvers = tuple_cat_t<gurobi_solver, glpk_solver, mosek_solver>;
+    using milp_solvers = tuple_cat_t<gurobi_solver, branch_and_bound_with_gurobi, glpk_solver, branch_and_bound_with_glpk, branch_and_bound_with_mosek>;
+    using branch_and_bound_solvers = tuple_cat_t<branch_and_bound_with_gurobi, branch_and_bound_with_glpk, branch_and_bound_with_mosek>;
     using branch_and_price_solvers = tuple_cat_t<branch_and_price_with_gurobi, branch_and_price_with_glpk>;
 }
 
