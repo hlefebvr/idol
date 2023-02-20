@@ -27,8 +27,8 @@ int main(int t_argc, char** t_argv) {
 
     using namespace Problems::GAP;
 
-    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    //const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
+    //const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
@@ -56,8 +56,10 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
 
+    model.set(Param::Algorithm::MaxThreads, 1);
+    model.set(Param::Algorithm::TimeLimit, 600);
     model.set(Param::BranchAndBound::LogFrequency, 1);
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::FarkasPricing, true);

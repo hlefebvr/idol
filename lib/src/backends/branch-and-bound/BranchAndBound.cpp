@@ -152,7 +152,9 @@ void BranchAndBound::prepare_to_solve_current_node() {
 }
 
 void BranchAndBound::solve_current_node() {
+
     auto& lower_bounding_model = m_relaxations.get().model();
+
     if (lower_bounding_model.get(Attr::Obj::Sense) == Minimize) {
         lower_bounding_model.set(Param::Algorithm::BestBoundStop, std::min(best_obj(), get(Param::Algorithm::BestBoundStop)));
     } else {
@@ -468,11 +470,22 @@ double BranchAndBound::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) con
 }
 
 void BranchAndBound::set(const Parameter<bool> &t_param, bool t_value) {
+
     m_relaxations.get().model().set(t_param, t_value);
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+        Algorithm::set(t_param, t_value);
+    }
+
 }
 
 void BranchAndBound::set(const Parameter<double> &t_param, double t_value) {
+
     m_relaxations.get().model().set(t_param, t_value);
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+        Algorithm::set(t_param, t_value);
+    }
 }
 
 const Expr<Var, Var> &BranchAndBound::get(const Req<Expr<Var, Var>, void> &t_attr) const {
