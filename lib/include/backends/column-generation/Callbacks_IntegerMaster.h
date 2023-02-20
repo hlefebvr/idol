@@ -38,6 +38,7 @@ public:
         Idol::set_optimizer<BackendT>(*integer_master);
 
         integer_master->set(Param::Algorithm::BestObjStop, node.get(Param::Algorithm::BestObjStop));
+        integer_master->set(Param::Algorithm::TimeLimit, original_model().remaining_time());
 
         integer_master->optimize();
 
