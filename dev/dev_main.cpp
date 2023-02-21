@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Eigen/Eigen>
 #include "modeling.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "backends/solvers/Gurobi.h"
@@ -19,6 +20,23 @@
 
 int main(int t_argc, char** t_argv) {
 
+    Env env;
+    Model model(env);
+
+    auto x = Var::array<1>(env, Dim<1>(3), 0., Inf, Continuous, "x");
+    model.add_array<Var, 1>(x);
+
+    Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= x[2] * x[2]);
+    model.add(quadratic);
+
+    model.set(Attr::Obj::Expr, -x[0] - x[1]);
+
+    Idol::set_optimizer<Mosek>(model);
+
+    model.update();
+
+    return 0;
+/*
     Logs::set_level<BranchAndBound>(Debug);
     Logs::set_color<BranchAndBound>(Blue);
 
@@ -56,36 +74,19 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    for (bool with_heuristic : { true, false }) {
+    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
 
-        for (bool farkas_pricing: { true, false }) {
+    model.set(Param::Algorithm::MaxThreads, 1);
+    model.set(Param::Algorithm::TimeLimit, 600);
+    model.set(Param::BranchAndBound::LogFrequency, 1);
+    model.set(Param::ColumnGeneration::LogFrequency, 1);
+    model.set(Param::ColumnGeneration::FarkasPricing, false);
+    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
+    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
 
-            for (bool branching_on_master : { true, false }) {
+    model.optimize();
 
-                for (double smoothing_factor : { 0., .3, .5, .8 }) {
-
-                    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
-
-                    model.set(Param::Algorithm::MaxThreads, 1);
-                    model.set(Param::Algorithm::TimeLimit, 600);
-                    model.set(Param::BranchAndBound::LogFrequency, 1);
-                    model.set(Param::ColumnGeneration::LogFrequency, 1);
-                    model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
-                    model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
-                    model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
-                    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, with_heuristic);
-
-                    model.optimize();
-
-                    std::cout << save(model, Attr::Solution::Primal) << std::endl;
-
-                }
-
-            }
-
-        }
-
-    }
-
+    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+*/
     return 0;
 }
