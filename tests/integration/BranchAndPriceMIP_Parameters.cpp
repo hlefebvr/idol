@@ -16,6 +16,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto [filename, objective_value] = GENERATE(
             std::make_pair<std::string, double>("GAP_instance0.txt", -233.)
     );
+    const auto integer_master_heuristic = GENERATE(false, true);
     const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
@@ -51,6 +52,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
     model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
     model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
+    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, integer_master_heuristic);
 
     WHEN("The instance \"" + filename + "\" is solved") {
 

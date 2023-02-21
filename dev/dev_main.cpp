@@ -27,8 +27,8 @@ int main(int t_argc, char** t_argv) {
 
     using namespace Problems::GAP;
 
-    //const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
+    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    //const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
@@ -56,19 +56,36 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    for (bool with_heuristic : { true, false }) {
 
-    model.set(Param::Algorithm::MaxThreads, 1);
-    model.set(Param::Algorithm::TimeLimit, 600);
-    model.set(Param::BranchAndBound::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::FarkasPricing, true);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
-    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
+        for (bool farkas_pricing: { true, false }) {
 
-    model.optimize();
+            for (bool branching_on_master : { true, false }) {
 
-    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+                for (double smoothing_factor : { 0., .3, .5, .8 }) {
+
+                    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
+
+                    model.set(Param::Algorithm::MaxThreads, 1);
+                    model.set(Param::Algorithm::TimeLimit, 600);
+                    model.set(Param::BranchAndBound::LogFrequency, 1);
+                    model.set(Param::ColumnGeneration::LogFrequency, 1);
+                    model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
+                    model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
+                    model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
+                    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, with_heuristic);
+
+                    model.optimize();
+
+                    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
+                }
+
+            }
+
+        }
+
+    }
 
     return 0;
 }
