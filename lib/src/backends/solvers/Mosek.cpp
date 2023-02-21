@@ -130,30 +130,37 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
         assert(row.linear().empty());
 
-        std::cout << "WARNING: Using experimental feature: quadratic expression with mosek" << std::endl;
+        std::cout << "WARNING: Using experimental feature: quadratic expression with Mosek" << std::endl;
 
         const auto& quadratic = row.quadratic();
-        const int size = quadratic.size();
+        const int size = (int) quadratic.size();
 
-        auto expression = mosek::fusion::Expr::constTerm(size + 2, 0.0);
+        auto expression = mosek::fusion::Expr::zeros(0);
 
-        unsigned int index = 2;
+        int index = 2;
         for (const auto& [var1, var2, constant] : row.quadratic()) {
 
             const double q_ij = constant.numerical();
 
             if (q_ij < 0) {
-                expression->index(0) = mosek::fusion::Expr::mul(.5, lazy(var1).impl().variable);
-                expression->index(1) = lazy(var2).impl().variable;
-            } else {
-                if (var1 != var2 || q_ij != 1) { throw Exception("Cannot hande complex quadartic expressions for now."); }
-                expression->index(index) = lazy(var1).impl().variable;
+                expression = mosek::fusion::Expr::vstack(
+                            mosek::fusion::Expr::mul(.5, lazy(var1).impl().variable),
+                            lazy(var2).impl().variable,
+                            std::move(expression)
+                        );
+            } else if (var1 == var2 && q_ij == 1) {
+                expression = mosek::fusion::Expr::vstack(
+                                std::move(expression),
+                                lazy(var1).impl().variable
+                            );
                 ++index;
+            } else {
+                throw Exception("Cannot hande complex quadratic expressions for now.");
             }
 
         }
 
-        result.constraint = m_model->constraint(std::move(expression), mosek::fusion::Domain::inQCone());
+        result.constraint = m_model->constraint(std::move(expression), mosek::fusion::Domain::inRotatedQCone());
 
         return result;
     }
