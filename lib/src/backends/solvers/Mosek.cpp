@@ -2,6 +2,7 @@
 
 #include "backends/solvers/Mosek.h"
 #include "linear-algebra/to_rotated_quadratic_cone.h"
+#include "modeling/expressions/operations/operators.h"
 #include <Eigen/Sparse>
 
 Mosek::Mosek(const AbstractModel &t_model)
@@ -135,6 +136,14 @@ mosek::fusion::Expression::t Mosek::to_mosek_expression(const LinExpr<Var> &t_ex
     return result;
 }
 
+mosek::fusion::Expression::t Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
+    assert(t_expr.quadratic().empty());
+    return mosek::fusion::Expr::add(
+                as_numeric(t_expr.constant()),
+                to_mosek_expression(t_expr.linear())
+            );
+}
+
 MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
     MosekCtr result;
@@ -148,7 +157,9 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
 #ifdef IDOL_USE_EIGEN
 
-        auto rq_cone_expr = to_rotated_quadratic_cone(row.quadratic());
+        auto sign = type == LessOrEqual ? 1. : -1.;
+
+        auto rq_cone_expr = to_rotated_quadratic_cone(sign == 1. ? row.quadratic() : sign * row.quadratic());
 
         auto expression = mosek::fusion::Expr::zeros(0);
 
@@ -156,18 +167,21 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
         if (!row.linear().empty()) {
 
-            assert(it->empty());
+            auto& head1 = *it;
             ++it;
-            assert(it->empty());
+            auto& head2 = *it;
 
-            auto linear_part = row.linear();
-            linear_part *= -1.;
+            if (head1.is_zero() && head2.is_zero()) {
 
-            expression = mosek::fusion::Expr::vstack(
+                expression = mosek::fusion::Expr::vstack(
                         std::move(expression),
                         mosek::fusion::Expr::constTerm(.5),
-                        mosek::fusion::Expr::add(as_numeric(row.rhs()), to_mosek_expression(linear_part))
-                    );
+                        to_mosek_expression(sign * row.rhs() - sign * row.linear())
+                );
+
+            } else {
+                throw Exception("Non-convex constraint was found.");
+            }
 
             ++it;
         }
