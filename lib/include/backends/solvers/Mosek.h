@@ -28,6 +28,7 @@ protected:
     void set_var_attr(MosekVar& t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj);
     void set_var_lb(MosekVar& t_mosek_var, double t_bound);
     void set_var_ub(MosekVar& t_mosek_var, double t_bound);
+    [[nodiscard]] mosek::fusion::Expression::t to_mosek_expression(const LinExpr<Var>& t_expr) const;
 
     void hook_initialize() override;
 

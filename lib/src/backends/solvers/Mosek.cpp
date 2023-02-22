@@ -1,6 +1,7 @@
 #ifdef IDOL_USE_MOSEK
 
 #include "backends/solvers/Mosek.h"
+#include "linear-algebra/to_rotated_quadratic_cone.h"
 #include <Eigen/Sparse>
 
 Mosek::Mosek(const AbstractModel &t_model)
@@ -117,6 +118,23 @@ MosekVar Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
 }
 
+mosek::fusion::Expression::t Mosek::to_mosek_expression(const LinExpr<Var> &t_expr) const {
+
+    auto result = mosek::fusion::Expr::constTerm(0);
+
+    for (const auto& [var, constant] : t_expr) {
+        result = mosek::fusion::Expr::add(
+                std::move(result),
+                mosek::fusion::Expr::mul(
+                        as_numeric(constant),
+                        lazy(var).impl().variable
+                )
+        );
+    }
+
+    return result;
+}
+
 MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
     MosekCtr result;
@@ -128,55 +146,51 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
     if (!row.quadratic().empty()) {
 
-        assert(row.linear().empty());
+#ifdef IDOL_USE_EIGEN
 
-        std::cout << "WARNING: Using experimental feature: quadratic expression with Mosek" << std::endl;
-
-        const auto& quadratic = row.quadratic();
-        const int size = (int) quadratic.size();
+        auto rq_cone_expr = to_rotated_quadratic_cone(row.quadratic());
 
         auto expression = mosek::fusion::Expr::zeros(0);
 
-        int index = 2;
-        for (const auto& [var1, var2, constant] : row.quadratic()) {
+        auto it = rq_cone_expr.begin();
 
-            const double q_ij = constant.numerical();
+        if (!row.linear().empty()) {
 
-            if (q_ij < 0) {
-                expression = mosek::fusion::Expr::vstack(
-                            mosek::fusion::Expr::mul(.5, lazy(var1).impl().variable),
-                            lazy(var2).impl().variable,
-                            std::move(expression)
-                        );
-            } else if (var1 == var2 && q_ij == 1) {
-                expression = mosek::fusion::Expr::vstack(
-                                std::move(expression),
-                                lazy(var1).impl().variable
-                            );
-                ++index;
-            } else {
-                throw Exception("Cannot hande complex quadratic expressions for now.");
-            }
+            assert(it->empty());
+            ++it;
+            assert(it->empty());
 
+            auto linear_part = row.linear();
+            linear_part *= -1.;
+
+            expression = mosek::fusion::Expr::vstack(
+                        std::move(expression),
+                        mosek::fusion::Expr::constTerm(.5),
+                        mosek::fusion::Expr::add(as_numeric(row.rhs()), to_mosek_expression(linear_part))
+                    );
+
+            ++it;
+        }
+
+        for (const auto end = rq_cone_expr.end() ; it != end ; ++it) {
+            expression = mosek::fusion::Expr::vstack(
+                        std::move(expression),
+                        to_mosek_expression(*it)
+                    );
         }
 
         result.constraint = m_model->constraint(std::move(expression), mosek::fusion::Domain::inRotatedQCone());
 
         return result;
+#else
+      throw Exception("Modeling quadratic expressions with Mosek requires Eigen, please set the USE_EIGEN cmake option to YES to use this feature.");
+#endif
+
     }
 
     // Build expression
-    auto expr = mosek::fusion::Expr::constTerm(-as_numeric(row.rhs()));
-
-    for (const auto& [var, constant] : row.linear()) {
-        expr = mosek::fusion::Expr::add(
-                std::move(expr),
-                mosek::fusion::Expr::mul(
-                        as_numeric(constant),
-                        lazy(var).impl().variable
-                    )
-            );
-    }
+    auto expr = to_mosek_expression(row.linear());
+    expr = mosek::fusion::Expr::add(std::move(expr), -as_numeric(row.rhs()));
 
     // Set constraint type
     switch (type) {
@@ -454,5 +468,6 @@ bool Mosek::get(const Parameter<bool> &t_param) const {
 
     return Base::get(t_param);
 }
+
 
 #endif

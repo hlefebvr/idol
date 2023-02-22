@@ -1,23 +1,8 @@
-#include <iostream>
-#include <utility>
 #include "modeling.h"
-#include "problems/facility-location-problem/FLP_Instance.h"
 #include "backends/solvers/Gurobi.h"
 #include "backends/branch-and-bound/BranchAndBound.h"
 #include "backends/branch-and-bound/NodeStrategies_Basic.h"
-#include "backends/branch-and-bound/Nodes_Basic.h"
-#include "backends/branch-and-bound/BranchingStrategies_MostInfeasible.h"
-#include "backends/branch-and-bound/ActiveNodesManagers_Basic.h"
-#include "backends/branch-and-bound/NodeUpdators_ByBoundVar.h"
-#include "backends/branch-and-bound/Relaxations_Continuous.h"
-#include "backends/BranchAndBoundMIP.h"
-#include "problems/generalized-assignment-problem/GAP_Instance.h"
-#include "backends/column-generation/Relaxations_DantzigWolfe.h"
-#include "backends/column-generation/ColumnGeneration.h"
-#include "backends/BranchAndPriceMIP.h"
-#include "backends/solvers/GLPK.h"
 #include "backends/solvers/Mosek.h"
-#include "linear-algebra/to_rotated_quadratic_cone.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -27,30 +12,16 @@ int main(int t_argc, char** t_argv) {
     auto x = Var::array<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
     model.add_array<Var, 1>(x);
 
-    Ctr quadratic(env, 3 * x[0] * x[0] - 9 * x[0] * x[1] + 2 * x[1] * x[1] <= 0);
-    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] - 2 * x[0] * x[1] <= 0);
-    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= 0);
-    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= x[2] * x[3]);
+    Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] - 2 * x[0] * x[1] <= x[0]);
     model.add(quadratic);
 
     model.set(Attr::Obj::Expr, -x[0] - x[1]);
 
-    ///
-
-    const auto& expr = model.get(Attr::Ctr::Row, quadratic).quadratic();
-
-    std::cout << "result = " << std::endl;
-    for (const auto& component : to_rotated_quadratic_cone(expr)) {
-        std::cout << component << std::endl;
-    }
-
-    std::cout << std::endl;
-
-    ///
-
     Idol::set_optimizer<Mosek>(model);
 
     model.update();
+
+    model.write("model.ptf");
 
     return 0;
 /*
