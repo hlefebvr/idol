@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Eigen/Eigen>
+#include <utility>
 #include "modeling.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "backends/solvers/Gurobi.h"
@@ -17,19 +17,36 @@
 #include "backends/BranchAndPriceMIP.h"
 #include "backends/solvers/GLPK.h"
 #include "backends/solvers/Mosek.h"
+#include "linear-algebra/to_rotated_quadratic_cone.h"
 
 int main(int t_argc, char** t_argv) {
 
     Env env;
     Model model(env);
 
-    auto x = Var::array<1>(env, Dim<1>(3), 0., Inf, Continuous, "x");
+    auto x = Var::array<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
     model.add_array<Var, 1>(x);
 
-    Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= x[2] * x[2]);
+    Ctr quadratic(env, 3 * x[0] * x[0] - 9 * x[0] * x[1] + 2 * x[1] * x[1] <= 0);
+    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] - 2 * x[0] * x[1] <= 0);
+    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= 0);
+    //Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] <= x[2] * x[3]);
     model.add(quadratic);
 
     model.set(Attr::Obj::Expr, -x[0] - x[1]);
+
+    ///
+
+    const auto& expr = model.get(Attr::Ctr::Row, quadratic).quadratic();
+
+    std::cout << "result = " << std::endl;
+    for (const auto& component : to_rotated_quadratic_cone(expr)) {
+        std::cout << component << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    ///
 
     Idol::set_optimizer<Mosek>(model);
 
