@@ -75,6 +75,13 @@ void Mosek::hook_optimize() {
 
     } else if (problem_status == mosek::fusion::ProblemStatus::Unknown
                && primal_status == mosek::fusion::SolutionStatus::Unknown
+               && dual_status == mosek::fusion::SolutionStatus::Unknown) {
+
+        m_solution_status = Fail;
+        m_solution_reason = NotSpecified;
+
+    } else if (problem_status == mosek::fusion::ProblemStatus::Unknown
+               && primal_status == mosek::fusion::SolutionStatus::Unknown
                && dual_status == mosek::fusion::SolutionStatus::Undefined) {
 
         m_solution_status = Fail;
