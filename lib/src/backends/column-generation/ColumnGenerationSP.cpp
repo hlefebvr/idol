@@ -69,11 +69,20 @@ double impl::ColumnGenerationSP::compute_reduced_cost(const Solution::Dual &t_du
 
 void impl::ColumnGenerationSP::enrich_master_problem() {
 
-    auto& master = m_parent.master();
-    auto generator = save(*m_model, ::Attr::Solution::Primal);
+    const int status = m_model->get(::Attr::Solution::Status);
+
+    Solution::Primal generator;
+    if (status == Unbounded) {
+        save(*m_model, ::Attr::Solution::Ray);
+    } else {
+        save(*m_model, ::Attr::Solution::Primal);
+    }
+
     auto column = create_column_from_generator(generator);
 
     Var alpha(m_model->env(), 0., Inf, Continuous, "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
+
+    auto& master = m_parent.master();
 
     master.add(alpha, std::move(column));
     m_pool.add(alpha, std::move(generator));
@@ -82,12 +91,20 @@ void impl::ColumnGenerationSP::enrich_master_problem() {
 
 TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::Primal &t_primals) const {
 
-    return {
+    TempVar result {
         0.,
         Inf,
         Continuous,
         m_generation_pattern.fix(t_primals)
     };
+
+    if (t_primals.status() == Unbounded) {
+        auto convexity_constraint = m_parent.parent().block(m_index).aggregator();
+        std::cout << convexity_constraint << std::endl;
+        result.column().linear().set(convexity_constraint, 0.);
+    }
+
+    return result;
 
 }
 
