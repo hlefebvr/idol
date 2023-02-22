@@ -73,9 +73,9 @@ void impl::ColumnGenerationSP::enrich_master_problem() {
 
     Solution::Primal generator;
     if (status == Unbounded) {
-        save(*m_model, ::Attr::Solution::Ray);
+        generator = save(*m_model, ::Attr::Solution::Ray);
     } else {
-        save(*m_model, ::Attr::Solution::Primal);
+        generator = save(*m_model, ::Attr::Solution::Primal);
     }
 
     auto column = create_column_from_generator(generator);
