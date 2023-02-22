@@ -11,7 +11,7 @@
 #include "../modeling/expressions/LinExpr.h"
 #include "SquareMatrix.h"
 
-static std::list<LinExpr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var>& t_expr) {
+static std::list<Expr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var>& t_expr) {
 
     // Create index mapping
     MatrixIndices indices;
@@ -67,7 +67,7 @@ static std::list<LinExpr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var>& t_
     N = L * N * L.transpose();
 
     // Build result
-    std::list<LinExpr<Var>> result;
+    std::list<Expr<Var>> result;
 
     // Create head
     for (const auto& [var1, i] : indices.indices()) {
@@ -85,6 +85,10 @@ static std::list<LinExpr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var>& t_
     if (result.empty()) {
         result.emplace_back();
         result.emplace_back();
+    }
+
+    if (result.size() == 1) {
+        result.emplace_back(1);
     }
 
     if (result.size() > 2) {

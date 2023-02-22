@@ -2,6 +2,8 @@
 // Created by henri on 22/02/23.
 //
 
+#ifdef IDOL_USE_EIGEN
+
 #include "../../test_utils.h"
 #include "linear-algebra/to_rotated_quadratic_cone.h"
 
@@ -85,3 +87,5 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
     }
 
 }
+
+#endif
