@@ -89,8 +89,9 @@ static std::list<Expr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var>& t_exp
 
     if (result.size() == 1) {
         result.emplace_back(result.front());
-        result.front() *= .5;
     }
+
+    result.front() *= .5;
 
     if (result.size() > 2) {
         throw Exception("Non-convex expression found.");

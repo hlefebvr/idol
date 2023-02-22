@@ -23,6 +23,10 @@ double eval(const QuadExpr<Var, Var>& t_expr, const Solution::Primal& t_primal) 
     return result;
 }
 
+double eval(const Expr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
+    return t_expr.constant().numerical() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
+}
+
 TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
 
     Env env;
@@ -35,6 +39,7 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
             3 * x[0] * x[0] + x[1] * x[1] - 2 * x[0] * x[1],
             x[0] * x[0] + x[1] * x[1] - 2 * x[2] * x[3],
             3 * x[0] * x[0] + 4 * x[1] * x[1] + 2 * x[0] * x[1],
+            x[0] * x[0] + x[1] * x[1] - x[2] * x[2]
     };
 
     auto expr = GENERATE_COPY(
@@ -42,7 +47,8 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
                 quadratic_expressions[1],
                 quadratic_expressions[2],
                 quadratic_expressions[3],
-                quadratic_expressions[4]
+                quadratic_expressions[4],
+                quadratic_expressions[5]
             );
 
     std::stringstream ss;
@@ -67,13 +73,12 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
                 point.set(x[2], dist(engine));
                 point.set(x[3], dist(engine));
 
-                std::cout << "Evaluating at\n" << point << std::endl;
-
                 const double eval_expr = eval(expr, point);
 
                 auto it = result.begin();
 
-                double eval_result = -2 * eval(*it, point) * eval(*++it, point);
+                double eval_result = -2. * eval(*it, point) * eval(*++it, point);
+                ++it;
                 for (auto end = result.end(); it != end; ++it) {
                     eval_result += eval(*it, point) * eval(*it, point);
                 }
