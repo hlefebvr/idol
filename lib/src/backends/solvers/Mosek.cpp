@@ -168,11 +168,6 @@ MosekCtr Mosek::hook_add(const Ctr &t_ctr) {
 
         auto rq_cone_expr = to_rotated_quadratic_cone(sign == 1. ? row.quadratic() : sign * row.quadratic());
 
-        std::cout << "expr: " << (sign == 1. ? row.quadratic() : sign * row.quadratic()) << std::endl;
-        for (const auto& lin : rq_cone_expr) {
-            std::cout << lin << std::endl;
-        }
-
         auto expression = mosek::fusion::Expr::zeros(0);
 
         auto it = rq_cone_expr.begin();
