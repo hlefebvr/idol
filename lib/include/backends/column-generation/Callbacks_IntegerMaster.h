@@ -23,7 +23,7 @@ public:
             return;
         }
 
-        const auto& node = node_model();
+        const auto& node = relaxation().model();
 
         const auto& column_generation = node.backend().template as<ColumnGeneration>();
 

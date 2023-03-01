@@ -6,7 +6,9 @@
 #define IDOL_CALLBACK_H
 
 #include <ostream>
+#include "../../modeling/variables/Var.h"
 #include "../../errors/Exception.h"
+#include "backends/Relaxation.h"
 
 class BranchAndBound;
 class AbstractModel;
@@ -19,15 +21,34 @@ namespace impl {
     class Callback;
 }
 
+class HeuristicInterface {
+    impl::Callback& m_parent;
+    Relaxation& m_relaxation;
+
+    std::list<std::tuple<const Req<double, Var>*, Var, double>> m_history_Var_double;
+    std::list<std::tuple<const Req<int, Var>*, Var, int>> m_history_Var_int;
+public:
+    HeuristicInterface(impl::Callback& t_parent, Relaxation& t_relaxation);
+
+    ~HeuristicInterface();
+
+    void temporary_set(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
+    void temporary_set(const Req<int, Var>& t_attr, const Var& t_var, int t_value);
+    void reoptimize();
+};
+
 class impl::Callback {
     friend class ::BranchAndBound;
+    friend class HeuristicInterface;
     BranchAndBound* m_parent = nullptr;
 protected:
-    [[nodiscard]] const AbstractModel& node_model() const;
+    [[nodiscard]] const Relaxation& relaxation() const;
 
     [[nodiscard]] const AbstractModel& original_model() const;
 
     bool submit(Solution::Primal&& t_solution) const;
+
+    HeuristicInterface heuristic_interface();
 };
 
 class Callback : public impl::Callback {

@@ -9,6 +9,7 @@
 #include <functional>
 
 #include "../../modeling/models/Model.h"
+#include "../callback/Callback.h"
 #include "../Algorithm.h"
 #include "NodeStrategy.h"
 #include "backends/parameters/Logs.h"

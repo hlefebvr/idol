@@ -8,7 +8,6 @@
 #include "backends/Backend.h"
 #include "backends/parameters/Timer.h"
 #include "backends/parameters/Parameters_Algorithm.h"
-#include "backends/callback/Callback.h"
 
 #include "modeling/attributes/AttributeManager_Delegate.h"
 #include "Attributes_Model.h"
@@ -23,7 +22,7 @@ class AbstractModel : public AttributeManagers::Delegate {
 
     Timer m_timer;
     std::unique_ptr<Backend> m_backend;
-    std::unique_ptr<Callback> m_callback;
+    //std::unique_ptr<Callback> m_callback;
 protected:
     // Backend
     virtual void set_backend(Backend* t_backend) { m_backend.reset(t_backend); m_backend->initialize(); }
