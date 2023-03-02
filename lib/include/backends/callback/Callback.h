@@ -32,8 +32,8 @@ public:
 
     ~HeuristicInterface();
 
-    void temporary_set(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
-    void temporary_set(const Req<int, Var>& t_attr, const Var& t_var, int t_value);
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
+    void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value);
     void reoptimize();
 };
 
@@ -48,7 +48,7 @@ protected:
 
     bool submit(Solution::Primal&& t_solution) const;
 
-    HeuristicInterface heuristic_interface();
+    HeuristicInterface temporary_update_session();
 };
 
 class Callback : public impl::Callback {

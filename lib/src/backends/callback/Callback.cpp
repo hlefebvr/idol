@@ -2,7 +2,7 @@
 #include "backends/branch-and-bound/BranchAndBound.h"
 
 #define TEMPORARY_SET(attr_arg, attr_val) \
-void HeuristicInterface::temporary_set(const Req<attr_val, attr_arg> &t_attr, const attr_arg &t_var, attr_val t_value) { \
+void HeuristicInterface::set(const Req<attr_val, attr_arg> &t_attr, const attr_arg &t_var, attr_val t_value) { \
     const auto historical_value = m_relaxation.model().get(t_attr, t_var); \
     m_history_##attr_arg##_##attr_val.emplace_front(&t_attr, t_var, historical_value); \
     m_relaxation.model().set(t_attr, t_var, t_value); \
@@ -25,7 +25,7 @@ bool impl::Callback::submit(Solution::Primal &&t_solution) const {
     return m_parent->submit_solution(std::move(t_solution));
 }
 
-HeuristicInterface impl::Callback::heuristic_interface() {
+HeuristicInterface impl::Callback::temporary_update_session() {
     return { *this, m_parent->m_relaxations.get() };
 }
 
