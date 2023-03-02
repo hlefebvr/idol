@@ -43,7 +43,10 @@ Each subproblem is then solved
 by an external and dedicated solver. Currently, the following external solvers can be interfaced:
 
 * Gurobi (see https://www.gurobi.com/ ) ;
+* Mosek (see https://www.mosek.com/) ;
 * GLPK (see https://www.gnu.org/software/glpk/ ).
+
+**Important for Mosek users**: If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
 
 Table of Contents
 -----------------
@@ -52,8 +55,9 @@ Table of Contents
     :maxdepth: 2
 
     self
-    basics/index
+    tutorials/index
     api/index
     dev/index
+    miscellaneous/index
 
 * :ref:`genindex`

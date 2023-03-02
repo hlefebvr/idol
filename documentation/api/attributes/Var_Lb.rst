@@ -1,7 +1,7 @@
 .. _api_Attr_Var_Lb:
 
 Attr::Var::Lb
-======
+=============
 
 .. doxygenvariable:: Attr::Var::Lb
 

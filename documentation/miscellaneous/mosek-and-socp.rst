@@ -3,4 +3,4 @@
 Using Idol with Mosek for QPs and SOCPs
 =======================================
 
-
+# TODO

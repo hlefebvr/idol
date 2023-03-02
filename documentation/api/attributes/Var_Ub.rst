@@ -1,7 +1,7 @@
 .. _api_Attr_Var_Ub:
 
 Attr::Var::Ub
-======
+=============
 
 .. doxygenvariable:: Attr::Var::Ub
 
