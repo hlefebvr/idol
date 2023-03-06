@@ -50,6 +50,22 @@ The following will create an :bash:`install` target which will install idol with
 
     cmake -DUSE_GUROBI=YES -DGUROBI_DIR=/path/to/gurobi/install/dir ..
 
+
+For Mosek (commercial solver)
+""""""""""""""""
+
+* :bash:`USE_MOSEK=YES` will tell CMake to search and link with Mosek.
+* | :bash:`MOSEK_DIR=/path/to/mosek/install/dir` will tell CMake where to find Mosek.
+  | This option is *not mandatory* (by default, the environment variable :bash:`MOSEK_HOME` is used).
+
+The following will create an :bash:`install` target which will install idol with Mosek.
+
+.. code-block:: bash
+
+    cmake -DUSE_MOSEK=YES -DMOSEK_DIR=/path/to/mosek/install/dir ..
+
+**Important**: If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
+
 For GLPK (open-source solver)
 """"""""""""""""
 
