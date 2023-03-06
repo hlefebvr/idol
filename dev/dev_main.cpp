@@ -1,80 +1,53 @@
 #include "modeling.h"
+#include "modeling/models/BlockModel.h"
+#include "backends/row-generation/RowGeneration.h"
 #include "backends/solvers/Gurobi.h"
-#include "backends/branch-and-bound/BranchAndBound.h"
-#include "backends/branch-and-bound/NodeStrategies_Basic.h"
-#include "backends/solvers/Mosek.h"
+#include "backends/parameters/Logs.h"
 
 int main(int t_argc, char** t_argv) {
 
-    Env env;
-    Model model(env);
-
-    auto x = Var::array<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
-    model.add_array<Var, 1>(x);
-
-    Ctr quadratic(env, x[0] * x[0] + x[1] * x[1] - 2 * x[0] * x[1] <= x[0]);
-    model.add(quadratic);
-
-    model.set(Attr::Obj::Expr, -x[0] - x[1]);
-
-    Idol::set_optimizer<Mosek>(model);
-
-    model.update();
-
-    model.write("model.ptf");
-
-    return 0;
-/*
-    Logs::set_level<BranchAndBound>(Debug);
-    Logs::set_color<BranchAndBound>(Blue);
-
-    Logs::set_level<ColumnGeneration>(Debug);
-    Logs::set_color<ColumnGeneration>(Yellow);
-
-    using namespace Problems::GAP;
-
-    const auto instance = read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    //const auto instance = read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n3/instance_n3_30__3.txt");
-    const unsigned int n_agents = instance.n_agents();
-    const unsigned int n_jobs = instance.n_jobs();
+    Logs::set_level<RowGeneration>(Debug);
+    Logs::set_color<RowGeneration>(Green);
 
     Env env;
 
-    Annotation<Ctr> decomposition(env, "by_machines", MasterId);
-    Annotation<Ctr> decomposition2(env, "by_machines", MasterId);
+    BlockModel<Var> model(env, 1);
+    auto& subproblem = model.block(0);
 
-    Model model(env);
+    // Master variables
+    Var theta(env, 0, Inf, Continuous, "theta");
+    Var x(env, 0, Inf, Continuous, "x");
 
-    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-    model.add_array<Var, 2>(x);
+    model.add(theta);
+    model.add(x);
+    model.master().set(Attr::Obj::Expr, 2 * x + theta);
 
-    for (unsigned int i = 0 ; i < n_agents ; ++i) {
-        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
-        capacity.set(decomposition, i);
-        capacity.set(decomposition2, 0);
-        model.add(capacity);
-    }
+    // Subproblem variables
+    auto lambda = Var::array(env, Dim<1>(2), 0, Inf, Continuous, "lambda");
+    subproblem.model().add_array<Var, 1>(lambda);
 
-    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
-        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
-        model.add(assignment);
-    }
+    // Subproblem constraints
+    Ctr c1(env, lambda[0] + 2 * lambda[1] <= 2.);
+    subproblem.model().add(c1);
 
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+    Ctr c2(env, 2 * lambda[0] - lambda[1] <= 3.);
+    subproblem.model().add(c2);
 
-    Idol::set_optimizer<BranchAndPriceMIP<Mosek>>(model, decomposition);
+    // Generation pattern
+    subproblem.generation_pattern() = Row(theta + (!lambda[0] + 3. * !lambda[1]) * x,  3. * !lambda[0] + 4. * !lambda[1]);
 
-    model.set(Param::Algorithm::MaxThreads, 1);
-    model.set(Param::Algorithm::TimeLimit, 600);
-    model.set(Param::BranchAndBound::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::FarkasPricing, false);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
-    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
+    // Set epigraph
+    subproblem.set_aggregator(theta);
+
+    subproblem.model().set(Attr::Obj::Sense, Maximize);
+
+    auto& rg = Idol::set_optimizer<RowGeneration>(model);
+
+    rg.set_master_backend<Gurobi>();
+    rg.set_subproblem_backend<Gurobi>(0);
+
 
     model.optimize();
 
-    std::cout << save(model, Attr::Solution::Primal) << std::endl;
-*/
     return 0;
 }

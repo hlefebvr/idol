@@ -7,7 +7,6 @@
 
 #include "modeling/models/AbstractModel.h"
 #include "containers/GeneratorPool.h"
-#include "BranchingManager.h"
 
 class ColumnGeneration;
 
@@ -19,7 +18,7 @@ class impl::ColumnGenerationSP {
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
     using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
 
-    ColumnGeneration& m_parent;
+    ColumnGeneration* m_parent;
     const unsigned int m_index;
     std::unique_ptr<AbstractModel> m_model;
     ::Column m_generation_pattern;
@@ -58,6 +57,14 @@ protected:
 
     void clean_up();
 public:
+    virtual ~ColumnGenerationSP() = default;
+
+    ColumnGenerationSP(const ColumnGenerationSP&) = delete;
+    ColumnGenerationSP(ColumnGenerationSP&&) noexcept = default;
+
+    ColumnGenerationSP& operator=(const ColumnGenerationSP&) = delete;
+    ColumnGenerationSP& operator=(ColumnGenerationSP&&) = delete;
+
     [[nodiscard]] const AbstractModel& model() const { return *m_model; }
 
     [[nodiscard]] auto present_generators() const { return PresentGenerators(m_present_generators); }

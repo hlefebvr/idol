@@ -194,7 +194,7 @@ void Gurobi::hook_update_objective() {
 
     const auto& model = parent();
     const auto& objective = model.get(Attr::Obj::Expr);
-    const auto sense = model.get(Attr::Obj::Sense);
+    const auto sense = gurobi_obj_sense(model.get(Attr::Obj::Sense));
 
     GRBLinExpr linear_expr = gurobi_numeric(as_numeric(objective.constant()));
 

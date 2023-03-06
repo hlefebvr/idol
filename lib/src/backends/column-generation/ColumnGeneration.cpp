@@ -231,11 +231,11 @@ void ColumnGeneration::log_master_solution(bool t_force) const {
     idol_Log(Info,
              ColumnGeneration,
              "<Type=Master> "
-                     << "<Iter=" << m_iteration_count << "> "
-                     << "<TimT=" << parent().time().count() << "> "
-                     << "<TimI=" << m_master->time().count() << "> "
-                     << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
-                     << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
+             << "<Iter=" << m_iteration_count << "> "
+             << "<TimT=" << parent().time().count() << "> "
+             << "<TimI=" << m_master->time().count() << "> "
+             << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
+             << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
              << "<Obj=" << m_master->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "

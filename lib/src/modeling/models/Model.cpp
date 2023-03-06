@@ -462,6 +462,7 @@ Model* Model::clone() const {
             ));
     }
 
+    result->set(Attr::Obj::Sense, get(Attr::Obj::Sense));
     result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));
 
     return result;

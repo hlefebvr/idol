@@ -7,7 +7,7 @@
 #include "modeling/expressions/operations/operators.h"
 
 impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index)
-    : m_parent(t_parent),
+    : m_parent(&t_parent),
       m_index(t_index),
       m_model(t_parent.parent().block(t_index).model().clone()),
       m_generation_pattern(t_parent.parent().block(t_index).generation_pattern()) {
@@ -41,7 +41,7 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
 
 void impl::ColumnGenerationSP::solve() {
 
-    const double remaining_time = m_parent.parent().remaining_time();
+    const double remaining_time = m_parent->parent().remaining_time();
     m_model->set(::Param::Algorithm::TimeLimit, remaining_time);
     m_model->optimize();
 
@@ -82,7 +82,7 @@ void impl::ColumnGenerationSP::enrich_master_problem() {
 
     Var alpha(m_model->env(), 0., Inf, Continuous, "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
 
-    auto& master = m_parent.master();
+    auto& master = m_parent->master();
 
     master.add(alpha, std::move(column));
     m_pool.add(alpha, std::move(generator));
@@ -99,7 +99,7 @@ TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::P
     };
 
     if (t_primals.status() == Unbounded) {
-        auto convexity_constraint = m_parent.parent().block(m_index).aggregator();
+        auto convexity_constraint = m_parent->parent().block(m_index).aggregator();
         std::cout << convexity_constraint << std::endl;
         result.column().linear().set(convexity_constraint, 0.);
     }
@@ -110,14 +110,14 @@ TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::P
 
 void impl::ColumnGenerationSP::clean_up() {
 
-    const unsigned int threshold = m_parent.parent().get(::Param::ColumnGeneration::CleanUpThreshold);
+    const unsigned int threshold = m_parent->parent().get(::Param::ColumnGeneration::CleanUpThreshold);
 
     if (m_pool.size() < threshold) {
         return;
     }
 
-    auto& master = m_parent.master();
-    const double ratio = m_parent.parent().get(::Param::ColumnGeneration::CleanUpRatio);
+    auto& master = m_parent->master();
+    const double ratio = m_parent->parent().get(::Param::ColumnGeneration::CleanUpRatio);
     const auto n_to_remove = (unsigned int) (m_pool.size() * (1 - ratio));
     unsigned int n_removed = 0;
 
@@ -164,7 +164,7 @@ void impl::ColumnGenerationSP::clean_up() {
 double impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var) const {
     double result = 0;
     for (const auto& [alpha, generator] : m_present_generators) {
-        const double alpha_val = m_parent.master().get(::Attr::Solution::Primal, alpha);
+        const double alpha_val = m_parent->master().get(::Attr::Solution::Primal, alpha);
         if (alpha_val > 0) {
             result += alpha_val * generator.get(t_var);
         }
@@ -179,7 +179,7 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
         return t_generator.get(t_var) < t_value;
     });
 
-    if (!m_parent.parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_parent->parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
         m_model->set(::Attr::Var::Lb, t_var, t_value);
         return;
     }
@@ -195,7 +195,7 @@ void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
         return t_generator.get(t_var) > t_value;
     });
 
-    if (!m_parent.parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_parent->parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
         m_model->set(::Attr::Var::Ub, t_var, t_value);
         return;
     }
@@ -216,7 +216,7 @@ LinExpr<Var> impl::ColumnGenerationSP::expand(const Var &t_var) const {
 
 void impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req<double, Var> &t_attr, double t_value) {
 
-    auto& master = m_parent.master();
+    auto& master = m_parent->master();
 
     auto& applied_bounds = t_attr == ::Attr::Var::Lb ? m_lower_bound_constraints : m_upper_bound_constraints;
     const auto it = applied_bounds.find(t_var);
@@ -258,7 +258,7 @@ void impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req
 
 void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
 
-    auto& master = m_parent.master();
+    auto& master = m_parent->master();
 
     auto it = m_present_generators.begin();
     const auto end = m_present_generators.end();
@@ -277,7 +277,7 @@ void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const V
 
 void impl::ColumnGenerationSP::restore_column_from_pool() {
 
-    auto& master = m_parent.master();
+    auto& master = m_parent->master();
 
     for (auto& [alpha, primal_solution] : m_pool.values()) {
 
@@ -286,10 +286,10 @@ void impl::ColumnGenerationSP::restore_column_from_pool() {
         }
 
         bool is_feasible = true;
-        for (const auto& var : m_parent.parent().block(m_index).model().vars()) {
+        for (const auto& var : m_parent->parent().block(m_index).model().vars()) {
 
-            const double lb = m_parent.parent().block(m_index).model().get(::Attr::Var::Lb, var);
-            const double ub = m_parent.parent().block(m_index).model().get(::Attr::Var::Ub, var);
+            const double lb = m_parent->parent().block(m_index).model().get(::Attr::Var::Lb, var);
+            const double ub = m_parent->parent().block(m_index).model().get(::Attr::Var::Ub, var);
             const double value = primal_solution.get(var);
 
             if (!(lb <= value && value <= ub)) {
