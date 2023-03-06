@@ -10,7 +10,7 @@ mathematical optimization.
 
 Its main goal is to facilitate prototyping new algorithms which
 can exploit structure in optimization problems (e.g., Dantzig-Wolfe decomposition, Benders decomposition,
-nested approaches, ...) or to design complex algorithmic schemes for solving :math:`\Sigma_i^P`-hard problems
+nested approaches, ...) or to design complex algorithmic schemes for solving :math:`NP`-hard problems
 (e.g., bilevel problems, adjustable robust optimization, ...).
 
 General approach
@@ -31,10 +31,6 @@ solving a set of so-called subproblems of the following form.
 Here, :math:`x_j` are the variables of this optimization problem while :math:`c_j, d_{jk}, a_{ij}` and :math:`q_{jk}^i` are given
 input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is a set of variable indices
 whose value must be integral.
-
-Idol provides a structured and rigorous way to write custom or new algorithms based on - but not limited to - the current
-state-of-the-art algorithms (e.g., Branch-and-price, Benders decomposition, ...) by combining and interconnecting
-each algorithm together.
 
 External solvers
 ----------------
