@@ -10,12 +10,13 @@ In this section, we will show how to use the Branch-and-Price solver to solve th
 using an external solver to solve each subproblem.
 
 This tutorial regards the "advanced topic" of Column Generation and Dantzig-Wolfe decomposition, some prerequisites are needed:
+
 - Readers who are not familiar with Column Generation or Branch-and-Price may refer to the `Column Generation wikipedia page <https://en.wikipedia.org/wiki/Column_generation>`_
 - Readers who are not familiar with Dantzig-Wolfe decomposition may refer to the `Dantzig-Wolfe decomposition wikipedia page <https://en.wikipedia.org/wiki/Dantzig%E2%80%93Wolfe_decomposition>`_
-- Readers who are not familiar with GAP may refer to the `Generalized Assignemnt Problem
-Wikipedia page <https://en.wikipedia.org/wiki/Generalized_assignment_problem>`_.
+- Readers who are not familiar with GAP may refer to the `Generalized Assignment Problem Wikipedia page <https://en.wikipedia.org/wiki/Generalized_assignment_problem>`_.
 
 Readers interested in computational aspects regarding idol may refer to the `Benchmark on Generalized Assignemnt Problem <https://hlefebvr.github.io/idol_benchmark/GAP.render.html>`_.
+This includes a comparison with `Coluna.jl <https://github.com/atoptima/Coluna.jl>`_.
 
 Mathematical models
 -------------------
@@ -208,3 +209,10 @@ We end this tutorial by discussing some parameters which can be used to tweak th
 - :code:`(double) Param::ColumnGeneration::SmoothingFactor` controls the stabilization factor for dual price smoothing;
 - :code:`(bool) Param::BranchAndPrice::IntegerMasterHeuristic` controls the activation of a primal heuristic for branch-and-price where
   integrality requirements are imposed on Dantzig-Wolfe coefficients when the solution is fractional.
+
+For example, we may set the stabilization factor controlling dual price smoothing as follwos:
+
+.. code:: cpp
+
+    model.set(Param::ColumnGeneration::SmoothingFactor, .3); // (must be between 0 and 1)
+
