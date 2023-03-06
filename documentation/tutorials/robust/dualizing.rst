@@ -46,7 +46,7 @@ Our (*primal*) problem reads
 
     \min_{x\in\mathbb R^n} f(x) + \sum_{i=1}^m\delta(x|C^i) + \delta(x|[l,u]).
 
-As long as :math:`f` and :math:`C^i` are convex, this problem is convex and, assuming constraint qualification holds, the following
+As long as :math:`f` and :math:`C^i\cap [l, u]` are convex, this problem is convex and, assuming constraint qualification holds, the following
 equality holds (see `Fenchel duality <https://en.wikipedia.org/wiki/Fenchel%27s_duality_theorem>`_).
 
 .. math::
