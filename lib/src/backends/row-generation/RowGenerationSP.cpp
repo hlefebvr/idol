@@ -64,8 +64,8 @@ void impl::RowGenerationSP::enrich_master_problem() {
     auto row = create_cut_from_generator(generator);
 
     if (status == Unbounded) {
-        throw Exception("UNBOUNDED SP");
-        // row.row().linear().remove(m_epigraph_variable);
+        auto theta = m_parent->parent().block(m_index).aggregator();
+        row.row().linear().remove(theta);
     }
 
     Ctr cut(m_model->env(), GreaterOrEqual, 0);

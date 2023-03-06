@@ -41,7 +41,7 @@ void RowGeneration::update() {
 }
 
 void RowGeneration::write(const std::string &t_name) {
-    throw Exception("Not implemented write");
+    m_master->write(t_name);
 }
 
 void RowGeneration::hook_before_optimize() {
