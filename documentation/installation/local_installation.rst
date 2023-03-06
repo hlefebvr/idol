@@ -1,10 +1,10 @@
-.. _basics_local_installation:
+.. _installation_local:
 
 .. role:: bash(code)
    :language: bash
 
-Local installation guidelines
-=======================
+Local installation
+==================
 
 Another possibility to start building your application with idol is to install it "locally" using
 the CMake :bash:`FetchContent_*` directives. This will tell CMake to automatically download (from the GitHub repository)

@@ -7,7 +7,5 @@ Getting started
    :maxdepth: 1
    :glob:
 
-   installation
-   local_installation
-   first-model
-   knapsack
+   modeling_optimization_problems
+   using_an_external_solver

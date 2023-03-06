@@ -3,18 +3,15 @@
 .. role:: bash(code)
    :language: bash
 
-Global installation guidelines
-=======================
-
 Global installation
--------------------
+===================
 
 The installation process is managed by CMake. You will therefore need to have
 installed the CMake build system (at least version 3.22 is required - not that
 it may work with earlier versions but has not been tested).
 
 Build directory
-^^^^^^^^^^^^^^
+---------------
 
 Then, create a :bash:`build` directory. This is where the library will be compiled before being installed (i.e., moved) on your system.
 
@@ -35,10 +32,10 @@ If you want idol to be installed with an external solver (which is recommended) 
 the following options.
 
 Options
-^^^^^^^
+-------
 
 For Gurobi (commercial solver)
-""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :bash:`USE_GUROBI=YES` will tell CMake to search and link with Gurobi.
 * | :bash:`GUROBI_DIR=/path/to/gurobi/install/dir` will tell CMake where to find Gurobi.
@@ -52,7 +49,7 @@ The following will create an :bash:`install` target which will install idol with
 
 
 For Mosek (commercial solver)
-""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :bash:`USE_MOSEK=YES` will tell CMake to search and link with Mosek.
 * | :bash:`MOSEK_DIR=/path/to/mosek/install/dir` will tell CMake where to find Mosek.
@@ -67,7 +64,7 @@ The following will create an :bash:`install` target which will install idol with
 **Important**: If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
 
 For GLPK (open-source solver)
-""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :bash:`USE_GLPK=YES` will tell CMake to search and link with GLPK.
 * | :bash:`GLPK_DIR=/path/to/glpk/install/dir` will tell CMae where to find GLPK.
@@ -81,7 +78,7 @@ The following will create an :bash:`install` target which will install idol with
     cmake -DUSE_GLPK=YES -DGLPK_DIR=/path/to/glpk/install/dir ..
 
 Compiling and installing
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 Then, idol is compiled and installed as follows.
 

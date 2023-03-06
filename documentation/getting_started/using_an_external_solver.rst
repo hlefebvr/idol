@@ -1,13 +1,14 @@
-.. _basics_knapsack:
+.. _using_an_external_solver:
 
 .. role:: cpp(code)
    :language: cpp
 
 Using an external solver
-================
+========================
 
 In this tutorial, we will see how to use an external optimization solver like Gurobi or GLPK to solve
-a small combinatorial problem. The considered problem is the knapsack problem (see `<https://en.wikipedia.org/wiki/Knapsack_problem>`).
+a small combinatorial problem.
+The considered problem is the Knapsack Problem (see the `Knapsack Problem wikipedia page <https://en.wikipedia.org/wiki/Knapsack_problem>`_).
 
 Modeling
 --------
@@ -17,8 +18,8 @@ The first step is to model our problem using idol. Recall the standard model for
 .. math::
 
     \begin{array}{lll}
-        \max\  & \sum_{j=1}^n p_jx_j \\
-        \textrm{s.t. } & \sum_{j=1}^n w_jx_j \le W \\
+        \max\  & \displaystyle \sum_{j=1}^n p_jx_j \\
+        \textrm{s.t. } & \displaystyle \sum_{j=1}^n w_jx_j \le W \\
         & x_j = 0 \textrm{ or } 1 & j=1,...,n
     \end{array}
 
@@ -112,7 +113,7 @@ Here, :cpp:`Range` is used to define an iteratable ranging from :math:`0` to :ma
 by calling :cpp:`Range(l, n)`). The objective function is created similarly.
 
 Solving the model using an external solver
------------------------------------------
+------------------------------------------
 
 We can now solve our optimization model.
 Idol offers different approaches for solving optimization problems. To select the desired approach for a given model,

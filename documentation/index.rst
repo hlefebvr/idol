@@ -10,7 +10,7 @@ mathematical optimization.
 
 Its main goal is to facilitate prototyping new algorithms which
 can exploit structure in optimization problems (e.g., Dantzig-Wolfe decomposition, Benders decomposition,
-nested approaches, ...) or to design complex algorithmic schemes for solving :math:`NP`-hard problems
+nested approaches, ...) or to design complex algorithmic schemes for solving :math:`\mathcal{NP}`-hard problems
 (e.g., bilevel problems, adjustable robust optimization, ...).
 
 General approach
@@ -51,9 +51,12 @@ Table of Contents
     :maxdepth: 2
 
     self
-    tutorials/index
+    installation/index
+    getting_started/index
+    decomposition_methods/index
+    robust_optimization/index
     api/index
-    dev/index
+    developer_guide/index
     miscellaneous/index
 
 * :ref:`genindex`

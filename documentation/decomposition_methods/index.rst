@@ -7,4 +7,5 @@ Decomposition methods
    :maxdepth: 1
    :glob:
 
-   column_generation
+   dantzig_wolfe
+   benders

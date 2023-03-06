@@ -1,10 +1,10 @@
-.. _basics_first_model:
+.. _modeling_optimization_problems:
 
 .. role:: cpp(code)
    :language: cpp
 
-Introduction to the modeling interface
-================
+Modeling optimization problems
+==============================
 
 On this page, we discuss the very basic ideas of idol's modeling API.
 All classes which are used for modeling an optimization problem can be accessed by including :code:`#include <idol/modeling.h>`.

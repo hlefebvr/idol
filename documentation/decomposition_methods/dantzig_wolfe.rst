@@ -1,10 +1,10 @@
-.. _basics_colgen:
+.. _decomposition_dantzig_wolfe:
 
 .. role:: cpp(code)
    :language: cpp
 
-Using the Branch-and-Price solver
-=================================
+Dantzig-Wolfe decomposition
+===========================
 
 In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
 using an external solver to solve each subproblem.
