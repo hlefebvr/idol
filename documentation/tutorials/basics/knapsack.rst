@@ -17,8 +17,8 @@ The first step is to model our problem using idol. Recall the standard model for
 .. math::
 
     \begin{array}{lll}
-        \textrm{maximize } & \sum_{j=1}^n p_jx_j \\
-        \textrm{subject to } & \sum_{j=1}^n w_jx_j \le W \\
+        \max\  & \sum_{j=1}^n p_jx_j \\
+        \textrm{s.t. } & \sum_{j=1}^n w_jx_j \le W \\
         & x_j = 0 \textrm{ or } 1 & j=1,...,n
     \end{array}
 
