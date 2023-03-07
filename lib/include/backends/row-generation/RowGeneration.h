@@ -9,6 +9,14 @@
 #include "modeling/models/BlockModel.h"
 #include "RowGenerationSP.h"
 
+class RowGeneration;
+
+IDOL_CREATE_PARAMETER_CLASS(RowGeneration);
+
+IDOL_CREATE_PARAMETER_TYPE(RowGeneration, bool, 1);
+
+IDOL_CREATE_PARAMETER(RowGeneration, bool, 0, BranchingOnDual, false);
+
 class RowGeneration : public Algorithm {
     std::unique_ptr<AbstractModel> m_master;
     std::vector<RowGenerationSP> m_subproblems;
@@ -46,6 +54,11 @@ protected:
     void analyze_subproblems_solution();
     void clean_up();
     void enrich_master_problem();
+
+    using Algorithm::set;
+    using Algorithm::get;
+
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
 public:
     explicit RowGeneration(const BlockModel<Var>& t_model);
 

@@ -41,6 +41,8 @@ int main(int t_argc, char** t_argv) {
 
     subproblem.model().set(Attr::Obj::Sense, Maximize);
 
+    model.build_opposite_axis();
+
     auto& rg = Idol::set_optimizer<RowGeneration>(model);
 
     rg.set_master_backend<Gurobi>();

@@ -84,3 +84,54 @@ TempCtr impl::RowGenerationSP::create_cut_from_generator(const Solution::Primal 
             GreaterOrEqual
     };
 }
+
+void impl::RowGenerationSP::apply_lb(const Var &t_var, double t_lb) {
+
+    if (m_parent->parent().get(::Param::RowGeneration::BranchingOnDual)) {
+
+        remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
+            return t_generator.get(t_var) < t_lb;
+        });
+
+        m_model->set(::Attr::Var::Lb, t_var, t_lb);
+        return;
+    }
+
+    throw Exception("Branching on primal problem is not yet implemented");
+}
+
+void impl::RowGenerationSP::apply_ub(const Var &t_var, double t_ub) {
+
+    if (m_parent->parent().get(::Param::RowGeneration::BranchingOnDual)) {
+
+        remove_cut_if([&](const Ctr& t_object, const Solution::Primal& t_generator) {
+            return t_generator.get(t_var) > t_ub;
+        });
+
+
+        m_model->set(::Attr::Var::Ub, t_var, t_ub);
+        return;
+    }
+
+    throw Exception("Branching on primal problem is not yet implemented");
+}
+
+void impl::RowGenerationSP::remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto& master = m_parent->master();
+
+    auto it = m_present_generators.begin();
+    const auto end = m_present_generators.end();
+
+    while (it != end) {
+        const auto& [cut, generator] = *it;
+        if (t_indicator_for_removal(cut, generator)) {
+            master.remove(cut);
+            it = m_present_generators.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+
+}

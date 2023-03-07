@@ -33,6 +33,9 @@ protected:
     void solve();
     void enrich_master_problem();
     [[nodiscard]] TempCtr create_cut_from_generator(const Solution::Primal& t_generator) const;
+    void remove_cut_if(const std::function<bool(const Ctr &, const Solution::Primal &)> &t_indicator_for_removal);
+    void apply_lb(const Var& t_var, double t_lb);
+    void apply_ub(const Var& t_var, double t_ub);
 public:
     virtual ~RowGenerationSP() = default;
 

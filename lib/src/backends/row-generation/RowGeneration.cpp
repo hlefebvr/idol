@@ -3,6 +3,7 @@
 //
 #include "backends/row-generation/RowGeneration.h"
 #include "backends/parameters/Logs.h"
+#include "modeling/objects/Versions.h"
 
 RowGeneration::RowGeneration(const BlockModel<Var> &t_model) : Algorithm(t_model) {
 
@@ -322,4 +323,26 @@ void RowGeneration::enrich_master_problem() {
 
 const BlockModel<Var> &RowGeneration::parent() const {
     return dynamic_cast<const BlockModel<Var>&>(Backend::parent());
+}
+
+void RowGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+
+    const unsigned int subproblem_id = t_var.get(parent().axis());
+
+    if (subproblem_id == MasterId) {
+        m_master->set(t_attr, t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Lb) {
+        m_subproblems[subproblem_id].apply_lb(t_var, t_value);
+        return;
+    }
+
+    if (t_attr == Attr::Var::Ub) {
+        m_subproblems[subproblem_id].apply_ub(t_var, t_value);
+        return;
+    }
+
+    Algorithm::set(t_attr, t_var, t_value);
 }
