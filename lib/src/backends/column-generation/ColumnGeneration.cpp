@@ -375,13 +375,19 @@ void ColumnGeneration::update_subproblems() {
 
 void ColumnGeneration::solve_subproblems() {
 
-    for (auto& subproblem : m_subproblems) {
+    const unsigned int n_threads = get(Param::ColumnGeneration::NumParallelPricing);
 
+    #pragma omp parallel for num_threads(n_threads) default(none)
+    for (auto & subproblem : m_subproblems) {
         subproblem.solve();
+    }
+
+    for (auto& subproblem : m_subproblems) {
 
         log_subproblem_solution(subproblem);
 
         if (is_terminated()) { break; }
+
     }
 
 }
