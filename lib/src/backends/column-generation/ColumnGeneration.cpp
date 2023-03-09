@@ -71,19 +71,19 @@ void ColumnGeneration::hook_optimize() {
 }
 
 void ColumnGeneration::add(const Var &t_var) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::add(const Ctr &t_ctr) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::remove(const Var &t_var) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::remove(const Ctr &t_ctr) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::update() {
@@ -91,7 +91,7 @@ void ColumnGeneration::update() {
 }
 
 void ColumnGeneration::write(const std::string &t_name) {
-
+    m_master->write(t_name);
 }
 
 void ColumnGeneration::hook_before_optimize() {
@@ -548,4 +548,14 @@ void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, dou
 
     Algorithm::set(t_attr, t_var, t_value);
 
+}
+
+void ColumnGeneration::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        m_master->set(t_attr, std::move(t_expr));
+        return;
+    }
+
+    Base::set(t_attr, t_expr);
 }

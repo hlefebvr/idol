@@ -49,7 +49,7 @@ public:
 
         auto& column_generation = Idol::set_optimizer<ColumnGeneration>(relaxation.model());
 
-        column_generation.template set_master_backend<MasterProblemBackendT>();
+        column_generation.template set_master_optimizer<MasterProblemBackendT>();
         for (unsigned int i = 0, n = relaxation.model().n_blocks() ; i < n ; ++i) {
             column_generation.template set_subproblem_backend<SubProblemBackendT>(i);
         }

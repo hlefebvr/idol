@@ -71,6 +71,7 @@ public:
     [[nodiscard]] const auto& master() const { return m_master; }
 
     // Blocks
+    Block& add_block() { m_blocks.emplace_back(env()); return m_blocks.back(); }
     [[nodiscard]] unsigned int n_blocks() const { return m_blocks.size(); }
     auto blocks() { return IteratorForward(m_blocks); }
     [[nodiscard]] auto blocks() const { return ConstIteratorForward(m_blocks); }
@@ -92,7 +93,7 @@ public:
     //[[nodiscard]] const LinExpr<Ctr>& get(const Req<LinExpr<Ctr>, void>& t_attr) const override;
     //[[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
     //void set(const Req<int, void> &t_attr, int t_value) override;
-    //void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
     //void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
     //void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
     //void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
@@ -115,6 +116,17 @@ public:
     //void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     //void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 };
+
+template<class AxisT>
+void BlockModel<AxisT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        m_master.set(t_attr, std::move(t_value));
+        return;
+    }
+
+    Delegate::set(t_attr, t_value);
+}
 
 template class BlockModel<Ctr>;
 template class BlockModel<Var>;
