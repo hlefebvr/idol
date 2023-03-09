@@ -33,7 +33,7 @@ We provide here a minimal :bash:`CMakeLists.txt`.
 
     add_executable(my_target main.cpp)
 
-    target_link_library(my_target PUBLIC idol)
+    target_link_libraries(my_target PUBLIC idol)
 
 Then, here is a starting :bash:`main.cpp`.
 
