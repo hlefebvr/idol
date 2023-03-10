@@ -509,7 +509,7 @@ bool ColumnGeneration::stopping_condition() const {
 
 double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
-    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+    const unsigned int subproblem_id = parent().has_opposite_axis() ? t_var.get(parent().opposite_axis()) : MasterId;
 
     if (subproblem_id == MasterId) {
         return m_master->get(t_attr, t_var);
@@ -529,7 +529,7 @@ double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) c
 
 void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
-    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+    const unsigned int subproblem_id = parent().has_opposite_axis() ? t_var.get(parent().opposite_axis()) : MasterId;
 
     if (subproblem_id == MasterId) {
         m_master->set(t_attr, t_var, t_value);

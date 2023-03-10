@@ -6,7 +6,7 @@
 
 template<class AxisT>
 BlockModel<AxisT>::BlockModel(Env &t_env, unsigned int t_n_blocks, Annotation<AxisT, unsigned int> t_axis_annotation)
-        : m_master(t_env), m_axis_annotation(std::move(t_axis_annotation)) {
+        : m_master(std::make_unique<Model>(t_env)), m_axis_annotation(std::move(t_axis_annotation)) {
 
     m_blocks.reserve(t_n_blocks);
     for (unsigned int i = 0 ; i < t_n_blocks ; ++i) {
@@ -18,13 +18,13 @@ BlockModel<AxisT>::BlockModel(Env &t_env, unsigned int t_n_blocks, Annotation<Ax
 template<class AxisT>
 Model &BlockModel<AxisT>::model(const Ctr &t_ctr) {
     const unsigned int block_id = t_ctr.get(annotation(t_ctr));
-    return block_id == MasterId ? m_master : block(block_id).model();
+    return block_id == MasterId ? *m_master : block(block_id).model();
 }
 
 template<class AxisT>
 Model &BlockModel<AxisT>::model(const Var &t_var) {
     const unsigned int block_id = t_var.get(annotation(t_var));
-    return block_id == MasterId ? m_master : block(block_id).model();
+    return block_id == MasterId ? *m_master : block(block_id).model();
 }
 
 template<class AxisT>
@@ -72,7 +72,7 @@ template<class AxisT>
 int BlockModel<AxisT>::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Obj::Sense) {
-        return m_master.get(t_attr);
+        return m_master->get(t_attr);
     }
 
     return Delegate::get(t_attr);
