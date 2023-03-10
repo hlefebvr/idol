@@ -54,6 +54,7 @@ void BranchAndBound::hook_before_optimize() {
 
     m_n_created_nodes = 0;
     m_iteration = 0;
+    m_current_node_should_be_resolve = false;
     set_best_bound(std::max(-Inf, get(Param::Algorithm::BestObjStop)));
     set_best_obj(std::min(+Inf, get(Param::Algorithm::BestBoundStop)));
 
@@ -158,7 +159,7 @@ void BranchAndBound::prepare_to_solve_current_node() {
 
 void BranchAndBound::solve_current_node() {
 
-    m_callback->m_current_node_should_be_resolved = false;
+    m_current_node_should_be_resolve = false;
 
     auto& lower_bounding_model = m_relaxations.get().model();
 
@@ -518,9 +519,15 @@ void BranchAndBound::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Con
 }
 
 void BranchAndBound::call_callback(Callback::Event t_event) {
-    if (!m_callback) { return; }
-    m_callback->m_current_node_should_be_resolved = false;
-    m_callback->execute(t_event);
+    if (m_callbacks.empty()) { return; }
+
+    m_current_node_should_be_resolve = false;
+    for (auto& ptr_to_cb : m_callbacks) {
+        ptr_to_cb->m_current_node_should_be_resolved = false;
+        ptr_to_cb->execute(t_event);
+        m_current_node_should_be_resolve = m_current_node_should_be_resolve || ptr_to_cb->m_current_node_should_be_resolved;
+    }
+
 }
 
 const AbstractModel &BranchAndBound::relaxed_model() const {
@@ -538,6 +545,6 @@ bool BranchAndBound::submit_solution(Solution::Primal t_solution) {
     return false;
 }
 
-bool BranchAndBound::current_node_should_be_resolved() {
-    return m_callback->m_current_node_should_be_resolved;
+bool BranchAndBound::current_node_should_be_resolved() const {
+    return m_current_node_should_be_resolve;
 }

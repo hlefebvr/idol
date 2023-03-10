@@ -23,6 +23,7 @@ private:
 
     unsigned int m_n_created_nodes = 0;
     unsigned int m_iteration = 0;
+    bool m_current_node_should_be_resolve = false;
 
     double m_iter_lower_bound = -Inf;
     double m_iter_upper_bound = +Inf;
@@ -32,7 +33,7 @@ private:
     std::unique_ptr<NodeStrategy> m_nodes_manager;
 
     friend class impl::Callback;
-    std::unique_ptr<Callback> m_callback;
+    std::vector<std::unique_ptr<Callback>> m_callbacks;
     void call_callback(Callback::Event t_event);
 protected:
     void initialize() override;
@@ -70,7 +71,7 @@ protected:
     void prune_active_nodes_by_bound();
     void update_best_lower_bound();
     bool no_active_nodes();
-    bool current_node_should_be_resolved();
+    [[nodiscard]] bool current_node_should_be_resolved() const;
     void branch();
     [[nodiscard]] bool iteration_limit_is_reached() const;
     [[nodiscard]] bool time_limit_is_reached() const;
@@ -109,7 +110,7 @@ public:
 
     template<class T, class ...ArgsT> T& set_node_strategy(ArgsT&& ...t_args);
 
-    template<class T, class ...ArgsT> T& set_callback(ArgsT&& ...t_args);
+    template<class T, class ...ArgsT> T& add_callback(ArgsT&& ...t_args);
 
     bool submit_solution(Solution::Primal t_solution);
 };
@@ -127,10 +128,10 @@ T &BranchAndBound::set_node_strategy(ArgsT &&... t_args) {
 }
 
 template<class T, class... ArgsT>
-T &BranchAndBound::set_callback(ArgsT &&... t_args) {
+T &BranchAndBound::add_callback(ArgsT &&... t_args) {
     auto* result = new T(std::forward<ArgsT>(t_args)...);
     ((impl::Callback*) result)->m_parent = this;
-    m_callback.reset(result);
+    m_callbacks.emplace_back(result);
     return *result;
 }
 
