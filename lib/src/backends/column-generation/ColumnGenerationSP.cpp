@@ -6,11 +6,16 @@
 #include "backends/column-generation/ColumnGeneration.h"
 #include "modeling/expressions/operations/operators.h"
 
+
+#include "backends/solvers/Gurobi.h" // TODO remove this
+
 impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index)
     : m_parent(&t_parent),
       m_index(t_index),
       m_model(t_parent.parent().block(t_index).model().clone()),
       m_generation_pattern(t_parent.parent().block(t_index).generation_pattern()) {
+
+    Idol::set_optimizer<Gurobi>(*m_model); // TODO remove this
 
 }
 

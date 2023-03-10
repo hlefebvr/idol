@@ -70,6 +70,7 @@ protected:
     void prune_active_nodes_by_bound();
     void update_best_lower_bound();
     bool no_active_nodes();
+    bool current_node_should_be_resolved();
     void branch();
     [[nodiscard]] bool iteration_limit_is_reached() const;
     [[nodiscard]] bool time_limit_is_reached() const;

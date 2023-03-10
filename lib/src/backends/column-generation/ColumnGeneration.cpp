@@ -30,7 +30,9 @@ void ColumnGeneration::hook_optimize() {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
+            idol_Log(Trace, ColumnGeneration, "Solving master problem.");
             solve_master_problem();
+            idol_Log(Trace, ColumnGeneration, "Master problem has been solved.");
 
             analyze_master_problem_solution();
 
@@ -75,7 +77,7 @@ void ColumnGeneration::add(const Var &t_var) {
 }
 
 void ColumnGeneration::add(const Ctr &t_ctr) {
-    throw Exception("Not implemented");
+    m_master->add(t_ctr);
 }
 
 void ColumnGeneration::remove(const Var &t_var) {
@@ -87,6 +89,13 @@ void ColumnGeneration::remove(const Ctr &t_ctr) {
 }
 
 void ColumnGeneration::update() {
+
+    const unsigned int current_n_blocks = m_subproblems.size();
+    const unsigned int parent_n_blocks = parent().n_blocks();
+
+    for (unsigned int k = current_n_blocks ; k < parent_n_blocks ; ++k) {
+        m_subproblems.emplace_back(*this, k);
+    }
 
 }
 
@@ -147,7 +156,6 @@ void ColumnGeneration::add_artificial_variables() {
         }
 
     }
-
 
 }
 
@@ -257,11 +265,11 @@ void ColumnGeneration::log_subproblem_solution(const ColumnGenerationSP& t_subpr
     idol_Log(Debug,
              ColumnGeneration,
              "<Type=Pricing> "
-                     << "<Iter=" << m_iteration_count << "> "
-                     << "<TimT=" << parent().time().count() << "> "
-                     << "<TimI=" << pricing.time().count() << "> "
-                     << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
-                     << "<Reas=" << (SolutionReason) pricing.get(Attr::Solution::Reason) << "> "
+             << "<Iter=" << m_iteration_count << "> "
+             << "<TimT=" << parent().time().count() << "> "
+             << "<TimI=" << pricing.time().count() << "> "
+             << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
+             << "<Reas=" << (SolutionReason) pricing.get(Attr::Solution::Reason) << "> "
              << "<Obj=" << pricing.get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "

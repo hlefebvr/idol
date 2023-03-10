@@ -28,6 +28,8 @@ private:
 protected:
     BlockModel(const BlockModel& t_src);
 
+    [[nodiscard]] bool has_annotation(const AxisT&) const { return m_axis_annotation.has_value(); }
+    [[nodiscard]] bool has_annotation(const OppositeAxisT&) const { return m_opposite_axis_annotation.has_value(); }
     [[nodiscard]] const Annotation<AxisT, unsigned int>& annotation(const AxisT&) const { return m_axis_annotation.value(); }
     [[nodiscard]] const Annotation<OppositeAxisT, unsigned int>& annotation(const OppositeAxisT&) const { return m_opposite_axis_annotation.value(); }
 
@@ -57,7 +59,7 @@ public:
     [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_master->vars(); }
 
     // Constraints
-    void add(const Ctr &t_ctr) override { m_master->add(t_ctr); }
+    void add(const Ctr &t_ctr) override;
     void add(const Ctr &t_ctr, TempCtr &&t_row) override { m_master->add(t_ctr, std::move(t_row)); }
     [[nodiscard]] bool has(const Ctr &t_ctr) const override { return model(t_ctr).has(t_ctr); }
     void remove(const Ctr &t_ctr) override { model(t_ctr).remove(t_ctr); }
@@ -73,7 +75,7 @@ public:
     [[nodiscard]] const auto& master() const { return *m_master; }
 
     // Blocks
-    Block& add_block() { m_blocks.emplace_back(env()); return m_blocks.back(); }
+    void add_block(Block&& t_block);
     [[nodiscard]] unsigned int n_blocks() const { return m_blocks.size(); }
     auto blocks() { return IteratorForward(m_blocks); }
     [[nodiscard]] auto blocks() const { return ConstIteratorForward(m_blocks); }
@@ -120,6 +122,14 @@ public:
     //void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     //void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 };
+
+template<class AxisT>
+void BlockModel<AxisT>::add(const Ctr &t_ctr) {
+    m_master->add(t_ctr);
+    if (has_backend()) {
+        backend().add(t_ctr);
+    }
+}
 
 template<class AxisT>
 BlockModel<AxisT>::BlockModel(const BlockModel &t_src) : m_master(t_src.m_master->clone()) {

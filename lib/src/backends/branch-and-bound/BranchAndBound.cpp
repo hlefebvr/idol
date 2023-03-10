@@ -132,11 +132,16 @@ void BranchAndBound::solve_queued_nodes() {
         );
 
         prepare_to_solve_current_node();
-        solve_current_node();
 
-        log_node(Debug, m_nodes_manager->current_node());
+        do {
 
-        analyze_current_node();
+            solve_current_node();
+
+            log_node(Debug, m_nodes_manager->current_node());
+
+            analyze_current_node();
+
+        } while (current_node_should_be_resolved());
 
         if (m_nodes_manager->has_current_node()) {
             apply_heuristics_on_current_node();
@@ -152,6 +157,8 @@ void BranchAndBound::prepare_to_solve_current_node() {
 }
 
 void BranchAndBound::solve_current_node() {
+
+    m_callback->m_current_node_should_be_resolved = false;
 
     auto& lower_bounding_model = m_relaxations.get().model();
 
@@ -208,18 +215,24 @@ void BranchAndBound::analyze_current_node() {
 
     if (current_node_has_a_valid_solution()) {
 
-        add_current_node_to_solution_pool();
-
         idol_Log(Trace, BranchAndBound, "Valid solution found at node " << current_node().id() << '.');
 
         if (current_node_is_below_upper_bound()) {
-            set_current_node_as_incumbent();
-            set_best_obj(current_node().objective_value());
-            log_node(Info, m_nodes_manager->current_node());
-            idol_Log(Trace, BranchAndBound, "Better incumbent found at node " << current_node().id() << ".");
 
             call_callback(Callback::IncumbentFound);
+
+            if (!current_node_should_be_resolved()) {
+                set_current_node_as_incumbent();
+                set_best_obj(current_node().objective_value());
+                log_node(Info, m_nodes_manager->current_node());
+                idol_Log(Trace, BranchAndBound, "Better incumbent found at node " << current_node().id() << ".");
+            } else {
+                return;
+            }
+
         }
+
+        add_current_node_to_solution_pool();
 
         reset_current_node();
         return;
@@ -506,6 +519,7 @@ void BranchAndBound::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Con
 
 void BranchAndBound::call_callback(Callback::Event t_event) {
     if (!m_callback) { return; }
+    m_callback->m_current_node_should_be_resolved = false;
     m_callback->execute(t_event);
 }
 
@@ -522,4 +536,8 @@ bool BranchAndBound::submit_solution(Solution::Primal t_solution) {
         return true;
     }
     return false;
+}
+
+bool BranchAndBound::current_node_should_be_resolved() {
+    return m_callback->m_current_node_should_be_resolved;
 }
