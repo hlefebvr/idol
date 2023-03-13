@@ -11,7 +11,7 @@ if (${BUILD_DEV})
 endif()
 
 if (${BUILD_EXAMPLES})
-    # nothing to do for the moment
+    add_subdirectory(examples)
 endif()
 
 if (${BUILD_TESTS})

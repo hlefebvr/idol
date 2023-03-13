@@ -78,7 +78,10 @@ Assuming that the instance file is named :code:`instance.txt`, it can be loaded 
 
 .. code-block:: cpp
 
-    auto instance = Problems::GAP::read_instance("instance.txt");
+    const auto instance = Problems::GAP::read_instance("instance.txt");
+
+    const unsigned int n_agents = instance.n_agents();
+    const unsigned int n_jobs = instance.n_jobs();
 
 We are now ready to model our problem (for more details, refer to :ref:`this tutorial on modeling <basics_first_model>`)
 
@@ -166,7 +169,7 @@ This is done in the exact same way as classically done with any other solver, us
 
 .. code:: cpp
 
-    Idol::set_optimizer<BranchAndPrice<GLPK>>(model, decomposition);
+    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
 
 Here, we pass the direct model as argument with the desired decomposition. Then, one can simply call the :code:`optimize` method as follows.
 
