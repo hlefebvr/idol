@@ -20,7 +20,7 @@ IDOL_CREATE_PARAMETER(ColumnGeneration, bool, 1, BranchingOnMaster, true)
 
 IDOL_CREATE_PARAMETER_TYPE(ColumnGeneration, double, 3)
 IDOL_CREATE_PARAMETER(ColumnGeneration, double, 0, CleanUpRatio, 2./3.)
-IDOL_CREATE_PARAMETER(ColumnGeneration, double, 1, ArtificialVarCost, 1e+9)
+IDOL_CREATE_PARAMETER(ColumnGeneration, double, 1, ArtificialVarCost, 1e+7)
 IDOL_CREATE_PARAMETER(ColumnGeneration, double, 2, SmoothingFactor, 0.)
 
 #endif //IDOL_PARAMETERS_COLUMNGENERATION_H

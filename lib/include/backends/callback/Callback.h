@@ -37,10 +37,25 @@ public:
     void reoptimize();
 };
 
+class AdvancedInterface {
+    impl::Callback& m_parent;
+    Relaxation& m_relaxation;
+public:
+    AdvancedInterface(impl::Callback& t_parent, Relaxation& t_relaxation);
+
+    Relaxation& relaxation() { return m_relaxation; }
+
+    [[nodiscard]] const Relaxation& relaxation() const { return m_relaxation; }
+
+    void relaxation_has_changed();
+};
+
 class impl::Callback {
     friend class ::BranchAndBound;
-    friend class HeuristicInterface;
+    friend class ::HeuristicInterface;
+    friend class ::AdvancedInterface;
     BranchAndBound* m_parent = nullptr;
+    bool m_current_node_should_be_resolved = false;
 protected:
     [[nodiscard]] const Relaxation& relaxation() const;
 
@@ -48,7 +63,9 @@ protected:
 
     bool submit(Solution::Primal&& t_solution) const;
 
-    HeuristicInterface temporary_update_session();
+    HeuristicInterface heuristic_interface();
+
+    AdvancedInterface advanced_interface();
 };
 
 class Callback : public impl::Callback {

@@ -77,6 +77,20 @@ public:
 
     [[nodiscard]] double remaining_time() const { return std::max(0., get(Param::Algorithm::TimeLimit) - time().count()); }
 
+    template<class T> [[nodiscard]] bool is() const { return dynamic_cast<T*>(this); }
+
+    template<class T> T& as() {
+        auto* ptr = dynamic_cast<T*>(this);
+        if (!ptr) { throw Exception("Bad cast."); }
+        return *ptr;
+    }
+
+    template<class T> const T& as() const {
+        auto* ptr = dynamic_cast<const T*>(this);
+        if (!ptr) { throw Exception("Bad cast."); }
+        return *ptr;
+    }
+
     using AttributeManagers::Delegate::get;
     using AttributeManagers::Delegate::set;
 };

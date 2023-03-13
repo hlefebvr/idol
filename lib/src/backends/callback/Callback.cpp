@@ -25,7 +25,11 @@ bool impl::Callback::submit(Solution::Primal &&t_solution) const {
     return m_parent->submit_solution(std::move(t_solution));
 }
 
-HeuristicInterface impl::Callback::temporary_update_session() {
+HeuristicInterface impl::Callback::heuristic_interface() {
+    return { *this, m_parent->m_relaxations.get() };
+}
+
+AdvancedInterface impl::Callback::advanced_interface() {
     return { *this, m_parent->m_relaxations.get() };
 }
 
@@ -48,4 +52,13 @@ HeuristicInterface::~HeuristicInterface() {
     RESTORE_SET(Var, double);
     RESTORE_SET(Var, int);
 
+}
+
+AdvancedInterface::AdvancedInterface(impl::Callback &t_parent, Relaxation &t_relaxation)
+    : m_parent(t_parent), m_relaxation(t_relaxation) {
+
+}
+
+void AdvancedInterface::relaxation_has_changed() {
+    m_parent.m_current_node_should_be_resolved = true;
 }

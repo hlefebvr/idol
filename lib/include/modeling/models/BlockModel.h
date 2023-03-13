@@ -20,12 +20,16 @@ public:
 
     class Block;
 private:
-    Model m_master;
+    std::unique_ptr<Model> m_master;
     std::vector<Block> m_blocks;
 
     std::optional<Annotation<AxisT, unsigned int>> m_axis_annotation;
     std::optional<Annotation<OppositeAxisT, unsigned int>> m_opposite_axis_annotation;
 protected:
+    BlockModel(const BlockModel& t_src);
+
+    [[nodiscard]] bool has_annotation(const AxisT&) const { return m_axis_annotation.has_value(); }
+    [[nodiscard]] bool has_annotation(const OppositeAxisT&) const { return m_opposite_axis_annotation.has_value(); }
     [[nodiscard]] const Annotation<AxisT, unsigned int>& annotation(const AxisT&) const { return m_axis_annotation.value(); }
     [[nodiscard]] const Annotation<OppositeAxisT, unsigned int>& annotation(const OppositeAxisT&) const { return m_opposite_axis_annotation.value(); }
 
@@ -36,9 +40,9 @@ protected:
     [[nodiscard]] const Model& model(const Ctr& t_ctr) const { return const_cast<BlockModel<AxisT>*>(this)->model(t_ctr); }
 
     // Attribute delegate
-    AttributeManager &attribute_delegate(const Attribute &t_attribute) override { return backend(); }
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override { return backend(); }
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override { return backend(); }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute) override { return has_backend() ? (AttributeManager&) backend() : *m_master; }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override { return has_backend() ? (AttributeManager&) backend() : *m_master; }
+    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override { return has_backend() ? (AttributeManager&) backend() : *m_master; }
     // Parameter delegate
     AttributeManager &parameter_delegate(const Parameter<double> &t_param) override { return backend(); }
     AttributeManager &parameter_delegate(const Parameter<int> &t_param) override { return backend(); }
@@ -48,29 +52,30 @@ public:
     BlockModel(Env& t_env, unsigned int t_n_blocks, Annotation<AxisT, unsigned int> t_axis_annotation);
 
     // Variables
-    void add(const Var &t_var) override { m_master.add(t_var); }
-    void add(const Var &t_var, TempVar&& t_temp_var) override { m_master.add(t_var, std::move(t_temp_var)); }
+    void add(const Var &t_var) override { m_master->add(t_var); }
+    void add(const Var &t_var, TempVar&& t_temp_var) override { m_master->add(t_var, std::move(t_temp_var)); }
     [[nodiscard]] bool has(const Var &t_var) const override { return model(t_var).has(t_var); }
     void remove(const Var &t_var) override { model(t_var).remove(t_var); }
-    [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_master.vars(); }
+    [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const override { return m_master->vars(); }
 
     // Constraints
-    void add(const Ctr &t_ctr) override { m_master.add(t_ctr); }
-    void add(const Ctr &t_ctr, TempCtr &&t_row) override { m_master.add(t_ctr, std::move(t_row)); }
+    void add(const Ctr &t_ctr) override;
+    void add(const Ctr &t_ctr, TempCtr &&t_row) override { m_master->add(t_ctr, std::move(t_row)); }
     [[nodiscard]] bool has(const Ctr &t_ctr) const override { return model(t_ctr).has(t_ctr); }
     void remove(const Ctr &t_ctr) override { model(t_ctr).remove(t_ctr); }
-    [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_master.ctrs(); }
+    [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const override { return m_master->ctrs(); }
 
     // Model
-    [[nodiscard]] BlockModel<AxisT> *clone() const override { throw Exception("Not implemented."); }
-    [[nodiscard]] unsigned int id() const override { return m_master.id(); }
-    [[nodiscard]] Env &env() const override { return m_master.env(); }
+    [[nodiscard]] BlockModel<AxisT> *clone() const override;
+    [[nodiscard]] unsigned int id() const override { return m_master->id(); }
+    [[nodiscard]] Env &env() const override { return m_master->env(); }
 
     // Master
-    auto& master() { return m_master; }
-    [[nodiscard]] const auto& master() const { return m_master; }
+    auto& master() { return *m_master; }
+    [[nodiscard]] const auto& master() const { return *m_master; }
 
     // Blocks
+    void add_block(Block&& t_block);
     [[nodiscard]] unsigned int n_blocks() const { return m_blocks.size(); }
     auto blocks() { return IteratorForward(m_blocks); }
     [[nodiscard]] auto blocks() const { return ConstIteratorForward(m_blocks); }
@@ -80,7 +85,9 @@ public:
 
     // Axis
     [[nodiscard]] const auto& axis() const { return m_axis_annotation.value(); }
+    [[nodiscard]] bool has_axis() const { return m_axis_annotation.has_value(); }
     [[nodiscard]] const auto& opposite_axis() const { return m_opposite_axis_annotation.value(); }
+    [[nodiscard]] bool has_opposite_axis() const { return m_opposite_axis_annotation.has_value(); }
 
     using AbstractModel::get;
     using AbstractModel::set;
@@ -92,7 +99,7 @@ public:
     //[[nodiscard]] const LinExpr<Ctr>& get(const Req<LinExpr<Ctr>, void>& t_attr) const override;
     //[[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
     //void set(const Req<int, void> &t_attr, int t_value) override;
-    //void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
     //void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
     //void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
     //void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
@@ -116,16 +123,58 @@ public:
     //void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
 };
 
+template<class AxisT>
+void BlockModel<AxisT>::add(const Ctr &t_ctr) {
+    m_master->add(t_ctr);
+    if (has_backend()) {
+        backend().add(t_ctr);
+    }
+}
+
+template<class AxisT>
+BlockModel<AxisT>::BlockModel(const BlockModel &t_src) : m_master(t_src.m_master->clone()) {
+
+    const unsigned int n_blocks = t_src.n_blocks();
+
+    m_blocks.reserve(n_blocks);
+    for (unsigned int k = 0 ; k < n_blocks ; ++k) {
+        m_blocks.emplace_back(t_src.m_blocks[k]);
+    }
+
+}
+
+template<class AxisT>
+BlockModel<AxisT> *BlockModel<AxisT>::clone() const {
+    return new BlockModel<AxisT>(*this);
+}
+
+template<class AxisT>
+void BlockModel<AxisT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        m_master->set(t_attr, std::move(t_value));
+        return;
+    }
+
+    Delegate::set(t_attr, t_value);
+}
+
 template class BlockModel<Ctr>;
 template class BlockModel<Var>;
 
 template<class AxisT>
 class BlockModel<AxisT>::Block {
-    Model m_model;
+    std::unique_ptr<Model> m_model;
     GenerationPatternT m_generation_pattern;
     std::optional<AxisT> m_aggregator;
+
 public:
-    explicit Block(Env& t_env) : m_model(t_env) {}
+    explicit Block(Env& t_env) : m_model(std::make_unique<Model>(t_env)) {}
+
+    Block(const Block& t_src)
+            : m_model(t_src.m_model->clone()),
+              m_generation_pattern(t_src.m_generation_pattern),
+              m_aggregator(t_src.m_aggregator) {}
 
     // Aggregators
     [[nodiscard]] const AxisT& aggregator() const { return m_aggregator.value(); }
@@ -138,8 +187,8 @@ public:
     [[nodiscard]] const GenerationPatternT& generation_pattern() const { return m_generation_pattern; }
 
     // Model
-    [[nodiscard]] const auto& model() const { return m_model; }
-    auto& model() { return m_model; }
+    [[nodiscard]] const auto& model() const { return *m_model; }
+    auto& model() { return *m_model; }
 };
 
 template<class AxisT>

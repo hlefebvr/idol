@@ -30,7 +30,9 @@ void ColumnGeneration::hook_optimize() {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
+            idol_Log(Trace, ColumnGeneration, "Solving master problem.");
             solve_master_problem();
+            idol_Log(Trace, ColumnGeneration, "Master problem has been solved.");
 
             analyze_master_problem_solution();
 
@@ -71,27 +73,34 @@ void ColumnGeneration::hook_optimize() {
 }
 
 void ColumnGeneration::add(const Var &t_var) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::add(const Ctr &t_ctr) {
-
+    m_master->add(t_ctr);
 }
 
 void ColumnGeneration::remove(const Var &t_var) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::remove(const Ctr &t_ctr) {
-
+    throw Exception("Not implemented");
 }
 
 void ColumnGeneration::update() {
 
+    const unsigned int current_n_blocks = m_subproblems.size();
+    const unsigned int parent_n_blocks = parent().n_blocks();
+
+    for (unsigned int k = current_n_blocks ; k < parent_n_blocks ; ++k) {
+        m_subproblems.emplace_back(*this, k);
+    }
+
 }
 
 void ColumnGeneration::write(const std::string &t_name) {
-
+    m_master->write(t_name);
 }
 
 void ColumnGeneration::hook_before_optimize() {
@@ -147,7 +156,6 @@ void ColumnGeneration::add_artificial_variables() {
         }
 
     }
-
 
 }
 
@@ -257,11 +265,11 @@ void ColumnGeneration::log_subproblem_solution(const ColumnGenerationSP& t_subpr
     idol_Log(Debug,
              ColumnGeneration,
              "<Type=Pricing> "
-                     << "<Iter=" << m_iteration_count << "> "
-                     << "<TimT=" << parent().time().count() << "> "
-                     << "<TimI=" << pricing.time().count() << "> "
-                     << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
-                     << "<Reas=" << (SolutionReason) pricing.get(Attr::Solution::Reason) << "> "
+             << "<Iter=" << m_iteration_count << "> "
+             << "<TimT=" << parent().time().count() << "> "
+             << "<TimI=" << pricing.time().count() << "> "
+             << "<Stat=" << (SolutionStatus) pricing.get(Attr::Solution::Status) << "> "
+             << "<Reas=" << (SolutionReason) pricing.get(Attr::Solution::Reason) << "> "
              << "<Obj=" << pricing.get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
@@ -509,7 +517,7 @@ bool ColumnGeneration::stopping_condition() const {
 
 double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
-    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+    const unsigned int subproblem_id = parent().has_opposite_axis() ? t_var.get(parent().opposite_axis()) : MasterId;
 
     if (subproblem_id == MasterId) {
         return m_master->get(t_attr, t_var);
@@ -529,7 +537,7 @@ double ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) c
 
 void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
-    const unsigned int subproblem_id = t_var.get(parent().opposite_axis());
+    const unsigned int subproblem_id = parent().has_opposite_axis() ? t_var.get(parent().opposite_axis()) : MasterId;
 
     if (subproblem_id == MasterId) {
         m_master->set(t_attr, t_var, t_value);
@@ -548,4 +556,14 @@ void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, dou
 
     Algorithm::set(t_attr, t_var, t_value);
 
+}
+
+void ColumnGeneration::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
+
+    if (t_attr == Attr::Obj::Expr) {
+        m_master->set(t_attr, std::move(t_expr));
+        return;
+    }
+
+    Base::set(t_attr, t_expr);
 }
