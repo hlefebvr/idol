@@ -83,7 +83,7 @@ Assuming that the instance file is named :code:`instance.txt`, it can be loaded 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
-We are now ready to model our problem (for more details, refer to :ref:`this tutorial on modeling <basics_first_model>`)
+We are now ready to model our problem (for more details, refer to :ref:`this tutorial on modeling <modeling_optimization_problems>`)
 
 .. code-block:: cpp
 
@@ -190,6 +190,54 @@ is possible to obtain logs as follows.
 
 Note that the rest remains unchanged and one can use :code:`model.get(Attr::Solution::Status)` to get the optimization status
 or use :code:`save(model, Attr::Solution::Primal)` to save the primal solution of the problem.
+
+**Example of possible output:**
+
+.. code-block:: text
+
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=110000.00> <NGen=0> <BestBnd=-inf> <BestObj=110000.00> <RGap=90909090909090928.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-50093.00> <NGen=0> <BestBnd=-inf> <BestObj=110000.00> <RGap=90909090909090928.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-40096.00> <NGen=0> <BestBnd=-inf> <BestObj=110000.00> <RGap=90909090909090928.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-30068.00> <NGen=0> <BestBnd=-inf> <BestObj=110000.00> <RGap=90909090909090928.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-242.50> <NGen=1> <BestBnd=-277.86> <BestObj=-242.50> <RGap=14.58> <AGap=35.36>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-7.90> <NGen=1> <BestBnd=-277.86> <BestObj=-242.50> <RGap=14.58> <AGap=35.36>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-14.50> <NGen=1> <BestBnd=-277.86> <BestObj=-242.50> <RGap=14.58> <AGap=35.36>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-1.36> <NGen=1> <BestBnd=-277.86> <BestObj=-242.50> <RGap=14.58> <AGap=35.36>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=16> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-242.50> <NGen=0> <BestBnd=-242.51> <BestObj=-242.50> <RGap=0.00> <AGap=0.01>
+    [2023-03-13 12:09:54]	[debug]	[BranchAndBound] 	<Node=0 > <Iter=0> <Time=0.01> <Levl=0> <Unex=0> <Stat=Optimal> <Reas=NotSpecified> <ObjV=-242.50> <Lb=-inf> <Ub=+inf> <RGap=200.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[BranchAndBound] 	New incumbent solution found by submission.
+    [2023-03-13 12:09:54]	[info]	[BranchAndBound] 	<Node=H-> <Iter=0> <Time=0.01> <Levl=1> <Unex=0> <Stat=Optimal> <Reas=Proved> <ObjV=-233.00> <Lb=-inf> <Ub=-233.00> <RGap=42918454935603896320.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[info]	[BranchAndBound] 	<Node=0+> <Iter=0> <Time=0.01> <Levl=0> <Unex=1> <Stat=Optimal> <Reas=NotSpecified> <ObjV=-242.50> <Lb=-242.50> <Ub=-233.00> <RGap=4.08> <AGap=9.50>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-233.00> <NGen=0> <BestBnd=-inf> <BestObj=-233.00> <RGap=42918454935603896320.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-9998.00> <NGen=0> <BestBnd=-inf> <BestObj=-233.00> <RGap=42918454935603896320.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-4936.50> <NGen=0> <BestBnd=-inf> <BestObj=-233.00> <RGap=42918454935603896320.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-9978.00> <NGen=0> <BestBnd=-inf> <BestObj=-233.00> <RGap=42918454935603896320.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-233.00> <NGen=1> <BestBnd=-233.39> <BestObj=-233.00> <RGap=0.17> <AGap=0.39>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-0.06> <NGen=1> <BestBnd=-233.39> <BestObj=-233.00> <RGap=0.17> <AGap=0.39>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-0.00> <NGen=1> <BestBnd=-233.39> <BestObj=-233.00> <RGap=0.17> <AGap=0.39>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=10> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-0.06> <NGen=1> <BestBnd=-233.39> <BestObj=-233.00> <RGap=0.17> <AGap=0.39>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=12> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-233.00> <NGen=1> <BestBnd=-233.01> <BestObj=-233.00> <RGap=0.00> <AGap=0.01>
+    [2023-03-13 12:09:54]	[debug]	[BranchAndBound] 	<Node=2-> <Iter=1> <Time=0.02> <Levl=1> <Unex=0> <Stat=Optimal> <Reas=NotSpecified> <ObjV=-233.00> <Lb=-242.50> <Ub=-233.00> <RGap=4.08> <AGap=9.50>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=4747.00> <NGen=0> <BestBnd=-inf> <BestObj=4747.00> <RGap=2106593638087168512.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-14929.00> <NGen=0> <BestBnd=-inf> <BestObj=4747.00> <RGap=2106593638087168512.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-9945.00> <NGen=0> <BestBnd=-inf> <BestObj=4747.00> <RGap=2106593638087168512.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[debug]	[ColumnGeneration] 	<Type=Pricing> <Iter=0> <TimT=0.00> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=0.00> <NGen=0> <BestBnd=-inf> <BestObj=4747.00> <RGap=2106593638087168512.00> <AGap=+inf>
+    [2023-03-13 12:09:54]	[info]	[ColumnGeneration] 	<Type=Master> <Iter=7> <TimT=0.01> <TimI=0.00> <Stat=Optimal> <Reas=Proved> <Obj=-218.00> <NGen=0> <BestBnd=-224.89> <BestObj=-218.00> <RGap=3.16> <AGap=6.89>
+    [2023-03-13 12:09:54]	[debug]	[BranchAndBound] 	<Node=1 > <Iter=1> <Time=0.03> <Levl=1> <Unex=0> <Stat=Optimal> <Reas=UserObjLimit> <ObjV=-218.00> <Lb=-242.50> <Ub=-233.00> <RGap=4.08> <AGap=9.50>
+    +-----------------------
+    | Status: Optimal
+    | Reason: Proved
+    | ObjVal: -233.00
+    | Values:
+    | 	x_1_7 = 1.00
+    | 	x_2_0 = 1.00
+    | 	x_2_1 = 1.00
+    | 	x_1_4 = 1.00
+    | 	x_1_5 = 1.00
+    | 	x_0_6 = 1.00
+    | 	x_0_2 = 1.00
+    | 	x_0_3 = 1.00
+    +-----------------------
 
 Parameters
 ----------
