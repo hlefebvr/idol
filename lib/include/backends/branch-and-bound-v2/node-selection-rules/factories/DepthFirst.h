@@ -6,6 +6,7 @@
 #define IDOL_DEPTHFIRST_H
 
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/NodeSelectionRuleFactory.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/impls/DepthFirst.h"
 
 class DepthFirst {
 public:
@@ -14,9 +15,8 @@ public:
     public:
         explicit Strategy(const DepthFirst& t_parent) {}
 
-        NodeSelectionRule<NodeT> *operator()() const override {
-            std::cout << "DepthFirst did not create anything" << std::endl;
-            return nullptr;
+        NodeSelectionRules::DepthFirst<NodeT> *operator()() const override {
+            return new NodeSelectionRules::DepthFirst<NodeT>();
         }
 
         NodeSelectionRuleFactory<NodeT> *clone() const override {

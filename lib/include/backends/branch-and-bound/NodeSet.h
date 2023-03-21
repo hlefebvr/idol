@@ -31,7 +31,24 @@ public:
     [[nodiscard]] unsigned int size() const { return m_by_objective_value.size(); }
 
     const_iterator erase(const const_iterator& t_it);
+
+    void merge(NodeSet<NodeT>&& t_node_set);
 };
+
+template<class NodeT>
+void NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
+
+    for (auto pair : t_node_set.m_by_objective_value) {
+        m_by_objective_value.emplace(pair);
+    }
+
+    for (auto pair : t_node_set.m_by_level) {
+        m_by_level.emplace(pair);
+    }
+
+    t_node_set.clear();
+
+}
 
 template<class NodeT>
 typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::emplace(NodeT *t_node) {

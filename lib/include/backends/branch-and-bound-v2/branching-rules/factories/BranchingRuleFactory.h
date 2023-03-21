@@ -12,7 +12,7 @@ class BranchingRuleFactory {
 public:
     virtual ~BranchingRuleFactory() = default;
 
-    virtual BranchingRule<NodeT>* operator()() const = 0;
+    virtual BranchingRule<NodeT>* operator()(const AbstractModel& t_model) const = 0;
 
     virtual BranchingRuleFactory* clone() const = 0;
 };

@@ -6,6 +6,7 @@
 #define IDOL_MOSTINFEASIBLE_H
 
 #include "backends/branch-and-bound-v2/branching-rules/factories/BranchingRuleFactory.h"
+#include "backends/branch-and-bound-v2/branching-rules/impls/MostInfeasbile.h"
 
 class MostInfeasible {
 public:
@@ -14,9 +15,8 @@ public:
     public:
         explicit Strategy(const MostInfeasible& t_parent) {}
 
-        BranchingRule<NodeT> *operator()() const override {
-            std::cout << "MostInfeasible did not create anything" << std::endl;
-            return nullptr;
+        BranchingRules::MostInfeasible<NodeT> *operator()(const AbstractModel& t_model) const override {
+            return new BranchingRules::MostInfeasible<NodeT>(t_model);
         }
 
         Strategy *clone() const override {
