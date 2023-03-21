@@ -13,6 +13,7 @@
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
+#include "backends/branch-and-bound-v2/OptimizerFactory.h"
 
 class Backend;
 class TempVar;
@@ -69,6 +70,11 @@ public:
     void update() {
         throw_if_no_backend();
         backend().update();
+    }
+
+    void use(const OptimizerFactory& t_optimizer) {
+        m_backend.reset(t_optimizer(*this));
+        m_backend->initialize();
     }
 
     [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }

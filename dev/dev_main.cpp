@@ -3,9 +3,39 @@
 #include "backends/row-generation/RowGeneration.h"
 #include "backends/solvers/Gurobi.h"
 #include "backends/parameters/Logs.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundV2.h"
+#include "backends/solvers/GLPK.h"
+#include "backends/branch-and-bound-v2/DefaultOptimizer.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "backends/branch-and-bound-v2/ContinuousRelaxation.h"
+#include "backends/branch-and-bound-v2/MostInfeasible.h"
+#include "backends/branch-and-bound-v2/DepthFirst.h"
+
+class MyNode {
+    unsigned int m_id = 0;
+};
 
 int main(int t_argc, char** t_argv) {
 
+    Env env;
+    Model model(env);
+
+    Var x(env, 0., 1., Continuous, "x");
+    model.add(x);
+    model.add(Ctr(env, x >= .5));
+    model.set(Attr::Obj::Expr, -x);
+
+    model.use(BranchAndBoundOptimizer<MyNode>(
+                DefaultOptimizer<GLPK>(),
+                ContinuousRelaxation(),
+                MostInfeasible(),
+                DepthFirst()
+            ));
+
+    model.optimize();
+
+    return 0;
+/*
     Logs::set_level<RowGeneration>(Debug);
     Logs::set_color<RowGeneration>(Green);
 
@@ -50,6 +80,6 @@ int main(int t_argc, char** t_argv) {
 
 
     model.optimize();
-
+*/
     return 0;
 }
