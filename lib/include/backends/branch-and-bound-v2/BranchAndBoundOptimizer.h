@@ -6,7 +6,7 @@
 #define IDOL_BRANCHANDBOUNDOPTIMIZER_H
 
 #include <memory>
-#include "OptimizerFactory.h"
+#include "backends/OptimizerFactory.h"
 #include "BranchAndBoundV2.h"
 
 template<class NodeT>

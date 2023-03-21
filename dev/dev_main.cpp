@@ -5,11 +5,11 @@
 #include "backends/parameters/Logs.h"
 #include "backends/branch-and-bound-v2/BranchAndBoundV2.h"
 #include "backends/solvers/GLPK.h"
-#include "backends/branch-and-bound-v2/DefaultOptimizer.h"
+#include "backends/solvers/DefaultOptimizer.h"
 #include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
-#include "backends/branch-and-bound-v2/ContinuousRelaxation.h"
-#include "backends/branch-and-bound-v2/MostInfeasible.h"
-#include "backends/branch-and-bound-v2/DepthFirst.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/ContinuousRelaxation.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/DepthFirst.h"
 
 class MyNode {
     unsigned int m_id = 0;

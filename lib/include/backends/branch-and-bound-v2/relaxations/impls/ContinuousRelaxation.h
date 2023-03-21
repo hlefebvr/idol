@@ -5,7 +5,7 @@
 #ifndef IDOL_CONTINUOUSRELAXATION_H
 #define IDOL_CONTINUOUSRELAXATION_H
 
-#include "RelaxationBuilderFactory.h"
+#include "backends/branch-and-bound-v2/relaxations/factories/RelaxationBuilderFactory.h"
 #include "modeling/models/AbstractModel.h"
 
 class ContinuousRelaxation : public RelaxationBuilderFactory {

@@ -6,15 +6,20 @@
 #define IDOL_BRANCHANDBOUNDV2_H
 
 #include "backends/branch-and-bound/NodeSet.h"
-#include "BranchingRuleFactory.h"
-#include "RelaxationBuilderFactory.h"
-#include "NodeSelectionRuleFactory.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/BranchingRuleFactory.h"
+#include "backends/branch-and-bound-v2/relaxations/factories/RelaxationBuilderFactory.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/NodeSelectionRuleFactory.h"
+#include "backends/branch-and-bound-v2/branching-rules/impls/BranchingRule.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/impls/NodeSelectionRule.h"
 
 #include <memory>
 
 template<class NodeT>
 class BranchAndBoundV2 : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
+    std::unique_ptr<RelaxationBuilderFactory> m_relaxation_builder_factory;
+    std::unique_ptr<BranchingRule<NodeT>> m_branching_rule;
+    std::unique_ptr<NodeSelectionRule<NodeT>> m_node_selection_rule;
 
     NodeSet<NodeT> m_active_nodes;
 public:
@@ -41,7 +46,10 @@ BranchAndBoundV2<NodeT>::BranchAndBoundV2(const AbstractModel &t_model,
                                           const BranchingRuleFactory<NodeT>& t_branching_rule_factory,
                                           const NodeSelectionRuleFactory<NodeT>& t_node_selection_rule_factory)
     : Algorithm(t_model),
-      m_relaxation_optimizer_factory(t_node_optimizer.clone()) {
+      m_relaxation_optimizer_factory(t_node_optimizer.clone()),
+      m_relaxation_builder_factory(t_relaxation_builder_factory.clone()),
+      m_branching_rule(t_branching_rule_factory()),
+      m_node_selection_rule(t_node_selection_rule_factory()) {
 
 }
 

@@ -5,7 +5,7 @@
 #ifndef IDOL_DEFAULTOPTIMIZER_H
 #define IDOL_DEFAULTOPTIMIZER_H
 
-#include "OptimizerFactory.h"
+#include "backends/OptimizerFactory.h"
 
 template<class BackendT>
 class DefaultOptimizer : public OptimizerFactory {

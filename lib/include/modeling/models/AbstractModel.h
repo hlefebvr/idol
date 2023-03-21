@@ -13,7 +13,7 @@
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
-#include "backends/branch-and-bound-v2/OptimizerFactory.h"
+#include "backends/OptimizerFactory.h"
 
 class Backend;
 class TempVar;
