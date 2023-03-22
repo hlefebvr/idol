@@ -38,7 +38,7 @@ public:
 
     void set_local_upper_bound(const Var& t_var, double t_ub);
 
-    void save(const AbstractModel& t_model) { m_primal_solution = ::save(t_model, Attr::Solution::Primal); }
+    void save(const AbstractModel& t_original_formulation, const AbstractModel& t_model) { m_primal_solution = ::save(t_original_formulation, Attr::Solution::Primal, t_model); }
 
     static NodeUpdator2<NodeInfo>* create_updator(AbstractModel& t_model);
 

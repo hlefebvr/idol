@@ -31,7 +31,9 @@ class impl::ColumnGenerationSP {
     GeneratorPool<Var> m_pool;
     PresentGeneratorsList m_present_generators;
 protected:
-    explicit ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index);
+    ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index);
+
+    ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index, const OptimizerFactory& t_optimizer_factory);
 
     void update_objective(bool t_farkas_pricing, const Solution::Dual& t_duals);
 
@@ -75,7 +77,9 @@ public:
 class ColumnGenerationSP : public impl::ColumnGenerationSP {
     friend class ColumnGeneration;
 public:
-    explicit ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index) : impl::ColumnGenerationSP(t_parent, t_index) {}
+    ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index) : impl::ColumnGenerationSP(t_parent, t_index) {}
+
+    ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index, const OptimizerFactory& t_optimizer) : impl::ColumnGenerationSP(t_parent, t_index, t_optimizer) {}
 };
 
 #endif //IDOL_COLUMNGENERATIONSP_H

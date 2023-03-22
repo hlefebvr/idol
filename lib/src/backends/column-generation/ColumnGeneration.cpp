@@ -18,6 +18,23 @@ ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model) : Algorithm(t
 
 }
 
+ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model,
+                                   const OptimizerFactory &t_master_optimizer,
+                                   const OptimizerFactory &t_pricing_optimizer)
+                                   : Algorithm(t_model),
+                                     m_pricing_optimizer(t_pricing_optimizer.clone()) {
+
+    m_master.reset(t_model.master().clone());
+    m_master->use(t_master_optimizer);
+
+    const unsigned int n_blocks = t_model.n_blocks();
+    m_subproblems.reserve(n_blocks);
+    for (unsigned int i = 0 ; i < n_blocks ; ++i) {
+        m_subproblems.emplace_back(*this, i, t_pricing_optimizer);
+    }
+
+}
+
 void ColumnGeneration::initialize() {
 
 }

@@ -36,7 +36,7 @@ protected:
 public:
     DantzigWolfe(const AbstractModel& t_original_model, Annotation<Ctr, unsigned int> t_complicating_constraint_annotation);
 
-    const Annotation<Ctr, unsigned int>& decomposition() const { return m_complicating_constraint_annotation; }
+    [[nodiscard]] const Annotation<Ctr, unsigned int>& decomposition() const { return m_complicating_constraint_annotation; }
 
     void build() override;
 

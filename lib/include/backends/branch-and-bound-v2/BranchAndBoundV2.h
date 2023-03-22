@@ -199,7 +199,7 @@ void BranchAndBoundV2<NodeInfoT>::solve(TreeNode* t_node) {
 
     m_relaxation->optimize();
 
-    t_node->save(*m_relaxation);
+    t_node->save(parent(), *m_relaxation);
 
 }
 
@@ -362,7 +362,7 @@ BranchAndBoundV2<NodeInfoT>::select_node_for_branching(BranchAndBoundV2::SetOfAc
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::write(const std::string &t_name) {
-    throw Exception("Not implemented write");
+    m_relaxation->write(t_name);
 }
 
 template<class NodeInfoT>
@@ -385,8 +385,8 @@ template<class NodeInfoT>
 bool BranchAndBoundV2<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
         || parent().remaining_time() == 0
-        || get(Attr::Solution::RelGap) <= get(Param::Algorithm::MIPGap)
-        || get(Attr::Solution::AbsGap) <= get(Param::Algorithm::MIPGap); // TODO these should be different
+        || get(Attr::Solution::RelGap) <= get(Param::Algorithm::MIPRelGap)
+        || get(Attr::Solution::AbsGap) <= get(Param::Algorithm::MIPAbsGap);
 }
 
 template<class NodeInfoT>
@@ -399,27 +399,27 @@ void BranchAndBoundV2<NodeInfoT>::backtrack(BranchAndBoundV2::SetOfActiveNodes &
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::update() {
-    throw Exception("Not implemented update");
+    m_relaxation->update();
 }
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::remove(const Ctr &t_ctr) {
-    throw Exception("Not implemented remove");
+    m_relaxation->remove(t_ctr);
 }
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::remove(const Var &t_var) {
-    throw Exception("Not implemented remove");
+    m_relaxation->remove(t_var);
 }
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::add(const Ctr &t_ctr) {
-    throw Exception("Not implemented add");
+    m_relaxation->add(t_ctr);
 }
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::add(const Var &t_var) {
-    throw Exception("Not implemented add");
+    m_relaxation->add(t_var);
 }
 
 template<class NodeInfoT>

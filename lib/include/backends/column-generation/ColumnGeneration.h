@@ -11,6 +11,8 @@
 #include "ColumnGenerationSP.h"
 
 class ColumnGeneration : public Algorithm {
+    std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
+
     std::unique_ptr<AbstractModel> m_master;
     std::vector<ColumnGenerationSP> m_subproblems;
 
@@ -72,6 +74,10 @@ protected:
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
     explicit ColumnGeneration(const BlockModel<Ctr>& t_model);
+
+    ColumnGeneration(const BlockModel<Ctr>& t_model,
+                     const OptimizerFactory& t_master_optimizer,
+                     const OptimizerFactory& t_pricing_optimizer);
 
     [[nodiscard]] const BlockModel<Ctr>& parent() const override;
 
