@@ -22,8 +22,6 @@ public:
 
     virtual ~NodeInfo() = default;
 
-    [[nodiscard]] double objective_value() const { return m_primal_solution.objective_value(); }
-
     [[nodiscard]] int status() const { return m_primal_solution.status(); }
 
     [[nodiscard]] int reason() const { return m_primal_solution.reason(); }

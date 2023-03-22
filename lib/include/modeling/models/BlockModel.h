@@ -152,7 +152,12 @@ template<class AxisT>
 void BlockModel<AxisT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
 
     if (t_attr == Attr::Obj::Expr) {
-        m_master->set(t_attr, std::move(t_value));
+        if (has_backend()) {
+            std::cout << "WARNING USING EXPERIMENTAL FEATURE" << std::endl;
+            backend().set(t_attr, std::move(t_value));
+        } else {
+            m_master->set(t_attr, std::move(t_value));
+        }
         return;
     }
 

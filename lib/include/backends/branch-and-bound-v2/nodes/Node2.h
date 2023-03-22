@@ -26,7 +26,7 @@ public:
 
     [[nodiscard]] unsigned int level() const { return m_level; }
 
-    [[nodiscard]] double objective_value() const { return m_info->objective_value(); }
+    [[nodiscard]] double objective_value() const { return m_info->primal_solution().objective_value(); }
 
     [[nodiscard]] int status() const { return m_info->status(); }
 

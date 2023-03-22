@@ -61,6 +61,21 @@ protected:
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
+
+    using Algorithm::get;
+    using Algorithm::set;
+
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+
+    void set(const Parameter<bool>& t_param, bool t_value) override;
+    void set(const Parameter<double>& t_param, double t_value) override;
+    void set(const Parameter<int>& t_param, int t_value) override;
+    //[[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
     explicit BranchAndBoundV2(const AbstractModel& t_model,
                               const OptimizerFactory& t_node_optimizer,
@@ -68,6 +83,78 @@ public:
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory);
 };
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
+
+    m_relaxation->set(t_param, t_value);
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+        Algorithm::set(t_param, t_value);
+    }
+
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Parameter<double> &t_param, double t_value) {
+
+    m_relaxation->set(t_param, t_value);
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+        Algorithm::set(t_param, t_value);
+    }
+
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Parameter<bool> &t_param, bool t_value) {
+
+    m_relaxation->set(t_param, t_value);
+
+    if (t_param.is_in_section(Param::Sections::Algorithm)) {
+        Algorithm::set(t_param, t_value);
+    }
+
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+    m_relaxation->set(t_attr, std::move(t_value));
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+    m_relaxation->set(t_attr, t_ctr, std::move(t_value));
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+    m_relaxation->set(t_attr, t_var, t_value);
+}
+
+template<class NodeInfoT>
+const Expr<Var, Var> &BranchAndBoundV2<NodeInfoT>::get(const Req<Expr<Var, Var>, void> &t_attr) const {
+    return m_relaxation->get(t_attr);
+}
+
+template<class NodeInfoT>
+double BranchAndBoundV2<NodeInfoT>::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+    return m_relaxation->get(t_attr, t_ctr);
+}
+
+template<class NodeInfoT>
+double BranchAndBoundV2<NodeInfoT>::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+
+    if (t_attr == Attr::Solution::Primal) {
+        if (m_incumbent) {
+            return m_incumbent->info().primal_solution().get(t_var);
+        } else {
+            throw Exception("No incumbent found.");
+        }
+    }
+
+    return Base::get(t_attr, t_var);
+}
 
 template<class NodeInfoT>
 BranchAndBoundV2<NodeInfoT>::BranchAndBoundV2(const AbstractModel &t_model,
@@ -111,7 +198,9 @@ template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 
-    // Reset incumbent solution
+    // Reset solution
+    set_best_bound(std::max(-Inf, get(Param::Algorithm::BestObjStop)));
+    set_best_obj(std::min(+Inf, get(Param::Algorithm::BestBoundStop)));
     delete m_incumbent;
     m_incumbent = nullptr;
 
@@ -132,7 +221,7 @@ void BranchAndBoundV2<NodeInfoT>::hook_optimize() {
         set_reason(Proved);
     }
 
-    std::cout << best_obj() << std::endl;
+    std::cout << "Done. " << (SolutionStatus) status() << std::endl;
 
 }
 
@@ -151,6 +240,10 @@ void BranchAndBoundV2<NodeInfoT>::explore(TreeNode *t_node,
         analyze(t_node, &explore_children_flag, &reoptimize_flag);
 
     } while (reoptimize_flag);
+
+    if (t_step == 0) {
+        update_lower_bound(t_active_nodes);
+    }
 
     if (is_terminated() || gap_is_closed()) { return; }
 

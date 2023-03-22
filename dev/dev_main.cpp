@@ -15,18 +15,18 @@
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
 #include "backends/column-generation/ColumnGenerationOptimizer.h"
 #include "backends/branch-and-bound-v2/relaxations/impls/DantzigWolfeRelaxation.h"
-
-class MyNode {
-    unsigned int m_id = 0;
-};
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
 
 int main(int t_argc, char** t_argv) {
 
     Logs::set_level<BranchAndBoundV2<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundV2<NodeInfo>>(Blue);
 
+    Logs::set_level<ColumnGeneration>(Trace);
+    Logs::set_color<ColumnGeneration>(Yellow);
+
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/examples/generalized-assignment-problem/instance.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -39,6 +39,7 @@ int main(int t_argc, char** t_argv) {
 
     // Create decomposition annotation
     Annotation<Ctr> decomposition(env, "decomposition", MasterId);
+    Annotation<Ctr> decomposition2(env, "decomposition2", MasterId);
 
     // Create assignment variables (x_ij binaries)
     auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
@@ -51,7 +52,8 @@ int main(int t_argc, char** t_argv) {
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
         model.add(capacity);
 
-        capacity.set(decomposition, i); // Assign constraint to i-th subproblem
+        capacity.set(decomposition, i/2);
+        capacity.set(decomposition2, i % 2);
     }
 
     // Create assignment constraints
@@ -66,12 +68,28 @@ int main(int t_argc, char** t_argv) {
     model.use(BranchAndBoundOptimizer<NodeInfo>(
                 ColumnGenerationOptimizer(
                     DefaultOptimizer<Gurobi>(),
-                    DefaultOptimizer<Gurobi>()
+                    BranchAndBoundOptimizer<NodeInfo>(
+                        ColumnGenerationOptimizer(
+                                DefaultOptimizer<Gurobi>(),
+                                BranchAndBoundOptimizer<NodeInfo>(
+                                    DefaultOptimizer<GLPK>(),
+                                    ContinuousRelaxation(),
+                                    MostInfeasible(),
+                                    WorstBound()
+                                )
+                        ),
+                        DantzigWolfeRelaxation(decomposition2),
+                        MostInfeasible(),
+                        BestBound()
+                    )
                 ),
                 DantzigWolfeRelaxation(decomposition),
                 MostInfeasible(),
                 BestBound()
             ));
+
+    model.set(Param::ColumnGeneration::LogFrequency, 1);
+    model.set(Param::ColumnGeneration::FarkasPricing, true);
 
     model.optimize();
 

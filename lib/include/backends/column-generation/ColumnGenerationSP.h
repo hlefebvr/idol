@@ -35,6 +35,8 @@ protected:
 
     ColumnGenerationSP(ColumnGeneration& t_parent, unsigned int t_index, const OptimizerFactory& t_optimizer_factory);
 
+    auto& generation_pattern() { return m_generation_pattern; }
+
     void update_objective(bool t_farkas_pricing, const Solution::Dual& t_duals);
 
     void hook_before_solve();

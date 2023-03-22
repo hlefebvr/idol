@@ -5,6 +5,7 @@
 #include "backends/column-generation/ColumnGeneration.h"
 #include "backends/parameters/Logs.h"
 #include "modeling/objects/Versions.h"
+#include "modeling/expressions/operations/operators.h"
 
 ColumnGeneration::ColumnGeneration(const BlockModel<Ctr> &t_model) : Algorithm(t_model) {
 
@@ -578,7 +579,35 @@ void ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, dou
 void ColumnGeneration::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
 
     if (t_attr == Attr::Obj::Expr) {
-        m_master->set(t_attr, std::move(t_expr));
+
+        std::cout << "Updating obj for " << t_expr << std::endl;
+
+        const unsigned int n_subproblems = m_subproblems.size();
+
+        Expr<Var, Var> master_obj = std::move(t_expr.constant());
+        std::vector<Constant> pricing_obj(n_subproblems);
+
+        for (auto [var, coeff] : t_expr.linear()) {
+            const unsigned int subproblem_id = parent().has_opposite_axis() ? var.get(parent().opposite_axis()) : MasterId;
+            if (subproblem_id == MasterId) {
+                master_obj += coeff * var;
+            } else {
+                if (!coeff.is_numerical()) {
+                    throw Exception("Could not handle non-numerical objective coefficient as generation pattern.");
+                }
+                pricing_obj[subproblem_id] += coeff.numerical() * !var;
+            }
+        }
+
+        std::cout << "master -> " << master_obj << std::endl;
+
+        m_master->set(t_attr, std::move(master_obj));
+
+        for (unsigned int k = 0 ; k < n_subproblems ; ++k) {
+            std::cout << k << " -> " << pricing_obj[k] << std::endl;
+            m_subproblems[k].generation_pattern().set_obj(std::move(pricing_obj[k]));
+        }
+
         return;
     }
 
