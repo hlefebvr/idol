@@ -32,7 +32,7 @@ class BranchAndBoundV2 : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 2, 0 };
+    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
     unsigned int m_n_created_nodes = 0;
 
     TreeNode* m_incumbent = nullptr;
@@ -52,11 +52,13 @@ protected:
     void explore(TreeNode* t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
     void solve(TreeNode* t_node);
     void analyze(TreeNode* t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag);
-    typename SetOfActiveNodes::const_iterator select_node_for_branching(SetOfActiveNodes& t_active_nodes);
+    Node2<NodeInfoT>* select_node_for_branching(SetOfActiveNodes& t_active_nodes);
     std::vector<TreeNode*> create_child_nodes(const TreeNode* t_node);
     void backtrack(SetOfActiveNodes& t_actives_nodes, SetOfActiveNodes& t_sub_active_nodes);
     void set_as_incumbent(TreeNode* t_node);
     [[nodiscard]] bool gap_is_closed() const;
+    void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
+    void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 public:
@@ -86,7 +88,6 @@ BranchAndBoundV2<NodeInfoT>::BranchAndBoundV2(const AbstractModel &t_model,
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::create_relaxations() {
 
-    const unsigned int n_relaxations = 1;
     const auto &original_model = parent();
 
     m_relaxation.reset((*m_relaxation_builder_factory)(original_model));
@@ -131,14 +132,14 @@ void BranchAndBoundV2<NodeInfoT>::hook_optimize() {
         set_reason(Proved);
     }
 
+    std::cout << best_obj() << std::endl;
+
 }
 
 template<class NodeInfoT>
 void BranchAndBoundV2<NodeInfoT>::explore(TreeNode *t_node,
                                       SetOfActiveNodes & t_active_nodes,
                                       unsigned int t_step) {
-
-    std::cout << "BEGIN explore " << t_step << std::endl;
 
     bool reoptimize_flag = false;
     bool explore_children_flag = false;
@@ -159,13 +160,21 @@ void BranchAndBoundV2<NodeInfoT>::explore(TreeNode *t_node,
 
     const unsigned int max_levels = m_steps.at(t_step);
 
-    for (unsigned int level = 0 ; level < max_levels && !t_active_nodes.empty() ; ++level) {
+    for (unsigned int level = 0 ; level < max_levels ; ++level) {
+
+        prune_nodes_by_bound(t_active_nodes);
+
+        if (t_step == 0) {
+            update_lower_bound(t_active_nodes);
+        }
+
+        if (t_active_nodes.empty()) { break; }
 
         auto selected_node = select_node_for_branching(t_active_nodes);
 
         idol_Log(Trace, BranchAndBoundV2<>, "Node " << selected_node->id() << " was selected for branching.")
 
-        auto children = create_child_nodes(selected_node.operator->());
+        auto children = create_child_nodes(selected_node);
 
         const unsigned int n_children = children.size();
 
@@ -177,8 +186,6 @@ void BranchAndBoundV2<NodeInfoT>::explore(TreeNode *t_node,
         }
 
     }
-
-    std::cout << "END explore " << t_step << std::endl;
 
 }
 
@@ -245,11 +252,6 @@ void BranchAndBoundV2<NodeInfoT>::analyze(BranchAndBoundV2::TreeNode *t_node, bo
 
     const double objective_value = t_node->objective_value();
 
-    if (objective_value >= best_bound()) {
-        set_best_bound(objective_value);
-        log_node(Info, *t_node);
-    }
-
     if (m_branching_rule->is_valid(*t_node)) {
 
         if (objective_value < best_obj()) {
@@ -307,10 +309,54 @@ void BranchAndBoundV2<NodeInfoT>::set_as_incumbent(BranchAndBoundV2::TreeNode *t
 }
 
 template<class NodeInfoT>
-typename NodeSet<Node2<NodeInfoT>>::const_iterator
+void BranchAndBoundV2<NodeInfoT>::update_lower_bound(const BranchAndBoundV2::SetOfActiveNodes &t_active_nodes) {
+    if (t_active_nodes.empty()) {
+        set_best_bound(best_obj());
+        return;
+    }
+    auto& lowest_node = *t_active_nodes.by_objective_value().begin();
+    const double lower_bound = lowest_node.objective_value();
+    if (lower_bound > best_bound()) {
+        std::cout << lower_bound << std::endl;
+        set_best_bound(lower_bound);
+        log_node(Info, lowest_node);
+    }
+
+}
+
+template<class NodeInfoT>
+void BranchAndBoundV2<NodeInfoT>::prune_nodes_by_bound(BranchAndBoundV2::SetOfActiveNodes& t_active_nodes) {
+
+    const double upper_bound = best_obj();
+
+    auto it = t_active_nodes.by_objective_value().begin();
+    auto end = t_active_nodes.by_objective_value().end();
+
+    while (it != end) {
+
+        if (const auto& node = *it ; node.objective_value() >= upper_bound) {
+            idol_Log(
+                    Trace,
+                    BranchAndBoundV2<>,
+                    "Node " << node.id() << " was pruned by bound "
+                            << "(BestObj: " << upper_bound << ", Obj: " << node.objective_value() << ").");
+            it = t_active_nodes.erase(it);
+            end = t_active_nodes.by_objective_value().end();
+            delete &node;
+        } else {
+            break;
+        }
+
+    }
+
+}
+
+template<class NodeInfoT>
+Node2<NodeInfoT>*
 BranchAndBoundV2<NodeInfoT>::select_node_for_branching(BranchAndBoundV2::SetOfActiveNodes &t_active_nodes) {
-    auto result = m_node_selection_rule->operator()(t_active_nodes);
-    t_active_nodes.erase(result);
+    auto iterator = m_node_selection_rule->operator()(t_active_nodes);
+    auto* result = iterator.operator->();
+    t_active_nodes.erase(iterator);
     return result;
 }
 

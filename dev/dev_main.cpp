@@ -11,6 +11,7 @@
 #include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/DepthFirst.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
+#include "problems/facility-location-problem/FLP_Instance.h"
 
 class MyNode {
     unsigned int m_id = 0;
@@ -21,42 +22,32 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<BranchAndBoundV2<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundV2<NodeInfo>>(Blue);
 
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/examples/generalized-assignment-problem/instance.txt");
+    // Read instance
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/CLionProjects/optimize/tests/instances/facility-location-problem/instance_F10_C20__4.txt");
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
 
-    const unsigned int n_agents = instance.n_agents();
-    const unsigned int n_jobs = instance.n_jobs();
-
-    // Create optimization environment
     Env env;
 
-    // Create model
+    // Make model
+    auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
+    auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+
     Model model(env);
 
-    // Create decomposition annotation
-    Annotation<Ctr> decomposition(env, "decomposition", MasterId);
+    model.add_array<Var, 1>(x);
+    model.add_array<Var, 2>(y);
 
-    // Create assignment variables (x_ij binaries)
-    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-
-    // Add variables to the model
-    model.add_array<Var, 2>(x);
-
-    // Create knapsack constraints (i.e., capacity constraints)
-    for (unsigned int i = 0 ; i < n_agents ; ++i) {
-        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
-        model.add(capacity);
-
-        capacity.set(decomposition, i); // Assign constraint to i-th subproblem
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
     }
 
-    // Create assignment constraints
-    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
-        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
-        model.add(assignment);
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
     }
 
-    // Set the objective function
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
+
 
     model.use(BranchAndBoundOptimizer<NodeInfo>(
                 DefaultOptimizer<Gurobi>(),
