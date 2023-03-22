@@ -5,10 +5,25 @@
 #include "../test_utils.h"
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/DepthFirst.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/BreadthFirst.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
+#include "backends/solvers/DefaultOptimizer.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/ContinuousRelaxation.h"
+
+using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, WorstBound>;
+
+using test_parameters = cartesian_product<lp_solvers, node_selection_rules>;
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with different node selection strategies",
                         "[integration][backend][solver]",
-                        lp_solvers) {
+                        test_parameters) {
+
+    using OptimizerT = std::tuple_element_t<0, TestType>;
+    using NodeSelectionRuleT = std::tuple_element_t<1, TestType>;
 
     Env env;
 
@@ -21,14 +36,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     const auto instance = read_instance("instances/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();
 
-    auto node_selection = GENERATE(
-            NodeSelections::Automatic,
-            NodeSelections::DepthFirst,
-            NodeSelections::BreadthFirst,
-            NodeSelections::BestBound,
-            NodeSelections::WorstBound
-    );
-
     auto x = Var::array(env, Dim<1>(n_items), 0., 1., Binary, "x");
     Ctr c(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
@@ -37,8 +44,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     model.add(c);
     model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    Idol::set_optimizer<BranchAndBoundMIP<TestType>>(model);
-    model.set(Param::BranchAndBound::NodeSelection, node_selection);
+    model.use(BranchAndBoundOptimizer<NodeInfo>(
+                DefaultOptimizer<OptimizerT>(),
+                ContinuousRelaxation(),
+                MostInfeasible(),
+                NodeSelectionRuleT()
+        ));
 
     WHEN("The instance \"" + filename + "\" is solved") {
 
@@ -66,7 +77,10 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
 
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection strategies",
                         "[integration][backend][solver]",
-                        lp_solvers) {
+                        test_parameters) {
+
+    using OptimizerT = std::tuple_element_t<0, TestType>;
+    using NodeSelectionRuleT = std::tuple_element_t<1, TestType>;
 
     Env env;
 
@@ -79,14 +93,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
             std::make_pair<std::string, double>("instance_F10_C20__2.txt", 287.37),
             std::make_pair<std::string, double>("instance_F10_C20__3.txt", 333.86),
             std::make_pair<std::string, double>("instance_F10_C20__4.txt", 202.11)
-    );
-
-    const auto node_selection = GENERATE(
-            NodeSelections::Automatic,
-            NodeSelections::DepthFirst,
-            NodeSelections::BreadthFirst,
-            NodeSelections::BestBound,
-            NodeSelections::WorstBound
     );
 
     // Read instance
@@ -114,8 +120,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     // Set backend options
-    Idol::set_optimizer<BranchAndBoundMIP<TestType>>(model);
-    model.set(Param::BranchAndBound::NodeSelection, node_selection);
+    model.use(BranchAndBoundOptimizer<NodeInfo>(
+            DefaultOptimizer<OptimizerT>(),
+            ContinuousRelaxation(),
+            MostInfeasible(),
+            NodeSelectionRuleT()
+    ));
 
     WHEN("The instance \"" + filename + "\" is solved") {
 

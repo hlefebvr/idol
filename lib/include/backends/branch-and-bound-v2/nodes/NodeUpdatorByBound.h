@@ -9,7 +9,7 @@
 #include "modeling/models/AbstractModel.h"
 
 template<class NodeT>
-class NodeUpdatorByBound : public NodeUpdator<NodeT> {
+class NodeUpdatorByBound : public NodeUpdator2<NodeT> {
     AbstractModel& m_model;
 
     Map<Var, double> m_lower_bounds;

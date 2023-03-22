@@ -12,6 +12,7 @@
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/DepthFirst.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
 
 class MyNode {
     unsigned int m_id = 0;
@@ -48,12 +49,11 @@ int main(int t_argc, char** t_argv) {
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
-
     model.use(BranchAndBoundOptimizer<NodeInfo>(
                 DefaultOptimizer<Gurobi>(),
                 ContinuousRelaxation(),
                 MostInfeasible(),
-                DepthFirst()
+                BestBound()
             ));
 
     model.optimize();

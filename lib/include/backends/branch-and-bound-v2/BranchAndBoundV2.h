@@ -27,7 +27,7 @@ class BranchAndBoundV2 : public Algorithm {
     std::unique_ptr<RelaxationBuilderFactory> m_relaxation_builder_factory;
 
     std::unique_ptr<AbstractModel> m_relaxation;
-    std::unique_ptr<NodeUpdator<NodeInfoT>> m_node_updator;
+    std::unique_ptr<NodeUpdator2<NodeInfoT>> m_node_updator;
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;

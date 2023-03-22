@@ -8,9 +8,9 @@
 class AbstractModel;
 
 template<class NodeT>
-class NodeUpdator {
+class NodeUpdator2 {
 public:
-    virtual ~NodeUpdator() = default;
+    virtual ~NodeUpdator2() = default;
 
     virtual void apply_local_updates(const NodeT& t_node) = 0;
 

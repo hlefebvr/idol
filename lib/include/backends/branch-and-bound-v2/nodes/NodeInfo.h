@@ -40,7 +40,7 @@ public:
 
     void save(const AbstractModel& t_model) { m_primal_solution = ::save(t_model, Attr::Solution::Primal); }
 
-    static NodeUpdator<NodeInfo>* create_updator(AbstractModel& t_model);
+    static NodeUpdator2<NodeInfo>* create_updator(AbstractModel& t_model);
 
     [[nodiscard]] NodeInfo* create_child() const { return new NodeInfo(*this); }
 };

@@ -19,7 +19,7 @@ public:
             return new NodeSelectionRules::DepthFirst<NodeT>();
         }
 
-        NodeSelectionRuleFactory<NodeT> *clone() const override {
+        Strategy *clone() const override {
             return new Strategy(*this);
         }
     };
