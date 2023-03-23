@@ -15,9 +15,9 @@ SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
         Env env;
         Model model(env);
 
-        model.use(DefaultOptimizer<Gurobi>());
+        model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
         WHEN("A continuous variable (lb=0,ub=1) is added") {
 

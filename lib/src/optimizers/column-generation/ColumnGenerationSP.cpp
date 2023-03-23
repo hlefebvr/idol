@@ -6,7 +6,7 @@
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "modeling/expressions/operations/operators.h"
 
-impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index)
+Backends::impl::ColumnGenerationSP::ColumnGenerationSP(::Backends::ColumnGeneration &t_parent, unsigned int t_index)
     : m_parent(&t_parent),
       m_index(t_index),
       m_model(t_parent.parent().block(t_index).model().clone()),
@@ -14,7 +14,7 @@ impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent, unsigne
 
 }
 
-impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent,
+Backends::impl::ColumnGenerationSP::ColumnGenerationSP(::Backends::ColumnGeneration &t_parent,
                                              unsigned int t_index,
                                              const OptimizerFactory &t_optimizer_factory)
 
@@ -27,11 +27,11 @@ impl::ColumnGenerationSP::ColumnGenerationSP(ColumnGeneration &t_parent,
 
 }
 
-void impl::ColumnGenerationSP::hook_before_solve() {
+void Backends::impl::ColumnGenerationSP::hook_before_solve() {
     restore_column_from_pool();
 }
 
-void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
+void Backends::impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
 
     ::Expr<Var, Var> objective;
 
@@ -52,7 +52,7 @@ void impl::ColumnGenerationSP::update_objective(bool t_farkas_pricing, const Sol
 
 }
 
-void impl::ColumnGenerationSP::solve() {
+void Backends::impl::ColumnGenerationSP::solve() {
 
     const double remaining_time = m_parent->parent().remaining_time();
     m_model->set(::Param::Algorithm::TimeLimit, remaining_time);
@@ -60,7 +60,7 @@ void impl::ColumnGenerationSP::solve() {
 
 }
 
-double impl::ColumnGenerationSP::compute_reduced_cost(const Solution::Dual &t_duals) const {
+double Backends::impl::ColumnGenerationSP::compute_reduced_cost(const Solution::Dual &t_duals) const {
 
     double result = 0.;
 
@@ -80,7 +80,7 @@ double impl::ColumnGenerationSP::compute_reduced_cost(const Solution::Dual &t_du
     return result;
 }
 
-void impl::ColumnGenerationSP::enrich_master_problem() {
+void Backends::impl::ColumnGenerationSP::enrich_master_problem() {
 
     const int status = m_model->get(::Attr::Solution::Status);
 
@@ -102,7 +102,7 @@ void impl::ColumnGenerationSP::enrich_master_problem() {
     m_present_generators.emplace_back(alpha, m_pool.last_inserted());
 }
 
-TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::Primal &t_primals) const {
+TempVar Backends::impl::ColumnGenerationSP::create_column_from_generator(const Solution::Primal &t_primals) const {
 
     TempVar result {
         0.,
@@ -121,7 +121,7 @@ TempVar impl::ColumnGenerationSP::create_column_from_generator(const Solution::P
 
 }
 
-void impl::ColumnGenerationSP::clean_up() {
+void Backends::impl::ColumnGenerationSP::clean_up() {
 
     const unsigned int threshold = m_parent->parent().get(::Param::ColumnGeneration::CleanUpThreshold);
 
@@ -174,7 +174,7 @@ void impl::ColumnGenerationSP::clean_up() {
 
 }
 
-double impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var) const {
+double Backends::impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var) const {
     double result = 0;
     for (const auto& [alpha, generator] : m_present_generators) {
         const double alpha_val = m_parent->master().get(::Attr::Solution::Primal, alpha);
@@ -185,7 +185,7 @@ double impl::ColumnGenerationSP::compute_original_space_primal(const Var &t_var)
     return result;
 }
 
-void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
+void Backends::impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
 
     remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
         //return true;
@@ -201,7 +201,7 @@ void impl::ColumnGenerationSP::apply_lb(const Var &t_var, double t_value) {
 
 }
 
-void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
+void Backends::impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
 
     remove_column_if([&](const Var& t_object, const Solution::Primal& t_generator) {
         //return true;
@@ -216,7 +216,7 @@ void impl::ColumnGenerationSP::apply_ub(const Var &t_var, double t_value) {
     apply_bound_on_master(t_var, ::Attr::Var::Ub, t_value);
 }
 
-LinExpr<Var> impl::ColumnGenerationSP::expand(const Var &t_var) const {
+LinExpr<Var> Backends::impl::ColumnGenerationSP::expand(const Var &t_var) const {
 
     LinExpr<Var> result;
 
@@ -227,7 +227,7 @@ LinExpr<Var> impl::ColumnGenerationSP::expand(const Var &t_var) const {
     return result;
 }
 
-void impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req<double, Var> &t_attr, double t_value) {
+void Backends::impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req<double, Var> &t_attr, double t_value) {
 
     auto& master = m_parent->master();
 
@@ -269,7 +269,7 @@ void impl::ColumnGenerationSP::apply_bound_on_master(const Var &t_var, const Req
 
 }
 
-void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+void Backends::impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
 
     auto& master = m_parent->master();
 
@@ -288,7 +288,7 @@ void impl::ColumnGenerationSP::remove_column_if(const std::function<bool(const V
 
 }
 
-void impl::ColumnGenerationSP::restore_column_from_pool() {
+void Backends::impl::ColumnGenerationSP::restore_column_from_pool() {
 
     auto& master = m_parent->master();
 

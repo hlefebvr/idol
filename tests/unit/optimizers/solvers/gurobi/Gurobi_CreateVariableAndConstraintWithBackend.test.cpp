@@ -15,9 +15,9 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
         Env env;
         Model model(env);
 
-        model.use(DefaultOptimizer<Gurobi>());
+        model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
         Var y(env, 0., 1., Continuous, "y");
         model.add(y);

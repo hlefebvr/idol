@@ -5,22 +5,21 @@
 #include "modeling.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "modeling/models/BlockModel.h"
-#include "optimizers/solvers/GLPK.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/solvers/GLPKOptimizer.h"
 
 int main(int t_argc, const char** t_argv) {
 
     Logs::set_level<BranchAndBoundOptimizer<>>(Debug); // Set debug log level for BranchAndBound algorithms
     Logs::set_color<BranchAndBoundOptimizer<>>(Blue); // Set output color to blue for BranchAndBound algorithms
 
-    Logs::set_level<ColumnGeneration>(Debug); // Set debug log level for ColumnGeneration algorithms
-    Logs::set_color<ColumnGeneration>(Yellow); // Set output color to blue for ColumnGeneration algorithms
+    Logs::set_level<ColumnGenerationOptimizer>(Debug); // Set debug log level for ColumnGeneration algorithms
+    Logs::set_color<ColumnGenerationOptimizer>(Yellow); // Set output color to blue for ColumnGeneration algorithms
 
     const auto instance = Problems::GAP::read_instance("instance.txt");
 
@@ -62,8 +61,8 @@ int main(int t_argc, const char** t_argv) {
     // Set optimizer
     model.use(BranchAndBoundOptimizer(
                 ColumnGenerationOptimizer(
-                    DefaultOptimizer<GLPK>(),
-                    DefaultOptimizer<GLPK>()
+                    GLPKOptimizer(),
+                    GLPKOptimizer()
                 ),
                 DantzigWolfeRelaxation(decomposition),
                 MostInfeasible(),

@@ -20,7 +20,11 @@ struct MosekCtr {
     mosek::fusion::Constraint::t constraint;
 };
 
-class Mosek : public LazyBackend<MosekVar, MosekCtr> {
+namespace Backends {
+    class Mosek;
+}
+
+class Backends::Mosek : public LazyBackend<MosekVar, MosekCtr> {
     mosek::fusion::Model::t m_model;
     SolutionStatus m_solution_status = Unknown;
     SolutionReason m_solution_reason = NotSpecified;

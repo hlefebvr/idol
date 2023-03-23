@@ -22,7 +22,7 @@ public:
           m_pricing_optimizer(t_pricing_optimizer.clone()) {}
 
     Backend *operator()(const AbstractModel &t_model) const override {
-        return new ColumnGeneration(t_model.as<BlockModel<Ctr>>(),
+        return new Backends::ColumnGeneration(t_model.as<BlockModel<Ctr>>(),
                                     *m_master_optimizer,
                                     *m_pricing_optimizer);
     }

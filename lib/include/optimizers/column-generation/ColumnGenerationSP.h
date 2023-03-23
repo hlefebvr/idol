@@ -8,17 +8,19 @@
 #include "modeling/models/AbstractModel.h"
 #include "containers/GeneratorPool.h"
 
-class ColumnGeneration;
-
-namespace impl {
+namespace Backends {
+    class ColumnGeneration;
     class ColumnGenerationSP;
+    namespace impl {
+        class ColumnGenerationSP;
+    }
 }
 
-class impl::ColumnGenerationSP {
+class Backends::impl::ColumnGenerationSP {
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
     using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
 
-    ColumnGeneration* m_parent;
+    ::Backends::ColumnGeneration* m_parent;
     const unsigned int m_index;
     std::unique_ptr<AbstractModel> m_model;
     ::Column m_generation_pattern;
@@ -76,7 +78,7 @@ public:
     [[nodiscard]] LinExpr<Var> expand(const Var& t_var) const;
 };
 
-class ColumnGenerationSP : public impl::ColumnGenerationSP {
+class Backends::ColumnGenerationSP : public impl::ColumnGenerationSP {
     friend class ColumnGeneration;
 public:
     ColumnGenerationSP(ColumnGeneration &t_parent, unsigned int t_index) : impl::ColumnGenerationSP(t_parent, t_index) {}

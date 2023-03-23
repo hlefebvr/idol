@@ -12,7 +12,11 @@
 #include "LazyBackend.h"
 #include <glpk.h>
 
-class GLPK  : public LazyBackend<int, int> {
+namespace Backends {
+    class GLPK;
+}
+
+class Backends::GLPK  : public LazyBackend<int, int> {
 
     glp_prob* m_model;
     glp_smcp m_simplex_parameters;

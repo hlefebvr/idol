@@ -17,14 +17,16 @@
 #include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/solvers/Mosek.h"
+#include "optimizers/solvers/GurobiOptimizer.h"
+#include "optimizers/solvers/GLPKOptimizer.h"
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBound<NodeInfo>>(Trace);
-    Logs::set_color<BranchAndBound<NodeInfo>>(Blue);
+    Logs::set_level<BranchAndBoundOptimizer<NodeInfo>>(Trace);
+    Logs::set_color<BranchAndBoundOptimizer<NodeInfo>>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Info);
-    Logs::set_color<ColumnGeneration>(Yellow);
+    Logs::set_level<ColumnGenerationOptimizer>(Info);
+    Logs::set_color<ColumnGenerationOptimizer>(Yellow);
 
     // Read instance
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
@@ -68,12 +70,12 @@ int main(int t_argc, char** t_argv) {
 
     model.use(BranchAndBoundOptimizer<NodeInfo>(
                 ColumnGenerationOptimizer(
-                    DefaultOptimizer<Gurobi>(),
+                    GurobiOptimizer(),
                     BranchAndBoundOptimizer<NodeInfo>(
                         ColumnGenerationOptimizer(
-                                DefaultOptimizer<Gurobi>(),
+                                GurobiOptimizer(),
                                 BranchAndBoundOptimizer<NodeInfo>(
-                                    DefaultOptimizer<GLPK>(),
+                                    GLPKOptimizer(),
                                     ContinuousRelaxation(),
                                     MostInfeasible(),
                                     WorstBound()
@@ -89,19 +91,10 @@ int main(int t_argc, char** t_argv) {
                 BestBound()
             ));
 
-    using SolverT = Gurobi;
-
-    std::unique_ptr<OptimizerFactory> subproblem_optimizer(new BranchAndBoundOptimizer<NodeInfo>(
-                DefaultOptimizer<SolverT>(),
-                ContinuousRelaxation(),
-                MostInfeasible(),
-                BestBound()
-            ));
-
     model.use(BranchAndBoundOptimizer(
                     ColumnGenerationOptimizer(
-                            DefaultOptimizer<SolverT>(),
-                            DefaultOptimizer<SolverT>()
+                            GurobiOptimizer(),
+                            GurobiOptimizer()
                     ),
                     DantzigWolfeRelaxation(decomposition),
                     MostInfeasible(),

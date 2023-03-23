@@ -12,7 +12,11 @@
 
 #include "LazyBackend.h"
 
-class Gurobi : public LazyBackend<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
+namespace Backends {
+    class Gurobi;
+}
+
+class Backends::Gurobi : public LazyBackend<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
     static std::unique_ptr<GRBEnv> s_global_env;
 
     static GRBEnv& get_global_env();

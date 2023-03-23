@@ -20,9 +20,9 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -15, 30, Continuous, "x");
             model.add(x);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -58,9 +58,9 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -Inf, Inf, Integer, "x");
             model.add(x);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -96,9 +96,9 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 1, 1, Binary, "x");
             model.add(x);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -149,9 +149,9 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 0, Inf, Continuous, std::move(column), "x");
             model.add(x);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 

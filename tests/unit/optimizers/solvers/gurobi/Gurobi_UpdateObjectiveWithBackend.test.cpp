@@ -21,9 +21,9 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         model.add(x);
         model.add(y);
 
-        model.use(DefaultOptimizer<Gurobi>());
+        model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
         model.update();
 

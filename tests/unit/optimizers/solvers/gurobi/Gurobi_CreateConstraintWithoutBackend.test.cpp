@@ -19,9 +19,9 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, LessOrEqual, 10, "c");
             model.add(c);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -53,9 +53,9 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, GreaterOrEqual, -5, "c");
             model.add(c);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -88,9 +88,9 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, Equal, 0, "c");
             model.add(c);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 
@@ -132,9 +132,9 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, 0 * x[0] + 1 * x[1] + 2 * x[2] <= 1);
             model.add(c);
 
-            model.use(DefaultOptimizer<Gurobi>());
+            model.use(GurobiOptimizer());
 
-            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+            const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
 
             model.update();
 

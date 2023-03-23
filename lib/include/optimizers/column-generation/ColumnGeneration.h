@@ -10,7 +10,11 @@
 #include "Parameters_ColumnGeneration.h"
 #include "ColumnGenerationSP.h"
 
-class ColumnGeneration : public Algorithm {
+namespace Backends {
+    class ColumnGeneration;
+}
+
+class Backends::ColumnGeneration : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
 
     std::unique_ptr<AbstractModel> m_master;

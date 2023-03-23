@@ -5,7 +5,7 @@
 
 #ifdef IDOL_USE_GLPK
 
-GLPK::GLPK(const AbstractModel &t_model) : LazyBackend(t_model), m_model(glp_create_prob()) {
+Backends::GLPK::GLPK(const AbstractModel &t_model) : LazyBackend(t_model), m_model(glp_create_prob()) {
 
     glp_init_smcp(&m_simplex_parameters);
     m_simplex_parameters.msg_lev = GLP_MSG_ERR;
@@ -18,7 +18,7 @@ GLPK::GLPK(const AbstractModel &t_model) : LazyBackend(t_model), m_model(glp_cre
 
 }
 
-void GLPK::hook_build() {
+void Backends::GLPK::hook_build() {
 
     const auto& objective = parent().get(Attr::Obj::Expr);
 
@@ -32,11 +32,11 @@ void GLPK::hook_build() {
 
 }
 
-void GLPK::hook_write(const std::string &t_name) {
+void Backends::GLPK::hook_write(const std::string &t_name) {
     glp_write_lp(m_model, nullptr, t_name.c_str());
 }
 
-void GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
+void Backends::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
 
     const bool has_lb = !is_neg_inf(t_lb);
     const bool has_ub = !is_pos_inf(t_ub);
@@ -69,7 +69,7 @@ void GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, doubl
 
 }
 
-int GLPK::hook_add(const Var &t_var, bool t_add_column) {
+int Backends::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     int index;
     if (m_deleted_variables.empty()) {
@@ -112,7 +112,7 @@ int GLPK::hook_add(const Var &t_var, bool t_add_column) {
     return index;
 }
 
-void GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
+void Backends::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
     switch (t_type) {
         case LessOrEqual: glp_set_row_bnds(m_model, t_index, GLP_UP, 0., t_rhs); break;
@@ -123,7 +123,7 @@ void GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
 }
 
-int GLPK::hook_add(const Ctr &t_ctr) {
+int Backends::GLPK::hook_add(const Ctr &t_ctr) {
 
     int index;
     if (m_deleted_constraints.empty()) {
@@ -161,19 +161,19 @@ int GLPK::hook_add(const Ctr &t_ctr) {
     return index;
 }
 
-void GLPK::hook_update_objective_sense() {
+void Backends::GLPK::hook_update_objective_sense() {
     glp_set_obj_dir(m_model, parent().get(Attr::Obj::Sense) == Minimize ? GLP_MIN : GLP_MAX);
 }
 
-void GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void Backends::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     throw Exception("Not implemented.");
 }
 
-void GLPK::hook_update() {
+void Backends::GLPK::hook_update() {
 
 }
 
-void GLPK::hook_update(const Var &t_var) {
+void Backends::GLPK::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
@@ -186,7 +186,7 @@ void GLPK::hook_update(const Var &t_var) {
 
 }
 
-void GLPK::hook_update(const Ctr &t_ctr) {
+void Backends::GLPK::hook_update(const Ctr &t_ctr) {
 
 
     const auto& model = parent();
@@ -198,7 +198,7 @@ void GLPK::hook_update(const Ctr &t_ctr) {
 
 }
 
-void GLPK::hook_update_objective() {
+void Backends::GLPK::hook_update_objective() {
 
     const auto& model = parent();
 
@@ -209,11 +209,11 @@ void GLPK::hook_update_objective() {
 
 }
 
-void GLPK::hook_update_rhs() {
+void Backends::GLPK::hook_update_rhs() {
     throw Exception("Not implemented.");
 }
 
-void GLPK::hook_remove(const Var &t_var) {
+void Backends::GLPK::hook_remove(const Var &t_var) {
 
     const int index = lazy(t_var).impl();
 
@@ -228,7 +228,7 @@ void GLPK::hook_remove(const Var &t_var) {
 
 }
 
-void GLPK::hook_remove(const Ctr &t_ctr) {
+void Backends::GLPK::hook_remove(const Ctr &t_ctr) {
 
     const int index = lazy(t_ctr).impl();
 
@@ -243,7 +243,7 @@ void GLPK::hook_remove(const Ctr &t_ctr) {
 
 }
 
-void GLPK::hook_optimize() {
+void Backends::GLPK::hook_optimize() {
 
     m_solved_as_mip = false;
 
@@ -286,7 +286,7 @@ void GLPK::hook_optimize() {
 
 }
 
-void GLPK::save_simplex_solution_status() {
+void Backends::GLPK::save_simplex_solution_status() {
 
     int status = glp_get_status(m_model);
 
@@ -324,7 +324,7 @@ void GLPK::save_simplex_solution_status() {
 
 }
 
-void GLPK::compute_farkas_certificate() {
+void Backends::GLPK::compute_farkas_certificate() {
     
     const auto& model = parent();
 
@@ -422,7 +422,7 @@ void GLPK::compute_farkas_certificate() {
 
 }
 
-void GLPK::compute_unbounded_ray() {
+void Backends::GLPK::compute_unbounded_ray() {
 
     const auto& model = parent();
 
@@ -540,7 +540,7 @@ void GLPK::compute_unbounded_ray() {
 
 }
 
-void GLPK::save_milp_solution_status() {
+void Backends::GLPK::save_milp_solution_status() {
 
     int status = glp_mip_status(m_model);
 
@@ -572,7 +572,7 @@ void GLPK::save_milp_solution_status() {
 
 }
 
-void GLPK::set(const Parameter<bool> &t_param, bool t_value) {
+void Backends::GLPK::set(const Parameter<bool> &t_param, bool t_value) {
 
     if (t_param.is_in_section(Param::Sections::Algorithm)) {
 
@@ -592,7 +592,7 @@ void GLPK::set(const Parameter<bool> &t_param, bool t_value) {
     Base::set(t_param, t_value);
 }
 
-void GLPK::set(const Parameter<double> &t_param, double t_value) {
+void Backends::GLPK::set(const Parameter<double> &t_param, double t_value) {
 
     if (t_param.is_in_section(Param::Sections::Algorithm)) {
 
@@ -618,7 +618,7 @@ void GLPK::set(const Parameter<double> &t_param, double t_value) {
 }
 
 
-bool GLPK::get(const Parameter<bool> &t_param) const {
+bool Backends::GLPK::get(const Parameter<bool> &t_param) const {
 
     if (t_param.is_in_section(Param::Sections::Algorithm)) {
 
@@ -635,7 +635,7 @@ bool GLPK::get(const Parameter<bool> &t_param) const {
     return LazyBackend::get(t_param);
 }
 
-int GLPK::get(const Req<int, void> &t_attr) const {
+int Backends::GLPK::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::Status) {
         return m_solution_status;
@@ -648,7 +648,7 @@ int GLPK::get(const Req<int, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double GLPK::get(const Parameter<double> &t_param) const {
+double Backends::GLPK::get(const Parameter<double> &t_param) const {
 
     if (t_param == Param::Algorithm::TimeLimit) {
         return (double) m_simplex_parameters.tm_lim;
@@ -665,7 +665,7 @@ double GLPK::get(const Parameter<double> &t_param) const {
     return Base::get(t_param);
 }
 
-double GLPK::get(const Req<double, void> &t_attr) const {
+double Backends::GLPK::get(const Req<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
         if (m_solution_status == Unbounded) { return -Inf; }
@@ -677,7 +677,7 @@ double GLPK::get(const Req<double, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double GLPK::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Backends::GLPK::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Solution::Primal) {
         const int impl = lazy(t_var).impl();
@@ -696,7 +696,7 @@ double GLPK::get(const Req<double, Var> &t_attr, const Var &t_var) const {
     return Base::get(t_attr, t_var);
 }
 
-double GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+double Backends::GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Solution::Dual) {
         const auto &impl = lazy(t_ctr).impl();
