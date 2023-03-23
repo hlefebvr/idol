@@ -7,8 +7,6 @@
 
 #include <tuple>
 #include "backends/NoAvailableBackend.h"
-#include "backends/BranchAndBoundMIP.h"
-#include "backends/BranchAndPriceMIP.h"
 
 template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::declval<input_t>()... ));
 
@@ -50,5 +48,8 @@ using milp_solvers = std::conditional_t< has_milp_solver, impl::milp_solvers, st
 using default_solver = std::conditional_t<has_milp_solver, std::tuple_element_t<0, milp_solvers>,
                         std::conditional_t<has_lp_solver, std::tuple_element_t<0, lp_solvers>, NoAvailableBackend>
                        >;
+
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "backends/column-generation/ColumnGenerationOptimizer.h"
 
 #endif //OPTIMIZE_SOLVERS_H

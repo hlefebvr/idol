@@ -3,6 +3,7 @@
 //
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -18,7 +19,10 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, LessOrEqual, 10, "c");
             model.add(c);
 
-            auto& backend = Idol::set_optimizer<Gurobi>(model);
+            model.use(DefaultOptimizer<Gurobi>());
+
+            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -49,7 +53,10 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, GreaterOrEqual, -5, "c");
             model.add(c);
 
-            auto& backend = Idol::set_optimizer<Gurobi>(model);
+            model.use(DefaultOptimizer<Gurobi>());
+
+            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -81,7 +88,10 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, Equal, 0, "c");
             model.add(c);
 
-            auto& backend = Idol::set_optimizer<Gurobi>(model);
+            model.use(DefaultOptimizer<Gurobi>());
+
+            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+
             model.update();
 
             THEN("The backend's model should have the added constraint") {
@@ -122,7 +132,10 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, 0 * x[0] + 1 * x[1] + 2 * x[2] <= 1);
             model.add(c);
 
-            auto& backend = Idol::set_optimizer<Gurobi>(model);
+            model.use(DefaultOptimizer<Gurobi>());
+
+            const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+
             model.update();
 
             THEN("The backend's model should have the added constraint") {

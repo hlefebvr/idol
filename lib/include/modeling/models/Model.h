@@ -28,7 +28,7 @@ class Idol;
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class Model : public Matrix, public AbstractModel {
+class Model : public AbstractModel, public Matrix {
     Env& m_env;
     const unsigned int m_id;
 

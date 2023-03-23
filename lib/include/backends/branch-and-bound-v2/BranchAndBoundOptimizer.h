@@ -9,7 +9,7 @@
 #include "backends/OptimizerFactory.h"
 #include "BranchAndBoundV2.h"
 
-template<class NodeT>
+template<class NodeT = NodeInfo>
 class BranchAndBoundOptimizer : public OptimizerFactory {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<RelaxationBuilderFactory> m_relaxation_builder_factory;

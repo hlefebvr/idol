@@ -4,6 +4,7 @@
 
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -13,7 +14,10 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
 
         Env env;
         Model model(env);
-        auto& backend = Idol::set_optimizer<Gurobi>(model);
+
+        model.use(DefaultOptimizer<Gurobi>());
+
+        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
 
         Var y(env, 0., 1., Continuous, "y");
         model.add(y);

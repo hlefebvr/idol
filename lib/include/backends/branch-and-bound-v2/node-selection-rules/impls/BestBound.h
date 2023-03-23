@@ -6,7 +6,7 @@
 #define IDOL_BESTBOUND_IMPL_H
 
 #include "NodeSelectionRule.h"
-#include "backends/branch-and-bound/NodeSet.h"
+#include "backends/branch-and-bound-v2/NodeSet.h"
 
 namespace NodeSelectionRules {
     template<class NodeT> class BestBound;

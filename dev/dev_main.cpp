@@ -98,7 +98,7 @@ int main(int t_argc, char** t_argv) {
                 BestBound()
             ));
 
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
+    model.use(BranchAndBoundOptimizer(
                     ColumnGenerationOptimizer(
                             DefaultOptimizer<SolverT>(),
                             DefaultOptimizer<SolverT>()

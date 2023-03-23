@@ -9,10 +9,7 @@
 
 #include "solvers.h"
 
-#include "backends/BranchAndBoundMIP.h"
 #include "backends/parameters/Parameters_Algorithm.h"
-
-#include "backends/BranchAndPriceMIP.h"
 
 #include "./cartesian_product.h"
 

@@ -5,7 +5,8 @@
 #ifndef IDOL_BRANCHANDBOUNDV2_H
 #define IDOL_BRANCHANDBOUNDV2_H
 
-#include "backends/branch-and-bound/NodeSet.h"
+#include "NodeSet.h"
+#include "../Algorithm.h"
 #include "backends/branch-and-bound-v2/branching-rules/factories/BranchingRuleFactory.h"
 #include "backends/branch-and-bound-v2/relaxations/factories/RelaxationBuilderFactory.h"
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/NodeSelectionRuleFactory.h"
@@ -13,7 +14,7 @@
 #include "backends/branch-and-bound-v2/node-selection-rules/impls/NodeSelectionRule.h"
 #include "backends/branch-and-bound-v2/nodes/NodeInfo.h"
 #include "backends/branch-and-bound-v2/nodes/Node2.h"
-#include "backends/branch-and-bound/Attributes_BranchAndBound.h"
+#include "backends/parameters/Logs.h"
 
 #include <memory>
 #include <cassert>

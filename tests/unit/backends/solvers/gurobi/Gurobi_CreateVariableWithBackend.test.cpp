@@ -4,6 +4,7 @@
 
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -13,7 +14,10 @@ SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
 
         Env env;
         Model model(env);
-        auto& backend = Idol::set_optimizer<Gurobi>(model);
+
+        model.use(DefaultOptimizer<Gurobi>());
+
+        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
 
         WHEN("A continuous variable (lb=-15,ub=15) is added to the model") {
 
@@ -123,7 +127,10 @@ SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
 
         Env env;
         Model model(env);
-        auto& backend = Idol::set_optimizer<Gurobi>(model);
+
+        model.use(DefaultOptimizer<Gurobi>());
+
+        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
 
         auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
         model.add_array<Ctr, 1>(c);

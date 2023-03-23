@@ -4,6 +4,7 @@
 
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -13,7 +14,10 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
 
         Env env;
         Model model(env);
-        auto& backend = Idol::set_optimizer<Gurobi>(model);
+
+        model.use(DefaultOptimizer<Gurobi>());
+
+        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
 
         WHEN("A <=-constraint (rhs=1) is added") {
 

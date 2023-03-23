@@ -4,6 +4,7 @@
 
 #include "../../../../test_utils.h"
 #include "backends/solvers/Gurobi.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
@@ -20,7 +21,10 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         model.add(x);
         model.add(y);
 
-        auto& backend = Idol::set_optimizer<Gurobi>(model);
+        model.use(DefaultOptimizer<Gurobi>());
+
+        const auto& backend = ((const Model&) model).backend().as<Gurobi>();
+
         model.update();
 
         WHEN("Model::update_objective() is called") {
