@@ -190,17 +190,6 @@ auto save(const AbstractModel& t_model, const Req<double, ObjectT>& t_attr) {
     return save(t_model, t_attr, t_model);
 }
 
-struct Idol {
-
-    template<class T, class ModelT, class ...ArgsT>
-    static T &set_optimizer(ModelT &t_model, ArgsT &&...t_args) {
-        auto *result = new T(t_model, std::forward<ArgsT>(t_args)...);
-        ((AbstractModel&) t_model).set_backend(result);
-        return *result;
-    }
-
-};
-
 static std::ostream& operator<<(std::ostream& t_os, const AbstractModel& t_model) {
 
     if (t_model.get(Attr::Obj::Sense) == Minimize) {

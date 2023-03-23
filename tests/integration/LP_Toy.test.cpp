@@ -122,7 +122,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add_many(u, v, w, c1, c2);
         model.set(Attr::Obj::Expr, objective);
 
-        Idol::set_optimizer<TestType>(model);
+        model.use(DefaultOptimizer<TestType>());
 
         model.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 

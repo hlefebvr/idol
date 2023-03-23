@@ -89,9 +89,6 @@ public:
 
     [[nodiscard]] const ColumnGenerationSP& subproblem(unsigned int t_index) const { return m_subproblems[t_index]; }
 
-    template<class T, class ...ArgsT> T& set_master_optimizer(ArgsT&& ...t_args) { return Idol::set_optimizer<T>(*m_master, std::forward<ArgsT>(t_args)...); }
-
-    template<class T, class ...ArgsT> T& set_subproblem_backend(unsigned int t_index, ArgsT&& ...t_args) { return Idol::set_optimizer<T>(m_subproblems[t_index].model(), std::forward<ArgsT>(t_args)...); }
 };
 
 #endif //IDOL_COLUMNGENERATION_H
