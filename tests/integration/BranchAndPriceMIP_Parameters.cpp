@@ -24,7 +24,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto [filename, objective_value] = GENERATE(
             std::make_pair<std::string, double>("GAP_instance0.txt", -233.),
             std::make_pair<std::string, double>("GAP_instance1.txt", -22.),
-            std::make_pair<std::string, double>("GAP_instance1.txt", -40.)
+            std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
     const auto subproblem_solver = GENERATE(
             std::shared_ptr<OptimizerFactory>(new DefaultOptimizer<TestType>()),
