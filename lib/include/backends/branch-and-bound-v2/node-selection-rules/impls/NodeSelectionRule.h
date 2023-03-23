@@ -6,6 +6,7 @@
 #define IDOL_NODESELECTIONRULE_H
 
 #include "../../nodes/Node2.h"
+#include "backends/branch-and-bound-v2/NodeSet.h"
 
 template<class NodeT>
 class NodeSelectionRule {

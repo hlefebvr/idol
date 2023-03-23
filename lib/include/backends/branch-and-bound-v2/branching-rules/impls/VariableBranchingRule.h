@@ -6,8 +6,11 @@
 #define IDOL_VARIABLEBRANCHINGRULE_H
 
 #include "BranchingRule.h"
+#include "backends/parameters/Logs.h"
 
 #include <optional>
+
+template<class> class BranchAndBoundOptimizer;
 
 template<class NodeInfoT>
 class VariableBranchingRule : public BranchingRule<NodeInfoT> {
@@ -50,7 +53,7 @@ std::list<NodeInfoT *> VariableBranchingRule<NodeInfoT>::create_child_nodes_by_b
     n2->set_local_upper_bound(t_variable_selected_for_branching, t_ub);
 
     idol_Log(Trace,
-             BranchAndBoundV2<>,
+             BranchAndBoundOptimizer<NodeInfoT>,
              "Node " << t_node.id() << " has 2 child nodes with "
              << t_variable_selected_for_branching << " >= " << t_lb
              << " and "

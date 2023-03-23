@@ -6,12 +6,18 @@
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "modeling/models/BlockModel.h"
 #include "backends/solvers/GLPK.h"
-#include "backends/BranchAndPriceMIP.h"
+#include "backends/column-generation/ColumnGeneration.h"
+#include "backends/solvers/DefaultOptimizer.h"
+#include "backends/column-generation/ColumnGenerationOptimizer.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/DantzigWolfeRelaxation.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
 
 int main(int t_argc, const char** t_argv) {
 
-    Logs::set_level<BranchAndBound>(Debug); // Set debug log level for BranchAndBound algorithms
-    Logs::set_color<BranchAndBound>(Blue); // Set output color to blue for BranchAndBound algorithms
+    Logs::set_level<BranchAndBoundOptimizer<>>(Debug); // Set debug log level for BranchAndBound algorithms
+    Logs::set_color<BranchAndBoundOptimizer<>>(Blue); // Set output color to blue for BranchAndBound algorithms
 
     Logs::set_level<ColumnGeneration>(Debug); // Set debug log level for ColumnGeneration algorithms
     Logs::set_color<ColumnGeneration>(Yellow); // Set output color to blue for ColumnGeneration algorithms
@@ -54,7 +60,15 @@ int main(int t_argc, const char** t_argv) {
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     // Set optimizer
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    model.use(BranchAndBoundOptimizer(
+                ColumnGenerationOptimizer(
+                    DefaultOptimizer<GLPK>(),
+                    DefaultOptimizer<GLPK>()
+                ),
+                DantzigWolfeRelaxation(decomposition),
+                MostInfeasible(),
+                WorstBound()
+            ));
 
     // Set parameters
     model.set(Param::ColumnGeneration::FarkasPricing, false);
@@ -63,7 +77,7 @@ int main(int t_argc, const char** t_argv) {
     model.set(Param::ColumnGeneration::SmoothingFactor, .3);
     model.set(Param::ColumnGeneration::CleanUpThreshold, 1e+8);
     model.set(Param::ColumnGeneration::CleanUpRatio, .75);
-    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, true);
+    // model.set(Param::BranchAndPrice::IntegerMasterHeuristic, true);
 
     // Solve
     model.optimize();
