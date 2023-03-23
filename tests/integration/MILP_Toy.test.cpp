@@ -178,7 +178,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
         THEN("The solution status should be Unbounded") {
 
-            CHECK(model.get(Attr::Solution::Status) == Unbounded);
+            const bool unknown_or_unbounded = model.get(Attr::Solution::Status) == Unbounded || model.get(Attr::Solution::Status) == InfeasibleOrUnbounded;
+
+            CHECK(unknown_or_unbounded);
 
         }
 

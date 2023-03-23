@@ -88,6 +88,13 @@ void Mosek::hook_optimize() {
         m_solution_status = Fail;
         m_solution_reason = NotSpecified;
 
+    } else if (problem_status == mosek::fusion::ProblemStatus::PrimalInfeasibleOrUnbounded
+               && primal_status == mosek::fusion::SolutionStatus::Unknown
+               && dual_status == mosek::fusion::SolutionStatus::Undefined) {
+
+        m_solution_status = InfeasibleOrUnbounded;
+        m_solution_reason = NotSpecified;
+
     } else {
         std::cout << problem_status << ", " << primal_status << ", " << dual_status << std::endl;
         throw Exception("Unknown problem-solution status combination.");
