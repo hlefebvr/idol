@@ -4,27 +4,45 @@
 
 #include "../test_utils.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
+#include "backends/branch-and-bound-v2/nodes/NodeInfo.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "backends/column-generation/ColumnGenerationOptimizer.h"
+#include "backends/solvers/DefaultOptimizer.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/DantzigWolfeRelaxation.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/ContinuousRelaxation.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
-                        branch_and_price_solvers) {
+                        milp_solvers) {
 
     Env env;
 
     using namespace Problems::GAP;
 
     const auto [filename, objective_value] = GENERATE(
-            std::make_pair<std::string, double>("GAP_instance0.txt", -233.)
+            std::make_pair<std::string, double>("GAP_instance0.txt", -233.),
+            std::make_pair<std::string, double>("GAP_instance1.txt", -22.),
+            std::make_pair<std::string, double>("GAP_instance1.txt", -40.)
     );
-    const auto integer_master_heuristic = GENERATE(false, true);
+    const auto subproblem_solver = GENERATE(
+            std::shared_ptr<OptimizerFactory>(new DefaultOptimizer<TestType>()),
+            std::shared_ptr<OptimizerFactory>(new BranchAndBoundOptimizer<NodeInfo>(
+                        DefaultOptimizer<TestType>(),
+                        ContinuousRelaxation(),
+                        MostInfeasible(),
+                        BestBound()
+                    ))
+        );
+    //const auto integer_master_heuristic = GENERATE(false, true);
     const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
 
-    const auto instance = read_instance("instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = read_instance("instances/generalized-assignment-problem/" + filename);
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
-
 
     Annotation<Ctr> decomposition(env, "by_machines", MasterId);
 
@@ -46,13 +64,22 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    Idol::set_optimizer<TestType>(model, decomposition);
+    model.use(BranchAndBoundOptimizer<NodeInfo>(
+            ColumnGenerationOptimizer(
+                    DefaultOptimizer<TestType>(),
+                    *subproblem_solver
+            ),
+            DantzigWolfeRelaxation(decomposition),
+            MostInfeasible(),
+            BestBound()
+        ));
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
     model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
     model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
-    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, integer_master_heuristic);
+
+    std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 
     WHEN("The instance \"" + filename + "\" is solved") {
 

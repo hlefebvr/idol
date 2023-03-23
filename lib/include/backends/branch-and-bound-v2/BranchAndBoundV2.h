@@ -32,7 +32,7 @@ class BranchAndBoundV2 : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
+    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 2, 0 };
     unsigned int m_n_created_nodes = 0;
 
     TreeNode* m_incumbent = nullptr;
@@ -216,12 +216,12 @@ void BranchAndBoundV2<NodeInfoT>::hook_optimize() {
 
     explore(root_node, active_nodes, 0);
 
+    m_node_updator->clear_local_updates();
+
     if (gap_is_closed()) {
         set_status(Optimal);
         set_reason(Proved);
     }
-
-    std::cout << "Done. " << (SolutionStatus) status() << std::endl;
 
 }
 

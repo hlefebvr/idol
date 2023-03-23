@@ -16,13 +16,14 @@
 #include "backends/column-generation/ColumnGenerationOptimizer.h"
 #include "backends/branch-and-bound-v2/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
+#include "backends/solvers/Mosek.h"
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBoundV2<NodeInfo>>(Trace);
+    Logs::set_level<BranchAndBoundV2<NodeInfo>>(Info);
     Logs::set_color<BranchAndBoundV2<NodeInfo>>(Blue);
 
-    Logs::set_level<ColumnGeneration>(Trace);
+    Logs::set_level<ColumnGeneration>(Info);
     Logs::set_color<ColumnGeneration>(Yellow);
 
     // Read instance
@@ -80,7 +81,7 @@ int main(int t_argc, char** t_argv) {
                         ),
                         DantzigWolfeRelaxation(decomposition2),
                         MostInfeasible(),
-                        BestBound()
+                        DepthFirst()
                     )
                 ),
                 DantzigWolfeRelaxation(decomposition),
@@ -88,14 +89,50 @@ int main(int t_argc, char** t_argv) {
                 BestBound()
             ));
 
-    model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::FarkasPricing, true);
+    using SolverT = Gurobi;
 
-    model.optimize();
+    std::unique_ptr<OptimizerFactory> subproblem_optimizer(new BranchAndBoundOptimizer<NodeInfo>(
+                DefaultOptimizer<SolverT>(),
+                ContinuousRelaxation(),
+                MostInfeasible(),
+                BestBound()
+            ));
 
-    std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
-    std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
-    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+    model.use(BranchAndBoundOptimizer<NodeInfo>(
+                    ColumnGenerationOptimizer(
+                            DefaultOptimizer<SolverT>(),
+                            DefaultOptimizer<SolverT>()
+                    ),
+                    DantzigWolfeRelaxation(decomposition),
+                    MostInfeasible(),
+                    BestBound()
+            ));
+
+    for (bool branching_on_master : { true, false }) {
+
+        for (bool farkas_pricing : { true, false }) {
+
+            for (double smoothing : { 0., .3, .8 }) {
+
+
+                model.set(Param::ColumnGeneration::LogFrequency, 1);
+                model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
+                model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
+                model.set(Param::ColumnGeneration::SmoothingFactor, smoothing);
+
+                model.optimize();
+
+                std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
+
+                std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
+                std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
+                std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
+            }
+
+        }
+
+    }
 
     return 0;
 /*
