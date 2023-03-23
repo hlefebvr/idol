@@ -5,15 +5,15 @@
 #ifndef IDOL_ABSTRACTMODEL_H
 #define IDOL_ABSTRACTMODEL_H
 
-#include "backends/Backend.h"
-#include "backends/parameters/Timer.h"
-#include "backends/parameters/Parameters_Algorithm.h"
+#include "optimizers/Backend.h"
+#include "optimizers/parameters/Timer.h"
+#include "optimizers/parameters/Parameters_Algorithm.h"
 
 #include "modeling/attributes/AttributeManager_Delegate.h"
 #include "Attributes_Model.h"
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
-#include "backends/OptimizerFactory.h"
+#include "optimizers/OptimizerFactory.h"
 
 class Backend;
 class TempVar;
@@ -23,10 +23,8 @@ class AbstractModel : public AttributeManagers::Delegate {
 
     Timer m_timer;
     std::unique_ptr<Backend> m_backend;
-    //std::unique_ptr<Callback> m_callback;
 protected:
     // Backend
-    virtual void set_backend(Backend* t_backend) { m_backend.reset(t_backend); m_backend->initialize(); }
     virtual void throw_if_no_backend() const { if (!m_backend) { throw Exception("No backend was found."); } }
     Backend& backend() { throw_if_no_backend(); return *m_backend; }
     void reset_backend() { m_backend.reset(); }
@@ -74,7 +72,7 @@ public:
 
     void use(const OptimizerFactory& t_optimizer) {
         m_backend.reset(t_optimizer(*this));
-        m_backend->initialize();
+        m_backend->build();
     }
 
     [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }

@@ -5,14 +5,14 @@
 #include "modeling.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "modeling/models/BlockModel.h"
-#include "backends/solvers/GLPK.h"
-#include "backends/column-generation/ColumnGeneration.h"
-#include "backends/solvers/DefaultOptimizer.h"
-#include "backends/column-generation/ColumnGenerationOptimizer.h"
-#include "backends/branch-and-bound-v2/relaxations/impls/DantzigWolfeRelaxation.h"
-#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
-#include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
-#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "optimizers/solvers/GLPK.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
+#include "optimizers/solvers/DefaultOptimizer.h"
+#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
+#include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
 
 int main(int t_argc, const char** t_argv) {
 

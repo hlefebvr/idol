@@ -3,7 +3,7 @@
 //
 
 #include "../test_utils.h"
-#include "backends/solvers/DefaultOptimizer.h"
+#include "optimizers/solvers/DefaultOptimizer.h"
 
 TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
                         "[integration][backend][solver]",

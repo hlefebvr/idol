@@ -6,7 +6,7 @@
 #define IDOL_BLOCKMODEL_H
 
 #include "Model.h"
-#include "backends/Backend.h"
+#include "optimizers/Backend.h"
 
 static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
 

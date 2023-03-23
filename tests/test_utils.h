@@ -9,7 +9,7 @@
 
 #include "solvers.h"
 
-#include "backends/parameters/Parameters_Algorithm.h"
+#include "optimizers/parameters/Parameters_Algorithm.h"
 
 #include "./cartesian_product.h"
 

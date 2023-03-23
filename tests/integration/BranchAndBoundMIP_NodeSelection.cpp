@@ -5,14 +5,14 @@
 #include "../test_utils.h"
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
-#include "backends/branch-and-bound-v2/node-selection-rules/factories/DepthFirst.h"
-#include "backends/branch-and-bound-v2/node-selection-rules/factories/BreadthFirst.h"
-#include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
-#include "backends/branch-and-bound-v2/node-selection-rules/factories/WorstBound.h"
-#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
-#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
-#include "backends/solvers/DefaultOptimizer.h"
-#include "backends/branch-and-bound-v2/relaxations/impls/ContinuousRelaxation.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "optimizers/solvers/DefaultOptimizer.h"
+#include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
 
 using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, WorstBound>;
 
