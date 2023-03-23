@@ -3,6 +3,7 @@
 //
 
 #include "../test_utils.h"
+#include "backends/solvers/DefaultOptimizer.h"
 
 TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
                         "[integration][backend][solver]",
@@ -23,7 +24,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add_many(x, y, c1, c2, c3);
         model.set(Attr::Obj::Expr, -143 * x - 60 * y);
 
-        Idol::set_optimizer<TestType>(model);
+        model.use(DefaultOptimizer<TestType>());
 
         model.optimize();
 
@@ -74,7 +75,8 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         Model model(env);
         model.add_many(x, y, c1, c2, c3);
         model.set(Attr::Obj::Expr, -3 * x - 2 * y);
-        Idol::set_optimizer<TestType>(model);
+
+        model.use(DefaultOptimizer<TestType>());
 
         model.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
 

@@ -218,9 +218,19 @@ void BranchAndBoundV2<NodeInfoT>::hook_optimize() {
 
     m_node_updator->clear_local_updates();
 
+    if (!m_incumbent) {
+        if (is_pos_inf(best_obj())) {
+            set_status(Infeasible);
+        } else {
+            set_status(Unbounded);
+        }
+        return;
+    }
+
     if (gap_is_closed()) {
         set_status(Optimal);
         set_reason(Proved);
+        return;
     }
 
 }
@@ -308,7 +318,6 @@ void BranchAndBoundV2<NodeInfoT>::analyze(BranchAndBoundV2::TreeNode *t_node, bo
     const auto& reason = t_node->reason();
 
     if (status == Unbounded) {
-        set_status(Unbounded);
         set_reason(Proved);
         set_best_obj(-Inf);
         terminate();

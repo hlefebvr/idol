@@ -20,7 +20,7 @@
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBoundV2<NodeInfo>>(Info);
+    Logs::set_level<BranchAndBoundV2<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundV2<NodeInfo>>(Blue);
 
     Logs::set_level<ColumnGeneration>(Info);

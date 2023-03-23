@@ -3,10 +3,26 @@
 //
 
 #include "../test_utils.h"
+#include "backends/solvers/DefaultOptimizer.h"
+#include "backends/branch-and-bound-v2/nodes/NodeInfo.h"
+#include "backends/branch-and-bound-v2/BranchAndBoundOptimizer.h"
+#include "backends/branch-and-bound-v2/branching-rules/factories/MostInfeasible.h"
+#include "backends/branch-and-bound-v2/relaxations/impls/ContinuousRelaxation.h"
+#include "backends/branch-and-bound-v2/node-selection-rules/factories/BestBound.h"
 
 TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
                         "[integration][backend][solver]",
                         milp_solvers) {
+    
+    auto solver = GENERATE(
+                std::shared_ptr<OptimizerFactory>(new DefaultOptimizer<TestType>),
+                std::shared_ptr<OptimizerFactory>(new BranchAndBoundOptimizer<NodeInfo>(
+                            DefaultOptimizer<TestType>(),
+                            ContinuousRelaxation(),
+                            MostInfeasible(),
+                            BestBound()
+                        ))
+            );
 
     Env env;
 
@@ -24,7 +40,8 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Model model(env);
             model.add_many(x, y, z, c1, c2);
             model.set(Attr::Obj::Expr, objective);
-            Idol::set_optimizer<TestType>(model);
+
+            model.use(*solver);
 
             model.optimize();
 
@@ -61,7 +78,8 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Model model(env);
             model.add_many(x, y, z, c1, c2);
             model.set(Attr::Obj::Expr, objective);
-            Idol::set_optimizer<TestType>(model);
+
+            model.use(*solver);
 
             model.optimize();
 
@@ -99,7 +117,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, c1, c2);
-            Idol::set_optimizer<TestType>(model);
+
+            model.use(*solver);
+
             model.optimize();
 
             THEN("The solution status should be Infeasible") {
@@ -124,7 +144,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, c1, c2);
-            Idol::set_optimizer<TestType>(model);
+
+            model.use(*solver);
+
             model.optimize();
 
             THEN("The solution status should be Infeasible") {
@@ -149,7 +171,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
         Model model(env);
         model.add(x);
         model.set(Attr::Obj::Expr, -x);
-        Idol::set_optimizer<TestType>(model);
+
+        model.use(*solver);
+
         model.optimize();
 
         THEN("The solution status should be Unbounded") {
