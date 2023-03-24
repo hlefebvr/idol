@@ -5,21 +5,21 @@
 #include "optimizers/parameters/Logs.h"
 #include "modeling/expressions/operations/operators.h"
 
-Backends::ColumnGenerationV2::ColumnGenerationV2(const Model &t_model,
-                                                 const OptimizerFactory& t_master_optimizer,
-                                                 const std::vector<ColumnGenerationOptimizerV2::Subproblem> &t_subproblems)
-    : Algorithm(t_model),
-      m_master(t_model.clone()) {
-
-    m_master->use(t_master_optimizer);
+Backends::ColumnGenerationV2::ColumnGenerationV2(const Model& t_model,
+                                                 Model *t_master_problem,
+                                                 const std::vector<Model *> &t_subproblems,
+                                                 std::vector<Column> t_generation_patterns)
+     : Algorithm(t_model),
+       m_master(t_master_problem) {
 
     const unsigned int n_subproblems = t_subproblems.size();
 
     m_subproblems.reserve(t_subproblems.capacity());
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        m_subproblems.emplace_back(*this, t_subproblems[i]);
+        m_subproblems.emplace_back(*this, i, t_subproblems[i], std::move(t_generation_patterns[i]));
     }
+
 
 }
 
@@ -508,11 +508,13 @@ int Backends::ColumnGenerationV2::get(const Parameter<int> &t_param) const {
 void Backends::ColumnGenerationV2::Subproblem::hook_before_optimize() {}
 
 Backends::ColumnGenerationV2::Subproblem::Subproblem(Backends::ColumnGenerationV2 &t_parent,
-                                                     const ColumnGenerationOptimizerV2::Subproblem &t_subproblem)
+                                                     unsigned int t_index,
+                                                     Model* t_model,
+                                                     Column&& t_generation_pattern)
     : m_parent(t_parent),
-      m_index(t_subproblem.index()),
-      m_model(t_subproblem.model().clone()),
-      m_generation_pattern(t_subproblem.generation_pattern())
+      m_index(t_index),
+      m_model(t_model),
+      m_generation_pattern(std::move(t_generation_pattern))
 
     {
 

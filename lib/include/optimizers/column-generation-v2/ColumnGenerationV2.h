@@ -19,8 +19,9 @@ public:
     class Subproblem;
 
     ColumnGenerationV2(const Model& t_model,
-                       const OptimizerFactory& t_master_optimizer,
-                       const std::vector<ColumnGenerationOptimizerV2::Subproblem>& t_subproblems);
+                       Model *t_master_problem,
+                       const std::vector<Model *> &t_subproblems,
+                       std::vector<Column> t_generation_patterns);
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -109,7 +110,7 @@ class Backends::ColumnGenerationV2::Subproblem {
     void clean_up();
 
 public:
-    Subproblem(ColumnGenerationV2& t_parent, const ColumnGenerationOptimizerV2::Subproblem& t_subproblem);
+    Subproblem(ColumnGenerationV2& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
 };
 
 #endif //IDOL_COLUMNGENERATIONV2_H

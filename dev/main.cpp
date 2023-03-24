@@ -21,6 +21,7 @@
 #include "optimizers/solvers/GLPKOptimizer.h"
 #include "optimizers/column-generation-v2/ColumnGenerationOptimizerV2.h"
 #include "optimizers/column-generation-v2/ColumnGenerationV2.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -115,11 +116,24 @@ int main(int t_argc, char** t_argv) {
 
     pricing.use(GurobiOptimizer());
 
+    /*
     model.use(BranchAndBoundOptimizer(
                 ColumnGenerationOptimizerV2(
                     GurobiOptimizer(),
                     1
                 ).with_subproblem(pricing, Column()),
+                ContinuousRelaxation(),
+                MostInfeasible(),
+                BestBound()
+            ));
+    */
+
+    model.use(BranchAndBoundOptimizer(
+                DantzigWolfeOptimizer(
+                    decomposition,
+                    GurobiOptimizer(),
+                    GLPKOptimizer()
+                ),
                 ContinuousRelaxation(),
                 MostInfeasible(),
                 BestBound()
