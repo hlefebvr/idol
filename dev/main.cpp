@@ -19,14 +19,19 @@
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/solvers/GurobiOptimizer.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
+#include "optimizers/column-generation-v2/ColumnGenerationOptimizerV2.h"
+#include "optimizers/column-generation-v2/ColumnGenerationV2.h"
 
 int main(int t_argc, char** t_argv) {
 
     Logs::set_level<BranchAndBoundOptimizer<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundOptimizer<NodeInfo>>(Blue);
 
-    Logs::set_level<ColumnGenerationOptimizer>(Info);
+    Logs::set_level<ColumnGenerationOptimizer>(Trace);
     Logs::set_color<ColumnGenerationOptimizer>(Yellow);
+
+    Logs::set_level<Backends::ColumnGenerationV2>(Trace);
+    Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
 
     // Read instance
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
@@ -68,6 +73,8 @@ int main(int t_argc, char** t_argv) {
     // Set the objective function
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
+    /*
+
     model.use(BranchAndBoundOptimizer<NodeInfo>(
                 ColumnGenerationOptimizer(
                     GurobiOptimizer(),
@@ -99,6 +106,23 @@ int main(int t_argc, char** t_argv) {
                     DantzigWolfeRelaxation(decomposition),
                     MostInfeasible(),
                     BestBound()
+            ));
+
+    */
+
+
+    Model pricing(env);
+
+    pricing.use(GurobiOptimizer());
+
+    model.use(BranchAndBoundOptimizer(
+                ColumnGenerationOptimizerV2(
+                    GurobiOptimizer(),
+                    1
+                ).with_subproblem(pricing, Column()),
+                ContinuousRelaxation(),
+                MostInfeasible(),
+                BestBound()
             ));
 
     for (bool branching_on_master : { true, false }) {

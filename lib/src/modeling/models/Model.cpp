@@ -465,6 +465,10 @@ Model* Model::clone() const {
     result->set(Attr::Obj::Sense, get(Attr::Obj::Sense));
     result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));
 
+    if (m_optimizer) {
+        result->use(*m_optimizer);
+    }
+
     return result;
 }
 

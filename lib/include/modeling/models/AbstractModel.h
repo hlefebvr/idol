@@ -19,11 +19,10 @@ class Backend;
 class TempVar;
 
 class AbstractModel : public AttributeManagers::Delegate {
-    friend class Idol;
-
     Timer m_timer;
     std::unique_ptr<Backend> m_backend;
 protected:
+    std::unique_ptr<OptimizerFactory> m_optimizer;
     // Backend
     virtual void throw_if_no_backend() const { if (!m_backend) { throw Exception("No backend was found."); } }
     Backend& backend() { throw_if_no_backend(); return *m_backend; }
@@ -73,6 +72,7 @@ public:
     void use(const OptimizerFactory& t_optimizer) {
         m_backend.reset(t_optimizer(*this));
         m_backend->build();
+        m_optimizer.reset(t_optimizer.clone());
     }
 
     [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }
