@@ -12,7 +12,7 @@ Backends::DantzigWolfe::DantzigWolfe(const Model& t_original_formulation,
                                      Model *t_master_problem,
                                      const std::vector<Model *> &t_subproblems,
                                      std::vector<Column> t_generation_patterns)
-     : Backends::ColumnGenerationV2(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
+     : Backends::ColumnGeneration(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
        m_variable_flag(t_variable_flag),
        m_constraint_flag(t_constraint_flag) {
 
@@ -30,7 +30,7 @@ double Backends::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &t_
         }
     }
 
-    return ColumnGenerationV2::get(t_attr, t_var);
+    return ColumnGeneration::get(t_attr, t_var);
 }
 
 void Backends::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
@@ -54,7 +54,7 @@ void Backends::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_va
 
     }
 
-    ColumnGenerationV2::set(t_attr, t_var, t_value);
+    ColumnGeneration::set(t_attr, t_var, t_value);
 }
 
 

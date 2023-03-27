@@ -12,13 +12,12 @@
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/solvers/GurobiOptimizer.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
-#include "optimizers/column-generation-v2/ColumnGenerationOptimizerV2.h"
-#include "optimizers/column-generation-v2/ColumnGenerationV2.h"
+#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 
 int main(int t_argc, char** t_argv) {
@@ -29,11 +28,8 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<Backends::BranchAndBound<NodeInfo>>(Trace);
     Logs::set_color<Backends::BranchAndBound<NodeInfo>>(Blue);
 
-    Logs::set_level<ColumnGenerationOptimizer>(Trace);
-    Logs::set_color<ColumnGenerationOptimizer>(Yellow);
-
-    Logs::set_level<Backends::ColumnGenerationV2>(Trace);
-    Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
+    Logs::set_level<Backends::ColumnGeneration>(Trace);
+    Logs::set_color<Backends::ColumnGeneration>(Yellow);
 
     // Read instance
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");

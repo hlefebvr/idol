@@ -1,35 +1,33 @@
 //
-// Created by henri on 22/03/23.
+// Created by henri on 24/03/23.
 //
 
 #ifndef IDOL_COLUMNGENERATIONOPTIMIZER_H
 #define IDOL_COLUMNGENERATIONOPTIMIZER_H
 
+#include <vector>
 #include "optimizers/OptimizerFactory.h"
-#include "ColumnGeneration.h"
+#include "modeling/models/Model.h"
 
 class ColumnGenerationOptimizer : public OptimizerFactory {
-    std::unique_ptr<OptimizerFactory> m_master_optimizer;
-    std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
-protected:
-    ColumnGenerationOptimizer(const ColumnGenerationOptimizer& t_src)
-        : m_master_optimizer(t_src.m_master_optimizer->clone()),
-          m_pricing_optimizer(t_src.m_pricing_optimizer->clone()) {}
 public:
-    explicit ColumnGenerationOptimizer(const OptimizerFactory& t_master_optimizer,
-                                       const OptimizerFactory& t_pricing_optimizer)
-        : m_master_optimizer(t_master_optimizer.clone()),
-          m_pricing_optimizer(t_pricing_optimizer.clone()) {}
+    ColumnGenerationOptimizer(const OptimizerFactory& t_master_optimizer, unsigned int t_n_subproblems);
 
-    Backend *operator()(const AbstractModel &t_model) const override {
-        return new Backends::ColumnGeneration(t_model.as<BlockModel<Ctr>>(),
-                                    *m_master_optimizer,
-                                    *m_pricing_optimizer);
-    }
+    Backend *operator()(const AbstractModel &t_model) const override;
 
-    [[nodiscard]] ColumnGenerationOptimizer *clone() const override {
-        return new ColumnGenerationOptimizer(*this);
-    }
+    [[nodiscard]] ColumnGenerationOptimizer *clone() const override;
+
+    void reserve_subproblems(unsigned int t_n_subproblems);
+
+    [[nodiscard]] unsigned int n_subproblems() const { return m_subproblems.size(); }
+
+    ColumnGenerationOptimizer& with_subproblem(const Model& t_model, Column t_column);
+private:
+    std::vector<const Model*> m_subproblems;
+    std::vector<Column> m_generation_patterns;
+    std::unique_ptr<OptimizerFactory> m_master_optimizer;
+
+    ColumnGenerationOptimizer(const ColumnGenerationOptimizer& t_src);
 };
 
 #endif //IDOL_COLUMNGENERATIONOPTIMIZER_H

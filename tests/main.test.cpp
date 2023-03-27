@@ -6,9 +6,6 @@
 
 int main( int argc, char* argv[] ) {
 
-    Logs::set_level<BranchAndBoundOptimizer<>>(Info);
-    Logs::set_level<ColumnGenerationOptimizer>(Info);
-
     int result = Catch::Session().run( argc, argv );
 
     return result;

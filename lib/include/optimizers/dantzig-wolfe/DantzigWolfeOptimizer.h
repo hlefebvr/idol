@@ -7,7 +7,7 @@
 
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/constraints/Ctr.h"
-#include "optimizers/column-generation-v2/ColumnGenerationOptimizerV2.h"
+#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 
 class DantzigWolfeOptimizer : public OptimizerFactory {
     Annotation<Ctr, unsigned int> m_decomposition;

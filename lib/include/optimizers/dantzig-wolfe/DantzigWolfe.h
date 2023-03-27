@@ -5,13 +5,13 @@
 #ifndef IDOL_DANTZIGWOLFE_H
 #define IDOL_DANTZIGWOLFE_H
 
-#include "optimizers/column-generation-v2/ColumnGenerationV2.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
 
 namespace Backends {
     class DantzigWolfe;
 }
 
-class Backends::DantzigWolfe : public Backends::ColumnGenerationV2 {
+class Backends::DantzigWolfe : public Backends::ColumnGeneration {
     Annotation<Ctr, unsigned int> m_constraint_flag;
     Annotation<Var, unsigned int> m_variable_flag;
 

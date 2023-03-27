@@ -6,7 +6,7 @@
 #include "modeling/models/BlockModel.h"
 #include "modeling/expressions/operations/operators.h"
 #include "modeling/objects/Versions.h"
-#include "optimizers/column-generation-v2/ColumnGenerationOptimizerV2.h"
+#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfe.h"
 
 DantzigWolfeOptimizer::DantzigWolfeOptimizer(const Annotation<Ctr, unsigned int> &t_decomposition,

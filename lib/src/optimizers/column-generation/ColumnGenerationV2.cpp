@@ -1,11 +1,11 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/column-generation-v2/ColumnGenerationV2.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/parameters/Logs.h"
 #include "modeling/expressions/operations/operators.h"
 
-Backends::ColumnGenerationV2::ColumnGenerationV2(const Model& t_model,
+Backends::ColumnGeneration::ColumnGeneration(const Model& t_model,
                                                  Model *t_master_problem,
                                                  const std::vector<Model *> &t_subproblems,
                                                  std::vector<Column> t_generation_patterns)
@@ -23,31 +23,31 @@ Backends::ColumnGenerationV2::ColumnGenerationV2(const Model& t_model,
 
 }
 
-void Backends::ColumnGenerationV2::add(const Var &t_var) {
+void Backends::ColumnGeneration::add(const Var &t_var) {
     m_master->add(t_var);
 }
 
-void Backends::ColumnGenerationV2::add(const Ctr &t_ctr) {
+void Backends::ColumnGeneration::add(const Ctr &t_ctr) {
     m_master->add(t_ctr);
 }
 
-void Backends::ColumnGenerationV2::remove(const Var &t_var) {
+void Backends::ColumnGeneration::remove(const Var &t_var) {
     m_master->remove(t_var);
 }
 
-void Backends::ColumnGenerationV2::remove(const Ctr &t_ctr) {
+void Backends::ColumnGeneration::remove(const Ctr &t_ctr) {
     m_master->remove(t_ctr);
 }
 
-void Backends::ColumnGenerationV2::update() {
+void Backends::ColumnGeneration::update() {
     m_master->update();
 }
 
-void Backends::ColumnGenerationV2::write(const std::string &t_name) {
+void Backends::ColumnGeneration::write(const std::string &t_name) {
     m_master->write(t_name);
 }
 
-void Backends::ColumnGenerationV2::hook_before_optimize() {
+void Backends::ColumnGeneration::hook_before_optimize() {
 
     set_best_bound(-Inf);
     set_best_obj(+Inf);
@@ -71,7 +71,7 @@ void Backends::ColumnGenerationV2::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 }
 
-void Backends::ColumnGenerationV2::add_artificial_variables() {
+void Backends::ColumnGeneration::add_artificial_variables() {
 
     auto& env = m_master->env();
     const double artificial_cost = parent().get(Param::ColumnGeneration::ArtificialVarCost);
@@ -104,7 +104,7 @@ void Backends::ColumnGenerationV2::add_artificial_variables() {
 
 }
 
-void Backends::ColumnGenerationV2::hook_optimize() {
+void Backends::ColumnGeneration::hook_optimize() {
 
     //call_callback(Event_::Algorithm::Begin);
 
@@ -112,9 +112,9 @@ void Backends::ColumnGenerationV2::hook_optimize() {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
-            idol_Log(Trace, ColumnGenerationV2, "Solving master problem.");
+            idol_Log(Trace, ColumnGeneration, "Solving master problem.");
             solve_master_problem();
-            idol_Log(Trace, ColumnGenerationV2, "Master problem has been solved.");
+            idol_Log(Trace, ColumnGeneration, "Master problem has been solved.");
 
             analyze_master_problem_solution();
 
@@ -154,18 +154,18 @@ void Backends::ColumnGenerationV2::hook_optimize() {
 
 }
 
-void Backends::ColumnGenerationV2::solve_master_problem() {
+void Backends::ColumnGeneration::solve_master_problem() {
     m_master->optimize();
 }
 
-void Backends::ColumnGenerationV2::log_master_solution(bool t_force) const {
+void Backends::ColumnGeneration::log_master_solution(bool t_force) const {
 
     if (!t_force && m_iteration_count % get(Param::ColumnGeneration::LogFrequency) != 0) {
         return;
     }
 
     idol_Log(Info,
-             ColumnGenerationV2,
+             ColumnGeneration,
              "<Type=Master> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
@@ -182,7 +182,7 @@ void Backends::ColumnGenerationV2::log_master_solution(bool t_force) const {
 
 }
 
-void Backends::ColumnGenerationV2::log_subproblem_solution(const Backends::ColumnGenerationV2::Subproblem &t_subproblem,
+void Backends::ColumnGeneration::log_subproblem_solution(const Backends::ColumnGeneration::Subproblem &t_subproblem,
                                                            bool t_force) const {
 
     if (!t_force && m_iteration_count % get(Param::ColumnGeneration::LogFrequency) != 0) {
@@ -192,7 +192,7 @@ void Backends::ColumnGenerationV2::log_subproblem_solution(const Backends::Colum
     const auto& pricing = t_subproblem.m_model;
 
     idol_Log(Debug,
-             ColumnGenerationV2,
+             ColumnGeneration,
              "<Type=Pricing> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
@@ -209,7 +209,7 @@ void Backends::ColumnGenerationV2::log_subproblem_solution(const Backends::Colum
 
 }
 
-void Backends::ColumnGenerationV2::analyze_master_problem_solution() {
+void Backends::ColumnGeneration::analyze_master_problem_solution() {
 
     auto status = m_master->get(Attr::Solution::Status);
 
@@ -258,7 +258,7 @@ void Backends::ColumnGenerationV2::analyze_master_problem_solution() {
 
         } else {
 
-            idol_Log(Fatal, ColumnGenerationV2, "ERROR. Master problem should not be infeasible when using artificial variables.");
+            idol_Log(Fatal, ColumnGeneration, "ERROR. Master problem should not be infeasible when using artificial variables.");
             set_status(Fail);
             set_reason(NotSpecified);
             terminate();
@@ -272,14 +272,14 @@ void Backends::ColumnGenerationV2::analyze_master_problem_solution() {
 
         set_reason(Proved);
 
-        idol_Log(Trace, ColumnGenerationV2, "Terminate. Unbounded master problem.");
+        idol_Log(Trace, ColumnGeneration, "Terminate. Unbounded master problem.");
 
     } else {
 
         set_status(Fail);
         set_reason(NotSpecified);
 
-        idol_Log(Trace, ColumnGenerationV2, "Terminate. Master problem could not be solved to optimality.");
+        idol_Log(Trace, ColumnGeneration, "Terminate. Master problem could not be solved to optimality.");
 
     }
 
@@ -287,7 +287,7 @@ void Backends::ColumnGenerationV2::analyze_master_problem_solution() {
 
 }
 
-void Backends::ColumnGenerationV2::update_subproblems() {
+void Backends::ColumnGeneration::update_subproblems() {
 
     if (!m_adjusted_dual_solution) {
 
@@ -310,7 +310,7 @@ void Backends::ColumnGenerationV2::update_subproblems() {
 
 }
 
-void Backends::ColumnGenerationV2::solve_subproblems() {
+void Backends::ColumnGeneration::solve_subproblems() {
 
     const unsigned int n_threads = get(Param::ColumnGeneration::NumParallelPricing);
 
@@ -328,7 +328,7 @@ void Backends::ColumnGenerationV2::solve_subproblems() {
     }
 }
 
-void Backends::ColumnGenerationV2::analyze_subproblems_solution() {
+void Backends::ColumnGeneration::analyze_subproblems_solution() {
 
     double reduced_costs = 0;
 
@@ -365,7 +365,7 @@ void Backends::ColumnGenerationV2::analyze_subproblems_solution() {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
             idol_Log(Trace,
-                     ColumnGenerationV2,
+                     ColumnGeneration,
                      "Terminate. Given Param::Algorithm::BestBoundStop is " << best_bound_stop
                                                                             << " while current best bound is " << best_bound()
             )
@@ -375,7 +375,7 @@ void Backends::ColumnGenerationV2::analyze_subproblems_solution() {
 
 }
 
-void Backends::ColumnGenerationV2::enrich_master_problem() {
+void Backends::ColumnGeneration::enrich_master_problem() {
 
     m_n_generated_columns_at_last_iteration = 0;
 
@@ -398,7 +398,7 @@ void Backends::ColumnGenerationV2::enrich_master_problem() {
 
 }
 
-void Backends::ColumnGenerationV2::clean_up() {
+void Backends::ColumnGeneration::clean_up() {
 
     for (auto& subproblem : m_subproblems) {
         subproblem.clean_up();
@@ -406,7 +406,7 @@ void Backends::ColumnGenerationV2::clean_up() {
 
 }
 
-void Backends::ColumnGenerationV2::analyze_feasibility_with_artificial_variables() {
+void Backends::ColumnGeneration::analyze_feasibility_with_artificial_variables() {
 
     if (m_artificial_variables.empty()) { return; }
 
@@ -428,7 +428,7 @@ void Backends::ColumnGenerationV2::analyze_feasibility_with_artificial_variables
 
 }
 
-void Backends::ColumnGenerationV2::remove_artificial_variables() {
+void Backends::ColumnGeneration::remove_artificial_variables() {
 
     for (const Var& var : m_artificial_variables) {
         m_master->remove(var);
@@ -437,13 +437,13 @@ void Backends::ColumnGenerationV2::remove_artificial_variables() {
     m_artificial_variables.clear();
 }
 
-bool Backends::ColumnGenerationV2::stopping_condition() const {
+bool Backends::ColumnGeneration::stopping_condition() const {
     return get(Attr::Solution::AbsGap) <= ToleranceForAbsoluteGapPricing
            || get(Attr::Solution::RelGap) <= ToleranceForRelativeGapPricing
            || parent().remaining_time() == 0;
 }
 
-void Backends::ColumnGenerationV2::set(const Parameter<bool> &t_param, bool t_value) {
+void Backends::ColumnGeneration::set(const Parameter<bool> &t_param, bool t_value) {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
 
@@ -459,7 +459,7 @@ void Backends::ColumnGenerationV2::set(const Parameter<bool> &t_param, bool t_va
     Algorithm::set(t_param, t_value);
 }
 
-void Backends::ColumnGenerationV2::set(const Parameter<double> &t_param, double t_value) {
+void Backends::ColumnGeneration::set(const Parameter<double> &t_param, double t_value) {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
         m_double_parameters.set(t_param, t_value);
@@ -469,7 +469,7 @@ void Backends::ColumnGenerationV2::set(const Parameter<double> &t_param, double 
     Algorithm::set(t_param, t_value);
 }
 
-void Backends::ColumnGenerationV2::set(const Parameter<int> &t_param, int t_value) {
+void Backends::ColumnGeneration::set(const Parameter<int> &t_param, int t_value) {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
         m_int_parameters.set(t_param, t_value);
@@ -479,7 +479,7 @@ void Backends::ColumnGenerationV2::set(const Parameter<int> &t_param, int t_valu
     Algorithm::set(t_param, t_value);
 }
 
-bool Backends::ColumnGenerationV2::get(const Parameter<bool> &t_param) const {
+bool Backends::ColumnGeneration::get(const Parameter<bool> &t_param) const {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
         return m_bool_parameters.get(t_param);
@@ -488,7 +488,7 @@ bool Backends::ColumnGenerationV2::get(const Parameter<bool> &t_param) const {
     return Algorithm::get(t_param);
 }
 
-double Backends::ColumnGenerationV2::get(const Parameter<double> &t_param) const {
+double Backends::ColumnGeneration::get(const Parameter<double> &t_param) const {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
         return m_double_parameters.get(t_param);
@@ -497,7 +497,7 @@ double Backends::ColumnGenerationV2::get(const Parameter<double> &t_param) const
     return Algorithm::get(t_param);
 }
 
-int Backends::ColumnGenerationV2::get(const Parameter<int> &t_param) const {
+int Backends::ColumnGeneration::get(const Parameter<int> &t_param) const {
 
     if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
         return m_int_parameters.get(t_param);
@@ -506,7 +506,7 @@ int Backends::ColumnGenerationV2::get(const Parameter<int> &t_param) const {
     return Algorithm::get(t_param);
 }
 
-void Backends::ColumnGenerationV2::switch_to_pure_phase_I() {
+void Backends::ColumnGeneration::switch_to_pure_phase_I() {
 
     Expr<Var, Var> objective;
 
@@ -519,7 +519,7 @@ void Backends::ColumnGenerationV2::switch_to_pure_phase_I() {
     m_current_is_pure_phase_I = true;
 }
 
-void Backends::ColumnGenerationV2::restore_from_pure_phase_I() {
+void Backends::ColumnGeneration::restore_from_pure_phase_I() {
 
     set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
 
@@ -527,9 +527,9 @@ void Backends::ColumnGenerationV2::restore_from_pure_phase_I() {
 
 }
 
-void Backends::ColumnGenerationV2::Subproblem::hook_before_optimize() {}
+void Backends::ColumnGeneration::Subproblem::hook_before_optimize() {}
 
-Backends::ColumnGenerationV2::Subproblem::Subproblem(Backends::ColumnGenerationV2 &t_parent,
+Backends::ColumnGeneration::Subproblem::Subproblem(Backends::ColumnGeneration &t_parent,
                                                      unsigned int t_index,
                                                      Model* t_model,
                                                      Column&& t_generation_pattern)
@@ -542,7 +542,7 @@ Backends::ColumnGenerationV2::Subproblem::Subproblem(Backends::ColumnGenerationV
 
 }
 
-void Backends::ColumnGenerationV2::Subproblem::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
+void Backends::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
 
     ::Expr<Var, Var> objective;
 
@@ -563,7 +563,7 @@ void Backends::ColumnGenerationV2::Subproblem::update_objective(bool t_farkas_pr
 
 }
 
-void Backends::ColumnGenerationV2::Subproblem::optimize() {
+void Backends::ColumnGeneration::Subproblem::optimize() {
 
     const double remaining_time = m_parent.parent().remaining_time();
     m_model->set(::Param::Algorithm::TimeLimit, remaining_time);
@@ -571,7 +571,7 @@ void Backends::ColumnGenerationV2::Subproblem::optimize() {
 
 }
 
-double Backends::ColumnGenerationV2::Subproblem::compute_reduced_cost(const Solution::Dual &t_duals) const {
+double Backends::ColumnGeneration::Subproblem::compute_reduced_cost(const Solution::Dual &t_duals) const {
 
     double result = 0.;
 
@@ -591,7 +591,7 @@ double Backends::ColumnGenerationV2::Subproblem::compute_reduced_cost(const Solu
     return result;
 }
 
-void Backends::ColumnGenerationV2::Subproblem::enrich_master_problem() {
+void Backends::ColumnGeneration::Subproblem::enrich_master_problem() {
 
     const int status = m_model->get(::Attr::Solution::Status);
 
@@ -614,7 +614,7 @@ void Backends::ColumnGenerationV2::Subproblem::enrich_master_problem() {
 }
 
 TempVar
-Backends::ColumnGenerationV2::Subproblem::create_column_from_generator(const Solution::Primal &t_primals) const {
+Backends::ColumnGeneration::Subproblem::create_column_from_generator(const Solution::Primal &t_primals) const {
     return {
             0.,
             Inf,
@@ -624,7 +624,7 @@ Backends::ColumnGenerationV2::Subproblem::create_column_from_generator(const Sol
 
 }
 
-void Backends::ColumnGenerationV2::Subproblem::clean_up() {
+void Backends::ColumnGeneration::Subproblem::clean_up() {
 
     const unsigned int threshold = m_parent.parent().get(::Param::ColumnGeneration::CleanUpThreshold);
 
@@ -677,7 +677,7 @@ void Backends::ColumnGenerationV2::Subproblem::clean_up() {
 
 }
 
-void Backends::ColumnGenerationV2::Subproblem::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+void Backends::ColumnGeneration::Subproblem::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
 
     auto& master = m_parent.m_master;
 
