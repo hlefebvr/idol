@@ -58,6 +58,7 @@ void Backends::ColumnGenerationV2::hook_before_optimize() {
     m_current_dual_solution.reset();
     m_adjusted_dual_solution.reset();
     m_current_is_farkas_pricing = false;
+    m_current_is_pure_phase_I = false;
 
     if (!get(Param::ColumnGeneration::FarkasPricing)) {
         add_artificial_variables();
@@ -73,13 +74,13 @@ void Backends::ColumnGenerationV2::hook_before_optimize() {
 void Backends::ColumnGenerationV2::add_artificial_variables() {
 
     auto& env = m_master->env();
-    const double artificial_cost = get(Param::ColumnGeneration::ArtificialVarCost);
+    const double artificial_cost = parent().get(Param::ColumnGeneration::ArtificialVarCost);
     const auto add_to = [&](const Ctr& t_ctr, double t_sign) {
 
         Column column(artificial_cost);
         column.linear().set(t_ctr, t_sign);
 
-        Var artifical_var(env, 0., Inf, Continuous, std::move(column));
+        Var artifical_var(env, 0., Inf, Continuous, std::move(column), "_artificial_" + std::to_string(m_artificial_variables.size()));
         m_master->add(artifical_var);
 
         m_artificial_variables.emplace_back(artifical_var);
@@ -503,6 +504,27 @@ int Backends::ColumnGenerationV2::get(const Parameter<int> &t_param) const {
     }
 
     return Algorithm::get(t_param);
+}
+
+void Backends::ColumnGenerationV2::switch_to_pure_phase_I() {
+
+    Expr<Var, Var> objective;
+
+    for (const auto& var : m_artificial_variables) {
+        objective += var;
+    }
+
+    set(Attr::Obj::Expr, std::move(objective));
+
+    m_current_is_pure_phase_I = true;
+}
+
+void Backends::ColumnGenerationV2::restore_from_pure_phase_I() {
+
+    set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
+
+    m_current_is_pure_phase_I = false;
+
 }
 
 void Backends::ColumnGenerationV2::Subproblem::hook_before_optimize() {}

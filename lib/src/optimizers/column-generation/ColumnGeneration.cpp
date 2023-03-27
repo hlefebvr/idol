@@ -355,6 +355,8 @@ void Backends::ColumnGeneration::analyze_master_problem_solution() {
 
     if (status == Unbounded) {
 
+        switch_to_pure_phase_I();
+
         set_reason(Proved);
 
         idol_Log(Trace, ColumnGeneration, "Terminate. Unbounded master problem.");
@@ -608,4 +610,25 @@ void Backends::ColumnGeneration::set(const Req<Expr<Var, Var>, void> &t_attr, Ex
     }
 
     Base::set(t_attr, t_expr);
+}
+
+void Backends::ColumnGeneration::switch_to_pure_phase_I() {
+
+    Expr<Var, Var> objective;
+
+    for (const auto& var : m_artificial_variables) {
+        objective += var;
+    }
+
+    set(Attr::Obj::Expr, std::move(objective));
+
+    m_current_is_phase_I = true;
+}
+
+void Backends::ColumnGeneration::restore_from_pure_phase_I() {
+
+    set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
+
+    m_current_is_phase_I = false;
+
 }

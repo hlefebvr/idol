@@ -194,7 +194,6 @@ void Backends::GLPK::hook_update(const Var &t_var) {
 
 void Backends::GLPK::hook_update(const Ctr &t_ctr) {
 
-
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
     const auto& rhs = model.get(Attr::Ctr::Rhs, t_ctr);

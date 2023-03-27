@@ -67,7 +67,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.use(BranchAndBoundOptimizer<NodeInfo>(
             DantzigWolfeOptimizer(
                     decomposition,
-                    TestType(),
+                    TestType::ContinuousRelaxation(),
                     *subproblem_solver
             ),
             MostInfeasible(),
@@ -78,6 +78,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
     model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
     model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
+    model.set(Param::ColumnGeneration::ArtificialVarCost, 1e5);
 
     std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 

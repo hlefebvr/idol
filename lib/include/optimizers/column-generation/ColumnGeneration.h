@@ -27,6 +27,7 @@ class Backends::ColumnGeneration : public Algorithm {
 
     std::list<Var> m_artificial_variables;
     bool m_current_is_farkas_pricing = false;
+    bool m_current_is_phase_I = false;
 
     std::optional<Solution::Dual> m_current_dual_solution;
     std::optional<Solution::Dual> m_adjusted_dual_solution;
@@ -43,6 +44,8 @@ protected:
     void write(const std::string &t_name) override;
 
     virtual void add_artificial_variables();
+    virtual void switch_to_pure_phase_I();
+    virtual void restore_from_pure_phase_I();
     virtual void solve_master_problem();
     void log_master_solution(bool t_force = false) const;
     void log_subproblem_solution(const ColumnGenerationSP& t_subproblem, bool t_force = false) const;

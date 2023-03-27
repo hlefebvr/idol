@@ -38,7 +38,7 @@ int main(int t_argc, char** t_argv) {
     Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -106,39 +106,36 @@ int main(int t_argc, char** t_argv) {
             ));
     */
 
-    /*
-    model.use(BranchAndBoundOptimizer(
-                    GurobiOptimizer(),
-                    ContinuousRelaxation(),
-                    MostInfeasible(),
-                    BestBound()
-            ));
-    */
+    //model.set(Attr::Var::Ub, x[0][2], 0);
 
-    model.use(BranchAndBoundOptimizer(
-            DantzigWolfeOptimizer(
-                    std_decomposition,
-                    GurobiOptimizer::ContinuousRelaxation(),
-                    BranchAndBoundOptimizer(
-                            GurobiOptimizer::ContinuousRelaxation(),
-                            MostInfeasible(),
-                            BestBound()
-                    )
-            ),
-            MostInfeasible(),
-            BestBound()
-    ));
+    for (bool branching_on_master : { true, false }) {
 
-    for (bool branching_on_master : { false, true }) {
+        for (bool farkas_pricing : { false, true }) {
 
-        for (bool farkas_pricing : { false }) {
+            for (double smoothing : { 0., .3, .5, .8 }) {
 
-            for (double smoothing : { 0., .3, .8 }) {
+                model.use(BranchAndBoundOptimizer(
+                        DantzigWolfeOptimizer(
+                                std_decomposition,
+                                GurobiOptimizer::ContinuousRelaxation(),
+                                GurobiOptimizer()
+                                /*
+                                BranchAndBoundOptimizer(
+                                        GurobiOptimizer::ContinuousRelaxation(),
+                                        MostInfeasible(),
+                                        BestBound()
+                                )
+                                 */
+                        ),
+                        MostInfeasible(),
+                        BestBound()
+                ));
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
                 model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
                 model.set(Param::ColumnGeneration::SmoothingFactor, smoothing);
+                model.set(Param::ColumnGeneration::ArtificialVarCost, 1e5);
 
                 model.optimize();
 
@@ -147,6 +144,13 @@ int main(int t_argc, char** t_argv) {
                 std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
                 std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
                 std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
+                const double obj_val = model.get(Attr::Solution::ObjVal);
+
+                if (obj_val > -39.5) {
+                    std::cout << obj_val << std::endl;
+                    throw Exception("STOP");
+                }
 
             }
 
