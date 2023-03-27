@@ -29,7 +29,6 @@ class Backends::BranchAndBound : public Algorithm {
     using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
-    std::unique_ptr<RelaxationBuilderFactory> m_relaxation_builder_factory;
 
     std::unique_ptr<AbstractModel> m_relaxation;
     std::unique_ptr<NodeUpdator<NodeInfoT>> m_node_updator;
@@ -37,7 +36,7 @@ class Backends::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 2, 0 };
+    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
 
     TreeNode* m_incumbent = nullptr;
@@ -83,10 +82,16 @@ protected:
 public:
     explicit BranchAndBound(const AbstractModel& t_model,
                               const OptimizerFactory& t_node_optimizer,
-                              const RelaxationBuilderFactory& t_relaxation_builder_factory,
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory);
+
+    ~BranchAndBound() override;
 };
+
+template<class NodeInfoT>
+Backends::BranchAndBound<NodeInfoT>::~BranchAndBound() {
+    delete m_incumbent;
+}
 
 template<class NodeInfoT>
 void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
@@ -163,12 +168,10 @@ double Backends::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, 
 template<class NodeInfoT>
 Backends::BranchAndBound<NodeInfoT>::BranchAndBound(const AbstractModel &t_model,
                                           const OptimizerFactory& t_node_optimizer,
-                                          const RelaxationBuilderFactory& t_relaxation_builder_factory,
                                           const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                                           const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
-      m_relaxation_builder_factory(t_relaxation_builder_factory.clone()),
       m_branching_rule(t_branching_rule_factory(t_model)),
       m_node_selection_rule(t_node_selection_rule_factory()) {
 
@@ -181,7 +184,7 @@ void Backends::BranchAndBound<NodeInfoT>::create_relaxations() {
 
     const auto &original_model = parent();
 
-    m_relaxation.reset((*m_relaxation_builder_factory)(original_model));
+    m_relaxation.reset(original_model.clone());
     m_relaxation->use(*m_relaxation_optimizer_factory);
 
     m_node_updator.reset(NodeInfoT::create_updator(*m_relaxation));
@@ -326,6 +329,7 @@ void Backends::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_no
         set_best_obj(-Inf);
         terminate();
         idol_Log(Trace, BranchAndBound<NodeInfoT>, "Terminate. The problem is unbounded.");
+        delete t_node;
         return;
     }
 
@@ -344,6 +348,7 @@ void Backends::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_no
     if (parent().remaining_time() == 0) {
         set_reason(TimeLimit);
         terminate();
+        delete t_node;
         return;
     }
 
@@ -423,7 +428,6 @@ void Backends::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBoun
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
     const double lower_bound = lowest_node.objective_value();
     if (lower_bound > best_bound()) {
-        std::cout << lower_bound << std::endl;
         set_best_bound(lower_bound);
         log_node(Info, lowest_node);
     }

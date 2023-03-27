@@ -17,6 +17,11 @@ GRBEnv &Backends::Gurobi::get_global_env() {
 }
 
 char Backends::Gurobi::gurobi_var_type(int t_type) {
+
+    if (m_continuous_relaxation) {
+        return GRB_CONTINUOUS;
+    }
+
     switch (t_type) {
         case Continuous: return GRB_CONTINUOUS;
         case Integer: return GRB_INTEGER;
@@ -70,7 +75,11 @@ double Backends::Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
-Backends::Gurobi::Gurobi(const AbstractModel &t_model, GRBEnv &t_env) : LazyBackend(t_model), m_env(t_env), m_model(t_env) {
+Backends::Gurobi::Gurobi(const AbstractModel &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
+    : LazyBackend(t_model),
+    m_continuous_relaxation(t_continuous_relaxation),
+      m_env(t_env),
+      m_model(t_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
     m_model.set(GRB_IntParam_QCPDual, 1);

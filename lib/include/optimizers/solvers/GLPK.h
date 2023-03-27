@@ -18,6 +18,8 @@ namespace Backends {
 
 class Backends::GLPK  : public LazyBackend<int, int> {
 
+    bool m_continuous_relaxation;
+
     glp_prob* m_model;
     glp_smcp m_simplex_parameters;
     glp_iocp m_mip_parameters;
@@ -83,7 +85,7 @@ protected:
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;
     [[nodiscard]] double get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const override;
 public:
-    explicit GLPK(const AbstractModel& t_model);
+    explicit GLPK(const AbstractModel& t_model, bool t_continuous_relaxation);
 };
 
 #endif

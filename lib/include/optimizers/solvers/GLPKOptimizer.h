@@ -5,13 +5,26 @@
 #ifndef IDOL_GLPKOPTIMIZER_H
 #define IDOL_GLPKOPTIMIZER_H
 
-#ifdef IDOL_USE_GLPK
+#include "../OptimizerFactory.h"
 
-#include "DefaultOptimizer.h"
-#include "GLPK.h"
+class GLPKOptimizer : public OptimizerFactory {
+    bool m_continuous_relaxation = false;
 
-class GLPKOptimizer : public DefaultOptimizer<Backends::GLPK> {};
+    explicit GLPKOptimizer(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
+    GLPKOptimizer(const GLPKOptimizer&) = default;
+public:
+    GLPKOptimizer() = default;
+    GLPKOptimizer(GLPKOptimizer&&) noexcept = default;
 
-#endif
+    GLPKOptimizer& operator=(const GLPKOptimizer&) = delete;
+    GLPKOptimizer& operator=(GLPKOptimizer&&) noexcept = delete;
+
+    Backend *operator()(const AbstractModel &t_model) const override;
+
+    static GLPKOptimizer ContinuousRelaxation();
+
+    [[nodiscard]] GLPKOptimizer *clone() const override;
+};
+
 
 #endif //IDOL_GLPKOPTIMIZER_H

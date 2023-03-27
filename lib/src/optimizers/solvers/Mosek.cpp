@@ -5,9 +5,10 @@
 #include "modeling/expressions/operations/operators.h"
 #include <Eigen/Sparse>
 
-Backends::Mosek::Mosek(const AbstractModel &t_model)
+Backends::Mosek::Mosek(const AbstractModel &t_model, bool t_continuous_relaxation)
     : LazyBackend<MosekVar, MosekCtr>(t_model),
-      m_model(new mosek::fusion::Model()) {
+      m_model(new mosek::fusion::Model()),
+      m_continuous_relaxation(t_continuous_relaxation) {
 
     m_model->setLogHandler(NULL);
 
@@ -331,11 +332,10 @@ void Backends::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_l
     m_model->updateObjective(mosek::fusion::Expr::mul(t_obj, t_mosek_var.variable), t_mosek_var.variable);
 
     // Set type
-    switch (t_type) {
-        case Continuous: t_mosek_var.variable->make_continuous(); break;
-        case Binary: [[fallthrough]];
-        case Integer: t_mosek_var.variable->make_integer(); break;
-        default: throw std::runtime_error("Unknown variable type.");
+    if (m_continuous_relaxation || t_type == Continuous) {
+        t_mosek_var.variable->make_continuous();
+    } else {
+        t_mosek_var.variable->make_integer();
     }
 
     // Set bounds

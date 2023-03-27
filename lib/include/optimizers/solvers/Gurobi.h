@@ -23,8 +23,9 @@ class Backends::Gurobi : public LazyBackend<GRBVar, std::variant<GRBConstr, GRBQ
 
     GRBEnv& m_env;
     GRBModel m_model;
+    bool m_continuous_relaxation;
 
-    static char gurobi_var_type(int t_type);
+    char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
     static char gurobi_obj_sense(int t_sense);
     static double gurobi_numeric(double t_value);
@@ -72,8 +73,8 @@ protected:
     void set(const Parameter<bool>& t_param, bool t_value) override;
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
 public:
-    Gurobi(const AbstractModel& t_model, GRBEnv& t_env);
-    explicit Gurobi(const AbstractModel& t_model) : Gurobi(t_model, Gurobi::get_global_env()) {}
+    Gurobi(const AbstractModel& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
+    explicit Gurobi(const AbstractModel& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
 
     GRBEnv& env() { return m_env; }
 

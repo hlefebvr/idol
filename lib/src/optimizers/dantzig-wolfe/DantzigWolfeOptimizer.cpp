@@ -35,9 +35,6 @@ Backend *DantzigWolfeOptimizer::operator()(const AbstractModel &t_model) const {
 
     auto variable_flag = create_variable_flag(original_formulation, &n_subproblems);
 
-    std::cout << original_formulation << std::endl;
-    std::cout << n_subproblems << std::endl;
-
     auto subproblems = create_empty_subproblems(env, n_subproblems);
     auto generation_patterns = create_empty_generation_patterns(n_subproblems);
 

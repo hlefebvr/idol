@@ -9,7 +9,6 @@
 
 #include "solvers.h"
 
-
 #include <tuple>
 #include "BackendNotAvailable.h"
 
@@ -18,7 +17,7 @@ template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::
 #ifdef IDOL_USE_GUROBI
 #include "optimizers/solvers/Gurobi.h"
 
-using gurobi_solver = std::tuple<Backends::Gurobi>;
+using gurobi_solver = std::tuple<GurobiOptimizer>;
 #else
 using gurobi_solver = std::tuple<>;
 #endif
@@ -26,7 +25,7 @@ using gurobi_solver = std::tuple<>;
 #ifdef IDOL_USE_GLPK
 #include "optimizers/solvers/GLPK.h"
 
-using glpk_solver = std::tuple<Backends::GLPK>;
+using glpk_solver = std::tuple<GLPKOptimizer>;
 #else
 using glpk_solver = std::tuple<>;
 #endif
@@ -34,7 +33,7 @@ using glpk_solver = std::tuple<>;
 #ifdef IDOL_USE_MOSEK
 #include "optimizers/solvers/Mosek.h"
 
-using mosek_solver = std::tuple<Backends::Mosek>;
+using mosek_solver = std::tuple<MosekOptimizer>;
 #else
 using mosek_solver = std::tuple<>;
 #endif

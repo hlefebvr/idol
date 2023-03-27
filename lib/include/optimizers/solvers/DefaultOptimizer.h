@@ -13,7 +13,7 @@ public:
     DefaultOptimizer() = default;
 
     DefaultOptimizer(const DefaultOptimizer&) = default;
-    DefaultOptimizer(const DefaultOptimizer&&) noexcept = delete;
+    DefaultOptimizer(DefaultOptimizer&&) noexcept = delete;
 
     DefaultOptimizer& operator=(const DefaultOptimizer&) = delete;
     DefaultOptimizer& operator=(DefaultOptimizer&&) noexcept = delete;

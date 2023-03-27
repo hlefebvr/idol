@@ -5,7 +5,10 @@
 
 #ifdef IDOL_USE_GLPK
 
-Backends::GLPK::GLPK(const AbstractModel &t_model) : LazyBackend(t_model), m_model(glp_create_prob()) {
+Backends::GLPK::GLPK(const AbstractModel &t_model, bool t_continuous_relaxation)
+    : LazyBackend(t_model),
+      m_model(glp_create_prob()),
+      m_continuous_relaxation(t_continuous_relaxation) {
 
     glp_init_smcp(&m_simplex_parameters);
     m_simplex_parameters.msg_lev = GLP_MSG_ERR;
@@ -45,11 +48,14 @@ void Backends::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t
     glp_set_obj_coef(m_model, t_index, t_obj);
 
     // Set type
-    switch (t_type) {
-        case Continuous: glp_set_col_kind(m_model, t_index, GLP_CV); break;
-        case Binary: glp_set_col_kind(m_model, t_index, GLP_BV); break;
-        case Integer: glp_set_col_kind(m_model, t_index, GLP_IV); break;
-        default: throw std::runtime_error("Unknown variable type.");
+    if (m_continuous_relaxation || t_type == Continuous) {
+        glp_set_col_kind(m_model, t_index, GLP_CV);
+    } else if (t_type == Binary) {
+        glp_set_col_kind(m_model, t_index, GLP_BV);
+    } else if (t_type == Integer) {
+        glp_set_col_kind(m_model, t_index, GLP_IV);
+    } else {
+        throw std::runtime_error("Unknown variable type.");
     }
 
     // Set bounds

@@ -28,10 +28,9 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
     const auto subproblem_solver = GENERATE(
-            std::shared_ptr<OptimizerFactory>(new DefaultOptimizer<TestType>()),
+            std::shared_ptr<OptimizerFactory>(new TestType()),
             std::shared_ptr<OptimizerFactory>(new BranchAndBoundOptimizer<NodeInfo>(
-                        DefaultOptimizer<TestType>(),
-                        ContinuousRelaxation(),
+                        TestType::ContinuousRelaxation(),
                         MostInfeasible(),
                         BestBound()
                     ))
@@ -68,10 +67,9 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.use(BranchAndBoundOptimizer<NodeInfo>(
             DantzigWolfeOptimizer(
                     decomposition,
-                    DefaultOptimizer<TestType>(),
+                    TestType(),
                     *subproblem_solver
             ),
-            ContinuousRelaxation(),
             MostInfeasible(),
             BestBound()
         ));
@@ -83,15 +81,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 
-    WHEN("The instance \"" + filename + "\" is solved") {
+    WHEN("The instance \"" + filename + "\" is solved with "
+            + (farkas_pricing ? "farkas pricing" : "artificial variables")
+            + ", branching applied to " + (branching_on_master ? "master" : "subproblem")
+            + " and stabilization factor of " + std::to_string(smoothing_factor)
+            ) {
 
-        std::cout << "Solving " << filename
-                  << (farkas_pricing ? " with farkas pricing" : " with artificial variables")
-                  << (branching_on_master ? " branching applied to master" : "branching applied to pricing")
-                  << ", stabilization factor = " << smoothing_factor
-                  << "..." << std::endl;
         model.optimize();
-        std::cout << "Done." << std::endl;
 
         THEN("The solution status is Optimal") {
 

@@ -50,6 +50,7 @@ int main(int t_argc, char** t_argv) {
     Model model(env);
 
     // Create decomposition annotation
+    Annotation<Ctr> std_decomposition(env, "std_decomposition", MasterId);
     Annotation<Ctr> decomposition(env, "decomposition", MasterId);
     Annotation<Ctr> decomposition2(env, "decomposition2", MasterId);
 
@@ -64,6 +65,7 @@ int main(int t_argc, char** t_argv) {
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
         model.add(capacity);
 
+        capacity.set(std_decomposition, i);
         capacity.set(decomposition, i/2);
         capacity.set(decomposition2, i % 2);
     }
@@ -103,37 +105,33 @@ int main(int t_argc, char** t_argv) {
                 BestBound()
             ));
     */
-/*
+
+    /*
     model.use(BranchAndBoundOptimizer(
-                    ColumnGenerationOptimizer(
-                            GurobiOptimizer(),
-                            GurobiOptimizer()
-                    ),
-                    DantzigWolfeRelaxation(decomposition),
+                    GurobiOptimizer(),
+                    ContinuousRelaxation(),
                     MostInfeasible(),
                     BestBound()
             ));
-*/
+    */
 
     model.use(BranchAndBoundOptimizer(
             DantzigWolfeOptimizer(
-                    decomposition,
-                    GurobiOptimizer(),
+                    std_decomposition,
+                    GurobiOptimizer::ContinuousRelaxation(),
                     BranchAndBoundOptimizer(
-                            GurobiOptimizer(),
-                            ContinuousRelaxation(),
+                            GurobiOptimizer::ContinuousRelaxation(),
                             MostInfeasible(),
                             BestBound()
                     )
             ),
-            ContinuousRelaxation(),
             MostInfeasible(),
             BestBound()
     ));
 
     for (bool branching_on_master : { false, true }) {
 
-        for (bool farkas_pricing : { false, true }) {
+        for (bool farkas_pricing : { false }) {
 
             for (double smoothing : { 0., .3, .8 }) {
 

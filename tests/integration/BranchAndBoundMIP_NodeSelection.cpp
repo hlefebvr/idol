@@ -45,8 +45,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     model.use(BranchAndBoundOptimizer<NodeInfo>(
-                DefaultOptimizer<OptimizerT>(),
-                ContinuousRelaxation(),
+                OptimizerT::ContinuousRelaxation(),
                 MostInfeasible(),
                 NodeSelectionRuleT()
         ));
@@ -121,8 +120,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
 
     // Set backend options
     model.use(BranchAndBoundOptimizer<NodeInfo>(
-            DefaultOptimizer<OptimizerT>(),
-            ContinuousRelaxation(),
+            OptimizerT::ContinuousRelaxation(),
             MostInfeasible(),
             NodeSelectionRuleT()
     ));

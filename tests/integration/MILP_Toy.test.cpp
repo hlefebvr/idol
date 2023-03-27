@@ -15,10 +15,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
                         milp_solvers) {
     
     auto solver = GENERATE(
-                std::shared_ptr<OptimizerFactory>(new DefaultOptimizer<TestType>),
+                std::shared_ptr<OptimizerFactory>(new TestType),
                 std::shared_ptr<OptimizerFactory>(new BranchAndBoundOptimizer<NodeInfo>(
-                            DefaultOptimizer<TestType>(),
-                            ContinuousRelaxation(),
+                            TestType::ContinuousRelaxation(),
                             MostInfeasible(),
                             BestBound()
                         ))

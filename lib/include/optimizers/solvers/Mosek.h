@@ -25,6 +25,8 @@ namespace Backends {
 }
 
 class Backends::Mosek : public LazyBackend<MosekVar, MosekCtr> {
+    bool m_continuous_relaxation;
+
     mosek::fusion::Model::t m_model;
     SolutionStatus m_solution_status = Unknown;
     SolutionReason m_solution_reason = NotSpecified;
@@ -76,7 +78,7 @@ protected:
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;
     [[nodiscard]] double get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const override;
 public:
-    explicit Mosek(const AbstractModel& t_model);
+    explicit Mosek(const AbstractModel& t_model, bool t_continuous_relaxation);
 
     ~Mosek() override;
 };

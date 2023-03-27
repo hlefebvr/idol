@@ -5,13 +5,25 @@
 #ifndef IDOL_GUROBIOPTIMIZER_H
 #define IDOL_GUROBIOPTIMIZER_H
 
-#ifdef IDOL_USE_GUROBI
+#include "../OptimizerFactory.h"
 
-#include "DefaultOptimizer.h"
-#include "Gurobi.h"
+class GurobiOptimizer : public OptimizerFactory {
+    bool m_continuous_relaxation = false;
 
-class GurobiOptimizer : public DefaultOptimizer<Backends::Gurobi> {};
+    explicit GurobiOptimizer(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
+    GurobiOptimizer(const GurobiOptimizer&) = default;
+public:
+    GurobiOptimizer() = default;
+    GurobiOptimizer(GurobiOptimizer&&) noexcept = default;
 
-#endif
+    GurobiOptimizer& operator=(const GurobiOptimizer&) = delete;
+    GurobiOptimizer& operator=(GurobiOptimizer&&) noexcept = delete;
+
+    Backend *operator()(const AbstractModel &t_model) const override;
+
+    static GurobiOptimizer ContinuousRelaxation();
+
+    [[nodiscard]] GurobiOptimizer *clone() const override;
+};
 
 #endif //IDOL_GUROBIOPTIMIZER_H
