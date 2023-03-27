@@ -8,10 +8,8 @@
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",

@@ -12,7 +12,6 @@
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
 
 using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, WorstBound>;
 

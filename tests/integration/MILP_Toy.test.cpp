@@ -7,7 +7,6 @@
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 
 TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",

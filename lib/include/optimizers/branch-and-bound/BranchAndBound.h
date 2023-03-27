@@ -8,7 +8,6 @@
 #include "NodeSet.h"
 #include "../Algorithm.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h"
-#include "optimizers/branch-and-bound/relaxations/factories/RelaxationBuilderFactory.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h"
 #include "optimizers/branch-and-bound/branching-rules/impls/BranchingRule.h"
 #include "optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h"

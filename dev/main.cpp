@@ -7,14 +7,12 @@
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
-#include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
-#include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/solvers/GurobiOptimizer.h"
@@ -114,7 +112,7 @@ int main(int t_argc, char** t_argv) {
 
             for (double smoothing : { 0., .3, .5 }) {
 
-                /*
+
                 model.use(BranchAndBoundOptimizer(
                         DantzigWolfeOptimizer(
                                 std_decomposition,
@@ -128,8 +126,8 @@ int main(int t_argc, char** t_argv) {
                         MostInfeasible(),
                         BestBound()
                 ));
-                */
 
+                /*
                 model.use(BranchAndBoundOptimizer<NodeInfo>(
                         DantzigWolfeOptimizer(
                                 decomposition,
@@ -137,15 +135,12 @@ int main(int t_argc, char** t_argv) {
                                 BranchAndBoundOptimizer<NodeInfo>(
                                         DantzigWolfeOptimizer(
                                                 decomposition2,
-                                                GurobiOptimizer::ContinuousRelaxation(),
-                                                GurobiOptimizer()
-                                                /*
+                                                GurobiOptimizer::ContinuousRelaxation()
                                                 BranchAndBoundOptimizer<NodeInfo>(
                                                         GLPKOptimizer::ContinuousRelaxation(),
                                                         MostInfeasible(),
                                                         WorstBound()
                                                 )
-                                                 */
                                         ),
                                         MostInfeasible(),
                                         DepthFirst()
@@ -154,6 +149,7 @@ int main(int t_argc, char** t_argv) {
                         MostInfeasible(),
                         BestBound()
                 ));
+                */
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
