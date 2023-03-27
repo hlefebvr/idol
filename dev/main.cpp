@@ -31,7 +31,7 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<ColumnGenerationOptimizer>(Trace);
     Logs::set_color<ColumnGenerationOptimizer>(Yellow);
 
-    Logs::set_level<Backends::ColumnGenerationV2>(Trace);
+    Logs::set_level<Backends::ColumnGenerationV2>(Mute);
     Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
 
     // Read instance
@@ -158,6 +158,10 @@ int main(int t_argc, char** t_argv) {
                 std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
                 std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
                 std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
+                if (model.get(Attr::Solution::ObjVal) != -233) {
+                    throw Exception("Oups");
+                }
 
             }
 

@@ -654,3 +654,22 @@ void Backends::ColumnGenerationV2::Subproblem::clean_up() {
 
 
 }
+
+void Backends::ColumnGenerationV2::Subproblem::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto& master = m_parent.m_master;
+
+    auto it = m_present_generators.begin();
+    const auto end = m_present_generators.end();
+
+    while (it != end) {
+        const auto& [column_variable, ptr_to_column] = *it;
+        if (t_indicator_for_removal(column_variable, ptr_to_column)) {
+            master->remove(column_variable);
+            it = m_present_generators.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+}

@@ -49,7 +49,12 @@ Backend *DantzigWolfeOptimizer::operator()(const AbstractModel &t_model) const {
         subproblems[i]->use(*m_subproblem_optimizer);
     }
 
-    return new Backends::DantzigWolfe(t_model.as<Model>(), master, subproblems, generation_patterns);
+    return new Backends::DantzigWolfe(t_model.as<Model>(),
+                                      m_decomposition,
+                                      variable_flag,
+                                      master,
+                                      subproblems,
+                                      generation_patterns);
 }
 
 DantzigWolfeOptimizer *DantzigWolfeOptimizer::clone() const {

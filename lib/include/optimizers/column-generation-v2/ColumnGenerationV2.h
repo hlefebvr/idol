@@ -12,6 +12,7 @@
 
 namespace Backends {
     class ColumnGenerationV2;
+    class DantzigWolfe;
 }
 
 class Backends::ColumnGenerationV2 : public Algorithm {
@@ -61,7 +62,7 @@ protected:
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
     [[nodiscard]] double get(const Parameter<double>& t_param) const override;
     [[nodiscard]] int get(const Parameter<int>& t_param) const override;
-private:
+
     std::unique_ptr<Model> m_master;
     std::vector<Subproblem> m_subproblems;
 
@@ -83,6 +84,7 @@ private:
 
 class Backends::ColumnGenerationV2::Subproblem {
     friend class ::Backends::ColumnGenerationV2;
+    friend class ::Backends::DantzigWolfe;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
     using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
@@ -109,6 +111,7 @@ class Backends::ColumnGenerationV2::Subproblem {
 
     void clean_up();
 
+    void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
 public:
     Subproblem(ColumnGenerationV2& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
 };
