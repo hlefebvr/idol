@@ -5,8 +5,6 @@
 #ifndef IDOL_MOSEKOPTIMIZER_H
 #define IDOL_MOSEKOPTIMIZER_H
 
-#ifdef IDOL_USE_MOSEK
-
 #include "../OptimizerFactory.h"
 
 class MosekOptimizer : public OptimizerFactory {
@@ -27,7 +25,5 @@ public:
 
     [[nodiscard]] MosekOptimizer *clone() const override;
 };
-
-#endif
 
 #endif //IDOL_MOSEKOPTIMIZER_H
