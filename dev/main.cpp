@@ -38,7 +38,7 @@ int main(int t_argc, char** t_argv) {
     Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -108,24 +108,48 @@ int main(int t_argc, char** t_argv) {
 
     //model.set(Attr::Var::Ub, x[0][2], 0);
 
-    for (bool branching_on_master : { true, false }) {
+    for (bool branching_on_master : { false, true }) {
 
-        for (bool farkas_pricing : { false, true }) {
+        for (bool farkas_pricing : { true, false }) {
 
-            for (double smoothing : { 0., .3, .5, .8 }) {
+            for (double smoothing : { 0., .3, .5 }) {
 
+                /*
                 model.use(BranchAndBoundOptimizer(
                         DantzigWolfeOptimizer(
                                 std_decomposition,
                                 GurobiOptimizer::ContinuousRelaxation(),
-                                GurobiOptimizer()
-                                /*
                                 BranchAndBoundOptimizer(
                                         GurobiOptimizer::ContinuousRelaxation(),
                                         MostInfeasible(),
                                         BestBound()
                                 )
-                                 */
+                        ),
+                        MostInfeasible(),
+                        BestBound()
+                ));
+                */
+
+                model.use(BranchAndBoundOptimizer<NodeInfo>(
+                        DantzigWolfeOptimizer(
+                                decomposition,
+                                GurobiOptimizer::ContinuousRelaxation(),
+                                BranchAndBoundOptimizer<NodeInfo>(
+                                        DantzigWolfeOptimizer(
+                                                decomposition2,
+                                                GurobiOptimizer::ContinuousRelaxation(),
+                                                GurobiOptimizer()
+                                                /*
+                                                BranchAndBoundOptimizer<NodeInfo>(
+                                                        GLPKOptimizer::ContinuousRelaxation(),
+                                                        MostInfeasible(),
+                                                        WorstBound()
+                                                )
+                                                 */
+                                        ),
+                                        MostInfeasible(),
+                                        DepthFirst()
+                                )
                         ),
                         MostInfeasible(),
                         BestBound()
@@ -137,6 +161,8 @@ int main(int t_argc, char** t_argv) {
                 model.set(Param::ColumnGeneration::SmoothingFactor, smoothing);
                 model.set(Param::ColumnGeneration::ArtificialVarCost, 1e5);
 
+                std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
+
                 model.optimize();
 
                 std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
@@ -147,10 +173,7 @@ int main(int t_argc, char** t_argv) {
 
                 const double obj_val = model.get(Attr::Solution::ObjVal);
 
-                if (obj_val > -39.5) {
-                    std::cout << obj_val << std::endl;
-                    throw Exception("STOP");
-                }
+                throw 10;
 
             }
 

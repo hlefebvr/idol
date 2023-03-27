@@ -163,8 +163,6 @@ void Backends::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<V
 
     if (t_attr == Attr::Obj::Expr) {
 
-        std::cout << "Updating obj for " << t_expr << std::endl;
-
         const unsigned int n_subproblems = m_subproblems.size();
 
         Expr<Var, Var> master_obj = std::move(t_expr.constant());
@@ -182,12 +180,9 @@ void Backends::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<V
             }
         }
 
-        std::cout << "master -> " << master_obj << std::endl;
-
         m_master->set(t_attr, std::move(master_obj));
 
         for (unsigned int k = 0 ; k < n_subproblems ; ++k) {
-            std::cout << k << " -> " << pricing_obj[k] << std::endl;
             m_subproblems[k].m_generation_pattern.set_obj(std::move(pricing_obj[k]));
         }
 
