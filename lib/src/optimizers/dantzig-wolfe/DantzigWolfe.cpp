@@ -159,3 +159,41 @@ LinExpr<Var> Backends::DantzigWolfe::expand_subproblem_variable(const Var &t_var
     return result;
 }
 
+void Backends::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
+
+    if (t_attr == Attr::Obj::Expr) {
+
+        std::cout << "Updating obj for " << t_expr << std::endl;
+
+        const unsigned int n_subproblems = m_subproblems.size();
+
+        Expr<Var, Var> master_obj = std::move(t_expr.constant());
+        std::vector<Constant> pricing_obj(n_subproblems);
+
+        for (auto [var, coeff] : t_expr.linear()) {
+            const unsigned int subproblem_id = var.get(m_variable_flag);
+            if (subproblem_id == MasterId) {
+                master_obj += coeff * var;
+            } else {
+                if (!coeff.is_numerical()) {
+                    throw Exception("Could not handle non-numerical objective coefficient as generation pattern.");
+                }
+                pricing_obj[subproblem_id] += coeff.numerical() * !var;
+            }
+        }
+
+        std::cout << "master -> " << master_obj << std::endl;
+
+        m_master->set(t_attr, std::move(master_obj));
+
+        for (unsigned int k = 0 ; k < n_subproblems ; ++k) {
+            std::cout << k << " -> " << pricing_obj[k] << std::endl;
+            m_subproblems[k].m_generation_pattern.set_obj(std::move(pricing_obj[k]));
+        }
+
+        return;
+    }
+
+    Base::set(t_attr, t_expr);
+}
+

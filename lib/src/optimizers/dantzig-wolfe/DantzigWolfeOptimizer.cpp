@@ -28,12 +28,16 @@ DantzigWolfeOptimizer::DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src)
 Backend *DantzigWolfeOptimizer::operator()(const AbstractModel &t_model) const {
 
     const auto& original_formulation = t_model.as<Model>();
-
     auto& env = t_model.env();
 
     unsigned int n_subproblems;
     auto* master = new Model(env);
+
     auto variable_flag = create_variable_flag(original_formulation, &n_subproblems);
+
+    std::cout << original_formulation << std::endl;
+    std::cout << n_subproblems << std::endl;
+
     auto subproblems = create_empty_subproblems(env, n_subproblems);
     auto generation_patterns = create_empty_generation_patterns(n_subproblems);
 
@@ -80,12 +84,15 @@ Annotation<Var, unsigned int> DantzigWolfeOptimizer::create_variable_flag(const 
         t_var.set(result, t_subproblem_id);
     };
 
+    bool has_at_least_one_subproblem = false;
+
     for (const auto& ctr : t_model.ctrs()) {
 
         const unsigned int subproblem_id = ctr.get(m_decomposition);
 
-        if (subproblem_id != MasterId && subproblem_id > *t_n_subproblem) {
-            *t_n_subproblem = subproblem_id + 1;
+        if (subproblem_id != MasterId && subproblem_id >= *t_n_subproblem) {
+            has_at_least_one_subproblem = true;
+            *t_n_subproblem = subproblem_id;
         }
 
         const auto& row = t_model.get(Attr::Ctr::Row, ctr);
@@ -99,6 +106,10 @@ Annotation<Var, unsigned int> DantzigWolfeOptimizer::create_variable_flag(const 
             set_flag(var2, subproblem_id);
         }
 
+    }
+
+    if (has_at_least_one_subproblem) {
+        *t_n_subproblem += 1;
     }
 
     return result;
@@ -127,6 +138,10 @@ void DantzigWolfeOptimizer::dispatch_variables(const Annotation<Var, unsigned in
                                                Model *t_master,
                                                const std::vector<Model *> &t_subproblems) const {
 
+    if (t_subproblems.empty()) {
+        return;
+    }
+
     for (const auto& var : t_original_formulation.vars()) {
 
         const unsigned int subproblem_id = var.get(t_variable_flag);
@@ -149,6 +164,10 @@ void DantzigWolfeOptimizer::dispatch_constraints(const Annotation<Var, unsigned 
                                                  Model *t_master,
                                                  const std::vector<Model *> &t_subproblems,
                                                  std::vector<Column>& t_generation_patterns) const {
+
+    if (t_subproblems.empty()) {
+        return;
+    }
 
     for (const auto& ctr : t_original_formulation.ctrs()) {
 

@@ -26,6 +26,7 @@ public:
                  std::vector<Column> t_generation_patterns);
 
 protected:
+    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_expr) override;
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;
     void set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) override;
 

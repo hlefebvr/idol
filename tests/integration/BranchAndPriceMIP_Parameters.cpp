@@ -12,6 +12,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/relaxations/impls/ContinuousRelaxation.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
@@ -65,11 +66,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     model.use(BranchAndBoundOptimizer<NodeInfo>(
-            ColumnGenerationOptimizer(
+            DantzigWolfeOptimizer(
+                    decomposition,
                     DefaultOptimizer<TestType>(),
                     *subproblem_solver
             ),
-            DantzigWolfeRelaxation(decomposition),
+            ContinuousRelaxation(),
             MostInfeasible(),
             BestBound()
         ));

@@ -28,10 +28,13 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<BranchAndBoundOptimizer<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundOptimizer<NodeInfo>>(Blue);
 
+    Logs::set_level<Backends::BranchAndBound<NodeInfo>>(Trace);
+    Logs::set_color<Backends::BranchAndBound<NodeInfo>>(Blue);
+
     Logs::set_level<ColumnGenerationOptimizer>(Trace);
     Logs::set_color<ColumnGenerationOptimizer>(Yellow);
 
-    Logs::set_level<Backends::ColumnGenerationV2>(Mute);
+    Logs::set_level<Backends::ColumnGenerationV2>(Trace);
     Logs::set_color<Backends::ColumnGenerationV2>(Yellow);
 
     // Read instance
@@ -53,7 +56,7 @@ int main(int t_argc, char** t_argv) {
     // Create assignment variables (x_ij binaries)
     auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
 
-    // Add variables to the model
+    // Add variables to the modelgeneration_pattern
     model.add_array<Var, 2>(x);
 
     // Create knapsack constraints (i.e., capacity constraints)
@@ -75,12 +78,13 @@ int main(int t_argc, char** t_argv) {
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     /*
-
     model.use(BranchAndBoundOptimizer<NodeInfo>(
-                ColumnGenerationOptimizer(
+                DantzigWolfeOptimizer(
+                    decomposition,
                     GurobiOptimizer(),
                     BranchAndBoundOptimizer<NodeInfo>(
-                        ColumnGenerationOptimizer(
+                        DantzigWolfeOptimizer(
+                                decomposition2,
                                 GurobiOptimizer(),
                                 BranchAndBoundOptimizer<NodeInfo>(
                                     GLPKOptimizer(),
@@ -89,16 +93,17 @@ int main(int t_argc, char** t_argv) {
                                     WorstBound()
                                 )
                         ),
-                        DantzigWolfeRelaxation(decomposition2),
+                        ContinuousRelaxation(),
                         MostInfeasible(),
                         DepthFirst()
                     )
                 ),
-                DantzigWolfeRelaxation(decomposition),
+                ContinuousRelaxation(),
                 MostInfeasible(),
                 BestBound()
             ));
-
+    */
+/*
     model.use(BranchAndBoundOptimizer(
                     ColumnGenerationOptimizer(
                             GurobiOptimizer(),
@@ -108,43 +113,29 @@ int main(int t_argc, char** t_argv) {
                     MostInfeasible(),
                     BestBound()
             ));
-
-    */
-
-
-    Model pricing(env);
-
-    pricing.use(GurobiOptimizer());
-
-    /*
-    model.use(BranchAndBoundOptimizer(
-                ColumnGenerationOptimizerV2(
-                    GurobiOptimizer(),
-                    1
-                ).with_subproblem(pricing, Column()),
-                ContinuousRelaxation(),
-                MostInfeasible(),
-                BestBound()
-            ));
-    */
+*/
 
     model.use(BranchAndBoundOptimizer(
-                DantzigWolfeOptimizer(
+            DantzigWolfeOptimizer(
                     decomposition,
                     GurobiOptimizer(),
-                    GLPKOptimizer()
-                ),
-                ContinuousRelaxation(),
-                MostInfeasible(),
-                BestBound()
-            ));
+                    BranchAndBoundOptimizer(
+                            GurobiOptimizer(),
+                            ContinuousRelaxation(),
+                            MostInfeasible(),
+                            BestBound()
+                    )
+            ),
+            ContinuousRelaxation(),
+            MostInfeasible(),
+            BestBound()
+    ));
 
-    for (bool branching_on_master : { true, false }) {
+    for (bool branching_on_master : { false, true }) {
 
-        for (bool farkas_pricing : { true, false }) {
+        for (bool farkas_pricing : { false, true }) {
 
             for (double smoothing : { 0., .3, .8 }) {
-
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
@@ -158,10 +149,6 @@ int main(int t_argc, char** t_argv) {
                 std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
                 std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
                 std::cout << save(model, Attr::Solution::Primal) << std::endl;
-
-                if (model.get(Attr::Solution::ObjVal) != -233) {
-                    throw Exception("Oups");
-                }
 
             }
 
