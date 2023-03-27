@@ -3,6 +3,7 @@
 //
 #include "optimizers/solvers/GurobiOptimizer.h"
 #include "optimizers/solvers/Gurobi.h"
+#include "errors/Exception.h"
 
 Backend *GurobiOptimizer::operator()(const AbstractModel &t_model) const {
 #ifdef IDOL_USE_GUROBI

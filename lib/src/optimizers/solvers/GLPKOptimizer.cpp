@@ -3,6 +3,7 @@
 //
 #include "optimizers/solvers/GLPKOptimizer.h"
 #include "optimizers/solvers/GLPK.h"
+#include "errors/Exception.h"
 
 Backend *GLPKOptimizer::operator()(const AbstractModel &t_model) const {
 #ifdef IDOL_USE_GLPK

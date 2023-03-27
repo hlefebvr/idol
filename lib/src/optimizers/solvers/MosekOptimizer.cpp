@@ -3,6 +3,7 @@
 //
 #include "optimizers/solvers/MosekOptimizer.h"
 #include "optimizers/solvers/Mosek.h"
+#include "errors/Exception.h"
 
 Backend *MosekOptimizer::operator()(const AbstractModel &t_model) const {
 #ifdef IDOL_USE_MOSEK
