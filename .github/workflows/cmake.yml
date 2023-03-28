@@ -42,7 +42,7 @@ jobs:
       run: ./tests
       
     - name: Build coverage report
-      run: lcov --directory . --capture --output-file ${DESTINATION_FOLDER}/coverage.info
+      run: lcov --directory . --capture --output-file coverage.info
       
       
     - name: Upload coverage reports to Codecov
