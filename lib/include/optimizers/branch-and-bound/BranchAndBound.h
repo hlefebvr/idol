@@ -231,6 +231,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     explore(root_node, active_nodes, 0);
 
+    if (active_nodes.empty()) {
+        set_best_bound(best_obj());
+    }
+
     m_node_updator->clear_local_updates();
 
     if (!m_incumbent) {
@@ -265,10 +269,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
         analyze(t_node, &explore_children_flag, &reoptimize_flag);
 
     } while (reoptimize_flag);
-
-    if (t_step == 0) {
-        update_lower_bound(t_active_nodes);
-    }
 
     if (is_terminated() || gap_is_closed()) { return; }
 
@@ -329,6 +329,14 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
+
+    if (best_bound() > best_obj()) {
+        set_status(Fail);
+        set_reason(NotSpecified);
+        terminate();
+        delete t_node;
+        return;
+    }
 
     //if (t_node->id() % get(Param::BranchAndBound::LogFrequency) == 0) {
     if (true) {
@@ -434,10 +442,9 @@ void Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(BranchAndBound::Tre
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBound::SetOfActiveNodes &t_active_nodes) {
-    if (t_active_nodes.empty()) {
-        set_best_bound(best_obj());
-        return;
-    }
+
+    if (t_active_nodes.empty()) { return; }
+
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
     const double lower_bound = lowest_node.objective_value();
     if (lower_bound > best_bound()) {

@@ -70,6 +70,7 @@ int main(int t_argc, char** t_argv) {
 
             for (double smoothing : { 0., .3, .5 }) {
 
+                /*
                 model.use(BranchAndBoundOptimizer(
 
                             DantzigWolfeOptimizer(
@@ -90,6 +91,7 @@ int main(int t_argc, char** t_argv) {
 
                         ).with_log_level(Info, Blue)
                 );
+                 */
 
                 /*
                 model.use(BranchAndBoundOptimizer<NodeInfo>(
@@ -133,7 +135,7 @@ int main(int t_argc, char** t_argv) {
 
                 const double obj_val = model.get(Attr::Solution::ObjVal);
 
-                throw 10;
+                //throw 10;
 
             }
 
