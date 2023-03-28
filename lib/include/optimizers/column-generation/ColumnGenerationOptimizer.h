@@ -13,7 +13,7 @@ class ColumnGenerationOptimizer : public OptimizerFactory {
 public:
     ColumnGenerationOptimizer(const OptimizerFactory& t_master_optimizer, unsigned int t_n_subproblems);
 
-    Backend *operator()(const Model &t_model) const override;
+    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] ColumnGenerationOptimizer *clone() const override;
 

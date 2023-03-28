@@ -5,9 +5,9 @@
 #ifndef IDOL_BACKENDNOTAVAILABLE_H
 #define IDOL_BACKENDNOTAVAILABLE_H
 
-#include "optimizers/Backend.h"
+#include "optimizers/Optimizer.h"
 
-class BackendNotAvailable : public Backend {
+class BackendNotAvailable : public Optimizer {
 protected:
     void add(const Var &t_var) override {}
     void add(const Ctr &t_ctr) override {}

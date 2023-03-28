@@ -5,19 +5,19 @@
 #include "modeling/objects/Versions.h"
 #include "modeling/expressions/operations/operators.h"
 
-Backends::DantzigWolfe::DantzigWolfe(const Model& t_original_formulation,
-                                     const Annotation<Ctr, unsigned int>& t_constraint_flag,
-                                     const Annotation<Var, unsigned int>& t_variable_flag,
-                                     Model *t_master_problem,
-                                     const std::vector<Model *> &t_subproblems,
-                                     std::vector<Column> t_generation_patterns)
-     : Backends::ColumnGeneration(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
+Optimizers::DantzigWolfe::DantzigWolfe(const Model& t_original_formulation,
+                                       const Annotation<Ctr, unsigned int>& t_constraint_flag,
+                                       const Annotation<Var, unsigned int>& t_variable_flag,
+                                       Model *t_master_problem,
+                                       const std::vector<Model *> &t_subproblems,
+                                       std::vector<Column> t_generation_patterns)
+     : Optimizers::ColumnGeneration(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
        m_variable_flag(t_variable_flag),
        m_constraint_flag(t_constraint_flag) {
 
 }
 
-double Backends::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
@@ -32,7 +32,7 @@ double Backends::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &t_
     return ColumnGeneration::get(t_attr, t_var);
 }
 
-void Backends::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+void Optimizers::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
@@ -57,7 +57,7 @@ void Backends::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_va
 }
 
 
-double Backends::DantzigWolfe::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
+double Optimizers::DantzigWolfe::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
 
     double result = 0;
     for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
@@ -70,7 +70,7 @@ double Backends::DantzigWolfe::get_subproblem_primal_value(const Var &t_var, uns
     return result;
 }
 
-void Backends::DantzigWolfe::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfe::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -88,7 +88,7 @@ void Backends::DantzigWolfe::set_subproblem_lower_bound(const Var &t_var, unsign
 
 }
 
-void Backends::DantzigWolfe::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfe::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -106,7 +106,7 @@ void Backends::DantzigWolfe::set_subproblem_upper_bound(const Var &t_var, unsign
 
 }
 
-void Backends::DantzigWolfe::apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfe::apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -147,7 +147,7 @@ void Backends::DantzigWolfe::apply_subproblem_bound_on_master(const Req<double, 
 
 }
 
-LinExpr<Var> Backends::DantzigWolfe::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
+LinExpr<Var> Optimizers::DantzigWolfe::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
 
     LinExpr<Var> result;
 
@@ -158,7 +158,7 @@ LinExpr<Var> Backends::DantzigWolfe::expand_subproblem_variable(const Var &t_var
     return result;
 }
 
-void Backends::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
+void Optimizers::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
 
     if (t_attr == Attr::Obj::Expr) {
 

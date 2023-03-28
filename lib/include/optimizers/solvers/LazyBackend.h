@@ -5,7 +5,7 @@
 #ifndef IDOL_LAZYBACKEND_H
 #define IDOL_LAZYBACKEND_H
 
-#include "optimizers/Backend.h"
+#include "optimizers/Optimizer.h"
 
 #include "modeling/models/Model.h"
 
@@ -42,7 +42,7 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-class LazyBackend : public Backend {
+class LazyBackend : public Optimizer {
     std::vector<Lazy<Var, VarImplT>> m_variables;
     std::list<unsigned int> m_variables_to_update;
 
@@ -112,8 +112,8 @@ protected:
     [[nodiscard]] bool is_rhs_to_be_updated() const { return m_is_rhs_to_be_updated; }
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
 
-    using Backend::set;
-    using Backend::get;
+    using Optimizer::set;
+    using Optimizer::get;
 
     // Model
     void set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) override;
@@ -139,7 +139,7 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-LazyBackend<VarImplT, CtrImplT>::LazyBackend(const Model &t_parent) : Backend(t_parent) {
+LazyBackend<VarImplT, CtrImplT>::LazyBackend(const Model &t_parent) : Optimizer(t_parent) {
 
 }
 

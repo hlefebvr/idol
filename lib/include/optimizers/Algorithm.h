@@ -5,11 +5,11 @@
 #ifndef IDOL_ALGORITHM_H
 #define IDOL_ALGORITHM_H
 
-#include "Backend.h"
+#include "Optimizer.h"
 #include "optimizers/parameters/Parameters_Algorithm.h"
 #include "modeling/solutions/Solution.h"
 
-class Algorithm : public Backend {
+class Algorithm : public Optimizer {
     bool m_is_terminated = false;
 
     int m_status = Unknown;
@@ -40,8 +40,8 @@ protected:
     [[nodiscard]] double best_bound() const { return m_best_bound; }
     [[nodiscard]] double best_obj() const { return m_best_obj; }
 
-    using Backend::set;
-    using Backend::get;
+    using Optimizer::set;
+    using Optimizer::get;
 
     [[nodiscard]] int get(const Req<int, void>& t_attr) const override;
     [[nodiscard]] double get(const Req<double, void>& t_attr) const override;

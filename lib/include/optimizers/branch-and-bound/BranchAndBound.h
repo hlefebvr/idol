@@ -18,12 +18,12 @@
 #include <memory>
 #include <cassert>
 
-namespace Backends {
+namespace Optimizers {
     template<class NodeInfoT> class BranchAndBound;
 }
 
 template<class NodeInfoT>
-class Backends::BranchAndBound : public Algorithm {
+class Optimizers::BranchAndBound : public Algorithm {
     using TreeNode = Node<NodeInfoT>;
     using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
 
@@ -88,12 +88,12 @@ public:
 };
 
 template<class NodeInfoT>
-Backends::BranchAndBound<NodeInfoT>::~BranchAndBound() {
+Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
     delete m_incumbent;
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
 
     m_relaxation->set(t_param, t_value);
 
@@ -104,7 +104,7 @@ void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<double> &t_param, double t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<double> &t_param, double t_value) {
 
     m_relaxation->set(t_param, t_value);
 
@@ -115,7 +115,7 @@ void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<double> &t_param, 
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<bool> &t_param, bool t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<bool> &t_param, bool t_value) {
 
     m_relaxation->set(t_param, t_value);
 
@@ -126,32 +126,32 @@ void Backends::BranchAndBound<NodeInfoT>::set(const Parameter<bool> &t_param, bo
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
     m_relaxation->set(t_attr, std::move(t_value));
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
     m_relaxation->set(t_attr, t_ctr, std::move(t_value));
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
     m_relaxation->set(t_attr, t_var, t_value);
 }
 
 template<class NodeInfoT>
-const Expr<Var, Var> &Backends::BranchAndBound<NodeInfoT>::get(const Req<Expr<Var, Var>, void> &t_attr) const {
+const Expr<Var, Var> &Optimizers::BranchAndBound<NodeInfoT>::get(const Req<Expr<Var, Var>, void> &t_attr) const {
     return m_relaxation->get(t_attr);
 }
 
 template<class NodeInfoT>
-double Backends::BranchAndBound<NodeInfoT>::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+double Optimizers::BranchAndBound<NodeInfoT>::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
     return m_relaxation->get(t_attr, t_ctr);
 }
 
 template<class NodeInfoT>
-double Backends::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Solution::Primal) {
         if (m_incumbent) {
@@ -165,10 +165,10 @@ double Backends::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, 
 }
 
 template<class NodeInfoT>
-Backends::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
-                                          const OptimizerFactory& t_node_optimizer,
-                                          const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
-                                          const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory)
+Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
+                                                      const OptimizerFactory& t_node_optimizer,
+                                                      const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
+                                                      const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(t_model)),
@@ -179,7 +179,7 @@ Backends::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::create_relaxations() {
+void Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 
     const auto &original_model = parent();
 
@@ -191,7 +191,7 @@ void Backends::BranchAndBound<NodeInfoT>::create_relaxations() {
 }
 
 template<class NodeInfoT>
-Node<NodeInfoT>* Backends::BranchAndBound<NodeInfoT>::create_root_node() {
+Node<NodeInfoT>* Optimizers::BranchAndBound<NodeInfoT>::create_root_node() {
 
     auto* root_node = Node<NodeInfoT>::create_root_node();
     assert(root_node->id() == 0);
@@ -201,7 +201,7 @@ Node<NodeInfoT>* Backends::BranchAndBound<NodeInfoT>::create_root_node() {
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::hook_before_optimize() {
+void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 
     // Reset solution
@@ -214,7 +214,7 @@ void Backends::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::hook_optimize() {
+void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     auto* root_node = create_root_node();
 
@@ -242,9 +242,9 @@ void Backends::BranchAndBound<NodeInfoT>::hook_optimize() {
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
-                                      SetOfActiveNodes & t_active_nodes,
-                                      unsigned int t_step) {
+void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
+                                                    SetOfActiveNodes & t_active_nodes,
+                                                    unsigned int t_step) {
 
     bool reoptimize_flag = false;
     bool explore_children_flag = false;
@@ -299,7 +299,7 @@ void Backends::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
+void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
     m_node_updator->apply_local_updates(t_node->info());
 
@@ -313,7 +313,7 @@ void Backends::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
+void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
 
     //if (t_node->id() % get(Param::BranchAndBound::LogFrequency) == 0) {
     if (true) {
@@ -382,7 +382,7 @@ void Backends::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_no
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const BranchAndBound::TreeNode &t_node) {
+void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const BranchAndBound::TreeNode &t_node) {
 
     const double objective_value = t_node.objective_value();
     const unsigned int id = t_node.id();
@@ -411,7 +411,7 @@ void Backends::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const B
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::set_as_incumbent(BranchAndBound::TreeNode *t_node) {
+void Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(BranchAndBound::TreeNode *t_node) {
     delete m_incumbent;
     m_incumbent = t_node;
     set_best_obj(t_node->objective_value());
@@ -419,7 +419,7 @@ void Backends::BranchAndBound<NodeInfoT>::set_as_incumbent(BranchAndBound::TreeN
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBound::SetOfActiveNodes &t_active_nodes) {
+void Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBound::SetOfActiveNodes &t_active_nodes) {
     if (t_active_nodes.empty()) {
         set_best_bound(best_obj());
         return;
@@ -434,7 +434,7 @@ void Backends::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBoun
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound::SetOfActiveNodes& t_active_nodes) {
+void Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound::SetOfActiveNodes& t_active_nodes) {
 
     const double upper_bound = best_obj();
 
@@ -462,7 +462,7 @@ void Backends::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound::S
 
 template<class NodeInfoT>
 Node<NodeInfoT>*
-Backends::BranchAndBound<NodeInfoT>::select_node_for_branching(BranchAndBound::SetOfActiveNodes &t_active_nodes) {
+Optimizers::BranchAndBound<NodeInfoT>::select_node_for_branching(BranchAndBound::SetOfActiveNodes &t_active_nodes) {
     auto iterator = m_node_selection_rule->operator()(t_active_nodes);
     auto* result = iterator.operator->();
     t_active_nodes.erase(iterator);
@@ -470,12 +470,12 @@ Backends::BranchAndBound<NodeInfoT>::select_node_for_branching(BranchAndBound::S
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::write(const std::string &t_name) {
+void Optimizers::BranchAndBound<NodeInfoT>::write(const std::string &t_name) {
     m_relaxation->write(t_name);
 }
 
 template<class NodeInfoT>
-std::vector<Node<NodeInfoT>*> Backends::BranchAndBound<NodeInfoT>::create_child_nodes(const BranchAndBound::TreeNode *t_node) {
+std::vector<Node<NodeInfoT>*> Optimizers::BranchAndBound<NodeInfoT>::create_child_nodes(const BranchAndBound::TreeNode *t_node) {
     auto children_info = m_branching_rule->create_child_nodes(*t_node);
 
     std::vector<Node<NodeInfoT>*> result;
@@ -491,7 +491,7 @@ std::vector<Node<NodeInfoT>*> Backends::BranchAndBound<NodeInfoT>::create_child_
 }
 
 template<class NodeInfoT>
-bool Backends::BranchAndBound<NodeInfoT>::gap_is_closed() const {
+bool Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
         || parent().remaining_time() == 0
         || get(Attr::Solution::RelGap) <= get(Param::Algorithm::MIPRelGap)
@@ -499,35 +499,35 @@ bool Backends::BranchAndBound<NodeInfoT>::gap_is_closed() const {
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::backtrack(BranchAndBound::SetOfActiveNodes &t_actives_nodes,
-                                            SetOfActiveNodes &t_sub_active_nodes) {
+void Optimizers::BranchAndBound<NodeInfoT>::backtrack(BranchAndBound::SetOfActiveNodes &t_actives_nodes,
+                                                      SetOfActiveNodes &t_sub_active_nodes) {
 
     t_actives_nodes.merge(std::move(t_sub_active_nodes));
 
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::update() {
+void Optimizers::BranchAndBound<NodeInfoT>::update() {
     m_relaxation->update();
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::remove(const Ctr &t_ctr) {
+void Optimizers::BranchAndBound<NodeInfoT>::remove(const Ctr &t_ctr) {
     m_relaxation->remove(t_ctr);
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::remove(const Var &t_var) {
+void Optimizers::BranchAndBound<NodeInfoT>::remove(const Var &t_var) {
     m_relaxation->remove(t_var);
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::add(const Ctr &t_ctr) {
+void Optimizers::BranchAndBound<NodeInfoT>::add(const Ctr &t_ctr) {
     m_relaxation->add(t_ctr);
 }
 
 template<class NodeInfoT>
-void Backends::BranchAndBound<NodeInfoT>::add(const Var &t_var) {
+void Optimizers::BranchAndBound<NodeInfoT>::add(const Var &t_var) {
     m_relaxation->add(t_var);
 }
 

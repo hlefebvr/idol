@@ -34,8 +34,8 @@ void Model::add(const Var &t_var, TempVar &&t_temp_var) {
     );
     m_variables.emplace_back(t_var);
 
-    if (has_backend()) {
-        backend().add(t_var);
+    if (has_optimizer()) {
+        optimizer().add(t_var);
     }
 
     add_column_to_rows(t_var);
@@ -53,8 +53,8 @@ void Model::add(const Var &t_var) {
 
 void Model::remove(const Var &t_var) {
 
-    if (has_backend()) {
-        backend().remove(t_var);
+    if (has_optimizer()) {
+        optimizer().remove(t_var);
     }
 
     remove_column_from_rows(t_var);
@@ -67,8 +67,8 @@ void Model::remove(const Var &t_var) {
 
 void Model::remove(const Ctr &t_ctr) {
 
-    if (has_backend()) {
-        backend().remove(t_ctr);
+    if (has_optimizer()) {
+        optimizer().remove(t_ctr);
     }
 
     remove_row_from_columns(t_ctr);
@@ -83,8 +83,8 @@ void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
     m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
     m_constraints.emplace_back(t_ctr);
 
-    if (has_backend()) {
-        backend().add(t_ctr);
+    if (has_optimizer()) {
+        optimizer().add(t_ctr);
     }
 
     add_row_to_columns(t_ctr);
@@ -231,13 +231,13 @@ void Model::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value
 
     if (t_attr == Attr::Var::Lb) {
         m_env.version(*this, t_var).set_lb(t_value);
-        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
+        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
         return;
     }
 
     if (t_attr == Attr::Var::Ub) {
         m_env.version(*this, t_var).set_ub(t_value);
-        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
+        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
         return;
     }
 
@@ -248,9 +248,9 @@ void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const V
 
     if (t_attr == Attr::Matrix::Coeff) {
 
-        if (has_backend()) {
-            backend().update();
-            backend().set(t_attr, t_ctr, t_var, t_value);
+        if (has_optimizer()) {
+            optimizer().update();
+            optimizer().set(t_attr, t_ctr, t_var, t_value);
         }
 
         update_matrix_coefficient(t_ctr, t_var, std::move(t_value));
@@ -264,9 +264,9 @@ void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const V
 void Model::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
 
     if (t_attr == Attr::Ctr::Rhs) {
-        if (has_backend()) {
+        if (has_optimizer()) {
             add_to_rhs(t_ctr, Constant(t_value));
-            backend().set(t_attr, t_ctr, std::move(t_value));
+            optimizer().set(t_attr, t_ctr, std::move(t_value));
         } else {
             add_to_rhs(t_ctr, std::move(t_value));
         }
@@ -280,9 +280,9 @@ void Model::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_valu
 
     if (t_attr == Attr::Obj::Expr) {
 
-        if (has_backend()) {
+        if (has_optimizer()) {
             replace_objective(Expr<Var, Var>(t_value));
-            backend().set(t_attr, std::move(t_value));
+            optimizer().set(t_attr, std::move(t_value));
         } else {
             replace_objective(std::move(t_value));
         }
@@ -297,9 +297,9 @@ void Model::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
 
-        if (has_backend()) {
+        if (has_optimizer()) {
             replace_right_handside(LinExpr<Ctr>(t_value));
-            backend().set(t_attr, std::move(t_value));
+            optimizer().set(t_attr, std::move(t_value));
         } else {
             replace_right_handside(std::move(t_value));
         }
@@ -314,9 +314,9 @@ void Model::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
 
     if (t_attr == Attr::Obj::Const) {
 
-        if (has_backend()) {
+        if (has_optimizer()) {
             m_objective.constant() = Constant(t_value);
-            backend().set(t_attr, std::move(t_value));
+            optimizer().set(t_attr, std::move(t_value));
         } else {
             m_objective.constant() = std::move(t_value);
         }
@@ -331,9 +331,9 @@ void Model::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t
 
     if (t_attr == Attr::Var::Obj) {
 
-        if (has_backend()) {
+        if (has_optimizer()) {
             add_to_obj(t_var, Constant(t_value));
-            backend().set(t_attr, t_var, std::move(t_value));
+            optimizer().set(t_attr, t_var, std::move(t_value));
         } else {
             add_to_obj(t_var, std::move(t_value));
         }
@@ -349,7 +349,7 @@ void Model::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
     if (t_attr == Attr::Var::Type) {
 
         m_env.version(*this, t_var).set_type(t_value);
-        if (has_backend()) { backend().set(t_attr, t_var, t_value); }
+        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
         return;
     }
 
@@ -363,7 +363,7 @@ void Model::set(const Req<int, void> &t_attr, int t_value) {
             throw Exception("Unsupported objective sense.");
         }
         m_sense = t_value;
-        if (has_backend()) { backend().set(t_attr, t_value); }
+        if (has_optimizer()) { optimizer().set(t_attr, t_value); }
         return;
     }
 
@@ -374,7 +374,7 @@ void Model::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
 
     if (t_attr == Attr::Ctr::Type) {
         m_env.version(*this, t_ctr).set_type(t_value);
-        if (has_backend()) { backend().set(t_attr, t_ctr, t_value); }
+        if (has_optimizer()) { optimizer().set(t_attr, t_ctr, t_value); }
         return;
     }
 
@@ -388,7 +388,7 @@ void Model::set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
         remove_row_from_columns(t_ctr);
         m_env.version(*this, t_ctr).row() = std::move(t_value);
         add_row_to_columns(t_ctr);
-        if (has_backend()) {
+        if (has_optimizer()) {
             throw Exception("Updating row is not implemented.");
         }
 
@@ -404,7 +404,7 @@ void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_val
         remove_column_from_rows(t_var);
         m_env.version(*this, t_var).column() = std::move(t_value);
         add_column_to_rows(t_var);
-        if (has_backend()) {
+        if (has_optimizer()) {
             throw Exception("Updating column is not implemented.");
         }
 
@@ -424,15 +424,15 @@ const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) c
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
-    return backend();
+    return optimizer();
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
-    return backend();
+    return optimizer();
 }
 
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
-    return backend();
+    return optimizer();
 }
 
 bool Model::has(const Var &t_var) const {
@@ -465,50 +465,50 @@ Model* Model::clone() const {
     result->set(Attr::Obj::Sense, get(Attr::Obj::Sense));
     result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));
 
-    if (m_optimizer) {
-        result->use(*m_optimizer);
+    if (m_optimizer_factory) {
+        result->use(*m_optimizer_factory);
     }
 
     return result;
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<double> &t_param) {
-    return backend();
+    return optimizer();
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<int> &t_param) {
-    return backend();
+    return optimizer();
 }
 
 AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
-    return backend();
+    return optimizer();
 }
 
 void Model::optimize() {
-    throw_if_no_backend();
+    throw_if_no_optimizer();
     m_timer.start();
-    backend().optimize();
+    optimizer().optimize();
     m_timer.stop();
 }
 
 void Model::write(const std::string& t_name) {
-    throw_if_no_backend();
-    m_backend->write(t_name);
+    throw_if_no_optimizer();
+    m_optimizer->write(t_name);
 }
 
 void Model::update() {
-    throw_if_no_backend();
-    backend().update();
+    throw_if_no_optimizer();
+    optimizer().update();
 }
 
 void Model::use(const OptimizerFactory &t_optimizer_factory) {
-    m_backend.reset(t_optimizer_factory(*this));
-    m_backend->build();
-    m_optimizer.reset(t_optimizer_factory.clone());
+    m_optimizer.reset(t_optimizer_factory(*this));
+    m_optimizer->build();
+    m_optimizer_factory.reset(t_optimizer_factory.clone());
 }
 
 void Model::unuse() {
-    m_backend.reset();
+    m_optimizer.reset();
     m_optimizer.reset();
 }
 
@@ -516,6 +516,6 @@ double Model::remaining_time() const {
     return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
 }
 
-bool Model::has_backend() const {
-    return bool(m_backend);
+bool Model::has_optimizer() const {
+    return bool(m_optimizer);
 }

@@ -10,12 +10,12 @@
 #include "optimizers/column-generation/Parameters_ColumnGeneration.h"
 #include "containers/GeneratorPool.h"
 
-namespace Backends {
+namespace Optimizers {
     class ColumnGeneration;
     class DantzigWolfe;
 }
 
-class Backends::ColumnGeneration : public Algorithm {
+class Optimizers::ColumnGeneration : public Algorithm {
 public:
     class Subproblem;
 
@@ -85,9 +85,9 @@ protected:
     Param::ColumnGeneration::values<double> m_double_parameters;
 };
 
-class Backends::ColumnGeneration::Subproblem {
-    friend class ::Backends::ColumnGeneration;
-    friend class ::Backends::DantzigWolfe;
+class Optimizers::ColumnGeneration::Subproblem {
+    friend class ::Optimizers::ColumnGeneration;
+    friend class ::Optimizers::DantzigWolfe;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
     using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;

@@ -5,9 +5,9 @@
 #include "optimizers/solvers/GLPK.h"
 #include "errors/Exception.h"
 
-Backend *GLPKOptimizer::operator()(const Model &t_model) const {
+Optimizer *GLPKOptimizer::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GLPK
-    return new Backends::GLPK(t_model, m_continuous_relaxation);
+    return new Optimizers::GLPK(t_model, m_continuous_relaxation);
 #else
     throw Exception("Idol was not linked with GLPK.");
 #endif

@@ -24,7 +24,7 @@ DantzigWolfeOptimizer::DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src)
 
 }
 
-Backend *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation) const {
+Optimizer *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation) const {
 
     auto& env = t_original_formulation.env();
 
@@ -48,12 +48,12 @@ Backend *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation) 
         subproblems[i]->use(*m_subproblem_optimizer);
     }
 
-    return new Backends::DantzigWolfe(t_original_formulation,
-                                      m_decomposition,
-                                      variable_flag,
-                                      master,
-                                      subproblems,
-                                      generation_patterns);
+    return new Optimizers::DantzigWolfe(t_original_formulation,
+                                        m_decomposition,
+                                        variable_flag,
+                                        master,
+                                        subproblems,
+                                        generation_patterns);
 }
 
 DantzigWolfeOptimizer *DantzigWolfeOptimizer::clone() const {

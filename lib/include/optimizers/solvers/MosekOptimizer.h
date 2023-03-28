@@ -19,7 +19,7 @@ public:
     MosekOptimizer& operator=(const MosekOptimizer&) = delete;
     MosekOptimizer& operator=(MosekOptimizer&&) noexcept = delete;
 
-    Backend *operator()(const Model &t_model) const override;
+    Optimizer *operator()(const Model &t_model) const override;
 
     static MosekOptimizer ContinuousRelaxation();
 

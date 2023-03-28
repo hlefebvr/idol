@@ -6,7 +6,7 @@
 #include "optimizers/parameters/Parameters_Algorithm.h"
 #include <Eigen/Sparse>
 
-Backends::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
+Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
     : LazyBackend<MosekVar, MosekCtr>(t_model),
       m_model(new mosek::fusion::Model()),
       m_continuous_relaxation(t_continuous_relaxation) {
@@ -15,11 +15,11 @@ Backends::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
-Backends::Mosek::~Mosek() {
+Optimizers::Mosek::~Mosek() {
     m_model->dispose();
 }
 
-void Backends::Mosek::hook_build() {
+void Optimizers::Mosek::hook_build() {
 
     const auto& objective = parent().get(Attr::Obj::Expr);
 
@@ -32,7 +32,7 @@ void Backends::Mosek::hook_build() {
     set_rhs_as_updated();
 }
 
-void Backends::Mosek::hook_optimize() {
+void Optimizers::Mosek::hook_optimize() {
 
     m_model->solve();
 
@@ -103,11 +103,11 @@ void Backends::Mosek::hook_optimize() {
     }
 }
 
-void Backends::Mosek::hook_write(const std::string &t_name) {
+void Optimizers::Mosek::hook_write(const std::string &t_name) {
     m_model->writeTask(t_name);
 }
 
-MosekVar Backends::Mosek::hook_add(const Var &t_var, bool t_add_column) {
+MosekVar Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
     MosekVar result;
 
@@ -135,7 +135,7 @@ MosekVar Backends::Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
 }
 
-mosek::fusion::Expression::t Backends::Mosek::to_mosek_expression(const LinExpr<Var> &t_expr) const {
+mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const LinExpr<Var> &t_expr) const {
 
     auto result = mosek::fusion::Expr::constTerm(0);
 
@@ -152,7 +152,7 @@ mosek::fusion::Expression::t Backends::Mosek::to_mosek_expression(const LinExpr<
     return result;
 }
 
-mosek::fusion::Expression::t Backends::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
+mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
     assert(t_expr.quadratic().empty());
     return mosek::fusion::Expr::add(
                 as_numeric(t_expr.constant()),
@@ -160,7 +160,7 @@ mosek::fusion::Expression::t Backends::Mosek::to_mosek_expression(const Expr<Var
             );
 }
 
-MosekCtr Backends::Mosek::hook_add(const Ctr &t_ctr) {
+MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     MosekCtr result;
 
@@ -239,19 +239,19 @@ MosekCtr Backends::Mosek::hook_add(const Ctr &t_ctr) {
     return result;
 }
 
-void Backends::Mosek::hook_update_objective_sense() {
+void Optimizers::Mosek::hook_update_objective_sense() {
     std::cout << "skips updating sense" << std::endl;
 }
 
-void Backends::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void Optimizers::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     throw Exception("Not implemented hook_update_matrix");
 }
 
-void Backends::Mosek::hook_update() {
+void Optimizers::Mosek::hook_update() {
 
 }
 
-void Backends::Mosek::hook_update(const Var &t_var) {
+void Optimizers::Mosek::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
@@ -264,7 +264,7 @@ void Backends::Mosek::hook_update(const Var &t_var) {
 
 }
 
-void Backends::Mosek::hook_update(const Ctr &t_ctr) {
+void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
     const auto& row = parent().get(Attr::Ctr::Row, t_ctr);
 
@@ -273,7 +273,7 @@ void Backends::Mosek::hook_update(const Ctr &t_ctr) {
 
 }
 
-void Backends::Mosek::hook_update_objective() {
+void Optimizers::Mosek::hook_update_objective() {
 
     const auto& model = parent();
     const auto& objective = model.get(Attr::Obj::Expr);
@@ -299,11 +299,11 @@ void Backends::Mosek::hook_update_objective() {
 
 }
 
-void Backends::Mosek::hook_update_rhs() {
+void Optimizers::Mosek::hook_update_rhs() {
     throw Exception("Not implemented hook_update_rhs");
 }
 
-void Backends::Mosek::hook_remove(const Var &t_var) {
+void Optimizers::Mosek::hook_remove(const Var &t_var) {
 
     auto& impl = lazy(t_var).impl();
 
@@ -322,12 +322,12 @@ void Backends::Mosek::hook_remove(const Var &t_var) {
     }
 }
 
-void Backends::Mosek::hook_remove(const Ctr &t_ctr) {
+void Optimizers::Mosek::hook_remove(const Ctr &t_ctr) {
     auto& impl = lazy(t_ctr).impl();
     impl.constraint->remove();
 }
 
-void Backends::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
+void Optimizers::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
 
     // Set obj
     m_model->updateObjective(mosek::fusion::Expr::mul(t_obj, t_mosek_var.variable), t_mosek_var.variable);
@@ -344,7 +344,7 @@ void Backends::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_l
     set_var_ub(t_mosek_var, t_ub);
 }
 
-void Backends::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
+void Optimizers::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
 
     const bool has_lb = !is_neg_inf(t_bound);
 
@@ -365,7 +365,7 @@ void Backends::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
 
 }
 
-void Backends::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
+void Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 
     const bool has_ub = !is_pos_inf(t_bound);
 
@@ -386,7 +386,7 @@ void Backends::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 
 }
 
-int Backends::Mosek::get(const Req<int, void> &t_attr) const {
+int Optimizers::Mosek::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::Status) {
         return m_solution_status;
@@ -399,7 +399,7 @@ int Backends::Mosek::get(const Req<int, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double Backends::Mosek::get(const Req<double, void> &t_attr) const {
+double Optimizers::Mosek::get(const Req<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
         if (m_solution_status == Infeasible) { return Inf; }
@@ -410,7 +410,7 @@ double Backends::Mosek::get(const Req<double, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double Backends::Mosek::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::Mosek::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Solution::Primal) {
         return lazy(t_var).impl().variable->level()->operator[](0);
@@ -426,7 +426,7 @@ double Backends::Mosek::get(const Req<double, Var> &t_attr, const Var &t_var) co
     return Base::get(t_attr, t_var);
 }
 
-double Backends::Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+double Optimizers::Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Solution::Dual) {
         return lazy(t_ctr).impl().constraint->dual()->operator[](0);
@@ -442,7 +442,7 @@ double Backends::Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) co
     return Base::get(t_attr, t_ctr);
 }
 
-double Backends::Mosek::get(const Parameter<double> &t_param) const {
+double Optimizers::Mosek::get(const Parameter<double> &t_param) const {
 
     if (t_param == Param::Algorithm::BestBoundStop) {
         return m_model->getSolverDoubleInfo("lowerObjCut");
@@ -459,7 +459,7 @@ double Backends::Mosek::get(const Parameter<double> &t_param) const {
     return Base::get(t_param);
 }
 
-void Backends::Mosek::set(const Parameter<double> &t_param, double t_value) {
+void Optimizers::Mosek::set(const Parameter<double> &t_param, double t_value) {
 
     if (t_param == Param::Algorithm::BestBoundStop) {
         m_model->setSolverParam("lowerObjCut", t_value);
@@ -479,7 +479,7 @@ void Backends::Mosek::set(const Parameter<double> &t_param, double t_value) {
     Base::set(t_param, t_value);
 }
 
-void Backends::Mosek::set(const Parameter<bool> &t_param, bool t_value) {
+void Optimizers::Mosek::set(const Parameter<bool> &t_param, bool t_value) {
 
     if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
         m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
@@ -489,7 +489,7 @@ void Backends::Mosek::set(const Parameter<bool> &t_param, bool t_value) {
     Base::set(t_param, t_value);
 }
 
-bool Backends::Mosek::get(const Parameter<bool> &t_param) const {
+bool Optimizers::Mosek::get(const Parameter<bool> &t_param) const {
 
     if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
         return m_model->getAcceptedSolutionStatus() == mosek::fusion::AccSolutionStatus::Anything;

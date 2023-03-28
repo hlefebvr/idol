@@ -17,7 +17,7 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
 
         model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
+        const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
         WHEN("A <=-constraint (rhs=1) is added") {
 

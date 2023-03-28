@@ -12,11 +12,11 @@
 #include "LazyBackend.h"
 #include <glpk.h>
 
-namespace Backends {
+namespace Optimizers {
     class GLPK;
 }
 
-class Backends::GLPK  : public LazyBackend<int, int> {
+class Optimizers::GLPK  : public LazyBackend<int, int> {
 
     bool m_continuous_relaxation;
 

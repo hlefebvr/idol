@@ -7,11 +7,11 @@
 
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-namespace Backends {
+namespace Optimizers {
     class DantzigWolfe;
 }
 
-class Backends::DantzigWolfe : public Backends::ColumnGeneration {
+class Optimizers::DantzigWolfe : public Optimizers::ColumnGeneration {
     Annotation<Ctr, unsigned int> m_constraint_flag;
     Annotation<Var, unsigned int> m_variable_flag;
 

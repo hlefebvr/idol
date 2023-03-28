@@ -17,7 +17,7 @@ SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
 
         model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
+        const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
         WHEN("A continuous variable (lb=-15,ub=15) is added to the model") {
 
@@ -130,7 +130,7 @@ SCENARIO("Gurobi: Create a variable with backend", "[unit][backend][Gurobi]") {
 
         model.use(GurobiOptimizer());
 
-        const auto& backend = ((const Model&) model).backend().as<Backends::Gurobi>();
+        const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
         auto c = Ctr::array(env, Dim<1>(3), LessOrEqual, 0.);
         model.add_array<Ctr, 1>(c);

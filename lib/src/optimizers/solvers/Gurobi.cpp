@@ -7,16 +7,16 @@
 #include "optimizers/parameters/Logs.h"
 #include "optimizers/parameters/Parameters_Algorithm.h"
 
-std::unique_ptr<GRBEnv> Backends::Gurobi::s_global_env;
+std::unique_ptr<GRBEnv> Optimizers::Gurobi::s_global_env;
 
-GRBEnv &Backends::Gurobi::get_global_env() {
+GRBEnv &Optimizers::Gurobi::get_global_env() {
     if (!s_global_env) {
         s_global_env = std::make_unique<GRBEnv>();
     }
     return *s_global_env;
 }
 
-char Backends::Gurobi::gurobi_var_type(int t_type) {
+char Optimizers::Gurobi::gurobi_var_type(int t_type) {
 
     if (m_continuous_relaxation) {
         return GRB_CONTINUOUS;
@@ -31,7 +31,7 @@ char Backends::Gurobi::gurobi_var_type(int t_type) {
     throw Exception("Unsupported variable type: " + std::to_string(t_type));
 }
 
-char Backends::Gurobi::gurobi_ctr_type(int t_type) {
+char Optimizers::Gurobi::gurobi_ctr_type(int t_type) {
     switch (t_type) {
         case Equal: return GRB_EQUAL;
         case LessOrEqual: return GRB_LESS_EQUAL;
@@ -41,7 +41,7 @@ char Backends::Gurobi::gurobi_ctr_type(int t_type) {
     throw Exception("Unsupported constraint type: " + std::to_string(t_type));
 }
 
-char Backends::Gurobi::gurobi_obj_sense(int t_sense) {
+char Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
     switch (t_sense) {
         case Minimize: return GRB_MINIMIZE;
         case Maximize: return GRB_MAXIMIZE;
@@ -50,7 +50,7 @@ char Backends::Gurobi::gurobi_obj_sense(int t_sense) {
     throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
 }
 
-std::pair<char, char> Backends::Gurobi::gurobi_status(int t_status) const {
+std::pair<char, char> Optimizers::Gurobi::gurobi_status(int t_status) const {
     switch (t_status) {
         case GRB_OPTIMAL: return { Optimal, Proved };
         case GRB_INFEASIBLE: return { Infeasible, Proved };
@@ -65,7 +65,7 @@ std::pair<char, char> Backends::Gurobi::gurobi_status(int t_status) const {
     throw Exception("Unsupported status: " + std::to_string(t_status));
 }
 
-double Backends::Gurobi::gurobi_numeric(double t_value) {
+double Optimizers::Gurobi::gurobi_numeric(double t_value) {
     if (is_pos_inf(t_value)) {
         return GRB_INFINITY;
     }
@@ -75,7 +75,7 @@ double Backends::Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
-Backends::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
+Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
     : LazyBackend(t_model),
     m_continuous_relaxation(t_continuous_relaxation),
       m_env(t_env),
@@ -86,7 +86,7 @@ Backends::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRB
 
 }
 
-void Backends::Gurobi::hook_build() {
+void Optimizers::Gurobi::hook_build() {
 
     const auto& model = parent();
     const auto& objective = model.get(Attr::Obj::Expr);
@@ -100,7 +100,7 @@ void Backends::Gurobi::hook_build() {
 
 }
 
-GRBVar Backends::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
+GRBVar Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
     const auto& model = parent();
     const auto& column = model.get(Attr::Var::Column, t_var);
@@ -133,7 +133,7 @@ GRBVar Backends::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
     return m_model.addVar(lb, ub, objective, type, col, name);
 }
 
-std::variant<GRBConstr, GRBQConstr> Backends::Gurobi::hook_add(const Ctr& t_ctr) {
+std::variant<GRBConstr, GRBQConstr> Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 
     const auto& model = parent();
     const auto& row = model.get(Attr::Ctr::Row, t_ctr);
@@ -163,7 +163,7 @@ std::variant<GRBConstr, GRBQConstr> Backends::Gurobi::hook_add(const Ctr& t_ctr)
     return m_model.addQConstr(expr, type, rhs, name);
 }
 
-void Backends::Gurobi::hook_update(const Var& t_var) {
+void Optimizers::Gurobi::hook_update(const Var& t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
@@ -179,7 +179,7 @@ void Backends::Gurobi::hook_update(const Var& t_var) {
 
 }
 
-void Backends::Gurobi::hook_update(const Ctr& t_ctr) {
+void Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
@@ -199,7 +199,7 @@ void Backends::Gurobi::hook_update(const Ctr& t_ctr) {
 
 }
 
-void Backends::Gurobi::hook_update_objective() {
+void Optimizers::Gurobi::hook_update_objective() {
 
     const auto& model = parent();
     const auto& objective = model.get(Attr::Obj::Expr);
@@ -231,7 +231,7 @@ void Backends::Gurobi::hook_update_objective() {
 
 }
 
-void Backends::Gurobi::hook_update_rhs() {
+void Optimizers::Gurobi::hook_update_rhs() {
 
     const auto& model = parent();
 
@@ -247,14 +247,14 @@ void Backends::Gurobi::hook_update_rhs() {
 
 }
 
-void Backends::Gurobi::hook_remove(const Var& t_var) {
+void Optimizers::Gurobi::hook_remove(const Var& t_var) {
 
     const auto& impl = lazy(t_var).impl();
     m_model.remove(impl);
 
 }
 
-void Backends::Gurobi::hook_remove(const Ctr& t_ctr) {
+void Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
     const auto& impl = lazy(t_ctr).impl();
 
@@ -266,19 +266,19 @@ void Backends::Gurobi::hook_remove(const Ctr& t_ctr) {
 
 }
 
-void Backends::Gurobi::hook_optimize() {
+void Optimizers::Gurobi::hook_optimize() {
     m_model.optimize();
 }
 
-void Backends::Gurobi::hook_write(const std::string &t_name) {
+void Optimizers::Gurobi::hook_write(const std::string &t_name) {
     m_model.write(t_name);
 }
 
-void Backends::Gurobi::hook_update_objective_sense() {
+void Optimizers::Gurobi::hook_update_objective_sense() {
     m_model.set(GRB_IntAttr_ModelSense, gurobi_obj_sense(parent().get(Attr::Obj::Sense)));
 }
 
-void Backends::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
 
     const auto& var_impl = lazy(t_var).impl();
     const auto& ctr_impl = std::get<GRBConstr>(lazy(t_ctr).impl());
@@ -287,11 +287,11 @@ void Backends::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, co
 
 }
 
-void Backends::Gurobi::hook_update() {
+void Optimizers::Gurobi::hook_update() {
     m_model.update();
 }
 
-int Backends::Gurobi::get(const Req<int, void> &t_attr) const {
+int Optimizers::Gurobi::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::Status) {
         return gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
@@ -304,7 +304,7 @@ int Backends::Gurobi::get(const Req<int, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double Backends::Gurobi::get(const Req<double, void> &t_attr) const {
+double Optimizers::Gurobi::get(const Req<double, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::ObjVal) {
         switch (gurobi_status(m_model.get(GRB_IntAttr_Status)).first) {
@@ -317,7 +317,7 @@ double Backends::Gurobi::get(const Req<double, void> &t_attr) const {
     return Base::get(t_attr);
 }
 
-double Backends::Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     if (t_attr == Attr::Solution::Primal) {
         return lazy(t_var).impl().get(GRB_DoubleAttr_X);
@@ -334,7 +334,7 @@ double Backends::Gurobi::get(const Req<double, Var> &t_attr, const Var &t_var) c
     return Base::get(t_attr, t_var);
 }
 
-double Backends::Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
+double Optimizers::Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
 
     if (t_attr == Attr::Solution::Dual) {
         const auto& impl = lazy(t_ctr).impl();
@@ -366,7 +366,7 @@ double Backends::Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) c
     return Base::get(t_attr, t_ctr);
 }
 
-double Backends::Gurobi::get(const Parameter<double> &t_param) const {
+double Optimizers::Gurobi::get(const Parameter<double> &t_param) const {
 
     if (t_param == Param::Algorithm::BestBoundStop) {
         return m_model.get(GRB_DoubleParam_BestBdStop);
@@ -379,7 +379,7 @@ double Backends::Gurobi::get(const Parameter<double> &t_param) const {
     return Base::get(t_param);
 }
 
-void Backends::Gurobi::set(const Parameter<double> &t_param, double t_value) {
+void Optimizers::Gurobi::set(const Parameter<double> &t_param, double t_value) {
 
     if (t_param == Param::Algorithm::BestBoundStop) {
         m_model.set(GRB_DoubleParam_BestBdStop, t_value);
@@ -399,7 +399,7 @@ void Backends::Gurobi::set(const Parameter<double> &t_param, double t_value) {
     Base::set(t_param, t_value);
 }
 
-void Backends::Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
+void Optimizers::Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
 
     if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
         m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
@@ -409,7 +409,7 @@ void Backends::Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
     Base::set(t_param, t_value);
 }
 
-bool Backends::Gurobi::get(const Parameter<bool> &t_param) const {
+bool Optimizers::Gurobi::get(const Parameter<bool> &t_param) const {
 
     if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
         return m_model.get(GRB_IntParam_InfUnbdInfo);

@@ -20,11 +20,11 @@ struct MosekCtr {
     mosek::fusion::Constraint::t constraint;
 };
 
-namespace Backends {
+namespace Optimizers {
     class Mosek;
 }
 
-class Backends::Mosek : public LazyBackend<MosekVar, MosekCtr> {
+class Optimizers::Mosek : public LazyBackend<MosekVar, MosekCtr> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;

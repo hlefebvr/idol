@@ -5,9 +5,9 @@
 #include "optimizers/solvers/Mosek.h"
 #include "errors/Exception.h"
 
-Backend *MosekOptimizer::operator()(const Model &t_model) const {
+Optimizer *MosekOptimizer::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_MOSEK
-    return new Backends::Mosek(t_model, m_continuous_relaxation);
+    return new Optimizers::Mosek(t_model, m_continuous_relaxation);
 #else
     throw Exception("Idol was not linked with Mosek.");
 #endif

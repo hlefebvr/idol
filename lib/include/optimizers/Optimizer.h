@@ -2,8 +2,8 @@
 // Created by henri on 31/01/23.
 //
 
-#ifndef IDOL_BACKEND_H
-#define IDOL_BACKEND_H
+#ifndef IDOL_OPTIMIZER_H
+#define IDOL_OPTIMIZER_H
 
 #include <string>
 
@@ -64,13 +64,13 @@ public:
     }
 };
 
-class Backend : public impl::Backend {
+class Optimizer : public impl::Backend {
     friend class Model;
     friend class Model;
     friend class BlockModel<Ctr>;
     friend class BlockModel<Var>;
 public:
-    explicit Backend(const Model& t_parent) : impl::Backend(t_parent) {}
+    explicit Optimizer(const Model& t_parent) : impl::Backend(t_parent) {}
 };
 
-#endif //IDOL_BACKEND_H
+#endif //IDOL_OPTIMIZER_H

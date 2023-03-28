@@ -23,11 +23,11 @@ int main(int t_argc, char** t_argv) {
     Logs::set_level<BranchAndBoundOptimizer<NodeInfo>>(Trace);
     Logs::set_color<BranchAndBoundOptimizer<NodeInfo>>(Blue);
 
-    Logs::set_level<Backends::BranchAndBound<NodeInfo>>(Trace);
-    Logs::set_color<Backends::BranchAndBound<NodeInfo>>(Blue);
+    Logs::set_level<Optimizers::BranchAndBound<NodeInfo>>(Trace);
+    Logs::set_color<Optimizers::BranchAndBound<NodeInfo>>(Blue);
 
-    Logs::set_level<Backends::ColumnGeneration>(Trace);
-    Logs::set_color<Backends::ColumnGeneration>(Yellow);
+    Logs::set_level<Optimizers::ColumnGeneration>(Trace);
+    Logs::set_color<Optimizers::ColumnGeneration>(Yellow);
 
     // Read instance
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");

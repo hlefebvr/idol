@@ -23,7 +23,7 @@
 #include "../constraints/Attributes_Ctr.h"
 #include "../variables/Attributes_Var.h"
 
-#include "optimizers/Backend.h"
+#include "optimizers/Optimizer.h"
 #include "optimizers/OptimizerFactory.h"
 
 #include "optimizers/parameters/Timer.h"
@@ -49,8 +49,8 @@ class Model : public AttributeManagers::Delegate, public Matrix {
     std::vector<Ctr> m_constraints;
 
     Timer m_timer;
-    std::unique_ptr<Backend> m_backend;
-    std::unique_ptr<OptimizerFactory> m_optimizer;
+    std::unique_ptr<Optimizer> m_optimizer;
+    std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     // Matrix hooks
     Expr<Var> &access_obj() override;
@@ -58,7 +58,7 @@ class Model : public AttributeManagers::Delegate, public Matrix {
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
 protected:
-    void throw_if_no_backend() const { if (!m_backend) { throw Exception("No backend was found."); } }
+    void throw_if_no_optimizer() const { if (!m_optimizer) { throw Exception("No backend was found."); } }
     // Attribute delegate
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
@@ -101,14 +101,14 @@ public:
     template<class T, class ...ArgsT> void add_many(const T& t_object, const ArgsT& ...t_args);
 
     // Optimizer
-    Backend& backend() { throw_if_no_backend(); return *m_backend; }
-    [[nodiscard]] const Backend& backend() const { throw_if_no_backend(); return *m_backend; }
+    Optimizer& optimizer() { throw_if_no_optimizer(); return *m_optimizer; }
+    [[nodiscard]] const Optimizer& optimizer() const { throw_if_no_optimizer(); return *m_optimizer; }
     void optimize();
     void write(const std::string& t_name);
     void update();
     void use(const OptimizerFactory& t_optimizer_factory);
     void unuse();
-    [[nodiscard]] bool has_backend() const;
+    [[nodiscard]] bool has_optimizer() const;
 
     using AttributeManagers::Delegate::set;
     using AttributeManagers::Delegate::get;

@@ -31,7 +31,7 @@ public:
     BranchAndBoundOptimizer& operator=(const BranchAndBoundOptimizer&) = delete;
     BranchAndBoundOptimizer& operator=(BranchAndBoundOptimizer&&) noexcept = delete;
 
-    Backend *operator()(const Model &t_model) const override;
+    Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 };
@@ -63,11 +63,11 @@ BranchAndBoundOptimizer<NodeT>::BranchAndBoundOptimizer(const BranchAndBoundOpti
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory->clone()) {}
 
 template<class NodeT>
-Backend *BranchAndBoundOptimizer<NodeT>::operator()(const Model &t_model) const {
-    return new Backends::BranchAndBound<NodeT>(t_model,
-                                               *m_relaxation_optimizer_factory,
-                                               *m_branching_rule_factory,
-                                               *m_node_selection_rule_factory);
+Optimizer *BranchAndBoundOptimizer<NodeT>::operator()(const Model &t_model) const {
+    return new Optimizers::BranchAndBound<NodeT>(t_model,
+                                                 *m_relaxation_optimizer_factory,
+                                                 *m_branching_rule_factory,
+                                                 *m_node_selection_rule_factory);
 }
 
 template<class NodeT>

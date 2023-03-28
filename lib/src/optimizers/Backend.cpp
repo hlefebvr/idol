@@ -1,7 +1,7 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "optimizers/Backend.h"
+#include "optimizers/Optimizer.h"
 #include "modeling/models/Model.h"
 
 double impl::Backend::as_numeric(const Constant &t_constant) {
