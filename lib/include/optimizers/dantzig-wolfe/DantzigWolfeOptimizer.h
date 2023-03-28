@@ -51,7 +51,7 @@ public:
                           const OptimizerFactory& t_master_optimizer,
                           const OptimizerFactory& t_subproblem_optimizer);
 
-    Backend *operator()(const AbstractModel &t_model) const override;
+    Backend *operator()(const Model &t_original_formulation) const override;
 
     [[nodiscard]] DantzigWolfeOptimizer *clone() const override;
 };

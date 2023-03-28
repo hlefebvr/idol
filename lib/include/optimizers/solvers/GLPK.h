@@ -85,7 +85,7 @@ protected:
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;
     [[nodiscard]] double get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const override;
 public:
-    explicit GLPK(const AbstractModel& t_model, bool t_continuous_relaxation);
+    explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 };
 
 #endif

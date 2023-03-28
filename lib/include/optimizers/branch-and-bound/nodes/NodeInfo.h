@@ -5,7 +5,7 @@
 #ifndef IDOL_NODEINFO_H
 #define IDOL_NODEINFO_H
 
-#include "modeling/models/AbstractModel.h"
+#include "modeling/models/Model.h"
 #include "NodeUpdator.h"
 
 class NodeInfo {
@@ -36,9 +36,9 @@ public:
 
     void set_local_upper_bound(const Var& t_var, double t_ub);
 
-    void save(const AbstractModel& t_original_formulation, const AbstractModel& t_model) { m_primal_solution = ::save(t_original_formulation, Attr::Solution::Primal, t_model); }
+    void save(const Model& t_original_formulation, const Model& t_model) { m_primal_solution = ::save(t_original_formulation, Attr::Solution::Primal, t_model); }
 
-    static NodeUpdator<NodeInfo>* create_updator(AbstractModel& t_model);
+    static NodeUpdator<NodeInfo>* create_updator(Model& t_model);
 
     [[nodiscard]] NodeInfo* create_child() const { return new NodeInfo(*this); }
 };

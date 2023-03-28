@@ -15,7 +15,7 @@ public:
     public:
         explicit Strategy(const MostInfeasible& t_parent) {}
 
-        BranchingRules::MostInfeasible<NodeT> *operator()(const AbstractModel& t_model) const override {
+        BranchingRules::MostInfeasible<NodeT> *operator()(const Model& t_model) const override {
             return new BranchingRules::MostInfeasible<NodeT>(t_model);
         }
 

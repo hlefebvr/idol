@@ -5,7 +5,7 @@
 #ifndef IDOL_NODEUPDATOR_H
 #define IDOL_NODEUPDATOR_H
 
-class AbstractModel;
+class Model;
 
 template<class NodeT>
 class NodeUpdator {

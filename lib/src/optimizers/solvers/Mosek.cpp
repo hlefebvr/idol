@@ -3,9 +3,10 @@
 #include "optimizers/solvers/Mosek.h"
 #include "linear-algebra/to_rotated_quadratic_cone.h"
 #include "modeling/expressions/operations/operators.h"
+#include "optimizers/parameters/Parameters_Algorithm.h"
 #include <Eigen/Sparse>
 
-Backends::Mosek::Mosek(const AbstractModel &t_model, bool t_continuous_relaxation)
+Backends::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
     : LazyBackend<MosekVar, MosekCtr>(t_model),
       m_model(new mosek::fusion::Model()),
       m_continuous_relaxation(t_continuous_relaxation) {

@@ -6,13 +6,13 @@
 #define IDOL_OPTIMIZERFACTORY_H
 
 class Backend;
-class AbstractModel;
+class Model;
 
 class OptimizerFactory {
 public:
     virtual ~OptimizerFactory() = default;
 
-    virtual Backend* operator()(const AbstractModel& t_model) const = 0;
+    virtual Backend* operator()(const Model& t_model) const = 0;
 
     [[nodiscard]] virtual OptimizerFactory* clone() const = 0;
 };

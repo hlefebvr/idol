@@ -17,7 +17,7 @@ IDOL_CREATE_PARAMETER_TYPE(RowGeneration, bool, 1);
 IDOL_CREATE_PARAMETER(RowGeneration, bool, 0, BranchingOnDual, false);
 
 class RowGeneration : public Algorithm {
-    std::unique_ptr<AbstractModel> m_master;
+    std::unique_ptr<Model> m_master;
     std::vector<RowGenerationSP> m_subproblems;
 
     int m_sense = Minimize;
@@ -62,9 +62,9 @@ public:
 
     [[nodiscard]] const BlockModel<Var>& parent() const override;
 
-    AbstractModel& master() { return *m_master; } // TODO make this private
+    Model& master() { return *m_master; } // TODO make this private
 
-    [[nodiscard]] const AbstractModel& master() const { return *m_master; }
+    [[nodiscard]] const Model& master() const { return *m_master; }
 
     [[nodiscard]] auto subproblems() const { return ConstIteratorForward<std::vector<RowGenerationSP>>(m_subproblems); }
 

@@ -483,3 +483,39 @@ AttributeManager &Model::parameter_delegate(const Parameter<int> &t_param) {
 AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
     return backend();
 }
+
+void Model::optimize() {
+    throw_if_no_backend();
+    m_timer.start();
+    backend().optimize();
+    m_timer.stop();
+}
+
+void Model::write(const std::string& t_name) {
+    throw_if_no_backend();
+    m_backend->write(t_name);
+}
+
+void Model::update() {
+    throw_if_no_backend();
+    backend().update();
+}
+
+void Model::use(const OptimizerFactory &t_optimizer_factory) {
+    m_backend.reset(t_optimizer_factory(*this));
+    m_backend->build();
+    m_optimizer.reset(t_optimizer_factory.clone());
+}
+
+void Model::unuse() {
+    m_backend.reset();
+    m_optimizer.reset();
+}
+
+double Model::remaining_time() const {
+    return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
+}
+
+bool Model::has_backend() const {
+    return bool(m_backend);
+}

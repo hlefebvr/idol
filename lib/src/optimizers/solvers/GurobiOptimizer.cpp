@@ -5,7 +5,7 @@
 #include "optimizers/solvers/Gurobi.h"
 #include "errors/Exception.h"
 
-Backend *GurobiOptimizer::operator()(const AbstractModel &t_model) const {
+Backend *GurobiOptimizer::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GUROBI
     return new Backends::Gurobi(t_model, m_continuous_relaxation);
 #else

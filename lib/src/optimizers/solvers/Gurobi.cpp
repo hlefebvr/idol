@@ -75,7 +75,7 @@ double Backends::Gurobi::gurobi_numeric(double t_value) {
     return t_value;
 }
 
-Backends::Gurobi::Gurobi(const AbstractModel &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
+Backends::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
     : LazyBackend(t_model),
     m_continuous_relaxation(t_continuous_relaxation),
       m_env(t_env),

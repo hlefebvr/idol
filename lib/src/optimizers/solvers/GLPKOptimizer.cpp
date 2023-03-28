@@ -5,7 +5,7 @@
 #include "optimizers/solvers/GLPK.h"
 #include "errors/Exception.h"
 
-Backend *GLPKOptimizer::operator()(const AbstractModel &t_model) const {
+Backend *GLPKOptimizer::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GLPK
     return new Backends::GLPK(t_model, m_continuous_relaxation);
 #else

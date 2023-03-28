@@ -2,10 +2,11 @@
 // Created by henri on 14/02/23.
 //
 #include "optimizers/solvers/GLPK.h"
+#include "optimizers/Algorithm.h"
 
 #ifdef IDOL_USE_GLPK
 
-Backends::GLPK::GLPK(const AbstractModel &t_model, bool t_continuous_relaxation)
+Backends::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
     : LazyBackend(t_model),
       m_model(glp_create_prob()),
       m_continuous_relaxation(t_continuous_relaxation) {

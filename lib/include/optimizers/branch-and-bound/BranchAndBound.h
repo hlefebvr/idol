@@ -29,7 +29,7 @@ class Backends::BranchAndBound : public Algorithm {
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
-    std::unique_ptr<AbstractModel> m_relaxation;
+    std::unique_ptr<Model> m_relaxation;
     std::unique_ptr<NodeUpdator<NodeInfoT>> m_node_updator;
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
@@ -79,7 +79,7 @@ protected:
     void set(const Parameter<int>& t_param, int t_value) override;
     //[[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
-    explicit BranchAndBound(const AbstractModel& t_model,
+    explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory);
@@ -165,7 +165,7 @@ double Backends::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, 
 }
 
 template<class NodeInfoT>
-Backends::BranchAndBound<NodeInfoT>::BranchAndBound(const AbstractModel &t_model,
+Backends::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
                                           const OptimizerFactory& t_node_optimizer,
                                           const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                                           const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory)

@@ -19,7 +19,7 @@ public:
     GurobiOptimizer& operator=(const GurobiOptimizer&) = delete;
     GurobiOptimizer& operator=(GurobiOptimizer&&) noexcept = delete;
 
-    Backend *operator()(const AbstractModel &t_model) const override;
+    Backend *operator()(const Model &t_model) const override;
 
     static GurobiOptimizer ContinuousRelaxation();
 

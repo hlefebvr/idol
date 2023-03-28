@@ -73,8 +73,8 @@ protected:
     void set(const Parameter<bool>& t_param, bool t_value) override;
     [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
 public:
-    Gurobi(const AbstractModel& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
-    explicit Gurobi(const AbstractModel& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
+    Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
+    explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}
 
     GRBEnv& env() { return m_env; }
 

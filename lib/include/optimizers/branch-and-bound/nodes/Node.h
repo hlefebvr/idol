@@ -36,7 +36,7 @@ public:
 
     NodeInfoT& info() { return *m_info; }
 
-    void save(const AbstractModel& t_original_formulation, const AbstractModel& t_model) { m_info->save(t_original_formulation, t_model); }
+    void save(const Model& t_original_formulation, const Model& t_model) { m_info->save(t_original_formulation, t_model); }
 };
 
 #endif //IDOL_NODE_H

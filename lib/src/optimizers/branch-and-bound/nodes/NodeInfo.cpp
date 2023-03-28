@@ -4,7 +4,7 @@
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdatorByBound.h"
 
-NodeUpdator<NodeInfo> *NodeInfo::create_updator(AbstractModel& t_model) {
+NodeUpdator<NodeInfo> *NodeInfo::create_updator(Model& t_model) {
     return new NodeUpdatorByBound<NodeInfo>(t_model);
 }
 

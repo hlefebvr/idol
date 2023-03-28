@@ -18,7 +18,7 @@ public:
     DefaultOptimizer& operator=(const DefaultOptimizer&) = delete;
     DefaultOptimizer& operator=(DefaultOptimizer&&) noexcept = delete;
 
-    BackendT *operator()(const AbstractModel &t_model) const override {
+    BackendT *operator()(const Model &t_model) const override {
         return new BackendT(t_model);
     }
 

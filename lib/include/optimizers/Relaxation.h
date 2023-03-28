@@ -5,15 +5,15 @@
 #ifndef IDOL_RELAXATION_H
 #define IDOL_RELAXATION_H
 
-#include "modeling/models/AbstractModel.h"
+#include "modeling/models/Model.h"
 
 class Relaxation {
 public:
     virtual ~Relaxation() = default;
 
-    virtual AbstractModel& model() = 0;
+    virtual Model& model() = 0;
 
-    [[nodiscard]] virtual const AbstractModel& model() const = 0;
+    [[nodiscard]] virtual const Model& model() const = 0;
 
     virtual void build() = 0;
 };

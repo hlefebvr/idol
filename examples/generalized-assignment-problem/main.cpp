@@ -4,14 +4,13 @@
 #include <iostream>
 #include "modeling.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
-#include "modeling/models/BlockModel.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
-#include "optimizers/branch-and-bound/relaxations/impls/DantzigWolfeRelaxation.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -60,11 +59,11 @@ int main(int t_argc, const char** t_argv) {
 
     // Set optimizer
     model.use(BranchAndBoundOptimizer(
-                ColumnGenerationOptimizer(
-                    GLPKOptimizer(),
+                DantzigWolfeOptimizer(
+                    decomposition,
+                    GLPKOptimizer::ContinuousRelaxation(),
                     GLPKOptimizer()
                 ),
-                DantzigWolfeRelaxation(decomposition),
                 MostInfeasible(),
                 WorstBound()
             ));

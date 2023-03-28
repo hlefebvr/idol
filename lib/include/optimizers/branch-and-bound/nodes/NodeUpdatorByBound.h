@@ -6,11 +6,11 @@
 #define IDOL_NODEUPDATORBYBOUND_H
 
 #include "NodeUpdator.h"
-#include "modeling/models/AbstractModel.h"
+#include "modeling/models/Model.h"
 
 template<class NodeT>
 class NodeUpdatorByBound : public NodeUpdator<NodeT> {
-    AbstractModel& m_model;
+    Model& m_model;
 
     Map<Var, double> m_lower_bounds;
     Map<Var, double> m_upper_bounds;
@@ -20,7 +20,7 @@ class NodeUpdatorByBound : public NodeUpdator<NodeT> {
                               const Req<double, Var>& t_bound_attr);
 
 public:
-    explicit NodeUpdatorByBound(AbstractModel& t_model) : m_model(t_model) {}
+    explicit NodeUpdatorByBound(Model& t_model) : m_model(t_model) {}
 
     void apply_local_updates(const NodeT& t_node) override {
         update_bounds(m_lower_bounds, t_node.local_lower_bounds(), Attr::Var::Lb);

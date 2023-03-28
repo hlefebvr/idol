@@ -4,7 +4,7 @@
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-Backend *ColumnGenerationOptimizer::operator()(const AbstractModel &t_model) const {
+Backend *ColumnGenerationOptimizer::operator()(const Model &t_model) const {
 
     const unsigned int n_subproblems = this->n_subproblems();
 
@@ -14,7 +14,7 @@ Backend *ColumnGenerationOptimizer::operator()(const AbstractModel &t_model) con
         subproblems[i] = m_subproblems[i]->clone();
     }
 
-    return new Backends::ColumnGeneration(t_model.as<Model>(), &t_model.clone()->as<Model>(), subproblems, m_generation_patterns);
+    return new Backends::ColumnGeneration(t_model, t_model.clone(), subproblems, m_generation_patterns);
 }
 
 ColumnGenerationOptimizer *ColumnGenerationOptimizer::clone() const {

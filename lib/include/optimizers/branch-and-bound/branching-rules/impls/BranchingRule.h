@@ -9,12 +9,12 @@
 
 template<class NodeInfoT>
 class BranchingRule {
-    const AbstractModel& m_model;
+    const Model& m_model;
 public:
-    explicit BranchingRule(const AbstractModel& t_model) : m_model(t_model) {}
+    explicit BranchingRule(const Model& t_model) : m_model(t_model) {}
     virtual ~BranchingRule() = default;
 
-    [[nodiscard]] const AbstractModel& model() const { return m_model; }
+    [[nodiscard]] const Model& model() const { return m_model; }
 
     [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) const = 0;
 

@@ -5,7 +5,7 @@
 #ifndef IDOL_ROWGENERATIONSP_H
 #define IDOL_ROWGENERATIONSP_H
 
-#include "modeling/models/AbstractModel.h"
+#include "modeling/models/Model.h"
 #include "containers/GeneratorPool.h"
 
 class RowGeneration;
@@ -20,7 +20,7 @@ class impl::RowGenerationSP {
 
     RowGeneration* m_parent;
     const unsigned int m_index;
-    std::unique_ptr<AbstractModel> m_model;
+    std::unique_ptr<Model> m_model;
     ::Row m_generation_pattern;
 
     GeneratorPool<Ctr> m_pool;
@@ -45,7 +45,7 @@ public:
     RowGenerationSP& operator=(const RowGenerationSP&) = delete;
     RowGenerationSP& operator=(RowGenerationSP&&) = delete;
 
-    [[nodiscard]] const AbstractModel& model() const { return *m_model; }
+    [[nodiscard]] const Model& model() const { return *m_model; }
 };
 
 class RowGenerationSP : public impl::RowGenerationSP {

@@ -27,7 +27,7 @@ protected:
             const Var& t_var,
             double t_value);
 public:
-    explicit MostInfeasible(const AbstractModel& t_model) : VariableBranchingRule<NodeInfoT>(t_model) {
+    explicit MostInfeasible(const Model& t_model) : VariableBranchingRule<NodeInfoT>(t_model) {
 
         for (const auto& var : t_model.vars()) {
             if (t_model.get(Attr::Var::Type, var) != Continuous) {

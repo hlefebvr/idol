@@ -19,7 +19,7 @@ public:
     GLPKOptimizer& operator=(const GLPKOptimizer&) = delete;
     GLPKOptimizer& operator=(GLPKOptimizer&&) noexcept = delete;
 
-    Backend *operator()(const AbstractModel &t_model) const override;
+    Backend *operator()(const Model &t_model) const override;
 
     static GLPKOptimizer ContinuousRelaxation();
 

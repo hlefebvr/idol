@@ -2,7 +2,7 @@
 // Created by henri on 24/03/23.
 //
 #include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
-#include "modeling/models/AbstractModel.h"
+#include "modeling/models/Model.h"
 #include "modeling/expressions/operations/operators.h"
 #include "modeling/objects/Versions.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
@@ -24,22 +24,21 @@ DantzigWolfeOptimizer::DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src)
 
 }
 
-Backend *DantzigWolfeOptimizer::operator()(const AbstractModel &t_model) const {
+Backend *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation) const {
 
-    const auto& original_formulation = t_model.as<Model>();
-    auto& env = t_model.env();
+    auto& env = t_original_formulation.env();
 
     unsigned int n_subproblems;
     auto* master = new Model(env);
 
-    auto variable_flag = create_variable_flag(original_formulation, &n_subproblems);
+    auto variable_flag = create_variable_flag(t_original_formulation, &n_subproblems);
 
     auto subproblems = create_empty_subproblems(env, n_subproblems);
     auto generation_patterns = create_empty_generation_patterns(n_subproblems);
 
-    dispatch_variables(variable_flag, original_formulation, master, subproblems);
-    dispatch_constraints(variable_flag, original_formulation, master, subproblems, generation_patterns);
-    dispatch_objective(variable_flag, original_formulation, master, generation_patterns);
+    dispatch_variables(variable_flag, t_original_formulation, master, subproblems);
+    dispatch_constraints(variable_flag, t_original_formulation, master, subproblems, generation_patterns);
+    dispatch_objective(variable_flag, t_original_formulation, master, generation_patterns);
 
     add_convexity_constraints(env, master, generation_patterns);
 
@@ -49,7 +48,7 @@ Backend *DantzigWolfeOptimizer::operator()(const AbstractModel &t_model) const {
         subproblems[i]->use(*m_subproblem_optimizer);
     }
 
-    return new Backends::DantzigWolfe(t_model.as<Model>(),
+    return new Backends::DantzigWolfe(t_original_formulation,
                                       m_decomposition,
                                       variable_flag,
                                       master,

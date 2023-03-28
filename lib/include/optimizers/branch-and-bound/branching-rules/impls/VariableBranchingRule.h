@@ -38,7 +38,7 @@ protected:
             double t_ub
     );
 public:
-    explicit VariableBranchingRule(const AbstractModel& t_model) : BranchingRule<NodeInfoT>(t_model) {}
+    explicit VariableBranchingRule(const Model& t_model) : BranchingRule<NodeInfoT>(t_model) {}
 };
 
 template<class NodeInfoT>
