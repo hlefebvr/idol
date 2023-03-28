@@ -117,6 +117,8 @@ class Optimizers::ColumnGeneration::Subproblem {
     void clean_up();
 
     void remove_column_if(const std::function<bool(const Var&, const Solution::Primal&)>& t_indicator_for_removal);
+
+    void update_generation_pattern_objective(Constant&& t_objective);
 public:
     Subproblem(ColumnGeneration& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
 };

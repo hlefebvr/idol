@@ -21,7 +21,7 @@
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -63,12 +63,13 @@ int main(int t_argc, char** t_argv) {
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     //model.set(Attr::Var::Ub, x[0][2], 0);
+    //model.set(Attr::Var::Lb, x[0][2], 1);
 
-    for (bool branching_on_master : { false, true }) {
+    for (bool branching_on_master : { true, false }) {
 
         for (bool farkas_pricing : { true, false }) {
 
-            for (double smoothing : { 0., .3, .5 }) {
+            for (double smoothing : { 0., .3, .5, .8 }) {
 
                 /*
                 model.use(BranchAndBoundOptimizer(
@@ -93,29 +94,32 @@ int main(int t_argc, char** t_argv) {
                 );
                  */
 
-                /*
-                model.use(BranchAndBoundOptimizer<NodeInfo>(
+                model.use(
+                    BranchAndBoundOptimizer<NodeInfo>(
                         DantzigWolfeOptimizer(
                                 decomposition,
                                 GurobiOptimizer::ContinuousRelaxation(),
                                 BranchAndBoundOptimizer<NodeInfo>(
                                         DantzigWolfeOptimizer(
                                                 decomposition2,
-                                                GurobiOptimizer::ContinuousRelaxation()
+                                                GurobiOptimizer::ContinuousRelaxation(),
+                                                //GurobiOptimizer()
+
                                                 BranchAndBoundOptimizer<NodeInfo>(
                                                         GLPKOptimizer::ContinuousRelaxation(),
                                                         MostInfeasible(),
                                                         WorstBound()
                                                 )
+
                                         ),
-                                        MostInfeasible(),
-                                        DepthFirst()
+                                       MostInfeasible(),
+                                       DepthFirst()
                                 )
-                        ),
+                        ).with_log_level(Info, Magenta),
                         MostInfeasible(),
                         BestBound()
-                ));
-                */
+                    ).with_log_level(Info, Blue)
+                );
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
@@ -135,7 +139,9 @@ int main(int t_argc, char** t_argv) {
 
                 const double obj_val = model.get(Attr::Solution::ObjVal);
 
-                //throw 10;
+                if (obj_val != -40.) {
+                    throw Exception("stop");
+                }
 
             }
 

@@ -694,3 +694,13 @@ void Optimizers::ColumnGeneration::Subproblem::remove_column_if(const std::funct
     }
 
 }
+
+void Optimizers::ColumnGeneration::Subproblem::update_generation_pattern_objective(Constant &&t_objective) {
+
+    for (const auto& [var, generator] : m_present_generators) {
+        m_parent.m_master->set(Attr::Var::Obj, var, t_objective.fix(generator));
+    }
+
+    m_generation_pattern.set_obj(std::move(t_objective));
+
+}
