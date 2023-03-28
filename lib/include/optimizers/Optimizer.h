@@ -24,6 +24,8 @@ class impl::Optimizer : protected AttributeManagers::Base {
 
     LogLevel m_log_level = Mute;
     Color m_log_color = Default;
+    double m_time_limit = std::numeric_limits<double>::max();
+    unsigned m_max_n_threads = 1;
 protected:
     virtual void build() = 0;
 

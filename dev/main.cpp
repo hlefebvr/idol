@@ -118,7 +118,8 @@ int main(int t_argc, char** t_argv) {
                         ).with_log_level(Info, Magenta),
                         MostInfeasible(),
                         BestBound()
-                    ).with_log_level(Info, Blue)
+                    )
+                    .with_log_level(Info, Blue)
                 );
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
