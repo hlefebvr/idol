@@ -20,10 +20,11 @@
 
 #include "optimizers/parameters/Timer.h"
 
+static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
+
 class Env;
 class Column;
 class TempCtr;
-class Idol;
 
 /**
  * This class is used to represent a mathematical optimization model.

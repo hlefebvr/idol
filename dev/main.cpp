@@ -1,6 +1,4 @@
 #include "modeling.h"
-#include "modeling/models/BlockModel.h"
-#include "optimizers/row-generation/RowGeneration.h"
 #include "optimizers/solvers/Gurobi.h"
 #include "optimizers/parameters/Logs.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
@@ -72,33 +70,6 @@ int main(int t_argc, char** t_argv) {
 
     // Set the objective function
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
-
-    /*
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
-                DantzigWolfeOptimizer(
-                    decomposition,
-                    GurobiOptimizer(),
-                    BranchAndBoundOptimizer<NodeInfo>(
-                        DantzigWolfeOptimizer(
-                                decomposition2,
-                                GurobiOptimizer(),
-                                BranchAndBoundOptimizer<NodeInfo>(
-                                    GLPKOptimizer(),
-                                    ContinuousRelaxation(),
-                                    MostInfeasible(),
-                                    WorstBound()
-                                )
-                        ),
-                        ContinuousRelaxation(),
-                        MostInfeasible(),
-                        DepthFirst()
-                    )
-                ),
-                ContinuousRelaxation(),
-                MostInfeasible(),
-                BestBound()
-            ));
-    */
 
     //model.set(Attr::Var::Ub, x[0][2], 0);
 

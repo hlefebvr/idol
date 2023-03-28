@@ -3,7 +3,6 @@
 //
 #include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
 #include "modeling/models/AbstractModel.h"
-#include "modeling/models/BlockModel.h"
 #include "modeling/expressions/operations/operators.h"
 #include "modeling/objects/Versions.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"

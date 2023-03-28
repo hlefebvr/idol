@@ -3,7 +3,6 @@
 //
 #include "optimizers/dantzig-wolfe/DantzigWolfe.h"
 #include "modeling/objects/Versions.h"
-#include "modeling/models/BlockModel.h"
 #include "modeling/expressions/operations/operators.h"
 
 Backends::DantzigWolfe::DantzigWolfe(const Model& t_original_formulation,

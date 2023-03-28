@@ -6,7 +6,6 @@
 #define IDOL_ROWGENERATION_H
 
 #include "optimizers/Algorithm.h"
-#include "modeling/models/BlockModel.h"
 #include "RowGenerationSP.h"
 
 class RowGeneration;
