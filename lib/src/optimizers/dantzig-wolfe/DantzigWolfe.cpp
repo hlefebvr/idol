@@ -170,7 +170,7 @@ void Optimizers::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr
         for (auto [var, coeff] : t_expr.linear()) {
             const unsigned int subproblem_id = var.get(m_variable_flag);
             if (subproblem_id == MasterId) {
-                master_obj += std::move(coeff) * var;
+                master_obj += coeff * var;
             } else {
                 if (!coeff.is_numerical()) {
                     throw Exception("Could not handle non-numerical objective coefficient as generation pattern.");

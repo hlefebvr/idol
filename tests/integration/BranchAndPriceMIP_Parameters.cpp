@@ -22,14 +22,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
             std::make_pair<std::string, double>("GAP_instance1.txt", -22.),
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
-    const auto subproblem_solver = GENERATE(
-            std::shared_ptr<OptimizerFactory>(new TestType()),
-            std::shared_ptr<OptimizerFactory>(new BranchAndBoundOptimizer<NodeInfo>(
-                        TestType::ContinuousRelaxation(),
-                        MostInfeasible(),
-                        BestBound()
-                    ))
-        );
     //const auto integer_master_heuristic = GENERATE(false, true);
     const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
@@ -39,7 +31,10 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
-    Annotation<Ctr> decomposition(env, "by_machines", MasterId);
+    Annotation<Ctr> std_decomposition(env, "by_machines", MasterId);
+
+    Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
+    Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
 
     Model model(env);
 
@@ -47,9 +42,15 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.add_array<Var, 2>(x);
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
+
         Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
-        capacity.set(decomposition, i);
+
+        capacity.set(std_decomposition, i);
+        capacity.set(nested_decomposition1, i/2);
+        capacity.set(nested_decomposition2, i % 2);
+
         model.add(capacity);
+
     }
 
     for (unsigned int j = 0 ; j < n_jobs ; ++j) {
@@ -59,12 +60,52 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
-            DantzigWolfeOptimizer(
-                    decomposition,
+    std::vector<std::pair<std::string, std::shared_ptr<OptimizerFactory>>> relaxation_solvers = {
+            { "CG",
+              std::make_shared<DantzigWolfeOptimizer>(
+                    std_decomposition,
                     TestType::ContinuousRelaxation(),
-                    *subproblem_solver
-            ),
+                    TestType()
+            )
+            },
+            { "CG + B&B",
+              std::make_shared<DantzigWolfeOptimizer>(
+                    std_decomposition,
+                    TestType::ContinuousRelaxation(),
+                    BranchAndBoundOptimizer<NodeInfo>(
+                            TestType::ContinuousRelaxation(),
+                            MostInfeasible(),
+                            BestBound()
+                    )
+            )
+            },
+            { "CG + nested B&P",
+              std::make_shared<DantzigWolfeOptimizer>(
+                     nested_decomposition1,
+                     TestType::ContinuousRelaxation(),
+                     BranchAndBoundOptimizer<NodeInfo>(
+                             DantzigWolfeOptimizer(
+                                     nested_decomposition2,
+                                     TestType::ContinuousRelaxation(),
+
+                                     BranchAndBoundOptimizer<NodeInfo>(
+                                             TestType::ContinuousRelaxation(),
+                                             MostInfeasible(),
+                                             BestBound()
+                                     )
+
+                             ),
+                             MostInfeasible(),
+                             BestBound()
+                     )
+              )
+            }
+    };
+
+    const auto solver_index = GENERATE(0, 1, 2);
+
+    model.use(BranchAndBoundOptimizer<NodeInfo>(
+            *relaxation_solvers[solver_index].second,
             MostInfeasible(),
             BestBound()
         ));
@@ -77,7 +118,8 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 
-    WHEN("The instance \"" + filename + "\" is solved with "
+    WHEN("The instance \"" + filename + "\" is solved by branch-and-bound with relaxation being solved by "
+            + relaxation_solvers[solver_index].first + " with "
             + (farkas_pricing ? "farkas pricing" : "artificial variables")
             + ", branching applied to " + (branching_on_master ? "master" : "subproblem")
             + " and stabilization factor of " + std::to_string(smoothing_factor)
