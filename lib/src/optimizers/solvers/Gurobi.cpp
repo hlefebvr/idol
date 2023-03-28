@@ -241,7 +241,7 @@ void Optimizers::Gurobi::hook_update_rhs() {
             const auto& rhs = model.get(Attr::Ctr::Rhs, ctr);
             std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(as_numeric(rhs)));
         } else {
-            idol_Log(Warn, Gurobi, "Updating RHS on an SOCP constraint was skipped.")
+            idol_Log2(Warn, "Updating RHS on an SOCP constraint was skipped.")
         }
     }
 

@@ -11,7 +11,7 @@
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 
 template<class NodeT = NodeInfo>
-class BranchAndBoundOptimizer : public OptimizerFactory {
+class BranchAndBoundOptimizer : public OptimizerFactoryWithDefaultParameters<BranchAndBoundOptimizer<NodeT>> {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
@@ -58,16 +58,19 @@ BranchAndBoundOptimizer<NodeT>::BranchAndBoundOptimizer(const OptimizerFactory &
 template<class NodeT>
 BranchAndBoundOptimizer<NodeT>::BranchAndBoundOptimizer(const BranchAndBoundOptimizer &t_rhs)
 
-        : m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory->clone()),
+        : OptimizerFactoryWithDefaultParameters<BranchAndBoundOptimizer<NodeT>>(t_rhs),
+          m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory->clone()),
           m_branching_rule_factory(t_rhs.m_branching_rule_factory->clone()),
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory->clone()) {}
 
 template<class NodeT>
 Optimizer *BranchAndBoundOptimizer<NodeT>::operator()(const Model &t_model) const {
-    return new Optimizers::BranchAndBound<NodeT>(t_model,
-                                                 *m_relaxation_optimizer_factory,
-                                                 *m_branching_rule_factory,
-                                                 *m_node_selection_rule_factory);
+    auto* result = new Optimizers::BranchAndBound<NodeT>(t_model,
+                                     *m_relaxation_optimizer_factory,
+                                     *m_branching_rule_factory,
+                                     *m_node_selection_rule_factory);
+    this->set_default_parameters(result);
+    return result;
 }
 
 template<class NodeT>

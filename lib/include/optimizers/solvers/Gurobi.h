@@ -83,6 +83,8 @@ public:
     GRBModel& model() { return m_model; }
 
     [[nodiscard]] const GRBModel& model() const { return m_model; }
+
+    [[nodiscard]] std::string name() const override { return "gurobi"; }
 };
 
 #endif

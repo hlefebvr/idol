@@ -23,6 +23,8 @@ public:
                        Model *t_master_problem,
                        const std::vector<Model *> &t_subproblems,
                        std::vector<Column> t_generation_patterns);
+
+    [[nodiscard]] std::string name() const override { return "column-generation"; }
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;

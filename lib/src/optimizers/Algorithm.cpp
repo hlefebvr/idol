@@ -10,9 +10,11 @@ Algorithm::Algorithm(const Model &t_model) : Optimizer(t_model) {
 
 void Algorithm::optimize() {
     m_is_terminated = false;
+    idol_Log2(Debug, "Algorithm " << name() << " starts.")
     hook_before_optimize();
     hook_optimize();
     hook_after_optimize();
+    idol_Log2(Debug, "Algorithm " << name() << " has ended.")
 }
 
 void Algorithm::set(const Parameter<int>& t_param, int t_value) {

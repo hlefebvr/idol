@@ -14,7 +14,11 @@ Optimizer *ColumnGenerationOptimizer::operator()(const Model &t_model) const {
         subproblems[i] = m_subproblems[i]->clone();
     }
 
-    return new Optimizers::ColumnGeneration(t_model, t_model.clone(), subproblems, m_generation_patterns);
+    auto* result = new Optimizers::ColumnGeneration(t_model, t_model.clone(), subproblems, m_generation_patterns);
+
+    this->set_default_parameters(result);
+
+    return result;
 }
 
 ColumnGenerationOptimizer *ColumnGenerationOptimizer::clone() const {
@@ -30,7 +34,8 @@ ColumnGenerationOptimizer::ColumnGenerationOptimizer(const OptimizerFactory& t_m
 }
 
 ColumnGenerationOptimizer::ColumnGenerationOptimizer(const ColumnGenerationOptimizer &t_src)
-    : m_master_optimizer(t_src.m_master_optimizer->clone()),
+    : OptimizerFactoryWithDefaultParameters<ColumnGenerationOptimizer>(t_src),
+      m_master_optimizer(t_src.m_master_optimizer->clone()),
       m_subproblems(t_src.m_subproblems),
       m_generation_patterns(t_src.m_generation_patterns) {
 

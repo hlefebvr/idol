@@ -20,15 +20,6 @@
 
 int main(int t_argc, char** t_argv) {
 
-    Logs::set_level<BranchAndBoundOptimizer<NodeInfo>>(Trace);
-    Logs::set_color<BranchAndBoundOptimizer<NodeInfo>>(Blue);
-
-    Logs::set_level<Optimizers::BranchAndBound<NodeInfo>>(Trace);
-    Logs::set_color<Optimizers::BranchAndBound<NodeInfo>>(Blue);
-
-    Logs::set_level<Optimizers::ColumnGeneration>(Trace);
-    Logs::set_color<Optimizers::ColumnGeneration>(Yellow);
-
     // Read instance
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
 
@@ -79,20 +70,26 @@ int main(int t_argc, char** t_argv) {
 
             for (double smoothing : { 0., .3, .5 }) {
 
-
                 model.use(BranchAndBoundOptimizer(
-                        DantzigWolfeOptimizer(
-                                std_decomposition,
-                                GurobiOptimizer::ContinuousRelaxation(),
-                                BranchAndBoundOptimizer(
-                                        GurobiOptimizer::ContinuousRelaxation(),
-                                        MostInfeasible(),
-                                        BestBound()
-                                )
-                        ),
-                        MostInfeasible(),
-                        BestBound()
-                ));
+
+                            DantzigWolfeOptimizer(
+                                    std_decomposition,
+
+                                    GurobiOptimizer::ContinuousRelaxation(),
+
+                                    BranchAndBoundOptimizer(
+                                            GurobiOptimizer::ContinuousRelaxation(),
+                                            MostInfeasible(),
+                                            BestBound()
+                                    ).with_log_level(Info, Cyan)
+
+                            ).with_log_level(Info, Green),
+
+                            MostInfeasible(),
+                            BestBound()
+
+                        ).with_log_level(Info, Blue)
+                );
 
                 /*
                 model.use(BranchAndBoundOptimizer<NodeInfo>(
@@ -146,8 +143,6 @@ int main(int t_argc, char** t_argv) {
 
     return 0;
 /*
-    Logs::set_level<RowGeneration>(Debug);
-    Logs::set_color<RowGeneration>(Green);
 
     Env env;
 

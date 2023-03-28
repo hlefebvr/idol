@@ -52,8 +52,7 @@ std::list<NodeInfoT *> VariableBranchingRule<NodeInfoT>::create_child_nodes_by_b
     auto* n2 = t_node.info().create_child();
     n2->set_local_upper_bound(t_variable_selected_for_branching, t_ub);
 
-    idol_Log(Trace,
-             BranchAndBoundOptimizer<NodeInfoT>,
+    idol_Log2(Trace,
              "Node " << t_node.id() << " has 2 child nodes with "
              << t_variable_selected_for_branching << " >= " << t_lb
              << " and "

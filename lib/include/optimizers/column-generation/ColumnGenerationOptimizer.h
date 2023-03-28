@@ -9,7 +9,7 @@
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/models/Model.h"
 
-class ColumnGenerationOptimizer : public OptimizerFactory {
+class ColumnGenerationOptimizer : public OptimizerFactoryWithDefaultParameters<ColumnGenerationOptimizer> {
 public:
     ColumnGenerationOptimizer(const OptimizerFactory& t_master_optimizer, unsigned int t_n_subproblems);
 

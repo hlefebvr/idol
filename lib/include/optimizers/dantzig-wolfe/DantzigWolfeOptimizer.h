@@ -9,7 +9,7 @@
 #include "modeling/constraints/Ctr.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 
-class DantzigWolfeOptimizer : public OptimizerFactory {
+class DantzigWolfeOptimizer : public OptimizerFactoryWithDefaultParameters<DantzigWolfeOptimizer> {
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<OptimizerFactory> m_subproblem_optimizer;

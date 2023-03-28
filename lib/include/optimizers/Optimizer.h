@@ -8,6 +8,7 @@
 #include <string>
 
 #include "../modeling/attributes/AttributeManagers_Base.h"
+#include "optimizers/parameters/Logs.h"
 
 class Model;
 class Model;
@@ -22,6 +23,9 @@ namespace impl {
 
 class impl::Backend : protected AttributeManagers::Base {
     const ::Model& m_parent;
+
+    LogLevel m_log_level = Mute;
+    Color m_log_color = Default;
 protected:
     virtual void build() = 0;
 
@@ -41,7 +45,17 @@ protected:
 public:
     explicit Backend(const ::Model& t_parent) : m_parent(t_parent) {}
 
+    [[nodiscard]] virtual std::string name() const = 0;
+
     [[nodiscard]] virtual const ::Model& parent() const { return m_parent; }
+
+    [[nodiscard]] LogLevel log_level() const { return m_log_level; }
+
+    [[nodiscard]] Color log_color() const { return m_log_color; }
+
+    void set_log_level(LogLevel t_level) { m_log_level = t_level; }
+
+    void set_log_color(Color t_color) { m_log_color = t_color; }
 
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);
@@ -66,9 +80,6 @@ public:
 
 class Optimizer : public impl::Backend {
     friend class Model;
-    friend class Model;
-    friend class BlockModel<Ctr>;
-    friend class BlockModel<Var>;
 public:
     explicit Optimizer(const Model& t_parent) : impl::Backend(t_parent) {}
 };

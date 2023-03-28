@@ -25,6 +25,7 @@ public:
                  const std::vector<Model *> &t_subproblems,
                  std::vector<Column> t_generation_patterns);
 
+    [[nodiscard]] std::string name() const override { return "dantzig-wolfe"; }
 protected:
     void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_expr) override;
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;

@@ -14,12 +14,6 @@
 
 int main(int t_argc, const char** t_argv) {
 
-    Logs::set_level<BranchAndBoundOptimizer<>>(Debug); // Set debug log level for BranchAndBound algorithms
-    Logs::set_color<BranchAndBoundOptimizer<>>(Blue); // Set output color to blue for BranchAndBound algorithms
-
-    Logs::set_level<ColumnGenerationOptimizer>(Debug); // Set debug log level for ColumnGeneration algorithms
-    Logs::set_color<ColumnGenerationOptimizer>(Yellow); // Set output color to blue for ColumnGeneration algorithms
-
     const auto instance = Problems::GAP::read_instance("instance.txt");
 
     const unsigned int n_agents = instance.n_agents();

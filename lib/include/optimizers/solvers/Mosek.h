@@ -81,6 +81,8 @@ public:
     explicit Mosek(const Model& t_model, bool t_continuous_relaxation);
 
     ~Mosek() override;
+
+    [[nodiscard]] std::string name() const override { return "mosek"; }
 };
 
 #endif

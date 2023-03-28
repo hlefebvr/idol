@@ -18,7 +18,8 @@ DantzigWolfeOptimizer::DantzigWolfeOptimizer(const Annotation<Ctr, unsigned int>
 }
 
 DantzigWolfeOptimizer::DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src)
-        : m_decomposition(t_src.m_decomposition),
+        : OptimizerFactoryWithDefaultParameters<DantzigWolfeOptimizer>(t_src),
+          m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer->clone()),
           m_subproblem_optimizer(t_src.m_subproblem_optimizer->clone()) {
 
@@ -48,12 +49,16 @@ Optimizer *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation
         subproblems[i]->use(*m_subproblem_optimizer);
     }
 
-    return new Optimizers::DantzigWolfe(t_original_formulation,
+    auto* result = new Optimizers::DantzigWolfe(t_original_formulation,
                                         m_decomposition,
                                         variable_flag,
                                         master,
                                         subproblems,
                                         generation_patterns);
+
+    this->set_default_parameters(result);
+
+    return result;
 }
 
 DantzigWolfeOptimizer *DantzigWolfeOptimizer::clone() const {
