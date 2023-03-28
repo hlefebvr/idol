@@ -1,6 +1,6 @@
 #include "modeling.h"
 #include "optimizers/solvers/Gurobi.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/solvers/DefaultOptimizer.h"

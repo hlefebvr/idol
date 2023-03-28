@@ -2,7 +2,7 @@
 // Created by henri on 22/09/22.
 //
 #include "./test_utils.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 
 int main( int argc, char* argv[] ) {
 

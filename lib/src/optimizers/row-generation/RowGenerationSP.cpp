@@ -4,7 +4,7 @@
 #include "optimizers/row-generation/RowGenerationSP.h"
 #include "optimizers/row-generation/RowGeneration.h"
 #include "modeling/expressions/operations/operators.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 
 RowGenerationSP::RowGenerationSP(RowGeneration &t_parent, unsigned int t_index) : impl::RowGenerationSP(t_parent, t_index) {
 

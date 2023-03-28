@@ -2,7 +2,7 @@
 // Created by henri on 24/03/23.
 //
 #include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 #include "modeling/expressions/operations/operators.h"
 
 Optimizers::ColumnGeneration::ColumnGeneration(const Model& t_model,

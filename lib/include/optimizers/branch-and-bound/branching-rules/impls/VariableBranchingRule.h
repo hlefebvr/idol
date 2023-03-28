@@ -6,7 +6,7 @@
 #define IDOL_VARIABLEBRANCHINGRULE_H
 
 #include "BranchingRule.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 
 #include <optional>
 

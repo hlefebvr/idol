@@ -1,7 +1,7 @@
 //
 // Created by henri on 10/10/22.
 //
-#include "optimizers/parameters/Timer.h"
+#include "optimizers/Timer.h"
 #include <stdexcept>
 
 void Timer::start() {

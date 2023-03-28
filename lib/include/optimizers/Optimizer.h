@@ -8,20 +8,18 @@
 #include <string>
 
 #include "../modeling/attributes/AttributeManagers_Base.h"
-#include "optimizers/parameters/Logs.h"
+#include "Logger.h"
 
 class Model;
-class Model;
-template<class AxisT> class BlockModel;
 class Var;
 class Ctr;
 class Constant;
 
 namespace impl {
-    class Backend;
+    class Optimizer;
 }
 
-class impl::Backend : protected AttributeManagers::Base {
+class impl::Optimizer : protected AttributeManagers::Base {
     const ::Model& m_parent;
 
     LogLevel m_log_level = Mute;
@@ -43,7 +41,7 @@ protected:
 
     static double as_numeric(const Constant& t_constant);
 public:
-    explicit Backend(const ::Model& t_parent) : m_parent(t_parent) {}
+    explicit Optimizer(const ::Model& t_parent) : m_parent(t_parent) {}
 
     [[nodiscard]] virtual std::string name() const = 0;
 
@@ -78,10 +76,10 @@ public:
     }
 };
 
-class Optimizer : public impl::Backend {
+class Optimizer : public impl::Optimizer {
     friend class Model;
 public:
-    explicit Optimizer(const Model& t_parent) : impl::Backend(t_parent) {}
+    explicit Optimizer(const Model& t_parent) : impl::Optimizer(t_parent) {}
 };
 
 #endif //IDOL_OPTIMIZER_H

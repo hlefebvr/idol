@@ -4,7 +4,7 @@
 #ifdef IDOL_USE_GUROBI
 
 #include "optimizers/solvers/Gurobi.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 #include "optimizers/parameters/Parameters_Algorithm.h"
 
 std::unique_ptr<GRBEnv> Optimizers::Gurobi::s_global_env;

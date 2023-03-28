@@ -5,7 +5,7 @@
 #ifndef IDOL_OPTIMIZERFACTORY_H
 #define IDOL_OPTIMIZERFACTORY_H
 
-#include "optimizers/parameters/Logs.h"
+#include "Logger.h"
 #include "optimizers/Optimizer.h"
 
 class Model;

@@ -1,7 +1,7 @@
 //
 // Created by henri on 15/09/22.
 //
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 #include <iostream>
 #include <iomanip>
 

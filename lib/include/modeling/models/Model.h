@@ -26,7 +26,7 @@
 #include "optimizers/Optimizer.h"
 #include "optimizers/OptimizerFactory.h"
 
-#include "optimizers/parameters/Timer.h"
+#include "optimizers/Timer.h"
 
 static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
 

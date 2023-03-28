@@ -2,7 +2,7 @@
 // Created by henri on 06/03/23.
 //
 #include "optimizers/row-generation/RowGeneration.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 #include "modeling/objects/Versions.h"
 
 RowGeneration::RowGeneration(const BlockModel<Var> &t_model) : Algorithm(t_model) {

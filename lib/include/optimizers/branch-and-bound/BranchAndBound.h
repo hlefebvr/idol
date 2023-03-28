@@ -13,7 +13,7 @@
 #include "optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h"
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
-#include "optimizers/parameters/Logs.h"
+#include "optimizers/Logger.h"
 
 #include <memory>
 #include <cassert>
@@ -35,7 +35,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
+    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
     unsigned int m_n_created_nodes = 0;
 
     TreeNode* m_incumbent = nullptr;
