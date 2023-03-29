@@ -2,7 +2,7 @@
 // Created by henri on 31/01/23.
 //
 #include "../../../../test_utils.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
@@ -19,7 +19,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, LessOrEqual, 10, "c");
             model.add(c);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -53,7 +53,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, GreaterOrEqual, -5, "c");
             model.add(c);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -88,7 +88,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, Equal, 0, "c");
             model.add(c);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -132,7 +132,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
             Ctr c(env, 0 * x[0] + 1 * x[1] + 2 * x[2] <= 1);
             model.add(c);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 

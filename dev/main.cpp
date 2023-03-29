@@ -1,8 +1,8 @@
 #include "modeling.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/Logger.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
-#include "optimizers/solvers/GLPK.h"
+#include "optimizers/solvers/Optimizers_GLPK.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
@@ -11,13 +11,13 @@
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/solvers/Mosek.h"
-#include "optimizers/solvers/GurobiOptimizer.h"
-#include "optimizers/solvers/GLPKOptimizer.h"
+#include "optimizers/solvers/Optimizers_Mosek.h"
+#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/GLPK.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/solvers/MosekOptimizer.h"
+#include "optimizers/solvers/Mosek.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -80,7 +80,7 @@ int main(int t_argc, char** t_argv) {
 
                             DantzigWolfeDecomposition(decomposition)
 
-                                .with_master_solver(MosekOptimizer::ContinuousRelaxation())
+                                .with_master_solver(Mosek::ContinuousRelaxation())
 
                                 .with_pricing_solver(
 
@@ -90,13 +90,13 @@ int main(int t_argc, char** t_argv) {
 
                                                     DantzigWolfeDecomposition(decomposition2)
 
-                                                        .with_master_solver(MosekOptimizer::ContinuousRelaxation())
+                                                        .with_master_solver(Mosek::ContinuousRelaxation())
 
                                                         .with_pricing_solver(
 
                                                             BranchAndBound<NodeInfo>()
 
-                                                                    .with_node_solver(MosekOptimizer::ContinuousRelaxation())
+                                                                    .with_node_solver(Mosek::ContinuousRelaxation())
 
                                                                     .with_branching_rule(MostInfeasible())
 

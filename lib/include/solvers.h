@@ -7,8 +7,8 @@
 
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/solvers/GLPKOptimizer.h"
-#include "optimizers/solvers/MosekOptimizer.h"
-#include "optimizers/solvers/GurobiOptimizer.h"
+#include "optimizers/solvers/GLPK.h"
+#include "optimizers/solvers/Mosek.h"
+#include "optimizers/solvers/Gurobi.h"
 
 #endif //OPTIMIZE_SOLVERS_H

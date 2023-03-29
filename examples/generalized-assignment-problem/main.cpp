@@ -9,7 +9,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/solvers/GLPKOptimizer.h"
+#include "optimizers/solvers/GLPK.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -56,8 +56,8 @@ int main(int t_argc, const char** t_argv) {
 
                 .with_node_solver(
                     DantzigWolfeDecomposition(decomposition)
-                        .with_master_solver(GLPKOptimizer::ContinuousRelaxation())
-                        .with_pricing_solver(GLPKOptimizer())
+                        .with_master_solver(GLPK::GLPK())
+                        .with_pricing_solver(GLPK())
                         .with_log_level(Info, Yellow)
                 )
                 .with_branching_rule(MostInfeasible())

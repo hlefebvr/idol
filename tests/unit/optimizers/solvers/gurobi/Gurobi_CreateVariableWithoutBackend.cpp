@@ -3,7 +3,7 @@
 //
 
 #include "../../../../test_utils.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
@@ -20,7 +20,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -15, 30, Continuous, "x");
             model.add(x);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -58,7 +58,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, -Inf, Inf, Integer, "x");
             model.add(x);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -96,7 +96,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 1, 1, Binary, "x");
             model.add(x);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -149,7 +149,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
             Var x(env, 0, Inf, Continuous, std::move(column), "x");
             model.add(x);
 
-            model.use(GurobiOptimizer());
+            model.use(Gurobi());
 
             const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 

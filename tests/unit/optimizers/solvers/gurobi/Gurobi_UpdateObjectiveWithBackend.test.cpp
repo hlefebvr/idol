@@ -3,7 +3,7 @@
 //
 
 #include "../../../../test_utils.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
@@ -21,7 +21,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
         model.add(x);
         model.add(y);
 
-        model.use(GurobiOptimizer());
+        model.use(Gurobi());
 
         const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 

@@ -2,7 +2,7 @@
 // Created by henri on 31/01/23.
 //
 #include "../../../../test_utils.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
@@ -14,7 +14,7 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
         Env env;
         Model model(env);
 
-        model.use(GurobiOptimizer());
+        model.use(Gurobi());
 
         const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
@@ -116,7 +116,7 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
         Env env;
         Model model(env);
 
-        model.use(GurobiOptimizer());
+        model.use(Gurobi());
 
         const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 

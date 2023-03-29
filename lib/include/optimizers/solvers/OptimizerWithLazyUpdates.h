@@ -2,8 +2,8 @@
 // Created by henri on 31/01/23.
 //
 
-#ifndef IDOL_LAZYBACKEND_H
-#define IDOL_LAZYBACKEND_H
+#ifndef IDOL_OPTIMIZERWITHLAZYUPDATES_H
+#define IDOL_OPTIMIZERWITHLAZYUPDATES_H
 
 #include "optimizers/Optimizer.h"
 
@@ -42,7 +42,7 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-class LazyBackend : public Optimizer {
+class OptimizerWithLazyUpdates : public Optimizer {
     std::vector<Lazy<Var, VarImplT>> m_variables;
     std::list<unsigned int> m_variables_to_update;
 
@@ -63,7 +63,7 @@ class LazyBackend : public Optimizer {
     void update_objective();
     void update_rhs();
 protected:
-    explicit LazyBackend(const Model& t_parent);
+    explicit OptimizerWithLazyUpdates(const Model& t_parent);
 
     void build() final;
     virtual void hook_build() = 0;
@@ -136,12 +136,12 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-LazyBackend<VarImplT, CtrImplT>::LazyBackend(const Model &t_parent) : Optimizer(t_parent) {
+OptimizerWithLazyUpdates<VarImplT, CtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
 
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::build() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
 
     for (const auto& var : parent().vars()) {
         add(var);
@@ -158,13 +158,13 @@ void LazyBackend<VarImplT, CtrImplT>::build() {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::write(const std::string &t_name) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string &t_name) {
     update();
     hook_write(t_name);
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 
     update_vars();
 
@@ -186,7 +186,7 @@ void LazyBackend<VarImplT, CtrImplT>::update() {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_vars() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
 
     for (const unsigned int index : m_variables_to_update) {
 
@@ -205,7 +205,7 @@ void LazyBackend<VarImplT, CtrImplT>::update_vars() {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_ctrs() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
 
     for (const unsigned int index : m_constraints_to_update) {
 
@@ -225,41 +225,41 @@ void LazyBackend<VarImplT, CtrImplT>::update_ctrs() {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_rhs() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
     set_rhs_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_objective() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_objective() {
     set_objective_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_objective_sense() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_objective_sense() {
     hook_update_objective_sense();
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update(const Var &t_var) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Var &t_var) {
     const unsigned int index = parent().get(Attr::Var::Index, t_var);
     m_variables_to_update.emplace_front(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update(const Ctr &t_ctr) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Ctr &t_ctr) {
     const unsigned int index = parent().get(Attr::Ctr::Index, t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
     if (m_is_initialized) {
         update_vars();
     }
@@ -269,7 +269,7 @@ void LazyBackend<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::add(const Var &t_var) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
     if (m_is_initialized) {
         update_ctrs();
     }
@@ -279,7 +279,7 @@ void LazyBackend<VarImplT, CtrImplT>::add(const Var &t_var) {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::remove(const Var& t_var) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 
     const unsigned index = parent().get(Attr::Var::Index, t_var);
 
@@ -296,7 +296,7 @@ void LazyBackend<VarImplT, CtrImplT>::remove(const Var& t_var) {
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
     const unsigned index = parent().get(Attr::Ctr::Index, t_ctr);
 
@@ -314,7 +314,7 @@ void LazyBackend<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
 
     if (t_attr == Attr::Ctr::Type) {
         update(t_ctr);
@@ -325,7 +325,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Ctr> &t_attr, const Ctr
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, void> &t_attr, int t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, void> &t_attr, int t_value) {
 
     if (t_attr == Attr::Obj::Sense) {
         update_objective_sense();
@@ -336,7 +336,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, void> &t_attr, int t_va
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
 
     if (t_attr == Attr::Var::Type) {
         update(t_var);
@@ -347,7 +347,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<int, Var> &t_attr, const Var
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
 
     if (t_attr == Attr::Var::Obj) {
         update(t_var);
@@ -358,7 +358,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Var> &t_attr, cons
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
 
     if (t_attr == Attr::Obj::Const) {
         update_objective();
@@ -369,7 +369,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, void> &t_attr, Con
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
 
     if (t_attr == Attr::Rhs::Expr) {
         update_rhs();
@@ -380,7 +380,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<LinExpr<Ctr>, void> &t_attr,
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
 
     if (t_attr == Attr::Obj::Expr) {
         update_objective();
@@ -391,7 +391,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<Expr<Var, Var>, void> &t_att
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
 
     if (t_attr == Attr::Ctr::Rhs) {
         update(t_ctr);
@@ -402,7 +402,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr> &t_attr, cons
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) {
 
     if (t_attr == Attr::Matrix::Coeff) {
         update_matrix(t_ctr, t_var, t_value);
@@ -413,7 +413,7 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<Constant, Ctr, Var> &t_attr,
 }
 
 template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
         update(t_var);
@@ -423,4 +423,4 @@ void LazyBackend<VarImplT, CtrImplT>::set(const Req<double, Var> &t_attr, const 
     Base::set(t_attr, t_var, t_value);
 }
 
-#endif //IDOL_LAZYBACKEND_H
+#endif //IDOL_OPTIMIZERWITHLAZYUPDATES_H
