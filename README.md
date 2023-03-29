@@ -5,7 +5,7 @@
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/cmake.yml?branch=main)
 ![GitHub issues](https://img.shields.io/github/issues-raw/hlefebvr/idol)
 ![Repo status](https://www.repostatus.org/badges/latest/wip.svg)
-[![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://codecov.io/github/hlefebvr/idol)
+[![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
 
 Idol is a C++ library for implementing complex decomposition algorithms for
 mathematical optimization.
