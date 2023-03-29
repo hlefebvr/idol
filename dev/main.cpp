@@ -17,6 +17,7 @@
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "optimizers/solvers/MosekOptimizer.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -65,35 +66,12 @@ int main(int t_argc, char** t_argv) {
     //model.set(Attr::Var::Ub, x[0][2], 0);
     //model.set(Attr::Var::Lb, x[0][2], 1);
 
-    for (bool branching_on_master : { true }) {
+    for (bool branching_on_master : { true, true }) {
 
-        for (bool farkas_pricing : { true }) {
+        for (bool farkas_pricing : { true, false }) {
 
-            for (double smoothing : { .5, }) {
+            for (double smoothing : { 0., .3, .5, .8 }) {
 
-                model.use(
-
-                    BranchAndBound<NodeInfo>()
-
-                        .with_node_solver(
-                            DantzigWolfeDecomposition(std_decomposition)
-                                .with_master_solver(GLPKOptimizer::ContinuousRelaxation())
-                                .with_pricing_solver(
-                                        BranchAndBound<NodeInfo>()
-                                                .with_node_solver(GLPKOptimizer::ContinuousRelaxation())
-                                                .with_branching_rule(MostInfeasible())
-                                                .with_node_selection_rule(BestBound())
-                                                .with_log_level(Trace, Green)
-                                )
-                                .with_log_level(Trace, Yellow)
-                        )
-
-                        .with_branching_rule(MostInfeasible())
-                        .with_node_selection_rule(BestBound())
-                        .with_log_level(Trace, Blue)
-                );
-
-                /*
                 model.use(
 
                     BranchAndBound<NodeInfo>()
@@ -102,7 +80,7 @@ int main(int t_argc, char** t_argv) {
 
                             DantzigWolfeDecomposition(decomposition)
 
-                                .with_master_solver(GLPKOptimizer::ContinuousRelaxation())
+                                .with_master_solver(MosekOptimizer::ContinuousRelaxation())
 
                                 .with_pricing_solver(
 
@@ -112,20 +90,18 @@ int main(int t_argc, char** t_argv) {
 
                                                     DantzigWolfeDecomposition(decomposition2)
 
-                                                        .with_master_solver(GurobiOptimizer::ContinuousRelaxation())
+                                                        .with_master_solver(MosekOptimizer::ContinuousRelaxation())
 
                                                         .with_pricing_solver(
 
                                                             BranchAndBound<NodeInfo>()
 
-                                                                    .with_node_solver(GLPKOptimizer::ContinuousRelaxation())
+                                                                    .with_node_solver(MosekOptimizer::ContinuousRelaxation())
 
                                                                     .with_branching_rule(MostInfeasible())
 
                                                                     .with_node_selection_rule(WorstBound())
                                                         )
-
-                                                        .with_dual_pricing_smoothing_stabilization(.3)
 
 
                                             )
@@ -145,7 +121,6 @@ int main(int t_argc, char** t_argv) {
 
                         .with_log_level(Trace, Blue)
                 );
-                */
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
@@ -165,9 +140,9 @@ int main(int t_argc, char** t_argv) {
 
                 const double obj_val = model.get(Attr::Solution::ObjVal);
 
-                if (obj_val != -40.) {
-                    throw Exception("stop");
-                }
+                //if (obj_val != -40.) {
+                //    throw Exception("stop");
+                //}
 
             }
 

@@ -47,7 +47,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
                 .with_node_solver(OptimizerT::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(NodeSelectionRuleT())
-                .with_log_level(Info, Default)
             );
 
     WHEN("The instance \"" + filename + "\" is solved") {
