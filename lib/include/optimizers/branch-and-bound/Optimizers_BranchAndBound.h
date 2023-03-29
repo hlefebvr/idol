@@ -35,6 +35,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
+    unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
     unsigned int m_n_created_nodes = 0;
 
@@ -83,6 +84,14 @@ public:
     ~BranchAndBound() override;
 
     [[nodiscard]] std::string name() const override { return "branch-and-bound"; }
+
+    virtual void set_log_frequency(unsigned int t_log_frequency) { m_log_frequency = t_log_frequency; }
+
+    [[nodiscard]] unsigned int log_frequency() const { return m_log_frequency; }
+
+    virtual void set_subtree_depth(unsigned int t_depth) { m_steps.at(1) = t_depth; }
+
+    [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
 };
 
 template<class NodeInfoT>
@@ -300,8 +309,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    //if (t_node->id() % get(Param::BranchAndBound::LogFrequency) == 0) {
-    if (true) {
+    if (t_node->id() % m_log_frequency == 0) {
         log_node(Info, *t_node);
     }
 

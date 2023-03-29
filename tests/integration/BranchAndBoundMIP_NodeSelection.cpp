@@ -31,6 +31,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     const auto [filename, objective_value] = GENERATE(
             std::make_pair<std::string, double>("KP_instance0.txt", -235.)
     );
+    const auto subtree_depth = GENERATE(0, 2);
 
     const auto instance = read_instance("instances/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();
@@ -47,13 +48,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
                 .with_node_solver(OptimizerT::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(NodeSelectionRuleT())
+                .with_subtree_depth(subtree_depth)
             );
 
-    WHEN("The instance \"" + filename + "\" is solved") {
+    WHEN("The instance \"" + filename + "\" is solved with subtree depth of " + std::to_string(subtree_depth)) {
 
-        std::cout << "Solving " << filename << "..." << std::endl;
         model.optimize();
-        std::cout << "Done." << std::endl;
 
         THEN("The solution status is Optimal") {
 

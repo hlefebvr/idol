@@ -25,6 +25,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
+    const auto subtree_depth = GENERATE(0, 1);
 
     const auto instance = read_instance("instances/generalized-assignment-problem/" + filename);
     const unsigned int n_agents = instance.n_agents();
@@ -130,11 +131,14 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_node_solver(*relaxation_solvers[solver_index].second)
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
+                    .with_subtree_depth(subtree_depth)
             );
 
     std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 
-    WHEN("The instance \"" + filename + "\" is solved by branch-and-bound with relaxation being solved by "
+    WHEN("The instance \"" + filename + "\" is solved by branch-and-bound "
+            + "with subtree depth of " + std::to_string(subtree_depth)
+            + " and with relaxation solved by "
             + relaxation_solvers[solver_index].first + " with "
             + (farkas_pricing ? "farkas pricing" : "artificial variables")
             + ", branching applied to " + (branching_on_master ? "master" : "subproblem")

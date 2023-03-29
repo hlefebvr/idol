@@ -15,6 +15,9 @@ class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBou
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
+
+    std::optional<unsigned int> m_subtree_depth;
+    std::optional<unsigned int> m_log_frequency;
 protected:
     BranchAndBound(const BranchAndBound& t_rhs);
 public:
@@ -42,7 +45,35 @@ public:
     Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
+
+    BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
+
+    BranchAndBound<NodeT>& with_log_frequency(unsigned int t_log_frequency);
 };
+
+template<class NodeT>
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
+
+    if (m_log_frequency.has_value()) {
+        throw Exception("A log frequency has already been given.");
+    }
+
+    m_log_frequency = t_log_frequency;
+
+    return *this;
+}
+
+template<class NodeT>
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_subtree_depth(unsigned int t_depth) {
+
+    if (m_subtree_depth.has_value()) {
+        throw Exception("A subtree depth has already been given");
+    }
+
+    m_subtree_depth = t_depth;
+
+    return *this;
+}
 
 template<class NodeT>
 template<class NodeSelectionRuleFactoryT>
@@ -124,6 +155,14 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
                                      *m_node_selection_rule_factory);
 
     this->handle_default_parameters(result);
+
+    if (m_log_frequency.has_value()) {
+        result->set_log_frequency(m_log_frequency.value());
+    }
+
+    if (m_subtree_depth.has_value()) {
+        result->set_subtree_depth(m_subtree_depth.value());
+    }
 
     return result;
 }

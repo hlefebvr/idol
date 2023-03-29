@@ -63,7 +63,7 @@ void impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_g
         t_optimizer->set_clean_up_threshold(m_clean_up_threshold.value());
     }
 
-    if (m_use_farkas_pricing.value()) {
+    if (m_use_farkas_pricing.has_value()) {
         t_optimizer->set_farkas_pricing(m_use_farkas_pricing.value());
     }
 
