@@ -6,29 +6,16 @@
 #define IDOL_ALGORITHM_H
 
 #include "Optimizer.h"
-#include "optimizers/parameters/Parameters_Algorithm.h"
 #include "modeling/solutions/Solution.h"
 
 class Algorithm : public Optimizer {
-    bool m_is_terminated = false;
 
     int m_status = Unknown;
     int m_reason = NotSpecified;
     double m_best_bound = -Inf;
     double m_best_obj = +Inf;
-
-    Param::Algorithm::values<double> m_double_parameters;
-    Param::Algorithm::values<int> m_int_parameters;
-    Param::Algorithm::values<bool> m_bool_parameters;
 protected:
     void build() override {}
-    void optimize() final;
-    virtual void hook_before_optimize() {}
-    virtual void hook_optimize() = 0;
-    virtual void hook_after_optimize() {}
-
-    [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
-    void terminate() { m_is_terminated = true; }
 
     void set_status(int t_status) { m_status = t_status; }
     void set_reason(int t_reason) { m_reason = t_reason; }
@@ -45,14 +32,6 @@ protected:
 
     [[nodiscard]] int get(const Req<int, void>& t_attr) const override;
     [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
-
-    void set(const Parameter<int>& t_param, int t_value) override;
-    void set(const Parameter<bool>& t_param, bool t_value) override;
-    void set(const Parameter<double>& t_param, double t_value) override;
-
-    [[nodiscard]] int get(const Parameter<int>& t_param) const override;
-    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
-    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
 public:
     explicit Algorithm(const Model& t_model);
 };

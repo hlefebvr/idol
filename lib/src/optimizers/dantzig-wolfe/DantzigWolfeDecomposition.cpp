@@ -5,7 +5,7 @@
 #include "modeling/models/Model.h"
 #include "modeling/expressions/operations/operators.h"
 #include "modeling/objects/Versions.h"
-#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
 DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsigned int> &t_decomposition)
@@ -14,7 +14,7 @@ DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsig
 }
 
 DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
-        : OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition>(t_src),
+        : impl::OptimizerWithColumnGenerationParameters<DantzigWolfeDecomposition>(t_src),
           m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr) {
@@ -60,7 +60,7 @@ Optimizer *DantzigWolfeDecomposition::operator()(const Model &t_original_formula
                                                              subproblems,
                                                              generation_patterns);
 
-    this->set_default_parameters(result);
+    this->handle_default_parameters(result);
 
     return result;
 }

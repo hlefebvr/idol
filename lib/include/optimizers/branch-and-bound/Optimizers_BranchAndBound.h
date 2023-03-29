@@ -103,35 +103,17 @@ Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
-
     m_relaxation->set(t_param, t_value);
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-        Algorithm::set(t_param, t_value);
-    }
-
 }
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<double> &t_param, double t_value) {
-
     m_relaxation->set(t_param, t_value);
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-        Algorithm::set(t_param, t_value);
-    }
-
 }
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<bool> &t_param, bool t_value) {
-
     m_relaxation->set(t_param, t_value);
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-        Algorithm::set(t_param, t_value);
-    }
-
 }
 
 template<class NodeInfoT>
@@ -214,8 +196,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 
     // Reset solution
-    set_best_bound(std::max(-Inf, get(Param::Algorithm::BestObjStop)));
-    set_best_obj(std::min(+Inf, get(Param::Algorithm::BestBoundStop)));
+    set_best_bound(std::max(-Inf, best_obj_stop()));
+    set_best_obj(std::min(+Inf, best_bound_stop()));
     delete m_incumbent;
     m_incumbent = nullptr;
 
@@ -314,8 +296,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
     m_node_updator->apply_local_updates(t_node->info());
 
-    m_relaxation->set(Param::Algorithm::BestBoundStop, std::min(best_obj(), get(Param::Algorithm::BestBoundStop)));
-    m_relaxation->set(Param::Algorithm::TimeLimit, parent().remaining_time());
+    m_relaxation->optimizer().set_best_bound_stop(std::min(best_obj(), best_bound_stop()));
+    m_relaxation->optimizer().set_time_limit(remaining_time());
 
     idol_Log2(Debug, "Beginning to solve node " << t_node->id() << ".");
 
@@ -367,7 +349,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    if (parent().remaining_time() == 0) {
+    if (remaining_time() == 0) {
         set_reason(TimeLimit);
         terminate();
         delete t_node;
@@ -419,7 +401,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
 
     idol_Log2(t_msg_level,
              "<Node=" << (id == -1 ? "H" : std::to_string(id)) << sign << "> "
-              << "<Time=" << parent().time().count() << "> "
+              << "<Time=" << time().count() << "> "
               << "<Levl=" << t_node.level() << "> "
               << "<Stat=" << (SolutionStatus) t_node.status() << "> "
               << "<Reas=" << (SolutionReason) t_node.reason() << "> "
@@ -513,9 +495,9 @@ std::vector<Node<NodeInfoT>*> Optimizers::BranchAndBound<NodeInfoT>::create_chil
 template<class NodeInfoT>
 bool Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
-        || parent().remaining_time() == 0
-        || get(Attr::Solution::RelGap) <= get(Param::Algorithm::MIPRelGap)
-        || get(Attr::Solution::AbsGap) <= get(Param::Algorithm::MIPAbsGap);
+        || remaining_time() == 0
+        || get(Attr::Solution::RelGap) <= relative_gap_tolerance()
+        || get(Attr::Solution::AbsGap) <= absolute_gap_tolerance();
 }
 
 template<class NodeInfoT>

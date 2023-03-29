@@ -123,7 +123,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
                                      *m_branching_rule_factory,
                                      *m_node_selection_rule_factory);
 
-    this->set_default_parameters(result);
+    this->handle_default_parameters(result);
 
     return result;
 }

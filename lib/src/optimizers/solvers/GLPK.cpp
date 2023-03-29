@@ -578,69 +578,6 @@ void Optimizers::GLPK::save_milp_solution_status() {
 
 }
 
-void Optimizers::GLPK::set(const Parameter<bool> &t_param, bool t_value) {
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-            m_infeasible_or_unbounded_info = t_value;
-            return;
-        }
-
-        if (t_param == Param::Algorithm::Presolve) {
-            m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
-            m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
-            return;
-        }
-
-    }
-
-    Base::set(t_param, t_value);
-}
-
-void Optimizers::GLPK::set(const Parameter<double> &t_param, double t_value) {
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::TimeLimit) {
-            const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_value));
-            m_simplex_parameters.tm_lim = value;
-            m_mip_parameters.tm_lim = value;
-            return;
-        }
-
-        if (t_param == Param::Algorithm::BestBoundStop) {
-            m_simplex_parameters.obj_ll = t_value;
-            return;
-        }
-
-        if (t_param == Param::Algorithm::BestObjStop) {
-            m_simplex_parameters.obj_ul = t_value;
-            return;
-        }
-    }
-
-    Base::set(t_param, t_value);
-}
-
-
-bool Optimizers::GLPK::get(const Parameter<bool> &t_param) const {
-
-    if (t_param.is_in_section(Param::Sections::Algorithm)) {
-
-        if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-            return m_infeasible_or_unbounded_info;
-        }
-
-        if (t_param == Param::Algorithm::Presolve) {
-            return m_simplex_parameters.presolve != GLP_MSG_OFF;
-        }
-
-    }
-
-    return LazyBackend::get(t_param);
-}
-
 int Optimizers::GLPK::get(const Req<int, void> &t_attr) const {
 
     if (t_attr == Attr::Solution::Status) {
@@ -652,23 +589,6 @@ int Optimizers::GLPK::get(const Req<int, void> &t_attr) const {
     }
 
     return Base::get(t_attr);
-}
-
-double Optimizers::GLPK::get(const Parameter<double> &t_param) const {
-
-    if (t_param == Param::Algorithm::TimeLimit) {
-        return (double) m_simplex_parameters.tm_lim;
-    }
-
-    if (t_param == Param::Algorithm::BestBoundStop) {
-        return m_simplex_parameters.obj_ll;
-    }
-
-    if (t_param == Param::Algorithm::BestObjStop) {
-        return m_simplex_parameters.obj_ul;
-    }
-
-    return Base::get(t_param);
 }
 
 double Optimizers::GLPK::get(const Req<double, void> &t_attr) const {
@@ -719,6 +639,36 @@ double Optimizers::GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) c
     }
 
     return Base::get(t_attr, t_ctr);
+}
+
+void Optimizers::GLPK::set_time_limit(double t_time_limit) {
+
+    const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit));
+    m_simplex_parameters.tm_lim = value;
+    m_mip_parameters.tm_lim = value;
+
+    Optimizer::set_time_limit(t_time_limit);
+}
+
+void Optimizers::GLPK::set_best_obj_stop(double t_best_obj_stop) {
+    m_simplex_parameters.obj_ul = t_best_obj_stop;
+    Optimizer::set_best_obj_stop(t_best_obj_stop);
+}
+
+void Optimizers::GLPK::set_best_bound_stop(double t_best_bound_stop) {
+    m_simplex_parameters.obj_ll = t_best_bound_stop;
+    Optimizer::set_best_bound_stop(t_best_bound_stop);
+}
+
+void Optimizers::GLPK::set_presolve(bool t_value) {
+    m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
+    m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
+    Optimizer::set_presolve(t_value);
+}
+
+void Optimizers::GLPK::set_infeasible_or_unbounded_info(bool t_value) {
+    m_infeasible_or_unbounded_info = t_value;
+    Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
 #endif

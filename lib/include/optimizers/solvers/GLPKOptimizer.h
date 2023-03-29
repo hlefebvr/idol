@@ -7,7 +7,7 @@
 
 #include "../OptimizerFactory.h"
 
-class GLPKOptimizer : public OptimizerFactory {
+class GLPKOptimizer : public OptimizerFactoryWithDefaultParameters<GLPKOptimizer> {
     bool m_continuous_relaxation = false;
 
     explicit GLPKOptimizer(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}

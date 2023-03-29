@@ -48,7 +48,6 @@ class Model : public AttributeManagers::Delegate, public Matrix {
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
-    Timer m_timer;
     std::unique_ptr<Optimizer> m_optimizer;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
@@ -142,10 +141,6 @@ public:
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
     void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
-
-    [[nodiscard]] const Timer& time() const { return m_timer; }
-
-    [[nodiscard]] double remaining_time() const;
 };
 
 template<class T, class... ArgsT>

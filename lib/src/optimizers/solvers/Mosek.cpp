@@ -3,7 +3,6 @@
 #include "optimizers/solvers/Mosek.h"
 #include "linear-algebra/to_rotated_quadratic_cone.h"
 #include "modeling/expressions/operations/operators.h"
-#include "optimizers/parameters/Parameters_Algorithm.h"
 #include <Eigen/Sparse>
 
 Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
@@ -442,60 +441,34 @@ double Optimizers::Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) 
     return Base::get(t_attr, t_ctr);
 }
 
-double Optimizers::Mosek::get(const Parameter<double> &t_param) const {
-
-    if (t_param == Param::Algorithm::BestBoundStop) {
-        return m_model->getSolverDoubleInfo("lowerObjCut");
-    }
-
-    if (t_param == Param::Algorithm::BestObjStop) {
-        return m_model->getSolverDoubleInfo("upperObjCut");
-    }
-
-    if (t_param == Param::Algorithm::TimeLimit) {
-        return m_model->getSolverDoubleInfo("optimizerMaxTime");
-    }
-
-    return Base::get(t_param);
+void Optimizers::Mosek::set_time_limit(double t_time_limit) {
+    m_model->setSolverParam("optimizerMaxTime", t_time_limit);
+    Optimizer::set_time_limit(t_time_limit);
 }
 
-void Optimizers::Mosek::set(const Parameter<double> &t_param, double t_value) {
-
-    if (t_param == Param::Algorithm::BestBoundStop) {
-        m_model->setSolverParam("lowerObjCut", t_value);
-        return;
-    }
-
-    if (t_param == Param::Algorithm::BestObjStop) {
-        m_model->setSolverParam("upperObjCut", t_value);
-        return;
-    }
-
-    if (t_param == Param::Algorithm::TimeLimit) {
-        m_model->setSolverParam("optimizerMaxTime", t_value);
-        return;
-    }
-
-    Base::set(t_param, t_value);
+void Optimizers::Mosek::set_thread_limit(unsigned int t_thread_limit) {
+    m_model->setSolverParam("numThreads", (int) t_thread_limit);
+    Optimizer::set_thread_limit(t_thread_limit);
 }
 
-void Optimizers::Mosek::set(const Parameter<bool> &t_param, bool t_value) {
-
-    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-        m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
-        return;
-    }
-
-    Base::set(t_param, t_value);
+void Optimizers::Mosek::set_best_obj_stop(double t_best_obj_stop) {
+    m_model->setSolverParam("upperObjCut", t_best_obj_stop);
+    Optimizer::set_best_obj_stop(t_best_obj_stop);
 }
 
-bool Optimizers::Mosek::get(const Parameter<bool> &t_param) const {
+void Optimizers::Mosek::set_best_bound_stop(double t_best_bound_stop) {
+    m_model->setSolverParam("lowerObjCut", t_best_bound_stop);
+    Optimizer::set_best_bound_stop(t_best_bound_stop);
+}
 
-    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-        return m_model->getAcceptedSolutionStatus() == mosek::fusion::AccSolutionStatus::Anything;
-    }
+void Optimizers::Mosek::set_presolve(bool t_value) {
+    m_model->setSolverParam("presolveUse", t_value ? "on" : "off");
+    Optimizer::set_presolve(t_value);
+}
 
-    return Base::get(t_param);
+void Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
+    m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
+    Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
 

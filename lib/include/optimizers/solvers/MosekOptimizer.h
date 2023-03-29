@@ -7,7 +7,7 @@
 
 #include "../OptimizerFactory.h"
 
-class MosekOptimizer : public OptimizerFactory {
+class MosekOptimizer : public OptimizerFactoryWithDefaultParameters<MosekOptimizer> {
     bool m_continuous_relaxation = false;
 
     explicit MosekOptimizer(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}

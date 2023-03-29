@@ -7,12 +7,16 @@
 
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/constraints/Ctr.h"
-#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
 
-class DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition> {
+class DantzigWolfeDecomposition : public impl::OptimizerWithColumnGenerationParameters<DantzigWolfeDecomposition> {
+    // Basic parameters
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
+
+    // Branching parameters
+    std::optional<bool> m_branching_on_master;
 
     DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
 

@@ -79,6 +79,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                 .with_node_solver(TestType::ContinuousRelaxation())
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
+                                .with_log_level(Trace, Default)
                             )
                         .clone()
               )
@@ -115,6 +116,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_node_solver(*relaxation_solvers[solver_index].second)
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
+                    .with_log_level(Debug, Blue)
             );
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);

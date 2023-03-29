@@ -15,7 +15,7 @@ protected:
     void remove(const Ctr &t_ctr) override {}
     void update() override {}
     void write(const std::string &t_name) override {}
-    void optimize() override {}
+    void hook_optimize() override {}
 public:
     template<class ...ArgsT> explicit BackendNotAvailable(ArgsT&& ...t_args) {
         throw Exception("No default backend available.");

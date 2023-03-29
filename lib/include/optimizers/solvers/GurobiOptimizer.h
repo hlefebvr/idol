@@ -7,7 +7,7 @@
 
 #include "../OptimizerFactory.h"
 
-class GurobiOptimizer : public OptimizerFactory {
+class GurobiOptimizer : public OptimizerFactoryWithDefaultParameters<GurobiOptimizer> {
     bool m_continuous_relaxation = false;
 
     explicit GurobiOptimizer(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}

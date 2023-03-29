@@ -14,8 +14,8 @@
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/solvers/GurobiOptimizer.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
-#include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
+#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 int main(int t_argc, char** t_argv) {
@@ -65,35 +65,35 @@ int main(int t_argc, char** t_argv) {
     //model.set(Attr::Var::Ub, x[0][2], 0);
     //model.set(Attr::Var::Lb, x[0][2], 1);
 
-    for (bool branching_on_master : { true, false }) {
+    for (bool branching_on_master : { true }) {
 
-        for (bool farkas_pricing : { true, false }) {
+        for (bool farkas_pricing : { true }) {
 
-            for (double smoothing : { 0., .3, .5, .8 }) {
+            for (double smoothing : { .5, }) {
+
+                model.use(
+
+                    BranchAndBound<NodeInfo>()
+
+                        .with_node_solver(
+                            DantzigWolfeDecomposition(std_decomposition)
+                                .with_master_solver(GLPKOptimizer::ContinuousRelaxation())
+                                .with_pricing_solver(
+                                        BranchAndBound<NodeInfo>()
+                                                .with_node_solver(GLPKOptimizer::ContinuousRelaxation())
+                                                .with_branching_rule(MostInfeasible())
+                                                .with_node_selection_rule(BestBound())
+                                                .with_log_level(Trace, Green)
+                                )
+                                .with_log_level(Trace, Yellow)
+                        )
+
+                        .with_branching_rule(MostInfeasible())
+                        .with_node_selection_rule(BestBound())
+                        .with_log_level(Trace, Blue)
+                );
 
                 /*
-                model.use(BranchAndBoundOptimizer(
-
-                            DantzigWolfeOptimizer(
-                                    std_decomposition,
-
-                                    GurobiOptimizer::ContinuousRelaxation(),
-
-                                    BranchAndBoundOptimizer(
-                                            GurobiOptimizer::ContinuousRelaxation(),
-                                            MostInfeasible(),
-                                            BestBound()
-                                    ).with_log_level(Info, Cyan)
-
-                            ).with_log_level(Info, Green),
-
-                            MostInfeasible(),
-                            BestBound()
-
-                        ).with_log_level(Info, Blue)
-                );
-                 */
-
                 model.use(
 
                     BranchAndBound<NodeInfo>()
@@ -102,7 +102,7 @@ int main(int t_argc, char** t_argv) {
 
                             DantzigWolfeDecomposition(decomposition)
 
-                                .with_master_solver(GurobiOptimizer::ContinuousRelaxation())
+                                .with_master_solver(GLPKOptimizer::ContinuousRelaxation())
 
                                 .with_pricing_solver(
 
@@ -125,6 +125,9 @@ int main(int t_argc, char** t_argv) {
                                                                     .with_node_selection_rule(WorstBound())
                                                         )
 
+                                                        .with_dual_pricing_smoothing_stabilization(.3)
+
+
                                             )
 
                                             .with_branching_rule(MostInfeasible())
@@ -140,8 +143,9 @@ int main(int t_argc, char** t_argv) {
 
                         .with_node_selection_rule(BestBound())
 
-                        .with_log_level(Info, Blue)
+                        .with_log_level(Trace, Blue)
                 );
+                */
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);
                 model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);

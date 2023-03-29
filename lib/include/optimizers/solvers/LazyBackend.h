@@ -68,9 +68,6 @@ protected:
     void build() final;
     virtual void hook_build() = 0;
 
-    void optimize() final;
-    virtual void hook_optimize() = 0;
-
     void write(const std::string &t_name) final;
     virtual void hook_write(const std::string& t_name) = 0;
 
@@ -259,12 +256,6 @@ void LazyBackend<VarImplT, CtrImplT>::update(const Ctr &t_ctr) {
 template<class VarImplT, class CtrImplT>
 void LazyBackend<VarImplT, CtrImplT>::update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
-}
-
-template<class VarImplT, class CtrImplT>
-void LazyBackend<VarImplT, CtrImplT>::optimize() {
-    update();
-    hook_optimize();
 }
 
 template<class VarImplT, class CtrImplT>

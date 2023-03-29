@@ -3,7 +3,6 @@
 //
 #include "modeling/models/Model.h"
 #include "modeling/objects/Env.h"
-#include "optimizers/parameters/Parameters_Algorithm.h"
 
 Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 
@@ -486,9 +485,7 @@ AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
 
 void Model::optimize() {
     throw_if_no_optimizer();
-    m_timer.start();
     optimizer().optimize();
-    m_timer.stop();
 }
 
 void Model::write(const std::string& t_name) {
@@ -510,10 +507,6 @@ void Model::use(const OptimizerFactory &t_optimizer_factory) {
 void Model::unuse() {
     m_optimizer.reset();
     m_optimizer.reset();
-}
-
-double Model::remaining_time() const {
-    return std::max(0., get(Param::Algorithm::TimeLimit) - time().count());
 }
 
 bool Model::has_optimizer() const {

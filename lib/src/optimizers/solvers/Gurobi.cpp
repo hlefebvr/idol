@@ -5,7 +5,6 @@
 
 #include "optimizers/solvers/Gurobi.h"
 #include "optimizers/Logger.h"
-#include "optimizers/parameters/Parameters_Algorithm.h"
 
 std::unique_ptr<GRBEnv> Optimizers::Gurobi::s_global_env;
 
@@ -366,56 +365,34 @@ double Optimizers::Gurobi::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr)
     return Base::get(t_attr, t_ctr);
 }
 
-double Optimizers::Gurobi::get(const Parameter<double> &t_param) const {
-
-    if (t_param == Param::Algorithm::BestBoundStop) {
-        return m_model.get(GRB_DoubleParam_BestBdStop);
-    }
-
-    if (t_param == Param::Algorithm::BestObjStop) {
-        return m_model.get(GRB_DoubleParam_BestObjStop);
-    }
-
-    return Base::get(t_param);
+void Optimizers::Gurobi::set_time_limit(double t_time_limit) {
+    m_model.set(GRB_DoubleParam_TimeLimit, t_time_limit);
+    Optimizer::set_time_limit(t_time_limit);
 }
 
-void Optimizers::Gurobi::set(const Parameter<double> &t_param, double t_value) {
-
-    if (t_param == Param::Algorithm::BestBoundStop) {
-        m_model.set(GRB_DoubleParam_BestBdStop, t_value);
-        return;
-    }
-
-    if (t_param == Param::Algorithm::BestObjStop) {
-        m_model.set(GRB_DoubleParam_BestObjStop, t_value);
-        return;
-    }
-
-    if (t_param == Param::Algorithm::TimeLimit) {
-        m_model.set(GRB_DoubleParam_TimeLimit, t_value);
-        return;
-    }
-
-    Base::set(t_param, t_value);
+void Optimizers::Gurobi::set_thread_limit(unsigned int t_thread_limit) {
+    m_model.set(GRB_IntParam_Threads, t_thread_limit);
+    Optimizer::set_thread_limit(t_thread_limit);
 }
 
-void Optimizers::Gurobi::set(const Parameter<bool> &t_param, bool t_value) {
-
-    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-        m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
-        return;
-    }
-
-    Base::set(t_param, t_value);
+void Optimizers::Gurobi::set_best_obj_stop(double t_best_obj_stop) {
+    m_model.set(GRB_DoubleParam_BestBdStop, t_best_obj_stop);
+    Optimizer::set_best_obj_stop(t_best_obj_stop);
 }
 
-bool Optimizers::Gurobi::get(const Parameter<bool> &t_param) const {
+void Optimizers::Gurobi::set_best_bound_stop(double t_best_bound_stop) {
+    m_model.set(GRB_DoubleParam_BestObjStop, t_best_bound_stop);
+    Optimizer::set_best_bound_stop(t_best_bound_stop);
+}
 
-    if (t_param == Param::Algorithm::InfeasibleOrUnboundedInfo) {
-        return m_model.get(GRB_IntParam_InfUnbdInfo);
-    }
+void Optimizers::Gurobi::set_presolve(bool t_value) {
+    m_model.set(GRB_IntParam_Presolve, t_value);
+    Optimizer::set_presolve(t_value);
+}
 
-    return Base::get(t_param);
+void Optimizers::Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
+    m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
+    Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
 #endif

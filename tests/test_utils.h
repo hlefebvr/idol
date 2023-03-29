@@ -53,9 +53,6 @@ using default_solver = std::conditional_t<has_milp_solver, std::tuple_element_t<
         std::conditional_t<has_lp_solver, std::tuple_element_t<0, lp_solvers>, BackendNotAvailable>
 >;
 
-
-#include "optimizers/parameters/Parameters_Algorithm.h"
-
 #include "./cartesian_product.h"
 
 #include <catch2/catch_all.hpp>

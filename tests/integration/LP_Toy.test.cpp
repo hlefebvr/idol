@@ -76,9 +76,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add_many(x, y, c1, c2, c3);
         model.set(Attr::Obj::Expr, -3 * x - 2 * y);
 
-        model.use(TestType());
-
-        model.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+        model.use(TestType().with_infeasible_or_unbounded_info(true));
 
         model.optimize();
 
@@ -122,9 +120,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add_many(u, v, w, c1, c2);
         model.set(Attr::Obj::Expr, objective);
 
-        model.use(TestType());
-
-        model.set(Param::Algorithm::InfeasibleOrUnboundedInfo, true);
+        model.use(TestType().with_infeasible_or_unbounded_info(true));
 
         model.optimize();
 

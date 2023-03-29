@@ -68,11 +68,6 @@ protected:
     using LazyBackend::get;
     using LazyBackend::set;
 
-    void set(const Parameter<bool>& t_param, bool t_value) override;
-    void set(const Parameter<double>& t_param, double t_value) override;
-    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
-    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
-
     [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
     [[nodiscard]] double get(const Req<double, void> &t_attr) const override;
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;
@@ -83,6 +78,18 @@ public:
     ~Mosek() override;
 
     [[nodiscard]] std::string name() const override { return "mosek"; }
+
+    void set_time_limit(double t_time_limit) override;
+
+    void set_thread_limit(unsigned int t_thread_limit) override;
+
+    void set_best_obj_stop(double t_best_obj_stop) override;
+
+    void set_best_bound_stop(double t_best_bound_stop) override;
+
+    void set_presolve(bool t_value) override;
+
+    void set_infeasible_or_unbounded_info(bool t_value) override;
 };
 
 #endif

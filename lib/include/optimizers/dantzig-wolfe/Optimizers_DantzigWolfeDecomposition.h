@@ -5,7 +5,7 @@
 #ifndef IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 #define IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 
-#include "optimizers/column-generation/ColumnGeneration.h"
+#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 
 namespace Optimizers {
     class DantzigWolfeDecomposition;
