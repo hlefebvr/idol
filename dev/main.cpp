@@ -78,41 +78,53 @@ int main(int t_argc, char** t_argv) {
 
                         .with_node_solver(
 
-                            DantzigWolfeDecomposition(decomposition)
+                                DantzigWolfeDecomposition(decomposition)
 
-                                .with_master_solver(Mosek::ContinuousRelaxation())
+                                        .with_master_solver(Gurobi::ContinuousRelaxation())
 
-                                .with_pricing_solver(
+                                        .with_pricing_solver(
 
-                                    BranchAndBound<NodeInfo>()
+                                                BranchAndBound<NodeInfo>()
 
-                                            .with_node_solver(
+                                                        .with_node_solver(
 
-                                                    DantzigWolfeDecomposition(decomposition2)
+                                                                DantzigWolfeDecomposition(decomposition2)
 
-                                                        .with_master_solver(Mosek::ContinuousRelaxation())
+                                                                        .with_master_solver(
+                                                                                Gurobi::ContinuousRelaxation())
 
-                                                        .with_pricing_solver(
+                                                                        .with_pricing_solver(
 
-                                                            BranchAndBound<NodeInfo>()
+                                                                                BranchAndBound<NodeInfo>()
 
-                                                                    .with_node_solver(Mosek::ContinuousRelaxation())
+                                                                                        .with_node_solver(
+                                                                                                Gurobi::ContinuousRelaxation())
 
-                                                                    .with_branching_rule(MostInfeasible())
+                                                                                        .with_branching_rule(
+                                                                                                MostInfeasible())
 
-                                                                    .with_node_selection_rule(WorstBound())
+                                                                                        .with_node_selection_rule(
+                                                                                                WorstBound())
+                                                                        )
+
+
                                                         )
 
+                                                        .with_branching_rule(MostInfeasible())
 
-                                            )
+                                                        .with_node_selection_rule(DepthFirst())
 
-                                            .with_branching_rule(MostInfeasible())
+                                        )
 
-                                            .with_node_selection_rule(DepthFirst())
+                                        .with_log_level(Info, Magenta)
 
-                                )
+                                        .with_farkas_pricing(farkas_pricing)
 
-                                .with_log_level(Info, Magenta)
+                                        .with_artificial_variables_cost(1e5)
+
+                                .with_dual_price_smoothing_stabilization(smoothing)
+
+                                .with_branching_on_master(branching_on_master)
                         )
 
                         .with_branching_rule(MostInfeasible())
@@ -121,12 +133,6 @@ int main(int t_argc, char** t_argv) {
 
                         .with_log_level(Trace, Blue)
                 );
-
-                model.set(Param::ColumnGeneration::LogFrequency, 1);
-                model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
-                model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
-                model.set(Param::ColumnGeneration::SmoothingFactor, smoothing);
-                model.set(Param::ColumnGeneration::ArtificialVarCost, 1e5);
 
                 std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
 

@@ -74,11 +74,6 @@ protected:
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
     void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
-
-    void set(const Parameter<bool>& t_param, bool t_value) override;
-    void set(const Parameter<double>& t_param, double t_value) override;
-    void set(const Parameter<int>& t_param, int t_value) override;
-    //[[nodiscard]] int get(const Parameter<int>& t_param) const override;
 public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
@@ -99,21 +94,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::build() {
 template<class NodeInfoT>
 Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
     delete m_incumbent;
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<int> &t_param, int t_value) {
-    m_relaxation->set(t_param, t_value);
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<double> &t_param, double t_value) {
-    m_relaxation->set(t_param, t_value);
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Parameter<bool> &t_param, bool t_value) {
-    m_relaxation->set(t_param, t_value);
 }
 
 template<class NodeInfoT>

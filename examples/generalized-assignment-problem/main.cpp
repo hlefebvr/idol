@@ -56,25 +56,21 @@ int main(int t_argc, const char** t_argv) {
 
                 .with_node_solver(
                     DantzigWolfeDecomposition(decomposition)
-                        .with_master_solver(GLPK::GLPK())
+                        .with_master_solver(GLPK::ContinuousRelaxation())
                         .with_pricing_solver(GLPK())
                         .with_log_level(Info, Yellow)
+                        .with_farkas_pricing(false)
+                        .with_artificial_variables_cost(1e+4)
+                        .with_branching_on_master(true)
+                        .with_dual_price_smoothing_stabilization(.3)
+                        .with_column_pool_clean_up(1e+8, .75)
                 )
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
             );
 
-    // Set parameters
-    /*
-    model.set(Param::ColumnGeneration::FarkasPricing, false);
-    model.set(Param::ColumnGeneration::ArtificialVarCost, 1e+4);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
-    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
-    model.set(Param::ColumnGeneration::CleanUpThreshold, 1e+8);
-    model.set(Param::ColumnGeneration::CleanUpRatio, .75);
-     */
-    // model.set(Param::BranchAndPrice::IntegerMasterHeuristic, true);
+    // TODO: add primal heuristic
 
     // Solve
     model.optimize();

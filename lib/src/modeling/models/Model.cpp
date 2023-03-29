@@ -471,18 +471,6 @@ Model* Model::clone() const {
     return result;
 }
 
-AttributeManager &Model::parameter_delegate(const Parameter<double> &t_param) {
-    return optimizer();
-}
-
-AttributeManager &Model::parameter_delegate(const Parameter<int> &t_param) {
-    return optimizer();
-}
-
-AttributeManager &Model::parameter_delegate(const Parameter<bool> &t_param) {
-    return optimizer();
-}
-
 void Model::optimize() {
     throw_if_no_optimizer();
     optimizer().optimize();

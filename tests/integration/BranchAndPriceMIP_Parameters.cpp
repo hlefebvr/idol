@@ -7,7 +7,6 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/Parameters_ColumnGeneration.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
@@ -66,6 +65,10 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     DantzigWolfeDecomposition(std_decomposition)
                         .with_master_solver(TestType::ContinuousRelaxation())
                         .with_pricing_solver(TestType())
+                        .with_branching_on_master(branching_on_master)
+                        .with_farkas_pricing(farkas_pricing)
+                        .with_dual_price_smoothing_stabilization(smoothing_factor)
+                        .with_artificial_variables_cost(1e5)
                         .clone()
             )
             },
@@ -80,6 +83,10 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
                             )
+                        .with_branching_on_master(branching_on_master)
+                        .with_farkas_pricing(farkas_pricing)
+                        .with_dual_price_smoothing_stabilization(smoothing_factor)
+                        .with_artificial_variables_cost(1e5)
                         .clone()
               )
             },
@@ -99,10 +106,18 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                                 .with_branching_rule(MostInfeasible())
                                                 .with_node_selection_rule(BestBound())
                                         )
+                                        .with_branching_on_master(branching_on_master)
+                                        .with_farkas_pricing(farkas_pricing)
+                                        .with_dual_price_smoothing_stabilization(smoothing_factor)
+                                        .with_artificial_variables_cost(1e5)
                                 )
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
                         )
+                        .with_branching_on_master(branching_on_master)
+                        .with_farkas_pricing(farkas_pricing)
+                        .with_dual_price_smoothing_stabilization(smoothing_factor)
+                        .with_artificial_variables_cost(1e5)
                         .clone()
               )
             }
@@ -116,12 +131,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
             );
-
-    model.set(Param::ColumnGeneration::LogFrequency, 1);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);
-    model.set(Param::ColumnGeneration::FarkasPricing, farkas_pricing);
-    model.set(Param::ColumnGeneration::SmoothingFactor, smoothing_factor);
-    model.set(Param::ColumnGeneration::ArtificialVarCost, 1e5);
 
     std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 

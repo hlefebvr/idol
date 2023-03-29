@@ -9,7 +9,7 @@
 #include "modeling/constraints/Ctr.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-class DantzigWolfeDecomposition : public impl::OptimizerWithColumnGenerationParameters<DantzigWolfeDecomposition> {
+class DantzigWolfeDecomposition : public impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition> {
     // Basic parameters
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
@@ -56,6 +56,8 @@ public:
     DantzigWolfeDecomposition& with_master_solver(const OptimizerFactory& t_master_solver);
 
     DantzigWolfeDecomposition& with_pricing_solver(const OptimizerFactory& t_pricing_solver);
+
+    DantzigWolfeDecomposition& with_branching_on_master(bool t_value);
 
     Optimizer *operator()(const Model &t_original_formulation) const override;
 

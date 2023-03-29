@@ -14,7 +14,7 @@ DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsig
 }
 
 DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
-        : impl::OptimizerWithColumnGenerationParameters<DantzigWolfeDecomposition>(t_src),
+        : impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition>(t_src),
           m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr) {
@@ -61,6 +61,11 @@ Optimizer *DantzigWolfeDecomposition::operator()(const Model &t_original_formula
                                                              generation_patterns);
 
     this->handle_default_parameters(result);
+    this->handle_column_generation_parameters(result);
+
+    if (m_branching_on_master.has_value()) {
+        result->set_branching_on_master(m_branching_on_master.value());
+    }
 
     return result;
 }
@@ -306,6 +311,17 @@ DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_master_solver(const O
     }
 
     m_master_optimizer.reset(t_master_solver.clone());
+
+    return *this;
+}
+
+DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_branching_on_master(bool t_value) {
+
+    if (m_branching_on_master.has_value()) {
+        throw Exception("Branching on master setting has already been given.");
+    }
+
+    m_branching_on_master = t_value;
 
     return *this;
 }

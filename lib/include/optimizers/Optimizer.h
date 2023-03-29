@@ -78,7 +78,7 @@ public:
 
     virtual void set_time_limit(double t_time_limit) { m_time_limit = t_time_limit; }
 
-    [[nodiscard]] unsigned int tread_limit() const { return m_thread_limit; }
+    [[nodiscard]] unsigned int thread_limit() const { return m_thread_limit; }
 
     virtual void set_thread_limit(unsigned int t_thread_limit) { m_thread_limit = t_thread_limit; }
 

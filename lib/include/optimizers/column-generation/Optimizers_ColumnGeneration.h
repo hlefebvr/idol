@@ -6,8 +6,7 @@
 #define IDOL_OPTIMIZERS_COLUMNGENERATION_H
 
 #include "../Algorithm.h"
-#include "ColumnGeneration.h"
-#include "optimizers/column-generation/Parameters_ColumnGeneration.h"
+#include "modeling/models/Model.h"
 #include "containers/GeneratorPool.h"
 
 namespace Optimizers {
@@ -25,6 +24,34 @@ public:
                      std::vector<Column> t_generation_patterns);
 
     [[nodiscard]] std::string name() const override { return "column-generation"; }
+
+    virtual void set_parallel_pricing_limit(unsigned int t_limit) { m_parallel_pricing_limit = t_limit; }
+
+    [[nodiscard]] unsigned int parallel_pricing_limit() const { return m_parallel_pricing_limit; }
+
+    virtual void set_clean_up_ratio(double t_ratio) { m_clean_up_ratio = t_ratio; }
+
+    [[nodiscard]] double clean_up_ratio() const { return m_clean_up_ratio; }
+
+    virtual void set_clean_up_threshold(unsigned int t_threshold) { m_clean_up_threshold = t_threshold; }
+
+    [[nodiscard]] unsigned int clean_up_threshold() const { return m_clean_up_threshold; }
+
+    virtual void set_farkas_pricing(bool t_value) { m_farkas_pricing = t_value; }
+
+    [[nodiscard]] bool farkas_pricing() const { return m_farkas_pricing; }
+
+    virtual void set_artificial_variables_cost(double t_cost) { m_artificial_variables_cost = t_cost; }
+
+    [[nodiscard]] double artificial_variable_cost() const { return m_artificial_variables_cost; }
+
+    virtual void set_dual_price_smoothing_stabilization_factor(double t_factor) { m_smoothing_factor = t_factor; }
+
+    [[nodiscard]] double dual_price_smoothing_stabilization_factor() const { return m_smoothing_factor; }
+
+    virtual void set_log_frequency(unsigned int t_frequency) { m_log_frequency = t_frequency; }
+
+    [[nodiscard]] unsigned int log_frequency() const { return m_log_frequency; }
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -36,8 +63,6 @@ protected:
     void write(const std::string &t_name) override;
 
     virtual void add_artificial_variables();
-    virtual void switch_to_pure_phase_I();
-    virtual void restore_from_pure_phase_I();
     virtual void solve_master_problem();
     void log_master_solution(bool t_force = false) const;
     void log_subproblem_solution(const Subproblem& t_subproblem, bool t_force = false) const;
@@ -55,17 +80,10 @@ protected:
     using Algorithm::get;
 
     // Variables
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override { return m_master->get(t_attr, t_var); }
-    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_var) const override { return m_master->get(t_attr, t_var); }
-    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override { m_master->set(t_attr, t_var, t_value); }
-    void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value) override { m_master->set(t_attr, t_var, t_value); }
-    // Parameters
-    void set(const Parameter<bool>& t_param, bool t_value) override;
-    void set(const Parameter<double>& t_param, double t_value) override;
-    void set(const Parameter<int>& t_param, int t_value) override;
-    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override;
-    [[nodiscard]] double get(const Parameter<double>& t_param) const override;
-    [[nodiscard]] int get(const Parameter<int>& t_param) const override;
+    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_var) const override;
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
+    void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value) override;
 
     std::unique_ptr<Model> m_master;
     std::vector<Subproblem> m_subproblems;
@@ -76,15 +94,18 @@ protected:
     unsigned int m_n_generated_columns_at_last_iteration = 0;
 
     std::list<Var> m_artificial_variables;
-    bool m_current_is_farkas_pricing = false;
-    bool m_current_is_pure_phase_I = false;
+    bool m_current_iteration_is_farkas_pricing = false;
 
     std::optional<Solution::Dual> m_current_dual_solution;
     std::optional<Solution::Dual> m_adjusted_dual_solution;
 
-    Param::ColumnGeneration::values<bool> m_bool_parameters;
-    Param::ColumnGeneration::values<int> m_int_parameters;
-    Param::ColumnGeneration::values<double> m_double_parameters;
+    unsigned int m_parallel_pricing_limit = 1;
+    double m_clean_up_ratio = .75;
+    unsigned int m_clean_up_threshold = 1e4;
+    bool m_farkas_pricing = true;
+    double m_artificial_variables_cost = 1e7;
+    double m_smoothing_factor = 0.;
+    unsigned int m_log_frequency = 10;
 };
 
 class Optimizers::ColumnGeneration::Subproblem {

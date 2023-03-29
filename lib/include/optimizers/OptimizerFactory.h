@@ -8,6 +8,8 @@
 #include "Logger.h"
 #include "optimizers/Optimizer.h"
 
+#include <optional>
+
 class Model;
 
 class OptimizerFactory {

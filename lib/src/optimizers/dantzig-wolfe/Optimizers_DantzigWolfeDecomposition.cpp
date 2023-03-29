@@ -79,7 +79,7 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var
         return t_generator.get(t_var) < t_value;
     });
 
-    if (!parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_branching_on_master) {
         subproblem.m_model->set(::Attr::Var::Lb, t_var, t_value);
         return;
     }
@@ -97,7 +97,7 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var
         return t_generator.get(t_var) > t_value;
     });
 
-    if (!parent().get(::Param::ColumnGeneration::BranchingOnMaster)) {
+    if (!m_branching_on_master) {
         subproblem.m_model->set(::Attr::Var::Ub, t_var, t_value);
         return;
     }

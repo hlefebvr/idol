@@ -57,11 +57,12 @@ void Optimizers::ColumnGeneration::hook_before_optimize() {
     m_n_generated_columns_at_last_iteration = 0;
     m_current_dual_solution.reset();
     m_adjusted_dual_solution.reset();
-    m_current_is_farkas_pricing = false;
-    m_current_is_pure_phase_I = false;
+    m_current_iteration_is_farkas_pricing = false;
 
-    if (!get(Param::ColumnGeneration::FarkasPricing)) {
+    if (!m_farkas_pricing) {
         add_artificial_variables();
+    } else if (!m_master->optimizer().infeasible_or_unbounded_info()) {
+        m_master->optimizer().set_infeasible_or_unbounded_info(true);
     }
 
     for (auto& subproblem : m_subproblems) {
@@ -74,10 +75,9 @@ void Optimizers::ColumnGeneration::hook_before_optimize() {
 void Optimizers::ColumnGeneration::add_artificial_variables() {
 
     auto& env = m_master->env();
-    const double artificial_cost = parent().get(Param::ColumnGeneration::ArtificialVarCost);
     const auto add_to = [&](const Ctr& t_ctr, double t_sign) {
 
-        Column column(artificial_cost);
+        Column column(m_artificial_variables_cost);
         column.linear().set(t_ctr, t_sign);
 
         Var artifical_var(env, 0., Inf, Continuous, std::move(column), "_artificial_" + std::to_string(m_artificial_variables.size()));
@@ -120,7 +120,7 @@ void Optimizers::ColumnGeneration::hook_optimize() {
 
             log_master_solution();
 
-        } else if (m_current_is_farkas_pricing) {
+        } else if (m_current_iteration_is_farkas_pricing) {
 
             set_status(Infeasible);
             set_reason(Proved);
@@ -160,7 +160,7 @@ void Optimizers::ColumnGeneration::solve_master_problem() {
 
 void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
 
-    if (!t_force && m_iteration_count % get(Param::ColumnGeneration::LogFrequency) != 0) {
+    if (!t_force && m_iteration_count % m_log_frequency != 0) {
         return;
     }
 
@@ -184,7 +184,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
 void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::ColumnGeneration::Subproblem &t_subproblem,
                                                            bool t_force) const {
 
-    if (!t_force && m_iteration_count % get(Param::ColumnGeneration::LogFrequency) != 0) {
+    if (!t_force && m_iteration_count % m_log_frequency != 0) {
         return;
     }
 
@@ -221,13 +221,13 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         m_current_dual_solution = save(*m_master, Attr::Solution::Dual);
 
-        if (m_current_is_farkas_pricing) {
+        if (m_current_iteration_is_farkas_pricing) {
             m_adjusted_dual_solution.reset();
         }
 
-        m_current_is_farkas_pricing = false;
+        m_current_iteration_is_farkas_pricing = false;
 
-        if (!get(Param::ColumnGeneration::FarkasPricing)) {
+        if (!m_farkas_pricing) {
 
             analyze_feasibility_with_artificial_variables();
 
@@ -248,9 +248,9 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
     if (status == Infeasible) {
 
-        if (get(Param::ColumnGeneration::FarkasPricing)) {
+        if (m_farkas_pricing) {
 
-            m_current_is_farkas_pricing = true;
+            m_current_iteration_is_farkas_pricing = true;
             m_current_dual_solution = save(*m_master, Attr::Solution::Farkas);
             m_adjusted_dual_solution.reset();
 
@@ -293,24 +293,23 @@ void Optimizers::ColumnGeneration::update_subproblems() {
 
     } else {
 
-        const double factor = get(Param::ColumnGeneration::SmoothingFactor);
-        if (factor == 0.) {
+        if (m_smoothing_factor == 0.) {
             m_adjusted_dual_solution = m_current_dual_solution.value();
         } else {
-            m_adjusted_dual_solution = factor * m_adjusted_dual_solution.value() + (1. - factor) * m_current_dual_solution.value();
+            m_adjusted_dual_solution = m_smoothing_factor * m_adjusted_dual_solution.value() + (1. - m_smoothing_factor) * m_current_dual_solution.value();
         }
 
     }
 
     for (auto& subproblem : m_subproblems) {
-        subproblem.update_objective(m_current_is_farkas_pricing, m_adjusted_dual_solution.value());
+        subproblem.update_objective(m_current_iteration_is_farkas_pricing, m_adjusted_dual_solution.value());
     }
 
 }
 
 void Optimizers::ColumnGeneration::solve_subproblems() {
 
-    const unsigned int n_threads = get(Param::ColumnGeneration::NumParallelPricing);
+    const unsigned int n_threads = std::min(thread_limit(), m_parallel_pricing_limit);
 
 #pragma omp parallel for num_threads(n_threads) default(none)
     for (auto & subproblem : m_subproblems) {
@@ -347,7 +346,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     }
 
-    if (!m_current_is_farkas_pricing) {
+    if (!m_current_iteration_is_farkas_pricing) {
 
         const double lower_bound = m_master->get(Attr::Solution::ObjVal) + reduced_costs;
 
@@ -381,7 +380,7 @@ void Optimizers::ColumnGeneration::enrich_master_problem() {
 
         bool can_enrich_master;
 
-        if (m_current_is_farkas_pricing) {
+        if (m_current_iteration_is_farkas_pricing) {
             can_enrich_master = subproblem.m_model->get(Attr::Solution::ObjVal) < -1e-6;
         } else {
             can_enrich_master = subproblem.compute_reduced_cost(m_current_dual_solution.value()) < 0;
@@ -441,88 +440,20 @@ bool Optimizers::ColumnGeneration::stopping_condition() const {
            || remaining_time() == 0;
 }
 
-void Optimizers::ColumnGeneration::set(const Parameter<bool> &t_param, bool t_value) {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-
-        m_bool_parameters.set(t_param, t_value);
-
-        if (t_param == Param::ColumnGeneration::FarkasPricing) {
-            m_master->optimizer().set_infeasible_or_unbounded_info(true);
-        }
-
-        return;
-    }
-
-    Algorithm::set(t_param, t_value);
+double Optimizers::ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+    return m_master->get(t_attr, t_var);
 }
 
-void Optimizers::ColumnGeneration::set(const Parameter<double> &t_param, double t_value) {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-        m_double_parameters.set(t_param, t_value);
-        return;
-    }
-
-    Algorithm::set(t_param, t_value);
+int Optimizers::ColumnGeneration::get(const Req<int, Var> &t_attr, const Var &t_var) const {
+    return m_master->get(t_attr, t_var);;
 }
 
-void Optimizers::ColumnGeneration::set(const Parameter<int> &t_param, int t_value) {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-        m_int_parameters.set(t_param, t_value);
-        return;
-    }
-
-    Algorithm::set(t_param, t_value);
+void Optimizers::ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+    m_master->set(t_attr, t_var, t_value);
 }
 
-bool Optimizers::ColumnGeneration::get(const Parameter<bool> &t_param) const {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-        return m_bool_parameters.get(t_param);
-    }
-
-    return Algorithm::get(t_param);
-}
-
-double Optimizers::ColumnGeneration::get(const Parameter<double> &t_param) const {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-        return m_double_parameters.get(t_param);
-    }
-
-    return Algorithm::get(t_param);
-}
-
-int Optimizers::ColumnGeneration::get(const Parameter<int> &t_param) const {
-
-    if (t_param.is_in_section(Param::Sections::ColumnGeneration)) {
-        return m_int_parameters.get(t_param);
-    }
-
-    return Algorithm::get(t_param);
-}
-
-void Optimizers::ColumnGeneration::switch_to_pure_phase_I() {
-
-    Expr<Var, Var> objective;
-
-    for (const auto& var : m_artificial_variables) {
-        objective += var;
-    }
-
-    set(Attr::Obj::Expr, std::move(objective));
-
-    m_current_is_pure_phase_I = true;
-}
-
-void Optimizers::ColumnGeneration::restore_from_pure_phase_I() {
-
-    set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
-
-    m_current_is_pure_phase_I = false;
-
+void Optimizers::ColumnGeneration::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
+    m_master->set(t_attr, t_var, t_value);
 }
 
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
@@ -624,14 +555,12 @@ Optimizers::ColumnGeneration::Subproblem::create_column_from_generator(const Sol
 
 void Optimizers::ColumnGeneration::Subproblem::clean_up() {
 
-    const unsigned int threshold = m_parent.parent().get(::Param::ColumnGeneration::CleanUpThreshold);
-
-    if (m_pool.size() < threshold) {
+    if (m_pool.size() < m_parent.m_clean_up_threshold) {
         return;
     }
 
     auto& master = *m_parent.m_master;
-    const double ratio = m_parent.parent().get(::Param::ColumnGeneration::CleanUpRatio);
+    const double ratio = m_parent.m_clean_up_ratio;
     const auto n_to_remove = (unsigned int) (m_pool.size() * (1 - ratio));
     unsigned int n_removed = 0;
 

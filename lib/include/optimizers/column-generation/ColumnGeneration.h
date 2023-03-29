@@ -7,9 +7,9 @@
 
 #include <vector>
 #include "modeling/models/Model.h"
-#include "OptimizerWithColumnGenerationParameters.h"
+#include "OptimizerFactoryWithColumnGenerationParameters.h"
 
-class ColumnGeneration : public impl::OptimizerWithColumnGenerationParameters<ColumnGeneration> {
+class ColumnGeneration : public impl::OptimizerFactoryWithColumnGenerationParameters<ColumnGeneration> {
 public:
     explicit ColumnGeneration(unsigned int t_n_subproblems);
 

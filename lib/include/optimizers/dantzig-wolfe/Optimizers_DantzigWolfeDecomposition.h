@@ -15,6 +15,8 @@ class Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGeneratio
     Annotation<Ctr, unsigned int> m_constraint_flag;
     Annotation<Var, unsigned int> m_variable_flag;
 
+    bool m_branching_on_master = true;
+
     Map<Var, Ctr> m_lower_bound_constraints;
     Map<Var, Ctr> m_upper_bound_constraints;
 public:
@@ -26,6 +28,10 @@ public:
                               std::vector<Column> t_generation_patterns);
 
     [[nodiscard]] std::string name() const override { return "dantzig-wolfe"; }
+
+    virtual void set_branching_on_master(bool t_value) { m_branching_on_master = t_value; }
+
+    [[nodiscard]] bool branching_on_master() const { return m_branching_on_master; }
 protected:
     void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_expr) override;
     [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override;

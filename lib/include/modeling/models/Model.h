@@ -62,10 +62,6 @@ protected:
     AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
     AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
-    // Parameter delegate
-    AttributeManager &parameter_delegate(const Parameter<double> &t_param) override;
-    AttributeManager &parameter_delegate(const Parameter<int> &t_param) override;
-    AttributeManager &parameter_delegate(const Parameter<bool> &t_param) override;
 public:
     explicit Model(Env& t_env);
 
