@@ -60,14 +60,6 @@ public:
     [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
     [[nodiscard]] const Constant& get(const Req<Constant, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
     [[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
-
-    //// PARAMETERS
-    [[nodiscard]] int get(const Parameter<int>& t_param) const override { throw UnsupportedParameter(t_param); }
-    [[nodiscard]] bool get(const Parameter<bool>& t_param) const override { throw UnsupportedParameter(t_param); }
-    [[nodiscard]] double get(const Parameter<double>& t_param) const override { throw UnsupportedParameter(t_param); }
-    void set(const Parameter<int>& t_param, int t_value) override { throw UnsupportedParameter(t_param); }
-    void set(const Parameter<bool>& t_param, bool t_value) override { throw UnsupportedParameter(t_param); }
-    void set(const Parameter<double>& t_param, double t_value) override { throw UnsupportedParameter(t_param); }
 };
 
 #endif //IDOL_ATTRIBUTEMANAGERS_BASE_H

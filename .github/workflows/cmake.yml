@@ -22,11 +22,14 @@ jobs:
 
     - name: Install GLPK
       run: sudo apt-get install glpk-utils libglpk-dev
-
+      
+    - name: Install lcov
+      run: sudo apt-get install lcov
+  
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DUSE_GLPK=YES
+      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
 
     - name: Build
       # Build your program with the given configuration
@@ -38,3 +41,13 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ./tests
       
+    - name: Build coverage report
+      run: lcov --directory . --capture --output-file coverage.info
+      
+      
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: coverage.info
+        flags: default

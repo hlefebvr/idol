@@ -4,17 +4,15 @@
 #include <iostream>
 #include "modeling.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
-#include "modeling/models/BlockModel.h"
-#include "backends/solvers/GLPK.h"
-#include "backends/BranchAndPriceMIP.h"
+#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "optimizers/column-generation/ColumnGeneration.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
+#include "optimizers/solvers/GLPK.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 int main(int t_argc, const char** t_argv) {
-
-    Logs::set_level<BranchAndBound>(Debug); // Set debug log level for BranchAndBound algorithms
-    Logs::set_color<BranchAndBound>(Blue); // Set output color to blue for BranchAndBound algorithms
-
-    Logs::set_level<ColumnGeneration>(Debug); // Set debug log level for ColumnGeneration algorithms
-    Logs::set_color<ColumnGeneration>(Yellow); // Set output color to blue for ColumnGeneration algorithms
 
     const auto instance = Problems::GAP::read_instance("instance.txt");
 
@@ -54,16 +52,25 @@ int main(int t_argc, const char** t_argv) {
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     // Set optimizer
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    model.use(BranchAndBound()
 
-    // Set parameters
-    model.set(Param::ColumnGeneration::FarkasPricing, false);
-    model.set(Param::ColumnGeneration::ArtificialVarCost, 1e+4);
-    model.set(Param::ColumnGeneration::BranchingOnMaster, true);
-    model.set(Param::ColumnGeneration::SmoothingFactor, .3);
-    model.set(Param::ColumnGeneration::CleanUpThreshold, 1e+8);
-    model.set(Param::ColumnGeneration::CleanUpRatio, .75);
-    model.set(Param::BranchAndPrice::IntegerMasterHeuristic, true);
+                .with_node_solver(
+                    DantzigWolfeDecomposition(decomposition)
+                        .with_master_solver(GLPK::ContinuousRelaxation())
+                        .with_pricing_solver(GLPK())
+                        .with_log_level(Info, Yellow)
+                        .with_farkas_pricing(false)
+                        .with_artificial_variables_cost(1e+4)
+                        .with_branching_on_master(true)
+                        .with_dual_price_smoothing_stabilization(.3)
+                        .with_column_pool_clean_up(1e+8, .75)
+                )
+                .with_branching_rule(MostInfeasible())
+                .with_node_selection_rule(WorstBound())
+                .with_log_level(Info, Blue)
+            );
+
+    // TODO: add primal heuristic
 
     // Solve
     model.optimize();

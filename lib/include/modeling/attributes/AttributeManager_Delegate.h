@@ -39,30 +39,6 @@ protected:
     [[nodiscard]] virtual const AttributeManager& attribute_delegate(const Attribute& t_attribute, const Ctr& t_object) const  {
         return const_cast<Delegate*>(this)->attribute_delegate(t_attribute, t_object);
     }
-
-    virtual AttributeManager& parameter_delegate(const Parameter<double>& t_param) {
-        throw UnsupportedParameter(t_param);
-    }
-
-    virtual AttributeManager& parameter_delegate(const Parameter<int>& t_param) {
-        throw UnsupportedParameter(t_param);
-    }
-
-    virtual AttributeManager& parameter_delegate(const Parameter<bool>& t_param) {
-        throw UnsupportedParameter(t_param);
-    }
-
-    virtual const AttributeManager& parameter_delegate(const Parameter<double>& t_param) const {
-        return const_cast<Delegate*>(this)->parameter_delegate(t_param);
-    }
-
-    virtual const AttributeManager& parameter_delegate(const Parameter<int>& t_param) const {
-        return const_cast<Delegate*>(this)->parameter_delegate(t_param);
-    }
-
-    virtual const AttributeManager& parameter_delegate(const Parameter<bool>& t_param) const {
-        return const_cast<Delegate*>(this)->parameter_delegate(t_param);
-    }
 public:
     void set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) override {
         attribute_delegate(t_attr, t_var).set(t_attr, t_var, t_value);
@@ -204,29 +180,6 @@ public:
         return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr, t_var);
     }
 
-    void set(const Parameter<double> &t_param, double t_value) override {
-        parameter_delegate(t_param).set(t_param, t_value);
-    }
-
-    void set(const Parameter<bool> &t_param, bool t_value) override {
-        parameter_delegate(t_param).set(t_param, t_value);
-    }
-
-    void set(const Parameter<int> &t_param, int t_value) override {
-        parameter_delegate(t_param).set(t_param, t_value);
-    }
-
-    double get(const Parameter<double> &t_param) const override {
-        return parameter_delegate(t_param).get(t_param);
-    }
-
-    bool get(const Parameter<bool> &t_param) const override {
-        return parameter_delegate(t_param).get(t_param);
-    }
-
-    int get(const Parameter<int> &t_param) const override {
-        return parameter_delegate(t_param).get(t_param);
-    }
 };
 
 #endif //IDOL_ATTRIBUTEMANAGER_DELEGATE_H
