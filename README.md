@@ -62,7 +62,7 @@ auto nested_branch_and_price =
                                 )
                                 
                                 /* Branching constraints are applied to the pricing problem */
-                                .with_branching_on_pricing()
+                                .with_branching_on_master(false)
                         )
                         /* Variables are selected for branching using the most-infeasible rule */
                         .with_branching_rule(MostInfeasible())
