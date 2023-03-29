@@ -164,31 +164,66 @@ Here, all the knapsack constraints are moved to the same pricing problem (id: 0)
 Decomposing and solving the model
 ---------------------------------
 
-Now that the desired decomposition has been specified, we can define the optimizer for our model and request its decomposition.
-This is done in the exact same way as classically done with any other solver, using the :code:`set_optimizer` function.
+Now that the desired decomposition has been specified, we can specify the desired algorithm to solve our model.
+Here, we want to solve our problem using a branch-and-price algorithm, i.e., a branch-and-bound algorithm where each relaxation
+in the branch-and-bound tree is solved by a Dantzig-Wolfe decomposition. This is done as follows.
 
 .. code:: cpp
 
-    Idol::set_optimizer<BranchAndPriceMIP<GLPK>>(model, decomposition);
+    model.use(
+        /* The overall algorithm is a branch-and-bound */
+        BranchAndBound()
 
-Here, we pass the direct model as argument with the desired decomposition. Then, one can simply call the :code:`optimize` method as follows.
+            /* Each node is solved with a Dantzig-Wolfe decomposition algorithm */
+            .with_node_solver(
+
+                /* The annotation "decomposition" is used to automatically decompose the problem */
+                DantzigWolfeDecomposition(decomposition1)
+
+                    /* The master problem is solved using Gurobi */
+                    .with_master_solver(Gurobi::ContinuousRelaxation())
+
+                    /* Each pricing problem is solved by Gurobi as well */
+                    .with_pricing_solver(Gurobi())
+
+            )
+
+            /* Variables are selected for branching using the most-infeasible rule */
+            .with_branching_rule(MostInfeasible())
+
+            /* Nodes are selected using the best-bound rule */
+            .with_node_selection_rule(BestBound()
+
+            /* Only informational logs will be printed (in blue) */
+            .with_log_level(Info, Blue)
+
+            /* The algorithm will run with a time limit of 3600 */
+            .with_time_limit(3600)
+
+    );
+
+Then, one can simply call the :code:`Model::optimize` method as follows.
 
 .. code:: cpp
 
     model.optimize();
 
+
 That's it! The problem is being solved by column generation, and possibly branching on fractional variables. Note that it
-is possible to obtain logs as follows.
+is possible to obtain logs using the `with_log_level` method on the desired optimizer. For instance, one may want to have
+logs for the branch-and-bound optimizer. Then, one should do as follows.
 
 .. code:: cpp
 
-    Logs::set_level<BranchAndBound>(Debug); // Set debug log level for BranchAndBound algorithms
-    Logs::set_color<BranchAndBound>(Blue); // Set output color to blue for BranchAndBound algorithms
+    model.use(
+        BranchAndBound()
 
-    Logs::set_level<ColumnGeneration>(Debug); // Set debug log level for ColumnGeneration algorithms
-    Logs::set_color<ColumnGeneration>(Yellow); // Set output color to blue for ColumnGeneration algorithms
+            /* ... omitting identical details */
 
-Note that the rest remains unchanged and one can use :code:`model.get(Attr::Solution::Status)` to get the optimization status
+            .with_log_level(Info, Blue)
+    );
+
+The rest remains unchanged and one can use :code:`model.get(Attr::Solution::Status)` to get the optimization status
 or use :code:`save(model, Attr::Solution::Primal)` to save the primal solution of the problem.
 
 **Example of possible output:**
@@ -238,32 +273,3 @@ or use :code:`save(model, Attr::Solution::Primal)` to save the primal solution o
     | 	x_0_2 = 1.00
     | 	x_0_3 = 1.00
     +-----------------------
-
-Parameters
-----------
-
-We end this tutorial by discussing some parameters which can be used to tweak the execution of the branch-and-price algorithm.
-
-- :code:`(int) Param::ColumnGeneration::LogFrequency` controls the frequency for log outputs, e.g., when set to 10, a log
-  regarding the solution of the master and pricing problems is written every 10 iterations;
-- :code:`(bool) Param::ColumnGeneration::BranchingOnMaster` controls where the branching is applied, e.g., when set to 1,
-  branching is applied to the master problem (0 applies it to the pricing problems);
-- :code:`(bool) Param::ColumnGeneration::FarkasPricing` controls how infeasible master problems are handled, e.g., when set to
-  1, a farkas certificate is used to generate new columns or proving infeasibility of the original problem (0 introduces artificial
-  variables with high costs similar to Phase I Simplex);
-- :code:`(double) Param::ColumnGeneration::ArtificialVarCost` controls the value for the artificial variables (when :code:`Param::ColumnGeneration::FarkasPricing`
-  is set to 0);
-- :code:`(int) Param::ColumnGeneration::CleanUpThreshold` controls the maximum number of columns present in the column pool
-  before the pool is cleaned up;
-- :code:`(double) Param::ColumnGeneration::CleanUpRatio` controls the amount of columns which are removed from the pool during
-  clean up (note that the oldest columns are removed first), e.g., when set to .75, 25% of the columns are removed from the pool;
-- :code:`(double) Param::ColumnGeneration::SmoothingFactor` controls the stabilization factor for dual price smoothing;
-- :code:`(bool) Param::BranchAndPrice::IntegerMasterHeuristic` controls the activation of a primal heuristic for branch-and-price where
-  integrality requirements are imposed on Dantzig-Wolfe coefficients when the solution is fractional.
-
-For example, we may set the stabilization factor controlling dual price smoothing as follwos:
-
-.. code:: cpp
-
-    model.set(Param::ColumnGeneration::SmoothingFactor, .3); // (must be between 0 and 1)
-

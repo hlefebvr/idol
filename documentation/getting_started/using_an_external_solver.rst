@@ -124,9 +124,11 @@ For instance, the following will set the optimizer to Gurobi for solving our mod
 
     Idol::set_optimizer<Gurobi>(model);
 
+    model.use(Gurobi());
+
     model.optimize();
 
-Once done, informations regarding the executation and solution can be accessed through the :cpp:`model` variable itself. For instance,
+Once done, information regarding the execution and solution can be accessed through the :cpp:`model` variable itself. For instance,
 we may ask for the solution status, the primal values and the execution time as follows.
 
 .. code-block:: cpp
