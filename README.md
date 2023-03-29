@@ -17,62 +17,81 @@ Visit our [online documentation](https://hlefebvr.github.io/idol/) and [online b
 Here is an example of a complex algorithm built using idol. It is a nested Branch-and-Price algorithm.
 
 ```cpp
-auto nested_branch_and_price = 
-            
-    /* The overall algorithm is a branch-and-bound */
-    BranchAndBoundOptimizer(
+auto nested_branch_and_price =
         
+    /* The overall algorithm is a branch-and-bound */
+    BranchAndBound()
+    
         /* Each node is solved with a Dantzig-Wolfe decomposition algorithm */
-        DantzigWolfeOptimizer(
-    
-                /* This annotation is used to automatically decompose the problem */
-                decomposition1,
-    
-                /* The master problem is solved using Gurobi */
-                GurobiOptimizer::ContinuousRelaxation(), 
+        .with_node_solver(
                 
-                /* Each sub-problem is solved by a (nested) branch-and-bound algorithm */
-                BranchAndBoundOptimizer(
+            /* The annotation "decomposition1" is used to automatically decompose the problem */
+            DantzigWolfeDecomposition(decomposition1)
+            
+                /* The master problem is solved using Gurobi */
+                .with_master_solver(Gurobi::ContinuousRelaxation())
+                
+                /* Each pricing problem is solved by a (nested) branch-and-bound algorithm */
+                .with_pricing_solver(
                         
+                    BranchAndBound()
+                    
                         /* Each node is solved by a dantzig-wolfe decomposition algorithm */
-                        DantzigWolfeOptimizer(
+                        .with_nodes_solver(
                                 
-                                /* This annotation is used to decompose the sub-problem again */
-                                decomposition2,
+                            /* The annotation "decomposition2" is used to decompose the sub-problem again */
+                            DantzigWolfeDecomposition(decomposition2)
+                            
+                                /* The master problem is solved using Mosek */
+                                .with_master_solver(Mosek::ContinuousRelaxation())
                                 
-                                /* The master problem is solved using Gurobi */
-                                GurobiOptimizer::ContinuousRelaxation(),
-    
-                                /* The sub-problem is solved by a (nested) branch-and-bound algorithm [we could have used GurobiOptimizer instead] */
-                                BranchAndBoundOptimizer(
+                                /* The sub-problem is solved by a (nested) branch-and-bound algorithm [we could have used, e.g., Gurobi instead] */
+                                .with_pricing_solver(
                                         
+                                    BranchAndBound()
+                                    
                                         /* Each node is solved by GLPK */
-                                        GLPKOptimizer::ContinuousRelaxation(),
-    
+                                        .with_node_solver(GLPK::ContinuousRelaxation())
+                                        
                                         /* Variables are selected for branching using the most-infeasible rule */
-                                        MostInfeasible(),
+                                        .with_branching_rule(MostInfeasible())
                                         
                                         /* Nodes are selected using the worst-bound rule */
-                                        WorstBound()
+                                        .with_node_selection_rule(WorstBound())
+                                        
                                 )
-    
-                        ),
-                       
-                       /* Variables are selected for branching using the most-infeasible rule */
-                       MostInfeasible(),
-                       
-                       /* Nodes are selected using the depth-first rule */
-                       DepthFirst()
+                                
+                                /* Branching constraints are applied to the pricing problem */
+                                .with_branching_on_pricing()
+                        )
+                        /* Variables are selected for branching using the most-infeasible rule */
+                        .with_branching_rule(MostInfeasible())
+                        
+                        /* Nodes are selected using the depth-first rule */
+                        .with_node_selection_rule(DepthFirst())
                 )
-        ).with_log_level(Info, Magenta), /* Here, we set some logging parameters */
-    
+                
+                /* Column generation is stabilized by dual-price smoothing */
+                .with_dual_price_smoothing_stabilization(.3)
+                
+                /* Infeasible master problem are dealt with using Farkas pricing */
+                .with_farkas_pricing()
+                
+                /* Branching constraints are applied to the master problem */
+                .with_branching_on_master()
+        )
         /* Variables are selected for branching using the most-infeasible rule */
-        MostInfeasible(),
-    
-        /* Nodes are selected using the best-bound rule */
-        BestBound()
+        .with_branching_rule(MostInfeasible())
         
-    ).with_log_level(Info, Blue); /* Here, we set some logging parameters */
+        /* Nodes are selected using the best-bound rule */
+        .with_node_selection_rule(BestBound()
+        
+        /* Only informational logs will be printed (in blue) */
+        .with_log_level(Info, Blue)
+        
+        /* The algorithm will run with a time limit of 3600 */
+        .with_time_limit(3600)
+    )
     
 model.use(nested_branch_and_price);
 
