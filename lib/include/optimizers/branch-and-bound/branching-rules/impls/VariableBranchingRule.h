@@ -10,7 +10,7 @@
 
 #include <optional>
 
-template<class> class BranchAndBoundOptimizer;
+template<class> class BranchAndBound;
 
 template<class NodeInfoT>
 class VariableBranchingRule : public BranchingRule<NodeInfoT> {

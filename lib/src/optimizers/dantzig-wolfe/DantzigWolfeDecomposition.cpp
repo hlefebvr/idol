@@ -1,31 +1,35 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "modeling/models/Model.h"
 #include "modeling/expressions/operations/operators.h"
 #include "modeling/objects/Versions.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfe.h"
+#include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
-DantzigWolfeOptimizer::DantzigWolfeOptimizer(const Annotation<Ctr, unsigned int> &t_decomposition,
-                                             const OptimizerFactory &t_master_optimizer,
-                                             const OptimizerFactory &t_subproblem_optimizer)
-        : m_decomposition(t_decomposition),
-          m_master_optimizer(t_master_optimizer.clone()),
-          m_subproblem_optimizer(t_subproblem_optimizer.clone()) {
+DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsigned int> &t_decomposition)
+        : m_decomposition(t_decomposition) {
 
 }
 
-DantzigWolfeOptimizer::DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src)
-        : OptimizerFactoryWithDefaultParameters<DantzigWolfeOptimizer>(t_src),
+DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
+        : OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition>(t_src),
           m_decomposition(t_src.m_decomposition),
-          m_master_optimizer(t_src.m_master_optimizer->clone()),
-          m_subproblem_optimizer(t_src.m_subproblem_optimizer->clone()) {
+          m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
+          m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr) {
 
 }
 
-Optimizer *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation) const {
+Optimizer *DantzigWolfeDecomposition::operator()(const Model &t_original_formulation) const {
+
+    if (!m_master_optimizer) {
+        throw Exception("No master solver has been given, please call DantzigWolfeDecomposition::with_master_solver to configure.");
+    }
+
+    if (!m_pricing_optimizer) {
+        throw Exception("No pricing solver has been given, please call DantzigWolfeDecomposition::with_pricing_solver to configure.");
+    }
 
     auto& env = t_original_formulation.env();
 
@@ -46,26 +50,26 @@ Optimizer *DantzigWolfeOptimizer::operator()(const Model &t_original_formulation
     master->use(*m_master_optimizer);
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        subproblems[i]->use(*m_subproblem_optimizer);
+        subproblems[i]->use(*m_pricing_optimizer);
     }
 
-    auto* result = new Optimizers::DantzigWolfe(t_original_formulation,
-                                        m_decomposition,
-                                        variable_flag,
-                                        master,
-                                        subproblems,
-                                        generation_patterns);
+    auto* result = new Optimizers::DantzigWolfeDecomposition(t_original_formulation,
+                                                             m_decomposition,
+                                                             variable_flag,
+                                                             master,
+                                                             subproblems,
+                                                             generation_patterns);
 
     this->set_default_parameters(result);
 
     return result;
 }
 
-DantzigWolfeOptimizer *DantzigWolfeOptimizer::clone() const {
-    return new DantzigWolfeOptimizer(*this);
+DantzigWolfeDecomposition *DantzigWolfeDecomposition::clone() const {
+    return new DantzigWolfeDecomposition(*this);
 }
 
-Annotation<Var, unsigned int> DantzigWolfeOptimizer::create_variable_flag(const Model &t_model, unsigned int *t_n_subproblem) const {
+Annotation<Var, unsigned int> DantzigWolfeDecomposition::create_variable_flag(const Model &t_model, unsigned int *t_n_subproblem) const {
 
     Annotation<Var, unsigned int> result(t_model.env(), "variable_flag", MasterId);
 
@@ -116,7 +120,7 @@ Annotation<Var, unsigned int> DantzigWolfeOptimizer::create_variable_flag(const 
 }
 
 std::vector<Model*>
-DantzigWolfeOptimizer::create_empty_subproblems(Env& t_env, unsigned int t_n_subproblems) const {
+DantzigWolfeDecomposition::create_empty_subproblems(Env& t_env, unsigned int t_n_subproblems) const {
 
     std::vector<Model*> result;
     result.reserve(t_n_subproblems);
@@ -129,11 +133,11 @@ DantzigWolfeOptimizer::create_empty_subproblems(Env& t_env, unsigned int t_n_sub
 }
 
 std::vector<Column>
-DantzigWolfeOptimizer::create_empty_generation_patterns(unsigned int t_n_subproblems) const {
+DantzigWolfeDecomposition::create_empty_generation_patterns(unsigned int t_n_subproblems) const {
     return std::vector<Column>(t_n_subproblems);
 }
 
-void DantzigWolfeOptimizer::dispatch_variables(const Annotation<Var, unsigned int> &t_variable_flag,
+void DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigned int> &t_variable_flag,
                                                const Model& t_original_formulation,
                                                Model *t_master,
                                                const std::vector<Model *> &t_subproblems) const {
@@ -159,7 +163,7 @@ void DantzigWolfeOptimizer::dispatch_variables(const Annotation<Var, unsigned in
 
 }
 
-void DantzigWolfeOptimizer::dispatch_constraints(const Annotation<Var, unsigned int> &t_variable_flag,
+void DantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var, unsigned int> &t_variable_flag,
                                                  const Model &t_original_formulation,
                                                  Model *t_master,
                                                  const std::vector<Model *> &t_subproblems,
@@ -185,7 +189,7 @@ void DantzigWolfeOptimizer::dispatch_constraints(const Annotation<Var, unsigned 
 
 }
 
-void DantzigWolfeOptimizer::dispatch_linking_constraint(const Annotation<Var, unsigned int> &t_variable_flag,
+void DantzigWolfeDecomposition::dispatch_linking_constraint(const Annotation<Var, unsigned int> &t_variable_flag,
                                                         const Ctr& t_ctr,
                                                         const Row &t_row,
                                                         int t_type,
@@ -205,7 +209,7 @@ void DantzigWolfeOptimizer::dispatch_linking_constraint(const Annotation<Var, un
 
 }
 
-void DantzigWolfeOptimizer::dispatch_objective(const Annotation<Var, unsigned int> &t_variable_flag,
+void DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigned int> &t_variable_flag,
                                                const Model &t_original_formulation, Model *t_master,
                                                std::vector<Column> &t_generation_patterns) const {
 
@@ -226,7 +230,7 @@ void DantzigWolfeOptimizer::dispatch_objective(const Annotation<Var, unsigned in
 }
 
 std::pair<Expr<Var, Var>, std::vector<Constant>>
-DantzigWolfeOptimizer::dispatch_linking_expression(const Annotation<Var, unsigned int> &t_variable_flag,
+DantzigWolfeDecomposition::dispatch_linking_expression(const Annotation<Var, unsigned int> &t_variable_flag,
                                                    const QuadExpr<Var, Var> &t_quad,
                                                    const LinExpr<Var> &t_lin,
                                                    Model *t_master,
@@ -272,7 +276,7 @@ DantzigWolfeOptimizer::dispatch_linking_expression(const Annotation<Var, unsigne
 
 }
 
-void DantzigWolfeOptimizer::add_convexity_constraints(Env& t_env, Model *t_master, std::vector<Column> &t_generation_patterns) const {
+void DantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Model *t_master, std::vector<Column> &t_generation_patterns) const {
 
     const unsigned int n_subproblems = t_generation_patterns.size();
 
@@ -282,4 +286,26 @@ void DantzigWolfeOptimizer::add_convexity_constraints(Env& t_env, Model *t_maste
         t_generation_patterns[i].linear().set(convexity_constraint, 1);
     }
 
+}
+
+DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_pricing_solver(const OptimizerFactory &t_pricing_solver) {
+
+    if (m_pricing_optimizer) {
+        throw Exception("A pricing solver has already been set.");
+    }
+
+    m_pricing_optimizer.reset(t_pricing_solver.clone());
+
+    return *this;
+}
+
+DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_master_solver(const OptimizerFactory &t_master_solver) {
+
+    if (m_master_optimizer) {
+        throw Exception("A master solver has already been set.");
+    }
+
+    m_master_optimizer.reset(t_master_solver.clone());
+
+    return *this;
 }

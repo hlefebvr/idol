@@ -2,28 +2,28 @@
 // Created by henri on 24/03/23.
 //
 
-#ifndef IDOL_DANTZIGWOLFE_H
-#define IDOL_DANTZIGWOLFE_H
+#ifndef IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
+#define IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 
 #include "optimizers/column-generation/ColumnGeneration.h"
 
 namespace Optimizers {
-    class DantzigWolfe;
+    class DantzigWolfeDecomposition;
 }
 
-class Optimizers::DantzigWolfe : public Optimizers::ColumnGeneration {
+class Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGeneration {
     Annotation<Ctr, unsigned int> m_constraint_flag;
     Annotation<Var, unsigned int> m_variable_flag;
 
     Map<Var, Ctr> m_lower_bound_constraints;
     Map<Var, Ctr> m_upper_bound_constraints;
 public:
-    DantzigWolfe(const Model& t_original_formulation,
-                 const Annotation<Ctr, unsigned int>& t_constraint_flag,
-                 const Annotation<Var, unsigned int>& t_variable_flag,
-                 Model *t_master_problem,
-                 const std::vector<Model *> &t_subproblems,
-                 std::vector<Column> t_generation_patterns);
+    DantzigWolfeDecomposition(const Model& t_original_formulation,
+                              const Annotation<Ctr, unsigned int>& t_constraint_flag,
+                              const Annotation<Var, unsigned int>& t_variable_flag,
+                              Model *t_master_problem,
+                              const std::vector<Model *> &t_subproblems,
+                              std::vector<Column> t_generation_patterns);
 
     [[nodiscard]] std::string name() const override { return "dantzig-wolfe"; }
 protected:
@@ -39,4 +39,4 @@ protected:
     LinExpr<Var> expand_subproblem_variable(const Var& t_var, unsigned int t_subproblem_id);
 };
 
-#endif //IDOL_DANTZIGWOLFE_H
+#endif //IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H

@@ -1,10 +1,10 @@
 #include "modeling.h"
 #include "optimizers/solvers/Gurobi.h"
 #include "optimizers/Logger.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
+#include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
@@ -16,7 +16,7 @@
 #include "optimizers/solvers/GLPKOptimizer.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -95,31 +95,52 @@ int main(int t_argc, char** t_argv) {
                  */
 
                 model.use(
-                    BranchAndBoundOptimizer<NodeInfo>(
-                        DantzigWolfeOptimizer(
-                                decomposition,
-                                GurobiOptimizer::ContinuousRelaxation(),
-                                BranchAndBoundOptimizer<NodeInfo>(
-                                        DantzigWolfeOptimizer(
-                                                decomposition2,
-                                                GurobiOptimizer::ContinuousRelaxation(),
-                                                //GurobiOptimizer()
 
-                                                BranchAndBoundOptimizer<NodeInfo>(
-                                                        GLPKOptimizer::ContinuousRelaxation(),
-                                                        MostInfeasible(),
-                                                        WorstBound()
-                                                )
+                    BranchAndBound<NodeInfo>()
 
-                                        ),
-                                       MostInfeasible(),
-                                       DepthFirst()
+                        .with_node_solver(
+
+                            DantzigWolfeDecomposition(decomposition)
+
+                                .with_master_solver(GurobiOptimizer::ContinuousRelaxation())
+
+                                .with_pricing_solver(
+
+                                    BranchAndBound<NodeInfo>()
+
+                                            .with_node_solver(
+
+                                                    DantzigWolfeDecomposition(decomposition2)
+
+                                                        .with_master_solver(GurobiOptimizer::ContinuousRelaxation())
+
+                                                        .with_pricing_solver(
+
+                                                            BranchAndBound<NodeInfo>()
+
+                                                                    .with_node_solver(GLPKOptimizer::ContinuousRelaxation())
+
+                                                                    .with_branching_rule(MostInfeasible())
+
+                                                                    .with_node_selection_rule(WorstBound())
+                                                        )
+
+                                            )
+
+                                            .with_branching_rule(MostInfeasible())
+
+                                            .with_node_selection_rule(DepthFirst())
+
                                 )
-                        ).with_log_level(Info, Magenta),
-                        MostInfeasible(),
-                        BestBound()
-                    )
-                    .with_log_level(Info, Blue)
+
+                                .with_log_level(Info, Magenta)
+                        )
+
+                        .with_branching_rule(MostInfeasible())
+
+                        .with_node_selection_rule(BestBound())
+
+                        .with_log_level(Info, Blue)
                 );
 
                 model.set(Param::ColumnGeneration::LogFrequency, 1);

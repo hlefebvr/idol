@@ -2,19 +2,19 @@
 // Created by henri on 24/03/23.
 //
 
-#ifndef IDOL_DANTZIGWOLFEOPTIMIZER_H
-#define IDOL_DANTZIGWOLFEOPTIMIZER_H
+#ifndef IDOL_DANTZIGWOLFEDECOMPOSITION_H
+#define IDOL_DANTZIGWOLFEDECOMPOSITION_H
 
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/constraints/Ctr.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 
-class DantzigWolfeOptimizer : public OptimizerFactoryWithDefaultParameters<DantzigWolfeOptimizer> {
+class DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition> {
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
-    std::unique_ptr<OptimizerFactory> m_subproblem_optimizer;
+    std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
 
-    DantzigWolfeOptimizer(const DantzigWolfeOptimizer& t_src);
+    DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
 
     Annotation<Var, unsigned int> create_variable_flag(const Model& t_model, unsigned int *t_n_subproblem) const;
     std::vector<Model*> create_empty_subproblems(Env& t_env, unsigned int t_n_subproblems) const;
@@ -47,13 +47,15 @@ class DantzigWolfeOptimizer : public OptimizerFactoryWithDefaultParameters<Dantz
                                     unsigned int t_n_subproblems) const;
     void add_convexity_constraints(Env& t_env, Model* t_master, std::vector<Column>& t_generation_patterns) const;
 public:
-    DantzigWolfeOptimizer(const Annotation<Ctr, unsigned int>& t_decomposition,
-                          const OptimizerFactory& t_master_optimizer,
-                          const OptimizerFactory& t_subproblem_optimizer);
+    explicit DantzigWolfeDecomposition(const Annotation<Ctr, unsigned int>& t_decomposition);
+
+    DantzigWolfeDecomposition& with_master_solver(const OptimizerFactory& t_master_solver);
+
+    DantzigWolfeDecomposition& with_pricing_solver(const OptimizerFactory& t_pricing_solver);
 
     Optimizer *operator()(const Model &t_original_formulation) const override;
 
-    [[nodiscard]] DantzigWolfeOptimizer *clone() const override;
+    [[nodiscard]] DantzigWolfeDecomposition *clone() const override;
 };
 
-#endif //IDOL_DANTZIGWOLFEOPTIMIZER_H
+#endif //IDOL_DANTZIGWOLFEDECOMPOSITION_H

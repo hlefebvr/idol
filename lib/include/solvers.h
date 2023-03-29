@@ -5,7 +5,7 @@
 #ifndef OPTIMIZE_SOLVERS_H
 #define OPTIMIZE_SOLVERS_H
 
-#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
 #include "optimizers/solvers/MosekOptimizer.h"

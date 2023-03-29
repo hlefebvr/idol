@@ -9,7 +9,7 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 
@@ -43,11 +43,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     model.add(c);
     model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
-                OptimizerT::ContinuousRelaxation(),
-                MostInfeasible(),
-                NodeSelectionRuleT()
-        ).with_log_level(Info, Default));
+    model.use(BranchAndBound<NodeInfo>()
+                .with_node_solver(OptimizerT::ContinuousRelaxation())
+                .with_branching_rule(MostInfeasible())
+                .with_node_selection_rule(NodeSelectionRuleT())
+                .with_log_level(Info, Default)
+            );
 
     WHEN("The instance \"" + filename + "\" is solved") {
 
@@ -118,11 +119,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     // Set backend options
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
-            OptimizerT::ContinuousRelaxation(),
-            MostInfeasible(),
-            NodeSelectionRuleT()
-    ));
+    model.use(
+            BranchAndBound<NodeInfo>()
+                .with_node_solver(OptimizerT::ContinuousRelaxation())
+                .with_branching_rule(MostInfeasible())
+                .with_node_selection_rule(NodeSelectionRuleT())
+        );
 
     WHEN("The instance \"" + filename + "\" is solved") {
 

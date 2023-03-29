@@ -8,9 +8,9 @@
 #include "optimizers/column-generation/ColumnGenerationOptimizer.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/branch-and-bound/BranchAndBoundOptimizer.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/solvers/GLPKOptimizer.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -52,8 +52,8 @@ int main(int t_argc, const char** t_argv) {
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     // Set optimizer
-    model.use(BranchAndBoundOptimizer(
-                DantzigWolfeOptimizer(
+    model.use(BranchAndBound(
+                DantzigWolfeDecomposition(
                     decomposition,
                     GLPKOptimizer::ContinuousRelaxation(),
                     GLPKOptimizer()

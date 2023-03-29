@@ -1,23 +1,23 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/dantzig-wolfe/DantzigWolfe.h"
+#include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "modeling/objects/Versions.h"
 #include "modeling/expressions/operations/operators.h"
 
-Optimizers::DantzigWolfe::DantzigWolfe(const Model& t_original_formulation,
-                                       const Annotation<Ctr, unsigned int>& t_constraint_flag,
-                                       const Annotation<Var, unsigned int>& t_variable_flag,
-                                       Model *t_master_problem,
-                                       const std::vector<Model *> &t_subproblems,
-                                       std::vector<Column> t_generation_patterns)
+Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_original_formulation,
+                                                                 const Annotation<Ctr, unsigned int>& t_constraint_flag,
+                                                                 const Annotation<Var, unsigned int>& t_variable_flag,
+                                                                 Model *t_master_problem,
+                                                                 const std::vector<Model *> &t_subproblems,
+                                                                 std::vector<Column> t_generation_patterns)
      : Optimizers::ColumnGeneration(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
        m_variable_flag(t_variable_flag),
        m_constraint_flag(t_constraint_flag) {
 
 }
 
-double Optimizers::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::DantzigWolfeDecomposition::get(const Req<double, Var> &t_attr, const Var &t_var) const {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
@@ -32,7 +32,7 @@ double Optimizers::DantzigWolfe::get(const Req<double, Var> &t_attr, const Var &
     return ColumnGeneration::get(t_attr, t_var);
 }
 
-void Optimizers::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
+void Optimizers::DantzigWolfeDecomposition::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
@@ -57,7 +57,7 @@ void Optimizers::DantzigWolfe::set(const Req<double, Var> &t_attr, const Var &t_
 }
 
 
-double Optimizers::DantzigWolfe::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
+double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
 
     double result = 0;
     for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
@@ -70,7 +70,7 @@ double Optimizers::DantzigWolfe::get_subproblem_primal_value(const Var &t_var, u
     return result;
 }
 
-void Optimizers::DantzigWolfe::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -88,7 +88,7 @@ void Optimizers::DantzigWolfe::set_subproblem_lower_bound(const Var &t_var, unsi
 
 }
 
-void Optimizers::DantzigWolfe::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -106,7 +106,7 @@ void Optimizers::DantzigWolfe::set_subproblem_upper_bound(const Var &t_var, unsi
 
 }
 
-void Optimizers::DantzigWolfe::apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -147,7 +147,7 @@ void Optimizers::DantzigWolfe::apply_subproblem_bound_on_master(const Req<double
 
 }
 
-LinExpr<Var> Optimizers::DantzigWolfe::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
+LinExpr<Var> Optimizers::DantzigWolfeDecomposition::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
 
     LinExpr<Var> result;
 
@@ -158,7 +158,7 @@ LinExpr<Var> Optimizers::DantzigWolfe::expand_subproblem_variable(const Var &t_v
     return result;
 }
 
-void Optimizers::DantzigWolfe::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
+void Optimizers::DantzigWolfeDecomposition::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_expr) {
 
     if (t_attr == Attr::Obj::Expr) {
 

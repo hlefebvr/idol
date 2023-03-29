@@ -6,7 +6,7 @@
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfeOptimizer.h"
+#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/column-generation/Parameters_ColumnGeneration.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
@@ -62,53 +62,60 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     std::vector<std::pair<std::string, std::shared_ptr<OptimizerFactory>>> relaxation_solvers = {
             { "CG",
-              std::make_shared<DantzigWolfeOptimizer>(
-                    std_decomposition,
-                    TestType::ContinuousRelaxation(),
-                    TestType()
+              std::shared_ptr<OptimizerFactory>(
+                    DantzigWolfeDecomposition(std_decomposition)
+                        .with_master_solver(TestType::ContinuousRelaxation())
+                        .with_pricing_solver(TestType())
+                        .clone()
             )
             },
+
             { "CG + B&B",
-              std::make_shared<DantzigWolfeOptimizer>(
-                    std_decomposition,
-                    TestType::ContinuousRelaxation(),
-                    BranchAndBoundOptimizer<NodeInfo>(
-                            TestType::ContinuousRelaxation(),
-                            MostInfeasible(),
-                            BestBound()
-                    )
-            )
+              std::shared_ptr<OptimizerFactory>(
+                    DantzigWolfeDecomposition(std_decomposition)
+                        .with_master_solver(TestType::ContinuousRelaxation())
+                        .with_pricing_solver(
+                            BranchAndBound<NodeInfo>()
+                                .with_node_solver(TestType::ContinuousRelaxation())
+                                .with_branching_rule(MostInfeasible())
+                                .with_node_selection_rule(BestBound())
+                            )
+                        .clone()
+              )
             },
+
             { "CG + nested B&P",
-              std::make_shared<DantzigWolfeOptimizer>(
-                     nested_decomposition1,
-                     TestType::ContinuousRelaxation(),
-                     BranchAndBoundOptimizer<NodeInfo>(
-                             DantzigWolfeOptimizer(
-                                     nested_decomposition2,
-                                     TestType::ContinuousRelaxation(),
-
-                                     BranchAndBoundOptimizer<NodeInfo>(
-                                             TestType::ContinuousRelaxation(),
-                                             MostInfeasible(),
-                                             BestBound()
-                                     )
-
-                             ),
-                             MostInfeasible(),
-                             BestBound()
-                     )
+              std::shared_ptr<OptimizerFactory>(
+                    DantzigWolfeDecomposition(nested_decomposition1)
+                        .with_master_solver(TestType::ContinuousRelaxation())
+                        .with_pricing_solver(
+                            BranchAndBound<NodeInfo>()
+                                .with_node_solver(
+                                    DantzigWolfeDecomposition(nested_decomposition2)
+                                        .with_master_solver(TestType::ContinuousRelaxation())
+                                        .with_pricing_solver(
+                                            BranchAndBound<NodeInfo>()
+                                                .with_node_solver(TestType::ContinuousRelaxation())
+                                                .with_branching_rule(MostInfeasible())
+                                                .with_node_selection_rule(BestBound())
+                                        )
+                                )
+                                .with_branching_rule(MostInfeasible())
+                                .with_node_selection_rule(BestBound())
+                        )
+                        .clone()
               )
             }
     };
 
     const auto solver_index = GENERATE(0, 1, 2);
 
-    model.use(BranchAndBoundOptimizer<NodeInfo>(
-            *relaxation_solvers[solver_index].second,
-            MostInfeasible(),
-            BestBound()
-        ));
+    model.use(
+                BranchAndBound<NodeInfo>()
+                    .with_node_solver(*relaxation_solvers[solver_index].second)
+                    .with_branching_rule(MostInfeasible())
+                    .with_node_selection_rule(BestBound())
+            );
 
     model.set(Param::ColumnGeneration::LogFrequency, 1);
     model.set(Param::ColumnGeneration::BranchingOnMaster, branching_on_master);

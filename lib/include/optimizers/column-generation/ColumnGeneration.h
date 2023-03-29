@@ -12,7 +12,7 @@
 
 namespace Optimizers {
     class ColumnGeneration;
-    class DantzigWolfe;
+    class DantzigWolfeDecomposition;
 }
 
 class Optimizers::ColumnGeneration : public Algorithm {
@@ -89,7 +89,7 @@ protected:
 
 class Optimizers::ColumnGeneration::Subproblem {
     friend class ::Optimizers::ColumnGeneration;
-    friend class ::Optimizers::DantzigWolfe;
+    friend class ::Optimizers::DantzigWolfeDecomposition;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
     using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
