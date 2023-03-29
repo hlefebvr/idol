@@ -92,6 +92,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
             std::make_pair<std::string, double>("instance_F10_C20__3.txt", 333.86),
             std::make_pair<std::string, double>("instance_F10_C20__4.txt", 202.11)
     );
+    const auto subtree_depth = GENERATE(0, 2);
 
     // Read instance
     const auto instance = read_instance_1991_Cornuejols_et_al("instances/facility-location-problem/" + filename);
@@ -123,6 +124,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
                 .with_node_solver(OptimizerT::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(NodeSelectionRuleT())
+                .with_subtree_depth(subtree_depth)
         );
 
     WHEN("The instance \"" + filename + "\" is solved") {
