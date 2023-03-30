@@ -429,7 +429,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
 
     }
 
-    call_callbacks(InvalidSolutionFound, t_node);
+    call_callbacks(InvalidSolution, t_node);
 
     *t_explore_children_flag = true;
 

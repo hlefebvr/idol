@@ -17,7 +17,8 @@ DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposi
         : impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition>(t_src),
           m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
-          m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr) {
+          m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr),
+          m_branching_on_master(t_src.m_branching_on_master) {
 
 }
 

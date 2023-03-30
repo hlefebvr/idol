@@ -38,7 +38,7 @@ IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
 
 void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
 
-    if (t_event != InvalidSolutionFound) {
+    if (t_event != InvalidSolution) {
         return;
     }
 

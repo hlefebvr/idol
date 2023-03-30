@@ -16,14 +16,18 @@ namespace Optimizers {
 }
 
 enum BranchAndBoundEvent {
-    IncumbentSolutionFound,
-    InvalidSolutionFound
+    NodeLoaded, /* Called when a node is about to be solved */
+    IncumbentSolution, /* Called when an incumbent solution has been found */
+    InvalidSolution, /* Called when a solution of the relaxation is not valid (e.g., not integer) */
+    OptimalSolution /* Called at the end of the execution, if an optimal solution has been found */
 };
 
 static std::ostream &operator<<(std::ostream& t_os, BranchAndBoundEvent t_event) {
     switch (t_event) {
-        case IncumbentSolutionFound: return t_os << "IncumbentSolutionFound";
-        case InvalidSolutionFound: return t_os << "InvalidSolutionFound";
+        case IncumbentSolution: return t_os << "IncumbentSolution";
+        case InvalidSolution: return t_os << "InvalidSolution";
+        case OptimalSolution: return t_os << "OptimalSolution";
+        case NodeLoaded: return t_os << "NodeLoaded";
         default:;
     }
     throw Exception("Enum out of bounds.");
