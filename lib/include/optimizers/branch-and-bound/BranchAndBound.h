@@ -9,12 +9,15 @@
 #include "optimizers/OptimizerFactory.h"
 #include "Optimizers_BranchAndBound.h"
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
+#include "optimizers/branch-and-bound/callbacks/Callback.h"
 
 template<class NodeT = NodeInfo>
 class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
+
+    std::list<Callback<NodeT>*> m_callbacks;
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
@@ -49,7 +52,17 @@ public:
     BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
 
     BranchAndBound<NodeT>& with_log_frequency(unsigned int t_log_frequency);
+
+    BranchAndBound<NodeT>& with_callback(Callback<NodeT>* t_callback);
 };
+
+template<class NodeT>
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(Callback<NodeT> *t_callback) {
+
+    m_callbacks.emplace_back(t_callback);
+
+    return *this;
+}
 
 template<class NodeT>
 BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
@@ -162,6 +175,10 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
 
     if (m_subtree_depth.has_value()) {
         result->set_subtree_depth(m_subtree_depth.value());
+    }
+
+    for (auto* cb : m_callbacks) {
+        result->add_callback(cb);
     }
 
     return result;

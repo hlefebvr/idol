@@ -38,6 +38,8 @@ public:
 
     void save(const Model& t_original_formulation, const Model& t_model) { m_primal_solution = ::save(t_original_formulation, Attr::Solution::Primal, t_model); }
 
+    void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
+
     static NodeUpdator<NodeInfo>* create_updator(Model& t_model);
 
     [[nodiscard]] NodeInfo* create_child() const { return new NodeInfo(*this); }

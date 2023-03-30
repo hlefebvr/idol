@@ -19,10 +19,77 @@
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/solvers/Mosek.h"
 
+class IntegerMasterHeuristic : public Callback<NodeInfo> {
+    std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+public:
+
+    explicit IntegerMasterHeuristic(const OptimizerFactory& t_optimizer)
+        : m_optimizer_factory(t_optimizer.clone())
+        {}
+
+protected:
+    void operator()(BranchAndBoundEvent t_event) override {
+
+        if (t_event != InvalidSolutionFound) {
+            return;
+        }
+
+        std::cout << "CALLED for " << t_event << " at node " << node().id() << std::endl;
+
+        const auto& relaxation = this->relaxation();
+        const auto& column_generation_optimizer = relaxation.optimizer().as<Optimizers::ColumnGeneration>();
+        const auto& original_model = this->original_model();
+
+        std::unique_ptr<Model> integer_master(column_generation_optimizer.master().clone());
+
+        integer_master->unuse();
+
+        for (const auto& var : original_model.vars()) {
+            const int type = original_model.get(Attr::Var::Type, var);
+            if (integer_master->has(var)) {
+                integer_master->set(Attr::Var::Type, var, type);
+            }
+        }
+
+        for (const auto& subproblem : column_generation_optimizer.subproblems()) {
+            for (const auto& [alpha, generator] : subproblem.present_generators()) {
+                integer_master->set(Attr::Var::Type, alpha, Binary);
+            }
+        }
+
+        integer_master->use(*m_optimizer_factory);
+
+        integer_master->optimize();
+
+        auto solution = save(*integer_master, Attr::Solution::Primal);
+        const int status = solution.status();
+
+        if (status != Optimal && status != Feasible) {
+            return;
+        }
+
+        // search for alpha = 1, add generator to solution
+        for (const auto& subproblem : column_generation_optimizer.subproblems()) {
+            for (const auto &[alpha, generator]: subproblem.present_generators()) {
+                if (solution.get(alpha) > .5) {
+                    solution.merge_without_conflict(generator);
+                    solution.set(alpha, 0.);
+                }
+            }
+        }
+
+        auto* info = new NodeInfo();
+        info->set_primal_solution(std::move(solution));
+
+        submit_heuristic_solution(info);
+
+    }
+};
+
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -72,6 +139,8 @@ int main(int t_argc, char** t_argv) {
 
             for (double smoothing : { 0., .3, .5, .8 }) {
 
+                IntegerMasterHeuristic cb(Gurobi().with_time_limit(20));
+
                 model.use(
 
                     BranchAndBound<NodeInfo>()
@@ -82,39 +151,7 @@ int main(int t_argc, char** t_argv) {
 
                                         .with_master_solver(Gurobi::ContinuousRelaxation())
 
-                                        .with_pricing_solver(
-
-                                                BranchAndBound<NodeInfo>()
-
-                                                        .with_node_solver(
-
-                                                                DantzigWolfeDecomposition(decomposition2)
-
-                                                                        .with_master_solver(
-                                                                                Gurobi::ContinuousRelaxation())
-
-                                                                        .with_pricing_solver(
-
-                                                                                BranchAndBound<NodeInfo>()
-
-                                                                                        .with_node_solver(
-                                                                                                Gurobi::ContinuousRelaxation())
-
-                                                                                        .with_branching_rule(
-                                                                                                MostInfeasible())
-
-                                                                                        .with_node_selection_rule(
-                                                                                                WorstBound())
-                                                                        )
-
-
-                                                        )
-
-                                                        .with_branching_rule(MostInfeasible())
-
-                                                        .with_node_selection_rule(DepthFirst())
-
-                                        )
+                                        .with_pricing_solver(Gurobi())
 
                                         .with_log_level(Info, Magenta)
 
@@ -130,6 +167,8 @@ int main(int t_argc, char** t_argv) {
                         .with_branching_rule(MostInfeasible())
 
                         .with_node_selection_rule(BestBound())
+
+                        .with_callback(&cb)
 
                         .with_log_level(Trace, Blue)
                 );
@@ -149,6 +188,8 @@ int main(int t_argc, char** t_argv) {
                 //if (obj_val != -40.) {
                 //    throw Exception("stop");
                 //}
+
+                return 0;
 
             }
 

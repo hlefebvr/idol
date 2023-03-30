@@ -14,6 +14,7 @@
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
 #include "optimizers/Logger.h"
+#include "callbacks/CallbackI.h"
 
 #include <memory>
 #include <cassert>
@@ -34,6 +35,8 @@ class Optimizers::BranchAndBound : public Algorithm {
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
+
+    std::list<CallbackI<NodeInfoT>*> m_callbacks;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -64,6 +67,8 @@ protected:
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
+    void call_callbacks(BranchAndBoundEvent t_event, TreeNode* t_node);
+
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
     using Algorithm::get;
@@ -92,7 +97,59 @@ public:
     virtual void set_subtree_depth(unsigned int t_depth) { m_steps.at(1) = t_depth; }
 
     [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
+
+    virtual void add_callback(CallbackI<NodeInfoT>* t_cb);
+
+    void submit_heuristic_solution(NodeInfoT* t_info);
 };
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT* t_info) {
+
+    auto* t_node = new Node<NodeInfoT>(t_info, -1, 0);
+
+    if (t_node->objective_value() < best_obj()) {
+
+        if (m_branching_rule->is_valid(*t_node)) {
+            set_as_incumbent(t_node);
+            log_node(Info, *t_node);
+            idol_Log2(Trace, "New incumbent with objective value " << t_node->objective_value() << " was submitted by heuristic.");
+        } else {
+            idol_Log2(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
+            delete t_node;
+        }
+
+    } else {
+        idol_Log2(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node->objective_value() << " while best obj is " << best_obj() << '.');
+        delete t_node;
+    }
+
+
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
+
+    for (auto* cb : m_callbacks) {
+
+        cb->set_relaxation(m_relaxation.get());
+        cb->set_node(t_node);
+        cb->set_parent(this);
+
+        cb->operator()(t_event);
+
+        cb->set_node(nullptr);
+        cb->set_relaxation(nullptr);
+        cb->set_parent(nullptr);
+
+    }
+
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::add_callback(CallbackI<NodeInfoT> *t_cb) {
+    m_callbacks.emplace_back(t_cb);
+}
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::build() {
@@ -369,6 +426,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
 
     }
+
+    call_callbacks(InvalidSolutionFound, t_node);
 
     *t_explore_children_flag = true;
 

@@ -25,6 +25,10 @@ public:
 
     [[nodiscard]] std::string name() const override { return "column-generation"; }
 
+    [[nodiscard]] const Model& master() const { return *m_master; }
+
+    [[nodiscard]] auto subproblems() const { return ConstIteratorForward(m_subproblems); }
+
     virtual void set_parallel_pricing_limit(unsigned int t_limit) { m_parallel_pricing_limit = t_limit; }
 
     [[nodiscard]] unsigned int parallel_pricing_limit() const { return m_parallel_pricing_limit; }
@@ -113,7 +117,6 @@ class Optimizers::ColumnGeneration::Subproblem {
     friend class ::Optimizers::DantzigWolfeDecomposition;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
-    using PresentGenerators = ConstIteratorForward<PresentGeneratorsList>;
 
     unsigned int m_index;
     ColumnGeneration& m_parent;
@@ -142,6 +145,8 @@ class Optimizers::ColumnGeneration::Subproblem {
     void update_generation_pattern_objective(Constant&& t_objective);
 public:
     Subproblem(ColumnGeneration& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
+
+    [[nodiscard]] auto present_generators() const { return ConstIteratorForward(m_present_generators); }
 };
 
 #endif //IDOL_OPTIMIZERS_COLUMNGENERATION_H
