@@ -5,7 +5,7 @@ target_link_libraries(tests PRIVATE idol)
 target_include_directories(tests PRIVATE ../lib/include/)
 
 if (${WITH_TEST_COVERAGE})
-    target_compile_options(idol PRIVATE -fprofile-arcs -ftest-coverage -g -O0 -fno-inline-small-functions -fkeep-inline-functions -fkeep-static-functions --coverage)
+    target_compile_options(idol PRIVATE -fprofile-arcs -ftest-coverage -g -O0 --coverage)
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CPP_COMPILER gcc)
     target_link_libraries(idol PUBLIC gcov)
