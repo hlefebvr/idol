@@ -21,7 +21,7 @@ find_library(
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(MOSEK DEFAULT_MSG MOSEK_LIBRARY FUSION_LIBRARY MOSEK_INCLUDE_DIRS)
 
-if (GUROBI_FOUND)
+if (MOSEK_FOUND)
     add_library(mosek STATIC IMPORTED)
     set_target_properties(mosek PROPERTIES IMPORTED_LOCATION ${FUSION_LIBRARY})
     target_link_libraries(mosek INTERFACE ${MOSEK_LIBRARY})

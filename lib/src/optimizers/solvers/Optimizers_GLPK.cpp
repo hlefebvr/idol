@@ -643,9 +643,9 @@ double Optimizers::GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) c
 
 void Optimizers::GLPK::set_time_limit(double t_time_limit) {
 
-    const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit));
-    m_simplex_parameters.tm_lim = value * 1000;
-    m_mip_parameters.tm_lim = value * 1000;
+    const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit) * 1000);
+    m_simplex_parameters.tm_lim = value;
+    m_mip_parameters.tm_lim = value;
 
     Optimizer::set_time_limit(t_time_limit);
 }
