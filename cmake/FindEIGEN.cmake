@@ -1,7 +1,7 @@
 find_path(
         EIGEN_INCLUDE_DIRS
         NAMES Eigen/Core
-        HINTS /usr/include/Eigen /usr/local/include/Eigen  ${EIGEN_DIR} $ENV{EIGEN_HOME}
+        HINTS /usr/include/ /usr/local/include/ ${EIGEN_DIR} $ENV{EIGEN_HOME}
 )
 
 include(FindPackageHandleStandardArgs)
