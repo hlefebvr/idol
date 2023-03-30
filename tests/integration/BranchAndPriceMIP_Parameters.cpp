@@ -7,6 +7,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "optimizers/column-generation/IntegerMasterHeuristic.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
@@ -21,7 +22,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
             std::make_pair<std::string, double>("GAP_instance1.txt", -22.),
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
-    //const auto integer_master_heuristic = GENERATE(false, true);
+    const auto integer_master_heuristic = GENERATE(false, true);
     const auto farkas_pricing = GENERATE(false, true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
@@ -114,6 +115,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                 )
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
+                                .conditional(integer_master_heuristic, [](auto& x){
+                                    x.with_callback(
+                                            IntegerMasterHeuristic()
+                                                .with_solver( TestType() )
+                                    );
+                                })
                         )
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
@@ -132,13 +139,18 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     .with_subtree_depth(subtree_depth)
+                    .conditional(integer_master_heuristic, [](auto& x){
+                        x.with_callback(
+                                IntegerMasterHeuristic()
+                                    .with_solver(TestType()
+                                )
+                            );
+                    })
             );
-
-    std::cout << "WARNING NO INTEGER MASTER HEURISTIC IS USED" << std::endl;
 
     WHEN("The instance \"" + filename + "\" is solved by branch-and-bound "
             + "with subtree depth of " + std::to_string(subtree_depth)
-            + " and with relaxation solved by "
+            + " and" + (integer_master_heuristic ? " with integer master heuristic" : "") + " with relaxation solved by "
             + relaxation_solvers[solver_index].first + " with "
             + (farkas_pricing ? "farkas pricing" : "artificial variables")
             + ", branching applied to " + (branching_on_master ? "master" : "subproblem")

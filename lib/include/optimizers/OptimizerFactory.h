@@ -9,6 +9,7 @@
 #include "optimizers/Optimizer.h"
 
 #include <optional>
+#include <functional>
 
 class Model;
 
@@ -60,7 +61,16 @@ public:
 
     CRTP& with_infeasible_or_unbounded_info(bool t_value);
 
+    CRTP& conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else = [](CRTP&){});
+
 };
+
+template<class CRTP>
+CRTP &
+OptimizerFactoryWithDefaultParameters<CRTP>::conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else) {
+    t_conditional_value ? t_if(crtp()) : t_else(crtp());
+    return crtp();
+}
 
 template<class CRTP>
 CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_infeasible_or_unbounded_info(bool t_value) {

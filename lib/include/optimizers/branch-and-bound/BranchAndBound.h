@@ -178,7 +178,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
     }
 
     for (auto* cb : m_callbacks) {
-        result->add_callback(cb->operator()());
+        result->add_callback((CallbackI<NodeT>*) cb->operator()());
     }
 
     return result;

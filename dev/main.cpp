@@ -100,9 +100,11 @@ int main(int t_argc, char** t_argv) {
 
                         .with_node_selection_rule(BestBound())
 
+                        /*
                         .with_callback(
                                 IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
                         )
+                        */
 
                         .with_log_level(Info, Blue)
                 );
