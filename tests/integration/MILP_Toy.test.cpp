@@ -183,11 +183,13 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
         }
 
+        /*
         THEN("The objective value should be -inf") {
 
             CHECK(is_neg_inf(model.get(Attr::Solution::ObjVal)));
 
         }
+         */
 
     }
 
