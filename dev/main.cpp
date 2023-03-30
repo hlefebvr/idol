@@ -23,7 +23,7 @@
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -67,65 +67,63 @@ int main(int t_argc, char** t_argv) {
     //model.set(Attr::Var::Ub, x[0][2], 0);
     //model.set(Attr::Var::Lb, x[0][2], 1);
 
-    for (bool branching_on_master : { true, true }) {
+    for (bool primal_heuristic : { true, false }) {
 
-        for (bool farkas_pricing : { true, false }) {
+        for (bool branching_on_master: {true, true}) {
 
-            for (double smoothing : { 0., .3, .5, .8 }) {
+            for (bool farkas_pricing: {true, false}) {
 
-                model.use(
+                for (double smoothing: {0., .3, .5, .8}) {
 
-                    BranchAndBound<NodeInfo>()
+                    model.use(
 
-                        .with_node_solver(
+                            BranchAndBound<NodeInfo>()
 
-                                DantzigWolfeDecomposition(decomposition)
+                                    .with_node_solver(
 
-                                        .with_master_solver(Gurobi::ContinuousRelaxation())
+                                            DantzigWolfeDecomposition(decomposition)
 
-                                        .with_pricing_solver(Gurobi())
+                                                    .with_master_solver(Gurobi::ContinuousRelaxation())
 
-                                        .with_log_level(Info, Magenta)
+                                                    .with_pricing_solver(Gurobi())
 
-                                        .with_farkas_pricing(farkas_pricing)
+                                                    .with_log_level(Info, Magenta)
 
-                                        .with_artificial_variables_cost(1e5)
+                                                    .with_farkas_pricing(farkas_pricing)
 
-                                .with_dual_price_smoothing_stabilization(smoothing)
+                                                    .with_artificial_variables_cost(1e5)
 
-                                .with_branching_on_master(branching_on_master)
-                        )
+                                                    .with_dual_price_smoothing_stabilization(smoothing)
 
-                        .with_branching_rule(MostInfeasible())
+                                                    .with_branching_on_master(branching_on_master)
+                                    )
 
-                        .with_node_selection_rule(BestBound())
+                                    .with_branching_rule(MostInfeasible())
 
-                        /*
-                        .with_callback(
-                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
-                        )
-                        */
+                                    .with_node_selection_rule(BestBound())
 
-                        .with_log_level(Info, Blue)
-                );
+                                    .conditional(primal_heuristic, [](auto &x) {
+                                        x.with_callback(
+                                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
+                                        );
+                                    })
 
-                std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
+                                    .with_log_level(Info, Blue)
+                    );
 
-                model.optimize();
+                    std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
+                              << std::endl;
 
-                std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing << std::endl;
+                    model.optimize();
 
-                std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
-                std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
-                std::cout << save(model, Attr::Solution::Primal) << std::endl;
+                    std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
+                              << std::endl;
 
-                const double obj_val = model.get(Attr::Solution::ObjVal);
+                    std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
+                    std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
+                    std::cout << save(model, Attr::Solution::Primal) << std::endl;
 
-                //if (obj_val != -40.) {
-                //    throw Exception("stop");
-                //}
-
-                return 0;
+                }
 
             }
 
