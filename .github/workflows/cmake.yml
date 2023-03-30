@@ -60,6 +60,8 @@ jobs:
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ./tests
+      env:
+        MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
       
     - name: Build coverage report
       run: lcov --directory . --capture --output-file coverage.info
