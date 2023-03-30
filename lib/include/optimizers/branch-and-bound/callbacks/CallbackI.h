@@ -38,6 +38,8 @@ class CallbackI {
     virtual void set_parent(Optimizers::BranchAndBound<NodeInfoT>* t_parent) = 0;
 protected:
     virtual void operator()(BranchAndBoundEvent t_event) = 0;
+public:
+    virtual ~CallbackI() = default;
 };
 
 #endif //IDOL_CALLBACKI_H

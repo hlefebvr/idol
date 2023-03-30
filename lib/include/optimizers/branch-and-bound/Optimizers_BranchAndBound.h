@@ -410,26 +410,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    /*
-
-    if (t_node->objective_value() < best_obj()) {
-
-        if (m_branching_rule->is_valid(*t_node)) {
-            set_as_incumbent(t_node);
-            log_node(Info, *t_node);
-            idol_Log2(Trace, "New incumbent with objective value " << t_node->objective_value() << " was submitted by heuristic.");
-        } else {
-            idol_Log2(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
-            delete t_node;
-        }
-
-    } else {
-        idol_Log2(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node->objective_value() << " while best obj is " << best_obj() << '.');
-        delete t_node;
-    }
-
-     */
-
     if (t_node->objective_value() < best_obj()) {
 
         if (m_branching_rule->is_valid(*t_node)) {
