@@ -125,7 +125,7 @@ CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_farkas_pr
         throw Exception("Farkas pricing setting has already been given.");
     }
 
-    m_use_farkas_pricing = true;
+    m_use_farkas_pricing = t_value;
 
     return this->crtp();
 }
