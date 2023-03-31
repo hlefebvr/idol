@@ -25,6 +25,8 @@ protected:
 
     void submit_heuristic_solution(NodeInfoT* t_info);
 
+    void submit_lower_bound(double t_lower_bound);
+
     AdvancedInterface& advanced_interface() { return *m_advanced_interface; }
 
     const AdvancedInterface& advanced_interface() const { return *m_advanced_interface; }
@@ -43,6 +45,11 @@ private:
     void set_parent(Optimizers::BranchAndBound<NodeInfoT> *t_parent) final { m_parent = t_parent; }
     void set_side_effect_registry(typename CallbackI<NodeInfoT>::SideEffectRegistry* t_registry) { m_side_effect_registry = t_registry; }
 };
+
+template<class NodeInfoT>
+void Callback<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
+    m_parent->submit_lower_bound(t_lower_bound);
+}
 
 template<class NodeInfoT>
 Callback<NodeInfoT>::Callback() : m_advanced_interface(new AdvancedInterface(*this)) {

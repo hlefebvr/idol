@@ -102,7 +102,23 @@ public:
     virtual void add_callback(CallbackI<NodeInfoT>* t_cb);
 
     void submit_heuristic_solution(NodeInfoT* t_info);
+
+    void submit_lower_bound(double t_lower_bound);
 };
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
+    if (t_lower_bound > best_obj()) {
+        set_status(Fail);
+        set_reason(NotSpecified);
+        terminate();
+        return;
+    }
+    if (t_lower_bound > best_bound()) {
+        set_best_bound(t_lower_bound);
+        idol_Log2(Trace, "New best lower bound of " << t_lower_bound << " was submitted.");
+    }
+}
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT* t_info) {
