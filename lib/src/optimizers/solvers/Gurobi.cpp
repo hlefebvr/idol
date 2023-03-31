@@ -7,8 +7,15 @@
 
 Optimizer *Gurobi::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GUROBI
+
     auto* result = new Optimizers::Gurobi(t_model, m_continuous_relaxation);
+
     this->handle_default_parameters(result);
+
+    for (auto* cb : m_callbacks) {
+        result->add_callback(cb);
+    }
+
     return result;
 #else
     throw Exception("Idol was not linked with Gurobi.");
@@ -21,5 +28,10 @@ Gurobi Gurobi::ContinuousRelaxation() {
 
 Gurobi *Gurobi::clone() const {
     return new Gurobi(*this);
+}
+
+Gurobi &Gurobi::with_callback(GurobiCallback *t_cb) {
+    m_callbacks.emplace_back(t_cb);
+    return *this;
 }
 

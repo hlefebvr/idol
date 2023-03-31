@@ -6,9 +6,13 @@
 #define IDOL_GUROBI_H
 
 #include "../OptimizerFactory.h"
+#include <list>
+
+class GurobiCallback;
 
 class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     bool m_continuous_relaxation = false;
+    std::list<GurobiCallback*> m_callbacks;
 
     explicit Gurobi(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
     Gurobi(const Gurobi&) = default;
@@ -22,6 +26,8 @@ public:
     Optimizer *operator()(const Model &t_model) const override;
 
     static Gurobi ContinuousRelaxation();
+
+    Gurobi& with_callback(GurobiCallback* t_cb);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

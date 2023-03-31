@@ -9,12 +9,6 @@
 #include "errors/Exception.h"
 #include "optimizers/branch-and-bound/nodes/Node.h"
 
-class Model;
-
-namespace Optimizers {
-    template<class NodeInfoT> class BranchAndBound;
-}
-
 enum BranchAndBoundEvent {
     NodeLoaded, /* Called when a node is about to be solved */
     IncumbentSolution, /* Called when an incumbent solution has been found */
@@ -33,10 +27,16 @@ static std::ostream &operator<<(std::ostream& t_os, BranchAndBoundEvent t_event)
     throw Exception("Enum out of bounds.");
 }
 
+class Model;
+
+namespace Optimizers {
+    template<class NodeInfoT> class BranchAndBound;
+}
+
 template<class NodeInfoT>
 class CallbackI {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
-protected:
+
     virtual void operator()(BranchAndBoundEvent t_event) = 0;
 public:
     virtual ~CallbackI() = default;

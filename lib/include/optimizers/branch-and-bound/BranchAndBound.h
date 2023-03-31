@@ -17,7 +17,7 @@ class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBou
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
 
-    std::list<CallbackFactory<NodeT>*> m_callbacks;
+    std::list<std::unique_ptr<CallbackFactory<NodeT>>> m_callbacks;
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
@@ -145,7 +145,13 @@ BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
         : OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>>(t_rhs),
           m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory ? t_rhs.m_relaxation_optimizer_factory->clone() : nullptr),
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
-          m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr) {}
+          m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr) {
+
+    for (auto& cb : t_rhs.m_callbacks) {
+        m_callbacks.emplace_back(cb->clone());
+    }
+
+}
 
 template<class NodeT>
 Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
@@ -177,7 +183,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
         result->set_subtree_depth(m_subtree_depth.value());
     }
 
-    for (auto* cb : m_callbacks) {
+    for (auto& cb : m_callbacks) {
         result->add_callback((CallbackI<NodeT>*) cb->operator()());
     }
 

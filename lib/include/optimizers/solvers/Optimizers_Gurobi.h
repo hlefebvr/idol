@@ -11,12 +11,14 @@
 #include <variant>
 
 #include "OptimizerWithLazyUpdates.h"
+#include "GurobiCallback.h"
 
 namespace Optimizers {
     class Gurobi;
 }
 
 class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
+    friend class ::GurobiCallbackI;
     static std::unique_ptr<GRBEnv> s_global_env;
 
     static GRBEnv& get_global_env();
@@ -24,6 +26,9 @@ class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<
     GRBEnv& m_env;
     GRBModel m_model;
     bool m_continuous_relaxation;
+
+    std::list<std::unique_ptr<GurobiCallback>> m_callbacks;
+    std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
 
     char gurobi_var_type(int t_type);
     static char gurobi_ctr_type(int t_type);
@@ -92,6 +97,8 @@ public:
     void set_presolve(bool t_value) override;
 
     void set_infeasible_or_unbounded_info(bool t_value) override;
+
+    void add_callback(GurobiCallback* t_ptr_to_callback);
 };
 
 #endif

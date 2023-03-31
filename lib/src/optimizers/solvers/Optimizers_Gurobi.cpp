@@ -395,4 +395,14 @@ void Optimizers::Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
     Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
+void Optimizers::Gurobi::add_callback(GurobiCallback *t_ptr_to_callback) {
+
+    if (!m_gurobi_callback) {
+        m_gurobi_callback = std::make_unique<GurobiCallbackI>(*this);
+        m_model.setCallback(m_gurobi_callback.get());
+    }
+
+    m_gurobi_callback->add_callback(t_ptr_to_callback);
+}
+
 #endif

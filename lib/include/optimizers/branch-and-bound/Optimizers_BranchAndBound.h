@@ -37,7 +37,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::list<CallbackI<NodeInfoT>*> m_callbacks;
+    std::list<std::unique_ptr<CallbackI<NodeInfoT>>> m_callbacks;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -150,7 +150,7 @@ Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_even
 
     SideEffectRegistry registry;
 
-    for (auto* cb : m_callbacks) {
+    for (auto& cb : m_callbacks) {
 
         cb->set_relaxation(m_relaxation.get());
         cb->set_node(t_node);
