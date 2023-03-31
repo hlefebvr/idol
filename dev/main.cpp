@@ -23,7 +23,8 @@
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
+    //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_40__8.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -67,13 +68,13 @@ int main(int t_argc, char** t_argv) {
     //model.set(Attr::Var::Ub, x[0][2], 0);
     //model.set(Attr::Var::Lb, x[0][2], 1);
 
-    for (bool primal_heuristic : { true, false }) {
+    for (bool primal_heuristic : { true }) {
 
-        for (bool branching_on_master: {true, true}) {
+        for (bool branching_on_master: {false}) {
 
-            for (bool farkas_pricing: {true, false}) {
+            for (bool farkas_pricing: {false}) {
 
-                for (double smoothing: {0., .3, .5, .8}) {
+                for (double smoothing: {0.}) {
 
                     model.use(
 
@@ -83,9 +84,9 @@ int main(int t_argc, char** t_argv) {
 
                                             DantzigWolfeDecomposition(decomposition)
 
-                                                    .with_master_solver(Gurobi::ContinuousRelaxation())
+                                                    .with_master_solver(Mosek::ContinuousRelaxation())
 
-                                                    .with_pricing_solver(Gurobi())
+                                                    .with_pricing_solver(Mosek())
 
                                                     .with_log_level(Info, Magenta)
 
@@ -104,7 +105,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
+                                                IntegerMasterHeuristic().with_solver(Mosek().with_time_limit(20))
                                         );
                                     })
 

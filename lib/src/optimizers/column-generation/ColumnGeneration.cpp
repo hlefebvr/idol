@@ -6,6 +6,10 @@
 
 Optimizer *ColumnGeneration::operator()(const Model &t_model) const {
 
+    if (!m_master_optimizer) {
+        throw Exception("No optimizer have been given for master problem.");
+    }
+
     const unsigned int n_subproblems = this->n_subproblems();
 
     std::vector<Model*> subproblems(n_subproblems);
@@ -14,7 +18,10 @@ Optimizer *ColumnGeneration::operator()(const Model &t_model) const {
         subproblems[i] = m_subproblems[i]->clone();
     }
 
-    auto* result = new Optimizers::ColumnGeneration(t_model, t_model.clone(), subproblems, m_generation_patterns);
+    auto* master = t_model.clone();
+    master->use(*m_master_optimizer);
+
+    auto* result = new Optimizers::ColumnGeneration(t_model, master, subproblems, m_generation_patterns);
 
     this->handle_default_parameters(result);
     this->handle_column_generation_parameters(result);
