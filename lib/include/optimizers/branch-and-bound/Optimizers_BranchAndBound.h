@@ -27,6 +27,7 @@ template<class NodeInfoT>
 class Optimizers::BranchAndBound : public Algorithm {
     using TreeNode = Node<NodeInfoT>;
     using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
+    using SideEffectRegistry = typename CallbackI<NodeInfoT>::SideEffectRegistry;
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
@@ -67,7 +68,7 @@ protected:
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
-    void call_callbacks(BranchAndBoundEvent t_event, TreeNode* t_node);
+    SideEffectRegistry call_callbacks(BranchAndBoundEvent t_event, TreeNode* t_node);
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
@@ -128,21 +129,28 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
+typename CallbackI<NodeInfoT>::SideEffectRegistry
+Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
+
+    SideEffectRegistry registry;
 
     for (auto* cb : m_callbacks) {
 
         cb->set_relaxation(m_relaxation.get());
         cb->set_node(t_node);
         cb->set_parent(this);
+        cb->set_side_effect_registry(&registry);
 
         cb->operator()(t_event);
 
         cb->set_node(nullptr);
         cb->set_relaxation(nullptr);
         cb->set_parent(nullptr);
+        cb->set_side_effect_registry(nullptr);
 
     }
+
+    return registry;
 
 }
 
@@ -414,9 +422,18 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
 
         if (m_branching_rule->is_valid(*t_node)) {
 
+            auto side_effects = call_callbacks(IncumbentSolution, t_node);
+
+            if (side_effects.relaxation_was_modified) {
+                *t_reoptimize_flag = true;
+                idol_Log2(Trace, "The relaxation was modified by callback at node " << t_node->id() << ". Re-optimization is needed.");
+                return;
+            }
+
             set_as_incumbent(t_node);
             log_node(Info, *t_node);
             idol_Log2(Trace, "New incumbent with objective value " << t_node->objective_value() << " found at node " << t_node->id() << ".");
+
             return;
 
         }

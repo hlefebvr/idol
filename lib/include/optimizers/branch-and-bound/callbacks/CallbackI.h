@@ -36,14 +36,20 @@ static std::ostream &operator<<(std::ostream& t_os, BranchAndBoundEvent t_event)
 template<class NodeInfoT>
 class CallbackI {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
-
-    virtual void set_node(Node<NodeInfoT>* t_node) = 0;
-    virtual void set_relaxation(Model* t_relaxation) = 0;
-    virtual void set_parent(Optimizers::BranchAndBound<NodeInfoT>* t_parent) = 0;
 protected:
     virtual void operator()(BranchAndBoundEvent t_event) = 0;
 public:
     virtual ~CallbackI() = default;
+
+    struct SideEffectRegistry {
+        bool relaxation_was_modified = false;
+    };
+
+private:
+    virtual void set_node(Node<NodeInfoT>* t_node) = 0;
+    virtual void set_relaxation(Model* t_relaxation) = 0;
+    virtual void set_parent(Optimizers::BranchAndBound<NodeInfoT>* t_parent) = 0;
+    virtual void set_side_effect_registry(SideEffectRegistry* t_registry) = 0;
 };
 
 #endif //IDOL_CALLBACKI_H
