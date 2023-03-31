@@ -56,6 +56,8 @@ public:
     virtual void set_log_frequency(unsigned int t_frequency) { m_log_frequency = t_frequency; }
 
     [[nodiscard]] unsigned int log_frequency() const { return m_log_frequency; }
+
+    Subproblem& add_subproblem(Model* t_sub_problem_model, Column t_generation_pattern);
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;

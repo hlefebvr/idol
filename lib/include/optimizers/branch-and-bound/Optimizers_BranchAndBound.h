@@ -295,8 +295,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
                                                     SetOfActiveNodes & t_active_nodes,
                                                     unsigned int t_step) {
 
-    bool reoptimize_flag = false;
-    bool explore_children_flag = false;
+    bool reoptimize_flag;
+    bool explore_children_flag;
 
     do {
 
@@ -365,6 +365,9 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
+
+    *t_explore_children_flag = false;
+    *t_reoptimize_flag = false;
 
     if (best_bound() > best_obj()) {
         set_status(Fail);

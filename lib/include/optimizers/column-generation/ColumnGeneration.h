@@ -17,7 +17,7 @@ public:
 
     [[nodiscard]] ColumnGeneration *clone() const override;
 
-    void reserve_subproblems(unsigned int t_n_subproblems);
+    ColumnGeneration& reserve_for_subproblems(unsigned int t_n_subproblems);
 
     [[nodiscard]] unsigned int n_subproblems() const { return m_subproblems.size(); }
 

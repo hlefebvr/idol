@@ -47,9 +47,10 @@ ColumnGeneration::ColumnGeneration(const ColumnGeneration &t_src)
 
 }
 
-void ColumnGeneration::reserve_subproblems(unsigned int t_n_subproblems) {
+ColumnGeneration& ColumnGeneration::reserve_for_subproblems(unsigned int t_n_subproblems) {
     m_subproblems.reserve(t_n_subproblems);
     m_generation_patterns.reserve(t_n_subproblems);
+    return *this;
 }
 
 ColumnGeneration &ColumnGeneration::with_subproblem(const Model &t_model, Column t_column) {

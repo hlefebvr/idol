@@ -17,7 +17,7 @@ Optimizers::ColumnGeneration::ColumnGeneration(const Model& t_model,
     m_subproblems.reserve(t_subproblems.capacity());
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        m_subproblems.emplace_back(*this, i, t_subproblems[i], std::move(t_generation_patterns[i]));
+        add_subproblem(t_subproblems[i], std::move(t_generation_patterns[i]));
     }
 
 
@@ -190,7 +190,7 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
 
     const auto& pricing = t_subproblem.m_model;
 
-    idol_Log2(Debug,
+    idol_Log2(Info,
              "<Type=Pricing> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
@@ -454,6 +454,11 @@ void Optimizers::ColumnGeneration::set(const Req<double, Var> &t_attr, const Var
 
 void Optimizers::ColumnGeneration::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
     m_master->set(t_attr, t_var, t_value);
+}
+
+Optimizers::ColumnGeneration::Subproblem& Optimizers::ColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
+    m_subproblems.emplace_back(*this, m_subproblems.size(), t_sub_problem_model, std::move(t_generation_pattern));
+    return m_subproblems.back();
 }
 
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
