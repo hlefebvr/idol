@@ -83,6 +83,24 @@ QuadExpr<Var> operator*(const QuadExpr<Var>& t_quad_expr, double t_num) {
     return t_num * t_quad_expr;
 }
 
+Expr<Var> operator*(double t_num, Expr<Var>&& t_expr) {
+    Expr<Var> result(std::move(t_expr));
+    result *= t_num;
+    return result;
+}
+
+Expr<Var> operator*(double t_num, const Expr<Var>& t_expr) {
+    return t_num * Expr(t_expr);
+}
+
+Expr<Var> operator*(Expr<Var>&& t_expr, double t_num) {
+    return t_num * std::move(t_expr);
+}
+
+Expr<Var> operator*(const Expr<Var>& t_expr, double t_num) {
+    return Expr(t_expr) * t_num;
+}
+
 /* ADDITION */
 
 LinExpr<Var> operator+(LinExpr<Var>&& t_lin_expr) {

@@ -99,6 +99,8 @@ public:
     void set_infeasible_or_unbounded_info(bool t_value) override;
 
     void add_callback(GurobiCallback* t_ptr_to_callback);
+
+    void set_lazy_cut(bool t_value);
 };
 
 #endif

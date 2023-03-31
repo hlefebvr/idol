@@ -31,13 +31,13 @@ public:
     Row& operator=(Row&& t_src) noexcept = default;
 
     Constant& rhs() { return m_impl.constant(); }
-    const Constant& rhs() const { return m_impl.constant(); }
+    [[nodiscard]] const Constant& rhs() const { return m_impl.constant(); }
 
     LinExpr<Var>& linear() { return m_impl.linear(); }
-    const LinExpr<Var>& linear() const { return m_impl.linear(); }
+    [[nodiscard]] const LinExpr<Var>& linear() const { return m_impl.linear(); }
 
     QuadExpr<Var, Var>& quadratic() { return m_impl.quadratic(); }
-    const QuadExpr<Var, Var>& quadratic() const { return m_impl.quadratic(); }
+    [[nodiscard]] const QuadExpr<Var, Var>& quadratic() const { return m_impl.quadratic(); }
 
     void set_linear(LinExpr<Var>&& t_lin_expr) {  m_impl.linear() = std::move(t_lin_expr); }
     void set_linear(const LinExpr<Var>& t_lin_expr) {  m_impl.linear() = t_lin_expr; }

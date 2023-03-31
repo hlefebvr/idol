@@ -16,6 +16,10 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->add_callback(cb);
     }
 
+    if (m_lazy_cuts) {
+        result->set_lazy_cut(m_lazy_cuts);
+    }
+
     return result;
 #else
     throw Exception("Idol was not linked with Gurobi.");
@@ -32,6 +36,11 @@ Gurobi *Gurobi::clone() const {
 
 Gurobi &Gurobi::with_callback(GurobiCallback *t_cb) {
     m_callbacks.emplace_back(t_cb);
+    return *this;
+}
+
+Gurobi &Gurobi::with_lazy_cut(bool t_value) {
+    m_lazy_cuts = t_value;
     return *this;
 }
 

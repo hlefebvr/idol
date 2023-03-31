@@ -405,4 +405,8 @@ void Optimizers::Gurobi::add_callback(GurobiCallback *t_ptr_to_callback) {
     m_gurobi_callback->add_callback(t_ptr_to_callback);
 }
 
+void Optimizers::Gurobi::set_lazy_cut(bool t_value) {
+    m_model.set(GRB_IntParam_LazyConstraints, t_value);
+}
+
 #endif
