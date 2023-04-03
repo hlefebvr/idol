@@ -92,7 +92,7 @@ bool BranchingRules::MostInfeasible<NodeT>::is_valid(const Node<NodeT> &t_node) 
 
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
-            idol_Log2(Trace, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
+            idol_Log(Trace, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
             return false;
         }
     }

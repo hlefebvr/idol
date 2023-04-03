@@ -112,9 +112,9 @@ void Optimizers::ColumnGeneration::hook_optimize() {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
-            idol_Log2(Trace, "Beginning to solve master problem.");
+            idol_Log(Trace, "Beginning to solve master problem.");
             solve_master_problem();
-            idol_Log2(Trace, "Master problem has been solved.");
+            idol_Log(Trace, "Master problem has been solved.");
 
             analyze_master_problem_solution();
 
@@ -164,7 +164,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
         return;
     }
 
-    idol_Log2(Info,
+    idol_Log(Info,
              "<Type=Master> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
@@ -190,7 +190,7 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
 
     const auto& pricing = t_subproblem.m_model;
 
-    idol_Log2(Info,
+    idol_Log(Info,
              "<Type=Pricing> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
@@ -256,7 +256,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         } else {
 
-            idol_Log2(Fatal, "ERROR. Master problem should not be infeasible when using artificial variables.");
+            idol_Log(Fatal, "ERROR. Master problem should not be infeasible when using artificial variables.");
             set_status(Fail);
             set_reason(NotSpecified);
             terminate();
@@ -270,14 +270,14 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         set_reason(Proved);
 
-        idol_Log2(Trace, "Terminate. Unbounded master problem.");
+        idol_Log(Trace, "Terminate. Unbounded master problem.");
 
     } else {
 
         set_status(Fail);
         set_reason(NotSpecified);
 
-        idol_Log2(Trace, "Terminate. Master problem could not be solved to optimality.");
+        idol_Log(Trace, "Terminate. Master problem could not be solved to optimality.");
 
     }
 
@@ -313,9 +313,9 @@ void Optimizers::ColumnGeneration::solve_subproblems() {
 
 #pragma omp parallel for num_threads(n_threads) default(none)
     for (auto & subproblem : m_subproblems) {
-        idol_Log2(Trace, "Beginning to solve subproblem " << subproblem.m_index << ".")
+        idol_Log(Trace, "Beginning to solve subproblem " << subproblem.m_index << ".")
         subproblem.optimize();
-        idol_Log2(Trace, "Subproblem " << subproblem.m_index << " has been solved.")
+        idol_Log(Trace, "Subproblem " << subproblem.m_index << " has been solved.")
     }
 
     for (auto& subproblem : m_subproblems) {
@@ -362,7 +362,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         if (best_bound() > best_bound_stop()) {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
-            idol_Log2(Trace,
+            idol_Log(Trace,
                      "Terminate. Given best_bound_stop is " << best_bound_stop()
                     << " while current best bound is " << best_bound()
             )

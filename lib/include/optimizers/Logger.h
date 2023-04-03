@@ -52,7 +52,7 @@ Logger &Logger::operator<<(const U &t_object) {
     return *this;
 }
 
-#define idol_Log2(t_required_level, msg) \
+#define idol_Log(t_required_level, msg) \
 if ((t_required_level) <= this->log_level()) { \
     ::Logger(t_required_level, this->log_color(), this->name()) << msg; \
 }

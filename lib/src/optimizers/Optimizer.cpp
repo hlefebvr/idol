@@ -19,12 +19,12 @@ impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {
 
 void impl::Optimizer::optimize() {
 
-    idol_Log2(Debug, "Optimizer " << name() << " is getting ready.")
+    idol_Log(Debug, "Optimizer " << name() << " is getting ready.")
 
     m_is_terminated = false;
     update();
 
-    idol_Log2(Debug, "Optimizer " << name() << " starts.")
+    idol_Log(Debug, "Optimizer " << name() << " starts.")
 
     m_timer.start();
     hook_before_optimize();
@@ -32,7 +32,7 @@ void impl::Optimizer::optimize() {
     hook_after_optimize();
     m_timer.stop();
 
-    idol_Log2(Debug, "Optimizer " << name() << " has ended.")
+    idol_Log(Debug, "Optimizer " << name() << " has ended.")
 
     m_is_terminated = true;
 
