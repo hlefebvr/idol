@@ -31,7 +31,7 @@ public:
 
     Callback<NodeInfo> *operator()() override;
 
-    CallbackFactory<NodeInfo> *clone() const override;
+    [[nodiscard]] CallbackFactory<NodeInfo> *clone() const override;
 
     IntegerMasterHeuristic& with_solver(const OptimizerFactory& t_optimizer);
 };
