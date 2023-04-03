@@ -4,7 +4,7 @@
 
 #ifdef IDOL_USE_GUROBI
 
-#include "GurobiCallback.h"
+#include "optimizers/solvers/GurobiCallback.h"
 #include "optimizers/solvers/Optimizers_Gurobi.h"
 
 GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
