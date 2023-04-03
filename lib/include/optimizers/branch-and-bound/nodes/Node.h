@@ -7,6 +7,8 @@
 
 #include <memory>
 
+class Model;
+
 template<class NodeInfoT>
 class Node {
 

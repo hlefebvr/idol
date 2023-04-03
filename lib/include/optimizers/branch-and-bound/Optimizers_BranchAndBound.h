@@ -15,6 +15,8 @@
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
 #include "optimizers/Logger.h"
 #include "callbacks/CallbackI.h"
+#include "optimizers/OptimizerFactory.h"
+#include "modeling/models/Model.h"
 
 #include <memory>
 #include <cassert>

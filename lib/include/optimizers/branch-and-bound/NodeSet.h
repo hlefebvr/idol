@@ -6,6 +6,7 @@
 #define IDOL_NODESET_H
 
 #include <map>
+#include "containers/IteratorForward.h"
 
 template<class NodeT>
 class NodeSet {
