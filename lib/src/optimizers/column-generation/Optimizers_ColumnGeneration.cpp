@@ -348,7 +348,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     if (!m_current_iteration_is_farkas_pricing) {
 
-        const double lower_bound = m_master->get(Attr::Solution::ObjVal) + reduced_costs;
+        const double lower_bound = m_current_dual_solution->objective_value() + reduced_costs;
 
         m_iter_lower_bound = lower_bound;
 
