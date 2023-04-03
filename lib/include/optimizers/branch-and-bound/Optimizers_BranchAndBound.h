@@ -44,6 +44,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
     unsigned int m_n_created_nodes = 0;
+    unsigned int m_n_solved_nodes = 0;
 
     TreeNode* m_incumbent = nullptr;
 protected:
@@ -106,6 +107,12 @@ public:
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
+
+    [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
+
+    [[nodiscard]] unsigned int n_solved_nodes() const { return m_n_solved_nodes; }
+
+    [[nodiscard]] const Model& relaxation() const { return *m_relaxation; }
 };
 
 template<class NodeInfoT>
@@ -274,6 +281,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     m_incumbent = nullptr;
 
     m_n_created_nodes = 0;
+    m_n_solved_nodes = 0;
 }
 
 template<class NodeInfoT>
@@ -380,6 +388,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
     idol_Log(Debug, "Node " << t_node->id() << " has been solved.");
 
     t_node->save(parent(), *m_relaxation);
+
+    ++m_n_solved_nodes;
 
 }
 

@@ -149,6 +149,10 @@ public:
     Subproblem(ColumnGeneration& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
 
     [[nodiscard]] auto present_generators() const { return ConstIteratorForward(m_present_generators); }
+
+    [[nodiscard]] const auto& pool() const { return m_pool; }
+
+    [[nodiscard]] const auto& model() const { return *m_model; }
 };
 
 #endif //IDOL_OPTIMIZERS_COLUMNGENERATION_H
