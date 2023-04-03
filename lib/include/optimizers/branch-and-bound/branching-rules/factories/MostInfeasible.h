@@ -9,13 +9,30 @@
 #include "optimizers/branch-and-bound/branching-rules/impls/MostInfeasbile.h"
 
 class MostInfeasible {
+    std::optional<std::list<Var>> m_explicit_branching_candidates;
 public:
+    MostInfeasible() = default;
+
+    template<class IteratorT>
+    MostInfeasible(IteratorT t_begin, IteratorT t_end) : m_explicit_branching_candidates(std::list<Var>()) {
+
+        for ( ; t_begin != t_end ; ++t_begin) {
+            m_explicit_branching_candidates.value().emplace_back(*t_begin);
+        }
+
+    }
+
     template<class NodeT>
     class Strategy : public BranchingRuleFactory<NodeT> {
+        std::optional<std::list<Var>> m_explicit_branching_candidates;
     public:
-        explicit Strategy(const MostInfeasible& t_parent) {}
+        explicit Strategy(const MostInfeasible& t_parent)
+            : m_explicit_branching_candidates(t_parent.m_explicit_branching_candidates) {}
 
         BranchingRules::MostInfeasible<NodeT> *operator()(const Model& t_model) const override {
+            if (m_explicit_branching_candidates.has_value()) {
+                return new BranchingRules::MostInfeasible<NodeT>(t_model, m_explicit_branching_candidates.value());
+            }
             return new BranchingRules::MostInfeasible<NodeT>(t_model);
         }
 

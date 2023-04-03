@@ -27,6 +27,11 @@ protected:
             const Var& t_var,
             double t_value);
 public:
+    MostInfeasible(const Model& t_model, std::list<Var> t_explicit_branching_candidates)
+        : VariableBranchingRule<NodeInfoT>(t_model), m_branching_candidates(std::move(t_explicit_branching_candidates)) {
+
+    }
+
     explicit MostInfeasible(const Model& t_model) : VariableBranchingRule<NodeInfoT>(t_model) {
 
         for (const auto& var : t_model.vars()) {
