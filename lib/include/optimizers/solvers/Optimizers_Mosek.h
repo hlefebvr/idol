@@ -10,6 +10,12 @@
 #include "OptimizerWithLazyUpdates.h"
 #include <fusion.h>
 
+struct MosekKiller {
+    ~MosekKiller();
+};
+
+static const MosekKiller s_mosek_killer;
+
 struct MosekVar {
     mosek::fusion::Variable::t variable;
     mosek::fusion::Constraint::t lower_bound;

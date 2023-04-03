@@ -309,6 +309,7 @@ void Optimizers::Mosek::hook_remove(const Var &t_var) {
     m_model->updateObjective(mosek::fusion::Expr::constTerm(0), impl.variable);
 
     impl.variable->remove();
+    impl.variable = nullptr;
 
     if (impl.lower_bound.get()) {
         impl.lower_bound->remove();
@@ -324,6 +325,7 @@ void Optimizers::Mosek::hook_remove(const Var &t_var) {
 void Optimizers::Mosek::hook_remove(const Ctr &t_ctr) {
     auto& impl = lazy(t_ctr).impl();
     impl.constraint->remove();
+    impl.constraint = nullptr;
 }
 
 void Optimizers::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
@@ -471,5 +473,8 @@ void Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
     Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
+MosekKiller::~MosekKiller() {
+    mosek::releaseGlobalEnv();
+}
 
 #endif
