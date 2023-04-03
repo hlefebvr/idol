@@ -15,6 +15,8 @@
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
 #include "optimizers/Logger.h"
 #include "callbacks/CallbackI.h"
+#include "optimizers/OptimizerFactory.h"
+#include "modeling/models/Model.h"
 
 #include <memory>
 #include <cassert>
@@ -42,6 +44,9 @@ class Optimizers::BranchAndBound : public Algorithm {
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
     unsigned int m_n_created_nodes = 0;
+    unsigned int m_n_solved_nodes = 0;
+    double m_root_node_best_bound = -Inf;
+    double m_root_node_best_obj = +Inf;
 
     TreeNode* m_incumbent = nullptr;
 protected:
@@ -104,6 +109,16 @@ public:
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
+
+    [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
+
+    [[nodiscard]] unsigned int n_solved_nodes() const { return m_n_solved_nodes; }
+
+    [[nodiscard]] const Model& relaxation() const { return *m_relaxation; }
+
+    [[nodiscard]] double root_node_best_bound() const { return m_root_node_best_bound; }
+
+    [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 };
 
 template<class NodeInfoT>
@@ -272,6 +287,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     m_incumbent = nullptr;
 
     m_n_created_nodes = 0;
+    m_n_solved_nodes = 0;
+
+    m_root_node_best_bound = -Inf;
+    m_root_node_best_obj = Inf;
 }
 
 template<class NodeInfoT>
@@ -379,6 +398,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
     t_node->save(parent(), *m_relaxation);
 
+    ++m_n_solved_nodes;
+
 }
 
 template<class NodeInfoT>
@@ -439,6 +460,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
+    if (t_node->level() == 0) {
+        m_root_node_best_bound = t_node->objective_value();
+    }
+
     if (t_node->objective_value() < best_obj()) {
 
         if (m_branching_rule->is_valid(*t_node)) {
@@ -468,6 +493,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
     }
 
     call_callbacks(InvalidSolution, t_node);
+
+    if (t_node->level() == 0) {
+        m_root_node_best_obj = best_obj();
+    }
 
     *t_explore_children_flag = true;
 

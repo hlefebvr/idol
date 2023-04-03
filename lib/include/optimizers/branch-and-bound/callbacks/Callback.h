@@ -13,6 +13,7 @@ class Callback : public CallbackI<NodeInfoT> {
 protected:
     Callback();
 
+    class TemporaryInterface;
     class AdvancedInterface;
 
     using SideEffectRegistry = typename CallbackI<NodeInfoT>::SideEffectRegistry;
@@ -26,6 +27,8 @@ protected:
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
+
+    TemporaryInterface temporary_interface();
 
     AdvancedInterface& advanced_interface() { return *m_advanced_interface; }
 
@@ -43,7 +46,7 @@ private:
     void set_node(Node<NodeInfoT> *t_node) final { m_node = t_node; }
     void set_relaxation(Model *t_relaxation) final { m_relaxation = t_relaxation; }
     void set_parent(Optimizers::BranchAndBound<NodeInfoT> *t_parent) final { m_parent = t_parent; }
-    void set_side_effect_registry(typename CallbackI<NodeInfoT>::SideEffectRegistry* t_registry) { m_side_effect_registry = t_registry; }
+    void set_side_effect_registry(typename CallbackI<NodeInfoT>::SideEffectRegistry* t_registry) final { m_side_effect_registry = t_registry; }
 };
 
 template<class NodeInfoT>
@@ -147,6 +150,53 @@ template<class NodeInfoT>
 Callback<NodeInfoT>::AdvancedInterface::AdvancedInterface(Callback<NodeInfoT> &t_parent)
     : m_parent(t_parent) {
 
+}
+
+template<class NodeInfoT>
+class Callback<NodeInfoT>::TemporaryInterface {
+    friend class Callback<NodeInfoT>;
+
+    Callback<NodeInfoT>& m_parent;
+    std::list< std::tuple<const Req<double, Var>&, Var, double> > m_double_Var_history;
+
+    explicit TemporaryInterface(Callback<NodeInfoT>& t_parent);
+public:
+    ~TemporaryInterface();
+
+    void reoptimize();
+
+    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
+};
+
+template<class NodeInfoT>
+void Callback<NodeInfoT>::TemporaryInterface::reoptimize() {
+    m_parent.m_relaxation->optimize();
+}
+
+template<class NodeInfoT>
+Callback<NodeInfoT>::TemporaryInterface::~TemporaryInterface() {
+
+    for (const auto& [attr, var, val] : m_double_Var_history) {
+        m_parent.m_relaxation->set(attr, var, val);
+    }
+
+}
+
+template<class NodeInfoT>
+void Callback<NodeInfoT>::TemporaryInterface::set(const Req<double, Var> &t_attr, const Var& t_var, double t_value) {
+    const double current_value = m_parent.m_relaxation->get(t_attr, t_var);
+    m_double_Var_history.emplace_front(t_attr, t_var, current_value);
+    m_parent.m_relaxation->set(t_attr, t_var, t_value);
+}
+
+template<class NodeInfoT>
+Callback<NodeInfoT>::TemporaryInterface::TemporaryInterface(Callback<NodeInfoT> &t_parent) : m_parent(t_parent) {
+
+}
+
+template<class NodeInfoT>
+typename Callback<NodeInfoT>::TemporaryInterface Callback<NodeInfoT>::temporary_interface() {
+    return Callback::TemporaryInterface(*this);
 }
 
 #endif //IDOL_CALLBACK_H
