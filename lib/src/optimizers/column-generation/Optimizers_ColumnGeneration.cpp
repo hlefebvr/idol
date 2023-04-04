@@ -359,6 +359,14 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             //call_callback(Event_::Algorithm::NewBestLb);
         }
 
+        if (best_bound() > best_obj()) {
+            idol_Log(Trace,
+                     "Terminate. Best bound is strictly greater than best obj.");
+            set_status(Fail);
+            set_reason(NotSpecified);
+            terminate();
+        }
+
         if (best_bound() > best_bound_stop()) {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
