@@ -359,8 +359,8 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             //call_callback(Event_::Algorithm::NewBestLb);
         }
 
-        if (best_bound() > best_obj()) {
-            idol_Log(Trace,
+        if (best_bound() > best_obj() + 1e-3) {
+            idol_Log(Fatal,
                      "Terminate. Best bound is strictly greater than best obj.");
             set_status(Fail);
             set_reason(NotSpecified);
