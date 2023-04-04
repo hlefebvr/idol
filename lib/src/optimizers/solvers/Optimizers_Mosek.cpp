@@ -3,7 +3,10 @@
 #include "optimizers/solvers/Optimizers_Mosek.h"
 #include "linear-algebra/to_rotated_quadratic_cone.h"
 #include "modeling/expressions/operations/operators.h"
+
+#ifdef IDOL_USE_EIGEN
 #include <Eigen/Sparse>
+#endif
 
 Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
     : OptimizerWithLazyUpdates<MosekVar, MosekCtr>(t_model),
