@@ -126,10 +126,12 @@ void Optimizers::ColumnGeneration::hook_optimize() {
 
         }
 
-        if (last_status == Unbounded && !m_master->optimizer().infeasible_or_unbounded_info()) {
+        if ((last_status == Unbounded || last_status == InfeasibleOrUnbounded) && !m_master->optimizer().infeasible_or_unbounded_info()) {
 
             m_master->optimizer().set_infeasible_or_unbounded_info(true);
             m_master->optimize();
+            set_status(m_master->get(Attr::Solution::Status));
+            std::cout << status() << std::endl;
             //m_master->optimizer().set_infeasible_or_unbounded_info(false);
 
         }
@@ -251,14 +253,23 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
         return;
     }
 
+    auto status = (SolutionStatus) m_master->get(Attr::Solution::Status);
+
+    double objective_value = +Inf;
+    if (status == Optimal || status == Feasible) {
+        objective_value = m_master->get(Attr::Solution::ObjVal);
+    } else if (status == Unbounded) {
+        objective_value = -Inf;
+    }
+
     idol_Log(Info,
              "<Type=Master> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << m_master->optimizer().time().count() << "> "
-             << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
+             << "<Stat=" << status << "> "
              << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
-             << "<Obj=" << m_master->get(Attr::Solution::ObjVal) << "> "
+             << "<ObjVal=" << objective_value << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
@@ -344,7 +355,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
     }
 
-    set_status(Fail);
+    set_status(status);
     set_reason(NotSpecified);
     idol_Log(Trace, "Terminate. Master problem could not be solved to optimality.");
     terminate();

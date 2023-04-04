@@ -2,7 +2,7 @@
 #include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/Logger.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
-#include "optimizers/solvers/Optimizers_GLPK.h"
+#include "optimizers/solvers/Optimizers_Gurobi.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
@@ -13,7 +13,7 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/solvers/Optimizers_Mosek.h"
 #include "optimizers/solvers/Gurobi.h"
-#include "optimizers/solvers/GLPK.h"
+#include "optimizers/solvers/Gurobi.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
@@ -23,7 +23,7 @@
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance1.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
     //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__0.txt");
 
     const unsigned int n_agents = instance.n_agents();
@@ -81,9 +81,9 @@ int main(int t_argc, char** t_argv) {
 
                                             DantzigWolfeDecomposition(decomposition)
 
-                                                    .with_master_solver(GLPK::ContinuousRelaxation())
+                                                    .with_master_solver(Gurobi::ContinuousRelaxation())
 
-                                                    .with_pricing_solver(GLPK())
+                                                    .with_pricing_solver(Gurobi())
 
                                                     .with_log_level(Trace, Magenta)
 
@@ -100,7 +100,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_solver(GLPK().with_time_limit(20))
+                                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
                                         );
                                     })
 
