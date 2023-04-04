@@ -58,6 +58,8 @@ protected:
 
     virtual void hook_after_optimize() {}
 
+    void restart() { m_is_terminated = false; hook_before_optimize(); }
+
     static double as_numeric(const Constant& t_constant);
 public:
     explicit Optimizer(const ::Model& t_parent);

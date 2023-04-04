@@ -38,5 +38,3 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 add_custom_command(TARGET tests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/instances/ $<TARGET_FILE_DIR:tests>/instances/
 )
-
-add_subdirectory(unit)

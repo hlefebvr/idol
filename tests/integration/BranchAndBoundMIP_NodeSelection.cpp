@@ -72,8 +72,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
 
 }
 
-
-TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection strategies",
+TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection rules",
                         "[integration][backend][solver]",
                         test_parameters) {
 
@@ -129,9 +128,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
 
     WHEN("The instance \"" + filename + "\" is solved") {
 
-        std::cout << "Solving " << filename << "..." << std::endl;
         model.optimize();
-        std::cout << "Done." << std::endl;
 
         THEN("The solution status is Optimal") {
 

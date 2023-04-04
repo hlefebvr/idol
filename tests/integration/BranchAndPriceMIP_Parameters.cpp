@@ -70,7 +70,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
-                        .with_artificial_variables_cost(1e5)
                         .clone()
             )
             },
@@ -88,7 +87,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
-                        .with_artificial_variables_cost(1e5)
                         .clone()
               )
             },
@@ -111,7 +109,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                         .with_branching_on_master(branching_on_master)
                                         .with_farkas_pricing(farkas_pricing)
                                         .with_dual_price_smoothing_stabilization(smoothing_factor)
-                                        .with_artificial_variables_cost(1e7)
                                 )
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
@@ -125,7 +122,6 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
-                        .with_artificial_variables_cost(1e5)
                         .clone()
               )
             }

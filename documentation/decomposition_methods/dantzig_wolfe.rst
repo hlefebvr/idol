@@ -6,8 +6,8 @@
 Dantzig-Wolfe decomposition
 ===========================
 
-In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
-using an external solver to solve each subproblem.
+In this section, we will show how to use the Branch-and-Price solver to solve_with_farkas_pricing the *Generalized Assignment Problem* (GAP)
+using an external solver to solve_with_farkas_pricing each subproblem.
 
 This tutorial regards the "advanced topic" of Column Generation and Dantzig-Wolfe decomposition, some prerequisites are needed:
 
@@ -65,7 +65,7 @@ Column Generation and Branch-and-price. In such case, the pricing problem is a K
 Automatic reformulation in Idol
 -------------------------------
 
-The simplest way to solve a problem using column generation and idol is through its automatic reformulation feature.
+The simplest way to solve_with_farkas_pricing a problem using column generation and idol is through its automatic reformulation feature.
 To use this, one simply needs to give the *original space* formulation of the problem (here, the *so-called* direct model)
 and to indicate which constraints should be moved to the pricing problem (here, the knapsack constraints).
 
@@ -164,8 +164,8 @@ Here, all the knapsack constraints are moved to the same pricing problem (id: 0)
 Decomposing and solving the model
 ---------------------------------
 
-Now that the desired decomposition has been specified, we can specify the desired algorithm to solve our model.
-Here, we want to solve our problem using a branch-and-price algorithm, i.e., a branch-and-bound algorithm where each relaxation
+Now that the desired decomposition has been specified, we can specify the desired algorithm to solve_with_farkas_pricing our model.
+Here, we want to solve_with_farkas_pricing our problem using a branch-and-price algorithm, i.e., a branch-and-bound algorithm where each relaxation
 in the branch-and-bound tree is solved by a Dantzig-Wolfe decomposition. This is done as follows.
 
 .. code:: cpp

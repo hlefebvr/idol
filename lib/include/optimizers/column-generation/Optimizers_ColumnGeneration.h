@@ -58,6 +58,8 @@ public:
     [[nodiscard]] unsigned int log_frequency() const { return m_log_frequency; }
 
     Subproblem& add_subproblem(Model* t_sub_problem_model, Column t_generation_pattern);
+
+    [[nodiscard]] unsigned int n_generated_columns() const { return m_n_generated_columns; }
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -68,7 +70,9 @@ protected:
     void update() override;
     void write(const std::string &t_name) override;
 
+    virtual void run_column_generation();
     virtual void add_artificial_variables();
+    [[nodiscard]] virtual bool has_artificial_variable_in_basis() const;
     virtual void solve_master_problem();
     void log_master_solution(bool t_force = false) const;
     void log_subproblem_solution(const Subproblem& t_subproblem, bool t_force = false) const;
@@ -78,9 +82,11 @@ protected:
     virtual void analyze_subproblems_solution();
     virtual void enrich_master_problem();
     virtual void clean_up();
-    virtual void analyze_feasibility_with_artificial_variables();
     virtual void remove_artificial_variables();
     [[nodiscard]] virtual bool stopping_condition() const;
+    void terminate_for_master_infeasible_with_artificial_variables();
+    void set_phase_I_objective_function();
+    void restore_objective_function();
 
     using Algorithm::set;
     using Algorithm::get;
@@ -98,6 +104,7 @@ protected:
     double m_iter_upper_bound = +Inf;
     unsigned int m_iteration_count = 0;
     unsigned int m_n_generated_columns_at_last_iteration = 0;
+    unsigned int m_n_generated_columns = 0;
 
     std::list<Var> m_artificial_variables;
     bool m_current_iteration_is_farkas_pricing = false;

@@ -23,8 +23,8 @@
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_40__8.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance1.txt");
+    //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -65,16 +65,13 @@ int main(int t_argc, char** t_argv) {
     // Set the objective function
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    //model.set(Attr::Var::Ub, x[0][2], 0);
-    //model.set(Attr::Var::Lb, x[0][2], 1);
+    for (bool primal_heuristic : { false, true }) {
 
-    for (bool primal_heuristic : { true }) {
+        for (bool branching_on_master: {true, false}) {
 
-        for (bool branching_on_master: {false}) {
+            for (bool farkas_pricing: {true}) {
 
-            for (bool farkas_pricing: {false}) {
-
-                for (double smoothing: {0.}) {
+                for (double smoothing: {0., .3}) {
 
                     model.use(
 
@@ -88,11 +85,11 @@ int main(int t_argc, char** t_argv) {
 
                                                     .with_pricing_solver(Mosek())
 
-                                                    .with_log_level(Info, Magenta)
+                                                    .with_log_level(Trace, Magenta)
 
                                                     .with_farkas_pricing(farkas_pricing)
 
-                                                    .with_artificial_variables_cost(1e5)
+                                                    .with_artificial_variables_cost(1)
 
                                                     .with_dual_price_smoothing_stabilization(smoothing)
 

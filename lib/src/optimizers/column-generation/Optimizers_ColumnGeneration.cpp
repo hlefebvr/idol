@@ -55,13 +55,12 @@ void Optimizers::ColumnGeneration::hook_before_optimize() {
     m_iter_upper_bound = +Inf;
     m_iteration_count = 0;
     m_n_generated_columns_at_last_iteration = 0;
+    m_n_generated_columns = 0;
     m_current_dual_solution.reset();
     m_adjusted_dual_solution.reset();
     m_current_iteration_is_farkas_pricing = false;
 
-    if (!m_farkas_pricing) {
-        add_artificial_variables();
-    } else if (!m_master->optimizer().infeasible_or_unbounded_info()) {
+    if (m_farkas_pricing && !m_master->optimizer().infeasible_or_unbounded_info()) {
         m_master->optimizer().set_infeasible_or_unbounded_info(true);
     }
 
@@ -106,6 +105,102 @@ void Optimizers::ColumnGeneration::add_artificial_variables() {
 
 void Optimizers::ColumnGeneration::hook_optimize() {
 
+    if (m_farkas_pricing) {
+        run_column_generation();
+        return;
+    }
+
+    add_artificial_variables();
+
+    // min c^Tx + M^Ts
+    if (m_artificial_variables_cost <= 1e-8) {
+
+        run_column_generation();
+
+        const auto last_status = status();
+
+        if (last_status == Infeasible) {
+            remove_artificial_variables();
+            terminate_for_master_infeasible_with_artificial_variables();
+            return;
+
+        }
+
+        if (last_status == Unbounded && !m_master->optimizer().infeasible_or_unbounded_info()) {
+
+            m_master->optimizer().set_infeasible_or_unbounded_info(true);
+            m_master->optimize();
+            //m_master->optimizer().set_infeasible_or_unbounded_info(false);
+
+        }
+
+        if (!has_artificial_variable_in_basis()) {
+            remove_artificial_variables();
+            return;
+        }
+
+    }
+
+    // min e^Ts
+    idol_Log(Debug, "Current status is " << (SolutionStatus) status() << ", switching to pure phase I.")
+
+    set_phase_I_objective_function();
+
+    restart();
+    run_column_generation();
+
+    if (status() != Optimal) {
+        remove_artificial_variables();
+        return;
+    }
+
+    remove_artificial_variables();
+
+    restore_objective_function();
+
+    restart();
+    hook_before_optimize();
+    run_column_generation();
+
+}
+
+void Optimizers::ColumnGeneration::set_phase_I_objective_function() {
+
+    Expr objective;
+    for (const auto& var : m_artificial_variables) {
+        objective += var;
+    }
+
+    set(Attr::Obj::Expr, std::move(objective));
+
+}
+
+void Optimizers::ColumnGeneration::restore_objective_function() {
+    set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
+}
+
+bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
+
+    std::function<double(const Var&)> value;
+
+    if (status() == Unbounded) {
+        value = [this](const Var& t_var) { return m_master->get(Attr::Solution::Ray, t_var); };
+    } else {
+        value = [this](const Var& t_var) { return m_master->get(Attr::Solution::Primal, t_var); };
+    }
+
+    for (const auto& var : m_artificial_variables) {
+        if (!equals(value(var), 0, 1e-8)) {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+void Optimizers::ColumnGeneration::run_column_generation() {
+
     //call_callback(Event_::Algorithm::Begin);
 
     do {
@@ -119,12 +214,6 @@ void Optimizers::ColumnGeneration::hook_optimize() {
             analyze_master_problem_solution();
 
             log_master_solution();
-
-        } else if (m_current_iteration_is_farkas_pricing) {
-
-            set_status(Infeasible);
-            set_reason(Proved);
-            terminate();
 
         }
 
@@ -149,8 +238,6 @@ void Optimizers::ColumnGeneration::hook_optimize() {
     log_master_solution(true);
 
     //call_callback(Event_::Algorithm::End);
-
-    remove_artificial_variables();
 
 }
 
@@ -227,41 +314,23 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         m_current_iteration_is_farkas_pricing = false;
 
-        if (!m_farkas_pricing) {
-
-            analyze_feasibility_with_artificial_variables();
-
-            if (this->status() != Infeasible) {
-                //call_callback(Event_::Algorithm::NewIterUb);
-                //call_callback(Event_::Algorithm::NewBestUb);
-            }
-
-        } else {
-
-            //call_callback(Event_::Algorithm::NewIterUb);
-            //call_callback(Event_::Algorithm::NewBestUb);
-
-        }
-
         return;
     }
 
     if (status == Infeasible) {
 
-        if (m_farkas_pricing) {
+        if (!m_farkas_pricing) {
 
-            m_current_iteration_is_farkas_pricing = true;
-            m_current_dual_solution = save(*m_master, Attr::Solution::Farkas);
-            m_adjusted_dual_solution.reset();
-
-        } else {
-
-            idol_Log(Fatal, "ERROR. Master problem should not be infeasible when using artificial variables.");
-            set_status(Fail);
-            set_reason(NotSpecified);
+            set_status(Infeasible);
+            set_reason(Proved);
             terminate();
+            return;
 
         }
+
+        m_current_iteration_is_farkas_pricing = true;
+        m_current_dual_solution = save(*m_master, Attr::Solution::Farkas);
+        m_adjusted_dual_solution.reset();
 
         return;
     }
@@ -269,18 +338,15 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
     if (status == Unbounded) {
 
         set_reason(Proved);
-
         idol_Log(Trace, "Terminate. Unbounded master problem.");
-
-    } else {
-
-        set_status(Fail);
-        set_reason(NotSpecified);
-
-        idol_Log(Trace, "Terminate. Master problem could not be solved to optimality.");
+        terminate();
+        return;
 
     }
 
+    set_status(Fail);
+    set_reason(NotSpecified);
+    idol_Log(Trace, "Terminate. Master problem could not be solved to optimality.");
     terminate();
 
 }
@@ -397,6 +463,7 @@ void Optimizers::ColumnGeneration::enrich_master_problem() {
         if (can_enrich_master) {
             subproblem.enrich_master_problem();
             ++m_n_generated_columns_at_last_iteration;
+            ++m_n_generated_columns;
         }
 
     }
@@ -407,28 +474,6 @@ void Optimizers::ColumnGeneration::clean_up() {
 
     for (auto& subproblem : m_subproblems) {
         subproblem.clean_up();
-    }
-
-}
-
-void Optimizers::ColumnGeneration::analyze_feasibility_with_artificial_variables() {
-
-    if (m_artificial_variables.empty()) { return; }
-
-    const auto& primals = save(*m_master, Attr::Solution::Primal);
-    bool has_positive_artificial_variable = false;
-
-    for (const auto& var : m_artificial_variables) {
-        if (primals.get(var) > 0) {
-            has_positive_artificial_variable = true;
-            break;
-        }
-    }
-
-    if (has_positive_artificial_variable) {
-        set_status(Infeasible);
-    } else {
-        remove_artificial_variables();
     }
 
 }
@@ -467,6 +512,15 @@ void Optimizers::ColumnGeneration::set(const Req<int, Var> &t_attr, const Var &t
 Optimizers::ColumnGeneration::Subproblem& Optimizers::ColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
     m_subproblems.emplace_back(*this, m_subproblems.size(), t_sub_problem_model, std::move(t_generation_pattern));
     return m_subproblems.back();
+}
+
+void Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_artificial_variables() {
+
+    idol_Log(Fatal, "Master problem should not be infeasible when using artificial variables.");
+    set_status(Fail);
+    set_reason(NotSpecified);
+    terminate();
+
 }
 
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
