@@ -65,13 +65,13 @@ int main(int t_argc, char** t_argv) {
     // Set the objective function
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    for (bool primal_heuristic : { false, true }) {
+    for (bool primal_heuristic : { true }) {
 
-        for (bool branching_on_master: {true, false}) {
+        for (bool branching_on_master: {false}) {
 
-            for (bool farkas_pricing: {true}) {
+            for (bool farkas_pricing: {false}) {
 
-                for (double smoothing: {0., .3}) {
+                for (double smoothing: {.5}) {
 
                     model.use(
 
@@ -81,15 +81,13 @@ int main(int t_argc, char** t_argv) {
 
                                             DantzigWolfeDecomposition(decomposition)
 
-                                                    .with_master_solver(Mosek::ContinuousRelaxation())
+                                                    .with_master_solver(GLPK::ContinuousRelaxation())
 
-                                                    .with_pricing_solver(Mosek())
+                                                    .with_pricing_solver(GLPK())
 
                                                     .with_log_level(Trace, Magenta)
 
                                                     .with_farkas_pricing(farkas_pricing)
-
-                                                    .with_artificial_variables_cost(1)
 
                                                     .with_dual_price_smoothing_stabilization(smoothing)
 
@@ -102,7 +100,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_solver(Mosek().with_time_limit(20))
+                                                IntegerMasterHeuristic().with_solver(GLPK().with_time_limit(20))
                                         );
                                     })
 

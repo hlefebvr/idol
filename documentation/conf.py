@@ -19,8 +19,8 @@ subprocess.call('doxygen Doxyfile.in', shell=True)
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Idol'
-copyright = '2022, Henri Lefebvre'
+project = 'idol'
+copyright = '2023, Henri Lefebvre'
 author = 'Henri Lefebvre'
 
 
@@ -39,7 +39,8 @@ extensions = [
     'sphinx_sitemap',
     'sphinx.ext.inheritance_diagram',
     'breathe',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
+    'sphinx_copybutton'
 ]
 
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
@@ -65,6 +66,7 @@ html_theme_options = {
     "source_branch": "main",
     "source_directory": "documentation/",
 }
+pygments_style = "colorful"
 html_title = "Idol"
 # html_logo = ''
 github_url = 'https://github.com/hlefebvr/idol'

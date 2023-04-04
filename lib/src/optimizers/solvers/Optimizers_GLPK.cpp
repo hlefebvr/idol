@@ -253,6 +253,10 @@ void Optimizers::GLPK::hook_optimize() {
 
     m_solved_as_mip = false;
 
+    if (m_solution_status == Unbounded) {
+        m_rebuild_basis = true;
+    }
+
     if (m_rebuild_basis) {
         glp_std_basis(m_model);
         m_rebuild_basis = false;

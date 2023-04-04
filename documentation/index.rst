@@ -1,5 +1,12 @@
-IDOL's documentation
-====================
+Welcome to idol!
+================
+
+.. image:: https://img.shields.io/github/license/hlefebvr/idol
+.. image:: https://img.shields.io/github/v/tag/hlefebvr/idol?label=version
+.. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/cmake.yml?branch=main
+.. image:: https://img.shields.io/github/issues-raw/hlefebvr/idol
+.. image:: https://www.repostatus.org/badges/latest/wip.svg
+.. image:: https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol
 
 .. toctree::
     :maxdepth: 2
@@ -8,41 +15,123 @@ IDOL's documentation
 Idol is a C++ library for implementing complex decomposition algorithms for
 mathematical optimization.
 
-Its main goal is to facilitate prototyping new algorithms which
-can exploit structure in optimization problems (e.g., Dantzig-Wolfe decomposition, Benders decomposition,
-nested approaches, ...) or to design complex algorithmic schemes for solving :math:`\mathcal{NP}`-hard problems
-(e.g., bilevel problems, adjustable robust optimization, ...).
+Its main goal is to ease the development of new mathematical optimization techniques to
+solve complex optimization problems. It offers a user-friendly interface to build new algorithms
+on top of state-of-the-art methods like Dantzig-Wolfe decomposition, Benders decomposition or
+column-and-constraint generation.
 
-General approach
+New to idol?
+------------
+
+If you are new to idol, I advise you to visit our :ref:`installation guideline <installation>`.
+In particular, have a look at the :ref:`local installation guideline <installation_local>`.
+It is the easiest installation process one could think of since it automatically downloads the latest version of idol and
+installs it in a local folder. It's really a mater of seconds before you can start using idol.
+
+.. admonition:: Example
+
+    Idol has a user-friendly interface which should look natural to people working in optimization. For instance,
+    here is how one solves a Knapsack Problem using the `Gurobi <https://www.gurobi.com/>`_ solver.
+
+    .. code:: cpp
+
+        const unsigned int n_items = ...;
+        const double[] profit = { ... };
+        const double[] weight = { ... };
+        const double capacity = ...;
+
+        Env env;
+
+        Model model(env);
+
+        auto x = Var::array<1>(env, 0., 1., Binary, "x");
+
+        Ctr constraint(idol_Sum(j, n_items, weight[j] * x[j]) <= capacity);
+
+        Expr objective(idol_Sum(j, n_items, -profits[j] * x[j]);
+
+        model.add(x);
+        model.add(constraint);
+        model.set(Attr::Expr::Obj, objective);
+
+        model.use(Gurobi());
+
+        model.optimize();
+
+If you want to learn more about idol's modeling interface, be sure to visit :ref:`beginner tutorials <basics>`.
+
+If you are more experienced, you may want to have a look at our :ref:`decomposition methods tutorials <decomposition>`.
+
+Is this a MIP solver?
+---------------------
+
+The idol library is not a MIP solver in itself. Indeed, it typically needs to call external
+solvers (e.g., `GLPK <https://www.gnu.org/software/glpk/>`_ or `Gurobi <https://www.gurobi.com/>`_)
+as a sub-routine of more complex algorithmic schemes (e.g., column generation).
+The idea is to work hand in hand with existing fine-tuned and well-engineered optimization
+softwares to enhance their possibilities to solve e.g., larger problems or problems which
+cannot directly be modeled as MIPs (e.g., :math:`\Sigma_i^P`-hard problems).
+
+Each subproblem is then solved by an external and dedicated solver.
+Currently, the following external solvers can be interfaced:
+
+* `Gurobi <https://www.gurobi.com/>`_;
+* `Mosek <https://www.mosek.com/>`_;
+* `GLPK <https://www.gnu.org/software/glpk/>`_.
+
+Current features
 ----------------
 
-Based on the current state of the art, idol aims at solving complex problems by iteratively
-solving a set of so-called subproblems of the following form.
+Interfacing external optimization solvers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. math::
+The idol library can be used to interface external solvers like `GLPK <https://www.gnu.org/software/glpk/>`_
+or `Gurobi <https://www.gurobi.com/>`_ to solve standalone MI(N)LPs. It offers a unified and common
+interface to every solver including standard parameters and branch-and-bound callbacks.
+Thus, you can write your code once and test it with different solvers!
 
-    \begin{array}{lll}
-        \min \ & \displaystyle \sum_{j=1}^n c_jx_j + \sum_{j=1}^n\sum_{k=1}^n d_{jk}x_jx_k \\
-        \textrm{s.t. } & \displaystyle \sum_{j=1}^n a_{ij}x_j + \sum_{j=1}^n\sum_{k=1}^n q^i_{jk}x_jx_k \le b_i & i=1,...,m \\
-        & l_j \le x_j \le u_j & j=1,...,m \\
-        & x_j\in\mathbb Z & j\in J_I
-    \end{array}
+Generic Branch-and-Bound algorithms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Here, :math:`x_j` are the variables of this optimization problem while :math:`c_j, d_{jk}, a_{ij}` and :math:`q_{jk}^i` are given
-input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is a set of variable indices
-whose value must be integral.
+Idol allows its user to create custom branch-and-bound scheme very easily where almost everything can be tweaked.
 
-External solvers
-----------------
+* *Node agnostic implementation*. The branch-and-bound algorithm can work with any node type as long as the user properly
+  defines how nodes must be updated. A default node type is already implemented for classical variable branching. This
+  node type can also be inherited, e.g., to enrich the information carried out from each parent node to its children.
+* *Customizable branching rule*. The default branching rules include: most-infeasible rule.
+* *Customizable node selection rule*. The default node selection rules include: best-bound, worst-bound, depth-first, breadth-first.
+* *Callbacks*. The user can specify its own callback to locally or globally modify a node's problem, submit heuristic solutions,
+  or influence the execution of the overall algorithm.
+* *Branch-and-bound with phases*. Independently on any of the above settings, the B&B algorithm supports sub-trees exploration
+  to reach valid solutions to the original problem as quick as possible.
 
-Each subproblem is then solved
-by an external and dedicated solver. Currently, the following external solvers can be interfaced:
+**Features to come/desired features**
 
-* Gurobi (see https://www.gurobi.com/ ) ;
-* Mosek (see https://www.mosek.com/) ;
-* GLPK (see https://www.gnu.org/software/glpk/ ).
+* *Parallelization of the algorithm*.
+* *New branching rules*: pseudo-cost, strong-branching and reliability branching.
+* *Default cutting planes*.
 
-**Important for Mosek users**: If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
+Generic Column Generation and Dantzig-Wolfe decomposition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Idol can be used to build and custom column-generation algorithms with the following features.
+
+* *Infeasible master problem procedures*. Idol can handle an infeasible master problem by resorting to Farkas pricing or
+  by adding artificial variables to the original problem (note that if this fails, idol will then switch to pure phase I
+  so as to exactly prove infeasibility).
+* *Automatic pool clean up*. If the master problem contains too many variables, they can be automatically removed. This can be
+  all controlled by user parameters.
+* *Stabilization via dual price smoothing*. The column generation procedure can be stabilized using dual price smoothing
+  controlled by user inputs.
+* *Parallel pricing*. Each pricing problem can be solved in parallel by means of a single parameter.
+* *Nested column generation*. A key idea of idol is that every optimizer is seen as a black-box to solve a given optimization model.
+  As such, a column-generation algorithm can easily be "plugged in" any algorithmic phase. For instance, solving the pricing of
+  a column-generation algorithm can be done by yet another column-generation algorithm.
+
+**Features to come/desired features**
+
+* *Handling identical sub-systems*.
+* *Ryan-and-Foster* branching rule.
 
 Table of Contents
 -----------------

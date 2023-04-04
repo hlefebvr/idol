@@ -116,7 +116,7 @@ protected:
     double m_clean_up_ratio = .75;
     unsigned int m_clean_up_threshold = 1e4;
     bool m_farkas_pricing = true;
-    double m_artificial_variables_cost = 1e7;
+    double m_artificial_variables_cost = -1;
     double m_smoothing_factor = 0.;
     unsigned int m_log_frequency = 10;
 };
