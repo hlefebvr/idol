@@ -49,8 +49,8 @@ void Optimizers::ColumnGeneration::write(const std::string &t_name) {
 
 void Optimizers::ColumnGeneration::hook_before_optimize() {
 
-    set_best_bound(std::max(-Inf, best_obj_stop()));
-    set_best_obj(std::min(+Inf, best_bound_stop()));
+    set_best_bound(-Inf);
+    set_best_obj(+Inf);
     m_iter_lower_bound = -Inf;
     m_iter_upper_bound = +Inf;
     m_iteration_count = 0;
@@ -113,32 +113,19 @@ void Optimizers::ColumnGeneration::hook_optimize() {
     add_artificial_variables();
 
     // min c^Tx + M^Ts
-    if (m_artificial_variables_cost <= 1e-8) {
+    if (m_artificial_variables_cost > 0) {
 
         run_column_generation();
 
-        const auto last_status = status();
+        if (m_artificial_variables.empty()) {
+            return;
+        }
 
-        if (last_status == Infeasible) {
+        if (status() == Infeasible) {
             remove_artificial_variables();
             terminate_for_master_infeasible_with_artificial_variables();
             return;
 
-        }
-
-        if ((last_status == Unbounded || last_status == InfeasibleOrUnbounded) && !m_master->optimizer().infeasible_or_unbounded_info()) {
-
-            m_master->optimizer().set_infeasible_or_unbounded_info(true);
-            m_master->optimize();
-            set_status(m_master->get(Attr::Solution::Status));
-            std::cout << status() << std::endl;
-            //m_master->optimizer().set_infeasible_or_unbounded_info(false);
-
-        }
-
-        if (!has_artificial_variable_in_basis()) {
-            remove_artificial_variables();
-            return;
         }
 
     }
@@ -149,14 +136,14 @@ void Optimizers::ColumnGeneration::hook_optimize() {
     set_phase_I_objective_function();
 
     restart();
+    hook_before_optimize();
     run_column_generation();
 
+    remove_artificial_variables();
+
     if (status() != Optimal) {
-        remove_artificial_variables();
         return;
     }
-
-    remove_artificial_variables();
 
     restore_objective_function();
 
@@ -203,8 +190,6 @@ bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
 
 void Optimizers::ColumnGeneration::run_column_generation() {
 
-    //call_callback(Event_::Algorithm::Begin);
-
     do {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
@@ -239,8 +224,6 @@ void Optimizers::ColumnGeneration::run_column_generation() {
 
     log_master_solution(true);
 
-    //call_callback(Event_::Algorithm::End);
-
 }
 
 void Optimizers::ColumnGeneration::solve_master_problem() {
@@ -255,11 +238,11 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
 
     auto status = (SolutionStatus) m_master->get(Attr::Solution::Status);
 
-    double objective_value = +Inf;
-    if (status == Optimal || status == Feasible) {
-        objective_value = m_master->get(Attr::Solution::ObjVal);
-    } else if (status == Unbounded) {
-        objective_value = -Inf;
+    std::stringstream objective_value;
+    if (status == InfeasibleOrUnbounded || status == Fail || status == Unknown) {
+        objective_value << "-";
+    } else {
+        objective_value << m_master->get(Attr::Solution::ObjVal);
     }
 
     idol_Log(Info,
@@ -269,7 +252,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
              << "<TimI=" << m_master->optimizer().time().count() << "> "
              << "<Stat=" << status << "> "
              << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
-             << "<ObjVal=" << objective_value << "> "
+             << "<ObjVal=" << objective_value.str() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
@@ -295,7 +278,7 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
              << "<TimI=" << pricing->optimizer().time().count() << "> "
              << "<Stat=" << (SolutionStatus) pricing->get(Attr::Solution::Status) << "> "
              << "<Reas=" << (SolutionReason) pricing->get(Attr::Solution::Reason) << "> "
-             << "<Obj=" << pricing->get(Attr::Solution::ObjVal) << "> "
+             << "<Obj=" << std::setprecision(5)  << pricing->get(Attr::Solution::ObjVal) << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
@@ -321,6 +304,11 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         if (m_current_iteration_is_farkas_pricing) {
             m_adjusted_dual_solution.reset();
+        }
+
+        if (!m_artificial_variables.empty() && !has_artificial_variable_in_basis()) {
+            idol_Log(Trace, "Master problem is feasible, removing artificial variables.");
+            remove_artificial_variables();
         }
 
         m_current_iteration_is_farkas_pricing = false;
@@ -357,7 +345,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
     set_status(status);
     set_reason(NotSpecified);
-    idol_Log(Trace, "Terminate. Master problem could not be solved to optimality.");
+    idol_Log(Trace, "Terminate. Master problem could not be solved to optimality (status = " << (SolutionStatus) status << ").");
     terminate();
 
 }
@@ -413,7 +401,10 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         const auto status = subproblem.m_model->get(Attr::Solution::Status);
 
         if (status == Optimal) {
-            reduced_costs += subproblem.m_model->get(Attr::Solution::ObjVal);
+
+            const double pricing_optimum = subproblem.m_model->get(Attr::Solution::ObjVal);
+            reduced_costs += std::min(0., pricing_optimum);
+
         } else {
             set_status(status);
             set_reason(Proved);
@@ -429,22 +420,19 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
         m_iter_lower_bound = lower_bound;
 
-        //call_callback(Event_::Algorithm::NewIterLb);
-
         if (best_bound() < lower_bound) {
             set_best_bound(lower_bound);
-            //call_callback(Event_::Algorithm::NewBestLb);
         }
 
         if (best_bound() > best_obj() + 1e-3) {
-            idol_Log(Fatal,
-                     "Terminate. Best bound is strictly greater than best obj.");
+            idol_Log(Fatal, "Terminate. Best bound is strictly greater than best obj.");
             set_status(Fail);
             set_reason(NotSpecified);
             terminate();
+            return;
         }
 
-        if (best_bound() > best_bound_stop()) {
+        if (m_artificial_variables.empty() && best_bound() > best_bound_stop()) {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
             idol_Log(Trace,

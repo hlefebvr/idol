@@ -24,7 +24,7 @@ class impl::Optimizer : protected AttributeManagers::Base {
     const ::Model& m_parent;
 
     bool m_is_terminated = false;
-    LogLevel m_log_level = Mute;
+    LogLevel m_log_level = Warn;
     Color m_log_color = Default;
     double m_time_limit = std::numeric_limits<double>::max();
     unsigned int m_thread_limit = 1;

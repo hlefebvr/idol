@@ -164,7 +164,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
     }
 
-    AND_WHEN("An unbounded milp is solved") {
+    AND_WHEN("An unbounded MILP is solved") {
 
         Var x(env, -Inf, Inf, Integer, "x");
         Model model(env);
@@ -177,7 +177,11 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
         THEN("The solution status should be Unbounded") {
 
-            const bool unknown_or_unbounded = model.get(Attr::Solution::Status) == Unbounded || model.get(Attr::Solution::Status) == InfeasibleOrUnbounded;
+            const auto status = (SolutionStatus) model.get(Attr::Solution::Status);
+
+            const bool unknown_or_unbounded = status == Unbounded || status == InfeasibleOrUnbounded;
+
+            std::cout << status << std::endl;
 
             CHECK(unknown_or_unbounded);
 

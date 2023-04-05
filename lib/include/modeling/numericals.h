@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <cmath>
+#include <iostream>
 
 static constexpr double Inf = 1e20;
 static double ToleranceForSparsity = 1e-8;
@@ -33,9 +34,15 @@ static bool equals(double t_a, double t_b, double t_tolerance) {
 }
 
 static double relative_gap(double t_lb, double t_ub) {
+
     if (is_pos_inf(t_lb) || is_neg_inf(t_ub)) {
         return Inf;
     }
+
+    if (equals(t_lb, 0.0, 1e-3) && equals(t_ub, 0.0, 1e-3)) {
+        return 0.0;
+    }
+
     return std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub));
 }
 

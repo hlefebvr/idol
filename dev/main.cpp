@@ -65,13 +65,13 @@ int main(int t_argc, char** t_argv) {
     // Set the objective function
     model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    for (bool primal_heuristic : { true }) {
+    for (bool primal_heuristic : { true, false }) {
 
-        for (bool branching_on_master: {false}) {
+        for (bool branching_on_master: {true, false}) {
 
-            for (bool farkas_pricing: {false}) {
+            for (bool farkas_pricing: {true, false}) {
 
-                for (double smoothing: {.5}) {
+                for (double smoothing: {0., .3, .5, .8}) {
 
                     model.use(
 
@@ -81,9 +81,14 @@ int main(int t_argc, char** t_argv) {
 
                                             DantzigWolfeDecomposition(decomposition)
 
-                                                    .with_master_solver(Gurobi::ContinuousRelaxation())
+                                                    .with_master_solver(
+                                                            Gurobi::ContinuousRelaxation()
+                                                                //.with_infeasible_or_unbounded_info(true)
+                                                    )
 
-                                                    .with_pricing_solver(Gurobi())
+                                                    .with_pricing_solver(
+                                                            Gurobi()
+                                                    )
 
                                                     .with_log_level(Trace, Magenta)
 
@@ -92,6 +97,9 @@ int main(int t_argc, char** t_argv) {
                                                     .with_dual_price_smoothing_stabilization(smoothing)
 
                                                     .with_branching_on_master(branching_on_master)
+
+                                                    .with_log_frequency(1)
+
                                     )
 
                                     .with_branching_rule(MostInfeasible())
@@ -104,7 +112,9 @@ int main(int t_argc, char** t_argv) {
                                         );
                                     })
 
-                                    .with_log_level(Info, Blue)
+                                    .with_subtree_depth(1)
+
+                                    .with_log_level(Trace, Blue)
                     );
 
                     std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
@@ -118,6 +128,12 @@ int main(int t_argc, char** t_argv) {
                     std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
                     std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
                     std::cout << save(model, Attr::Solution::Primal) << std::endl;
+
+                    //return 0;
+
+                    if (model.get(Attr::Solution::ObjVal) != -233.) {
+                        throw Exception("STOP");
+                    }
 
                 }
 

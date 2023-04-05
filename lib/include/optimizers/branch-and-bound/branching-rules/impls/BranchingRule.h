@@ -15,7 +15,7 @@ template<class NodeInfoT>
 class BranchingRule {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
     const Model& m_model;
-    LogLevel m_log_level = Mute;
+    LogLevel m_log_level = Warn;
     Color m_log_color = Default;
 protected:
     [[nodiscard]] LogLevel log_level() const { return m_log_level; }

@@ -26,7 +26,8 @@ enum SolutionReason {
     TimeLimit,
     IterationCount,
     CutOff,
-    UserObjLimit
+    UserObjLimit,
+    Numerical
 };
 
 template<class T> bool is_in();
@@ -86,6 +87,7 @@ static std::ostream &operator<<(std::ostream& t_os, SolutionReason t_status) {
         case IterationCount: return t_os << "IterationCount";
         case CutOff: return t_os << "CutOff";
         case UserObjLimit: return t_os << "UserObjLimit";
+        case Numerical: return t_os << "Numerical";
         default: throw Exception("Unexpected status: " + std::to_string(t_status));
     }
     return t_os;
