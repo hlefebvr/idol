@@ -9,3 +9,4 @@ API
 
     modeling/index
     attributes/index
+    optimizers/index

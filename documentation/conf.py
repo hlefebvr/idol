@@ -60,11 +60,11 @@ highlight_language = 'c++'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'furo'
+html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-    "source_repository": "https://github.com/hlefebvr/idol",
-    "source_branch": "main",
-    "source_directory": "documentation/",
+    "navigation_depth": -1,
+    "titles_only": True,
+    "style_external_links": True
 }
 pygments_style = "colorful"
 html_title = "Idol"

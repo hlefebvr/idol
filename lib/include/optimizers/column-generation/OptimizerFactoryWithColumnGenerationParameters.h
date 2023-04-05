@@ -35,16 +35,66 @@ class impl::OptimizerFactoryWithColumnGenerationParameters : public OptimizerFac
 protected:
     void handle_column_generation_parameters(Optimizers::ColumnGeneration* t_optimizer) const;
 public:
+    /**
+     * Configures the maximum number of pricing problems which can be solved in parallel
+     * @param t_limit the desired limit
+     * @return the optimizer factory itself
+     */
     CRTP& with_parallel_pricing_limit(unsigned int t_limit);
 
+    /**
+     * Configures the column pool clean up
+     *
+     * When the number of columns in the column pool is larger than the given threshold,
+     * columns are removed from the pool (and possibly from the master problem) from the oldest columns to the
+     * newest. Only t_threshold * t_ratio are kept.
+     * @param t_threshold the desired threshold
+     * @param t_ratio the clean up ratio
+     * @return the optimizer factory itself
+     */
     CRTP& with_column_pool_clean_up(unsigned int t_threshold, double t_ratio);
 
+    /**
+     * Configures the activation of Farkas pricing.
+     *
+     * If set to true, a Farkas certificate is asked to the master problem solver so as to generate new columns to improve
+     * feasibility or to show infeasibility of the problem.
+     *
+     * By default, it is turned off.
+     * @param t_value true if Farkas pricing is desired, false otherwise
+     * @return the optimizer factory itself
+     */
     CRTP& with_farkas_pricing(bool t_value);
 
+    /**
+     * Configures the cost for the artificial variables added when the master problem is infeasible and
+     * Farkas pricing is turned off.
+     *
+     * When the master problem is infeasible, artificial variables are added to the master problem with an objective
+     * cost of t_artificial_variable_cost. In case this approach fails to generate columns making the master problem
+     * feasible (e.g., the costs are too small), the algorithm switches to pure phase I where the constraint violations
+     * are optimized.
+     *
+     * If t_artificial_variable_cost is less or equal than zero, pure phase I is directly applied.
+     *
+     * @param t_artificial_variable_cost the desired cost for the artificial variables.
+     * @return the optimizer factory itself
+     */
     CRTP& with_artificial_variables_cost(double t_artificial_variable_cost);
 
+    /**
+     * Configures the stabilization factor of the dual price smoothing stabilization. This value should be in [0,1).
+     * Note that when this parameter is zero, no stabilization is performed.
+     * @param t_smoothing_factor the desired stabilization factor
+     * @return the optimizer factory itself
+     */
     CRTP& with_dual_price_smoothing_stabilization(double t_smoothing_factor);
 
+    /**
+     * Configures the frequency for logging. Logging information is displayed every t_log_frequency iterations.
+     * @param t_log_frequency the desired log frequency
+     * @return the optimizer factory itself
+     */
     CRTP& with_log_frequency(unsigned int t_log_frequency);
 };
 

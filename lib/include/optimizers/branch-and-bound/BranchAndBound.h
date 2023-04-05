@@ -24,20 +24,59 @@ class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBou
 protected:
     BranchAndBound(const BranchAndBound& t_rhs);
 public:
-    /* The following is used to exploit SFINAE in order to detect when a class has a sub-class named Strategy<NodeT> */
+    /**
+     * This type is used to exploit SFINAE in order to detect when a class has a sub-class named Strategy<NodeT>.
+     * This is used to make calls like ".with_node_selection_rule(DepthFirst());" which will actually calls
+     * DepthFirst::Strategy<NodeT>().
+     */
     template<class ReturnT, class T> using only_if_has_Strategy = typename std::pair<typename T::template Strategy<NodeT>, ReturnT>::second_type;
 
     BranchAndBound() = default;
 
+    /**
+     * Configures the optimizer factory for solving the branch-and-bound tree nodes
+     * @param t_node_solver the optimizer factory the node problems
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_node_solver(const OptimizerFactory& t_node_solver);
 
+    /**
+     * Configures the branching rule used to create child nodes
+     * @param t_branching_rule the desired branching rule
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_branching_rule(const BranchingRuleFactory<NodeT>& t_branching_rule);
 
+    /**
+     * Configures the branching rule used to create child nodes.
+     *
+     * Here, the function is called only when BranchingRuleFactoryT has a nested template class named Strategy.
+     * In such a case, the branching rule is created by calling BranchingRuleFactoryT::Strategy<NodeT>(t_branching_rule).
+     * This is used to avoid that the user repeats the used node type NodeT.
+     * @tparam BranchingRuleFactoryT the class containing a nested template class named Strategy
+     * @param t_branching_rule the desired branching rule
+     * @return the optimizer factory itself
+     */
     template<class BranchingRuleFactoryT>
     only_if_has_Strategy<BranchAndBound<NodeT>&, BranchingRuleFactoryT> with_branching_rule(const BranchingRuleFactoryT& t_branching_rule);
 
+    /**
+     * Configures the node selection rule to explore the branch and bound tree.
+     * @param t_node_selection the desired node selection rule
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_node_selection_rule(const NodeSelectionRuleFactory<NodeT>& t_node_selection);
 
+    /**
+     * Configures the node selection rule to explore the branch and bound tree.
+     *
+     * Here, the function is called only when NodeSelectionRuleFactoryT has a nested template class named Strategy.
+     * In such a case, the node selection rule is created by calling NodeSelectionRuleFactoryT::Strategy<NodeT>(t_node_selection_rule).
+     * This is used to avoid that the user repeats the used node type NodeT.
+     * @tparam NodeSelectionRuleFactoryT the class containing a nested template class named Strategy
+     * @param t_node_selection_rule the desired node selection rule
+     * @return the optimizer factory itself
+     */
     template<class NodeSelectionRuleFactoryT>
     only_if_has_Strategy<BranchAndBound<NodeT>&, NodeSelectionRuleFactoryT> with_node_selection_rule(const NodeSelectionRuleFactoryT& t_node_selection_rule);
 
@@ -49,10 +88,36 @@ public:
 
     [[nodiscard]] OptimizerFactory *clone() const override;
 
+    /**
+     * Configures the depth for sub-tree exploration.
+     *
+     * When a node is selected for branching, all of its children are explored. This exploration takes the form of a
+     * sub-tree exploration. When this parameter is set to 0, only the root node of this sub-tree is solved. Thus
+     * every child node are solved and the branch-and-bound algorithm is continued.
+     *
+     * For strictly greater values of this parameter, the sub-tree is explored with a maximum depth equal to the
+     * value of this parameter.
+     *
+     * For example, with a value of 1, each child node is solved along with its child nodes.
+     * @param t_depth the maximum sub-tree exploration depth
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
 
+    /**
+     * Configures the log frequency of the optimizer, i.e., nodes are logged every t_log_frequency nodes.
+     * @param t_log_frequency the desired frequency for logging
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_log_frequency(unsigned int t_log_frequency);
 
+    /**
+     * Configures a callback which will be called by the optimizer.
+     *
+     * Note that this method can be called multiple times so that multiple callbacks can be added.
+     * @param t_callback the callback factory
+     * @return the optimizer factory itself
+     */
     BranchAndBound<NodeT>& with_callback(const CallbackFactory<NodeT> & t_callback);
 };
 

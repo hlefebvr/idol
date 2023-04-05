@@ -133,7 +133,7 @@ Idol can be used to build and custom column-generation algorithms with the follo
 * *Handling identical sub-systems*.
 * *Ryan-and-Foster* branching rule.
 
-Table of Contents
+Table of contents
 -----------------
 
 .. toctree::
@@ -141,11 +141,8 @@ Table of Contents
 
     self
     installation/index
-    getting_started/index
-    decomposition_methods/index
-    robust_optimization/index
+    tutorials/index
     api/index
     developer_guide/index
-    miscellaneous/index
 
 * :ref:`genindex`
