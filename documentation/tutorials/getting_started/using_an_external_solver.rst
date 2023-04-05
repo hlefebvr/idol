@@ -6,7 +6,7 @@
 Using an external solver
 ========================
 
-In this tutorial, we will see how to use an external optimization solver like Gurobi or GLPK to solve_with_farkas_pricing
+In this tutorial, we will see how to use an external optimization solver like Gurobi or GLPK to solve
 a small combinatorial problem.
 The considered problem is the Knapsack Problem (see the `Knapsack Problem wikipedia page <https://en.wikipedia.org/wiki/Knapsack_problem>`_).
 
@@ -115,7 +115,7 @@ by calling :cpp:`Range(l, n)`). The objective function is created similarly.
 Solving the model using an external solver
 ------------------------------------------
 
-We can now solve_with_farkas_pricing our optimization model.
+We can now solve our optimization model.
 Idol offers different approaches for solving optimization problems. To select the desired approach for a given model,
 one must call the :cpp:`Idol::set_optimizer<>` method and set its template argument as the desired "backend solver".
 For instance, the following will set the optimizer to Gurobi for solving our model.
