@@ -6,9 +6,17 @@
 Local installation
 ==================
 
-Another possibility to start building your application with idol is to install it "locally" using
-the CMake :bash:`FetchContent_*` directives. This will tell CMake to automatically download (from the GitHub repository)
-the desired version of idol and to make it available for your project.
+This page is dedicated to local installations of idol. This is the easiest way to get your project working with
+idol without installing it globally on your computer.
+
+.. hint::
+
+    If you want to install idol globally, please read our :ref:`global installation guide <basics_installation>`.
+
+The idea behind local installations is to let CMake download and manage the installation of idol in a sub-folder of your
+project. This is done by using the CMake :bash:`FetchContent_*` directives.
+
+Using this method, you can also explicitly specify the desired version of idol which you want to use.
 
 We provide here a minimal :bash:`CMakeLists.txt`.
 
@@ -21,19 +29,40 @@ We provide here a minimal :bash:`CMakeLists.txt`.
 
     include(FetchContent)
 
-    set(USE_GUROBI ON) # Tell idol to link with Gurobi
+    # Define your CMake options here
+    set(USE_GUROBI YES) # For instance, tell CMake to link idol with Gurobi
 
+    # Tell CMake which version of idol you desire
     FetchContent_Declare(
             idol
             GIT_REPOSITORY https://github.com/hlefebvr/idol.git
-            GIT_TAG        origin/main # You may also use a tag, e.g., v0.0.2-alpha
+            GIT_TAG        origin/main # You may also use a tag, e.g., v0.2.4-alpha
     )
 
+    # Ask CMake to download idol and install it to a sub-folder
     FetchContent_MakeAvailable(idol)
 
+    # Normal executable definition
     add_executable(my_target main.cpp)
 
+    # Link your CMake target with idol as classically done
     target_link_libraries(my_target PUBLIC idol)
+
+.. hint::
+
+    As you have seen, some options must be set in CMake in order to tell it to link idol with external solvers.
+    This is done with the :bash:`set` CMake function. Say you want
+    to set the option :bash:`MY_OPTION` to the value :bash:`MY_VALUE`. Then, you should add the following
+    function call.
+
+    .. code-block:: bash
+
+        set(MY_OPTION MY_VALUE)
+
+.. seealso::
+
+    A list of all possible options which can be set can be found on the :ref:`global installation guide <basics_installation>`.
+    In particular, you will find options to link with Gurobi, Mosek and GLPK.
 
 Then, here is a starting :bash:`main.cpp`.
 

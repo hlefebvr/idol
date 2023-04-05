@@ -6,125 +6,87 @@
 Global installation
 ===================
 
-The installation process is managed by CMake. You will therefore need to have
-installed the CMake build system (at least version 3.22 is required - not that
-it may work with earlier versions but has not been tested).
+The installation process is managed by the CMake build system. You will therefore need to have it
+installed on your computer (at least version 3.22 is required but it may work with earlier versions).
 
-Build directory
----------------
+Creating the :bash:`install` target
+-----------------------------------
 
-Then, create a :bash:`build` directory. This is where the library will be compiled before being installed (i.e., moved) on your system.
+The first step is to create a :bash:`build` directory.
+This is where the library will be compiled before being installed (i.e., copied) on your system.
 
 .. code-block:: bash
 
     mkdir build
     cd build
 
-Then, you should call CMake in order to create an :bash:`install` target.
-Running CMake without any option will cause to create a target for installing
-the library without external solvers. This is done as follows (inside :bash:`build/`).
+Then, you should call CMake in order to create some targets (in particular, the :bash:`idol` and the :bash:`install` target).
+To do so, we recommend you to specify some options in order to link with external solvers that you may have
+already installed on your computer.
+
+.. attention::
+
+    By default, (i.e., if no options are given to CMake) idol will not be linked with any external solver.
+    See the last section on this page for more details.
 
 .. code-block:: bash
 
-    cmake ..
+    cmake <YOUR_CMAKE_OPTIONS_SHOULD_GO_HERE> ..
 
-If you want idol to be installed with an external solver (which is recommended) you should use
-the following options.
+.. admonition:: Example for Gurobi
 
-Options
--------
+    Here is an example of possible CMake command which will create the necessary targets for installing idol with Gurobi.
 
-For Gurobi (commercial solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    .. code-block:: bash
 
-* :bash:`USE_GUROBI=YES` will tell CMake to search and link with Gurobi.
-* | :bash:`GUROBI_DIR=/path/to/gurobi/install/dir` will tell CMake where to find Gurobi.
-  | This option is *not mandatory* (by default, the environment variable :bash:`GUROBI_HOME` is used).
+        cmake -DUSE_GUROBI=YES ..
 
-The following will create an :bash:`install` target which will install idol with Gurobi.
+    Note that this example assumes that your environment variable :bash:`GUROBI_HOME` has been correctly configured
+    (see `this official Gurobi page <https://www.gurobi.com/documentation/10.0/quickstart_linux/software_installation_guid.html>`_).
 
-.. code-block:: bash
+Building
+--------
 
-    cmake -DUSE_GUROBI=YES -DGUROBI_DIR=/path/to/gurobi/install/dir ..
-
-
-For Mosek (commercial solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* :bash:`USE_MOSEK=YES` will tell CMake to search and link with Mosek.
-* | :bash:`MOSEK_DIR=/path/to/mosek/install/dir` will tell CMake where to find Mosek.
-  | This option is *not mandatory* (by default, the environment variable :bash:`MOSEK_HOME` is used).
-
-The following will create an :bash:`install` target which will install idol with Mosek.
+Now that targets have been created, we can build idol by running the following command.
 
 .. code-block:: bash
 
-    cmake -DUSE_MOSEK=YES -DMOSEK_DIR=/path/to/mosek/install/dir ..
+    make idol
 
-**Important**: If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
+This will compile the idol C++ library and make it ready to be installed (i.e., copied) on your computer.
 
-For GLPK (open-source solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Installing
+----------
 
-* :bash:`USE_GLPK=YES` will tell CMake to search and link with GLPK.
-* | :bash:`GLPK_DIR=/path/to/glpk/install/dir` will tell CMae where to find GLPK.
-  | This option is *not mandatory* (the default GLPK install folders will be used when not specified.
-  | Alternatively, :bash:`GLPK_HOME` can be defined as environment variable.).
-
-The following will create an :bash:`install` target which will install idol with GLPK.
+If you want to install idol on your computer, run the following command.
 
 .. code-block:: bash
 
-    cmake -DUSE_GLPK=YES -DGLPK_DIR=/path/to/glpk/install/dir ..
+    sudo make install
 
-Compiling and installing
-------------------------
+.. hint::
 
-Then, idol is compiled and installed as follows.
+    Here, you need superuser rights in order to install idol globally. If you want to install idol on a specific folder,
+    you may also use the :bash:`CMAKE_INSTALL_PREFIX` CMake option to change the destination folder.
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    make && sudo make install
+        cmake -CMAKE_INSTALL_PREFIX=/my/custom/installation/folder <YOUR_CMAKE_OPTIONS_SHOULD_GO_HERE> ..
+        make install
 
-Linking with idol
------------------
+Linking with external solvers
+------------------------------
 
-Idol is built with and for CMake (even though it is still possible to link using :bash:`Makefile` or pure :bash:`gcc, clang, ...`).
+To link idol with external solvers, specific options need to be passed to CMake.
+A detailed list of such options can be found on :ref:`this page <cmake_options>`.
 
-If you are using CMake, here is a minimal :bash:`CMakeLists.txt` which creates a new executable target linked with idol.
+.. hint::
 
-.. code-block:: cmake
+    Here is a quick guide on how to pass options to CMake. Say you want
+    to pass the option :bash:`MY_OPTION` to CMake with the value :bash:`MY_VALUE`. Then, you should run the following
+    command (inside :bash:`build/`).
 
-    cmake_minimum_required(VERSION 3.22)
-    project(my_project)
+    .. code-block:: bash
 
-    set(CMAKE_CXX_STANDARD 17)
+        cmake -DMY_OPTION=MY_VALUE ..
 
-    add_executable(my_target main.cpp)
-
-    find_package(idol REQUIRED)
-
-    target_link_library(my_target PUBLIC idol)
-
-Note that this will also work when idol is linked with an external solver like Gurobi or GLPK.
-
-The following :bash:`main.cpp` is then a minimal example.
-
-.. code-block:: cpp
-
-    #include <iostream>
-    #include <idol/modeling.h>
-
-    int main(int t_argc, const char** t_argv) {
-
-        Env env;
-
-        Model model(env);
-
-        Var x(env, 0., 1., Binary, "x");
-        model.add(x);
-
-        // ...
-
-        return 0;
-    }

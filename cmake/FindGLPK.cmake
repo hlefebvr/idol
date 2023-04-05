@@ -8,6 +8,7 @@ find_path(
 find_library(
         GLPK_LIBRARY
         NAMES glpk
+        HINTS /usr/lib/ ${GLPK_DIR} $ENV{GLPK_HOME}
 )
 
 include(FindPackageHandleStandardArgs)

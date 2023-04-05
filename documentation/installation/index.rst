@@ -8,4 +8,6 @@ Installation guidelines
    :glob:
 
    global_installation
+   options
+   linking
    local_installation
