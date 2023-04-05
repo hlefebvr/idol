@@ -181,8 +181,6 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             const bool unknown_or_unbounded = status == Unbounded || status == InfeasibleOrUnbounded;
 
-            std::cout << status << std::endl;
-
             CHECK(unknown_or_unbounded);
 
         }
