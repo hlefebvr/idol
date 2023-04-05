@@ -43,6 +43,14 @@ if (${USE_GLPK})
 
 endif()
 
+if (${USE_KP_SOLVER})
+
+    find_package(KPSOLVER REQUIRED)
+    target_link_libraries(idol PUBLIC knapsacksolver)
+    target_compile_definitions(idol PUBLIC IDOL_USE_KP_SOLVER)
+
+endif()
+
 target_include_directories(
         idol
         PUBLIC
