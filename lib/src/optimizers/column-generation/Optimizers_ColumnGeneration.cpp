@@ -471,8 +471,6 @@ void Optimizers::ColumnGeneration::enrich_master_problem() {
 
         if (can_enrich_master) {
             subproblem.enrich_master_problem();
-            ++m_n_generated_columns_at_last_iteration;
-            ++m_n_generated_columns;
         }
 
     }
@@ -664,24 +662,40 @@ double Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(const Solu
 
 void Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
 
-    const int status = m_model->get_status();
+    auto& env = m_model->env();
+    const unsigned int n_solutions = m_model->get_n_solutions();
+    const unsigned int max_columns_added = m_parent.m_max_columns_per_pricing;
 
-    Solution::Primal generator;
-    if (status == Unbounded) {
-        generator = save_ray(*m_model);
-    } else {
-        generator = save_primal(*m_model);
+    for (unsigned int k = 0 ; k < n_solutions && k < max_columns_added ; ++k) {
+
+        m_model->set_solution_index(k);
+
+        const int status = m_model->get_status();
+
+        Solution::Primal generator;
+        if (status == Unbounded) {
+            generator = save_ray(*m_model);
+        } else {
+            generator = save_primal(*m_model);
+        }
+
+        auto column = create_column_from_generator(generator);
+
+        Var alpha(env,
+                  0.,
+                  Inf,
+                  Continuous,
+                  "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
+
+        auto &master = *m_parent.m_master;
+
+        master.add(alpha, std::move(column));
+        m_pool.add(alpha, std::move(generator));
+        m_present_generators.emplace_back(alpha, m_pool.last_inserted());
+
+        ++m_parent.m_n_generated_columns_at_last_iteration;
+        ++m_parent.m_n_generated_columns;
     }
-
-    auto column = create_column_from_generator(generator);
-
-    Var alpha(m_model->env(), 0., Inf, Continuous, "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
-
-    auto& master = *m_parent.m_master;
-
-    master.add(alpha, std::move(column));
-    m_pool.add(alpha, std::move(generator));
-    m_present_generators.emplace_back(alpha, m_pool.last_inserted());
 }
 
 TempVar

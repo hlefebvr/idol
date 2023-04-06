@@ -32,6 +32,9 @@ class impl::OptimizerFactoryWithColumnGenerationParameters : public OptimizerFac
 
     // Logging parameters
     std::optional<unsigned int> m_log_frequency;
+
+    // Maximum number of columns generated per pricing operation
+    std::optional<unsigned int> m_max_columns_per_pricing;
 protected:
     void handle_column_generation_parameters(Optimizers::ColumnGeneration* t_optimizer) const;
 public:
@@ -96,7 +99,21 @@ public:
      * @return the optimizer factory itself
      */
     CRTP& with_log_frequency(unsigned int t_log_frequency);
+
+    /**
+     * Configures the maximum number of columns which are added for each pricing operation.
+     * @param t_n_columns the maximum nuber of added columns
+     * @return the optimizer itself
+     */
+    CRTP& with_max_columns_per_pricing(unsigned int t_n_columns);
 };
+
+template<class CRTP>
+CRTP &
+impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_max_columns_per_pricing(unsigned int t_n_columns) {
+    m_max_columns_per_pricing = t_n_columns;
+    return this->crtp();
+}
 
 template<class CRTP>
 void impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_generation_parameters(Optimizers::ColumnGeneration *t_optimizer) const {
@@ -127,6 +144,10 @@ void impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_g
 
     if (m_log_frequency.has_value()) {
         t_optimizer->set_log_frequency(m_log_frequency.value());
+    }
+
+    if (m_max_columns_per_pricing.has_value()) {
+        t_optimizer->set_max_columns_per_pricing(m_max_columns_per_pricing.value());
     }
 
 }

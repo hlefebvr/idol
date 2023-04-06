@@ -60,6 +60,10 @@ public:
     Subproblem& add_subproblem(Model* t_sub_problem_model, Column t_generation_pattern);
 
     [[nodiscard]] unsigned int n_generated_columns() const { return m_n_generated_columns; }
+
+    void set_max_columns_per_pricing(unsigned int t_n_columns) { m_max_columns_per_pricing = t_n_columns; }
+
+    [[nodiscard]] unsigned int max_columns_per_pricing() const { return m_max_columns_per_pricing; }
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -133,6 +137,7 @@ protected:
     double m_artificial_variables_cost = -1;
     double m_smoothing_factor = 0.;
     unsigned int m_log_frequency = 10;
+    unsigned int m_max_columns_per_pricing = 5;
 };
 
 class Optimizers::ColumnGeneration::Subproblem {

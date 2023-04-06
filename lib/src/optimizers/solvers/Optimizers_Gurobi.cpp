@@ -266,6 +266,7 @@ void Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 }
 
 void Optimizers::Gurobi::hook_optimize() {
+    set_solution_index(0);
     m_model.optimize();
 }
 
