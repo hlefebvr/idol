@@ -37,7 +37,7 @@ class Model : public Matrix {
     Env& m_env;
     const unsigned int m_id;
 
-    int m_sense = Minimize;
+    ObjectiveSense m_sense = Minimize;
     Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
 
@@ -66,9 +66,9 @@ public:
     ~Model() override;
 
     // Variables
-    Var add_var(double t_lb, double t_ub, int t_type, std::string t_name = "");
-    Var add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name = "");
-    template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
+    template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name = "");
     void add(const Var& t_var);
     void add(const Var& t_var, TempVar t_temp_var);
     [[nodiscard]] bool has(const Var& t_var) const;
@@ -77,8 +77,8 @@ public:
 
     // Constraints
     Ctr add_ctr(TempCtr t_temp_ctr, std::string t_name = "");
-    Ctr add_ctr(Row&& t_row, int t_type, std::string t_name = "");
-    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, int t_type, const Constant& t_constant, const std::string& t_name = "");
+    Ctr add_ctr(Row&& t_row, CtrType t_type, std::string t_name = "");
+    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant& t_constant, const std::string& t_name = "");
     void add(const Ctr& t_ctr);
     void add(const Ctr &t_ctr, TempCtr t_temp_ctr);
     [[nodiscard]] bool has(const Ctr& t_ctr) const;
@@ -103,15 +103,15 @@ public:
     [[nodiscard]] bool has_optimizer() const;
 
     // Models' attributes
-    [[nodiscard]] int get_obj_sense() const;
+    [[nodiscard]] ObjectiveSense get_obj_sense() const;
     [[nodiscard]] const Expr<Var, Var>& get_obj() const;
     [[nodiscard]] const LinExpr<Ctr>& get_rhs() const;
     [[nodiscard]] const Constant& get_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
-    [[nodiscard]] int get_status() const;
-    [[nodiscard]] int get_reason() const;
+    [[nodiscard]] SolutionStatus get_status() const;
+    [[nodiscard]] SolutionReason get_reason() const;
     [[nodiscard]] double get_best_obj() const;
     [[nodiscard]] double get_best_bound() const;
-    void set_obj_sense(int t_value);
+    void set_obj_sense(ObjectiveSense t_value);
     void set_obj(const Expr<Var, Var>& t_objective);
     void set_obj(Expr<Var, Var>&& t_objective);
     void set_rhs(const LinExpr<Ctr>& t_rhs);
@@ -123,25 +123,25 @@ public:
 
     // Constraints' attributes
     [[nodiscard]] unsigned int get_ctr_index(const Ctr& t_ctr) const;
-    [[nodiscard]] int get_ctr_type(const Ctr& t_ctr) const;
+    [[nodiscard]] CtrType get_ctr_type(const Ctr& t_ctr) const;
     [[nodiscard]] const Row& get_ctr_row(const Ctr& t_ctr) const;
     [[nodiscard]] double get_ctr_val(const Ctr& t_ctr) const;
     [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const;
     void set_ctr_rhs(const Ctr& t_ctr, const Constant& t_rhs);
     void set_ctr_rhs(const Ctr& t_ctr, Constant&& t_rhs);
-    void set_ctr_type(const Ctr& t_ctr, int t_type);
+    void set_ctr_type(const Ctr& t_ctr, CtrType t_type);
     void set_ctr_row(const Ctr& t_ctr, const Row& t_row);
     void set_ctr_row(const Ctr& t_ctr, Row&& t_row);
 
     // Variables' attributes
     [[nodiscard]] unsigned int get_var_index(const Var& t_var) const;
-    [[nodiscard]] int get_var_type(const Var& t_var) const;
+    [[nodiscard]] VarType get_var_type(const Var& t_var) const;
     [[nodiscard]] double get_var_lb(const Var& t_var) const;
     [[nodiscard]] double get_var_ub(const Var& t_var) const;
     [[nodiscard]] double get_var_val(const Var& t_var) const;
     [[nodiscard]] double get_var_ray(const Var& t_var) const;
     [[nodiscard]] const Column& get_var_column(const Var& t_var) const;
-    void set_var_type(const Var& t_var, int t_type);
+    void set_var_type(const Var& t_var, VarType t_type);
     void set_var_lb(const Var& t_var, double t_lb);
     void set_var_ub(const Var& t_var, double t_ub);
     void set_var_obj(const Var& t_var, const Constant& t_obj);
@@ -164,14 +164,14 @@ void Model::add_vector(const Vector<T, N> &t_vector) {
 }
 
 template<unsigned int N>
-Vector<Var, N> Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name) {
+Vector<Var, N> Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name) {
     auto result = Var::make_vector(m_env, t_dim, t_lb, t_ub, t_type, t_name);
     add_vector<Var, N>(result);
     return result;
 }
 
 template<unsigned int N>
-Vector<Ctr, N> Model::add_ctrs(Dim<N> t_dim, int t_type, const Constant &t_constant, const std::string &t_name) {
+Vector<Ctr, N> Model::add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant &t_constant, const std::string &t_name) {
     auto result = Ctr::make_vector(m_env, t_dim, t_type, t_constant, t_name);
     add_vector<Ctr, N>(result);
     return result;

@@ -157,7 +157,7 @@ void DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigne
         const unsigned int subproblem_id = var.get(t_variable_flag);
         const double lb = t_original_formulation.get_var_lb(var);
         const double ub = t_original_formulation.get_var_ub(var);
-        const int type = t_original_formulation.get_var_type(var);
+        const VarType type = t_original_formulation.get_var_type(var);
 
         auto* model = subproblem_id == MasterId ? t_master : t_subproblems[subproblem_id];
 
@@ -198,7 +198,7 @@ void DantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var, unsig
 void DantzigWolfeDecomposition::dispatch_linking_constraint(const Annotation<Var, unsigned int> &t_variable_flag,
                                                         const Ctr& t_ctr,
                                                         const Row &t_row,
-                                                        int t_type,
+                                                        CtrType t_type,
                                                         Model *t_master,
                                                         const std::vector<Model *> &t_subproblems,
                                                         std::vector<Column> &t_generation_patterns) const {

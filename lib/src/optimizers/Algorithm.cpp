@@ -7,11 +7,11 @@ Algorithm::Algorithm(const Model &t_model) : Optimizer(t_model) {
 
 }
 
-int Algorithm::get_status() const {
+SolutionStatus Algorithm::get_status() const {
     return m_status;
 }
 
-int Algorithm::get_reason() const {
+SolutionReason Algorithm::get_reason() const {
     return m_reason;
 }
 

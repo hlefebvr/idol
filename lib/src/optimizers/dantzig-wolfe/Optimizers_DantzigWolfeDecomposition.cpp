@@ -87,7 +87,7 @@ void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(boo
     if (it == applied_bounds.end()) { // Create a new constraint
 
         auto expanded = expand_subproblem_variable(t_var, t_subproblem_id);
-        const int type = t_is_lb ? GreaterOrEqual : LessOrEqual;
+        const CtrType type = t_is_lb ? GreaterOrEqual : LessOrEqual;
 
         Ctr bound_constraint(m_master->env(), Equal, 0);
 

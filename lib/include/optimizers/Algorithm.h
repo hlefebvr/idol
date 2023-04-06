@@ -9,20 +9,20 @@
 #include "modeling/solutions/Solution.h"
 
 class Algorithm : public Optimizer {
-    int m_status = Unknown;
-    int m_reason = NotSpecified;
+    SolutionStatus m_status = Unknown;
+    SolutionReason m_reason = NotSpecified;
     double m_best_bound = -Inf;
     double m_best_obj = +Inf;
 protected:
     void build() override {}
 
-    void set_status(int t_status) { m_status = t_status; }
-    void set_reason(int t_reason) { m_reason = t_reason; }
+    void set_status(SolutionStatus t_status) { m_status = t_status; }
+    void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
     void set_best_bound(double t_value) { m_best_bound = t_value; }
     void set_best_obj(double t_value) { m_best_obj = t_value; }
 
-    [[nodiscard]] int get_status() const override;
-    [[nodiscard]] int get_reason() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
     [[nodiscard]] double get_best_obj() const override;
     [[nodiscard]] double get_best_bound() const override;
     [[nodiscard]] double get_relative_gap() const override;

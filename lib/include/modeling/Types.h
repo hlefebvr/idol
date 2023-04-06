@@ -19,7 +19,7 @@ enum CtrType : int {
     Equal
 };
 
-enum Sense : int {
+enum ObjectiveSense : int {
     Minimize,
     Maximize
 };
@@ -44,7 +44,7 @@ static std::ostream &operator<<(std::ostream& t_os, CtrType t_type) {
     throw Exception("Enum out of bounds.");
 }
 
-static std::ostream &operator<<(std::ostream& t_os, Sense t_type) {
+static std::ostream &operator<<(std::ostream& t_os, ObjectiveSense t_type) {
     switch (t_type) {
         case Minimize: return t_os << "Minimize";
         case Maximize: return t_os << "Maximize";

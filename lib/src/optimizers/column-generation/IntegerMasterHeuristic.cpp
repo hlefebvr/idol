@@ -51,7 +51,7 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
     integer_master->unuse();
 
     for (const auto& var : original_model.vars()) {
-        const int type = original_model.get_var_type(var);
+        const VarType type = original_model.get_var_type(var);
         if (integer_master->has(var)) {
             integer_master->set_var_type(var, type);
         }

@@ -230,8 +230,8 @@ CRTP &AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
 template<class KeyT, class CRTP>
 static std::ostream& operator<<(std::ostream& t_os, const AbstractSolution<KeyT, CRTP>& t_solution) {
     t_os << "+-----------------------\n";
-    t_os << "| Status: " << (SolutionStatus) t_solution.status() << '\n';
-    t_os << "| Reason: " << (SolutionReason) t_solution.reason() << '\n';
+    t_os << "| Status: " << t_solution.status() << '\n';
+    t_os << "| Reason: " << t_solution.reason() << '\n';
     t_os << "| ObjVal: " << t_solution.objective_value() << '\n';
     t_os << "| Values:" << '\n';
     for (const auto& [key, value] : t_solution) {

@@ -113,7 +113,7 @@ Row &Model::access_row(const Ctr &t_ctr) {
     return m_env.version(*this, t_ctr).row();
 }
 
-int Model::get_obj_sense() const {
+ObjectiveSense Model::get_obj_sense() const {
     return m_sense;
 }
 
@@ -133,7 +133,7 @@ const Row &Model::get_ctr_row(const Ctr &t_ctr) const {
     return m_env.version(*this, t_ctr).row();
 }
 
-int Model::get_ctr_type(const Ctr &t_ctr) const {
+CtrType Model::get_ctr_type(const Ctr &t_ctr) const {
     return m_env.version(*this, t_ctr).type();
 }
 
@@ -157,7 +157,7 @@ unsigned int Model::get_var_index(const Var &t_var) const {
     return m_env.version(*this, t_var).index();
 }
 
-int Model::get_var_type(const Var &t_var) const {
+VarType Model::get_var_type(const Var &t_var) const {
     return m_env.version(*this, t_var).type();
 }
 
@@ -228,12 +228,12 @@ bool Model::has_optimizer() const {
     return bool(m_optimizer);
 }
 
-int Model::get_status() const {
+SolutionStatus Model::get_status() const {
     throw_if_no_optimizer();
     return m_optimizer->get_status();
 }
 
-int Model::get_reason() const {
+SolutionReason Model::get_reason() const {
     throw_if_no_optimizer();
     return m_optimizer->get_reason();
 }
@@ -268,7 +268,7 @@ double Model::get_best_bound() const {
     return m_optimizer->get_best_bound();
 }
 
-void Model::set_obj_sense(int t_value) {
+void Model::set_obj_sense(ObjectiveSense t_value) {
 
     if (t_value != Minimize && t_value != Maximize) {
         throw Exception("Unsupported objective sense.");
@@ -353,7 +353,7 @@ void Model::set_ctr_rhs(const Ctr &t_ctr, Constant &&t_rhs) {
 
 }
 
-void Model::set_ctr_type(const Ctr &t_ctr, int t_type) {
+void Model::set_ctr_type(const Ctr &t_ctr, CtrType t_type) {
 
     m_env.version(*this, t_ctr).set_type(t_type);
 
@@ -383,7 +383,7 @@ void Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
 
 }
 
-void Model::set_var_type(const Var &t_var, int t_type) {
+void Model::set_var_type(const Var &t_var, VarType t_type) {
 
     m_env.version(*this, t_var).set_type(t_type);
 
@@ -445,17 +445,17 @@ void Model::set_var_column(const Var &t_var, Column &&t_column) {
 
 }
 
-Var Model::add_var(double t_lb, double t_ub, int t_type, std::string t_name) {
+Var Model::add_var(double t_lb, double t_ub, VarType t_type, std::string t_name) {
     return add_var(t_lb, t_ub, t_type, Column(), std::move(t_name));
 }
 
-Var Model::add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name) {
+Var Model::add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
     Var result(m_env, t_lb, t_ub, t_type, std::move(t_column), std::move(t_name));
     add(result);
     return result;
 }
 
-Ctr Model::add_ctr(Row &&t_row, int t_type, std::string t_name) {
+Ctr Model::add_ctr(Row &&t_row, CtrType t_type, std::string t_name) {
     return add_ctr(TempCtr(std::move(t_row), t_type), std::move(t_name));
 }
 

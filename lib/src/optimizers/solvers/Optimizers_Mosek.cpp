@@ -420,11 +420,11 @@ void Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
     Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
-int Optimizers::Mosek::get_status() const {
+SolutionStatus Optimizers::Mosek::get_status() const {
     return m_solution_status;
 }
 
-int Optimizers::Mosek::get_reason() const {
+SolutionReason Optimizers::Mosek::get_reason() const {
     return m_solution_reason;
 }
 

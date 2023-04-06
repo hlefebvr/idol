@@ -131,7 +131,7 @@ void Optimizers::ColumnGeneration::hook_optimize() {
     }
 
     // min e^Ts
-    idol_Log(Debug, "Current status is " << (SolutionStatus) get_status() << ", switching to pure phase I.")
+    idol_Log(Debug, "Current status is " << get_status() << ", switching to pure phase I.")
 
     set_phase_I_objective_function();
 
@@ -242,7 +242,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
         return;
     }
 
-    auto status = (SolutionStatus) m_master->get_status();
+    auto status = m_master->get_status();
 
     std::stringstream objective_value;
     if (status == InfeasibleOrUnbounded || status == Fail || status == Unknown) {
@@ -257,7 +257,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << m_master->optimizer().time().count() << "> "
              << "<Stat=" << status << "> "
-             << "<Reas=" << (SolutionReason) m_master->get_reason() << "> "
+             << "<Reas=" << m_master->get_reason() << "> "
              << "<ObjVal=" << objective_value.str() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << get_best_bound() << "> "
@@ -282,8 +282,8 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << pricing->optimizer().time().count() << "> "
-             << "<Stat=" << (SolutionStatus) pricing->get_status() << "> "
-             << "<Reas=" << (SolutionReason) pricing->get_reason() << "> "
+             << "<Stat=" << pricing->get_status() << "> "
+             << "<Reas=" << pricing->get_reason() << "> "
              << "<Obj=" << std::setprecision(5)  << pricing->get_best_obj() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << get_best_bound() << "> "
@@ -351,7 +351,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
     set_status(status);
     set_reason(NotSpecified);
-    idol_Log(Trace, "Terminate. Master problem could not be solved to optimality (status = " << (SolutionStatus) status << ").");
+    idol_Log(Trace, "Terminate. Master problem could not be solved to optimality (status = " << status << ").");
     terminate();
 
 }

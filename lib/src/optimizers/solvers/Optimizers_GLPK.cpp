@@ -607,11 +607,11 @@ void Optimizers::GLPK::set_presolve(bool t_value) {
     Optimizer::set_presolve(t_value);
 }
 
-int Optimizers::GLPK::get_status() const {
+SolutionStatus Optimizers::GLPK::get_status() const {
     return m_solution_status;
 }
 
-int Optimizers::GLPK::get_reason() const {
+SolutionReason Optimizers::GLPK::get_reason() const {
     return m_solution_reason;
 }
 

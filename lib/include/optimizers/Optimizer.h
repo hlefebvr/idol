@@ -10,6 +10,8 @@
 #include "Logger.h"
 #include "Timer.h"
 
+#include "modeling/solutions/types.h"
+
 class Model;
 class Var;
 class Ctr;
@@ -61,9 +63,9 @@ protected:
 
     static double as_numeric(const Constant& t_constant);
 
-    [[nodiscard]] virtual int get_status() const = 0;
+    [[nodiscard]] virtual SolutionStatus get_status() const = 0;
 
-    [[nodiscard]] virtual int get_reason() const = 0;
+    [[nodiscard]] virtual SolutionReason get_reason() const = 0;
 
     [[nodiscard]] virtual double get_best_obj() const = 0;
 

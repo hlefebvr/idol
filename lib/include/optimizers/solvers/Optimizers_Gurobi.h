@@ -34,7 +34,7 @@ class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<
     static char gurobi_ctr_type(int t_type);
     static char gurobi_obj_sense(int t_sense);
     static double gurobi_numeric(double t_value);
-    [[nodiscard]] std::pair<char, char> gurobi_status(int t_status) const;
+    [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
     void hook_build() override;
 
@@ -64,9 +64,9 @@ protected:
 
     void hook_remove(const Ctr& t_ctr) override;
 
-    [[nodiscard]] int get_status() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
 
-    [[nodiscard]] int get_reason() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
 
     [[nodiscard]] double get_best_obj() const override;
 

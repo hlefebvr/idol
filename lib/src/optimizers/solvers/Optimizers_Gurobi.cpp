@@ -49,7 +49,7 @@ char Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
     throw Exception("Unsupported objective sense: " + std::to_string(t_sense));
 }
 
-std::pair<char, char> Optimizers::Gurobi::gurobi_status(int t_status) const {
+std::pair<SolutionStatus, SolutionReason> Optimizers::Gurobi::gurobi_status(int t_status) const {
     switch (t_status) {
         case GRB_OPTIMAL: return { Optimal, Proved };
         case GRB_INFEASIBLE: return { Infeasible, Proved };
@@ -334,11 +334,11 @@ void Optimizers::Gurobi::set_lazy_cut(bool t_value) {
     m_model.set(GRB_IntParam_LazyConstraints, t_value);
 }
 
-int Optimizers::Gurobi::get_status() const {
+SolutionStatus Optimizers::Gurobi::get_status() const {
     return gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
 }
 
-int Optimizers::Gurobi::get_reason() const {
+SolutionReason Optimizers::Gurobi::get_reason() const {
     return gurobi_status(m_model.get(GRB_IntAttr_Status)).second;
 }
 

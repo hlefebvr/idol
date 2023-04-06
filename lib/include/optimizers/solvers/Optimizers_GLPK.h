@@ -71,8 +71,8 @@ protected:
     void compute_unbounded_ray();
     void save_milp_solution_status();
 
-    [[nodiscard]] int get_status() const override;
-    [[nodiscard]] int get_reason() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
     [[nodiscard]] double get_best_obj() const override;
     [[nodiscard]] double get_best_bound() const override;
     [[nodiscard]] double get_var_val(const Var &t_var) const override;

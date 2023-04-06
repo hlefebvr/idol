@@ -190,7 +190,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
         THEN("The solution status should be Unbounded") {
 
-            const auto status = (SolutionStatus) model.get_status();
+            const auto status = model.get_status();
 
             const bool unknown_or_unbounded = status == Unbounded || status == InfeasibleOrUnbounded;
 

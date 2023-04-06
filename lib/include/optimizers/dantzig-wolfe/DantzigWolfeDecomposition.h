@@ -35,7 +35,7 @@ class DantzigWolfeDecomposition : public impl::OptimizerFactoryWithColumnGenerat
     void dispatch_linking_constraint(const Annotation<Var, unsigned int>& t_variable_flag,
                                      const Ctr& t_ctr,
                                      const Row& t_row,
-                                     int t_type,
+                                     CtrType t_type,
                                      Model* t_master,
                                      const std::vector<Model*>& t_subproblems,
                                      std::vector<Column>& t_generation_patterns) const;

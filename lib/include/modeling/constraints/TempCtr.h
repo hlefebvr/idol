@@ -34,7 +34,7 @@ namespace Solution {
  */
 class TempCtr {
     Row m_row;
-    int m_type = LessOrEqual;
+    CtrType m_type = LessOrEqual;
 public:
     TempCtr() = default;
     /**
@@ -42,7 +42,7 @@ public:
      * @param t_row The desired row.
      * @param t_type The desired constraint type.
      */
-    TempCtr(Row&& t_row, int t_type) : m_row(std::move(t_row)), m_type(t_type) {}
+    TempCtr(Row&& t_row, CtrType t_type) : m_row(std::move(t_row)), m_type(t_type) {}
 
     TempCtr(const TempCtr&) = default;
     TempCtr(TempCtr&&) noexcept = default;
@@ -53,7 +53,7 @@ public:
     /**
      * Returns the row for the constraint (see Row).
      */
-    const Row& row() const { return m_row; }
+    [[nodiscard]] const Row& row() const { return m_row; }
 
     /**
      * Returns the row for the constraint (see Row).
@@ -63,9 +63,9 @@ public:
     /**
      * Returns the constraint type.
      */
-    int type() const { return m_type; }
+    [[nodiscard]] CtrType type() const { return m_type; }
 
-    void set_type(int t_type) {
+    void set_type(CtrType t_type) {
         if (t_type < 0 || t_type > 2) {
             throw Exception("Constraint type out of bounds.");
         }
@@ -76,7 +76,7 @@ public:
      * Returns true if the temporary constraint is violated by the given solution, false otherwise.
      * @param t_solution The solution to check.
      */
-    bool is_violated(const Solution::Primal& t_solution) const;
+    [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
 };
 
 template<class Key1, class Key2> class Expr;

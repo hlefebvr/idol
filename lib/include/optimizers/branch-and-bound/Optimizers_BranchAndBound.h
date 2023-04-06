@@ -518,7 +518,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
-        idol_Log(Trace, "Terminate. Node " << t_node->id() << " could not be solved to optimality (status = " << (SolutionStatus) status << ").");
+        idol_Log(Trace, "Terminate. Node " << t_node->id() << " could not be solved to optimality (status = " << status << ").");
         delete t_node;
         return;
     }
@@ -583,8 +583,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
               << "<TimT=" << std::setw(7) << time().count() << "> "
               << "<TimI=" << std::setw(7) << m_relaxation.get()->optimizer().time().count() << "> "
               << "<Levl=" << std::setw(3) << t_node.level() << "> "
-              << "<Stat=" << (SolutionStatus) t_node.status() << "> "
-              << "<Reas=" << (SolutionReason) t_node.reason() << "> "
+              << "<Stat=" << t_node.status() << "> "
+              << "<Reas=" << t_node.reason() << "> "
               << "<ObjVal=" << std::setw(9) << t_node.objective_value() << "> "
               << "<BestBnd="   << std::setw(9) << get_best_bound() << "> "
               << "<BestObj="   << std::setw(9) << get_best_obj() << "> "

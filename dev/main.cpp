@@ -29,7 +29,6 @@ int main(int t_argc, char** t_argv) {
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
-
     Env env;
 
     // Make model
@@ -122,8 +121,8 @@ int main(int t_argc, char** t_argv) {
                     std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
                               << std::endl;
 
-                    std::cout << (SolutionStatus) model.get_status() << std::endl;
-                    std::cout << (SolutionReason) model.get_reason() << std::endl;
+                    std::cout << model.get_status() << std::endl;
+                    std::cout << model.get_reason() << std::endl;
                     std::cout << save_primal_values(model) << std::endl;
 
                 }
