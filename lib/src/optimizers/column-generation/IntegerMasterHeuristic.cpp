@@ -73,7 +73,7 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
         return;
     }
 
-    auto solution = save_primal_values(*integer_master);
+    auto solution = save_primal(*integer_master);
 
     // search for alpha = 1, add generator to solution
     for (const auto& subproblem : column_generation_optimizer.subproblems()) {

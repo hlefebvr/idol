@@ -123,7 +123,7 @@ int main(int t_argc, char** t_argv) {
 
                     std::cout << model.get_status() << std::endl;
                     std::cout << model.get_reason() << std::endl;
-                    std::cout << save_primal_values(model) << std::endl;
+                    std::cout << save_primal(model) << std::endl;
 
                 }
 

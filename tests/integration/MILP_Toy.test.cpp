@@ -58,7 +58,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             AND_THEN("The returned solution values should be correct") {
 
-                const auto primal_solution = save_primal_values(model);
+                const auto primal_solution = save_primal(model);
 
                 CHECK(primal_solution.get(x) == 1._a);
                 CHECK(primal_solution.get(y) == 0._a);
@@ -100,7 +100,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             AND_THEN("The returned solution values should be correct") {
 
-                const auto primal_solution = save_primal_values(model);
+                const auto primal_solution = save_primal(model);
 
                 CHECK(primal_solution.get(x) == 1._a);
                 CHECK(primal_solution.get(y) == 0._a);

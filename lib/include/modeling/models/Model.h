@@ -177,7 +177,7 @@ Vector<Ctr, N> Model::add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant &t_c
     return result;
 }
 
-static auto save_primal_values(const Model& t_original_model, const Model& t_model) {
+static auto save_primal(const Model& t_original_model, const Model& t_model) {
 
     Solution::Primal result;
 
@@ -201,11 +201,11 @@ static auto save_primal_values(const Model& t_original_model, const Model& t_mod
 
 }
 
-static auto save_primal_values(const Model& t_original_model) {
-    return save_primal_values(t_original_model, t_original_model);
+static auto save_primal(const Model& t_original_model) {
+    return save_primal(t_original_model, t_original_model);
 }
 
-static auto save_ray_values(const Model& t_original_model, const Model& t_model) {
+static auto save_ray(const Model& t_original_model, const Model& t_model) {
 
     Solution::Primal result;
 
@@ -229,11 +229,11 @@ static auto save_ray_values(const Model& t_original_model, const Model& t_model)
 
 }
 
-static auto save_ray_values(const Model& t_original_model) {
-    return save_ray_values(t_original_model, t_original_model);
+static auto save_ray(const Model& t_original_model) {
+    return save_ray(t_original_model, t_original_model);
 }
 
-static auto save_dual_values(const Model& t_original_model, const Model& t_model) {
+static auto save_dual(const Model& t_original_model, const Model& t_model) {
 
     Solution::Dual result;
 
@@ -257,11 +257,11 @@ static auto save_dual_values(const Model& t_original_model, const Model& t_model
 
 }
 
-static auto save_dual_values(const Model& t_original_model) {
-    return save_dual_values(t_original_model, t_original_model);
+static auto save_dual(const Model& t_original_model) {
+    return save_dual(t_original_model, t_original_model);
 }
 
-static auto save_farkas_values(const Model& t_original_model, const Model& t_model) {
+static auto save_farkas(const Model& t_original_model, const Model& t_model) {
 
     Solution::Dual result;
 
@@ -285,8 +285,8 @@ static auto save_farkas_values(const Model& t_original_model, const Model& t_mod
 
 }
 
-static auto save_farkas_values(const Model& t_original_model) {
-    return save_farkas_values(t_original_model, t_original_model);
+static auto save_farkas(const Model& t_original_model) {
+    return save_farkas(t_original_model, t_original_model);
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {

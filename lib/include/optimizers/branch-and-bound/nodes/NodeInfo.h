@@ -59,7 +59,7 @@ public:
             return;
         }
 
-        m_primal_solution = save_primal_values(t_original_formulation, t_model);
+        m_primal_solution = save_primal(t_original_formulation, t_model);
     }
 
     void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }

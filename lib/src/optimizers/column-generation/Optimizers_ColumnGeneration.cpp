@@ -306,7 +306,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         set_best_obj(std::min(m_iter_upper_bound, get_best_obj()));
 
-        m_current_dual_solution = save_dual_values(*m_master);
+        m_current_dual_solution = save_dual(*m_master);
 
         if (m_current_iteration_is_farkas_pricing) {
             m_adjusted_dual_solution.reset();
@@ -334,7 +334,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
         }
 
         m_current_iteration_is_farkas_pricing = true;
-        m_current_dual_solution = save_farkas_values(*m_master);
+        m_current_dual_solution = save_farkas(*m_master);
         m_adjusted_dual_solution.reset();
 
         return;
@@ -628,7 +628,7 @@ double Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(const Solu
 
     double result = 0.;
 
-    const auto& primals = save_primal_values(*m_model);
+    const auto& primals = save_primal(*m_model);
 
     for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
@@ -650,9 +650,9 @@ void Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
 
     Solution::Primal generator;
     if (status == Unbounded) {
-        generator = save_ray_values(*m_model);
+        generator = save_ray(*m_model);
     } else {
-        generator = save_primal_values(*m_model);
+        generator = save_primal(*m_model);
     }
 
     auto column = create_column_from_generator(generator);

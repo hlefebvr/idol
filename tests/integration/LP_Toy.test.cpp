@@ -46,7 +46,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         AND_THEN("The primal values should be correct") {
 
-            const auto primal_solution = save_primal_values(model);
+            const auto primal_solution = save_primal(model);
 
             CHECK(primal_solution.status() == Optimal);
             CHECK(primal_solution.get(x) == 21.875_a);
@@ -56,7 +56,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         AND_THEN("The dual values should be correct") {
 
-            const auto dual_solution = save_dual_values(model);
+            const auto dual_solution = save_dual(model);
 
             CHECK(dual_solution.status() == Optimal);
             CHECK(dual_solution.get(c1) == 0._a);
@@ -102,7 +102,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         AND_THEN("The unbounded ray should be valid") {
 
-            const auto ray = save_ray_values(model);
+            const auto ray = save_ray(model);
             
             const double x_val = ray.get(x);
             const double y_val = ray.get(y);
@@ -151,7 +151,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         AND_THEN("The returned certificate should be valid") {
 
-            const auto farkas = save_farkas_values(model);
+            const auto farkas = save_farkas(model);
 
             CHECK(farkas.status() == Infeasible);
 
