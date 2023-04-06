@@ -16,7 +16,6 @@ namespace AttributeManagers {
 class AttributeManagers::Base : public AttributeManager {
 public:
     using AttributeManager::set;
-    using AttributeManager::get;
 
     //// ATTRIBUTES
 
@@ -40,26 +39,6 @@ public:
     void set(const Req<Constant, void>& t_attr, Constant&& t_value) override { throw UnsupportedRequest(t_attr); }
     void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override { throw UnsupportedRequest(t_attr); }
 
-    /// Get
-    // Var
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Column& get(const Req<Column, Var>& t_attr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Constant& get(const Req<Constant, Var>& t_attr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
-
-    // Ctr
-    [[nodiscard]] int get(const Req<int, Ctr>& t_attr, const Ctr& t_ctr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Row& get(const Req<Row, Ctr>& t_attr, const Ctr& t_ctr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Constant& get(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override { throw UnsupportedRequest(t_attr); }
-
-    // Model
-    [[nodiscard]] double get(const Req<double, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] int get(const Req<int, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const LinExpr<Ctr>& get(const Req<LinExpr<Ctr>, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Constant& get(const Req<Constant, void>& t_attr) const override { throw UnsupportedRequest(t_attr); }
-    [[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override { throw UnsupportedRequest(t_attr); }
 };
 
 #endif //IDOL_ATTRIBUTEMANAGERS_BASE_H

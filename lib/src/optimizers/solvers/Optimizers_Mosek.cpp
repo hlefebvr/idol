@@ -23,7 +23,7 @@ Optimizers::Mosek::~Mosek() {
 
 void Optimizers::Mosek::hook_build() {
 
-    const auto& objective = parent().get(Attr::Obj::Expr);
+    const auto& objective = parent().get_obj();
 
     if (!objective.quadratic().empty()) {
         throw Exception("Handling quadratic objective is not implemented.");
@@ -115,10 +115,10 @@ MosekVar Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
     result.variable = m_model->variable(1, mosek::fusion::Domain::unbounded());
 
-    const double lb = parent().get(Attr::Var::Lb, t_var);
-    const double ub = parent().get(Attr::Var::Ub, t_var);
-    const auto& column = parent().get(Attr::Var::Column, t_var);
-    const auto type = parent().get(Attr::Var::Type, t_var);
+    const double lb = parent().get_var_lb(t_var);
+    const double ub = parent().get_var_ub(t_var);
+    const auto& column = parent().get_var_column(t_var);
+    const auto type = parent().get_var_type(t_var);
 
     set_var_attr(result, type, lb, ub, as_numeric(column.obj()));
 
@@ -168,8 +168,8 @@ MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     const auto& model = parent();
 
-    const int type = model.get(Attr::Ctr::Type, t_ctr);
-    const auto& row = model.get(Attr::Ctr::Row, t_ctr);
+    const int type = model.get_ctr_type(t_ctr);
+    const auto& row = model.get_ctr_row(t_ctr);
 
     if (!row.quadratic().empty()) {
 
@@ -257,10 +257,10 @@ void Optimizers::Mosek::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
-    const double lb = model.get(Attr::Var::Lb, t_var);
-    const double ub = model.get(Attr::Var::Ub, t_var);
-    const int type = model.get(Attr::Var::Type, t_var);
-    const Constant& obj = model.get(Attr::Var::Obj, t_var);
+    const double lb = model.get_var_lb(t_var);
+    const double ub = model.get_var_ub(t_var);
+    const int type = model.get_var_type(t_var);
+    const Constant& obj = model.get_var_column(t_var).obj();
 
     set_var_attr(impl, type, lb, ub, as_numeric(obj));
 
@@ -268,7 +268,7 @@ void Optimizers::Mosek::hook_update(const Var &t_var) {
 
 void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
-    const auto& row = parent().get(Attr::Ctr::Row, t_ctr);
+    const auto& row = parent().get_ctr_row(t_ctr);
 
     auto rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -as_numeric(row.rhs()));
     lazy(t_ctr).impl().constraint->index(0)->update(rhs);
@@ -278,8 +278,8 @@ void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 void Optimizers::Mosek::hook_update_objective() {
 
     const auto& model = parent();
-    const auto& objective = model.get(Attr::Obj::Expr);
-    const int sense = model.get(Attr::Obj::Sense);
+    const auto& objective = model.get_obj();
+    const int sense = model.get_obj_sense();
 
     auto expr = mosek::fusion::Expr::constTerm(as_numeric(objective.constant()));
 
@@ -390,62 +390,6 @@ void Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 
 }
 
-int Optimizers::Mosek::get(const Req<int, void> &t_attr) const {
-
-    if (t_attr == Attr::Solution::Status) {
-        return m_solution_status;
-    }
-
-    if (t_attr == Attr::Solution::Reason) {
-        return m_solution_reason;
-    }
-
-    return Base::get(t_attr);
-}
-
-double Optimizers::Mosek::get(const Req<double, void> &t_attr) const {
-
-    if (t_attr == Attr::Solution::ObjVal) {
-        if (m_solution_status == Infeasible) { return Inf; }
-        if (m_solution_status == Unbounded) { return -Inf; }
-        return m_model->primalObjValue();
-    }
-
-    return Base::get(t_attr);
-}
-
-double Optimizers::Mosek::get(const Req<double, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Solution::Primal) {
-        return lazy(t_var).impl().variable->level()->operator[](0);
-    }
-
-    if (t_attr == Attr::Solution::Ray) {
-        if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
-            throw Exception("Not available.");
-        }
-        return lazy(t_var).impl().variable->level()->operator[](0);
-    }
-
-    return Base::get(t_attr, t_var);
-}
-
-double Optimizers::Mosek::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
-
-    if (t_attr == Attr::Solution::Dual) {
-        return lazy(t_ctr).impl().constraint->dual()->operator[](0);
-    }
-
-    if (t_attr == Attr::Solution::Farkas) {
-        if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
-            throw Exception("Not available.");
-        }
-        return lazy(t_ctr).impl().constraint->dual()->operator[](0);
-    }
-
-    return Base::get(t_attr, t_ctr);
-}
-
 void Optimizers::Mosek::set_time_limit(double t_time_limit) {
     m_model->setSolverParam("optimizerMaxTime", t_time_limit);
     Optimizer::set_time_limit(t_time_limit);
@@ -474,6 +418,56 @@ void Optimizers::Mosek::set_presolve(bool t_value) {
 void Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
     m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
     Optimizer::set_infeasible_or_unbounded_info(t_value);
+}
+
+int Optimizers::Mosek::get_status() const {
+    return m_solution_status;
+}
+
+int Optimizers::Mosek::get_reason() const {
+    return m_solution_reason;
+}
+
+double Optimizers::Mosek::get_best_obj() const {
+    if (m_solution_status == Infeasible) { return Inf; }
+    if (m_solution_status == Unbounded) { return -Inf; }
+    return m_model->primalObjValue();
+}
+
+double Optimizers::Mosek::get_best_bound() const {
+    if (m_solution_status == Infeasible) { return Inf; }
+    if (m_solution_status == Unbounded) { return -Inf; }
+    return m_model->dualObjValue();
+}
+
+double Optimizers::Mosek::get_var_val(const Var &t_var) const {
+    return lazy(t_var).impl().variable->level()->operator[](0);
+}
+
+double Optimizers::Mosek::get_var_ray(const Var &t_var) const {
+    if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
+        throw Exception("Not available.");
+    }
+    return lazy(t_var).impl().variable->level()->operator[](0);
+}
+
+double Optimizers::Mosek::get_ctr_val(const Ctr &t_ctr) const {
+    return lazy(t_ctr).impl().constraint->dual()->operator[](0);
+}
+
+double Optimizers::Mosek::get_ctr_farkas(const Ctr &t_ctr) const {
+    if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
+        throw Exception("Not available.");
+    }
+    return lazy(t_ctr).impl().constraint->dual()->operator[](0);
+}
+
+double Optimizers::Mosek::get_relative_gap() const {
+    throw Exception("Not implemented.");
+}
+
+double Optimizers::Mosek::get_absolute_gap() const {
+    throw Exception("Not implemented.");
 }
 
 MosekKiller::~MosekKiller() {

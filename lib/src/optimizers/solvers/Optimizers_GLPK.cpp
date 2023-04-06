@@ -24,7 +24,7 @@ Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 void Optimizers::GLPK::hook_build() {
 
-    const auto& objective = parent().get(Attr::Obj::Expr);
+    const auto& objective = parent().get_obj();
 
     if (!objective.quadratic().empty()) {
         throw Exception("GLPK is not available as an SOCP solver.");
@@ -87,10 +87,10 @@ int Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
         m_deleted_variables.pop();
     }
 
-    const double lb = parent().get(Attr::Var::Lb, t_var);
-    const double ub = parent().get(Attr::Var::Ub, t_var);
-    const auto& column = parent().get(Attr::Var::Column, t_var);
-    const auto type = parent().get(Attr::Var::Type, t_var);
+    const double lb = parent().get_var_lb(t_var);
+    const double ub = parent().get_var_ub(t_var);
+    const auto& column = parent().get_var_column(t_var);
+    const auto type = parent().get_var_type(t_var);
 
     set_var_attr(index, type, lb, ub, as_numeric(column.obj()));
 
@@ -141,9 +141,9 @@ int Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
         m_deleted_constraints.pop();
     }
 
-    const auto& row = parent().get(Attr::Ctr::Row, t_ctr);
+    const auto& row = parent().get_ctr_row(t_ctr);
     const double rhs = as_numeric(row.rhs());
-    const auto type = parent().get(Attr::Ctr::Type, t_ctr);
+    const auto type = parent().get_ctr_type(t_ctr);
 
     set_ctr_attr(index, type, rhs);
 
@@ -169,7 +169,7 @@ int Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 }
 
 void Optimizers::GLPK::hook_update_objective_sense() {
-    glp_set_obj_dir(m_model, parent().get(Attr::Obj::Sense) == Minimize ? GLP_MIN : GLP_MAX);
+    glp_set_obj_dir(m_model, parent().get_obj_sense() == Minimize ? GLP_MIN : GLP_MAX);
 }
 
 void Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
@@ -184,10 +184,10 @@ void Optimizers::GLPK::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
-    const double lb = model.get(Attr::Var::Lb, t_var);
-    const double ub = model.get(Attr::Var::Ub, t_var);
-    const int type = model.get(Attr::Var::Type, t_var);
-    const Constant& obj = model.get(Attr::Var::Obj, t_var);
+    const double lb = model.get_var_lb(t_var);
+    const double ub = model.get_var_ub(t_var);
+    const int type = model.get_var_type(t_var);
+    const Constant& obj = model.get_var_column(t_var).obj();
 
     set_var_attr(impl, type, lb, ub, as_numeric(obj));
 
@@ -197,8 +197,8 @@ void Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
-    const auto& rhs = model.get(Attr::Ctr::Rhs, t_ctr);
-    const auto type = model.get(Attr::Ctr::Type, t_ctr);
+    const auto& rhs = model.get_ctr_row(t_ctr).rhs();
+    const auto type = model.get_ctr_type(t_ctr);
 
     set_ctr_attr(impl, type, as_numeric(rhs));
 
@@ -209,7 +209,7 @@ void Optimizers::GLPK::hook_update_objective() {
     const auto& model = parent();
 
     for (const auto& var : model.vars()) {
-        const auto& obj = model.get(Attr::Var::Obj, var);
+        const auto& obj = model.get_var_column(var).obj();
         glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(obj));
     }
 
@@ -363,7 +363,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
 
         auto* index = new int[2];
         index[1] = lazy(ctr).impl();
-        const auto type = model.get(Attr::Ctr::Type, ctr);
+        const auto type = model.get_ctr_type(ctr);
 
         if (type == LessOrEqual) {
             int art_var_index = glp_add_cols(m_model, 1);
@@ -397,7 +397,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
     delete[] plus_one;
 
     // Set original variables' objective coefficient to zero
-    for (const auto& [var, constant] : model.get(Attr::Obj::Expr).linear()) {
+    for (const auto& [var, constant] : model.get_obj().linear()) {
         glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
     }
 
@@ -406,11 +406,11 @@ void Optimizers::GLPK::compute_farkas_certificate() {
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = Solution::Dual();
-    double objective_value = as_numeric(model.get(Attr::Obj::Const));
+    double objective_value = as_numeric(model.get_obj().constant());
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
-        objective_value += dual * as_numeric(model.get(Attr::Ctr::Row, ctr).rhs());
+        objective_value += dual * as_numeric(model.get_ctr_row(ctr).rhs());
     }
     m_farkas_certificate->set_objective_value(objective_value);
 
@@ -418,7 +418,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
     glp_del_cols(m_model, (int) artificial_variables.size() - 1, artificial_variables.data());
 
     // Restore objective function
-    for (const auto& [var, constant] : model.get(Attr::Obj::Expr).linear()) {
+    for (const auto& [var, constant] : model.get_obj().linear()) {
         glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(constant));
     }
 
@@ -440,8 +440,8 @@ void Optimizers::GLPK::compute_unbounded_ray() {
     for (const auto& var : model.vars()) {
 
         const int index = lazy(var).impl();
-        const double lb = model.get(Attr::Var::Lb, var);
-        const double ub = model.get(Attr::Var::Ub, var);
+        const double lb = model.get_var_lb(var);
+        const double ub = model.get_var_ub(var);
         const bool has_lb = !is_neg_inf(lb);
         const bool has_ub = !is_pos_inf(ub);
 
@@ -459,7 +459,7 @@ void Optimizers::GLPK::compute_unbounded_ray() {
 
     for (const auto& ctr : model.ctrs()) {
         const int index = lazy(ctr).impl();
-        const auto type = model.get(Attr::Ctr::Type, ctr);
+        const auto type = model.get_ctr_type(ctr);
         set_ctr_attr(index, type, 0.);
     }
 
@@ -506,7 +506,7 @@ void Optimizers::GLPK::compute_unbounded_ray() {
 
     // Save ray
     m_unbounded_ray = Solution::Primal();
-    const double objective_value = as_numeric(model.get(Attr::Obj::Const)) + glp_get_obj_val(m_model);
+    const double objective_value = as_numeric(model.get_obj().constant()) + glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
         m_unbounded_ray->set(var, glp_get_col_prim(m_model, lazy(var).impl()));
@@ -531,10 +531,10 @@ void Optimizers::GLPK::compute_unbounded_ray() {
     // Restore variables bounds
     for (const auto& var : model.vars()) {
         const int index = lazy(var).impl();
-        const int type = model.get(Attr::Var::Type, var);
-        const double lb = model.get(Attr::Var::Lb, var);
-        const double ub = model.get(Attr::Var::Ub, var);
-        const auto& column = model.get(Attr::Var::Column, var);
+        const int type = model.get_var_type(var);
+        const double lb = model.get_var_lb(var);
+        const double ub = model.get_var_ub(var);
+        const auto& column = model.get_var_column(var);
         const double obj = as_numeric(column.obj());
         set_var_attr(index, type, lb, ub, obj);
     }
@@ -542,8 +542,8 @@ void Optimizers::GLPK::compute_unbounded_ray() {
     // Restore RHS
     for (const auto& ctr : model.ctrs()) {
         const int index = lazy(ctr).impl();
-        const int type = model.get(Attr::Ctr::Type, ctr);
-        const auto& row = model.get(Attr::Ctr::Row, ctr);
+        const int type = model.get_ctr_type(ctr);
+        const auto& row = model.get_ctr_row(ctr);
         const double rhs = as_numeric(row.rhs());
         set_ctr_attr(index, type, rhs);
     }
@@ -582,69 +582,6 @@ void Optimizers::GLPK::save_milp_solution_status() {
 
 }
 
-int Optimizers::GLPK::get(const Req<int, void> &t_attr) const {
-
-    if (t_attr == Attr::Solution::Status) {
-        return m_solution_status;
-    }
-
-    if (t_attr == Attr::Solution::Reason) {
-        return m_solution_reason;
-    }
-
-    return Base::get(t_attr);
-}
-
-double Optimizers::GLPK::get(const Req<double, void> &t_attr) const {
-
-    if (t_attr == Attr::Solution::ObjVal) {
-        if (m_solution_status == Unbounded) { return -Inf; }
-        if (m_solution_status == Infeasible) { return +Inf; }
-        const double constant_term = as_numeric(parent().get(Attr::Obj::Const));
-        return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
-    }
-
-    return Base::get(t_attr);
-}
-
-double Optimizers::GLPK::get(const Req<double, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Solution::Primal) {
-        const int impl = lazy(t_var).impl();
-        return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
-    }
-
-    if (t_attr == Attr::Solution::Ray) {
-
-        if (!m_unbounded_ray.has_value()) {
-            throw Exception("Not available.");
-        }
-
-        return m_unbounded_ray->get(t_var);
-    }
-
-    return Base::get(t_attr, t_var);
-}
-
-double Optimizers::GLPK::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
-
-    if (t_attr == Attr::Solution::Dual) {
-        const auto &impl = lazy(t_ctr).impl();
-        return glp_get_row_dual(m_model, impl);
-    }
-
-    if (t_attr == Attr::Solution::Farkas) {
-
-        if (!m_farkas_certificate.has_value()) {
-            throw Exception("Not available.");
-        }
-
-        return m_farkas_certificate->get(t_ctr);
-    }
-
-    return Base::get(t_attr, t_ctr);
-}
-
 void Optimizers::GLPK::set_time_limit(double t_time_limit) {
 
     const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit) * 1000);
@@ -668,6 +605,60 @@ void Optimizers::GLPK::set_presolve(bool t_value) {
     m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     Optimizer::set_presolve(t_value);
+}
+
+int Optimizers::GLPK::get_status() const {
+    return m_solution_reason;
+}
+
+int Optimizers::GLPK::get_reason() const {
+    return m_solution_reason;
+}
+
+double Optimizers::GLPK::get_best_obj() const {
+    if (m_solution_status == Unbounded) { return -Inf; }
+    if (m_solution_status == Infeasible) { return +Inf; }
+    const double constant_term = as_numeric(parent().get_obj().constant());
+    return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
+}
+
+double Optimizers::GLPK::get_best_bound() const {
+    return get_best_obj();
+}
+
+double Optimizers::GLPK::get_var_val(const Var &t_var) const {
+    const int impl = lazy(t_var).impl();
+    return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
+}
+
+double Optimizers::GLPK::get_var_ray(const Var &t_var) const {
+
+    if (!m_unbounded_ray.has_value()) {
+        throw Exception("Not available.");
+    }
+
+    return m_unbounded_ray->get(t_var);
+}
+
+double Optimizers::GLPK::get_ctr_val(const Ctr &t_ctr) const {
+    const auto &impl = lazy(t_ctr).impl();
+    return glp_get_row_dual(m_model, impl);
+}
+
+double Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
+    if (!m_farkas_certificate.has_value()) {
+        throw Exception("Not available.");
+    }
+
+    return m_farkas_certificate->get(t_ctr);
+}
+
+double Optimizers::GLPK::get_relative_gap() const {
+    return 0;
+}
+
+double Optimizers::GLPK::get_absolute_gap() const {
+    return 0;
 }
 
 #endif

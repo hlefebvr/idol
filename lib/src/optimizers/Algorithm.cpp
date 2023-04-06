@@ -8,40 +8,26 @@ Algorithm::Algorithm(const Model &t_model) : Optimizer(t_model) {
 
 }
 
-double Algorithm::get(const Req<double, void> &t_attr) const {
-
-    if (t_attr == Attr::Solution::ObjVal) {
-        return m_best_obj;
-    }
-
-    if (t_attr == Attr::Solution::RelGap) {
-        return relative_gap(m_best_bound, m_best_obj);
-    }
-
-    if (t_attr == Attr::Solution::AbsGap) {
-        return absolute_gap(m_best_bound, m_best_obj);
-    }
-
-    if (t_attr == Attr::Solution::BestBound) {
-        return m_best_bound;
-    }
-
-    if (t_attr == Attr::Solution::BestObj) {
-        return m_best_obj;
-    }
-
-    return Base::get(t_attr);
+int Algorithm::get_status() const {
+    return m_status;
 }
 
-int Algorithm::get(const Req<int, void> &t_attr) const {
+int Algorithm::get_reason() const {
+    return m_reason;
+}
 
-    if (t_attr == Attr::Solution::Status) {
-        return m_status;
-    }
+double Algorithm::get_best_obj() const {
+    return m_best_obj;
+}
 
-    if (t_attr == Attr::Solution::Reason) {
-        return m_reason;
-    }
+double Algorithm::get_best_bound() const {
+    return m_best_bound;
+}
 
-    return Base::get(t_attr);
+double Algorithm::get_relative_gap() const {
+    return relative_gap(m_best_bound, m_best_obj);
+}
+
+double Algorithm::get_absolute_gap() const {
+    return absolute_gap(m_best_bound, m_best_obj);
 }

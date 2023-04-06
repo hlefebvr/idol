@@ -17,19 +17,15 @@ Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_
 
 }
 
-double Optimizers::DantzigWolfeDecomposition::get(const Req<double, Var> &t_attr, const Var &t_var) const {
+double Optimizers::DantzigWolfeDecomposition::get_var_val(const Var &t_var) const {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
     if (subproblem_id != MasterId) {
-        if (t_attr == Attr::Solution::Primal) {
-            return get_subproblem_primal_value(t_var, subproblem_id);
-        } else {
-            return m_subproblems[subproblem_id].m_model->get(t_attr, t_var);
-        }
+        return get_subproblem_primal_value(t_var, subproblem_id);
     }
 
-    return ColumnGeneration::get(t_attr, t_var);
+    return ColumnGeneration::get_var_val(t_var);
 }
 
 void Optimizers::DantzigWolfeDecomposition::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
@@ -61,7 +57,7 @@ double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const 
 
     double result = 0;
     for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
-        const double alpha_val = m_master->get(::Attr::Solution::Primal, alpha);
+        const double alpha_val = m_master->get_var_val(alpha);
         if (alpha_val > 0) {
             result += alpha_val * generator.get(t_var);
         }
@@ -128,7 +124,7 @@ void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(con
         return;
     }
 
-    const auto& current_rhs = m_master->get(::Attr::Ctr::Rhs, it->second);
+    const auto& current_rhs = m_master->get_ctr_row(it->second).rhs();
 
     if (!current_rhs.is_numerical()) {
         throw Exception("Unexpected RHS with non-numerical terms.");
@@ -190,4 +186,3 @@ void Optimizers::DantzigWolfeDecomposition::set(const Req<Expr<Var, Var>, void> 
 
     Base::set(t_attr, t_expr);
 }
-

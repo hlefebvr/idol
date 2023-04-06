@@ -19,7 +19,6 @@
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/column-generation/IntegerMasterHeuristic.h"
-#include "optimizers/solvers/KnapsackSolver.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -88,10 +87,10 @@ int main(int t_argc, char** t_argv) {
                                                     )
 
                                                     .with_pricing_solver(
-                                                            KnapsackSolver()
+                                                            Gurobi()
                                                     )
 
-                                                    .with_log_level(Debug, Magenta)
+                                                    .with_log_level(Info, Magenta)
 
                                                     .with_farkas_pricing(farkas_pricing)
 
@@ -99,7 +98,7 @@ int main(int t_argc, char** t_argv) {
 
                                                     .with_branching_on_master(branching_on_master)
 
-                                                    .with_log_frequency(1)
+                                                    //.with_log_frequency(1)
 
                                                     //.with_iteration_count_limit(20)
 
@@ -128,9 +127,9 @@ int main(int t_argc, char** t_argv) {
                     std::cout << "RESULT: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
                               << std::endl;
 
-                    std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
-                    std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
-                    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+                    std::cout << (SolutionStatus) model.get_status() << std::endl;
+                    std::cout << (SolutionReason) model.get_reason() << std::endl;
+                    std::cout << save_primal_values(model) << std::endl;
 
                 }
 

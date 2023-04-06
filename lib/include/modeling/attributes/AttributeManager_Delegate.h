@@ -124,62 +124,6 @@ public:
         attribute_delegate(t_attr, t_ctr).set(t_attr, t_ctr, t_var, std::move(t_value));
     }
 
-    [[nodiscard]] double get(const Req<double, Var> &t_attr, const Var &t_var) const override {
-        return attribute_delegate(t_attr, t_var).get(t_attr, t_var);
-    }
-
-    [[nodiscard]] int get(const Req<int, Var> &t_attr, const Var &t_var) const override {
-        return attribute_delegate(t_attr, t_var).get(t_attr, t_var);
-    }
-
-    [[nodiscard]] const Column &get(const Req<Column, Var> &t_attr, const Var &t_var) const override {
-        return attribute_delegate(t_attr, t_var).get(t_attr, t_var);
-    }
-
-    [[nodiscard]] const Constant &get(const Req<Constant, Var> &t_attr, const Var &t_var) const override {
-        return attribute_delegate(t_attr, t_var).get(t_attr, t_var);
-    }
-
-    [[nodiscard]] int get(const Req<int, Ctr> &t_attr, const Ctr &t_ctr) const override {
-        return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr);
-    }
-
-    [[nodiscard]] double get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const override {
-        return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr);
-    }
-
-    [[nodiscard]] const Row &get(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr) const override {
-        return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr);
-    }
-
-    [[nodiscard]] const Constant &get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) const override {
-        return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr);
-    }
-
-    [[nodiscard]] int get(const Req<int, void> &t_attr) const override {
-        return attribute_delegate(t_attr).get(t_attr);
-    }
-
-    [[nodiscard]] double get(const Req<double, void> &t_attr) const override {
-        return attribute_delegate(t_attr).get(t_attr);
-    }
-
-    [[nodiscard]] const LinExpr<Ctr> &get(const Req<LinExpr<Ctr>, void> &t_attr) const override {
-        return attribute_delegate(t_attr).get(t_attr);
-    }
-
-    [[nodiscard]] const Expr<Var, Var> &get(const Req<Expr<Var, Var>, void> &t_attr) const override {
-        return attribute_delegate(t_attr).get(t_attr);
-    }
-
-    [[nodiscard]] const Constant &get(const Req<Constant, void> &t_attr) const override {
-        return attribute_delegate(t_attr).get(t_attr);
-    }
-
-    [[nodiscard]] const Constant &get(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const override {
-        return attribute_delegate(t_attr, t_ctr).get(t_attr, t_ctr, t_var);
-    }
-
 };
 
 #endif //IDOL_ATTRIBUTEMANAGER_DELEGATE_H

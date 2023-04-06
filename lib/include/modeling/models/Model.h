@@ -106,14 +106,16 @@ public:
     [[nodiscard]] bool has_optimizer() const;
 
     using AttributeManagers::Delegate::set;
-    using AttributeManagers::Delegate::get;
 
     // Models' attributes
-    [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
-    [[nodiscard]] const Constant& get(const Req<Constant, void>& t_attr) const override;
-    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override;
-    [[nodiscard]] const LinExpr<Ctr>& get(const Req<LinExpr<Ctr>, void>& t_attr) const override;
-    [[nodiscard]] const Constant& get(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var) const override;
+    [[nodiscard]] int get_obj_sense() const;
+    [[nodiscard]] const Expr<Var, Var>& get_obj() const;
+    [[nodiscard]] const LinExpr<Ctr>& get_rhs() const;
+    [[nodiscard]] const Constant& get_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
+    [[nodiscard]] int get_status() const;
+    [[nodiscard]] int get_reason() const;
+    [[nodiscard]] double get_best_obj() const;
+    [[nodiscard]] double get_best_bound() const;
     void set(const Req<int, void> &t_attr, int t_value) override;
     void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
     void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
@@ -121,18 +123,23 @@ public:
     void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
 
     // Constraints' attributes
-    [[nodiscard]] int get(const Req<int, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    [[nodiscard]] const Row& get(const Req<Row, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    [[nodiscard]] const Constant& get(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] unsigned int get_ctr_index(const Ctr& t_ctr) const;
+    [[nodiscard]] int get_ctr_type(const Ctr& t_ctr) const;
+    [[nodiscard]] const Row& get_ctr_row(const Ctr& t_ctr) const;
+    [[nodiscard]] double get_ctr_val(const Ctr& t_ctr) const;
+    [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const;
     void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
     void set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
     void set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
 
     // Variables' attributes
-    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_ctr) const override;
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] const Column& get(const Req<Column, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] const Constant& get(const Req<Constant, Var>& t_attr, const Var& t_var) const override;
+    [[nodiscard]] unsigned int get_var_index(const Var& t_var) const;
+    [[nodiscard]] int get_var_type(const Var& t_var) const;
+    [[nodiscard]] double get_var_lb(const Var& t_var) const;
+    [[nodiscard]] double get_var_ub(const Var& t_var) const;
+    [[nodiscard]] double get_var_val(const Var& t_var) const;
+    [[nodiscard]] double get_var_ray(const Var& t_var) const;
+    [[nodiscard]] const Column& get_var_column(const Var& t_var) const;
     void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
@@ -160,89 +167,133 @@ void Model::add_array(const Vector<T, N> &t_vector) {
     }
 }
 
-template<class ObjectT>
-auto save(const Model& t_original_model, const Req<double, ObjectT>& t_attr, const Model& t_model) {
+static auto save_primal_values(const Model& t_original_model, const Model& t_model) {
 
-    std::conditional_t<std::is_same_v<ObjectT, Var>, Solution::Primal, Solution::Dual> result;
+    Solution::Primal result;
 
-    const int sense = t_original_model.get(Attr::Obj::Sense);
-    const int status = t_model.get(Attr::Solution::Status);
-    const int reason = t_model.get(Attr::Solution::Reason);
+    const auto status = t_model.get_status();
+    const auto reason = t_model.get_reason();
+
+    if (status != Optimal && status != Feasible) {
+        throw Exception("Not available.");
+    }
 
     result.set_status(status);
     result.set_reason(reason);
 
-    if (status == Infeasible) {
+    result.set_objective_value(t_model.get_best_obj());
 
-        result.set_objective_value(sense == Minimize ? Inf : -Inf);
-
-        if constexpr (std::is_same_v<ObjectT, Var>) {
-            if (t_attr == Attr::Solution::Primal) {
-                return result;
-            }
-        }
-
-        if constexpr (std::is_same_v<ObjectT, Ctr>) {
-            if (t_attr == Attr::Solution::Dual) {
-                return result;
-            }
-        }
-
-    } else if (status == Unbounded) {
-
-        result.set_objective_value(sense == Minimize ? -Inf : Inf);
-
-        if constexpr (std::is_same_v<ObjectT, Var>) {
-            if (t_attr == Attr::Solution::Primal) {
-                return result;
-            }
-        }
-
-        if constexpr (std::is_same_v<ObjectT, Ctr>) {
-            if (t_attr == Attr::Solution::Dual) {
-                return result;
-            }
-        }
-
-    } else {
-
-        result.set_objective_value(t_model.get(Attr::Solution::ObjVal));
-
-    }
-
-    if constexpr (std::is_same_v<ObjectT, Var>) {
-        for (const auto &var: t_original_model.vars()) {
-            result.set(var, t_model.get(t_attr, var));
-        }
-    } else {
-        for (const auto &ctr: t_original_model.ctrs()) {
-            result.set(ctr, t_model.get(t_attr, ctr));
-        }
+    for (const auto& var : t_original_model.vars()) {
+        result.set(var, t_model.get_var_val(var));
     }
 
     return result;
+
 }
 
-template<class ObjectT>
-auto save(const Model& t_model, const Req<double, ObjectT>& t_attr) {
-    return save(t_model, t_attr, t_model);
+static auto save_primal_values(const Model& t_original_model) {
+    return save_primal_values(t_original_model, t_original_model);
+}
+
+static auto save_ray_values(const Model& t_original_model, const Model& t_model) {
+
+    Solution::Primal result;
+
+    const auto status = t_model.get_status();
+    const auto reason = t_model.get_reason();
+
+    if (status != Unbounded) {
+        throw Exception("Not available.");
+    }
+
+    result.set_status(status);
+    result.set_reason(reason);
+
+    result.set_objective_value(-Inf);
+
+    for (const auto& var : t_original_model.vars()) {
+        result.set(var, t_model.get_var_ray(var));
+    }
+
+    return result;
+
+}
+
+static auto save_ray_values(const Model& t_original_model) {
+    return save_primal_values(t_original_model, t_original_model);
+}
+
+static auto save_dual_values(const Model& t_original_model, const Model& t_model) {
+
+    Solution::Dual result;
+
+    const auto status = t_model.get_status();
+    const auto reason = t_model.get_reason();
+
+    if (status != Optimal && status != Feasible) {
+        throw Exception("Not available.");
+    }
+
+    result.set_status(status);
+    result.set_reason(reason);
+
+    result.set_objective_value(t_model.get_best_bound());
+
+    for (const auto& ctr : t_original_model.ctrs()) {
+        result.set(ctr, t_model.get_ctr_val(ctr));
+    }
+
+    return result;
+
+}
+
+static auto save_dual_values(const Model& t_original_model) {
+    return save_dual_values(t_original_model, t_original_model);
+}
+
+static auto save_farkas_values(const Model& t_original_model, const Model& t_model) {
+
+    Solution::Dual result;
+
+    const auto status = t_model.get_status();
+    const auto reason = t_model.get_reason();
+
+    if (status != Infeasible) {
+        throw Exception("Not available.");
+    }
+
+    result.set_status(status);
+    result.set_reason(reason);
+
+    result.set_objective_value(+Inf);
+
+    for (const auto& ctr : t_original_model.ctrs()) {
+        result.set(ctr, t_model.get_ctr_farkas(ctr));
+    }
+
+    return result;
+
+}
+
+static auto save_farkas_values(const Model& t_original_model) {
+    return save_farkas_values(t_original_model, t_original_model);
 }
 
 static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
 
-    if (t_model.get(Attr::Obj::Sense) == Minimize) {
+    if (t_model.get_obj_sense() == Minimize) {
         t_os << "Minimize";
     } else {
         t_os << "Maximize";
     }
 
-    t_os << " " << t_model.get(Attr::Obj::Expr) << "\nSubject to:\n";
+    t_os << " " << t_model.get_obj() << "\nSubject to:\n";
     for (const auto& ctr : t_model.ctrs()) {
 
-        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
+        const auto& row = t_model.get_ctr_row(ctr);
         const auto& linear = row.linear();
         const auto& quadratic = row.quadratic();
-        const auto type = t_model.get(Attr::Ctr::Type, ctr);
+        const auto type = t_model.get_ctr_type(ctr);
 
         t_os << ctr << ": ";
 
@@ -268,9 +319,9 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
     t_os << "Variables:\n";
     for (const auto& var : t_model.vars()) {
 
-        const double lb = t_model.get(Attr::Var::Lb, var);
-        const double ub = t_model.get(Attr::Var::Ub, var);
-        const int type = t_model.get(Attr::Var::Type, var);
+        const double lb = t_model.get_var_lb(var);
+        const double ub = t_model.get_var_ub(var);
+        const int type = t_model.get_var_type(var);
 
         if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
             t_os << lb << " <= " << var << " <= " << ub;

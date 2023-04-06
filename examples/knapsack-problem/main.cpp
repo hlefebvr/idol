@@ -31,7 +31,7 @@ int main(int t_argc, const char** t_argv) {
 
     model.optimize();
 
-    std::cout << "Gurobi: " << model.get(Attr::Solution::ObjVal) << std::endl;
+    std::cout << "Gurobi: " << model.get_best_obj() << std::endl;
 
     std::cout << save(model, Attr::Solution::Primal) << std::endl;
 
@@ -39,7 +39,7 @@ int main(int t_argc, const char** t_argv) {
 
     model.optimize();
 
-    std::cout << "KnapsackSolver: " << model.get(Attr::Solution::ObjVal) << std::endl;
+    std::cout << "KnapsackSolver: " << model.get_best_obj() << std::endl;
 
     std::cout << save(model, Attr::Solution::Primal) << std::endl;
 

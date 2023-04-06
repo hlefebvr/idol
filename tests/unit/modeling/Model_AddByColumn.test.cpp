@@ -35,23 +35,23 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
             }
 
             AND_THEN("The column objective should have been added to the model's variable objective") {
-                CHECK(model.get(Attr::Var::Column, var).obj().numerical() == 100_a);
+                CHECK(model.get_var_column(var).obj().numerical() == 100_a);
             }
 
             AND_THEN("The column objective should have been added to the model's objective") {
-                CHECK(model.get(Attr::Obj::Expr).linear().get(var).numerical() == 100_a);
+                CHECK(model.get_obj().linear().get(var).numerical() == 100_a);
             }
 
             AND_THEN("The column coefficients should have been added to the model's variable column") {
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 101_a);
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[1]).numerical() == 102_a);
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[2]).numerical() == 103_a);
+                CHECK(model.get_var_column(var).linear().get(c[0]).numerical() == 101_a);
+                CHECK(model.get_var_column(var).linear().get(c[1]).numerical() == 102_a);
+                CHECK(model.get_var_column(var).linear().get(c[2]).numerical() == 103_a);
             }
 
             AND_THEN("The column coefficients should have been added to the model's constraints' rows") {
-                CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 101_a);
-                CHECK(model.get(Attr::Ctr::Row, c[1]).linear().get(var).numerical() == 102_a);
-                CHECK(model.get(Attr::Ctr::Row, c[2]).linear().get(var).numerical() == 103_a);
+                CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 101_a);
+                CHECK(model.get_ctr_row(c[1]).linear().get(var).numerical() == 102_a);
+                CHECK(model.get_ctr_row(c[2]).linear().get(var).numerical() == 103_a);
             }
 
             AND_WHEN("The objective coefficient of that variable is changed in the model (nonzero)") {
@@ -59,11 +59,11 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 model.set(Attr::Var::Obj, var, 1);
 
                 THEN("The model's objective should be updated") {
-                    CHECK(model.get(Attr::Obj::Expr).linear().get(var).numerical() == 1_a);
+                    CHECK(model.get_obj().linear().get(var).numerical() == 1_a);
                 }
 
                 AND_THEN("The variable's objective coefficient should be updated") {
-                    CHECK(model.get(Attr::Var::Obj, var).numerical() == 1_a);
+                    CHECK(model.get_var_column(var).obj().numerical() == 1_a);
                 }
             }
 
@@ -72,11 +72,11 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 model.set(Attr::Matrix::Coeff, c[0], var, 1);
 
                 THEN("The model's constraint's row should be updated") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 1_a);
+                    CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 1_a);
                 }
 
                 AND_THEN("The model's variable's column should be updated") {
-                    CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 1_a);
+                    CHECK(model.get_var_column(var).linear().get(c[0]).numerical() == 1_a);
                 }
 
             }
@@ -86,11 +86,11 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 model.set(Attr::Var::Obj, var, 0);
 
                 THEN("The model's objective should be empty") {
-                    CHECK(model.get(Attr::Obj::Expr).linear().empty());
+                    CHECK(model.get_obj().linear().empty());
                 }
 
                 AND_THEN("The model's variable's column's objective coefficient should be zero") {
-                    CHECK(model.get(Attr::Var::Obj, var).numerical() == 0_a);
+                    CHECK(model.get_var_column(var).obj().numerical() == 0_a);
                 }
 
             }
@@ -100,11 +100,11 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 model.set(Attr::Matrix::Coeff, c[0], var, 0);
 
                 THEN("The model's constraint's row should be empty") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().empty());
+                    CHECK(model.get_ctr_row(c[0]).linear().empty());
                 }
 
                 AND_THEN("The model's variable's column's coefficient should be zero") {
-                    CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 0_a);
+                    CHECK(model.get_var_column(var).linear().get(c[0]).numerical() == 0_a);
                 }
 
             }
@@ -126,19 +126,19 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 }
 
                 AND_THEN("The model's objective should be empty") {
-                    CHECK(model.get(Attr::Obj::Expr).linear().empty());
+                    CHECK(model.get_obj().linear().empty());
                 }
 
                 AND_THEN("The model's constraints should be empty") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).linear().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).linear().empty());
+                    CHECK(model.get_ctr_row(c[0]).linear().empty());
+                    CHECK(model.get_ctr_row(c[1]).linear().empty());
+                    CHECK(model.get_ctr_row(c[2]).linear().empty());
                 }
 
                 AND_THEN("The variable's coefficients in the model's constraints should be zero") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).linear().get(var).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[1]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[2]).linear().get(var).numerical() == 0_a);
                 }
 
             }
@@ -181,39 +181,39 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
             // OBJECTIVE check model's objective and variable's objective
 
             AND_THEN("The column coefficients should have been added to the model's variable column") {
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[0]).numerical() == 101_a);
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[1]).numerical() == 102_a);
-                CHECK(model.get(Attr::Var::Column, var).linear().get(c[2]).numerical() == 103_a);
+                CHECK(model.get_var_column(var).linear().get(c[0]).numerical() == 101_a);
+                CHECK(model.get_var_column(var).linear().get(c[1]).numerical() == 102_a);
+                CHECK(model.get_var_column(var).linear().get(c[2]).numerical() == 103_a);
 
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[0], x[0]).numerical() == 104_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[0], x[1]).numerical() == 105_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[0], x[2]).numerical() == 106_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[0], x[0]).numerical() == 104_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[0], x[1]).numerical() == 105_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[0], x[2]).numerical() == 106_a);
 
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[1], x[0]).numerical() == 107_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[1], x[1]).numerical() == 108_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[1], x[2]).numerical() == 109_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[1], x[0]).numerical() == 107_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[1], x[1]).numerical() == 108_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[1], x[2]).numerical() == 109_a);
 
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[2], x[0]).numerical() == 110_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[2], x[1]).numerical() == 111_a);
-                CHECK(model.get(Attr::Var::Column, var).quadratic().get(c[2], x[2]).numerical() == 112_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[2], x[0]).numerical() == 110_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[2], x[1]).numerical() == 111_a);
+                CHECK(model.get_var_column(var).quadratic().get(c[2], x[2]).numerical() == 112_a);
             }
 
             AND_THEN("The column coefficients should have been added to the model's constraints' rows") {
-                CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 101_a);
-                CHECK(model.get(Attr::Ctr::Row, c[1]).linear().get(var).numerical() == 102_a);
-                CHECK(model.get(Attr::Ctr::Row, c[2]).linear().get(var).numerical() == 103_a);
+                CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 101_a);
+                CHECK(model.get_ctr_row(c[1]).linear().get(var).numerical() == 102_a);
+                CHECK(model.get_ctr_row(c[2]).linear().get(var).numerical() == 103_a);
 
-                CHECK(model.get(Attr::Ctr::Row, c[0]).quadratic().get(var, x[0]).numerical() == 104_a);
-                CHECK(model.get(Attr::Ctr::Row, c[0]).quadratic().get(var, x[1]).numerical() == 105_a);
-                CHECK(model.get(Attr::Ctr::Row, c[0]).quadratic().get(var, x[2]).numerical() == 106_a);
+                CHECK(model.get_ctr_row(c[0]).quadratic().get(var, x[0]).numerical() == 104_a);
+                CHECK(model.get_ctr_row(c[0]).quadratic().get(var, x[1]).numerical() == 105_a);
+                CHECK(model.get_ctr_row(c[0]).quadratic().get(var, x[2]).numerical() == 106_a);
 
-                CHECK(model.get(Attr::Ctr::Row, c[1]).quadratic().get(var, x[0]).numerical() == 107_a);
-                CHECK(model.get(Attr::Ctr::Row, c[1]).quadratic().get(var, x[1]).numerical() == 108_a);
-                CHECK(model.get(Attr::Ctr::Row, c[1]).quadratic().get(var, x[2]).numerical() == 109_a);
+                CHECK(model.get_ctr_row(c[1]).quadratic().get(var, x[0]).numerical() == 107_a);
+                CHECK(model.get_ctr_row(c[1]).quadratic().get(var, x[1]).numerical() == 108_a);
+                CHECK(model.get_ctr_row(c[1]).quadratic().get(var, x[2]).numerical() == 109_a);
 
-                CHECK(model.get(Attr::Ctr::Row, c[2]).quadratic().get(var, x[0]).numerical() == 110_a);
-                CHECK(model.get(Attr::Ctr::Row, c[2]).quadratic().get(var, x[1]).numerical() == 111_a);
-                CHECK(model.get(Attr::Ctr::Row, c[2]).quadratic().get(var, x[2]).numerical() == 112_a);
+                CHECK(model.get_ctr_row(c[2]).quadratic().get(var, x[0]).numerical() == 110_a);
+                CHECK(model.get_ctr_row(c[2]).quadratic().get(var, x[1]).numerical() == 111_a);
+                CHECK(model.get_ctr_row(c[2]).quadratic().get(var, x[2]).numerical() == 112_a);
             }
 
             AND_WHEN("The variable is removed") {
@@ -229,28 +229,28 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
                 }
 
                 AND_THEN("The model's objective should be empty") {
-                    CHECK(model.get(Attr::Obj::Expr).linear().empty());
-                    CHECK(model.get(Attr::Obj::Expr).quadratic().empty());
+                    CHECK(model.get_obj().linear().empty());
+                    CHECK(model.get_obj().quadratic().empty());
                 }
 
                 AND_THEN("The model's constraints should be empty") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).linear().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).linear().empty());
+                    CHECK(model.get_ctr_row(c[0]).linear().empty());
+                    CHECK(model.get_ctr_row(c[1]).linear().empty());
+                    CHECK(model.get_ctr_row(c[2]).linear().empty());
 
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).quadratic().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).quadratic().empty());
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).quadratic().empty());
+                    CHECK(model.get_ctr_row(c[0]).quadratic().empty());
+                    CHECK(model.get_ctr_row(c[1]).quadratic().empty());
+                    CHECK(model.get_ctr_row(c[2]).quadratic().empty());
                 }
 
                 AND_THEN("The variable's coefficients in the model's constraints should be zero") {
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).linear().get(var).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).linear().get(var).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[1]).linear().get(var).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[2]).linear().get(var).numerical() == 0_a);
 
-                    CHECK(model.get(Attr::Ctr::Row, c[0]).quadratic().get(var, x[0]).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[1]).quadratic().get(var, x[1]).numerical() == 0_a);
-                    CHECK(model.get(Attr::Ctr::Row, c[2]).quadratic().get(var, x[2]).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[0]).quadratic().get(var, x[0]).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[1]).quadratic().get(var, x[1]).numerical() == 0_a);
+                    CHECK(model.get_ctr_row(c[2]).quadratic().get(var, x[2]).numerical() == 0_a);
                 }
 
             }

@@ -37,7 +37,30 @@ public:
 
     void set_local_upper_bound(const Var& t_var, double t_ub);
 
-    virtual void save(const Model& t_original_formulation, const Model& t_model) { m_primal_solution = ::save(t_original_formulation, Attr::Solution::Primal, t_model); }
+    virtual void save(const Model& t_original_formulation, const Model& t_model) {
+
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        m_primal_solution.set_status(status);
+        m_primal_solution.set_reason(reason);
+
+        if (status == Infeasible) {
+            m_primal_solution.set_objective_value(+Inf);
+            return;
+        }
+
+        if (status == Unbounded) {
+            m_primal_solution.set_objective_value(-Inf);
+            return;
+        }
+
+        if (status != Optimal && status != Feasible) {
+            return;
+        }
+
+        m_primal_solution = save_primal_values(t_original_formulation, t_model);
+    }
 
     void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 

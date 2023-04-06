@@ -157,7 +157,8 @@ class Callback<NodeInfoT>::TemporaryInterface {
     friend class Callback<NodeInfoT>;
 
     Callback<NodeInfoT>& m_parent;
-    std::list< std::tuple<const Req<double, Var>&, Var, double> > m_double_Var_history;
+    std::list< std::pair<Var, double> > m_var_lb_history;
+    std::list< std::pair<Var, double> > m_var_ub_history;
 
     explicit TemporaryInterface(Callback<NodeInfoT>& t_parent);
 public:
@@ -165,7 +166,8 @@ public:
 
     void reoptimize();
 
-    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value);
+    void set_var_lb(const Var& t_var, double t_value);
+    void set_var_ub(const Var& t_var, double t_value);
 };
 
 template<class NodeInfoT>
@@ -176,17 +178,28 @@ void Callback<NodeInfoT>::TemporaryInterface::reoptimize() {
 template<class NodeInfoT>
 Callback<NodeInfoT>::TemporaryInterface::~TemporaryInterface() {
 
-    for (const auto& [attr, var, val] : m_double_Var_history) {
-        m_parent.m_relaxation->set(attr, var, val);
+    for (const auto& [var, val] : m_var_lb_history) {
+        m_parent.m_relaxation->set(Attr::Var::Lb, var, val);
+    }
+
+    for (const auto& [var, val] : m_var_ub_history) {
+        m_parent.m_relaxation->set(Attr::Var::Ub, var, val);
     }
 
 }
 
 template<class NodeInfoT>
-void Callback<NodeInfoT>::TemporaryInterface::set(const Req<double, Var> &t_attr, const Var& t_var, double t_value) {
-    const double current_value = m_parent.m_relaxation->get(t_attr, t_var);
-    m_double_Var_history.emplace_front(t_attr, t_var, current_value);
-    m_parent.m_relaxation->set(t_attr, t_var, t_value);
+void Callback<NodeInfoT>::TemporaryInterface::set_var_lb(const Var& t_var, double t_value) {
+    const double current_value = m_parent.m_relaxation->get_var_lb(t_var);
+    m_var_lb_history.emplace_front(t_var, current_value);
+    m_parent.m_relaxation->set(Attr::Var::Lb, t_var, t_value);
+}
+
+template<class NodeInfoT>
+void Callback<NodeInfoT>::TemporaryInterface::set_var_ub(const Var& t_var, double t_value) {
+    const double current_value = m_parent.m_relaxation->get_var_ub(t_var);
+    m_var_ub_history.emplace_front(t_var, current_value);
+    m_parent.m_relaxation->set(Attr::Var::Ub, t_var, t_value);
 }
 
 template<class NodeInfoT>

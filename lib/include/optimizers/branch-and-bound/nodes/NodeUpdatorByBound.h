@@ -17,26 +17,26 @@ class NodeUpdatorByBound : public NodeUpdator<NodeT> {
 
     void update_bounds(Map<Var, double>& t_currently_modified_variables_with_their_original_bound,
                               const Map<Var, double>& t_node_bounds,
-                              const Req<double, Var>& t_bound_attr);
+                              bool t_is_lb);
 
 public:
     explicit NodeUpdatorByBound(Model& t_model) : m_model(t_model) {}
 
     void apply_local_updates(const NodeT& t_node) override {
-        update_bounds(m_lower_bounds, t_node.local_lower_bounds(), Attr::Var::Lb);
-        update_bounds(m_upper_bounds, t_node.local_upper_bounds(), Attr::Var::Ub);
+        update_bounds(m_lower_bounds, t_node.local_lower_bounds(), true);
+        update_bounds(m_upper_bounds, t_node.local_upper_bounds(), false);
     }
 
     void clear_local_updates() override {
-        update_bounds(m_lower_bounds, Map<Var, double>(), Attr::Var::Lb);
-        update_bounds(m_upper_bounds, Map<Var, double>(), Attr::Var::Ub);
+        update_bounds(m_lower_bounds, Map<Var, double>(), true);
+        update_bounds(m_upper_bounds, Map<Var, double>(), false);
     }
 };
 
 template<class NodeT>
 void NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modified_variables_with_their_original_bound,
                                               const Map<Var, double> &t_node_bounds,
-                                              const Req<double, Var> &t_bound_attr) {
+                                              bool t_is_lb) {
 
 
     auto it = t_currently_modified_variables_with_their_original_bound.cbegin();
@@ -48,23 +48,24 @@ void NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modi
         auto result = t_node_bounds.find(var);
 
         if (result == t_node_bounds.end()) {
-            m_model.set(t_bound_attr, var, original_bound);
+            t_is_lb ? m_model.set(Attr::Var::Lb, var, original_bound) : m_model.set(Attr::Var::Ub, var, original_bound);
             it = t_currently_modified_variables_with_their_original_bound.erase(it);
             continue;
         }
 
-        if (!equals(result->second, m_model.get(t_bound_attr, var), ToleranceForIntegrality)) {
-            m_model.set(t_bound_attr, var, result->second);
+        const double bound = t_is_lb ? m_model.get_var_lb(var) : m_model.get_var_ub(var);
+        if (!equals(result->second, bound, ToleranceForIntegrality)) {
+            t_is_lb ? m_model.set(Attr::Var::Lb, var, result->second) : m_model.set(Attr::Var::Ub, var, result->second);
         }
         ++it;
 
     }
 
     for (const auto& [var, bound] : t_node_bounds) {
-        const double original_bound = m_model.get(t_bound_attr, var);
+        const double original_bound = t_is_lb ? m_model.get_var_lb(var) : m_model.get_var_ub(var);
         auto [_, success] = t_currently_modified_variables_with_their_original_bound.emplace(var, original_bound);
         if (success) {
-            m_model.set(t_bound_attr, var, bound);
+            t_is_lb ? m_model.set(Attr::Var::Lb, var, bound) : m_model.set(Attr::Var::Ub, var, bound);
         }
     }
 

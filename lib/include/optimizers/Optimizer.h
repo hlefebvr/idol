@@ -61,6 +61,26 @@ protected:
     void restart() { m_is_terminated = false; hook_before_optimize(); }
 
     static double as_numeric(const Constant& t_constant);
+
+    [[nodiscard]] virtual int get_status() const = 0;
+
+    [[nodiscard]] virtual int get_reason() const = 0;
+
+    [[nodiscard]] virtual double get_best_obj() const = 0;
+
+    [[nodiscard]] virtual double get_best_bound() const = 0;
+
+    [[nodiscard]] virtual double get_var_val(const Var& t_var) const = 0;
+
+    [[nodiscard]] virtual double get_var_ray(const Var& t_var) const = 0;
+
+    [[nodiscard]] virtual double get_ctr_val(const Ctr& t_ctr) const = 0;
+
+    [[nodiscard]] virtual double get_ctr_farkas(const Ctr& t_ctr) const = 0;
+
+    [[nodiscard]] virtual double get_relative_gap() const = 0;
+
+    [[nodiscard]] virtual double get_absolute_gap() const = 0;
 public:
     explicit Optimizer(const ::Model& t_parent);
 

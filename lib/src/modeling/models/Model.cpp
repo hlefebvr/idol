@@ -113,117 +113,52 @@ Row &Model::access_row(const Ctr &t_ctr) {
     return m_env.version(*this, t_ctr).row();
 }
 
-int Model::get(const Req<int, void> &t_attr) const {
-
-    if (t_attr == Attr::Obj::Sense) {
-        return m_sense;
-    }
-
-    return AttributeManagers::Delegate::get(t_attr);
+int Model::get_obj_sense() const {
+    return m_sense;
 }
 
-const Expr<Var, Var> &Model::get(const Req<Expr<Var, Var>, void> &t_attr) const {
-
-    if (t_attr == Attr::Obj::Expr) {
-        return m_objective;
-    }
-
-    return AttributeManagers::Delegate::get(t_attr);
+const Expr<Var, Var> &Model::get_obj() const {
+    return m_objective;
 }
 
-const Row &Model::get(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr) const {
-
-    if (t_attr == Attr::Ctr::Row) {
-        return m_env.version(*this, t_ctr).row();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_ctr);
+const LinExpr<Ctr> &Model::get_rhs() const {
+    return m_rhs;
 }
 
-int Model::get(const Req<int, Ctr> &t_attr, const Ctr &t_ctr) const {
-
-    if (t_attr == Attr::Ctr::Type) {
-        return m_env.version(*this, t_ctr).type();
-    }
-
-    if (t_attr == Attr::Ctr::Index) {
-        return (int) m_env.version(*this, t_ctr).index();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_ctr);
+const Constant &Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
+    return m_env.version(*this, t_ctr).row().linear().get(t_var);
 }
 
-double Model::get(const Req<double, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Var::Lb) {
-        return m_env.version(*this, t_var).lb();
-    }
-
-    if (t_attr == Attr::Var::Ub) {
-        return m_env.version(*this, t_var).ub();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_var);
+const Row &Model::get_ctr_row(const Ctr &t_ctr) const {
+    return m_env.version(*this, t_ctr).row();
 }
 
-const Column &Model::get(const Req<Column, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Var::Column) {
-        return m_env.version(*this, t_var).column();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_var);
+int Model::get_ctr_type(const Ctr &t_ctr) const {
+    return m_env.version(*this, t_ctr).type();
 }
 
-const Constant &
-Model::get(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var) const {
-
-    if (t_attr == Attr::Matrix::Coeff) {
-        return m_env.version(*this, t_ctr).row().linear().get(t_var);
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_ctr, t_var);
+unsigned int Model::get_ctr_index(const Ctr &t_ctr) const {
+    return (int) m_env.version(*this, t_ctr).index();
 }
 
-const LinExpr<Ctr> &Model::get(const Req<LinExpr<Ctr>, void> &t_attr) const {
-
-    if (t_attr == Attr::Rhs::Expr) {
-        return m_rhs;
-    }
-
-    return AttributeManagers::Delegate::get(t_attr);
+double Model::get_var_lb(const Var &t_var) const {
+    return m_env.version(*this, t_var).lb();
 }
 
-const Constant &Model::get(const Req<Constant, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Var::Obj) {
-        //return m_objective.linear().get(t_var);
-        return m_env.version(*this, t_var).column().obj();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_var);
+double Model::get_var_ub(const Var &t_var) const {
+    return m_env.version(*this, t_var).ub();
 }
 
-const Constant &Model::get(const Req<Constant, void> &t_attr) const {
-
-    if (t_attr == Attr::Obj::Const) {
-        return m_objective.constant();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr);
+const Column &Model::get_var_column(const Var &t_var) const {
+    return m_env.version(*this, t_var).column();
 }
 
-int Model::get(const Req<int, Var> &t_attr, const Var &t_var) const {
+unsigned int Model::get_var_index(const Var &t_var) const {
+    return m_env.version(*this, t_var).index();
+}
 
-    if (t_attr == Attr::Var::Type) {
-        return m_env.version(*this, t_var).type();
-    }
-
-    if (t_attr == Attr::Var::Index) {
-        return (int) m_env.version(*this, t_var).index();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_var);
+int Model::get_var_type(const Var &t_var) const {
+    return m_env.version(*this, t_var).type();
 }
 
 void Model::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
@@ -413,15 +348,6 @@ void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_val
     AttributeManagers::Delegate::set(t_attr, t_var, t_value);
 }
 
-const Constant &Model::get(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr) const {
-
-    if (t_attr == Attr::Ctr::Rhs) {
-        return m_env.version(*this, t_ctr).row().rhs();
-    }
-
-    return AttributeManagers::Delegate::get(t_attr, t_ctr);
-}
-
 AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
     return optimizer();
 }
@@ -447,22 +373,22 @@ Model* Model::clone() const {
 
     for (const auto& var : vars()) {
         result->add(var, TempVar(
-                    get(Attr::Var::Lb, var),
-                    get(Attr::Var::Ub, var),
-                    get(Attr::Var::Type, var),
+                    get_var_lb(var),
+                    get_var_ub(var),
+                    get_var_type(var),
                     Column()
                 ));
     }
 
     for (const auto& ctr : ctrs()) {
         result->add(ctr, TempCtr(
-                Row(get(Attr::Ctr::Row, ctr)),
-                get(Attr::Ctr::Type, ctr)
+                Row(get_ctr_row(ctr)),
+                get_ctr_type(ctr)
             ));
     }
 
-    result->set(Attr::Obj::Sense, get(Attr::Obj::Sense));
-    result->set(Attr::Obj::Expr, get(Attr::Obj::Expr));
+    result->set(Attr::Obj::Sense, get_obj_sense());
+    result->set(Attr::Obj::Expr, get_obj());
 
     if (m_optimizer_factory) {
         result->use(*m_optimizer_factory);
@@ -499,4 +425,44 @@ void Model::unuse() {
 
 bool Model::has_optimizer() const {
     return bool(m_optimizer);
+}
+
+int Model::get_status() const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_status();
+}
+
+int Model::get_reason() const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_reason();
+}
+
+double Model::get_best_obj() const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_best_obj();
+}
+
+double Model::get_var_val(const Var &t_var) const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_var_val(t_var);
+}
+
+double Model::get_ctr_farkas(const Ctr &t_ctr) const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_ctr_farkas(t_ctr);
+}
+
+double Model::get_ctr_val(const Ctr &t_ctr) const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_ctr_val(t_ctr);
+}
+
+double Model::get_var_ray(const Var &t_var) const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_var_ray(t_var);
+}
+
+double Model::get_best_bound() const {
+    throw_if_no_optimizer();
+    return m_optimizer->get_best_bound();
 }

@@ -88,7 +88,7 @@ void Optimizers::ColumnGeneration::add_artificial_variables() {
 
     for (const auto& ctr : m_master->ctrs()) {
 
-        const auto type = m_master->get(Attr::Ctr::Type, ctr);
+        const auto type = m_master->get_ctr_type(ctr);
 
         if (type == LessOrEqual) {
             add_to(ctr, -1);
@@ -165,7 +165,7 @@ void Optimizers::ColumnGeneration::set_phase_I_objective_function() {
 }
 
 void Optimizers::ColumnGeneration::restore_objective_function() {
-    set(Attr::Obj::Expr, parent().get(Attr::Obj::Expr));
+    set(Attr::Obj::Expr, parent().get_obj());
 }
 
 bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
@@ -173,9 +173,9 @@ bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
     std::function<double(const Var&)> value;
 
     if (status() == Unbounded) {
-        value = [this](const Var& t_var) { return m_master->get(Attr::Solution::Ray, t_var); };
+        value = [this](const Var& t_var) { return m_master->get_var_ray(t_var); };
     } else {
-        value = [this](const Var& t_var) { return m_master->get(Attr::Solution::Primal, t_var); };
+        value = [this](const Var& t_var) { return m_master->get_var_val(t_var); };
     }
 
     for (const auto& var : m_artificial_variables) {
@@ -242,13 +242,13 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
         return;
     }
 
-    auto status = (SolutionStatus) m_master->get(Attr::Solution::Status);
+    auto status = (SolutionStatus) m_master->get_status();
 
     std::stringstream objective_value;
     if (status == InfeasibleOrUnbounded || status == Fail || status == Unknown) {
         objective_value << "-";
     } else {
-        objective_value << m_master->get(Attr::Solution::ObjVal);
+        objective_value << m_master->get_best_obj();
     }
 
     idol_Log(Info,
@@ -257,13 +257,13 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << m_master->optimizer().time().count() << "> "
              << "<Stat=" << status << "> "
-             << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
+             << "<Reas=" << (SolutionReason) m_master->get_reason() << "> "
              << "<ObjVal=" << objective_value.str() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
-             << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
-             << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
+             << "<RGap=" << get_relative_gap() * 100 << " %> "
+             << "<AGap=" << get_absolute_gap() << "> "
     );
 
 }
@@ -282,31 +282,31 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << pricing->optimizer().time().count() << "> "
-             << "<Stat=" << (SolutionStatus) pricing->get(Attr::Solution::Status) << "> "
-             << "<Reas=" << (SolutionReason) pricing->get(Attr::Solution::Reason) << "> "
-             << "<Obj=" << std::setprecision(5)  << pricing->get(Attr::Solution::ObjVal) << "> "
+             << "<Stat=" << (SolutionStatus) pricing->get_status() << "> "
+             << "<Reas=" << (SolutionReason) pricing->get_reason() << "> "
+             << "<Obj=" << std::setprecision(5)  << pricing->get_best_obj() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
-             << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
-             << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
+             << "<RGap=" << get_relative_gap() * 100 << " %> "
+             << "<AGap=" << get_absolute_gap() << "> "
     );
 
 }
 
 void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
-    auto status = m_master->get(Attr::Solution::Status);
+    auto status = m_master->get_status();
 
     set_status(status);
 
     if (status == Optimal) {
 
-        m_iter_upper_bound = m_master->get(Attr::Solution::ObjVal);
+        m_iter_upper_bound = m_master->get_best_obj();
 
         set_best_obj(std::min(m_iter_upper_bound, best_obj()));
 
-        m_current_dual_solution = save(*m_master, Attr::Solution::Dual);
+        m_current_dual_solution = save_dual_values(*m_master);
 
         if (m_current_iteration_is_farkas_pricing) {
             m_adjusted_dual_solution.reset();
@@ -334,7 +334,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
         }
 
         m_current_iteration_is_farkas_pricing = true;
-        m_current_dual_solution = save(*m_master, Attr::Solution::Farkas);
+        m_current_dual_solution = save_farkas_values(*m_master);
         m_adjusted_dual_solution.reset();
 
         return;
@@ -404,11 +404,11 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     for (auto& subproblem : m_subproblems) {
 
-        const auto status = subproblem.m_model->get(Attr::Solution::Status);
+        const auto status = subproblem.m_model->get_status();
 
         if (status == Optimal) {
 
-            const double pricing_optimum = subproblem.m_model->get(Attr::Solution::ObjVal);
+            const double pricing_optimum = subproblem.m_model->get_best_obj();
             reduced_costs += std::min(0., pricing_optimum);
 
         } else {
@@ -422,7 +422,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     if (!m_current_iteration_is_farkas_pricing) {
 
-        const double lower_bound = m_master->get(Attr::Solution::ObjVal) + reduced_costs;
+        const double lower_bound = m_master->get_best_obj() + reduced_costs;
 
         m_iter_lower_bound = lower_bound;
 
@@ -460,7 +460,7 @@ void Optimizers::ColumnGeneration::enrich_master_problem() {
         bool can_enrich_master;
 
         if (m_current_iteration_is_farkas_pricing) {
-            can_enrich_master = subproblem.m_model->get(Attr::Solution::ObjVal) < -1e-6;
+            can_enrich_master = subproblem.m_model->get_best_obj() < -1e-6;
         } else {
             can_enrich_master = subproblem.compute_reduced_cost(m_current_dual_solution.value()) < 0;
         }
@@ -493,17 +493,9 @@ void Optimizers::ColumnGeneration::remove_artificial_variables() {
 }
 
 bool Optimizers::ColumnGeneration::stopping_condition() const {
-    return get(Attr::Solution::AbsGap) <= ToleranceForAbsoluteGapPricing
-           || get(Attr::Solution::RelGap) <= ToleranceForRelativeGapPricing
+    return get_absolute_gap() <= ToleranceForAbsoluteGapPricing
+           || get_relative_gap() <= ToleranceForRelativeGapPricing
            || remaining_time() == 0;
-}
-
-double Optimizers::ColumnGeneration::get(const Req<double, Var> &t_attr, const Var &t_var) const {
-    return m_master->get(t_attr, t_var);
-}
-
-int Optimizers::ColumnGeneration::get(const Req<int, Var> &t_attr, const Var &t_var) const {
-    return m_master->get(t_attr, t_var);;
 }
 
 void Optimizers::ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
@@ -526,6 +518,22 @@ void Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_artifici
     set_reason(NotSpecified);
     terminate();
 
+}
+
+double Optimizers::ColumnGeneration::get_var_val(const Var &t_var) const {
+    return m_master->get_var_val(t_var);
+}
+
+double Optimizers::ColumnGeneration::get_var_ray(const Var &t_var) const {
+    return m_master->get_var_ray(t_var);
+}
+
+double Optimizers::ColumnGeneration::get_ctr_val(const Ctr &t_ctr) const {
+    return m_master->get_ctr_val(t_ctr);
+}
+
+double Optimizers::ColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
+    return m_master->get_ctr_farkas(t_ctr);
 }
 
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
@@ -576,7 +584,7 @@ double Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(const Solu
 
     double result = 0.;
 
-    const auto& primals = save(*m_model, ::Attr::Solution::Primal);
+    const auto& primals = save_primal_values(*m_model);
 
     for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
@@ -594,13 +602,13 @@ double Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(const Solu
 
 void Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
 
-    const int status = m_model->get(::Attr::Solution::Status);
+    const int status = m_model->get_status();
 
     Solution::Primal generator;
     if (status == Unbounded) {
-        generator = save(*m_model, ::Attr::Solution::Ray);
+        generator = save_ray_values(*m_model);
     } else {
-        generator = save(*m_model, ::Attr::Solution::Primal);
+        generator = save_primal_values(*m_model);
     }
 
     auto column = create_column_from_generator(generator);
@@ -656,7 +664,7 @@ void Optimizers::ColumnGeneration::Subproblem::clean_up() {
 
         if (is_already_in_master) {
 
-            if (master.get(::Attr::Solution::Primal, it->first) > 0) {
+            if (master.get_var_val(it->first) > 0) {
 
                 m_present_generators.emplace_back(it->first, it->second);
                 ++it;

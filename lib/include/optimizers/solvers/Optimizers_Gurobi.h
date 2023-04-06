@@ -64,14 +64,27 @@ protected:
 
     void hook_remove(const Ctr& t_ctr) override;
 
-    using OptimizerWithLazyUpdates::get;
     using OptimizerWithLazyUpdates::set;
 
-    // Solution
-    [[nodiscard]] int get(const Req<int, void> &t_attr) const override;
-    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
+    [[nodiscard]] int get_status() const override;
+
+    [[nodiscard]] int get_reason() const override;
+
+    [[nodiscard]] double get_best_obj() const override;
+
+    [[nodiscard]] double get_best_bound() const override;
+
+    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+
+    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+
+    [[nodiscard]] double get_relative_gap() const override;
+
+    [[nodiscard]] double get_absolute_gap() const override;
 public:
     Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
     explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}

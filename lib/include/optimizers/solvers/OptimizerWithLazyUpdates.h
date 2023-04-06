@@ -95,11 +95,11 @@ protected:
     void remove(const Ctr& t_ctr) final;
     virtual void hook_remove(const Ctr& t_ctr) = 0;
 
-    auto& lazy(const Var& t_var) { return m_variables[parent().get(Attr::Var::Index, t_var)]; }
-    const auto& lazy(const Var& t_var) const { return m_variables[parent().get(Attr::Var::Index, t_var)]; }
+    auto& lazy(const Var& t_var) { return m_variables[parent().get_var_index(t_var)]; }
+    const auto& lazy(const Var& t_var) const { return m_variables[parent().get_var_index(t_var)]; }
 
-    auto& lazy(const Ctr& t_ctr) { return m_constraints[parent().get(Attr::Ctr::Index, t_ctr)]; }
-    const auto& lazy(const Ctr& t_ctr) const { return m_constraints[parent().get(Attr::Ctr::Index, t_ctr)]; }
+    auto& lazy(const Ctr& t_ctr) { return m_constraints[parent().get_ctr_index(t_ctr)]; }
+    const auto& lazy(const Ctr& t_ctr) const { return m_constraints[parent().get_ctr_index(t_ctr)]; }
 
     void set_objective_to_be_updated() { m_is_objective_to_be_updated = true; }
     [[nodiscard]] bool is_objective_to_be_updated() const { return m_is_objective_to_be_updated; }
@@ -110,7 +110,6 @@ protected:
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
 
     using Optimizer::set;
-    using Optimizer::get;
 
     // Model
     void set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) override;
@@ -241,14 +240,14 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_objective_sense() {
 
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Var &t_var) {
-    const unsigned int index = parent().get(Attr::Var::Index, t_var);
+    const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Ctr &t_ctr) {
-    const unsigned int index = parent().get(Attr::Ctr::Index, t_ctr);
+    const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
@@ -281,7 +280,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 
-    const unsigned index = parent().get(Attr::Var::Index, t_var);
+    const unsigned index = parent().get_var_index(t_var);
 
     if (m_variables[index].is_to_be_updated()) {
         m_variables_to_update.erase(m_variables[index].to_be_updated_flag());
@@ -298,7 +297,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
-    const unsigned index = parent().get(Attr::Ctr::Index, t_ctr);
+    const unsigned index = parent().get_ctr_index(t_ctr);
 
     if (m_constraints[index].is_to_be_updated()) {
         m_constraints_to_update.erase(m_constraints[index].to_be_updated_flag());

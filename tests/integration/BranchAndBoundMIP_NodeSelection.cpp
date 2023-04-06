@@ -57,13 +57,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
 
         THEN("The solution status is Optimal") {
 
-            CHECK(model.get(Attr::Solution::Status) == Optimal);
+            CHECK(model.get_status() == Optimal);
 
         }
 
         AND_THEN("The objective value is " + std::to_string(objective_value)) {
 
-            CHECK(model.get(Attr::Solution::ObjVal) == objective_value);
+            CHECK(model.get_best_obj() == objective_value);
 
         }
 
@@ -132,13 +132,13 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
 
         THEN("The solution status is Optimal") {
 
-            CHECK(model.get(Attr::Solution::Status) == Optimal);
+            CHECK(model.get_status() == Optimal);
 
         }
 
         AND_THEN("The objective value is " + std::to_string(objective_value)) {
 
-            CHECK(model.get(Attr::Solution::ObjVal) == Catch::Approx(objective_value));
+            CHECK(model.get_best_obj() == Catch::Approx(objective_value));
 
         }
 

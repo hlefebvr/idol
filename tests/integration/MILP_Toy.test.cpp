@@ -45,16 +45,16 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             model.optimize();
 
             THEN("The solution status should be Optimal") {
-                CHECK(model.get(Attr::Solution::Status) == Optimal);
+                CHECK(model.get_status() == Optimal);
             }
 
             AND_THEN("The objective value should be correct") {
-                CHECK(model.get(Attr::Solution::ObjVal) == -3_a);
+                CHECK(model.get_best_obj() == -3_a);
             }
 
             AND_THEN("The returned solution values should be correct") {
 
-                const auto primal_solution = save(model, Attr::Solution::Primal);
+                const auto primal_solution = save_primal_values(model);
 
                 CHECK(primal_solution.get(x) == 1._a);
                 CHECK(primal_solution.get(y) == 0._a);
@@ -83,16 +83,16 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             model.optimize();
 
             THEN("The solution status should be Optimal") {
-                CHECK(model.get(Attr::Solution::Status) == Optimal);
+                CHECK(model.get_status() == Optimal);
             }
 
             AND_THEN("The objective value should be correct") {
-                CHECK(model.get(Attr::Solution::ObjVal) == -3_a);
+                CHECK(model.get_best_obj() == -3_a);
             }
 
             AND_THEN("The returned solution values should be correct") {
 
-                const auto primal_solution = save(model, Attr::Solution::Primal);
+                const auto primal_solution = save_primal_values(model);
 
                 CHECK(primal_solution.get(x) == 1._a);
                 CHECK(primal_solution.get(y) == 0._a);
@@ -123,13 +123,13 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             THEN("The solution status should be Infeasible") {
 
-                CHECK(model.get(Attr::Solution::Status) == Infeasible);
+                CHECK(model.get_status() == Infeasible);
 
             }
 
             THEN("The objective value should be +inf") {
 
-                CHECK(is_pos_inf(model.get(Attr::Solution::ObjVal)));
+                CHECK(is_pos_inf(model.get_best_obj()));
 
             }
 
@@ -150,13 +150,13 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             THEN("The solution status should be Infeasible") {
 
-                CHECK(model.get(Attr::Solution::Status) == Infeasible);
+                CHECK(model.get_status() == Infeasible);
 
             }
 
             THEN("The objective value should be +inf") {
 
-                CHECK(is_pos_inf(model.get(Attr::Solution::ObjVal)));
+                CHECK(is_pos_inf(model.get_best_obj()));
 
             }
 
@@ -177,7 +177,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
         THEN("The solution status should be Unbounded") {
 
-            const auto status = (SolutionStatus) model.get(Attr::Solution::Status);
+            const auto status = (SolutionStatus) model.get_status();
 
             const bool unknown_or_unbounded = status == Unbounded || status == InfeasibleOrUnbounded;
 
@@ -188,7 +188,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
         /*
         THEN("The objective value should be -inf") {
 
-            CHECK(is_neg_inf(model.get(Attr::Solution::ObjVal)));
+            CHECK(is_neg_inf(model.get_best_obj()));
 
         }
          */

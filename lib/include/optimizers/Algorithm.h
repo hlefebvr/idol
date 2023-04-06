@@ -28,10 +28,18 @@ protected:
     [[nodiscard]] double best_obj() const { return m_best_obj; }
 
     using Optimizer::set;
-    using Optimizer::get;
 
-    [[nodiscard]] int get(const Req<int, void>& t_attr) const override;
-    [[nodiscard]] double get(const Req<double, void>& t_attr) const override;
+    [[nodiscard]] int get_status() const override;
+
+    [[nodiscard]] int get_reason() const override;
+
+    [[nodiscard]] double get_best_obj() const override;
+
+    [[nodiscard]] double get_best_bound() const override;
+
+    [[nodiscard]] double get_relative_gap() const override;
+
+    [[nodiscard]] double get_absolute_gap() const override;
 public:
     explicit Algorithm(const Model& t_model);
 };

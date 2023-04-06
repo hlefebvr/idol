@@ -51,7 +51,7 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
     integer_master->unuse();
 
     for (const auto& var : original_model.vars()) {
-        const int type = original_model.get(Attr::Var::Type, var);
+        const int type = original_model.get_var_type(var);
         if (integer_master->has(var)) {
             integer_master->set(Attr::Var::Type, var, type);
         }
@@ -67,12 +67,13 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
 
     integer_master->optimize();
 
-    auto solution = save(*integer_master, Attr::Solution::Primal);
-    const int status = solution.status();
+    const int status = integer_master->get_status();
 
     if (status != Optimal && status != Feasible) {
         return;
     }
+
+    auto solution = save_primal_values(*integer_master);
 
     // search for alpha = 1, add generator to solution
     for (const auto& subproblem : column_generation_optimizer.subproblems()) {

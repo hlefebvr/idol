@@ -52,7 +52,7 @@ void impl::RowGenerationSP::solve() {
 
 void impl::RowGenerationSP::enrich_master_problem() {
 
-    const int status = m_model->get(::Attr::Solution::Status);
+    const int status = m_model->get_status();
 
     Solution::Primal generator;
     if (status == Unbounded) {

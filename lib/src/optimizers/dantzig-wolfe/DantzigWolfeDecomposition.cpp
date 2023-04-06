@@ -105,7 +105,7 @@ Annotation<Var, unsigned int> DantzigWolfeDecomposition::create_variable_flag(co
             *t_n_subproblem = subproblem_id;
         }
 
-        const auto& row = t_model.get(Attr::Ctr::Row, ctr);
+        const auto& row = t_model.get_ctr_row(ctr);
 
         for (const auto& [var, constant] : row.linear()) {
             set_flag(var, subproblem_id);
@@ -155,9 +155,9 @@ void DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigne
     for (const auto& var : t_original_formulation.vars()) {
 
         const unsigned int subproblem_id = var.get(t_variable_flag);
-        const double lb = t_original_formulation.get(Attr::Var::Lb, var);
-        const double ub = t_original_formulation.get(Attr::Var::Ub, var);
-        const int type = t_original_formulation.get(Attr::Var::Type, var);
+        const double lb = t_original_formulation.get_var_lb(var);
+        const double ub = t_original_formulation.get_var_ub(var);
+        const int type = t_original_formulation.get_var_type(var);
 
         auto* model = subproblem_id == MasterId ? t_master : t_subproblems[subproblem_id];
 
@@ -182,8 +182,8 @@ void DantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var, unsig
     for (const auto& ctr : t_original_formulation.ctrs()) {
 
         const unsigned int subproblem_id = ctr.get(m_decomposition);
-        const auto& row = t_original_formulation.get(Attr::Ctr::Row, ctr);
-        const auto type = t_original_formulation.get(Attr::Ctr::Type, ctr);
+        const auto& row = t_original_formulation.get_ctr_row(ctr);
+        const auto type = t_original_formulation.get_ctr_type(ctr);
 
         if (subproblem_id == MasterId) {
             dispatch_linking_constraint(t_variable_flag, ctr, row, type, t_master, t_subproblems, t_generation_patterns);
@@ -221,7 +221,7 @@ void DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigne
 
     const unsigned int n_subproblems = t_generation_patterns.size();
 
-    const auto& objective = t_original_formulation.get(Attr::Obj::Expr);
+    const auto& objective = t_original_formulation.get_obj();
 
     auto [master_obj, subproblem_patterns] = dispatch_linking_expression(t_variable_flag, objective.quadratic(), objective.linear(), t_master, n_subproblems);
 

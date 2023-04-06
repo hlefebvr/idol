@@ -35,7 +35,7 @@ public:
     explicit MostInfeasible(const Model& t_model) : VariableBranchingRule<NodeInfoT>(t_model) {
 
         for (const auto& var : t_model.vars()) {
-            if (t_model.get(Attr::Var::Type, var) != Continuous) {
+            if (t_model.get_var_type(var) != Continuous) {
                 m_branching_candidates.emplace_back(var);
             }
         }

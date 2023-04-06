@@ -30,19 +30,19 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         THEN("The solution status should be Optimal") {
 
-            CHECK(model.get(Attr::Solution::Status) == Optimal);
+            CHECK(model.get_status() == Optimal);
 
         }
 
         AND_THEN("The objective value should be correct") {
 
-            CHECK(model.get(Attr::Solution::ObjVal) == -6315.625_a);
+            CHECK(model.get_best_obj() == -6315.625_a);
 
         }
 
         AND_THEN("The primal values should be correct") {
 
-            const auto primal_solution = save(model, Attr::Solution::Primal);
+            const auto primal_solution = save_primal_values(model);
 
             CHECK(primal_solution.status() == Optimal);
             CHECK(primal_solution.get(x) == 21.875_a);
@@ -52,7 +52,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         AND_THEN("The dual values should be correct") {
 
-            const auto dual_solution = save(model, Attr::Solution::Dual);
+            const auto dual_solution = save_dual_values(model);
 
             CHECK(dual_solution.status() == Optimal);
             CHECK(dual_solution.get(c1) == 0._a);
@@ -82,19 +82,19 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         THEN("The solution status should be Unbounded") {
 
-            CHECK(model.get(Attr::Solution::Status) == Unbounded);
+            CHECK(model.get_status() == Unbounded);
 
         }
 
         AND_THEN("The objective value should be -Inf") {
 
-            CHECK(is_neg_inf(model.get(Attr::Solution::ObjVal)));
+            CHECK(is_neg_inf(model.get_best_obj()));
 
         }
 
         AND_THEN("The unbounded ray should be valid") {
 
-            const auto ray = save(model, Attr::Solution::Ray);
+            const auto ray = save_ray_values(model);
             
             const double x_val = ray.get(x);
             const double y_val = ray.get(y);
@@ -127,19 +127,19 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
 
         THEN("The solution status should be Infeasible") {
 
-            CHECK(model.get(Attr::Solution::Status) == Infeasible);
+            CHECK(model.get_status() == Infeasible);
 
         }
 
         AND_THEN("The objective value should be -Inf") {
 
-            CHECK(is_pos_inf(model.get(Attr::Solution::ObjVal)));
+            CHECK(is_pos_inf(model.get_best_obj()));
 
         }
 
         AND_THEN("The returned certificate should be valid") {
 
-            const auto farkas = save(model, Attr::Solution::Farkas);
+            const auto farkas = save_farkas_values(model);
 
             CHECK(farkas.status() == Infeasible);
 

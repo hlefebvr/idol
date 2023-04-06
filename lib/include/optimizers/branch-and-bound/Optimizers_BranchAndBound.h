@@ -77,12 +77,13 @@ protected:
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
-    using Algorithm::get;
     using Algorithm::set;
 
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] double get(const Req<double, Ctr>& t_attr, const Ctr& t_ctr) const override;
-    [[nodiscard]] const Expr<Var, Var>& get(const Req<Expr<Var, Var>, void>& t_attr) const override;
+    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
     void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
@@ -120,6 +121,40 @@ public:
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 };
+
+template<class NodeInfoT>
+double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_farkas(const Ctr &t_ctr) const {
+    if (m_n_solved_nodes > 1) {
+        throw Exception("Not available.");
+    }
+    return m_relaxation->get_ctr_farkas(t_ctr);
+}
+
+template<class NodeInfoT>
+double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_val(const Ctr &t_ctr) const {
+    if (m_n_solved_nodes > 1) {
+        throw Exception("Not available.");
+    }
+    return m_relaxation->get_ctr_val(t_ctr);
+}
+
+template<class NodeInfoT>
+double Optimizers::BranchAndBound<NodeInfoT>::get_var_ray(const Var &t_var) const {
+    if (m_n_solved_nodes > 1) {
+        throw Exception("Not available.");
+    }
+    return m_relaxation->get_var_ray(t_var);
+}
+
+template<class NodeInfoT>
+double Optimizers::BranchAndBound<NodeInfoT>::get_var_val(const Var &t_var) const {
+
+    if (!m_incumbent){
+        throw Exception("Not available.");
+    }
+
+    return m_incumbent->info().primal_solution().get(t_var);
+}
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
@@ -214,30 +249,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<Constant, Ctr> &t_attr
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
     m_relaxation->set(t_attr, t_var, t_value);
-}
-
-template<class NodeInfoT>
-const Expr<Var, Var> &Optimizers::BranchAndBound<NodeInfoT>::get(const Req<Expr<Var, Var>, void> &t_attr) const {
-    return m_relaxation->get(t_attr);
-}
-
-template<class NodeInfoT>
-double Optimizers::BranchAndBound<NodeInfoT>::get(const Req<double, Ctr> &t_attr, const Ctr &t_ctr) const {
-    return m_relaxation->get(t_attr, t_ctr);
-}
-
-template<class NodeInfoT>
-double Optimizers::BranchAndBound<NodeInfoT>::get(const Req<double, Var> &t_attr, const Var &t_var) const {
-
-    if (t_attr == Attr::Solution::Primal) {
-        if (m_incumbent) {
-            return m_incumbent->info().primal_solution().get(t_var);
-        } else {
-            throw Exception("No incumbent found.");
-        }
-    }
-
-    return Base::get(t_attr, t_var);
 }
 
 template<class NodeInfoT>
@@ -530,8 +541,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
               << "<ObjVal=" << std::setw(9) << t_node.objective_value() << "> "
               << "<BestBnd="   << std::setw(9) << best_bound() << "> "
               << "<BestObj="   << std::setw(9) << best_obj() << "> "
-              << "<RelGap=" << std::setw(5) << get(Attr::Solution::RelGap) * 100 << "> "
-              << "<AbsGap=" << std::setw(5) << get(Attr::Solution::AbsGap) << "> "
+              << "<RelGap=" << std::setw(5) << get_relative_gap() * 100 << "> "
+              << "<AbsGap=" << std::setw(5) << get_absolute_gap() << "> "
     );
 
 }
@@ -615,8 +626,8 @@ template<class NodeInfoT>
 bool Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
         || remaining_time() == 0
-        || get(Attr::Solution::RelGap) <= relative_gap_tolerance()
-        || get(Attr::Solution::AbsGap) <= absolute_gap_tolerance();
+        || get_relative_gap() <= relative_gap_tolerance()
+        || get_absolute_gap() <= absolute_gap_tolerance();
 }
 
 template<class NodeInfoT>

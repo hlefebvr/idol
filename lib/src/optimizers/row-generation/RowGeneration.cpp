@@ -111,7 +111,7 @@ void RowGeneration::solve_master_problem() {
 
 void RowGeneration::analyze_master_problem_solution() {
 
-    auto status = m_master->get(Attr::Solution::Status);
+    auto status = m_master->get_status();
 
     set_status(status);
 
@@ -119,7 +119,7 @@ void RowGeneration::analyze_master_problem_solution() {
 
         double& iter_bound = m_sense == Minimize ? m_iter_lower_bound : m_iter_upper_bound;
 
-        iter_bound = m_master->get(Attr::Solution::ObjVal);
+        iter_bound = m_master->get_best_obj();
 
         if (!m_is_nested) {
 
@@ -171,21 +171,21 @@ void RowGeneration::log_master_solution(bool t_force) const {
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
              << "<TimI=" << m_master->time().count() << "> "
-             << "<Stat=" << (SolutionStatus) m_master->get(Attr::Solution::Status) << "> "
-             << "<Reas=" << (SolutionReason) m_master->get(Attr::Solution::Reason) << "> "
-             << "<ObjV=" << m_master->get(Attr::Solution::ObjVal) << "> "
+             << "<Stat=" << (SolutionStatus) m_master->get_status() << "> "
+             << "<Reas=" << (SolutionReason) m_master->get_reason() << "> "
+             << "<ObjV=" << m_master->get_best_obj() << "> "
              << "<NGen=" << m_n_generated_rows_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
-             << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
-             << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
+             << "<RGap=" << get_relative_gap() * 100 << "> "
+             << "<AGap=" << get_absolute_gap() << "> "
     );
 
 }
 
 bool RowGeneration::stopping_condition() const {
-    return get(Attr::Solution::AbsGap) <= ToleranceForAbsoluteGapPricing
-           || get(Attr::Solution::RelGap) <= ToleranceForRelativeGapPricing
+    return get_absolute_gap() <= ToleranceForAbsoluteGapPricing
+           || get_relative_gap() <= ToleranceForRelativeGapPricing
            || parent().remaining_time() == 0;
 }
 
@@ -232,14 +232,14 @@ void RowGeneration::log_subproblem_solution(const RowGenerationSP &t_subproblem,
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << parent().time().count() << "> "
              << "<TimI=" << separation.time().count() << "> "
-             << "<Stat=" << (SolutionStatus) separation.get(Attr::Solution::Status) << "> "
-             << "<Reas=" << (SolutionReason) separation.get(Attr::Solution::Reason) << "> "
-             << "<ObjV=" << separation.get(Attr::Solution::ObjVal) << "> "
+             << "<Stat=" << (SolutionStatus) separation.get_status() << "> "
+             << "<Reas=" << (SolutionReason) separation.get_reason() << "> "
+             << "<ObjV=" << separation.get_best_obj() << "> "
              << "<NGen=" << m_n_generated_rows_at_last_iteration << "> "
              << "<BestBnd=" << best_bound() << "> "
              << "<BestObj=" << best_obj() << "> "
-             << "<RGap=" << get(Attr::Solution::RelGap) * 100 << "> "
-             << "<AGap=" << get(Attr::Solution::AbsGap) << "> "
+             << "<RGap=" << get_relative_gap() * 100 << "> "
+             << "<AGap=" << get_absolute_gap() << "> "
     );
 
 }
@@ -255,10 +255,10 @@ void RowGeneration::analyze_subproblems_solution() {
 
     for (auto& subproblem : m_subproblems) {
 
-        const auto status = subproblem.model().get(Attr::Solution::Status);
+        const auto status = subproblem.model().get_status();
 
         if (status == Optimal) {
-            upper_bound += subproblem.model().get(Attr::Solution::ObjVal);
+            upper_bound += subproblem.model().get_best_obj();
         } else if (status == Unbounded) {
             current_subproblems_are_all_feasible = false;
             break;
@@ -303,9 +303,9 @@ void RowGeneration::enrich_master_problem() {
 
         bool can_enrich_master;
         if (m_sense == Maximize) {
-            can_enrich_master = subproblem.model().get(Attr::Solution::ObjVal) < 0;
+            can_enrich_master = subproblem.model().get_best_obj() < 0;
         } else {
-            can_enrich_master = subproblem.model().get(Attr::Solution::ObjVal) > 0;
+            can_enrich_master = subproblem.model().get_best_obj() > 0;
         }
 
         if (can_enrich_master) {

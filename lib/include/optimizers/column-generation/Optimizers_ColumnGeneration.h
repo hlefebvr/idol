@@ -89,11 +89,16 @@ protected:
     void restore_objective_function();
 
     using Algorithm::set;
-    using Algorithm::get;
+
+    double get_var_val(const Var &t_var) const override;
+
+    double get_var_ray(const Var &t_var) const override;
+
+    double get_ctr_val(const Ctr &t_ctr) const override;
+
+    double get_ctr_farkas(const Ctr &t_ctr) const override;
 
     // Variables
-    [[nodiscard]] double get(const Req<double, Var>& t_attr, const Var& t_var) const override;
-    [[nodiscard]] int get(const Req<int, Var>& t_attr, const Var& t_var) const override;
     void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
     void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value) override;
 
