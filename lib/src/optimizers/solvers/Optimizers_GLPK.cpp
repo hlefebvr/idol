@@ -661,4 +661,19 @@ double Optimizers::GLPK::get_absolute_gap() const {
     return 0;
 }
 
+unsigned int Optimizers::GLPK::get_n_solutions() const {
+    const auto status = get_status();
+    return status == Optimal || status == Feasible;
+}
+
+unsigned int Optimizers::GLPK::get_solution_index() const {
+    return 0;
+}
+
+void Optimizers::GLPK::set_solution_index(unsigned int t_index) {
+    if (t_index != 0) {
+        throw Exception("Solution index out of bounds");
+    }
+}
+
 #endif

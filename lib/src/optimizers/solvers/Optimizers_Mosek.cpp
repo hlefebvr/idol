@@ -470,6 +470,21 @@ double Optimizers::Mosek::get_absolute_gap() const {
     throw Exception("Not implemented.");
 }
 
+unsigned int Optimizers::Mosek::get_n_solutions() const {
+    const auto status = get_status();
+    return status == Optimal || status == Feasible;
+}
+
+unsigned int Optimizers::Mosek::get_solution_index() const {
+    return 0;
+}
+
+void Optimizers::Mosek::set_solution_index(unsigned int t_index) {
+    if (t_index != 0) {
+        throw Exception("Solution index out of bounds.");
+    }
+}
+
 MosekKiller::~MosekKiller() {
     mosek::releaseGlobalEnv();
 }

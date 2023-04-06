@@ -81,6 +81,9 @@ protected:
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
     [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
+    void set_solution_index(unsigned int t_index) override;
 
     void update_obj_sense() override;
     void update_obj() override;
@@ -128,6 +131,23 @@ public:
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 };
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::set_solution_index(unsigned int t_index) {
+    if (t_index != 0) {
+        throw Exception("Solution index out of bounds.");
+    }
+}
+
+template<class NodeInfoT>
+unsigned int Optimizers::BranchAndBound<NodeInfoT>::get_solution_index() const {
+    return 0;
+}
+
+template<class NodeInfoT>
+unsigned int Optimizers::BranchAndBound<NodeInfoT>::get_n_solutions() const {
+    return !!m_incumbent;
+}
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::update_obj() {

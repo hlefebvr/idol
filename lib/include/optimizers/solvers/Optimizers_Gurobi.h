@@ -37,52 +37,37 @@ class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<
     [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
     void hook_build() override;
-
     void hook_optimize() override;
-
     void hook_write(const std::string &t_name) override;
-
     GRBVar hook_add(const Var& t_var, bool t_add_column) override;
-
     std::variant<GRBConstr, GRBQConstr> hook_add(const Ctr& t_ctr) override;
-
     void hook_update(const Var& t_var) override;
-
     void hook_update(const Ctr& t_ctr) override;
-
     void hook_update_objective_sense() override;
-
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) override;
-
     void hook_update_objective() override;
-
     void hook_update_rhs() override;
-
     void hook_update() override;
-
     void hook_remove(const Var& t_var) override;
-
     void hook_remove(const Ctr& t_ctr) override;
 
     [[nodiscard]] SolutionStatus get_status() const override;
-
     [[nodiscard]] SolutionReason get_reason() const override;
-
     [[nodiscard]] double get_best_obj() const override;
-
     [[nodiscard]] double get_best_bound() const override;
-
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
-
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-
     [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
-
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
-
     [[nodiscard]] double get_relative_gap() const override;
-
     [[nodiscard]] double get_absolute_gap() const override;
+
+    unsigned int get_n_solutions() const override;
+
+    unsigned int get_solution_index() const override;
+
+    void set_solution_index(unsigned int t_index) override;
+
 public:
     Gurobi(const Model& t_model, bool t_continuous_relaxation, GRBEnv& t_env);
     explicit Gurobi(const Model& t_model, bool t_continuous_relaxation) : Gurobi(t_model, t_continuous_relaxation, Gurobi::get_global_env()) {}

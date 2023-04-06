@@ -344,26 +344,51 @@ SolutionReason Optimizers::Gurobi::get_reason() const {
 
 double Optimizers::Gurobi::get_best_obj() const {
 
-    switch (gurobi_status(m_model.get(GRB_IntAttr_Status)).first) {
-        case Unbounded: return -Inf;
-        case Infeasible: return +Inf;
-        default: return m_model.get(GRB_DoubleAttr_ObjVal);
+    const auto status = gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+
+    if (status == Unbounded) {
+        return -Inf;
     }
+
+    if (status == Infeasible) {
+        return +Inf;
+    }
+
+    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
+        return m_model.get(GRB_DoubleAttr_ObjVal);
+    }
+
+    return m_model.get(GRB_DoubleAttr_PoolObjVal);
 
 }
 
 double Optimizers::Gurobi::get_best_bound() const {
 
-    switch (gurobi_status(m_model.get(GRB_IntAttr_Status)).first) {
-        case Unbounded: return -Inf;
-        case Infeasible: return +Inf;
-        default: return m_model.get(GRB_DoubleAttr_ObjVal);
+    const auto status = gurobi_status(m_model.get(GRB_IntAttr_Status)).first;
+
+    if (status == Unbounded) {
+        return -Inf;
     }
+
+    if (status == Infeasible) {
+        return +Inf;
+    }
+
+    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
+        return m_model.get(GRB_DoubleAttr_ObjBound);
+    }
+
+    return m_model.get(GRB_DoubleAttr_PoolObjBound);
 
 }
 
 double Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
-    return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+
+    if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
+        return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+    }
+
+    return lazy(t_var).impl().get(GRB_DoubleAttr_Xn);
 }
 
 double Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
@@ -391,11 +416,23 @@ double Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
 }
 
 double Optimizers::Gurobi::get_relative_gap() const {
-    return 0;
+    throw Exception("Not implemented");
 }
 
 double Optimizers::Gurobi::get_absolute_gap() const {
-    return 0;
+    throw Exception("Not implemented");
+}
+
+unsigned int Optimizers::Gurobi::get_n_solutions() const {
+    return m_model.get(GRB_IntAttr_SolCount);
+}
+
+unsigned int Optimizers::Gurobi::get_solution_index() const {
+    return m_model.get(GRB_IntParam_SolutionNumber);
+}
+
+void Optimizers::Gurobi::set_solution_index(unsigned int t_index) {
+    m_model.set(GRB_IntParam_SolutionNumber, (int) t_index);
 }
 
 #endif

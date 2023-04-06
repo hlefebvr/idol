@@ -199,17 +199,14 @@ Model* Model::clone() const {
 }
 
 void Model::optimize() {
-    throw_if_no_optimizer();
     optimizer().optimize();
 }
 
 void Model::write(const std::string& t_name) {
-    throw_if_no_optimizer();
-    m_optimizer->write(t_name);
+    optimizer().write(t_name);
 }
 
 void Model::update() {
-    throw_if_no_optimizer();
     optimizer().update();
 }
 
@@ -229,43 +226,35 @@ bool Model::has_optimizer() const {
 }
 
 SolutionStatus Model::get_status() const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_status();
+    return optimizer().get_status();
 }
 
 SolutionReason Model::get_reason() const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_reason();
+    return optimizer().get_reason();
 }
 
 double Model::get_best_obj() const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_best_obj();
+    return optimizer().get_best_obj();
 }
 
 double Model::get_var_primal(const Var &t_var) const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_var_primal(t_var);
+    return optimizer().get_var_primal(t_var);
 }
 
 double Model::get_ctr_farkas(const Ctr &t_ctr) const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_ctr_farkas(t_ctr);
+    return optimizer().get_ctr_farkas(t_ctr);
 }
 
 double Model::get_ctr_dual(const Ctr &t_ctr) const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_ctr_dual(t_ctr);
+    return optimizer().get_ctr_dual(t_ctr);
 }
 
 double Model::get_var_ray(const Var &t_var) const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_var_ray(t_var);
+    return optimizer().get_var_ray(t_var);
 }
 
 double Model::get_best_bound() const {
-    throw_if_no_optimizer();
-    return m_optimizer->get_best_bound();
+    return optimizer().get_best_bound();
 }
 
 void Model::set_obj_sense(ObjectiveSense t_value) {
@@ -463,4 +452,16 @@ Ctr Model::add_ctr(TempCtr t_temp_ctr, std::string t_name) {
     Ctr result(m_env, std::move(t_temp_ctr), std::move(t_name));
     add(result);
     return result;
+}
+
+unsigned int Model::get_n_solutions() const {
+    return optimizer().get_n_solutions();
+}
+
+unsigned int Model::get_solution_index() const {
+    return optimizer().get_solution_index();
+}
+
+void Model::set_solution_index(unsigned int t_index) {
+    optimizer().set_solution_index(t_index);
 }

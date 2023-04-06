@@ -95,27 +95,20 @@ protected:
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
     [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
+    void set_solution_index(unsigned int t_index) override;
 
     void update_obj_sense() override;
-
     void update_obj() override;
-
     void update_rhs() override;
-
     void update_obj_constant() override;
-
     void update_mat_coeff(const Ctr &t_ctr, const Var &t_var) override;
-
     void update_ctr_type(const Ctr &t_ctr) override;
-
     void update_ctr_rhs(const Ctr &t_ctr) override;
-
     void update_var_type(const Var &t_var) override;
-
     void update_var_lb(const Var &t_var) override;
-
     void update_var_ub(const Var &t_var) override;
-
     void update_var_obj(const Var &t_var) override;
 
     std::unique_ptr<Model> m_master;

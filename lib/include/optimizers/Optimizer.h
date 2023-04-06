@@ -83,6 +83,12 @@ protected:
 
     [[nodiscard]] virtual double get_absolute_gap() const = 0;
 
+    [[nodiscard]] virtual unsigned int get_n_solutions() const = 0;
+
+    [[nodiscard]] virtual unsigned int get_solution_index() const = 0;
+
+    virtual void set_solution_index(unsigned int t_index) = 0;
+
     virtual void update_obj_sense() = 0;
 
     virtual void update_obj() = 0;

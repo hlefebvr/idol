@@ -584,6 +584,20 @@ void Optimizers::ColumnGeneration::update_var_obj(const Var &t_var) {
     m_master->set_var_obj(t_var, parent().get_var_column(t_var).obj());
 }
 
+unsigned int Optimizers::ColumnGeneration::get_n_solutions() const {
+    return 1;
+}
+
+unsigned int Optimizers::ColumnGeneration::get_solution_index() const {
+    return 0;
+}
+
+void Optimizers::ColumnGeneration::set_solution_index(unsigned int t_index) {
+    if (t_index != 0) {
+        throw Exception("Solution index out of bounds.");
+    }
+}
+
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
 
 Optimizers::ColumnGeneration::Subproblem::Subproblem(Optimizers::ColumnGeneration &t_parent,

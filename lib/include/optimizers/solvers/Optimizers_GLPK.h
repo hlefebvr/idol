@@ -81,6 +81,9 @@ protected:
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_relative_gap() const override;
     [[nodiscard]] double get_absolute_gap() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
+    void set_solution_index(unsigned int t_index) override;
 public:
     explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 

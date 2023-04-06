@@ -1149,6 +1149,60 @@ public:
      * @param t_column the variable's column
      */
     void set_var_column(const Var& t_var, Column&& t_column);
+
+    /**
+     * Returns the number of available solution primal solutions
+     *
+     * Useful for accessing several solutions returned by the solver.
+     *
+     * Example:
+     * ```cpp
+     * model.optimize();
+     *
+     * std::cout << n_solutions << " solution(s) have been found" << std::endl;
+     * ```
+     *
+     * @return the number of available solution primal solutions
+     */
+    [[nodiscard]] unsigned int get_n_solutions() const;
+
+    /**
+     * Returns the current solution index.
+     *
+     * Useful for accessing several solutions returned by the solver.
+     *
+     * Example:
+     * ```cpp
+     * model.optimize();
+     *
+     * std::cout << model.get_solution_index() << std::endl; // output: 0
+     * ```
+     * @return
+     */
+    [[nodiscard]] unsigned int get_solution_index() const;
+
+    /**
+     * Sets the index of the solution returned by get_var_primal, get_status and get_reason.
+     *
+     * Useful for accessing several solutions returned by the solver.
+     *
+     * Example:
+     * ```cpp
+     * model.optimize();
+     *
+     * const unsigned int n_solutions = model.get_n_solutions();
+     *
+     * std::cout << n_solutions << " solution(s) have been found" << std::endl;
+     *
+     * for (unsigned int i = 0 ; i < n_solutions ; ++i) {
+     *      model.set_solution_index(i);
+     *      std::cout << save_primal(model) << std::endl;
+     * }
+     * ```
+     *
+     * @return the number of available solution primal solutions
+     */
+    void set_solution_index(unsigned int t_index);
 };
 
 template<class T, unsigned int N>
