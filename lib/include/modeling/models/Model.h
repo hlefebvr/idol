@@ -220,7 +220,7 @@ static auto save_ray_values(const Model& t_original_model, const Model& t_model)
 }
 
 static auto save_ray_values(const Model& t_original_model) {
-    return save_primal_values(t_original_model, t_original_model);
+    return save_ray_values(t_original_model, t_original_model);
 }
 
 static auto save_dual_values(const Model& t_original_model, const Model& t_model) {
