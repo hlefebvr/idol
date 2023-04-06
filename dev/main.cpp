@@ -1,8 +1,8 @@
 #include "modeling.h"
-#include "optimizers/solvers/Optimizers_Gurobi.h"
+#include "optimizers/solvers/Optimizers_GLPK.h"
 #include "optimizers/Logger.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
-#include "optimizers/solvers/Optimizers_Gurobi.h"
+#include "optimizers/solvers/Optimizers_GLPK.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
@@ -12,8 +12,8 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/solvers/Optimizers_Mosek.h"
-#include "optimizers/solvers/Gurobi.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/GLPK.h"
+#include "optimizers/solvers/GLPK.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
@@ -24,7 +24,7 @@ int main(int t_argc, char** t_argv) {
 
     // Read instance
     //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__12.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__1.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -76,12 +76,12 @@ int main(int t_argc, char** t_argv) {
                                             DantzigWolfeDecomposition(std_decomposition)
 
                                                     .with_master_solver(
-                                                            Gurobi::ContinuousRelaxation()
+                                                            GLPK::ContinuousRelaxation()
                                                                 //.with_infeasible_or_unbounded_info(true)
                                                     )
 
                                                     .with_pricing_solver(
-                                                            Gurobi()
+                                                            GLPK()
                                                     )
 
                                                     .with_log_level(Info, Magenta)
@@ -104,7 +104,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
+                                                IntegerMasterHeuristic().with_solver(GLPK().with_time_limit(20))
                                         );
                                     })
 
@@ -123,7 +123,7 @@ int main(int t_argc, char** t_argv) {
 
                     std::cout << model.get_status() << std::endl;
                     std::cout << model.get_reason() << std::endl;
-                    std::cout << save_primal(model) << std::endl;
+                    std::cout << model.get_best_obj() << std::endl;
 
                 }
 
@@ -172,8 +172,8 @@ int main(int t_argc, char** t_argv) {
 
     auto& rg = idol::set_optimizer<RowGeneration>(model);
 
-    rg.set_master_backend<Gurobi>();
-    rg.set_subproblem_backend<Gurobi>(0);
+    rg.set_master_backend<GLPK>();
+    rg.set_subproblem_backend<GLPK>(0);
 
 
     model.optimize();

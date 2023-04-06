@@ -647,7 +647,7 @@ double Optimizers::GLPK::get_ctr_val(const Ctr &t_ctr) const {
 
 double Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
     if (!m_farkas_certificate.has_value()) {
-        throw Exception("Not available.");
+        throw Exception("Farkas certificate not available.");
     }
 
     return m_farkas_certificate->get(t_ctr);

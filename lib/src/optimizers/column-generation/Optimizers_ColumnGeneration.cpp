@@ -192,8 +192,6 @@ void Optimizers::ColumnGeneration::run_column_generation() {
 
     do {
 
-        m_master->write(("master.lp"));
-
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
 
             idol_Log(Trace, "Beginning to solve master problem.");
@@ -331,6 +329,13 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
     }
 
     if (status == Infeasible) {
+
+        if (!m_farkas_pricing) {
+            set_status(Infeasible);
+            set_reason(Proved);
+            terminate();
+            return;
+        }
 
         m_current_iteration_is_farkas_pricing = true;
         m_current_dual_solution = save_farkas(*m_master);
