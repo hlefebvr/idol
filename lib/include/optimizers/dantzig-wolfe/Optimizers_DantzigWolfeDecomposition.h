@@ -43,7 +43,7 @@ protected:
     [[nodiscard]] double get_subproblem_primal_value(const Var& t_var, unsigned int t_subproblem_id) const;
     void set_subproblem_lower_bound(const Var& t_var, unsigned int t_subproblem_id, double t_value);
     void set_subproblem_upper_bound(const Var& t_var, unsigned int t_subproblem_id, double t_value);
-    void apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value);
+    void apply_subproblem_bound_on_master(bool t_is_lb, const Var &t_var, unsigned int t_subproblem_id, double t_value);
 
     LinExpr<Var> expand_subproblem_variable(const Var& t_var, unsigned int t_subproblem_id);
 };

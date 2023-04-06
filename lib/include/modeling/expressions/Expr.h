@@ -34,7 +34,7 @@ protected:
 public:
     Expr();
     Expr(double t_num); // NOLINT(google-explicit-constructor)
-    Expr(const InParam& t_param); // NOLINT(google-explicit-constructor)
+    Expr(const Param& t_param); // NOLINT(google-explicit-constructor)
     Expr(Constant&& t_expr); // NOLINT(google-explicit-constructor)
     Expr(const Constant& t_expr); // NOLINT(google-explicit-constructor)
     Expr(const Key1& t_var); // NOLINT(google-explicit-constructor)
@@ -88,7 +88,7 @@ impl::Expr<Key1, Key2>::Expr(double t_num)
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const InParam &t_param)
+impl::Expr<Key1, Key2>::Expr(const Param &t_param)
         : m_constant(std::make_unique<MatrixCoefficient>(t_param)) {
 
 }
@@ -203,7 +203,7 @@ class Expr : public impl::Expr<Key1, Key2> {
 public:
     Expr() = default;
     Expr(double t_num) : impl::Expr<Key1, Key2>(t_num) {} // NOLINT(google-explicit-constructor)
-    Expr(const InParam& t_param) : impl::Expr<Key1, Key2>(t_param) {} // NOLINT(google-explicit-constructor)
+    Expr(const Param& t_param) : impl::Expr<Key1, Key2>(t_param) {} // NOLINT(google-explicit-constructor)
     Expr(Constant&& t_expr) : impl::Expr<Key1, Key2>(std::move(t_expr)) {} // NOLINT(google-explicit-constructor)
     Expr(const Constant& t_expr) : impl::Expr<Key1, Key2>(t_expr) {} // NOLINT(google-explicit-constructor)
     Expr(const Key1& t_var) : impl::Expr<Key1, Key2>(t_var) {} // NOLINT(google-explicit-constructor)

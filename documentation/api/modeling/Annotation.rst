@@ -1,0 +1,4 @@
+Annotation
+==========
+
+.. doxygenclass:: Annotation

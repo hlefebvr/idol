@@ -1,0 +1,4 @@
+QuadExpr
+========
+
+.. doxygenclass:: QuadExpr

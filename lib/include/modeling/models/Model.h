@@ -15,13 +15,9 @@
 #include "modeling/constraints/CtrVersion.h"
 #include "modeling/variables/VarVersion.h"
 #include "modeling/expressions/Expr.h"
+#include "modeling/solutions/Solution.h"
 
 #include "Model.h"
-
-#include "modeling/attributes/AttributeManager_Delegate.h"
-#include "Attributes_Model.h"
-#include "../constraints/Attributes_Ctr.h"
-#include "../variables/Attributes_Var.h"
 
 #include "optimizers/Optimizer.h"
 #include "optimizers/OptimizerFactory.h"

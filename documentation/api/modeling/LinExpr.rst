@@ -1,0 +1,4 @@
+LinExpr
+=======
+
+.. doxygenclass:: LinExpr

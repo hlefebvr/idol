@@ -1,7 +1,7 @@
-.. _api_attributes:
+.. _api_problems:
 
-Attributes
-==========
+Problems
+========
 
 .. toctree::
     :maxdepth: 1

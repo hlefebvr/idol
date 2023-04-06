@@ -2,7 +2,6 @@
 // Created by henri on 01/02/23.
 //
 #include "optimizers/Algorithm.h"
-#include "modeling/models/Attributes_Model.h"
 
 Algorithm::Algorithm(const Model &t_model) : Optimizer(t_model) {
 

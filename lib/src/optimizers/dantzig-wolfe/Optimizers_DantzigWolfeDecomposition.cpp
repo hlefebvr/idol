@@ -55,7 +55,7 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var
         return;
     }
 
-    apply_subproblem_bound_on_master(::Attr::Var::Lb, t_var, t_subproblem_id, t_value);
+    apply_subproblem_bound_on_master(true, t_var, t_subproblem_id, t_value);
 
 }
 
@@ -73,21 +73,21 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var
         return;
     }
 
-    apply_subproblem_bound_on_master(::Attr::Var::Ub, t_var, t_subproblem_id, t_value);
+    apply_subproblem_bound_on_master(false, t_var, t_subproblem_id, t_value);
 
 }
 
-void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(const Req<double, Var>& t_attr, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(bool t_is_lb, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
-    auto& applied_bounds = t_attr == ::Attr::Var::Lb ? m_lower_bound_constraints : m_upper_bound_constraints;
+    auto& applied_bounds = t_is_lb ? m_lower_bound_constraints : m_upper_bound_constraints;
     const auto it = applied_bounds.find(t_var);
 
     if (it == applied_bounds.end()) { // Create a new constraint
 
         auto expanded = expand_subproblem_variable(t_var, t_subproblem_id);
-        const int type = t_attr == ::Attr::Var::Lb ? GreaterOrEqual : LessOrEqual;
+        const int type = t_is_lb ? GreaterOrEqual : LessOrEqual;
 
         Ctr bound_constraint(m_master->env(), Equal, 0);
 

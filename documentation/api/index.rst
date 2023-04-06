@@ -8,5 +8,5 @@ API
     :glob:
 
     modeling/index
-    attributes/index
     optimizers/index
+    problems/index

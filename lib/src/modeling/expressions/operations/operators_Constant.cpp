@@ -9,11 +9,11 @@ Constant operator*(const Constant& t_coefficient, double t_factor) {
     return t_factor * Constant(t_coefficient);
 }
 
-Constant operator*(double t_factor, const InParam& t_param) {
+Constant operator*(double t_factor, const Param& t_param) {
     return { t_param, t_factor };
 }
 
-Constant operator*(const InParam& t_param, double t_factor) {
+Constant operator*(const Param& t_param, double t_factor) {
     return { t_param, t_factor };
 }
 
@@ -59,7 +59,7 @@ Constant operator+(const Constant& t_b, double t_a) {
     return t_a + Constant(t_b);
 }
 
-Constant operator+(const InParam& t_a, const InParam& t_b) {
+Constant operator+(const Param& t_a, const Param& t_b) {
     return Constant(t_a) + t_b;
 }
 
@@ -105,7 +105,7 @@ Constant operator-(const Constant& t_b, double t_a) {
     return result;
 }
 
-Constant operator-(const InParam& t_a, const InParam& t_b) {
+Constant operator-(const Param& t_a, const Param& t_b) {
     Constant result(t_a);
     result -= t_b;
     return result;

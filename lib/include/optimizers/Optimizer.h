@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "../modeling/attributes/AttributeManagers_Base.h"
 #include "Logger.h"
 #include "Timer.h"
 
