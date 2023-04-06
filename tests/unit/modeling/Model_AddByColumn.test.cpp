@@ -56,7 +56,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
             AND_WHEN("The objective coefficient of that variable is changed in the model (nonzero)") {
 
-                model.set(Attr::Var::Obj, var, 1);
+                model.set_var_obj(var, 1);
 
                 THEN("The model's objective should be updated") {
                     CHECK(model.get_obj().linear().get(var).numerical() == 1_a);
@@ -69,7 +69,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
             AND_WHEN("A matrix coefficient is changed in the model (nonzero)") {
 
-                model.set(Attr::Matrix::Coeff, c[0], var, 1);
+                model.set_mat_coeff(c[0], var, 1);
 
                 THEN("The model's constraint's row should be updated") {
                     CHECK(model.get_ctr_row(c[0]).linear().get(var).numerical() == 1_a);
@@ -83,7 +83,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
             AND_WHEN("An objective coefficient is set to zero") {
 
-                model.set(Attr::Var::Obj, var, 0);
+                model.set_var_obj(var, 0);
 
                 THEN("The model's objective should be empty") {
                     CHECK(model.get_obj().linear().empty());
@@ -97,7 +97,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 
             AND_WHEN("A constraint coefficient is set to zero") {
 
-                model.set(Attr::Matrix::Coeff, c[0], var, 0);
+                model.set_mat_coeff(c[0], var, 0);
 
                 THEN("The model's constraint's row should be empty") {
                     CHECK(model.get_ctr_row(c[0]).linear().empty());

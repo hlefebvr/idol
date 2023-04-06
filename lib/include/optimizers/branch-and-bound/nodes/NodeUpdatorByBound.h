@@ -48,14 +48,14 @@ void NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modi
         auto result = t_node_bounds.find(var);
 
         if (result == t_node_bounds.end()) {
-            t_is_lb ? m_model.set(Attr::Var::Lb, var, original_bound) : m_model.set(Attr::Var::Ub, var, original_bound);
+            t_is_lb ? m_model.set_var_lb(var, original_bound) : m_model.set_var_ub(var, original_bound);
             it = t_currently_modified_variables_with_their_original_bound.erase(it);
             continue;
         }
 
         const double bound = t_is_lb ? m_model.get_var_lb(var) : m_model.get_var_ub(var);
         if (!equals(result->second, bound, ToleranceForIntegrality)) {
-            t_is_lb ? m_model.set(Attr::Var::Lb, var, result->second) : m_model.set(Attr::Var::Ub, var, result->second);
+            t_is_lb ? m_model.set_var_lb(var, result->second) : m_model.set_var_ub(var, result->second);
         }
         ++it;
 
@@ -65,7 +65,7 @@ void NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modi
         const double original_bound = t_is_lb ? m_model.get_var_lb(var) : m_model.get_var_ub(var);
         auto [_, success] = t_currently_modified_variables_with_their_original_bound.emplace(var, original_bound);
         if (success) {
-            t_is_lb ? m_model.set(Attr::Var::Lb, var, bound) : m_model.set(Attr::Var::Ub, var, bound);
+            t_is_lb ? m_model.set_var_lb(var, bound) : m_model.set_var_ub(var, bound);
         }
     }
 

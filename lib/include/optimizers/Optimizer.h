@@ -20,7 +20,7 @@ namespace impl {
     class Optimizer;
 }
 
-class impl::Optimizer : protected AttributeManagers::Base {
+class impl::Optimizer {
     const ::Model& m_parent;
 
     bool m_is_terminated = false;
@@ -81,8 +81,32 @@ protected:
     [[nodiscard]] virtual double get_relative_gap() const = 0;
 
     [[nodiscard]] virtual double get_absolute_gap() const = 0;
+
+    virtual void update_obj_sense() = 0;
+
+    virtual void update_obj() = 0;
+
+    virtual void update_rhs() = 0;
+
+    virtual void update_obj_constant() = 0;
+
+    virtual void update_mat_coeff(const Ctr& t_ctr, const Var& t_var) = 0;
+
+    virtual void update_ctr_type(const Ctr& t_ctr) = 0;
+
+    virtual void update_ctr_rhs(const Ctr& t_ctr) = 0;
+
+    virtual void update_var_type(const Var& t_var) = 0;
+
+    virtual void update_var_lb(const Var& t_var) = 0;
+
+    virtual void update_var_ub(const Var& t_var) = 0;
+
+    virtual void update_var_obj(const Var& t_var) = 0;
 public:
     explicit Optimizer(const ::Model& t_parent);
+
+    virtual ~Optimizer() = default;
 
     [[nodiscard]] virtual std::string name() const = 0;
 

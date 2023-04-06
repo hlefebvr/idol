@@ -161,205 +161,6 @@ int Model::get_var_type(const Var &t_var) const {
     return m_env.version(*this, t_var).type();
 }
 
-void Model::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
-
-    if (t_attr == Attr::Var::Lb) {
-        m_env.version(*this, t_var).set_lb(t_value);
-        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
-        return;
-    }
-
-    if (t_attr == Attr::Var::Ub) {
-        m_env.version(*this, t_var).set_ub(t_value);
-        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
-}
-
-void Model::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) {
-
-    if (t_attr == Attr::Matrix::Coeff) {
-
-        if (has_optimizer()) {
-            optimizer().update();
-            optimizer().set(t_attr, t_ctr, t_var, t_value);
-        }
-
-        update_matrix_coefficient(t_ctr, t_var, std::move(t_value));
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_ctr, t_var, std::move(t_value));
-}
-
-void Model::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
-
-    if (t_attr == Attr::Ctr::Rhs) {
-        if (has_optimizer()) {
-            add_to_rhs(t_ctr, Constant(t_value));
-            optimizer().set(t_attr, t_ctr, std::move(t_value));
-        } else {
-            add_to_rhs(t_ctr, std::move(t_value));
-        }
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_ctr, std::move(t_value));
-}
-
-void Model::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
-
-    if (t_attr == Attr::Obj::Expr) {
-
-        if (has_optimizer()) {
-            replace_objective(Expr<Var, Var>(t_value));
-            optimizer().set(t_attr, std::move(t_value));
-        } else {
-            replace_objective(std::move(t_value));
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, std::move(t_value));
-}
-
-void Model::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
-
-    if (t_attr == Attr::Rhs::Expr) {
-
-        if (has_optimizer()) {
-            replace_right_handside(LinExpr<Ctr>(t_value));
-            optimizer().set(t_attr, std::move(t_value));
-        } else {
-            replace_right_handside(std::move(t_value));
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_value);
-}
-
-void Model::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
-
-    if (t_attr == Attr::Obj::Const) {
-
-        if (has_optimizer()) {
-            m_objective.constant() = Constant(t_value);
-            optimizer().set(t_attr, std::move(t_value));
-        } else {
-            m_objective.constant() = std::move(t_value);
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_value);
-}
-
-void Model::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
-
-    if (t_attr == Attr::Var::Obj) {
-
-        if (has_optimizer()) {
-            add_to_obj(t_var, Constant(t_value));
-            optimizer().set(t_attr, t_var, std::move(t_value));
-        } else {
-            add_to_obj(t_var, std::move(t_value));
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
-}
-
-void Model::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
-
-    if (t_attr == Attr::Var::Type) {
-
-        m_env.version(*this, t_var).set_type(t_value);
-        if (has_optimizer()) { optimizer().set(t_attr, t_var, t_value); }
-        return;
-    }
-
-    return AttributeManagers::Delegate::set(t_attr, t_var, t_value);
-}
-
-void Model::set(const Req<int, void> &t_attr, int t_value) {
-
-    if (t_attr == Attr::Obj::Sense) {
-        if (t_value != Minimize && t_value != Maximize) {
-            throw Exception("Unsupported objective sense.");
-        }
-        m_sense = t_value;
-        if (has_optimizer()) { optimizer().set(t_attr, t_value); }
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_value);
-}
-
-void Model::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
-
-    if (t_attr == Attr::Ctr::Type) {
-        m_env.version(*this, t_ctr).set_type(t_value);
-        if (has_optimizer()) { optimizer().set(t_attr, t_ctr, t_value); }
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_ctr, t_value);
-}
-
-void Model::set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) {
-
-    if (t_attr == Attr::Ctr::Row) {
-
-        remove_row_from_columns(t_ctr);
-        m_env.version(*this, t_ctr).row() = std::move(t_value);
-        add_row_to_columns(t_ctr);
-        if (has_optimizer()) {
-            throw Exception("Updating row is not implemented.");
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_ctr, t_value);
-}
-
-void Model::set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) {
-
-    if (t_attr == Attr::Var::Column) {
-        remove_column_from_rows(t_var);
-        m_env.version(*this, t_var).column() = std::move(t_value);
-        add_column_to_rows(t_var);
-        if (has_optimizer()) {
-            throw Exception("Updating column is not implemented.");
-        }
-
-        return;
-    }
-
-    AttributeManagers::Delegate::set(t_attr, t_var, t_value);
-}
-
-AttributeManager &Model::attribute_delegate(const Attribute &t_attribute) {
-    return optimizer();
-}
-
-AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Var &t_object) {
-    return optimizer();
-}
-
-AttributeManager &Model::attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) {
-    return optimizer();
-}
-
 bool Model::has(const Var &t_var) const {
     return m_env.has_version(*this, t_var);
 }
@@ -387,8 +188,8 @@ Model* Model::clone() const {
             ));
     }
 
-    result->set(Attr::Obj::Sense, get_obj_sense());
-    result->set(Attr::Obj::Expr, get_obj());
+    result->set_obj_sense(get_obj_sense());
+    result->set_obj(get_obj());
 
     if (m_optimizer_factory) {
         result->use(*m_optimizer_factory);
@@ -465,4 +266,181 @@ double Model::get_var_ray(const Var &t_var) const {
 double Model::get_best_bound() const {
     throw_if_no_optimizer();
     return m_optimizer->get_best_bound();
+}
+
+void Model::set_obj_sense(int t_value) {
+
+    if (t_value != Minimize && t_value != Maximize) {
+        throw Exception("Unsupported objective sense.");
+    }
+
+    m_sense = t_value;
+
+    if (has_optimizer()) {
+        optimizer().update_obj_sense();
+    }
+
+}
+
+void Model::set_obj(const Expr<Var, Var> &t_objective) {
+    set_obj(Expr<Var, Var>(t_objective));
+}
+
+void Model::set_obj(Expr<Var, Var> &&t_objective) {
+
+    replace_objective(Expr<Var, Var>(t_objective));
+
+    if (has_optimizer()) {
+        optimizer().update_obj();
+    }
+
+}
+
+void Model::set_rhs(const LinExpr<Ctr> &t_rhs) {
+    set_rhs(LinExpr<Ctr>(t_rhs));
+}
+
+void Model::set_rhs(LinExpr<Ctr> &&t_rhs) {
+
+    replace_right_handside(LinExpr<Ctr>(t_rhs));
+
+    if (has_optimizer()) {
+        optimizer().update_rhs();
+    }
+
+}
+
+void Model::set_obj_constant(const Constant &t_constant) {
+    set_obj_constant(Constant(t_constant));
+}
+
+void Model::set_obj_constant(Constant &&t_constant) {
+
+    m_objective.constant() = std::move(t_constant);
+
+    if (has_optimizer()) {
+        optimizer().update_obj_constant();
+    }
+
+}
+
+void Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, const Constant &t_coeff) {
+    set_mat_coeff(t_ctr, t_var, Constant(t_coeff));
+}
+
+void Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, Constant &&t_coeff) {
+
+    update_matrix_coefficient(t_ctr, t_var, std::move(t_coeff));
+
+    if (has_optimizer()) {
+        optimizer().update();
+        optimizer().update_mat_coeff(t_ctr, t_var);
+    }
+
+}
+
+void Model::set_ctr_rhs(const Ctr &t_ctr, const Constant &t_rhs) {
+    set_ctr_rhs(t_ctr, Constant(t_rhs));
+}
+
+void Model::set_ctr_rhs(const Ctr &t_ctr, Constant &&t_rhs) {
+
+    add_to_rhs(t_ctr, Constant(t_rhs));
+
+    if (has_optimizer()) {
+        optimizer().update_ctr_rhs(t_ctr);
+    }
+
+}
+
+void Model::set_ctr_type(const Ctr &t_ctr, int t_type) {
+
+    m_env.version(*this, t_ctr).set_type(t_type);
+
+    if (has_optimizer()) {
+
+        optimizer().update_ctr_type(t_ctr);
+
+    }
+
+}
+
+void Model::set_ctr_row(const Ctr &t_ctr, const Row &t_row) {
+    set_ctr_row(t_ctr, Row(t_row));
+}
+
+void Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
+
+    remove_row_from_columns(t_ctr);
+
+    m_env.version(*this, t_ctr).row() = std::move(t_row);
+
+    add_row_to_columns(t_ctr);
+
+    if (has_optimizer()) {
+        throw Exception("Updating row is not implemented.");
+    }
+
+}
+
+void Model::set_var_type(const Var &t_var, int t_type) {
+
+    m_env.version(*this, t_var).set_type(t_type);
+
+    if (has_optimizer()) {
+        optimizer().update_var_type(t_var);
+    }
+
+}
+
+void Model::set_var_lb(const Var &t_var, double t_lb) {
+
+    m_env.version(*this, t_var).set_lb(t_lb);
+
+    if (has_optimizer()) {
+        optimizer().update_var_lb(t_var);
+    }
+
+}
+
+void Model::set_var_ub(const Var &t_var, double t_ub) {
+
+    m_env.version(*this, t_var).set_ub(t_ub);
+
+    if (has_optimizer()) {
+        optimizer().update_var_ub(t_var);
+    }
+
+}
+
+void Model::set_var_obj(const Var &t_var, const Constant &t_obj) {
+    set_var_obj(t_var, Constant(t_obj));
+}
+
+void Model::set_var_obj(const Var &t_var, Constant &&t_obj) {
+
+    add_to_obj(t_var, std::move(t_obj));
+
+    if (has_optimizer()) {
+        optimizer().update_var_obj(t_var);
+    }
+
+}
+
+void Model::set_var_column(const Var &t_var, const Column &t_column) {
+    set_var_column(t_var, Column(t_column));
+}
+
+void Model::set_var_column(const Var &t_var, Column &&t_column) {
+
+    remove_column_from_rows(t_var);
+
+    m_env.version(*this, t_var).column() = std::move(t_column);
+
+    add_column_to_rows(t_var);
+
+    if (has_optimizer()) {
+        throw Exception("Updating column is not implemented.");
+    }
+
 }

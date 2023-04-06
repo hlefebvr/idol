@@ -121,7 +121,7 @@ void Optimizers::ColumnGeneration::hook_optimize() {
             return;
         }
 
-        if (status() == Infeasible) {
+        if (get_status() == Infeasible) {
             remove_artificial_variables();
             terminate_for_master_infeasible_with_artificial_variables();
             return;
@@ -131,7 +131,7 @@ void Optimizers::ColumnGeneration::hook_optimize() {
     }
 
     // min e^Ts
-    idol_Log(Debug, "Current status is " << (SolutionStatus) status() << ", switching to pure phase I.")
+    idol_Log(Debug, "Current status is " << (SolutionStatus) get_status() << ", switching to pure phase I.")
 
     set_phase_I_objective_function();
 
@@ -141,7 +141,7 @@ void Optimizers::ColumnGeneration::hook_optimize() {
 
     remove_artificial_variables();
 
-    if (status() != Optimal) {
+    if (get_status() != Optimal) {
         return;
     }
 
@@ -160,19 +160,19 @@ void Optimizers::ColumnGeneration::set_phase_I_objective_function() {
         objective += var;
     }
 
-    set(Attr::Obj::Expr, std::move(objective));
+    set_objective(std::move(objective));
 
 }
 
 void Optimizers::ColumnGeneration::restore_objective_function() {
-    set(Attr::Obj::Expr, parent().get_obj());
+    set_objective(parent().get_obj());
 }
 
 bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
 
     std::function<double(const Var&)> value;
 
-    if (status() == Unbounded) {
+    if (get_status() == Unbounded) {
         value = [this](const Var& t_var) { return m_master->get_var_ray(t_var); };
     } else {
         value = [this](const Var& t_var) { return m_master->get_var_val(t_var); };
@@ -260,8 +260,8 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
              << "<Reas=" << (SolutionReason) m_master->get_reason() << "> "
              << "<ObjVal=" << objective_value.str() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
-             << "<BestBnd=" << best_bound() << "> "
-             << "<BestObj=" << best_obj() << "> "
+             << "<BestBnd=" << get_best_bound() << "> "
+             << "<BestObj=" << get_best_obj() << "> "
              << "<RGap=" << get_relative_gap() * 100 << " %> "
              << "<AGap=" << get_absolute_gap() << "> "
     );
@@ -286,8 +286,8 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
              << "<Reas=" << (SolutionReason) pricing->get_reason() << "> "
              << "<Obj=" << std::setprecision(5)  << pricing->get_best_obj() << "> "
              << "<NGen=" << m_n_generated_columns_at_last_iteration << "> "
-             << "<BestBnd=" << best_bound() << "> "
-             << "<BestObj=" << best_obj() << "> "
+             << "<BestBnd=" << get_best_bound() << "> "
+             << "<BestObj=" << get_best_obj() << "> "
              << "<RGap=" << get_relative_gap() * 100 << " %> "
              << "<AGap=" << get_absolute_gap() << "> "
     );
@@ -304,7 +304,7 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
         m_iter_upper_bound = m_master->get_best_obj();
 
-        set_best_obj(std::min(m_iter_upper_bound, best_obj()));
+        set_best_obj(std::min(m_iter_upper_bound, get_best_obj()));
 
         m_current_dual_solution = save_dual_values(*m_master);
 
@@ -426,11 +426,11 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
         m_iter_lower_bound = lower_bound;
 
-        if (best_bound() < lower_bound) {
+        if (get_best_bound() < lower_bound) {
             set_best_bound(lower_bound);
         }
 
-        if (best_bound() > best_obj() + 1e-3) {
+        if (get_best_bound() > get_best_obj() + 1e-3) {
             idol_Log(Fatal, "Terminate. Best bound is strictly greater than best obj.");
             set_status(Fail);
             set_reason(NotSpecified);
@@ -438,12 +438,12 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             return;
         }
 
-        if (m_artificial_variables.empty() && best_bound() > best_bound_stop()) {
+        if (m_artificial_variables.empty() && get_best_bound() > best_bound_stop()) {
             set_reason(SolutionReason::UserObjLimit);
             terminate();
             idol_Log(Trace,
                      "Terminate. Given best_bound_stop is " << best_bound_stop()
-                    << " while current best bound is " << best_bound()
+                    << " while current best bound is " << get_best_bound()
             )
         }
 
@@ -498,14 +498,6 @@ bool Optimizers::ColumnGeneration::stopping_condition() const {
            || remaining_time() == 0;
 }
 
-void Optimizers::ColumnGeneration::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
-    m_master->set(t_attr, t_var, t_value);
-}
-
-void Optimizers::ColumnGeneration::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
-    m_master->set(t_attr, t_var, t_value);
-}
-
 Optimizers::ColumnGeneration::Subproblem& Optimizers::ColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
     m_subproblems.emplace_back(*this, m_subproblems.size(), t_sub_problem_model, std::move(t_generation_pattern));
     return m_subproblems.back();
@@ -534,6 +526,58 @@ double Optimizers::ColumnGeneration::get_ctr_val(const Ctr &t_ctr) const {
 
 double Optimizers::ColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
     return m_master->get_ctr_farkas(t_ctr);
+}
+
+void Optimizers::ColumnGeneration::set_objective(Expr<Var, Var> &&t_objective) {
+    m_master->set_obj(std::move(t_objective));
+}
+
+void Optimizers::ColumnGeneration::set_objective(const Expr<Var, Var> &t_objective) {
+    set_objective(Expr<Var, Var>(t_objective));
+}
+
+void Optimizers::ColumnGeneration::update_obj_sense() {
+    throw Exception("Not implemented");
+}
+
+void Optimizers::ColumnGeneration::update_obj() {
+    set_objective(parent().get_obj());
+}
+
+void Optimizers::ColumnGeneration::update_rhs() {
+    m_master->set_rhs(parent().get_rhs());
+}
+
+void Optimizers::ColumnGeneration::update_obj_constant() {
+    m_master->set_obj_constant(parent().get_obj().constant());
+}
+
+void Optimizers::ColumnGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+    m_master->set_mat_coeff(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
+}
+
+void Optimizers::ColumnGeneration::update_ctr_type(const Ctr &t_ctr) {
+    m_master->set_ctr_type(t_ctr, parent().get_ctr_type(t_ctr));
+}
+
+void Optimizers::ColumnGeneration::update_ctr_rhs(const Ctr &t_ctr) {
+    m_master->set_ctr_rhs(t_ctr, parent().get_ctr_row(t_ctr).rhs());
+}
+
+void Optimizers::ColumnGeneration::update_var_type(const Var &t_var) {
+    m_master->set_var_type(t_var, parent().get_var_type(t_var));
+}
+
+void Optimizers::ColumnGeneration::update_var_lb(const Var &t_var) {
+    m_master->set_var_lb(t_var, parent().get_var_lb(t_var));
+}
+
+void Optimizers::ColumnGeneration::update_var_ub(const Var &t_var) {
+    m_master->set_var_ub(t_var, parent().get_var_ub(t_var));
+}
+
+void Optimizers::ColumnGeneration::update_var_obj(const Var &t_var) {
+    m_master->set_var_obj(t_var, parent().get_var_column(t_var).obj());
 }
 
 void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
@@ -568,7 +612,7 @@ void Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pr
         }
     }
 
-    m_model->set(::Attr::Obj::Expr, std::move(objective));
+    m_model->set_obj(std::move(objective));
 
 }
 
@@ -706,7 +750,7 @@ void Optimizers::ColumnGeneration::Subproblem::remove_column_if(const std::funct
 void Optimizers::ColumnGeneration::Subproblem::update_generation_pattern_objective(Constant &&t_objective) {
 
     for (const auto& [var, generator] : m_present_generators) {
-        m_parent.m_master->set(Attr::Var::Obj, var, t_objective.fix(generator));
+        m_parent.m_master->set_var_obj(var, t_objective.fix(generator));
     }
 
     m_generation_pattern.set_obj(std::move(t_objective));

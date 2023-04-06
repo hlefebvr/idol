@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with differen
     Model model(env);
     model.add_array<Var, 1>(x);
     model.add(c);
-    model.set(Attr::Obj::Expr, idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
+    model.set_obj(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     model.use(BranchAndBound<NodeInfo>()
                 .with_node_solver(OptimizerT::ContinuousRelaxation())
@@ -115,7 +115,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
         model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
     }
 
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
+    model.set_obj(idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     // Set backend options
     model.use(

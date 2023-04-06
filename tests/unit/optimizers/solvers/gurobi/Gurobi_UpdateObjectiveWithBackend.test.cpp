@@ -41,7 +41,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
 
         WHEN("The objective coefficient for x is changed to 1 and Model::update_objective() is called") {
 
-            model.set(Attr::Var::Obj, x, 1);
+            model.set_var_obj(x, 1);
             model.update();
 
 
@@ -58,7 +58,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
 
         WHEN("The objective is set to 1 * x and Model::update_objective() is called") {
 
-            model.set(Attr::Obj::Expr, x);
+            model.set_obj(x);
             model.update();
 
 
@@ -72,7 +72,7 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
 
             AND_WHEN("The objective is set to 1 * y and Model::update_objective() is called") {
 
-                model.set(Attr::Obj::Expr, y);
+                model.set_obj(y);
                 model.update();
 
 

@@ -71,8 +71,6 @@ protected:
     void compute_unbounded_ray();
     void save_milp_solution_status();
 
-    using OptimizerWithLazyUpdates::set;
-
     [[nodiscard]] int get_status() const override;
     [[nodiscard]] int get_reason() const override;
     [[nodiscard]] double get_best_obj() const override;

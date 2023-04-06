@@ -33,10 +33,12 @@ public:
 
     [[nodiscard]] bool branching_on_master() const { return m_branching_on_master; }
 protected:
-    double get_var_val(const Var &t_var) const override;
+    void set_objective(Expr<Var, Var> &&t_objective) override;
 
-    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_expr) override;
-    void set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) override;
+    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+
+    void update_var_lb(const Var &t_var) override;
+    void update_var_ub(const Var &t_var) override;
 
     [[nodiscard]] double get_subproblem_primal_value(const Var& t_var, unsigned int t_subproblem_id) const;
     void set_subproblem_lower_bound(const Var& t_var, unsigned int t_subproblem_id, double t_value);

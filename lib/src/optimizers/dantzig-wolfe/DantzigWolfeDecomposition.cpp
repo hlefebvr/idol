@@ -227,7 +227,7 @@ void DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigne
 
     master_obj += objective.constant();
 
-    t_master->set(Attr::Obj::Expr, std::move(master_obj));
+    t_master->set_obj(std::move(master_obj));
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         t_generation_patterns[i].set_obj(std::move(subproblem_patterns[i]));

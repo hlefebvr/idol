@@ -42,7 +42,7 @@ SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
 
             AND_WHEN("The upper bound is updated to 0 before Model::update_objective() is called") {
 
-                model.set(Attr::Var::Ub, x, 0);
+                model.set_var_ub(x, 0);
 
                 WHEN("Model::update_objective() is called") {
 

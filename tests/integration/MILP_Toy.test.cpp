@@ -38,7 +38,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, y, z, c1, c2);
-            model.set(Attr::Obj::Expr, objective);
+            model.set_obj(objective);
 
             model.use(*solver);
 
@@ -76,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             Model model(env);
             model.add_many(x, y, z, c1, c2);
-            model.set(Attr::Obj::Expr, objective);
+            model.set_obj(objective);
 
             model.use(*solver);
 
@@ -169,7 +169,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
         Var x(env, -Inf, Inf, Integer, "x");
         Model model(env);
         model.add(x);
-        model.set(Attr::Obj::Expr, -x);
+        model.set_obj(-x);
 
         model.use(*solver);
 

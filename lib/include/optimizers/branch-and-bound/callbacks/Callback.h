@@ -179,11 +179,11 @@ template<class NodeInfoT>
 Callback<NodeInfoT>::TemporaryInterface::~TemporaryInterface() {
 
     for (const auto& [var, val] : m_var_lb_history) {
-        m_parent.m_relaxation->set(Attr::Var::Lb, var, val);
+        m_parent.m_relaxation->set_var_lb(var, val);
     }
 
     for (const auto& [var, val] : m_var_ub_history) {
-        m_parent.m_relaxation->set(Attr::Var::Ub, var, val);
+        m_parent.m_relaxation->set_var_ub(var, val);
     }
 
 }
@@ -192,14 +192,14 @@ template<class NodeInfoT>
 void Callback<NodeInfoT>::TemporaryInterface::set_var_lb(const Var& t_var, double t_value) {
     const double current_value = m_parent.m_relaxation->get_var_lb(t_var);
     m_var_lb_history.emplace_front(t_var, current_value);
-    m_parent.m_relaxation->set(Attr::Var::Lb, t_var, t_value);
+    m_parent.m_relaxation->set_var_lb(t_var, t_value);
 }
 
 template<class NodeInfoT>
 void Callback<NodeInfoT>::TemporaryInterface::set_var_ub(const Var& t_var, double t_value) {
     const double current_value = m_parent.m_relaxation->get_var_ub(t_var);
     m_var_ub_history.emplace_front(t_var, current_value);
-    m_parent.m_relaxation->set(Attr::Var::Ub, t_var, t_value);
+    m_parent.m_relaxation->set_var_ub(t_var, t_value);
 }
 
 template<class NodeInfoT>

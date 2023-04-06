@@ -88,19 +88,35 @@ protected:
     void set_phase_I_objective_function();
     void restore_objective_function();
 
-    using Algorithm::set;
+    virtual void set_objective(Expr<Var, Var>&& t_objective);
+    virtual void set_objective(const Expr<Var, Var>& t_objective);
 
-    double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
-    double get_var_ray(const Var &t_var) const override;
+    void update_obj_sense() override;
 
-    double get_ctr_val(const Ctr &t_ctr) const override;
+    void update_obj() override;
 
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
+    void update_rhs() override;
 
-    // Variables
-    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    void set(const Req<int, Var>& t_attr, const Var& t_var, int t_value) override;
+    void update_obj_constant() override;
+
+    void update_mat_coeff(const Ctr &t_ctr, const Var &t_var) override;
+
+    void update_ctr_type(const Ctr &t_ctr) override;
+
+    void update_ctr_rhs(const Ctr &t_ctr) override;
+
+    void update_var_type(const Var &t_var) override;
+
+    void update_var_lb(const Var &t_var) override;
+
+    void update_var_ub(const Var &t_var) override;
+
+    void update_var_obj(const Var &t_var) override;
 
     std::unique_ptr<Model> m_master;
     std::vector<Subproblem> m_subproblems;

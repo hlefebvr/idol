@@ -37,7 +37,7 @@ class TempCtr;
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class Model : public AttributeManagers::Delegate, public Matrix {
+class Model : public Matrix {
     Env& m_env;
     const unsigned int m_id;
 
@@ -51,17 +51,13 @@ class Model : public AttributeManagers::Delegate, public Matrix {
     std::unique_ptr<Optimizer> m_optimizer;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
+    void throw_if_no_optimizer() const { if (!m_optimizer) { throw Exception("No optimizer was found."); } }
+
     // Matrix hooks
     Expr<Var> &access_obj() override;
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
-protected:
-    void throw_if_no_optimizer() const { if (!m_optimizer) { throw Exception("No backend was found."); } }
-    // Attribute delegate
-    AttributeManager &attribute_delegate(const Attribute &t_attribute) override;
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Var &t_object) override;
-    AttributeManager &attribute_delegate(const Attribute &t_attribute, const Ctr &t_object) override;
 public:
     explicit Model(Env& t_env);
 
@@ -105,8 +101,6 @@ public:
     void unuse();
     [[nodiscard]] bool has_optimizer() const;
 
-    using AttributeManagers::Delegate::set;
-
     // Models' attributes
     [[nodiscard]] int get_obj_sense() const;
     [[nodiscard]] const Expr<Var, Var>& get_obj() const;
@@ -116,11 +110,15 @@ public:
     [[nodiscard]] int get_reason() const;
     [[nodiscard]] double get_best_obj() const;
     [[nodiscard]] double get_best_bound() const;
-    void set(const Req<int, void> &t_attr, int t_value) override;
-    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
-    void set(const Req<LinExpr<Ctr>, void>& t_attr, LinExpr<Ctr>&& t_value) override;
-    void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
-    void set(const Req<Constant, Ctr, Var>& t_attr, const Ctr& t_ctr, const Var& t_var, Constant&& t_value) override;
+    void set_obj_sense(int t_value);
+    void set_obj(const Expr<Var, Var>& t_objective);
+    void set_obj(Expr<Var, Var>&& t_objective);
+    void set_rhs(const LinExpr<Ctr>& t_rhs);
+    void set_rhs(LinExpr<Ctr>&& t_rhs);
+    void set_obj_constant(const Constant& t_constant);
+    void set_obj_constant(Constant&& t_constant);
+    void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, const Constant& t_coeff);
+    void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, Constant&& t_coeff);
 
     // Constraints' attributes
     [[nodiscard]] unsigned int get_ctr_index(const Ctr& t_ctr) const;
@@ -128,9 +126,11 @@ public:
     [[nodiscard]] const Row& get_ctr_row(const Ctr& t_ctr) const;
     [[nodiscard]] double get_ctr_val(const Ctr& t_ctr) const;
     [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const;
-    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
-    void set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
-    void set(const Req<Row, Ctr> &t_attr, const Ctr &t_ctr, Row &&t_value) override;
+    void set_ctr_rhs(const Ctr& t_ctr, const Constant& t_rhs);
+    void set_ctr_rhs(const Ctr& t_ctr, Constant&& t_rhs);
+    void set_ctr_type(const Ctr& t_ctr, int t_type);
+    void set_ctr_row(const Ctr& t_ctr, const Row& t_row);
+    void set_ctr_row(const Ctr& t_ctr, Row&& t_row);
 
     // Variables' attributes
     [[nodiscard]] unsigned int get_var_index(const Var& t_var) const;
@@ -140,10 +140,13 @@ public:
     [[nodiscard]] double get_var_val(const Var& t_var) const;
     [[nodiscard]] double get_var_ray(const Var& t_var) const;
     [[nodiscard]] const Column& get_var_column(const Var& t_var) const;
-    void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;
-    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
-    void set(const Req<Column, Var> &t_attr, const Var &t_var, Column &&t_value) override;
+    void set_var_type(const Var& t_var, int t_type);
+    void set_var_lb(const Var& t_var, double t_lb);
+    void set_var_ub(const Var& t_var, double t_ub);
+    void set_var_obj(const Var& t_var, const Constant& t_obj);
+    void set_var_obj(const Var& t_var, Constant&& t_obj);
+    void set_var_column(const Var& t_var, const Column& t_column);
+    void set_var_column(const Var& t_var, Column&& t_column);
 };
 
 template<class T, class... ArgsT>

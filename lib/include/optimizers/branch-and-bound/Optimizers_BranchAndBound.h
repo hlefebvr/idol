@@ -77,16 +77,23 @@ protected:
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
-    using Algorithm::set;
-
     [[nodiscard]] double get_var_val(const Var &t_var) const override;
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
     [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
-    void set(const Req<double, Var>& t_attr, const Var& t_var, double t_value) override;
-    void set(const Req<Constant, Ctr>& t_attr, const Ctr& t_ctr, Constant&& t_value) override;
-    void set(const Req<Expr<Var, Var>, void>& t_attr, Expr<Var, Var>&& t_value) override;
+    void update_obj_sense() override;
+    void update_obj() override;
+    void update_rhs() override;
+    void update_obj_constant() override;
+    void update_mat_coeff(const Ctr &t_ctr, const Var &t_var) override;
+    void update_ctr_type(const Ctr &t_ctr) override;
+    void update_ctr_rhs(const Ctr &t_ctr) override;
+    void update_var_type(const Var &t_var) override;
+    void update_var_lb(const Var &t_var) override;
+    void update_var_ub(const Var &t_var) override;
+    void update_var_obj(const Var &t_var) override;
+
 public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
@@ -121,6 +128,61 @@ public:
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 };
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_obj() {
+    m_relaxation->set_obj(parent().get_obj());
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_rhs() {
+    m_relaxation->set_rhs(parent().get_rhs());
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_obj_constant() {
+    m_relaxation->set_obj_constant(parent().get_obj().constant());
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+    m_relaxation->set_mat_coeff(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_ctr_type(const Ctr &t_ctr) {
+    m_relaxation->set_ctr_type(t_ctr, parent().get_ctr_type(t_ctr));
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_ctr_rhs(const Ctr &t_ctr) {
+    m_relaxation->set_ctr_rhs(t_ctr, parent().get_ctr_row(t_ctr).rhs());
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_var_type(const Var &t_var) {
+    m_relaxation->set_var_type(t_var, parent().get_var_type(t_var));
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_var_lb(const Var &t_var) {
+    m_relaxation->set_var_lb(t_var, parent().get_var_lb(t_var));
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_var_ub(const Var &t_var) {
+    m_relaxation->set_var_ub(t_var, parent().get_var_ub(t_var));
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_var_obj(const Var &t_var) {
+    m_relaxation->set_var_obj(t_var, parent().get_var_column(t_var).obj());
+}
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::update_obj_sense() {
+    throw Exception("Not implemented");
+}
 
 template<class NodeInfoT>
 double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -158,13 +220,13 @@ double Optimizers::BranchAndBound<NodeInfoT>::get_var_val(const Var &t_var) cons
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
-    if (t_lower_bound > best_obj()) {
+    if (t_lower_bound > get_best_obj()) {
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
         return;
     }
-    if (t_lower_bound > best_bound()) {
+    if (t_lower_bound > get_best_bound()) {
         set_best_bound(t_lower_bound);
         idol_Log(Trace, "New best lower bound of " << t_lower_bound << " was submitted.");
     }
@@ -175,7 +237,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 
     auto* t_node = new Node<NodeInfoT>(t_info, -1, 0);
 
-    if (t_node->objective_value() < best_obj()) {
+    if (t_node->objective_value() < get_best_obj()) {
 
         if (m_branching_rule->is_valid(*t_node)) {
             set_as_incumbent(t_node);
@@ -187,7 +249,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
         }
 
     } else {
-        idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node->objective_value() << " while best obj is " << best_obj() << '.');
+        idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node->objective_value() << " while best obj is " << get_best_obj() << '.');
         delete t_node;
     }
 
@@ -234,21 +296,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::build() {
 template<class NodeInfoT>
 Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
     delete m_incumbent;
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
-    m_relaxation->set(t_attr, std::move(t_value));
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
-    m_relaxation->set(t_attr, t_ctr, std::move(t_value));
-}
-
-template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
-    m_relaxation->set(t_attr, t_var, t_value);
 }
 
 template<class NodeInfoT>
@@ -314,17 +361,17 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
     explore(root_node, active_nodes, 0);
 
     if (active_nodes.empty()) {
-        set_best_bound(best_obj());
+        set_best_bound(get_best_obj());
     }
 
     m_node_updator->clear_local_updates();
 
     if (!m_incumbent) {
 
-        if (is_pos_inf(best_obj())) {
+        if (is_pos_inf(get_best_obj())) {
             set_status(Infeasible);
             return;
-        } else if (is_neg_inf(best_obj())) {
+        } else if (is_neg_inf(get_best_obj())) {
             set_status(Unbounded);
             return;
         }
@@ -403,7 +450,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
 
     m_node_updator->apply_local_updates(t_node->info());
 
-    m_relaxation->optimizer().set_best_bound_stop(std::min(best_obj(), best_bound_stop()));
+    m_relaxation->optimizer().set_best_bound_stop(std::min(get_best_obj(), best_bound_stop()));
     m_relaxation->optimizer().set_time_limit(remaining_time());
 
     idol_Log(Debug, "Beginning to solve node " << t_node->id() << ".");
@@ -424,7 +471,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
     *t_explore_children_flag = false;
     *t_reoptimize_flag = false;
 
-    if (best_bound() > best_obj()) {
+    if (get_best_bound() > get_best_obj()) {
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
@@ -455,7 +502,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
     }
 
     if (status == Feasible && reason == UserObjLimit) {
-        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << best_obj() << ", Obj: " << t_node->objective_value() << ").");
+        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node->objective_value() << ").");
         delete t_node;
         return;
     }
@@ -480,7 +527,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         m_root_node_best_bound = t_node->objective_value();
     }
 
-    if (t_node->objective_value() < best_obj()) {
+    if (t_node->objective_value() < get_best_obj()) {
 
         if (m_branching_rule->is_valid(*t_node)) {
 
@@ -502,7 +549,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
 
     } else {
 
-        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << best_obj() << ", Obj: " << t_node->objective_value() << ").");
+        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node->objective_value() << ").");
         delete t_node;
         return;
 
@@ -511,7 +558,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
     call_callbacks(InvalidSolution, t_node);
 
     if (t_node->level() == 0) {
-        m_root_node_best_obj = best_obj();
+        m_root_node_best_obj = get_best_obj();
     }
 
     *t_explore_children_flag = true;
@@ -525,9 +572,9 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
     const unsigned int id = t_node.id();
     char sign = ' ';
 
-    if (equals(objective_value, best_obj(), ToleranceForAbsoluteGapMIP)) {
+    if (equals(objective_value, get_best_obj(), ToleranceForAbsoluteGapMIP)) {
         sign = '-';
-    } else if (equals(objective_value, best_bound(), ToleranceForAbsoluteGapMIP)) {
+    } else if (equals(objective_value, get_best_bound(), ToleranceForAbsoluteGapMIP)) {
         sign = '+';
     }
 
@@ -539,8 +586,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
               << "<Stat=" << (SolutionStatus) t_node.status() << "> "
               << "<Reas=" << (SolutionReason) t_node.reason() << "> "
               << "<ObjVal=" << std::setw(9) << t_node.objective_value() << "> "
-              << "<BestBnd="   << std::setw(9) << best_bound() << "> "
-              << "<BestObj="   << std::setw(9) << best_obj() << "> "
+              << "<BestBnd="   << std::setw(9) << get_best_bound() << "> "
+              << "<BestObj="   << std::setw(9) << get_best_obj() << "> "
               << "<RelGap=" << std::setw(5) << get_relative_gap() * 100 << "> "
               << "<AbsGap=" << std::setw(5) << get_absolute_gap() << "> "
     );
@@ -562,7 +609,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBo
 
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
     const double lower_bound = lowest_node.objective_value();
-    if (lower_bound > best_bound()) {
+    if (lower_bound > get_best_bound()) {
         set_best_bound(lower_bound);
         log_node(Info, lowest_node);
     }
@@ -572,7 +619,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const BranchAndBo
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound::SetOfActiveNodes& t_active_nodes) {
 
-    const double upper_bound = best_obj();
+    const double upper_bound = get_best_obj();
 
     auto it = t_active_nodes.by_objective_value().begin();
     auto end = t_active_nodes.by_objective_value().end();
@@ -580,7 +627,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound:
     while (it != end) {
 
         if (const auto& node = *it ; node.objective_value() >= upper_bound) {
-            idol_Log(Trace, "Node " << node.id() << " was pruned by bound " << "(BestObj: " << best_obj() << ", Obj: " << node.objective_value() << ").");
+            idol_Log(Trace, "Node " << node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << node.objective_value() << ").");
             it = t_active_nodes.erase(it);
             end = t_active_nodes.by_objective_value().end();
             delete &node;

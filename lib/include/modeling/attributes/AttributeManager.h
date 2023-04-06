@@ -31,7 +31,7 @@ template<class T> class Parameter;
  * double lb = model.get_var_lb(x);
  *
  * Solvers::GLPK solver(model);
- * solver.set(Attr::Var::Ub, x, 0.);
+ * solver.set_var_ub(x, 0.);
  * ```
  */
 class AttributeManager {

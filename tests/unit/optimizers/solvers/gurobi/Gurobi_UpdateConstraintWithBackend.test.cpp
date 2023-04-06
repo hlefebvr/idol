@@ -42,7 +42,7 @@ SCENARIO("Gurobi: Update a constraint with backend", "[unit][backend][Gurobi]") 
 
             AND_WHEN("The rhs is updated to 0 before Model::update_objective() is called") {
 
-                model.set(Attr::Ctr::Rhs, c, 0);
+                model.set_ctr_rhs(c, 0);
 
                 WHEN("Model::update_objective() is called") {
 

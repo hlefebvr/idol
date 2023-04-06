@@ -53,13 +53,13 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
     for (const auto& var : original_model.vars()) {
         const int type = original_model.get_var_type(var);
         if (integer_master->has(var)) {
-            integer_master->set(Attr::Var::Type, var, type);
+            integer_master->set_var_type(var, type);
         }
     }
 
     for (const auto& subproblem : column_generation_optimizer.subproblems()) {
         for (const auto& [alpha, generator] : subproblem.present_generators()) {
-            integer_master->set(Attr::Var::Type, alpha, Binary);
+            integer_master->set_var_type(alpha, Binary);
         }
     }
 

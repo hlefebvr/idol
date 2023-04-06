@@ -64,8 +64,6 @@ protected:
 
     void hook_remove(const Ctr& t_ctr) override;
 
-    using OptimizerWithLazyUpdates::set;
-
     [[nodiscard]] int get_status() const override;
 
     [[nodiscard]] int get_reason() const override;

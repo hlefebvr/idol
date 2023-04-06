@@ -49,7 +49,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
 
             AND_WHEN("The variable's lower bound is set to 0") {
 
-                model.set(Attr::Var::Lb, x, 0);
+                model.set_var_lb(x, 0);
 
                 THEN("The variable's lower bound should be 0") {
                     CHECK(model.get_var_lb(x) == 0);
@@ -59,7 +59,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
 
             AND_WHEN("The variable's upper bound is set to 0") {
 
-                model.set(Attr::Var::Ub, x, 0);
+                model.set_var_ub(x, 0);
 
                 THEN("The variable's upper bound should be 0") {
                     CHECK(model.get_var_ub(x) == 0);
@@ -69,7 +69,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
 
             AND_WHEN("The variable's objective coefficient is set to 1") {
 
-                model.set(Attr::Var::Obj, x, 1);
+                model.set_var_obj(x, 1);
 
                 THEN("The variable's objective coefficient should be 1") {
                     CHECK(model.get_var_column(x).obj().numerical() == 1);

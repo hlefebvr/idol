@@ -83,7 +83,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
             AND_WHEN("The rhs of that constraint in changed int the model (nonzero)") {
 
-                model.set(Attr::Ctr::Rhs, ctr, 1);
+                model.set_ctr_rhs(ctr, 1);
 
                 THEN("The model's rhs should be updated") {
                     CHECK(model.get_rhs().get(ctr).numerical() == 1_a);
@@ -97,7 +97,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
             AND_WHEN("A matrix coefficient is changed in the model (nonzero)") {
 
-                model.set(Attr::Matrix::Coeff, ctr, x[0], 1);
+                model.set_mat_coeff(ctr, x[0], 1);
 
                 THEN("The model's constraint's row should be updated") {
                     CHECK(model.get_ctr_row(ctr).linear().get(x[0]).numerical() == 1_a);
@@ -111,7 +111,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
             AND_WHEN("An rhs coefficient is set to zero") {
 
-                model.set(Attr::Ctr::Rhs, ctr, 0);
+                model.set_ctr_rhs(ctr, 0);
 
                 THEN("The model's objective should be empty") {
                     CHECK(model.get_rhs().empty());
@@ -126,7 +126,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
 
             AND_WHEN("A matrix coefficient is set to zero") {
 
-                model.set(Attr::Matrix::Coeff, ctr, x[0], 0);
+                model.set_mat_coeff(ctr, x[0], 0);
 
                 THEN("The model's constraint's row should be empty") {
                     CHECK(model.get_ctr_row(ctr).linear().get(x[0]).numerical() == 0_a);

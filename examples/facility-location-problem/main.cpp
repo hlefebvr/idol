@@ -37,7 +37,7 @@ int main(int t_argc, const char** t_argv) {
         model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
     }
 
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
+    model.set_obj(idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers), instance.per_unit_transportation_cost(i, j) * instance.demand(j) * y[i][j])));
 
     // Set backend options
     model.use(

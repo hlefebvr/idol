@@ -53,15 +53,15 @@ class OptimizerWithLazyUpdates : public Optimizer {
     bool m_is_objective_to_be_updated = true;
     bool m_is_rhs_to_be_updated = true;
 
-    void update_vars();
-    void update_ctrs();
+    void lazy_update_vars();
+    void lazy_update_ctrs();
 
-    void update_objective_sense();
-    void update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant);
-    void update(const Var& t_var);
-    void update(const Ctr& t_ctr);
-    void update_objective();
-    void update_rhs();
+    void lazy_update_objective_sense();
+    void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant);
+    void lazy_update(const Var& t_var);
+    void lazy_update(const Ctr& t_ctr);
+    void lazy_update_objective();
+    void lazy_update_rhs();
 protected:
     explicit OptimizerWithLazyUpdates(const Model& t_parent);
 
@@ -109,23 +109,17 @@ protected:
     [[nodiscard]] bool is_rhs_to_be_updated() const { return m_is_rhs_to_be_updated; }
     void set_rhs_as_updated() { m_is_rhs_to_be_updated = false; }
 
-    using Optimizer::set;
-
-    // Model
-    void set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant && t_value) override;
-    void set(const Req<Constant, void> &t_attr, Constant &&t_value) override;
-    void set(const Req<int, void> &t_attr, int t_value) override;
-
-    // Variables
-    void set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) override;
-    void set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) override;
-    void set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) override;
-    void set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) override;
-
-    // Constraints
-    void set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) override;
-    void set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) override;
-    void set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) override;
+    void update_obj_sense() override;
+    void update_obj() override;
+    void update_rhs() override;
+    void update_obj_constant() override;
+    void update_mat_coeff(const Ctr &t_ctr, const Var &t_var) override;
+    void update_ctr_type(const Ctr &t_ctr) override;
+    void update_ctr_rhs(const Ctr &t_ctr) override;
+    void update_var_type(const Var &t_var) override;
+    void update_var_lb(const Var &t_var) override;
+    void update_var_ub(const Var &t_var) override;
+    void update_var_obj(const Var &t_var) override;
 public:
     VarImplT& operator[](const Var& t_var) { return lazy(t_var).impl(); }
     const VarImplT& operator[](const Var& t_var) const { return lazy(t_var).impl(); }
@@ -133,6 +127,62 @@ public:
     CtrImplT& operator[](const Ctr& t_ctr) { return lazy(t_ctr).impl(); }
     const CtrImplT& operator[](const Ctr& t_ctr) const { return lazy(t_ctr).impl(); }
 };
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_ub(const Var &t_var) {
+    lazy_update(t_var);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_obj(const Var &t_var) {
+    lazy_update(t_var);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_lb(const Var &t_var) {
+    lazy_update(t_var);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_type(const Var &t_var) {
+    lazy_update(t_var);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_rhs(const Ctr &t_ctr) {
+    lazy_update(t_ctr);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_type(const Ctr &t_ctr) {
+    lazy_update(t_ctr);
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+    lazy_update_matrix(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_constant() {
+    lazy_update_objective();
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj() {
+    lazy_update_objective();
+}
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_sense() {
+    lazy_update_objective_sense();
+}
+
+
+template<class VarImplT, class CtrImplT>
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
+    lazy_update_rhs();
+}
 
 template<class VarImplT, class CtrImplT>
 OptimizerWithLazyUpdates<VarImplT, CtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
@@ -165,9 +215,9 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string &t_na
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 
-    update_vars();
+    lazy_update_vars();
 
-    update_ctrs();
+    lazy_update_ctrs();
 
     if (is_objective_to_be_updated()) {
         hook_update_objective();
@@ -185,7 +235,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
 
     for (const unsigned int index : m_variables_to_update) {
 
@@ -204,7 +254,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_ctrs() {
 
     for (const unsigned int index : m_constraints_to_update) {
 
@@ -224,43 +274,43 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_rhs() {
     set_rhs_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_objective() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective() {
     set_objective_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_objective_sense() {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective_sense() {
     hook_update_objective_sense();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Var &t_var) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Var &t_var) {
     const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update(const Ctr &t_ctr) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Ctr &t_ctr) {
     const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
 }
 
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
     if (m_is_initialized) {
-        update_vars();
+        lazy_update_vars();
     }
     const unsigned int index = m_constraints.size();
     m_constraints_to_update.emplace_front(index);
@@ -270,7 +320,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
 template<class VarImplT, class CtrImplT>
 void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
     if (m_is_initialized) {
-        update_ctrs();
+        lazy_update_ctrs();
     }
     const unsigned int index = m_variables.size();
     m_variables_to_update.emplace_front(index);
@@ -309,117 +359,6 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
     m_constraints[index] = std::move(m_constraints.back());
     m_constraints.pop_back();
-}
-
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, Ctr> &t_attr, const Ctr &t_ctr, int t_value) {
-
-    if (t_attr == Attr::Ctr::Type) {
-        update(t_ctr);
-        return;
-    }
-
-    Base::set(t_attr, t_ctr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, void> &t_attr, int t_value) {
-
-    if (t_attr == Attr::Obj::Sense) {
-        update_objective_sense();
-        return;
-    }
-
-    Base::set(t_attr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<int, Var> &t_attr, const Var &t_var, int t_value) {
-
-    if (t_attr == Attr::Var::Type) {
-        update(t_var);
-        return;
-    }
-
-    Base::set(t_attr, t_var, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Var> &t_attr, const Var &t_var, Constant &&t_value) {
-
-    if (t_attr == Attr::Var::Obj) {
-        update(t_var);
-        return;
-    }
-
-    Base::set(t_attr, t_var, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, void> &t_attr, Constant &&t_value) {
-
-    if (t_attr == Attr::Obj::Const) {
-        update_objective();
-        return;
-    }
-
-    Base::set(t_attr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<LinExpr<Ctr>, void> &t_attr, LinExpr<Ctr> &&t_value) {
-
-    if (t_attr == Attr::Rhs::Expr) {
-        update_rhs();
-        return;
-    }
-
-    Base::set(t_attr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Expr<Var, Var>, void> &t_attr, Expr<Var, Var> &&t_value) {
-
-    if (t_attr == Attr::Obj::Expr) {
-        update_objective();
-        return;
-    }
-
-    Base::set(t_attr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Ctr> &t_attr, const Ctr &t_ctr, Constant &&t_value) {
-
-    if (t_attr == Attr::Ctr::Rhs) {
-        update(t_ctr);
-        return;
-    }
-
-    Base::set(t_attr, t_ctr, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<Constant, Ctr, Var> &t_attr, const Ctr &t_ctr, const Var &t_var, Constant &&t_value) {
-
-    if (t_attr == Attr::Matrix::Coeff) {
-        update_matrix(t_ctr, t_var, t_value);
-        return;
-    }
-
-    Base::set(t_attr, t_ctr, t_var, t_value);
-}
-
-template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::set(const Req<double, Var> &t_attr, const Var &t_var, double t_value) {
-
-    if (t_attr == Attr::Var::Lb || t_attr == Attr::Var::Ub) {
-        update(t_var);
-        return;
-    }
-
-    Base::set(t_attr, t_var, t_value);
 }
 
 #endif //IDOL_OPTIMIZERWITHLAZYUPDATES_H

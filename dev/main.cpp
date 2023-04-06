@@ -63,7 +63,7 @@ int main(int t_argc, char** t_argv) {
     }
 
     // Set the objective function
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+    model.set_obj(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     for (bool primal_heuristic : { true, false }) {
 
@@ -153,7 +153,7 @@ int main(int t_argc, char** t_argv) {
 
     model.add(theta);
     model.add(x);
-    model.master().set(Attr::Obj::Expr, 2 * x + theta);
+    model.master().set_obj(2 * x + theta);
 
     // Subproblem variables
     auto lambda = Var::array(env, Dim<1>(2), 0, Inf, Continuous, "lambda");
@@ -172,7 +172,7 @@ int main(int t_argc, char** t_argv) {
     // Set epigraph
     subproblem.set_aggregator(theta);
 
-    subproblem.model().set(Attr::Obj::Sense, Maximize);
+    subproblem.model().set_obj_sense(Maximize);
 
     model.build_opposite_axis();
 

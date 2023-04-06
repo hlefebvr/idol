@@ -49,7 +49,7 @@ int main(int t_argc, const char** t_argv) {
     }
 
     // Set the objective function
-    model.set(Attr::Obj::Expr, idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+    model.set_obj(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     // Set optimizer
     model.use(BranchAndBound()
