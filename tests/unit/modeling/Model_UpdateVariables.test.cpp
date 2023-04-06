@@ -25,7 +25,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
             }
 
             AND_THEN("The model's objective should not contain a non-zero coefficient x") {
-                auto objective = model.get_obj();
+                auto objective = model.get_obj_expr();
 
                 CHECK(objective.linear().empty());
                 CHECK(objective.quadratic().empty());
@@ -77,7 +77,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
                 }
 
                 THEN("The model's objective should have a coefficient for x of 1") {
-                    auto objective = model.get_obj();
+                    auto objective = model.get_obj_expr();
 
                     CHECK(objective.linear().get(x).numerical() == 1);
                     CHECK(objective.linear().get(x).is_numerical());

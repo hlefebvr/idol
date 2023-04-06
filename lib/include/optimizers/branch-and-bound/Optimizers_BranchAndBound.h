@@ -131,17 +131,17 @@ public:
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::update_obj() {
-    m_relaxation->set_obj(parent().get_obj());
+    m_relaxation->set_obj_expr(parent().get_obj_expr());
 }
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::update_rhs() {
-    m_relaxation->set_rhs(parent().get_rhs());
+    m_relaxation->set_rhs_expr(parent().get_rhs_expr());
 }
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::update_obj_constant() {
-    m_relaxation->set_obj_constant(parent().get_obj().constant());
+    m_relaxation->set_obj_const(parent().get_obj_expr().constant());
 }
 
 template<class NodeInfoT>
@@ -197,7 +197,7 @@ double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_val(const Ctr &t_ctr) cons
     if (m_n_solved_nodes > 1) {
         throw Exception("Not available.");
     }
-    return m_relaxation->get_ctr_val(t_ctr);
+    return m_relaxation->get_ctr_dual(t_ctr);
 }
 
 template<class NodeInfoT>

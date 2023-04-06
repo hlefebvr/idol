@@ -221,13 +221,13 @@ void DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigne
 
     const unsigned int n_subproblems = t_generation_patterns.size();
 
-    const auto& objective = t_original_formulation.get_obj();
+    const auto& objective = t_original_formulation.get_obj_expr();
 
     auto [master_obj, subproblem_patterns] = dispatch_linking_expression(t_variable_flag, objective.quadratic(), objective.linear(), t_master, n_subproblems);
 
     master_obj += objective.constant();
 
-    t_master->set_obj(std::move(master_obj));
+    t_master->set_obj_expr(std::move(master_obj));
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         t_generation_patterns[i].set_obj(std::move(subproblem_patterns[i]));

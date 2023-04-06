@@ -26,7 +26,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add(c1);
         model.add(c2);
         model.add(c3);
-        model.set_obj(-143 * x - 60 * y);
+        model.set_obj_expr(-143 * x - 60 * y);
 
         model.use(TestType());
 
@@ -82,7 +82,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add(c1);
         model.add(c2);
         model.add(c3);
-        model.set_obj(-3 * x - 2 * y);
+        model.set_obj_expr(-3 * x - 2 * y);
 
         model.use(TestType().with_infeasible_or_unbounded_info(true));
 
@@ -130,7 +130,7 @@ TEMPLATE_LIST_TEST_CASE("LP solvers: solve toy example",
         model.add(w);
         model.add(c1);
         model.add(c2);
-        model.set_obj(objective);
+        model.set_obj_expr(objective);
 
         model.use(TestType().with_infeasible_or_unbounded_info(true));
 

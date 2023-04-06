@@ -24,7 +24,7 @@ Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 void Optimizers::GLPK::hook_build() {
 
-    const auto& objective = parent().get_obj();
+    const auto& objective = parent().get_obj_expr();
 
     if (!objective.quadratic().empty()) {
         throw Exception("GLPK is not available as an SOCP solver.");
@@ -397,7 +397,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
     delete[] plus_one;
 
     // Set original variables' objective coefficient to zero
-    for (const auto& [var, constant] : model.get_obj().linear()) {
+    for (const auto& [var, constant] : model.get_obj_expr().linear()) {
         glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
     }
 
@@ -406,7 +406,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = Solution::Dual();
-    double objective_value = as_numeric(model.get_obj().constant());
+    double objective_value = as_numeric(model.get_obj_expr().constant());
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
@@ -418,7 +418,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
     glp_del_cols(m_model, (int) artificial_variables.size() - 1, artificial_variables.data());
 
     // Restore objective function
-    for (const auto& [var, constant] : model.get_obj().linear()) {
+    for (const auto& [var, constant] : model.get_obj_expr().linear()) {
         glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(constant));
     }
 
@@ -506,7 +506,7 @@ void Optimizers::GLPK::compute_unbounded_ray() {
 
     // Save ray
     m_unbounded_ray = Solution::Primal();
-    const double objective_value = as_numeric(model.get_obj().constant()) + glp_get_obj_val(m_model);
+    const double objective_value = as_numeric(model.get_obj_expr().constant()) + glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
         m_unbounded_ray->set(var, glp_get_col_prim(m_model, lazy(var).impl()));
@@ -618,7 +618,7 @@ SolutionReason Optimizers::GLPK::get_reason() const {
 double Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
     if (m_solution_status == Infeasible) { return +Inf; }
-    const double constant_term = as_numeric(parent().get_obj().constant());
+    const double constant_term = as_numeric(parent().get_obj_expr().constant());
     return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
 }
 

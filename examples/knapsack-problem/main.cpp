@@ -23,7 +23,7 @@ int main(int t_argc, const char** t_argv) {
 
     model.add_vector<Var, 1>(x);
     model.add(knapsack_constraint);
-    model.set_obj(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
+    model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     ///
 

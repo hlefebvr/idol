@@ -44,7 +44,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
             }
 
             AND_THEN("The row rhs should be added to the model's rhs") {
-                CHECK(model.get_rhs().get(ctr).numerical() == 100_a);
+                CHECK(model.get_rhs_expr().get(ctr).numerical() == 100_a);
             }
 
             AND_THEN("The row rhs should have been added to the model's constraint's rhs") {
@@ -86,7 +86,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
                 model.set_ctr_rhs(ctr, 1);
 
                 THEN("The model's rhs should be updated") {
-                    CHECK(model.get_rhs().get(ctr).numerical() == 1_a);
+                    CHECK(model.get_rhs_expr().get(ctr).numerical() == 1_a);
                 }
 
                 AND_THEN("The constraint's rhs should be updated") {
@@ -114,7 +114,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
                 model.set_ctr_rhs(ctr, 0);
 
                 THEN("The model's objective should be empty") {
-                    CHECK(model.get_rhs().empty());
+                    CHECK(model.get_rhs_expr().empty());
                 }
 
                 AND_THEN("The model's constraint's row's rhs should be zero") {
@@ -155,7 +155,7 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling][Model]") {
                 }
 
                 AND_THEN("The model's rhs should be empty") {
-                    CHECK(model.get_rhs().empty());
+                    CHECK(model.get_rhs_expr().empty());
                 }
 
                 AND_THEN("The model's columns should be empty") {

@@ -23,7 +23,7 @@ Optimizers::Mosek::~Mosek() {
 
 void Optimizers::Mosek::hook_build() {
 
-    const auto& objective = parent().get_obj();
+    const auto& objective = parent().get_obj_expr();
 
     if (!objective.quadratic().empty()) {
         throw Exception("Handling quadratic objective is not implemented.");
@@ -278,7 +278,7 @@ void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 void Optimizers::Mosek::hook_update_objective() {
 
     const auto& model = parent();
-    const auto& objective = model.get_obj();
+    const auto& objective = model.get_obj_expr();
     const int sense = model.get_obj_sense();
 
     auto expr = mosek::fusion::Expr::constTerm(as_numeric(objective.constant()));

@@ -32,7 +32,7 @@ double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const 
 
     double result = 0;
     for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
-        const double alpha_val = m_master->get_var_val(alpha);
+        const double alpha_val = m_master->get_var_primal(alpha);
         if (alpha_val > 0) {
             result += alpha_val * generator.get(t_var);
         }
@@ -172,7 +172,7 @@ void Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_obj
         }
     }
 
-    m_master->set_obj(std::move(master_obj));
+    m_master->set_obj_expr(std::move(master_obj));
 
     for (unsigned int k = 0 ; k < n_subproblems ; ++k) {
         m_subproblems[k].update_generation_pattern_objective(std::move(pricing_obj[k]));

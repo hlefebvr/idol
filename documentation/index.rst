@@ -50,7 +50,7 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         Expr objective(idol_Sum(j, n_items, -profits[j] * x[j]);
 
-        model.set_obj(objective);
+        model.set_obj_expr(objective);
 
         model.use(Gurobi());
 

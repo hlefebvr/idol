@@ -104,20 +104,20 @@ public:
 
     // Models' attributes
     [[nodiscard]] ObjectiveSense get_obj_sense() const;
-    [[nodiscard]] const Expr<Var, Var>& get_obj() const;
-    [[nodiscard]] const LinExpr<Ctr>& get_rhs() const;
+    [[nodiscard]] const Expr<Var, Var>& get_obj_expr() const;
+    [[nodiscard]] const LinExpr<Ctr>& get_rhs_expr() const;
     [[nodiscard]] const Constant& get_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
     [[nodiscard]] SolutionStatus get_status() const;
     [[nodiscard]] SolutionReason get_reason() const;
     [[nodiscard]] double get_best_obj() const;
     [[nodiscard]] double get_best_bound() const;
     void set_obj_sense(ObjectiveSense t_value);
-    void set_obj(const Expr<Var, Var>& t_objective);
-    void set_obj(Expr<Var, Var>&& t_objective);
-    void set_rhs(const LinExpr<Ctr>& t_rhs);
-    void set_rhs(LinExpr<Ctr>&& t_rhs);
-    void set_obj_constant(const Constant& t_constant);
-    void set_obj_constant(Constant&& t_constant);
+    void set_obj_expr(const Expr<Var, Var>& t_objective);
+    void set_obj_expr(Expr<Var, Var>&& t_objective);
+    void set_rhs_expr(const LinExpr<Ctr>& t_rhs);
+    void set_rhs_expr(LinExpr<Ctr>&& t_rhs);
+    void set_obj_const(const Constant& t_constant);
+    void set_obj_const(Constant&& t_constant);
     void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, const Constant& t_coeff);
     void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, Constant&& t_coeff);
 
@@ -125,7 +125,7 @@ public:
     [[nodiscard]] unsigned int get_ctr_index(const Ctr& t_ctr) const;
     [[nodiscard]] CtrType get_ctr_type(const Ctr& t_ctr) const;
     [[nodiscard]] const Row& get_ctr_row(const Ctr& t_ctr) const;
-    [[nodiscard]] double get_ctr_val(const Ctr& t_ctr) const;
+    [[nodiscard]] double get_ctr_dual(const Ctr& t_ctr) const;
     [[nodiscard]] double get_ctr_farkas(const Ctr& t_ctr) const;
     void set_ctr_rhs(const Ctr& t_ctr, const Constant& t_rhs);
     void set_ctr_rhs(const Ctr& t_ctr, Constant&& t_rhs);
@@ -138,7 +138,7 @@ public:
     [[nodiscard]] VarType get_var_type(const Var& t_var) const;
     [[nodiscard]] double get_var_lb(const Var& t_var) const;
     [[nodiscard]] double get_var_ub(const Var& t_var) const;
-    [[nodiscard]] double get_var_val(const Var& t_var) const;
+    [[nodiscard]] double get_var_primal(const Var& t_var) const;
     [[nodiscard]] double get_var_ray(const Var& t_var) const;
     [[nodiscard]] const Column& get_var_column(const Var& t_var) const;
     void set_var_type(const Var& t_var, VarType t_type);
@@ -194,7 +194,7 @@ static auto save_primal_values(const Model& t_original_model, const Model& t_mod
     result.set_objective_value(t_model.get_best_obj());
 
     for (const auto& var : t_original_model.vars()) {
-        result.set(var, t_model.get_var_val(var));
+        result.set(var, t_model.get_var_primal(var));
     }
 
     return result;
@@ -250,7 +250,7 @@ static auto save_dual_values(const Model& t_original_model, const Model& t_model
     result.set_objective_value(t_model.get_best_bound());
 
     for (const auto& ctr : t_original_model.ctrs()) {
-        result.set(ctr, t_model.get_ctr_val(ctr));
+        result.set(ctr, t_model.get_ctr_dual(ctr));
     }
 
     return result;
@@ -297,7 +297,7 @@ static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
         t_os << "Maximize";
     }
 
-    t_os << " " << t_model.get_obj() << "\nSubject to:\n";
+    t_os << " " << t_model.get_obj_expr() << "\nSubject to:\n";
     for (const auto& ctr : t_model.ctrs()) {
 
         const auto& row = t_model.get_ctr_row(ctr);

@@ -165,7 +165,7 @@ void Optimizers::ColumnGeneration::set_phase_I_objective_function() {
 }
 
 void Optimizers::ColumnGeneration::restore_objective_function() {
-    set_objective(parent().get_obj());
+    set_objective(parent().get_obj_expr());
 }
 
 bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
@@ -175,7 +175,7 @@ bool Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
     if (get_status() == Unbounded) {
         value = [this](const Var& t_var) { return m_master->get_var_ray(t_var); };
     } else {
-        value = [this](const Var& t_var) { return m_master->get_var_val(t_var); };
+        value = [this](const Var& t_var) { return m_master->get_var_primal(t_var); };
     }
 
     for (const auto& var : m_artificial_variables) {
@@ -513,7 +513,7 @@ void Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_artifici
 }
 
 double Optimizers::ColumnGeneration::get_var_val(const Var &t_var) const {
-    return m_master->get_var_val(t_var);
+    return m_master->get_var_primal(t_var);
 }
 
 double Optimizers::ColumnGeneration::get_var_ray(const Var &t_var) const {
@@ -521,7 +521,7 @@ double Optimizers::ColumnGeneration::get_var_ray(const Var &t_var) const {
 }
 
 double Optimizers::ColumnGeneration::get_ctr_val(const Ctr &t_ctr) const {
-    return m_master->get_ctr_val(t_ctr);
+    return m_master->get_ctr_dual(t_ctr);
 }
 
 double Optimizers::ColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -529,7 +529,7 @@ double Optimizers::ColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
 }
 
 void Optimizers::ColumnGeneration::set_objective(Expr<Var, Var> &&t_objective) {
-    m_master->set_obj(std::move(t_objective));
+    m_master->set_obj_expr(std::move(t_objective));
 }
 
 void Optimizers::ColumnGeneration::set_objective(const Expr<Var, Var> &t_objective) {
@@ -541,15 +541,15 @@ void Optimizers::ColumnGeneration::update_obj_sense() {
 }
 
 void Optimizers::ColumnGeneration::update_obj() {
-    set_objective(parent().get_obj());
+    set_objective(parent().get_obj_expr());
 }
 
 void Optimizers::ColumnGeneration::update_rhs() {
-    m_master->set_rhs(parent().get_rhs());
+    m_master->set_rhs_expr(parent().get_rhs_expr());
 }
 
 void Optimizers::ColumnGeneration::update_obj_constant() {
-    m_master->set_obj_constant(parent().get_obj().constant());
+    m_master->set_obj_const(parent().get_obj_expr().constant());
 }
 
 void Optimizers::ColumnGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
@@ -612,7 +612,7 @@ void Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pr
         }
     }
 
-    m_model->set_obj(std::move(objective));
+    m_model->set_obj_expr(std::move(objective));
 
 }
 
@@ -708,7 +708,7 @@ void Optimizers::ColumnGeneration::Subproblem::clean_up() {
 
         if (is_already_in_master) {
 
-            if (master.get_var_val(it->first) > 0) {
+            if (master.get_var_primal(it->first) > 0) {
 
                 m_present_generators.emplace_back(it->first, it->second);
                 ++it;

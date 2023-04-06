@@ -57,7 +57,7 @@ int main(int t_argc, char** t_argv) {
     }
 
     // Set the objective function
-    model.set_obj(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
+    model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     for (bool primal_heuristic : { true, false }) {
 

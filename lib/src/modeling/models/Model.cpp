@@ -117,11 +117,11 @@ ObjectiveSense Model::get_obj_sense() const {
     return m_sense;
 }
 
-const Expr<Var, Var> &Model::get_obj() const {
+const Expr<Var, Var> &Model::get_obj_expr() const {
     return m_objective;
 }
 
-const LinExpr<Ctr> &Model::get_rhs() const {
+const LinExpr<Ctr> &Model::get_rhs_expr() const {
     return m_rhs;
 }
 
@@ -189,7 +189,7 @@ Model* Model::clone() const {
     }
 
     result->set_obj_sense(get_obj_sense());
-    result->set_obj(get_obj());
+    result->set_obj_expr(get_obj_expr());
 
     if (m_optimizer_factory) {
         result->use(*m_optimizer_factory);
@@ -243,7 +243,7 @@ double Model::get_best_obj() const {
     return m_optimizer->get_best_obj();
 }
 
-double Model::get_var_val(const Var &t_var) const {
+double Model::get_var_primal(const Var &t_var) const {
     throw_if_no_optimizer();
     return m_optimizer->get_var_val(t_var);
 }
@@ -253,7 +253,7 @@ double Model::get_ctr_farkas(const Ctr &t_ctr) const {
     return m_optimizer->get_ctr_farkas(t_ctr);
 }
 
-double Model::get_ctr_val(const Ctr &t_ctr) const {
+double Model::get_ctr_dual(const Ctr &t_ctr) const {
     throw_if_no_optimizer();
     return m_optimizer->get_ctr_val(t_ctr);
 }
@@ -282,11 +282,11 @@ void Model::set_obj_sense(ObjectiveSense t_value) {
 
 }
 
-void Model::set_obj(const Expr<Var, Var> &t_objective) {
-    set_obj(Expr<Var, Var>(t_objective));
+void Model::set_obj_expr(const Expr<Var, Var> &t_objective) {
+    set_obj_expr(Expr<Var, Var>(t_objective));
 }
 
-void Model::set_obj(Expr<Var, Var> &&t_objective) {
+void Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
     replace_objective(Expr<Var, Var>(t_objective));
 
@@ -296,11 +296,11 @@ void Model::set_obj(Expr<Var, Var> &&t_objective) {
 
 }
 
-void Model::set_rhs(const LinExpr<Ctr> &t_rhs) {
-    set_rhs(LinExpr<Ctr>(t_rhs));
+void Model::set_rhs_expr(const LinExpr<Ctr> &t_rhs) {
+    set_rhs_expr(LinExpr<Ctr>(t_rhs));
 }
 
-void Model::set_rhs(LinExpr<Ctr> &&t_rhs) {
+void Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
     replace_right_handside(LinExpr<Ctr>(t_rhs));
 
@@ -310,11 +310,11 @@ void Model::set_rhs(LinExpr<Ctr> &&t_rhs) {
 
 }
 
-void Model::set_obj_constant(const Constant &t_constant) {
-    set_obj_constant(Constant(t_constant));
+void Model::set_obj_const(const Constant &t_constant) {
+    set_obj_const(Constant(t_constant));
 }
 
-void Model::set_obj_constant(Constant &&t_constant) {
+void Model::set_obj_const(Constant &&t_constant) {
 
     m_objective.constant() = std::move(t_constant);
 

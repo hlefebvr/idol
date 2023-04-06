@@ -88,7 +88,7 @@ Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, G
 void Optimizers::Gurobi::hook_build() {
 
     const auto& model = parent();
-    const auto& objective = model.get_obj();
+    const auto& objective = model.get_obj_expr();
 
     if (objective.quadratic().empty()) {
         hook_update_objective_sense();
@@ -201,7 +201,7 @@ void Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
 void Optimizers::Gurobi::hook_update_objective() {
 
     const auto& model = parent();
-    const auto& objective = model.get_obj();
+    const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
     GRBLinExpr linear_expr = gurobi_numeric(as_numeric(objective.constant()));
