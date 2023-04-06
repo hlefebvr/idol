@@ -220,6 +220,12 @@ void Optimizers::ColumnGeneration::run_column_generation() {
 
         ++m_iteration_count;
 
+        if (m_iteration_count >= iteration_count_limit()) {
+            set_reason(IterationCount);
+            terminate();
+            break;
+        }
+
     } while (true);
 
     log_master_solution(true);

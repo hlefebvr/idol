@@ -1,1 +1,2 @@
 add_subdirectory(generalized-assignment-problem)
+add_subdirectory(knapsack-problem)

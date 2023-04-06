@@ -19,6 +19,7 @@
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/solvers/Mosek.h"
 #include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/solvers/KnapsackSolver.h"
 
 int main(int t_argc, char** t_argv) {
 
@@ -67,7 +68,7 @@ int main(int t_argc, char** t_argv) {
 
     for (bool primal_heuristic : { true, false }) {
 
-        for (bool branching_on_master: {true, false}) {
+        for (bool branching_on_master: {true}) {
 
             for (bool farkas_pricing: {true, false}) {
 
@@ -79,7 +80,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .with_node_solver(
 
-                                            DantzigWolfeDecomposition(decomposition)
+                                            DantzigWolfeDecomposition(std_decomposition)
 
                                                     .with_master_solver(
                                                             Gurobi::ContinuousRelaxation()
@@ -87,10 +88,10 @@ int main(int t_argc, char** t_argv) {
                                                     )
 
                                                     .with_pricing_solver(
-                                                            Gurobi()
+                                                            KnapsackSolver()
                                                     )
 
-                                                    .with_log_level(Trace, Magenta)
+                                                    .with_log_level(Debug, Magenta)
 
                                                     .with_farkas_pricing(farkas_pricing)
 
@@ -99,6 +100,8 @@ int main(int t_argc, char** t_argv) {
                                                     .with_branching_on_master(branching_on_master)
 
                                                     .with_log_frequency(1)
+
+                                                    //.with_iteration_count_limit(20)
 
                                     )
 
@@ -114,7 +117,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .with_subtree_depth(1)
 
-                                    .with_log_level(Trace, Blue)
+                                    .with_log_level(Info, Blue)
                     );
 
                     std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing
@@ -128,12 +131,6 @@ int main(int t_argc, char** t_argv) {
                     std::cout << (SolutionStatus) model.get(Attr::Solution::Status) << std::endl;
                     std::cout << (SolutionReason) model.get(Attr::Solution::Reason) << std::endl;
                     std::cout << save(model, Attr::Solution::Primal) << std::endl;
-
-                    //return 0;
-
-                    if (model.get(Attr::Solution::ObjVal) != -233.) {
-                        throw Exception("STOP");
-                    }
 
                 }
 
