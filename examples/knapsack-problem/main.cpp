@@ -17,11 +17,11 @@ int main(int t_argc, const char** t_argv) {
 
     Model model(env);
 
-    auto x = Var::array(env, Dim<1>(n_items), 0, 1, Binary, "x");
+    auto x = Var::make_vector(env, Dim<1>(n_items), 0, 1, Binary, "x");
 
     Ctr knapsack_constraint(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
-    model.add_array<Var, 1>(x);
+    model.add_vector<Var, 1>(x);
     model.add(knapsack_constraint);
     model.set_obj(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 

@@ -29,10 +29,10 @@ int main(int t_argc, const char** t_argv) {
     Annotation<Ctr> decomposition(env, "decomposition", MasterId);
 
     // Create assignment variables (x_ij binaries)
-    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
+    auto x = Var::make_vector(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
 
     // Add variables to the model
-    model.add_array<Var, 2>(x);
+    model.add_vector<Var, 2>(x);
 
     // Create knapsack constraints (i.e., capacity constraints)
     for (unsigned int i = 0 ; i < n_agents ; ++i) {

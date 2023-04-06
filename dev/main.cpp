@@ -41,15 +41,11 @@ int main(int t_argc, char** t_argv) {
     Annotation<Ctr> decomposition2(env, "decomposition2", MasterId);
 
     // Create assignment variables (x_ij binaries)
-    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-
-    // Add variables to the modelgeneration_pattern
-    model.add_array<Var, 2>(x);
+    auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
 
     // Create knapsack constraints (i.e., capacity constraints)
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
-        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
-        model.add(capacity);
+        auto capacity = model.add_ctr(idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
 
         capacity.set(std_decomposition, i);
         capacity.set(decomposition, i/2);
@@ -58,8 +54,7 @@ int main(int t_argc, char** t_argv) {
 
     // Create assignment constraints
     for (unsigned int j = 0 ; j < n_jobs ; ++j) {
-        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
-        model.add(assignment);
+        model.add_ctr(idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
     }
 
     // Set the objective function

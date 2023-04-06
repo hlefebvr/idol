@@ -37,7 +37,11 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             auto objective = -x - y - 2 * z;
 
             Model model(env);
-            model.add_many(x, y, z, c1, c2);
+            model.add(x);
+            model.add(y);
+            model.add(z);
+            model.add(c1);
+            model.add(c2);
             model.set_obj(objective);
 
             model.use(*solver);
@@ -75,7 +79,11 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             auto objective = -x - y - 2 * z;
 
             Model model(env);
-            model.add_many(x, y, z, c1, c2);
+            model.add(x);
+            model.add(y);
+            model.add(z);
+            model.add(c1);
+            model.add(c2);
             model.set_obj(objective);
 
             model.use(*solver);
@@ -115,7 +123,9 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Ctr c2(env, x <= 0);
 
             Model model(env);
-            model.add_many(x, c1, c2);
+            model.add(x);
+            model.add(c1);
+            model.add(c2);
 
             model.use(*solver);
 
@@ -142,7 +152,10 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
             Ctr c2(env, x <= .9);
 
             Model model(env);
-            model.add_many(x, c1, c2);
+
+            model.add(x);
+            model.add(c1);
+            model.add(c2);
 
             model.use(*solver);
 

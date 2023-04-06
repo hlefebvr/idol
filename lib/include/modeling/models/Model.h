@@ -66,26 +66,31 @@ public:
     ~Model() override;
 
     // Variables
+    Var add_var(double t_lb, double t_ub, int t_type, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name = "");
+    template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name = "");
     void add(const Var& t_var);
-    void add(const Var& t_var, TempVar&& t_temp_var);
+    void add(const Var& t_var, TempVar t_temp_var);
     [[nodiscard]] bool has(const Var& t_var) const;
     void remove(const Var& t_var);
     [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const { return m_variables; }
 
     // Constraints
+    Ctr add_ctr(TempCtr t_temp_ctr, std::string t_name = "");
+    Ctr add_ctr(Row&& t_row, int t_type, std::string t_name = "");
+    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, int t_type, const Constant& t_constant, const std::string& t_name = "");
     void add(const Ctr& t_ctr);
-    void add(const Ctr &t_ctr, TempCtr &&t_temp_ctr);
+    void add(const Ctr &t_ctr, TempCtr t_temp_ctr);
     [[nodiscard]] bool has(const Ctr& t_ctr) const;
     void remove(const Ctr& t_ctr);
-    [[nodiscard]] auto ctrs() const { return ConstIteratorForward(m_constraints); }
+    [[nodiscard]] ConstIteratorForward<std::vector<Ctr>> ctrs() const { return m_constraints; }
 
     // Model
     [[nodiscard]] unsigned int id() const { return m_id; }
     [[nodiscard]] Model* clone() const;
     [[nodiscard]] Env& env() const { return const_cast<Model*>(this)->m_env; }
 
-    template<class T, unsigned int N> void add_array(const Vector<T, N>& t_vector);
-    template<class T, class ...ArgsT> void add_many(const T& t_object, const ArgsT& ...t_args);
+    template<class T, unsigned int N> void add_vector(const Vector<T, N>& t_vector);
 
     // Optimizer
     Optimizer& optimizer() { throw_if_no_optimizer(); return *m_optimizer; }
@@ -145,25 +150,31 @@ public:
     void set_var_column(const Var& t_var, Column&& t_column);
 };
 
-template<class T, class... ArgsT>
-void Model::add_many(const T &t_object, const ArgsT &... t_args) {
-    add(t_object);
-    if constexpr (sizeof...(t_args) > 0) {
-        add_many(t_args...);
-    }
-}
-
 template<class T, unsigned int N>
-void Model::add_array(const Vector<T, N> &t_vector) {
+void Model::add_vector(const Vector<T, N> &t_vector) {
     if constexpr (N == 1) {
         for (const auto& x : t_vector) {
             add(x);
         }
     } else  {
         for (const auto& x : t_vector) {
-            add_array<T, N - 1>(x);
+            add_vector<T, N - 1>(x);
         }
     }
+}
+
+template<unsigned int N>
+Vector<Var, N> Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, int t_type, const std::string& t_name) {
+    auto result = Var::make_vector(m_env, t_dim, t_lb, t_ub, t_type, t_name);
+    add_vector<Var, N>(result);
+    return result;
+}
+
+template<unsigned int N>
+Vector<Ctr, N> Model::add_ctrs(Dim<N> t_dim, int t_type, const Constant &t_constant, const std::string &t_name) {
+    auto result = Ctr::make_vector(m_env, t_dim, t_type, t_constant, t_name);
+    add_vector<Ctr, N>(result);
+    return result;
 }
 
 static auto save_primal_values(const Model& t_original_model, const Model& t_model) {

@@ -39,8 +39,8 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
     Model model(env);
 
-    auto x = Var::array(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-    model.add_array<Var, 2>(x);
+    auto x = Var::make_vector(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
+    model.add_vector<Var, 2>(x);
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
 

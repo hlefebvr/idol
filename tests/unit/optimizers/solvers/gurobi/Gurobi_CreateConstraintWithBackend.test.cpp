@@ -120,8 +120,8 @@ SCENARIO("Gurobi: Create a constraint with backend", "[unit][backend][Gurobi]") 
 
         const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
-        auto x = Var::array(env, Dim<1>(3), 0., 1., Continuous);
-        model.add_array<Var, 1>(x);
+        auto x = Var::make_vector(env, Dim<1>(3), 0., 1., Continuous);
+        model.add_vector<Var, 1>(x);
 
         WHEN("A <=-constraint (rhs=1) is added with a Row") {
 

@@ -44,15 +44,13 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         Model model(env);
 
-        auto x = Var::array<1>(env, 0., 1., Binary, "x");
+        auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, "x");
 
-        Ctr constraint(idol_Sum(j, n_items, weight[j] * x[j]) <= capacity);
+        model.add_ctr(idol_Sum(j, n_items, weight[j] * x[j]) <= capacity);
 
         Expr objective(idol_Sum(j, n_items, -profits[j] * x[j]);
 
-        model.add(x);
-        model.add(constraint);
-        model.set(Attr::Expr::Obj, objective);
+        model.set_obj(objective);
 
         model.use(Gurobi());
 

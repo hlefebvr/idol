@@ -21,13 +21,13 @@ int main(int t_argc, const char** t_argv) {
     const unsigned int n_facilities = instance.n_facilities();
 
     // Make model
-    auto x = Var::array(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = Var::array(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    auto x = Var::make_vector(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
+    auto y = Var::make_vector(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
 
     Model model(env);
 
-    model.add_array<Var, 1>(x);
-    model.add_array<Var, 2>(y);
+    model.add_vector<Var, 1>(x);
+    model.add_vector<Var, 2>(y);
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));

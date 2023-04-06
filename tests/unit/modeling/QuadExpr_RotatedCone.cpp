@@ -31,7 +31,7 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
 
     Env env;
 
-    auto x = Var::array<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
+    auto x = Var::make_vector<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
 
     std::vector<QuadExpr<Var, Var>> quadratic_expressions = {
             x[0] * x[0] + x[1] * x[1],

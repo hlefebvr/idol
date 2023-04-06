@@ -22,7 +22,7 @@ Model::~Model() {
 }
 
 
-void Model::add(const Var &t_var, TempVar &&t_temp_var) {
+void Model::add(const Var &t_var, TempVar t_temp_var) {
     m_env.create_version(*this,
                          t_var,
                          m_variables.size(),
@@ -78,7 +78,7 @@ void Model::remove(const Ctr &t_ctr) {
     m_env.remove_version(*this, t_ctr);
 }
 
-void Model::add(const Ctr &t_ctr, TempCtr &&t_temp_ctr) {
+void Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
     m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
     m_constraints.emplace_back(t_ctr);
 
@@ -443,4 +443,24 @@ void Model::set_var_column(const Var &t_var, Column &&t_column) {
         throw Exception("Updating column is not implemented.");
     }
 
+}
+
+Var Model::add_var(double t_lb, double t_ub, int t_type, std::string t_name) {
+    return add_var(t_lb, t_ub, t_type, Column(), std::move(t_name));
+}
+
+Var Model::add_var(double t_lb, double t_ub, int t_type, Column t_column, std::string t_name) {
+    Var result(m_env, t_lb, t_ub, t_type, std::move(t_column), std::move(t_name));
+    add(result);
+    return result;
+}
+
+Ctr Model::add_ctr(Row &&t_row, int t_type, std::string t_name) {
+    return add_ctr(TempCtr(std::move(t_row), t_type), std::move(t_name));
+}
+
+Ctr Model::add_ctr(TempCtr t_temp_ctr, std::string t_name) {
+    Ctr result(m_env, std::move(t_temp_ctr), std::move(t_name));
+    add(result);
+    return result;
 }
