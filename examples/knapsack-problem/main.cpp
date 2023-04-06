@@ -4,7 +4,6 @@
 #include <iostream>
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "modeling.h"
-#include "optimizers/solvers/KnapsackSolver.h"
 #include "optimizers/solvers/Gurobi.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -15,33 +14,24 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
+    // Create model
     Model model(env);
 
-    auto x = Var::make_vector(env, Dim<1>(n_items), 0, 1, Binary, "x");
+    auto x = model.add_vars(Dim<1>(n_items), 0, 1, Binary, "x");
 
-    Ctr knapsack_constraint(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
+    model.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
-    model.add_vector<Var, 1>(x);
-    model.add(knapsack_constraint);
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    ///
-
+    // Set optimizer
     model.use(Gurobi());
 
+    // Solve
     model.optimize();
 
-    std::cout << "Gurobi: " << model.get_best_obj() << std::endl;
+    std::cout << "Objective value = " << model.get_best_obj() << std::endl;
 
-    std::cout << save(model, Attr::Solution::Primal) << std::endl;
-
-    model.use(KnapsackSolver());
-
-    model.optimize();
-
-    std::cout << "KnapsackSolver: " << model.get_best_obj() << std::endl;
-
-    std::cout << save(model, Attr::Solution::Primal) << std::endl;
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

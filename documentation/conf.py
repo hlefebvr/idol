@@ -67,7 +67,7 @@ html_theme_options = {
     "style_external_links": True
 }
 pygments_style = "colorful"
-html_title = "Idol"
+html_title = "idol"
 # html_logo = ''
 github_url = 'https://github.com/hlefebvr/idol'
 # html_baseurl = ''
@@ -80,7 +80,7 @@ html_static_path = ['_static']
 # -- Breathe configuration -------------------------------------------------
 
 breathe_projects = {
-    "Idol": "_build/xml/"
+    "idol": "_build/xml/"
 }
-breathe_default_project = "Idol"
+breathe_default_project = "idol"
 breathe_default_members = ('members', 'undoc-members')

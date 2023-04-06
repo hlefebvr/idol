@@ -138,6 +138,7 @@ Table of contents
     self
     installation/index
     tutorials/index
+    examples/index
     api/index
     developer_guide/index
 
