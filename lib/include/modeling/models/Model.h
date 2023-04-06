@@ -1151,9 +1151,11 @@ public:
     void set_var_column(const Var& t_var, Column&& t_column);
 
     /**
-     * Returns the number of available solution primal solutions
+     * Returns the number of available primal solutions.
      *
-     * Useful for accessing several solutions returned by the solver.
+     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * solution pools). This function can be used to query the number of available solutions.
+     * The solution is selected with `Model::set_solution_index` and retrieved via get_var_primal and get_best_obj.
      *
      * Example:
      * ```cpp
@@ -1169,7 +1171,8 @@ public:
     /**
      * Returns the current solution index.
      *
-     * Useful for accessing several solutions returned by the solver.
+     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * solution pools). This function return the current solution index which is being returned by the model.
      *
      * Example:
      * ```cpp
@@ -1184,7 +1187,8 @@ public:
     /**
      * Sets the index of the solution returned by get_var_primal, get_status and get_reason.
      *
-     * Useful for accessing several solutions returned by the solver.
+     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * solution pools). This method can be used to change the solution index which is being returned by the model.
      *
      * Example:
      * ```cpp

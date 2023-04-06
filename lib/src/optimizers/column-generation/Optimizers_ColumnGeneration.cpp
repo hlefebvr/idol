@@ -463,6 +463,8 @@ void Optimizers::ColumnGeneration::enrich_master_problem() {
 
         bool can_enrich_master;
 
+        // TODO add rules for adding columns
+
         if (m_current_iteration_is_farkas_pricing) {
             can_enrich_master = subproblem.m_model->get_best_obj() < -1e-4;
         } else {
