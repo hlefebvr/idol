@@ -67,23 +67,23 @@ install(TARGETS idol
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-        IdolConfigVersion.cmake
+        idolConfigVersion.cmake
         VERSION ${CMAKE_PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 
 install(EXPORT idol_targets
-        FILE IdolTargets.cmake
-        DESTINATION lib/cmake/Idol
+        FILE idolTargets.cmake
+        DESTINATION lib/cmake/idol
         )
 
-configure_file(IdolConfig.cmake.in IdolConfig.cmake @ONLY)
+configure_file(idolConfig.cmake.in idolConfig.cmake @ONLY)
 install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/IdolConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/IdolConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/idolConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/idolConfigVersion.cmake"
         "${idol_SOURCE_DIR}/cmake/FindGUROBI.cmake"
         "${idol_SOURCE_DIR}/cmake/FindGLPK.cmake"
         "${idol_SOURCE_DIR}/cmake/FindMOSEK.cmake"
         "${idol_SOURCE_DIR}/cmake/FindEIGEN.cmake"
-        DESTINATION lib/cmake/Idol
+        DESTINATION lib/cmake/idol
         )

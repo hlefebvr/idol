@@ -170,7 +170,7 @@ int main(int t_argc, char** t_argv) {
 
     model.build_opposite_axis();
 
-    auto& rg = Idol::set_optimizer<RowGeneration>(model);
+    auto& rg = idol::set_optimizer<RowGeneration>(model);
 
     rg.set_master_backend<Gurobi>();
     rg.set_subproblem_backend<Gurobi>(0);

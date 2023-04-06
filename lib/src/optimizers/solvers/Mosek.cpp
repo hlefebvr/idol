@@ -11,7 +11,7 @@ Optimizer *Mosek::operator()(const Model &t_model) const {
     this->handle_default_parameters(result);
     return result;
 #else
-    throw Exception("Idol was not linked with Mosek.");
+    throw Exception("idol was not linked with Mosek.");
 #endif
 }
 

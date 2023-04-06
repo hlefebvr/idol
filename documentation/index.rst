@@ -48,9 +48,7 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         model.add_ctr(idol_Sum(j, n_items, weight[j] * x[j]) <= capacity);
 
-        Expr objective(idol_Sum(j, n_items, -profits[j] * x[j]);
-
-        model.set_obj_expr(objective);
+        model.set_obj_expr(idol_Sum(j, n_items, -profits[j] * x[j]);
 
         model.use(Gurobi());
 

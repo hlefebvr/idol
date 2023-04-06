@@ -22,7 +22,7 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
 
     return result;
 #else
-    throw Exception("Idol was not linked with Gurobi.");
+    throw Exception("idol was not linked with Gurobi.");
 #endif
 }
 
