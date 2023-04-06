@@ -516,7 +516,7 @@ void Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_artifici
 
 }
 
-double Optimizers::ColumnGeneration::get_var_val(const Var &t_var) const {
+double Optimizers::ColumnGeneration::get_var_primal(const Var &t_var) const {
     return m_master->get_var_primal(t_var);
 }
 
@@ -524,7 +524,7 @@ double Optimizers::ColumnGeneration::get_var_ray(const Var &t_var) const {
     return m_master->get_var_ray(t_var);
 }
 
-double Optimizers::ColumnGeneration::get_ctr_val(const Ctr &t_ctr) const {
+double Optimizers::ColumnGeneration::get_ctr_dual(const Ctr &t_ctr) const {
     return m_master->get_ctr_dual(t_ctr);
 }
 

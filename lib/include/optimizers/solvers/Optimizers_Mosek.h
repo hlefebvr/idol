@@ -75,9 +75,9 @@ protected:
     [[nodiscard]] SolutionReason get_reason() const override;
     [[nodiscard]] double get_best_obj() const override;
     [[nodiscard]] double get_best_bound() const override;
-    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_relative_gap() const override;
     [[nodiscard]] double get_absolute_gap() const override;

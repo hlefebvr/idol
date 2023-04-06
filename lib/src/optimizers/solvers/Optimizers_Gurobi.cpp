@@ -362,7 +362,7 @@ double Optimizers::Gurobi::get_best_bound() const {
 
 }
 
-double Optimizers::Gurobi::get_var_val(const Var &t_var) const {
+double Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
     return lazy(t_var).impl().get(GRB_DoubleAttr_X);
 }
 
@@ -370,7 +370,7 @@ double Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
     return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
 }
 
-double Optimizers::Gurobi::get_ctr_val(const Ctr &t_ctr) const {
+double Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
     const auto& impl = lazy(t_ctr).impl();
 
     if (std::holds_alternative<GRBConstr>(impl)) {

@@ -1186,7 +1186,7 @@ static auto save_primal(const Model& t_original_model, const Model& t_model) {
     const auto reason = t_model.get_reason();
 
     if (status != Optimal && status != Feasible) {
-        throw Exception("Not available.");
+        throw Exception("Primal values not available.");
     }
 
     result.set_status(status);
@@ -1214,7 +1214,7 @@ static auto save_ray(const Model& t_original_model, const Model& t_model) {
     const auto reason = t_model.get_reason();
 
     if (status != Unbounded) {
-        throw Exception("Not available.");
+        throw Exception("Ray not available.");
     }
 
     result.set_status(status);
@@ -1242,7 +1242,7 @@ static auto save_dual(const Model& t_original_model, const Model& t_model) {
     const auto reason = t_model.get_reason();
 
     if (status != Optimal && status != Feasible) {
-        throw Exception("Not available.");
+        throw Exception("Dual values not available.");
     }
 
     result.set_status(status);
@@ -1270,7 +1270,7 @@ static auto save_farkas(const Model& t_original_model, const Model& t_model) {
     const auto reason = t_model.get_reason();
 
     if (status != Infeasible) {
-        throw Exception("Not available.");
+        throw Exception("Farkas certificate not available.");
     }
 
     result.set_status(status);

@@ -91,9 +91,9 @@ protected:
     virtual void set_objective(Expr<Var, Var>&& t_objective);
     virtual void set_objective(const Expr<Var, Var>& t_objective);
 
-    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
     void update_obj_sense() override;

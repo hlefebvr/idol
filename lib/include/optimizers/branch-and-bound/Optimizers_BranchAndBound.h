@@ -77,9 +77,9 @@ protected:
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
-    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-    [[nodiscard]] double get_ctr_val(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
     void update_obj_sense() override;
@@ -187,15 +187,15 @@ void Optimizers::BranchAndBound<NodeInfoT>::update_obj_sense() {
 template<class NodeInfoT>
 double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_farkas(const Ctr &t_ctr) const {
     if (m_n_solved_nodes > 1) {
-        throw Exception("Not available.");
+        throw Exception("Farkas certificate not available.");
     }
     return m_relaxation->get_ctr_farkas(t_ctr);
 }
 
 template<class NodeInfoT>
-double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_val(const Ctr &t_ctr) const {
+double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_dual(const Ctr &t_ctr) const {
     if (m_n_solved_nodes > 1) {
-        throw Exception("Not available.");
+        throw Exception("Dual value not available.");
     }
     return m_relaxation->get_ctr_dual(t_ctr);
 }
@@ -203,16 +203,16 @@ double Optimizers::BranchAndBound<NodeInfoT>::get_ctr_val(const Ctr &t_ctr) cons
 template<class NodeInfoT>
 double Optimizers::BranchAndBound<NodeInfoT>::get_var_ray(const Var &t_var) const {
     if (m_n_solved_nodes > 1) {
-        throw Exception("Not available.");
+        throw Exception("Ray not available.");
     }
     return m_relaxation->get_var_ray(t_var);
 }
 
 template<class NodeInfoT>
-double Optimizers::BranchAndBound<NodeInfoT>::get_var_val(const Var &t_var) const {
+double Optimizers::BranchAndBound<NodeInfoT>::get_var_primal(const Var &t_var) const {
 
     if (!m_incumbent){
-        throw Exception("Not available.");
+        throw Exception("Primal value not available.");
     }
 
     return m_incumbent->info().primal_solution().get(t_var);

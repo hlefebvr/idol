@@ -17,7 +17,7 @@ Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_
 
 }
 
-double Optimizers::DantzigWolfeDecomposition::get_var_val(const Var &t_var) const {
+double Optimizers::DantzigWolfeDecomposition::get_var_primal(const Var &t_var) const {
 
     const unsigned int subproblem_id = t_var.get(m_variable_flag);
 
@@ -25,7 +25,7 @@ double Optimizers::DantzigWolfeDecomposition::get_var_val(const Var &t_var) cons
         return get_subproblem_primal_value(t_var, subproblem_id);
     }
 
-    return ColumnGeneration::get_var_val(t_var);
+    return ColumnGeneration::get_var_primal(t_var);
 }
 
 double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {

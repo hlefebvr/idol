@@ -35,7 +35,7 @@ public:
 protected:
     void set_objective(Expr<Var, Var> &&t_objective) override;
 
-    [[nodiscard]] double get_var_val(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
     void update_var_lb(const Var &t_var) override;
     void update_var_ub(const Var &t_var) override;

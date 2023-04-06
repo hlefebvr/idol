@@ -245,7 +245,7 @@ double Model::get_best_obj() const {
 
 double Model::get_var_primal(const Var &t_var) const {
     throw_if_no_optimizer();
-    return m_optimizer->get_var_val(t_var);
+    return m_optimizer->get_var_primal(t_var);
 }
 
 double Model::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -255,7 +255,7 @@ double Model::get_ctr_farkas(const Ctr &t_ctr) const {
 
 double Model::get_ctr_dual(const Ctr &t_ctr) const {
     throw_if_no_optimizer();
-    return m_optimizer->get_ctr_val(t_ctr);
+    return m_optimizer->get_ctr_dual(t_ctr);
 }
 
 double Model::get_var_ray(const Var &t_var) const {

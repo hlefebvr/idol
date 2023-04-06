@@ -626,7 +626,7 @@ double Optimizers::GLPK::get_best_bound() const {
     return get_best_obj();
 }
 
-double Optimizers::GLPK::get_var_val(const Var &t_var) const {
+double Optimizers::GLPK::get_var_primal(const Var &t_var) const {
     const int impl = lazy(t_var).impl();
     return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
 }
@@ -634,13 +634,13 @@ double Optimizers::GLPK::get_var_val(const Var &t_var) const {
 double Optimizers::GLPK::get_var_ray(const Var &t_var) const {
 
     if (!m_unbounded_ray.has_value()) {
-        throw Exception("Not available.");
+        throw Exception("Ray not available.");
     }
 
     return m_unbounded_ray->get(t_var);
 }
 
-double Optimizers::GLPK::get_ctr_val(const Ctr &t_ctr) const {
+double Optimizers::GLPK::get_ctr_dual(const Ctr &t_ctr) const {
     const auto &impl = lazy(t_ctr).impl();
     return glp_get_row_dual(m_model, impl);
 }

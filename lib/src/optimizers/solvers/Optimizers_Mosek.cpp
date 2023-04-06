@@ -440,24 +440,24 @@ double Optimizers::Mosek::get_best_bound() const {
     return m_model->dualObjValue();
 }
 
-double Optimizers::Mosek::get_var_val(const Var &t_var) const {
+double Optimizers::Mosek::get_var_primal(const Var &t_var) const {
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
 double Optimizers::Mosek::get_var_ray(const Var &t_var) const {
     if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
-        throw Exception("Not available.");
+        throw Exception("Ray not available.");
     }
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
-double Optimizers::Mosek::get_ctr_val(const Ctr &t_ctr) const {
+double Optimizers::Mosek::get_ctr_dual(const Ctr &t_ctr) const {
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
 
 double Optimizers::Mosek::get_ctr_farkas(const Ctr &t_ctr) const {
     if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
-        throw Exception("Not available.");
+        throw Exception("Farkas certificate not available.");
     }
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
