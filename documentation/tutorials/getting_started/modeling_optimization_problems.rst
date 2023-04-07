@@ -10,6 +10,21 @@ On this page, we discuss the very basic ideas of idol's modeling API.
 All classes which are used for modeling an optimization problem can be accessed by including :code:`#include <idol/modeling.h>`.
 Let's get started.
 
+Env
+---
+
+Every optimization object (like variables and constraints) are managed by an "optimization environment". Essentially,
+it is the environment that controls the death and lives of such objects. It is through the environment that idol
+manages the different versions each optimization object may have during the execution of your program.
+
+Typically, only one environment should be used by your code, though it is possible to instantiate many environment (not advised).
+
+Environments are objects of the ``Env`` class and can be created as follows.
+
+.. code-block::
+
+    Env env; // Creates a new optimization environment.
+
 Model
 -----
 
@@ -28,10 +43,8 @@ Here, :math:`x_j` are the variables of this optimization problem while :math:`c_
 input parameters for this model. Optionally, :math:`J_I\subseteq\{1,...,n\}` is a set of variable indices
 whose value must be integral.
 
-The default constructor of :cpp:`Model` can be used to create a new optimization model in idol. It takes a single argument
-which is the "optimization environment" to be used. An optimization environment manages optimization objects throughout its
-lifetime. It is thanks to the environment that variables can be added to different models and that idol manages multi-threading
-implementations. Typically, users should define only one optimization environment.
+Constructors of :cpp:`Model` can be used to create a new optimization model in idol. The most common takes a single argument
+which is the optimization environment to be used.
 
 .. code-block:: cpp
 
@@ -54,59 +67,85 @@ Variables
 Any variable in idol is associated to at least one :cpp:`Model` object. Typically, exactly one.
 We can easily create a new variable by using the constructor of the :cpp:`Var` class and add it to a model by calling the :cpp:`Model::add` method.
 For instance, the following piece of code
-will create a new variable, called "x", which is continuous, non-negative and has an objective coefficient of 2.
+will create a new variable, called "x", which is continuous and non-negative.
 
 .. code-block:: cpp
 
-    Var x(0., Inf, Continuous, 2, "x");
-
-    std::cout << x << std::endl; // "x"
+    Var x(env, 0., Inf, Continuous, "x");
 
     model.add(x); // Variable x is added to the model
 
-Note that it is also possible to create multiple variables at once by calling :cpp:`Var::array`. This method requires
+A more straightforward way of creating variables is by directly calling the method ``add_var`` of the ``Model`` class.
+For instance, the following piece of code is equivalent to the previous one.
+
+.. code-block:: cpp
+
+    model.add_var(0, Inf, Continuous, "x");
+
+Note that we did not need to repeat the environment since the model's environment is used by default.
+
+The idol library also offers simple ways for creating multiple variables at once.
+For instance, one can call the :cpp:`Var::make_vector` function. This function requires
 an extra parameter specifying the dimension of the new variable. For instance, the following code creates variables :math:`y_{ij}`
 with :math:`i=1,...,K` and :math:`j=1,...,T`.
 
 .. code-block:: cpp
 
-    auto y = Var::array(env, Dim<2>(K, T), 0., Inf, Continuous, 0., "y");
-
-    std::cout << y[0][0] << std::endl; // "y_0_0"
+    auto y = Var::array(env, Dim<2>(K, T), 0., Inf, Continuous, "y");
 
     model.add_array<Var, 2>(y); // Variables y_ij are added to the model
 
-Another possible way to add a variable is to add it "by column", i.e., by specifying the matrix coefficients of the new variable.
-This is done by first defining a :cpp:`Column` object and to give it to the :cpp:`Var` constructor. We will not discuss it here for brevity.
+    std::cout << y[0][0] << std::endl; // "y_0_0"
+
+Alternatively, one can use the ``Model::add_vars`` method.
+
+.. code-block:: cpp
+
+    auto y= model.add_vars(Dim<2>(K, T), 0., Inf, Continuous, "y");
+
+    std::cout << y[0][0] << std::endl; // "y_0_0"
 
 Constraints
 -----------
 
-Similar to variables, any constraint in idol is associated to at least one :cpp:`Model` object.
+Similarly to variables, constraints are easily created and added to a given ``Model``.
 
-It is created by calling the constructor of the :cpp:`Ctr` class and added to method by means of :cpp:`Model::add`. See for instance.
+Constraints can be created by calling the constructor of the :cpp:`Ctr` class and added to a model by means of :cpp:`Model::add`.
+See for instance.
 
 .. code-block:: cpp
 
     Env env;
     Model model(env);
 
-    Var x(env, 0., Inf, Continuous, "x");
-    Var y(env, 0., Inf, Continuous, "y");
-    Ctr constraint(env, x + y >= 1);
+    Var x_0(env, 0., Inf, Continuous, "x_0");
+    Var x_1(env, 0., Inf, Continuous, "x_1");
+    Ctr constraint(env, x_0 + x_1 >= 1);
 
-    model.add(x);
-    model.add(y);
+    model.add(x_0);
+    model.add(x_1);
     model.add(constraint);
 
-As you can see, a constraint is created using the pattern :code:`{expression} {sign} {expression}` where :code:`{sign}` is one of
-:code:`<=`, :code:`>=` and :code:`==`, and where :code:`{expression}` is an instance of :code:`Expr`.
+A more compact of this code is obtained by making use of the ``Model::add_vars`` and ``Model::add_ctr`` methods.
 
-The class :code:`Expr` is used to represent a mathematical expression in idol. An expression is composed of three parts:
+.. code-block:: cpp
 
-* :code:`Expr::linear` will give you access to the linear part of the expression ;
-* :code:`Expr::quadratic` will give you access to the quadratic part of the expression ;
-* :code:`Expr::constant` will return the constant (or offset) of the expression.
+    Env env;
+    Model model(env);
+
+    auto x = model.add_vars(Dim<1>(2), 0., Inf, Continuous, "x");
+    auto constraint = model.add_ctr(x + y >= 1);
+
+As you can see, a constraint is created using the pattern :code:`{expression} {sign} {expression}` where
+
+* :code:`{sign}` is one of :code:`<=`, :code:`>=` and :code:`==`;
+* :code:`{expression}` is an instance of :code:`Expr`.
+
+The :code:`Expr` class is used to represent a mathematical expression in idol. An expression is composed of three parts:
+
+* :code:`Expr::linear` will give you access to the linear part of the expression (it is an instance of ``LinExpr``);
+* :code:`Expr::quadratic` will give you access to the quadratic part of the expression (it is an instance of ``QuadExpr``);
+* :code:`Expr::constant` will return the constant (or offset) of the expression (it is an instance of ``Constant``).
 
 Typically, however, you will not really care about what composes an expression since an :code:`Expr` object can be created
 quite naturally. See for instance the following code.
@@ -132,19 +171,42 @@ As mentioned, you can access parts of an expression as follows.
         "x_1 is multiplied by 1"
     */
 
-Without diving into too much detail, we should here precise that each constant multiplying a variable in an :cpp:`Expr`
-can actually be composite (e.g., a coefficient may refer to an external optimization variable whose value is fixed in the current model).
-Accessing the actual :cpp:`double` which represents the constant can be done by calling :cpp:`Constant::numerical`.
+.. admonition:: About constants in expressions
 
-In the following example, we make use of the :cpp:`LinExpr::get` function to retrieve the coefficient of a variable inside
-the linear part of an :cpp:`Expr`. Then, we access the :cpp:`double` representing the constant.
+    Without diving into too much detail, we should here precise that each constant multiplying a variable in an :cpp:`Expr`
+    can actually be composite (e.g., a coefficient in the expression may refer to external optimization variables whose
+    value is considered fixed in the current model).
 
-.. code-block:: cpp
+    Fixing variables in an optimization problem can be achieved thanks to the ``!`` symbol.
 
-    Constant coefficient = expr.linear().get(x[0]);
-    double num = coefficient.numerical();
+    For instance, here is an expression where ``xi_0`` and ``xi_1`` are seen as parameters.
 
-    std::cout << num << std::endl; // "4"
+    .. code-block::
+
+        Expr expr = (1 + 2 * !xi_0) * x + 3 * !xi_1 * y;
+
+    Here, ``1 + 2 * !xi_0`` is an instance of the ``Constant`` object and can be used as follows.
+
+    .. code-block::
+
+        Constant constant = 1 + 2 * !xi_0;
+
+        std::cout << constant.numerical() << std::endl; // output: 1
+
+        for (const auto& [param, coeff] : constant) {
+            std::cout << coeff << " * " << param << std::endl; // output: 2 * !xi_0
+        }
+
+Objective function
+------------------
+
+The objective function of an optimization model can specified by the ``Model::set_obj_expr`` method.
+
+Here is an example which sets the objective function to :math:`-x_0 + 2 * x_1`;
+
+.. code-block::
+
+    model.set_obj_expr(-x_0 + 2 * x_1);
 
 In the following tutorial, we will dive into a more practical way to build expressions by considering the simple example
 of the combinatorial Knapsack problem. We will also see how to call an external solver like Gurobi or GLPK using idol.

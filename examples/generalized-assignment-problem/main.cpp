@@ -64,7 +64,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
-                .with_callback(IntegerMasterHeuristic())
+                .with_callback(IntegerMasterHeuristic().with_solver(GLPK()))
             );
 
     // Solve

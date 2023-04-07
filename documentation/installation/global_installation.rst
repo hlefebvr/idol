@@ -9,6 +9,10 @@ Global installation
 The installation process is managed by the CMake build system. You will therefore need to have it
 installed on your computer (at least version 3.22 is required but it may work with earlier versions).
 
+.. hint::
+
+    If you simply want to "try out" idol, we advise you to opt for a :ref:`local installation <installation_local>`.
+
 Creating the :bash:`install` target
 -----------------------------------
 

@@ -90,3 +90,36 @@ another directory to look for GLPK.
 
         set(USE_GLPK YES)
         set(GLPK_DIR /path/to/glpk/install/dir)
+
+Building examples
+-----------------
+
+:ref:`Examples :<examples>` can be found at the root level of the idol repository, inside the directory ``examples``.
+
+By default, CMake will not generate targets to build these example. To tell CMake to generate them, you
+need to set the CMake option ``BUILD_EXAMPLE`` to ``YES``.
+
+.. admonition:: Example
+
+    The following will tell CMake to create targets for examples.
+
+    .. code-block::
+
+        cmake -DBUILD_EXAMPLES=YES ..
+
+    For instance, we can now build the Knapsack Problem example,
+
+    .. code-block::
+
+        make ex_knapsack_problem
+
+    and run it.
+
+    .. code-block::
+
+        ./examples/knapsack-problem/ex_knapsack_problem
+
+Building unit and integration tests
+-----------------------------------
+
+To build tests for idol, please refer to this :ref:`developer page <tests>`.

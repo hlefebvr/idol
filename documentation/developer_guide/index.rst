@@ -8,3 +8,4 @@ Developer guide
    :glob:
 
    build-the-doc
+   tests
