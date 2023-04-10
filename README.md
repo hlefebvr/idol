@@ -97,3 +97,7 @@ model.use(nested_branch_and_price);
 
 model.optimize();
 ```
+
+## Miscellaneous
+
+Versionning is compliant with [Semantic versionning 2.0.0](https://semver.org/).
