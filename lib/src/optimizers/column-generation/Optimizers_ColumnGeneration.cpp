@@ -450,14 +450,15 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     }
 
+    /*
     if (max_reduced_costs > -1e-4 && min_reduced_costs < -1e-2) {
 
         for (auto &subproblem: m_subproblems) {
 
-            if (subproblem.m_model->get_best_obj() > -1e-4) {
-                subproblem.m_skip = true;
-            } else {
+            if (subproblem.m_model->get_best_obj() < -1e-2) {
                 subproblem.m_skip = false;
+            } else {
+                subproblem.m_skip = true;
             }
 
         }
@@ -469,6 +470,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         }
 
     }
+     */
 
     if (some_subproblems_had_been_skipped) {
         return;

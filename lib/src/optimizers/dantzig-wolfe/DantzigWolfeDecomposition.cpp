@@ -149,10 +149,6 @@ void DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigne
                                                Model *t_master,
                                                const std::vector<Model *> &t_subproblems) const {
 
-    if (t_subproblems.empty()) {
-        return;
-    }
-
     for (const auto& var : t_original_formulation.vars()) {
 
         const unsigned int subproblem_id = var.get(t_variable_flag);
