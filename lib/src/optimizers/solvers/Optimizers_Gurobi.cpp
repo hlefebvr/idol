@@ -302,12 +302,12 @@ void Optimizers::Gurobi::set_thread_limit(unsigned int t_thread_limit) {
 }
 
 void Optimizers::Gurobi::set_best_obj_stop(double t_best_obj_stop) {
-    m_model.set(GRB_DoubleParam_BestBdStop, t_best_obj_stop);
+    m_model.set(GRB_DoubleParam_BestObjStop, t_best_obj_stop);
     Optimizer::set_best_obj_stop(t_best_obj_stop);
 }
 
 void Optimizers::Gurobi::set_best_bound_stop(double t_best_bound_stop) {
-    m_model.set(GRB_DoubleParam_BestObjStop, t_best_bound_stop);
+    m_model.set(GRB_DoubleParam_BestBdStop, t_best_bound_stop);
     Optimizer::set_best_bound_stop(t_best_bound_stop);
 }
 
