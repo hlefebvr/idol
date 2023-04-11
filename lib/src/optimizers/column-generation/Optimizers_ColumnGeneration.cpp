@@ -551,7 +551,7 @@ void Optimizers::ColumnGeneration::remove_artificial_variables() {
 bool Optimizers::ColumnGeneration::stopping_condition() const {
     return get_absolute_gap() <= ToleranceForAbsoluteGapPricing
            || get_relative_gap() <= ToleranceForRelativeGapPricing
-           || remaining_time() == 0;
+           || get_remaining_time() == 0;
 }
 
 Optimizers::ColumnGeneration::Subproblem& Optimizers::ColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
@@ -690,7 +690,7 @@ void Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pr
 
 void Optimizers::ColumnGeneration::Subproblem::optimize() {
 
-    const double remaining_time = m_parent.remaining_time();
+    const double remaining_time = m_parent.get_remaining_time();
     m_model->optimizer().set_time_limit(remaining_time);
     m_model->optimize();
 

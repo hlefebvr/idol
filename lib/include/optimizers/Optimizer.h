@@ -127,7 +127,7 @@ public:
 
     virtual void set_log_color(Color t_log_color) { m_log_color = t_log_color; }
 
-    [[nodiscard]] double time_limit() const { return m_time_limit; }
+    [[nodiscard]] double get_time_limit() const { return m_time_limit; }
 
     virtual void set_time_limit(double t_time_limit) { m_time_limit = t_time_limit; }
 
@@ -165,7 +165,7 @@ public:
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
-    [[nodiscard]] double remaining_time() const;
+    [[nodiscard]] double get_remaining_time() const;
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
