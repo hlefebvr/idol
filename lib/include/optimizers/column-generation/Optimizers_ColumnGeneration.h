@@ -180,6 +180,8 @@ public:
     [[nodiscard]] const auto& pool() const { return m_pool; }
 
     [[nodiscard]] const auto& model() const { return *m_model; }
+
+    [[nodiscard]] unsigned int index() const { return m_index; }
 };
 
 #endif //IDOL_OPTIMIZERS_COLUMNGENERATION_H
