@@ -59,7 +59,8 @@ Optimizer *DantzigWolfeDecomposition::operator()(const Model &t_original_formula
                                                              variable_flag,
                                                              master,
                                                              subproblems,
-                                                             generation_patterns);
+                                                             generation_patterns,
+                                                             *m_pricing_optimizer);
 
     this->handle_default_parameters(result);
     this->handle_column_generation_parameters(result);

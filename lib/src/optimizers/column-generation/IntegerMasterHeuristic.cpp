@@ -13,7 +13,13 @@ Callback<NodeInfo> *IntegerMasterHeuristic::operator()() {
         throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_solver to configure.");
     }
 
-    return new Strategy(*m_optimizer_factory);
+    auto* result = new Strategy(*m_optimizer_factory);
+
+    if (m_integer_columns.has_value()) {
+        result->set_integer_columns(m_integer_columns.value());
+    }
+
+    return result;
 }
 
 IntegerMasterHeuristic &IntegerMasterHeuristic::with_solver(const OptimizerFactory &t_optimizer) {
@@ -29,6 +35,11 @@ IntegerMasterHeuristic &IntegerMasterHeuristic::with_solver(const OptimizerFacto
 
 CallbackFactory<NodeInfo> *IntegerMasterHeuristic::clone() const {
     return new IntegerMasterHeuristic(*this);
+}
+
+IntegerMasterHeuristic &IntegerMasterHeuristic::with_integer_columns(bool t_value) {
+    m_integer_columns = t_value;
+    return *this;
 }
 
 IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
@@ -57,9 +68,11 @@ void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
         }
     }
 
-    for (const auto& subproblem : column_generation_optimizer.subproblems()) {
-        for (const auto& [alpha, generator] : subproblem.present_generators()) {
-            integer_master->set_var_type(alpha, Binary);
+    if (m_integer_columns) {
+        for (const auto &subproblem: column_generation_optimizer.subproblems()) {
+            for (const auto &[alpha, generator]: subproblem.present_generators()) {
+                integer_master->set_var_type(alpha, Binary);
+            }
         }
     }
 

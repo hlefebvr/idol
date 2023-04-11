@@ -10,16 +10,18 @@ Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_
                                                                  const Annotation<Var, unsigned int>& t_variable_flag,
                                                                  Model *t_master_problem,
                                                                  const std::vector<Model *> &t_subproblems,
-                                                                 std::vector<Column> t_generation_patterns)
+                                                                 std::vector<Column> t_generation_patterns,
+                                                                 const OptimizerFactory& t_pricing_optimizer)
      : Optimizers::ColumnGeneration(t_original_formulation, t_master_problem, t_subproblems, std::move(t_generation_patterns)),
-       m_variable_flag(t_variable_flag),
-       m_constraint_flag(t_constraint_flag) {
+       m_var_annotation(t_variable_flag),
+       m_ctr_annotation(t_constraint_flag),
+       m_pricing_optimizer(t_pricing_optimizer.clone()) {
 
 }
 
 double Optimizers::DantzigWolfeDecomposition::get_var_primal(const Var &t_var) const {
 
-    const unsigned int subproblem_id = t_var.get(m_variable_flag);
+    const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
     if (subproblem_id != MasterId) {
         return get_subproblem_primal_value(t_var, subproblem_id);
@@ -131,7 +133,7 @@ LinExpr<Var> Optimizers::DantzigWolfeDecomposition::expand_subproblem_variable(c
 
 void Optimizers::DantzigWolfeDecomposition::update_var_lb(const Var &t_var) {
 
-    const unsigned int subproblem_id = t_var.get(m_variable_flag);
+    const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
     if (subproblem_id != MasterId) {
         set_subproblem_lower_bound(t_var, subproblem_id, parent().get_var_lb(t_var));
@@ -143,7 +145,7 @@ void Optimizers::DantzigWolfeDecomposition::update_var_lb(const Var &t_var) {
 
 void Optimizers::DantzigWolfeDecomposition::update_var_ub(const Var &t_var) {
 
-    const unsigned int subproblem_id = t_var.get(m_variable_flag);
+    const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
     if (subproblem_id != MasterId) {
         set_subproblem_upper_bound(t_var, subproblem_id, parent().get_var_ub(t_var));
@@ -161,7 +163,7 @@ void Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_obj
     std::vector<Constant> pricing_obj(n_subproblems);
 
     for (auto [var, coeff] : t_objective.linear()) {
-        const unsigned int subproblem_id = var.get(m_variable_flag);
+        const unsigned int subproblem_id = var.get(m_var_annotation);
         if (subproblem_id == MasterId) {
             master_obj += coeff * var;
         } else {
@@ -176,6 +178,81 @@ void Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_obj
 
     for (unsigned int k = 0 ; k < n_subproblems ; ++k) {
         m_subproblems[k].update_generation_pattern_objective(std::move(pricing_obj[k]));
+    }
+
+}
+
+void Optimizers::DantzigWolfeDecomposition::add(const Var &t_var) {
+
+    const auto subproblem_id = t_var.get(m_var_annotation);
+
+    if (subproblem_id == MasterId) {
+        ColumnGeneration::add(t_var);
+        return;
+    }
+
+    if (m_subproblems.size() <= subproblem_id) {
+
+        auto& env = m_master->env();
+
+        for (unsigned int i = subproblem_id ; i <= subproblem_id ; ++i) {
+
+            auto* model = new Model(env);
+
+            auto convex = m_master->add_ctr(Row(0, 1), Equal);
+
+            Column column;
+            column.linear().set(convex, 1);
+
+            model->use(*m_pricing_optimizer);
+
+            add_subproblem(model, std::move(column));
+
+        }
+
+    }
+
+    m_subproblems[subproblem_id].m_model->add(t_var);
+
+}
+
+void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
+
+    const auto subproblem_id = t_ctr.get(m_ctr_annotation);
+
+    const auto& row = parent().get_ctr_row(t_ctr);
+    const auto type = parent().get_ctr_type(t_ctr);
+
+    if (subproblem_id != MasterId) {
+        m_subproblems[subproblem_id].m_model->add(t_ctr, TempCtr(Row(row), type));
+        return;
+    }
+
+    const unsigned int n_subproblems = m_subproblems.size();
+
+    Row master_row;
+    std::vector<Constant> pricing_pattern(n_subproblems);
+
+    master_row.rhs() = row.rhs();
+
+    for (auto [var, coeff] : row.linear()) {
+        const unsigned int var_subproblem_id = var.get(m_var_annotation);
+
+        if (var_subproblem_id == MasterId) {
+            master_row.linear() += coeff * var;
+        } else {
+            if (!coeff.is_numerical()) {
+                throw Exception("Could not handle non-numerical objective coefficient as generation pattern.");
+            }
+            pricing_pattern[var_subproblem_id] += coeff.numerical() * !var;
+        }
+
+    }
+
+    m_master->add(t_ctr, TempCtr(Row(master_row), type));
+
+    for (auto& subproblem : m_subproblems) {
+        subproblem.m_generation_pattern.linear().set(t_ctr, std::move(pricing_pattern[subproblem.m_index]));
     }
 
 }
