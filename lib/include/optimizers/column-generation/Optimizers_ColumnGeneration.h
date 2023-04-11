@@ -150,6 +150,7 @@ class Optimizers::ColumnGeneration::Subproblem {
     ColumnGeneration& m_parent;
     std::unique_ptr<Model> m_model;
     Column m_generation_pattern;
+    bool m_skip = false;
 
     GeneratorPool<Var> m_pool;
     PresentGeneratorsList m_present_generators;

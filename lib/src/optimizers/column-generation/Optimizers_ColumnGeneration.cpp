@@ -284,7 +284,7 @@ void Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::Col
     const auto& pricing = t_subproblem.m_model;
 
     idol_Log(Info,
-             "<Type=Pricing> "
+             "<Type=Pricing_" << t_subproblem.m_index << "> "
              << "<Iter=" << m_iteration_count << "> "
              << "<TimT=" << time().count() << "> "
              << "<TimI=" << pricing->optimizer().time().count() << "> "
@@ -387,7 +387,13 @@ void Optimizers::ColumnGeneration::solve_subproblems() {
     const unsigned int n_threads = std::min(thread_limit(), m_parallel_pricing_limit);
 
 #pragma omp parallel for num_threads(n_threads) default(none)
-    for (auto & subproblem : m_subproblems) {
+    for (auto& subproblem : m_subproblems) {
+
+        if (subproblem.m_skip) {
+            idol_Log(Trace, "Skipping subproblem " << subproblem.m_index << ".")
+            continue;
+        }
+
         idol_Log(Trace, "Beginning to solve subproblem " << subproblem.m_index << ".")
         subproblem.optimize();
         idol_Log(Trace, "Subproblem " << subproblem.m_index << " has been solved.")
@@ -395,18 +401,30 @@ void Optimizers::ColumnGeneration::solve_subproblems() {
 
     for (auto& subproblem : m_subproblems) {
 
+        if (subproblem.m_skip) {
+            continue;
+        }
+
         log_subproblem_solution(subproblem);
 
         if (is_terminated()) { break; }
 
     }
+
 }
 
 void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     double reduced_costs = 0;
+    double min_reduced_costs = +Inf;
+    double max_reduced_costs = -Inf;
+    bool some_subproblems_had_been_skipped = false;
 
     for (auto& subproblem : m_subproblems) {
+
+        if (subproblem.m_skip) {
+            some_subproblems_had_been_skipped = true;
+        }
 
         const auto status = subproblem.m_model->get_status();
 
@@ -415,6 +433,14 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             const double pricing_optimum = subproblem.m_model->get_best_obj();
             reduced_costs += std::min(0., pricing_optimum);
 
+            if (max_reduced_costs < reduced_costs) {
+                max_reduced_costs = reduced_costs;
+            }
+
+            if (min_reduced_costs > reduced_costs) {
+                min_reduced_costs = reduced_costs;
+            }
+
         } else {
             set_status(status);
             set_reason(Proved);
@@ -422,6 +448,30 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             return;
         }
 
+    }
+
+    if (max_reduced_costs > -1e-4 && min_reduced_costs < -1e-2) {
+
+        for (auto &subproblem: m_subproblems) {
+
+            if (subproblem.m_model->get_best_obj() > -1e-4) {
+                subproblem.m_skip = true;
+            } else {
+                subproblem.m_skip = false;
+            }
+
+        }
+
+    } else {
+
+        for (auto &subproblem: m_subproblems) {
+            subproblem.m_skip = false;
+        }
+
+    }
+
+    if (some_subproblems_had_been_skipped) {
+        return;
     }
 
     if (!m_current_iteration_is_farkas_pricing) {
@@ -598,7 +648,9 @@ void Optimizers::ColumnGeneration::set_solution_index(unsigned int t_index) {
     }
 }
 
-void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {}
+void Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {
+    m_skip = false;
+}
 
 Optimizers::ColumnGeneration::Subproblem::Subproblem(Optimizers::ColumnGeneration &t_parent,
                                                      unsigned int t_index,
