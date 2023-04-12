@@ -57,76 +57,138 @@ protected:
     void handle_default_parameters(Optimizer* t_optimizer) const;
 public:
     /**
-     * Configures the log level and color for the optimizer
-     * @param t_log_level the desired log level
-     * @param t_log_color the desired output color
+     * Sets the log level and color for the optimizer
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_log_level(Info, Green);
+     * ```
+     * @param t_log_level the log level
+     * @param t_log_color the output color
      * @return the optimizer factory itself
      */
     CRTP& with_log_level(LogLevel t_log_level, Color t_log_color = Color::Default);
 
     /**
-     * Configures the time limit for the optimizer
-     * @param t_time_limit the desired time limit
+     * Sets the time limit for the optimizer
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_time_limit(3600);
+     * ```
+     * @param t_time_limit the time limit (in seconds)
      * @return the optimizer factory itself
      */
     CRTP& with_time_limit(double t_time_limit);
 
     /**
-     * Configures the maximum number of threads which the optimizer can use
-     * @param t_max_n_threads the desired number of threads which can be used
+     * Sets the maximum number of threads which the optimizer can use
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_thread_limit(5);
+     * ```
+     * @param t_max_n_threads the number of threads which can be used
      * @return the optimizer factory itself
      */
     CRTP& with_thread_limit(unsigned int t_max_n_threads);
 
     /**
-     * Configures the maximum number of iterations which the optimizer go through
-     * @param t_iteration_count_limit the desired maximum number of iterations
+     * Sets the maximum number of iterations which the optimizer go through
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_iteration_count_limit(200);
+     * ```
+     * @param t_iteration_count_limit the maximum number of iterations
      * @return the optimizer factory itself
      */
     CRTP& with_iteration_count_limit(unsigned int t_iteration_count_limit);
 
     /**
-     * Configures a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound
+     * Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound
      * which is greater than this threshold, the optimizer stops.
-     * @param t_best_bound_stop the desired threshold
+     *
+     * Example:
+     * ```cpp
+     * const double my_known_best_obj = 0.;
+     * auto algorithm = GLPK()
+     *                      .with_best_bound_stop(my_known_best_obj);
+     * ```
+     * @param t_best_bound_stop the threshold
      * @return the optimizer factory itself
      */
     CRTP& with_best_bound_stop(double t_best_bound_stop);
 
     /**
-     * Configures a threshold on the best objective value for stopping the optimizer.
+     * Sets a threshold on the best objective value for stopping the optimizer.
      * When the optimizer have found a best objective value which is less than this threshold, the optimizer stops.
-     * @param t_user_best_obj the desired threshold
+     *
+     * Example:
+     * ```cpp
+     * const double my_known_best_bound = 0;
+     * auto algorithm = GLPK()
+     *                      .with_best_obj_stop(my_known_best_bound);
+     * ```
+     * @param t_user_best_obj the threshold
      * @return the optimizer factory itself
      */
     CRTP& with_best_obj_stop(double t_user_best_obj);
 
     /**
-     * Configures the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap
+     * Sets the relative gap tolerance for the optimizer. When the optimizer proves that the relative optimality gap
      * is less than this threshold, the optimizer stops.
-     * @param t_relative_gap_tolerance the desired relative gap tolerance
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_relative_gap_tolerance(.05); // sets a gap tolerance of 5%
+     * ```
+     * @param t_relative_gap_tolerance the relative gap tolerance
      * @return the optimizer factory itself
      */
     CRTP& with_relative_gap_tolerance(double t_relative_gap_tolerance);
 
     /**
-     * Configures the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap
+     * Sets the absolute gap tolerance for the optimizer. When the optimizer proves that the absolute optimality gap
      * is less than this threshold, the optimizer stops.
-     * @param t_absolute_gap_tolerance the desired absolute gap tolerance
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_absolute_gap_tolerance(1e-4);
+     * ```
+     * @param t_absolute_gap_tolerance the absolute gap tolerance
      * @return the optimizer factory itself
      */
     CRTP& with_absolute_gap_tolerance(double t_absolute_gap_tolerance);
 
     /**
-     * Configures the presolve activation for the optimizer.
+     * Sets the presolve activation for the optimizer.
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_presolve(false); // turns off presolve phase
+     * ```
      * @param t_value the activation level for the optimizer's presolve (0 for disabling, 1 for enabling)
      * @return the optimizer factory itself
      */
     CRTP& with_presolve(bool t_value);
 
     /**
-     * Configures the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true,
+     * Sets the behaviour of the optimizer when a model is shown to be infeasible or unbounded. When set to true,
      * the optimizer is forced to prove feasibility or unboundedness by providing a certificate.
+     *
+     * Example:
+     * ```cpp
+     * auto algorithm = GLPK()
+     *                      .with_infeasible_or_unbounded_info(true);
+     * ```
      * @param t_value the activation level
      * @return the optimizer factory itself
      */
@@ -135,6 +197,16 @@ public:
     /**
      * Executes the lambda function given as second parameter if and only if its first argument is true. This function
      * can be used to build different optimizer factories depending on some external variable.
+     *
+     * Example:
+     * ```cpp
+     * for (const bool use_presolve : {true, false}) {
+     *      auto algorithm = GLPK()
+     *                          .conditional(use_presolve, [](auto& x){ x.with_presolve(true); })
+     *       model.use(algorithm);
+     *       model.optimize();
+     * }
+     * ```
      * @param t_conditional_value if true, the t_if lambda function is executed, if false, nothing happens.
      * @param t_if lambda function to execute in case t_conditional_value is true
      * @return the optimizer factory itself
@@ -144,6 +216,18 @@ public:
     /**
      * Executes the lambda function given as second parameter if and only if its first argument is true. This function
      * can be used to build different optimizer factories depending on some external variable.
+     *
+     * Example:
+     * ```cpp
+     * for (const bool use_presolve : {true, false}) {
+     *      auto algorithm = GLPK()
+     *                          .conditional(use_presolve,
+     *                                          [](auto& x){ x.with_presolve(true); },
+     *                                          [](auto& x){ x.with_presolve(false); })
+     *       model.use(algorithm);
+     *       model.optimize();
+     * }
+     * ```
      * @param t_conditional_value if true, the t_if lambda function is executed, if false, the t_else lambda function is.
      * @param t_if lambda function to execute in case t_conditional_value is true
      * @param t_else lambda function to execute in case t_conditional_value is false

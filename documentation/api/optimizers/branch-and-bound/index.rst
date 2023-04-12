@@ -10,3 +10,4 @@ Branch-And-Bound algorithms
     BranchAndBound
     branching-rules/index
     node-selection-rules/index
+    BranchAndBoundCallback

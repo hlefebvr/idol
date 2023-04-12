@@ -26,6 +26,8 @@ public:
     class Strategy : public BranchingRuleFactory<NodeT> {
         std::optional<std::list<Var>> m_explicit_branching_candidates;
     public:
+        Strategy() = default;
+
         explicit Strategy(const MostInfeasible& t_parent)
             : m_explicit_branching_candidates(t_parent.m_explicit_branching_candidates) {}
 

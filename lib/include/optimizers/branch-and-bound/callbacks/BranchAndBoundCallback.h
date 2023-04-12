@@ -13,6 +13,9 @@
 template<class NodeInfoT>
 class BranchAndBoundCallback;
 
+/**
+ * @tparam NodeInfoT the class used to store each branch-and-tree node's information
+ */
 template<class NodeInfoT>
 class BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<NodeInfoT> {
     friend class BranchAndBoundCallback<NodeInfoT>;
@@ -39,7 +42,7 @@ protected:
 
     void submit_heuristic_solution(NodeInfoT* t_info);
 
-    void submit_lower_bound(double t_lower_bound);
+    void submit_bound(double t_bound);
 
     SideEffectRegistry operator()(
             Optimizers::BranchAndBound<NodeInfoT> *t_parent,
@@ -56,21 +59,57 @@ public:
     virtual ~BranchAndBoundCallback() = default;
 protected:
 
+    /**
+     * This method is left for the user to write and consists in the main execution block of the callback.
+     */
     virtual void operator()(CallbackEvent t_event) = 0;
 
+    /**
+     * Adds a user cut to the relaxation
+     * @param t_cut the cut to be added
+     */
     void add_user_cut(const TempCtr& t_cut);
 
+    /**
+     * Adds a lazy cut to the relaxation
+     * @param t_cut the cut to be added
+     */
     void add_lazy_cut(const TempCtr& t_cut);
 
+    /**
+     * Returns the node which is currently explored
+     * @return the node which is currently explored
+     */
     [[nodiscard]] const Node<NodeInfoT>& node() const;
 
+    /**
+     * Returns the current node's model being solved
+     * @return the current node's model being solved
+     */
     [[nodiscard]] const Model& relaxation() const;
 
+    /**
+     * Returns the original model from which the branch-and-bound algorithm started (i.e., the original non-relaxed model)
+     * @return the original model
+     */
     [[nodiscard]] const Model& original_model() const;
 
+    /**
+     * Submits a new solution to the branch-and-bound tree algorithm.
+     *
+     * The solution is checked for validity according to the branch-and-bound tree branching rule and is set as incumbent
+     * if and only if it is valid and improves the current best objective.
+     * @param t_info a node information storing the solution
+     */
     void submit_heuristic_solution(NodeInfoT* t_info);
 
-    void submit_lower_bound(double t_lower_bound);
+    /**
+     * Submits a new proven bound.
+     *
+     * The given bound is set as best bound if and only if it improves the current best bound.
+     * @param t_bound a proven bound
+     */
+    void submit_bound(double t_bound);
 private:
     BranchAndBoundCallbackI<NodeInfoT>* m_interface = nullptr;
 
@@ -80,9 +119,9 @@ private:
 };
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
+void BranchAndBoundCallback<NodeInfoT>::submit_bound(double t_bound) {
     throw_if_no_interface();
-    m_interface->submit_lower_bound(t_lower_bound);
+    m_interface->submit_bound(t_bound);
 }
 
 template<class NodeInfoT>
@@ -159,11 +198,11 @@ void BranchAndBoundCallbackI<NodeInfoT>::add_callback(BranchAndBoundCallback<Nod
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::submit_lower_bound(double t_lower_bound) {
+void BranchAndBoundCallbackI<NodeInfoT>::submit_bound(double t_bound) {
     if (!m_parent) {
-        throw Exception("submit_lower_bound is not accessible in this context.");
+        throw Exception("submit_bound is not accessible in this context.");
     }
-    m_parent->submit_lower_bound(t_lower_bound);
+    m_parent->submit_lower_bound(t_bound);
 }
 
 template<class NodeInfoT>

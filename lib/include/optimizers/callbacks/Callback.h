@@ -52,14 +52,21 @@ public:
     virtual ~Callback() = default;
 protected:
     /**
-     * Adds a user cut to the relaxation.
-     *
-     * @param t_cut the user cut to be added
+     * Adds a user cut to the relaxation
+     * @param t_cut the cut to be added
      */
     virtual void add_user_cut(const TempCtr& t_cut);
 
+    /**
+     * Adds a lazy cut to the relaxation
+     * @param t_cut the cut to be added
+     */
     virtual void add_lazy_cut(const TempCtr& t_cut);
 
+    /**
+     * Returns the solution of the node which is currently being explored (when available)
+     * @return the solution of the current node
+     */
     [[nodiscard]] virtual Solution::Primal primal_solution() const;
 
     /**
