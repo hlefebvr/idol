@@ -7,16 +7,17 @@
 
 #include "../../OptimizerFactory.h"
 #include "../../../../../../../../../usr/include/c++/10/list"
+#include "optimizers/callbacks/CallbackFactory.h"
 
 class Callback;
 
 class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     bool m_continuous_relaxation = false;
     bool m_lazy_cuts = false;
-    std::list<Callback*> m_callbacks;
+    std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
     explicit Gurobi(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
-    Gurobi(const Gurobi&) = default;
+    Gurobi(const Gurobi& t_src);
 public:
     Gurobi() = default;
     Gurobi(Gurobi&&) noexcept = default;
@@ -28,7 +29,7 @@ public:
 
     static Gurobi ContinuousRelaxation();
 
-    Gurobi& with_callback(Callback* t_cb);
+    Gurobi& with_callback(const CallbackFactory& t_cb);
 
     Gurobi& with_lazy_cut(bool t_value);
 
