@@ -471,7 +471,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
     m_node_updator->apply_local_updates(t_node->info());
 
     m_relaxation->optimizer().set_best_bound_stop(std::min(get_best_obj(), best_bound_stop()));
-    m_relaxation->optimizer().set_time_limit(remaining_time());
+    m_relaxation->optimizer().set_time_limit(get_remaining_time());
 
     idol_Log(Debug, "Beginning to solve node " << t_node->id() << ".");
 
@@ -527,7 +527,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    if (remaining_time() == 0) {
+    if (get_remaining_time() == 0) {
         set_reason(TimeLimit);
         terminate();
         delete t_node;
@@ -692,8 +692,8 @@ std::vector<Node<NodeInfoT>*> Optimizers::BranchAndBound<NodeInfoT>::create_chil
 template<class NodeInfoT>
 bool Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
-        || remaining_time() == 0
-        || get_relative_gap() <= relative_gap_tolerance()
+           || get_remaining_time() == 0
+           || get_relative_gap() <= relative_gap_tolerance()
         || get_absolute_gap() <= absolute_gap_tolerance();
 }
 

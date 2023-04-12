@@ -18,8 +18,8 @@
  */
 template<class KeyT, class CRTP>
 class AbstractSolution {
-    int m_status = Unknown;
-    int m_reason = NotSpecified;
+    SolutionStatus m_status = Unknown;
+    SolutionReason m_reason = NotSpecified;
     std::optional<double> m_objective_value;
     Map<KeyT, double> m_values;
 
@@ -42,16 +42,16 @@ public:
      * Sets the solution status.
      * @param t_status The desired solution status.
      */
-    void set_status(int t_status) { m_status = t_status; }
+    void set_status(SolutionStatus t_status) { m_status = t_status; }
 
     /**
      * Returns the stored solution status.
      */
-    [[nodiscard]] int status() const { return m_status; }
+    [[nodiscard]] SolutionStatus status() const { return m_status; }
 
-    void set_reason(int t_reason) { m_reason = t_reason; }
+    void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
 
-    int reason() const { return m_reason; }
+    [[nodiscard]] SolutionReason reason() const { return m_reason; }
 
     /**
      * Sets the stored objective value.
