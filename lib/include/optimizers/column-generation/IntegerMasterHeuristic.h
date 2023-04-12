@@ -27,7 +27,7 @@ public:
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
     protected:
-        void operator()(BranchAndBoundEvent t_event) override;
+        void operator()(CallbackEvent t_event) override;
     public:
         explicit Strategy(const OptimizerFactory& t_optimizer);
 

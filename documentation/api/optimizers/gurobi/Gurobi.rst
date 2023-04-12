@@ -1,0 +1,4 @@
+Gurobi
+======
+
+.. doxygenclass:: Gurobi

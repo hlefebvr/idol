@@ -24,7 +24,7 @@ Solution::Primal Callback::primal_solution() const {
     return m_interface->primal_solution();
 }
 
-void Callback::Interface::execute(Callback &t_cb, BranchAndBoundEvent t_event) {
+void CallbackI::execute(Callback &t_cb, CallbackEvent t_event) {
     t_cb.m_interface = this;
     t_cb.operator()(t_event);
     t_cb.m_interface = nullptr;

@@ -17,7 +17,7 @@ void GurobiCallbackI::add_callback(Callback *t_callback) {
 
 void GurobiCallbackI::callback() {
 
-    BranchAndBoundEvent event;
+    CallbackEvent event;
 
     switch (where) {
         case GRB_CB_MIPSOL: event = IncumbentSolution; break;

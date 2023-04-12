@@ -1,0 +1,4 @@
+Mosek
+=====
+
+.. doxygenclass:: Mosek

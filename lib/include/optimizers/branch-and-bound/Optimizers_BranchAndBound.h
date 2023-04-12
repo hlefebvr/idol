@@ -73,7 +73,7 @@ protected:
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
-    SideEffectRegistry call_callbacks(BranchAndBoundEvent t_event, TreeNode* t_node);
+    SideEffectRegistry call_callbacks(CallbackEvent t_event, TreeNode* t_node);
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
@@ -278,7 +278,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 
 template<class NodeInfoT>
 typename BranchAndBoundCallbackI<NodeInfoT>::SideEffectRegistry
-Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
+Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
 
     SideEffectRegistry registry;
 

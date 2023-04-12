@@ -6,8 +6,8 @@ Optimizers
 Introduction
 ------------
 
-Optimizers denote the algorithms which are being used by idol to solve a given `Model`.
-They are set by using the `Model::use` method, as done in the following example.
+Optimizers denote the algorithms which are being used by idol to solve a given ``Model``.
+They are set by using the ``Model::use`` method, as done in the following example.
 
 .. code-block:: cpp
 
@@ -17,8 +17,8 @@ They are set by using the `Model::use` method, as done in the following example.
 
     my_model.use( Gurobi() ); // setting the optimizer of my_model to Gurobi()
 
-Here, `Gurobi` is actually an `OptimizerFactory` which will eventually create an optimizer to solve our model. Indeed,
-the "real" optimizer in this case will be an instance of `Optimizers::Gurobi` which will be created when necessary.
+Here, ``Gurobi`` is actually an ``OptimizerFactory`` which will eventually create an optimizer to solve our model. Indeed,
+the "real" optimizer in this case will be an instance of ``Optimizers::Gurobi`` which will be created when necessary.
 
 This mechanism is what allows idol to create complex algorithms by combining optimizers together. Here is a second example
 which creates a nested branch-and-price algorithm.
@@ -103,7 +103,7 @@ which creates a nested branch-and-price algorithm.
 
     my_model.use(nested_branch_and_price);
 
-Once an optimizer, or rather, an optimizer factory, has been given, the `Model::optimize` method can be called to actually
+Once an optimizer, or rather, an optimizer factory, has been given, the ``Model::optimize`` method can be called to actually
 solve the model.
 
 .. code-block::
@@ -114,8 +114,8 @@ Optimizer factories
 -------------------
 
 Typically, a user mostly works with optimizer factories rather than with optimizers. Optimizer factories are like
-"building plans" for creating actual optimizers. They usually can be recognized by their `with_*` functions allowing
-the user to customize this plan. For instance, the `BranchAndBound` optimizer factory has a method `with_node_solver`
+"building plans" for creating actual optimizers. They usually can be recognized by their ``with_*`` functions allowing
+the user to customize this plan. For instance, the ``BranchAndBound`` optimizer factory has a method ``with_node_solver``
 allowing the user to pass yet another optimizer factory which will be used to create optimizers for the branch-and-bound
 nodes.
 
@@ -128,3 +128,7 @@ Table of contents
 
     branch-and-bound/index
     column-generation/index
+    glpk/index
+    gurobi/index
+    mosek/index
+    callbacks/index

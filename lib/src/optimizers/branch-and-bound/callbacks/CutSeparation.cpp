@@ -11,7 +11,7 @@ impl::CutSeparation::CutSeparation(Model *t_separation_problem, TempCtr t_cut)
 
 }
 
-void impl::CutSeparation::operator()(BranchAndBoundEvent t_event) {
+void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     if (t_event != IncumbentSolution) {
         return;

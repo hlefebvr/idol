@@ -47,7 +47,7 @@ IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
 
 }
 
-void IntegerMasterHeuristic::Strategy::operator()(BranchAndBoundEvent t_event) {
+void IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
 
     if (t_event != InvalidSolution) {
         return;

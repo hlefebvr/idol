@@ -20,7 +20,7 @@ template<class NodeInfoT>
 class BranchAndBoundCallbackI {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
 
-    virtual void operator()(BranchAndBoundEvent t_event) = 0;
+    virtual void operator()(CallbackEvent t_event) = 0;
 public:
     virtual ~BranchAndBoundCallbackI() = default;
 

@@ -16,7 +16,7 @@ class impl::CutSeparation : public Callback {
     std::unique_ptr<Model> m_separation_problem;
     TempCtr m_cut;
 protected:
-    void operator()(BranchAndBoundEvent t_event) override;
+    void operator()(CallbackEvent t_event) override;
 
     virtual void hook_add_cut(const TempCtr& t_cut) = 0;
 public:
