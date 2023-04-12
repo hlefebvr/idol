@@ -18,7 +18,7 @@ namespace Optimizers {
     class Gurobi;
 }
 
-class GurobiCallbackI : public GRBCallback, public Callback::Interface {
+class GurobiCallbackI : public GRBCallback, public CallbackI {
 
     Optimizers::Gurobi& m_parent;
     std::list<std::unique_ptr<Callback>> m_callbacks;
