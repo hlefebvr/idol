@@ -10,6 +10,7 @@
 
 class LazyCutCallback : public CallbackFactory {
     std::unique_ptr<Model> m_model;
+    std::unique_ptr<OptimizerFactory> m_optimizer_factory;
     TempCtr m_cut;
 
     LazyCutCallback(const LazyCutCallback& t_src) : m_model(t_src.m_model->clone()), m_cut(t_src.m_cut) {}
@@ -28,11 +29,32 @@ public:
     };
 
     Callback *operator()() override {
-        return new Strategy(m_model->clone(), m_cut);
+
+        if (!m_optimizer_factory) {
+            throw Exception("No optimizer has been given.");
+        }
+
+        auto* model = m_model->clone();
+        model->use(*m_optimizer_factory);
+
+        auto* result = new Strategy(model, m_cut);
+
+        return result;
     }
 
     [[nodiscard]] CallbackFactory *clone() const override {
         return new LazyCutCallback(*this);
+    }
+
+    LazyCutCallback& with_separation_solver(const OptimizerFactory& t_optimizer_factory) {
+
+        if (m_optimizer_factory) {
+            throw Exception("An optimizer has already been given.");
+        }
+
+        m_optimizer_factory.reset(t_optimizer_factory.clone());
+
+        return *this;
     }
 };
 
