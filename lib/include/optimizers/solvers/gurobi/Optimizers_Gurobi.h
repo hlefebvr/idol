@@ -12,7 +12,7 @@
 
 #include "../OptimizerWithLazyUpdates.h"
 #include "optimizers/callbacks/Callback.h"
-#include "GurobiCallback.h"
+#include "GurobiCallbackI.h"
 
 namespace Optimizers {
     class Gurobi;
@@ -28,7 +28,6 @@ class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<
     GRBModel m_model;
     bool m_continuous_relaxation;
 
-    std::list<std::unique_ptr<Callback>> m_callbacks;
     std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
 
     char gurobi_var_type(int t_type);
@@ -62,10 +61,8 @@ protected:
     [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
     [[nodiscard]] double get_relative_gap() const override;
     [[nodiscard]] double get_absolute_gap() const override;
-
-    unsigned int get_n_solutions() const override;
-
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
 
     void set_solution_index(unsigned int t_index) override;
 

@@ -13,7 +13,10 @@ class LazyCutCallback : public CallbackFactory {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
     TempCtr m_cut;
 
-    LazyCutCallback(const LazyCutCallback& t_src) : m_model(t_src.m_model->clone()), m_cut(t_src.m_cut) {}
+    LazyCutCallback(const LazyCutCallback& t_src)
+        : m_model(t_src.m_model->clone()),
+          m_cut(t_src.m_cut),
+          m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 public:
     LazyCutCallback(const Model& t_model, TempCtr t_cut) : m_model(t_model.clone()), m_cut(std::move(t_cut)) {}
 
