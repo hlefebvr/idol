@@ -13,7 +13,7 @@
 #include "optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h"
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
-#include "optimizers/branch-and-bound/callbacks/AbstractBaBCallbackI.h"
+#include "optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h"
 #include "optimizers/Logger.h"
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/models/Model.h"
@@ -38,7 +38,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::unique_ptr<AbstractBaBCallbackI<NodeInfoT>> m_callback;
+    std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -101,7 +101,7 @@ public:
                               const OptimizerFactory& t_node_optimizer,
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
-                              AbstractBaBCallbackI<NodeInfoT>* t_callback);
+                              AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback);
 
     ~BranchAndBound() override;
 
@@ -115,7 +115,7 @@ public:
 
     [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
 
-    virtual void add_callback(BaBCallback<NodeInfoT>* t_cb);
+    virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb);
 
     void submit_heuristic_solution(NodeInfoT* t_info);
 
@@ -286,7 +286,7 @@ Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_event, Opt
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::add_callback(BaBCallback<NodeInfoT> *t_cb) {
+void Optimizers::BranchAndBound<NodeInfoT>::add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) {
     m_callback->add_callback(t_cb);
 }
 
@@ -306,7 +306,7 @@ Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
                                                       const OptimizerFactory& t_node_optimizer,
                                                       const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                                                       const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
-                                                      AbstractBaBCallbackI<NodeInfoT>* t_callback)
+                                                      AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(t_model)),
@@ -538,7 +538,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
 
             auto side_effects = call_callbacks(IncumbentSolution, t_node);
 
-            if (side_effects.relaxation_was_modified) {
+            if (side_effects.n_added_user_cuts > 0 || side_effects.n_added_lazy_cuts > 0) {
                 *t_reoptimize_flag = true;
                 idol_Log(Trace, "The relaxation was modified by callback at node " << t_node->id() << ". Re-optimization is needed.");
                 return;

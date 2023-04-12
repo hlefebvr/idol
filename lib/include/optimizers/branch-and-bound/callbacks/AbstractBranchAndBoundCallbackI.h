@@ -2,27 +2,28 @@
 // Created by henri on 12/04/23.
 //
 
-#ifndef IDOL_ABSTRACTBABCALLBACKI_H
-#define IDOL_ABSTRACTBABCALLBACKI_H
+#ifndef IDOL_ABSTRACTBRANCHANDBOUNDCALLBACKI_H
+#define IDOL_ABSTRACTBRANCHANDBOUNDCALLBACKI_H
 
 #include "modeling/solutions/Solution.h"
 #include "optimizers/callbacks/Callback.h"
 
 template<class NodeInfoT>
-class BaBCallback;
+class BranchAndBoundCallback;
 
 namespace Optimizers {
     template<class NodeInfoT> class BranchAndBound;
 }
 
 struct SideEffectRegistry {
-    bool relaxation_was_modified = false;
+    unsigned int n_added_lazy_cuts = 0;
+    unsigned int n_added_user_cuts = 0;
 };
 
 template<class NodeInfoT>
-class AbstractBaBCallbackI {
+class AbstractBranchAndBoundCallbackI {
 public:
-    virtual ~AbstractBaBCallbackI() = default;
+    virtual ~AbstractBranchAndBoundCallbackI() = default;
 protected:
     virtual SideEffectRegistry operator()(
             Optimizers::BranchAndBound<NodeInfoT>* t_parent,
@@ -30,9 +31,9 @@ protected:
             Node<NodeInfoT>* t_current_node,
             Model* t_relaxation) = 0;
 
-    virtual void add_callback(BaBCallback<NodeInfoT>* t_cb) = 0;
+    virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb) = 0;
 
     friend class Optimizers::BranchAndBound<NodeInfoT>;
 };
 
-#endif //IDOL_ABSTRACTBABCALLBACKI_H
+#endif //IDOL_ABSTRACTBRANCHANDBOUNDCALLBACKI_H
