@@ -12,8 +12,8 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
 
     this->handle_default_parameters(result);
 
-    for (auto* cb : m_callbacks) {
-        result->add_callback(cb);
+    for (auto& cb : m_callbacks) {
+        result->add_callback(cb->operator()());
     }
 
     if (m_lazy_cuts) {
@@ -34,13 +34,22 @@ Gurobi *Gurobi::clone() const {
     return new Gurobi(*this);
 }
 
-Gurobi &Gurobi::with_callback(Callback *t_cb) {
-    m_callbacks.emplace_back(t_cb);
-    return *this;
-}
-
 Gurobi &Gurobi::with_lazy_cut(bool t_value) {
     m_lazy_cuts = t_value;
     return *this;
 }
 
+Gurobi &Gurobi::with_callback(const CallbackFactory &t_cb) {
+    m_callbacks.emplace_back(t_cb.clone());
+    return *this;
+}
+
+Gurobi::Gurobi(const Gurobi& t_src) :
+        OptimizerFactoryWithDefaultParameters<Gurobi>(t_src),
+        m_lazy_cuts(t_src.m_lazy_cuts) {
+
+    for (const auto& cb : t_src.m_callbacks) {
+        m_callbacks.emplace_back(cb->clone());
+    }
+
+}
