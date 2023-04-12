@@ -7,7 +7,7 @@
 
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
-#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
+#include "optimizers/branch-and-bound/callbacks/BaBCallback.h"
 
 class IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeInfo> {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
@@ -23,7 +23,7 @@ public:
     IntegerMasterHeuristic& operator=(const IntegerMasterHeuristic&) = delete;
     IntegerMasterHeuristic& operator=(IntegerMasterHeuristic&&) noexcept = default;
 
-    class Strategy : public BranchAndBoundCallback<NodeInfo> {
+    class Strategy : public BaBCallback<NodeInfo> {
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
     protected:
@@ -36,7 +36,7 @@ public:
         void set_integer_columns(bool t_value) { m_integer_columns = t_value; }
     };
 
-    BranchAndBoundCallback<NodeInfo> *operator()() override;
+    BaBCallback<NodeInfo> *operator()() override;
 
     [[nodiscard]] BranchAndBoundCallbackFactory<NodeInfo> *clone() const override;
 

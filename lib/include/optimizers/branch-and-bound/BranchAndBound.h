@@ -10,6 +10,7 @@
 #include "Optimizers_BranchAndBound.h"
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
+#include "optimizers/branch-and-bound/callbacks/BaBCallback.h"
 
 template<class NodeT = NodeInfo>
 class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
@@ -233,10 +234,13 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
         throw Exception("No node selection rule has been given, please call BranchAndBound::with_node_selection_rule to configure.");
     }
 
+    auto* callback_interface = new BaBCallbackI<NodeT>();
+
     auto* result = new Optimizers::BranchAndBound<NodeT>(t_model,
                                      *m_relaxation_optimizer_factory,
                                      *m_branching_rule_factory,
-                                     *m_node_selection_rule_factory);
+                                     *m_node_selection_rule_factory,
+                                     callback_interface);
 
     this->handle_default_parameters(result);
 
@@ -249,7 +253,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
     }
 
     for (auto& cb : m_callbacks) {
-        result->add_callback((BranchAndBoundCallbackI<NodeT>*) cb->operator()());
+        result->add_callback((BaBCallback<NodeT>*) cb->operator()());
     }
 
     return result;

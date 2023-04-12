@@ -72,8 +72,6 @@ private:
     CallbackI* m_interface = nullptr;
 
     void throw_if_no_interface() const;
-
-    friend class Interface;
 };
 
 #endif //IDOL_CALLBACK_H

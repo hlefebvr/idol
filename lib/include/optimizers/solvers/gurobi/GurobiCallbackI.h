@@ -11,7 +11,6 @@
 #include <memory>
 #include <list>
 #include "modeling/constraints/TempCtr.h"
-#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackI.h"
 #include "optimizers/callbacks/Callback.h"
 
 namespace Optimizers {

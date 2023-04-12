@@ -7,7 +7,7 @@
 IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src)
     :m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 
-BranchAndBoundCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
+BaBCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
 
     if (!m_optimizer_factory) {
         throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_solver to configure.");

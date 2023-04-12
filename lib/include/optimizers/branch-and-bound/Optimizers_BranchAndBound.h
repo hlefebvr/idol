@@ -13,8 +13,8 @@
 #include "optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h"
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
+#include "optimizers/branch-and-bound/callbacks/AbstractBaBCallbackI.h"
 #include "optimizers/Logger.h"
-#include "callbacks/BranchAndBoundCallbackI.h"
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/models/Model.h"
 
@@ -29,7 +29,6 @@ template<class NodeInfoT>
 class Optimizers::BranchAndBound : public Algorithm {
     using TreeNode = Node<NodeInfoT>;
     using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
-    using SideEffectRegistry = typename BranchAndBoundCallbackI<NodeInfoT>::SideEffectRegistry;
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
@@ -39,7 +38,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::list<std::unique_ptr<BranchAndBoundCallbackI<NodeInfoT>>> m_callbacks;
+    std::unique_ptr<AbstractBaBCallbackI<NodeInfoT>> m_callback;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -101,7 +100,8 @@ public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
-                              const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory);
+                              const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
+                              AbstractBaBCallbackI<NodeInfoT>* t_callback);
 
     ~BranchAndBound() override;
 
@@ -115,7 +115,7 @@ public:
 
     [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
 
-    virtual void add_callback(BranchAndBoundCallbackI<NodeInfoT>* t_cb);
+    virtual void add_callback(BaBCallback<NodeInfoT>* t_cb);
 
     void submit_heuristic_solution(NodeInfoT* t_info);
 
@@ -277,34 +277,17 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 }
 
 template<class NodeInfoT>
-typename BranchAndBoundCallbackI<NodeInfoT>::SideEffectRegistry
+SideEffectRegistry
 Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
-
-    SideEffectRegistry registry;
-
-    for (auto& cb : m_callbacks) {
-
-        cb->set_relaxation(m_relaxation.get());
-        cb->set_node(t_node);
-        cb->set_parent(this);
-        cb->set_side_effect_registry(&registry);
-
-        cb->operator()(t_event);
-
-        cb->set_node(nullptr);
-        cb->set_relaxation(nullptr);
-        cb->set_parent(nullptr);
-        cb->set_side_effect_registry(nullptr);
-
+    if (!m_callback) {
+        return {};
     }
-
-    return registry;
-
+    return m_callback->operator()(this, t_event, t_node, m_relaxation.get());
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::add_callback(BranchAndBoundCallbackI<NodeInfoT> *t_cb) {
-    m_callbacks.emplace_back(t_cb);
+void Optimizers::BranchAndBound<NodeInfoT>::add_callback(BaBCallback<NodeInfoT> *t_cb) {
+    m_callback->add_callback(t_cb);
 }
 
 template<class NodeInfoT>
@@ -322,11 +305,13 @@ template<class NodeInfoT>
 Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model,
                                                       const OptimizerFactory& t_node_optimizer,
                                                       const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
-                                                      const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory)
+                                                      const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
+                                                      AbstractBaBCallbackI<NodeInfoT>* t_callback)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(t_model)),
-      m_node_selection_rule(t_node_selection_rule_factory()) {
+      m_node_selection_rule(t_node_selection_rule_factory()),
+      m_callback(t_callback) {
 
     create_relaxations();
 
