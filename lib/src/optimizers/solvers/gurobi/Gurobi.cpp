@@ -1,8 +1,8 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "optimizers/solvers/Gurobi.h"
-#include "optimizers/solvers/Optimizers_Gurobi.h"
+#include "optimizers/solvers/gurobi/Gurobi.h"
+#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 #include "errors/Exception.h"
 
 Optimizer *Gurobi::operator()(const Model &t_model) const {
@@ -34,7 +34,7 @@ Gurobi *Gurobi::clone() const {
     return new Gurobi(*this);
 }
 
-Gurobi &Gurobi::with_callback(GurobiCallback *t_cb) {
+Gurobi &Gurobi::with_callback(Callback *t_cb) {
     m_callbacks.emplace_back(t_cb);
     return *this;
 }

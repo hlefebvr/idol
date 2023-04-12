@@ -6,11 +6,12 @@
 #define IDOL_OPTIMIZERS_GUROBI_H
 
 #ifdef IDOL_USE_GUROBI
-#include <gurobi_c++.h>
+#include "gurobi_c++.h"
 #include <memory>
 #include <variant>
 
-#include "OptimizerWithLazyUpdates.h"
+#include "../OptimizerWithLazyUpdates.h"
+#include "optimizers/callbacks/Callback.h"
 #include "GurobiCallback.h"
 
 namespace Optimizers {
@@ -27,7 +28,7 @@ class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<
     GRBModel m_model;
     bool m_continuous_relaxation;
 
-    std::list<std::unique_ptr<GurobiCallback>> m_callbacks;
+    std::list<std::unique_ptr<Callback>> m_callbacks;
     std::unique_ptr<GurobiCallbackI> m_gurobi_callback;
 
     char gurobi_var_type(int t_type);
@@ -94,7 +95,7 @@ public:
 
     void set_infeasible_or_unbounded_info(bool t_value) override;
 
-    void add_callback(GurobiCallback* t_ptr_to_callback);
+    void add_callback(Callback* t_ptr_to_callback);
 
     void set_lazy_cut(bool t_value);
 };

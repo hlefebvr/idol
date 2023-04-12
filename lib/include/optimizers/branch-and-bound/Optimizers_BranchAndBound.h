@@ -14,7 +14,7 @@
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/nodes/NodeUpdator.h"
 #include "optimizers/Logger.h"
-#include "callbacks/CallbackI.h"
+#include "callbacks/BranchAndBoundCallbackI.h"
 #include "optimizers/OptimizerFactory.h"
 #include "modeling/models/Model.h"
 
@@ -29,7 +29,7 @@ template<class NodeInfoT>
 class Optimizers::BranchAndBound : public Algorithm {
     using TreeNode = Node<NodeInfoT>;
     using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
-    using SideEffectRegistry = typename CallbackI<NodeInfoT>::SideEffectRegistry;
+    using SideEffectRegistry = typename BranchAndBoundCallbackI<NodeInfoT>::SideEffectRegistry;
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
@@ -39,7 +39,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::list<std::unique_ptr<CallbackI<NodeInfoT>>> m_callbacks;
+    std::list<std::unique_ptr<BranchAndBoundCallbackI<NodeInfoT>>> m_callbacks;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -115,7 +115,7 @@ public:
 
     [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
 
-    virtual void add_callback(CallbackI<NodeInfoT>* t_cb);
+    virtual void add_callback(BranchAndBoundCallbackI<NodeInfoT>* t_cb);
 
     void submit_heuristic_solution(NodeInfoT* t_info);
 
@@ -277,7 +277,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 }
 
 template<class NodeInfoT>
-typename CallbackI<NodeInfoT>::SideEffectRegistry
+typename BranchAndBoundCallbackI<NodeInfoT>::SideEffectRegistry
 Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
 
     SideEffectRegistry registry;
@@ -303,7 +303,7 @@ Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(BranchAndBoundEvent t_even
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::add_callback(CallbackI<NodeInfoT> *t_cb) {
+void Optimizers::BranchAndBound<NodeInfoT>::add_callback(BranchAndBoundCallbackI<NodeInfoT> *t_cb) {
     m_callbacks.emplace_back(t_cb);
 }
 

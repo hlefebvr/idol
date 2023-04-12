@@ -9,7 +9,7 @@
 #include "optimizers/OptimizerFactory.h"
 #include "Optimizers_BranchAndBound.h"
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
-#include "optimizers/branch-and-bound/callbacks/CallbackFactory.h"
+#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 
 template<class NodeT = NodeInfo>
 class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
@@ -17,7 +17,7 @@ class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBou
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
 
-    std::list<std::unique_ptr<CallbackFactory<NodeT>>> m_callbacks;
+    std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
@@ -118,11 +118,11 @@ public:
      * @param t_callback the callback factory
      * @return the optimizer factory itself
      */
-    BranchAndBound<NodeT>& with_callback(const CallbackFactory<NodeT> & t_callback);
+    BranchAndBound<NodeT>& with_callback(const BranchAndBoundCallbackFactory<NodeT> & t_callback);
 };
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const CallbackFactory<NodeT> &t_callback) {
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
 
     m_callbacks.emplace_back(t_callback.clone());
 
@@ -249,7 +249,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
     }
 
     for (auto& cb : m_callbacks) {
-        result->add_callback((CallbackI<NodeT>*) cb->operator()());
+        result->add_callback((BranchAndBoundCallbackI<NodeT>*) cb->operator()());
     }
 
     return result;

@@ -6,10 +6,10 @@
 #define IDOL_INTEGERMASTERHEURISTIC_H
 
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
-#include "optimizers/branch-and-bound/callbacks/CallbackFactory.h"
-#include "optimizers/branch-and-bound/callbacks/Callback.h"
+#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
+#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 
-class IntegerMasterHeuristic : public CallbackFactory<NodeInfo> {
+class IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeInfo> {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     std::optional<bool> m_integer_columns;
@@ -23,7 +23,7 @@ public:
     IntegerMasterHeuristic& operator=(const IntegerMasterHeuristic&) = delete;
     IntegerMasterHeuristic& operator=(IntegerMasterHeuristic&&) noexcept = default;
 
-    class Strategy : public Callback<NodeInfo> {
+    class Strategy : public BranchAndBoundCallback<NodeInfo> {
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
     protected:
@@ -36,9 +36,9 @@ public:
         void set_integer_columns(bool t_value) { m_integer_columns = t_value; }
     };
 
-    Callback<NodeInfo> *operator()() override;
+    BranchAndBoundCallback<NodeInfo> *operator()() override;
 
-    [[nodiscard]] CallbackFactory<NodeInfo> *clone() const override;
+    [[nodiscard]] BranchAndBoundCallbackFactory<NodeInfo> *clone() const override;
 
     IntegerMasterHeuristic& with_solver(const OptimizerFactory& t_optimizer);
 

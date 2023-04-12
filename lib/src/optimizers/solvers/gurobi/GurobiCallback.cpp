@@ -4,14 +4,14 @@
 
 #ifdef IDOL_USE_GUROBI
 
-#include "optimizers/solvers/GurobiCallback.h"
-#include "optimizers/solvers/Optimizers_Gurobi.h"
+#include "optimizers/solvers/gurobi/GurobiCallback.h"
+#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 
 GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
 
 }
 
-void GurobiCallbackI::add_callback(GurobiCallback *t_callback) {
+void GurobiCallbackI::add_callback(Callback *t_callback) {
     m_callbacks.emplace_back(t_callback);
 }
 
@@ -26,11 +26,7 @@ void GurobiCallbackI::callback() {
     }
 
     for (auto& cb : m_callbacks) {
-
-        cb->m_parent = this;
-        cb->operator()(event);
-        cb->m_parent = nullptr;
-
+        execute(*cb, event);
     }
 
 }
@@ -98,18 +94,6 @@ Solution::Primal GurobiCallbackI::primal_solution() const {
     result.set_reason(Proved);
 
     return result;
-}
-
-void GurobiCallback::add_lazy_cut(const TempCtr &t_cut) {
-    m_parent->add_lazy_cut(t_cut);
-}
-
-void GurobiCallback::add_user_cut(const TempCtr &t_user_cut) {
-    m_parent->add_user_cut(t_user_cut);
-}
-
-Solution::Primal GurobiCallback::primal_solution() const {
-    return m_parent->primal_solution();
 }
 
 #endif

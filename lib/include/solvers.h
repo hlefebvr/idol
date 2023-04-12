@@ -9,6 +9,6 @@
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/solvers/Mosek.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/gurobi/Gurobi.h"
 
 #endif //OPTIMIZE_SOLVERS_H

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "modeling.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/gurobi/Gurobi.h"
 
 int main(int t_argc, const char** t_argv) {
 

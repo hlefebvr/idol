@@ -6,7 +6,7 @@
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "optimizers/solvers/Gurobi.h"
+#include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 
 int main(int t_argc, const char** t_argv) {

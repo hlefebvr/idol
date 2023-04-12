@@ -39,7 +39,7 @@ void impl::Optimizer::optimize() {
 }
 
 double impl::Optimizer::remaining_time() const {
-    return std::max(0., m_time_limit - m_timer.count());
+    return std::max(0., m_time_limit - time().count());
 }
 
 void impl::Optimizer::terminate() {

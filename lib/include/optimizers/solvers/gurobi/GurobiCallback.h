@@ -1,0 +1,44 @@
+//
+// Created by henri on 31/03/23.
+//
+
+#ifndef CCG_WITH_NESTED_CG_GUROBICALLBACK_H
+#define CCG_WITH_NESTED_CG_GUROBICALLBACK_H
+
+#ifdef IDOL_USE_GUROBI
+
+#include <gurobi_c++.h>
+#include <memory>
+#include <list>
+#include "modeling/constraints/TempCtr.h"
+#include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackI.h"
+#include "optimizers/callbacks/Callback.h"
+
+namespace Optimizers {
+    class Gurobi;
+}
+
+class GurobiCallbackI : public GRBCallback, public Callback::Interface {
+
+    Optimizers::Gurobi& m_parent;
+    std::list<std::unique_ptr<Callback>> m_callbacks;
+
+    GRBTempConstr gurobi_temp_constr(const TempCtr& t_temp_ctr);
+public:
+    explicit GurobiCallbackI(Optimizers::Gurobi& t_parent);
+
+    void add_callback(Callback* t_callback);
+protected:
+    void callback() override;
+
+    void add_lazy_cut(const TempCtr& t_lazy_cut) override;
+
+    void add_user_cut(const TempCtr& t_user_cut) override;
+
+    [[nodiscard]] Solution::Primal primal_solution() const override;
+
+};
+
+#endif
+
+#endif //CCG_WITH_NESTED_CG_GUROBICALLBACK_H

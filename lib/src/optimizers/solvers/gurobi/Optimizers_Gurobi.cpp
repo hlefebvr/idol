@@ -3,7 +3,7 @@
 //
 #ifdef IDOL_USE_GUROBI
 
-#include "optimizers/solvers/Optimizers_Gurobi.h"
+#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 #include "optimizers/Logger.h"
 
 std::unique_ptr<GRBEnv> Optimizers::Gurobi::s_global_env;
@@ -76,7 +76,7 @@ double Optimizers::Gurobi::gurobi_numeric(double t_value) {
 
 Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, GRBEnv &t_env)
     : OptimizerWithLazyUpdates(t_model),
-    m_continuous_relaxation(t_continuous_relaxation),
+      m_continuous_relaxation(t_continuous_relaxation),
       m_env(t_env),
       m_model(t_env) {
 
@@ -321,7 +321,7 @@ void Optimizers::Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
     Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
-void Optimizers::Gurobi::add_callback(GurobiCallback *t_ptr_to_callback) {
+void Optimizers::Gurobi::add_callback(Callback *t_ptr_to_callback) {
 
     if (!m_gurobi_callback) {
         m_gurobi_callback = std::make_unique<GurobiCallbackI>(*this);
