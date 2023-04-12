@@ -35,7 +35,7 @@ static bool equals(double t_a, double t_b, double t_tolerance) {
 
 static double relative_gap(double t_lb, double t_ub) {
 
-    if (is_pos_inf(t_lb) || is_neg_inf(t_ub)) {
+    if (is_neg_inf(t_lb) || is_pos_inf(t_ub)) {
         return Inf;
     }
 
