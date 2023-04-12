@@ -2,16 +2,16 @@
 // Created by henri on 11/04/23.
 //
 
-#include "optimizers/callbacks/CutSeparationCallback.h"
+#include "optimizers/callbacks/CutSeparation.h"
 #include "modeling/expressions/operations/operators.h"
 
-CutSeparationCallback::CutSeparationCallback(Model *t_separation_problem, TempCtr t_cut)
+impl::CutSeparation::CutSeparation(Model *t_separation_problem, TempCtr t_cut)
     : m_separation_problem(t_separation_problem),
       m_cut(std::move(t_cut)) {
 
 }
 
-void CutSeparationCallback::operator()(BranchAndBoundEvent t_event) {
+void impl::CutSeparation::operator()(BranchAndBoundEvent t_event) {
 
     if (t_event != IncumbentSolution) {
         return;
@@ -25,14 +25,14 @@ void CutSeparationCallback::operator()(BranchAndBoundEvent t_event) {
         throw Exception("Adding non-linear cut is not available in Gurobi.");
     }
 
-    Expr objective = row.rhs().numerical();
+    ::Expr objective = row.rhs().numerical();
 
     for (const auto& [param, coeff] : row.rhs()) {
         objective += coeff * param.as<Var>();
     }
 
     for (const auto& [var, constant] : row.linear()) {
-        Expr term = -constant.numerical();
+        ::Expr term = -constant.numerical();
         for (const auto& [param, coeff] : constant) {
             term += -coeff * param.as<Var>();
         }

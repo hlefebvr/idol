@@ -8,7 +8,11 @@
 #include "modeling/models/Model.h"
 #include "optimizers/callbacks/Callback.h"
 
-class CutSeparationCallback : public Callback {
+namespace impl {
+    class CutSeparation;
+}
+
+class impl::CutSeparation : public Callback {
     std::unique_ptr<Model> m_separation_problem;
     TempCtr m_cut;
 protected:
@@ -16,7 +20,7 @@ protected:
 
     virtual void hook_add_cut(const TempCtr& t_cut) = 0;
 public:
-    explicit CutSeparationCallback(Model* t_separation_problem, TempCtr t_cut);
+    explicit CutSeparation(Model* t_separation_problem, TempCtr t_cut);
 };
 
 
