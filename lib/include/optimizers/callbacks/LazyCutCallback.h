@@ -24,7 +24,7 @@ public:
         }
     public:
         explicit Strategy(Model* t_separation_problem, TempCtr t_cut)
-        : impl::CutSeparation(t_separation_problem, std::move(t_cut)) {}
+                : impl::CutSeparation(IncumbentSolution, t_separation_problem, std::move(t_cut)) {}
 
     };
 

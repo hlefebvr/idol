@@ -5,8 +5,9 @@
 #include "optimizers/callbacks/CutSeparation.h"
 #include "modeling/expressions/operations/operators.h"
 
-impl::CutSeparation::CutSeparation(Model *t_separation_problem, TempCtr t_cut)
-    : m_separation_problem(t_separation_problem),
+impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event, Model *t_separation_problem, TempCtr t_cut)
+    : m_triggering_event(t_triggering_event),
+      m_separation_problem(t_separation_problem),
       m_cut(std::move(t_cut)) {
 
 }
