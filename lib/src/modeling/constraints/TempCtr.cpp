@@ -36,8 +36,8 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
         lhs += coeff.numerical() * t_solution.get(var);
     }
     switch (m_type) {
-        case LessOrEqual: return lhs > rhs - ToleranceForIntegrality;
-        case GreaterOrEqual: return lhs < rhs + ToleranceForIntegrality;
+        case LessOrEqual: return lhs > rhs;
+        case GreaterOrEqual: return lhs < rhs;
         default:;
     }
     return equals(lhs, rhs, ToleranceForIntegrality);

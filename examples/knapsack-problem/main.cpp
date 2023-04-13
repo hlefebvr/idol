@@ -5,6 +5,10 @@
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "modeling.h"
 #include "optimizers/solvers/gurobi/Gurobi.h"
+#include "optimizers/branch-and-bound/BranchAndBound.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -24,7 +28,15 @@ int main(int t_argc, const char** t_argv) {
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     // Set optimizer
-    model.use(Gurobi());
+    //model.use(Gurobi());
+    model.use(
+            BranchAndBound()
+                .with_node_solver(Gurobi::ContinuousRelaxation())
+                .with_branching_rule(MostInfeasible())
+                .with_node_selection_rule(BestBound())
+                .with_cutting_plane_generator(CoverCuts())
+                .with_log_level(Info, Blue)
+        );
 
     // Solve
     model.optimize();

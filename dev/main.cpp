@@ -11,12 +11,13 @@
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/column-generation/IntegerMasterHeuristic.h"
 #include "optimizers/callbacks/UserCutCallback.h"
+#include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
 
 int main(int t_argc, char** t_argv) {
 
     // Read instance
-    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
-    //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__1.txt");
+    //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__3.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -99,8 +100,6 @@ int main(int t_argc, char** t_argv) {
                                                 IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
                                         );
                                     })
-
-                                    .with_cutting_plane_generator(CoverCuts())
 
                                     .with_subtree_depth(1)
 
