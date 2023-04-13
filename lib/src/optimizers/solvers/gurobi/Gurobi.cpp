@@ -46,6 +46,7 @@ Gurobi &Gurobi::with_callback(const CallbackFactory &t_cb) {
 
 Gurobi::Gurobi(const Gurobi& t_src) :
         OptimizerFactoryWithDefaultParameters<Gurobi>(t_src),
+        m_continuous_relaxation(t_src.m_continuous_relaxation),
         m_lazy_cuts(t_src.m_lazy_cuts) {
 
     for (const auto& cb : t_src.m_callbacks) {
