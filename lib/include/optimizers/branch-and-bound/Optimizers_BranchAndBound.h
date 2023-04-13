@@ -117,6 +117,8 @@ public:
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb);
 
+    virtual void add_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_plane_generator);
+
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
@@ -131,6 +133,11 @@ public:
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 };
+
+template<class NodeInfoT>
+void Optimizers::BranchAndBound<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
+    m_callback->add_cutting_plane_generator(t_cutting_plane_generator);
+}
 
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::set_solution_index(unsigned int t_index) {
@@ -354,6 +361,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
+
+    m_callback->initialize(*m_relaxation);
 }
 
 template<class NodeInfoT>
@@ -560,10 +569,14 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
 
     }
 
-    call_callbacks(InvalidSolution, t_node);
+    auto side_effects = call_callbacks(InvalidSolution, t_node);
 
     if (t_node->level() == 0) {
         m_root_node_best_obj = get_best_obj();
+    }
+
+    if (side_effects.n_added_lazy_cuts > 0 || side_effects.n_added_user_cuts > 0) {
+        *t_reoptimize_flag = true;
     }
 
     *t_explore_children_flag = true;

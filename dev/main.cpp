@@ -1,24 +1,79 @@
 #include "modeling.h"
 #include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
-#include "optimizers/Logger.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
-#include "optimizers/solvers/DefaultOptimizer.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/solvers/Optimizers_Mosek.h"
-#include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/solvers/Mosek.h"
 #include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/callbacks/UserCutCallback.h"
+
+class CoverCuts : public CuttingPlaneGenerator {
+
+    void parse_ctr(const Model& t_model, const Ctr& t_ctr) {
+
+        const auto ctr_type = t_model.get_ctr_type(t_ctr);
+
+        if (ctr_type != LessOrEqual) { return; }
+
+        auto& env = t_model.env();
+        Model separation(env);
+        const auto& row = t_model.get_ctr_row(t_ctr);
+        double rhs = row.rhs().numerical();
+        Expr lhs;
+        std::list<Var> covered_vars;
+
+        for (const auto& [var, constant] : row.linear()) {
+
+            const auto var_type = t_model.get_var_type(var);
+
+            if (var_type == Continuous) { return; }
+
+            const double var_ub = t_model.get_var_ub(var);
+            const double var_lb = t_model.get_var_lb(var);
+
+            if (is_pos_inf(var_ub)) { return; }
+
+            if (var_lb < -.5 || var_ub > 1.5) { return; }
+
+            const double coeff = constant.numerical();
+
+            if (coeff < 0) {
+                rhs -= coeff * var_ub;
+            } else {
+                lhs += coeff * var;
+                covered_vars.emplace_back(var);
+                separation.add(var, TempVar(0, 1, Binary, Column()));
+            }
+
+        }
+
+        separation.add_ctr(lhs >= rhs + 1);
+
+        add_callback(
+                UserCutCallback(separation, idol_Sum(var, covered_vars, !var * var) <= idol_Sum(var, covered_vars, !var) - 1)
+                    .with_separation_solver(Gurobi())
+                );
+    }
+
+public:
+
+    void operator()(const Model &t_model) override {
+
+        for (auto& ctr : t_model.ctrs()) {
+            parse_ctr(t_model, ctr);
+        }
+
+    }
+
+    [[nodiscard]] CuttingPlaneGenerator *clone() const override {
+        return new CoverCuts(*this);
+    }
+};
 
 int main(int t_argc, char** t_argv) {
 
@@ -108,9 +163,11 @@ int main(int t_argc, char** t_argv) {
                                         );
                                     })
 
+                                    .with_cutting_plane_generator(CoverCuts())
+
                                     .with_subtree_depth(1)
 
-                                    .with_log_level(Info, Blue)
+                                    .with_log_level(Trace, Blue)
                     );
 
                     std::cout << "RUNNING: " << branching_on_master << ", " << farkas_pricing << ", " << smoothing

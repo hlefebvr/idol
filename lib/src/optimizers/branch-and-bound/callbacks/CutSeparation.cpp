@@ -14,7 +14,7 @@ impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event, Model *t_se
 
 void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
-    if (t_event != IncumbentSolution) {
+    if (t_event != m_triggering_event) {
         return;
     }
 
@@ -52,7 +52,7 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const auto& solution = save_primal(*m_separation_problem);
 
-    if (solution.objective_value() > 0) {
+    if (solution.objective_value() >= -1e-6) {
         return;
     }
 

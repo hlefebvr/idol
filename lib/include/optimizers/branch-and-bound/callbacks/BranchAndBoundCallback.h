@@ -9,6 +9,8 @@
 #include "optimizers/branch-and-bound/nodes/Node.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 #include "AbstractBranchAndBoundCallbackI.h"
+#include "optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
+#include "CallbackAsBranchAndBoundCallback.h"
 
 template<class NodeInfoT>
 class BranchAndBoundCallback;
@@ -21,6 +23,8 @@ class BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<NodeInfoT
     friend class BranchAndBoundCallback<NodeInfoT>;
 
     std::list<std::unique_ptr<BranchAndBoundCallback<NodeInfoT>>> m_callbacks;
+    std::list<std::unique_ptr<BranchAndBoundCallback<NodeInfoT>>> m_cutting_plane_callbacks;
+    std::list<std::unique_ptr<CuttingPlaneGenerator>> m_cutting_plane_generators;
 
     Optimizers::BranchAndBound<NodeInfoT>* m_parent = nullptr;
     Node<NodeInfoT>* m_node = nullptr;
@@ -51,7 +55,31 @@ protected:
             Model *t_relaxation) override;
 
     void add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) override;
+
+    void add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) override;
+
+    void initialize(const Model& t_model) override;
 };
+
+template<class NodeInfoT>
+void BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
+
+    m_cutting_plane_callbacks.clear();
+
+    for (auto& generator : m_cutting_plane_generators) {
+        generator->operator()(t_model);
+        for (auto& cb : generator->generated_callbacks()) {
+            m_cutting_plane_callbacks.emplace_back(CallbackAsBranchAndBoundCallback<NodeInfoT>(*cb).operator()());
+        }
+        generator->clear_generated_callbacks();
+    }
+
+}
+
+template<class NodeInfoT>
+void BranchAndBoundCallbackI<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
+    m_cutting_plane_generators.emplace_back(t_cutting_plane_generator.clone());
+}
 
 template<class NodeInfoT>
 class BranchAndBoundCallback {
@@ -177,6 +205,12 @@ BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeIn
     m_node = t_current_node;
     m_relaxation = t_relaxation;
     m_registry = &result;
+
+    for (auto& cb : m_cutting_plane_callbacks) {
+        cb->m_interface = this;
+        cb->operator()(t_event);
+        cb->m_interface = nullptr;
+    }
 
     for (auto& cb : m_callbacks) {
         cb->m_interface = this;

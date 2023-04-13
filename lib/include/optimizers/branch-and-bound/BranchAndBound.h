@@ -13,6 +13,7 @@
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 #include "optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "optimizers/callbacks/CallbackFactory.h"
+#include "optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
 
 /**
  * @tparam NodeT the class used to store nodes information.
@@ -25,6 +26,7 @@ class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBou
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
 
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
+    std::list<std::unique_ptr<CuttingPlaneGenerator>> m_cutting_plane_generators;
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
@@ -201,7 +203,16 @@ public:
      * @return the optimizer factory itself
      */
     BranchAndBound<NodeT>& with_callback(const CallbackFactory& t_callback);
+
+    BranchAndBound<NodeT>& with_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_place_generator);
 };
+
+template<class NodeT>
+BranchAndBound<NodeT> &
+BranchAndBound<NodeT>::with_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_place_generator) {
+    m_cutting_plane_generators.emplace_back(t_cutting_place_generator.clone());
+    return *this;
+}
 
 template<class NodeT>
 BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const CallbackFactory &t_callback) {
@@ -303,6 +314,10 @@ BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
         m_callbacks.emplace_back(cb->clone());
     }
 
+    for (auto& generator : t_rhs.m_cutting_plane_generators) {
+        m_cutting_plane_generators.emplace_back(generator->clone());
+    }
+
 }
 
 template<class NodeT>
@@ -339,7 +354,11 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
     }
 
     for (auto& cb : m_callbacks) {
-        result->add_callback((BranchAndBoundCallback<NodeT>*) cb->operator()());
+        result->add_callback(cb->operator()());
+    }
+
+    for (auto& generator : m_cutting_plane_generators) {
+        result->add_cutting_plane_generator(*generator);
     }
 
     return result;

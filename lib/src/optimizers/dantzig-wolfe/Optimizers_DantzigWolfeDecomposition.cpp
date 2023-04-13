@@ -218,6 +218,10 @@ void Optimizers::DantzigWolfeDecomposition::add(const Var &t_var) {
 
 void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
 
+    for ( auto& subproblem : m_subproblems) {
+        subproblem.remove_column_if([](...){ return true; });
+    }
+
     const auto subproblem_id = t_ctr.get(m_ctr_annotation);
 
     const auto& row = parent().get_ctr_row(t_ctr);
@@ -254,5 +258,7 @@ void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
     for (auto& subproblem : m_subproblems) {
         subproblem.m_generation_pattern.linear().set(t_ctr, std::move(pricing_pattern[subproblem.m_index]));
     }
+
+    //throw Exception("Manual stop");
 
 }
