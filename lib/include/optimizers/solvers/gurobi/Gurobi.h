@@ -6,7 +6,7 @@
 #define IDOL_GUROBI_H
 
 #include "../../OptimizerFactory.h"
-#include "../../../../../../../../../usr/include/c++/10/list"
+#include <list>
 #include "optimizers/callbacks/CallbackFactory.h"
 
 class Callback;
