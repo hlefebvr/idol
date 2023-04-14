@@ -26,7 +26,7 @@ class Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int> {
     bool m_solved_as_mip = false;
     bool m_rebuild_basis = false;
 
-    SolutionStatus m_solution_status = Unknown;
+    SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
     std::optional<Solution::Primal> m_unbounded_ray;
     std::optional<Solution::Dual> m_farkas_certificate;

@@ -68,7 +68,7 @@ static SolutionStatus dual(SolutionStatus t_status) {
 static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
 
     switch (t_status) {
-        case Loaded: return t_os << std::setw(10) << "Unknown";
+        case Loaded: return t_os << std::setw(10) << "Loaded";
         case Optimal: return t_os << std::setw(10) << "Optimal";
         case Feasible: return t_os << std::setw(10) << "Feasible";
         case Infeasible: return t_os << std::setw(10) << "Infeasible";

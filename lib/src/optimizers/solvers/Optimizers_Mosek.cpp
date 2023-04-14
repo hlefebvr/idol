@@ -96,7 +96,7 @@ void Optimizers::Mosek::hook_optimize() {
                && primal_status == mosek::fusion::SolutionStatus::Unknown
                && dual_status == mosek::fusion::SolutionStatus::Undefined) {
 
-        m_solution_status = InfeasibleOrUnbounded;
+        m_solution_status = InfOrUnbnd;
         m_solution_reason = NotSpecified;
 
     } else {

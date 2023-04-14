@@ -34,7 +34,7 @@ class Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;
-    SolutionStatus m_solution_status = Unknown;
+    SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
 protected:
     void set_var_attr(MosekVar& t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj);
