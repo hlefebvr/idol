@@ -35,7 +35,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_node_solver(Gurobi::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(BestBound())
-                .with_cutting_plane_generator(CoverCuts())
+                .with_cutting_planes(CoverCuts())
                 .with_log_level(Info, Blue)
         );
 

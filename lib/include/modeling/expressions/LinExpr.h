@@ -28,6 +28,9 @@ struct LinTerm {
         : key(t_key), constant(t_constant) {}
 };
 
+/**
+ * @tparam Key the class representing keys
+ */
 template<class Key = Var>
 class LinExpr : public AbstractExpr<Key, LinTerm<Key>> {
     friend class Matrix;
@@ -37,21 +40,74 @@ public:
     LinExpr(Constant&& t_factor, const Key& t_key);
     LinExpr(const Constant& t_factor, const Key& t_key);
 
+    /**
+     * Sets the value of a key's coefficient
+     *
+     * The constant is copied.
+     *
+     * Example:
+     * ```cpp
+     * LinExpr lin_expr;
+     * lin_expr.set(x[0], -1);
+     * ```
+     * @param t_key the key
+     * @param t_coefficient the key's coefficient
+     */
     void set(const Key& t_key, const Constant& t_coefficient);
 
-    using AbstractExpr<Key, LinTerm<Key>>::get;
-    using AbstractExpr<Key, LinTerm<Key>>::set;
-    using AbstractExpr<Key, LinTerm<Key>>::remove;
+    /**
+     * Sets the value of a key's coefficient
+     *
+     * The constant is moved.
+     *
+     * Example:
+     * ```cpp
+     * LinExpr lin_expr;
+     * lin_expr.set(x[0], -1);
+     * ```
+     * @param t_key the key
+     * @param t_coefficient the key's coefficient
+     */
+    void set(const Key& t_key, Constant&& t_coefficient) override;
 
     /**
-     * Replaces every a Key with the returned expression (if any) by t_function.
+     * Returns a key's coefficient
      *
-     * Can be used to substitute, for instance, a Var by an Expr (e.g., \f$ x = \sum_e \alpha_e\textbf x^e \f$).
-     * @param t_function A function which returns an optional expression to replace its argument.
+     * Example:
+     * ```cpp
+     * LinExpr lin_expr = 2 * x[0] + 3 * x[1];
+     *
+     * std::cout << lin_expr.get(x[0]) << std::endl; // output: 2
+     * ```
+     * @param t_key the key
+     * @return the key's coefficient
      */
-    void replace_if(const std::function<std::optional<LinExpr<Key>>(const Key&)>& t_function);
+    const Constant& get(const Key& t_key) const override;
+
+    /**
+     * Sets the coefficient of a key to zero
+     *
+     * This is equivalent to calling `LinExpr<Key>::set` with a zero coefficient.
+     * @param t_key the key
+     */
+    void remove(const Key& t_key) override;
 
 };
+
+template<class Key>
+void LinExpr<Key>::remove(const Key &t_key) {
+    AbstractExpr<Key, LinTerm<Key>>::remove(t_key);
+}
+
+template<class Key>
+const Constant &LinExpr<Key>::get(const Key &t_key) const {
+    return AbstractExpr<Key, LinTerm<Key>>::get(t_key);
+}
+
+template<class Key>
+void LinExpr<Key>::set(const Key &t_key, Constant &&t_coefficient) {
+    AbstractExpr<Key, LinTerm<Key>>::set(t_key, std::move(t_coefficient));
+}
 
 template<class Key>
 LinExpr<Key>::LinExpr(const Key &t_key) {
@@ -71,35 +127,6 @@ LinExpr<Key>::LinExpr(const Constant& t_factor, const Key &t_key) {
 template<class Key>
 void LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
     AbstractExpr<Key, LinTerm<Key>>::set(t_key, Constant(t_coefficient));
-}
-
-template<class Key>
-void LinExpr<Key>::replace_if(const std::function<std::optional<LinExpr<Key>>(const Key &)> &t_function) {
-
-    std::list<LinExpr<Key>> to_add;
-
-    auto it = this->refs().begin();
-    const auto end = this->refs().end();
-
-    while (it != end) {
-
-        const auto& [key, ref] = *it;
-
-        if (auto result = t_function(key) ; result.has_value()) {
-
-            auto expr = ref.value().numerical() * result.value();
-            to_add.template emplace_back(std::move(expr));
-            it = this->refs().erase(it);
-
-        } else {
-            ++it;
-        }
-
-    }
-
-    for (auto& expr : to_add) {
-        *this += expr;
-    }
 }
 
 template<class Key>
