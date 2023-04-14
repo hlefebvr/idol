@@ -728,35 +728,47 @@ void Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
     const unsigned int n_solutions = m_model->get_n_solutions();
     const unsigned int max_columns_added = m_parent.m_max_columns_per_pricing;
 
-    for (unsigned int k = 0 ; k < n_solutions && k < max_columns_added ; ++k) {
+    bool at_least_one_column_was_added = false;
 
-        m_model->set_solution_index(k);
+    try {
+        for (unsigned int k = 0; k < n_solutions && k < max_columns_added; ++k) {
 
-        const int status = m_model->get_status();
+            m_model->set_solution_index(k);
 
-        Solution::Primal generator;
-        if (status == Unbounded) {
-            generator = save_ray(*m_model);
-        } else {
-            generator = save_primal(*m_model);
+            const int status = m_model->get_status();
+
+            Solution::Primal generator;
+            if (status == Unbounded) {
+                generator = save_ray(*m_model);
+            } else {
+                generator = save_primal(*m_model);
+            }
+
+            auto column = create_column_from_generator(generator);
+
+            Var alpha(env,
+                      0.,
+                      Inf,
+                      Continuous,
+                      "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
+
+            auto &master = *m_parent.m_master;
+
+            master.add(alpha, std::move(column));
+            m_pool.add(alpha, std::move(generator));
+            m_present_generators.emplace_back(alpha, m_pool.last_inserted());
+
+            ++m_parent.m_n_generated_columns_at_last_iteration;
+            ++m_parent.m_n_generated_columns;
+
+            at_least_one_column_was_added = true;
         }
 
-        auto column = create_column_from_generator(generator);
-
-        Var alpha(env,
-                  0.,
-                  Inf,
-                  Continuous,
-                  "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
-
-        auto &master = *m_parent.m_master;
-
-        master.add(alpha, std::move(column));
-        m_pool.add(alpha, std::move(generator));
-        m_present_generators.emplace_back(alpha, m_pool.last_inserted());
-
-        ++m_parent.m_n_generated_columns_at_last_iteration;
-        ++m_parent.m_n_generated_columns;
+    } catch (...) {
+        if (!at_least_one_column_was_added) {
+            __throw_exception_again;
+        }
+        std::cout << "Warning: exception was thrown while adding more than one column" << std::endl;
     }
 }
 
