@@ -12,7 +12,8 @@
 
 int main(int t_argc, const char** t_argv) {
 
-    auto instance = Problems::KP::read_instance("instance.txt");
+    //auto instance = Problems::KP::read_instance("instance.txt");
+    const auto instance = Problems::KP::read_instance("/home/henri/CLionProjects/optimize/examples/knapsack-problem/instance50.txt");
 
     const auto n_items = instance.n_items();
 

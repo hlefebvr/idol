@@ -301,7 +301,7 @@ void Optimizers::GLPK::save_simplex_solution_status() {
     int status = glp_get_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Unknown;
+        m_solution_status = Fail;
         m_solution_reason = NotSpecified;
         return;
     }
@@ -555,7 +555,7 @@ void Optimizers::GLPK::save_milp_solution_status() {
     int status = glp_mip_status(m_model);
 
     if (status == GLP_UNDEF) {
-        m_solution_status = Unknown;
+        m_solution_status = Fail;
         m_solution_reason = NotSpecified;
         return;
     }

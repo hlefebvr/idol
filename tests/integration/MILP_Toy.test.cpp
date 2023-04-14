@@ -192,7 +192,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
 
             const auto status = model.get_status();
 
-            const bool unknown_or_unbounded = status == Unbounded || status == InfeasibleOrUnbounded;
+            const bool unknown_or_unbounded = status == Unbounded || status == InfOrUnbnd;
 
             CHECK(unknown_or_unbounded);
 
