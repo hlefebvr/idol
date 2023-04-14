@@ -56,8 +56,8 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        if (m_separation_problem->get_best_obj() >= -1e-6) {
-            return;
+        if (m_separation_problem->get_best_obj() >= 0) {
+            break;
         }
 
         const auto& solution = save_primal(*m_separation_problem);

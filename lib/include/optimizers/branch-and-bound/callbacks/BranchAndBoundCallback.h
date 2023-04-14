@@ -74,6 +74,7 @@ void BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
         generator->clear_generated_callbacks();
     }
 
+    std::cout << "With " << m_cutting_plane_callbacks.size() << " cutting planes" << std::endl;
 }
 
 template<class NodeInfoT>

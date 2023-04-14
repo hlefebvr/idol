@@ -23,7 +23,6 @@ public:
     class Strategy : public impl::CutSeparation {
     protected:
         void hook_add_cut(const TempCtr &t_cut) override {
-            std::cout << "adding " << t_cut << std::endl;
             add_user_cut(t_cut);
         }
     public:

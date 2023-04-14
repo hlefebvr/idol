@@ -380,6 +380,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     m_node_updator->clear_local_updates();
 
+    std::cout << "Solved " << m_n_solved_nodes << " nodes" << std::endl;
+
     if (!m_incumbent) {
 
         if (is_pos_inf(get_best_obj())) {
@@ -419,6 +421,8 @@ void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
         analyze(t_node, &explore_children_flag, &reoptimize_flag);
 
     } while (reoptimize_flag);
+
+    ++m_n_solved_nodes;
 
     if (is_terminated() || gap_is_closed()) { return; }
 
@@ -474,8 +478,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
     idol_Log(Debug, "Node " << t_node->id() << " has been solved.");
 
     t_node->save(parent(), *m_relaxation);
-
-    ++m_n_solved_nodes;
 
 }
 

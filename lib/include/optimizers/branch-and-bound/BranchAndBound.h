@@ -204,12 +204,12 @@ public:
      */
     BranchAndBound<NodeT>& with_callback(const CallbackFactory& t_callback);
 
-    BranchAndBound<NodeT>& with_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_place_generator);
+    BranchAndBound<NodeT>& with_cutting_planes(const CuttingPlaneGenerator& t_cutting_place_generator);
 };
 
 template<class NodeT>
 BranchAndBound<NodeT> &
-BranchAndBound<NodeT>::with_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_place_generator) {
+BranchAndBound<NodeT>::with_cutting_planes(const CuttingPlaneGenerator &t_cutting_place_generator) {
     m_cutting_plane_generators.emplace_back(t_cutting_place_generator.clone());
     return *this;
 }

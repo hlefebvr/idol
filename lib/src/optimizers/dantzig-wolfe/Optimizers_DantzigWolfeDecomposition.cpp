@@ -259,7 +259,9 @@ void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
 
         subproblem.m_generation_pattern.linear().set(t_ctr, std::move(pricing_pattern[subproblem.m_index]));
 
-        subproblem.remove_column_if([](...){ return true; }); // TODO, remove only violating columns!!
+        subproblem.remove_column_if([&](const auto& t_alpha, const auto& t_generator) -> double {
+            return true;
+        });
 
     }
 
