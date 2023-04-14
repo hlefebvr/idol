@@ -16,8 +16,12 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->add_callback(cb->operator()());
     }
 
-    if (m_lazy_cuts) {
-        result->set_lazy_cut(m_lazy_cuts);
+    if (m_lazy_cuts.has_value()) {
+        result->set_lazy_cut(m_lazy_cuts.value());
+    }
+
+    if (m_max_n_solution_in_pool.has_value()) {
+        result->set_max_n_solution_in_pool(m_max_n_solution_in_pool.value());
     }
 
     return result;
@@ -53,4 +57,9 @@ Gurobi::Gurobi(const Gurobi& t_src) :
         m_callbacks.emplace_back(cb->clone());
     }
 
+}
+
+Gurobi &Gurobi::with_max_n_solution_in_pool(unsigned int t_value) {
+    m_max_n_solution_in_pool = t_value;
+    return *this;
 }

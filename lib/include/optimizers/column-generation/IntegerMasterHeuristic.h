@@ -40,7 +40,7 @@ public:
 
     [[nodiscard]] BranchAndBoundCallbackFactory<NodeInfo> *clone() const override;
 
-    IntegerMasterHeuristic& with_solver(const OptimizerFactory& t_optimizer);
+    IntegerMasterHeuristic& with_optimizer(const OptimizerFactory& t_optimizer);
 
     IntegerMasterHeuristic& with_integer_columns(bool t_value);
 };

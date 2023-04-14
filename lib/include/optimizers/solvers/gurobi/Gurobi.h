@@ -13,7 +13,8 @@ class Callback;
 
 class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     bool m_continuous_relaxation = false;
-    bool m_lazy_cuts = false;
+    std::optional<bool> m_lazy_cuts;
+    std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
     explicit Gurobi(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
@@ -32,6 +33,8 @@ public:
     Gurobi& with_callback(const CallbackFactory& t_cb);
 
     Gurobi& with_lazy_cut(bool t_value);
+
+    Gurobi& with_max_n_solution_in_pool(unsigned int t_value);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

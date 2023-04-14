@@ -95,6 +95,8 @@ public:
     void add_callback(Callback* t_ptr_to_callback);
 
     void set_lazy_cut(bool t_value);
+
+    void set_max_n_solution_in_pool(unsigned int t_value);
 };
 
 #endif

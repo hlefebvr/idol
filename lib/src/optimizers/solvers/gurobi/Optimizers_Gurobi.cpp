@@ -435,4 +435,8 @@ void Optimizers::Gurobi::set_solution_index(unsigned int t_index) {
     m_model.set(GRB_IntParam_SolutionNumber, (int) t_index);
 }
 
+void Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) {
+    m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
+}
+
 #endif

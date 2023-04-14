@@ -97,7 +97,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_solver(Gurobi().with_time_limit(20))
+                                                IntegerMasterHeuristic().with_optimizer(Gurobi().with_time_limit(20))
                                         );
                                     })
 

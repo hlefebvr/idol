@@ -10,7 +10,7 @@ IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_s
 BranchAndBoundCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
 
     if (!m_optimizer_factory) {
-        throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_solver to configure.");
+        throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_optimizer to configure.");
     }
 
     auto* result = new Strategy(*m_optimizer_factory);
@@ -22,7 +22,7 @@ BranchAndBoundCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
     return result;
 }
 
-IntegerMasterHeuristic &IntegerMasterHeuristic::with_solver(const OptimizerFactory &t_optimizer) {
+IntegerMasterHeuristic &IntegerMasterHeuristic::with_optimizer(const OptimizerFactory &t_optimizer) {
 
     if (m_optimizer_factory) {
         throw Exception("A solver has already been given.");

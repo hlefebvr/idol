@@ -1,6 +1,7 @@
 //
 // Created by henri on 24/03/23.
 //
+#include <cassert>
 #include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "modeling/objects/Versions.h"
 #include "modeling/expressions/operations/operators.h"
@@ -249,7 +250,15 @@ void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
 
     }
 
-    m_master->add(t_ctr, TempCtr(Row(master_row), type));
+    // Remove columns
+
+    double master_lhs = 0;
+
+    for (const auto& [var, constant] : master_row.linear()) {
+        master_lhs += constant.numerical() * m_master->get_var_primal(var);
+    }
+
+    const double master_rhs = master_row.rhs().numerical();
 
     for (auto& subproblem : m_subproblems) {
 
@@ -257,12 +266,21 @@ void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
             continue;
         }
 
-        subproblem.m_generation_pattern.linear().set(t_ctr, std::move(pricing_pattern[subproblem.m_index]));
-
         subproblem.remove_column_if([&](const auto& t_alpha, const auto& t_generator) -> double {
-            return true;
+            const double value = master_lhs + pricing_pattern[subproblem.m_index].fix(t_generator) - master_rhs;
+            switch (type) {
+                case LessOrEqual: return value > 0;
+                case GreaterOrEqual: return value < 0;
+                default:;
+            }
+            return !equals(value, 0., 1e-6);
         });
 
+        subproblem.m_generation_pattern.linear().set(t_ctr, std::move(pricing_pattern[subproblem.m_index]));
+
     }
+
+    // Add cut
+    m_master->add(t_ctr, TempCtr(Row(std::move(master_row)), type));
 
 }

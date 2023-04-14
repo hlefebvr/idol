@@ -14,6 +14,7 @@
 class CoverCuts : public CuttingPlaneGenerator {
 
     bool m_adaptivity = false;
+    bool m_gub = false;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     void parse_ctr(const Model& t_model, const Ctr& t_ctr) {
@@ -72,6 +73,9 @@ class CoverCuts : public CuttingPlaneGenerator {
 
         separation.add_ctr(lhs >= rhs + 1);
 
+        if (m_adaptivity && (!use_adaptive_var || !adaptive_var.has_value())) {
+            return;
+        }
 
         Expr cut_rhs;
         if (use_adaptive_var && adaptive_var.has_value()) {
@@ -90,10 +94,14 @@ class CoverCuts : public CuttingPlaneGenerator {
 
     CoverCuts(const CoverCuts& t_src)
         : m_adaptivity(t_src.m_adaptivity),
+          m_gub(t_src.m_gub),
           m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 
+    explicit CoverCuts(bool t_adaptivity, bool t_gub) : m_adaptivity(t_adaptivity), m_gub(t_gub) {}
 public:
     CoverCuts() = default;
+
+    static CoverCuts Adaptive() { return CoverCuts(true, false); }
 
     void operator()(const Model &t_model) override {
 
@@ -107,15 +115,11 @@ public:
         return new CoverCuts(*this);
     }
 
-    CoverCuts& with_solver(const OptimizerFactory& t_optimizer_factory) {
+    CoverCuts& with_optimizer(const OptimizerFactory& t_optimizer_factory) {
         m_optimizer_factory.reset(t_optimizer_factory.clone());
         return *this;
     }
 
-    CoverCuts& with_adaptivity(bool t_value) {
-        m_adaptivity = t_value;
-        return *this;
-    }
 };
 
 #endif //IDOL_COVERCUTS_H

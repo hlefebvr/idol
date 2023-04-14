@@ -115,7 +115,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                 .conditional(integer_master_heuristic, [](auto& x){
                                     x.with_callback(
                                             IntegerMasterHeuristic()
-                                                .with_solver( TestType() )
+                                                .with_optimizer( TestType() )
                                     );
                                 })
                         )
@@ -138,7 +138,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .conditional(integer_master_heuristic, [](auto& x){
                         x.with_callback(
                                 IntegerMasterHeuristic()
-                                    .with_solver(TestType()
+                                    .with_optimizer(TestType()
                                 )
                             );
                     })
