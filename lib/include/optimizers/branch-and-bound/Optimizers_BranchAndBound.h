@@ -515,7 +515,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    if (status == Feasible && reason == UserObjLimit) {
+    if (status == Feasible && reason == ObjLimit) {
         idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node->objective_value() << ").");
         delete t_node;
         return;

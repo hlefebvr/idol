@@ -8,14 +8,15 @@
 #include <string>
 #include <stdexcept>
 #include <ostream>
+#include <iomanip>
 #include "../../errors/Exception.h"
 
 enum SolutionStatus {
-    Unknown,
+    Loaded,
     Optimal,
     Feasible,
     Infeasible,
-    InfeasibleOrUnbounded,
+    InfOrUnbnd,
     Unbounded,
     Fail
 };
@@ -24,9 +25,8 @@ enum SolutionReason {
     NotSpecified,
     Proved,
     TimeLimit,
-    IterationCount,
-    CutOff,
-    UserObjLimit,
+    IterLimit,
+    ObjLimit,
     Numerical
 };
 
@@ -54,11 +54,11 @@ bool is_in(typename T::value_type t_status, const T& t_list) {
 
 static SolutionStatus dual(SolutionStatus t_status) {
     switch (t_status) {
-        case Unknown: return Unknown;
+        case Loaded: return Loaded;
         case Optimal: return Optimal;
         case Feasible: return Feasible;
         case Infeasible: return Unbounded;
-        case InfeasibleOrUnbounded: return InfeasibleOrUnbounded;
+        case InfOrUnbnd: return InfOrUnbnd;
         case Unbounded: return Infeasible;
         case Fail: return Fail;
     }
@@ -66,31 +66,34 @@ static SolutionStatus dual(SolutionStatus t_status) {
 }
 
 static std::ostream &operator<<(std::ostream& t_os, SolutionStatus t_status) {
+
     switch (t_status) {
-        case Unknown: return t_os << "Unknown";
-        case Optimal: return t_os << "Optimal";
-        case Feasible: return t_os << "Feasible";
-        case Infeasible: return t_os << "Infeasible";
-        case InfeasibleOrUnbounded: return t_os << "InfeasibleOrUnbounded";
-        case Unbounded: return t_os << "Unbounded";
-        case Fail: return t_os << "Fail";
-        default: throw Exception("Unexpected status: " + std::to_string(t_status));
+        case Loaded: return t_os << std::setw(10) << "Unknown";
+        case Optimal: return t_os << std::setw(10) << "Optimal";
+        case Feasible: return t_os << std::setw(10) << "Feasible";
+        case Infeasible: return t_os << std::setw(10) << "Infeasible";
+        case InfOrUnbnd: return t_os << std::setw(10) << "InfOrUnbnd";
+        case Unbounded: return t_os << std::setw(10) << "Unbounded";
+        case Fail: return t_os << std::setw(10) << "Fail";
+        default:;
     }
-    return t_os;
+
+    throw Exception("Unexpected status: " + std::to_string(t_status));
 }
 
 static std::ostream &operator<<(std::ostream& t_os, SolutionReason t_status) {
+
     switch (t_status) {
-        case Proved: return t_os << "Proved";
-        case NotSpecified: return t_os << "NotSpecified";
-        case TimeLimit: return t_os << "TimeLimit";
-        case IterationCount: return t_os << "IterationCount";
-        case CutOff: return t_os << "CutOff";
-        case UserObjLimit: return t_os << "UserObjLimit";
-        case Numerical: return t_os << "Numerical";
-        default: throw Exception("Unexpected status: " + std::to_string(t_status));
+        case Proved: return t_os << std::setw(9) << "Proved";
+        case NotSpecified: return t_os << std::setw(9) << "-";
+        case TimeLimit: return t_os << std::setw(9) << "TimeLimit";
+        case IterLimit: return t_os << std::setw(9) << "IterLimit";
+        case ObjLimit: return t_os << std::setw(9) << "ObjLimit";
+        case Numerical: return t_os << std::setw(9) << "Numerical";
+        default:;
     }
-    return t_os;
+
+    throw Exception("Unexpected status: " + std::to_string(t_status));
 }
 
 #endif //IDOL_SOLUTION_TYPES_H

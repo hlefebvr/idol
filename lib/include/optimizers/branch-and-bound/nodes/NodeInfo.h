@@ -23,9 +23,9 @@ public:
 
     virtual ~NodeInfo() = default;
 
-    [[nodiscard]] int status() const { return m_primal_solution.status(); }
+    [[nodiscard]] SolutionStatus status() const { return m_primal_solution.status(); }
 
-    [[nodiscard]] int reason() const { return m_primal_solution.reason(); }
+    [[nodiscard]] SolutionReason reason() const { return m_primal_solution.reason(); }
 
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 

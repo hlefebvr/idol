@@ -212,10 +212,14 @@ BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeIn
         cb->m_interface = nullptr;
     }
 
-    for (auto& cb : m_callbacks) {
-        cb->m_interface = this;
-        cb->operator()(t_event);
-        cb->m_interface = nullptr;
+    if (result.n_added_user_cuts == 0) {
+
+        for (auto &cb: m_callbacks) {
+            cb->m_interface = this;
+            cb->operator()(t_event);
+            cb->m_interface = nullptr;
+        }
+
     }
 
     m_parent = nullptr;

@@ -9,7 +9,7 @@
 #include "modeling/solutions/Solution.h"
 
 class Algorithm : public Optimizer {
-    SolutionStatus m_status = Unknown;
+    SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     double m_best_bound = -Inf;
     double m_best_obj = +Inf;

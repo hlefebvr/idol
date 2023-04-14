@@ -227,12 +227,17 @@ void Optimizers::ColumnGeneration::run_column_generation() {
         ++m_iteration_count;
 
         if (m_iteration_count >= iteration_count_limit()) {
-            set_reason(IterationCount);
+            set_reason(IterLimit);
             terminate();
             break;
         }
 
     } while (true);
+
+    if (get_relative_gap() <= relative_gap_tolerance()) {
+        set_status(Optimal);
+        set_reason(Proved);
+    }
 
     log_master_solution(true);
 
@@ -251,7 +256,7 @@ void Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
     auto status = m_master->get_status();
 
     std::stringstream objective_value;
-    if (status == InfeasibleOrUnbounded || status == Fail || status == Unknown) {
+    if (status == InfOrUnbnd || status == Fail || status == Loaded) {
         objective_value << "-";
     } else {
         objective_value << m_master->get_best_obj();
@@ -304,9 +309,9 @@ void Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
     auto status = m_master->get_status();
 
-    set_status(status);
-
     if (status == Optimal) {
+
+        set_status(Feasible);
 
         m_iter_upper_bound = m_master->get_best_obj();
 
@@ -495,7 +500,8 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         }
 
         if (m_artificial_variables.empty() && get_best_bound() > best_bound_stop()) {
-            set_reason(SolutionReason::UserObjLimit);
+            set_status(get_relative_gap() > 0 ? Feasible : Optimal);
+            set_reason(ObjLimit);
             terminate();
             idol_Log(Trace,
                      "Terminate. Given best_bound_stop is " << best_bound_stop()

@@ -47,10 +47,10 @@ public:
     [[nodiscard]] unsigned int n_facilities() const { return m_fixed_costs.size(); }
     [[nodiscard]] unsigned int n_customers() const { return m_demands.size(); }
 
-    [[nodiscard]] double fixed_cost(unsigned int t_i) const { return m_fixed_costs[t_i]; }
-    [[nodiscard]] double capacity(unsigned int t_i) const { return m_capacities[t_i]; }
-    [[nodiscard]] double demand(unsigned int t_j) const { return m_demands[t_j]; }
-    [[nodiscard]] double per_unit_transportation_cost(unsigned int t_i, unsigned int t_j) const { return m_per_unit_transportation_costs[t_i][t_j]; }
+    [[nodiscard]] virtual double fixed_cost(unsigned int t_i) const { return m_fixed_costs[t_i]; }
+    [[nodiscard]] virtual double capacity(unsigned int t_i) const { return m_capacities[t_i]; }
+    [[nodiscard]] virtual double demand(unsigned int t_j) const { return m_demands[t_j]; }
+    [[nodiscard]] virtual double per_unit_transportation_cost(unsigned int t_i, unsigned int t_j) const { return m_per_unit_transportation_costs[t_i][t_j]; }
 
     void set_fixed_cost(unsigned int t_i, double t_value) { m_fixed_costs[t_i] = t_value; }
     void set_capacity(unsigned int t_i, double t_value) { m_capacities[t_i] = t_value; }

@@ -50,14 +50,21 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
         return;
     }
 
-    const auto& solution = save_primal(*m_separation_problem);
+    const unsigned int n_solutions = m_separation_problem->get_n_solutions();
 
-    if (solution.objective_value() >= -1e-6) {
-        return;
+    for (unsigned int k = 0 ; k < n_solutions ; ++k) {
+
+        m_separation_problem->set_solution_index(k);
+
+        if (m_separation_problem->get_best_obj() >= -1e-6) {
+            return;
+        }
+
+        const auto& solution = save_primal(*m_separation_problem);
+
+        TempCtr cut(m_cut.row().fix(solution), m_cut.type());
+
+        hook_add_cut(cut);
     }
-
-    TempCtr cut(m_cut.row().fix(solution), m_cut.type());
-
-    hook_add_cut(cut);
 
 }

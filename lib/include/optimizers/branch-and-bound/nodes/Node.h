@@ -30,9 +30,9 @@ public:
 
     [[nodiscard]] double objective_value() const { return m_info->primal_solution().objective_value(); }
 
-    [[nodiscard]] int status() const { return m_info->status(); }
+    [[nodiscard]] SolutionStatus status() const { return m_info->status(); }
 
-    [[nodiscard]] int reason() const { return m_info->reason(); }
+    [[nodiscard]] SolutionReason reason() const { return m_info->reason(); }
 
     [[nodiscard]] const NodeInfoT& info() const { return *m_info; }
 

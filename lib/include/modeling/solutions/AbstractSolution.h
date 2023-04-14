@@ -18,7 +18,7 @@
  */
 template<class KeyT, class CRTP>
 class AbstractSolution {
-    SolutionStatus m_status = Unknown;
+    SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     std::optional<double> m_objective_value;
     Map<KeyT, double> m_values;

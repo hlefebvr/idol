@@ -53,15 +53,14 @@ std::pair<SolutionStatus, SolutionReason> Optimizers::Gurobi::gurobi_status(int 
     switch (t_status) {
         case GRB_OPTIMAL: return { Optimal, Proved };
         case GRB_INFEASIBLE: return { Infeasible, Proved };
-        case GRB_INF_OR_UNBD: return { InfeasibleOrUnbounded, Proved };
+        case GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
         case GRB_UNBOUNDED: return { Unbounded, Proved };
-        case GRB_CUTOFF: return { Unknown, CutOff };
-        case GRB_USER_OBJ_LIMIT: return { Feasible, UserObjLimit };
+        case GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
         case GRB_TIME_LIMIT: return { m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible, TimeLimit };
-        case GRB_NUMERIC: return { Fail, NotSpecified };
+        case GRB_NUMERIC: return {Fail, NotSpecified };
         default:;
     }
-    throw Exception("Unsupported status: " + std::to_string(t_status));
+    throw Exception("Unsupported gurobi status: " + std::to_string(t_status));
 }
 
 double Optimizers::Gurobi::gurobi_numeric(double t_value) {
