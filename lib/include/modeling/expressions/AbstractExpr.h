@@ -31,9 +31,9 @@ class impl::AbstractExpr {
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
 protected:
-    void set(const Key& t_key, Constant&& t_coefficient);
-    const Constant& get(const Key& t_key) const;
-    void remove(const Key& t_key);
+    virtual void set(const Key& t_key, Constant&& t_coefficient);
+    virtual const Constant& get(const Key& t_key) const;
+    virtual void remove(const Key& t_key);
 
     class References;
     References refs();
@@ -41,71 +41,107 @@ public:
     AbstractExpr() = default;
 
     /**
-     * Copy constructor. Every terms are copied by value.
+     * Copy constructor.
+     *
+     * Each term are copied by value.
+     *
      * @param t_src The source object to copy.
      */
     AbstractExpr(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_src);
 
     /**
-     * Move constructor. Every terms are moved.
-     * Meaning that MatrixCoefficientReference-s remain MatrixCoefficientReference-s, if any.
+     * Move constructor.
+     *
+     * Each term is moved.
+     *
+     * In particular, MatrixCoefficientReference-s remain MatrixCoefficientReference-s.
+     *
      * @param t_src
      */
     AbstractExpr(AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>&& t_src) noexcept = default;
 
     /**
-     * Assignment operator. Every term is copied by value.
+     * Assignment operator.
+     *
+     * Each term is copied by value.
+     *
      * @param t_src The source object to assign.
      * @return The object itself.
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_src);
 
     /**
-     * Assignment move operator. Every term is moved.
-     * Meaning that MatrixCoefficientReference-s remain MatrixCoefficientReference-s, if any.
+     * Assignment move operator.
+     *
+     * Each term is moved.
+     *
+     * In particular, MatrixCoefficientReference-s remain MatrixCoefficientReference-s.
      * @param t_src The source object to assign.
      * @return The object itself.
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator=(AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>&& t_src) noexcept = default;
 
     /**
-     * Adds up every term of t_rhs to the Expr.
-     * Zero entries are removed from the resulting Expr.
-     * @param t_rhs The object whose terms are to be added up.
+     * Adds each term of `t_rhs` to the expression.
+     *
+     * Zero entries are removed from the resulting expression.
+     *
+     * @param t_rhs the expression whose terms are to be added up.
      * @return The object itself.
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator+=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_rhs);
 
     /**
-     * Subtracts every term of t_rhs to the Expr.
-     * Zero entries are removed from the resulting Expr.
+     * Subtracts each term of `t_rhs` to the expression.
+     *
+     * Zero entries are removed from the resulting expression.
+     *
      * @param t_rhs The object whose terms are to be subtracted.
      * @return The object itself.
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator-=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_rhs);
 
     /**
-     * Multiplies every term of the Expr by t_factor. If t_factor equals zero with tolerance ToleranceForSparsity, then the Expr is emptied.
+     * Multiplies every term of the expression by `t_factor`.
+     *
+     * If `t_factor` equals zero with tolerance `ToleranceForSparsity`, then the expression is emptied.
+     *
      * @param t_factor The multiplying factor.
      * @return The object itself.
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator*=(double t_factor);
 
     /**
-     * Returns the size of the Expr, i.e., the number of non-zero entries which are currently stored.
+     * Returns the size of the expression (i.e., number of non-zero entries which are currently stored).
+     *
+     * @return the size of the expression
      */
     [[nodiscard]] unsigned int size() const { return m_map.size(); }
 
     /**
-     * Returns True if the size is zero, False otherwise.
+     * Returns true if and only if the size is zero.
+     *
+     * @return true if and only if the size is zero
      */
     [[nodiscard]] bool empty() const { return m_map.empty(); }
 
     class const_iterator;
 
+    /**
+     * Returns an iterator pointing to the first term of the expression.
+     * @return an iterator pointing to the first term of the expression
+     */
     const_iterator begin() const { return const_iterator(m_map.begin()); }
+
+    /**
+     * Returns an iterator pointing to the end of the expression.
+     * @return an iterator pointing to the end the expression
+     */
     const_iterator end() const { return const_iterator(m_map.end()); }
 
+    /**
+     * Removes all entries from the expression.
+     */
     void clear() { m_map.clear(); }
 };
 
