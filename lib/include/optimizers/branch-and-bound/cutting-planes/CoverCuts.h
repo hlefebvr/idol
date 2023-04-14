@@ -84,8 +84,6 @@ class CoverCuts : public CuttingPlaneGenerator {
             cut_rhs = idol_Sum(var, covered_vars, !var) - 1;
         }
 
-        //std::cout << "Adding separation for " << row << std::endl;
-
         add_callback(
                 UserCutCallback(separation, idol_Sum(var, covered_vars, !var * var) <= std::move(cut_rhs))
                         .with_separation_solver(*m_optimizer_factory)
