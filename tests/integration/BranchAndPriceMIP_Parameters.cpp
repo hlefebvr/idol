@@ -135,6 +135,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     .with_subtree_depth(subtree_depth)
+                    .with_log_level(Trace, Blue)
                     .conditional(integer_master_heuristic, [](auto& x){
                         x.with_callback(
                                 IntegerMasterHeuristic()

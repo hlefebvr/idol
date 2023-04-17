@@ -380,8 +380,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     m_node_updator->clear_local_updates();
 
-    std::cout << "Solved " << m_n_solved_nodes << " nodes" << std::endl;
-
     if (!m_incumbent) {
 
         if (is_pos_inf(get_best_obj())) {
@@ -511,7 +509,12 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         return;
     }
 
-    if (status == Infeasible) {
+    if (status == Infeasible || status == InfOrUnbnd) {
+
+        if (t_node->level() == 0) {
+            set_status(status);
+        }
+
         idol_Log(Trace, "Pruning node " << t_node->id() << " (by feasibility).");
         delete t_node;
         return;
