@@ -24,6 +24,14 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->set_max_n_solution_in_pool(m_max_n_solution_in_pool.value());
     }
 
+    if (m_use_cuts.has_value()) {
+        result->set_use_cuts(m_use_cuts.value());
+    }
+
+    if (m_use_heuristics.has_value()) {
+        result->set_use_heuristics(m_use_heuristics.value());
+    }
+
     return result;
 #else
     throw Exception("idol was not linked with Gurobi.");
@@ -61,5 +69,15 @@ Gurobi::Gurobi(const Gurobi& t_src) :
 
 Gurobi &Gurobi::with_max_n_solution_in_pool(unsigned int t_value) {
     m_max_n_solution_in_pool = t_value;
+    return *this;
+}
+
+Gurobi &Gurobi::with_cutting_planes(bool t_value) {
+    m_use_cuts = t_value;
+    return *this;
+}
+
+Gurobi &Gurobi::with_heuristics(bool t_value) {
+    m_use_heuristics = t_value;
     return *this;
 }

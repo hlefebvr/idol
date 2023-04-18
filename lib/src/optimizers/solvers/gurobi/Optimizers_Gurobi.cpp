@@ -439,4 +439,12 @@ void Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) {
     m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
 }
 
+void Optimizers::Gurobi::set_use_cuts(bool t_value) {
+    m_model.set(GRB_IntParam_Cuts, t_value);
+}
+
+void Optimizers::Gurobi::set_use_heuristics(bool t_value) {
+    m_model.set(GRB_DoubleParam_Heuristics, t_value);
+}
+
 #endif

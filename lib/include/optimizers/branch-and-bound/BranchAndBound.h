@@ -60,10 +60,10 @@ public:
      *                      .with_node_optimizer(GLPK::ContinuousRelaxation());
      * ```
      *
-     * @param t_node_solver the optimizer factory the node problems
+     * @param t_node_optimizer the optimizer factory the node problems
      * @return the optimizer factory itself
      */
-    BranchAndBound<NodeT>& with_node_optimizer(const OptimizerFactory& t_node_solver);
+    BranchAndBound<NodeT>& with_node_optimizer(const OptimizerFactory& t_node_optimizer);
 
     /**
      * Sets the branching rule used to create child nodes
@@ -291,13 +291,13 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_branching_rule(const Branchin
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_optimizer(const OptimizerFactory &t_node_solver) {
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_optimizer(const OptimizerFactory &t_node_optimizer) {
 
     if (m_relaxation_optimizer_factory) {
         throw Exception("A node solver has already been set.");
     }
 
-    m_relaxation_optimizer_factory.reset(t_node_solver.clone());
+    m_relaxation_optimizer_factory.reset(t_node_optimizer.clone());
 
     return *this;
 }
