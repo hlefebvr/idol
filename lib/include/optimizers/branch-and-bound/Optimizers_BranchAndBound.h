@@ -362,7 +362,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
 
-    m_callback->initialize(*m_relaxation);
+    m_callback->initialize(parent());
 }
 
 template<class NodeInfoT>
