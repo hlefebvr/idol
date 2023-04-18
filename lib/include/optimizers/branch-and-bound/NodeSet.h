@@ -53,7 +53,7 @@ void NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 
 template<class NodeT>
 typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::emplace(NodeT *t_node) {
-    auto it = m_by_objective_value.template emplace(t_node->objective_value(), t_node);
+    auto it = m_by_objective_value.template emplace(t_node->info().objective_value(), t_node);
     m_by_level.template emplace(t_node->level(), t_node);
     return const_iterator(std::move(it));
 }
@@ -74,7 +74,7 @@ typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::erase(const NodeSet::con
     const unsigned int id = t_it->id();
 
     if (t_it.is_by_level()) {
-        const double objective_value = t_it->objective_value();
+        const double objective_value = t_it->info().objective_value();
         auto it = m_by_objective_value.lower_bound(objective_value);
         for (; it->second->id() != id ; ++it);
         m_by_objective_value.erase(it);
