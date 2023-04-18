@@ -46,7 +46,7 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                .with_node_solver(Gurobi::ContinuousRelaxation())
+                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(BestBound())
                 .with_log_level(Trace, Blue)

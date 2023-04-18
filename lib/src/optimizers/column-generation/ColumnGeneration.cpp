@@ -59,7 +59,7 @@ ColumnGeneration &ColumnGeneration::with_subproblem(const Model &t_model, Column
     return *this;
 }
 
-ColumnGeneration &ColumnGeneration::with_master_solver(const OptimizerFactory &t_master_optimizer) {
+ColumnGeneration &ColumnGeneration::with_master_optimizer(const OptimizerFactory &t_master_optimizer) {
 
     if (m_master_optimizer) {
         throw Exception("A master solver has already been given.");

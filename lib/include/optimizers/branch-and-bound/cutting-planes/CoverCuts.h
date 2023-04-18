@@ -86,12 +86,13 @@ class CoverCuts : public CuttingPlaneGenerator {
 
         add_callback(
                 UserCutCallback(separation, idol_Sum(var, covered_vars, !var * var) <= std::move(cut_rhs))
-                        .with_separation_solver(*m_optimizer_factory)
+                        .with_separation_optimizer(*m_optimizer_factory)
         );
     }
 
     CoverCuts(const CoverCuts& t_src)
-        : m_adaptivity(t_src.m_adaptivity),
+        : CuttingPlaneGenerator(t_src),
+          m_adaptivity(t_src.m_adaptivity),
           m_gub(t_src.m_gub),
           m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 

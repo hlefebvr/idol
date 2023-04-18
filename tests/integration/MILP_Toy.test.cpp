@@ -16,7 +16,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
     auto solver = GENERATE(
                 std::shared_ptr<OptimizerFactory>(TestType().clone()),
                 std::shared_ptr<OptimizerFactory>(BranchAndBound<NodeInfo>()
-                                .with_node_solver(TestType::ContinuousRelaxation())
+                                                          .with_node_optimizer(TestType::ContinuousRelaxation())
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
                                 .clone()

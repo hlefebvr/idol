@@ -50,17 +50,17 @@ int main(int t_argc, const char** t_argv) {
     // Set optimizer
     model.use(BranchAndBound()
 
-                .with_node_solver(
-                    DantzigWolfeDecomposition(decomposition)
-                        .with_master_solver(GLPK::ContinuousRelaxation())
-                        .with_pricing_solver(GLPK())
-                        .with_log_level(Info, Yellow)
-                        .with_farkas_pricing(false)
-                        .with_artificial_variables_cost(1e+4)
-                        .with_branching_on_master(true)
-                        .with_dual_price_smoothing_stabilization(.3)
-                        .with_column_pool_clean_up(1e+8, .75)
-                )
+                      .with_node_optimizer(
+                              DantzigWolfeDecomposition(decomposition)
+                                      .with_master_optimizer(GLPK::ContinuousRelaxation())
+                                      .with_pricing_optimizer(GLPK())
+                                      .with_log_level(Info, Yellow)
+                                      .with_farkas_pricing(false)
+                                      .with_artificial_variables_cost(1e+4)
+                                      .with_branching_on_master(true)
+                                      .with_dual_price_smoothing_stabilization(.3)
+                                      .with_column_pool_clean_up(1e+8, .75)
+                      )
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)

@@ -1,5 +1,5 @@
 //
-// Created by henri on 06/02/23.
+// Created by henri on 17.04.23.
 //
 
 #include "../test_utils.h"
@@ -17,64 +17,8 @@ using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, Wor
 
 using test_parameters = cartesian_product<lp_solvers, node_selection_rules>;
 
-TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Knapsack Problem with different node selection strategies",
-                        "[integration][backend][solver]",
-                        test_parameters) {
-
-    using OptimizerT = std::tuple_element_t<0, TestType>;
-    using NodeSelectionRuleT = std::tuple_element_t<1, TestType>;
-
-    Env env;
-
-    using namespace Problems::KP;
-
-    const auto [filename, objective_value] = GENERATE(
-            std::make_pair<std::string, double>("KP_instance0.txt", -235.)
-    );
-    const auto subtree_depth = GENERATE(0, 2);
-
-    const auto instance = read_instance("instances/knapsack-problem/" + filename);
-    const unsigned int n_items = instance.n_items();
-
-    auto x = Var::make_vector(env, Dim<1>(n_items), 0., 1., Binary, "x");
-    Ctr c(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
-
-    Model model(env);
-    model.add_vector<Var, 1>(x);
-    model.add(c);
-    model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
-
-    model.use(BranchAndBound<NodeInfo>()
-                .with_node_solver(OptimizerT::ContinuousRelaxation())
-                .with_branching_rule(MostInfeasible())
-                .with_node_selection_rule(NodeSelectionRuleT())
-                .with_subtree_depth(subtree_depth)
-            );
-
-    WHEN("The instance \"" + filename + "\" is solved with subtree depth of " + std::to_string(subtree_depth)) {
-
-        model.optimize();
-
-        THEN("The solution status is Optimal") {
-
-            CHECK(model.get_status() == Optimal);
-
-        }
-
-        AND_THEN("The objective value is " + std::to_string(objective_value)) {
-
-            CHECK(model.get_best_obj() == objective_value);
-
-        }
-
-    }
-
-
-}
-
 TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with different node selection rules",
-                        "[integration][backend][solver]",
-                        test_parameters) {
+    "[integration][backend][solver]", test_parameters) {
 
     using OptimizerT = std::tuple_element_t<0, TestType>;
     using NodeSelectionRuleT = std::tuple_element_t<1, TestType>;
@@ -124,11 +68,11 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
     // Set backend options
     model.use(
             BranchAndBound<NodeInfo>()
-                .with_node_solver(OptimizerT::ContinuousRelaxation())
-                .with_branching_rule(MostInfeasible())
-                .with_node_selection_rule(NodeSelectionRuleT())
-                .with_subtree_depth(subtree_depth)
-        );
+                    .with_node_optimizer(OptimizerT::ContinuousRelaxation())
+        .with_branching_rule(MostInfeasible())
+        .with_node_selection_rule(NodeSelectionRuleT())
+        .with_subtree_depth(subtree_depth)
+    );
 
     WHEN("The instance \"" + filename + "\" is solved") {
 

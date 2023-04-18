@@ -64,16 +64,16 @@ int main(int t_argc, char** t_argv) {
 
                             BranchAndBound<NodeInfo>()
 
-                                    .with_node_solver(
+                                    .with_node_optimizer(
 
                                             DantzigWolfeDecomposition(std_decomposition)
 
-                                                    .with_master_solver(
+                                                    .with_master_optimizer(
                                                             Gurobi::ContinuousRelaxation()
-                                                                //.with_infeasible_or_unbounded_info(true)
+                                                            //.with_infeasible_or_unbounded_info(true)
                                                     )
 
-                                                    .with_pricing_solver(
+                                                    .with_pricing_optimizer(
                                                             Gurobi()
                                                     )
 
@@ -85,9 +85,9 @@ int main(int t_argc, char** t_argv) {
 
                                                     .with_branching_on_master(branching_on_master)
 
-                                                    //.with_log_frequency(1)
+                                            //.with_log_frequency(1)
 
-                                                    //.with_iteration_count_limit(20)
+                                            //.with_iteration_count_limit(20)
 
                                     )
 

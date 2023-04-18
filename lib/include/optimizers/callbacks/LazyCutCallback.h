@@ -49,7 +49,7 @@ public:
         return new LazyCutCallback(*this);
     }
 
-    LazyCutCallback& with_separation_solver(const OptimizerFactory& t_optimizer_factory) {
+    LazyCutCallback& with_separation_optimizer(const OptimizerFactory& t_optimizer_factory) {
 
         if (m_optimizer_factory) {
             throw Exception("An optimizer has already been given.");

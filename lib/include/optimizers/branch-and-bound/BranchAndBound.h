@@ -57,13 +57,13 @@ public:
      * Example:
      * ```cpp
      * auto algorithm = BranchAndBound()
-     *                      .with_node_solver(GLPK::ContinuousRelaxation());
+     *                      .with_node_optimizer(GLPK::ContinuousRelaxation());
      * ```
      *
      * @param t_node_solver the optimizer factory the node problems
      * @return the optimizer factory itself
      */
-    BranchAndBound<NodeT>& with_node_solver(const OptimizerFactory& t_node_solver);
+    BranchAndBound<NodeT>& with_node_optimizer(const OptimizerFactory& t_node_solver);
 
     /**
      * Sets the branching rule used to create child nodes
@@ -291,7 +291,7 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_branching_rule(const Branchin
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_solver(const OptimizerFactory &t_node_solver) {
+BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_optimizer(const OptimizerFactory &t_node_solver) {
 
     if (m_relaxation_optimizer_factory) {
         throw Exception("A node solver has already been set.");
@@ -324,7 +324,7 @@ template<class NodeT>
 Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
 
     if (!m_relaxation_optimizer_factory) {
-        throw Exception("No node solver has been given, please call BranchAndBound::with_node_solver to configure.");
+        throw Exception("No node solver has been given, please call BranchAndBound::with_node_optimizer to configure.");
     }
 
     if (!m_branching_rule_factory) {
