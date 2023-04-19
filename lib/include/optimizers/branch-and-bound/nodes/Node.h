@@ -28,17 +28,9 @@ public:
 
     [[nodiscard]] unsigned int level() const { return m_level; }
 
-    [[nodiscard]] double objective_value() const { return m_info->primal_solution().objective_value(); }
-
-    [[nodiscard]] SolutionStatus status() const { return m_info->status(); }
-
-    [[nodiscard]] SolutionReason reason() const { return m_info->reason(); }
-
     [[nodiscard]] const NodeInfoT& info() const { return *m_info; }
 
     NodeInfoT& info() { return *m_info; }
-
-    void save(const Model& t_original_formulation, const Model& t_model) { m_info->save(t_original_formulation, t_model); }
 };
 
 #endif //IDOL_NODE_H

@@ -27,6 +27,8 @@ public:
 
     [[nodiscard]] SolutionReason reason() const { return m_primal_solution.reason(); }
 
+    [[nodiscard]] double objective_value() const { return m_primal_solution.objective_value(); }
+
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 
     [[nodiscard]] const auto& local_lower_bounds() const { return m_local_lower_bounds; }

@@ -369,7 +369,7 @@ void Optimizers::ColumnGeneration::update_subproblems() {
 
     if (!m_adjusted_dual_solution) {
 
-        m_adjusted_dual_solution = m_current_dual_solution;
+        m_adjusted_dual_solution = m_current_dual_solution.value();
 
     } else {
 
