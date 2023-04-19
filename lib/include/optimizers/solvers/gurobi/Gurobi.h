@@ -12,7 +12,7 @@
 class Callback;
 
 class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
-    std::optional<bool> m_continuous_relaxation = false;
+    std::optional<bool> m_continuous_relaxation;
     std::optional<bool> m_lazy_cuts;
     std::optional<bool> m_use_cuts;
     std::optional<bool> m_use_heuristics;
