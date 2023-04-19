@@ -39,7 +39,7 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
 }
 
 Gurobi Gurobi::ContinuousRelaxation() {
-    return Gurobi(true);
+    return Gurobi().with_continuous_relaxation_only(true);
 }
 
 Gurobi *Gurobi::clone() const {

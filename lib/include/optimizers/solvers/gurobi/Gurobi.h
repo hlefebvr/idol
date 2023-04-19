@@ -19,14 +19,13 @@ class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
-    explicit Gurobi(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
     Gurobi(const Gurobi& t_src);
 public:
     Gurobi() = default;
     Gurobi(Gurobi&&) noexcept = default;
 
     Gurobi& operator=(const Gurobi&) = delete;
-    Gurobi& operator=(Gurobi&&) noexcept = delete;
+    Gurobi& operator=(Gurobi&&) noexcept = default;
 
     Optimizer *operator()(const Model &t_model) const override;
 
