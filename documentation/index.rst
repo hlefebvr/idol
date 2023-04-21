@@ -46,9 +46,9 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, "x");
 
-        model.add_ctr(idol_Sum(j, n_items, weight[j] * x[j]) <= capacity);
+        model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
 
-        model.set_obj_expr(idol_Sum(j, n_items, -profits[j] * x[j]);
+        model.set_obj_expr(idol_Sum(j, Range(n_items), -profits[j] * x[j]);
 
         model.use(Gurobi());
 
