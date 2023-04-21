@@ -55,17 +55,17 @@ public:
 
     /**
      * Configures the optimizer factory for the master problem
-     * @param t_master_solver the desired optimizer factory for the master problem
+     * @param t_master_optimizer the desired optimizer factory for the master problem
      * @return the optimizer factory itself
      */
-    DantzigWolfeDecomposition& with_master_solver(const OptimizerFactory& t_master_solver);
+    DantzigWolfeDecomposition& with_master_optimizer(const OptimizerFactory& t_master_optimizer);
 
     /**
      * Configures the optimizer factory for the pricing problems
-     * @param t_pricing_solver the desired optimizer factory for the pricing problems
+     * @param t_pricing_optimizer the desired optimizer factory for the pricing problems
      * @return the optimizer factory itself
      */
-    DantzigWolfeDecomposition& with_pricing_solver(const OptimizerFactory& t_pricing_solver);
+    DantzigWolfeDecomposition& with_pricing_optimizer(const OptimizerFactory& t_pricing_optimizer);
 
     /**
      * When set to true, branching is applied to the master problem. Otherwise, branching decisions are applied to the

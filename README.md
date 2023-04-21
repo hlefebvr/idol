@@ -23,16 +23,16 @@ auto nested_branch_and_price =
     BranchAndBound()
     
         /* Each node is solved with a Dantzig-Wolfe decomposition algorithm */
-        .with_node_solver(
+        .with_node_optimizer(
                 
             /* The annotation "decomposition1" is used to automatically decompose the problem */
             DantzigWolfeDecomposition(decomposition1)
             
                 /* The master problem is solved using Gurobi */
-                .with_master_solver(Gurobi::ContinuousRelaxation())
+                .with_master_optimizer(Gurobi::ContinuousRelaxation())
                 
                 /* Each pricing problem is solved by a (nested) branch-and-bound algorithm */
-                .with_pricing_solver(
+                .with_pricing_optimizer(
                         
                     BranchAndBound()
                     
@@ -43,15 +43,15 @@ auto nested_branch_and_price =
                             DantzigWolfeDecomposition(decomposition2)
                             
                                 /* The master problem is solved using Mosek */
-                                .with_master_solver(Mosek::ContinuousRelaxation())
+                                .with_master_optimizer(Mosek::ContinuousRelaxation())
                                 
                                 /* The sub-problem is solved by a (nested) branch-and-bound algorithm [we could have used, e.g., Gurobi instead] */
-                                .with_pricing_solver(
+                                .with_pricing_optimizer(
                                         
                                     BranchAndBound()
                                     
                                         /* Each node is solved by GLPK */
-                                        .with_node_solver(GLPK::ContinuousRelaxation())
+                                        .with_node_optimizer(GLPK::ContinuousRelaxation())
                                         
                                         /* Variables are selected for branching using the most-infeasible rule */
                                         .with_branching_rule(MostInfeasible())

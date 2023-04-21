@@ -21,7 +21,7 @@ public:
 
     [[nodiscard]] unsigned int n_subproblems() const { return m_subproblems.size(); }
 
-    ColumnGeneration& with_master_solver(const OptimizerFactory& t_master_optimizer);
+    ColumnGeneration& with_master_optimizer(const OptimizerFactory& t_master_optimizer);
 
     ColumnGeneration& with_subproblem(const Model& t_model, Column t_column);
 private:

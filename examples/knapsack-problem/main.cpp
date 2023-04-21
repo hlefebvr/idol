@@ -2,6 +2,7 @@
 // Created by henri on 06/04/23.
 //
 #include <iostream>
+#include <gurobi_c++.h>
 #include "problems/knapsack-problem/KP_Instance.h"
 #include "modeling.h"
 #include "optimizers/solvers/gurobi/Gurobi.h"
@@ -12,8 +13,8 @@
 
 int main(int t_argc, const char** t_argv) {
 
-    //auto instance = Problems::KP::read_instance("instance.txt");
-    const auto instance = Problems::KP::read_instance("/home/henri/CLionProjects/optimize/examples/knapsack-problem/instance50.txt");
+    const auto instance = Problems::KP::read_instance("instance.txt");
+    //const auto instance = Problems::KP::read_instance("/home/henri/CLionProjects/optimize/examples/knapsack-problem/instance50.txt");
 
     const auto n_items = instance.n_items();
 
@@ -32,13 +33,12 @@ int main(int t_argc, const char** t_argv) {
     //model.use(Gurobi());
     model.use(
             BranchAndBound()
-                .with_node_solver(Gurobi::ContinuousRelaxation())
-                .with_branching_rule(MostInfeasible())
-                .with_node_selection_rule(BestBound())
-                .with_cutting_planes(CoverCuts())
-                .with_log_level(Info, Blue)
-        );
-
+                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
+                    .with_branching_rule(MostInfeasible())
+                    .with_node_selection_rule(BestBound())
+                    //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))
+                    .with_log_level(Info, Blue)
+    );
     // Solve
     model.optimize();
 

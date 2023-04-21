@@ -48,7 +48,7 @@ public:
         return new UserCutCallback(*this);
     }
 
-    UserCutCallback& with_separation_solver(const OptimizerFactory& t_optimizer_factory) {
+    UserCutCallback& with_separation_optimizer(const OptimizerFactory& t_optimizer_factory) {
 
         if (m_optimizer_factory) {
             throw Exception("An optimizer has already been given.");

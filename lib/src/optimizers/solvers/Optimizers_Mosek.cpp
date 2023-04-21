@@ -242,7 +242,7 @@ MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 }
 
 void Optimizers::Mosek::hook_update_objective_sense() {
-    std::cout << "skips updating sense" << std::endl;
+    //std::cout << "skips updating sense" << std::endl;
 }
 
 void Optimizers::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {

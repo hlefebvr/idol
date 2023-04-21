@@ -64,9 +64,9 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     std::vector<std::pair<std::string, std::shared_ptr<OptimizerFactory>>> relaxation_solvers = {
             { "CG",
               std::shared_ptr<OptimizerFactory>(
-                    DantzigWolfeDecomposition(std_decomposition)
-                        .with_master_solver(TestType::ContinuousRelaxation())
-                        .with_pricing_solver(TestType())
+                      DantzigWolfeDecomposition(std_decomposition)
+                        .with_master_optimizer(TestType::ContinuousRelaxation())
+                        .with_pricing_optimizer(TestType())
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
@@ -76,14 +76,14 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
             { "CG + B&B",
               std::shared_ptr<OptimizerFactory>(
-                    DantzigWolfeDecomposition(std_decomposition)
-                        .with_master_solver(TestType::ContinuousRelaxation())
-                        .with_pricing_solver(
-                            BranchAndBound<NodeInfo>()
-                                .with_node_solver(TestType::ContinuousRelaxation())
-                                .with_branching_rule(MostInfeasible())
-                                .with_node_selection_rule(BestBound())
-                            )
+                      DantzigWolfeDecomposition(std_decomposition)
+                              .with_master_optimizer(TestType::ContinuousRelaxation())
+                              .with_pricing_optimizer(
+                                      BranchAndBound<NodeInfo>()
+                                              .with_node_optimizer(TestType::ContinuousRelaxation())
+                                              .with_branching_rule(MostInfeasible())
+                                              .with_node_selection_rule(BestBound())
+                              )
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
@@ -93,32 +93,33 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
 
             { "CG + nested B&P",
               std::shared_ptr<OptimizerFactory>(
-                    DantzigWolfeDecomposition(nested_decomposition1)
-                        .with_master_solver(TestType::ContinuousRelaxation())
-                        .with_pricing_solver(
-                            BranchAndBound<NodeInfo>()
-                                .with_node_solver(
-                                    DantzigWolfeDecomposition(nested_decomposition2)
-                                        .with_master_solver(TestType::ContinuousRelaxation())
-                                        .with_pricing_solver(
-                                            BranchAndBound<NodeInfo>()
-                                                .with_node_solver(TestType::ContinuousRelaxation())
-                                                .with_branching_rule(MostInfeasible())
-                                                .with_node_selection_rule(BestBound())
-                                        )
-                                        .with_branching_on_master(branching_on_master)
-                                        .with_farkas_pricing(farkas_pricing)
-                                        .with_dual_price_smoothing_stabilization(smoothing_factor)
-                                )
-                                .with_branching_rule(MostInfeasible())
-                                .with_node_selection_rule(BestBound())
-                                .conditional(integer_master_heuristic, [](auto& x){
-                                    x.with_callback(
-                                            IntegerMasterHeuristic()
-                                                .with_optimizer( TestType() )
-                                    );
-                                })
-                        )
+                      DantzigWolfeDecomposition(nested_decomposition1)
+                              .with_master_optimizer(TestType::ContinuousRelaxation())
+                              .with_pricing_optimizer(
+                                      BranchAndBound<NodeInfo>()
+                                              .with_node_optimizer(
+                                                      DantzigWolfeDecomposition(nested_decomposition2)
+                                                              .with_master_optimizer(TestType::ContinuousRelaxation())
+                                                              .with_pricing_optimizer(
+                                                                      BranchAndBound<NodeInfo>()
+                                                                              .with_node_optimizer(
+                                                                                      TestType::ContinuousRelaxation())
+                                                                              .with_branching_rule(MostInfeasible())
+                                                                              .with_node_selection_rule(BestBound())
+                                                              )
+                                                              .with_branching_on_master(branching_on_master)
+                                                              .with_farkas_pricing(farkas_pricing)
+                                                              .with_dual_price_smoothing_stabilization(smoothing_factor)
+                                              )
+                                              .with_branching_rule(MostInfeasible())
+                                              .with_node_selection_rule(BestBound())
+                                              .conditional(integer_master_heuristic, [](auto &x) {
+                                                  x.with_callback(
+                                                          IntegerMasterHeuristic()
+                                                                  .with_optimizer(TestType())
+                                                  );
+                                              })
+                              )
                         .with_branching_on_master(branching_on_master)
                         .with_farkas_pricing(farkas_pricing)
                         .with_dual_price_smoothing_stabilization(smoothing_factor)
@@ -130,8 +131,8 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto solver_index = GENERATE(0, 1, 2);
 
     model.use(
-                BranchAndBound<NodeInfo>()
-                    .with_node_solver(*relaxation_solvers[solver_index].second)
+            BranchAndBound<NodeInfo>()
+                    .with_node_optimizer(*relaxation_solvers[solver_index].second)
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     .with_subtree_depth(subtree_depth)

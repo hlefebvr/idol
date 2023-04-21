@@ -97,6 +97,10 @@ public:
     void set_lazy_cut(bool t_value);
 
     void set_max_n_solution_in_pool(unsigned int t_value);
+
+    void set_use_cuts(bool t_value);
+
+    void set_use_heuristics(bool t_value);
 };
 
 #endif

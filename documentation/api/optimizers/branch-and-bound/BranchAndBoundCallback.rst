@@ -58,7 +58,7 @@ This class can be used to create callbacks to run on idol's :ref:`branch-and-bou
 
         model.use(
             BranchAndBound()
-                .with_node_solver(GLPK::ContinuousRelaxation())
+                .with_node_optimizer(GLPK::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(DepthFirst())
                 .with_callback(MyCallback());

@@ -174,16 +174,16 @@ in the branch-and-bound tree is solved by a Dantzig-Wolfe decomposition. This is
         BranchAndBound()
 
             /* Each node is solved with a Dantzig-Wolfe decomposition algorithm */
-            .with_node_solver(
+            .with_node_optimizer(
 
                 /* The annotation "decomposition" is used to automatically decompose the problem */
                 DantzigWolfeDecomposition(decomposition1)
 
                     /* The master problem is solved using Gurobi */
-                    .with_master_solver(Gurobi::ContinuousRelaxation())
+                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
 
                     /* Each pricing problem is solved by Gurobi as well */
-                    .with_pricing_solver(Gurobi())
+                    .with_pricing_optimizer(Gurobi())
 
             )
 

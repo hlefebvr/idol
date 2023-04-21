@@ -37,7 +37,7 @@ which creates a nested branch-and-price algorithm.
                 DantzigWolfeDecomposition(decomposition1)
 
                     /* The master problem is solved using Gurobi */
-                    .with_master_solver(Gurobi::ContinuousRelaxation())
+                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
 
                     /* Each pricing problem is solved by a (nested) branch-and-bound algorithm */
                     .with_pricing_solver(
@@ -51,10 +51,10 @@ which creates a nested branch-and-price algorithm.
                                 DantzigWolfeDecomposition(decomposition2)
 
                                     /* The master problem is solved using Mosek */
-                                    .with_master_solver(Mosek::ContinuousRelaxation())
+                                    .with_master_optimizer(Mosek::ContinuousRelaxation())
 
                                     /* The sub-problem is solved by a (nested) branch-and-bound algorithm [we could have used, e.g., Gurobi instead] */
-                                    .with_pricing_solver(
+                                    .with_pricing_optimizer(
 
                                         BranchAndBound()
 
@@ -115,7 +115,7 @@ Optimizer factories
 
 Typically, a user mostly works with optimizer factories rather than with optimizers. Optimizer factories are like
 "building plans" for creating actual optimizers. They usually can be recognized by their ``with_*`` functions allowing
-the user to customize this plan. For instance, the ``BranchAndBound`` optimizer factory has a method ``with_node_solver``
+the user to customize this plan. For instance, the ``BranchAndBound`` optimizer factory has a method ``with_node_optimizer``
 allowing the user to pass yet another optimizer factory which will be used to create optimizers for the branch-and-bound
 nodes.
 

@@ -25,11 +25,11 @@ DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposi
 Optimizer *DantzigWolfeDecomposition::operator()(const Model &t_original_formulation) const {
 
     if (!m_master_optimizer) {
-        throw Exception("No master solver has been given, please call DantzigWolfeDecomposition::with_master_solver to configure.");
+        throw Exception("No master solver has been given, please call DantzigWolfeDecomposition::with_master_optimizer to configure.");
     }
 
     if (!m_pricing_optimizer) {
-        throw Exception("No pricing solver has been given, please call DantzigWolfeDecomposition::with_pricing_solver to configure.");
+        throw Exception("No pricing solver has been given, please call DantzigWolfeDecomposition::with_pricing_optimizer to configure.");
     }
 
     auto& env = t_original_formulation.env();
@@ -291,24 +291,24 @@ void DantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Model *t_m
 
 }
 
-DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_pricing_solver(const OptimizerFactory &t_pricing_solver) {
+DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_pricing_optimizer(const OptimizerFactory &t_pricing_optimizer) {
 
     if (m_pricing_optimizer) {
         throw Exception("A pricing solver has already been set.");
     }
 
-    m_pricing_optimizer.reset(t_pricing_solver.clone());
+    m_pricing_optimizer.reset(t_pricing_optimizer.clone());
 
     return *this;
 }
 
-DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_master_solver(const OptimizerFactory &t_master_solver) {
+DantzigWolfeDecomposition &DantzigWolfeDecomposition::with_master_optimizer(const OptimizerFactory &t_master_optimizer) {
 
     if (m_master_optimizer) {
         throw Exception("A master solver has already been set.");
     }
 
-    m_master_optimizer.reset(t_master_solver.clone());
+    m_master_optimizer.reset(t_master_optimizer.clone());
 
     return *this;
 }

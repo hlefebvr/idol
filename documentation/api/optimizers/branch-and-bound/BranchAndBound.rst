@@ -22,7 +22,7 @@ It can be used to create customized branch-and-bound algorithms with a large deg
 
         model.use(
             BranchAndBound()
-                .with_node_solver( GLPK::ContinuousRelaxation() )
+                .with_node_optimizer( GLPK::ContinuousRelaxation() )
                 .with_branching_rule( MostInfeasible() )
                 .with_node_selection_rule( BestBound() )
                 .with_subtree_depth(2)
