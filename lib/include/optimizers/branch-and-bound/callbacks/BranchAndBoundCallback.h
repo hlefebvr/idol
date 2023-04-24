@@ -27,7 +27,7 @@ class BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<NodeInfoT
     std::list<std::unique_ptr<CuttingPlaneGenerator>> m_cutting_plane_generators;
 
     Optimizers::BranchAndBound<NodeInfoT>* m_parent = nullptr;
-    Node<NodeInfoT>* m_node = nullptr;
+    std::optional<Node<NodeInfoT>> m_node;
     Model* m_relaxation = nullptr;
     SideEffectRegistry* m_registry = nullptr;
 
@@ -51,7 +51,7 @@ protected:
     SideEffectRegistry operator()(
             Optimizers::BranchAndBound<NodeInfoT> *t_parent,
             CallbackEvent t_event,
-            Node<NodeInfoT> *t_current_node,
+            const Node<NodeInfoT>& t_current_node,
             Model *t_relaxation) override;
 
     void add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) override;
@@ -198,7 +198,7 @@ void BranchAndBoundCallback<NodeInfoT>::throw_if_no_interface() const {
 template<class NodeInfoT>
 SideEffectRegistry
 BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT> *t_parent, CallbackEvent t_event,
-                                               Node<NodeInfoT> *t_current_node, Model *t_relaxation) {
+                                               const Node<NodeInfoT> &t_current_node, Model *t_relaxation) {
     SideEffectRegistry result;
 
     m_parent = t_parent;
@@ -223,7 +223,7 @@ BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeIn
     }
 
     m_parent = nullptr;
-    m_node = nullptr;
+    m_node.reset();
     m_relaxation = nullptr;
     m_registry = nullptr;
 

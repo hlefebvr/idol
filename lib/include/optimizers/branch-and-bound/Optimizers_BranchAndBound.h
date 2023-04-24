@@ -47,7 +47,7 @@ class Optimizers::BranchAndBound : public Algorithm {
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
-    TreeNode* m_incumbent = nullptr;
+    std::optional<TreeNode> m_incumbent;
 protected:
     void build() override;
     void hook_before_optimize() override;
@@ -60,19 +60,19 @@ protected:
     void write(const std::string &t_name) override;
 
     void create_relaxations();
-    Node<NodeInfoT>* create_root_node();
-    void explore(TreeNode* t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
-    void solve(TreeNode* t_node);
-    void analyze(TreeNode* t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag);
-    Node<NodeInfoT>* select_node_for_branching(SetOfActiveNodes& t_active_nodes);
-    std::vector<TreeNode*> create_child_nodes(const TreeNode* t_node);
+    Node<NodeInfoT> create_root_node();
+    void explore(TreeNode& t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
+    void solve(TreeNode& t_node);
+    void analyze(const TreeNode& t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag);
+    Node<NodeInfoT> select_node_for_branching(SetOfActiveNodes& t_active_nodes);
+    std::vector<TreeNode> create_child_nodes(const TreeNode& t_node);
     void backtrack(SetOfActiveNodes& t_actives_nodes, SetOfActiveNodes& t_sub_active_nodes);
-    void set_as_incumbent(TreeNode* t_node);
+    void set_as_incumbent(const TreeNode& t_node);
     [[nodiscard]] bool gap_is_closed() const;
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
-    SideEffectRegistry call_callbacks(CallbackEvent t_event, TreeNode* t_node);
+    SideEffectRegistry call_callbacks(CallbackEvent t_event, const TreeNode& t_node);
 
     void log_node(LogLevel t_msg_level, const TreeNode &t_node);
 
@@ -262,22 +262,20 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lower_bo
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT* t_info) {
 
-    auto* t_node = new Node<NodeInfoT>(t_info, -1, 0);
+    Node<NodeInfoT> t_node(t_info, -1, 0);
 
-    if (t_node->info().objective_value() < get_best_obj()) {
+    if (t_node.info().objective_value() < get_best_obj()) {
 
-        if (m_branching_rule->is_valid(*t_node)) {
+        if (m_branching_rule->is_valid(t_node)) {
             set_as_incumbent(t_node);
-            log_node(Info, *t_node);
-            idol_Log(Trace, "New incumbent with objective value " << t_node->info().objective_value() << " was submitted by heuristic.");
+            log_node(Info, t_node);
+            idol_Log(Trace, "New incumbent with objective value " << t_node.info().objective_value() << " was submitted by heuristic.");
         } else {
             idol_Log(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
-            delete t_node;
         }
 
     } else {
-        idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node->info().objective_value() << " while best obj is " << get_best_obj() << '.');
-        delete t_node;
+        idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node.info().objective_value() << " while best obj is " << get_best_obj() << '.');
     }
 
 
@@ -285,10 +283,12 @@ void Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT*
 
 template<class NodeInfoT>
 SideEffectRegistry
-Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_event, Optimizers::BranchAndBound<NodeInfoT>::TreeNode *t_node) {
+Optimizers::BranchAndBound<NodeInfoT>::call_callbacks(CallbackEvent t_event, const Optimizers::BranchAndBound<NodeInfoT>::TreeNode &t_node) {
+
     if (!m_callback) {
         return {};
     }
+
     return m_callback->operator()(this, t_event, t_node, m_relaxation.get());
 }
 
@@ -305,7 +305,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::build() {
 
 template<class NodeInfoT>
 Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
-    delete m_incumbent;
+
 }
 
 template<class NodeInfoT>
@@ -337,10 +337,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 }
 
 template<class NodeInfoT>
-Node<NodeInfoT>* Optimizers::BranchAndBound<NodeInfoT>::create_root_node() {
+Node<NodeInfoT> Optimizers::BranchAndBound<NodeInfoT>::create_root_node() {
 
-    auto* root_node = Node<NodeInfoT>::create_root_node();
-    assert(root_node->id() == 0);
+    auto root_node = Node<NodeInfoT>::create_root_node();
+    assert(root_node.id() == 0);
     ++m_n_created_nodes;
     return root_node;
 
@@ -353,8 +353,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     // Reset solution
     set_best_bound(std::max(-Inf, best_obj_stop()));
     set_best_obj(std::min(+Inf, best_bound_stop()));
-    delete m_incumbent;
-    m_incumbent = nullptr;
+    m_incumbent.reset();
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
@@ -368,7 +367,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
-    auto* root_node = create_root_node();
+    auto root_node = create_root_node();
 
     SetOfActiveNodes active_nodes;
 
@@ -403,7 +402,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
+void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
                                                     SetOfActiveNodes & t_active_nodes,
                                                     unsigned int t_step) {
 
@@ -442,7 +441,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
 
         auto selected_node = select_node_for_branching(t_active_nodes);
 
-        idol_Log(Trace, "Node " << selected_node->id() << " was selected for branching.")
+        idol_Log(Trace, "Node " << selected_node.id() << " was selected for branching.")
 
         auto children = create_child_nodes(selected_node);
 
@@ -460,27 +459,27 @@ void Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode *t_node,
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode* t_node) {
+void Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) {
 
-    idol_Log(Trace, "Preparing to solve node " << t_node->id() << ".");
+    idol_Log(Trace, "Preparing to solve node " << t_node.id() << ".");
 
-    m_node_updator->apply_local_updates(t_node->info());
+    m_node_updator->apply_local_updates(t_node.info());
 
     m_relaxation->optimizer().set_best_bound_stop(std::min(get_best_obj(), best_bound_stop()));
     m_relaxation->optimizer().set_time_limit(get_remaining_time());
 
-    idol_Log(Debug, "Beginning to solve node " << t_node->id() << ".");
+    idol_Log(Debug, "Beginning to solve node " << t_node.id() << ".");
 
     m_relaxation->optimize();
 
-    idol_Log(Debug, "Node " << t_node->id() << " has been solved.");
+    idol_Log(Debug, "Node " << t_node.id() << " has been solved.");
 
-    t_node->info().save(parent(), *m_relaxation);
+    t_node.info().save(parent(), *m_relaxation);
 
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
+void Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::TreeNode &t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag) {
 
     *t_explore_children_flag = false;
     *t_reoptimize_flag = false;
@@ -489,47 +488,42 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
-        delete t_node;
         return;
     }
 
-    if (t_node->id() % m_log_frequency == 0) {
-        log_node(Info, *t_node);
+    if (t_node.id() % m_log_frequency == 0) {
+        log_node(Info, t_node);
     }
 
-    const auto& status = t_node->info().status();
-    const auto& reason = t_node->info().reason();
+    const auto& status = t_node.info().status();
+    const auto& reason = t_node.info().reason();
 
     if (status == Unbounded) {
         set_reason(Proved);
         set_best_obj(-Inf);
         terminate();
         idol_Log(Trace, "Terminate. The problem is unbounded.");
-        delete t_node;
         return;
     }
 
     if (status == Infeasible || status == InfOrUnbnd) {
 
-        if (t_node->level() == 0) {
+        if (t_node.level() == 0) {
             set_status(status);
         }
 
-        idol_Log(Trace, "Pruning node " << t_node->id() << " (by feasibility).");
-        delete t_node;
+        idol_Log(Trace, "Pruning node " << t_node.id() << " (by feasibility).");
         return;
     }
 
     if (status == Feasible && reason == ObjLimit) {
-        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node->info().objective_value() << ").");
-        delete t_node;
+        idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().objective_value() << ").");
         return;
     }
 
     if (get_remaining_time() == 0) {
         set_reason(TimeLimit);
         terminate();
-        delete t_node;
         return;
     }
 
@@ -537,46 +531,43 @@ void Optimizers::BranchAndBound<NodeInfoT>::analyze(BranchAndBound::TreeNode *t_
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
-        idol_Log(Trace, "Terminate. Node " << t_node->id() << " could not be solved to optimality (status = " << status << ").");
-        delete t_node;
+        idol_Log(Trace, "Terminate. Node " << t_node.id() << " could not be solved to optimality (status = " << status << ").");
         return;
     }
 
-    if (t_node->level() == 0) {
-        m_root_node_best_bound = t_node->info().objective_value();
+    if (t_node.level() == 0) {
+        m_root_node_best_bound = t_node.info().objective_value();
     }
 
-    if (t_node->info().objective_value() < get_best_obj()) {
+    if (t_node.info().objective_value() < get_best_obj()) {
 
-        if (m_branching_rule->is_valid(*t_node)) {
+        if (m_branching_rule->is_valid(t_node)) {
 
             auto side_effects = call_callbacks(IncumbentSolution, t_node);
 
             if (side_effects.n_added_user_cuts > 0 || side_effects.n_added_lazy_cuts > 0) {
                 *t_reoptimize_flag = true;
-                idol_Log(Trace, "The relaxation was modified by callback at node " << t_node->id() << ". Re-optimization is needed.");
+                idol_Log(Trace, "The relaxation was modified by callback at node " << t_node.id() << ". Re-optimization is needed.");
                 return;
             }
 
             set_as_incumbent(t_node);
-            log_node(Info, *t_node);
-            idol_Log(Trace, "New incumbent with objective value " << t_node->info().objective_value() << " found at node " << t_node->id() << ".");
-
+            log_node(Info, t_node);
+            idol_Log(Trace, "New incumbent with objective value " << t_node.info().objective_value() << " found at node " << t_node.id() << ".");
             return;
 
         }
 
     } else {
 
-        idol_Log(Trace, "Node " << t_node->id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node->info().objective_value() << ").");
-        delete t_node;
+        idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().objective_value() << ").");
         return;
 
     }
 
     auto side_effects = call_callbacks(InvalidSolution, t_node);
 
-    if (t_node->level() == 0) {
+    if (t_node.level() == 0) {
         m_root_node_best_obj = get_best_obj();
     }
 
@@ -618,10 +609,9 @@ void Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const
 }
 
 template<class NodeInfoT>
-void Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(BranchAndBound::TreeNode *t_node) {
-    delete m_incumbent;
+void Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(const BranchAndBound::TreeNode &t_node) {
     m_incumbent = t_node;
-    set_best_obj(t_node->info().objective_value());
+    set_best_obj(t_node.info().objective_value());
     set_status(Feasible);
 }
 
@@ -653,7 +643,6 @@ void Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound:
             idol_Log(Trace, "Node " << node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << node.info().objective_value() << ").");
             it = t_active_nodes.erase(it);
             end = t_active_nodes.by_objective_value().end();
-            delete &node;
         } else {
             break;
         }
@@ -663,10 +652,10 @@ void Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAndBound:
 }
 
 template<class NodeInfoT>
-Node<NodeInfoT>*
+Node<NodeInfoT>
 Optimizers::BranchAndBound<NodeInfoT>::select_node_for_branching(BranchAndBound::SetOfActiveNodes &t_active_nodes) {
     auto iterator = m_node_selection_rule->operator()(t_active_nodes);
-    auto* result = iterator.operator->();
+    auto result = *iterator;
     t_active_nodes.erase(iterator);
     return result;
 }
@@ -677,17 +666,16 @@ void Optimizers::BranchAndBound<NodeInfoT>::write(const std::string &t_name) {
 }
 
 template<class NodeInfoT>
-std::vector<Node<NodeInfoT>*> Optimizers::BranchAndBound<NodeInfoT>::create_child_nodes(const BranchAndBound::TreeNode *t_node) {
-    auto children_info = m_branching_rule->create_child_nodes(*t_node);
+std::vector<Node<NodeInfoT>> Optimizers::BranchAndBound<NodeInfoT>::create_child_nodes(const BranchAndBound::TreeNode &t_node) {
 
-    std::vector<Node<NodeInfoT>*> result;
+    auto children_info = m_branching_rule->create_child_nodes(t_node);
+
+    std::vector<Node<NodeInfoT>> result;
     result.reserve(children_info.size());
 
     for (auto* ptr_to_info : children_info) {
-        result.emplace_back(new Node<NodeInfoT>(ptr_to_info, m_n_created_nodes++, t_node->level() + 1));
+        result.emplace_back(ptr_to_info, m_n_created_nodes++, t_node.level() + 1);
     }
-
-    delete t_node;
 
     return result;
 }

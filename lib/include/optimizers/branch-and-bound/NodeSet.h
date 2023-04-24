@@ -10,8 +10,8 @@
 
 template<class NodeT>
 class NodeSet {
-    using by_objective_value_t = std::multimap<double, NodeT*>;
-    using by_level_t = std::multimap<unsigned int, NodeT*>;
+    using by_objective_value_t = std::multimap<double, NodeT>;
+    using by_level_t = std::multimap<unsigned int, NodeT>;
     by_objective_value_t m_by_objective_value;
     by_level_t m_by_level;
 public:
@@ -23,7 +23,7 @@ public:
     [[nodiscard]] ByObjectiveValueNodes by_objective_value() const { return ByObjectiveValueNodes(m_by_objective_value); }
     [[nodiscard]] ByLevelNodes by_level() const { return ByLevelNodes(m_by_level); }
 
-    const_iterator emplace(NodeT* t_node);
+    const_iterator emplace(NodeT t_node);
 
     void clear();
 
@@ -52,9 +52,9 @@ void NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 }
 
 template<class NodeT>
-typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::emplace(NodeT *t_node) {
-    auto it = m_by_objective_value.template emplace(t_node->info().objective_value(), t_node);
-    m_by_level.template emplace(t_node->level(), t_node);
+typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::emplace(NodeT t_node) {
+    auto it = m_by_objective_value.template emplace(t_node.info().objective_value(), t_node);
+    m_by_level.template emplace(t_node.level(), t_node);
     return const_iterator(std::move(it));
 }
 
@@ -76,14 +76,14 @@ typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::erase(const NodeSet::con
     if (t_it.is_by_level()) {
         const double objective_value = t_it->info().objective_value();
         auto it = m_by_objective_value.lower_bound(objective_value);
-        for (; it->second->id() != id ; ++it);
+        for (; it->second.id() != id ; ++it);
         m_by_objective_value.erase(it);
         return const_iterator(m_by_level.erase(t_it.m_by_level_it));
     }
 
     const unsigned int level = t_it->level();
     auto it = m_by_level.lower_bound(level);
-    for (; it->second->id() != id ; ++it);
+    for (; it->second.id() != id ; ++it);
     m_by_level.erase(it);
     return const_iterator(m_by_objective_value.erase(t_it.m_by_objective_value_it));
 }
@@ -140,23 +140,23 @@ public:
     }
     const NodeT& operator*() const {
         if (m_is_by_level) {
-            return *m_by_level_it->second;
+            return m_by_level_it->second;
         }
-        return *m_by_objective_value_it->second;
+        return m_by_objective_value_it->second;
     }
 
     const NodeT* operator->() const {
         if (m_is_by_level) {
-            return m_by_level_it->second;
+            return &m_by_level_it->second;
         }
-        return m_by_objective_value_it->second;
+        return &m_by_objective_value_it->second;
     }
 
     NodeT* operator->() {
         if (m_is_by_level) {
-            return m_by_level_it->second;
+            return &m_by_level_it->second;
         }
-        return m_by_objective_value_it->second;
+        return &m_by_objective_value_it->second;
     }
 };
 
