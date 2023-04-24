@@ -103,8 +103,6 @@ public:
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                               AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback);
 
-    ~BranchAndBound() override;
-
     [[nodiscard]] std::string name() const override { return "branch-and-bound"; }
 
     virtual void set_log_frequency(unsigned int t_log_frequency) { m_log_frequency = t_log_frequency; }
@@ -238,7 +236,7 @@ double Optimizers::BranchAndBound<NodeInfoT>::get_var_ray(const Var &t_var) cons
 template<class NodeInfoT>
 double Optimizers::BranchAndBound<NodeInfoT>::get_var_primal(const Var &t_var) const {
 
-    if (!m_incumbent){
+    if (!m_incumbent.has_value()){
         throw Exception("Primal value not available.");
     }
 
@@ -301,11 +299,6 @@ template<class NodeInfoT>
 void Optimizers::BranchAndBound<NodeInfoT>::build() {
     m_branching_rule->m_log_level = log_level();
     m_branching_rule->m_log_color = log_color();
-}
-
-template<class NodeInfoT>
-Optimizers::BranchAndBound<NodeInfoT>::~BranchAndBound() {
-
 }
 
 template<class NodeInfoT>
@@ -379,7 +372,7 @@ void Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 
     m_node_updator->clear_local_updates();
 
-    if (!m_incumbent) {
+    if (!m_incumbent.has_value()) {
 
         if (is_pos_inf(get_best_obj())) {
             set_status(Infeasible);
