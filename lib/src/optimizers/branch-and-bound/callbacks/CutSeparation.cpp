@@ -5,10 +5,16 @@
 #include "optimizers/callbacks/CutSeparation.h"
 #include "modeling/expressions/operations/operators.h"
 
-impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event, Model *t_separation_problem, TempCtr t_cut)
+impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
+                                   Model *t_separation_problem,
+                                   TempCtr t_cut,
+                                   LogLevel t_level,
+                                   Color t_color)
     : m_triggering_event(t_triggering_event),
       m_separation_problem(t_separation_problem),
-      m_cut(std::move(t_cut)) {
+      m_cut(std::move(t_cut)),
+      m_log_level(t_level),
+      m_log_color(t_color) {
 
 }
 
@@ -52,7 +58,8 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const unsigned int n_solutions = m_separation_problem->get_n_solutions();
 
-    for (unsigned int k = 0 ; k < n_solutions ; ++k) {
+    unsigned int k = 0;
+    for ( ; k < n_solutions ; ++k) {
 
         m_separation_problem->set_solution_index(k);
 
@@ -64,7 +71,11 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         TempCtr cut(m_cut.row().fix(solution), m_cut.type());
 
+        idol_Log(Trace, "Added " << cut << ".")
+
         hook_add_cut(cut);
     }
+
+    idol_Log(Info, "Added " << k << " cuts.")
 
 }
