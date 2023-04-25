@@ -465,3 +465,11 @@ unsigned int Model::get_solution_index() const {
 void Model::set_solution_index(unsigned int t_index) {
     optimizer().set_solution_index(t_index);
 }
+
+Ctr Model::get_ctr_by_index(unsigned int t_index) const {
+    return m_constraints.at(t_index);
+}
+
+Var Model::get_var_by_index(unsigned int t_index) const {
+    return m_variables.at(t_index);
+}

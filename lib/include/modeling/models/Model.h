@@ -792,6 +792,10 @@ public:
      */
     void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, Constant&& t_coeff);
 
+    [[nodiscard]] Ctr get_ctr_by_index(unsigned int t_index) const;
+
+    [[nodiscard]] Var get_var_by_index(unsigned int t_index) const;
+
     /**
      * Returns the current index of the constraint in the model.
      *
