@@ -30,7 +30,7 @@ protected:
     virtual SideEffectRegistry operator()(
             Optimizers::BranchAndBound<NodeInfoT>* t_parent,
             CallbackEvent t_event,
-            Node<NodeInfoT>* t_current_node,
+            const Node<NodeInfoT>& t_current_node,
             Model* t_relaxation) = 0;
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb) = 0;

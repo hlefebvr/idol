@@ -8,7 +8,7 @@
 Optimizer *Gurobi::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GUROBI
 
-    auto* result = new Optimizers::Gurobi(t_model, m_continuous_relaxation);
+    auto* result = new Optimizers::Gurobi(t_model, m_continuous_relaxation.has_value() && m_continuous_relaxation.value());
 
     this->handle_default_parameters(result);
 
@@ -39,7 +39,7 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
 }
 
 Gurobi Gurobi::ContinuousRelaxation() {
-    return Gurobi(true);
+    return Gurobi().with_continuous_relaxation_only(true);
 }
 
 Gurobi *Gurobi::clone() const {
@@ -68,16 +68,45 @@ Gurobi::Gurobi(const Gurobi& t_src) :
 }
 
 Gurobi &Gurobi::with_max_n_solution_in_pool(unsigned int t_value) {
+
+    if (m_max_n_solution_in_pool.has_value()) {
+        throw Exception("Maximum number of solutions in pool has already been configured.");
+    }
+
     m_max_n_solution_in_pool = t_value;
+
     return *this;
 }
 
 Gurobi &Gurobi::with_cutting_planes(bool t_value) {
+
+    if (m_use_cuts.has_value()) {
+        throw Exception("Cut usage has already been configured.");
+    }
+
     m_use_cuts = t_value;
+
     return *this;
 }
 
 Gurobi &Gurobi::with_heuristics(bool t_value) {
+
+    if (m_use_heuristics.has_value()) {
+        throw Exception("Heuristic usage has already been configured.");
+    }
+
     m_use_heuristics = t_value;
+
+    return *this;
+}
+
+Gurobi &Gurobi::with_continuous_relaxation_only(bool t_value) {
+
+    if (m_continuous_relaxation.has_value()) {
+        throw Exception("Continuous relaxation mode activation has already been configured.");
+    }
+
+    m_continuous_relaxation = t_value;
+
     return *this;
 }

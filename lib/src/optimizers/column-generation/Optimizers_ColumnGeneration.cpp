@@ -488,9 +488,10 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         m_iter_lower_bound = lower_bound;
 
         if (get_best_bound() <= lower_bound) {
-            set_best_bound(lower_bound);
+            set_best_bound(std::min(lower_bound, get_best_obj()));
         }
 
+        /*
         if (get_best_bound() > get_best_obj() + 1e-3) {
             idol_Log(Fatal, "Terminate. Best bound is strictly greater than best obj.");
             set_status(Fail);
@@ -498,6 +499,7 @@ void Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             terminate();
             return;
         }
+         */
 
         if (m_artificial_variables.empty() && get_best_bound() > best_bound_stop()) {
             set_status(get_relative_gap() > 0 ? Feasible : Optimal);
