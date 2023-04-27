@@ -7,6 +7,7 @@
 
 #include "../../OptimizerFactory.h"
 #include <list>
+#include <memory>
 #include "optimizers/callbacks/CallbackFactory.h"
 
 class Callback;
