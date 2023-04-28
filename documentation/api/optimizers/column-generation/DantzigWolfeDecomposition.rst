@@ -3,7 +3,7 @@
 DantzigWolfeDecomposition
 =========================
 
-.. seealso::
+.. hint::
 
     This page documents on the DantzigWolfeDecomposition optimizer factory. Note that there is also a
     :ref:`Dantzig-Wolfe decomposition tutorial <decomposition_dantzig_wolfe>` which shows how to solve a
