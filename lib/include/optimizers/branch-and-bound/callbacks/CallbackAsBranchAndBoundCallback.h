@@ -41,6 +41,10 @@ public:
                 return m_parent.node().info().primal_solution();
             }
 
+            [[nodiscard]] const Timer &time() const override {
+                return m_parent.time();
+            }
+
         };
 
         Interface m_interface;

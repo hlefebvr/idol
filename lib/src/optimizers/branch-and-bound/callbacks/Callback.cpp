@@ -2,6 +2,7 @@
 // Created by henri on 12/04/23.
 //
 #include "optimizers/callbacks/Callback.h"
+#include "optimizers/Timer.h"
 
 void Callback::add_user_cut(const TempCtr &t_cut) {
     throw_if_no_interface();
@@ -22,6 +23,11 @@ void Callback::throw_if_no_interface() const {
 Solution::Primal Callback::primal_solution() const {
     throw_if_no_interface();
     return m_interface->primal_solution();
+}
+
+const Timer &Callback::time() const {
+    throw_if_no_interface();
+    return m_interface->time();
 }
 
 void CallbackI::execute(Callback &t_cb, CallbackEvent t_event) {

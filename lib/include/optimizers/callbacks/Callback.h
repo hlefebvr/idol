@@ -8,6 +8,7 @@
 #include "modeling/solutions/Solution.h"
 
 class TempCtr;
+class Timer;
 
 /**
  * CallbackEvent is an enumerated type used to indicate events during a branch-and-bound tree execution.
@@ -15,6 +16,8 @@ class TempCtr;
  * It is typically used inside of a Callback to influence or modify the behaviour of the algorithm at execution time.
  */
 enum CallbackEvent {
+    AlgorithmStarts, /*! Occurs when the algorithm starts */
+    AlgorithmStops, /*! Occurs when the algorithm stops */
     NodeLoaded, /*!< Occurs when a node is about to be solved */
     IncumbentSolution, /*!< Occurs when an incumbent solution has been found */
     InvalidSolution, /*!< Occurs when a solution of the relaxation is not valid (e.g., not integer) */
@@ -40,6 +43,8 @@ protected:
     virtual void add_lazy_cut(const TempCtr& t_cut) = 0;
 
     [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
+
+    [[nodiscard]] virtual const Timer& time() const = 0;
 
     void execute(Callback& t_cb, CallbackEvent t_event);
 public:
@@ -68,6 +73,12 @@ protected:
      * @return the solution of the current node
      */
     [[nodiscard]] virtual Solution::Primal primal_solution() const;
+
+    /**
+     * Returns the current time
+     * @return the optimizer's time
+     */
+    [[nodiscard]] const Timer& time() const;
 
     /**
      * This method is left for the user to write and consists in the main execution block of the callback.

@@ -25,8 +25,14 @@ void GurobiCallbackI::callback() {
         default: return;
     }
 
+    call(event);
+
+}
+
+void GurobiCallbackI::call(CallbackEvent t_event) {
+
     for (auto& cb : m_callbacks) {
-        execute(*cb, event);
+        execute(*cb, t_event);
     }
 
 }
@@ -81,10 +87,26 @@ Solution::Primal GurobiCallbackI::primal_solution() const {
 
     } else if (where == GRB_CB_MIPNODE) {
 
+        const auto [status, reason] = m_parent.gurobi_status(me->getIntInfo(GRB_CB_MIPNODE_STATUS));
+
+        if (status != Optimal) {
+            result.set_status(status);
+            result.set_reason(reason);
+            return result;
+        }
+
         for (const auto& var : m_parent.parent().vars()) {
             auto& impl = m_parent.lazy(var).impl();
             result.set(var, me->getNodeRel(impl));
         }
+
+        const auto& obj = m_parent.parent().get_obj_expr();
+        double obj_val = 0.;
+        for (const auto& [var, constant] : obj.linear()) {
+            obj_val += constant.numerical() * result.get(var);
+        }
+
+        result.set_objective_value(obj_val);
 
     } else {
         throw Exception("Primal solution not accessible in this context.");
@@ -94,6 +116,10 @@ Solution::Primal GurobiCallbackI::primal_solution() const {
     result.set_reason(Proved);
 
     return result;
+}
+
+const Timer &GurobiCallbackI::time() const {
+    return m_parent.time();
 }
 
 #endif

@@ -44,6 +44,8 @@ protected:
 
     [[nodiscard]] const Model& original_model() const;
 
+    [[nodiscard]] const Timer& time() const;
+
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_bound(double t_bound);
@@ -60,6 +62,11 @@ protected:
 
     void initialize(const Model& t_model) override;
 };
+
+template<class NodeInfoT>
+const Timer &BranchAndBoundCallbackI<NodeInfoT>::time() const {
+    return m_parent->time();
+}
 
 template<class NodeInfoT>
 void BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
@@ -138,6 +145,8 @@ protected:
      * @param t_bound a proven bound
      */
     void submit_bound(double t_bound);
+
+    [[nodiscard]] const Timer& time() const;
 private:
     BranchAndBoundCallbackI<NodeInfoT>* m_interface = nullptr;
 
@@ -145,6 +154,12 @@ private:
 
     friend class BranchAndBoundCallbackI<NodeInfoT>;
 };
+
+template<class NodeInfoT>
+const Timer &BranchAndBoundCallback<NodeInfoT>::time() const {
+    throw_if_no_interface();
+    return m_interface->time();
+}
 
 template<class NodeInfoT>
 void BranchAndBoundCallback<NodeInfoT>::submit_bound(double t_bound) {

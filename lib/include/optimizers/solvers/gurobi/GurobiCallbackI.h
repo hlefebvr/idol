@@ -27,6 +27,8 @@ public:
     explicit GurobiCallbackI(Optimizers::Gurobi& t_parent);
 
     void add_callback(Callback* t_callback);
+
+    void call(CallbackEvent t_event);
 protected:
     void callback() override;
 
@@ -36,6 +38,7 @@ protected:
 
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
+    const Timer &time() const override;
 };
 
 #endif

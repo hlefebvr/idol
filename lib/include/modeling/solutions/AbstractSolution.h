@@ -232,7 +232,9 @@ static std::ostream& operator<<(std::ostream& t_os, const AbstractSolution<KeyT,
     t_os << "+-----------------------\n";
     t_os << "| Status: " << t_solution.status() << '\n';
     t_os << "| Reason: " << t_solution.reason() << '\n';
-    t_os << "| ObjVal: " << t_solution.objective_value() << '\n';
+    if (t_solution.has_objective_value()) {
+        t_os << "| ObjVal: " << t_solution.objective_value() << '\n';
+    }
     t_os << "| Values:" << '\n';
     for (const auto& [key, value] : t_solution) {
         t_os << "| \t" << key.name() << " = " << value << '\n';

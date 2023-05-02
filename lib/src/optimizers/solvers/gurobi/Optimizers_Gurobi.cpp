@@ -55,6 +55,7 @@ std::pair<SolutionStatus, SolutionReason> Optimizers::Gurobi::gurobi_status(int 
         case GRB_INFEASIBLE: return { Infeasible, Proved };
         case GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
         case GRB_UNBOUNDED: return { Unbounded, Proved };
+        case GRB_CUTOFF: [[fallthrough]];
         case GRB_USER_OBJ_LIMIT: return {Feasible, ObjLimit };
         case GRB_TIME_LIMIT: return { m_model.get(GRB_IntAttr_SolCount) > 0 ? Feasible : Infeasible, TimeLimit };
         case GRB_NUMERIC: return {Fail, NotSpecified };
@@ -266,7 +267,16 @@ void Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
 void Optimizers::Gurobi::hook_optimize() {
     set_solution_index(0);
+
+    if (m_gurobi_callback) {
+        m_gurobi_callback->call(AlgorithmStarts);
+    }
+
     m_model.optimize();
+
+    if (m_gurobi_callback) {
+        m_gurobi_callback->call(AlgorithmStops);
+    }
 }
 
 void Optimizers::Gurobi::hook_write(const std::string &t_name) {
