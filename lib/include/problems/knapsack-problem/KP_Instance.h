@@ -11,6 +11,7 @@
 namespace Problems::KP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
+    Instance read_instance_kplib(const std::string& t_filename);
 }
 
 class Problems::KP::Instance {

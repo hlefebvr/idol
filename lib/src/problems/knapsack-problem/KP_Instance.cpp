@@ -47,3 +47,39 @@ Problems::KP::Instance Problems::KP::read_instance(const std::string& t_filename
 
     return result;
 }
+
+
+Problems::KP::Instance Problems::KP::read_instance_kplib(const std::string& t_filename) {
+
+    std::ifstream file(t_filename);
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file.");
+    }
+
+    unsigned int n_items;
+    double x;
+
+    file >> n_items;
+
+    Instance result(n_items);
+
+    file >> x;
+    result.set_capacity(x);
+
+
+    for (unsigned int j = 0 ; j < n_items ; ++j) {
+
+        file >> x;
+        result.set_profit(j, x);
+
+        file >> x;
+        result.set_weight(j, x);
+
+    }
+
+    file.close();
+
+    return result;
+}
+
