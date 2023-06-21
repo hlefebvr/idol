@@ -204,6 +204,8 @@ void Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
+    std::cout << objective << std::endl;
+
     GRBLinExpr linear_expr = gurobi_numeric(as_numeric(objective.constant()));
 
     for (const auto& [var, constant] : objective.linear()) {
@@ -215,17 +217,13 @@ void Optimizers::Gurobi::hook_update_objective() {
         return;
     }
 
-    GRBQuadExpr quadratic_expr(linear_expr);
-
-    for (const auto& [var, constant] : objective.linear()) {
-        quadratic_expr.addTerm(gurobi_numeric(as_numeric(constant)), lazy(var).impl());
-    }
+    GRBQuadExpr quadratic_expr;
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
         quadratic_expr.addTerm(gurobi_numeric(as_numeric(constant)), lazy(var1).impl(), lazy(var2).impl());
     }
 
-    m_model.setObjective(quadratic_expr, sense);
+    m_model.setObjective(linear_expr + quadratic_expr, sense);
 
 
 }
