@@ -204,8 +204,6 @@ void Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
-    std::cout << objective << std::endl;
-
     GRBLinExpr linear_expr = gurobi_numeric(as_numeric(objective.constant()));
 
     for (const auto& [var, constant] : objective.linear()) {
