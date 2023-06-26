@@ -32,6 +32,10 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->set_use_heuristics(m_use_heuristics.value());
     }
 
+    if (m_nonconvexities.has_value()) {
+        result->set_nonconvexities(m_nonconvexities.value());
+    }
+
     return result;
 #else
     throw Exception("idol was not linked with Gurobi.");
@@ -107,6 +111,17 @@ Gurobi &Gurobi::with_continuous_relaxation_only(bool t_value) {
     }
 
     m_continuous_relaxation = t_value;
+
+    return *this;
+}
+
+Gurobi &Gurobi::with_nonconvexities(bool t_value) {
+
+    if (m_nonconvexities.has_value()) {
+        throw Exception("Nonconvexities settings has already been configured.");
+    }
+
+    m_nonconvexities = t_value;
 
     return *this;
 }

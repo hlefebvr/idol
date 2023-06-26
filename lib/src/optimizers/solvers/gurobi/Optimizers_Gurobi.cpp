@@ -453,4 +453,8 @@ void Optimizers::Gurobi::set_use_heuristics(bool t_value) {
     m_model.set(GRB_DoubleParam_Heuristics, t_value);
 }
 
+void Optimizers::Gurobi::set_nonconvexities(bool t_value) {
+    m_model.set(GRB_IntParam_NonConvex, t_value);
+}
+
 #endif

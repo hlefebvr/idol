@@ -101,6 +101,8 @@ public:
     void set_use_cuts(bool t_value);
 
     void set_use_heuristics(bool t_value);
+
+    void set_nonconvexities(bool t_value);
 };
 
 #endif
