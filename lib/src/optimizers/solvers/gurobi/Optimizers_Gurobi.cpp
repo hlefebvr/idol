@@ -268,7 +268,12 @@ void Optimizers::Gurobi::hook_optimize() {
         m_gurobi_callback->call(AlgorithmStarts);
     }
 
-    m_model.optimize();
+    try {
+        m_model.optimize();
+    } catch (const GRBException& err) {
+        std::cout << "[gurobi exception]" << err.getErrorCode() << ": " << err.getMessage() << std::endl;
+        __throw_exception_again;
+    }
 
     if (m_gurobi_callback) {
         m_gurobi_callback->call(AlgorithmStops);
@@ -454,7 +459,11 @@ void Optimizers::Gurobi::set_use_heuristics(bool t_value) {
 }
 
 void Optimizers::Gurobi::set_nonconvexities(bool t_value) {
-    m_model.set(GRB_IntParam_NonConvex, t_value);
+    m_model.set(GRB_IntParam_NonConvex, t_value ? 2 : -1);
+}
+
+void Optimizers::Gurobi::set_dual_reductions(bool t_value) {
+    m_model.set(GRB_IntParam_DualReductions, t_value);
 }
 
 #endif

@@ -18,6 +18,7 @@ class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     std::optional<bool> m_use_cuts;
     std::optional<bool> m_use_heuristics;
     std::optional<bool> m_nonconvexities;
+    std::optional<bool> m_use_dual_reduction;
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
@@ -46,6 +47,8 @@ public:
     Gurobi& with_continuous_relaxation_only(bool t_value);
 
     Gurobi& with_nonconvexities(bool t_value);
+
+    Gurobi& with_dual_reductions(bool t_value);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

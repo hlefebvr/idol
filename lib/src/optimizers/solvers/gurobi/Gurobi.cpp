@@ -36,6 +36,10 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->set_nonconvexities(m_nonconvexities.value());
     }
 
+    if (m_use_dual_reduction.has_value()) {
+        result->set_dual_reductions(m_use_dual_reduction.value());
+    }
+
     return result;
 #else
     throw Exception("idol was not linked with Gurobi.");
@@ -122,6 +126,17 @@ Gurobi &Gurobi::with_nonconvexities(bool t_value) {
     }
 
     m_nonconvexities = t_value;
+
+    return *this;
+}
+
+Gurobi &Gurobi::with_dual_reductions(bool t_value) {
+
+    if (m_use_dual_reduction.has_value()) {
+        throw Exception("Dual reduction setting has already been configured.");
+    }
+
+    m_use_dual_reduction = t_value;
 
     return *this;
 }

@@ -103,6 +103,8 @@ public:
     void set_use_heuristics(bool t_value);
 
     void set_nonconvexities(bool t_value);
+
+    void set_dual_reductions(bool t_value);
 };
 
 #endif
