@@ -459,11 +459,16 @@ void Optimizers::Gurobi::set_use_heuristics(bool t_value) {
 }
 
 void Optimizers::Gurobi::set_nonconvexities(bool t_value) {
-    m_model.set(GRB_IntParam_NonConvex, t_value ? 2 : -1);
+    m_model.set(GRB_IntParam_NonConvex, t_value ? 1 : -1);
 }
 
 void Optimizers::Gurobi::set_dual_reductions(bool t_value) {
     m_model.set(GRB_IntParam_DualReductions, t_value);
+}
+
+void Optimizers::Gurobi::set_logs(bool t_value) {
+    m_model.set(GRB_IntParam_OutputFlag, t_value);
+    // m_model.set(GRB_IntParam_LogToConsole, t_value);
 }
 
 #endif

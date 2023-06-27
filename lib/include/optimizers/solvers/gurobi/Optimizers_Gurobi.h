@@ -105,6 +105,8 @@ public:
     void set_nonconvexities(bool t_value);
 
     void set_dual_reductions(bool t_value);
+
+    void set_logs(bool t_value);
 };
 
 #endif

@@ -40,6 +40,10 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->set_dual_reductions(m_use_dual_reduction.value());
     }
 
+    if (m_logs.has_value()) {
+        result->set_logs(m_logs.value());
+    }
+
     return result;
 #else
     throw Exception("idol was not linked with Gurobi.");
@@ -137,6 +141,17 @@ Gurobi &Gurobi::with_dual_reductions(bool t_value) {
     }
 
     m_use_dual_reduction = t_value;
+
+    return *this;
+}
+
+Gurobi &Gurobi::with_logs(bool t_value) {
+
+    if (m_logs.has_value()) {
+        throw Exception("Logs setting has already been configured.");
+    }
+
+    m_logs = t_value;
 
     return *this;
 }
