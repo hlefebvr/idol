@@ -57,7 +57,7 @@ public:
             return;
         }
 
-        if (status != Optimal && status != Feasible) {
+        if (status != Optimal && status != Feasible && status != SubOptimal) {
             return;
         }
 

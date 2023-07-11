@@ -82,8 +82,6 @@ Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, G
       m_model(t_env) {
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
-    m_model.set(GRB_IntParam_QCPDual, 1);
-    //m_model.set(GRB_DoubleParam_BarConvTol, 1e-2);
 
 }
 

@@ -1247,7 +1247,7 @@ static auto save_primal(const Model& t_original_model, const Model& t_model) {
     const auto status = t_model.get_status();
     const auto reason = t_model.get_reason();
 
-    if (status != Optimal && status != Feasible) {
+    if (status != Optimal && status != Feasible && status != SubOptimal) {
         throw Exception("Primal values not available.");
     }
 
