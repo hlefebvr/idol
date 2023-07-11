@@ -495,6 +495,23 @@ void Optimizers::Mosek::set_parameter(const std::string &t_param, const std::str
     m_model->setSolverParam(t_param, t_value);
 }
 
+void Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
+
+    if (t_log_level == Mute) {
+
+        m_model->setLogHandler(nullptr);
+
+    } else {
+
+        m_model->setLogHandler([this](const std::string& t_msg){
+            idol_Log(Info, t_msg.substr(0, t_msg.size() - 1))
+        });
+
+    }
+
+    Optimizer::set_log_level(t_log_level);
+}
+
 MosekKiller::~MosekKiller() {
     mosek::releaseGlobalEnv();
 }

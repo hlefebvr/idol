@@ -108,6 +108,8 @@ public:
     void set_parameter(const std::string& t_param, int t_value);
 
     void set_parameter(const std::string& t_param, const std::string& t_value);
+
+    void set_log_level(LogLevel t_log_level) override;
 };
 
 #endif
