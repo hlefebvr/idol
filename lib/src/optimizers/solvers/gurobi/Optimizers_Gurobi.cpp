@@ -51,7 +51,7 @@ char Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
 
 std::pair<SolutionStatus, SolutionReason> Optimizers::Gurobi::gurobi_status(int t_status) const {
     switch (t_status) {
-        //case GRB_SUBOPTIMAL: [[fallthrough]];
+        case GRB_SUBOPTIMAL: return { SubOptimal, Proved };
         case GRB_OPTIMAL: return { Optimal, Proved };
         case GRB_INFEASIBLE: return { Infeasible, Proved };
         case GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
@@ -452,25 +452,17 @@ void Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) {
     m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
 }
 
-void Optimizers::Gurobi::set_use_cuts(bool t_value) {
-    m_model.set(GRB_IntParam_Cuts, t_value);
+void Optimizers::Gurobi::set_log_level(LogLevel t_log_level) {
+    m_model.set(GRB_IntParam_OutputFlag, t_log_level != Mute);
+    Optimizer::set_log_level(t_log_level);
 }
 
-void Optimizers::Gurobi::set_use_heuristics(bool t_value) {
-    m_model.set(GRB_DoubleParam_Heuristics, t_value);
+void Optimizers::Gurobi::set_param(GRB_IntParam t_param, int t_value) {
+    m_model.set(t_param, t_value);
 }
 
-void Optimizers::Gurobi::set_nonconvexities(bool t_value) {
-    m_model.set(GRB_IntParam_NonConvex, t_value ? 1 : -1);
-}
-
-void Optimizers::Gurobi::set_dual_reductions(bool t_value) {
-    m_model.set(GRB_IntParam_DualReductions, t_value);
-}
-
-void Optimizers::Gurobi::set_logs(bool t_value) {
-    m_model.set(GRB_IntParam_OutputFlag, t_value);
-    // m_model.set(GRB_IntParam_LogToConsole, t_value);
+void Optimizers::Gurobi::set_param(GRB_DoubleParam t_param, double t_value) {
+    m_model.set(t_param, t_value);
 }
 
 #endif

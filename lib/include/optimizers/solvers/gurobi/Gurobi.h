@@ -9,19 +9,24 @@
 #include <list>
 #include <memory>
 #include "optimizers/callbacks/CallbackFactory.h"
+#include "../../../containers/Map.h"
+
+#ifdef IDOL_USE_GUROBI
+#include <gurobi_c++.h>
+#endif
 
 class Callback;
 
 class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     std::optional<bool> m_continuous_relaxation;
     std::optional<bool> m_lazy_cuts;
-    std::optional<bool> m_use_cuts;
-    std::optional<bool> m_use_heuristics;
-    std::optional<bool> m_nonconvexities;
-    std::optional<bool> m_use_dual_reduction;
-    std::optional<bool> m_logs;
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
+
+#ifdef IDOL_USE_GUROBI
+    Map<GRB_IntParam, int> m_int_params;
+    Map<GRB_DoubleParam, double> m_double_params;
+#endif
 
     Gurobi(const Gurobi& t_src);
 public:
@@ -39,19 +44,13 @@ public:
 
     Gurobi& with_lazy_cut(bool t_value);
 
-    Gurobi& with_cutting_planes(bool t_value);
-
-    Gurobi& with_heuristics(bool t_value);
-
     Gurobi& with_max_n_solution_in_pool(unsigned int t_value);
 
     Gurobi& with_continuous_relaxation_only(bool t_value);
 
-    Gurobi& with_nonconvexities(bool t_value);
+    Gurobi& with_external_param(GRB_IntParam t_param, int t_value);
 
-    Gurobi& with_dual_reductions(bool t_value);
-
-    Gurobi& with_logs(bool t_value);
+    Gurobi& with_external_param(GRB_DoubleParam t_param, double t_value);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

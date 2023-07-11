@@ -98,15 +98,11 @@ public:
 
     void set_max_n_solution_in_pool(unsigned int t_value);
 
-    void set_use_cuts(bool t_value);
+    void set_log_level(LogLevel t_log_level) override;
 
-    void set_use_heuristics(bool t_value);
+    void set_param(GRB_IntParam t_param, int t_value);
 
-    void set_nonconvexities(bool t_value);
-
-    void set_dual_reductions(bool t_value);
-
-    void set_logs(bool t_value);
+    void set_param(GRB_DoubleParam t_param, double t_value);
 };
 
 #endif

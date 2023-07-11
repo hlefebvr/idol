@@ -24,24 +24,12 @@ Optimizer *Gurobi::operator()(const Model &t_model) const {
         result->set_max_n_solution_in_pool(m_max_n_solution_in_pool.value());
     }
 
-    if (m_use_cuts.has_value()) {
-        result->set_use_cuts(m_use_cuts.value());
+    for (const auto [param, value] : m_int_params) {
+        result->set_param(param, value);
     }
 
-    if (m_use_heuristics.has_value()) {
-        result->set_use_heuristics(m_use_heuristics.value());
-    }
-
-    if (m_nonconvexities.has_value()) {
-        result->set_nonconvexities(m_nonconvexities.value());
-    }
-
-    if (m_use_dual_reduction.has_value()) {
-        result->set_dual_reductions(m_use_dual_reduction.value());
-    }
-
-    if (m_logs.has_value()) {
-        result->set_logs(m_logs.value());
+    for (const auto [param, value] : m_double_params) {
+        result->set_param(param, value);
     }
 
     return result;
@@ -90,28 +78,6 @@ Gurobi &Gurobi::with_max_n_solution_in_pool(unsigned int t_value) {
     return *this;
 }
 
-Gurobi &Gurobi::with_cutting_planes(bool t_value) {
-
-    if (m_use_cuts.has_value()) {
-        throw Exception("Cut usage has already been configured.");
-    }
-
-    m_use_cuts = t_value;
-
-    return *this;
-}
-
-Gurobi &Gurobi::with_heuristics(bool t_value) {
-
-    if (m_use_heuristics.has_value()) {
-        throw Exception("Heuristic usage has already been configured.");
-    }
-
-    m_use_heuristics = t_value;
-
-    return *this;
-}
-
 Gurobi &Gurobi::with_continuous_relaxation_only(bool t_value) {
 
     if (m_continuous_relaxation.has_value()) {
@@ -123,35 +89,28 @@ Gurobi &Gurobi::with_continuous_relaxation_only(bool t_value) {
     return *this;
 }
 
-Gurobi &Gurobi::with_nonconvexities(bool t_value) {
+Gurobi &Gurobi::with_external_param(GRB_IntParam t_param, int t_value) {
 
-    if (m_nonconvexities.has_value()) {
-        throw Exception("Nonconvexities settings has already been configured.");
+#ifdef IDOL_USE_GUROBI
+    auto [it, success] = m_int_params.emplace(t_param, t_value);
+
+    if (!success) {
+        throw Exception("Gurobi parameter " + std::to_string(t_param) + " has already been configured.");
     }
-
-    m_nonconvexities = t_value;
+#endif
 
     return *this;
 }
 
-Gurobi &Gurobi::with_dual_reductions(bool t_value) {
+Gurobi &Gurobi::with_external_param(GRB_DoubleParam t_param, double t_value) {
 
-    if (m_use_dual_reduction.has_value()) {
-        throw Exception("Dual reduction setting has already been configured.");
+#ifdef IDOL_USE_GUROBI
+    auto [it, success] = m_double_params.emplace(t_param, t_value);
+
+    if (!success) {
+        throw Exception("Gurobi parameter " + std::to_string(t_param) + " has already been configured.");
     }
-
-    m_use_dual_reduction = t_value;
-
-    return *this;
-}
-
-Gurobi &Gurobi::with_logs(bool t_value) {
-
-    if (m_logs.has_value()) {
-        throw Exception("Logs setting has already been configured.");
-    }
-
-    m_logs = t_value;
+#endif
 
     return *this;
 }
