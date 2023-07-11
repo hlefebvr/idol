@@ -102,6 +102,12 @@ public:
     void set_presolve(bool t_value) override;
 
     void set_infeasible_or_unbounded_info(bool t_value) override;
+
+    void set_parameter(const std::string& t_param, double t_value);
+
+    void set_parameter(const std::string& t_param, int t_value);
+
+    void set_parameter(const std::string& t_param, const std::string& t_value);
 };
 
 #endif

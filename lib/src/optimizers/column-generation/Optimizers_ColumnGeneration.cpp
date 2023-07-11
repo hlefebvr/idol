@@ -694,6 +694,7 @@ void Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pr
 
     m_model->set_obj_expr(std::move(objective));
 
+    // m_model->write(std::string("pricing_").append(std::to_string(m_index)).append(".lp"));
 }
 
 void Optimizers::ColumnGeneration::Subproblem::optimize() {
@@ -772,6 +773,8 @@ void Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
         }
         std::cout << "Warning: exception was thrown while adding more than one column" << std::endl;
     }
+
+    // m_parent.m_master->write("master.lp");
 }
 
 TempVar

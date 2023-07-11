@@ -51,6 +51,7 @@ char Optimizers::Gurobi::gurobi_obj_sense(int t_sense) {
 
 std::pair<SolutionStatus, SolutionReason> Optimizers::Gurobi::gurobi_status(int t_status) const {
     switch (t_status) {
+        //case GRB_SUBOPTIMAL: [[fallthrough]];
         case GRB_OPTIMAL: return { Optimal, Proved };
         case GRB_INFEASIBLE: return { Infeasible, Proved };
         case GRB_INF_OR_UNBD: return {InfOrUnbnd, Proved };
@@ -82,6 +83,7 @@ Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxation, G
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
     m_model.set(GRB_IntParam_QCPDual, 1);
+    //m_model.set(GRB_DoubleParam_BarConvTol, 1e-2);
 
 }
 

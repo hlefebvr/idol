@@ -29,8 +29,6 @@ void Optimizers::Mosek::hook_build() {
         throw Exception("Handling quadratic objective is not implemented.");
     }
 
-    hook_update_objective_sense();
-    set_objective_as_updated();
     set_rhs_as_updated();
 }
 
@@ -242,7 +240,7 @@ MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 }
 
 void Optimizers::Mosek::hook_update_objective_sense() {
-    //std::cout << "skips updating sense" << std::endl;
+    hook_update_objective();
 }
 
 void Optimizers::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
@@ -483,6 +481,18 @@ void Optimizers::Mosek::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Solution index out of bounds.");
     }
+}
+
+void Optimizers::Mosek::set_parameter(const std::string &t_param, double t_value) {
+    m_model->setSolverParam(t_param, t_value);
+}
+
+void Optimizers::Mosek::set_parameter(const std::string &t_param, int t_value) {
+    m_model->setSolverParam(t_param, t_value);
+}
+
+void Optimizers::Mosek::set_parameter(const std::string &t_param, const std::string &t_value) {
+    m_model->setSolverParam(t_param, t_value);
 }
 
 MosekKiller::~MosekKiller() {

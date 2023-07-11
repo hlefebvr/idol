@@ -6,9 +6,13 @@
 #define IDOL_MOSEK_H
 
 #include "../OptimizerFactory.h"
+#include "../../containers/Map.h"
 
 class Mosek : public OptimizerFactoryWithDefaultParameters<Mosek> {
-    bool m_continuous_relaxation = false;
+    std::optional<bool> m_continuous_relaxation;
+    Map<std::string, double> m_double_parameter;
+    Map<std::string, int> m_int_parameter;
+    Map<std::string, std::string> m_string_parameter;
 
     explicit Mosek(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
     Mosek(const Mosek&) = default;
@@ -24,6 +28,14 @@ public:
     static Mosek ContinuousRelaxation();
 
     [[nodiscard]] Mosek *clone() const override;
+
+    Mosek& with_continuous_relaxation_only(bool t_value);
+
+    Mosek& with_external_parameter(const std::string& t_param, double t_value);
+
+    Mosek& with_external_parameter(const std::string& t_param, int t_value);
+
+    Mosek& with_external_parameter(const std::string& t_param, std::string t_value);
 };
 
 #endif //IDOL_MOSEK_H
