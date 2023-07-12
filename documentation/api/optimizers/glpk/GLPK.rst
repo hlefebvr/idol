@@ -1,4 +1,4 @@
 GLPK
 ====
 
-.. doxygenclass:: GLPK
+.. doxygenclass:: idol::GLPK

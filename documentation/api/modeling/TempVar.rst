@@ -3,4 +3,4 @@
 TempVar
 =======
 
-.. doxygenclass:: TempVar
+.. doxygenclass:: idol::TempVar

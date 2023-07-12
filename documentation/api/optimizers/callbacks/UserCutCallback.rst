@@ -3,4 +3,4 @@
 UserCutCallback
 ===============
 
-.. doxygenclass:: UserCutCallback
+.. doxygenclass:: idol::UserCutCallback

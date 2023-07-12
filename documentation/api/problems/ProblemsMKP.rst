@@ -1,4 +1,4 @@
 Multiple Knapsack Problem (MKP)
 ===============================
 
-.. doxygennamespace:: Problems::MKP
+.. doxygennamespace:: idol::Problems::MKP

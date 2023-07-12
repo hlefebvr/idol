@@ -52,4 +52,4 @@ problems.
 
         std::cout << "Best obj = " << model.get_best_obj() << std::endl;
 
-.. doxygenclass:: Model
+.. doxygenclass:: idol::Model

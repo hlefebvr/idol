@@ -81,5 +81,5 @@ a child (or little child) of the ``CallbackFactory`` class.
     Note that there also exists more advanced callbacks which are specific to idol's branch-and-bound implementation.
     For these advanced feature, see :ref:`BranchAndBoundCallback <api_BranchAndBoundCallback>`.
 
-.. doxygenclass:: Callback
+.. doxygenclass:: idol::Callback
     :protected-members:

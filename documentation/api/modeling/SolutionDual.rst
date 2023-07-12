@@ -3,4 +3,4 @@
 Solution::Dual
 ================
 
-.. doxygenclass:: Solution::Dual
+.. doxygenclass:: idol::Solution::Dual

@@ -3,4 +3,4 @@
 Param
 =====
 
-.. doxygenclass:: Param
+.. doxygenclass:: idol::Param

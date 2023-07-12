@@ -3,4 +3,4 @@
 Column
 ======
 
-.. doxygenclass:: Column
+.. doxygenclass:: idol::Column

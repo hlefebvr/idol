@@ -15,6 +15,8 @@
 
 int main(int t_argc, const char** t_argv) {
 
+    using namespace idol;
+
     const auto instance = Problems::GAP::read_instance("instance.txt");
 
     const unsigned int n_agents = instance.n_agents();

@@ -1,4 +1,4 @@
 Generalized Assignment Problem (GAP)
 ====================================
 
-.. doxygennamespace:: Problems::GAP
+.. doxygennamespace:: idol::Problems::GAP

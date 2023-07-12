@@ -10,4 +10,4 @@ ColumnGeneration
 
     We strongly advise you to use :ref:`DantzigWolfeDecomposition <api_DantzigWolfeDecomposition>` instead.
 
-.. doxygenclass:: ColumnGeneration
+.. doxygenclass:: idol::ColumnGeneration

@@ -35,6 +35,8 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
     .. code:: cpp
 
+        using namespace idol;
+
         const unsigned int n_items = 5;
         const double[] profit = { 40., 50., 100., 95., 30., };
         const double[] weight = { 2., 3.14, 1.98, 5., 3., };

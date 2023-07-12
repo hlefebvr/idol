@@ -1,4 +1,4 @@
 Gurobi
 ======
 
-.. doxygenclass:: Gurobi
+.. doxygenclass:: idol::Gurobi

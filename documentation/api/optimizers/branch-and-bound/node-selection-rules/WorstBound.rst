@@ -3,4 +3,4 @@
 WorstBound
 ==========
 
-.. doxygenclass:: WorstBound
+.. doxygenclass:: idol::WorstBound

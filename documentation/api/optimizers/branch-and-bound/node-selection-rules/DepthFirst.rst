@@ -3,4 +3,4 @@
 DepthFirst
 ==========
 
-.. doxygenclass:: DepthFirst
+.. doxygenclass:: idol::DepthFirst

@@ -3,4 +3,4 @@
 Solution::Primal
 ================
 
-.. doxygenclass:: Solution::Primal
+.. doxygenclass:: idol::Solution::Primal

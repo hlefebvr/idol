@@ -15,6 +15,8 @@
 
 int main(int t_argc, char** t_argv) {
 
+    using namespace idol;
+
     // Read instance
     //const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/optimize/tests/instances/generalized-assignment-problem/GAP_instance0.txt");
     const auto instance = Problems::GAP::read_instance("/home/henri/CLionProjects/idol_benchmark/GAP/data/n2/instance_n2_30__3.txt");

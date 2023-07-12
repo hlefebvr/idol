@@ -3,4 +3,4 @@
 Var
 ===
 
-.. doxygenclass:: Var
+.. doxygenclass:: idol::Var

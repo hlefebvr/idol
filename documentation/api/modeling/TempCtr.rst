@@ -3,4 +3,4 @@
 TempCtr
 =======
 
-.. doxygenclass:: TempCtr
+.. doxygenclass:: idol::TempCtr

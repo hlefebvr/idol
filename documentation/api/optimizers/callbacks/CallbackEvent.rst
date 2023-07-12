@@ -3,4 +3,4 @@
 Events
 ======
 
-.. doxygenenum:: CallbackEvent
+.. doxygenenum:: idol::CallbackEvent

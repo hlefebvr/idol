@@ -3,4 +3,4 @@
 MostInfeasible
 ==============
 
-.. doxygenclass:: MostInfeasible
+.. doxygenclass:: idol::MostInfeasible

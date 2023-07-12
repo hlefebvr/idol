@@ -3,4 +3,4 @@
 BreadthFirst
 ============
 
-.. doxygenclass:: BreadthFirst
+.. doxygenclass:: idol::BreadthFirst

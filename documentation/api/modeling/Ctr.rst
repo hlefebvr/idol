@@ -3,4 +3,4 @@
 Ctr
 ===
 
-.. doxygenclass:: Ctr
+.. doxygenclass:: idol::Ctr

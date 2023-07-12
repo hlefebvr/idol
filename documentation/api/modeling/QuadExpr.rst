@@ -1,4 +1,4 @@
 QuadExpr
 ========
 
-.. doxygenclass:: QuadExpr
+.. doxygenclass:: idol::QuadExpr

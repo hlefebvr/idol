@@ -1,4 +1,4 @@
 Knapsack Problem (KP)
 =====================
 
-.. doxygennamespace:: Problems::KP
+.. doxygennamespace:: idol::Problems::KP

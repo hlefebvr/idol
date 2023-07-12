@@ -3,4 +3,4 @@
 LazyCutCallback
 ===============
 
-.. doxygenclass:: LazyCutCallback
+.. doxygenclass:: idol::LazyCutCallback

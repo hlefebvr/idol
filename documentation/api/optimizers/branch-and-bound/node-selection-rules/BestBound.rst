@@ -3,4 +3,4 @@
 BestBound
 =========
 
-.. doxygenclass:: BestBound
+.. doxygenclass:: idol::BestBound

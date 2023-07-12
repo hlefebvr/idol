@@ -3,4 +3,4 @@
 Expr
 ====
 
-.. doxygenclass:: Expr
+.. doxygenclass:: idol::Expr

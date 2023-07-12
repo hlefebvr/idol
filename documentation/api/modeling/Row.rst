@@ -3,4 +3,4 @@
 Row
 ===
 
-.. doxygenclass:: Row
+.. doxygenclass:: idol::Row

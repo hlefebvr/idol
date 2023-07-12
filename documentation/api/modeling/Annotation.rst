@@ -1,4 +1,4 @@
 Annotation
 ==========
 
-.. doxygenclass:: Annotation
+.. doxygenclass:: idol::Annotation

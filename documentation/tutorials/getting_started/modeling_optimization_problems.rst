@@ -10,6 +10,11 @@ On this page, we discuss the very basic ideas of idol's modeling API.
 All classes which are used for modeling an optimization problem can be accessed by including :code:`#include <idol/modeling.h>`.
 Let's get started.
 
+.. warning::
+
+    The idol library can be found inside the :code:`idol` namespace, thus, be sure to add :code:`using namespace idol;`
+    where desired or to explicitly refer to classes using this namespace, e.g., by using :code:`idol::Model` instead of :code:`Model`.
+
 Env
 ---
 

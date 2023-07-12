@@ -70,5 +70,5 @@ This class can be used to create callbacks to run on idol's :ref:`branch-and-bou
     versions (e.g., if you want to perform non-standard updates to the relaxed model or want to change the node's current
     information manually), you should use the advanced interface obtained by calling ``BranchAndBoundCallback::advanced_interface``.
 
-.. doxygenclass:: BranchAndBoundCallback
+.. doxygenclass:: idol::BranchAndBoundCallback
     :protected-members:

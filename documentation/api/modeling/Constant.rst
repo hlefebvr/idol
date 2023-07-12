@@ -3,4 +3,4 @@
 Constant
 ========
 
-.. doxygenclass:: Constant
+.. doxygenclass:: idol::Constant

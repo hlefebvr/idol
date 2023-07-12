@@ -28,4 +28,4 @@ It can be used to create customized branch-and-bound algorithms with a large deg
                 .with_subtree_depth(2)
         );
 
-.. doxygenclass:: BranchAndBound
+.. doxygenclass:: idol::BranchAndBound

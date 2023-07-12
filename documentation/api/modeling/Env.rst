@@ -1,4 +1,4 @@
 Env
 ===
 
-.. doxygenclass:: Env
+.. doxygenclass:: idol::Env

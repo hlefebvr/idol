@@ -11,6 +11,8 @@
 
 int main(int t_argc, const char** t_argv) {
 
+    using namespace idol;
+
     Env env;
 
     // Read instance

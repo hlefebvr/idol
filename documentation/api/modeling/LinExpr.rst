@@ -19,4 +19,4 @@ It consists in a set of linear terms which represent products of keys (typically
 
         LinExpr lin_expr = 3 * x[0] + 2 * x[1];
 
-.. doxygenclass:: LinExpr
+.. doxygenclass:: idol::LinExpr
