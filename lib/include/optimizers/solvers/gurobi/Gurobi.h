@@ -29,10 +29,8 @@ class idol::Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
-#ifdef IDOL_USE_GUROBI
     Map<GRB_IntParam, int> m_int_params;
     Map<GRB_DoubleParam, double> m_double_params;
-#endif
 
     Gurobi(const Gurobi& t_src);
 public:
