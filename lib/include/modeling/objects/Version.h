@@ -5,7 +5,11 @@
 #ifndef IDOL_VERSION_H
 #define IDOL_VERSION_H
 
-class Version {
+namespace idol {
+    class Version;
+}
+
+class idol::Version {
     unsigned int m_index;
 public:
     explicit Version(unsigned int t_index) : m_index(t_index) {}

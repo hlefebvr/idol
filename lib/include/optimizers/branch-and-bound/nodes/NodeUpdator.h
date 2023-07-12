@@ -5,10 +5,15 @@
 #ifndef IDOL_NODEUPDATOR_H
 #define IDOL_NODEUPDATOR_H
 
-class Model;
+namespace idol {
+    class Model;
+
+    template<class NodeT>
+    class NodeUpdator;
+}
 
 template<class NodeT>
-class NodeUpdator {
+class idol::NodeUpdator {
 public:
     virtual ~NodeUpdator() = default;
 

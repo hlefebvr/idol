@@ -8,8 +8,12 @@
 #include "../modeling/solutions/Solution.h"
 #include <list>
 
-template<class KeyT, class ValueT = Solution::Primal>
-class GeneratorPool {
+namespace idol {
+    template<class KeyT, class ValueT> class GeneratorPool;
+}
+
+template<class KeyT, class ValueT = idol::Solution::Primal>
+class idol::GeneratorPool {
     std::list<std::pair<KeyT, ValueT>> m_values;
 public:
     void add(KeyT t_key, ValueT t_value) {

@@ -4,10 +4,10 @@
 #include "optimizers/column-generation/IntegerMasterHeuristic.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src)
+idol::IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src)
     :m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 
-BranchAndBoundCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
+idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::operator()() {
 
     if (!m_optimizer_factory) {
         throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_optimizer to configure.");
@@ -22,7 +22,7 @@ BranchAndBoundCallback<NodeInfo> *IntegerMasterHeuristic::operator()() {
     return result;
 }
 
-IntegerMasterHeuristic &IntegerMasterHeuristic::with_optimizer(const OptimizerFactory &t_optimizer) {
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_optimizer(const OptimizerFactory &t_optimizer) {
 
     if (m_optimizer_factory) {
         throw Exception("A solver has already been given.");
@@ -33,21 +33,21 @@ IntegerMasterHeuristic &IntegerMasterHeuristic::with_optimizer(const OptimizerFa
     return *this;
 }
 
-BranchAndBoundCallbackFactory<NodeInfo> *IntegerMasterHeuristic::clone() const {
+idol::BranchAndBoundCallbackFactory<idol::NodeInfo> *idol::IntegerMasterHeuristic::clone() const {
     return new IntegerMasterHeuristic(*this);
 }
 
-IntegerMasterHeuristic &IntegerMasterHeuristic::with_integer_columns(bool t_value) {
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_integer_columns(bool t_value) {
     m_integer_columns = t_value;
     return *this;
 }
 
-IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
+idol::IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
         : m_optimizer_factory(t_optimizer.clone()) {
 
 }
 
-void IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
+void idol::IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
 
     if (t_event != InvalidSolution) {
         return;

@@ -5,7 +5,7 @@
 #include "optimizers/solvers/Optimizers_GLPK.h"
 #include "errors/Exception.h"
 
-Optimizer *GLPK::operator()(const Model &t_model) const {
+idol::Optimizer *idol::GLPK::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GLPK
     auto* result = new Optimizers::GLPK(t_model, m_continuous_relaxation);
     this->handle_default_parameters(result);
@@ -15,11 +15,11 @@ Optimizer *GLPK::operator()(const Model &t_model) const {
 #endif
 }
 
-GLPK GLPK::ContinuousRelaxation() {
+idol::GLPK idol::GLPK::ContinuousRelaxation() {
     return GLPK(true);
 }
 
-GLPK *GLPK::clone() const {
+idol::GLPK *idol::GLPK::clone() const {
     return new GLPK(*this);
 }
 

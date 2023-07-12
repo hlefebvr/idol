@@ -7,9 +7,14 @@
 
 #include "AbstractMatrixCoefficient.h"
 
-class Constant;
 
-class MatrixCoefficientReference : public AbstractMatrixCoefficient {
+
+namespace idol {
+    class Constant;
+    class MatrixCoefficientReference;
+}
+
+class idol::MatrixCoefficientReference : public AbstractMatrixCoefficient {
 protected:
     Constant* m_coefficient = nullptr;
     explicit MatrixCoefficientReference(Constant* t_src) : m_coefficient(t_src) {}

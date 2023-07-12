@@ -10,7 +10,11 @@
 #include "MatrixIndices.h"
 #include <Eigen/Eigen>
 
-class SquareMatrix {
+namespace idol {
+    class SquareMatrix;
+}
+
+class idol::SquareMatrix {
     const MatrixIndices* m_indices;
     Eigen::MatrixXd m_matrix;
 
@@ -64,14 +68,18 @@ public:
     }
 };
 
-static std::ostream& operator<<(std::ostream& t_os, const SquareMatrix& t_matrix) {
-    for (unsigned int i = 0, n = t_matrix.size() ; i < n ; ++i) {
-        for (unsigned int j = 0 ; j < n ; ++j) {
-            t_os << t_matrix.get(i, j) <<", ";
+namespace idol {
+
+    static std::ostream &operator<<(std::ostream &t_os, const SquareMatrix &t_matrix) {
+        for (unsigned int i = 0, n = t_matrix.size(); i < n; ++i) {
+            for (unsigned int j = 0; j < n; ++j) {
+                t_os << t_matrix.get(i, j) << ", ";
+            }
+            t_os << '\n';
         }
-        t_os << '\n';
+        return t_os;
     }
-    return t_os;
+
 }
 
 #endif

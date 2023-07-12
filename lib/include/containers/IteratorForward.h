@@ -7,8 +7,16 @@
 
 #include <memory>
 
+namespace idol {
+    template<class T, class IteratorT, class ConstIteratorT>
+    class IteratorForward;
+
+    template<class T, class ConstIteratorT>
+    class ConstIteratorForward;
+}
+
 template<class T, class IteratorT = typename T::iterator, class ConstIteratorT = typename T::const_iterator>
-class IteratorForward {
+class idol::IteratorForward {
     T& m_container;
 public:
     IteratorForward(T& t_container) : m_container(t_container) {} // NOLINT(google-explicit-constructor)
@@ -30,7 +38,7 @@ public:
 };
 
 template<class T, class ConstIteratorT = typename T::const_iterator>
-class ConstIteratorForward {
+class idol::ConstIteratorForward {
     const T& m_container;
 public:
     ConstIteratorForward(const T& t_container) : m_container(t_container) {} // NOLINT(google-explicit-constructor)

@@ -8,7 +8,11 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h"
 #include "optimizers/branch-and-bound/branching-rules/impls/MostInfeasbile.h"
 
-class MostInfeasible {
+namespace idol {
+    class MostInfeasible;
+}
+
+class idol::MostInfeasible {
     std::optional<std::list<Var>> m_explicit_branching_candidates;
 public:
     MostInfeasible() = default;

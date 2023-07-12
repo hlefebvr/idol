@@ -8,7 +8,11 @@
 #include "CutSeparation.h"
 #include "CallbackFactory.h"
 
-class LazyCutCallback : public CallbackFactory {
+namespace idol {
+    class LazyCutCallback;
+}
+
+class idol::LazyCutCallback : public CallbackFactory {
     LogLevel m_log_level = Warn;
     Color m_log_color = Default;
 

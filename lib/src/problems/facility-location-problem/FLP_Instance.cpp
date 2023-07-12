@@ -8,7 +8,7 @@
 #include "problems/helpers/distances.h"
 #include <random>
 
-Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_customers)
+idol::Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_customers)
         : m_fixed_costs(t_n_facilities),
           m_capacities(t_n_facilities),
           m_demands(t_n_customers),
@@ -17,7 +17,7 @@ Problems::FLP::Instance::Instance(unsigned int t_n_facilities, unsigned int t_n_
 
 }
 
-Problems::FLP::Instance Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename) {
+idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_al(const std::string &t_filename) {
 
     auto data = parse_delimited(t_filename, '\t');
 
@@ -57,7 +57,7 @@ Problems::FLP::Instance Problems::FLP::read_instance_2021_Cheng_et_al(const std:
     return result;
 }
 
-Problems::FLP::Instance Problems::FLP::read_instance_1991_Cornuejols_et_al(const std::string& t_filename) {
+idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_1991_Cornuejols_et_al(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 
@@ -95,7 +95,7 @@ Problems::FLP::Instance Problems::FLP::read_instance_1991_Cornuejols_et_al(const
     return result;
 }
 
-std::ostream& operator<<(std::ostream& t_os, const Problems::FLP::Instance& t_instance) {
+std::ostream& operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance) {
     t_os << t_instance.n_facilities() << '\t' << t_instance.n_customers() << '\n';
     for (unsigned int i = 0, n = t_instance.n_facilities() ; i < n ; ++i) {
         t_os << t_instance.fixed_cost(i) << '\t' << t_instance.capacity(i) << '\n';
@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& t_os, const Problems::FLP::Instance& t_in
     return t_os;
 }
 
-Problems::FLP::Instance Problems::FLP::generate_instance_1991_Cornuejols_et_al(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand) {
+idol::Problems::FLP::Instance idol::Problems::FLP::generate_instance_1991_Cornuejols_et_al(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand) {
 
     std::random_device rd;
     std::mt19937 engine(rd());

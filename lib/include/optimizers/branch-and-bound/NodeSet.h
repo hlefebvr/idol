@@ -8,8 +8,13 @@
 #include <map>
 #include "containers/IteratorForward.h"
 
+namespace idol {
+    template<class NodeT>
+    class NodeSet;
+}
+
 template<class NodeT>
-class NodeSet {
+class idol::NodeSet {
     using by_objective_value_t = std::multimap<double, NodeT>;
     using by_level_t = std::multimap<unsigned int, NodeT>;
     by_objective_value_t m_by_objective_value;
@@ -37,7 +42,7 @@ public:
 };
 
 template<class NodeT>
-void NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
+void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 
     for (auto pair : t_node_set.m_by_objective_value) {
         m_by_objective_value.emplace(pair);
@@ -52,25 +57,25 @@ void NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 }
 
 template<class NodeT>
-typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::emplace(NodeT t_node) {
+typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::emplace(NodeT t_node) {
     auto it = m_by_objective_value.template emplace(t_node.info().objective_value(), t_node);
     m_by_level.template emplace(t_node.level(), t_node);
     return const_iterator(std::move(it));
 }
 
 template<class NodeT>
-void NodeSet<NodeT>::clear()  {
+void idol::NodeSet<NodeT>::clear()  {
     m_by_objective_value.clear();
     m_by_level.clear();
 }
 
 template<class NodeT>
-bool NodeSet<NodeT>::empty() const {
+bool idol::NodeSet<NodeT>::empty() const {
     return m_by_objective_value.empty();
 }
 
 template<class NodeT>
-typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::erase(const NodeSet::const_iterator &t_it) {
+typename idol::NodeSet<NodeT>::const_iterator idol::NodeSet<NodeT>::erase(const NodeSet::const_iterator &t_it) {
     const unsigned int id = t_it->id();
 
     if (t_it.is_by_level()) {
@@ -90,7 +95,7 @@ typename NodeSet<NodeT>::const_iterator NodeSet<NodeT>::erase(const NodeSet::con
 
 
 template<class NodeT>
-class NodeSet<NodeT>::const_iterator {
+class idol::NodeSet<NodeT>::const_iterator {
     friend class NodeSet<NodeT>;
 
     using by_objective_value_it_t = typename by_objective_value_t::const_iterator;

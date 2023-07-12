@@ -5,7 +5,7 @@
 #include "../../../include/modeling/matrix/Matrix.h"
 #include "../../../include/modeling/models/Model.h"
 
-void Matrix::add_row_to_columns(const Ctr &t_ctr) {
+void idol::Matrix::add_row_to_columns(const Ctr &t_ctr) {
 
     auto& row = access_row(t_ctr);
 
@@ -28,7 +28,7 @@ void Matrix::add_row_to_columns(const Ctr &t_ctr) {
     }
 }
 
-void Matrix::add_column_to_rows(const Var &t_var) {
+void idol::Matrix::add_column_to_rows(const Var &t_var) {
 
     auto& column = access_column(t_var);
 
@@ -49,7 +49,7 @@ void Matrix::add_column_to_rows(const Var &t_var) {
     }
 }
 
-void Matrix::remove_row_from_columns(const Ctr &t_ctr) {
+void idol::Matrix::remove_row_from_columns(const Ctr &t_ctr) {
     auto& row = access_row(t_ctr);
     for (const auto& [var, ptr_to_coeff] : row.linear().refs()) {
         access_column(var).impl().linear().remove(t_ctr);
@@ -65,7 +65,7 @@ void Matrix::remove_row_from_columns(const Ctr &t_ctr) {
     rhs.remove(t_ctr);
 }
 
-void Matrix::remove_column_from_rows(const Var &t_var) {
+void idol::Matrix::remove_column_from_rows(const Var &t_var) {
     auto& column = access_column(t_var);
     for (const auto& [ctr, ptr_to_coeff] : column.impl().linear().refs()) {
         access_row(ctr).linear().remove(t_var);
@@ -78,7 +78,7 @@ void Matrix::remove_column_from_rows(const Var &t_var) {
     obj.linear().remove(t_var);
 }
 
-void Matrix::replace_objective(Expr<Var> &&t_objective) {
+void idol::Matrix::replace_objective(Expr<Var> &&t_objective) {
     auto& obj = access_obj();
 
     for (const auto& [var, coeff] : obj.linear()) {
@@ -93,7 +93,7 @@ void Matrix::replace_objective(Expr<Var> &&t_objective) {
 
 }
 
-void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
+void idol::Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     auto& rhs = access_rhs();
 
     for (const auto& [ctr, coeff] : rhs) {
@@ -107,7 +107,7 @@ void Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     }
 }
 
-void Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
+void idol::Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
 
     auto& column = access_column(t_var);
 
@@ -124,7 +124,7 @@ void Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
 
 }
 
-void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
+void idol::Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
     auto& row = access_row(t_ctr);
 
@@ -142,7 +142,7 @@ void Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
 
 }
 
-void Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, Constant &&t_constant) {
+void idol::Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, Constant &&t_constant) {
 
     if (t_constant.is_zero()) {
         access_column(t_var).impl().linear().remove(t_ctr);

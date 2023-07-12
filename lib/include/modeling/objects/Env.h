@@ -13,15 +13,21 @@
 #include "modeling/objects/ObjectId.h"
 #include "modeling/annotations/impl_Annotation.h"
 
-class Model;
+namespace idol {
 
-namespace impl {
-    class Env;
-    template<unsigned int Start> class IdProvider;
+    class Model;
+
+    namespace impl {
+        class Env;
+
+        template<unsigned int Start>
+        class IdProvider;
+    }
+
 }
 
 template<unsigned int Start>
-class impl::IdProvider {
+class idol::impl::IdProvider {
     unsigned int m_max_id = Start;
     std::list<unsigned int> m_free_ids;
 public:
@@ -38,7 +44,7 @@ public:
     }
 };
 
-class impl::Env {
+class idol::impl::Env {
     unsigned int m_max_object_id = 0;
 
     IdProvider<1> m_model_ids;
@@ -58,7 +64,7 @@ class impl::Env {
 protected:
     unsigned int create_model_id() { return m_model_ids.create(); }
 
-    void free_model_id(const ::Model& t_model);
+    void free_model_id(const ::idol::Model& t_model);
 
     unsigned int create_annotation_id(bool t_is_variable) { return t_is_variable ? m_var_annotation_ids.create() : m_ctr_annotation_ids.create(); }
 
@@ -117,7 +123,7 @@ public:
  * This class manages an "optimization environment". It is used to actually store the versions of each variables and
  * constraints which may arise in optimization problems.
  */
-class Env : public impl::Env {
+class idol::Env : public impl::Env {
     friend class Model;
     friend class Var;
     friend class Ctr;

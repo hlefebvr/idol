@@ -9,12 +9,17 @@
 #include "../parameters/Param.h"
 #include "../numericals.h"
 
-namespace Solution {
-    class Primal;
-    class Dual;
-}
+namespace idol {
 
-class Algorithm;
+    namespace Solution {
+        class Primal;
+
+        class Dual;
+    }
+
+    class Algorithm;
+    class Constant;
+}
 
 /**
  * Constant term modeling object.
@@ -32,7 +37,7 @@ class Algorithm;
  * Constant terms can be created by calling the appropriate constructor or by using overloaded operators such as + and *. For instance,
  * 2 * xi where xi is a Param will yield a Constant.
  */
-class Constant {
+class idol::Constant {
     Map<Param, double> m_products;
     double m_constant = 0.;
 
@@ -154,37 +159,41 @@ public:
     static Constant Zero;
 };
 
-static std::ostream& operator<<(std::ostream& t_os, const Constant& t_coefficient) {
+namespace idol {
 
-    const auto print_term = [&t_os](const Param& t_param, double t_coeff) {
-        if (!equals(t_coeff, 1., ToleranceForSparsity)) {
-            t_os << t_coeff << ' ';
+    static std::ostream &operator<<(std::ostream &t_os, const Constant &t_coefficient) {
+
+        const auto print_term = [&t_os](const idol::Param &t_param, double t_coeff) {
+            if (!idol::equals(t_coeff, 1., idol::ToleranceForSparsity)) {
+                t_os << t_coeff << ' ';
+            }
+            t_os << t_param;
+        };
+
+        const double constant = t_coefficient.numerical();
+
+        auto it = t_coefficient.begin();
+        const auto end = t_coefficient.end();
+
+        if (it == end) {
+            return t_os << constant;
         }
-        t_os << t_param;
-    };
 
-    const double constant = t_coefficient.numerical();
+        if (!idol::equals(constant, 0., idol::ToleranceForSparsity)) {
+            t_os << constant << " + ";
+        }
 
-    auto it = t_coefficient.begin();
-    const auto end = t_coefficient.end();
-
-    if (it == end) {
-        return t_os << constant;
-    }
-
-    if (!equals(constant, 0., ToleranceForSparsity)) {
-        t_os << constant << " + ";
-    }
-
-    print_term(it->first, it->second);
-
-    for (++it ; it != end ; ++it) {
-        const auto& [param, coeff] = *it;
-        t_os << " + ";
         print_term(it->first, it->second);
+
+        for (++it; it != end; ++it) {
+            const auto &[param, coeff] = *it;
+            t_os << " + ";
+            print_term(it->first, it->second);
+        }
+
+        return t_os;
     }
 
-    return t_os;
 }
 
 #endif //OPTIMIZE_CONSTANT_H

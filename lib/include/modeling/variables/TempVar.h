@@ -7,6 +7,10 @@
 
 #include "../matrix/Column.h"
 
+namespace idol {
+    class TempVar;
+}
+
 /**
  * Temporary variable object.
  *
@@ -22,7 +26,7 @@
  * model.add_var(TempVar(0., 1., Binary, 2.));
  * ```
  */
-class TempVar {
+class idol::TempVar {
     double m_lb = 0.;
     double m_ub = Inf;
     VarType m_type = Continuous;
@@ -47,7 +51,7 @@ public:
     /**
      * Returns the column associated to the temporary variable (see Column).
      */
-    const Column& column() const { return m_column; }
+    [[nodiscard]] const Column& column() const { return m_column; }
 
     /**
      * Returns the column associated to the temporary variable (see Column).

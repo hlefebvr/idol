@@ -8,12 +8,18 @@
 #include "LinExpr.h"
 #include "QuadExpr.h"
 
-namespace impl {
-    template<class Key1, class Key2> class Expr;
+namespace idol {
+    namespace impl {
+        template<class Key1, class Key2>
+        class Expr;
+    }
+
+    template<class Key1, class Key2>
+    class Expr;
 }
 
 template<class Key1, class Key2>
-class impl::Expr {
+class idol::impl::Expr {
     LinExpr<Key1> m_linear;
     QuadExpr<Key1, Key2> m_quadratic;
     std::unique_ptr<AbstractMatrixCoefficient> m_constant;
@@ -76,72 +82,72 @@ public:
 };
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr()
+idol::impl::Expr<Key1, Key2>::Expr()
         : m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(double t_num)
+idol::impl::Expr<Key1, Key2>::Expr(double t_num)
         : m_constant(std::make_unique<MatrixCoefficient>(t_num)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const Param &t_param)
+idol::impl::Expr<Key1, Key2>::Expr(const Param &t_param)
         : m_constant(std::make_unique<MatrixCoefficient>(t_param)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(Constant &&t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(Constant &&t_expr)
         : m_constant(std::make_unique<MatrixCoefficient>(std::move(t_expr))) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const Constant &t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(const Constant &t_expr)
         : m_constant(std::make_unique<MatrixCoefficient>(t_expr)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const Key1 &t_var)
+idol::impl::Expr<Key1, Key2>::Expr(const Key1 &t_var)
         : m_linear(t_var),
           m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr)
         : m_linear(std::move(t_expr)),
           m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr)
         : m_linear(t_expr),
           m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(QuadExpr<Key1> &&t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(QuadExpr<Key1> &&t_expr)
         : m_quadratic(std::move(t_expr)),
           m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr)
+idol::impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr)
         : m_quadratic(t_expr),
           m_constant(std::make_unique<MatrixCoefficient>(0.)) {
 
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_lin_expr, QuadExpr<Key1, Key2> &&t_quad_expr, Constant &&t_constant)
+idol::impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_lin_expr, QuadExpr<Key1, Key2> &&t_quad_expr, Constant &&t_constant)
         : m_linear(std::move(t_lin_expr)),
           m_quadratic(std::move(t_quad_expr)),
           m_constant(std::make_unique<MatrixCoefficient>(std::move(t_constant))){
@@ -149,7 +155,7 @@ impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_lin_expr, QuadExpr<Key1, Key2> &&
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key1, Key2> &t_quad_expr, const Constant &t_constant)
+idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key1, Key2> &t_quad_expr, const Constant &t_constant)
         : m_linear(t_lin_expr),
           m_quadratic(t_quad_expr),
           m_constant(std::make_unique<MatrixCoefficient>(t_constant)) {
@@ -157,7 +163,7 @@ impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
+idol::impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
         : m_linear(t_src.m_linear),
           m_quadratic(t_src.m_quadratic),
           m_constant(std::make_unique<MatrixCoefficient>(t_src.m_constant->value()))  {
@@ -165,7 +171,7 @@ impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
     if (this == &t_rhs) { return *this; }
     m_linear = t_rhs.m_linear;
     m_quadratic = t_rhs.m_quadratic;
@@ -174,7 +180,7 @@ impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator+=(const impl::Expr<Key1, Key2> &t_rhs) {
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator+=(const impl::Expr<Key1, Key2> &t_rhs) {
     m_linear += t_rhs.m_linear;
     m_quadratic += t_rhs.m_quadratic;
     m_constant->value() += t_rhs.m_constant->value();
@@ -182,7 +188,7 @@ impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator+=(const impl::Expr<Key1
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator-=(const impl::Expr<Key1, Key2> &t_rhs) {
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator-=(const impl::Expr<Key1, Key2> &t_rhs) {
     m_linear -= t_rhs.m_linear;
     m_quadratic -= t_rhs.m_quadratic;
     m_constant->value() -= t_rhs.m_constant->value();
@@ -190,15 +196,15 @@ impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator-=(const impl::Expr<Key1
 }
 
 template<class Key1, class Key2>
-impl::Expr<Key1, Key2> &impl::Expr<Key1, Key2>::operator*=(double t_rhs) {
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator*=(double t_rhs) {
     m_linear *= t_rhs;
     m_quadratic *= t_rhs;
     m_constant->value() *= t_rhs;
     return *this;
 }
 
-template<class Key1 = Var, class Key2 = Key1>
-class Expr : public impl::Expr<Key1, Key2> {
+template<class Key1 = idol::Var, class Key2 = Key1>
+class idol::Expr : public impl::Expr<Key1, Key2> {
     friend class Matrix;
 public:
     Expr() = default;
@@ -222,7 +228,7 @@ public:
 };
 
 template<class Key1, class Key2>
-std::ostream &operator<<(std::ostream& t_os, const Expr<Key1, Key2>& t_expr) {
+std::ostream &operator<<(std::ostream& t_os, const idol::Expr<Key1, Key2>& t_expr) {
 
     if (t_expr.constant().is_zero()) {
 

@@ -4,16 +4,16 @@
 #include "../../../include/modeling/matrix/MatrixCoefficient.h"
 #include "../../../include/modeling/expressions/Constant.h"
 
-MatrixCoefficient::~MatrixCoefficient() {
+idol::MatrixCoefficient::~MatrixCoefficient() {
     delete m_coefficient;
 }
 
-MatrixCoefficient::MatrixCoefficient(Constant &&t_coefficient)
+idol::MatrixCoefficient::MatrixCoefficient(Constant &&t_coefficient)
     : MatrixCoefficientReference(new Constant(std::move(t_coefficient))) {
 
 }
 
-MatrixCoefficient::MatrixCoefficient(const Constant &t_coefficient)
+idol::MatrixCoefficient::MatrixCoefficient(const Constant &t_coefficient)
         : MatrixCoefficientReference(new Constant(t_coefficient)){
 
 }

@@ -9,15 +9,21 @@
 #include "AbstractMatrixCoefficient.h"
 #include "../expressions/Expr.h"
 
-namespace impl {
+namespace idol {
+
+    namespace impl {
+        class Column;
+    }
+
     class Column;
+
 }
 
-class impl::Column {
-    ::Expr<Ctr, Var> m_impl;
-    ::LinExpr<Var> m_obj_quad;
+class idol::impl::Column {
+    ::idol::Expr<Ctr, Var> m_impl;
+    ::idol::LinExpr<Var> m_obj_quad;
 protected:
-    ::Expr<Ctr, Var>& impl() { return m_impl; }
+    ::idol::Expr<Ctr, Var>& impl() { return m_impl; }
 public:
     Column() = default;
     Column(Constant&& t_obj) : m_impl(std::move(t_obj)) {} // NOLINT(google-explicit-constructor)
@@ -32,8 +38,8 @@ public:
     Constant& obj() { return m_impl.constant(); }
     [[nodiscard]] const Constant& obj() const { return m_impl.constant(); }
 
-    ::LinExpr<Var>& obj_quadratic() { return m_obj_quad; }
-    [[nodiscard]] const ::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
+    ::idol::LinExpr<Var>& obj_quadratic() { return m_obj_quad; }
+    [[nodiscard]] const ::idol::LinExpr<Var>& obj_quadratic() const { return m_obj_quad; }
 
     LinExpr<Ctr>& linear() { return m_impl.linear(); }
     [[nodiscard]] const LinExpr<Ctr>& linear() const { return m_impl.linear(); }
@@ -61,7 +67,7 @@ public:
  * This class is used to represent an optimization model's column. It is made of an objective coefficient and a set of Ctr-Constant
  * pairs representing the Constant coefficient of the column in each row Ctr. Such pairs are called components.
  */
-class Column : public impl::Column {
+class idol::Column : public impl::Column {
     friend class Matrix;
 public:
     Column() = default;
@@ -79,7 +85,7 @@ public:
     static const Column EmptyColumn;
 };
 
-static std::ostream &operator<<(std::ostream& t_os, const Column& t_column) {
+static std::ostream &operator<<(std::ostream& t_os, const idol::Column& t_column) {
 
     t_os << "[Obj: " << t_column.obj() << "]\n";
 

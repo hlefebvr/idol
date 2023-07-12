@@ -6,7 +6,7 @@
 
 #ifdef IDOL_USE_GLPK
 
-Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
+idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
     : OptimizerWithLazyUpdates(t_model),
       m_model(glp_create_prob()),
       m_continuous_relaxation(t_continuous_relaxation) {
@@ -22,7 +22,7 @@ Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
-void Optimizers::GLPK::hook_build() {
+void idol::Optimizers::GLPK::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
@@ -36,11 +36,11 @@ void Optimizers::GLPK::hook_build() {
 
 }
 
-void Optimizers::GLPK::hook_write(const std::string &t_name) {
+void idol::Optimizers::GLPK::hook_write(const std::string &t_name) {
     glp_write_lp(m_model, nullptr, t_name.c_str());
 }
 
-void Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
+void idol::Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
 
     const bool has_lb = !is_neg_inf(t_lb);
     const bool has_ub = !is_pos_inf(t_ub);
@@ -76,7 +76,7 @@ void Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, double
 
 }
 
-int Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
+int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     int index;
     if (m_deleted_variables.empty()) {
@@ -119,7 +119,7 @@ int Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
     return index;
 }
 
-void Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
+void idol::Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
     switch (t_type) {
         case LessOrEqual: glp_set_row_bnds(m_model, t_index, GLP_UP, 0., t_rhs); break;
@@ -130,7 +130,7 @@ void Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs) {
 
 }
 
-int Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
+int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 
     int index;
     if (m_deleted_constraints.empty()) {
@@ -168,19 +168,19 @@ int Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     return index;
 }
 
-void Optimizers::GLPK::hook_update_objective_sense() {
+void idol::Optimizers::GLPK::hook_update_objective_sense() {
     glp_set_obj_dir(m_model, parent().get_obj_sense() == Minimize ? GLP_MIN : GLP_MAX);
 }
 
-void Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void idol::Optimizers::GLPK::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     throw Exception("Not implemented.");
 }
 
-void Optimizers::GLPK::hook_update() {
+void idol::Optimizers::GLPK::hook_update() {
 
 }
 
-void Optimizers::GLPK::hook_update(const Var &t_var) {
+void idol::Optimizers::GLPK::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
@@ -193,7 +193,7 @@ void Optimizers::GLPK::hook_update(const Var &t_var) {
 
 }
 
-void Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
+void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
@@ -204,7 +204,7 @@ void Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 
 }
 
-void Optimizers::GLPK::hook_update_objective() {
+void idol::Optimizers::GLPK::hook_update_objective() {
 
     const auto& model = parent();
 
@@ -215,11 +215,11 @@ void Optimizers::GLPK::hook_update_objective() {
 
 }
 
-void Optimizers::GLPK::hook_update_rhs() {
+void idol::Optimizers::GLPK::hook_update_rhs() {
     throw Exception("Not implemented.");
 }
 
-void Optimizers::GLPK::hook_remove(const Var &t_var) {
+void idol::Optimizers::GLPK::hook_remove(const Var &t_var) {
 
     const int index = lazy(t_var).impl();
 
@@ -234,7 +234,7 @@ void Optimizers::GLPK::hook_remove(const Var &t_var) {
 
 }
 
-void Optimizers::GLPK::hook_remove(const Ctr &t_ctr) {
+void idol::Optimizers::GLPK::hook_remove(const Ctr &t_ctr) {
 
     const int index = lazy(t_ctr).impl();
 
@@ -249,7 +249,7 @@ void Optimizers::GLPK::hook_remove(const Ctr &t_ctr) {
 
 }
 
-void Optimizers::GLPK::hook_optimize() {
+void idol::Optimizers::GLPK::hook_optimize() {
 
     m_solved_as_mip = false;
 
@@ -296,7 +296,7 @@ void Optimizers::GLPK::hook_optimize() {
 
 }
 
-void Optimizers::GLPK::save_simplex_solution_status() {
+void idol::Optimizers::GLPK::save_simplex_solution_status() {
 
     int status = glp_get_status(m_model);
 
@@ -334,7 +334,7 @@ void Optimizers::GLPK::save_simplex_solution_status() {
 
 }
 
-void Optimizers::GLPK::compute_farkas_certificate() {
+void idol::Optimizers::GLPK::compute_farkas_certificate() {
     
     const auto& model = parent();
 
@@ -432,7 +432,7 @@ void Optimizers::GLPK::compute_farkas_certificate() {
 
 }
 
-void Optimizers::GLPK::compute_unbounded_ray() {
+void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
     const auto& model = parent();
 
@@ -550,7 +550,7 @@ void Optimizers::GLPK::compute_unbounded_ray() {
 
 }
 
-void Optimizers::GLPK::save_milp_solution_status() {
+void idol::Optimizers::GLPK::save_milp_solution_status() {
 
     int status = glp_mip_status(m_model);
 
@@ -582,7 +582,7 @@ void Optimizers::GLPK::save_milp_solution_status() {
 
 }
 
-void Optimizers::GLPK::set_time_limit(double t_time_limit) {
+void idol::Optimizers::GLPK::set_time_limit(double t_time_limit) {
 
     const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit) * 1000);
     m_simplex_parameters.tm_lim = value;
@@ -591,47 +591,47 @@ void Optimizers::GLPK::set_time_limit(double t_time_limit) {
     Optimizer::set_time_limit(t_time_limit);
 }
 
-void Optimizers::GLPK::set_best_obj_stop(double t_best_obj_stop) {
+void idol::Optimizers::GLPK::set_best_obj_stop(double t_best_obj_stop) {
     m_simplex_parameters.obj_ul = t_best_obj_stop;
     Optimizer::set_best_obj_stop(t_best_obj_stop);
 }
 
-void Optimizers::GLPK::set_best_bound_stop(double t_best_bound_stop) {
+void idol::Optimizers::GLPK::set_best_bound_stop(double t_best_bound_stop) {
     m_simplex_parameters.obj_ll = t_best_bound_stop;
     Optimizer::set_best_bound_stop(t_best_bound_stop);
 }
 
-void Optimizers::GLPK::set_presolve(bool t_value) {
+void idol::Optimizers::GLPK::set_presolve(bool t_value) {
     m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     Optimizer::set_presolve(t_value);
 }
 
-SolutionStatus Optimizers::GLPK::get_status() const {
+idol::SolutionStatus idol::Optimizers::GLPK::get_status() const {
     return m_solution_status;
 }
 
-SolutionReason Optimizers::GLPK::get_reason() const {
+idol::SolutionReason idol::Optimizers::GLPK::get_reason() const {
     return m_solution_reason;
 }
 
-double Optimizers::GLPK::get_best_obj() const {
+double idol::Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
     if (m_solution_status == Infeasible) { return +Inf; }
     const double constant_term = as_numeric(parent().get_obj_expr().constant());
     return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
 }
 
-double Optimizers::GLPK::get_best_bound() const {
+double idol::Optimizers::GLPK::get_best_bound() const {
     return get_best_obj();
 }
 
-double Optimizers::GLPK::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::GLPK::get_var_primal(const Var &t_var) const {
     const int impl = lazy(t_var).impl();
     return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
 }
 
-double Optimizers::GLPK::get_var_ray(const Var &t_var) const {
+double idol::Optimizers::GLPK::get_var_ray(const Var &t_var) const {
 
     if (!m_unbounded_ray.has_value()) {
         throw Exception("Ray not available.");
@@ -640,12 +640,12 @@ double Optimizers::GLPK::get_var_ray(const Var &t_var) const {
     return m_unbounded_ray->get(t_var);
 }
 
-double Optimizers::GLPK::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::GLPK::get_ctr_dual(const Ctr &t_ctr) const {
     const auto &impl = lazy(t_ctr).impl();
     return glp_get_row_dual(m_model, impl);
 }
 
-double Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
+double idol::Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
     if (!m_farkas_certificate.has_value()) {
         throw Exception("Farkas certificate not available.");
     }
@@ -653,24 +653,24 @@ double Optimizers::GLPK::get_ctr_farkas(const Ctr &t_ctr) const {
     return m_farkas_certificate->get(t_ctr);
 }
 
-double Optimizers::GLPK::get_relative_gap() const {
+double idol::Optimizers::GLPK::get_relative_gap() const {
     return 0;
 }
 
-double Optimizers::GLPK::get_absolute_gap() const {
+double idol::Optimizers::GLPK::get_absolute_gap() const {
     return 0;
 }
 
-unsigned int Optimizers::GLPK::get_n_solutions() const {
+unsigned int idol::Optimizers::GLPK::get_n_solutions() const {
     const auto status = get_status();
     return status == Optimal || status == Feasible;
 }
 
-unsigned int Optimizers::GLPK::get_solution_index() const {
+unsigned int idol::Optimizers::GLPK::get_solution_index() const {
     return 0;
 }
 
-void Optimizers::GLPK::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::GLPK::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Solution index out of bounds");
     }

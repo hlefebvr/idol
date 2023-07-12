@@ -11,7 +11,12 @@
 #include <optional>
 #include <functional>
 
-class Model;
+namespace idol {
+    class Model;
+    class OptimizerFactory;
+    template<class CRTP>
+    class OptimizerFactoryWithDefaultParameters;
+}
 
 /**
  * OptimizerFactory is the base class for all optimizer factories.
@@ -19,7 +24,7 @@ class Model;
  * An optimizer Factory is used to create an optimizer when actually needed. They can be seen as customizable
  * "building plans" for actually creating optimizers.
  */
-class OptimizerFactory {
+class idol::OptimizerFactory {
 public:
     virtual ~OptimizerFactory() = default;
 
@@ -38,7 +43,7 @@ public:
 };
 
 template<class CRTP>
-class OptimizerFactoryWithDefaultParameters : public OptimizerFactory {
+class idol::OptimizerFactoryWithDefaultParameters : public OptimizerFactory {
     std::optional<LogLevel> m_log_level;
     std::optional<Color> m_log_color;
     std::optional<double> m_time_limit;
@@ -239,19 +244,19 @@ public:
 
 template<class CRTP>
 CRTP &
-OptimizerFactoryWithDefaultParameters<CRTP>::conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else) {
+idol::OptimizerFactoryWithDefaultParameters<CRTP>::conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if, const std::function<void(CRTP&)>& t_else) {
     t_conditional_value ? t_if(crtp()) : t_else(crtp());
     return crtp();
 }
 
 template<class CRTP>
 CRTP &
-OptimizerFactoryWithDefaultParameters<CRTP>::conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if) {
+idol::OptimizerFactoryWithDefaultParameters<CRTP>::conditional(bool t_conditional_value, const std::function<void(CRTP&)>& t_if) {
     return conditional(t_conditional_value, t_if, [](CRTP&){});
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_infeasible_or_unbounded_info(bool t_value) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_infeasible_or_unbounded_info(bool t_value) {
 
     if (m_infeasible_or_unbounded_info.has_value()) {
         throw Exception("An infeasible-or-unbounded-info instruction has already been given.");
@@ -263,7 +268,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_infeasible_or_unbounded_
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_presolve(bool t_value) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_presolve(bool t_value) {
 
     if (m_presolve.has_value()) {
         throw Exception("A presolve instruction has already been given.");
@@ -275,7 +280,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_presolve(bool t_value) {
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_absolute_gap_tolerance(double t_absolute_gap_tolerance) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_absolute_gap_tolerance(double t_absolute_gap_tolerance) {
 
     if (m_absolute_gap_tolerance.has_value()) {
         throw Exception("An absolute gap tolerance count limit has already been given.");
@@ -287,7 +292,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_absolute_gap_tolerance(d
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_relative_gap_tolerance(double t_relative_gap_tolerance) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_relative_gap_tolerance(double t_relative_gap_tolerance) {
 
     if (m_relative_gap_tolerance.has_value()) {
         throw Exception("A relative gap tolerance count limit has already been given.");
@@ -299,7 +304,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_relative_gap_tolerance(d
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_best_obj_stop(double t_user_best_obj) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_obj_stop(double t_user_best_obj) {
 
     if (m_best_obj_stop.has_value()) {
         throw Exception("A user best obj count limit has already been given.");
@@ -311,7 +316,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_best_obj_stop(double t_u
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(double t_user_best_bound) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(double t_user_best_bound) {
 
     if (m_best_bound_stop.has_value()) {
         throw Exception("A user best bound limit has already been given.");
@@ -323,7 +328,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(double t
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_iteration_count_limit(unsigned int t_iteration_count_limit) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_iteration_count_limit(unsigned int t_iteration_count_limit) {
 
     if (m_iteration_count_limit.has_value()) {
         throw Exception("An iteration count limit has already been given.");
@@ -335,7 +340,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_iteration_count_limit(un
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_thread_limit(unsigned int t_max_n_threads) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_thread_limit(unsigned int t_max_n_threads) {
 
     if (m_thread_limit.has_value()) {
         throw Exception("A thread limit has already been given.");
@@ -347,7 +352,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_thread_limit(unsigned in
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_time_limit(double t_time_limit) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_time_limit(double t_time_limit) {
 
     if (m_time_limit.has_value()) {
         throw Exception("A time limit has already been given.");
@@ -359,7 +364,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_time_limit(double t_time
 }
 
 template<class CRTP>
-CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_log_level(LogLevel t_log_level, Color t_log_color) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_log_level(LogLevel t_log_level, Color t_log_color) {
 
     if (m_log_color.has_value() || m_log_level.has_value()) {
         throw Exception("Logging settings have already been given.");
@@ -372,7 +377,7 @@ CRTP &OptimizerFactoryWithDefaultParameters<CRTP>::with_log_level(LogLevel t_log
 }
 
 template<class CRTP>
-void OptimizerFactoryWithDefaultParameters<CRTP>::handle_default_parameters(Optimizer *t_optimizer) const {
+void idol::OptimizerFactoryWithDefaultParameters<CRTP>::handle_default_parameters(Optimizer *t_optimizer) const {
 
     if (m_log_level.has_value()) {
         t_optimizer->set_log_level(m_log_level.value());

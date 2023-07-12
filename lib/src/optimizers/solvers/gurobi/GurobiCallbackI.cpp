@@ -7,15 +7,15 @@
 #include "optimizers/solvers/gurobi/GurobiCallbackI.h"
 #include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 
-GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
+idol::GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
 
 }
 
-void GurobiCallbackI::add_callback(Callback *t_callback) {
+void idol::GurobiCallbackI::add_callback(Callback *t_callback) {
     m_callbacks.emplace_back(t_callback);
 }
 
-void GurobiCallbackI::callback() {
+void idol::GurobiCallbackI::callback() {
 
     CallbackEvent event;
 
@@ -29,7 +29,7 @@ void GurobiCallbackI::callback() {
 
 }
 
-void GurobiCallbackI::call(CallbackEvent t_event) {
+void idol::GurobiCallbackI::call(CallbackEvent t_event) {
 
     for (auto& cb : m_callbacks) {
         execute(*cb, t_event);
@@ -37,15 +37,15 @@ void GurobiCallbackI::call(CallbackEvent t_event) {
 
 }
 
-void GurobiCallbackI::add_lazy_cut(const TempCtr &t_lazy_cut) {
+void idol::GurobiCallbackI::add_lazy_cut(const TempCtr &t_lazy_cut) {
     addLazy(gurobi_temp_constr(t_lazy_cut));
 }
 
-void GurobiCallbackI::add_user_cut(const TempCtr &t_user_cut) {
+void idol::GurobiCallbackI::add_user_cut(const TempCtr &t_user_cut) {
     addCut(gurobi_temp_constr(t_user_cut));
 }
 
-GRBTempConstr GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ctr) {
+GRBTempConstr idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ctr) {
 
     const auto& row = t_temp_ctr.row();
     const auto& rhs = m_parent.gurobi_numeric(m_parent.as_numeric(row.rhs())); // NOLINT(readability-static-accessed-through-instance)
@@ -70,7 +70,7 @@ GRBTempConstr GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ctr) {
     throw Exception("Unexpected constraint type.");
 }
 
-Solution::Primal GurobiCallbackI::primal_solution() const {
+idol::Solution::Primal idol::GurobiCallbackI::primal_solution() const {
 
     auto* me = const_cast<GurobiCallbackI*>(this);
 
@@ -118,7 +118,7 @@ Solution::Primal GurobiCallbackI::primal_solution() const {
     return result;
 }
 
-const Timer &GurobiCallbackI::time() const {
+const idol::Timer &idol::GurobiCallbackI::time() const {
     return m_parent.time();
 }
 

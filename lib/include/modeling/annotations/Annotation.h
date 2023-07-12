@@ -7,11 +7,16 @@
 
 #include "impl_Annotation.h"
 
-class Var;
-class Ctr;
+namespace idol {
+    class Var;
+    class Ctr;
+
+    template<class ObjectT, class ValueT>
+    class Annotation;
+}
 
 template<class ObjectT, class ValueT = unsigned int>
-class Annotation : public impl::Annotation {
+class idol::Annotation : public impl::Annotation {
     static_assert(std::is_same_v<ObjectT, Var> || std::is_same_v<ObjectT, Ctr>);
 public:
     Annotation(Env& t_env, std::string t_name) : impl::Annotation(t_env, std::is_same_v<ObjectT, Var>, std::move(t_name)) {}

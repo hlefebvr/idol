@@ -9,7 +9,7 @@
 
 // Implements hash for pairs (non-symmetric by default (std::hash<std::pair<T, U>>) and symmetric impls)
 // See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
-namespace impl {
+namespace idol::impl {
 
     template <typename T>
     inline void hash_combine(std::size_t &seed, const T &val) {
@@ -57,7 +57,7 @@ namespace impl {
 template<class Key1, class Key2>
 struct std::hash<std::pair<Key1, Key2>> {
     std::size_t operator()(const std::pair<Key1, Key2>& t_pair) const {
-        return impl::hash_val(t_pair.first, t_pair.second);
+        return idol::impl::hash_val(t_pair.first, t_pair.second);
     }
 };
 
@@ -65,24 +65,32 @@ struct std::hash<std::pair<Key1, Key2>> {
 
 #include <robin_hood/robin_hood.h>
 
-template<
-        class Key,
-        class T,
-        class Hash = robin_hood::hash<Key>,
-        class KeyEqual = std::equal_to<Key>
->
-using Map = robin_hood::unordered_map<Key, T, Hash, KeyEqual>;
+namespace idol {
+
+    template<
+            class Key,
+            class T,
+            class Hash = robin_hood::hash<Key>,
+            class KeyEqual = std::equal_to<Key>
+    >
+    using Map = robin_hood::unordered_map<Key, T, Hash, KeyEqual>;
+
+}
 
 #else
 
-template<
-        class Key,
-        class T,
-        class Hash = std::hash<Key>,
-        class KeyEqual = std::equal_to<Key>,
-        class Allocator = std::allocator< std::pair<const Key, T> >
->
-using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
+namespace idol {
+
+    template<
+            class Key,
+            class T,
+            class Hash = std::hash<Key>,
+            class KeyEqual = std::equal_to<Key>,
+            class Allocator = std::allocator<std::pair<const Key, T> >
+    >
+    using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
+
+}
 
 #endif
 

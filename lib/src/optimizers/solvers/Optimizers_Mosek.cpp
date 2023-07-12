@@ -8,7 +8,7 @@
 #include <Eigen/Sparse>
 #endif
 
-Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
+idol::Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
     : OptimizerWithLazyUpdates<MosekVar, MosekCtr>(t_model),
       m_model(new mosek::fusion::Model()),
       m_continuous_relaxation(t_continuous_relaxation) {
@@ -17,11 +17,11 @@ Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
 
 }
 
-Optimizers::Mosek::~Mosek() {
+idol::Optimizers::Mosek::~Mosek() {
     m_model->dispose();
 }
 
-void Optimizers::Mosek::hook_build() {
+void idol::Optimizers::Mosek::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
@@ -32,7 +32,7 @@ void Optimizers::Mosek::hook_build() {
     set_rhs_as_updated();
 }
 
-void Optimizers::Mosek::hook_optimize() {
+void idol::Optimizers::Mosek::hook_optimize() {
 
     m_model->solve();
 
@@ -103,11 +103,11 @@ void Optimizers::Mosek::hook_optimize() {
     }
 }
 
-void Optimizers::Mosek::hook_write(const std::string &t_name) {
+void idol::Optimizers::Mosek::hook_write(const std::string &t_name) {
     m_model->writeTask(t_name);
 }
 
-MosekVar Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_column) {
+idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
     MosekVar result;
 
@@ -135,7 +135,7 @@ MosekVar Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_column) {
 
 }
 
-mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const LinExpr<Var> &t_expr) const {
+mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const LinExpr<Var> &t_expr) const {
 
     auto result = mosek::fusion::Expr::constTerm(0);
 
@@ -152,7 +152,7 @@ mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const LinExp
     return result;
 }
 
-mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
+mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
     assert(t_expr.quadratic().empty());
     return mosek::fusion::Expr::add(
                 as_numeric(t_expr.constant()),
@@ -160,7 +160,7 @@ mosek::fusion::Expression::t Optimizers::Mosek::to_mosek_expression(const Expr<V
             );
 }
 
-MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
+idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     MosekCtr result;
 
@@ -239,19 +239,19 @@ MosekCtr Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
     return result;
 }
 
-void Optimizers::Mosek::hook_update_objective_sense() {
+void idol::Optimizers::Mosek::hook_update_objective_sense() {
     hook_update_objective();
 }
 
-void Optimizers::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void idol::Optimizers::Mosek::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     throw Exception("Not implemented hook_update_matrix");
 }
 
-void Optimizers::Mosek::hook_update() {
+void idol::Optimizers::Mosek::hook_update() {
 
 }
 
-void Optimizers::Mosek::hook_update(const Var &t_var) {
+void idol::Optimizers::Mosek::hook_update(const Var &t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
@@ -264,7 +264,7 @@ void Optimizers::Mosek::hook_update(const Var &t_var) {
 
 }
 
-void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
+void idol::Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
     const auto& row = parent().get_ctr_row(t_ctr);
 
@@ -273,7 +273,7 @@ void Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
 }
 
-void Optimizers::Mosek::hook_update_objective() {
+void idol::Optimizers::Mosek::hook_update_objective() {
 
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
@@ -299,11 +299,11 @@ void Optimizers::Mosek::hook_update_objective() {
 
 }
 
-void Optimizers::Mosek::hook_update_rhs() {
+void idol::Optimizers::Mosek::hook_update_rhs() {
     throw Exception("Not implemented hook_update_rhs");
 }
 
-void Optimizers::Mosek::hook_remove(const Var &t_var) {
+void idol::Optimizers::Mosek::hook_remove(const Var &t_var) {
 
     auto& impl = lazy(t_var).impl();
 
@@ -323,13 +323,13 @@ void Optimizers::Mosek::hook_remove(const Var &t_var) {
     }
 }
 
-void Optimizers::Mosek::hook_remove(const Ctr &t_ctr) {
+void idol::Optimizers::Mosek::hook_remove(const Ctr &t_ctr) {
     auto& impl = lazy(t_ctr).impl();
     impl.constraint->remove();
     impl.constraint = nullptr;
 }
 
-void Optimizers::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
+void idol::Optimizers::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj) {
 
     // Set obj
     m_model->updateObjective(mosek::fusion::Expr::mul(t_obj, t_mosek_var.variable), t_mosek_var.variable);
@@ -346,7 +346,7 @@ void Optimizers::Mosek::set_var_attr(MosekVar &t_mosek_var, int t_type, double t
     set_var_ub(t_mosek_var, t_ub);
 }
 
-void Optimizers::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
+void idol::Optimizers::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
 
     const bool has_lb = !is_neg_inf(t_bound);
 
@@ -367,7 +367,7 @@ void Optimizers::Mosek::set_var_lb(MosekVar &t_mosek_var, double t_bound) {
 
 }
 
-void Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
+void idol::Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 
     const bool has_ub = !is_pos_inf(t_bound);
 
@@ -388,114 +388,114 @@ void Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) {
 
 }
 
-void Optimizers::Mosek::set_time_limit(double t_time_limit) {
+void idol::Optimizers::Mosek::set_time_limit(double t_time_limit) {
     m_model->setSolverParam("optimizerMaxTime", t_time_limit);
     Optimizer::set_time_limit(t_time_limit);
 }
 
-void Optimizers::Mosek::set_thread_limit(unsigned int t_thread_limit) {
+void idol::Optimizers::Mosek::set_thread_limit(unsigned int t_thread_limit) {
     m_model->setSolverParam("numThreads", (int) t_thread_limit);
     Optimizer::set_thread_limit(t_thread_limit);
 }
 
-void Optimizers::Mosek::set_best_obj_stop(double t_best_obj_stop) {
+void idol::Optimizers::Mosek::set_best_obj_stop(double t_best_obj_stop) {
     m_model->setSolverParam("upperObjCut", t_best_obj_stop);
     Optimizer::set_best_obj_stop(t_best_obj_stop);
 }
 
-void Optimizers::Mosek::set_best_bound_stop(double t_best_bound_stop) {
+void idol::Optimizers::Mosek::set_best_bound_stop(double t_best_bound_stop) {
     m_model->setSolverParam("lowerObjCut", t_best_bound_stop);
     Optimizer::set_best_bound_stop(t_best_bound_stop);
 }
 
-void Optimizers::Mosek::set_presolve(bool t_value) {
+void idol::Optimizers::Mosek::set_presolve(bool t_value) {
     m_model->setSolverParam("presolveUse", t_value ? "on" : "off");
     Optimizer::set_presolve(t_value);
 }
 
-void Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
+void idol::Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
     m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
     Optimizer::set_infeasible_or_unbounded_info(t_value);
 }
 
-SolutionStatus Optimizers::Mosek::get_status() const {
+idol::SolutionStatus idol::Optimizers::Mosek::get_status() const {
     return m_solution_status;
 }
 
-SolutionReason Optimizers::Mosek::get_reason() const {
+idol::SolutionReason idol::Optimizers::Mosek::get_reason() const {
     return m_solution_reason;
 }
 
-double Optimizers::Mosek::get_best_obj() const {
+double idol::Optimizers::Mosek::get_best_obj() const {
     if (m_solution_status == Infeasible) { return Inf; }
     if (m_solution_status == Unbounded) { return -Inf; }
     return m_model->primalObjValue();
 }
 
-double Optimizers::Mosek::get_best_bound() const {
+double idol::Optimizers::Mosek::get_best_bound() const {
     if (m_solution_status == Infeasible) { return Inf; }
     if (m_solution_status == Unbounded) { return -Inf; }
     return m_model->dualObjValue();
 }
 
-double Optimizers::Mosek::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::Mosek::get_var_primal(const Var &t_var) const {
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
-double Optimizers::Mosek::get_var_ray(const Var &t_var) const {
+double idol::Optimizers::Mosek::get_var_ray(const Var &t_var) const {
     if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
         throw Exception("Ray not available.");
     }
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
-double Optimizers::Mosek::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::Mosek::get_ctr_dual(const Ctr &t_ctr) const {
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
 
-double Optimizers::Mosek::get_ctr_farkas(const Ctr &t_ctr) const {
+double idol::Optimizers::Mosek::get_ctr_farkas(const Ctr &t_ctr) const {
     if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
         throw Exception("Farkas certificate not available.");
     }
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
 
-double Optimizers::Mosek::get_relative_gap() const {
+double idol::Optimizers::Mosek::get_relative_gap() const {
     throw Exception("Not implemented.");
 }
 
-double Optimizers::Mosek::get_absolute_gap() const {
+double idol::Optimizers::Mosek::get_absolute_gap() const {
     throw Exception("Not implemented.");
 }
 
-unsigned int Optimizers::Mosek::get_n_solutions() const {
+unsigned int idol::Optimizers::Mosek::get_n_solutions() const {
     const auto status = get_status();
     return status == Optimal || status == Feasible;
 }
 
-unsigned int Optimizers::Mosek::get_solution_index() const {
+unsigned int idol::Optimizers::Mosek::get_solution_index() const {
     return 0;
 }
 
-void Optimizers::Mosek::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::Mosek::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Solution index out of bounds.");
     }
 }
 
-void Optimizers::Mosek::set_parameter(const std::string &t_param, double t_value) {
+void idol::Optimizers::Mosek::set_parameter(const std::string &t_param, double t_value) {
     m_model->setSolverParam(t_param, t_value);
 }
 
-void Optimizers::Mosek::set_parameter(const std::string &t_param, int t_value) {
+void idol::Optimizers::Mosek::set_parameter(const std::string &t_param, int t_value) {
     m_model->setSolverParam(t_param, t_value);
 }
 
-void Optimizers::Mosek::set_parameter(const std::string &t_param, const std::string &t_value) {
+void idol::Optimizers::Mosek::set_parameter(const std::string &t_param, const std::string &t_value) {
     m_model->setSolverParam(t_param, t_value);
 }
 
-void Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
+void idol::Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
 
     if (t_log_level == Mute) {
 
@@ -512,7 +512,7 @@ void Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
     Optimizer::set_log_level(t_log_level);
 }
 
-MosekKiller::~MosekKiller() {
+idol::MosekKiller::~MosekKiller() {
     mosek::releaseGlobalEnv();
 }
 

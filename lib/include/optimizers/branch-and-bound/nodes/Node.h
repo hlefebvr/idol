@@ -7,10 +7,13 @@
 
 #include <memory>
 
-class Model;
+namespace idol {
+    class Model;
+    template<class NodeInfoT> class Node;
+}
 
 template<class NodeInfoT>
-class Node {
+class idol::Node {
 
     static_assert(std::is_default_constructible_v<NodeInfoT>);
 

@@ -12,11 +12,11 @@
 #include "OptimizerWithLazyUpdates.h"
 #include <glpk.h>
 
-namespace Optimizers {
+namespace idol::Optimizers {
     class GLPK;
 }
 
-class Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int> {
+class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int> {
 
     bool m_continuous_relaxation;
 

@@ -9,7 +9,11 @@
 #include "modeling/constraints/Ctr.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-class DantzigWolfeDecomposition : public impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition> {
+namespace idol {
+    class DantzigWolfeDecomposition;
+}
+
+class idol::DantzigWolfeDecomposition : public impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition> {
     // Basic parameters
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;

@@ -6,7 +6,7 @@
 #include <fstream>
 #include <random>
 
-Problems::GAP::Instance::Instance(unsigned int t_n_agents, unsigned int t_n_jobs) {
+idol::Problems::GAP::Instance::Instance(unsigned int t_n_agents, unsigned int t_n_jobs) {
 
     assert(t_n_agents > 1);
     assert(t_n_jobs > 1);
@@ -25,7 +25,7 @@ Problems::GAP::Instance::Instance(unsigned int t_n_agents, unsigned int t_n_jobs
 
 }
 
-Problems::GAP::Instance Problems::GAP::read_instance(const std::string& t_filename) {
+idol::Problems::GAP::Instance idol::Problems::GAP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 
@@ -64,7 +64,7 @@ Problems::GAP::Instance Problems::GAP::read_instance(const std::string& t_filena
     return result;
 }
 
-std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_instance) {
+std::ostream& operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance) {
 
     const unsigned int n_agents = t_instance.n_agents();
     const unsigned int n_jobs = t_instance.n_jobs();
@@ -92,8 +92,8 @@ std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_in
     return t_os;
 }
 
-Problems::GAP::Instance
-Problems::GAP::generate_instance_Chu_and_Beasley_1997_C(unsigned int t_n_agents, unsigned int t_n_jobs) {
+idol::Problems::GAP::Instance
+idol::Problems::GAP::generate_instance_Chu_and_Beasley_1997_C(unsigned int t_n_agents, unsigned int t_n_jobs) {
 
     Problems::GAP::Instance result(t_n_agents, t_n_jobs);
 

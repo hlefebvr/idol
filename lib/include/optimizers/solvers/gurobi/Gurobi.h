@@ -18,9 +18,12 @@ enum GRB_IntParam {};
 enum GRB_DoubleParam {};
 #endif
 
-class Callback;
+namespace idol {
+    class Callback;
+    class Gurobi;
+}
 
-class Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
+class idol::Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
     std::optional<bool> m_continuous_relaxation;
     std::optional<bool> m_lazy_cuts;
     std::optional<unsigned int> m_max_n_solution_in_pool;

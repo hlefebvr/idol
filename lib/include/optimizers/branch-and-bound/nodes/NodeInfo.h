@@ -8,7 +8,11 @@
 #include "modeling/models/Model.h"
 #include "NodeUpdator.h"
 
-class NodeInfo {
+namespace idol {
+    class NodeInfo;
+}
+
+class idol::NodeInfo {
     Solution::Primal m_primal_solution;
 
     Map<Var, double> m_local_lower_bounds;

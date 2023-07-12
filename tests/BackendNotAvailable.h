@@ -7,7 +7,11 @@
 
 #include "optimizers/Optimizer.h"
 
-class BackendNotAvailable : public Optimizer {
+namespace idol {
+    class BackendNotAvailable;
+}
+
+class idol::BackendNotAvailable : public Optimizer {
 protected:
     void add(const Var &t_var) override {}
     void add(const Ctr &t_ctr) override {}

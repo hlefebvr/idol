@@ -12,7 +12,11 @@
 #include <iostream>
 #include <variant>
 
-class Var;
+namespace idol {
+    class Var;
+
+    class Param;
+}
 
 /**
  * Parameter modeling object.
@@ -24,7 +28,7 @@ class Var;
  *
  * A model cannot have a parameter referring to one of its own variables.
  */
-class Param {
+class idol::Param {
     std::variant<Var, Ctr> m_value;
 public:
     explicit Param(const Var& t_var) : m_value(t_var) {}
@@ -51,10 +55,10 @@ public:
     [[nodiscard]] const std::string& name() const { return is<Var>() ? as<Var>().name() : as<Ctr>().name(); }
 };
 
-static Param operator!(const Var& t_var) { return Param(t_var); }
-static Param operator!(const Ctr& t_ctr) { return Param(t_ctr); }
+static idol::Param operator!(const idol::Var& t_var) { return idol::Param(t_var); }
+static idol::Param operator!(const idol::Ctr& t_ctr) { return idol::Param(t_ctr); }
 
-static std::ostream& operator<<(std::ostream& t_os, const Param& t_param) {
+static std::ostream& operator<<(std::ostream& t_os, const idol::Param& t_param) {
     return t_os << '!' << t_param.name();
 }
 

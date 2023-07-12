@@ -10,27 +10,30 @@
 #include "OptimizerWithLazyUpdates.h"
 #include <fusion.h>
 
-struct MosekKiller {
-    ~MosekKiller();
-};
+namespace idol {
 
-static const MosekKiller s_mosek_killer;
+    struct MosekKiller {
+        ~MosekKiller();
+    };
 
-struct MosekVar {
-    mosek::fusion::Variable::t variable;
-    mosek::fusion::Constraint::t lower_bound;
-    mosek::fusion::Constraint::t upper_bound;
-};
+    static const MosekKiller s_mosek_killer;
 
-struct MosekCtr {
-    mosek::fusion::Constraint::t constraint;
-};
+    struct MosekVar {
+        mosek::fusion::Variable::t variable;
+        mosek::fusion::Constraint::t lower_bound;
+        mosek::fusion::Constraint::t upper_bound;
+    };
 
-namespace Optimizers {
-    class Mosek;
+    struct MosekCtr {
+        mosek::fusion::Constraint::t constraint;
+    };
+
+    namespace Optimizers {
+        class Mosek;
+    }
 }
 
-class Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr> {
+class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;

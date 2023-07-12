@@ -7,7 +7,11 @@
 
 #include <optional>
 
-template<class T> using Optional = std::optional<T>;
-template<class T> static constexpr Optional<T> skip = std::optional<T>();
+namespace idol {
+
+    template<class T> using Optional = std::optional<T>;
+    template<class T> static constexpr Optional<T> skip = std::optional<T>();
+
+}
 
 #endif //OPTIMIZE_OPTIONAL_H

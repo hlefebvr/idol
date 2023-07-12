@@ -12,6 +12,8 @@
 #include <tuple>
 #include "BackendNotAvailable.h"
 
+using namespace idol;
+
 template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::declval<input_t>()... ));
 
 #ifdef IDOL_USE_GUROBI
@@ -38,7 +40,7 @@ using mosek_solver = std::tuple<Mosek>;
 using mosek_solver = std::tuple<>;
 #endif
 
-namespace impl {
+namespace idol::impl {
     using lp_solvers = tuple_cat_t<gurobi_solver, glpk_solver, mosek_solver>;
     using milp_solvers = tuple_cat_t<gurobi_solver, glpk_solver, mosek_solver>;
 }

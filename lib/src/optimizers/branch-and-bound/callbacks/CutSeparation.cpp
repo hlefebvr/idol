@@ -5,7 +5,7 @@
 #include "optimizers/callbacks/CutSeparation.h"
 #include "modeling/expressions/operations/operators.h"
 
-impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
+idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
                                    Model *t_separation_problem,
                                    TempCtr t_cut,
                                    LogLevel t_level,
@@ -18,7 +18,7 @@ impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
 
 }
 
-void impl::CutSeparation::operator()(CallbackEvent t_event) {
+void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     if (t_event != m_triggering_event) {
         return;
@@ -32,14 +32,14 @@ void impl::CutSeparation::operator()(CallbackEvent t_event) {
         throw Exception("Adding non-linear cut is not available in Gurobi.");
     }
 
-    ::Expr objective = row.rhs().numerical();
+    ::idol::Expr objective = row.rhs().numerical();
 
     for (const auto& [param, coeff] : row.rhs()) {
         objective += coeff * param.as<Var>();
     }
 
     for (const auto& [var, constant] : row.linear()) {
-        ::Expr term = -constant.numerical();
+        ::idol::Expr term = -constant.numerical();
         for (const auto& [param, coeff] : constant) {
             term += -coeff * param.as<Var>();
         }

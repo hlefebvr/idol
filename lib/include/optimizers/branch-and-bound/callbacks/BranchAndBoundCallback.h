@@ -12,14 +12,20 @@
 #include "optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
 #include "CallbackAsBranchAndBoundCallback.h"
 
-template<class NodeInfoT>
-class BranchAndBoundCallback;
+namespace idol {
 
+    template<class NodeInfoT>
+    class BranchAndBoundCallback;
+
+    template<class NodeInfoT>
+    class BranchAndBoundCallbackI;
+
+}
 /**
  * @tparam NodeInfoT the class used to store each branch-and-tree node's information
  */
 template<class NodeInfoT>
-class BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<NodeInfoT> {
+class idol::BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<NodeInfoT> {
     friend class BranchAndBoundCallback<NodeInfoT>;
 
     std::list<std::unique_ptr<BranchAndBoundCallback<NodeInfoT>>> m_callbacks;
@@ -64,12 +70,12 @@ protected:
 };
 
 template<class NodeInfoT>
-const Timer &BranchAndBoundCallbackI<NodeInfoT>::time() const {
+const idol::Timer &idol::BranchAndBoundCallbackI<NodeInfoT>::time() const {
     return m_parent->time();
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
 
     m_cutting_plane_callbacks.clear();
 
@@ -84,12 +90,12 @@ void BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
     m_cutting_plane_generators.emplace_back(t_cutting_plane_generator.clone());
 }
 
 template<class NodeInfoT>
-class BranchAndBoundCallback {
+class idol::BranchAndBoundCallback {
 public:
     virtual ~BranchAndBoundCallback() = default;
 protected:
@@ -156,63 +162,63 @@ private:
 };
 
 template<class NodeInfoT>
-const Timer &BranchAndBoundCallback<NodeInfoT>::time() const {
+const idol::Timer &idol::BranchAndBoundCallback<NodeInfoT>::time() const {
     throw_if_no_interface();
     return m_interface->time();
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::submit_bound(double t_bound) {
+void idol::BranchAndBoundCallback<NodeInfoT>::submit_bound(double t_bound) {
     throw_if_no_interface();
     m_interface->submit_bound(t_bound);
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::submit_heuristic_solution(NodeInfoT *t_info) {
+void idol::BranchAndBoundCallback<NodeInfoT>::submit_heuristic_solution(NodeInfoT *t_info) {
     throw_if_no_interface();
     m_interface->submit_heuristic_solution(t_info);
 }
 
 template<class NodeInfoT>
-const Model &BranchAndBoundCallback<NodeInfoT>::original_model() const {
+const idol::Model &idol::BranchAndBoundCallback<NodeInfoT>::original_model() const {
     throw_if_no_interface();
     return m_interface->original_model();
 }
 
 template<class NodeInfoT>
-const Model &BranchAndBoundCallback<NodeInfoT>::relaxation() const {
+const idol::Model &idol::BranchAndBoundCallback<NodeInfoT>::relaxation() const {
     throw_if_no_interface();
     return m_interface->relaxation();
 }
 
 template<class NodeInfoT>
-const Node<NodeInfoT> &BranchAndBoundCallback<NodeInfoT>::node() const {
+const idol::Node<NodeInfoT> &idol::BranchAndBoundCallback<NodeInfoT>::node() const {
     throw_if_no_interface();
     return m_interface->node();
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::add_lazy_cut(const TempCtr &t_cut) {
+void idol::BranchAndBoundCallback<NodeInfoT>::add_lazy_cut(const TempCtr &t_cut) {
     throw_if_no_interface();
     m_interface->add_lazy_cut(t_cut);
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::add_user_cut(const TempCtr &t_cut) {
+void idol::BranchAndBoundCallback<NodeInfoT>::add_user_cut(const TempCtr &t_cut) {
     throw_if_no_interface();
     m_interface->add_user_cut(t_cut);
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallback<NodeInfoT>::throw_if_no_interface() const {
+void idol::BranchAndBoundCallback<NodeInfoT>::throw_if_no_interface() const {
     if (!m_interface) {
         throw Exception("No interface was found.");
     }
 }
 
 template<class NodeInfoT>
-SideEffectRegistry
-BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT> *t_parent, CallbackEvent t_event,
+idol::SideEffectRegistry
+idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT> *t_parent, CallbackEvent t_event,
                                                const Node<NodeInfoT> &t_current_node, Model *t_relaxation) {
     SideEffectRegistry result;
 
@@ -246,12 +252,12 @@ BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeIn
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) {
     m_callbacks.emplace_back(t_cb);
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::submit_bound(double t_bound) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::submit_bound(double t_bound) {
     if (!m_parent) {
         throw Exception("submit_bound is not accessible in this context.");
     }
@@ -259,7 +265,7 @@ void BranchAndBoundCallbackI<NodeInfoT>::submit_bound(double t_bound) {
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::submit_heuristic_solution(NodeInfoT *t_info) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::submit_heuristic_solution(NodeInfoT *t_info) {
     if (!m_parent) {
         throw Exception("submit_heuristic_solution is not accessible in this context.");
     }
@@ -267,7 +273,7 @@ void BranchAndBoundCallbackI<NodeInfoT>::submit_heuristic_solution(NodeInfoT *t_
 }
 
 template<class NodeInfoT>
-const Model &BranchAndBoundCallbackI<NodeInfoT>::original_model() const {
+const idol::Model &idol::BranchAndBoundCallbackI<NodeInfoT>::original_model() const {
     if (!m_parent) {
         throw Exception("original_model is not accessible in this context.");
     }
@@ -275,7 +281,7 @@ const Model &BranchAndBoundCallbackI<NodeInfoT>::original_model() const {
 }
 
 template<class NodeInfoT>
-const Model &BranchAndBoundCallbackI<NodeInfoT>::relaxation() const {
+const idol::Model &idol::BranchAndBoundCallbackI<NodeInfoT>::relaxation() const {
     if (!m_relaxation) {
         throw Exception("relaxation is not accessible in this context.");
     }
@@ -283,7 +289,7 @@ const Model &BranchAndBoundCallbackI<NodeInfoT>::relaxation() const {
 }
 
 template<class NodeInfoT>
-const Node<NodeInfoT> &BranchAndBoundCallbackI<NodeInfoT>::node() const {
+const idol::Node<NodeInfoT> &idol::BranchAndBoundCallbackI<NodeInfoT>::node() const {
     if (!m_node) {
         throw Exception("node is not accessible in this context.");
     }
@@ -291,13 +297,13 @@ const Node<NodeInfoT> &BranchAndBoundCallbackI<NodeInfoT>::node() const {
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::add_lazy_cut(const TempCtr &t_cut) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::add_lazy_cut(const TempCtr &t_cut) {
     m_relaxation->add_ctr(t_cut);
     ++m_registry->n_added_lazy_cuts;
 }
 
 template<class NodeInfoT>
-void BranchAndBoundCallbackI<NodeInfoT>::add_user_cut(const TempCtr &t_cut) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::add_user_cut(const TempCtr &t_cut) {
     m_relaxation->add_ctr(t_cut);
     ++m_registry->n_added_user_cuts;
 }

@@ -5,10 +5,16 @@
 #ifndef IDOL_BRANCHANDBOUNDCALLBACKFACTORY_H
 #define IDOL_BRANCHANDBOUNDCALLBACKFACTORY_H
 
-template<class NodeInfoT> class BranchAndBoundCallback;
+namespace idol {
+    template<class NodeInfoT>
+    class BranchAndBoundCallback;
+
+    template<class NodeInfoT>
+    class BranchAndBoundCallbackFactory;
+}
 
 template<class NodeInfoT>
-class BranchAndBoundCallbackFactory {
+class idol::BranchAndBoundCallbackFactory {
 public:
     virtual ~BranchAndBoundCallbackFactory() = default;
 

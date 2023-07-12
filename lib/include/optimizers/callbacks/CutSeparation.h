@@ -8,11 +8,11 @@
 #include "modeling/models/Model.h"
 #include "optimizers/callbacks/Callback.h"
 
-namespace impl {
+namespace idol::impl {
     class CutSeparation;
 }
 
-class impl::CutSeparation : public Callback {
+class idol::impl::CutSeparation : public Callback {
     LogLevel m_log_level;
     Color m_log_color;
 

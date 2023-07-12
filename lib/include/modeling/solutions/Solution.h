@@ -9,24 +9,24 @@
 #include "../constraints/Ctr.h"
 #include "AbstractSolution.h"
 
-namespace Solution {
+namespace idol::Solution {
     class Primal : public AbstractSolution<Var, Primal> {};
     class Dual : public AbstractSolution<Ctr, Dual> {};
 }
 
-static Solution::Primal operator+(Solution::Primal t_a, const Solution::Primal& t_b) {
+static idol::Solution::Primal operator+(idol::Solution::Primal t_a, const idol::Solution::Primal& t_b) {
     return t_a += t_b;
 }
 
-static Solution::Dual operator+(Solution::Dual t_a, const Solution::Dual& t_b) {
+static idol::Solution::Dual operator+(idol::Solution::Dual t_a, const idol::Solution::Dual& t_b) {
     return t_a += t_b;
 }
 
-static Solution::Primal operator*(double t_factor, Solution::Primal t_solution) {
+static idol::Solution::Primal operator*(double t_factor, idol::Solution::Primal t_solution) {
     return t_solution *= t_factor;
 }
 
-static Solution::Dual operator*(double t_factor, Solution::Dual t_solution) {
+static idol::Solution::Dual operator*(double t_factor, idol::Solution::Dual t_solution) {
     return t_solution *= t_factor;
 }
 

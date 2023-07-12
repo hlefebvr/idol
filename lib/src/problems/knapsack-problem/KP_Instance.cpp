@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 
-Problems::KP::Instance::Instance(unsigned int t_n_items) {
+idol::Problems::KP::Instance::Instance(unsigned int t_n_items) {
 
     assert(t_n_items > 1);
 
@@ -15,7 +15,7 @@ Problems::KP::Instance::Instance(unsigned int t_n_items) {
 }
 
 
-Problems::KP::Instance Problems::KP::read_instance(const std::string& t_filename) {
+idol::Problems::KP::Instance idol::Problems::KP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 
@@ -49,7 +49,7 @@ Problems::KP::Instance Problems::KP::read_instance(const std::string& t_filename
 }
 
 
-Problems::KP::Instance Problems::KP::read_instance_kplib(const std::string& t_filename) {
+idol::Problems::KP::Instance idol::Problems::KP::read_instance_kplib(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 

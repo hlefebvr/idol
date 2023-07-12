@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-namespace Problems::FLP {
+namespace idol::Problems::FLP {
     class Instance;
 
     /**
@@ -30,7 +30,7 @@ namespace Problems::FLP {
     Instance generate_instance_1991_Cornuejols_et_al(unsigned int t_n_facilities, unsigned int t_n_customers, double t_ratio_capacity_over_demand);
 }
 
-class Problems::FLP::Instance {
+class idol::Problems::FLP::Instance {
     // For each facility
     std::vector<double> m_fixed_costs;
     std::vector<double> m_capacities;
@@ -59,6 +59,6 @@ public:
 
 };
 
-std::ostream& operator<<(std::ostream& t_os, const Problems::FLP::Instance& t_instance);
+std::ostream& operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance);
 
 #endif //IDOL_FLP_INSTANCE_H

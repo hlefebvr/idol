@@ -8,7 +8,11 @@
 #include "CutSeparation.h"
 #include "CallbackFactory.h"
 
-class UserCutCallback : public CallbackFactory {
+namespace idol {
+    class UserCutCallback;
+}
+
+class idol::UserCutCallback : public CallbackFactory {
     LogLevel m_log_level = Warn;
     Color m_log_color = Default;
 

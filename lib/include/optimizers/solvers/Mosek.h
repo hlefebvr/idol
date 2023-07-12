@@ -8,7 +8,11 @@
 #include "../OptimizerFactory.h"
 #include "../../containers/Map.h"
 
-class Mosek : public OptimizerFactoryWithDefaultParameters<Mosek> {
+namespace idol {
+    class Mosek;
+}
+
+class idol::Mosek : public OptimizerFactoryWithDefaultParameters<Mosek> {
     std::optional<bool> m_continuous_relaxation;
     Map<std::string, double> m_double_parameter;
     Map<std::string, int> m_int_parameter;

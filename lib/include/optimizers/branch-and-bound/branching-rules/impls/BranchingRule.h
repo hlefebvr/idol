@@ -7,12 +7,18 @@
 
 #include "../../nodes/Node.h"
 
-namespace Optimizers {
-    template<class NodeInfoT> class BranchAndBound;
+namespace idol {
+    namespace Optimizers {
+        template<class NodeInfoT>
+        class BranchAndBound;
+    }
+
+    template<class NodeInfoT>
+    class BranchingRule;
 }
 
 template<class NodeInfoT>
-class BranchingRule {
+class idol::BranchingRule {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
     const Model& m_model;
     LogLevel m_log_level = Warn;

@@ -9,13 +9,16 @@
 #include <memory>
 #include <any>
 
-class Env;
+namespace idol {
+    class Env;
 
-namespace impl {
-    class Annotation;
+    namespace impl {
+        class Annotation;
+    }
+
 }
 
-class impl::Annotation {
+class idol::impl::Annotation {
     struct Id {
         Env& env;
         const unsigned int id;
@@ -28,7 +31,7 @@ protected:
     template<class T, class ...ArgsT> void set_default_value(ArgsT&& ...t_args);
     template<class T> [[nodiscard]] const T& cast_default_value() const { return std::any_cast<const T&>(m_id->default_value); }
 public:
-    Annotation(::Env& t_env, bool t_is_var_annotation, std::string&& t_name);
+    Annotation(::idol::Env& t_env, bool t_is_var_annotation, std::string&& t_name);
 
     virtual ~Annotation() = default;
 
@@ -46,7 +49,7 @@ public:
 };
 
 template<class T, class... ArgsT>
-void impl::Annotation::set_default_value(ArgsT &&... t_args) {
+void idol::impl::Annotation::set_default_value(ArgsT &&... t_args) {
     m_id->default_value.emplace<T>(std::forward<ArgsT>(t_args)...);
 }
 

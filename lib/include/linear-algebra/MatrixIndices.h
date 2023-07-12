@@ -10,7 +10,11 @@
 #include "modeling/variables/Var.h"
 #include "containers/IteratorForward.h"
 
-class MatrixIndices {
+namespace idol {
+    class MatrixIndices;
+}
+
+class idol::MatrixIndices {
     Map<Var, unsigned int> m_indices;
     unsigned int m_n_indices = 0;
 public:

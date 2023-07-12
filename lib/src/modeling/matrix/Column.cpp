@@ -4,9 +4,9 @@
 #include "../../../include/modeling/matrix/Column.h"
 #include "../../../include/modeling/expressions/operations/operators_Ctr.h"
 
-const Column Column::EmptyColumn;
+const idol::Column idol::Column::EmptyColumn;
 
-Column Column::fix(const Solution::Primal &t_primals) const {
+idol::Column idol::Column::fix(const Solution::Primal &t_primals) const {
     Column result;
 
     for (const auto& [ctr, constant] : linear()) {

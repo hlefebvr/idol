@@ -5,9 +5,12 @@
 #ifndef IDOL_CALLBACKFACTORY_H
 #define IDOL_CALLBACKFACTORY_H
 
-class Callback;
+namespace idol {
+    class Callback;
+    class CallbackFactory;
+}
 
-class CallbackFactory {
+class idol::CallbackFactory {
 public:
     virtual ~CallbackFactory() = default;
 

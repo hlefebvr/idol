@@ -5,7 +5,8 @@
 #include <iostream>
 #include <iomanip>
 
-std::ostream& operator<<(std::ostream& t_os, LogLevel t_level) {
+std::ostream& operator<<(std::ostream& t_os, idol::LogLevel t_level) {
+    using namespace idol;
     switch (t_level) {
         case Mute:  return t_os << "mute";
         case Fatal: return t_os << "fatal";
@@ -19,7 +20,8 @@ std::ostream& operator<<(std::ostream& t_os, LogLevel t_level) {
     throw Exception("Enum out of bounds");
 }
 
-std::ostream& operator<<(std::ostream& t_os, Color t_color) {
+std::ostream& operator<<(std::ostream& t_os, idol::Color t_color) {
+    using namespace idol;
     switch (t_color) {
 
         case Default: return t_os << "default";
@@ -36,7 +38,7 @@ std::ostream& operator<<(std::ostream& t_os, Color t_color) {
     throw Exception("Enum out of bounds");
 }
 
-Logger::Logger(LogLevel t_level, Color t_color, const std::string &t_name)  : m_color(t_color) {
+idol::Logger::Logger(LogLevel t_level, Color t_color, const std::string &t_name)  : m_color(t_color) {
 
     switch (t_color) {
         case Black:   m_ostream << "\033[30m"; break;
@@ -58,7 +60,7 @@ Logger::Logger(LogLevel t_level, Color t_color, const std::string &t_name)  : m_
     m_ostream << std::fixed << std::setprecision(2);
 }
 
-Logger::~Logger() {
+idol::Logger::~Logger() {
 
     if (m_color != Default) {
         m_ostream << "\033[0m";
@@ -68,7 +70,7 @@ Logger::~Logger() {
 
 }
 
-std::string Logger::current_time() {
+std::string idol::Logger::current_time() {
     time_t     now = time(0);
     struct tm  tstruct{};
     char       buf[80];

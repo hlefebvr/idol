@@ -8,10 +8,17 @@
 #include <list>
 #include <string>
 
-template<class T> class Versions;
+namespace idol {
+
+    template<class T>
+    class Versions;
+
+    template<class T>
+    class ObjectId;
+}
 
 template<class T>
-class ObjectId {
+class idol::ObjectId {
     const typename std::list<Versions<T>>::iterator m_it;
     unsigned int m_id;
     const std::string m_name;

@@ -5,10 +5,16 @@
 #ifndef IDOL_NODESELECTIONRULEFACTORY_H
 #define IDOL_NODESELECTIONRULEFACTORY_H
 
-template<class NodeT> class NodeSelectionRule;
+namespace idol {
+    template<class NodeT>
+    class NodeSelectionRule;
+
+    template<class NodeT>
+    class NodeSelectionRuleFactory;
+}
 
 template<class NodeT>
-class NodeSelectionRuleFactory {
+class idol::NodeSelectionRuleFactory {
 public:
     virtual ~NodeSelectionRuleFactory() = default;
 

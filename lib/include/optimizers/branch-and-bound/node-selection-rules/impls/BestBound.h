@@ -8,12 +8,12 @@
 #include "NodeSelectionRule.h"
 #include "optimizers/branch-and-bound/NodeSet.h"
 
-namespace NodeSelectionRules {
+namespace idol::NodeSelectionRules {
     template<class NodeT> class BestBound;
 }
 
 template<class NodeT>
-class NodeSelectionRules::BestBound : public NodeSelectionRule<NodeT> {
+class idol::NodeSelectionRules::BestBound : public NodeSelectionRule<NodeT> {
 public:
     typename NodeSet<Node<NodeT>>::const_iterator operator()(const NodeSet<Node<NodeT>>& t_active_nodes) const override {
         return --t_active_nodes.by_objective_value().end();

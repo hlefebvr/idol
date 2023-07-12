@@ -4,7 +4,7 @@
 #include "optimizers/Optimizer.h"
 #include "modeling/models/Model.h"
 
-double impl::Optimizer::as_numeric(const Constant &t_constant) {
+double idol::impl::Optimizer::as_numeric(const Constant &t_constant) {
 
     if (!t_constant.is_numerical()) {
         throw Exception("Constant is not numeric.");
@@ -13,11 +13,11 @@ double impl::Optimizer::as_numeric(const Constant &t_constant) {
     return t_constant.numerical();
 }
 
-impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {
+idol::impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {
 
 }
 
-void impl::Optimizer::optimize() {
+void idol::impl::Optimizer::optimize() {
 
     idol_Log(Debug, "Optimizer " << name() << " is getting ready.")
 
@@ -38,14 +38,14 @@ void impl::Optimizer::optimize() {
 
 }
 
-double impl::Optimizer::get_remaining_time() const {
+double idol::impl::Optimizer::get_remaining_time() const {
     return std::max(0., m_time_limit - m_timer.count());
 }
 
-void impl::Optimizer::terminate() {
+void idol::impl::Optimizer::terminate() {
     m_is_terminated = true;
 }
 
-Optimizer::Optimizer(const Model &t_parent) : impl::Optimizer(t_parent) {
+idol::Optimizer::Optimizer(const Model &t_parent) : impl::Optimizer(t_parent) {
 
 }

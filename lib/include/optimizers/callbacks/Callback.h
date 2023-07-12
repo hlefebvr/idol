@@ -7,23 +7,27 @@
 
 #include "modeling/solutions/Solution.h"
 
-class TempCtr;
-class Timer;
+namespace idol {
+    class TempCtr;
+
+    class Timer;
 
 /**
  * CallbackEvent is an enumerated type used to indicate events during a branch-and-bound tree execution.
  *
  * It is typically used inside of a Callback to influence or modify the behaviour of the algorithm at execution time.
  */
-enum CallbackEvent {
-    AlgorithmStarts, /*! Occurs when the algorithm starts */
-    AlgorithmStops, /*! Occurs when the algorithm stops */
-    NodeLoaded, /*!< Occurs when a node is about to be solved */
-    IncumbentSolution, /*!< Occurs when an incumbent solution has been found */
-    InvalidSolution, /*!< Occurs when a solution of the relaxation is not valid (e.g., not integer) */
-};
+    enum CallbackEvent {
+        AlgorithmStarts, /*! Occurs when the algorithm starts */
+        AlgorithmStops, /*! Occurs when the algorithm stops */
+        NodeLoaded, /*!< Occurs when a node is about to be solved */
+        IncumbentSolution, /*!< Occurs when an incumbent solution has been found */
+        InvalidSolution, /*!< Occurs when a solution of the relaxation is not valid (e.g., not integer) */
+    };
+}
 
-static std::ostream &operator<<(std::ostream& t_os, CallbackEvent t_event) {
+static std::ostream &operator<<(std::ostream& t_os, idol::CallbackEvent t_event) {
+    using namespace idol;
     switch (t_event) {
         case IncumbentSolution: return t_os << "IncumbentSolution";
         case InvalidSolution: return t_os << "InvalidSolution";
@@ -33,10 +37,13 @@ static std::ostream &operator<<(std::ostream& t_os, CallbackEvent t_event) {
     throw Exception("Enum out of bounds.");
 }
 
-class Callback;
+namespace idol {
+    class Callback;
+    class CallbackI;
+}
 
-class CallbackI {
-    friend class ::Callback;
+class idol::CallbackI {
+    friend class ::idol::Callback;
 protected:
     virtual void add_user_cut(const TempCtr& t_cut) = 0;
 
@@ -51,8 +58,8 @@ public:
     virtual ~CallbackI() = default;
 };
 
-class Callback {
-    friend class ::CallbackI;
+class idol::Callback {
+    friend class ::idol::CallbackI;
 public:
     virtual ~Callback() = default;
 protected:

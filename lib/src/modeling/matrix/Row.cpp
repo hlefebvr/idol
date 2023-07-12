@@ -6,9 +6,9 @@
 
 #include <memory>
 
-const Row Row::EmptyRow;
+const idol::Row idol::Row::EmptyRow;
 
-Row Row::fix(const Solution::Primal &t_primals) const {
+idol::Row idol::Row::fix(const Solution::Primal &t_primals) const {
     Row result;
 
     for (const auto& [var, constant] : linear()) {
@@ -20,7 +20,7 @@ Row Row::fix(const Solution::Primal &t_primals) const {
     return result;
 }
 
-Row Row::fix(const Solution::Dual &t_duals) const {
+idol::Row idol::Row::fix(const Solution::Dual &t_duals) const {
     Row result;
 
     for (const auto& [var, constant] : linear()) {
@@ -32,7 +32,7 @@ Row Row::fix(const Solution::Dual &t_duals) const {
     return result;
 }
 
-impl::Row::Row(::Expr<Var> &&t_lhs, ::Expr<Var> &&t_rhs)
+idol::impl::Row::Row(::idol::Expr<Var> &&t_lhs, ::idol::Expr<Var> &&t_rhs)
     : m_impl(
             std::move(t_lhs.linear()) - t_rhs.linear(),
             std::move(t_lhs.quadratic()) - t_rhs.quadratic(),
@@ -41,7 +41,7 @@ impl::Row::Row(::Expr<Var> &&t_lhs, ::Expr<Var> &&t_rhs)
 
 }
 
-impl::Row::Row(::Expr<Var> &&t_lhs, const ::Expr<Var> &t_rhs)
+idol::impl::Row::Row(::idol::Expr<Var> &&t_lhs, const ::idol::Expr<Var> &t_rhs)
         : m_impl(
                 std::move(t_lhs.linear()) - t_rhs.linear(),
                 std::move(t_lhs.quadratic()) - t_rhs.quadratic(),
@@ -50,7 +50,7 @@ impl::Row::Row(::Expr<Var> &&t_lhs, const ::Expr<Var> &t_rhs)
 
 }
 
-impl::Row::Row(const ::Expr<Var> &t_lhs, ::Expr<Var> &&t_rhs)
+idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, ::idol::Expr<Var> &&t_rhs)
     : m_impl(
         t_lhs.linear() - t_rhs.linear(),
         t_lhs.quadratic() - t_rhs.quadratic(),
@@ -59,7 +59,7 @@ impl::Row::Row(const ::Expr<Var> &t_lhs, ::Expr<Var> &&t_rhs)
 
 }
 
-impl::Row::Row(const ::Expr<Var> &t_lhs, const ::Expr<Var> &t_rhs)
+idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, const ::idol::Expr<Var> &t_rhs)
     : m_impl(
         t_lhs.linear() - t_rhs.linear(),
         t_lhs.quadratic() - t_rhs.quadratic(),

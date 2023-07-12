@@ -8,16 +8,23 @@
 #include "modeling/objects/Object.h"
 #include "modeling/Types.h"
 
-class Env;
-class VarVersion;
-class Column;
-template<class T> class Versions;
+namespace idol {
 
-namespace impl {
     class Env;
+    class VarVersion;
+    class Column;
+
+    template<class T>
+    class Versions;
+
+    namespace impl {
+        class Env;
+    }
+
+    class Var;
 }
 
-class Var : public Object<VarVersion, Var> {
+class idol::Var : public Object<VarVersion, Var> {
     friend class impl::Env;
 public:
     Var(Env& t_env, double t_lb, double t_ub, VarType t_type, std::string t_name = "");

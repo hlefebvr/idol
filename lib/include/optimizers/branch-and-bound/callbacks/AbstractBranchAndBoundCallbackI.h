@@ -8,22 +8,32 @@
 #include "modeling/solutions/Solution.h"
 #include "optimizers/callbacks/Callback.h"
 
-template<class NodeInfoT>
-class BranchAndBoundCallback;
+namespace idol {
 
-class CuttingPlaneGenerator;
+    template<class NodeInfoT>
+    class BranchAndBoundCallback;
 
-namespace Optimizers {
-    template<class NodeInfoT> class BranchAndBound;
+    class CuttingPlaneGenerator;
+
+    namespace Optimizers {
+        template<class NodeInfoT>
+        class BranchAndBound;
+    }
+
+    struct SideEffectRegistry;
+
+    template<class NodeInfoT>
+    class AbstractBranchAndBoundCallbackI;
+
 }
 
-struct SideEffectRegistry {
+struct idol::SideEffectRegistry {
     unsigned int n_added_lazy_cuts = 0;
     unsigned int n_added_user_cuts = 0;
 };
 
 template<class NodeInfoT>
-class AbstractBranchAndBoundCallbackI {
+class idol::AbstractBranchAndBoundCallbackI {
 public:
     virtual ~AbstractBranchAndBoundCallbackI() = default;
 protected:

@@ -6,9 +6,17 @@
 #define OPTIMIZE_TEMPCTR_H
 
 #include "../matrix/Row.h"
+#include <ostream>
 
-namespace Solution {
-    class Primal;
+namespace idol {
+
+    class TempCtr;
+
+    namespace Solution {
+        class Primal;
+    }
+
+    template<class Key1, class Key2> class Expr;
 }
 
 /**
@@ -32,7 +40,7 @@ namespace Solution {
  * model.add_ctr(TempCtr(Row(x + y, 1.), LessOrEqual));
  * ```
  */
-class TempCtr {
+class idol::TempCtr {
     Row m_row;
     CtrType m_type = LessOrEqual;
 public:
@@ -79,23 +87,23 @@ public:
     [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
 };
 
-template<class Key1, class Key2> class Expr;
+idol::TempCtr operator<=(idol::Expr<idol::Var, idol::Var>&& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator<=(const idol::Expr<idol::Var, idol::Var>& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator<=(idol::Expr<idol::Var, idol::Var>&& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
+idol::TempCtr operator<=(const idol::Expr<idol::Var, idol::Var>& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
 
-TempCtr operator<=(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator<=(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator<=(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
-TempCtr operator<=(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
+idol::TempCtr operator>=(idol::Expr<idol::Var, idol::Var>&& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator>=(const idol::Expr<idol::Var, idol::Var>& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator>=(idol::Expr<idol::Var, idol::Var>&& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
+idol::TempCtr operator>=(const idol::Expr<idol::Var, idol::Var>& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
 
-TempCtr operator>=(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator>=(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator>=(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
-TempCtr operator>=(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
+idol::TempCtr operator==(idol::Expr<idol::Var, idol::Var>&& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator==(const idol::Expr<idol::Var, idol::Var>& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);
+idol::TempCtr operator==(idol::Expr<idol::Var, idol::Var>&& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
+idol::TempCtr operator==(const idol::Expr<idol::Var, idol::Var>& t_lhs, const idol::Expr<idol::Var, idol::Var>& t_rhs);
 
-TempCtr operator==(Expr<Var, Var>&& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator==(const Expr<Var, Var>& t_lhs, Expr<Var, Var>&& t_rhs);
-TempCtr operator==(Expr<Var, Var>&& t_lhs, const Expr<Var, Var>& t_rhs);
-TempCtr operator==(const Expr<Var, Var>& t_lhs, const Expr<Var, Var>& t_rhs);
-
-std::ostream& operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr);
+namespace idol {
+    std::ostream &operator<<(std::ostream &t_os, const TempCtr &t_temp_ctr);
+}
 
 #endif //OPTIMIZE_TEMPCTR_H

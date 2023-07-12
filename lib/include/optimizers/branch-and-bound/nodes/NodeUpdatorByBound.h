@@ -8,8 +8,13 @@
 #include "NodeUpdator.h"
 #include "modeling/models/Model.h"
 
+namespace idol {
+    template<class NodeT>
+    class NodeUpdatorByBound;
+}
+
 template<class NodeT>
-class NodeUpdatorByBound : public NodeUpdator<NodeT> {
+class idol::NodeUpdatorByBound : public NodeUpdator<NodeT> {
     Model& m_model;
 
     Map<Var, double> m_lower_bounds;
@@ -34,7 +39,7 @@ public:
 };
 
 template<class NodeT>
-void NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modified_variables_with_their_original_bound,
+void idol::NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currently_modified_variables_with_their_original_bound,
                                               const Map<Var, double> &t_node_bounds,
                                               bool t_is_lb) {
 

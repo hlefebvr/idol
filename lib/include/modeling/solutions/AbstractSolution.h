@@ -11,13 +11,18 @@
 #include "../numericals.h"
 #include <optional>
 
+namespace idol {
+    template<class KeyT, class CRTP>
+    class AbstractSolution;
+}
+
 /**
  * Base class for Solution::Primal and Solution::Dual. Stores a sparse vector of values associated to a given key.
  * @tparam KeyT The type of the key (typically Var or Ctr)
  * @tparam CRTP See [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern).
  */
 template<class KeyT, class CRTP>
-class AbstractSolution {
+class idol::AbstractSolution {
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
     std::optional<double> m_objective_value;
@@ -119,7 +124,7 @@ public:
 };
 
 template<class KeyT, class CRTP>
-void AbstractSolution<KeyT, CRTP>::set(const KeyT &t_key, double t_value) {
+void idol::AbstractSolution<KeyT, CRTP>::set(const KeyT &t_key, double t_value) {
 
     if (equals(t_value, 0., ToleranceForSparsity)) {
         m_values.erase(t_key);
@@ -134,13 +139,13 @@ void AbstractSolution<KeyT, CRTP>::set(const KeyT &t_key, double t_value) {
 }
 
 template<class KeyT, class CRTP>
-double AbstractSolution<KeyT, CRTP>::get(const KeyT &t_key) const {
+double idol::AbstractSolution<KeyT, CRTP>::get(const KeyT &t_key) const {
     auto it = m_values.find(t_key);
     return it == m_values.end() ? 0. : it->second;
 }
 
 template<class KeyT, class CRTP>
-CRTP& AbstractSolution<KeyT, CRTP>::normalize(double t_p) {
+CRTP& idol::AbstractSolution<KeyT, CRTP>::normalize(double t_p) {
 
     const double scale = norm(t_p);
 
@@ -156,7 +161,7 @@ CRTP& AbstractSolution<KeyT, CRTP>::normalize(double t_p) {
 }
 
 template<class KeyT, class CRTP>
-double AbstractSolution<KeyT, CRTP>::norm(double t_p) const {
+double idol::AbstractSolution<KeyT, CRTP>::norm(double t_p) const {
 
     if (is_pos_inf(t_p)) {
         return norm_inf();
@@ -171,7 +176,7 @@ double AbstractSolution<KeyT, CRTP>::norm(double t_p) const {
 }
 
 template<class KeyT, class CRTP>
-double AbstractSolution<KeyT, CRTP>::norm_inf() const {
+double idol::AbstractSolution<KeyT, CRTP>::norm_inf() const {
     double result = -Inf;
     for (const auto& [key, value] : m_values) {
         if (double abs = std::abs(value) ; result < abs) {
@@ -182,7 +187,7 @@ double AbstractSolution<KeyT, CRTP>::norm_inf() const {
 }
 
 template<class KeyT, class CRTP>
-CRTP &AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
+CRTP &idol::AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
     for (const auto& [key, value] : t_rhs.m_values) {
         auto [it, success] = m_values.template emplace(key, value);
         if (!success) {
@@ -199,7 +204,7 @@ CRTP &AbstractSolution<KeyT, CRTP>::merge_without_conflict(CRTP t_rhs) {
 }
 
 template<class KeyT, class CRTP>
-CRTP &AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
+CRTP &idol::AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
     for (const auto& [key, value] : t_rhs) {
         auto [it, success] = m_values.template emplace(key, value);
         if (!success) {
@@ -213,7 +218,7 @@ CRTP &AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
 }
 
 template<class KeyT, class CRTP>
-CRTP &AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
+CRTP &idol::AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
 
     if (equals(t_factor, 0., ToleranceForSparsity)) {
         m_values.clear();
@@ -228,7 +233,7 @@ CRTP &AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
 }
 
 template<class KeyT, class CRTP>
-static std::ostream& operator<<(std::ostream& t_os, const AbstractSolution<KeyT, CRTP>& t_solution) {
+static std::ostream& operator<<(std::ostream& t_os, const idol::AbstractSolution<KeyT, CRTP>& t_solution) {
     t_os << "+-----------------------\n";
     t_os << "| Status: " << t_solution.status() << '\n';
     t_os << "| Reason: " << t_solution.reason() << '\n';

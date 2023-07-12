@@ -14,12 +14,12 @@
 #include "optimizers/callbacks/Callback.h"
 #include "GurobiCallbackI.h"
 
-namespace Optimizers {
+namespace idol::Optimizers {
     class Gurobi;
 }
 
-class Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
-    friend class ::GurobiCallbackI;
+class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
+    friend class ::idol::GurobiCallbackI;
     static std::unique_ptr<GRBEnv> s_global_env;
 
     static GRBEnv& get_global_env();

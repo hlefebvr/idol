@@ -5,9 +5,14 @@
 #ifndef OPTIMIZE_ABSTRACTMATRIXCOEFFICIENT_H
 #define OPTIMIZE_ABSTRACTMATRIXCOEFFICIENT_H
 
-class Constant;
+namespace idol {
 
-class AbstractMatrixCoefficient {
+    class Constant;
+
+    class AbstractMatrixCoefficient;
+}
+
+class idol::AbstractMatrixCoefficient {
 public:
     virtual ~AbstractMatrixCoefficient() = default;
 

@@ -11,14 +11,19 @@
 #include "errors/Exception.h"
 #include "modeling/models/Model.h"
 
-class Model;
+namespace idol {
+    class Model;
+
+    template<class T>
+    class Versions;
+}
 
 /**
  * This class is used to store the different versions associated to a given object (e.g., a variable).
  * @tparam T the class representing an object's version
  */
 template<class T>
-class Versions {
+class idol::Versions {
     static const unsigned int s_buffer_size = 10;
 
     std::vector<std::optional<T>> m_versions; /// Every versions are stored here, the index corresponds to the id of the model to which the version is associated
@@ -58,7 +63,7 @@ public:
 
 template<class T>
 template<class ValueT>
-const ValueT* Versions<T>::get_annotation(unsigned int t_index) const {
+const ValueT* idol::Versions<T>::get_annotation(unsigned int t_index) const {
     if (t_index >= m_annotations.size() || !m_annotations[t_index].has_value()) {
         return nullptr;
     }
@@ -66,18 +71,18 @@ const ValueT* Versions<T>::get_annotation(unsigned int t_index) const {
 }
 
 template<class T>
-const T &Versions<T>::get_default() const {
+const T &idol::Versions<T>::get_default() const {
     return m_versions.front().value();
 }
 
 template<class T>
-T &Versions<T>::get_default() {
+T &idol::Versions<T>::get_default() {
     return m_versions.front().value();
 }
 
 template<class T>
 template<class ...ArgsT>
-void Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT&& ...t_args) {
+void idol::Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT&& ...t_args) {
 
     const unsigned int index = t_model.id();
 
@@ -91,7 +96,7 @@ void Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT&& ...
 }
 
 template<class T>
-const T &Versions<T>::get(const Model &t_model) const {
+const T &idol::Versions<T>::get(const Model &t_model) const {
     const unsigned int id = t_model.id();
     if (!m_versions[id].has_value()) {
         throw Exception("Object not part of model.");
@@ -100,7 +105,7 @@ const T &Versions<T>::get(const Model &t_model) const {
 }
 
 template<class T>
-T &Versions<T>::get(const Model &t_model) {
+T &idol::Versions<T>::get(const Model &t_model) {
     const unsigned int id = t_model.id();
     if (!m_versions[id].has_value()) {
         throw Exception("Object not part of model.");
@@ -109,13 +114,13 @@ T &Versions<T>::get(const Model &t_model) {
 }
 
 template<class T>
-void Versions<T>::remove(const Model &t_model) {
+void idol::Versions<T>::remove(const Model &t_model) {
     if (!has(t_model)) { return; }
     m_versions[t_model.id()].reset();
 }
 
 template<class T>
-bool Versions<T>::has(const Model &t_model) const {
+bool idol::Versions<T>::has(const Model &t_model) const {
     const unsigned int index = t_model.id();
     return index < m_versions.size() && m_versions[index].has_value();
 }

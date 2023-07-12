@@ -6,7 +6,7 @@
 #include "modeling/objects/Versions.h"
 #include "modeling/expressions/operations/operators.h"
 
-Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_original_formulation,
+idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_original_formulation,
                                                                  const Annotation<Ctr, unsigned int>& t_constraint_flag,
                                                                  const Annotation<Var, unsigned int>& t_variable_flag,
                                                                  Model *t_master_problem,
@@ -20,7 +20,7 @@ Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_
 
 }
 
-double Optimizers::DantzigWolfeDecomposition::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::DantzigWolfeDecomposition::get_var_primal(const Var &t_var) const {
 
     const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
@@ -31,7 +31,7 @@ double Optimizers::DantzigWolfeDecomposition::get_var_primal(const Var &t_var) c
     return ColumnGeneration::get_var_primal(t_var);
 }
 
-double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
+double idol::Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const Var &t_var, unsigned int t_subproblem_id) const {
 
     double result = 0;
     for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
@@ -44,7 +44,7 @@ double Optimizers::DantzigWolfeDecomposition::get_subproblem_primal_value(const 
     return result;
 }
 
-void Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void idol::Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -62,7 +62,7 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_lower_bound(const Var
 
 }
 
-void Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void idol::Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -80,7 +80,7 @@ void Optimizers::DantzigWolfeDecomposition::set_subproblem_upper_bound(const Var
 
 }
 
-void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(bool t_is_lb, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
+void idol::Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(bool t_is_lb, const Var &t_var, unsigned int t_subproblem_id, double t_value) {
 
     auto& subproblem = m_subproblems[t_subproblem_id];
 
@@ -94,7 +94,7 @@ void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(boo
 
         Ctr bound_constraint(m_master->env(), Equal, 0);
 
-        m_master->add(bound_constraint, TempCtr(::Row(expanded, t_value), type));
+        m_master->add(bound_constraint, TempCtr(::idol::Row(expanded, t_value), type));
         subproblem.m_generation_pattern.linear().set(bound_constraint, !t_var);
 
         applied_bounds.emplace(t_var, bound_constraint);
@@ -121,7 +121,7 @@ void Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_master(boo
 
 }
 
-LinExpr<Var> Optimizers::DantzigWolfeDecomposition::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
+idol::LinExpr<idol::Var> idol::Optimizers::DantzigWolfeDecomposition::expand_subproblem_variable(const Var &t_var, unsigned int t_subproblem_id) {
 
     LinExpr<Var> result;
 
@@ -132,7 +132,7 @@ LinExpr<Var> Optimizers::DantzigWolfeDecomposition::expand_subproblem_variable(c
     return result;
 }
 
-void Optimizers::DantzigWolfeDecomposition::update_var_lb(const Var &t_var) {
+void idol::Optimizers::DantzigWolfeDecomposition::update_var_lb(const Var &t_var) {
 
     const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
@@ -144,7 +144,7 @@ void Optimizers::DantzigWolfeDecomposition::update_var_lb(const Var &t_var) {
     ColumnGeneration::update_var_lb(t_var);
 }
 
-void Optimizers::DantzigWolfeDecomposition::update_var_ub(const Var &t_var) {
+void idol::Optimizers::DantzigWolfeDecomposition::update_var_ub(const Var &t_var) {
 
     const unsigned int subproblem_id = t_var.get(m_var_annotation);
 
@@ -156,7 +156,7 @@ void Optimizers::DantzigWolfeDecomposition::update_var_ub(const Var &t_var) {
     ColumnGeneration::update_var_ub(t_var);
 }
 
-void Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_objective) {
+void idol::Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_objective) {
 
     const unsigned int n_subproblems = m_subproblems.size();
 
@@ -183,7 +183,7 @@ void Optimizers::DantzigWolfeDecomposition::set_objective(Expr<Var, Var> &&t_obj
 
 }
 
-void Optimizers::DantzigWolfeDecomposition::add(const Var &t_var) {
+void idol::Optimizers::DantzigWolfeDecomposition::add(const Var &t_var) {
 
     const auto subproblem_id = t_var.get(m_var_annotation);
 
@@ -217,7 +217,7 @@ void Optimizers::DantzigWolfeDecomposition::add(const Var &t_var) {
 
 }
 
-void Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
+void idol::Optimizers::DantzigWolfeDecomposition::add(const Ctr &t_ctr) {
 
     const auto subproblem_id = t_ctr.get(m_ctr_annotation);
 

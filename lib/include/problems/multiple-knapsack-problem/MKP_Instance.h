@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-namespace Problems::MKP {
+namespace idol::Problems::MKP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
 }
@@ -16,7 +16,7 @@ namespace Problems::MKP {
 /**
  * See also https://en.wikipedia.org/wiki/Generalized_assignment_problem.
  */
-class Problems::MKP::Instance {
+class idol::Problems::MKP::Instance {
 protected:
     std::vector<double> m_p;
     std::vector<double> m_w;

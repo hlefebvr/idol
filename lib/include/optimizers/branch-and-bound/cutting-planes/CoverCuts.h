@@ -11,7 +11,11 @@
 #include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/callbacks/UserCutCallback.h"
 
-class CoverCuts : public CuttingPlaneGenerator {
+namespace idol {
+    class CoverCuts;
+}
+
+class idol::CoverCuts : public CuttingPlaneGenerator {
 
     bool m_adaptivity = false;
     bool m_gub = false;

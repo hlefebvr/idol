@@ -19,15 +19,26 @@
 #include <optional>
 #include <list>
 
-namespace impl {
-    template<class, class, class, class> class AbstractExpr;
+namespace idol {
+
+    namespace impl {
+        template<class, class, class, class>
+        class AbstractExpr;
+    }
+
+    template<class Key,
+            class IteratorOutputT,
+            class Hash,
+            class EqualTo
+    >
+    class AbstractExpr;
 }
 
 template<class Key,
         class IteratorOutputT,
         class Hash,
         class EqualTo>
-class impl::AbstractExpr {
+class idol::impl::AbstractExpr {
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
 protected:
@@ -146,7 +157,7 @@ public:
 };
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
 
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
         m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
@@ -155,8 +166,8 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
 
     if (this == &t_src) { return *this; }
     m_map.clear();
@@ -168,8 +179,8 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::A
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
@@ -188,8 +199,8 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
         const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
@@ -208,8 +219,8 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
-impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
 
     if (equals(t_factor, 0., ToleranceForSparsity)) {
         m_map.clear();
@@ -224,7 +235,7 @@ impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_fac
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-void impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
@@ -242,18 +253,18 @@ void impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_k
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-const Constant &impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
+const idol::Constant &idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
     return it == m_map.end() ? Constant::Zero : it->second->value();
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-void impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::remove(const Key &t_key) {
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::remove(const Key &t_key) {
     m_map.erase(t_key);
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References {
+class idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References {
 
     friend class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
     using ParentT = impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
@@ -302,12 +313,12 @@ public:
 };
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-typename impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::refs() {
+typename idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::refs() {
     return References(this);
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::const_iterator {
+class idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::const_iterator {
     typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator m_it;
 public:
     explicit const_iterator(const typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator& t_it) : m_it(t_it) {}
@@ -318,11 +329,11 @@ public:
 };
 
 template<class Key,
-        class IteratorOutputT = std::pair<const Key&, const Constant&>,
+        class IteratorOutputT = std::pair<const Key&, const idol::Constant&>,
         class Hash = std::hash<Key>,
         class EqualTo = std::equal_to<Key>
 >
-class AbstractExpr : public impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> {
+class idol::AbstractExpr : public impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> {
 public:
     AbstractExpr() = default;
     AbstractExpr(const AbstractExpr& t_src) = default;
@@ -332,24 +343,27 @@ public:
     AbstractExpr& operator=(AbstractExpr&& t_src) noexcept = default;
 };
 
-template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-std::ostream& operator<<(std::ostream& t_os, const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_expr) {
+namespace idol {
 
-    if (t_expr.empty()) {
-        return t_os << "0";
+    template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+    std::ostream &operator<<(std::ostream &t_os, const AbstractExpr <Key, IteratorOutputT, Hash, EqualTo> &t_expr) {
+
+        if (t_expr.empty()) {
+            return t_os << "0";
+        }
+
+        auto it = t_expr.begin();
+        const auto end = t_expr.end();
+
+        t_os << *it;
+
+        for (++it; it != end; ++it) {
+            t_os << " + " << *it;
+        }
+
+        return t_os;
     }
 
-    auto it = t_expr.begin();
-    const auto end = t_expr.end();
-
-    t_os << *it;
-
-    for (++it ; it != end ; ++it) {
-        t_os << " + " << *it;
-    }
-
-    return t_os;
 }
-
 
 #endif //IDOL_ABSTRACTEXPR_H

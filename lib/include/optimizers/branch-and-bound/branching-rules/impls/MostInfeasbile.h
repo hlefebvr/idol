@@ -9,12 +9,12 @@
 #include <iostream>
 #include <list>
 
-namespace BranchingRules {
+namespace idol::BranchingRules {
     template<class NodeT> class MostInfeasible;
 }
 
 template<class NodeInfoT>
-class BranchingRules::MostInfeasible : public VariableBranchingRule<NodeInfoT> {
+class idol::BranchingRules::MostInfeasible : public VariableBranchingRule<NodeInfoT> {
     std::list<Var> m_branching_candidates;
 protected:
     static double fractional_part(double t_x);
@@ -48,7 +48,7 @@ public:
 };
 
 template<class NodeInfoT>
-std::list<NodeInfoT *> BranchingRules::MostInfeasible<NodeInfoT>::create_child_nodes_by_bound_for_integer_variable(
+std::list<NodeInfoT *> idol::BranchingRules::MostInfeasible<NodeInfoT>::create_child_nodes_by_bound_for_integer_variable(
         const Node<NodeInfoT> &t_node, const Var &t_var, double t_value) {
 
     const double lb = std::ceil(t_value);
@@ -58,7 +58,7 @@ std::list<NodeInfoT *> BranchingRules::MostInfeasible<NodeInfoT>::create_child_n
 }
 
 template<class NodeInfoT>
-void BranchingRules::MostInfeasible<NodeInfoT>::select_integer_variable_for_branching(const Node<NodeInfoT> &t_node) {
+void idol::BranchingRules::MostInfeasible<NodeInfoT>::select_integer_variable_for_branching(const Node<NodeInfoT> &t_node) {
 
     this->select_variable_for_branching(
             m_branching_candidates.begin(),
@@ -69,24 +69,24 @@ void BranchingRules::MostInfeasible<NodeInfoT>::select_integer_variable_for_bran
 }
 
 template<class NodeT>
-double BranchingRules::MostInfeasible<NodeT>::most_infeasible_score(const Var &t_var, const Node<NodeT> &t_node) const {
+double idol::BranchingRules::MostInfeasible<NodeT>::most_infeasible_score(const Var &t_var, const Node<NodeT> &t_node) const {
     const double frac_value = fractional_part(t_node.info().primal_solution().get(t_var));
     if (frac_value <= ToleranceForIntegrality) { return -Inf; }
     return .5 - std::abs(.5 - frac_value);
 }
 
 template<class NodeT>
-bool BranchingRules::MostInfeasible<NodeT>::is_integer(double t_x) {
+bool idol::BranchingRules::MostInfeasible<NodeT>::is_integer(double t_x) {
     return fractional_part(t_x) <= ToleranceForIntegrality;
 }
 
 template<class NodeT>
-double BranchingRules::MostInfeasible<NodeT>::fractional_part(double t_x) {
+double idol::BranchingRules::MostInfeasible<NodeT>::fractional_part(double t_x) {
     return std::abs(std::round(t_x) - t_x);
 }
 
 template<class NodeT>
-bool BranchingRules::MostInfeasible<NodeT>::is_valid(const Node<NodeT> &t_node) const {
+bool idol::BranchingRules::MostInfeasible<NodeT>::is_valid(const Node<NodeT> &t_node) const {
 
     const auto& primal = t_node.info().primal_solution();
 
@@ -102,7 +102,7 @@ bool BranchingRules::MostInfeasible<NodeT>::is_valid(const Node<NodeT> &t_node) 
 
 template<class NodeT>
 std::list<NodeT *>
-BranchingRules::MostInfeasible<NodeT>::create_child_nodes(const Node<NodeT> &t_node) {
+idol::BranchingRules::MostInfeasible<NodeT>::create_child_nodes(const Node<NodeT> &t_node) {
 
     this->reset_variable_selected_for_branching();
 

@@ -11,10 +11,15 @@
 #include "modeling/annotations/Annotation.h"
 #include "errors/Exception.h"
 
-class Model;
+namespace idol {
+    class Model;
+
+    template<class T, class CRTP>
+    class Object;
+}
 
 template<class T, class CRTP>
-class Object {
+class idol::Object {
     std::shared_ptr<ObjectId<T>> m_object_id;
 protected:
     [[nodiscard]] auto& versions() { return m_object_id->versions(); }
@@ -62,16 +67,20 @@ public:
     template<class ValueT, class ...ArgsT> void set(const Annotation<CRTP, ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
 };
 
-template<class T, class CRTP>
-static std::ostream& operator<<(std::ostream& t_os, const Object<T, CRTP>& t_var) {
-    return t_os << t_var.name();
+namespace idol {
+
+    template<class T, class CRTP>
+    static std::ostream &operator<<(std::ostream &t_os, const Object<T, CRTP> &t_var) {
+        return t_os << t_var.name();
+    }
+
 }
 
-namespace impl {
+namespace idol::impl {
 
     template<class U, unsigned int N, unsigned int I = 0>
-    static ::Vector<U, N - I> create_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<U(const std::string& t_name)>& t_add_one) {
-        ::Vector<U, N - I> result;
+    static ::idol::Vector<U, N - I> create_many(const Dim<N>& t_dims, const std::string& t_name, const std::function<U(const std::string& t_name)>& t_add_one) {
+        ::idol::Vector<U, N - I> result;
         const unsigned int size = t_dims[I];
         result.reserve(size);
         for (unsigned int i = 0 ; i < size ; ++i) {
@@ -89,21 +98,21 @@ namespace impl {
 
 #define IDOL_MAKE_HASHABLE(name) \
 template<> \
-struct std::hash<name> { \
-    std::size_t operator()(const name& t_variable) const { \
+struct std::hash<idol::name> { \
+    std::size_t operator()(const idol::name& t_variable) const { \
         return std::hash<unsigned int>()(t_variable.id()); \
     } \
 };                          \
 \
 template<> \
-struct std::equal_to<name> { \
-    std::size_t operator()(const name& t_a, const name& t_b) const { \
+struct std::equal_to<idol::name> { \
+    std::size_t operator()(const idol::name& t_a, const idol::name& t_b) const { \
         return t_a.id() == t_b.id(); \
     } \
 }; \
 template<> \
-struct std::less<name> { \
-    std::size_t operator()(const name& t_a, const name& t_b) const { \
+struct std::less<idol::name> { \
+    std::size_t operator()(const idol::name& t_a, const idol::name& t_b) const { \
         return t_a.id() < t_b.id(); \
     } \
 };

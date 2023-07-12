@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 
-Problems::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
+idol::Problems::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_items) {
 
     assert(t_n_knapsacks >= 1);
     assert(t_n_items > 1);
@@ -15,7 +15,7 @@ Problems::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int t_n_i
     m_t.resize(t_n_knapsacks);
 }
 
-Problems::MKP::Instance Problems::MKP::read_instance(const std::string& t_filename) {
+idol::Problems::MKP::Instance idol::Problems::MKP::read_instance(const std::string& t_filename) {
 
     std::ifstream file(t_filename);
 

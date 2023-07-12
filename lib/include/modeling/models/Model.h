@@ -24,16 +24,21 @@
 
 #include "optimizers/Timer.h"
 
-static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
+namespace idol {
+    static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
 
-class Env;
-class Column;
-class TempCtr;
+    class Env;
+    class Column;
+    class TempCtr;
+
+    class Model;
+
+}
 
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class Model : public Matrix {
+class idol::Model : public Matrix {
     Env& m_env;
     const unsigned int m_id;
 
@@ -1214,7 +1219,7 @@ public:
 };
 
 template<class T, unsigned int N>
-void Model::add_vector(const Vector<T, N> &t_vector) {
+void idol::Model::add_vector(const Vector<T, N> &t_vector) {
     if constexpr (N == 1) {
         for (const auto& x : t_vector) {
             add(x);
@@ -1227,132 +1232,138 @@ void Model::add_vector(const Vector<T, N> &t_vector) {
 }
 
 template<unsigned int N>
-Vector<Var, N> Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name) {
+idol::Vector<idol::Var, N> idol::Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name) {
     auto result = Var::make_vector(m_env, t_dim, t_lb, t_ub, t_type, t_name);
     add_vector<Var, N>(result);
     return result;
 }
 
 template<unsigned int N>
-Vector<Ctr, N> Model::add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant &t_constant, const std::string &t_name) {
+idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant &t_constant, const std::string &t_name) {
     auto result = Ctr::make_vector(m_env, t_dim, t_type, t_constant, t_name);
     add_vector<Ctr, N>(result);
     return result;
 }
 
-static auto save_primal(const Model& t_original_model, const Model& t_model) {
+namespace idol {
 
-    Solution::Primal result;
+    static auto save_primal(const Model &t_original_model, const Model &t_model) {
 
-    const auto status = t_model.get_status();
-    const auto reason = t_model.get_reason();
+        Solution::Primal result;
 
-    if (status != Optimal && status != Feasible && status != SubOptimal) {
-        throw Exception("Primal values not available.");
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        if (status != Optimal && status != Feasible && status != SubOptimal) {
+            throw Exception("Primal values not available.");
+        }
+
+        result.set_status(status);
+        result.set_reason(reason);
+
+        result.set_objective_value(t_model.get_best_obj());
+
+        for (const auto &var: t_original_model.vars()) {
+            result.set(var, t_model.get_var_primal(var));
+        }
+
+        return result;
+
     }
 
-    result.set_status(status);
-    result.set_reason(reason);
-
-    result.set_objective_value(t_model.get_best_obj());
-
-    for (const auto& var : t_original_model.vars()) {
-        result.set(var, t_model.get_var_primal(var));
+    static auto save_primal(const Model &t_original_model) {
+        return save_primal(t_original_model, t_original_model);
     }
 
-    return result;
+    static auto save_ray(const Model &t_original_model, const Model &t_model) {
+
+        Solution::Primal result;
+
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        if (status != Unbounded) {
+            throw Exception("Ray not available.");
+        }
+
+        result.set_status(status);
+        result.set_reason(reason);
+
+        result.set_objective_value(-Inf);
+
+        for (const auto &var: t_original_model.vars()) {
+            result.set(var, t_model.get_var_ray(var));
+        }
+
+        return result;
+
+    }
+
+    static auto save_ray(const Model &t_original_model) {
+        return save_ray(t_original_model, t_original_model);
+    }
+
+    static auto save_dual(const Model &t_original_model, const Model &t_model) {
+
+        Solution::Dual result;
+
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        if (status != Optimal && status != Feasible) {
+            throw Exception("Dual values not available.");
+        }
+
+        result.set_status(status);
+        result.set_reason(reason);
+
+        result.set_objective_value(t_model.get_best_bound());
+
+        for (const auto &ctr: t_original_model.ctrs()) {
+            result.set(ctr, t_model.get_ctr_dual(ctr));
+        }
+
+        return result;
+
+    }
+
+    static auto save_dual(const Model &t_original_model) {
+        return save_dual(t_original_model, t_original_model);
+    }
+
+    static auto save_farkas(const Model &t_original_model, const Model &t_model) {
+
+        Solution::Dual result;
+
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        if (status != Infeasible) {
+            throw Exception("Farkas certificate not available.");
+        }
+
+        result.set_status(status);
+        result.set_reason(reason);
+
+        result.set_objective_value(+Inf);
+
+        for (const auto &ctr: t_original_model.ctrs()) {
+            result.set(ctr, t_model.get_ctr_farkas(ctr));
+        }
+
+        return result;
+
+    }
+
+    static auto save_farkas(const Model &t_original_model) {
+        return save_farkas(t_original_model, t_original_model);
+    }
 
 }
 
-static auto save_primal(const Model& t_original_model) {
-    return save_primal(t_original_model, t_original_model);
-}
+static std::ostream& operator<<(std::ostream& t_os, const idol::Model& t_model) {
 
-static auto save_ray(const Model& t_original_model, const Model& t_model) {
-
-    Solution::Primal result;
-
-    const auto status = t_model.get_status();
-    const auto reason = t_model.get_reason();
-
-    if (status != Unbounded) {
-        throw Exception("Ray not available.");
-    }
-
-    result.set_status(status);
-    result.set_reason(reason);
-
-    result.set_objective_value(-Inf);
-
-    for (const auto& var : t_original_model.vars()) {
-        result.set(var, t_model.get_var_ray(var));
-    }
-
-    return result;
-
-}
-
-static auto save_ray(const Model& t_original_model) {
-    return save_ray(t_original_model, t_original_model);
-}
-
-static auto save_dual(const Model& t_original_model, const Model& t_model) {
-
-    Solution::Dual result;
-
-    const auto status = t_model.get_status();
-    const auto reason = t_model.get_reason();
-
-    if (status != Optimal && status != Feasible) {
-        throw Exception("Dual values not available.");
-    }
-
-    result.set_status(status);
-    result.set_reason(reason);
-
-    result.set_objective_value(t_model.get_best_bound());
-
-    for (const auto& ctr : t_original_model.ctrs()) {
-        result.set(ctr, t_model.get_ctr_dual(ctr));
-    }
-
-    return result;
-
-}
-
-static auto save_dual(const Model& t_original_model) {
-    return save_dual(t_original_model, t_original_model);
-}
-
-static auto save_farkas(const Model& t_original_model, const Model& t_model) {
-
-    Solution::Dual result;
-
-    const auto status = t_model.get_status();
-    const auto reason = t_model.get_reason();
-
-    if (status != Infeasible) {
-        throw Exception("Farkas certificate not available.");
-    }
-
-    result.set_status(status);
-    result.set_reason(reason);
-
-    result.set_objective_value(+Inf);
-
-    for (const auto& ctr : t_original_model.ctrs()) {
-        result.set(ctr, t_model.get_ctr_farkas(ctr));
-    }
-
-    return result;
-
-}
-
-static auto save_farkas(const Model& t_original_model) {
-    return save_farkas(t_original_model, t_original_model);
-}
-
-static std::ostream& operator<<(std::ostream& t_os, const Model& t_model) {
+    using namespace idol;
 
     if (t_model.get_obj_sense() == Minimize) {
         t_os << "Minimize";

@@ -3,6 +3,8 @@
 //
 #include "../../../../include/modeling/expressions/operations/operators_Constant.h"
 
+using namespace idol;
+
 /* PRODUCT */
 
 Constant operator*(const Constant& t_coefficient, double t_factor) {

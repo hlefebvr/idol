@@ -9,12 +9,12 @@
 #include "modeling/models/Model.h"
 #include "containers/GeneratorPool.h"
 
-namespace Optimizers {
+namespace idol::Optimizers {
     class ColumnGeneration;
     class DantzigWolfeDecomposition;
 }
 
-class Optimizers::ColumnGeneration : public Algorithm {
+class idol::Optimizers::ColumnGeneration : public Algorithm {
 public:
     class Subproblem;
 
@@ -140,9 +140,9 @@ protected:
     unsigned int m_max_columns_per_pricing = 5;
 };
 
-class Optimizers::ColumnGeneration::Subproblem {
-    friend class ::Optimizers::ColumnGeneration;
-    friend class ::Optimizers::DantzigWolfeDecomposition;
+class idol::Optimizers::ColumnGeneration::Subproblem {
+    friend class ::idol::Optimizers::ColumnGeneration;
+    friend class ::idol::Optimizers::DantzigWolfeDecomposition;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
 

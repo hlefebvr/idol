@@ -9,7 +9,11 @@
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 
-class IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeInfo> {
+namespace idol {
+    class IntegerMasterHeuristic;
+}
+
+class idol::IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeInfo> {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     std::optional<bool> m_integer_columns;

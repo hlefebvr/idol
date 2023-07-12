@@ -13,8 +13,16 @@
 #include <list>
 #include <optional>
 
+namespace idol {
+    template<class T, class ImplT>
+    class Lazy;
+
+    template<class VarImplT, class CtrImplT>
+    class OptimizerWithLazyUpdates;
+}
+
 template<class T, class ImplT>
-class Lazy {
+class idol::Lazy {
     T m_object;
     std::optional<ImplT> m_impl;
     std::optional<std::list<unsigned int>::iterator> m_to_be_updated_flag;
@@ -42,7 +50,7 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-class OptimizerWithLazyUpdates : public Optimizer {
+class idol::OptimizerWithLazyUpdates : public Optimizer {
     std::vector<Lazy<Var, VarImplT>> m_variables;
     std::list<unsigned int> m_variables_to_update;
 
@@ -129,68 +137,68 @@ public:
 };
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_ub(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_ub(const Var &t_var) {
     lazy_update(t_var);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_obj(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_obj(const Var &t_var) {
     lazy_update(t_var);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_lb(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_lb(const Var &t_var) {
     lazy_update(t_var);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_type(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_type(const Var &t_var) {
     lazy_update(t_var);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_rhs(const Ctr &t_ctr) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_rhs(const Ctr &t_ctr) {
     lazy_update(t_ctr);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_type(const Ctr &t_ctr) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_type(const Ctr &t_ctr) {
     lazy_update(t_ctr);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     lazy_update_matrix(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_constant() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_constant() {
     lazy_update_objective();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj() {
     lazy_update_objective();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_sense() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_sense() {
     lazy_update_objective_sense();
 }
 
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
     lazy_update_rhs();
 }
 
 template<class VarImplT, class CtrImplT>
-OptimizerWithLazyUpdates<VarImplT, CtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
+idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
 
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
 
     for (const auto& var : parent().vars()) {
         add(var);
@@ -207,13 +215,13 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string &t_name) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string &t_name) {
     update();
     hook_write(t_name);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 
     lazy_update_vars();
 
@@ -235,7 +243,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
 
     for (const unsigned int index : m_variables_to_update) {
 
@@ -254,7 +262,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_ctrs() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_ctrs() {
 
     for (const unsigned int index : m_constraints_to_update) {
 
@@ -274,41 +282,41 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_ctrs() {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_rhs() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_rhs() {
     set_rhs_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective() {
     set_objective_to_be_updated();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective_sense() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective_sense() {
     hook_update_objective_sense();
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Var &t_var) {
     const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Ctr &t_ctr) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Ctr &t_ctr) {
     const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
     if (m_is_initialized) {
         lazy_update_vars();
     }
@@ -318,7 +326,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
     if (m_is_initialized) {
         lazy_update_ctrs();
     }
@@ -328,7 +336,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 
     const unsigned index = parent().get_var_index(t_var);
 
@@ -345,7 +353,7 @@ void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 }
 
 template<class VarImplT, class CtrImplT>
-void OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
     const unsigned index = parent().get_ctr_index(t_ctr);
 

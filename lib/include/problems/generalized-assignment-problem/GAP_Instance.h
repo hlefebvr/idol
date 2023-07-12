@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-namespace Problems::GAP {
+namespace idol::Problems::GAP {
     class Instance;
     Instance read_instance(const std::string& t_filename);
 
@@ -18,7 +18,7 @@ namespace Problems::GAP {
 /**
  * See also https://en.wikipedia.org/wiki/Generalized_assignment_problem.
  */
-class Problems::GAP::Instance {
+class idol::Problems::GAP::Instance {
 protected:
     std::vector<std::vector<double>> m_costs;
     std::vector<std::vector<double>> m_resource_consumptions;
@@ -44,6 +44,6 @@ public:
     void set_capacity(unsigned int t_agent, double t_value) { m_capacities[t_agent] = t_value; }
 };
 
-std::ostream& operator<<(std::ostream& t_os, const Problems::GAP::Instance& t_instance);
+std::ostream& operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance);
 
 #endif //OPTIMIZE_INSTANCE_H

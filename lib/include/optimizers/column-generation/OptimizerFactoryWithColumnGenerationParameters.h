@@ -10,12 +10,12 @@
 
 #include <optional>
 
-namespace impl {
+namespace idol::impl {
     template<class CRTP> class OptimizerFactoryWithColumnGenerationParameters;
 }
 
 template<class CRTP>
-class impl::OptimizerFactoryWithColumnGenerationParameters : public OptimizerFactoryWithDefaultParameters<CRTP> {
+class idol::impl::OptimizerFactoryWithColumnGenerationParameters : public OptimizerFactoryWithDefaultParameters<CRTP> {
     // Multithreading parameters
     std::optional<unsigned int> m_parallel_pricing_limit;
 
@@ -110,13 +110,13 @@ public:
 
 template<class CRTP>
 CRTP &
-impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_max_columns_per_pricing(unsigned int t_n_columns) {
+idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_max_columns_per_pricing(unsigned int t_n_columns) {
     m_max_columns_per_pricing = t_n_columns;
     return this->crtp();
 }
 
 template<class CRTP>
-void impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_generation_parameters(Optimizers::ColumnGeneration *t_optimizer) const {
+void idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_generation_parameters(Optimizers::ColumnGeneration *t_optimizer) const {
 
     if (m_parallel_pricing_limit.has_value()) {
         t_optimizer->set_parallel_pricing_limit(m_parallel_pricing_limit.value());
@@ -153,7 +153,7 @@ void impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_g
 }
 
 template<class CRTP>
-CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_log_frequency(unsigned int t_log_frequency) {
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_log_frequency(unsigned int t_log_frequency) {
 
     if (m_log_frequency.has_value()) {
         throw Exception("A log frequency has already been set.");
@@ -165,7 +165,7 @@ CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_log_frequ
 }
 
 template<class CRTP>
-CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_dual_price_smoothing_stabilization(double t_smoothing_factor) {
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_dual_price_smoothing_stabilization(double t_smoothing_factor) {
 
     if (m_smoothing_factor.has_value()) {
         throw Exception("Dual price smoothing has already been turned on.");
@@ -178,7 +178,7 @@ CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_dual_pric
 
 template<class CRTP>
 CRTP &
-impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_artificial_variables_cost(double t_artificial_variable_cost) {
+idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_artificial_variables_cost(double t_artificial_variable_cost) {
 
     if (m_artificial_variables_cost.has_value()) {
         throw Exception("Artificial variables cost have already been given.");
@@ -190,7 +190,7 @@ impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_artificial_vari
 }
 
 template<class CRTP>
-CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_farkas_pricing(bool t_value) {
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_farkas_pricing(bool t_value) {
 
     if (m_use_farkas_pricing.has_value()) {
         throw Exception("Farkas pricing setting has already been given.");
@@ -202,7 +202,7 @@ CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_farkas_pr
 }
 
 template<class CRTP>
-CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_column_pool_clean_up(unsigned int t_threshold, double t_ratio) {
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_column_pool_clean_up(unsigned int t_threshold, double t_ratio) {
 
     if (m_clean_up_ratio.has_value() || m_clean_up_threshold.has_value()) {
         throw Exception("Column pool clean up settings have already been given.");
@@ -215,7 +215,7 @@ CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_column_po
 }
 
 template<class CRTP>
-CRTP &impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_parallel_pricing_limit(unsigned int t_limit) {
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_parallel_pricing_limit(unsigned int t_limit) {
 
     if (m_parallel_pricing_limit.has_value()) {
         throw Exception("A limit for parallel pricing has already been given.");

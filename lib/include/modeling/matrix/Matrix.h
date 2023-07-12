@@ -9,7 +9,11 @@
 #include "../variables/VarVersion.h"
 #include "../constraints/CtrVersion.h"
 
-class Matrix {
+namespace idol {
+    class Matrix;
+}
+
+class idol::Matrix {
     virtual Expr<Var>& access_obj() = 0;
     virtual LinExpr<Ctr>& access_rhs() = 0;
     virtual Column& access_column(const Var& t_var) = 0;

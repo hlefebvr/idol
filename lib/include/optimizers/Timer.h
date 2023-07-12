@@ -7,7 +7,11 @@
 
 #include <chrono>
 
-class Timer {
+namespace idol {
+    class Timer;
+}
+
+class idol::Timer {
     using time = std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>>;
     using duration = std::chrono::duration<double>;
     bool m_has_started = false, m_has_stopped = false;

@@ -9,20 +9,26 @@
 #include "AbstractMatrixCoefficient.h"
 #include "../expressions/Expr.h"
 
-namespace impl {
+namespace idol {
+
+    namespace impl {
+        class Row;
+    }
+
     class Row;
+
 }
 
-class impl::Row {
-    ::Expr<Var, Var> m_impl;
+class idol::impl::Row {
+    ::idol::Expr<Var, Var> m_impl;
 protected:
-    ::Expr<Var, Var>& impl() { return m_impl; }
+    ::idol::Expr<Var, Var>& impl() { return m_impl; }
 public:
     Row() = default;
-    Row(::Expr<Var, Var>&& t_lhs, ::Expr<Var, Var>&& t_rhs);
-    Row(::Expr<Var, Var>&& t_lhs, const ::Expr<Var, Var>& t_rhs);
-    Row(const ::Expr<Var, Var>& t_lhs, ::Expr<Var, Var>&& t_rhs);
-    Row(const ::Expr<Var, Var>& t_lhs, const ::Expr<Var, Var>& t_rhs);
+    Row(::idol::Expr<Var, Var>&& t_lhs, ::idol::Expr<Var, Var>&& t_rhs);
+    Row(::idol::Expr<Var, Var>&& t_lhs, const ::idol::Expr<Var, Var>& t_rhs);
+    Row(const ::idol::Expr<Var, Var>& t_lhs, ::idol::Expr<Var, Var>&& t_rhs);
+    Row(const ::idol::Expr<Var, Var>& t_lhs, const ::idol::Expr<Var, Var>& t_rhs);
 
     Row(const Row& t_src) = default;
     Row(Row&& t_src) noexcept = default;
@@ -61,7 +67,7 @@ public:
  *
  * The whole left handside is stored as an Expr while the whole right handside is stored as a Constant.
  */
-class Row : public impl::Row {
+class idol::Row : public impl::Row {
     friend class Matrix;
 public:
     Row() = default;
@@ -82,25 +88,29 @@ public:
     static const Row EmptyRow;
 };
 
-static std::ostream &operator<<(std::ostream& t_os, const Row& t_row) {
+namespace idol {
 
-    t_os << '[';
+    static std::ostream &operator<<(std::ostream &t_os, const Row &t_row) {
 
-    if (t_row.linear().empty()) {
+        t_os << '[';
 
-        t_os << t_row.quadratic();
+        if (t_row.linear().empty()) {
 
-    } else {
+            t_os << t_row.quadratic();
 
-        t_os << t_row.linear();
+        } else {
 
-        if (!t_row.quadratic().empty()) {
-            t_os << " + " << t_row.quadratic();
+            t_os << t_row.linear();
+
+            if (!t_row.quadratic().empty()) {
+                t_os << " + " << t_row.quadratic();
+            }
+
         }
 
+        return t_os << "] [" << t_row.rhs() << ']';
     }
 
-    return t_os << "] [" << t_row.rhs() << ']';
 }
 
 #endif //OPTIMIZE_ROW_H

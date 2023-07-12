@@ -13,11 +13,14 @@
 #include "modeling/constraints/TempCtr.h"
 #include "optimizers/callbacks/Callback.h"
 
-namespace Optimizers {
-    class Gurobi;
+namespace idol {
+    namespace Optimizers {
+        class Gurobi;
+    }
+    class GurobiCallbackI;
 }
 
-class GurobiCallbackI : public GRBCallback, public CallbackI {
+class idol::GurobiCallbackI : public GRBCallback, public CallbackI {
 
     Optimizers::Gurobi& m_parent;
     std::list<std::unique_ptr<Callback>> m_callbacks;

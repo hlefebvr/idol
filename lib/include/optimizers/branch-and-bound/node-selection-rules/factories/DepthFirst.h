@@ -8,7 +8,11 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h"
 #include "optimizers/branch-and-bound/node-selection-rules/impls/DepthFirst.h"
 
-class DepthFirst {
+namespace idol {
+    class DepthFirst;
+}
+
+class idol::DepthFirst {
 public:
     template<class NodeT>
     class Strategy : public NodeSelectionRuleFactory<NodeT> {

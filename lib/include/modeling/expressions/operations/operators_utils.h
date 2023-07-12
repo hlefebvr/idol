@@ -5,8 +5,13 @@
 #ifndef IDOL_OPERATORS_UTILS_H
 #define IDOL_OPERATORS_UTILS_H
 
+namespace idol {
+    template<class NumT>
+    class Range;
+}
+
 template<class NumT>
-class Range {
+class idol::Range {
     const NumT m_begin;
     const NumT m_end;
 public:
@@ -31,6 +36,7 @@ public:
 
 #define idol_Sum(iterator_name, iterator, expr) \
 [&]() {                                         \
+    using namespace ::idol;                                           \
     Expr _idol_result;                                \
     auto _idol_iterator = iterator;                                            \
     for (auto _idol_iterator_begin = _idol_iterator.begin(), _idol_iterator_end = _idol_iterator.end() ; \

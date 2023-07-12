@@ -7,7 +7,11 @@
 
 #include <iostream>
 
-class Exception : public std::exception {
+namespace idol {
+    class Exception;
+}
+
+class idol::Exception : public std::exception {
     const std::string m_message;
 public:
     explicit Exception(std::string t_message) : m_message(std::move(t_message)) {}

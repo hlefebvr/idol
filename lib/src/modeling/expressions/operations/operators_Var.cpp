@@ -3,6 +3,8 @@
 //
 #include "../../../../include/modeling/expressions/operations/operators_Var.h"
 
+using namespace idol;
+
 /* PRODUCT */
 
 LinExpr<Var> operator*(double t_num, const Var& t_var) {

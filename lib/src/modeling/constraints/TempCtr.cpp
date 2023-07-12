@@ -3,7 +3,9 @@
 //
 #include "../../../include/modeling/constraints/TempCtr.h"
 #include "../../../include/modeling/solutions/Solution.h"
-#include "../../../include/modeling/expressions/operations/operators.h"
+#include "../../../include/modeling/expressions/LinExpr.h"
+
+using namespace idol;
 
 TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
     return { Row(std::move(t_lhs), std::move(t_rhs)), LessOrEqual };
@@ -43,7 +45,7 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
     return equals(lhs, rhs, ToleranceForIntegrality);
 }
 
-std::ostream &operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
+std::ostream &idol::operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
     t_os << t_temp_ctr.row().linear();
     switch (t_temp_ctr.type()) {
         case LessOrEqual: t_os << " <= "; break;

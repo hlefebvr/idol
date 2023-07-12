@@ -20,8 +20,16 @@
 #include <optional>
 #include <list>
 
-template<class Key = Var>
-struct LinTerm {
+namespace idol {
+    template<class Key>
+    struct LinTerm;
+
+    template<class Key>
+    class LinExpr;
+}
+
+template<class Key = idol::Var>
+struct idol::LinTerm {
     const Key& key;
     const Constant& constant;
     LinTerm(const Key& t_key, const Constant& t_constant)
@@ -31,8 +39,8 @@ struct LinTerm {
 /**
  * @tparam Key the class representing keys
  */
-template<class Key = Var>
-class LinExpr : public AbstractExpr<Key, LinTerm<Key>> {
+template<class Key = idol::Var>
+class idol::LinExpr : public AbstractExpr<Key, LinTerm<Key>> {
     friend class Matrix;
 public:
     LinExpr() = default;
@@ -95,54 +103,58 @@ public:
 };
 
 template<class Key>
-void LinExpr<Key>::remove(const Key &t_key) {
+void idol::LinExpr<Key>::remove(const Key &t_key) {
     AbstractExpr<Key, LinTerm<Key>>::remove(t_key);
 }
 
 template<class Key>
-const Constant &LinExpr<Key>::get(const Key &t_key) const {
+const idol::Constant &idol::LinExpr<Key>::get(const Key &t_key) const {
     return AbstractExpr<Key, LinTerm<Key>>::get(t_key);
 }
 
 template<class Key>
-void LinExpr<Key>::set(const Key &t_key, Constant &&t_coefficient) {
+void idol::LinExpr<Key>::set(const Key &t_key, Constant &&t_coefficient) {
     AbstractExpr<Key, LinTerm<Key>>::set(t_key, std::move(t_coefficient));
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(const Key &t_key) {
+idol::LinExpr<Key>::LinExpr(const Key &t_key) {
     set(t_key, 1.);
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(Constant&& t_factor, const Key &t_key) {
+idol::LinExpr<Key>::LinExpr(Constant&& t_factor, const Key &t_key) {
     set(t_key, std::move(t_factor));
 }
 
 template<class Key>
-LinExpr<Key>::LinExpr(const Constant& t_factor, const Key &t_key) {
+idol::LinExpr<Key>::LinExpr(const Constant& t_factor, const Key &t_key) {
     set(t_key, Constant(t_factor));
 }
 
 template<class Key>
-void LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
+void idol::LinExpr<Key>::set(const Key &t_key, const Constant& t_coefficient) {
     AbstractExpr<Key, LinTerm<Key>>::set(t_key, Constant(t_coefficient));
 }
 
-template<class Key>
-std::ostream& operator<<(std::ostream& t_os, const LinTerm<Key>& t_term) {
+namespace idol {
 
-    if (t_term.constant.is_zero()) {
-        return t_os << "0";
+    template<class Key>
+    std::ostream &operator<<(std::ostream &t_os, const LinTerm<Key> &t_term) {
+
+        if (t_term.constant.is_zero()) {
+            return t_os << "0";
+        }
+
+        if (t_term.constant.is_numerical()) {
+            t_os << t_term.constant.numerical();
+        } else {
+            t_os << '(' << t_term.constant << ')';
+        }
+
+        return t_os << ' ' << t_term.key;
     }
 
-    if (t_term.constant.is_numerical()) {
-        t_os << t_term.constant.numerical();
-    } else {
-        t_os << '(' << t_term.constant << ')';
-    }
-
-    return t_os << ' ' << t_term.key;
 }
 
 #endif //OPTIMIZE_EXPR_H

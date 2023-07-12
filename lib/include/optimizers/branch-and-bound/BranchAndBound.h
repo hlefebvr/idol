@@ -15,12 +15,17 @@
 #include "optimizers/callbacks/CallbackFactory.h"
 #include "optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
 
+namespace idol {
+    template<class NodeT>
+    class BranchAndBound;
+}
+
 /**
  * @tparam NodeT the class used to store nodes information.
  * It is strongly advised to inherit from NodeInfo in order to create your own node type.
  */
-template<class NodeT = NodeInfo>
-class BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
+template<class NodeT = idol::NodeInfo>
+class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
@@ -208,19 +213,20 @@ public:
 };
 
 template<class NodeT>
-BranchAndBound<NodeT> &
-BranchAndBound<NodeT>::with_cutting_planes(const CuttingPlaneGenerator &t_cutting_place_generator) {
+idol::BranchAndBound<NodeT> &
+idol::BranchAndBound<NodeT>::with_cutting_planes(const CuttingPlaneGenerator &t_cutting_place_generator) {
     m_cutting_plane_generators.emplace_back(t_cutting_place_generator.clone());
     return *this;
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const CallbackFactory &t_callback) {
+idol::BranchAndBound<NodeT> &
+idol::BranchAndBound<NodeT>::with_callback(const CallbackFactory &t_callback) {
     return with_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
 
     m_callbacks.emplace_back(t_callback.clone());
 
@@ -228,7 +234,7 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_callback(const BranchAndBound
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
 
     if (m_log_frequency.has_value()) {
         throw Exception("A log frequency has already been given.");
@@ -240,7 +246,7 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_log_frequency(unsigned int t_
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_subtree_depth(unsigned int t_depth) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_subtree_depth(unsigned int t_depth) {
 
     if (m_subtree_depth.has_value()) {
         throw Exception("A subtree depth has already been given");
@@ -253,14 +259,14 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_subtree_depth(unsigned int t_
 
 template<class NodeT>
 template<class NodeSelectionRuleFactoryT>
-typename BranchAndBound<NodeT>::template only_if_has_Strategy<BranchAndBound<NodeT>&, NodeSelectionRuleFactoryT>
-BranchAndBound<NodeT>::with_node_selection_rule(const NodeSelectionRuleFactoryT &t_node_selection_rule) {
+typename idol::BranchAndBound<NodeT>::template only_if_has_Strategy<idol::BranchAndBound<NodeT>&, NodeSelectionRuleFactoryT>
+idol::BranchAndBound<NodeT>::with_node_selection_rule(const NodeSelectionRuleFactoryT &t_node_selection_rule) {
     return with_node_selection_rule(typename NodeSelectionRuleFactoryT::template Strategy<NodeT>(t_node_selection_rule));
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &
-BranchAndBound<NodeT>::with_node_selection_rule(const NodeSelectionRuleFactory<NodeT> &t_node_selection) {
+idol::BranchAndBound<NodeT> &
+idol::BranchAndBound<NodeT>::with_node_selection_rule(const NodeSelectionRuleFactory<NodeT> &t_node_selection) {
 
     if (m_node_selection_rule_factory) {
         throw Exception("A node selection rule has already been set.");
@@ -273,13 +279,13 @@ BranchAndBound<NodeT>::with_node_selection_rule(const NodeSelectionRuleFactory<N
 
 template<class NodeT>
 template<class BranchingRuleFactoryT>
-typename BranchAndBound<NodeT>::template only_if_has_Strategy<BranchAndBound<NodeT>&, BranchingRuleFactoryT>
-BranchAndBound<NodeT>::with_branching_rule(const BranchingRuleFactoryT &t_branching_rule) {
+typename idol::BranchAndBound<NodeT>::template only_if_has_Strategy<idol::BranchAndBound<NodeT>&, BranchingRuleFactoryT>
+idol::BranchAndBound<NodeT>::with_branching_rule(const BranchingRuleFactoryT &t_branching_rule) {
     return with_branching_rule(typename BranchingRuleFactoryT::template Strategy<NodeT>(t_branching_rule));
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_branching_rule(const BranchingRuleFactory<NodeT> &t_branching_rule) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_branching_rule(const BranchingRuleFactory<NodeT> &t_branching_rule) {
 
     if (m_branching_rule_factory) {
         throw Exception("A branching rule has already been set.");
@@ -291,7 +297,7 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_branching_rule(const Branchin
 }
 
 template<class NodeT>
-BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_optimizer(const OptimizerFactory &t_node_optimizer) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_node_optimizer(const OptimizerFactory &t_node_optimizer) {
 
     if (m_relaxation_optimizer_factory) {
         throw Exception("A node solver has already been set.");
@@ -303,7 +309,7 @@ BranchAndBound<NodeT> &BranchAndBound<NodeT>::with_node_optimizer(const Optimize
 }
 
 template<class NodeT>
-BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
+idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
 
         : OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>>(t_rhs),
           m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory ? t_rhs.m_relaxation_optimizer_factory->clone() : nullptr),
@@ -321,7 +327,7 @@ BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
 }
 
 template<class NodeT>
-Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
+idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) const {
 
     if (!m_relaxation_optimizer_factory) {
         throw Exception("No node solver has been given, please call BranchAndBound::with_node_optimizer to configure.");
@@ -365,7 +371,7 @@ Optimizer *BranchAndBound<NodeT>::operator()(const Model &t_model) const {
 }
 
 template<class NodeT>
-OptimizerFactory *BranchAndBound<NodeT>::clone() const {
+idol::OptimizerFactory *idol::BranchAndBound<NodeT>::clone() const {
     return new BranchAndBound(*this);
 }
 

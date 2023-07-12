@@ -12,17 +12,21 @@
 
 #include "modeling/solutions/types.h"
 
-class Model;
-class Var;
-class Ctr;
-class Constant;
+namespace idol {
+    class Model;
+    class Var;
+    class Ctr;
+    class Constant;
 
-namespace impl {
+    namespace impl {
+        class Optimizer;
+    }
+
     class Optimizer;
 }
 
-class impl::Optimizer {
-    const ::Model& m_parent;
+class idol::impl::Optimizer {
+    const ::idol::Model& m_parent;
 
     bool m_is_terminated = false;
     LogLevel m_log_level = Warn;
@@ -111,13 +115,13 @@ protected:
 
     virtual void update_var_obj(const Var& t_var) = 0;
 public:
-    explicit Optimizer(const ::Model& t_parent);
+    explicit Optimizer(const ::idol::Model& t_parent);
 
     virtual ~Optimizer() = default;
 
     [[nodiscard]] virtual std::string name() const = 0;
 
-    [[nodiscard]] virtual const ::Model& parent() const { return m_parent; }
+    [[nodiscard]] virtual const ::idol::Model& parent() const { return m_parent; }
 
     [[nodiscard]] LogLevel log_level() const { return m_log_level; }
 
@@ -192,10 +196,10 @@ public:
     }
 };
 
-class Optimizer : public impl::Optimizer {
+class idol::Optimizer : public impl::Optimizer {
     friend class Model;
 public:
-    explicit Optimizer(const ::Model& t_parent);
+    explicit Optimizer(const ::idol::Model& t_parent);
 };
 
 #endif //IDOL_OPTIMIZER_H

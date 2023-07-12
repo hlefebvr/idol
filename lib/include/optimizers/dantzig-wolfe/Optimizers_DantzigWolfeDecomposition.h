@@ -7,11 +7,11 @@
 
 #include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
 
-namespace Optimizers {
+namespace idol::Optimizers {
     class DantzigWolfeDecomposition;
 }
 
-class Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGeneration {
+class idol::Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGeneration {
     std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
 
     Annotation<Ctr, unsigned int> m_ctr_annotation;

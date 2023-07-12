@@ -7,8 +7,13 @@
 
 #include "optimizers/OptimizerFactory.h"
 
+namespace idol {
+    template<class BackendT>
+    class DefaultOptimizer;
+}
+
 template<class BackendT>
-class DefaultOptimizer : public OptimizerFactory {
+class idol::DefaultOptimizer : public OptimizerFactory {
 public:
     DefaultOptimizer() = default;
 

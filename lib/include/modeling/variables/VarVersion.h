@@ -9,7 +9,11 @@
 #include "modeling/objects/Version.h"
 #include "TempVar.h"
 
-class VarVersion : public Version, public TempVar {
+namespace idol {
+    class VarVersion;
+}
+
+class idol::VarVersion : public Version, public TempVar {
 public:
     VarVersion(unsigned int t_index, double t_lb, double t_ub, VarType t_type, Column&& t_column) : Version(t_index), TempVar(t_lb, t_ub, t_type, std::move(t_column)) {}
     VarVersion(unsigned int t_index, TempVar&& t_temp_var) : Version(t_index), TempVar(std::move(t_temp_var)) {}

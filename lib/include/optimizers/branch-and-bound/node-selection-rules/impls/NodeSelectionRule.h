@@ -9,7 +9,7 @@
 #include "optimizers/branch-and-bound/NodeSet.h"
 
 template<class NodeT>
-class NodeSelectionRule {
+class idol::NodeSelectionRule {
 public:
     virtual ~NodeSelectionRule() = default;
 

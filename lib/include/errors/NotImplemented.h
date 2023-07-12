@@ -7,7 +7,11 @@
 
 #include "Exception.h"
 
-class NotImplemented : public Exception {
+namespace idol {
+    class NotImplemented;
+}
+
+class idol::NotImplemented : public Exception {
 public:
     NotImplemented(std::string t_functionality,
                    const std::string& t_method_to_override) : Exception(

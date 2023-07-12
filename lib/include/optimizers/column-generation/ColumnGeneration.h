@@ -9,7 +9,11 @@
 #include "modeling/models/Model.h"
 #include "OptimizerFactoryWithColumnGenerationParameters.h"
 
-class ColumnGeneration : public impl::OptimizerFactoryWithColumnGenerationParameters<ColumnGeneration> {
+namespace idol {
+    class ColumnGeneration;
+}
+
+class idol::ColumnGeneration : public impl::OptimizerFactoryWithColumnGenerationParameters<ColumnGeneration> {
 public:
     explicit ColumnGeneration(unsigned int t_n_subproblems);
 

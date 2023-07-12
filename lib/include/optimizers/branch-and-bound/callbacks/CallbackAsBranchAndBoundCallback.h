@@ -10,8 +10,13 @@
 #include "BranchAndBoundCallbackFactory.h"
 #include "BranchAndBoundCallback.h"
 
+namespace idol {
+    template<class NodeInfoT>
+    class CallbackAsBranchAndBoundCallback;
+}
+
 template<class NodeInfoT>
-class CallbackAsBranchAndBoundCallback : public BranchAndBoundCallbackFactory<NodeInfoT> {
+class idol::CallbackAsBranchAndBoundCallback : public BranchAndBoundCallbackFactory<NodeInfoT> {
     std::unique_ptr<CallbackFactory> m_callback_factory;
 
     CallbackAsBranchAndBoundCallback(const CallbackAsBranchAndBoundCallback& t_src)
@@ -20,7 +25,7 @@ public:
 
     class Strategy : public BranchAndBoundCallback<NodeInfoT> {
 
-        friend class ::CallbackAsBranchAndBoundCallback<NodeInfoT>;
+        friend class ::idol::CallbackAsBranchAndBoundCallback<NodeInfoT>;
 
         class Interface : public CallbackI {
             friend class Strategy;

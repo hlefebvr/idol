@@ -9,32 +9,36 @@
 #include <sstream>
 #include <vector>
 
-std::vector<std::vector<std::string>> parse_delimited(const std::string& t_filename, char t_delimiter) {
-    std::vector<std::vector<std::string>> result;
+namespace idol {
 
-    std::ifstream file(t_filename);
+    std::vector<std::vector<std::string>> parse_delimited(const std::string &t_filename, char t_delimiter) {
+        std::vector<std::vector<std::string>> result;
 
-    if (!file.is_open()) {
-        throw std::runtime_error("Could not open file.");
-    }
+        std::ifstream file(t_filename);
 
-    while (file) {
-        std::string line;
-        if (!getline(file, line)) { break; }
-
-        std::istringstream line_stream(line);
-
-        std::vector<std::string> line_cells;
-        while (line_stream) {
-            std::string cell_content;
-            if (!getline(line_stream, cell_content, t_delimiter)) break;
-            line_cells.push_back(cell_content);
+        if (!file.is_open()) {
+            throw std::runtime_error("Could not open file.");
         }
 
-        result.emplace_back(std::move(line_cells));
+        while (file) {
+            std::string line;
+            if (!getline(file, line)) { break; }
+
+            std::istringstream line_stream(line);
+
+            std::vector<std::string> line_cells;
+            while (line_stream) {
+                std::string cell_content;
+                if (!getline(line_stream, cell_content, t_delimiter)) break;
+                line_cells.push_back(cell_content);
+            }
+
+            result.emplace_back(std::move(line_cells));
+        }
+
+        return result;
     }
 
-    return result;
 }
 
 #endif //IDOL_PARSE_DELIMITED_H

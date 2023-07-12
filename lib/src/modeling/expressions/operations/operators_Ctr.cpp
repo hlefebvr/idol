@@ -4,6 +4,8 @@
 
 #include "../../../../include/modeling/expressions/operations/operators_Ctr.h"
 
+using namespace idol;
+
 /* PRODUCT */
 
 LinExpr<Ctr> operator*(double t_num, const Ctr& t_ctr) {

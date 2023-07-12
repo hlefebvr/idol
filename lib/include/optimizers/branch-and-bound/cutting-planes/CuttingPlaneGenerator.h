@@ -7,9 +7,12 @@
 
 #include "optimizers/callbacks/CallbackFactory.h"
 
-class Model;
+namespace idol {
+    class Model;
+    class CuttingPlaneGenerator;
+}
 
-class CuttingPlaneGenerator {
+class idol::CuttingPlaneGenerator {
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
 protected:
