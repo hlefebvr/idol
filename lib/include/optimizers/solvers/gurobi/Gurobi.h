@@ -13,6 +13,9 @@
 
 #ifdef IDOL_USE_GUROBI
 #include <gurobi_c++.h>
+#else
+namespace GRB_IntParam {};
+namespace GRB_DoubleParam {};
 #endif
 
 class Callback;
