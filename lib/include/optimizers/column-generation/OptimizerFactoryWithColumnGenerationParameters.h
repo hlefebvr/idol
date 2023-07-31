@@ -35,6 +35,9 @@ class idol::impl::OptimizerFactoryWithColumnGenerationParameters : public Optimi
 
     // Maximum number of columns generated per pricing operation
     std::optional<unsigned int> m_max_columns_per_pricing;
+
+    // Non-optimal pricing phase (time_limit, gap)
+    std::optional<std::pair<double, double>> m_non_optimal_pricing_phase;
 protected:
     void handle_column_generation_parameters(Optimizers::ColumnGeneration* t_optimizer) const;
 public:
@@ -106,7 +109,22 @@ public:
      * @return the optimizer itself
      */
     CRTP& with_max_columns_per_pricing(unsigned int t_n_columns);
+
+    CRTP& with_non_optimal_pricing_phase(double t_time_limit, double t_relative_gap);
 };
+
+template<class CRTP>
+CRTP &idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_non_optimal_pricing_phase(double t_time_limit,
+                                                                                                 double t_relative_gap) {
+
+    if (m_non_optimal_pricing_phase.has_value()) {
+        throw Exception("Non-optimal pricing phase parameters have already been provided.");
+    }
+
+    m_non_optimal_pricing_phase = { t_time_limit, t_relative_gap };
+
+    return this->crtp();
+}
 
 template<class CRTP>
 CRTP &
@@ -148,6 +166,11 @@ void idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_co
 
     if (m_max_columns_per_pricing.has_value()) {
         t_optimizer->set_max_columns_per_pricing(m_max_columns_per_pricing.value());
+    }
+
+    if (m_non_optimal_pricing_phase.has_value()) {
+        const auto [time_limit, relative_gap] = m_non_optimal_pricing_phase.value();
+        t_optimizer->set_non_optimal_pricing_phase(time_limit, relative_gap);
     }
 
 }

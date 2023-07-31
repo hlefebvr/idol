@@ -463,4 +463,14 @@ void idol::Optimizers::Gurobi::set_param(GRB_DoubleParam t_param, double t_value
     m_model.set(t_param, t_value);
 }
 
+void idol::Optimizers::Gurobi::set_relative_gap_tolerance(double t_relative_gap_tolerance) {
+    Optimizer::set_relative_gap_tolerance(t_relative_gap_tolerance);
+    m_model.set(GRB_DoubleParam_MIPGap, t_relative_gap_tolerance);
+}
+
+void idol::Optimizers::Gurobi::set_absolute_gap_tolerance(double t_absolute_gap_tolerance) {
+    Optimizer::set_absolute_gap_tolerance(t_absolute_gap_tolerance);
+    m_model.set(GRB_DoubleParam_MIPGapAbs, t_absolute_gap_tolerance);
+}
+
 #endif

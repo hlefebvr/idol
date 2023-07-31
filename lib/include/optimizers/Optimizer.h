@@ -149,11 +149,11 @@ public:
 
     [[nodiscard]] double relative_gap_tolerance() const { return m_relative_gap_tolerance; }
 
-    void set_relative_gap_tolerance(double t_relative_gap_tolerance) { m_relative_gap_tolerance = t_relative_gap_tolerance; }
+    virtual void set_relative_gap_tolerance(double t_relative_gap_tolerance) { m_relative_gap_tolerance = t_relative_gap_tolerance; }
 
-    [[nodiscard]] double absolute_gap_tolerance() const { return m_relative_gap_tolerance; }
+    [[nodiscard]] double absolute_gap_tolerance() const { return m_absolute_gap_tolerance; }
 
-    void set_absolute_gap_tolerance(double t_relative_gap_tolerance) { m_relative_gap_tolerance = t_relative_gap_tolerance; }
+    virtual void set_absolute_gap_tolerance(double t_absolute_gap_tolerance) { m_absolute_gap_tolerance = t_absolute_gap_tolerance; }
 
     [[nodiscard]] unsigned int iteration_count_limit() const { return m_iteration_count_limit; }
 

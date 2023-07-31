@@ -130,6 +130,10 @@ public:
     [[nodiscard]] double root_node_best_bound() const { return m_root_node_best_bound; }
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
+
+    BranchingRule<NodeInfoT>& branching_rule() { return *m_branching_rule; }
+
+    const BranchingRule<NodeInfoT>& branching_rule() const { return *m_branching_rule; }
 };
 
 template<class NodeInfoT>

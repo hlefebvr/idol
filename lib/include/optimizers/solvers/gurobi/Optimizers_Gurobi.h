@@ -103,6 +103,10 @@ public:
     void set_param(GRB_IntParam t_param, int t_value);
 
     void set_param(GRB_DoubleParam t_param, double t_value);
+
+    void set_relative_gap_tolerance(double t_relative_gap_tolerance) override;
+
+    void set_absolute_gap_tolerance(double t_absolute_gap_tolerance) override;
 };
 
 #endif

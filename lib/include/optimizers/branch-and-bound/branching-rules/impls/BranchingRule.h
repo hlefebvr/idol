@@ -36,6 +36,27 @@ public:
     [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) const = 0;
 
     [[nodiscard]] virtual std::list<NodeInfoT*> create_child_nodes(const Node<NodeInfoT>& t_node) = 0;
+
+
+    template<class T> T& as() {
+        auto* result = dynamic_cast<T*>(this);
+        if (!result) {
+            throw Exception("Bad cast.");
+        }
+        return *result;
+    }
+
+    template<class T> const T& as() const {
+        auto* result = dynamic_cast<const T*>(this);
+        if (!result) {
+            throw Exception("Bad cast.");
+        }
+        return *result;
+    }
+
+    template<class T> [[nodiscard]] bool is() const {
+        return dynamic_cast<const T*>(this);
+    }
 };
 
 #endif //IDOL_BRANCHINGRULE_H

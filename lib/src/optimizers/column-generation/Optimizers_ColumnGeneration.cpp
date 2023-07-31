@@ -424,6 +424,7 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
     double min_reduced_costs = +Inf;
     double max_reduced_costs = -Inf;
     bool some_subproblems_had_been_skipped = false;
+    bool all_subproblems_were_optimally_solved = true;
 
     for (auto& subproblem : m_subproblems) {
 
@@ -445,6 +446,10 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             if (min_reduced_costs > reduced_costs) {
                 min_reduced_costs = reduced_costs;
             }
+
+        } else if (status == Feasible) {
+
+            all_subproblems_were_optimally_solved = false;
 
         } else {
             set_status(status);
@@ -478,6 +483,10 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
      */
 
     if (some_subproblems_had_been_skipped) {
+        return;
+    }
+
+    if (!all_subproblems_were_optimally_solved) {
         return;
     }
 
@@ -658,8 +667,13 @@ void idol::Optimizers::ColumnGeneration::set_solution_index(unsigned int t_index
     }
 }
 
+void idol::Optimizers::ColumnGeneration::set_non_optimal_pricing_phase(double t_time_limit, double t_relative_gap) {
+    m_non_optimal_pricing_phase = { t_time_limit, t_relative_gap };
+}
+
 void idol::Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {
     m_skip = false;
+    m_is_non_optimal_phase = m_parent.m_non_optimal_pricing_phase.has_value();
 }
 
 idol::Optimizers::ColumnGeneration::Subproblem::Subproblem(Optimizers::ColumnGeneration &t_parent,
@@ -699,8 +713,38 @@ void idol::Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_far
 
 void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
 
-    const double remaining_time = m_parent.get_remaining_time();
-    m_model->optimizer().set_time_limit(remaining_time);
+    if (!m_parent.m_current_iteration_is_farkas_pricing && m_is_non_optimal_phase) {
+
+        std::cout << "non-optimal pricing phase" << std::endl;
+
+        const auto [time_limit, relative_gap] = m_parent.m_non_optimal_pricing_phase.value();
+        const auto duals = save_dual(*m_parent.m_master);
+
+        m_model->optimizer().set_relative_gap_tolerance(relative_gap);
+        m_model->optimizer().set_time_limit(std::min(m_parent.get_remaining_time(), time_limit));
+        m_model->optimize();
+
+        if (::idol::relative_gap(m_model->get_best_bound(), m_model->get_best_obj()) <= 1e-4 || compute_reduced_cost(duals) < 0) {
+            return;
+        }
+
+        std::cout << "continuing with time limit" << std::endl;
+
+        m_model->optimizer().set_time_limit(2 * m_parent.get_remaining_time());
+        m_model->optimize();
+        m_model->optimizer().set_best_obj_stop(-Inf);
+
+        if (::idol::relative_gap(m_model->get_best_bound(), m_model->get_best_obj()) <= 1e-4 || compute_reduced_cost(duals) < 0) {
+            return;
+        }
+
+        std::cout << "switching to exact pricing, current red. cost is " << compute_reduced_cost(duals) << std::endl;
+        m_is_non_optimal_phase = false;
+
+    }
+
+    m_model->optimizer().set_relative_gap_tolerance(1e-4);
+    m_model->optimizer().set_time_limit(m_parent.get_remaining_time());
     m_model->optimize();
 
 }

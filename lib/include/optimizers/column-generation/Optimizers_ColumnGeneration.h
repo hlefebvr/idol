@@ -64,6 +64,8 @@ public:
     void set_max_columns_per_pricing(unsigned int t_n_columns) { m_max_columns_per_pricing = t_n_columns; }
 
     [[nodiscard]] unsigned int max_columns_per_pricing() const { return m_max_columns_per_pricing; }
+
+    void set_non_optimal_pricing_phase(double t_time_limit, double t_relative_gap);
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;
@@ -138,6 +140,7 @@ protected:
     double m_smoothing_factor = 0.;
     unsigned int m_log_frequency = 10;
     unsigned int m_max_columns_per_pricing = 5;
+    std::optional<std::pair<double, double>> m_non_optimal_pricing_phase;
 };
 
 class idol::Optimizers::ColumnGeneration::Subproblem {
@@ -151,6 +154,7 @@ class idol::Optimizers::ColumnGeneration::Subproblem {
     std::unique_ptr<Model> m_model;
     Column m_generation_pattern;
     bool m_skip = false;
+    bool m_is_non_optimal_phase = false;
 
     GeneratorPool<Var> m_pool;
     PresentGeneratorsList m_present_generators;

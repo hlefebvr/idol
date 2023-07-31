@@ -45,7 +45,14 @@ public:
     bool is_valid(const Node<NodeInfoT> &t_node) const override;
 
     [[nodiscard]] std::list<NodeInfoT*> create_child_nodes(const Node<NodeInfoT>& t_node) override;
+
+    void add_branching_candidate(const Var& t_var);
 };
+
+template<class NodeInfoT>
+void BranchingRules::MostInfeasible<NodeInfoT>::add_branching_candidate(const Var &t_var) {
+    m_branching_candidates.emplace_back(t_var);
+}
 
 template<class NodeInfoT>
 std::list<NodeInfoT *> idol::BranchingRules::MostInfeasible<NodeInfoT>::create_child_nodes_by_bound_for_integer_variable(
