@@ -11,6 +11,10 @@ Constant operator*(const Constant& t_coefficient, double t_factor) {
     return t_factor * Constant(t_coefficient);
 }
 
+Constant operator*(const idol::Param& t_param_1, const idol::Param& t_param_2) {
+    return { t_param_1, t_param_2 };
+}
+
 Constant operator*(double t_factor, const Param& t_param) {
     return { t_param, t_factor };
 }

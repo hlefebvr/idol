@@ -11,6 +11,7 @@
 
 idol::Constant operator*(double t_factor, const idol::Param& t_param);
 idol::Constant operator*(const idol::Param& t_param, double t_factor);
+idol::Constant operator*(const idol::Param& t_param_1, const idol::Param& t_param_2);
 idol::Constant operator*(double t_factor, idol::Constant&& t_coefficient);
 idol::Constant operator*(idol::Constant&& t_coefficient, double t_factor);
 idol::Constant operator*(double t_factor, const idol::Constant& t_coefficient);

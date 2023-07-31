@@ -14,6 +14,13 @@ idol::Constant::Constant(const Param &t_param, double t_value) : m_linear_terms(
     }
 }
 
+idol::Constant::Constant(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value)
+    : m_quadratic_terms({{{t_param_1, t_param_2}, t_value}})  {
+    if (equals(t_value, 0., ToleranceForSparsity)) {
+        m_quadratic_terms.clear();
+    }
+}
+
 idol::Constant::Constant(double t_constant) : m_constant(t_constant) {
 
 }
@@ -175,3 +182,4 @@ void idol::Constant::set(const idol::Param &t_param_1, const idol::Param &t_para
         it->second = t_value;
     }
 }
+

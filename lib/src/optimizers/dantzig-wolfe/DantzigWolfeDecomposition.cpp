@@ -264,11 +264,20 @@ idol::DantzigWolfeDecomposition::dispatch_linking_expression(const Annotation<Va
         const unsigned int subproblem_id1 = var1.get(t_variable_flag);
         const unsigned int subproblem_id2 = var2.get(t_variable_flag);
 
-        if (subproblem_id1 != MasterId || subproblem_id2 != MasterId) {
-            throw Exception("Non-linear linking expressions are only allowed in the master problem.");
+        if (subproblem_id1 != subproblem_id2) {
+            throw Exception("Cannot mix block-variables in quadratic expressions.");
         }
 
-        master_lhs += constant * var1 * var2;
+        if (subproblem_id1 == MasterId) {
+            master_lhs += constant * var1 * var2;
+            continue;
+        }
+
+        if (!constant.is_numerical()) {
+            throw Exception("Cannot have linking expression with subproblem's variable associated to a parametrized coefficient.");
+        }
+
+        subproblem_patterns[subproblem_id1] += constant.numerical() * (!var1 * !var2);
 
     }
 

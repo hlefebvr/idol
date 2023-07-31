@@ -66,6 +66,8 @@ public:
      */
     Constant(const Param& t_param, double t_value = 1.); // NOLINT(google-explicit-constructor)
 
+    Constant(const Param& t_param_1, const Param& t_param_2, double t_value = 1.);
+
     /**
      * Creates a new constant term equal to the constant given as argument.
      * @param t_constant The constant.
