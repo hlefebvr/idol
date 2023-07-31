@@ -695,13 +695,13 @@ void idol::Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_far
 
     for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         objective += constant.numerical() * -t_duals.get(ctr);
-        for (const auto &[param, coeff]: constant) {
+        for (const auto &[param, coeff] : constant.linear()) {
             objective += -t_duals.get(ctr) * coeff * param.as<Var>();
         }
     }
 
     if (!t_farkas_pricing) {
-        for (const auto &[param, coeff] : m_generation_pattern.obj()) {
+        for (const auto &[param, coeff] : m_generation_pattern.obj().linear()) {
             objective += coeff * param.as<Var>();
         }
     }
@@ -757,12 +757,12 @@ double idol::Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(cons
 
     for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         result += constant.numerical() * -t_duals.get(ctr);
-        for (const auto &[param, coeff]: constant) {
+        for (const auto &[param, coeff] : constant.linear()) {
             result += -t_duals.get(ctr) * coeff * primals.get(param.as<Var>());
         }
     }
 
-    for (const auto &[param, coeff] : m_generation_pattern.obj()) {
+    for (const auto &[param, coeff] : m_generation_pattern.obj().linear()) {
         result += coeff * primals.get(param.as<Var>());
     }
 

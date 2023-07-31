@@ -34,13 +34,13 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     ::idol::Expr objective = row.rhs().numerical();
 
-    for (const auto& [param, coeff] : row.rhs()) {
+    for (const auto& [param, coeff] : row.rhs().linear()) {
         objective += coeff * param.as<Var>();
     }
 
     for (const auto& [var, constant] : row.linear()) {
         ::idol::Expr term = -constant.numerical();
-        for (const auto& [param, coeff] : constant) {
+        for (const auto& [param, coeff] : constant.linear()) {
             term += -coeff * param.as<Var>();
         }
         objective += term * current_solution.get(var);

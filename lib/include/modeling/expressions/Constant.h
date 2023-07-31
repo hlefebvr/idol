@@ -8,18 +8,27 @@
 #include "../../containers/Map.h"
 #include "../parameters/Param.h"
 #include "../numericals.h"
+#include "../../containers/IteratorForward.h"
 
 namespace idol {
 
     namespace Solution {
         class Primal;
-
         class Dual;
     }
 
     class Algorithm;
     class Constant;
+    class QuadParam;
 }
+
+struct idol::QuadParam {
+    const Param& key1;
+    const Param& key2;
+    const Constant& constant;
+    QuadParam(const std::pair<Param, Param>& t_pair, const Constant& t_constant)
+            : key1(t_pair.first), key2(t_pair.second), constant(t_constant) {}
+};
 
 /**
  * Constant term modeling object.
@@ -38,10 +47,12 @@ namespace idol {
  * 2 * xi where xi is a Param will yield a Constant.
  */
 class idol::Constant {
-    Map<Param, double> m_products;
+    Map<Param, double> m_linear_terms;
+    Map<std::pair<Param, Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to> m_quadratic_terms;
     double m_constant = 0.;
 
     void insert_or_add(const Param& t_param, double t_value);
+    void insert_or_add(const Param& t_param_1, const Param& t_param_2, double t_value);
 public:
     /**
      * Create a new constant term equal to zero.
@@ -77,12 +88,24 @@ public:
     void set(const Param& t_param, double t_value);
 
     /**
+     * Sets the factor for a given pair of parameters in the constant term.
+     *
+     * If t_factor is zero, the entry for t_param is removed (i.e., not stored).
+     * @param t_param_1 The parameter 1.
+     * @param t_param_2 The parameter 3.
+     * @param t_value The factor associated to the pair of parameters.
+     */
+    void set(const Param& t_param_1, const Param& t_param_2, double t_value);
+
+    /**
      * Returns the factor associated to the parameter given as argument.
      *
      * If no factor is found, zero is returned.
      * @param t_param The queried parameter.
      */
     double get(const Param& t_param) const;
+
+    double get(const Param& t_param_1, const Param& t_param_2) const;
 
     /**
      * Sets the numerical term equal to the constant given as parameter.
@@ -103,22 +126,20 @@ public:
     /**
      * Returns the number of Param-double pairs stored inside the Constant.
      */
-    unsigned int size() const { return m_products.size(); }
+    unsigned int size() const { return m_linear_terms.size(); }
 
     /**
      * Returns true if the Constant does not contain any Param-double pair.
      */
     bool is_numerical() const;
 
-    using iterator = Map<Param, double>::iterator;
-    using const_iterator = Map<Param, double>::const_iterator;
+    auto linear() { return IteratorForward(m_linear_terms); }
 
-    iterator begin() { return m_products.begin(); }
-    iterator end() { return m_products.end(); }
-    const_iterator begin() const { return m_products.begin(); }
-    const_iterator end() const { return m_products.end(); }
-    const_iterator cbegin() const { return m_products.begin(); }
-    const_iterator cend() const { return m_products.end(); }
+    auto linear() const { return ConstIteratorForward(m_linear_terms); }
+
+    auto quadratic() { return IteratorForward(m_quadratic_terms); }
+
+    auto quadratic() const { return ConstIteratorForward(m_quadratic_terms); }
 
     /**
      * Multiplies the Constant by t_factor (i.e., every Param-double pairs and the numerical term are multiplied).
@@ -138,7 +159,7 @@ public:
      * Resulting zero entries are removed.
      * @param t_term The parameter to add.
      */
-    Constant& operator+=(Param t_term);
+    Constant& operator+=(const Param& t_term);
 
     /**
      * Adds up another constant term (i.e., both the numerical terms and every Param-double pairs are added up).
@@ -172,8 +193,8 @@ namespace idol {
 
         const double constant = t_coefficient.numerical();
 
-        auto it = t_coefficient.begin();
-        const auto end = t_coefficient.end();
+        auto it = t_coefficient.linear().begin();
+        const auto end = t_coefficient.linear().end();
 
         if (it == end) {
             return t_os << constant;
