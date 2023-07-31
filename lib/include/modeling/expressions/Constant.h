@@ -184,32 +184,43 @@ namespace idol {
 
     static std::ostream &operator<<(std::ostream &t_os, const Constant &t_coefficient) {
 
-        const auto print_term = [&t_os](const idol::Param &t_param, double t_coeff) {
+        const auto print_lin_term = [&t_os](const idol::Param &t_param, double t_coeff) {
             if (!idol::equals(t_coeff, 1., idol::ToleranceForSparsity)) {
                 t_os << t_coeff << ' ';
             }
             t_os << t_param;
         };
 
+        const auto print_quad_term = [&t_os](const std::pair<idol::Param, idol::Param> &t_pair, double t_coeff) {
+            if (!idol::equals(t_coeff, 1., idol::ToleranceForSparsity)) {
+                t_os << t_coeff << ' ';
+            }
+            t_os << t_pair.first << ' ' << t_pair.second;
+        };
+
         const double constant = t_coefficient.numerical();
 
-        auto it = t_coefficient.linear().begin();
-        const auto end = t_coefficient.linear().end();
-
-        if (it == end) {
-            return t_os << constant;
-        }
+        bool first_term_has_been_printed = false;
 
         if (!idol::equals(constant, 0., idol::ToleranceForSparsity)) {
-            t_os << constant << " + ";
+            t_os << constant;
+            first_term_has_been_printed = true;
         }
 
-        print_term(it->first, it->second);
+        for (const auto& [param, coeff] : t_coefficient.linear()) {
+            if (first_term_has_been_printed) {
+                t_os << " + ";
+            }
+            print_lin_term(param, coeff);
+            first_term_has_been_printed = true;
+        }
 
-        for (++it; it != end; ++it) {
-            const auto &[param, coeff] = *it;
-            t_os << " + ";
-            print_term(it->first, it->second);
+        for (const auto& [pair, coeff] : t_coefficient.quadratic()) {
+            if (first_term_has_been_printed) {
+                t_os << " + ";
+            }
+            print_quad_term(pair, coeff);
+            first_term_has_been_printed = true;
         }
 
         return t_os;
