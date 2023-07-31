@@ -78,6 +78,8 @@ void idol::BranchingRules::MostInfeasible<NodeInfoT>::select_integer_variable_fo
 template<class NodeT>
 double idol::BranchingRules::MostInfeasible<NodeT>::most_infeasible_score(const Var &t_var, const Node<NodeT> &t_node) const {
     const double frac_value = fractional_part(t_node.info().primal_solution().get(t_var));
+    //std::cout << t_var << " = " << t_node.info().primal_solution().get(t_var) << " has frac_value = " << std::setprecision(10) << frac_value << std::endl;
+    //std::cout << "In tolerance = " << (frac_value <= ToleranceForIntegrality) << std::endl;
     if (frac_value <= ToleranceForIntegrality) { return -Inf; }
     return .5 - std::abs(.5 - frac_value);
 }
@@ -99,7 +101,7 @@ bool idol::BranchingRules::MostInfeasible<NodeT>::is_valid(const Node<NodeT> &t_
 
     for (const auto& var : m_branching_candidates) {
         if (double value = primal.get(var) ; !is_integer(value)) {
-            idol_Log(Trace, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ")." );
+            idol_Log(Trace, "Node " << t_node.id() << " solution not valid (" << var << " = " << value << ", score = " << most_infeasible_score(var, t_node) << ")." );
             return false;
         }
     }
