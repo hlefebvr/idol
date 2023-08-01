@@ -82,7 +82,7 @@ void idol::VariableBranchingRule<NodeInfoT>::select_variable_for_branching(Itera
 
     for ( ; t_begin != t_end ; ++t_begin ) {
 
-        std::cout << *t_begin << " -> " << t_scoring_function(*t_begin) << std::endl;
+        // std::cout << *t_begin << " -> " << t_scoring_function(*t_begin) << std::endl;
 
         if (double variable_score = t_scoring_function(*t_begin) ; variable_score > maximum_score) {
 
@@ -94,7 +94,7 @@ void idol::VariableBranchingRule<NodeInfoT>::select_variable_for_branching(Itera
     }
 
     if (selected_variable != t_end) {
-        std::cout << "selected " << *selected_variable << std::endl;
+        //std::cout << "selected " << *selected_variable << std::endl;
         set_variable_selected_for_branching(*selected_variable, maximum_score);
     }
 

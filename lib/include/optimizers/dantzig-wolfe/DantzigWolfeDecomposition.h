@@ -22,6 +22,8 @@ class idol::DantzigWolfeDecomposition : public impl::OptimizerFactoryWithColumnG
     // Branching parameters
     std::optional<bool> m_branching_on_master;
 
+    std::optional<CtrType> m_aggregation_type;
+
     DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
 
     Annotation<Var, unsigned int> create_variable_flag(const Model& t_model, unsigned int *t_n_subproblem) const;
@@ -78,6 +80,8 @@ public:
      * @return the optimizer factory itself
      */
     DantzigWolfeDecomposition& with_branching_on_master(bool t_value);
+
+    DantzigWolfeDecomposition& with_aggregation_type(CtrType t_type);
 
     Optimizer *operator()(const Model &t_original_formulation) const override;
 

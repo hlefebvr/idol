@@ -28,6 +28,17 @@ public:
     explicit NodeUpdatorByBound(Model& t_model) : m_model(t_model) {}
 
     void apply_local_updates(const NodeT& t_node) override {
+
+        /*
+        std::cout << "Current node: " << std::endl;
+        for (const auto& [var, bound] : t_node.local_lower_bounds()) {
+            std::cout << var << " >= " << bound << std::endl;
+        }
+        for (const auto& [var, bound] : t_node.local_upper_bounds()) {
+            std::cout << var << " <= " << bound << std::endl;
+        }
+         */
+
         update_bounds(m_lower_bounds, t_node.local_lower_bounds(), true);
         update_bounds(m_upper_bounds, t_node.local_upper_bounds(), false);
     }

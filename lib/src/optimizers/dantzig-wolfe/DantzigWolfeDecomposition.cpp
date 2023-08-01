@@ -18,7 +18,8 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
           m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr),
-          m_branching_on_master(t_src.m_branching_on_master) {
+          m_branching_on_master(t_src.m_branching_on_master),
+          m_aggregation_type(t_src.m_aggregation_type) {
 
 }
 
@@ -293,7 +294,7 @@ void idol::DantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Mode
     const unsigned int n_subproblems = t_generation_patterns.size();
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        Ctr convexity_constraint(t_env, Equal, 1);
+        Ctr convexity_constraint(t_env, m_aggregation_type.has_value() ? m_aggregation_type.value() : Equal, 1);
         t_master->add(convexity_constraint);
         t_generation_patterns[i].linear().set(convexity_constraint, 1);
     }
@@ -329,6 +330,17 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_branching
     }
 
     m_branching_on_master = t_value;
+
+    return *this;
+}
+
+idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_aggregation_type(idol::CtrType t_type) {
+
+    if (m_aggregation_type.has_value()) {
+        throw Exception("Aggregation type has already been given.");
+    }
+
+    m_aggregation_type = t_type;
 
     return *this;
 }
