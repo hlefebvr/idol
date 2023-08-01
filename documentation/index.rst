@@ -80,9 +80,9 @@ Currently, the following external solvers can be interfaced:
 Current features
 ----------------
 
-.. warning:
+.. warning::
 
-    Handling quadraric expressions still is an experimental feature and extreme care should be taken if used.
+    Handling quadratic expressions is an experimental feature and extreme care should be taken if used.
 
 Interfacing external optimization solvers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
