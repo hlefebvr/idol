@@ -421,8 +421,6 @@ void idol::Optimizers::ColumnGeneration::solve_subproblems() {
 void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
     double reduced_costs = 0;
-    double min_reduced_costs = +Inf;
-    double max_reduced_costs = -Inf;
     bool some_subproblems_had_been_skipped = false;
     bool all_subproblems_were_optimally_solved = true;
 
@@ -434,22 +432,15 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
         const auto status = subproblem.m_model->get_status();
 
-        if (status == Optimal) {
+
+        if (status == Feasible || subproblem.m_is_non_optimal_phase) {
+
+            all_subproblems_were_optimally_solved = false;
+
+        } else if (status == Optimal) {
 
             const double pricing_optimum = subproblem.m_model->get_best_obj();
             reduced_costs += std::min(0., pricing_optimum);
-
-            if (max_reduced_costs < reduced_costs) {
-                max_reduced_costs = reduced_costs;
-            }
-
-            if (min_reduced_costs > reduced_costs) {
-                min_reduced_costs = reduced_costs;
-            }
-
-        } else if (status == Feasible) {
-
-            all_subproblems_were_optimally_solved = false;
 
         } else {
             set_status(status);
@@ -459,28 +450,6 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         }
 
     }
-
-    /*
-    if (max_reduced_costs > -1e-4 && min_reduced_costs < -1e-2) {
-
-        for (auto &subproblem: m_subproblems) {
-
-            if (subproblem.m_model->get_best_obj() < -1e-2) {
-                subproblem.m_skip = false;
-            } else {
-                subproblem.m_skip = true;
-            }
-
-        }
-
-    } else {
-
-        for (auto &subproblem: m_subproblems) {
-            subproblem.m_skip = false;
-        }
-
-    }
-     */
 
     if (some_subproblems_had_been_skipped) {
         return;
@@ -499,16 +468,6 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
         if (get_best_bound() <= lower_bound) {
             set_best_bound(std::min(lower_bound, get_best_obj()));
         }
-
-        /*
-        if (get_best_bound() > get_best_obj() + 1e-3) {
-            idol_Log(Fatal, "Terminate. Best bound is strictly greater than best obj.");
-            set_status(Fail);
-            set_reason(NotSpecified);
-            terminate();
-            return;
-        }
-         */
 
         if (m_artificial_variables.empty() && get_best_bound() > best_bound_stop()) {
             set_status(get_relative_gap() > 0 ? Feasible : Optimal);
@@ -730,17 +689,16 @@ void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
         m_model->optimizer().set_time_limit(std::min(m_parent.get_remaining_time(), time_limit));
         m_model->optimize();
 
-        if (::idol::relative_gap(m_model->get_best_bound(), m_model->get_best_obj()) <= 1e-4 || compute_reduced_cost(duals) < 0) {
+        if (compute_reduced_cost(duals) < 0) {
             return;
         }
 
         std::cout << "continuing with time limit" << std::endl;
 
-        m_model->optimizer().set_time_limit(2 * m_parent.get_remaining_time());
+        m_model->optimizer().set_time_limit(std::min(m_parent.get_remaining_time(), 2 * time_limit));
         m_model->optimize();
-        m_model->optimizer().set_best_obj_stop(-Inf);
 
-        if (::idol::relative_gap(m_model->get_best_bound(), m_model->get_best_obj()) <= 1e-4 || compute_reduced_cost(duals) < 0) {
+        if (compute_reduced_cost(duals) < 0) {
             return;
         }
 
