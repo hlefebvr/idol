@@ -50,7 +50,7 @@ public:
 };
 
 template<class NodeInfoT>
-void BranchingRules::MostInfeasible<NodeInfoT>::add_branching_candidate(const Var &t_var) {
+void idol::BranchingRules::MostInfeasible<NodeInfoT>::add_branching_candidate(const Var &t_var) {
     m_branching_candidates.emplace_back(t_var);
 }
 
