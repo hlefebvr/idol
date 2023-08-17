@@ -47,9 +47,6 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
-    double m_mip_relative_gap = Tolerance::MIPRelativeGap;
-    double m_mip_absolute_gap = Tolerance::MIPAbsoluteGap;
-
     std::optional<TreeNode> m_incumbent;
 protected:
     void build() override;
@@ -219,7 +216,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_obj_sense() {
 template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_ctr_farkas(const Ctr &t_ctr) const {
     if (m_n_solved_nodes > 1) {
-        throw Exception("Farkas certificate not available.");
+        throw Exception("Accessing Farkas certificate for MIP is not available after the root node.");
     }
     return m_relaxation->get_ctr_farkas(t_ctr);
 }
@@ -227,7 +224,7 @@ double idol::Optimizers::BranchAndBound<NodeInfoT>::get_ctr_farkas(const Ctr &t_
 template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_ctr_dual(const Ctr &t_ctr) const {
     if (m_n_solved_nodes > 1) {
-        throw Exception("Dual value not available.");
+        throw Exception("Accessing dual values for MIP is not available after the root node.");
     }
     return m_relaxation->get_ctr_dual(t_ctr);
 }
@@ -244,7 +241,7 @@ template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_primal(const Var &t_var) const {
 
     if (!m_incumbent.has_value()){
-        throw Exception("Primal value not available.");
+        throw Exception("Trying to access primal values while no incumbent was found.");
     }
 
     return m_incumbent->info().primal_solution().get(t_var);
@@ -586,9 +583,9 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level,
     const unsigned int id = t_node.id();
     char sign = ' ';
 
-    if (equals(objective_value, get_best_obj(), m_mip_absolute_gap)) {
+    if (equals(objective_value, get_best_obj(), get_tol_mip_absolute_gap())) {
         sign = '-';
-    } else if (equals(objective_value, get_best_bound(), m_mip_relative_gap)) {
+    } else if (equals(objective_value, get_best_bound(), get_tol_mip_absolute_gap())) {
         sign = '+';
     }
 
@@ -687,7 +684,7 @@ bool idol::Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
            || get_remaining_time() == 0
            || get_relative_gap() <= get_tol_mip_relative_gap()
-        || get_absolute_gap() <= get_tol_mip_absolute_gap();
+           || get_absolute_gap() <= get_tol_mip_absolute_gap();
 }
 
 template<class NodeInfoT>
