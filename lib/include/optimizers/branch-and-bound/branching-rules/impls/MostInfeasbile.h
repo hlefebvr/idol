@@ -80,13 +80,13 @@ double idol::BranchingRules::MostInfeasible<NodeT>::most_infeasible_score(const 
     const double frac_value = fractional_part(t_node.info().primal_solution().get(t_var));
     //std::cout << t_var << " = " << t_node.info().primal_solution().get(t_var) << " has frac_value = " << std::setprecision(10) << frac_value << std::endl;
     //std::cout << "In tolerance = " << (frac_value <= ToleranceForIntegrality) << std::endl;
-    if (frac_value <= ToleranceForIntegrality) { return -Inf; }
+    if (frac_value <= Tolerance::Integer) { return -Inf; }
     return .5 - std::abs(.5 - frac_value);
 }
 
 template<class NodeT>
 bool idol::BranchingRules::MostInfeasible<NodeT>::is_integer(double t_x) {
-    return fractional_part(t_x) <= ToleranceForIntegrality;
+    return fractional_part(t_x) <= Tolerance::Integer;
 }
 
 template<class NodeT>
@@ -123,7 +123,7 @@ idol::BranchingRules::MostInfeasible<NodeT>::create_child_nodes(const Node<NodeT
 
     const auto [variable, score] = this->variable_selected_for_branching();
 
-    if (score <= ToleranceForIntegrality) {
+    if (score <= Tolerance::Integer) {
         throw Exception("Maximum infeasibility is less than ToleranceForIntegrality.");
     }
 

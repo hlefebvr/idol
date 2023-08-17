@@ -108,7 +108,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_mast
         throw Exception("Unexpected RHS with non-numerical terms.");
     }
 
-    if (equals(t_value, current_rhs.numerical(), ToleranceForIntegrality)) { // Remove existing constraint for it is not useful anymore
+    if (equals(t_value, current_rhs.numerical(), Tolerance::Integer)) { // Remove existing constraint for it is not useful anymore
 
         subproblem.m_generation_pattern.linear().remove(it->second);
         m_master->remove(it->second);

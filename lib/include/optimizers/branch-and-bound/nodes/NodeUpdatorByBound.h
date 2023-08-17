@@ -70,7 +70,7 @@ void idol::NodeUpdatorByBound<NodeT>::update_bounds(Map<Var, double> &t_currentl
         }
 
         const double bound = t_is_lb ? m_model.get_var_lb(var) : m_model.get_var_ub(var);
-        if (!equals(result->second, bound, ToleranceForIntegrality)) {
+        if (!equals(result->second, bound, Tolerance::Integer)) {
             t_is_lb ? m_model.set_var_lb(var, result->second) : m_model.set_var_ub(var, result->second);
         }
         ++it;

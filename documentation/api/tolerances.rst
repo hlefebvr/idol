@@ -1,0 +1,4 @@
+Tolerances
+==========
+
+.. doxygennamespace:: idol::Tolerance

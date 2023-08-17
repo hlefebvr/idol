@@ -126,7 +126,7 @@ public:
 template<class KeyT, class CRTP>
 void idol::AbstractSolution<KeyT, CRTP>::set(const KeyT &t_key, double t_value) {
 
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_values.erase(t_key);
         return;
     }
@@ -209,7 +209,7 @@ CRTP &idol::AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
         auto [it, success] = m_values.template emplace(key, value);
         if (!success) {
             it->second += value;
-            if (equals(it->second, 0., ToleranceForSparsity)) {
+            if (equals(it->second, 0., Tolerance::Sparsity)) {
                 m_values.erase(it);
             }
         }
@@ -220,7 +220,7 @@ CRTP &idol::AbstractSolution<KeyT, CRTP>::operator+=(const CRTP &t_rhs) {
 template<class KeyT, class CRTP>
 CRTP &idol::AbstractSolution<KeyT, CRTP>::operator*=(double t_factor) {
 
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
+    if (equals(t_factor, 0., Tolerance::Sparsity)) {
         m_values.clear();
         return dynamic_cast<CRTP&>(*this);
     }

@@ -12,12 +12,80 @@
 namespace idol {
 
     static constexpr double Inf = 1e20;
-    static double ToleranceForSparsity = 1e-6;
-    static double ToleranceForRelativeGapMIP = 1e-4;
-    static double ToleranceForAbsoluteGapMIP = 1e-6;
-    static double ToleranceForAbsoluteGapPricing = 1e-6;
-    static double ToleranceForRelativeGapPricing = 1e-4;
-    static double ToleranceForIntegrality = 1e-5;
+
+    /**
+     * Stores the default high-level tolerances used in idol.
+     *
+     * It is possible for optimizers to have additional tolerance parameters, yet, the tolerances defined in this namespace
+     * should always be taken into account by the optimizer. Apart from the Sparsity tolerance,
+     * users can also change tolerance values at a local level (i.e., at an optimizer level) rather than at a global level.
+     */
+    namespace Tolerance {
+
+        /**
+         * **Default:** \f$ 10^{-6} \f$
+         *
+         * **Recommended range:** \f$ [ 10^{-10}, 10^{-5} ] \f$
+         *
+         * This tolerance is used when data is saved in a sparse manner.
+         * For instance, when a value close to zero should be stored
+         * or ignored when saving a primal point.
+         */
+        static double Sparsity;
+
+        /**
+         * **Default:** \f$ 10^{-4} \f$
+         *
+         * **Recommended range:** \f$ [ 0, +\infty ] \f$
+         *
+         * Used to declare optimality of a MIP solution by comparing with the current relative gap.
+         *
+         * The relative gap is computed as follows:
+         * \f[ RelativeGap := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \f]
+         */
+        static double MIPRelativeGap;
+
+        /**
+         * **Default:** \f$ 10^{-10} \f$
+         *
+         * **Recommended range:** \f$ [ 0, \infty ] \f$
+         *
+         * Used to declare optimality of a MIP solution by comparing with the current absolute gap.
+         *
+         * The absolute gap is computed as follows:
+         * \f[ AbsoluteGap := |UB - LB| \f]
+         */
+        static double MIPAbsoluteGap;
+
+        /**
+         * **Default:** \f$ 10^{-5} \f$
+         *
+         * **Recommended range:** \f$ [ 10^{-9}, 10^{-1} ] \f$
+         *
+         * Used to recognized integer values, i.e., a given value is considered integer when the closest integer point
+         * is closer than this tolerance.
+         */
+        static double Integer;
+
+        /**
+         *  **Default:** \f$ 10^{-6} \f$
+         *
+         * **Recommended range:** \f$ [ 10^{-9}, 10^{-2} ] \f$
+         *
+         * Used to characterized constraint satisfaction, i.e., a constraint is satisfied if it is not violated by a
+         * larger amount than this tolerance.
+         */
+        static double Feasibility;
+
+        /**
+         *  **Default:** \f$ 10^{-6} \f$
+         *
+         * **Recommended range:** \f$ [ 10^{-9}, 10^{-2} ] \f$
+         *
+         * Used to characterize optimality, i.e., all reduced costs must be smaller than this tolerance.
+         */
+        static double Optimality;
+    };
 
     static bool is_pos_inf(double t_value) {
         return t_value >= Inf;

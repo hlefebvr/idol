@@ -61,7 +61,7 @@ void idol::Optimizers::GLPK::set_var_attr(int t_index, int t_type, double t_lb, 
 
     // Set bounds
     if (has_lb && has_ub) {
-        if (equals(t_lb, t_ub, ToleranceForIntegrality)) {
+        if (equals(t_lb, t_ub, Tolerance::Integer)) {
             glp_set_col_bnds(m_model, t_index, GLP_FX, t_lb, t_ub);
         } else {
             glp_set_col_bnds(m_model, t_index, GLP_DB, t_lb, t_ub);

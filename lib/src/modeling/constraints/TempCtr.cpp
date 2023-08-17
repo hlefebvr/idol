@@ -42,7 +42,7 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
         case GreaterOrEqual: return lhs < rhs;
         default:;
     }
-    return equals(lhs, rhs, ToleranceForIntegrality);
+    return equals(lhs, rhs, Tolerance::Feasibility);
 }
 
 std::ostream &idol::operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {

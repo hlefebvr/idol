@@ -10,3 +10,4 @@ API
     modeling/index
     optimizers/index
     problems/index
+    tolerances

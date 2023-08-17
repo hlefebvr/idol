@@ -9,14 +9,14 @@
 idol::Constant idol::Constant::Zero;
 
 idol::Constant::Constant(const Param &t_param, double t_value) : m_linear_terms({{t_param, t_value } }) {
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_linear_terms.clear();
     }
 }
 
 idol::Constant::Constant(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value)
     : m_quadratic_terms({{{t_param_1, t_param_2}, t_value}})  {
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_quadratic_terms.clear();
     }
 }
@@ -27,7 +27,7 @@ idol::Constant::Constant(double t_constant) : m_constant(t_constant) {
 
 void idol::Constant::set(const Param &t_param, double t_value) {
 
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_linear_terms.erase(t_param);
         return;
     }
@@ -50,7 +50,7 @@ double idol::Constant::get(const idol::Param &t_param_1, const idol::Param &t_pa
 
 idol::Constant &idol::Constant::operator*=(double t_factor) {
 
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
+    if (equals(t_factor, 0., Tolerance::Sparsity)) {
         m_constant = 0;
         m_linear_terms.clear();
         m_quadratic_terms.clear();
@@ -111,35 +111,35 @@ idol::Constant &idol::Constant::operator-=(const Constant &t_term) {
 }
 
 void idol::Constant::insert_or_add(const Param &t_param, double t_value) {
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         return;
     }
 
     auto [it, success] = m_linear_terms.emplace(t_param, t_value);
     if (!success) {
         it->second += t_value;
-        if (equals(it->second, 0., ToleranceForSparsity)) {
+        if (equals(it->second, 0., Tolerance::Sparsity)) {
             m_linear_terms.erase(it);
         }
     }
 }
 
 void idol::Constant::insert_or_add(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value) {
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         return;
     }
 
     auto [it, success] = m_quadratic_terms.emplace(std::make_pair(t_param_1, t_param_2), t_value);
     if (!success) {
         it->second += t_value;
-        if (equals(it->second, 0., ToleranceForSparsity)) {
+        if (equals(it->second, 0., Tolerance::Sparsity)) {
             m_quadratic_terms.erase(it);
         }
     }
 }
 
 bool idol::Constant::is_zero() const {
-    return m_linear_terms.empty() && m_quadratic_terms.empty() && equals(m_constant, 0., ToleranceForSparsity);
+    return m_linear_terms.empty() && m_quadratic_terms.empty() && equals(m_constant, 0., Tolerance::Sparsity);
 }
 
 bool idol::Constant::is_numerical() const {
@@ -172,7 +172,7 @@ double idol::Constant::fix(const Solution::Dual &t_duals) const {
 
 void idol::Constant::set(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value) {
 
-    if (equals(t_value, 0., ToleranceForSparsity)) {
+    if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_quadratic_terms.erase(std::make_pair( t_param_1, t_param_2 ));
         return;
     }

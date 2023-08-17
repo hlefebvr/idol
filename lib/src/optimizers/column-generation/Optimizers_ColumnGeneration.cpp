@@ -525,8 +525,8 @@ void idol::Optimizers::ColumnGeneration::remove_artificial_variables() {
 }
 
 bool idol::Optimizers::ColumnGeneration::stopping_condition() const {
-    return get_absolute_gap() <= ToleranceForAbsoluteGapPricing
-           || get_relative_gap() <= ToleranceForRelativeGapPricing
+    return get_absolute_gap() <= Tolerance::MIPAbsoluteGap
+           || get_relative_gap() <= Tolerance::MIPRelativeGap
            || get_remaining_time() == 0;
 }
 

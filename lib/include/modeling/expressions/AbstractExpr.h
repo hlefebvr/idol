@@ -115,7 +115,7 @@ public:
     /**
      * Multiplies every term of the expression by `t_factor`.
      *
-     * If `t_factor` equals zero with tolerance `ToleranceForSparsity`, then the expression is emptied.
+     * If `t_factor` equals zero with tolerance `Tolerance::Sparsity`, then the expression is emptied.
      *
      * @param t_factor The multiplying factor.
      * @return The object itself.
@@ -222,7 +222,7 @@ template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
 idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
 
-    if (equals(t_factor, 0., ToleranceForSparsity)) {
+    if (equals(t_factor, 0., Tolerance::Sparsity)) {
         m_map.clear();
         return *this;
     }

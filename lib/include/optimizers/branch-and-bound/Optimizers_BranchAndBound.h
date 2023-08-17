@@ -47,6 +47,9 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
+    double m_mip_relative_gap = Tolerance::MIPRelativeGap;
+    double m_mip_absolute_gap = Tolerance::MIPAbsoluteGap;
+
     std::optional<TreeNode> m_incumbent;
 protected:
     void build() override;
@@ -583,9 +586,9 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level,
     const unsigned int id = t_node.id();
     char sign = ' ';
 
-    if (equals(objective_value, get_best_obj(), ToleranceForAbsoluteGapMIP)) {
+    if (equals(objective_value, get_best_obj(), m_mip_absolute_gap)) {
         sign = '-';
-    } else if (equals(objective_value, get_best_bound(), ToleranceForAbsoluteGapMIP)) {
+    } else if (equals(objective_value, get_best_bound(), m_mip_relative_gap)) {
         sign = '+';
     }
 
