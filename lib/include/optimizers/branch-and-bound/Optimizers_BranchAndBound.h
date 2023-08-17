@@ -579,7 +579,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node(LogLevel t_msg_level, const BranchAndBound::TreeNode &t_node) {
 
-    const double objective_value = t_node.info().objective_value();
+    const double objective_value = t_node.info().has_objective_value() ? t_node.info().objective_value() : Inf;
     const unsigned int id = t_node.id();
     char sign = ' ';
 

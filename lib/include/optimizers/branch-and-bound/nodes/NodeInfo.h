@@ -31,6 +31,8 @@ public:
 
     [[nodiscard]] SolutionReason reason() const { return m_primal_solution.reason(); }
 
+    [[nodiscard]] bool has_objective_value() const { return m_primal_solution.has_objective_value(); }
+
     [[nodiscard]] double objective_value() const { return m_primal_solution.objective_value(); }
 
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
