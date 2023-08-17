@@ -31,7 +31,7 @@ namespace idol {
          * For instance, when a value close to zero should be stored
          * or ignored when saving a primal point.
          */
-        static double Sparsity;
+        static double Sparsity = 1e-6;
 
         /**
          * **Default:** \f$ 10^{-4} \f$
@@ -43,7 +43,7 @@ namespace idol {
          * The relative gap is computed as follows:
          * \f[ RelativeGap := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \f]
          */
-        static double MIPRelativeGap;
+        static double MIPRelativeGap = 1e-4;
 
         /**
          * **Default:** \f$ 10^{-10} \f$
@@ -55,7 +55,7 @@ namespace idol {
          * The absolute gap is computed as follows:
          * \f[ AbsoluteGap := |UB - LB| \f]
          */
-        static double MIPAbsoluteGap;
+        static double MIPAbsoluteGap = 1e-10;
 
         /**
          * **Default:** \f$ 10^{-5} \f$
@@ -65,7 +65,7 @@ namespace idol {
          * Used to recognized integer values, i.e., a given value is considered integer when the closest integer point
          * is closer than this tolerance.
          */
-        static double Integer;
+        static double Integer = 10e-5;
 
         /**
          *  **Default:** \f$ 10^{-6} \f$
@@ -75,7 +75,7 @@ namespace idol {
          * Used to characterized constraint satisfaction, i.e., a constraint is satisfied if it is not violated by a
          * larger amount than this tolerance.
          */
-        static double Feasibility;
+        static double Feasibility = 10e-6;
 
         /**
          *  **Default:** \f$ 10^{-6} \f$
@@ -84,7 +84,7 @@ namespace idol {
          *
          * Used to characterize optimality, i.e., all reduced costs must be smaller than this tolerance.
          */
-        static double Optimality;
+        static double Optimality = 10e-6;
     };
 
     static bool is_pos_inf(double t_value) {
