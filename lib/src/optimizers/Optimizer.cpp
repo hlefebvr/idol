@@ -39,7 +39,7 @@ void idol::impl::Optimizer::optimize() {
 }
 
 double idol::impl::Optimizer::get_remaining_time() const {
-    return std::max(0., m_time_limit - m_timer.count());
+    return std::max(0., m_param_time_limit - m_timer.count());
 }
 
 void idol::impl::Optimizer::terminate() {

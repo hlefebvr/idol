@@ -83,6 +83,19 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
 
     m_model.set(GRB_IntParam_OutputFlag, 0);
 
+    // Tolerances
+    m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());
+    m_model.set(GRB_DoubleParam_MIPGapAbs, get_tol_mip_absolute_gap());
+    m_model.set(GRB_DoubleParam_IntFeasTol, get_tol_integer());
+    m_model.set(GRB_DoubleParam_FeasibilityTol, get_tol_feasibility());
+    m_model.set(GRB_DoubleParam_OptimalityTol, get_tol_optimality());
+
+    // Parameters
+    m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
+    m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
+    m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
+    m_model.set(GRB_IntParam_Presolve, get_param_presolve());
+    m_model.set(GRB_IntParam_Threads, (int) get_param_threads());
 }
 
 void idol::Optimizers::Gurobi::hook_build() {
@@ -301,34 +314,34 @@ void idol::Optimizers::Gurobi::hook_update() {
     m_model.update();
 }
 
-void idol::Optimizers::Gurobi::set_time_limit(double t_time_limit) {
+void idol::Optimizers::Gurobi::set_param_time_limit(double t_time_limit) {
     m_model.set(GRB_DoubleParam_TimeLimit, t_time_limit);
-    Optimizer::set_time_limit(t_time_limit);
+    Optimizer::set_param_time_limit(t_time_limit);
 }
 
-void idol::Optimizers::Gurobi::set_thread_limit(unsigned int t_thread_limit) {
+void idol::Optimizers::Gurobi::set_param_threads(unsigned int t_thread_limit) {
     m_model.set(GRB_IntParam_Threads, t_thread_limit);
-    Optimizer::set_thread_limit(t_thread_limit);
+    Optimizer::set_param_threads(t_thread_limit);
 }
 
-void idol::Optimizers::Gurobi::set_best_obj_stop(double t_best_obj_stop) {
+void idol::Optimizers::Gurobi::set_param_best_obj_stop(double t_best_obj_stop) {
     m_model.set(GRB_DoubleParam_BestObjStop, t_best_obj_stop);
-    Optimizer::set_best_obj_stop(t_best_obj_stop);
+    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
-void idol::Optimizers::Gurobi::set_best_bound_stop(double t_best_bound_stop) {
+void idol::Optimizers::Gurobi::set_param_best_bound_stop(double t_best_bound_stop) {
     m_model.set(GRB_DoubleParam_BestBdStop, t_best_bound_stop);
-    Optimizer::set_best_bound_stop(t_best_bound_stop);
+    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
-void idol::Optimizers::Gurobi::set_presolve(bool t_value) {
+void idol::Optimizers::Gurobi::set_param_presolve(bool t_value) {
     m_model.set(GRB_IntParam_Presolve, t_value);
-    Optimizer::set_presolve(t_value);
+    Optimizer::set_param_presolve(t_value);
 }
 
-void idol::Optimizers::Gurobi::set_infeasible_or_unbounded_info(bool t_value) {
+void idol::Optimizers::Gurobi::set_param_infeasible_or_unbounded_info(bool t_value) {
     m_model.set(GRB_IntParam_InfUnbdInfo, t_value);
-    Optimizer::set_infeasible_or_unbounded_info(t_value);
+    Optimizer::set_param_infeasible_or_unbounded_info(t_value);
 }
 
 void idol::Optimizers::Gurobi::add_callback(Callback *t_ptr_to_callback) {
@@ -450,9 +463,9 @@ void idol::Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) 
     m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
 }
 
-void idol::Optimizers::Gurobi::set_log_level(LogLevel t_log_level) {
+void idol::Optimizers::Gurobi::set_param_log_level(LogLevel t_log_level) {
     m_model.set(GRB_IntParam_OutputFlag, t_log_level != Mute);
-    Optimizer::set_log_level(t_log_level);
+    Optimizer::set_param_log_level(t_log_level);
 }
 
 void idol::Optimizers::Gurobi::set_param(GRB_IntParam t_param, int t_value) {
@@ -463,14 +476,29 @@ void idol::Optimizers::Gurobi::set_param(GRB_DoubleParam t_param, double t_value
     m_model.set(t_param, t_value);
 }
 
-void idol::Optimizers::Gurobi::set_relative_gap_tolerance(double t_relative_gap_tolerance) {
-    Optimizer::set_relative_gap_tolerance(t_relative_gap_tolerance);
+void idol::Optimizers::Gurobi::set_tol_mip_relative_gap(double t_relative_gap_tolerance) {
+    Optimizer::set_tol_mip_relative_gap(t_relative_gap_tolerance);
     m_model.set(GRB_DoubleParam_MIPGap, t_relative_gap_tolerance);
 }
 
-void idol::Optimizers::Gurobi::set_absolute_gap_tolerance(double t_absolute_gap_tolerance) {
-    Optimizer::set_absolute_gap_tolerance(t_absolute_gap_tolerance);
+void idol::Optimizers::Gurobi::set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) {
+    Optimizer::set_tol_mip_absolute_gap(t_absolute_gap_tolerance);
     m_model.set(GRB_DoubleParam_MIPGapAbs, t_absolute_gap_tolerance);
+}
+
+void idol::Optimizers::Gurobi::set_tol_feasibility(double t_tol_feasibility) {
+    Optimizer::set_tol_feasibility(t_tol_feasibility);
+    m_model.set(GRB_DoubleParam_FeasibilityTol, t_tol_feasibility);
+}
+
+void idol::Optimizers::Gurobi::set_tol_optimality(double t_tol_optimality) {
+    Optimizer::set_tol_optimality(t_tol_optimality);
+    m_model.set(GRB_DoubleParam_OptimalityTol, t_tol_optimality);
+}
+
+void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
+    Optimizer::set_tol_integer(t_tol_integer);
+    m_model.set(GRB_DoubleParam_IntFeasTol, t_tol_integer);
 }
 
 #endif

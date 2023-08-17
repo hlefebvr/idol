@@ -271,7 +271,7 @@ void idol::Optimizers::GLPK::hook_optimize() {
 
     save_simplex_solution_status();
 
-    if (infeasible_or_unbounded_info()) {
+    if (get_param_infeasible_or_unbounded_info()) {
 
         if (m_solution_status == Infeasible) {
             compute_farkas_certificate();
@@ -582,29 +582,29 @@ void idol::Optimizers::GLPK::save_milp_solution_status() {
 
 }
 
-void idol::Optimizers::GLPK::set_time_limit(double t_time_limit) {
+void idol::Optimizers::GLPK::set_param_time_limit(double t_time_limit) {
 
     const int value = (int) std::min<double>(std::numeric_limits<int>::max(), std::ceil(t_time_limit) * 1000);
     m_simplex_parameters.tm_lim = value;
     m_mip_parameters.tm_lim = value;
 
-    Optimizer::set_time_limit(t_time_limit);
+    Optimizer::set_param_time_limit(t_time_limit);
 }
 
-void idol::Optimizers::GLPK::set_best_obj_stop(double t_best_obj_stop) {
+void idol::Optimizers::GLPK::set_param_best_obj_stop(double t_best_obj_stop) {
     m_simplex_parameters.obj_ul = t_best_obj_stop;
-    Optimizer::set_best_obj_stop(t_best_obj_stop);
+    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
-void idol::Optimizers::GLPK::set_best_bound_stop(double t_best_bound_stop) {
+void idol::Optimizers::GLPK::set_param_best_bound_stop(double t_best_bound_stop) {
     m_simplex_parameters.obj_ll = t_best_bound_stop;
-    Optimizer::set_best_bound_stop(t_best_bound_stop);
+    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
-void idol::Optimizers::GLPK::set_presolve(bool t_value) {
+void idol::Optimizers::GLPK::set_param_presolve(bool t_value) {
     m_simplex_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
     m_mip_parameters.presolve = t_value ? GLP_MSG_ERR : GLP_MSG_OFF;
-    Optimizer::set_presolve(t_value);
+    Optimizer::set_param_presolve(t_value);
 }
 
 idol::SolutionStatus idol::Optimizers::GLPK::get_status() const {

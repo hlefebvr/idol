@@ -94,17 +94,17 @@ public:
 
     [[nodiscard]] std::string name() const override { return "mosek"; }
 
-    void set_time_limit(double t_time_limit) override;
+    void set_param_time_limit(double t_time_limit) override;
 
-    void set_thread_limit(unsigned int t_thread_limit) override;
+    void set_param_threads(unsigned int t_thread_limit) override;
 
-    void set_best_obj_stop(double t_best_obj_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
 
-    void set_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
 
-    void set_presolve(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
 
-    void set_infeasible_or_unbounded_info(bool t_value) override;
+    void set_param_infeasible_or_unbounded_info(bool t_value) override;
 
     void set_parameter(const std::string& t_param, double t_value);
 
@@ -112,7 +112,7 @@ public:
 
     void set_parameter(const std::string& t_param, const std::string& t_value);
 
-    void set_log_level(LogLevel t_log_level) override;
+    void set_param_log_level(LogLevel t_log_level) override;
 };
 
 #endif

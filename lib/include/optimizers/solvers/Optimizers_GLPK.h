@@ -89,13 +89,13 @@ public:
 
     [[nodiscard]] std::string name() const override { return "glpk"; }
 
-    void set_time_limit(double t_time_limit) override;
+    void set_param_time_limit(double t_time_limit) override;
 
-    void set_best_obj_stop(double t_best_obj_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
 
-    void set_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
 
-    void set_presolve(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
 
 };
 

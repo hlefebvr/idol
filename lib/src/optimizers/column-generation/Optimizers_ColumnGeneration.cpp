@@ -60,8 +60,8 @@ void idol::Optimizers::ColumnGeneration::hook_before_optimize() {
     m_adjusted_dual_solution.reset();
     m_current_iteration_is_farkas_pricing = false;
 
-    if (m_farkas_pricing && !m_master->optimizer().infeasible_or_unbounded_info()) {
-        m_master->optimizer().set_infeasible_or_unbounded_info(true);
+    if (m_farkas_pricing && !m_master->optimizer().get_param_infeasible_or_unbounded_info()) {
+        m_master->optimizer().set_param_infeasible_or_unbounded_info(true);
     }
 
     for (auto& subproblem : m_subproblems) {
@@ -226,7 +226,7 @@ void idol::Optimizers::ColumnGeneration::run_column_generation() {
 
         ++m_iteration_count;
 
-        if (m_iteration_count >= iteration_count_limit()) {
+        if (m_iteration_count >= get_param_iteration_count_limit()) {
             set_reason(IterLimit);
             terminate();
             break;
@@ -234,7 +234,7 @@ void idol::Optimizers::ColumnGeneration::run_column_generation() {
 
     } while (true);
 
-    if (get_relative_gap() <= relative_gap_tolerance()) {
+    if (get_relative_gap() <= get_tol_mip_relative_gap()) {
         set_status(Optimal);
         set_reason(Proved);
     }
@@ -389,7 +389,7 @@ void idol::Optimizers::ColumnGeneration::update_subproblems() {
 
 void idol::Optimizers::ColumnGeneration::solve_subproblems() {
 
-    const unsigned int n_threads = std::min(thread_limit(), m_parallel_pricing_limit);
+    const unsigned int n_threads = std::min(get_param_threads(), m_parallel_pricing_limit);
 
 #pragma omp parallel for num_threads(n_threads) default(none)
     for (auto& subproblem : m_subproblems) {
@@ -469,12 +469,12 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
             set_best_bound(std::min(lower_bound, get_best_obj()));
         }
 
-        if (m_artificial_variables.empty() && get_best_bound() > best_bound_stop()) {
+        if (m_artificial_variables.empty() && get_best_bound() > get_param_best_bound_stop()) {
             set_status(get_relative_gap() > 0 ? Feasible : Optimal);
             set_reason(ObjLimit);
             terminate();
             idol_Log(Trace,
-                     "Terminate. Given best_bound_stop is " << best_bound_stop()
+                     "Terminate. Given get_param_best_bound_stop is " << get_param_best_bound_stop()
                     << " while current best bound is " << get_best_bound()
             )
         }
@@ -685,8 +685,8 @@ void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
         const auto [time_limit, relative_gap] = m_parent.m_non_optimal_pricing_phase.value();
         const auto duals = save_dual(*m_parent.m_master);
 
-        m_model->optimizer().set_relative_gap_tolerance(relative_gap);
-        m_model->optimizer().set_time_limit(std::min(m_parent.get_remaining_time(), time_limit));
+        m_model->optimizer().set_tol_mip_relative_gap(relative_gap);
+        m_model->optimizer().set_param_time_limit(std::min(m_parent.get_remaining_time(), time_limit));
         m_model->optimize();
 
         if (compute_reduced_cost(duals) < 0) {
@@ -695,7 +695,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
 
         std::cout << "continuing with time limit" << std::endl;
 
-        m_model->optimizer().set_time_limit(std::min(m_parent.get_remaining_time(), 2 * time_limit));
+        m_model->optimizer().set_param_time_limit(std::min(m_parent.get_remaining_time(), 2 * time_limit));
         m_model->optimize();
 
         if (compute_reduced_cost(duals) < 0) {
@@ -707,8 +707,8 @@ void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
 
     }
 
-    m_model->optimizer().set_relative_gap_tolerance(1e-4);
-    m_model->optimizer().set_time_limit(m_parent.get_remaining_time());
+    m_model->optimizer().set_tol_mip_relative_gap(1e-4);
+    m_model->optimizer().set_param_time_limit(m_parent.get_remaining_time());
     m_model->optimize();
 
 }

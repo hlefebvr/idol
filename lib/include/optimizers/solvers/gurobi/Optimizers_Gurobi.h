@@ -80,17 +80,17 @@ public:
 
     [[nodiscard]] std::string name() const override { return "gurobi"; }
 
-    void set_time_limit(double t_time_limit) override;
+    void set_param_time_limit(double t_time_limit) override;
 
-    void set_thread_limit(unsigned int t_thread_limit) override;
+    void set_param_threads(unsigned int t_thread_limit) override;
 
-    void set_best_obj_stop(double t_best_obj_stop) override;
+    void set_param_best_obj_stop(double t_best_obj_stop) override;
 
-    void set_best_bound_stop(double t_best_bound_stop) override;
+    void set_param_best_bound_stop(double t_best_bound_stop) override;
 
-    void set_presolve(bool t_value) override;
+    void set_param_presolve(bool t_value) override;
 
-    void set_infeasible_or_unbounded_info(bool t_value) override;
+    void set_param_infeasible_or_unbounded_info(bool t_value) override;
 
     void add_callback(Callback* t_ptr_to_callback);
 
@@ -98,15 +98,21 @@ public:
 
     void set_max_n_solution_in_pool(unsigned int t_value);
 
-    void set_log_level(LogLevel t_log_level) override;
+    void set_param_log_level(LogLevel t_log_level) override;
 
     void set_param(GRB_IntParam t_param, int t_value);
 
     void set_param(GRB_DoubleParam t_param, double t_value);
 
-    void set_relative_gap_tolerance(double t_relative_gap_tolerance) override;
+    void set_tol_mip_relative_gap(double t_relative_gap_tolerance) override;
 
-    void set_absolute_gap_tolerance(double t_absolute_gap_tolerance) override;
+    void set_tol_mip_absolute_gap(double t_absolute_gap_tolerance) override;
+
+    void set_tol_feasibility(double t_tol_feasibility) override;
+
+    void set_tol_optimality(double t_tol_optimality) override;
+
+    void set_tol_integer(double t_tol_integer) override;
 };
 
 #endif

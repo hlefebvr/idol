@@ -29,17 +29,26 @@ class idol::impl::Optimizer {
     const ::idol::Model& m_parent;
 
     bool m_is_terminated = false;
-    LogLevel m_log_level = Warn;
-    Color m_log_color = Default;
-    double m_time_limit = std::numeric_limits<double>::max();
-    unsigned int m_thread_limit = 1;
-    unsigned int m_iteration_count_limit = std::numeric_limits<unsigned int>::max();
-    double m_best_obj_stop = -Inf;
-    double m_best_bound_stop = +Inf;
-    double m_relative_gap_tolerance = 1e-4;
-    double m_absolute_gap_tolerance = 1e-8;
-    bool m_presolve = true;
-    bool m_infeasible_or_unbounded_info = false;
+
+    LogLevel m_param_log_level = Warn;
+
+    Color m_param_log_color = Default;
+
+    unsigned int m_param_threads = 1;
+    unsigned int m_param_iteration_limit = std::numeric_limits<unsigned int>::max();
+
+    double m_param_time_limit = std::numeric_limits<double>::max();
+    double m_param_best_obj_stop = -Inf;
+    double m_param_best_bound_stop = +Inf;
+
+    bool m_param_presolve = true;
+    bool m_param_infeasible_or_unbounded_info = false;
+
+    double m_tol_mip_relative_gap = Tolerance::MIPRelativeGap;
+    double m_tol_mip_absolute_gap = Tolerance::MIPAbsoluteGap;
+    double m_tol_integer = Tolerance::Integer;
+    double m_tol_feasibility = Tolerance::Feasibility;
+    double m_tol_optimality = Tolerance::Optimality;
 
     Timer m_timer;
 protected:
@@ -123,49 +132,61 @@ public:
 
     [[nodiscard]] virtual const ::idol::Model& parent() const { return m_parent; }
 
-    [[nodiscard]] LogLevel log_level() const { return m_log_level; }
+    [[nodiscard]] LogLevel log_level() const { return m_param_log_level; }
 
-    virtual void set_log_level(LogLevel t_log_level) { m_log_level = t_log_level; }
+    virtual void set_param_log_level(LogLevel t_log_level) { m_param_log_level = t_log_level; }
 
-    [[nodiscard]] Color log_color() const { return m_log_color; }
+    [[nodiscard]] Color log_color() const { return m_param_log_color; }
 
-    virtual void set_log_color(Color t_log_color) { m_log_color = t_log_color; }
+    virtual void set_param_log_color(Color t_log_color) { m_param_log_color = t_log_color; }
 
-    [[nodiscard]] double get_time_limit() const { return m_time_limit; }
+    [[nodiscard]] double get_param_time_limit() const { return m_param_time_limit; }
 
-    virtual void set_time_limit(double t_time_limit) { m_time_limit = t_time_limit; }
+    virtual void set_param_time_limit(double t_time_limit) { m_param_time_limit = t_time_limit; }
 
-    [[nodiscard]] unsigned int thread_limit() const { return m_thread_limit; }
+    [[nodiscard]] unsigned int get_param_threads() const { return m_param_threads; }
 
-    virtual void set_thread_limit(unsigned int t_thread_limit) { m_thread_limit = t_thread_limit; }
+    virtual void set_param_threads(unsigned int t_threads) { m_param_threads = t_threads; }
 
-    [[nodiscard]] double best_obj_stop() const { return m_best_obj_stop; }
+    [[nodiscard]] double get_param_best_obj_stop() const { return m_param_best_obj_stop; }
 
-    virtual void set_best_obj_stop(double t_best_obj_stop) { m_best_obj_stop = t_best_obj_stop; }
+    virtual void set_param_best_obj_stop(double t_best_obj_stop) { m_param_best_obj_stop = t_best_obj_stop; }
 
-    [[nodiscard]] double best_bound_stop() const { return m_best_bound_stop; }
+    [[nodiscard]] double get_param_best_bound_stop() const { return m_param_best_bound_stop; }
 
-    virtual void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
+    virtual void set_param_best_bound_stop(double t_best_bound_stop) { m_param_best_bound_stop = t_best_bound_stop; }
 
-    [[nodiscard]] double relative_gap_tolerance() const { return m_relative_gap_tolerance; }
+    [[nodiscard]] double get_tol_mip_relative_gap() const { return m_tol_mip_relative_gap; }
 
-    virtual void set_relative_gap_tolerance(double t_relative_gap_tolerance) { m_relative_gap_tolerance = t_relative_gap_tolerance; }
+    virtual void set_tol_mip_relative_gap(double t_tol_mip_relative_gap) { m_tol_mip_relative_gap = t_tol_mip_relative_gap; }
 
-    [[nodiscard]] double absolute_gap_tolerance() const { return m_absolute_gap_tolerance; }
+    [[nodiscard]] double get_tol_mip_absolute_gap() const { return m_tol_mip_absolute_gap; }
 
-    virtual void set_absolute_gap_tolerance(double t_absolute_gap_tolerance) { m_absolute_gap_tolerance = t_absolute_gap_tolerance; }
+    virtual void set_tol_mip_absolute_gap(double t_mip_tol_absolute_gap) { m_tol_mip_absolute_gap = t_mip_tol_absolute_gap; }
 
-    [[nodiscard]] unsigned int iteration_count_limit() const { return m_iteration_count_limit; }
+    [[nodiscard]] double get_tol_feasibility() const { return m_tol_feasibility; }
 
-    void set_iteration_count_limit(unsigned int t_iteration_count_limit) { m_iteration_count_limit = t_iteration_count_limit; }
+    virtual void set_tol_feasibility(double t_tol_feasibility) { m_tol_feasibility = t_tol_feasibility; }
 
-    [[nodiscard]] bool presolve() const { return m_presolve; }
+    [[nodiscard]] double get_tol_optimality() const { return m_tol_optimality; }
 
-    virtual void set_presolve(bool t_value) { m_presolve = t_value; }
+    virtual void set_tol_optimality(double t_tol_optimality) { m_tol_optimality = t_tol_optimality; }
 
-    [[nodiscard]] bool infeasible_or_unbounded_info() const { return m_infeasible_or_unbounded_info; }
+    [[nodiscard]] double get_tol_integer() const { return m_tol_integer; }
 
-    virtual void set_infeasible_or_unbounded_info(bool t_value) { m_infeasible_or_unbounded_info = t_value; }
+    virtual void set_tol_integer(double t_tol_integer) { m_tol_integer = t_tol_integer; }
+
+    [[nodiscard]] unsigned int get_param_iteration_count_limit() const { return m_param_iteration_limit; }
+
+    void set_param_iteration_limit(unsigned int t_iteration_limit) { m_param_iteration_limit = t_iteration_limit; }
+
+    [[nodiscard]] bool get_param_presolve() const { return m_param_presolve; }
+
+    virtual void set_param_presolve(bool t_value) { m_param_presolve = t_value; }
+
+    [[nodiscard]] bool get_param_infeasible_or_unbounded_info() const { return m_param_infeasible_or_unbounded_info; }
+
+    virtual void set_param_infeasible_or_unbounded_info(bool t_value) { m_param_infeasible_or_unbounded_info = t_value; }
 
     [[nodiscard]] const Timer& time() const { return m_timer; }
 
@@ -173,12 +194,12 @@ public:
 
     [[nodiscard]] bool is_terminated() const { return m_is_terminated; }
 
-    void terminate();
+    virtual void terminate();
 
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);
         if (!result) {
-            throw Exception("Bad cast.");
+            throw Exception("Optimizer could not be cast to desired type.");
         }
         return *result;
     }
@@ -186,7 +207,7 @@ public:
     template<class T> const T& as() const {
         auto* result = dynamic_cast<const T*>(this);
         if (!result) {
-            throw Exception("Bad cast.");
+            throw Exception("Optimizer could not be cast to desired type.");
         }
         return *result;
     }

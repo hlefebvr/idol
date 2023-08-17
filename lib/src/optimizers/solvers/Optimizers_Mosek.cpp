@@ -388,34 +388,34 @@ void idol::Optimizers::Mosek::set_var_ub(MosekVar &t_mosek_var, double t_bound) 
 
 }
 
-void idol::Optimizers::Mosek::set_time_limit(double t_time_limit) {
+void idol::Optimizers::Mosek::set_param_time_limit(double t_time_limit) {
     m_model->setSolverParam("optimizerMaxTime", t_time_limit);
-    Optimizer::set_time_limit(t_time_limit);
+    Optimizer::set_param_time_limit(t_time_limit);
 }
 
-void idol::Optimizers::Mosek::set_thread_limit(unsigned int t_thread_limit) {
+void idol::Optimizers::Mosek::set_param_threads(unsigned int t_thread_limit) {
     m_model->setSolverParam("numThreads", (int) t_thread_limit);
-    Optimizer::set_thread_limit(t_thread_limit);
+    Optimizer::set_param_threads(t_thread_limit);
 }
 
-void idol::Optimizers::Mosek::set_best_obj_stop(double t_best_obj_stop) {
+void idol::Optimizers::Mosek::set_param_best_obj_stop(double t_best_obj_stop) {
     m_model->setSolverParam("upperObjCut", t_best_obj_stop);
-    Optimizer::set_best_obj_stop(t_best_obj_stop);
+    Optimizer::set_param_best_obj_stop(t_best_obj_stop);
 }
 
-void idol::Optimizers::Mosek::set_best_bound_stop(double t_best_bound_stop) {
+void idol::Optimizers::Mosek::set_param_best_bound_stop(double t_best_bound_stop) {
     m_model->setSolverParam("lowerObjCut", t_best_bound_stop);
-    Optimizer::set_best_bound_stop(t_best_bound_stop);
+    Optimizer::set_param_best_bound_stop(t_best_bound_stop);
 }
 
-void idol::Optimizers::Mosek::set_presolve(bool t_value) {
+void idol::Optimizers::Mosek::set_param_presolve(bool t_value) {
     m_model->setSolverParam("presolveUse", t_value ? "on" : "off");
-    Optimizer::set_presolve(t_value);
+    Optimizer::set_param_presolve(t_value);
 }
 
-void idol::Optimizers::Mosek::set_infeasible_or_unbounded_info(bool t_value) {
+void idol::Optimizers::Mosek::set_param_infeasible_or_unbounded_info(bool t_value) {
     m_model->acceptedSolutionStatus(t_value ? mosek::fusion::AccSolutionStatus::Anything : mosek::fusion::AccSolutionStatus::Feasible);
-    Optimizer::set_infeasible_or_unbounded_info(t_value);
+    Optimizer::set_param_infeasible_or_unbounded_info(t_value);
 }
 
 idol::SolutionStatus idol::Optimizers::Mosek::get_status() const {
@@ -495,7 +495,7 @@ void idol::Optimizers::Mosek::set_parameter(const std::string &t_param, const st
     m_model->setSolverParam(t_param, t_value);
 }
 
-void idol::Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
+void idol::Optimizers::Mosek::set_param_log_level(LogLevel t_log_level) {
 
     if (t_log_level == Mute) {
 
@@ -509,7 +509,7 @@ void idol::Optimizers::Mosek::set_log_level(LogLevel t_log_level) {
 
     }
 
-    Optimizer::set_log_level(t_log_level);
+    Optimizer::set_param_log_level(t_log_level);
 }
 
 idol::MosekKiller::~MosekKiller() {

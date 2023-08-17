@@ -351,8 +351,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 
     // Reset solution
-    set_best_bound(std::max(-Inf, best_obj_stop()));
-    set_best_obj(std::min(+Inf, best_bound_stop()));
+    set_best_bound(std::max(-Inf, get_param_best_obj_stop()));
+    set_best_obj(std::min(+Inf, get_param_best_bound_stop()));
     m_incumbent.reset();
 
     m_n_created_nodes = 0;
@@ -465,8 +465,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) {
 
     m_node_updator->apply_local_updates(t_node.info());
 
-    m_relaxation->optimizer().set_best_bound_stop(std::min(get_best_obj(), best_bound_stop()));
-    m_relaxation->optimizer().set_time_limit(get_remaining_time());
+    m_relaxation->optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
+    m_relaxation->optimizer().set_param_time_limit(get_remaining_time());
 
     idol_Log(Debug, "Beginning to solve node " << t_node.id() << ".");
 
@@ -640,7 +640,9 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAnd
     while (it != end) {
 
         if (const auto& node = *it ; node.info().objective_value() >= upper_bound) {
-            idol_Log(Trace, "Node " << node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << node.info().objective_value() << ").");
+            idol_Log(Trace,
+                     "Node " << node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: "
+                             << node.info().objective_value() << ").");
             it = t_active_nodes.erase(it);
             end = t_active_nodes.by_objective_value().end();
         } else {
@@ -684,8 +686,8 @@ template<class NodeInfoT>
 bool idol::Optimizers::BranchAndBound<NodeInfoT>::gap_is_closed() const {
     return is_terminated()
            || get_remaining_time() == 0
-           || get_relative_gap() <= relative_gap_tolerance()
-        || get_absolute_gap() <= absolute_gap_tolerance();
+           || get_relative_gap() <= get_tol_mip_relative_gap()
+        || get_absolute_gap() <= get_tol_mip_absolute_gap();
 }
 
 template<class NodeInfoT>

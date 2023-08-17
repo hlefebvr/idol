@@ -173,14 +173,14 @@ public:
     CRTP& with_absolute_gap_tolerance(double t_absolute_gap_tolerance);
 
     /**
-     * Sets the presolve activation for the optimizer.
+     * Sets the get_param_presolve activation for the optimizer.
      *
      * Example:
      * ```cpp
      * auto algorithm = GLPK()
-     *                      .with_presolve(false); // turns off presolve phase
+     *                      .with_presolve(false); // turns off get_param_presolve phase
      * ```
-     * @param t_value the activation level for the optimizer's presolve (0 for disabling, 1 for enabling)
+     * @param t_value the activation level for the optimizer's get_param_presolve (0 for disabling, 1 for enabling)
      * @return the optimizer factory itself
      */
     CRTP& with_presolve(bool t_value);
@@ -271,7 +271,7 @@ template<class CRTP>
 CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_presolve(bool t_value) {
 
     if (m_presolve.has_value()) {
-        throw Exception("A presolve instruction has already been given.");
+        throw Exception("A get_param_presolve instruction has already been given.");
     }
 
     m_presolve = t_value;
@@ -380,47 +380,47 @@ template<class CRTP>
 void idol::OptimizerFactoryWithDefaultParameters<CRTP>::handle_default_parameters(Optimizer *t_optimizer) const {
 
     if (m_log_level.has_value()) {
-        t_optimizer->set_log_level(m_log_level.value());
+        t_optimizer->set_param_log_level(m_log_level.value());
     }
 
     if (m_log_color.has_value()) {
-        t_optimizer->set_log_color(m_log_color.value());
+        t_optimizer->set_param_log_color(m_log_color.value());
     }
 
     if (m_time_limit.has_value()) {
-        t_optimizer->set_time_limit(m_time_limit.value());
+        t_optimizer->set_param_time_limit(m_time_limit.value());
     }
 
     if (m_thread_limit.has_value()) {
-        t_optimizer->set_thread_limit(m_thread_limit.value());
+        t_optimizer->set_param_threads(m_thread_limit.value());
     }
 
     if (m_best_bound_stop.has_value()) {
-        t_optimizer->set_best_bound_stop(m_best_bound_stop.value());
+        t_optimizer->set_param_best_bound_stop(m_best_bound_stop.value());
     }
 
     if (m_best_obj_stop.has_value()) {
-        t_optimizer->set_best_obj_stop(m_best_obj_stop.value());
+        t_optimizer->set_param_best_obj_stop(m_best_obj_stop.value());
     }
 
     if (m_relative_gap_tolerance.has_value()) {
-        t_optimizer->set_relative_gap_tolerance(m_relative_gap_tolerance.value());
+        t_optimizer->set_tol_mip_relative_gap(m_relative_gap_tolerance.value());
     }
 
     if (m_absolute_gap_tolerance.has_value()) {
-        t_optimizer->set_absolute_gap_tolerance(m_absolute_gap_tolerance.value());
+        t_optimizer->set_tol_mip_absolute_gap(m_absolute_gap_tolerance.value());
     }
 
     if (m_iteration_count_limit.has_value()) {
-        t_optimizer->set_iteration_count_limit(m_iteration_count_limit.value());
+        t_optimizer->set_param_iteration_limit(m_iteration_count_limit.value());
     }
 
     if (m_presolve.has_value()) {
-        t_optimizer->set_presolve(m_presolve.value());
+        t_optimizer->set_param_presolve(m_presolve.value());
     }
 
     if (m_infeasible_or_unbounded_info.has_value()) {
-        t_optimizer->set_infeasible_or_unbounded_info(m_infeasible_or_unbounded_info.value());
+        t_optimizer->set_param_infeasible_or_unbounded_info(m_infeasible_or_unbounded_info.value());
     }
 
 }

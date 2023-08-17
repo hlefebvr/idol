@@ -218,7 +218,7 @@ void idol::Model::use(const OptimizerFactory &t_optimizer_factory) {
 
 void idol::Model::unuse() {
     m_optimizer.reset();
-    m_optimizer.reset();
+    m_optimizer_factory.reset();
 }
 
 bool idol::Model::has_optimizer() const {
