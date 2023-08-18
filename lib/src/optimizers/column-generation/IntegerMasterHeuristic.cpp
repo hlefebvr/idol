@@ -78,6 +78,8 @@ void idol::IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
 
     integer_master->use(*m_optimizer_factory);
 
+    integer_master->optimizer().set_param_time_limit(relaxation.optimizer().get_remaining_time());
+
     integer_master->optimize();
 
     const int status = integer_master->get_status();
