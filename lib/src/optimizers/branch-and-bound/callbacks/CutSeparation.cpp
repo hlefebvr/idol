@@ -63,7 +63,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        if (k == 0 && m_separation_problem->get_best_obj() >= 0) {
+        if (k == 0 && m_separation_problem->get_best_obj() >= 1e-3) {
             break;
         }
 
