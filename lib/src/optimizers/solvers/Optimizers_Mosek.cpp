@@ -111,7 +111,7 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
 
     MosekVar result;
 
-    result.variable = m_model->variable(1, mosek::fusion::Domain::unbounded());
+    result.variable = m_model->variable(/* t_var.name(), */ 1, mosek::fusion::Domain::unbounded());
 
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
@@ -181,7 +181,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
         auto it = rq_cone_expr.begin();
 
-        if (!row.linear().empty()) {
+        if (!row.linear().empty() || !row.rhs().is_zero()) {
 
             auto& head1 = *it;
             ++it;
