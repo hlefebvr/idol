@@ -14,6 +14,7 @@ idol::Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxatio
       m_continuous_relaxation(t_continuous_relaxation) {
 
     m_model->setLogHandler(NULL);
+    m_model->acceptedSolutionStatus(mosek::fusion::AccSolutionStatus::Feasible);
 
 }
 
@@ -54,6 +55,17 @@ void idol::Optimizers::Mosek::hook_optimize() {
         m_solution_status = Optimal;
         m_solution_reason = Proved;
 
+    } else if (problem_status == mosek::fusion::ProblemStatus::PrimalFeasible
+               && primal_status == mosek::fusion::SolutionStatus::Feasible
+               && dual_status == mosek::fusion::SolutionStatus::Undefined) {
+
+        m_solution_status = Feasible;
+        if (time().count() >= get_param_time_limit()) {
+            m_solution_reason = TimeLimit;
+        } else {
+            m_solution_reason = NotSpecified;
+        }
+
     } else if (problem_status == mosek::fusion::ProblemStatus::PrimalInfeasible
                && primal_status == mosek::fusion::SolutionStatus::Undefined
                && dual_status == mosek::fusion::SolutionStatus::Certificate) {
@@ -67,7 +79,11 @@ void idol::Optimizers::Mosek::hook_optimize() {
                ) {
 
         m_solution_status = Infeasible;
-        m_solution_reason = Proved;
+        if (time().count() >= get_param_time_limit()) {
+            m_solution_reason = TimeLimit;
+        } else {
+            m_solution_reason = NotSpecified;
+        }
 
     } else if (problem_status == mosek::fusion::ProblemStatus::DualInfeasible
                && primal_status == mosek::fusion::SolutionStatus::Certificate
