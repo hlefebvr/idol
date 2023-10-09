@@ -41,6 +41,7 @@ namespace idol {
 class idol::Model : public Matrix {
     Env& m_env;
     const unsigned int m_id;
+    bool m_has_been_moved = false;
 
     ObjectiveSense m_sense = Minimize;
     Expr<Var> m_objective;
@@ -72,8 +73,10 @@ public:
      */
     explicit Model(Env& t_env);
 
+    Model(Env& t_env, ObjectiveSense t_sense);
+
     Model(const Model&) = delete;
-    Model(Model&&) noexcept = default;
+    Model(Model&&) noexcept;
 
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;

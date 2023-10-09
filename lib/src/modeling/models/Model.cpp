@@ -6,7 +6,34 @@
 
 idol::Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 
+
+idol::Model::Model(idol::Env &t_env, idol::ObjectiveSense t_sense) : Model(t_env) {
+    set_obj_sense(t_sense);
+}
+
+
+idol::Model::Model(idol::Model && t_src) noexcept
+    : m_env(t_src.m_env),
+      m_id(t_src.m_id),
+      m_sense(t_src.m_sense),
+      m_objective(std::move(t_src.m_objective)),
+      m_rhs(std::move(t_src.m_rhs)),
+      m_variables(std::move(t_src.m_variables)),
+      m_constraints(std::move(t_src.m_constraints)),
+      m_optimizer(std::move(t_src.m_optimizer)),
+      m_optimizer_factory(std::move(t_src.m_optimizer_factory))
+{
+
+    t_src.m_has_been_moved = true;
+
+}
+
+
 idol::Model::~Model() {
+
+    if (m_has_been_moved) {
+        return;
+    }
 
     for (const auto& var : m_variables) {
         m_env.remove_version(*this, var);
