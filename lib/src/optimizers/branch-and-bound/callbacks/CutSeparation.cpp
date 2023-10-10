@@ -48,7 +48,9 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     m_separation_problem->set_obj_expr(std::move(objective));
 
+    idol_Log(Debug, "Start solving separation problem");
     m_separation_problem->optimize();
+    idol_Log(Debug, "Stop solving separation problem");
 
     const auto status = m_separation_problem->get_status();
 
@@ -63,9 +65,12 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        if (k == 0 && m_separation_problem->get_best_obj() >= 1e-3) {
+        if (k == 0 && m_separation_problem->get_best_obj() >= -1e-3) {
+            std::cout << "STOP" << std::endl;
             break;
         }
+
+        idol_Log(Debug, "Violation: " << m_separation_problem->get_best_obj() << ".")
 
         const auto& solution = save_primal(*m_separation_problem);
 
