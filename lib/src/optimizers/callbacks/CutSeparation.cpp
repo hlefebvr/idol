@@ -20,6 +20,10 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
         throw Exception("Adding non-linear cut is not available.");
     }
 
+    if (m_cut.type() == Equal) {
+        throw Exception("Separating equality constraints is not available.");
+    }
+
 }
 
 void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
