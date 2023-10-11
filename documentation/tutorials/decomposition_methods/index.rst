@@ -8,3 +8,4 @@ Decomposition methods
    :glob:
 
    dantzig_wolfe
+   benders

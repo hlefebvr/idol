@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-Dantzig-Wolfe decomposition
-===========================
+Dantzig-Wolfe Decomposition (Automatic)
+=======================================
 
 In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
 using an external solver to solve each sub-problem.
@@ -14,7 +14,7 @@ using an external solver to solve each sub-problem.
     This tutorial regards the `advanced topic` of Column Generation and Dantzig-Wolfe decomposition.
     Rudimentary notions in the following subjects are recommended:
 
-    - `Column Generation and Branch-and-Price algorithmd <https://en.wikipedia.org/wiki/Column_generation>`_
+    - `Column Generation and Branch-and-Price algorithms <https://en.wikipedia.org/wiki/Column_generation>`_
     - `Dantzig-Wolfe decomposition <https://en.wikipedia.org/wiki/Dantzig%E2%80%93Wolfe_decomposition>`_
     - `Generalized Assignment Problem <https://en.wikipedia.org/wiki/Generalized_assignment_problem>`_.
 
