@@ -16,6 +16,10 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
       m_log_level(t_level),
       m_log_color(t_color) {
 
+    if (!m_cut.row().quadratic().empty()) {
+        throw Exception("Adding non-linear cut is not available.");
+    }
+
 }
 
 void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
@@ -26,27 +30,10 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const auto& current_solution = primal_solution();
 
-    const auto& row = m_cut.row();
-
-    if (!row.quadratic().empty()) {
-        throw Exception("Adding non-linear cut is not available in Gurobi.");
-    }
-
-    ::idol::Expr objective = row.rhs().numerical();
-
-    for (const auto& [param, coeff] : row.rhs().linear()) {
-        objective += coeff * param.as<Var>();
-    }
-
-    for (const auto& [var, constant] : row.linear()) {
-        ::idol::Expr term = -constant.numerical();
-        for (const auto& [param, coeff] : constant.linear()) {
-            term += -coeff * param.as<Var>();
-        }
-        objective += term * current_solution.get(var);
-    }
+    auto [objective, sense] = create_separation_objective(current_solution);
 
     m_separation_problem->set_obj_expr(std::move(objective));
+    m_separation_problem->set_obj_sense(sense);
 
     idol_Log(Debug, "Start solving separation problem");
     m_separation_problem->optimize();
@@ -65,22 +52,45 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        if (k == 0 && m_separation_problem->get_best_obj() >= -1e-3) {
-            std::cout << "STOP" << std::endl;
+        idol_Log(Debug, "Solution " << k << " has a violation of " << std::abs(m_separation_problem->get_best_obj()) << ".")
+
+        if (k == 0 && m_separation_problem->get_best_obj() >= -m_tolerance) {
             break;
         }
-
-        idol_Log(Debug, "Violation: " << m_separation_problem->get_best_obj() << ".")
 
         const auto& solution = save_primal(*m_separation_problem);
 
         TempCtr cut(m_cut.row().fix(solution), m_cut.type());
 
-        idol_Log(Trace, "Added " << cut << ".")
+        idol_Log(Trace, "The following cut was added: " << cut << ".")
 
         hook_add_cut(cut);
     }
 
-    idol_Log(Info, "Added " << k << " cuts.")
+    idol_Log(Info, "In total, " << k << " cuts have been added.")
 
+}
+
+std::pair<idol::Expr<idol::Var, idol::Var>, idol::ObjectiveSense>
+idol::impl::CutSeparation::create_separation_objective(const idol::Solution::Primal &t_primal_solution) {
+
+    const auto sense = m_cut.type() == LessOrEqual ? Minimize : Maximize;
+
+    const auto& row = m_cut.row();
+
+    ::idol::Expr result = row.rhs().numerical();
+
+    for (const auto& [param, coeff] : row.rhs().linear()) {
+        result += coeff * param.as<Var>();
+    }
+
+    for (const auto& [var, constant] : row.linear()) {
+        ::idol::Expr term = -constant.numerical();
+        for (const auto& [param, coeff] : constant.linear()) {
+            term += -coeff * param.as<Var>();
+        }
+        result += term * t_primal_solution.get(var);
+    }
+
+    return std::make_pair(std::move(result), sense);
 }

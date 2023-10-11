@@ -19,7 +19,11 @@ class idol::impl::CutSeparation : public Callback {
     CallbackEvent m_triggering_event;
     std::unique_ptr<Model> m_separation_problem;
     TempCtr m_cut;
+
+    double m_tolerance = idol::Tolerance::Feasibility;
 protected:
+    std::pair<::idol::Expr<Var, Var>, ObjectiveSense> create_separation_objective(const Solution::Primal& t_primal_solution);
+
     void operator()(CallbackEvent t_event) override;
 
     virtual void hook_add_cut(const TempCtr& t_cut) = 0;
