@@ -200,6 +200,10 @@ namespace idol {
             t_os << t_pair.first << ' ' << t_pair.second;
         };
 
+        if (t_coefficient.is_zero()) {
+            return t_os << "0";
+        }
+
         const double constant = t_coefficient.numerical();
 
         bool first_term_has_been_printed = false;
