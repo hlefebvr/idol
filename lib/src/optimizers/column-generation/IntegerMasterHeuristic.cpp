@@ -8,7 +8,9 @@ idol::IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristi
     : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
       m_integer_columns(t_src.m_integer_columns),
       m_time_limit(t_src.m_time_limit),
-      m_iteration_limit(t_src.m_time_limit)
+      m_iteration_limit(t_src.m_time_limit),
+      m_max_depth(t_src.m_max_depth),
+      m_frequency(t_src.m_frequency)
     {}
 
 idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::operator()() {
@@ -29,6 +31,14 @@ idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::oper
 
     if (m_iteration_limit.has_value()) {
         result->set_iteration_limit(m_iteration_limit.value());
+    }
+
+    if (m_max_depth.has_value()){
+        result->set_max_depth(m_max_depth.value());
+    }
+
+    if (m_frequency.has_value()) {
+        result->set_frequency(m_frequency.value());
     }
 
     return result;
@@ -62,6 +72,16 @@ idol::IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optim
 void idol::IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
 
     if (t_event != InvalidSolution) {
+        return;
+    }
+
+    if (m_max_depth > this->node().level()) {
+        return;
+    }
+
+    unsigned int n_relevant_calls = m_n_relevant_calls++;
+
+    if ( n_relevant_calls % m_frequency != 0) {
         return;
     }
 

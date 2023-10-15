@@ -20,6 +20,8 @@ class idol::IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeIn
 
     std::optional<double> m_time_limit;
     std::optional<unsigned int> m_iteration_limit;
+    std::optional<unsigned int> m_max_depth;
+    std::optional<unsigned int> m_frequency;
 
     IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src);
 public:
@@ -35,6 +37,9 @@ public:
         bool m_integer_columns = true;
         double m_time_limit = std::numeric_limits<double>::max();
         unsigned int m_iteration_limit = 200;
+        unsigned int m_max_depth = 1000;
+        unsigned int m_frequency = 1;
+        unsigned int m_n_relevant_calls = 0; // Counts the number of calls to the callback which can trigger the heuristic, except for frequency reasons
     protected:
         void operator()(CallbackEvent t_event) override;
     public:
@@ -47,6 +52,10 @@ public:
         void set_time_limit(double t_time_limit) { m_time_limit = std::max(0., t_time_limit); }
 
         void set_iteration_limit(unsigned int t_iteration_limit) { m_iteration_limit = t_iteration_limit; }
+
+        void set_max_depth(unsigned int t_max_depth) { m_max_depth = t_max_depth; }
+
+        void set_frequency(unsigned int t_frequency) { m_frequency = t_frequency; }
     };
 
     BranchAndBoundCallback<NodeInfo> *operator()() override;
