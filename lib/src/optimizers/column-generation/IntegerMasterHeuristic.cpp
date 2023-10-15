@@ -5,7 +5,11 @@
 #include "optimizers/column-generation/ColumnGeneration.h"
 
 idol::IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src)
-    :m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
+    : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
+      m_integer_columns(t_src.m_integer_columns),
+      m_time_limit(t_src.m_time_limit),
+      m_iteration_limit(t_src.m_time_limit)
+    {}
 
 idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::operator()() {
 
@@ -17,6 +21,14 @@ idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::oper
 
     if (m_integer_columns.has_value()) {
         result->set_integer_columns(m_integer_columns.value());
+    }
+
+    if (m_time_limit.has_value()) {
+        result->set_time_limit(m_time_limit.value());
+    }
+
+    if (m_iteration_limit.has_value()) {
+        result->set_iteration_limit(m_iteration_limit.value());
     }
 
     return result;
@@ -78,7 +90,9 @@ void idol::IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
 
     integer_master->use(*m_optimizer_factory);
 
-    integer_master->optimizer().set_param_time_limit(relaxation.optimizer().get_remaining_time());
+    integer_master->optimizer().set_param_time_limit(std::min(m_time_limit, relaxation.optimizer().get_remaining_time()));
+
+    integer_master->optimizer().set_param_iteration_limit(m_iteration_limit);
 
     integer_master->optimize();
 

@@ -18,6 +18,9 @@ class idol::IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeIn
 
     std::optional<bool> m_integer_columns;
 
+    std::optional<double> m_time_limit;
+    std::optional<unsigned int> m_iteration_limit;
+
     IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src);
 public:
     IntegerMasterHeuristic() = default;
@@ -30,6 +33,8 @@ public:
     class Strategy : public BranchAndBoundCallback<NodeInfo> {
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
+        double m_time_limit = std::numeric_limits<double>::max();
+        unsigned int m_iteration_limit = 200;
     protected:
         void operator()(CallbackEvent t_event) override;
     public:
@@ -38,6 +43,10 @@ public:
         [[nodiscard]] bool with_integer_columns() const { return m_integer_columns; }
 
         void set_integer_columns(bool t_value) { m_integer_columns = t_value; }
+
+        void set_time_limit(double t_time_limit) { m_time_limit = std::max(0., t_time_limit); }
+
+        void set_iteration_limit(unsigned int t_iteration_limit) { m_iteration_limit = t_iteration_limit; }
     };
 
     BranchAndBoundCallback<NodeInfo> *operator()() override;
