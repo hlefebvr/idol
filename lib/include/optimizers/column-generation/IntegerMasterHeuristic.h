@@ -36,7 +36,7 @@ public:
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
         double m_time_limit = std::numeric_limits<double>::max();
-        unsigned int m_iteration_limit = 200;
+        unsigned int m_iteration_limit = std::numeric_limits<unsigned int>::max();
         unsigned int m_max_depth = 1000;
         unsigned int m_frequency = 1;
         unsigned int m_n_relevant_calls = 0; // Counts the number of calls to the callback which can trigger the heuristic, except for frequency reasons
@@ -65,6 +65,14 @@ public:
     IntegerMasterHeuristic& with_optimizer(const OptimizerFactory& t_optimizer);
 
     IntegerMasterHeuristic& with_integer_columns(bool t_value);
+
+    IntegerMasterHeuristic& with_time_limit(double t_time_limit);
+
+    IntegerMasterHeuristic& with_iteration_limit(unsigned int t_iteration_limit);
+
+    IntegerMasterHeuristic& with_max_depth(unsigned int t_max_depth);
+
+    IntegerMasterHeuristic& with_frequency(unsigned int t_frequency);
 };
 
 #endif //IDOL_INTEGERMASTERHEURISTIC_H

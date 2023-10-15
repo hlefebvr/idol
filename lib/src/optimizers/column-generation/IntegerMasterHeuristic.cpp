@@ -64,6 +64,26 @@ idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_integer_columns
     return *this;
 }
 
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_time_limit(double t_time_limit) {
+    m_time_limit = t_time_limit;
+    return *this;
+}
+
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_iteration_limit(unsigned int t_iteration_limit) {
+    m_iteration_limit = t_iteration_limit;
+    return *this;
+}
+
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_max_depth(unsigned int t_max_depth) {
+    m_max_depth = t_max_depth;
+    return *this;
+}
+
+idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_frequency(unsigned int t_frequency) {
+    m_frequency = t_frequency;
+    return *this;
+}
+
 idol::IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
         : m_optimizer_factory(t_optimizer.clone()) {
 
