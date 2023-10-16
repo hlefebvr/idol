@@ -8,11 +8,11 @@
 #include "CallbackFactory.h"
 #include "Callback.h"
 
-namespace idol {
+namespace idol::Heuristics {
     class SimpleRounding;
 }
 
-class idol::SimpleRounding : public CallbackFactory {
+class idol::Heuristics::SimpleRounding : public CallbackFactory {
 
     SimpleRounding(const SimpleRounding& t_src) = default;
 public:

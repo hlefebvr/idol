@@ -5,7 +5,7 @@
 #include "modeling/models/Model.h"
 #include "modeling/expressions/operations/operators.h"
 
-void idol::SimpleRounding::Strategy::operator()(CallbackEvent t_event) {
+void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_event) {
 
     if (t_event != InvalidSolution) {
         return;
@@ -62,6 +62,6 @@ void idol::SimpleRounding::Strategy::operator()(CallbackEvent t_event) {
 
     result.set_objective_value(evaluate(model.get_obj_expr(), result));
 
-    this->submit_solution(result);
+    this->submit_heuristic_solution(result);
 
 }

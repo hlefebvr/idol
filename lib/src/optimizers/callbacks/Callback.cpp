@@ -35,9 +35,9 @@ const idol::Model &idol::Callback::original_model() const {
     return m_interface->original_model();
 }
 
-void idol::Callback::submit_solution(const idol::Solution::Primal &t_solution) {
+void idol::Callback::submit_heuristic_solution(const idol::Solution::Primal &t_solution) {
     throw_if_no_interface();
-    m_interface->submit_solution(t_solution);
+    m_interface->submit_heuristic_solution(t_solution);
 }
 
 void idol::CallbackI::execute(Callback &t_cb, CallbackEvent t_event) {

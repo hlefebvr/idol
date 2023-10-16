@@ -9,7 +9,7 @@
 #include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/column-generation/IntegerMaster.h"
 #include "optimizers/callbacks/UserCutCallback.h"
 #include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
 
@@ -99,7 +99,7 @@ int main(int t_argc, char** t_argv) {
 
                                     .conditional(primal_heuristic, [](auto &x) {
                                         x.with_callback(
-                                                IntegerMasterHeuristic().with_optimizer(Gurobi().with_time_limit(20))
+                                                Heuristics::IntegerMaster().with_optimizer(Gurobi().with_time_limit(20))
                                         );
                                     })
 

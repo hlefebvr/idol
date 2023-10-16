@@ -7,7 +7,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/column-generation/IntegerMaster.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
@@ -115,7 +115,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                               .with_node_selection_rule(BestBound())
                                               .conditional(integer_master_heuristic, [](auto &x) {
                                                   x.with_callback(
-                                                          IntegerMasterHeuristic()
+                                                          Heuristics::IntegerMaster()
                                                                   .with_optimizer(TestType())
                                                   );
                                               })
@@ -138,7 +138,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                     .with_subtree_depth(subtree_depth)
                     .conditional(integer_master_heuristic, [](auto& x){
                         x.with_callback(
-                                IntegerMasterHeuristic()
+                                Heuristics::IntegerMaster()
                                     .with_optimizer(TestType()
                                 )
                             );

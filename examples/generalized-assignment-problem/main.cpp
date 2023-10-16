@@ -11,7 +11,7 @@
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/column-generation/IntegerMaster.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -66,7 +66,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
-                .with_callback(IntegerMasterHeuristic().with_optimizer(GLPK()))
+                .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
             );
 
     // Solve

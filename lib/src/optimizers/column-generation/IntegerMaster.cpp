@@ -1,10 +1,10 @@
 //
 // Created by henri on 30/03/23.
 //
-#include "optimizers/column-generation/IntegerMasterHeuristic.h"
+#include "optimizers/column-generation/IntegerMaster.h"
 #include "optimizers/column-generation/ColumnGeneration.h"
 
-idol::IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src)
+idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
       m_integer_columns(t_src.m_integer_columns),
       m_time_limit(t_src.m_time_limit),
@@ -13,10 +13,10 @@ idol::IntegerMasterHeuristic::IntegerMasterHeuristic(const IntegerMasterHeuristi
       m_frequency(t_src.m_frequency)
     {}
 
-idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::operator()() {
+idol::BranchAndBoundCallback<idol::NodeInfo> *idol::Heuristics::IntegerMaster::operator()() {
 
     if (!m_optimizer_factory) {
-        throw Exception("No solver was given to solve the integer master problem, please call IntegerMasterHeuristic::with_optimizer to configure.");
+        throw Exception("No solver was given to solve the integer master problem, please call IntegerMaster::with_optimizer to configure.");
     }
 
     auto* result = new Strategy(*m_optimizer_factory);
@@ -44,7 +44,7 @@ idol::BranchAndBoundCallback<idol::NodeInfo> *idol::IntegerMasterHeuristic::oper
     return result;
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_optimizer(const OptimizerFactory &t_optimizer) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_optimizer(const OptimizerFactory &t_optimizer) {
 
     if (m_optimizer_factory) {
         throw Exception("A solver has already been given.");
@@ -55,41 +55,41 @@ idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_optimizer(const
     return *this;
 }
 
-idol::BranchAndBoundCallbackFactory<idol::NodeInfo> *idol::IntegerMasterHeuristic::clone() const {
-    return new IntegerMasterHeuristic(*this);
+idol::BranchAndBoundCallbackFactory<idol::NodeInfo> *idol::Heuristics::IntegerMaster::clone() const {
+    return new IntegerMaster(*this);
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_integer_columns(bool t_value) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_integer_columns(bool t_value) {
     m_integer_columns = t_value;
     return *this;
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_time_limit(double t_time_limit) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_time_limit(double t_time_limit) {
     m_time_limit = t_time_limit;
     return *this;
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_iteration_limit(unsigned int t_iteration_limit) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_iteration_limit(unsigned int t_iteration_limit) {
     m_iteration_limit = t_iteration_limit;
     return *this;
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_max_depth(unsigned int t_max_depth) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_max_depth(unsigned int t_max_depth) {
     m_max_depth = t_max_depth;
     return *this;
 }
 
-idol::IntegerMasterHeuristic &idol::IntegerMasterHeuristic::with_frequency(unsigned int t_frequency) {
+idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_frequency(unsigned int t_frequency) {
     m_frequency = t_frequency;
     return *this;
 }
 
-idol::IntegerMasterHeuristic::Strategy::Strategy(const OptimizerFactory &t_optimizer)
+idol::Heuristics::IntegerMaster::Strategy::Strategy(const OptimizerFactory &t_optimizer)
         : m_optimizer_factory(t_optimizer.clone()) {
 
 }
 
-void idol::IntegerMasterHeuristic::Strategy::operator()(CallbackEvent t_event) {
+void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event) {
 
     if (t_event != InvalidSolution) {
         return;

@@ -186,7 +186,7 @@ public:
      *
      * ```cpp
      * auto algorithm = BranchAndBound()
-     *                      .with_callback(IntegerMasterHeuristic());
+     *                      .with_callback(IntegerMaster());
      * ```
      * @param t_callback the callback factory
      * @return the optimizer factory itself

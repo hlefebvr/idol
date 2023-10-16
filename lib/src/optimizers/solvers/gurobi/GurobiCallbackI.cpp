@@ -126,7 +126,7 @@ const idol::Model &idol::GurobiCallbackI::original_model() const {
     return m_parent.parent();
 }
 
-void idol::GurobiCallbackI::submit_solution(const idol::Solution::Primal &t_solution) {
+void idol::GurobiCallbackI::submit_heuristic_solution(idol::Solution::Primal t_solution) {
 
     unsigned int size = t_solution.size();
 

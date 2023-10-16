@@ -2,18 +2,18 @@
 // Created by henri on 30/03/23.
 //
 
-#ifndef IDOL_INTEGERMASTERHEURISTIC_H
-#define IDOL_INTEGERMASTERHEURISTIC_H
+#ifndef IDOL_INTEGERMASTER_H
+#define IDOL_INTEGERMASTER_H
 
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 #include "optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 
-namespace idol {
-    class IntegerMasterHeuristic;
+namespace idol::Heuristics {
+    class IntegerMaster;
 }
 
-class idol::IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeInfo> {
+class idol::Heuristics::IntegerMaster : public BranchAndBoundCallbackFactory<NodeInfo> {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     std::optional<bool> m_integer_columns;
@@ -23,14 +23,14 @@ class idol::IntegerMasterHeuristic : public BranchAndBoundCallbackFactory<NodeIn
     std::optional<unsigned int> m_max_depth;
     std::optional<unsigned int> m_frequency;
 
-    IntegerMasterHeuristic(const IntegerMasterHeuristic& t_src);
+    IntegerMaster(const IntegerMaster& t_src);
 public:
-    IntegerMasterHeuristic() = default;
+    IntegerMaster() = default;
 
-    IntegerMasterHeuristic(IntegerMasterHeuristic&&) noexcept = default;
+    IntegerMaster(IntegerMaster&&) noexcept = default;
 
-    IntegerMasterHeuristic& operator=(const IntegerMasterHeuristic&) = delete;
-    IntegerMasterHeuristic& operator=(IntegerMasterHeuristic&&) noexcept = default;
+    IntegerMaster& operator=(const IntegerMaster&) = delete;
+    IntegerMaster& operator=(IntegerMaster&&) noexcept = default;
 
     class Strategy : public BranchAndBoundCallback<NodeInfo> {
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
@@ -62,17 +62,17 @@ public:
 
     [[nodiscard]] BranchAndBoundCallbackFactory<NodeInfo> *clone() const override;
 
-    IntegerMasterHeuristic& with_optimizer(const OptimizerFactory& t_optimizer);
+    IntegerMaster& with_optimizer(const OptimizerFactory& t_optimizer);
 
-    IntegerMasterHeuristic& with_integer_columns(bool t_value);
+    IntegerMaster& with_integer_columns(bool t_value);
 
-    IntegerMasterHeuristic& with_time_limit(double t_time_limit);
+    IntegerMaster& with_time_limit(double t_time_limit);
 
-    IntegerMasterHeuristic& with_iteration_limit(unsigned int t_iteration_limit);
+    IntegerMaster& with_iteration_limit(unsigned int t_iteration_limit);
 
-    IntegerMasterHeuristic& with_max_depth(unsigned int t_max_depth);
+    IntegerMaster& with_max_depth(unsigned int t_max_depth);
 
-    IntegerMasterHeuristic& with_frequency(unsigned int t_frequency);
+    IntegerMaster& with_frequency(unsigned int t_frequency);
 };
 
-#endif //IDOL_INTEGERMASTERHEURISTIC_H
+#endif //IDOL_INTEGERMASTER_H

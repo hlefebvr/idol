@@ -51,7 +51,7 @@ protected:
 
     virtual void add_lazy_cut(const TempCtr& t_cut) = 0;
 
-    virtual void submit_solution(const Solution::Primal& t_solution) = 0;
+    virtual void submit_heuristic_solution(Solution::Primal t_solution) = 0;
 
     [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
 
@@ -75,7 +75,7 @@ protected:
      /**
       * Submits a new heuristic solution
       */
-      virtual void submit_solution(const Solution::Primal& t_solution);
+      virtual void submit_heuristic_solution(const Solution::Primal& t_solution);
 
     /**
      * Adds a user cut to the relaxation
