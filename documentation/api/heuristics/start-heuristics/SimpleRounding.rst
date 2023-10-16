@@ -1,6 +1,6 @@
 .. _api_Heuristics_SimpleRounding:
 
-SimpleRounding
-==============
+Simple Rounding Heuristic
+=========================
 
 .. doxygenclass:: idol::Heuristics::SimpleRounding

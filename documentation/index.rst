@@ -144,8 +144,8 @@ Table of contents
     self
     installation/index
     tutorials/index
-    examples/index
     api/index
+    examples/index
     developer_guide/index
 
 * :ref:`genindex`

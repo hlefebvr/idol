@@ -7,6 +7,5 @@ Heuristics
     :maxdepth: 2
     :glob:
 
-    SimpleRounding
-    IntegerMaster
-    RENS
+    start-heuristics/index
+    improvement-heuristics/index

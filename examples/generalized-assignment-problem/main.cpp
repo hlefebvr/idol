@@ -12,6 +12,9 @@
 #include "optimizers/solvers/GLPK.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/column-generation/IntegerMaster.h"
+#include "optimizers/callbacks/RENS.h"
+#include "optimizers/callbacks/LocalBranching.h"
+#include "optimizers/callbacks/SimpleRounding.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -66,7 +69,19 @@ int main(int t_argc, const char** t_argv) {
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
-                .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
+                .with_log_frequency(1)
+                // .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
+                      .with_callback(
+                              Heuristics::LocalBranching()
+                                      .with_optimizer(
+                                              BranchAndBound()
+                                                      .with_node_optimizer(GLPK::ContinuousRelaxation())
+                                                      .with_branching_rule(MostInfeasible())
+                                                      .with_node_selection_rule(WorstBound())
+                                                      .with_callback(Heuristics::SimpleRounding())
+                                                      .with_log_level(Info, Green)
+                                      )
+                      )
             );
 
     // Solve

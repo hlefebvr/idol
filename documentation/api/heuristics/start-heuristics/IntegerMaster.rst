@@ -1,7 +1,7 @@
 .. _api_Heuristics_IntegerMaster:
 
-IntegerMaster
-=============
+Integer Master Heuristic (for branch-and-price)
+===============================================
 
 .. warning::
 

@@ -4,7 +4,9 @@ add_library(idol STATIC include/modeling/numericals.h include/containers/Optiona
         src/optimizers/callbacks/SimpleRounding.cpp
         src/modeling/expressions/operations/operators.cpp
         include/optimizers/callbacks/RENS.h
-        src/optimizers/callbacks/RENS.cpp)
+        src/optimizers/callbacks/RENS.cpp
+        include/optimizers/callbacks/LocalBranching.h
+        src/optimizers/callbacks/LocalBranching.cpp)
 
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
