@@ -6,7 +6,12 @@ add_library(idol STATIC include/modeling/numericals.h include/containers/Optiona
         include/optimizers/callbacks/RENS.h
         src/optimizers/callbacks/RENS.cpp
         include/optimizers/callbacks/LocalBranching.h
-        src/optimizers/callbacks/LocalBranching.cpp)
+        src/optimizers/callbacks/LocalBranching.cpp
+        include/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h
+        include/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h
+        include/optimizers/branch-and-bound/scoring-functions/VariableScoringFunctionFactory.h
+        include/optimizers/branch-and-bound/scoring-functions/VariableScoringFunction.h
+        include/optimizers/branch-and-bound/scoring-functions/MostFractional.h)
 
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)

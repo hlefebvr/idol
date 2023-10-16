@@ -13,6 +13,8 @@
 #include "optimizers/callbacks/SimpleRounding.h"
 #include "optimizers/callbacks/RENS.h"
 #include "optimizers/callbacks/LocalBranching.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -39,7 +41,10 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             BranchAndBound()
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                    .with_branching_rule(MostInfeasible())
+                    .with_branching_rule(
+                            VariableBranching()
+                                            .with_scoring_function(MostFractional())
+                    )
                     .with_node_selection_rule(BestBound())
                     //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))
                     /*

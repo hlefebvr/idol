@@ -51,7 +51,8 @@ public:
 template<class NodeInfoT>
 std::list<NodeInfoT *> idol::VariableBranchingRule<NodeInfoT>::create_child_nodes_by_bound(const Node<NodeInfoT> &t_node,
                                                                                      const Var &t_variable_selected_for_branching,
-                                                                                     double t_value, double t_lb,
+                                                                                     double t_value,
+                                                                                     double t_lb,
                                                                                      double t_ub) {
     auto* n1 = t_node.info().create_child();
     n1->set_local_lower_bound(t_variable_selected_for_branching, t_lb);
