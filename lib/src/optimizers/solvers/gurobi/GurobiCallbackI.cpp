@@ -122,4 +122,28 @@ const idol::Timer &idol::GurobiCallbackI::time() const {
     return m_parent.time();
 }
 
+const idol::Model &idol::GurobiCallbackI::original_model() const {
+    return m_parent.parent();
+}
+
+void idol::GurobiCallbackI::submit_solution(const idol::Solution::Primal &t_solution) {
+
+    unsigned int size = t_solution.size();
+
+    auto* values = new double[size];
+    auto* gurobi_vars = new GRBVar[size];
+
+    unsigned int i = 0;
+    for (const auto& [var, value] : t_solution) {
+        values[i] = value;
+        gurobi_vars[i] = m_parent.lazy(var).impl();
+        ++i;
+    }
+
+    this->setSolution(gurobi_vars, values, (int) size);
+
+    this->useSolution();
+
+}
+
 #endif

@@ -35,13 +35,17 @@ public:
 protected:
     void callback() override;
 
+    [[nodiscard]] const Model& original_model() const override;
+
     void add_lazy_cut(const TempCtr& t_lazy_cut) override;
 
     void add_user_cut(const TempCtr& t_user_cut) override;
 
+    void submit_solution(const Solution::Primal& t_solution) override;
+
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
-    const Timer &time() const override;
+    [[nodiscard]] const Timer &time() const override;
 };
 
 #endif

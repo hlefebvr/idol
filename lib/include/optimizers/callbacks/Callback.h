@@ -45,9 +45,13 @@ namespace idol {
 class idol::CallbackI {
     friend class ::idol::Callback;
 protected:
+    [[nodiscard]] virtual const Model& original_model() const = 0;
+
     virtual void add_user_cut(const TempCtr& t_cut) = 0;
 
     virtual void add_lazy_cut(const TempCtr& t_cut) = 0;
+
+    virtual void submit_solution(const Solution::Primal& t_solution) = 0;
 
     [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
 
@@ -63,6 +67,16 @@ class idol::Callback {
 public:
     virtual ~Callback() = default;
 protected:
+    /**
+     * Accesses the original model given to the solver
+     */
+     [[nodiscard]] virtual const Model& original_model() const;
+
+     /**
+      * Submits a new heuristic solution
+      */
+      virtual void submit_solution(const Solution::Primal& t_solution);
+
     /**
      * Adds a user cut to the relaxation
      * @param t_cut the cut to be added

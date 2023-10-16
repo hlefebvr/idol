@@ -30,6 +30,16 @@ const idol::Timer &idol::Callback::time() const {
     return m_interface->time();
 }
 
+const idol::Model &idol::Callback::original_model() const {
+    throw_if_no_interface();
+    return m_interface->original_model();
+}
+
+void idol::Callback::submit_solution(const idol::Solution::Primal &t_solution) {
+    throw_if_no_interface();
+    m_interface->submit_solution(t_solution);
+}
+
 void idol::CallbackI::execute(Callback &t_cb, CallbackEvent t_event) {
     t_cb.m_interface = this;
     t_cb.operator()(t_event);

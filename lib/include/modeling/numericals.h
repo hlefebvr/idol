@@ -23,7 +23,7 @@ namespace idol {
     namespace Tolerance {
 
         /**
-         * **Default:** \f$ 10^{-6} \f$
+         * **Default:** \f$ 10^{-8} \f$
          *
          * **Recommended range:** \f$ [ 10^{-10}, 10^{-5} ] \f$
          *
@@ -31,7 +31,7 @@ namespace idol {
          * For instance, when a value close to zero should be stored
          * or ignored when saving a primal point.
          */
-        static double Sparsity = 1e-6;
+        static double Sparsity = 1e-8;
 
         /**
          * **Default:** \f$ 10^{-4} \f$
@@ -123,6 +123,9 @@ namespace idol {
         return std::abs(t_ub - t_lb);
     }
 
+    static bool is_integer(double t_value, double t_tolerance) {
+        return std::abs(t_value - std::round(t_value)) <= t_tolerance;
+    }
 }
 
 #endif //OPTIMIZE_NUMERICALS_H

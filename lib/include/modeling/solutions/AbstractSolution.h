@@ -88,6 +88,12 @@ public:
      */
     [[nodiscard]] double get(const KeyT& t_key) const;
 
+    /**
+     * Returns the size of the solution, i.e., the number of non-zero entries.
+     * @return the size of the solution
+     */
+    [[nodiscard]] unsigned int size() const { return m_values.size(); }
+
     using const_iterator = typename Map<KeyT, double>::const_iterator;
 
     const_iterator begin() const { return const_iterator(m_values.begin()); }
