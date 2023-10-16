@@ -35,7 +35,7 @@ public:
             explicit Interface(Strategy& t_parent) : m_parent(t_parent) {}
 
             [[nodiscard]] const Model &original_model() const override {
-                return m_parent.m_interface.original_model();
+                return m_parent.original_model();
             }
 
             void add_user_cut(const TempCtr &t_cut) override {

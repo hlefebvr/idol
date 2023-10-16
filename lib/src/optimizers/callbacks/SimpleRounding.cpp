@@ -28,7 +28,7 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
             throw Exception("SimpleRounding for quadratic problems is not implemented.");
         }
 
-        std::optional<bool> is_trivially_up_roundable = 0; // The name assumes <= constraints
+        std::optional<bool> is_trivially_up_roundable; // The name assumes <= constraints
         for (const auto& [ctr, coefficient] : column.linear()) {
 
             if (!coefficient.is_numerical()) {
@@ -41,7 +41,7 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
                 return;
             }
 
-            bool direction = (type == LessOrEqual && coefficient.numerical() >= 0.) || (type == GreaterOrEqual && coefficient.numerical() <= 0.);
+            bool direction = (type == LessOrEqual && coefficient.numerical() <= 0.) || (type == GreaterOrEqual && coefficient.numerical() >= 0.);
 
             if (!is_trivially_up_roundable.has_value()) {
                 is_trivially_up_roundable = direction;
@@ -58,7 +58,7 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
             continue;
         }
 
-        if (is_trivially_up_roundable) {
+        if (is_trivially_up_roundable.value()) {
             result.set(var, std::ceil(value));
         } else {
             result.set(var, std::floor(value));

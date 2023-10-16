@@ -10,6 +10,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
+#include "optimizers/callbacks/SimpleRounding.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -39,7 +40,11 @@ int main(int t_argc, const char** t_argv) {
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))
+                    .with_callback(
+                            Heuristics::SimpleRounding()
+                    )
                     .with_log_level(Info, Blue)
+                    .with_log_frequency(1)
     );
     // Solve
     model.optimize();
