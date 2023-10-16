@@ -36,4 +36,5 @@ public:
     }
 
 };
+
 #endif //IDOL_SIMPLEROUNDING_H

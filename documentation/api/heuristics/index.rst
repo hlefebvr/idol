@@ -9,3 +9,4 @@ Heuristics
 
     SimpleRounding
     IntegerMaster
+    RENS
