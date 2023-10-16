@@ -28,14 +28,20 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
             throw Exception("SimpleRounding for quadratic problems is not implemented.");
         }
 
-        std::optional<bool> is_trivially_up_roundable = 0;
+        std::optional<bool> is_trivially_up_roundable = 0; // The name assumes <= constraints
         for (const auto& [ctr, coefficient] : column.linear()) {
 
             if (!coefficient.is_numerical()) {
                 throw Exception("A coefficient which is non numerical was found when rounding.");
             }
 
-            bool direction = coefficient.numerical() >= 0.;
+            const auto type = model.get_ctr_type(ctr);
+
+            if (type == Equal) {
+                return;
+            }
+
+            bool direction = (type == LessOrEqual && coefficient.numerical() >= 0.) || (type == GreaterOrEqual && coefficient.numerical() <= 0.);
 
             if (!is_trivially_up_roundable.has_value()) {
                 is_trivially_up_roundable = direction;
