@@ -16,7 +16,7 @@ idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
 idol::BranchAndBoundCallback<idol::NodeInfo> *idol::Heuristics::IntegerMaster::operator()() {
 
     if (!m_optimizer_factory) {
-        throw Exception("No solver was given to solve the integer master problem, please call IntegerMaster::with_optimizer to configure.");
+        throw Exception("No solver was given to solve the integer master problem, please call IntegerMaster.rst::with_optimizer to configure.");
     }
 
     auto* result = new Strategy(*m_optimizer_factory);
