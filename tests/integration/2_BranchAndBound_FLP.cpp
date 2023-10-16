@@ -10,8 +10,9 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
+#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 
 using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, WorstBound>;
 
@@ -69,9 +70,9 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
     model.use(
             BranchAndBound<NodeInfo>()
                     .with_node_optimizer(OptimizerT::ContinuousRelaxation())
-        .with_branching_rule(MostInfeasible())
-        .with_node_selection_rule(NodeSelectionRuleT())
-        .with_subtree_depth(subtree_depth)
+                    .with_branching_rule(VariableBranching(MostFractional()))
+                    .with_node_selection_rule(NodeSelectionRuleT())
+                    .with_subtree_depth(subtree_depth)
     );
 
     WHEN("The instance \"" + filename + "\" is solved") {

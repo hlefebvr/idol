@@ -12,7 +12,7 @@ namespace idol {
 
 class idol::VariableScoringFunctionFactory {
 public:
-    ~VariableScoringFunctionFactory() = default;
+    virtual ~VariableScoringFunctionFactory() = default;
 
     virtual VariableScoringFunction* operator()() = 0;
 

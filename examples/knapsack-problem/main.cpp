@@ -7,7 +7,6 @@
 #include "modeling.h"
 #include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
 #include "optimizers/callbacks/SimpleRounding.h"
@@ -15,6 +14,7 @@
 #include "optimizers/callbacks/LocalBranching.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
+#include "optimizers/branch-and-bound/scoring-functions/UniformlyRandom.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -43,7 +43,7 @@ int main(int t_argc, const char** t_argv) {
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .with_branching_rule(
                             VariableBranching()
-                                            .with_scoring_function(MostFractional())
+                                            .with_scoring_function(UniformlyRandom())
                     )
                     .with_node_selection_rule(BestBound())
                     //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))

@@ -22,6 +22,9 @@ class idol::VariableBranching {
 public:
     VariableBranching() = default;
 
+    VariableBranching(const VariableScoringFunctionFactory& t_scoring_function)
+        : m_scoring_function_factory(t_scoring_function.clone()) {}
+
     template<class IteratorT>
     VariableBranching(IteratorT t_begin, IteratorT t_end) : m_explicit_branching_candidates(std::list<Var>()) {
 

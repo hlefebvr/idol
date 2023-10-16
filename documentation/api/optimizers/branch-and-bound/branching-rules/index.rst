@@ -7,4 +7,5 @@ Branching rules
     :maxdepth: 2
     :glob:
 
-    MostInfeasible
+    MostFractional
+    UniformlyRandom

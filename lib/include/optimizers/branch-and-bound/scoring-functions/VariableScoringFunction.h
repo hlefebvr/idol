@@ -15,7 +15,7 @@ namespace idol {
 
 class idol::VariableScoringFunction {
 public:
-    ~VariableScoringFunction() = default;
+    virtual ~VariableScoringFunction() = default;
 
     virtual std::list<double> operator()(const std::list<Var>& t_variables, const Solution::Primal& t_primal_values) = 0;
 };

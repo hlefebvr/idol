@@ -17,7 +17,18 @@ public:
 
     class Strategy : public VariableScoringFunction {
     public:
-        std::list<double> operator()(const std::list<Var> &t_variables, const Solution::Primal &t_primal_values) override;
+        std::list<double> operator()(const std::list<Var> &t_variables, const Solution::Primal &t_primal_values) override {
+
+            std::list<double> result;
+
+            for (const auto& var : t_variables) {
+                const double value = t_primal_values.get(var);
+                const double score = std::abs(value - std::round(value));
+                result.emplace_back(score);
+            }
+
+            return result;
+        }
     };
 
     Strategy *operator()() override {
@@ -28,19 +39,5 @@ public:
         return new MostFractional(*this);
     }
 };
-
-std::list<double> idol::MostFractional::Strategy::operator()(const std::list<Var> &t_variables,
-                                                             const idol::Solution::Primal &t_primal_values) {
-
-    std::list<double> result;
-
-    for (const auto& var : t_variables) {
-        const double value = t_primal_values.get(var);
-        const double score = std::abs(value - std::round(value));
-        result.emplace_back(score);
-    }
-
-    return result;
-}
 
 #endif //IDOL_MOSTFRACTIONAL_H
