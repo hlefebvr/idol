@@ -7,14 +7,17 @@
 ![Repo status](https://www.repostatus.org/badges/latest/wip.svg)
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
 
-Idol is a C++ library for implementing complex decomposition algorithms for
-mathematical optimization.
+Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
+methods. Whether you're exploring Branch-and-Price,
+Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
+or any other cutting-edge method, idol is your trusted companion.
 
 Visit our [online documentation](https://hlefebvr.github.io/idol/) and [online benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
 ## Examples
 
-Here is an example of a complex algorithm built using idol. It is a nested Branch-and-Price algorithm.
+Here is an example of a complex algorithm built using idol. It is a nested Branch-and-Price algorithm with strong branching.
 
 ```cpp
 auto nested_branch_and_price =
@@ -54,7 +57,7 @@ auto nested_branch_and_price =
                                         .with_node_optimizer(GLPK::ContinuousRelaxation())
                                         
                                         /* Variables are selected for branching using the most-infeasible rule */
-                                        .with_branching_rule(VariableBranching(MostFractional()))
+                                        .with_branching_rule(MostFractional())
                                         
                                         /* Nodes are selected using the worst-bound rule */
                                         .with_node_selection_rule(WorstBound())
@@ -81,7 +84,7 @@ auto nested_branch_and_price =
                 .with_branching_on_master()
         )
         /* Variables are selected for branching using the most-infeasible rule */
-        .with_branching_rule(MostInfeasible())
+        .with_branching_rule(StrongBranching())
         
         /* Nodes are selected using the best-bound rule */
         .with_node_selection_rule(BestBound()
