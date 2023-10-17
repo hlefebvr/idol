@@ -9,6 +9,5 @@ API
 
     modeling/index
     optimizers/index
-    heuristics/index
     problems/index
     tolerances

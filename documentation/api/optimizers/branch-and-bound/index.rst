@@ -11,3 +11,4 @@ Branch-And-Bound algorithms
     branching-rules/index
     node-selection-rules/index
     BranchAndBoundCallback
+    heuristics/index

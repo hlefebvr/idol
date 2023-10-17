@@ -63,5 +63,7 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << save_primal(model) << std::endl;
 
+    std::cout << "Nb. nodes: " << model.optimizer().as<Optimizers::BranchAndBound<NodeInfo>>().n_solved_nodes() << std::endl;
+
     return 0;
 }

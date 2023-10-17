@@ -122,8 +122,8 @@ double idol::BranchingRules::StrongBranching<NodeInfoT>::compute_score(double t_
     const auto& left_node_info = t_nodes.front().info();
     const auto& right_node_info = t_nodes.back().info();
 
-    const double left_objective_value = left_node_info.has_objective_value() ? left_node_info.objective_value() : Inf;
-    const double right_objective_value = right_node_info.has_objective_value() ? right_node_info.objective_value() : Inf;
+    const double left_objective_value = left_node_info.has_objective_value() ? left_node_info.objective_value() : -Inf;
+    const double right_objective_value = right_node_info.has_objective_value() ? right_node_info.objective_value() : -Inf;
 
     return m_score_function->operator()(
             t_parent_objective,
