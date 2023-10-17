@@ -31,6 +31,8 @@ public:
     explicit BranchingRule(const Optimizers::BranchAndBound<NodeInfoT>& t_parent) : m_parent(t_parent) {}
     virtual ~BranchingRule() = default;
 
+    [[nodiscard]] const Optimizers::BranchAndBound<NodeInfoT>& parent() const { return m_parent; }
+
     [[nodiscard]] const Model& model() const { return m_parent.parent(); }
 
     [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) const = 0;

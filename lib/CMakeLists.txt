@@ -17,6 +17,9 @@ add_library(idol STATIC include/modeling/numericals.h include/containers/Optiona
         include/optimizers/branch-and-bound/branching-rules/impls/UniformlyRandom.h
         include/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h
         include/optimizers/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h
+        include/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h
+        include/optimizers/branch-and-bound/branching-rules/impls/StrongBranching.h
+        include/optimizers/branch-and-bound/branching-rules/impls/strong-branching/NodeScoreFunction.h
 )
 
 find_package(OpenMP REQUIRED)

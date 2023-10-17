@@ -62,7 +62,6 @@ protected:
     void create_relaxations();
     Node<NodeInfoT> create_root_node();
     void explore(TreeNode& t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
-    void solve(TreeNode& t_node);
     void analyze(const TreeNode& t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag);
     Node<NodeInfoT> select_node_for_branching(SetOfActiveNodes& t_active_nodes);
     std::vector<TreeNode> create_child_nodes(const TreeNode& t_node);
@@ -104,6 +103,8 @@ public:
                               AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback);
 
     [[nodiscard]] std::string name() const override { return "branch-and-bound"; }
+
+    void solve(TreeNode& t_node) const;
 
     virtual void set_log_frequency(unsigned int t_log_frequency) { m_log_frequency = t_log_frequency; }
 
@@ -456,7 +457,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
 }
 
 template<class NodeInfoT>
-void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) {
+void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) const {
 
     idol_Log(Trace, "Preparing to solve node " << t_node.id() << ".");
 

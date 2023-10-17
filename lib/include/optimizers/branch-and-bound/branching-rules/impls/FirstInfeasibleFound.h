@@ -14,7 +14,7 @@ namespace idol::BranchingRules {
 template<class NodeInfoT>
 class idol::BranchingRules::FirstInfeasibleFound : public VariableBranching<NodeInfoT> {
 protected:
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Solution::Primal &t_primal_values) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
 public:
     explicit FirstInfeasibleFound(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates);
 };
@@ -27,7 +27,7 @@ idol::BranchingRules::FirstInfeasibleFound<NodeInfoT>::FirstInfeasibleFound(
 template<class NodeInfoT>
 std::list<std::pair<idol::Var, double>>
 idol::BranchingRules::FirstInfeasibleFound<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                  const idol::Solution::Primal &t_primal_values) {
+                                                                        const Node<NodeInfoT> &t_node) {
     return { { t_variables.front(), -1. } };
 }
 

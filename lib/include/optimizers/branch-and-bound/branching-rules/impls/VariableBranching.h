@@ -17,8 +17,6 @@ namespace idol::BranchingRules {
 template<class NodeInfoT>
 class idol::BranchingRules::VariableBranching : public BranchingRule<NodeInfoT> {
     std::list<Var> m_branching_candidates;
-protected:
-    virtual std::list<std::pair<Var, double>> scoring_function(const std::list<Var>& t_variables, const Solution::Primal& t_primal_values) = 0;
 public:
     virtual bool is_valid(const Node<NodeInfoT> &t_node) const {
 
@@ -33,6 +31,32 @@ public:
         return true;
     }
 
+    virtual std::list<std::pair<Var, double>> scoring_function(const std::list<Var>& t_variables, const Node<NodeInfoT> &t_node) = 0;
+
+    virtual std::list<NodeInfoT *> create_child_nodes_for_selected_variable(const Node<NodeInfoT> &t_node, const Var& t_var) {
+
+        const auto& primal_solution = t_node.info().primal_solution();
+        const double value = primal_solution.get(t_var);
+        const double lb = std::ceil(value);
+        const double ub = std::floor(value);
+
+        auto* n1 = t_node.info().create_child();
+        n1->set_local_lower_bound(t_var, lb);
+
+        auto* n2 = t_node.info().create_child();
+        n2->set_local_upper_bound(t_var, ub);
+
+        idol_Log(Trace,
+                 "Node " << t_node.id() << " has 2 child nodes with "
+                         << t_var << " >= " << lb
+                         << " and "
+                         << t_var << " <= " << ub
+                         << " (current value of " << t_var << " is " << value << ").";
+        );
+
+        return { n1, n2 };
+    }
+
     virtual std::list<NodeInfoT *> create_child_nodes(const Node<NodeInfoT> &t_node) {
 
         const auto& primal_solution = t_node.info().primal_solution();
@@ -42,29 +66,11 @@ public:
         Var selected_variable = invalid_variables.front();
 
         if (invalid_variables.size() > 1) {
-            auto scores = scoring_function(invalid_variables, primal_solution);
+            auto scores = scoring_function(invalid_variables, t_node);
             selected_variable = get_argmax_score(scores);
         }
 
-        const double value = primal_solution.get(selected_variable);
-        const double lb = std::ceil(value);
-        const double ub = std::floor(value);
-
-        auto* n1 = t_node.info().create_child();
-        n1->set_local_lower_bound(selected_variable, lb);
-
-        auto* n2 = t_node.info().create_child();
-        n2->set_local_upper_bound(selected_variable, ub);
-
-        idol_Log(Trace,
-                 "Node " << t_node.id() << " has 2 child nodes with "
-                         << selected_variable << " >= " << lb
-                         << " and "
-                         << selected_variable << " <= " << ub
-                         << " (current value of " << selected_variable << " is " << value << ").";
-        );
-
-        return { n1, n2 };
+        return create_child_nodes_for_selected_variable(t_node, selected_variable);
     }
 
     VariableBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates)

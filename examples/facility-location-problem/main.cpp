@@ -10,6 +10,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -52,7 +53,7 @@ int main(int t_argc, const char** t_argv) {
             BranchAndBound()
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .with_branching_rule(
-                        UniformlyRandom()
+                            StrongBranching()
                     )
                 .with_node_selection_rule(BestBound())
                 .with_log_level(Trace, Blue)
