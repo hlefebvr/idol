@@ -313,7 +313,7 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
                                                       AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
-      m_branching_rule(t_branching_rule_factory(t_model)),
+      m_branching_rule(t_branching_rule_factory(*this)),
       m_node_selection_rule(t_node_selection_rule_factory()),
       m_callback(t_callback) {
 

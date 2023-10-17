@@ -13,8 +13,7 @@
 #include "optimizers/callbacks/RENS.h"
 #include "optimizers/callbacks/LocalBranching.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
-#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
-#include "optimizers/branch-and-bound/scoring-functions/UniformlyRandom.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -42,8 +41,7 @@ int main(int t_argc, const char** t_argv) {
             BranchAndBound()
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .with_branching_rule(
-                            VariableBranching()
-                                            .with_scoring_function(UniformlyRandom())
+                            MostInfeasible()
                     )
                     .with_node_selection_rule(BestBound())
                     //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))

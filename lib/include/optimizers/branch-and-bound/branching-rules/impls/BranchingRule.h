@@ -20,7 +20,7 @@ namespace idol {
 template<class NodeInfoT>
 class idol::BranchingRule {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
-    const Model& m_model;
+    const Optimizers::BranchAndBound<NodeInfoT>& m_parent;
     LogLevel m_log_level = Warn;
     Color m_log_color = Default;
 protected:
@@ -28,15 +28,14 @@ protected:
     [[nodiscard]] Color log_color() const { return m_log_color; }
     [[nodiscard]] std::string name() const { return "branching-rule"; }
 public:
-    explicit BranchingRule(const Model& t_model) : m_model(t_model) {}
+    explicit BranchingRule(const Optimizers::BranchAndBound<NodeInfoT>& t_parent) : m_parent(t_parent) {}
     virtual ~BranchingRule() = default;
 
-    [[nodiscard]] const Model& model() const { return m_model; }
+    [[nodiscard]] const Model& model() const { return m_parent.parent(); }
 
     [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) const = 0;
 
     [[nodiscard]] virtual std::list<NodeInfoT*> create_child_nodes(const Node<NodeInfoT>& t_node) = 0;
-
 
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);

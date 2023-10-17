@@ -7,8 +7,7 @@
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "optimizers/column-generation/IntegerMaster.h"
-#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",
@@ -82,7 +81,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                               .with_pricing_optimizer(
                                       BranchAndBound<NodeInfo>()
                                               .with_node_optimizer(TestType::ContinuousRelaxation())
-                                              .with_branching_rule(VariableBranching(MostFractional()))
+                                              .with_branching_rule(MostInfeasible())
                                               .with_node_selection_rule(BestBound())
                               )
                         .with_branching_on_master(branching_on_master)
@@ -105,14 +104,14 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                                                                       BranchAndBound<NodeInfo>()
                                                                               .with_node_optimizer(
                                                                                       TestType::ContinuousRelaxation())
-                                                                              .with_branching_rule(VariableBranching(MostFractional()))
+                                                                              .with_branching_rule(MostInfeasible())
                                                                               .with_node_selection_rule(BestBound())
                                                               )
                                                               .with_branching_on_master(branching_on_master)
                                                               .with_farkas_pricing(farkas_pricing)
                                                               .with_dual_price_smoothing_stabilization(smoothing_factor)
                                               )
-                                              .with_branching_rule(VariableBranching(MostFractional()))
+                                              .with_branching_rule(MostInfeasible())
                                               .with_node_selection_rule(BestBound())
                                               .conditional(integer_master_heuristic, [](auto &x) {
                                                   x.with_callback(
@@ -134,7 +133,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     model.use(
             BranchAndBound<NodeInfo>()
                     .with_node_optimizer(*relaxation_solvers[solver_index].second)
-                    .with_branching_rule(VariableBranching(MostFractional()))
+                    .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     .with_subtree_depth(subtree_depth)
                     .conditional(integer_master_heuristic, [](auto& x){

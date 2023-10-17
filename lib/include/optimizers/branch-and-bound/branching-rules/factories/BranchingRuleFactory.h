@@ -11,13 +11,18 @@ namespace idol {
 
     template<class NodeT>
     class BranchingRuleFactory;
+
+    namespace Optimizers {
+        template<class NodeT> class BranchAndBound;
+    }
 }
+
 template<class NodeT>
 class idol::BranchingRuleFactory {
 public:
     virtual ~BranchingRuleFactory() = default;
 
-    virtual BranchingRule<NodeT>* operator()(const Model& t_model) const = 0;
+    virtual BranchingRule<NodeT>* operator()(const Optimizers::BranchAndBound<NodeT>& t_parent) const = 0;
 
     virtual BranchingRuleFactory* clone() const = 0;
 };

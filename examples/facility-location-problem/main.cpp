@@ -7,8 +7,9 @@
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/solvers/gurobi/Gurobi.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -50,14 +51,16 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             BranchAndBound()
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                .with_branching_rule(VariableBranching(MostFractional()))
+                    .with_branching_rule(
+                        UniformlyRandom()
+                    )
                 .with_node_selection_rule(BestBound())
                 .with_log_level(Trace, Blue)
     );
 
     model.optimize();
 
-    std::cout << model.get_status() << std::endl;
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

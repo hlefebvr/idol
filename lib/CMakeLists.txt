@@ -9,10 +9,15 @@ add_library(idol STATIC include/modeling/numericals.h include/containers/Optiona
         src/optimizers/callbacks/LocalBranching.cpp
         include/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h
         include/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h
-        include/optimizers/branch-and-bound/scoring-functions/VariableScoringFunctionFactory.h
-        include/optimizers/branch-and-bound/scoring-functions/VariableScoringFunction.h
-        include/optimizers/branch-and-bound/scoring-functions/MostFractional.h
-        include/optimizers/branch-and-bound/scoring-functions/UniformlyRandom.h)
+        include/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h
+        include/optimizers/branch-and-bound/branching-rules/impls/MostInfeasible.h
+        include/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h
+        include/optimizers/branch-and-bound/branching-rules/impls/LeastInfeasible.h
+        include/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h
+        include/optimizers/branch-and-bound/branching-rules/impls/UniformlyRandom.h
+        include/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h
+        include/optimizers/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h
+)
 
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)

@@ -1,6 +1,6 @@
 .. _api_UniformlyRandom:
 
-UniformlyRandom
-===============
+Uniformly Random
+================
 
 .. doxygenclass:: idol::UniformlyRandom

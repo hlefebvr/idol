@@ -2,7 +2,6 @@
 #include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 #include "optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "problems/generalized-assignment-problem/GAP_Instance.h"
 #include "problems/facility-location-problem/FLP_Instance.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
@@ -12,6 +11,8 @@
 #include "optimizers/column-generation/IntegerMaster.h"
 #include "optimizers/callbacks/UserCutCallback.h"
 #include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
+#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 
 int main(int t_argc, char** t_argv) {
 

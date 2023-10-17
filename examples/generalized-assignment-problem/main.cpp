@@ -14,8 +14,7 @@
 #include "optimizers/callbacks/RENS.h"
 #include "optimizers/callbacks/LocalBranching.h"
 #include "optimizers/callbacks/SimpleRounding.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
-#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -67,7 +66,7 @@ int main(int t_argc, const char** t_argv) {
                                       .with_dual_price_smoothing_stabilization(.3)
                                       .with_column_pool_clean_up(1e+8, .75)
                       )
-                .with_branching_rule(VariableBranching(MostFractional()))
+                .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
                 .with_log_frequency(1)
@@ -77,7 +76,7 @@ int main(int t_argc, const char** t_argv) {
                                       .with_optimizer(
                                               BranchAndBound()
                                                       .with_node_optimizer(GLPK::ContinuousRelaxation())
-                                                      .with_branching_rule(VariableBranching(MostFractional()))
+                                                      .with_branching_rule(MostInfeasible())
                                                       .with_node_selection_rule(WorstBound())
                                                       .with_callback(Heuristics::SimpleRounding())
                                                       .with_log_level(Info, Green)

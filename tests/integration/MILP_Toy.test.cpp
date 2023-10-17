@@ -7,8 +7,7 @@
 #include "optimizers/branch-and-bound/nodes/NodeInfo.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/scoring-functions/MostFractional.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
                         "[integration][backend][solver]",
@@ -18,7 +17,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
                 std::shared_ptr<OptimizerFactory>(TestType().clone()),
                 std::shared_ptr<OptimizerFactory>(BranchAndBound<NodeInfo>()
                                                           .with_node_optimizer(TestType::ContinuousRelaxation())
-                                .with_branching_rule(VariableBranching(MostFractional()))
+                                .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())
                                 .clone()
                         )

@@ -8,17 +8,17 @@
 #include <list>
 #include "BranchingRule.h"
 #include "modeling/variables/Var.h"
-#include "optimizers/branch-and-bound/scoring-functions/VariableScoringFunction.h"
 
 namespace idol::BranchingRules {
     template<class>
     class VariableBranching;
 }
+
 template<class NodeInfoT>
 class idol::BranchingRules::VariableBranching : public BranchingRule<NodeInfoT> {
     std::list<Var> m_branching_candidates;
-    std::unique_ptr<BranchingRule<NodeInfoT>> m_then;
-    std::unique_ptr<VariableScoringFunction> m_scoring_function;
+protected:
+    virtual std::list<std::pair<Var, double>> scoring_function(const std::list<Var>& t_variables, const Solution::Primal& t_primal_values) = 0;
 public:
     virtual bool is_valid(const Node<NodeInfoT> &t_node) const {
 
@@ -30,45 +30,7 @@ public:
             }
         }
 
-        return !m_then || m_then->is_valid(t_node);
-    }
-
-    std::list<Var> get_invalid_variables(const Solution::Primal& t_primal_solution) {
-
-        std::list<Var> result;
-
-        for (const auto& var : m_branching_candidates) {
-            if (const double value = t_primal_solution.get(var) ; !is_integer(value, Tolerance::Integer)) {
-                result.emplace_back(var);
-            }
-        }
-
-        return result;
-    }
-
-    Var get_argmin_score(const std::list<Var>& t_invalid_variables, const std::list<double>& t_scores) {
-
-        if (t_invalid_variables.size() != t_scores.size()) {
-            throw Exception("Invalid variables and scores do not match in size.");
-        }
-
-        double min = std::numeric_limits<double>::max();
-        std::optional<Var> argmin;
-
-        auto it_vars = t_invalid_variables.begin();
-        auto it_scores = t_scores.begin();
-        for (auto it_end = t_invalid_variables.end() ; it_vars != it_end ; ++it_vars, ++it_scores ) {
-            if (min > *it_scores) {
-                min = *it_scores;
-                argmin = *it_vars;
-            }
-        }
-
-        if (!argmin.has_value()) {
-            throw Exception("Could not compute argmin of scores while searching for branching variable.");
-        }
-
-        return argmin.value();
+        return true;
     }
 
     virtual std::list<NodeInfoT *> create_child_nodes(const Node<NodeInfoT> &t_node) {
@@ -76,8 +38,13 @@ public:
         const auto& primal_solution = t_node.info().primal_solution();
 
         auto invalid_variables = get_invalid_variables(primal_solution);
-        auto scores = (*m_scoring_function)(invalid_variables, primal_solution);
-        auto selected_variable = get_argmin_score(invalid_variables, scores);
+
+        Var selected_variable = invalid_variables.front();
+
+        if (invalid_variables.size() > 1) {
+            auto scores = scoring_function(invalid_variables, primal_solution);
+            selected_variable = get_argmax_score(scores);
+        }
 
         const double value = primal_solution.get(selected_variable);
         const double lb = std::ceil(value);
@@ -100,16 +67,47 @@ public:
         return { n1, n2 };
     }
 
-public:
-    VariableBranching(const Model& t_model,
-                      std::list<Var> t_branching_candidates,
-                      BranchingRule<NodeInfoT>* t_then,
-                      VariableScoringFunction* t_scoring_function
-                      )
-        : BranchingRule<NodeInfoT>(t_model),
-          m_branching_candidates(std::move(t_branching_candidates)),
-          m_then(t_then),
-          m_scoring_function(t_scoring_function) {}
+    VariableBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates)
+        : BranchingRule<NodeInfoT>(t_parent),
+          m_branching_candidates(std::move(t_branching_candidates)) {}
+
+protected:
+    std::list<Var> get_invalid_variables(const Solution::Primal& t_primal_solution) {
+
+        std::list<Var> result;
+
+        for (const auto& var : m_branching_candidates) {
+            if (const double value = t_primal_solution.get(var) ; !is_integer(value, Tolerance::Integer)) {
+                result.emplace_back(var);
+            }
+        }
+
+        return result;
+    }
+
+    Var get_argmax_score(const std::list<std::pair<Var, double>>& t_scores) {
+
+        if (t_scores.empty()) {
+            throw Exception("VariableScoringFunction returned an empty list.");
+        }
+
+        double max = std::numeric_limits<double>::lowest();
+        std::optional<Var> argmax;
+
+        for (const auto& [var, score] : t_scores) {
+            if (max < score) {
+                max = score;
+                argmax = var;
+            }
+        }
+
+        if (!argmax.has_value()) {
+            throw Exception("Could not compute argmax of scores while searching for branching variable.");
+        }
+
+        return argmax.value();
+    }
+
 };
 
 #endif //IDOL_VARIABLEBRANCHING_BRANCHINGRULE_H

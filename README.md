@@ -54,7 +54,7 @@ auto nested_branch_and_price =
                                         .with_node_optimizer(GLPK::ContinuousRelaxation())
                                         
                                         /* Variables are selected for branching using the most-infeasible rule */
-                                        .with_branching_rule(MostInfeasible())
+                                        .with_branching_rule(VariableBranching(MostFractional()))
                                         
                                         /* Nodes are selected using the worst-bound rule */
                                         .with_node_selection_rule(WorstBound())
