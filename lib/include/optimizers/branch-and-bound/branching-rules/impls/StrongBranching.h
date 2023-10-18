@@ -6,7 +6,7 @@
 #define IDOL_IMPL_STRONGBRANCHING_H
 
 #include "VariableBranching.h"
-#include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/NodeScoreFunction.h"
+#include "NodeScoreFunction.h"
 #include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 #include "MostInfeasible.h"
 #include "../factories/StrongBranching.h"
@@ -18,7 +18,7 @@ namespace idol::BranchingRules {
 template<class NodeInfoT>
 class idol::BranchingRules::StrongBranching : public VariableBranching<NodeInfoT> {
     std::unique_ptr<VariableBranching<NodeInfoT>> m_inner_variable_branching_rule;
-    std::unique_ptr<StrongBranchingScoreFunction> m_score_function;
+    std::unique_ptr<NodeScoreFunction> m_score_function;
     std::list<StrongBranchingPhase> m_phases;
 
     std::vector<std::pair<Var, double>> sort_variables_by_score(const std::list<std::pair<Var, double>>& t_scores);
@@ -34,7 +34,7 @@ public:
     explicit StrongBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent,
                              std::list<Var> t_branching_candidates,
                              unsigned int t_max_n_variables,
-                             StrongBranchingScoreFunction* t_score_function,
+                             NodeScoreFunction* t_score_function,
                              const std::list<StrongBranchingPhase>& t_phases);
 
     std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
@@ -42,11 +42,11 @@ public:
 
 template<class NodeInfoT>
 idol::BranchingRules::StrongBranching<NodeInfoT>::StrongBranching(
-            const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent,
-            std::list<Var> t_branching_candidates,
-            unsigned int t_max_n_variables,
-            StrongBranchingScoreFunction* t_score_function,
-            const std::list<StrongBranchingPhase>& t_phases
+        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent,
+        std::list<Var> t_branching_candidates,
+        unsigned int t_max_n_variables,
+        NodeScoreFunction* t_score_function,
+        const std::list<StrongBranchingPhase>& t_phases
         )
         : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)),
           m_inner_variable_branching_rule(new BranchingRules::MostInfeasible<NodeInfoT>(t_parent, {})),
@@ -151,8 +151,8 @@ double idol::BranchingRules::StrongBranching<NodeInfoT>::compute_score(double t_
     const auto& left_node_info = t_nodes.front().info();
     const auto& right_node_info = t_nodes.back().info();
 
-    const double left_objective_value = left_node_info.has_objective_value() ? left_node_info.objective_value() : -Inf;
-    const double right_objective_value = right_node_info.has_objective_value() ? right_node_info.objective_value() : -Inf;
+    const double left_objective_value = left_node_info.has_objective_value() ? left_node_info.objective_value() : Inf;
+    const double right_objective_value = right_node_info.has_objective_value() ? right_node_info.objective_value() : Inf;
 
     return m_score_function->operator()(
             t_parent_objective,

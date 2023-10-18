@@ -15,7 +15,7 @@ idol::StrongBranching &idol::StrongBranching::with_max_n_variables(unsigned int 
 }
 
 idol::StrongBranching &
-idol::StrongBranching::with_node_scoring_function(const idol::StrongBranchingScoreFunction &t_score_function) {
+idol::StrongBranching::with_node_scoring_function(const idol::NodeScoreFunction &t_score_function) {
 
     if (m_node_scoring_function) {
         throw Exception("Node scoring function has already been configured.");

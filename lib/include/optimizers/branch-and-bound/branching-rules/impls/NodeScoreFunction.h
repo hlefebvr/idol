@@ -8,25 +8,25 @@
 #include <algorithm>
 
 namespace idol {
-    class StrongBranchingScoreFunction;
+    class NodeScoreFunction;
 
-    namespace StrongBranchingScores {
+    namespace NodeScoreFunctions {
         class Product;
         class Linear;
     }
 
 }
 
-class idol::StrongBranchingScoreFunction {
+class idol::NodeScoreFunction {
 public:
-    virtual ~StrongBranchingScoreFunction() = default;
+    virtual ~NodeScoreFunction() = default;
 
     virtual double operator()(double t_parent_objective, double t_left, double t_right) = 0;
 
-    [[nodiscard]] virtual StrongBranchingScoreFunction* clone() const = 0;
+    [[nodiscard]] virtual NodeScoreFunction* clone() const = 0;
 };
 
-class idol::StrongBranchingScores::Linear : public idol::StrongBranchingScoreFunction {
+class idol::NodeScoreFunctions::Linear : public idol::NodeScoreFunction {
     double m_parameter = 1./16.;
 public:
     Linear() = default;
@@ -44,7 +44,7 @@ public:
         double Delta_left = t_left - t_parent_objective;
         double Delta_right = t_right - t_parent_objective;
 
-        return (1 - m_parameter) * std::max(Delta_left, Delta_right) + m_parameter * std::min(Delta_left, Delta_right);
+        return (1 - m_parameter) * std::min(Delta_left, Delta_right) + m_parameter * std::max(Delta_left, Delta_right);
     }
 
     [[nodiscard]] Linear *clone() const override {
@@ -52,7 +52,7 @@ public:
     }
 };
 
-class idol::StrongBranchingScores::Product : public idol::StrongBranchingScoreFunction {
+class idol::NodeScoreFunctions::Product : public idol::NodeScoreFunction {
     double m_parameter = 10e-6;
 public:
     Product() = default;

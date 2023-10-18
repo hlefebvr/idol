@@ -13,7 +13,7 @@ methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
 or any other cutting-edge method, idol is your trusted companion.
 
-Visit our [online documentation](https://hlefebvr.github.io/idol/) and [online benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
+Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
 ## Examples
 

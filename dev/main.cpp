@@ -90,7 +90,7 @@ int main(int t_argc, char** t_argv) {
 
                                             //.with_log_frequency(1)
 
-                                            //.with_iteration_count_limit(20)
+                                            //.with_iteration_limit(20)
 
                                     )
 

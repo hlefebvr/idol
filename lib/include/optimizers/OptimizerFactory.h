@@ -107,12 +107,12 @@ public:
      * Example:
      * ```cpp
      * auto algorithm = GLPK()
-     *                      .with_iteration_count_limit(200);
+     *                      .with_iteration_limit(200);
      * ```
      * @param t_iteration_count_limit the maximum number of iterations
      * @return the optimizer factory itself
      */
-    CRTP& with_iteration_count_limit(unsigned int t_iteration_count_limit);
+    CRTP& with_iteration_limit(unsigned int t_iteration_count_limit);
 
     /**
      * Sets a threshold on the best bound for stopping the optimizer. When the optimizer have found a best bound
@@ -328,7 +328,7 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_best_bound_stop(do
 }
 
 template<class CRTP>
-CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_iteration_count_limit(unsigned int t_iteration_count_limit) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_iteration_limit(unsigned int t_iteration_count_limit) {
 
     if (m_iteration_count_limit.has_value()) {
         throw Exception("An iteration count limit has already been given.");
