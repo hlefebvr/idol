@@ -7,6 +7,7 @@
 
 #include "NodeUpdator.h"
 #include "modeling/models/Model.h"
+#include "Node.h"
 
 namespace idol {
     template<class NodeT>
@@ -27,7 +28,7 @@ class idol::NodeUpdatorByBound : public NodeUpdator<NodeT> {
 public:
     explicit NodeUpdatorByBound(Model& t_model) : m_model(t_model) {}
 
-    void apply_local_updates(const NodeT& t_node) override {
+    void apply_local_updates(const Node<NodeT>& t_node) override {
 
         /*
         std::cout << "Current node: " << std::endl;
@@ -39,8 +40,8 @@ public:
         }
          */
 
-        update_bounds(m_lower_bounds, t_node.local_lower_bounds(), true);
-        update_bounds(m_upper_bounds, t_node.local_upper_bounds(), false);
+        update_bounds(m_lower_bounds, t_node.info().local_lower_bounds(), true);
+        update_bounds(m_upper_bounds, t_node.info().local_upper_bounds(), false);
     }
 
     void clear_local_updates() override {

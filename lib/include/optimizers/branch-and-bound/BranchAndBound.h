@@ -14,6 +14,7 @@
 #include "optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "optimizers/callbacks/CallbackFactory.h"
 #include "optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
+#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 
 namespace idol {
     template<class NodeT>
@@ -24,7 +25,7 @@ namespace idol {
  * @tparam NodeT the class used to store nodes information.
  * It is strongly advised to inherit from NodeInfo in order to create your own node type.
  */
-template<class NodeT = idol::NodeInfo>
+template<class NodeT = idol::NodeVarInfo>
 class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
@@ -40,9 +41,9 @@ protected:
 public:
     /**
      * This type is used to exploit [SFINAE](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
-     * in order to identify classes having a sub-class named `Strategy<NodeT>`.
+     * in order to identify classes having a sub-class named `Strategy<NodeInfoT>`.
      * This is used to make calls like `.with_node_selection_rule(DepthFirst());` which will actually call
-     * `.with_node_selection_rule(DepthFirst::Strategy<NodeT>())`.
+     * `.with_node_selection_rule(DepthFirst::Strategy<NodeInfoT>())`.
      */
     template<class ReturnT, class T> using only_if_has_Strategy = typename std::pair<typename T::template Strategy<NodeT>, ReturnT>::second_type;
 
@@ -86,9 +87,9 @@ public:
     /**
      * Sets the branching rule used to create child nodes.
      *
-     * Here, the function is called only when `BranchingRuleFactoryT` has a nested template class named `Strategy<NodeT>`.
-     * In such a case, the branching rule is created by calling `BranchingRuleFactoryT::Strategy<NodeT>(t_branching_rule)`.
-     * This is used to avoid the user repeating the node type `NodeT` being used.
+     * Here, the function is called only when `BranchingRuleFactoryT` has a nested template class named `Strategy<NodeInfoT>`.
+     * In such a case, the branching rule is created by calling `BranchingRuleFactoryT::Strategy<NodeInfoT>(t_branching_rule)`.
+     * This is used to avoid the user repeating the node type `NodeInfoT` being used.
      *
      * Example:
      * ```cpp
@@ -117,9 +118,9 @@ public:
     /**
      * Sets the node selection rule to explore the branch and bound tree.
      *
-     * Here, the function is called only when `NodeSelectionRuleFactoryT` has a nested template class named `Strategy<NodeT>`.
-     * In such a case, the node selection rule is created by calling `NodeSelectionRuleFactoryT::Strategy<NodeT>(t_node_selection_rule)`.
-     * This is used to avoid the user repeating the node type `NodeT` being used.
+     * Here, the function is called only when `NodeSelectionRuleFactoryT` has a nested template class named `Strategy<NodeInfoT>`.
+     * In such a case, the node selection rule is created by calling `NodeSelectionRuleFactoryT::Strategy<NodeInfoT>(t_node_selection_rule)`.
+     * This is used to avoid the user repeating the node type `NodeInfoT` being used.
      *
      * Example:
      * ```cpp
@@ -198,7 +199,7 @@ public:
      *
      * Note that this method can be called multiple times so that multiple callbacks can be added.
      *
-     * Here, the `Callback` is automatically converted into a `BranchAndBoundCallback<NodeT>`.
+     * Here, the `Callback` is automatically converted into a `BranchAndBoundCallback<NodeInfoT>`.
      *
      * ```cpp
      * auto algorithm = BranchAndBound()

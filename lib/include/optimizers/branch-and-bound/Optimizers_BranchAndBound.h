@@ -33,7 +33,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
     std::unique_ptr<Model> m_relaxation;
-    std::unique_ptr<NodeUpdator<NodeInfoT>> m_node_updator;
+    std::unique_ptr<::idol::NodeUpdator<NodeInfoT>> m_node_updator;
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
@@ -461,7 +461,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) const 
 
     idol_Log(Trace, "Preparing to solve node " << t_node.id() << ".");
 
-    m_node_updator->apply_local_updates(t_node.info());
+    m_node_updator->apply_local_updates(t_node);
 
     m_relaxation->optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
     m_relaxation->optimizer().set_param_time_limit(get_remaining_time());
@@ -517,7 +517,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
     }
 
     if (status == Feasible && reason == ObjLimit) {
-        idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().objective_value() << ").");
+        idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().primal_solution().objective_value() << ").");
         return;
     }
 

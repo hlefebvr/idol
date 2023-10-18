@@ -13,6 +13,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 #include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -64,8 +65,6 @@ int main(int t_argc, const char** t_argv) {
     model.optimize();
 
     std::cout << save_primal(model) << std::endl;
-
-    std::cout << "Nb. nodes: " << model.optimizer().as<Optimizers::BranchAndBound<NodeInfo>>().n_solved_nodes() << std::endl;
 
     return 0;
 }

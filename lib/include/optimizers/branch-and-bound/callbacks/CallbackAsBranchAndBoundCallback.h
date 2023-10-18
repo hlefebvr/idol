@@ -47,7 +47,7 @@ public:
             }
 
             void submit_heuristic_solution(Solution::Primal t_solution) override {
-                auto* info = new NodeInfo();
+                auto* info = new NodeInfoT();
                 info->set_primal_solution(std::move(t_solution));
                 m_parent.submit_heuristic_solution(info);
             }

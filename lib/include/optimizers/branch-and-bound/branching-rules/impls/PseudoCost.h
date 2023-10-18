@@ -45,6 +45,8 @@ idol::BranchingRules::PseudoCost<NodeInfoT>::scoring_function(const std::list<id
 
     const auto& primal_solution = t_node.info().primal_solution();
 
+    return {{ t_variables.front(), -1 }};
+
     throw Exception("Pseudo cost not implemented.");
 }
 

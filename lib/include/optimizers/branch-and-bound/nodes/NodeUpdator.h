@@ -10,6 +10,9 @@ namespace idol {
 
     template<class NodeT>
     class NodeUpdator;
+
+    template<class NodeT>
+    class Node;
 }
 
 template<class NodeT>
@@ -17,7 +20,7 @@ class idol::NodeUpdator {
 public:
     virtual ~NodeUpdator() = default;
 
-    virtual void apply_local_updates(const NodeT& t_node) = 0;
+    virtual void apply_local_updates(const Node<NodeT>& t_node) = 0;
 
     virtual void clear_local_updates() = 0;
 };
