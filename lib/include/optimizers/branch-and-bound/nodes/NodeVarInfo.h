@@ -39,7 +39,7 @@ public:
 
     virtual void save(const Model& t_original_formulation, const Model& t_model);
 
-    [[nodiscard]] virtual NodeVarInfo* create_child() const { return new NodeVarInfo(*this); }
+    [[nodiscard]] virtual NodeVarInfo* create_child() const;
 
     void set_local_lower_bound(const Var& t_var, double t_lb);
 

@@ -74,6 +74,8 @@ public:
         return create_child_nodes_for_selected_variable(t_node, selected_variable);
     }
 
+    [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
+
     VariableBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates)
         : BranchingRule<NodeInfoT>(t_parent),
           m_branching_candidates(std::move(t_branching_candidates)) {}

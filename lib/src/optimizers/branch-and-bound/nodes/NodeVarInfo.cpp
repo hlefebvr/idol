@@ -40,6 +40,8 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
 
     m_primal_solution = save_primal(t_original_formulation, t_model);
 
-    std::cout << "Forgetting grand parent is discarded" << std::endl;
+}
 
+idol::NodeVarInfo *idol::NodeVarInfo::create_child() const {
+    return new NodeVarInfo(*this);
 }

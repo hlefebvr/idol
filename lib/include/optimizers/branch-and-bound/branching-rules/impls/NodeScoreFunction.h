@@ -21,7 +21,7 @@ class idol::NodeScoreFunction {
 public:
     virtual ~NodeScoreFunction() = default;
 
-    virtual double operator()(double t_parent_objective, double t_left, double t_right) = 0;
+    virtual double operator()(double t_left, double t_right) = 0;
 
     [[nodiscard]] virtual NodeScoreFunction* clone() const = 0;
 };
@@ -39,12 +39,8 @@ public:
     Linear& operator=(const Linear&) = default;
     Linear& operator=(Linear&&) = default;
 
-    double operator()(double t_parent_objective, double t_left, double t_right) override {
-
-        double Delta_left = t_left - t_parent_objective;
-        double Delta_right = t_right - t_parent_objective;
-
-        return (1 - m_parameter) * std::min(Delta_left, Delta_right) + m_parameter * std::max(Delta_left, Delta_right);
+    double operator()(double t_left, double t_right) override {
+        return (1 - m_parameter) * std::min(t_left, t_right) + m_parameter * std::max(t_left, t_right);
     }
 
     [[nodiscard]] Linear *clone() const override {
@@ -65,12 +61,8 @@ public:
     Product& operator=(const Product&) = default;
     Product& operator=(Product&&) = default;
 
-    double operator()(double t_parent_objective, double t_left, double t_right) override {
-
-        double Delta_left = t_left - t_parent_objective;
-        double Delta_right = t_right - t_parent_objective;
-
-        return std::min(m_parameter, Delta_left) * std::min(m_parameter, Delta_right);
+    double operator()(double t_left, double t_right) override {
+        return std::min(m_parameter, t_left) * std::min(m_parameter, t_right);
     }
 
     [[nodiscard]] Product *clone() const override {
