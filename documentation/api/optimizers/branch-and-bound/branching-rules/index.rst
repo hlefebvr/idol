@@ -10,6 +10,7 @@ Branching rules
        VariableBranching <|-- LeastInfeasible
        VariableBranching <|-- FirstInfeasibleFound
        VariableBranching <|-- StrongBranching
+       VariableBranching <|-- PseudoCost
        VariableBranching <|-- UniformlyRandom
 
 .. toctree::
@@ -19,5 +20,6 @@ Branching rules
     MostInfeasible
     LeastInfeasible
     FirstInfeasibleFound
+    PseudoCost
     StrongBranching
     UniformlyRandom
