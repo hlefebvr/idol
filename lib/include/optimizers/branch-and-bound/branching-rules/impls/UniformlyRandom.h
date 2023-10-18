@@ -9,33 +9,33 @@
 #include "VariableBranching.h"
 
 namespace idol::BranchingRules {
-    template<class NodeInfoT> class UniformlyRandom;
+    template<class NodeVarInfoT> class UniformlyRandom;
 }
 
-template<class NodeInfoT>
-class idol::BranchingRules::UniformlyRandom : public VariableBranching<NodeInfoT> {
+template<class NodeVarInfoT>
+class idol::BranchingRules::UniformlyRandom : public VariableBranching<NodeVarInfoT> {
     unsigned int m_seed;
 protected:
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeVarInfoT> &t_node) override;
 public:
-    explicit UniformlyRandom(const Optimizers::BranchAndBound<NodeInfoT>& t_parent,
+    explicit UniformlyRandom(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent,
                              std::list<Var> t_branching_candidates,
                              unsigned int t_seed);
 };
 
-template<class NodeInfoT>
-idol::BranchingRules::UniformlyRandom<NodeInfoT>::UniformlyRandom(
-        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent,
+template<class NodeVarInfoT>
+idol::BranchingRules::UniformlyRandom<NodeVarInfoT>::UniformlyRandom(
+        const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent,
         std::list<Var> t_branching_candidates,
         unsigned int t_seed
         )
-        : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)),
+        : VariableBranching<NodeVarInfoT>(t_parent, std::move(t_branching_candidates)),
           m_seed(t_seed) {}
 
-template<class NodeInfoT>
+template<class NodeVarInfoT>
 std::list<std::pair<idol::Var, double>>
-idol::BranchingRules::UniformlyRandom<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                   const Node<NodeInfoT> &t_node) {
+idol::BranchingRules::UniformlyRandom<NodeVarInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
+                                                                   const Node<NodeVarInfoT> &t_node) {
 
     std::mt19937 engine(m_seed);
     std::uniform_real_distribution<double> distribution(0, 1);

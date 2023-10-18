@@ -14,8 +14,8 @@ namespace idol {
     class NodeVarUpdator;
 }
 
-template<class NodeInfoT>
-class idol::NodeVarUpdator : public NodeUpdator<NodeInfoT> {
+template<class NodeVarInfoT>
+class idol::NodeVarUpdator : public NodeUpdator<NodeVarInfoT> {
 
     Model& m_relaxation;
 
@@ -23,17 +23,17 @@ class idol::NodeVarUpdator : public NodeUpdator<NodeInfoT> {
     Map<Var, double> m_changed_upper_bounds;
 
 
-    void apply_local_updates(const Node<NodeInfoT>& t_node,
+    void apply_local_updates(const Node<NodeVarInfoT>& t_node,
                              Map<Var, double> &t_changed_lower_bounds,
                              Map<Var, double> &t_changed_upper_bounds);
 
-    void apply_local_update(const typename NodeInfoT::BranchingDecision& t_branching_decision,
+    void apply_local_update(const typename NodeVarInfoT::BranchingDecision& t_branching_decision,
                              Map<Var, double> &t_current_changed_bounds,
                              Map<Var, double> &t_changed_bounds);
 public:
     explicit NodeVarUpdator(Model& t_relaxation);
 
-    void apply_local_updates(const Node<NodeInfoT> &t_node) override;
+    void apply_local_updates(const Node<NodeVarInfoT> &t_node) override;
 
     void clear_local_updates() override;
 };
@@ -43,8 +43,8 @@ idol::NodeVarUpdator<NodeT>::NodeVarUpdator(idol::Model &t_relaxation) : m_relax
 
 }
 
-template<class NodeInfoT>
-void idol::NodeVarUpdator<NodeInfoT>::clear_local_updates() {
+template<class NodeVarInfoT>
+void idol::NodeVarUpdator<NodeVarInfoT>::clear_local_updates() {
 
     for (const auto& [var, lb] : m_changed_lower_bounds) {
         m_relaxation.set_var_lb(var, lb);
@@ -58,8 +58,8 @@ void idol::NodeVarUpdator<NodeInfoT>::clear_local_updates() {
 
 }
 
-template<class NodeInfoT>
-void idol::NodeVarUpdator<NodeInfoT>::apply_local_updates(const Node<NodeInfoT> &t_node) {
+template<class NodeVarInfoT>
+void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const Node<NodeVarInfoT> &t_node) {
 
     Map<Var, double> changed_lower_bounds;
     Map<Var, double> changed_upper_bounds;
@@ -71,8 +71,8 @@ void idol::NodeVarUpdator<NodeInfoT>::apply_local_updates(const Node<NodeInfoT> 
 
 }
 
-template<class NodeInfoT>
-void idol::NodeVarUpdator<NodeInfoT>::apply_local_updates(const idol::Node<NodeInfoT> &t_node,
+template<class NodeVarInfoT>
+void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<NodeVarInfoT> &t_node,
                                                           Map<Var, double> &t_changed_lower_bounds,
                                                           Map<Var, double> &t_changed_upper_bounds
                                                           ) {
@@ -98,8 +98,8 @@ void idol::NodeVarUpdator<NodeInfoT>::apply_local_updates(const idol::Node<NodeI
 
 }
 
-template<class NodeInfoT>
-void idol::NodeVarUpdator<NodeInfoT>::apply_local_update(const typename NodeInfoT::BranchingDecision &t_branching_decision,
+template<class NodeVarInfoT>
+void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_update(const typename NodeVarInfoT::BranchingDecision &t_branching_decision,
                                                          idol::Map<idol::Var, double> &t_current_changed_bounds,
                                                          idol::Map<idol::Var, double> &t_changed_bounds) {
 

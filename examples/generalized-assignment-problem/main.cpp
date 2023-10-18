@@ -70,7 +70,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
                 .with_log_frequency(1)
-                // .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
+                .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
                       .with_callback(
                               Heuristics::LocalBranching()
                                       .with_optimizer(

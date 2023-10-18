@@ -44,7 +44,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBound: solve Knapsack Problem with different n
     model.add(c);
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    model.use(BranchAndBound<NodeInfo>()
+    model.use(BranchAndBound<NodeVarInfo>()
                 .with_node_optimizer(OptimizerT::ContinuousRelaxation())
                 .with_branching_rule(MostInfeasible())
                 .with_node_selection_rule(NodeSelectionRuleT())

@@ -67,7 +67,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndBoundMIP: solve Facility Location Problem with
 
     // Set backend options
     model.use(
-            BranchAndBound<NodeInfo>()
+            BranchAndBound<NodeVarInfo>()
                     .with_node_optimizer(OptimizerT::ContinuousRelaxation())
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(NodeSelectionRuleT())

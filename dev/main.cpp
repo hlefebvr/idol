@@ -65,7 +65,7 @@ int main(int t_argc, char** t_argv) {
 
                     model.use(
 
-                            BranchAndBound<NodeInfo>()
+                            BranchAndBound<NodeVarInfo>()
 
                                     .with_node_optimizer(
 

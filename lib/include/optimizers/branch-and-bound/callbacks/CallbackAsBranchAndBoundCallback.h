@@ -11,21 +11,21 @@
 #include "BranchAndBoundCallback.h"
 
 namespace idol {
-    template<class NodeInfoT>
+    template<class NodeVarInfoT>
     class CallbackAsBranchAndBoundCallback;
 }
 
-template<class NodeInfoT>
-class idol::CallbackAsBranchAndBoundCallback : public BranchAndBoundCallbackFactory<NodeInfoT> {
+template<class NodeVarInfoT>
+class idol::CallbackAsBranchAndBoundCallback : public BranchAndBoundCallbackFactory<NodeVarInfoT> {
     std::unique_ptr<CallbackFactory> m_callback_factory;
 
     CallbackAsBranchAndBoundCallback(const CallbackAsBranchAndBoundCallback& t_src)
         : m_callback_factory(t_src.m_callback_factory->clone()) {}
 public:
 
-    class Strategy : public BranchAndBoundCallback<NodeInfoT> {
+    class Strategy : public BranchAndBoundCallback<NodeVarInfoT> {
 
-        friend class ::idol::CallbackAsBranchAndBoundCallback<NodeInfoT>;
+        friend class ::idol::CallbackAsBranchAndBoundCallback<NodeVarInfoT>;
 
         class Interface : public CallbackI {
             friend class Strategy;
@@ -47,7 +47,7 @@ public:
             }
 
             void submit_heuristic_solution(Solution::Primal t_solution) override {
-                auto* info = new NodeInfoT();
+                auto* info = new NodeVarInfoT();
                 info->set_primal_solution(std::move(t_solution));
                 m_parent.submit_heuristic_solution(info);
             }
@@ -75,13 +75,13 @@ public:
     explicit CallbackAsBranchAndBoundCallback(const CallbackFactory& t_factory)
         : m_callback_factory(t_factory.clone()) {}
 
-    BranchAndBoundCallback<NodeInfoT> *operator()() override {
+    BranchAndBoundCallback<NodeVarInfoT> *operator()() override {
         auto* cb = m_callback_factory->operator()();
         return new Strategy(cb);
     }
 
-    BranchAndBoundCallbackFactory<NodeInfoT> *clone() const override {
-        return new CallbackAsBranchAndBoundCallback<NodeInfoT>(*this);
+    BranchAndBoundCallbackFactory<NodeVarInfoT> *clone() const override {
+        return new CallbackAsBranchAndBoundCallback<NodeVarInfoT>(*this);
     }
 };
 

@@ -4,7 +4,7 @@
 
 #include "../test_utils.h"
 #include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/nodes/NodeInfo.h"
+#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 #include "optimizers/branch-and-bound/BranchAndBound.h"
 #include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
@@ -15,7 +15,7 @@ TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
     
     auto solver = GENERATE(
                 std::shared_ptr<OptimizerFactory>(TestType().clone()),
-                std::shared_ptr<OptimizerFactory>(BranchAndBound<NodeInfo>()
+                std::shared_ptr<OptimizerFactory>(BranchAndBound<NodeVarInfo>()
                                                           .with_node_optimizer(TestType::ContinuousRelaxation())
                                 .with_branching_rule(MostInfeasible())
                                 .with_node_selection_rule(BestBound())

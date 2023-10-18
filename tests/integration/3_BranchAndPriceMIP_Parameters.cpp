@@ -79,7 +79,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                       DantzigWolfeDecomposition(std_decomposition)
                               .with_master_optimizer(TestType::ContinuousRelaxation())
                               .with_pricing_optimizer(
-                                      BranchAndBound<NodeInfo>()
+                                      BranchAndBound<NodeVarInfo>()
                                               .with_node_optimizer(TestType::ContinuousRelaxation())
                                               .with_branching_rule(MostInfeasible())
                                               .with_node_selection_rule(BestBound())
@@ -96,12 +96,12 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
                       DantzigWolfeDecomposition(nested_decomposition1)
                               .with_master_optimizer(TestType::ContinuousRelaxation())
                               .with_pricing_optimizer(
-                                      BranchAndBound<NodeInfo>()
+                                      BranchAndBound<NodeVarInfo>()
                                               .with_node_optimizer(
                                                       DantzigWolfeDecomposition(nested_decomposition2)
                                                               .with_master_optimizer(TestType::ContinuousRelaxation())
                                                               .with_pricing_optimizer(
-                                                                      BranchAndBound<NodeInfo>()
+                                                                      BranchAndBound<NodeVarInfo>()
                                                                               .with_node_optimizer(
                                                                                       TestType::ContinuousRelaxation())
                                                                               .with_branching_rule(MostInfeasible())
@@ -131,7 +131,7 @@ TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem
     const auto solver_index = GENERATE(0, 1, 2);
 
     model.use(
-            BranchAndBound<NodeInfo>()
+            BranchAndBound<NodeVarInfo>()
                     .with_node_optimizer(*relaxation_solvers[solver_index].second)
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())

@@ -18,30 +18,30 @@ class idol::StrongBranching : public idol::VariableBranching {
 public:
     StrongBranching() = default;
 
-    template<class NodeInfoT>
-    class Strategy : public VariableBranching::Strategy<NodeInfoT> {
+    template<class NodeVarInfoT>
+    class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
         std::optional<unsigned int> m_max_n_variables;
         std::unique_ptr<NodeScoreFunction> m_node_scoring_function;
         std::list<StrongBranchingPhase> m_phases;
 
-        Strategy(const Strategy<NodeInfoT>& t_src);
+        Strategy(const Strategy<NodeVarInfoT>& t_src);
     public:
         Strategy() = default;
 
-        explicit Strategy(const StrongBranching& t_parent) : VariableBranching::Strategy<NodeInfoT>(t_parent) {}
+        explicit Strategy(const StrongBranching& t_parent) : VariableBranching::Strategy<NodeVarInfoT>(t_parent) {}
 
-        BranchingRules::VariableBranching<NodeInfoT> *
-        operator()(const Optimizers::BranchAndBound<NodeInfoT> &t_parent) const override {
-            return new BranchingRules::StrongBranching<NodeInfoT>(
+        BranchingRules::VariableBranching<NodeVarInfoT> *
+        operator()(const Optimizers::BranchAndBound<NodeVarInfoT> &t_parent) const override {
+            return new BranchingRules::StrongBranching<NodeVarInfoT>(
                         t_parent,
-                        idol::VariableBranching::Strategy<NodeInfoT>::create_branching_candidates(t_parent.parent()),
+                        idol::VariableBranching::Strategy<NodeVarInfoT>::create_branching_candidates(t_parent.parent()),
                         m_max_n_variables.has_value() ? m_max_n_variables.value() : 100,
                         m_node_scoring_function ? m_node_scoring_function->clone() : new NodeScoreFunctions::Product(),
                         m_phases
                     );
         }
 
-        VariableBranching::Strategy<NodeInfoT> *clone() const override {
+        VariableBranching::Strategy<NodeVarInfoT> *clone() const override {
             return new Strategy(*this);
         }
     };
@@ -57,8 +57,8 @@ private:
     std::list<StrongBranchingPhase> m_phases;
 };
 
-template<class NodeInfoT>
-idol::StrongBranching::Strategy<NodeInfoT>::Strategy(const Strategy<NodeInfoT>& t_src)
+template<class NodeVarInfoT>
+idol::StrongBranching::Strategy<NodeVarInfoT>::Strategy(const Strategy<NodeVarInfoT>& t_src)
     : m_max_n_variables(t_src.m_max_n_variables),
       m_node_scoring_function(t_src.m_node_scoring_function ? t_src.m_node_scoring_function->clone() : nullptr),
       m_phases(t_src.m_phases)

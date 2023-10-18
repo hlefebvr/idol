@@ -16,19 +16,19 @@ class idol::FirstInfeasibleFound : public idol::VariableBranching {
 public:
     FirstInfeasibleFound() = default;
 
-    template<class NodeInfoT>
-    class Strategy : public VariableBranching::Strategy<NodeInfoT> {
+    template<class NodeVarInfoT>
+    class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
     public:
         Strategy() = default;
 
-        explicit Strategy(const FirstInfeasibleFound& t_parent) : VariableBranching::Strategy<NodeInfoT>(t_parent) {}
+        explicit Strategy(const FirstInfeasibleFound& t_parent) : VariableBranching::Strategy<NodeVarInfoT>(t_parent) {}
 
-        BranchingRules::VariableBranching<NodeInfoT> *
-        operator()(const Optimizers::BranchAndBound<NodeInfoT> &t_parent) const override {
-            return new BranchingRules::FirstInfeasibleFound<NodeInfoT>(t_parent, idol::VariableBranching::Strategy<NodeInfoT>::create_branching_candidates(t_parent.parent()));
+        BranchingRules::VariableBranching<NodeVarInfoT> *
+        operator()(const Optimizers::BranchAndBound<NodeVarInfoT> &t_parent) const override {
+            return new BranchingRules::FirstInfeasibleFound<NodeVarInfoT>(t_parent, idol::VariableBranching::Strategy<NodeVarInfoT>::create_branching_candidates(t_parent.parent()));
         }
 
-        VariableBranching::Strategy<NodeInfoT> *clone() const override {
+        VariableBranching::Strategy<NodeVarInfoT> *clone() const override {
             return new Strategy(*this);
         }
     };

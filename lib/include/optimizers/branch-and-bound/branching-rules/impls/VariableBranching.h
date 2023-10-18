@@ -15,11 +15,11 @@ namespace idol::BranchingRules {
     class VariableBranching;
 }
 
-template<class NodeInfoT>
-class idol::BranchingRules::VariableBranching : public BranchingRule<NodeInfoT> {
+template<class NodeVarInfoT>
+class idol::BranchingRules::VariableBranching : public BranchingRule<NodeVarInfoT> {
     std::list<Var> m_branching_candidates;
 public:
-    virtual bool is_valid(const Node<NodeInfoT> &t_node) const {
+    virtual bool is_valid(const Node<NodeVarInfoT> &t_node) const {
 
         const auto& primal_solution = t_node.info().primal_solution();
 
@@ -32,9 +32,9 @@ public:
         return true;
     }
 
-    virtual std::list<std::pair<Var, double>> scoring_function(const std::list<Var>& t_variables, const Node<NodeInfoT> &t_node) = 0;
+    virtual std::list<std::pair<Var, double>> scoring_function(const std::list<Var>& t_variables, const Node<NodeVarInfoT> &t_node) = 0;
 
-    virtual std::list<NodeInfoT *> create_child_nodes_for_selected_variable(const Node<NodeInfoT> &t_node, const Var& t_var) {
+    virtual std::list<NodeVarInfoT *> create_child_nodes_for_selected_variable(const Node<NodeVarInfoT> &t_node, const Var& t_var) {
 
         const auto& primal_solution = t_node.info().primal_solution();
         const double value = primal_solution.get(t_var);
@@ -58,7 +58,7 @@ public:
         return { n1, n2 };
     }
 
-    virtual std::list<NodeInfoT *> create_child_nodes(const Node<NodeInfoT> &t_node) {
+    virtual std::list<NodeVarInfoT *> create_child_nodes(const Node<NodeVarInfoT> &t_node) {
 
         const auto& primal_solution = t_node.info().primal_solution();
 
@@ -76,8 +76,8 @@ public:
 
     [[nodiscard]] const std::list<Var>& branching_candidates() const { return m_branching_candidates; }
 
-    VariableBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates)
-        : BranchingRule<NodeInfoT>(t_parent),
+    VariableBranching(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates)
+        : BranchingRule<NodeVarInfoT>(t_parent),
           m_branching_candidates(std::move(t_branching_candidates)) {}
 
 protected:

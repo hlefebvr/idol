@@ -43,5 +43,5 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
 }
 
 idol::NodeVarInfo *idol::NodeVarInfo::create_child() const {
-    return new NodeVarInfo(*this);
+    return new NodeVarInfo();
 }

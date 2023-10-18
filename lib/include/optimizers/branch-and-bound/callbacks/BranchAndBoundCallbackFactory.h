@@ -6,21 +6,21 @@
 #define IDOL_BRANCHANDBOUNDCALLBACKFACTORY_H
 
 namespace idol {
-    template<class NodeInfoT>
+    template<class NodeVarInfoT>
     class BranchAndBoundCallback;
 
-    template<class NodeInfoT>
+    template<class NodeVarInfoT>
     class BranchAndBoundCallbackFactory;
 }
 
-template<class NodeInfoT>
+template<class NodeVarInfoT>
 class idol::BranchAndBoundCallbackFactory {
 public:
     virtual ~BranchAndBoundCallbackFactory() = default;
 
-    virtual BranchAndBoundCallback<NodeInfoT>* operator()() = 0;
+    virtual BranchAndBoundCallback<NodeVarInfoT>* operator()() = 0;
 
-    virtual BranchAndBoundCallbackFactory<NodeInfoT>* clone() const = 0;
+    virtual BranchAndBoundCallbackFactory<NodeVarInfoT>* clone() const = 0;
 };
 
 #endif //IDOL_BRANCHANDBOUNDCALLBACKFACTORY_H

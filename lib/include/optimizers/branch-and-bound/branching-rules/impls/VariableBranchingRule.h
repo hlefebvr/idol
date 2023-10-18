@@ -19,8 +19,8 @@ namespace idol {
     template<class>
     class VariableBranchingRule;
 }
-template<class NodeInfoT>
-class idol::VariableBranchingRule : public BranchingRule<NodeInfoT> {
+template<class NodeVarInfoT>
+class idol::VariableBranchingRule : public BranchingRule<NodeVarInfoT> {
     std::optional<std::pair<Var, double>> m_variable_selected_for_branching;
 protected:
     void reset_variable_selected_for_branching();
@@ -37,19 +37,19 @@ protected:
                                        const std::function<double(const Var&)>& t_scoring_function
     );
 
-    std::list<NodeInfoT*> create_child_nodes_by_bound(
-            const Node<NodeInfoT>& t_node,
+    std::list<NodeVarInfoT*> create_child_nodes_by_bound(
+            const Node<NodeVarInfoT>& t_node,
             const Var& t_variable_selected_for_branching,
             double t_value,
             double t_lb,
             double t_ub
     );
 public:
-    explicit VariableBranchingRule(const Model& t_model) : BranchingRule<NodeInfoT>(t_model) {}
+    explicit VariableBranchingRule(const Model& t_model) : BranchingRule<NodeVarInfoT>(t_model) {}
 };
 
-template<class NodeInfoT>
-std::list<NodeInfoT *> idol::VariableBranchingRule<NodeInfoT>::create_child_nodes_by_bound(const Node<NodeInfoT> &t_node,
+template<class NodeVarInfoT>
+std::list<NodeVarInfoT *> idol::VariableBranchingRule<NodeVarInfoT>::create_child_nodes_by_bound(const Node<NodeVarInfoT> &t_node,
                                                                                      const Var &t_variable_selected_for_branching,
                                                                                      double t_value,
                                                                                      double t_lb,
@@ -71,9 +71,9 @@ std::list<NodeInfoT *> idol::VariableBranchingRule<NodeInfoT>::create_child_node
     return { n1, n2 };
 }
 
-template<class NodeInfoT>
+template<class NodeVarInfoT>
 template<class IteratorT>
-void idol::VariableBranchingRule<NodeInfoT>::select_variable_for_branching(IteratorT t_begin, IteratorT t_end,
+void idol::VariableBranchingRule<NodeVarInfoT>::select_variable_for_branching(IteratorT t_begin, IteratorT t_end,
                                                                      const std::function<double(
                                                                              const Var &)> &t_scoring_function) {
 
@@ -102,23 +102,23 @@ void idol::VariableBranchingRule<NodeInfoT>::select_variable_for_branching(Itera
 
 }
 
-template<class NodeInfoT>
-const std::pair<idol::Var, double> &idol::VariableBranchingRule<NodeInfoT>::variable_selected_for_branching() const {
+template<class NodeVarInfoT>
+const std::pair<idol::Var, double> &idol::VariableBranchingRule<NodeVarInfoT>::variable_selected_for_branching() const {
     return m_variable_selected_for_branching.value();
 }
 
-template<class NodeInfoT>
-bool idol::VariableBranchingRule<NodeInfoT>::has_variable_selected_for_branching() const {
+template<class NodeVarInfoT>
+bool idol::VariableBranchingRule<NodeVarInfoT>::has_variable_selected_for_branching() const {
     return m_variable_selected_for_branching.has_value();
 }
 
-template<class NodeInfoT>
-void idol::VariableBranchingRule<NodeInfoT>::set_variable_selected_for_branching(const Var &t_var, double t_score) {
+template<class NodeVarInfoT>
+void idol::VariableBranchingRule<NodeVarInfoT>::set_variable_selected_for_branching(const Var &t_var, double t_score) {
     m_variable_selected_for_branching = { t_var, t_score };
 }
 
-template<class NodeInfoT>
-void idol::VariableBranchingRule<NodeInfoT>::reset_variable_selected_for_branching() {
+template<class NodeVarInfoT>
+void idol::VariableBranchingRule<NodeVarInfoT>::reset_variable_selected_for_branching() {
     m_variable_selected_for_branching = {};
 }
 

@@ -17,27 +17,27 @@ class idol::UniformlyRandom : public idol::VariableBranching {
 public:
     UniformlyRandom() = default;
 
-    template<class NodeInfoT>
-    class Strategy : public VariableBranching::Strategy<NodeInfoT> {
+    template<class NodeVarInfoT>
+    class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
         std::optional<unsigned int> m_seed;
     public:
         Strategy() = default;
 
         explicit Strategy(const UniformlyRandom& t_parent)
-            : VariableBranching::Strategy<NodeInfoT>(t_parent),
+            : VariableBranching::Strategy<NodeVarInfoT>(t_parent),
               m_seed(t_parent.m_seed) {}
 
-        BranchingRules::VariableBranching<NodeInfoT> *
-        operator()(const Optimizers::BranchAndBound<NodeInfoT> &t_parent) const override {
+        BranchingRules::VariableBranching<NodeVarInfoT> *
+        operator()(const Optimizers::BranchAndBound<NodeVarInfoT> &t_parent) const override {
 
             unsigned int seed = m_seed.has_value() ? m_seed.value() : (std::random_device())();
 
-            return new BranchingRules::UniformlyRandom<NodeInfoT>(t_parent,
-                                                                  idol::VariableBranching::Strategy<NodeInfoT>::create_branching_candidates(t_parent.parent()),
+            return new BranchingRules::UniformlyRandom<NodeVarInfoT>(t_parent,
+                                                                  idol::VariableBranching::Strategy<NodeVarInfoT>::create_branching_candidates(t_parent.parent()),
                                                                   seed);
         }
 
-        VariableBranching::Strategy<NodeInfoT> *clone() const override {
+        VariableBranching::Strategy<NodeVarInfoT> *clone() const override {
             return new Strategy(*this);
         }
     };
