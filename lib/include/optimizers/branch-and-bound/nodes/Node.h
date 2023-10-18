@@ -20,10 +20,17 @@ class idol::Node {
     unsigned int m_id;
     unsigned int m_level;
     std::shared_ptr<NodeInfoT> m_info;
+    std::shared_ptr<Node<NodeInfoT>> m_parent;
 
     Node() : m_level(0), m_id(0), m_info(std::make_shared<NodeInfoT>()) {}
+    Node(NodeInfoT* t_ptr_to_info, unsigned int t_id) : m_id(t_id), m_level(0), m_info(t_ptr_to_info) {}
 public:
-    Node(NodeInfoT* t_ptr_to_info, unsigned int t_id, unsigned int t_level) : m_id(t_id), m_level(t_level), m_info(t_ptr_to_info) {}
+    Node(NodeInfoT* t_ptr_to_info, unsigned int t_id, const Node<NodeInfoT>& t_parent)
+            : m_id(t_id),
+              m_level(t_parent.level() + 1),
+              m_info(t_ptr_to_info),
+              m_parent(std::make_shared<Node<NodeInfoT>>(t_parent))
+    {}
 
     Node(const Node&) = default;
     Node(Node&&) noexcept = default;
@@ -33,6 +40,8 @@ public:
 
     static Node<NodeInfoT> create_root_node() { return Node<NodeInfoT>(); }
 
+    static Node<NodeInfoT> create_detached_node(NodeInfoT* t_ptr_to_info) { return Node<NodeInfoT>(t_ptr_to_info, -1); }
+
     [[nodiscard]] unsigned int id() const { return m_id; }
 
     [[nodiscard]] unsigned int level() const { return m_level; }
@@ -40,6 +49,8 @@ public:
     [[nodiscard]] const NodeInfoT& info() const { return *m_info; }
 
     NodeInfoT& info() { return *m_info; }
+
+    [[nodiscard]] const Node<NodeInfoT>& parent() const { return *m_parent; }
 };
 
 #endif //IDOL_NODE_H

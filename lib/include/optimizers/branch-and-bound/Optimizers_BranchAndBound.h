@@ -265,7 +265,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_lower_bound(double t_lo
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(NodeInfoT* t_info) {
 
-    Node<NodeInfoT> t_node(t_info, -1, 0);
+    auto t_node = Node<NodeInfoT>::create_detached_node(t_info);
 
     if (t_node.info().objective_value() < get_best_obj()) {
 
@@ -474,6 +474,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node) const 
 
     t_node.info().save(parent(), *m_relaxation);
 
+    m_branching_rule->on_node_solved(t_node);
+
 }
 
 template<class NodeInfoT>
@@ -674,7 +676,7 @@ std::vector<idol::Node<NodeInfoT>> idol::Optimizers::BranchAndBound<NodeInfoT>::
     result.reserve(children_info.size());
 
     for (auto* ptr_to_info : children_info) {
-        result.emplace_back(ptr_to_info, m_n_created_nodes++, t_node.level() + 1);
+        result.emplace_back(ptr_to_info, m_n_created_nodes++, t_node);
     }
 
     return result;

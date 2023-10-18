@@ -40,6 +40,8 @@ public:
 
     [[nodiscard]] virtual std::list<NodeInfoT*> create_child_nodes(const Node<NodeInfoT>& t_node) = 0;
 
+    virtual void on_node_solved(const Node<NodeInfoT>& t_node) {}
+
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);
         if (!result) {

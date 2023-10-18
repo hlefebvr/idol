@@ -114,10 +114,9 @@ idol::BranchingRules::StrongBranching<NodeInfoT>::make_nodes(const std::list<Nod
     std::list<idol::Node<NodeInfoT>> result;
 
     const unsigned int id = t_parent_node.id();
-    const unsigned int level = t_parent_node.level();
 
     for (auto* info : t_node_infos) {
-        result.emplace_back(info, id, level);
+        result.emplace_back(info, id, t_parent_node);
     }
 
     return result;

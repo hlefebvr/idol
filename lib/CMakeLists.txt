@@ -23,6 +23,8 @@ add_library(idol STATIC include/modeling/numericals.h include/containers/Optiona
         src/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.cpp
         include/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h
         src/optimizers/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
+        include/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h
+        include/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h
 )
 
 find_package(OpenMP REQUIRED)
