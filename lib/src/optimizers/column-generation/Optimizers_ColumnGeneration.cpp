@@ -226,7 +226,7 @@ void idol::Optimizers::ColumnGeneration::run_column_generation() {
 
         ++m_iteration_count;
 
-        if (m_iteration_count >= get_param_iteration_count_limit()) {
+        if (m_iteration_count >= get_param_iteration_limit()) {
             set_reason(IterLimit);
             terminate();
             break;

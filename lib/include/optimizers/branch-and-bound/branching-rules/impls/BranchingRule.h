@@ -6,6 +6,7 @@
 #define IDOL_BRANCHINGRULE_H
 
 #include "../../nodes/Node.h"
+#include "../../../Logger.h"
 
 namespace idol {
     namespace Optimizers {

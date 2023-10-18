@@ -11,6 +11,7 @@
 #include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
 #include "optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
+#include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -54,6 +55,8 @@ int main(int t_argc, const char** t_argv) {
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .with_branching_rule(
                             StrongBranching()
+                                            .with_phase(StrongBranchingPhases::WithIterationLimit(1), 50, 4)
+                                            .with_phase(StrongBranchingPhases::WithNodeOptimizer(), 40, 7)
                     )
                 .with_node_selection_rule(BestBound())
                 .with_log_level(Trace, Blue)

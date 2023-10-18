@@ -8,6 +8,7 @@
 #include <list>
 #include "BranchingRule.h"
 #include "modeling/variables/Var.h"
+#include "modeling/solutions/Solution.h"
 
 namespace idol::BranchingRules {
     template<class>

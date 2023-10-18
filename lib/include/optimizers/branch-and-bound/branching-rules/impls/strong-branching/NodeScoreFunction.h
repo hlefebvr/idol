@@ -22,6 +22,8 @@ public:
     virtual ~StrongBranchingScoreFunction() = default;
 
     virtual double operator()(double t_parent_objective, double t_left, double t_right) = 0;
+
+    [[nodiscard]] virtual StrongBranchingScoreFunction* clone() const = 0;
 };
 
 class idol::StrongBranchingScores::Linear : public idol::StrongBranchingScoreFunction {
@@ -44,6 +46,10 @@ public:
 
         return (1 - m_parameter) * std::max(Delta_left, Delta_right) + m_parameter * std::min(Delta_left, Delta_right);
     }
+
+    [[nodiscard]] Linear *clone() const override {
+        return new Linear(*this);
+    }
 };
 
 class idol::StrongBranchingScores::Product : public idol::StrongBranchingScoreFunction {
@@ -65,6 +71,10 @@ public:
         double Delta_right = t_right - t_parent_objective;
 
         return std::min(m_parameter, Delta_left) * std::min(m_parameter, Delta_right);
+    }
+
+    [[nodiscard]] Product *clone() const override {
+        return new Product(*this);
     }
 };
 

@@ -176,7 +176,7 @@ public:
 
     virtual void set_tol_integer(double t_tol_integer) { m_tol_integer = t_tol_integer; }
 
-    [[nodiscard]] unsigned int get_param_iteration_count_limit() const { return m_param_iteration_limit; }
+    [[nodiscard]] unsigned int get_param_iteration_limit() const { return m_param_iteration_limit; }
 
     void set_param_iteration_limit(unsigned int t_iteration_limit) { m_param_iteration_limit = t_iteration_limit; }
 
