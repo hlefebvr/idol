@@ -3,11 +3,11 @@
 //
 
 #include "../test_utils.h"
-#include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/solvers/DefaultOptimizer.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 TEMPLATE_LIST_TEST_CASE("MILP solvers: solve toy example",
                         "[integration][backend][solver]",

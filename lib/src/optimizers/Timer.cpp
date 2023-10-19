@@ -1,7 +1,7 @@
 //
 // Created by henri on 10/10/22.
 //
-#include "optimizers/Timer.h"
+#include "idol/optimizers/Timer.h"
 #include <stdexcept>
 
 void idol::Timer::start() {

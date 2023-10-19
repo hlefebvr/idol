@@ -1,7 +1,7 @@
 //
 // Created by henri on 01/02/23.
 //
-#include "optimizers/Algorithm.h"
+#include "idol/optimizers/Algorithm.h"
 
 idol::Algorithm::Algorithm(const Model &t_model) : Optimizer(t_model) {
 

@@ -1,9 +1,9 @@
 //
 // Created by henri on 08/09/22.
 //
-#include "../../../include/modeling/constraints/TempCtr.h"
-#include "../../../include/modeling/solutions/Solution.h"
-#include "../../../include/modeling/expressions/LinExpr.h"
+#include "idol/modeling/constraints/TempCtr.h"
+#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/expressions/LinExpr.h"
 
 using namespace idol;
 

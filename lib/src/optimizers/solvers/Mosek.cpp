@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "optimizers/solvers/Mosek.h"
-#include "optimizers/solvers/Optimizers_Mosek.h"
-#include "errors/Exception.h"
+#include "idol/optimizers/solvers/Mosek.h"
+#include "idol/optimizers/solvers/Optimizers_Mosek.h"
+#include "idol/errors/Exception.h"
 
 idol::Optimizer *idol::Mosek::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_MOSEK

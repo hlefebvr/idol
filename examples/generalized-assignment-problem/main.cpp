@@ -2,25 +2,25 @@
 // Created by henri on 13/03/23.
 //
 #include <iostream>
-#include "modeling.h"
-#include "problems/generalized-assignment-problem/GAP_Instance.h"
-#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
-#include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/solvers/GLPK.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/IntegerMaster.h"
-#include "optimizers/callbacks/RENS.h"
-#include "optimizers/callbacks/LocalBranching.h"
-#include "optimizers/callbacks/SimpleRounding.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/modeling.h"
+#include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
+#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "idol/optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/solvers/GLPK.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/callbacks/RENS.h"
+#include "idol/optimizers/callbacks/LocalBranching.h"
+#include "idol/optimizers/callbacks/SimpleRounding.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 int main(int t_argc, const char** t_argv) {
 
     using namespace idol;
 
-    const auto instance = Problems::GAP::read_instance("instance.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -70,6 +70,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
                 .with_log_frequency(1)
+                /*
                 .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
                       .with_callback(
                               Heuristics::LocalBranching()
@@ -82,6 +83,7 @@ int main(int t_argc, const char** t_argv) {
                                                       .with_log_level(Info, Green)
                                       )
                       )
+                      */
             );
 
     // Solve

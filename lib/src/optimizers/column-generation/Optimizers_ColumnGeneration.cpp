@@ -1,9 +1,9 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
-#include "optimizers/Logger.h"
-#include "modeling/expressions/operations/operators.h"
+#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "idol/optimizers/Logger.h"
+#include "idol/modeling//expressions/operations/operators.h"
 
 idol::Optimizers::ColumnGeneration::ColumnGeneration(const Model& t_model,
                                                Model *t_master_problem,

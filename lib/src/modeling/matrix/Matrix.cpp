@@ -2,8 +2,8 @@
 // Created by henri on 04/10/22.
 //
 #include <sstream>
-#include "../../../include/modeling/matrix/Matrix.h"
-#include "../../../include/modeling/models/Model.h"
+#include "idol/modeling/matrix/Matrix.h"
+#include "idol/modeling/models/Model.h"
 
 void idol::Matrix::add_row_to_columns(const Ctr &t_ctr) {
 

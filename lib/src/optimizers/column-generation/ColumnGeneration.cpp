@@ -1,8 +1,8 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "idol/optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
 
 idol::Optimizer *idol::ColumnGeneration::operator()(const Model &t_model) const {
 

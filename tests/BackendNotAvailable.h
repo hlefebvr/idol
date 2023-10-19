@@ -5,7 +5,7 @@
 #ifndef IDOL_BACKENDNOTAVAILABLE_H
 #define IDOL_BACKENDNOTAVAILABLE_H
 
-#include "optimizers/Optimizer.h"
+#include "idol/optimizers/Optimizer.h"
 
 namespace idol {
     class BackendNotAvailable;

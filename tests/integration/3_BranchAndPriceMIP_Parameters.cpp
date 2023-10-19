@@ -3,11 +3,11 @@
 //
 
 #include "../test_utils.h"
-#include "problems/generalized-assignment-problem/GAP_Instance.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "optimizers/column-generation/IntegerMaster.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 TEMPLATE_LIST_TEST_CASE("BranchAndPriceMIP: solve Generalized Assignment Problem with different stabilizations and branching schemes",
                         "[integration][backend][solver]",

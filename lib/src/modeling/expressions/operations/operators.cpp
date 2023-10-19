@@ -1,8 +1,8 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "modeling/expressions/operations/operators.h"
-#include "modeling/solutions/Solution.h"
+#include "idol/modeling//expressions/operations/operators.h"
+#include "idol/modeling//solutions/Solution.h"
 
 double idol::evaluate(const Expr<Var, Var>& t_expr, const Solution::Primal& t_values) {
 

@@ -1,8 +1,8 @@
 //
 // Created by henri on 30/03/23.
 //
-#include "optimizers/column-generation/IntegerMaster.h"
-#include "optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/column-generation/ColumnGeneration.h"
 
 idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),

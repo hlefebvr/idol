@@ -2,9 +2,9 @@
 // Created by henri on 24/03/23.
 //
 #include <cassert>
-#include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
-#include "modeling/objects/Versions.h"
-#include "modeling/expressions/operations/operators.h"
+#include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/modeling//objects/Versions.h"
+#include "idol/modeling//expressions/operations/operators.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_original_formulation,
                                                                  const Annotation<Ctr, unsigned int>& t_constraint_flag,

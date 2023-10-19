@@ -1,7 +1,7 @@
 //
 // Created by henri on 12/10/22.
 //
-#include "../../../include/problems/multiple-knapsack-problem/MKP_Instance.h"
+#include "idol/problems/multiple-knapsack-problem/MKP_Instance.h"
 #include <cassert>
 #include <fstream>
 

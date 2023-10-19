@@ -1,8 +1,8 @@
 //
 // Created by henri on 14/02/23.
 //
-#include "optimizers/solvers/Optimizers_GLPK.h"
-#include "optimizers/Algorithm.h"
+#include "idol/optimizers/solvers/Optimizers_GLPK.h"
+#include "idol/optimizers/Algorithm.h"
 
 #ifdef IDOL_USE_GLPK
 

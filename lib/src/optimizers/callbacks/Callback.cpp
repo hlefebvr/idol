@@ -1,8 +1,8 @@
 //
 // Created by henri on 12/04/23.
 //
-#include "optimizers/callbacks/Callback.h"
-#include "optimizers/Timer.h"
+#include "idol/optimizers/callbacks/Callback.h"
+#include "idol/optimizers/Timer.h"
 
 void idol::Callback::add_user_cut(const TempCtr &t_cut) {
     throw_if_no_interface();

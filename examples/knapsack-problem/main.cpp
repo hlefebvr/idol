@@ -3,17 +3,17 @@
 //
 #include <iostream>
 #include <gurobi_c++.h>
-#include "problems/knapsack-problem/KP_Instance.h"
-#include "modeling.h"
-#include "optimizers/solvers/gurobi/Gurobi.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
-#include "optimizers/callbacks/SimpleRounding.h"
-#include "optimizers/callbacks/RENS.h"
-#include "optimizers/callbacks/LocalBranching.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/problems/knapsack-problem/KP_Instance.h"
+#include "idol/modeling.h"
+#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
+#include "idol/optimizers/callbacks/SimpleRounding.h"
+#include "idol/optimizers/callbacks/RENS.h"
+#include "idol/optimizers/callbacks/LocalBranching.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 int main(int t_argc, const char** t_argv) {
 

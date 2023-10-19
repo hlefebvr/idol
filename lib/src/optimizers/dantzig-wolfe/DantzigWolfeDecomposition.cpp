@@ -1,12 +1,12 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "modeling/models/Model.h"
-#include "modeling/expressions/operations/operators.h"
-#include "modeling/objects/Versions.h"
-#include "optimizers/column-generation/ColumnGeneration.h"
-#include "optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/modeling//models/Model.h"
+#include "idol/modeling//expressions/operations/operators.h"
+#include "idol/modeling//objects/Versions.h"
+#include "idol/optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
 idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsigned int> &t_decomposition)
         : m_decomposition(t_decomposition) {

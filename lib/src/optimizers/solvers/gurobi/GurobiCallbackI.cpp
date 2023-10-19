@@ -4,8 +4,8 @@
 
 #ifdef IDOL_USE_GUROBI
 
-#include "optimizers/solvers/gurobi/GurobiCallbackI.h"
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
+#include "idol/optimizers/solvers/gurobi/GurobiCallbackI.h"
+#include "idol/optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 
 idol::GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
 

@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "optimizers/solvers/GLPK.h"
-#include "optimizers/solvers/Optimizers_GLPK.h"
-#include "errors/Exception.h"
+#include "idol/optimizers/solvers/GLPK.h"
+#include "idol/optimizers/solvers/Optimizers_GLPK.h"
+#include "idol/errors/Exception.h"
 
 idol::Optimizer *idol::GLPK::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GLPK

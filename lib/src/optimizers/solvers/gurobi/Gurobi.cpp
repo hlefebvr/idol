@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "optimizers/solvers/gurobi/Gurobi.h"
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
-#include "errors/Exception.h"
+#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/solvers/gurobi/Optimizers_Gurobi.h"
+#include "idol/errors/Exception.h"
 
 idol::Optimizer *idol::Gurobi::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GUROBI

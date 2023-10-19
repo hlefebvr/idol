@@ -1,8 +1,8 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "optimizers/callbacks/RENS.h"
-#include "modeling/models/Model.h"
+#include "idol/optimizers/callbacks/RENS.h"
+#include "idol/modeling//models/Model.h"
 
 idol::Heuristics::RENS::RENS(const RENS& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),

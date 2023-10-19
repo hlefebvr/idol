@@ -1,8 +1,8 @@
 #ifdef IDOL_USE_MOSEK
 
-#include "optimizers/solvers/Optimizers_Mosek.h"
-#include "linear-algebra/to_rotated_quadratic_cone.h"
-#include "modeling/expressions/operations/operators.h"
+#include "idol/optimizers/solvers/Optimizers_Mosek.h"
+#include "idol/linear-algebra/to_rotated_quadratic_cone.h"
+#include "idol/modeling//expressions/operations/operators.h"
 
 #ifdef IDOL_USE_EIGEN
 #include <Eigen/Sparse>
@@ -229,7 +229,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
         return result;
 #else
-      throw Exception("Modeling quadratic expressions with Mosek requires Eigen, please set the USE_EIGEN cmake option to YES to use this feature.");
+      throw Exception("idol/modeling/ quadratic expressions with Mosek requires Eigen, please set the USE_EIGEN cmake option to YES to use this feature.");
 #endif
 
     }

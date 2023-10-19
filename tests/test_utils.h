@@ -5,9 +5,9 @@
 #ifndef OPTIMIZE_TEST_UTILS_H
 #define OPTIMIZE_TEST_UTILS_H
 
-#include "modeling.h"
+#include "idol/modeling.h"
 
-#include "solvers.h"
+#include "idol/solvers.h"
 
 #include <tuple>
 #include "BackendNotAvailable.h"
@@ -17,7 +17,7 @@ using namespace idol;
 template<typename ... input_t> using tuple_cat_t= decltype(std::tuple_cat( std::declval<input_t>()... ));
 
 #ifdef IDOL_USE_GUROBI
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
+#include "idol/optimizers/solvers/gurobi/Optimizers_Gurobi.h"
 
 using gurobi_solver = std::tuple<Gurobi>;
 #else
@@ -25,7 +25,7 @@ using gurobi_solver = std::tuple<>;
 #endif
 
 #ifdef IDOL_USE_GLPK
-#include "optimizers/solvers/Optimizers_GLPK.h"
+#include "idol/optimizers/solvers/Optimizers_GLPK.h"
 
 using glpk_solver = std::tuple<GLPK>;
 #else
@@ -33,7 +33,7 @@ using glpk_solver = std::tuple<>;
 #endif
 
 #ifdef IDOL_USE_MOSEK
-#include "optimizers/solvers/Optimizers_Mosek.h"
+#include "idol/optimizers/solvers/Optimizers_Mosek.h"
 
 using mosek_solver = std::tuple<Mosek>;
 #else

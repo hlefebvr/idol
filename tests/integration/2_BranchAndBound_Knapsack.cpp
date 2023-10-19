@@ -3,15 +3,15 @@
 //
 
 #include "../test_utils.h"
-#include "problems/knapsack-problem/KP_Instance.h"
-#include "problems/facility-location-problem/FLP_Instance.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/solvers/DefaultOptimizer.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/problems/knapsack-problem/KP_Instance.h"
+#include "idol/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/solvers/DefaultOptimizer.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 
 using node_selection_rules = std::tuple<DepthFirst, BreadthFirst, BestBound, WorstBound>;
 

@@ -1,9 +1,9 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "../../../include/modeling/expressions/Constant.h"
-#include "../../../include/modeling/numericals.h"
-#include "../../../include/modeling/solutions/Solution.h"
+#include "idol/modeling/expressions/Constant.h"
+#include "idol/modeling/numericals.h"
+#include "idol/modeling/solutions/Solution.h"
 #include <memory>
 
 idol::Constant idol::Constant::Zero;

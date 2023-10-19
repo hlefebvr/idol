@@ -2,18 +2,18 @@
 // Created by henri on 06/04/23.
 //
 #include <iostream>
-#include "modeling.h"
-#include "problems/facility-location-problem/FLP_Instance.h"
-#include "optimizers/branch-and-bound/BranchAndBound.h"
-#include "optimizers/solvers/gurobi/Gurobi.h"
-#include "optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
-#include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
-#include "optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/modeling.h"
+#include "idol/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 
 int main(int t_argc, const char** t_argv) {
 

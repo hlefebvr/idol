@@ -2,8 +2,8 @@
 // Created by henri on 12.07.23.
 //
 
-#include "problems/staff-rostering-problem/SRP_Instance.h"
-#include "errors/Exception.h"
+#include "idol/problems/staff-rostering-problem/SRP_Instance.h"
+#include "idol/errors/Exception.h"
 #include <random>
 #include <fstream>
 

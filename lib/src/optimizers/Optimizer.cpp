@@ -1,8 +1,8 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "optimizers/Optimizer.h"
-#include "modeling/models/Model.h"
+#include "idol/optimizers/Optimizer.h"
+#include "idol/modeling//models/Model.h"
 
 double idol::impl::Optimizer::as_numeric(const Constant &t_constant) {
 

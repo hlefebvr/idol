@@ -1,9 +1,9 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "optimizers/callbacks/SimpleRounding.h"
-#include "modeling/models/Model.h"
-#include "modeling/expressions/operations/operators.h"
+#include "idol/optimizers/callbacks/SimpleRounding.h"
+#include "idol/modeling//models/Model.h"
+#include "idol/modeling//expressions/operations/operators.h"
 
 void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_event) {
 

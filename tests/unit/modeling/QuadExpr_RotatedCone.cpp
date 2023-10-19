@@ -5,7 +5,7 @@
 #ifdef IDOL_USE_EIGEN
 
 #include "../../test_utils.h"
-#include "linear-algebra/to_rotated_quadratic_cone.h"
+#include "idol/linear-algebra/to_rotated_quadratic_cone.h"
 
 double eval(const LinExpr<Var>& t_expr, const Solution::Primal& t_primal) {
     double result = 0;

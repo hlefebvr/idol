@@ -3,8 +3,8 @@
 //
 #ifdef IDOL_USE_GUROBI
 
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
-#include "optimizers/Logger.h"
+#include "idol/optimizers/solvers/gurobi/Optimizers_Gurobi.h"
+#include "idol/optimizers/Logger.h"
 
 std::unique_ptr<GRBEnv> idol::Optimizers::Gurobi::s_global_env;
 

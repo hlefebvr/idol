@@ -1,8 +1,8 @@
 //
 // Created by henri on 04/10/22.
 //
-#include "../../../include/modeling/matrix/Row.h"
-#include "../../../include/modeling/expressions/operations/operators.h"
+#include "idol/modeling/matrix/Row.h"
+#include "idol/modeling/expressions/operations/operators.h"
 
 #include <memory>
 

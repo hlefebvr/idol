@@ -1,7 +1,7 @@
 //
 // Created by henri on 18.10.23.
 //
-#include "optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 
 void idol::NodeVarInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
     m_branching_decision = std::make_optional<BranchingDecision>(t_var, LessOrEqual, t_ub);

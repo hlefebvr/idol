@@ -1,9 +1,9 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "optimizers/callbacks/LocalBranching.h"
-#include "modeling/models/Model.h"
-#include "modeling/expressions/operations/operators.h"
+#include "idol/optimizers/callbacks/LocalBranching.h"
+#include "idol/modeling//models/Model.h"
+#include "idol/modeling//expressions/operations/operators.h"
 
 idol::Heuristics::LocalBranching::LocalBranching(const LocalBranching& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),

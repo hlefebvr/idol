@@ -1,7 +1,7 @@
 //
 // Created by henri on 18.10.23.
 //
-#include "optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 
 idol::StrongBranchingPhase::StrongBranchingPhase(const StrongBranchingPhaseType &t_phase_type,
                                     unsigned int t_max_n_variables,

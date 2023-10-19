@@ -115,7 +115,7 @@ Idol can be used to create a custom branch-and-bound scheme very easily in which
 * **Node-agnostic:** The B&B algorithm can work with any node type as long as the user properly
   defines how nodes must be updated. A default node type is already implemented for classical variable branching. This
   node type can also be inherited, e.g., to enrich the information carried out from each parent node to its children.
-* **Customizable branching rules:** The default branching rules include: most infeasible, least infeasible, first infeasible found, uniformly random, strong branching. The user can create its own branching rule if needed.
+* **Customizable branching rules:** The default branching rules include: most infeasible, least infeasible, first infeasible found, uniformly random, strong branching and pseudo-cost branching. The user can create its own branching rule if needed.
 * **Customizable node selection rules:** The default node selection rules include: best bound, worst bound, depth first, breadth first. The user can create its own node selection rule if needed.
 * **Callbacks:** The user can specify its own callback to locally or globally modify a node's problem, submit heuristic solutions, or influence the execution of the overall tree search.
 * *Sub-tree exploration*. The B&B algorithm supports sub-trees exploration to reach valid solutions to the original problem as quick as possible.

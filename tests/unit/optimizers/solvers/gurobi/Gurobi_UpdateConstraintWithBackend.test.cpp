@@ -3,8 +3,8 @@
 //
 
 #include "../../../../test_utils.h"
-#include "optimizers/solvers/gurobi/Optimizers_Gurobi.h"
-#include "optimizers/solvers/DefaultOptimizer.h"
+#include "idol/optimizers/solvers/gurobi/Optimizers_Gurobi.h"
+#include "idol/optimizers/solvers/DefaultOptimizer.h"
 
 #ifdef IDOL_USE_GUROBI
 
