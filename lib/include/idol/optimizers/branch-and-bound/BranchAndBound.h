@@ -314,7 +314,9 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
         : OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>>(t_rhs),
           m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory ? t_rhs.m_relaxation_optimizer_factory->clone() : nullptr),
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
-          m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr) {
+          m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr),
+          m_log_frequency(t_rhs.m_log_frequency),
+          m_subtree_depth(t_rhs.m_subtree_depth) {
 
     for (auto& cb : t_rhs.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
