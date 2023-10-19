@@ -1,4 +1,4 @@
-# Idol
+# idol
 
 ![GitHub](https://img.shields.io/github/license/hlefebvr/idol)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hlefebvr/idol?label=version)
