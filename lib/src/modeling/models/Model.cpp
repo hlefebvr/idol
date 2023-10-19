@@ -46,6 +46,7 @@ idol::Model::~Model() {
     m_constraints.clear();
 
     m_env.free_model_id(*this);
+
 }
 
 

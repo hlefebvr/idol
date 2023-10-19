@@ -102,20 +102,18 @@ void idol::Optimizers::DantzigWolfeDecomposition::apply_subproblem_bound_on_mast
         return;
     }
 
-    const auto& current_rhs = m_master->get_ctr_row(it->second).rhs();
+    const double original_bound = t_is_lb ? parent().get_var_lb(t_var) : parent().get_var_ub(t_var);
 
-    if (!current_rhs.is_numerical()) {
-        throw Exception("Unexpected RHS with non-numerical terms.");
-    }
+    /*
+    if (equals(t_value, original_bound, Tolerance::Integer)) { // Remove existing constraint for it is not useful anymore
 
-    if (equals(t_value, current_rhs.numerical(), Tolerance::Integer)) { // Remove existing constraint for it is not useful anymore
-
-        subproblem.m_generation_pattern.linear().remove(it->second);
         m_master->remove(it->second);
+        subproblem.m_generation_pattern.linear().remove(it->second);
         applied_bounds.erase(it);
 
         return;
     }
+     */
 
     m_master->set_ctr_rhs(it->second, t_value);
 
