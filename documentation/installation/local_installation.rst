@@ -69,7 +69,7 @@ Then, here is a starting :bash:`main.cpp`.
 .. code-block:: cpp
 
     #include <iostream>
-    #include <modeling.h> // Note that we do not include <idol/modeling.h>
+    #include <idol/modeling.h>
 
     int main(int t_argc, const char** t_argv) {
 
