@@ -73,6 +73,15 @@ if (${USE_GLPK})
 
 endif()
 
+if (${USE_HIGHS})
+
+    find_package(Threads REQUIRED)
+    find_package(HIGHS REQUIRED)
+    target_link_libraries(idol PUBLIC highs::highs)
+    target_compile_definitions(idol PUBLIC IDOL_USE_HIGHS)
+
+endif()
+
 target_include_directories(
         idol
         PUBLIC

@@ -25,6 +25,15 @@ if (@USE_GLPK@)
 
 endif()
 
+if (@USE_HIGHS@)
+
+    set(HIGHS_DIR "@HIGHS_DIR@")
+    find_dependency(Threads REQUIRED)
+    find_dependency(HIGHS REQUIRED)
+    add_compile_definitions(IDOL_USE_HIGHS)
+
+endif()
+
 if (@USE_MOSEK@)
 
     set(MOSEK_DIR "@MOSEK_DIR@")
