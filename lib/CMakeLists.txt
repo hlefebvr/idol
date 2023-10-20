@@ -28,6 +28,9 @@ add_library(idol STATIC include/idol/modeling/numericals.h include/idol/containe
         include/idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h
         include/idol/optimizers/branch-and-bound/nodes/NodeVarUpdator.h
         src/optimizers/branch-and-bound/nodes/NodeVarInfo.cpp
+        include/idol/optimizers/solvers/HiGHS.h
+        src/optimizers/solvers/HiGHS.cpp
+        src/optimizers/solvers/Optimizers_HiGHS.cpp
 )
 
 find_package(OpenMP REQUIRED)
