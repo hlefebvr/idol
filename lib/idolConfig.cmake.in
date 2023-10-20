@@ -1,11 +1,13 @@
 include(CMakeFindDependencyMacro)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/Idol/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/lib/cmake/idol/")
 
 set(USE_GUROBI @USE_GUROBI@)
 set(USE_GLPK @USE_GLPK@)
 set(USE_MOSEK @USE_MOSEK@)
 set(USE_EIGEN @USE_EIGEN@)
+
+find_dependency(OpenMP REQUIRED)
 
 if (@USE_GUROBI@)
 
@@ -47,4 +49,4 @@ if (@USE_ROBINHOOD@)
 
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/IdolTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/idolTargets.cmake")
