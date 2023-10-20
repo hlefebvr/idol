@@ -6,7 +6,7 @@
 #define IDOL_STRONGBRANCHINGPHASE_H
 
 #include "idol/optimizers/Optimizer.h"
-#include <optional>
+#include <memory>
 
 namespace idol {
 
