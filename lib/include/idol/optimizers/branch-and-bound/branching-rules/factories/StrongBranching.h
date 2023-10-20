@@ -18,6 +18,9 @@ class idol::StrongBranching : public idol::VariableBranching {
 public:
     StrongBranching() = default;
 
+    template<class IteratorT>
+    StrongBranching(IteratorT t_begin, IteratorT t_end) : idol::VariableBranching(t_begin, t_end) {}
+
     template<class NodeVarInfoT>
     class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
         std::optional<unsigned int> m_max_n_variables;

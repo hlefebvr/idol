@@ -17,6 +17,9 @@ class idol::UniformlyRandom : public idol::VariableBranching {
 public:
     UniformlyRandom() = default;
 
+    template<class IteratorT>
+    UniformlyRandom(IteratorT t_begin, IteratorT t_end) : idol::VariableBranching(t_begin, t_end) {}
+
     template<class NodeVarInfoT>
     class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
         std::optional<unsigned int> m_seed;
