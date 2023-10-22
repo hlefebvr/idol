@@ -5,7 +5,7 @@
 #include "idol/modeling.h"
 #include "idol/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"

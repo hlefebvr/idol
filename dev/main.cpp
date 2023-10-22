@@ -5,14 +5,14 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/column-generation/IntegerMaster.h"
-#include "idol/optimizers/solvers/HiGHS.h"
+#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/unit-tests/data/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 

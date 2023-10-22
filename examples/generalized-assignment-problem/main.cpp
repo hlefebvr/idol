@@ -8,7 +8,7 @@
 #include "idol/optimizers/column-generation/ColumnGeneration.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/solvers/GLPK.h"
+#include "idol/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/column-generation/IntegerMaster.h"
 #include "idol/optimizers/callbacks/RENS.h"

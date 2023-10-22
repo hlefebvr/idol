@@ -5,7 +5,7 @@
 #include <gurobi_c++.h>
 #include "idol/problems/knapsack-problem/KP_Instance.h"
 #include "idol/modeling.h"
-#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/branch-and-bound/cutting-planes/CoverCuts.h"
@@ -14,7 +14,7 @@
 #include "idol/optimizers/callbacks/LocalBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/solvers/HiGHS.h"
+#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
 
 int main(int t_argc, const char** t_argv) {
 

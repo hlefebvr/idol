@@ -1,8 +1,6 @@
-enable_testing()
+# Configure test environment
 
-add_executable(tests test_utils.h unit/modeling/Model_AddByRow.test.cpp unit/modeling/Model_AddByColumn.test.cpp unit/modeling/Model_UpdateVariables.test.cpp unit/modeling/Expr_OperatorsTypeDeduction.test.cpp unit/optimizers/solvers/gurobi/Gurobi_CreateVariableWithBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_CreateVariableWithoutBackend.cpp unit/optimizers/solvers/gurobi/Gurobi_CreateConstraintWithBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_CreateConstraintWithoutBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_UpdateVariableWithBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_UpdateConstraintWithBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_CreateVariableAndConstraintWithBackend.test.cpp unit/optimizers/solvers/gurobi/Gurobi_UpdateObjectiveWithBackend.test.cpp integration/LP_Toy.test.cpp integration/MILP_Toy.test.cpp integration/2_BranchAndBound_Knapsack.cpp integration/3_BranchAndPriceMIP_Parameters.cpp unit/modeling/QuadExpr_RotatedCone.cpp BackendNotAvailable.h integration/2_BranchAndBound_FLP.cpp)
-target_link_libraries(tests PRIVATE idol)
-target_include_directories(tests PRIVATE ../lib/include/)
+enable_testing()
 
 if (${WITH_TEST_COVERAGE})
     target_compile_options(idol PRIVATE -fprofile-arcs -ftest-coverage -g -O0 --coverage)
@@ -10,8 +8,6 @@ if (${WITH_TEST_COVERAGE})
     set(CMAKE_CPP_COMPILER g++)
     target_link_libraries(idol PUBLIC gcov)
 endif()
-
-add_test(tests tests)
 
 find_package(Catch2 QUIET)
 
@@ -32,9 +28,10 @@ if (NOT ${Catch2_FOUND})
 
 endif()
 
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/tests/)
 
-
-add_custom_command(TARGET tests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/instances/ $<TARGET_FILE_DIR:tests>/instances/
-)
+# Define tests
+add_subdirectory(modeling)
+add_subdirectory(wrappers)
+add_subdirectory(branch-and-bound)
+add_subdirectory(branch-and-price)

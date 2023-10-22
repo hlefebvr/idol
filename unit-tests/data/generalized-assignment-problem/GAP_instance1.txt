@@ -1,8 +1,0 @@
-2 5
--7 -3 -3 -8 -7
--5 -3 -8 -4 -1
-8 2 8 9 1
-2 2 6 4 4
-11 7
-
-http://www.or.deis.unibo.it/kp/Chapter7.pdf Example 7.2

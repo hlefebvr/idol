@@ -8,7 +8,7 @@
 #include "CuttingPlaneGenerator.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/optimizers/solvers/gurobi/Gurobi.h"
+#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/callbacks/UserCutCallback.h"
 
 namespace idol {
