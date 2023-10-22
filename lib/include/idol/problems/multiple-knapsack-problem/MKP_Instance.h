@@ -14,7 +14,7 @@ namespace idol::Problems::MKP {
 }
 
 /**
- * See also https://en.wikipedia.org/wiki/Generalized_assignment_problem.
+ * See also https://en.wikipedia.org/wiki/Knapsack_problem.
  */
 class idol::Problems::MKP::Instance {
 protected:

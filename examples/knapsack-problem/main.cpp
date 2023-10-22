@@ -14,6 +14,7 @@
 #include "idol/optimizers/callbacks/LocalBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/solvers/HiGHS.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -36,29 +37,17 @@ int main(int t_argc, const char** t_argv) {
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     // Set optimizer
-    //model.use(Gurobi());
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
+                    .with_node_optimizer(HiGHS::ContinuousRelaxation())
                     .with_branching_rule(
                             MostInfeasible()
                     )
                     .with_node_selection_rule(BestBound())
-                    //.with_cutting_planes(CoverCuts().with_optimizer(Gurobi()))
-                    /*
-                    .with_callback(
-                            Heuristics::RENS()
-                                        .with_optimizer(
-                                            BranchAndBound()
-                                                .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                                                .with_branching_rule(MostInfeasible())
-                                                .with_node_selection_rule(BestBound())
-                                                .with_log_level(Info, Green)
-                                        )
-                    ) */
                     .with_log_level(Info, Blue)
                     .with_log_frequency(1)
     );
+    // model.use(HiGHS());
     // Solve
     model.optimize();
 

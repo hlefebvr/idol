@@ -19,13 +19,10 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int> {
 
     bool m_continuous_relaxation;
 
-    ::Highs m_solver;
-    bool m_solved_as_mip = false;
+    ::Highs m_model;
 
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
-    std::optional<Solution::Primal> m_unbounded_ray;
-    std::optional<Solution::Dual> m_farkas_certificate;
 
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;
@@ -61,11 +58,6 @@ protected:
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
 
     void set_ctr_attr(int t_index, int t_type, double t_rhs);
-
-    void save_simplex_solution_status();
-    void compute_farkas_certificate();
-    void compute_unbounded_ray();
-    void save_milp_solution_status();
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;
