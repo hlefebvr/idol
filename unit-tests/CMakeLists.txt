@@ -28,5 +28,8 @@ if (NOT ${Catch2_FOUND})
 
 endif()
 
+file(COPY ${CMAKE_SOURCE_DIR}/unit-tests/data DESTINATION ${CMAKE_BINARY_DIR}/unit-tests/)
+
 # Define tests
 add_subdirectory(external-solvers)
+add_subdirectory(branch-and-bound)

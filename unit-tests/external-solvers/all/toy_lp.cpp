@@ -15,7 +15,6 @@ TEST_CASE("Solving small LPs") {
 
     Env env;
 
-
     WHEN("A bounded and feasible LP is solved") { // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
         Var x(env, 0, Inf, Continuous, "x");

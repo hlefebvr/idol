@@ -27,9 +27,10 @@ public:
         std::unique_ptr<NodeScoreFunction> m_node_scoring_function;
         std::list<StrongBranchingPhase> m_phases;
 
-        Strategy(const Strategy<NodeVarInfoT>& t_src);
     public:
         Strategy() = default;
+
+        Strategy(const Strategy<NodeVarInfoT>& t_src);
 
         explicit Strategy(const StrongBranching& t_parent) : VariableBranching::Strategy<NodeVarInfoT>(t_parent) {}
 

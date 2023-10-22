@@ -2,11 +2,11 @@ message("${AVAILABLE_MILP_SOLVERS}")
 
 foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
-    set(target_name "test_wrapper_${OPTIMIZER}")
+    set(target_name "test_bab_knapsack_${OPTIMIZER}")
 
     add_executable(${target_name}
-            toy_lp.cpp
-            toy_milp.cpp
+            knapsack.cpp
+            ../cartesian_product.h
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})
