@@ -2,7 +2,11 @@
 // Created by henri on 21/12/22.
 //
 
-#include "../../test_utils.h"
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
+
+using namespace Catch::literals;
+using namespace idol;
 
 SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
 

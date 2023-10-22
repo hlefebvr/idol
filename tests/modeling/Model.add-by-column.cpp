@@ -1,8 +1,11 @@
 //
 // Created by henri on 30/11/22.
 //
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
 
-#include "../../test_utils.h"
+using namespace Catch::literals;
+using namespace idol;
 
 SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
 

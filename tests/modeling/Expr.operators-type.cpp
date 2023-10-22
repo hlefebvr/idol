@@ -1,7 +1,11 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "../../test_utils.h"
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
+
+using namespace Catch::literals;
+using namespace idol;
 
 TEST_CASE("Expr: operators type deduction", "[unit][modeling][Expr]") {
 
