@@ -2,9 +2,12 @@
 // Created by henri on 31/01/23.
 //
 
-#include "../../../../test_utils.h"
-#include "idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
-#include "idol/optimizers/wrappers/DefaultOptimizer.h"
+#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
+
+using namespace Catch::literals;
+using namespace idol;
 
 #ifdef IDOL_USE_GUROBI
 

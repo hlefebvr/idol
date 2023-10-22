@@ -97,7 +97,6 @@ jobs:
           file: coverage.info
           flags: ${{ matrix.test }}
 
-
   GLPK:
     runs-on: ubuntu-latest
     strategy:
@@ -120,6 +119,46 @@ jobs:
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build/tests
+        run: ./${{ matrix.test }}
+
+      - name: Build coverage report
+        run: lcov --directory . --capture --output-file coverage.info
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: coverage.info
+          flags: ${{ matrix.test }}
+
+  HiGHS:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test:
+          - "branch-and-bound/test_bab_knapsack_HiGHS"
+          - "branch-and-bound/test_bab_location_HiGHS"
+          - "branch-and-price/test_bap_assignment_HiGHS"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install lcov
+        run: sudo apt-get install lcov
+
+      - name: Download HiGHS
+        run: git clone https://github.com/ERGO-Code/HiGHS.git
+
+      - name: Install HiGHS
+        run: cmake -DFAST_BUILD=ON . && make && sudo make install
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build
