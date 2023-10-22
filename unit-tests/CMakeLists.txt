@@ -31,5 +31,7 @@ endif()
 file(COPY ${CMAKE_SOURCE_DIR}/unit-tests/data DESTINATION ${CMAKE_BINARY_DIR}/unit-tests/)
 
 # Define tests
+add_subdirectory(modeling)
 add_subdirectory(external-solvers)
 add_subdirectory(branch-and-bound)
+add_subdirectory(branch-and-price)
