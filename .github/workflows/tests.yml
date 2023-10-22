@@ -35,14 +35,12 @@ jobs:
         run: ./modeling/test_modeling_interface
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - uses: actions/upload-artifact@v3
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: coverage.info
-          flags: modeling
+          name: coverage
+          path: coverage__*.info
 
   Mosek:
     runs-on: ubuntu-latest
@@ -88,14 +86,12 @@ jobs:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - uses: actions/upload-artifact@v3
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: coverage.info
-          flags: ${{ matrix.test }}
+          name: coverage
+          path: coverage_*.info
 
   GLPK:
     runs-on: ubuntu-latest
@@ -128,14 +124,12 @@ jobs:
         run: ./${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - uses: actions/upload-artifact@v3
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: coverage.info
-          flags: ${{ matrix.test }}
+          name: coverage
+          path: coverage_*.info
 
   HiGHS:
     runs-on: ubuntu-latest
@@ -168,11 +162,34 @@ jobs:
         run: ./${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage_*.info
+
+
+  Coverage:
+    runs-on: ubuntu-latest
+    needs: [GLPK, Mosek, HiGHS]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+
+      - name: Install lcov
+        run: sudo apt-get install lcov
+
+      - name: Merge all reports
+        run: lcov --add-tracefile coverage__*.info --output coverage.info
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           file: coverage.info
-          flags: ${{ matrix.test }}
+          flags: default
