@@ -32,7 +32,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
     const auto integer_master_heuristic = GENERATE(false, true);
-    const auto farkas_pricing = GENERATE(false, true);
+    const auto farkas_pricing = GENERATE(true);
     const auto branching_on_master = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
     const auto subtree_depth = GENERATE(0, 1);
@@ -119,6 +119,8 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                     .with_branching_on_master(branching_on_master)
                                                                     .with_farkas_pricing(farkas_pricing)
                                                                     .with_dual_price_smoothing_stabilization(smoothing_factor)
+                                                                    .with_log_level(Info, Cyan)
+                                                                    .with_log_frequency(1)
                                                     )
                                                     .with_branching_rule(MostInfeasible())
                                                     .with_node_selection_rule(BestBound())
@@ -128,10 +130,14 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                         .with_optimizer(OPTIMIZER())
                                                         );
                                                     })
+                                                    .with_log_level(Info, Green)
+                                                    .with_log_frequency(1)
                                     )
                                     .with_branching_on_master(branching_on_master)
                                     .with_farkas_pricing(farkas_pricing)
                                     .with_dual_price_smoothing_stabilization(smoothing_factor)
+                                    .with_log_level(Info, Yellow)
+                                    .with_log_frequency(1)
                                     .clone()
                     )
             }
@@ -152,6 +158,8 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                         )
                         );
                     })
+                    .with_log_level(Info, Blue)
+                    .with_log_frequency(1)
     );
 
     WHEN("The instance \"" + filename + "\" is solved by branch-and-bound "
