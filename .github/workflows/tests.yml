@@ -155,7 +155,7 @@ jobs:
         run: git clone https://github.com/ERGO-Code/HiGHS.git
 
       - name: Install HiGHS
-        run: cd HiGHS && cmake . && make && sudo make install
+        run: mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
