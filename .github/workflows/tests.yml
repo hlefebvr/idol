@@ -82,8 +82,8 @@ jobs:
         run: cmake --build ${{github.workspace}}/build
 
       - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        working-directory: ${{github.workspace}}/build
+        run: ./tests/${{ matrix.test }}
         env:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
@@ -124,8 +124,8 @@ jobs:
         run: cmake --build ${{github.workspace}}/build
 
       - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        working-directory: ${{github.workspace}}/build
+        run: ./tests/${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage.info
@@ -164,8 +164,8 @@ jobs:
         run: cmake --build ${{github.workspace}}/build
 
       - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        working-directory: ${{github.workspace}}/build
+        run: ./tests/${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage.info
