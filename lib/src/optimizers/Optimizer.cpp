@@ -10,7 +10,10 @@ double idol::impl::Optimizer::as_numeric(const Constant &t_constant) {
         throw Exception("Constant is not numeric.");
     }
 
-    return t_constant.numerical();
+    const double multiplier = std::pow(10, Tolerance::Digits);
+    const double numerical = t_constant.numerical();
+
+    return std::round(numerical * multiplier) / multiplier;
 }
 
 idol::impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {

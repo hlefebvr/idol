@@ -33,6 +33,8 @@ namespace idol {
          */
         static double Sparsity = 1e-8;
 
+        static unsigned int Digits = 8;
+
         /**
          * **Default:** \f$ 10^{-4} \f$
          *

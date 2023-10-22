@@ -27,7 +27,7 @@ void idol::Optimizers::HiGHS::hook_build() {
 }
 
 void idol::Optimizers::HiGHS::hook_write(const std::string &t_name) {
-    // glp_write_lp(m_model, nullptr, t_name.c_str());
+    m_solver.writeModel(t_name);
 }
 
 void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
@@ -181,7 +181,6 @@ void idol::Optimizers::HiGHS::hook_update() {
 
 void idol::Optimizers::HiGHS::hook_update(const Var &t_var) {
 
-    /*
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
     const double lb = model.get_var_lb(t_var);
@@ -191,33 +190,26 @@ void idol::Optimizers::HiGHS::hook_update(const Var &t_var) {
 
     set_var_attr(impl, type, lb, ub, as_numeric(obj));
 
-     */
-
 }
 
 void idol::Optimizers::HiGHS::hook_update(const Ctr &t_ctr) {
 
-    /*
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
     const auto& rhs = model.get_ctr_row(t_ctr).rhs();
     const auto type = model.get_ctr_type(t_ctr);
 
     set_ctr_attr(impl, type, as_numeric(rhs));
-    */
-
 }
 
 void idol::Optimizers::HiGHS::hook_update_objective() {
 
-    /*
     const auto& model = parent();
 
     for (const auto& var : model.vars()) {
         const auto& obj = model.get_var_column(var).obj();
-        glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(obj));
+        // glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(obj));
     }
-     */
 
 }
 

@@ -8,6 +8,8 @@
 #ifdef IDOL_USE_HIGHS
 
 #include "OptimizerWithLazyUpdates.h"
+#include <Highs.h>
+#include <stack>
 
 namespace idol::Optimizers {
     class HiGHS;
@@ -17,13 +19,16 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int> {
 
     bool m_continuous_relaxation;
 
-    // glp_prob* m_model;
+    ::Highs m_solver;
     bool m_solved_as_mip = false;
 
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
     std::optional<Solution::Primal> m_unbounded_ray;
     std::optional<Solution::Dual> m_farkas_certificate;
+
+    std::stack<int> m_deleted_variables;
+    std::stack<int> m_deleted_constraints;
 protected:
     void hook_build() override;
 
