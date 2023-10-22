@@ -57,7 +57,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Knapsack Problem instances with different node se
             std::make_pair<std::string, double>("s001.kp", -6635.),
             std::make_pair<std::string, double>("s002.kp", -25468.)
     );
-    const auto subtree_depth = GENERATE(0, 2);
+    const auto subtree_depth = GENERATE(0, 1);
 
     const auto instance = read_instance("../data/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();

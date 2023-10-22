@@ -1,5 +1,4 @@
-message("${AVAILABLE_MILP_SOLVERS}")
-
+# Wrapper
 foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
     set(target_name "test_wrapper_${OPTIMIZER}")

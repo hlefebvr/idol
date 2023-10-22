@@ -128,8 +128,6 @@ idol::BranchingRules::PseudoCost<NodeVarInfoT>::scoring_function(const std::list
 
         result.emplace_back(var, pseudo_cost);
 
-        std::cout << "Pseudo cost of " << var << " is " << result.back().second << std::endl;
-
     }
 
     return result;
