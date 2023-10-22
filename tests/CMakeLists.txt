@@ -29,6 +29,7 @@ if (NOT ${Catch2_FOUND})
 endif()
 
 file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/tests/)
+file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/) # Necessary for GitHub Actions
 
 # Define tests
 add_subdirectory(modeling)
