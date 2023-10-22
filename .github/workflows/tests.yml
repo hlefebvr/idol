@@ -11,6 +11,7 @@ env:
 
 jobs:
   modeling:
+    name: "Tests with modeling interface"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -43,6 +44,7 @@ jobs:
           path: coverage__*.info
 
   Mosek:
+    name: "Tests with Mosek"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -94,6 +96,7 @@ jobs:
           path: coverage_*.info
 
   GLPK:
+    name: "Tests with GLPK"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -132,6 +135,7 @@ jobs:
           path: coverage_*.info
 
   HiGHS:
+    name: "Tests with HiGHS"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -169,10 +173,10 @@ jobs:
           name: coverage
           path: coverage_*.info
 
-
   Coverage:
+    name: "Upload coverage report"
     runs-on: ubuntu-latest
-    needs: [GLPK, Mosek, HiGHS]
+    needs: [GLPK, Mosek, HiGHS, modeling]
     steps:
       - uses: actions/checkout@v3
 
@@ -185,7 +189,7 @@ jobs:
         run: sudo apt-get install lcov
 
       - name: Merge all reports
-        run: lcov --add-tracefile coverage__*.info --output coverage.info
+        run: ./merge_coverage.sh
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
