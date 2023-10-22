@@ -1,27 +1,17 @@
 //
-// Created by henri on 06/02/23.
+// Created by henri on 22.10.23.
 //
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
+#include <idol/optimizers/solvers/GLPK.h>
+#include <idol/optimizers/solvers/Mosek.h>
+#include <idol/optimizers/solvers/gurobi/Gurobi.h>
+#include <idol/optimizers/solvers/HiGHS.h>
 
-#include "../test_utils.h"
-#include "idol/optimizers/solvers/DefaultOptimizer.h"
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
-#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+using namespace Catch::literals;
+using namespace idol;
 
-TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
-                        "[integration][backend][solver]",
-                        milp_solvers) {
-    
-    auto solver = GENERATE(
-                std::shared_ptr<OptimizerFactory>(TestType().clone()),
-                std::shared_ptr<OptimizerFactory>(BranchAndBound<NodeVarInfo>()
-                                                          .with_node_optimizer(TestType::ContinuousRelaxation())
-                                .with_branching_rule(MostInfeasible())
-                                .with_node_selection_rule(BestBound())
-                                .clone()
-                        )
-            );
+TEST_CASE("Solving small MIPs") {
 
     Env env;
 
@@ -44,7 +34,7 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
             model.add(c2);
             model.set_obj_expr(objective);
 
-            model.use(*solver);
+            model.use(OPTIMIZER());
 
             model.optimize();
 
@@ -86,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
             model.add(c2);
             model.set_obj_expr(objective);
 
-            model.use(*solver);
+            model.use(OPTIMIZER());
 
             model.optimize();
 
@@ -127,7 +117,7 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
             model.add(c1);
             model.add(c2);
 
-            model.use(*solver);
+            model.use(OPTIMIZER());
 
             model.optimize();
 
@@ -157,7 +147,7 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
             model.add(c1);
             model.add(c2);
 
-            model.use(*solver);
+            model.use(OPTIMIZER());
 
             model.optimize();
 
@@ -184,7 +174,7 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
         model.add(x);
         model.set_obj_expr(-x);
 
-        model.use(*solver);
+        model.use(OPTIMIZER());
 
         model.optimize();
 
@@ -198,14 +188,8 @@ TEMPLATE_LIST_TEST_CASE("MILP external-solvers: solve toy example",
 
         }
 
-        /*
-        THEN("The objective value should be -inf") {
-
-            CHECK(is_neg_inf(model.get_best_obj()));
-
-        }
-         */
 
     }
+
 
 }

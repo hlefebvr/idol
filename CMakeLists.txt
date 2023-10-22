@@ -16,6 +16,7 @@ endif()
 
 if (${BUILD_TESTS})
     add_subdirectory(tests)
+    add_subdirectory(unit-tests)
 elseif(${TEST_COVERAGE})
     message(FATAL "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()

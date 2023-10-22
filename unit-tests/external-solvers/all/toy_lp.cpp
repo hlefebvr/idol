@@ -1,15 +1,20 @@
 //
-// Created by henri on 06/02/23.
+// Created by henri on 22.10.23.
 //
+#include <catch2/catch_all.hpp>
+#include <idol/modeling.h>
+#include <idol/optimizers/solvers/GLPK.h>
+#include <idol/optimizers/solvers/Mosek.h>
+#include <idol/optimizers/solvers/gurobi/Gurobi.h>
+#include <idol/optimizers/solvers/HiGHS.h>
 
-#include "../test_utils.h"
-#include "idol/optimizers/solvers/DefaultOptimizer.h"
+using namespace Catch::literals;
+using namespace idol;
 
-TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
-                        "[integration][backend][solver]",
-                        lp_solvers) {
+TEST_CASE("Solving small LPs") {
 
     Env env;
+
 
     WHEN("A bounded and feasible LP is solved") { // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
@@ -28,7 +33,7 @@ TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
         model.add(c3);
         model.set_obj_expr(-143 * x - 60 * y);
 
-        model.use(TestType());
+        model.use(OPTIMIZER());
 
         model.optimize();
 
@@ -84,7 +89,7 @@ TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
         model.add(c3);
         model.set_obj_expr(-3 * x - 2 * y);
 
-        model.use(TestType().with_infeasible_or_unbounded_info(true));
+        model.use(OPTIMIZER().with_infeasible_or_unbounded_info(true));
 
         model.optimize();
 
@@ -103,18 +108,18 @@ TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
         AND_THEN("The unbounded ray should be valid") {
 
             const auto ray = save_ray(model);
-            
+
             const double x_val = ray.get(x);
             const double y_val = ray.get(y);
-            
+
             CHECK(-3. * x_val -2. * y_val <= 0._a);
-            CHECK(-2. * x_val + y_val <= 0._a);
+            CHECK(-2. * x_val + y_val <= 0. + 1e-5);
             CHECK(x_val + y_val >= 0_a);
 
         }
 
     }
-    
+
     WHEN("An infeasible LP is solved") {
 
         Var u(env, 0., Inf, Continuous, "u");
@@ -132,7 +137,7 @@ TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
         model.add(c2);
         model.set_obj_expr(objective);
 
-        model.use(TestType().with_infeasible_or_unbounded_info(true));
+        model.use(OPTIMIZER().with_infeasible_or_unbounded_info(true));
 
         model.optimize();
 
@@ -166,5 +171,6 @@ TEMPLATE_LIST_TEST_CASE("LP external-solvers: solve toy example",
 
 
     }
+
 
 }

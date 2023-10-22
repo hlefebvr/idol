@@ -212,6 +212,13 @@ void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 }
 
 void idol::Optimizers::HiGHS::hook_optimize() {
+
+    delete m_extreme_ray;
+    m_extreme_ray = nullptr;
+
+    delete m_farkas_certificate;
+    m_farkas_certificate = nullptr;
+
     m_model.run();
 
     const auto status = m_model.getModelStatus();
@@ -254,9 +261,48 @@ void idol::Optimizers::HiGHS::hook_optimize() {
         case HighsModelStatus::kSolutionLimit:
         case HighsModelStatus::kInterrupt:
             throw Exception("Unhandled status: " + std::to_string((int) status));
-            break;
     }
 
+    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Unbounded) {
+
+        bool has_primal_ray;
+        m_extreme_ray = new double[m_model.getNumCol()];
+        m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
+
+        if (!has_primal_ray) {
+            run_without_presolve();
+            m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
+            if (!has_primal_ray) {
+                throw Exception("Cannot save primal ray.");
+            }
+        }
+
+    }
+
+    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible) {
+
+        bool has_dual_ray;
+        m_farkas_certificate = new double[m_model.getNumRow()];
+        m_model.getDualRay(has_dual_ray, m_farkas_certificate);
+
+        if (!has_dual_ray) {
+            run_without_presolve();
+            m_model.getDualRay(has_dual_ray, m_farkas_certificate);
+            if (!has_dual_ray) {
+                throw Exception("Cannot save dual ray.");
+            }
+        }
+
+    }
+
+}
+
+void idol::Optimizers::HiGHS::run_without_presolve() {
+    const std::string old_presolve_setting;
+    m_model.getStringOptionValues("presolve");
+    m_model.setOptionValue("presolve", "off");
+    m_model.run();
+    m_model.setOptionValue("presolve", old_presolve_setting);
 }
 
 void idol::Optimizers::HiGHS::set_param_time_limit(double t_time_limit) {
@@ -309,7 +355,12 @@ double idol::Optimizers::HiGHS::get_var_primal(const Var &t_var) const {
 }
 
 double idol::Optimizers::HiGHS::get_var_ray(const Var &t_var) const {
-    return get_var_primal(t_var);
+
+    if (!m_extreme_ray) {
+        throw Exception("Extreme ray is not available.");
+    }
+
+    return m_extreme_ray[lazy(t_var).impl()];
 }
 
 double idol::Optimizers::HiGHS::get_ctr_dual(const Ctr &t_ctr) const {
@@ -317,7 +368,12 @@ double idol::Optimizers::HiGHS::get_ctr_dual(const Ctr &t_ctr) const {
 }
 
 double idol::Optimizers::HiGHS::get_ctr_farkas(const Ctr &t_ctr) const {
-    return get_ctr_farkas(t_ctr);
+
+    if (!m_farkas_certificate) {
+        throw Exception("Farkas certificate not available.");
+    }
+
+    return m_farkas_certificate[lazy(t_ctr).impl()];
 }
 
 double idol::Optimizers::HiGHS::get_relative_gap() const {

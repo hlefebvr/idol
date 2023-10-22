@@ -57,6 +57,7 @@ if (${USE_GUROBI})
     find_package(GUROBI REQUIRED)
     target_link_libraries(idol PUBLIC gurobi)
     target_compile_definitions(idol PUBLIC IDOL_USE_GUROBI)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Gurobi")
 
 endif()
 
@@ -65,6 +66,7 @@ if (${USE_MOSEK})
     find_package(MOSEK REQUIRED)
     target_link_libraries(idol PUBLIC mosek)
     target_compile_definitions(idol PUBLIC IDOL_USE_MOSEK)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Mosek")
 
 endif()
 
@@ -73,6 +75,7 @@ if (${USE_GLPK})
     find_package(GLPK REQUIRED)
     target_link_libraries(idol PUBLIC glpk)
     target_compile_definitions(idol PUBLIC IDOL_USE_GLPK)
+    list(APPEND AVAILABLE_MILP_SOLVERS "GLPK")
 
 endif()
 
@@ -82,8 +85,11 @@ if (${USE_HIGHS})
     find_package(HIGHS REQUIRED)
     target_link_libraries(idol PUBLIC highs::highs)
     target_compile_definitions(idol PUBLIC IDOL_USE_HIGHS)
+    list(APPEND AVAILABLE_MILP_SOLVERS "HiGHS")
 
 endif()
+
+set(AVAILABLE_MILP_SOLVERS "${AVAILABLE_MILP_SOLVERS}" PARENT_SCOPE)
 
 target_include_directories(
         idol
