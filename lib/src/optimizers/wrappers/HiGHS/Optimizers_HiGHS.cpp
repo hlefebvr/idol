@@ -260,9 +260,12 @@ void idol::Optimizers::HiGHS::hook_optimize() {
             m_solution_status = Unbounded;
             m_solution_reason = Proved;
             break;
+        case HighsModelStatus::kTimeLimit:
+            m_solution_status = m_model.getSolution().value_valid ? Feasible : Infeasible;
+            m_solution_reason = TimeLimit;
+            break;
         case HighsModelStatus::kObjectiveBound:
         case HighsModelStatus::kObjectiveTarget:
-        case HighsModelStatus::kTimeLimit:
         case HighsModelStatus::kIterationLimit:
         case HighsModelStatus::kSolutionLimit:
         case HighsModelStatus::kInterrupt:
