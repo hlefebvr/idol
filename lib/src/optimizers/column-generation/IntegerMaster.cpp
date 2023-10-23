@@ -95,7 +95,7 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
         return;
     }
 
-    if (m_max_depth > this->node().level()) {
+    if (m_max_depth < this->node().level()) {
         return;
     }
 
