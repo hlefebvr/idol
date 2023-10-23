@@ -15,6 +15,20 @@ or any other cutting-edge method, idol is your trusted companion.
 
 Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
+## Features
+
+- Branch-and-Bound
+  - Node selection rules: Best Bound, Worst Bound, Depth First, Best Estimate, Breadth First.
+  - Branching rules (for variable branching): Pseudo Cost, Strong Branching (with phases), Most Infeasible, Least Infeasible, First Found, Uniformly Random.
+  - Subtree exploration
+  - Heuristics (for variable branching): Simple Rounding, Relaxed Enforced Neighborhood, Local Branching
+  - Callbacks: User Cuts, Lazy Cuts
+- Column Generation and Branch-and-Price
+  - Automatic Dantzig-Wolfe reformulation
+  - Soft and hard branching available (i.e, branching on master or sub-problem)
+  - Stabilization by dual price smoothing
+  - Heuristics: Integer Master
+
 ## Examples
 
 Here is an example of a complex algorithm built using idol. It is a nested Branch-and-Price algorithm with strong branching.
