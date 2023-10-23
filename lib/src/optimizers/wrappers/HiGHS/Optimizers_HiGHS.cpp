@@ -188,6 +188,10 @@ void idol::Optimizers::HiGHS::hook_update_rhs() {
 
 void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
+    if (!lazy(t_var).has_impl()) {
+        return;
+    }
+
     const int index = lazy(t_var).impl();
 
     m_model.changeColCost(index, 0.);
@@ -200,6 +204,10 @@ void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 }
 
 void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
+
+    if (!lazy(t_ctr).has_impl()) {
+        return;
+    }
 
     const int index = lazy(t_ctr).impl();
 
