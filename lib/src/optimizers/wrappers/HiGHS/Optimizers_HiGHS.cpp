@@ -188,15 +188,14 @@ void idol::Optimizers::HiGHS::hook_update_rhs() {
 
 void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
-    if (!lazy(t_var).has_impl()) {
-        return;
-    }
-
     const int index = lazy(t_var).impl();
 
     m_model.changeColCost(index, 0.);
     m_model.changeColBounds(index, 0., 0.);
     for (const auto& [ctr, constant] : parent().get_var_column(t_var).linear()) {
+        if (!lazy(ctr).has_impl()) {
+            continue;
+        }
         m_model.changeCoeff(lazy(ctr).impl(), index, 0.);
     }
     m_deleted_variables.push(index);
@@ -205,14 +204,13 @@ void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
 void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 
-    if (!lazy(t_ctr).has_impl()) {
-        return;
-    }
-
     const int index = lazy(t_ctr).impl();
 
     m_model.changeRowBounds(index, 0., 0.);
     for (const auto& [var, constant] : parent().get_ctr_row(t_ctr).linear()) {
+        if (!lazy(var).has_impl()) {
+            continue;
+        }
         m_model.changeCoeff(index, lazy(var).impl(), 0.);
     }
     m_deleted_constraints.push(index);
