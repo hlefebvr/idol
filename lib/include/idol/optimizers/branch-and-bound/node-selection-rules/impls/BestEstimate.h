@@ -2,8 +2,8 @@
 // Created by henri on 22/03/23.
 //
 
-#ifndef IDOL_WORSTBOUND_IMPL_H
-#define IDOL_WORSTBOUND_IMPL_H
+#ifndef IDOL_BESTESTIMATE_IMPL_H
+#define IDOL_BESTESTIMATE_IMPL_H
 
 #include "NodeSelectionRule.h"
 #include "idol/optimizers/branch-and-bound/NodeSet.h"
@@ -61,4 +61,4 @@ public:
     }
 };
 
-#endif //IDOL_WORSTBOUND_IMPL_H
+#endif //IDOL_BESTESTIMATE_IMPL_H
