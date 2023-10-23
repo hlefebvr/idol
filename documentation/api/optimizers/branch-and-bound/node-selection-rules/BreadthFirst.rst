@@ -1,6 +1,6 @@
 .. _api_BreadthFirst:
 
-BreadthFirst
-============
+Breadth First
+=============
 
 .. doxygenclass:: idol::BreadthFirst

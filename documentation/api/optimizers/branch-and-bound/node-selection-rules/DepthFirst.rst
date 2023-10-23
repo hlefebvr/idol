@@ -1,6 +1,6 @@
 .. _api_DepthFirst:
 
-DepthFirst
-==========
+Depth First
+===========
 
 .. doxygenclass:: idol::DepthFirst

@@ -1,6 +1,6 @@
 .. _api_BestBound:
 
-BestBound
-=========
+Best Bound
+==========
 
 .. doxygenclass:: idol::BestBound

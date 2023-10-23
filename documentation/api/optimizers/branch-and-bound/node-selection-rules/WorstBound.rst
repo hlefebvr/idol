@@ -1,6 +1,6 @@
 .. _api_WorstBound:
 
-WorstBound
-==========
+Worst Bound
+===========
 
 .. doxygenclass:: idol::WorstBound
