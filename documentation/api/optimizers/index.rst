@@ -129,6 +129,7 @@ Table of contents
     branch-and-bound/index
     column-generation/index
     glpk/index
+    highs/index
     gurobi/index
     mosek/index
     callbacks/index

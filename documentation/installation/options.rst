@@ -82,7 +82,7 @@ another directory to look for GLPK.
 
     .. code-block:: bash
 
-        cmake -DUSE_GLPK=YES -GLPK_DIR=/path/to/glpk/install/dir ..
+        cmake -DUSE_GLPK=YES -DGLPK_DIR=/path/to/glpk/install/dir ..
 
     If you are doing a *local installation*, then the same can be achieved as follows.
 
@@ -90,6 +90,32 @@ another directory to look for GLPK.
 
         set(USE_GLPK YES)
         set(GLPK_DIR /path/to/glpk/install/dir)
+
+
+For HiGHS (open-source solver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To link with GLPK, you will need to pass the :bash:`USE_HIGHS` CMake option with value :bash:`YES`.
+
+By default, CMake will look for HIGHS inside the default installation folders :bash:`/usr/include` and :bash:`/usr/lib`.
+Note that it is also possible to pass the CMake option :bash:`HIGHS_DIR=/path/to/highs/install/dir` in order to specify
+another directory to look for GLPK.
+
+.. admonition:: Example
+
+    The following will create an :bash:`install` target which will install idol with GLPK.
+
+    .. code-block:: bash
+
+        cmake -DUSE_HIGHS=YES -DHIGHS_DIR=/path/to/glpk/install/dir ..
+
+    If you are doing a *local installation*, then the same can be achieved as follows.
+
+    .. code-block:: bash
+
+        set(USE_HIGHS YES)
+        set(HIGHS_DIR /path/to/glpk/install/dir)
+
 
 Building examples
 -----------------
