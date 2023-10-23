@@ -440,6 +440,8 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::explore(TreeNode &t_node,
         }
 
         if (t_active_nodes.empty()) { break; }
+        
+        if (is_terminated() || gap_is_closed()) { break; }
 
         auto selected_node = select_node_for_branching(t_active_nodes);
 
