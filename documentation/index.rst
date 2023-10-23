@@ -3,7 +3,7 @@ Welcome to idol!
 
 .. image:: https://img.shields.io/github/license/hlefebvr/idol
 .. image:: https://img.shields.io/github/v/tag/hlefebvr/idol?label=version
-.. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/cmake.yml?branch=main
+.. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main
 .. image:: https://img.shields.io/github/issues-raw/hlefebvr/idol
 .. image:: https://www.repostatus.org/badges/latest/wip.svg
 .. image:: https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol
