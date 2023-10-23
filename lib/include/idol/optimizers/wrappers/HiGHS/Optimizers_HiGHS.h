@@ -76,6 +76,8 @@ protected:
     [[nodiscard]] unsigned int get_n_solutions() const override;
     [[nodiscard]] unsigned int get_solution_index() const override;
     void set_solution_index(unsigned int t_index) override;
+
+    void analyze_status();
 public:
     explicit HiGHS(const Model& t_model, bool t_continuous_relaxation);
 

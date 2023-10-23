@@ -232,6 +232,50 @@ void idol::Optimizers::HiGHS::hook_optimize() {
 
     m_model.run();
 
+    analyze_status();
+
+    if (m_solution_status == Fail) {
+        m_model.clearSolver();
+        m_model.run();
+        analyze_status();
+    }
+
+    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Unbounded) {
+
+        bool has_primal_ray;
+        m_extreme_ray = new double[m_model.getNumCol()];
+        m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
+
+        if (!has_primal_ray) {
+            run_without_presolve();
+            m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
+            if (!has_primal_ray) {
+                throw Exception("Cannot save primal ray.");
+            }
+        }
+
+    }
+
+    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible) {
+
+        bool has_dual_ray;
+        m_farkas_certificate = new double[m_model.getNumRow()];
+        m_model.getDualRay(has_dual_ray, m_farkas_certificate);
+
+        if (!has_dual_ray) {
+            run_without_presolve();
+            m_model.getDualRay(has_dual_ray, m_farkas_certificate);
+            if (!has_dual_ray) {
+                throw Exception("Cannot save dual ray.");
+            }
+        }
+
+    }
+
+}
+
+void idol::Optimizers::HiGHS::analyze_status() {
+
     const auto status = m_model.getModelStatus();
 
     switch (status) {
@@ -277,43 +321,11 @@ void idol::Optimizers::HiGHS::hook_optimize() {
             throw Exception("Unhandled status: " + std::to_string((int) status));
     }
 
-    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Unbounded) {
-
-        bool has_primal_ray;
-        m_extreme_ray = new double[m_model.getNumCol()];
-        m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
-
-        if (!has_primal_ray) {
-            run_without_presolve();
-            m_model.getPrimalRay(has_primal_ray, m_extreme_ray);
-            if (!has_primal_ray) {
-                throw Exception("Cannot save primal ray.");
-            }
-        }
-
-    }
-
-    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible) {
-
-        bool has_dual_ray;
-        m_farkas_certificate = new double[m_model.getNumRow()];
-        m_model.getDualRay(has_dual_ray, m_farkas_certificate);
-
-        if (!has_dual_ray) {
-            run_without_presolve();
-            m_model.getDualRay(has_dual_ray, m_farkas_certificate);
-            if (!has_dual_ray) {
-                throw Exception("Cannot save dual ray.");
-            }
-        }
-
-    }
-
 }
 
 void idol::Optimizers::HiGHS::run_without_presolve() {
-    const std::string old_presolve_setting;
-    m_model.getStringOptionValues("presolve");
+    std::string old_presolve_setting;
+    m_model.getOptionValue("presolve", old_presolve_setting);
     m_model.setOptionValue("presolve", "off");
     m_model.run();
     m_model.setOptionValue("presolve", old_presolve_setting);
