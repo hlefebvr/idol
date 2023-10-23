@@ -31,6 +31,8 @@ add_library(idol STATIC include/idol/modeling/numericals.h include/idol/containe
         include/idol/optimizers/wrappers/HiGHS/HiGHS.h
         src/optimizers/wrappers/HiGHS/HiGHS.cpp
         src/optimizers/wrappers/HiGHS/Optimizers_HiGHS.cpp
+        include/idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h
+        include/idol/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h
 )
 
 find_package(OpenMP REQUIRED)

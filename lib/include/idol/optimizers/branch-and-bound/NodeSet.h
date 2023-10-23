@@ -156,13 +156,14 @@ public:
         }
         return &m_by_objective_value_it->second;
     }
-
-    NodeT* operator->() {
+    /*
+    NodeInfoT* operator->() {
         if (m_is_by_level) {
             return &m_by_level_it->second;
         }
         return &m_by_objective_value_it->second;
     }
+    */
 };
 
 #endif //IDOL_NODESET_H

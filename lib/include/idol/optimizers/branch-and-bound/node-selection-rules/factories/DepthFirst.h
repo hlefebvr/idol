@@ -19,8 +19,8 @@ public:
     public:
         explicit Strategy(const DepthFirst& t_parent) {}
 
-        NodeSelectionRules::DepthFirst<NodeT> *operator()() const override {
-            return new NodeSelectionRules::DepthFirst<NodeT>();
+        NodeSelectionRules::DepthFirst<NodeT> *operator()(Optimizers::BranchAndBound<NodeT>& t_parent) const override {
+            return new NodeSelectionRules::DepthFirst<NodeT>(t_parent);
         }
 
         Strategy *clone() const override {

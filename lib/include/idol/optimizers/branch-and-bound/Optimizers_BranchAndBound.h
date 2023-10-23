@@ -25,20 +25,20 @@ namespace idol::Optimizers {
     template<class NodeVarInfoT> class BranchAndBound;
 }
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 class idol::Optimizers::BranchAndBound : public Algorithm {
-    using TreeNode = Node<NodeVarInfoT>;
-    using SetOfActiveNodes = NodeSet<Node<NodeVarInfoT>>;
+    using TreeNode = Node<NodeInfoT>;
+    using SetOfActiveNodes = NodeSet<Node<NodeInfoT>>;
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
     std::unique_ptr<Model> m_relaxation;
-    std::unique_ptr<::idol::NodeUpdator<NodeVarInfoT>> m_node_updator;
+    std::unique_ptr<::idol::NodeUpdator<NodeInfoT>> m_node_updator;
 
-    std::unique_ptr<BranchingRule<NodeVarInfoT>> m_branching_rule;
-    std::unique_ptr<NodeSelectionRule<NodeVarInfoT>> m_node_selection_rule;
+    std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
+    std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
 
-    std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeVarInfoT>> m_callback;
+    std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
     unsigned int m_log_frequency = 10;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
@@ -60,10 +60,10 @@ protected:
     void write(const std::string &t_name) override;
 
     void create_relaxations();
-    Node<NodeVarInfoT> create_root_node();
+    Node<NodeInfoT> create_root_node();
     void explore(TreeNode& t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
     void analyze(const TreeNode& t_node, bool* t_explore_children_flag, bool* t_reoptimize_flag);
-    Node<NodeVarInfoT> select_node_for_branching(SetOfActiveNodes& t_active_nodes);
+    Node<NodeInfoT> select_node_for_branching(SetOfActiveNodes& t_active_nodes);
     std::vector<TreeNode> create_child_nodes(const TreeNode& t_node);
     void backtrack(SetOfActiveNodes& t_actives_nodes, SetOfActiveNodes& t_sub_active_nodes);
     void set_as_incumbent(const TreeNode& t_node);
@@ -98,9 +98,9 @@ protected:
 public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
-                              const BranchingRuleFactory<NodeVarInfoT>& t_branching_rule_factory,
-                              const NodeSelectionRuleFactory<NodeVarInfoT>& t_node_selection_rule_factory,
-                              AbstractBranchAndBoundCallbackI<NodeVarInfoT>* t_callback);
+                              const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
+                              const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
+                              AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback);
 
     [[nodiscard]] std::string name() const override { return "branch-and-bound"; }
 
@@ -114,11 +114,11 @@ public:
 
     [[nodiscard]] unsigned int subtree_depth() const { return m_steps.at(1); }
 
-    virtual void add_callback(BranchAndBoundCallback<NodeVarInfoT>* t_cb);
+    virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb);
 
     virtual void add_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_plane_generator);
 
-    void submit_heuristic_solution(NodeVarInfoT* t_info);
+    void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
 
@@ -132,9 +132,13 @@ public:
 
     [[nodiscard]] double root_node_best_obj() const { return m_root_node_best_obj; }
 
-    BranchingRule<NodeVarInfoT>& branching_rule() { return *m_branching_rule; }
+    BranchingRule<NodeInfoT>& branching_rule() { return *m_branching_rule; }
 
-    const BranchingRule<NodeVarInfoT>& branching_rule() const { return *m_branching_rule; }
+    const BranchingRule<NodeInfoT>& branching_rule() const { return *m_branching_rule; }
+
+    [[nodiscard]] bool has_incumbent() const { return m_incumbent.has_value(); }
+
+    const TreeNode& incumbent() const { return m_incumbent.value(); }
 };
 
 template<class NodeVarInfoT>
@@ -315,7 +319,7 @@ idol::Optimizers::BranchAndBound<NodeVarInfoT>::BranchAndBound(const Model &t_mo
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(*this)),
-      m_node_selection_rule(t_node_selection_rule_factory()),
+      m_node_selection_rule(t_node_selection_rule_factory(*this)),
       m_callback(t_callback) {
 
     create_relaxations();

@@ -40,6 +40,11 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
 
     m_primal_solution = save_primal(t_original_formulation, t_model);
 
+    m_sum_of_infeasibilities = 0;
+    for (const auto& [var, value] : m_primal_solution) {
+        m_sum_of_infeasibilities.value() += std::abs(value - std::round(value));
+    }
+
 }
 
 idol::NodeVarInfo *idol::NodeVarInfo::create_child() const {

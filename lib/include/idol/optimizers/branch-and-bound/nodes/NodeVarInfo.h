@@ -33,6 +33,8 @@ public:
 
     [[nodiscard]] double objective_value() const { return m_primal_solution.objective_value(); }
 
+    [[nodiscard]] double sum_of_infeasibilities() const { return m_sum_of_infeasibilities.value(); }
+
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 
     void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
@@ -50,6 +52,7 @@ public:
     static NodeVarUpdator<NodeVarInfo>* create_updator(Model& t_relaxation);
 private:
     Solution::Primal m_primal_solution;
+    std::optional<double> m_sum_of_infeasibilities;
     std::optional<BranchingDecision> m_branching_decision;
 };
 

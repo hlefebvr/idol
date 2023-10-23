@@ -19,8 +19,8 @@ public:
     public:
         explicit Strategy(const BestBound& t_parent) {}
 
-        NodeSelectionRules::BestBound<NodeT> *operator()() const override {
-            return new NodeSelectionRules::BestBound<NodeT>();
+        NodeSelectionRules::BestBound<NodeT> *operator()(Optimizers::BranchAndBound<NodeT>& t_parent) const override {
+            return new NodeSelectionRules::BestBound<NodeT>(t_parent);
         }
 
         Strategy *clone() const override {

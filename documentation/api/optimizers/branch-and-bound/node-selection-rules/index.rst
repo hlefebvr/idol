@@ -11,3 +11,4 @@ Node selection rules
     WorstBound
     DepthFirst
     BreadthFirst
+    BestEstimate

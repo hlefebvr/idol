@@ -11,6 +11,11 @@ namespace idol {
 
     template<class NodeT>
     class NodeSelectionRuleFactory;
+
+    namespace Optimizers {
+        template<class NodeT>
+        class BranchAndBound;
+    }
 }
 
 template<class NodeT>
@@ -18,7 +23,7 @@ class idol::NodeSelectionRuleFactory {
 public:
     virtual ~NodeSelectionRuleFactory() = default;
 
-    virtual NodeSelectionRule<NodeT>* operator()() const = 0;
+    virtual NodeSelectionRule<NodeT>* operator()(Optimizers::BranchAndBound<NodeT>& t_parent) const = 0;
 
     virtual NodeSelectionRuleFactory* clone() const = 0;
 };

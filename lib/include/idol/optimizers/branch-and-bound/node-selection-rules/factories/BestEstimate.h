@@ -6,21 +6,21 @@
 #define IDOL_WORSTBOUND_H
 
 #include "NodeSelectionRuleFactory.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/impls/WorstBound.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h"
 
 namespace idol {
-    class WorstBound;
+    class BestEstimate;
 }
 
-class idol::WorstBound {
+class idol::BestEstimate {
 public:
     template<class NodeT>
     class Strategy : public NodeSelectionRuleFactory<NodeT> {
     public:
-        explicit Strategy(const WorstBound& t_parent) {}
+        explicit Strategy(const BestEstimate& t_parent) {}
 
-        NodeSelectionRules::WorstBound<NodeT> *operator()(Optimizers::BranchAndBound<NodeT>& t_parent) const override {
-            return new NodeSelectionRules::WorstBound<NodeT>(t_parent);
+        NodeSelectionRules::BestEstimate<NodeT> *operator()(Optimizers::BranchAndBound<NodeT>& t_parent) const override {
+            return new NodeSelectionRules::BestEstimate<NodeT>(t_parent);
         }
 
         Strategy *clone() const override {

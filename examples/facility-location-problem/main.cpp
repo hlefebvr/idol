@@ -14,6 +14,7 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -58,7 +59,7 @@ int main(int t_argc, const char** t_argv) {
                     .with_branching_rule(
                             PseudoCost()
                     )
-                .with_node_selection_rule(BestBound())
+                .with_node_selection_rule(BestEstimate())
                 .with_log_level(Trace, Blue)
     );
 
