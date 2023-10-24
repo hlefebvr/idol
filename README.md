@@ -15,6 +15,15 @@ or any other cutting-edge method, idol is your trusted companion.
 
 Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
+## Benchmark 
+
+- **Branc-and-Price** for [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
+- **Branch-and-Bound** for [Knapsack Problem](https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html).
+
+![Performance profile](https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/ecdf.png)
+
+This is a performance profile computed according to *Dolan, E., Moré, J. Benchmarking optimization software with performance profiles. Math. Program. 91, 201–213 (2002)* [https://doi.org/10.1007/s101070100263](https://doi.org/10.1007/s101070100263).
+
 ## Examples
 
 Here is an example of a complex algorithm built using idol. It is a nested Branch-and-Price algorithm with strong branching.
@@ -57,7 +66,7 @@ auto nested_branch_and_price =
                                         .with_node_optimizer(GLPK::ContinuousRelaxation())
                                         
                                         /* Variables are selected for branching using the most-infeasible rule */
-                                        .with_branching_rule(MostFractional())
+                                        .with_branching_rule(MostInfeasible())
                                         
                                         /* Nodes are selected using the worst-bound rule */
                                         .with_node_selection_rule(WorstBound())
@@ -83,18 +92,18 @@ auto nested_branch_and_price =
                 /* Branching constraints are applied to the master problem */
                 .with_branching_on_master()
         )
-        /* Variables are selected for branching using the most-infeasible rule */
+        /* Variables are selected for branching using the strong-branching rule */
         .with_branching_rule(StrongBranching())
         
         /* Nodes are selected using the best-bound rule */
-        .with_node_selection_rule(BestBound()
+        .with_node_selection_rule(BestBound())
         
         /* Only informational logs will be printed (in blue) */
         .with_log_level(Info, Blue)
         
         /* The algorithm will run with a time limit of 3600 */
         .with_time_limit(3600)
-    )
+    );
     
 model.use(nested_branch_and_price);
 
