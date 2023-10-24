@@ -15,6 +15,7 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/Diver.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -41,7 +42,7 @@ int main(int t_argc, const char** t_argv) {
             BranchAndBound()
                     .with_node_optimizer(HiGHS::ContinuousRelaxation())
                     .with_branching_rule(
-                            MostInfeasible()
+                            Diver<BranchingRules::MostInfeasible<NodeVarInfo>>()
                     )
                     .with_node_selection_rule(BestBound())
                     .with_log_level(Info, Blue)

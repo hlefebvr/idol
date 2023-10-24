@@ -19,6 +19,8 @@ template<class NodeVarInfoT>
 class idol::BranchingRules::VariableBranching : public BranchingRule<NodeVarInfoT> {
     std::list<Var> m_branching_candidates;
 public:
+    using NodeInfoT = NodeVarInfoT;
+
     virtual bool is_valid(const Node<NodeVarInfoT> &t_node) const {
 
         const auto& primal_solution = t_node.info().primal_solution();
