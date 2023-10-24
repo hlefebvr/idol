@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/hlefebvr/idol)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hlefebvr/idol?label=version)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/cmake.yml?branch=main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main)
 ![GitHub issues](https://img.shields.io/github/issues-raw/hlefebvr/idol)
 ![Repo status](https://www.repostatus.org/badges/latest/wip.svg)
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
@@ -15,9 +15,23 @@ or any other cutting-edge method, idol is your trusted companion.
 
 Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
+## Features
+
+- Branch-and-Bound
+  - Node selection rules: Best Bound, Worst Bound, Depth First, Best Estimate, Breadth First.
+  - Branching rules (for variable branching): Pseudo Cost, Strong Branching (with phases), Most Infeasible, Least Infeasible, First Found, Uniformly Random.
+  - Subtree exploration
+  - Heuristics (for variable branching): Simple Rounding, Relaxed Enforced Neighborhood, Local Branching
+  - Callbacks: User Cuts, Lazy Cuts
+- Column Generation and Branch-and-Price
+  - Automatic Dantzig-Wolfe reformulation
+  - Soft and hard branching available (i.e, branching on master or sub-problem)
+  - Stabilization by dual price smoothing
+  - Heuristics: Integer Master
+
 ## Benchmark 
 
-- **Branc-and-Price** for [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
+- **Branch-and-Price** for [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
 - **Branch-and-Bound** for [Knapsack Problem](https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html).
 
 ![Performance profile](https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/ecdf.png)

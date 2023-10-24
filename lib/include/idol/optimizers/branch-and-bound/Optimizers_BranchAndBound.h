@@ -449,6 +449,8 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::explore(TreeNode &t_node,
         }
 
         if (t_active_nodes.empty()) { break; }
+        
+        if (is_terminated() || gap_is_closed()) { break; }
 
         if (is_terminated() || gap_is_closed()) { return; }
 
