@@ -46,6 +46,8 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     unsigned int m_n_solved_nodes = 0;
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
+    unsigned int m_n_postponed_nodes = 0;
+    unsigned int m_max_postponed_nodes = 10;
 
     std::optional<TreeNode> m_incumbent;
 protected:
@@ -359,6 +361,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::hook_before_optimize() {
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
+    m_n_postponed_nodes = 0;
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
@@ -447,6 +450,8 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::explore(TreeNode &t_node,
 
         if (t_active_nodes.empty()) { break; }
 
+        if (is_terminated() || gap_is_closed()) { return; }
+
         auto selected_node = select_node_for_branching(t_active_nodes);
 
         idol_Log(Trace, "Node " << selected_node.id() << " was selected for branching.")
@@ -482,7 +487,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::solve(TreeNode& t_node) con
 
     idol_Log(Debug, "Node " << t_node.id() << " has been solved.");
 
-    t_node.info().save(parent(), *m_relaxation);
+    t_node.info().save(*this, parent(), *m_relaxation);
 
     m_branching_rule->on_node_solved(t_node);
 
@@ -537,7 +542,16 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
         return;
     }
 
-    if (status != Optimal) {
+    if (status == Fail) {
+
+        if (m_n_postponed_nodes < m_max_postponed_nodes) {
+            *t_explore_children_flag = true;
+            std::cout << "Postponing Node " << t_node.id() << " since returned status is " << status << "." << std::endl;
+            idol_Log(Trace, "Postponing Node " << t_node.id() << " since returned status is " << status << ".");
+            ++m_n_postponed_nodes;
+            return;
+        }
+
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();

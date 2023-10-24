@@ -2,6 +2,7 @@
 // Created by henri on 18.10.23.
 //
 #include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 
 void idol::NodeVarInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
     m_branching_decision = std::make_optional<BranchingDecision>(t_var, LessOrEqual, t_ub);
@@ -15,7 +16,8 @@ idol::NodeVarInfo::create_updator(idol::Model &t_relaxation) {
     return new NodeVarUpdator<NodeVarInfo>(t_relaxation);
 }
 
-void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
+void idol::NodeVarInfo::save(const Optimizers::BranchAndBound<NodeVarInfo>& t_parent,
+                             const idol::Model &t_original_formulation,
                              const idol::Model &t_model) {
 
     const auto status = t_model.get_status();
@@ -34,7 +36,13 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
         return;
     }
 
-    if (status != Optimal && status != Feasible && status != SubOptimal) {
+    if (status == Fail || status == SubOptimal) {
+        m_primal_solution.set_objective_value(t_original_formulation.get_best_bound());
+        m_sum_of_infeasibilities = Inf;
+        return;
+    }
+
+    if (status != Optimal && status != Feasible) {
         return;
     }
 

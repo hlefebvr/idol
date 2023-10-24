@@ -10,6 +10,11 @@
 
 namespace idol {
     class NodeVarInfo;
+
+    namespace Optimizers {
+        template<class NodeInfoT> class BranchAndBound;
+    }
+
 }
 
 class idol::NodeVarInfo {
@@ -39,7 +44,7 @@ public:
 
     void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 
-    virtual void save(const Model& t_original_formulation, const Model& t_model);
+    virtual void save(const Optimizers::BranchAndBound<NodeVarInfo>& t_parent, const Model& t_original_formulation, const Model& t_model);
 
     [[nodiscard]] virtual NodeVarInfo* create_child() const;
 
@@ -47,7 +52,7 @@ public:
 
     void set_local_upper_bound(const Var& t_var, double t_ub);
 
-    const BranchingDecision& branching_decision() const { return m_branching_decision.value(); }
+    [[nodiscard]] const BranchingDecision& branching_decision() const { return m_branching_decision.value(); }
 
     static NodeVarUpdator<NodeVarInfo>* create_updator(Model& t_relaxation);
 private:
