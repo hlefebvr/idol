@@ -279,5 +279,6 @@ install(FILES
         "${idol_SOURCE_DIR}/cmake/FindGLPK.cmake"
         "${idol_SOURCE_DIR}/cmake/FindMOSEK.cmake"
         "${idol_SOURCE_DIR}/cmake/FindEIGEN.cmake"
+        "${idol_SOURCE_DIR}/cmake/FindROBINHOOD.cmake"
         DESTINATION lib/cmake/idol
         )

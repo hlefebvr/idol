@@ -14,8 +14,10 @@ idol::Constant::Constant(const Param &t_param, double t_value) : m_linear_terms(
     }
 }
 
-idol::Constant::Constant(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value)
-    : m_quadratic_terms({{{t_param_1, t_param_2}, t_value}})  {
+idol::Constant::Constant(const idol::Param &t_param_1, const idol::Param &t_param_2, double t_value)  {
+
+    m_quadratic_terms.emplace(std::make_pair<>(t_param_1, t_param_2), t_value);
+
     if (equals(t_value, 0., Tolerance::Sparsity)) {
         m_quadratic_terms.clear();
     }

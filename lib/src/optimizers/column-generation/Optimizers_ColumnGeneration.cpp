@@ -655,25 +655,34 @@ void idol::Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_far
     for (const auto &[ctr, constant] : m_generation_pattern.linear()) {
         objective += constant.numerical() * -t_duals.get(ctr);
         for (const auto &[param, coeff] : constant.linear()) {
-            objective += -t_duals.get(ctr) * coeff * param.as<Var>();
+            const double cost = -t_duals.get(ctr) * coeff;
+            if (!equals(cost, 0., Tolerance::Sparsity)) {
+                objective += cost * param.as<Var>();
+            }
         }
         for (const auto &[pair, coeff] : constant.quadratic()) {
-            objective += -t_duals.get(ctr) * coeff * pair.first.as<Var>() * pair.second.as<Var>();
+            const double cost = -t_duals.get(ctr) * coeff;
+            if (!equals(cost, 0., Tolerance::Sparsity)) {
+                objective += cost * pair.first.as<Var>() * pair.second.as<Var>();
+            }
         }
     }
 
     if (!t_farkas_pricing) {
         for (const auto &[param, coeff] : m_generation_pattern.obj().linear()) {
-            objective += coeff * param.as<Var>();
+            if (!equals(coeff, 0., Tolerance::Sparsity)) {
+                objective += coeff * param.as<Var>();
+            }
         }
         for (const auto &[pair, coeff] : m_generation_pattern.obj().quadratic()) {
-            objective += coeff * pair.first.as<Var>() * pair.second.as<Var>();
+            if (!equals(coeff, 0., Tolerance::Sparsity)) {
+                objective += coeff * pair.first.as<Var>() * pair.second.as<Var>();
+            }
         }
     }
 
     m_model->set_obj_expr(std::move(objective));
 
-    // m_model->write(std::string("pricing_").append(std::to_string(m_index)).append(".lp"));
 }
 
 void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
