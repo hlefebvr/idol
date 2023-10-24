@@ -91,6 +91,8 @@ public:
 
     void set_param_presolve(bool t_value) override;
 
+    void set_param_log_level(LogLevel t_log_level) override;
+
 };
 
 #endif

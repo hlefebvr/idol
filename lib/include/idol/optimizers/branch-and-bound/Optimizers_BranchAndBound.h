@@ -381,19 +381,25 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::hook_optimize() {
 
     m_node_updator->clear_local_updates();
 
+    if (get_status() == Fail) {
+        return;
+    }
+
     if (!m_incumbent.has_value()) {
 
         if (is_pos_inf(get_best_obj())) {
             set_status(Infeasible);
             return;
-        } else if (is_neg_inf(get_best_obj())) {
+        }
+
+        if (is_neg_inf(get_best_obj())) {
             set_status(Unbounded);
             return;
         }
 
-    } else {
-        set_status(Feasible);
     }
+
+    set_status(Feasible);
 
     if (gap_is_closed()) {
         set_status(Optimal);
