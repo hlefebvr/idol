@@ -452,8 +452,6 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::explore(TreeNode &t_node,
         
         if (is_terminated() || gap_is_closed()) { break; }
 
-        if (is_terminated() || gap_is_closed()) { return; }
-
         auto selected_node = select_node_for_branching(t_active_nodes);
 
         idol_Log(Trace, "Node " << selected_node.id() << " was selected for branching.")
