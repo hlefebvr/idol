@@ -31,7 +31,7 @@ Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](http
 
 ## Benchmark 
 
-- **Branc-and-Price** for [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
+- **Branch-and-Price** for [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
 - **Branch-and-Bound** for [Knapsack Problem](https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html).
 
 ![Performance profile](https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/ecdf.png)
