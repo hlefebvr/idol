@@ -5,11 +5,11 @@
 #ifndef OPTIMIZE_MAP_H
 #define OPTIMIZE_MAP_H
 
-#include <unordered_map>
-
 
 #ifdef IDOL_USE_ROBINHOOD
-#include <robin_hood/robin_hood.h>
+#include <robin_hood.h>
+#else
+#include <unordered_map>
 #endif
 
 // Implements hash for pairs (non-symmetric by default (std::hash<std::pair<T, U>>) and symmetric impls)
