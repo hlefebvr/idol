@@ -7,13 +7,24 @@
 
 #include <unordered_map>
 
+
+#ifdef IDOL_USE_ROBINHOOD
+#include <robin_hood/robin_hood.h>
+#endif
+
 // Implements hash for pairs (non-symmetric by default (std::hash<std::pair<T, U>>) and symmetric impls)
 // See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
 namespace idol::impl {
 
+#ifdef IDOL_USE_ROBINHOOD
+    template<class T, class EnableT = void> using hash = robin_hood::hash<T, EnableT>;
+#else
+    template<class A> using hash = std::hash<A>;
+#endif
+
     template <typename T>
     inline void hash_combine(std::size_t &seed, const T &val) {
-        seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        seed ^= hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
 
     // auxiliary generic functions to create a hash value using a seed
@@ -38,8 +49,8 @@ namespace idol::impl {
         template<class Key>
         std::size_t operator()(const std::pair<Key, Key> &t_pair) const {
             return std::less<Key>()(t_pair.first, t_pair.second) ?
-                   std::hash<std::pair<Key, Key>>()(t_pair)
-                 : std::hash<std::pair<Key, Key>>()(std::make_pair(t_pair.second, t_pair.first));
+                   hash<std::pair<Key, Key>>()(t_pair)
+                 : hash<std::pair<Key, Key>>()(std::make_pair(t_pair.second, t_pair.first));
         }
     };
 
@@ -63,8 +74,6 @@ struct std::hash<std::pair<Key1, Key2>> {
 
 #ifdef IDOL_USE_ROBINHOOD
 
-#include <robin_hood/robin_hood.h>
-
 namespace idol {
 
     template<
@@ -73,7 +82,7 @@ namespace idol {
             class Hash = robin_hood::hash<Key>,
             class KeyEqual = std::equal_to<Key>
     >
-    using Map = robin_hood::unordered_map<Key, T, Hash, KeyEqual>;
+    using Map = robin_hood::unordered_flat_map<Key, T, Hash, KeyEqual>;
 
 }
 

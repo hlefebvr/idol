@@ -42,7 +42,8 @@ int main(int t_argc, const char** t_argv) {
             BranchAndBound()
                     .with_node_optimizer(HiGHS::ContinuousRelaxation())
                     .with_branching_rule(
-                            Diver<BranchingRules::MostInfeasible<NodeVarInfo>>()
+                            MostInfeasible()
+                            //Diver<BranchingRules::MostInfeasible<NodeVarInfo>>()
                     )
                     .with_node_selection_rule(BestBound())
                     .with_log_level(Info, Blue)

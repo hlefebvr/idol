@@ -1,7 +1,7 @@
 find_path(
         ROBINHOOD_INCLUDE_DIRS
-        NAMES robin_hood/robin_hood.h
-        HINTS /usr/include /usr/local/include/ ${ROBINHOOD_DIR} $ENV{ROBINHOOD_HOME}
+        NAMES robin_hood.h
+        HINTS /usr/include /usr/include/robin_hood/ /usr/local/include/ /usr/local/include/robin_hood/ ${ROBINHOOD_DIR} $ENV{ROBINHOOD_HOME}
 )
 
 include(FindPackageHandleStandardArgs)
