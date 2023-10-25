@@ -1,6 +1,7 @@
 //
 // Created by henri on 14/02/23.
 //
+#include <csignal>
 #include "idol/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
 #include "idol/optimizers/Algorithm.h"
 

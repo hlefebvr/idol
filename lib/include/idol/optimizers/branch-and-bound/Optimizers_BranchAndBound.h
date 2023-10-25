@@ -513,6 +513,12 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
     const auto& status = t_node.info().status();
     const auto& reason = t_node.info().reason();
 
+    if (get_remaining_time() == 0 || reason == TimeLimit) {
+        set_reason(TimeLimit);
+        terminate();
+        return;
+    }
+
     if (status == Unbounded) {
         set_reason(Proved);
         set_best_obj(-Inf);
@@ -533,12 +539,6 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
 
     if (status == Feasible && reason == ObjLimit) {
         idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().primal_solution().objective_value() << ").");
-        return;
-    }
-
-    if (get_remaining_time() == 0) {
-        set_reason(TimeLimit);
-        terminate();
         return;
     }
 
