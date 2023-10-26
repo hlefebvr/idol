@@ -544,6 +544,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
 
     if (status == Fail) {
 
+        /*
         if (m_n_postponed_nodes < m_max_postponed_nodes) {
             *t_explore_children_flag = true;
             std::cout << "Postponing Node " << t_node.id() << " since returned status is " << status << "." << std::endl;
@@ -551,6 +552,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
             ++m_n_postponed_nodes;
             return;
         }
+         */
 
         set_status(Fail);
         set_reason(NotSpecified);
