@@ -76,6 +76,7 @@ void idol::Utils::ExportBranchAndBoundTreeToCSV::Strategy::operator()(idol::Call
     file << time().count() << ","
          << id << ","
          << parent_id << ","
+         << node.level() << ","
          << status << ","
          << node.info().objective_value() << ","
          << branch_label.str() << ","

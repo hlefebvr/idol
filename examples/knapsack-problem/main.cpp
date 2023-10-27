@@ -27,8 +27,8 @@ int main(int t_argc, const char** t_argv) {
 
     using namespace idol;
 
-    //const auto instance = Problems::KP::read_instance("instance.txt");
-    const auto instance = Problems::KP::read_instance("/home/henri/Research/idol/examples/knapsack-problem/instance50.txt");
+    const auto instance = Problems::KP::read_instance("instance.txt");
+    //const auto instance = Problems::KP::read_instance("/home/henri/Research/idol/examples/knapsack-problem/instance50.txt");
 
     const auto n_items = instance.n_items();
 
@@ -49,7 +49,7 @@ int main(int t_argc, const char** t_argv) {
                     .with_node_optimizer(HiGHS::ContinuousRelaxation())
                     .with_branching_rule(PseudoCost())
                     .with_callback(Utils::ExportBranchAndBoundTreeToCSV("tree.csv"))
-                    .with_callback(Heuristics::SimpleRounding())
+                    //.with_callback(Heuristics::SimpleRounding())
                     .with_node_selection_rule(BestEstimate())
                     .with_log_level(Info, Blue)
                     .with_log_frequency(1)
