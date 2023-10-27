@@ -338,6 +338,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
 template<class VarImplT, class CtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
 
+    update();
+
     const unsigned index = parent().get_var_index(t_var);
 
     if (m_variables[index].is_to_be_updated()) {
