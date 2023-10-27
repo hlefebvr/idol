@@ -173,6 +173,8 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h
         include/idol/optimizers/branch-and-bound/branching-rules/impls/Diver.h
         include/idol/optimizers/branch-and-bound/branching-rules/factories/Diver.h
+        include/idol/optimizers/branch-and-bound/watchers/ExportBranchAndBoundTreeToCSV.h
+        src/optimizers/branch-and-bound/watchers/BranchAndBoundTree.cpp
 )
 
 find_package(OpenMP REQUIRED)

@@ -52,6 +52,8 @@ protected:
 
     [[nodiscard]] const Timer& time() const;
 
+    [[nodiscard]] const SideEffectRegistry& side_effect_registry() const;
+
     void submit_heuristic_solution(NodeVarInfoT* t_info);
 
     void submit_bound(double t_bound);
@@ -68,6 +70,14 @@ protected:
 
     void initialize(const Model& t_model) override;
 };
+
+template<class NodeVarInfoT>
+const idol::SideEffectRegistry &idol::BranchAndBoundCallbackI<NodeVarInfoT>::side_effect_registry() const {
+    if (!m_registry) {
+        throw Exception("No side effect registry was found");
+    }
+    return *m_registry;
+}
 
 template<class NodeVarInfoT>
 const idol::Timer &idol::BranchAndBoundCallbackI<NodeVarInfoT>::time() const {
@@ -152,6 +162,12 @@ protected:
      */
     void submit_bound(double t_bound);
 
+    /**
+     * Returns the side effect registry
+     * @return the side effect registry
+     */
+     const SideEffectRegistry& side_effect_registry() const;
+
     [[nodiscard]] const Timer& time() const;
 private:
     BranchAndBoundCallbackI<NodeVarInfoT>* m_interface = nullptr;
@@ -160,6 +176,12 @@ private:
 
     friend class BranchAndBoundCallbackI<NodeVarInfoT>;
 };
+
+template<class NodeVarInfoT>
+const idol::SideEffectRegistry &idol::BranchAndBoundCallback<NodeVarInfoT>::side_effect_registry() const {
+    throw_if_no_interface();
+    return m_interface->side_effect_registry();
+}
 
 template<class NodeVarInfoT>
 const idol::Timer &idol::BranchAndBoundCallback<NodeVarInfoT>::time() const {

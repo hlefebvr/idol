@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include "VariableBranching.h"
+#include "NodeScoreFunction.h"
 
 namespace idol::BranchingRules {
     template<class NodeVarInfoT> class PseudoCost;

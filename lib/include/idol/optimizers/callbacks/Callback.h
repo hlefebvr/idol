@@ -18,11 +18,10 @@ namespace idol {
  * It is typically used inside of a Callback to influence or modify the behaviour of the algorithm at execution time.
  */
     enum CallbackEvent {
-        AlgorithmStarts, /*! Occurs when the algorithm starts */
-        AlgorithmStops, /*! Occurs when the algorithm stops */
         NodeLoaded, /*!< Occurs when a node is about to be solved */
         IncumbentSolution, /*!< Occurs when an incumbent solution has been found */
         InvalidSolution, /*!< Occurs when a solution of the relaxation is not valid (e.g., not integer) */
+        PrunedSolution
     };
 }
 
@@ -32,6 +31,7 @@ static std::ostream &operator<<(std::ostream& t_os, idol::CallbackEvent t_event)
         case IncumbentSolution: return t_os << "IncumbentSolution";
         case InvalidSolution: return t_os << "InvalidSolution";
         case NodeLoaded: return t_os << "NodeLoaded";
+        case PrunedSolution: return t_os << "PrunedSolution";
         default:;
     }
     throw Exception("Enum out of bounds.");

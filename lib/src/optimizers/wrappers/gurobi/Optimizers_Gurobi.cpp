@@ -277,10 +277,6 @@ void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 void idol::Optimizers::Gurobi::hook_optimize() {
     set_solution_index(0);
 
-    if (m_gurobi_callback) {
-        m_gurobi_callback->call(AlgorithmStarts);
-    }
-
     try {
         m_model.optimize();
     } catch (const GRBException& err) {
@@ -288,9 +284,6 @@ void idol::Optimizers::Gurobi::hook_optimize() {
         __throw_exception_again;
     }
 
-    if (m_gurobi_callback) {
-        m_gurobi_callback->call(AlgorithmStops);
-    }
 }
 
 void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {

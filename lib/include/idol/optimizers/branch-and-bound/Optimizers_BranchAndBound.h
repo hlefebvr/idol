@@ -287,7 +287,6 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::submit_heuristic_solution(N
         idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node.info().objective_value() << " while best obj is " << get_best_obj() << '.');
     }
 
-
 }
 
 template<class NodeVarInfoT>
@@ -506,6 +505,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
         return;
     }
 
+
     if (t_node.id() % m_log_frequency == 0) {
         log_node(Info, t_node);
     }
@@ -533,11 +533,13 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
             set_status(status);
         }
 
+        call_callbacks(PrunedSolution, t_node);
         idol_Log(Trace, "Pruning node " << t_node.id() << " (by feasibility).");
         return;
     }
 
     if (status == Feasible && reason == ObjLimit) {
+        call_callbacks(PrunedSolution, t_node);
         idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().primal_solution().objective_value() << ").");
         return;
     }
@@ -557,6 +559,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();
+        call_callbacks(PrunedSolution, t_node);
         idol_Log(Trace, "Terminate. Node " << t_node.id() << " could not be solved to optimality (status = " << status << ").");
         return;
     }
@@ -586,6 +589,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
 
     } else {
 
+        call_callbacks(PrunedSolution, t_node);
         idol_Log(Trace, "Node " << t_node.id() << " was pruned by bound " << "(BestObj: " << get_best_obj() << ", Obj: " << t_node.info().objective_value() << ").");
         return;
 
@@ -599,6 +603,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
 
     if (side_effects.n_added_lazy_cuts > 0 || side_effects.n_added_user_cuts > 0) {
         *t_reoptimize_flag = true;
+        return;
     }
 
     *t_explore_children_flag = true;

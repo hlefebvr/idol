@@ -16,13 +16,19 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/Diver.h"
+#include "idol/optimizers/branch-and-bound/watchers/ExportBranchAndBoundTreeToCSV.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 
 int main(int t_argc, const char** t_argv) {
 
     using namespace idol;
 
-    const auto instance = Problems::KP::read_instance("instance.txt");
-    //const auto instance = Problems::KP::read_instance("/home/henri/CLionProjects/optimize/examples/knapsack-problem/instance50.txt");
+    //const auto instance = Problems::KP::read_instance("instance.txt");
+    const auto instance = Problems::KP::read_instance("/home/henri/Research/idol/examples/knapsack-problem/instance50.txt");
 
     const auto n_items = instance.n_items();
 
@@ -41,10 +47,10 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             BranchAndBound()
                     .with_node_optimizer(HiGHS::ContinuousRelaxation())
-                    .with_branching_rule(
-                            Diver<BranchingRules::MostInfeasible<NodeVarInfo>>()
-                    )
-                    .with_node_selection_rule(BestBound())
+                    .with_branching_rule(PseudoCost())
+                    .with_callback(Utils::ExportBranchAndBoundTreeToCSV("tree.csv"))
+                    .with_callback(Heuristics::SimpleRounding())
+                    .with_node_selection_rule(BestEstimate())
                     .with_log_level(Info, Blue)
                     .with_log_frequency(1)
     );
