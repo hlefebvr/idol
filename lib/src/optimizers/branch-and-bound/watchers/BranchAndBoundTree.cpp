@@ -73,7 +73,8 @@ void idol::Utils::ExportBranchAndBoundTreeToCSV::Strategy::operator()(idol::Call
         sum_of_infeasibilities = node.info().sum_of_infeasibilities();
     }
 
-    file << id << ","
+    file << time().count() << ","
+         << id << ","
          << parent_id << ","
          << status << ","
          << node.info().objective_value() << ","
