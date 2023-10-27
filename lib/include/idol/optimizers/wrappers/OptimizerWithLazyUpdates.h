@@ -357,6 +357,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var
 template<class VarImplT, class CtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
 
+    update();
+
     const unsigned index = parent().get_ctr_index(t_ctr);
 
     if (m_constraints[index].is_to_be_updated()) {
