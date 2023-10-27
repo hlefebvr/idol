@@ -27,10 +27,12 @@ void idol::Optimizers::HiGHS::hook_build() {
     set_objective_as_updated();
     set_rhs_as_updated();
 
+    /*
     if (m_model.getNumCol() == 0) {
         m_model.addCol(0., 0., 0., 0, nullptr, nullptr);
         m_deleted_variables.push(0);
     }
+     */
 
 }
 

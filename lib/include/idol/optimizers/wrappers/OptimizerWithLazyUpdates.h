@@ -342,9 +342,11 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var
 
     const unsigned index = parent().get_var_index(t_var);
 
+    /*
     if (m_variables[index].is_to_be_updated()) {
         m_variables_to_update.erase(m_variables[index].to_be_updated_flag());
     }
+     */
 
     if (m_variables[index].has_impl()) {
         hook_remove(m_variables[index].object());
@@ -361,9 +363,11 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr
 
     const unsigned index = parent().get_ctr_index(t_ctr);
 
+    /*
     if (m_constraints[index].is_to_be_updated()) {
         m_constraints_to_update.erase(m_constraints[index].to_be_updated_flag());
     }
+     */
 
     if (m_constraints[index].has_impl()) {
         hook_remove(m_constraints[index].object());
