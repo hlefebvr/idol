@@ -9,7 +9,7 @@
 #endif
 
 idol::Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxation)
-    : OptimizerWithLazyUpdates<MosekVar, MosekCtr>(t_model),
+    : OptimizerWithLazyUpdates(t_model),
       m_model(new mosek::fusion::Model()),
       m_continuous_relaxation(t_continuous_relaxation) {
 
@@ -127,7 +127,7 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
 
     MosekVar result;
 
-    result.variable = m_model->variable(/* t_var.name(), */ 1, mosek::fusion::Domain::unbounded());
+    result.variable = m_model->variable(t_var.name(), 1, mosek::fusion::Domain::unbounded());
 
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
@@ -225,7 +225,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
                     );
         }
 
-        result.constraint = m_model->constraint(std::move(expression), mosek::fusion::Domain::inRotatedQCone());
+        result.constraint = m_model->constraint(t_ctr.name(), std::move(expression), mosek::fusion::Domain::inRotatedQCone());
 
         return result;
 #else
@@ -241,13 +241,13 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
     // Set constraint type
     switch (type) {
         case LessOrEqual:
-            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::lessThan(0.));
+            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::lessThan(0.));
         break;
         case GreaterOrEqual:
-            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::greaterThan(0.));
+            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::greaterThan(0.));
             break;
         case Equal:
-            result.constraint = m_model->constraint(std::move(expr), mosek::fusion::Domain::equalsTo(0.));
+            result.constraint = m_model->constraint(t_ctr.name(), std::move(expr), mosek::fusion::Domain::equalsTo(0.));
             break;
         default: throw Exception("Enum out of bounds.");
     }
