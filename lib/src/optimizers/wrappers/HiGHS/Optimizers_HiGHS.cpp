@@ -72,14 +72,8 @@ void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb,
 
 int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
-    int index;
-    if (m_deleted_variables.empty()) {
-        index = (int) m_model.getNumCol();
-        m_model.addCol(0., 0., 0., 0, nullptr, nullptr);
-    } else {
-        index = m_deleted_variables.top();
-        m_deleted_variables.pop();
-    }
+    const int index = (int) m_model.getNumCol();
+    m_model.addCol(0., 0., 0., 0, nullptr, nullptr);
 
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
@@ -119,14 +113,8 @@ void idol::Optimizers::HiGHS::set_ctr_attr(int t_index, int t_type, double t_rhs
 
 int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
 
-    int index;
-    if (m_deleted_constraints.empty()) {
-        index = (int) m_model.getNumRow();
-        m_model.addRow(0., 0., 0, nullptr, nullptr);
-    } else {
-        index = m_deleted_constraints.top();
-        m_deleted_constraints.pop();
-    }
+    const int index = (int) m_model.getNumRow();
+    m_model.addRow(0., 0., 0, nullptr, nullptr);
 
     const auto& row = parent().get_ctr_row(t_ctr);
     const double rhs = as_numeric(row.rhs());
@@ -198,15 +186,13 @@ void idol::Optimizers::HiGHS::hook_remove(const Var &t_var) {
 
     const int index = lazy(t_var).impl();
 
-    m_model.changeColCost(index, 0.);
-    m_model.changeColBounds(index, 0., 0.);
-    for (const auto& [ctr, constant] : parent().get_var_column(t_var).linear()) {
-        if (!lazy(ctr).has_impl()) {
-            continue;
+    m_model.deleteCols(index, index);
+
+    for (auto& lazy_var : lazy_vars()) {
+        if (lazy_var.has_impl() && lazy_var.impl() > index) {
+            lazy_var.impl() -= 1;
         }
-        m_model.changeCoeff(lazy(ctr).impl(), index, 0.);
     }
-    m_deleted_variables.push(index);
 
 }
 
@@ -214,14 +200,13 @@ void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 
     const int index = lazy(t_ctr).impl();
 
-    m_model.changeRowBounds(index, 0., 0.);
-    for (const auto& [var, constant] : parent().get_ctr_row(t_ctr).linear()) {
-        if (!lazy(var).has_impl()) {
-            continue;
+    m_model.deleteRows(index, index);
+
+    for (auto& lazy_ctr : lazy_ctrs()) {
+        if (lazy_ctr.has_impl() && lazy_ctr.impl() > index) {
+            lazy_ctr.impl() -= 1;
         }
-        m_model.changeCoeff(index, lazy(var).impl(), 0.);
     }
-    m_deleted_constraints.push(index);
 
 }
 

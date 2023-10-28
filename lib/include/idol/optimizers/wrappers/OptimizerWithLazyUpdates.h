@@ -109,6 +109,12 @@ protected:
     auto& lazy(const Ctr& t_ctr) { return m_constraints[parent().get_ctr_index(t_ctr)]; }
     const auto& lazy(const Ctr& t_ctr) const { return m_constraints[parent().get_ctr_index(t_ctr)]; }
 
+    auto& lazy_vars() { return m_variables; }
+    const auto& lazy_vars() const { return m_variables; }
+
+    auto& lazy_ctrs() { return m_constraints; }
+    const auto& lazy_ctrs() const { return m_constraints; }
+
     void set_objective_to_be_updated() { m_is_objective_to_be_updated = true; }
     [[nodiscard]] bool is_objective_to_be_updated() const { return m_is_objective_to_be_updated; }
     void set_objective_as_updated() { m_is_objective_to_be_updated = false; }

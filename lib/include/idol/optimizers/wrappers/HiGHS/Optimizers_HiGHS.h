@@ -25,9 +25,6 @@ class idol::Optimizers::HiGHS  : public OptimizerWithLazyUpdates<int, int> {
     SolutionReason m_solution_reason = NotSpecified;
     double* m_extreme_ray = nullptr;
     double* m_farkas_certificate = nullptr;
-
-    std::stack<int> m_deleted_variables;
-    std::stack<int> m_deleted_constraints;
 protected:
     void hook_build() override;
 
