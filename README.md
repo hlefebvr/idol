@@ -1,4 +1,4 @@
-# idol
+# idol - The Mathematical Optimization Framework
 
 ![License](https://img.shields.io/github/license/hlefebvr/idol?color=blue)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/release/hlefebvr/idol?color=blue)
