@@ -1,5 +1,5 @@
 Generalized Assignment Problem / Branch-and-Price
 =================================================
 
-.. literalinclude:: ../../examples/generalized-assignment-problem/main.cpp
+.. literalinclude:: ../../examples/assignment.example.cpp
     :language: cpp

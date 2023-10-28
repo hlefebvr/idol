@@ -1,7 +1,7 @@
 cmake-build-*
 .idea
 coverage
-documentation/_build
+docs/_build
 coverage/_build
 venv
 install

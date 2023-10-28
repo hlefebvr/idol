@@ -1,5 +1,5 @@
 Knapsack Problem / Gurobi
 =========================
 
-.. literalinclude:: ../../examples/knapsack-problem/main.cpp
+.. literalinclude:: ../../examples/knapsack.example.cpp
     :language: cpp

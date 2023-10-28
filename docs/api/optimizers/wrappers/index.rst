@@ -1,7 +1,7 @@
-.. _api_Gurobi:
+.. _api_wrappers:
 
-Gurobi interface
-================
+Solver wrappers
+===============
 
 Table of contents
 -----------------
@@ -10,4 +10,4 @@ Table of contents
     :maxdepth: 2
     :glob:
 
-    Gurobi
+    *
