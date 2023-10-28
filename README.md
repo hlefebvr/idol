@@ -1,11 +1,12 @@
 # idol
 
-![GitHub](https://img.shields.io/github/license/hlefebvr/idol)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hlefebvr/idol?label=version)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main)
+![License](https://img.shields.io/github/license/hlefebvr/idol?color=blue)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/release/hlefebvr/idol?color=blue)
+![GitHub Workflow Status (branch)](https://github.com/hlefebvr/idol/actions/workflows/tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/hlefebvr/idol)
 ![Repo status](https://www.repostatus.org/badges/latest/wip.svg)
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
+[![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
 
 Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
 It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
