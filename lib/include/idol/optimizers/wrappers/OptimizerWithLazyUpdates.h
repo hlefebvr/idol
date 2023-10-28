@@ -61,8 +61,8 @@ class idol::OptimizerWithLazyUpdates : public Optimizer {
     bool m_is_objective_to_be_updated = true;
     bool m_is_rhs_to_be_updated = true;
 
-    void lazy_update_vars();
-    void lazy_update_ctrs();
+    void update_vars();
+    void update_ctrs();
 
     void lazy_update_objective_sense();
     void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant);
@@ -223,9 +223,9 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string
 template<class VarImplT, class CtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 
-    lazy_update_vars();
+    update_vars();
 
-    lazy_update_ctrs();
+    update_ctrs();
 
     if (is_objective_to_be_updated()) {
         hook_update_objective();
@@ -243,7 +243,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
 }
 
 template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
 
     for (const unsigned int index : m_variables_to_update) {
 
@@ -262,7 +262,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_vars() {
 }
 
 template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_ctrs() {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
 
     for (const unsigned int index : m_constraints_to_update) {
 
@@ -318,7 +318,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(cons
 template<class VarImplT, class CtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
     if (m_is_initialized) {
-        lazy_update_vars();
+        update_vars();
     }
     //const unsigned int index = m_constraints.size();
     const unsigned int index = parent().get_ctr_index(t_ctr);
@@ -329,7 +329,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
 template<class VarImplT, class CtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
     if (m_is_initialized) {
-        lazy_update_ctrs();
+        update_ctrs();
     }
     // const unsigned int index = m_variables.size();
     const unsigned int index = parent().get_var_index(t_var);
