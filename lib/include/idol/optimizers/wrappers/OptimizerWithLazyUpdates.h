@@ -320,7 +320,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
     if (m_is_initialized) {
         lazy_update_vars();
     }
-    const unsigned int index = m_constraints.size();
+    //const unsigned int index = m_constraints.size();
+    const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints.emplace_back(t_ctr, m_constraints_to_update.begin());
 }
@@ -330,7 +331,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
     if (m_is_initialized) {
         lazy_update_ctrs();
     }
-    const unsigned int index = m_variables.size();
+    // const unsigned int index = m_variables.size();
+    const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables.emplace_back(t_var, m_variables_to_update.begin());
 }
