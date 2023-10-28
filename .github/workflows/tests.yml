@@ -62,7 +62,7 @@ jobs:
         run: tar -xvf eigen*.tar.bz2 && rm eigen*.tar.bz2 && find . -depth -type d -name eigen-* -execdir mv {} ${{github.workspace}}/Eigen \;
 
       - name: Download Mosek
-        run: wget https://download.mosek.com/stable/10.0.40/mosektoolslinux64x86.tar.bz2
+        run: wget https://download.mosek.com/stable/10.1.16/mosektoolslinux64x86.tar.bz2
 
       - name: Install Mosek
         run: tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
