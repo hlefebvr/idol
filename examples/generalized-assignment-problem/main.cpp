@@ -15,12 +15,13 @@
 #include "idol/optimizers/callbacks/LocalBranching.h"
 #include "idol/optimizers/callbacks/SimpleRounding.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/wrappers/Mosek/Mosek.h"
 
 int main(int t_argc, const char** t_argv) {
 
     using namespace idol;
 
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/instances/generalized-assignment-problem/GAP_instance2.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -56,12 +57,12 @@ int main(int t_argc, const char** t_argv) {
     model.use(BranchAndBound()
                   .with_node_optimizer(
                           DantzigWolfeDecomposition(decomposition)
-                                  .with_master_optimizer(GLPK::ContinuousRelaxation())
-                                  .with_pricing_optimizer(GLPK())
+                                  .with_master_optimizer(Mosek::ContinuousRelaxation())
+                                  .with_pricing_optimizer(Mosek())
                                   .with_log_level(Info, Yellow)
-                                  .with_farkas_pricing(false)
+                                  .with_farkas_pricing(true)
                                   .with_artificial_variables_cost(1e+4)
-                                  .with_branching_on_master(true)
+                                  .with_branching_on_master(false)
                                   .with_dual_price_smoothing_stabilization(.3)
                                   .with_column_pool_clean_up(1e+8, .75)
                   )
@@ -70,6 +71,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
                 .with_log_frequency(1)
+                .with_callback(Heuristics::IntegerMaster().with_optimizer(Mosek()))
                 /*
                 .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
                       .with_callback(

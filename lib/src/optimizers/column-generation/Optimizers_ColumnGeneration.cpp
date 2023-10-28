@@ -79,7 +79,7 @@ void idol::Optimizers::ColumnGeneration::add_artificial_variables() {
         Column column(m_artificial_variables_cost);
         column.linear().set(t_ctr, t_sign);
 
-        Var artifical_var(env, 0., Inf, Continuous, std::move(column), "_artificial_" + std::to_string(m_artificial_variables.size()));
+        Var artifical_var(env, 0., Inf, Continuous, std::move(column));
         m_master->add(artifical_var);
 
         m_artificial_variables.emplace_back(artifical_var);
