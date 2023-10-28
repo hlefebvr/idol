@@ -137,13 +137,38 @@ need to set the CMake option ``BUILD_EXAMPLE`` to ``YES``.
 
     .. code-block::
 
-        make ex_knapsack_problem
+        make example_knapsack
 
     and run it.
 
     .. code-block::
 
-        ./examples/knapsack-problem/ex_knapsack_problem
+        cd examples && ./example_knapsack
+
+
+Linking with martinus/robin-hood-hashing
+----------------------------------------
+
+Internally, idol uses unordered map. Unfortunately, the default :code:`std` implementation is not the best choice when
+it comes to performance. To avoid this, if found relevant, users can link idol with the hash map implementation of
+`martinus/robin-hood-hashing <https://github.com/martinus/robin-hood-hashing>`_. It's actually a header-only library, so
+all you have to do is to tell us where the :code:`robin_hood.hpp` file is. This is done thourgh the CMake option
+:code:`ROBINHOOD_DIR=/path/to/robin_hood/folder` together with :code:`USE_ROBINHOOD=YES`.
+
+Note that, if :code:`ROBINHOOD_DIR` is not specified, :code:`robin_hood.hpp` is searched for in :code:`/usr/include`,
+:code:`/usr/include/robin_hood/`, :code:`/usr/local/include/`, :code:`/usr/local/include/robin_hood/` and in the path
+stored in the environment variable :code:`ROBINHOOD_HOME`.
+
+
+.. admonition:: Example
+
+    The following will create an :bash:`install` target which will install idol with martinus's robin_hood hash map
+    implementation.
+
+    .. code-block::
+
+        cmake -DUSE_ROBINhOOD=YES -DROBINHOOD_DIR=/path/to/robin_hood/folder ..
+
 
 Building unit and integration tests
 -----------------------------------
