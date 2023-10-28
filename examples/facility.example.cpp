@@ -5,25 +5,18 @@
 #include "idol/modeling.h"
 #include "idol/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
+#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+
+using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
-
-    using namespace idol;
 
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("instance.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("facility.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -55,12 +48,10 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                    .with_branching_rule(
-                            PseudoCost()
-                    )
-                .with_node_selection_rule(BestEstimate())
-                .with_log_level(Trace, Blue)
+                    .with_node_optimizer(HiGHS::ContinuousRelaxation())
+                    .with_branching_rule(PseudoCost())
+                    .with_node_selection_rule(BestEstimate())
+                    .with_log_level(Trace, Blue)
     );
 
     model.optimize();

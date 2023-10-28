@@ -1,3 +1,9 @@
-add_subdirectory(generalized-assignment-problem)
-add_subdirectory(knapsack-problem)
-add_subdirectory(facility-location-problem)
+function(ADD_EXAMPLE NAME)
+    add_executable(example_${NAME} ${NAME}.example.cpp)
+    target_link_libraries(example_${NAME} PRIVATE idol)
+    add_custom_command(TARGET example_${NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/${NAME}.data.txt $<TARGET_FILE_DIR:example_${NAME}>)
+endfunction()
+
+add_example(knapsack)
+add_example(facility)
+add_example(assignment)

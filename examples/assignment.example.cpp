@@ -4,24 +4,19 @@
 #include <iostream>
 #include "idol/modeling.h"
 #include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
-#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
-#include "idol/optimizers/column-generation/ColumnGeneration.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/column-generation/IntegerMaster.h"
-#include "idol/optimizers/callbacks/RENS.h"
-#include "idol/optimizers/callbacks/LocalBranching.h"
 #include "idol/optimizers/callbacks/SimpleRounding.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+
+using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    using namespace idol;
-
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("assignment.data.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -57,8 +52,8 @@ int main(int t_argc, const char** t_argv) {
     model.use(BranchAndBound()
                   .with_node_optimizer(
                           DantzigWolfeDecomposition(decomposition)
-                                  .with_master_optimizer(Mosek::ContinuousRelaxation())
-                                  .with_pricing_optimizer(Mosek())
+                                  .with_master_optimizer(HiGHS::ContinuousRelaxation())
+                                  .with_pricing_optimizer(HiGHS())
                                   .with_log_level(Info, Yellow)
                                   .with_farkas_pricing(true)
                                   .with_artificial_variables_cost(1e+4)
@@ -71,21 +66,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_node_selection_rule(WorstBound())
                 .with_log_level(Info, Blue)
                 .with_log_frequency(1)
-                .with_callback(Heuristics::IntegerMaster().with_optimizer(Mosek()))
-                /*
-                .with_callback(Heuristics::IntegerMaster().with_optimizer(GLPK()))
-                      .with_callback(
-                              Heuristics::LocalBranching()
-                                      .with_optimizer(
-                                              BranchAndBound()
-                                                      .with_node_optimizer(GLPK::ContinuousRelaxation())
-                                                      .with_branching_rule(MostInfeasible())
-                                                      .with_node_selection_rule(WorstBound())
-                                                      .with_callback(Heuristics::SimpleRounding())
-                                                      .with_log_level(Info, Green)
-                                      )
-                      )
-                      */
+                .with_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS()))
             );
 
     // Solve
