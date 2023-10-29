@@ -311,6 +311,9 @@ void idol::Optimizers::HiGHS::analyze_status() {
 void idol::Optimizers::HiGHS::run_without_presolve() {
     std::string old_presolve_setting;
     m_model.getOptionValue("presolve", old_presolve_setting);
+    if (old_presolve_setting == "off") {
+        return;
+    }
     m_model.setOptionValue("presolve", "off");
     m_model.run();
     m_model.setOptionValue("presolve", old_presolve_setting);
