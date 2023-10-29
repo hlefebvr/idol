@@ -776,8 +776,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
             Var alpha(env,
                       0.,
                       Inf,
-                      Continuous,
-                      "_alpha_" + std::to_string(m_index) + "_" + std::to_string(m_pool.size()));
+                      Continuous);
 
             auto &master = *m_parent.m_master;
 
