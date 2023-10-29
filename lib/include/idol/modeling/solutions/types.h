@@ -82,21 +82,21 @@ namespace idol {
 
         switch (t_status) {
             case Loaded:
-                return t_os << std::setw(10) << "Loaded";
+                return t_os << "Loaded";
             case Optimal:
-                return t_os << std::setw(10) << "Optimal";
+                return t_os << "Optimal";
             case Feasible:
-                return t_os << std::setw(10) << "Feasible";
+                return t_os << "Feasible";
             case Infeasible:
-                return t_os << std::setw(10) << "Infeasible";
+                return t_os << "Infeasible";
             case InfOrUnbnd:
-                return t_os << std::setw(10) << "InfOrUnbnd";
+                return t_os << "InfOrUnbnd";
             case Unbounded:
-                return t_os << std::setw(10) << "Unbounded";
+                return t_os << "Unbounded";
             case Fail:
-                return t_os << std::setw(10) << "Fail";
+                return t_os << "Fail";
             case SubOptimal:
-                return t_os << std::setw(10) << "SubOptimal";
+                return t_os << "SubOptimal";
             default:;
         }
 
@@ -107,17 +107,17 @@ namespace idol {
 
         switch (t_status) {
             case Proved:
-                return t_os << std::setw(9) << "Proved";
+                return t_os << "Proved";
             case NotSpecified:
-                return t_os << std::setw(9) << "-";
+                return t_os << "-";
             case TimeLimit:
-                return t_os << std::setw(9) << "TimeLimit";
+                return t_os << "TimeLimit";
             case IterLimit:
-                return t_os << std::setw(9) << "IterLimit";
+                return t_os << "IterLimit";
             case ObjLimit:
-                return t_os << std::setw(9) << "ObjLimit";
+                return t_os << "ObjLimit";
             case Numerical:
-                return t_os << std::setw(9) << "Numerical";
+                return t_os << "Numerical";
             default:;
         }
 
