@@ -428,9 +428,11 @@ double idol::Optimizers::HiGHS::get_best_bound() const {
 }
 
 double idol::Optimizers::HiGHS::get_var_primal(const Var &t_var) const {
+    /*
     if (!m_model.getSolution().value_valid) {
         throw Exception("Cannot access primal values");
     }
+     */
     return m_model.getSolution().col_value[lazy(t_var).impl()];
 }
 

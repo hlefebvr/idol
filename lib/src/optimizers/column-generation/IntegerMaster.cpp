@@ -131,10 +131,8 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     integer_master->use(*m_optimizer_factory);
 
     integer_master->optimizer().set_param_time_limit(std::min(m_time_limit, relaxation.optimizer().get_remaining_time()));
-
+    // TODO set bound stop
     integer_master->optimizer().set_param_iteration_limit(m_iteration_limit);
-
-    integer_master->optimize();
 
     const int status = integer_master->get_status();
 
