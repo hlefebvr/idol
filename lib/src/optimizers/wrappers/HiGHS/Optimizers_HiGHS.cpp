@@ -209,10 +209,10 @@ void idol::Optimizers::HiGHS::hook_remove(const Ctr &t_ctr) {
 
 void idol::Optimizers::HiGHS::hook_optimize() {
 
-    delete m_extreme_ray;
+    delete[] m_extreme_ray;
     m_extreme_ray = nullptr;
 
-    delete m_farkas_certificate;
+    delete[] m_farkas_certificate;
     m_farkas_certificate = nullptr;
 
     m_model.run();
