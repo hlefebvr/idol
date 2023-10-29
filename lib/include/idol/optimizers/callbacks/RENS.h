@@ -16,7 +16,7 @@ namespace idol::Heuristics {
 class idol::Heuristics::RENS : public CallbackFactory {
 
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
-    double m_minimum_ratio_of_integer_variables_to_fix = .5;
+    double m_minimum_ratio_of_integer_variables_to_fix = .75;
     double m_minimum_ratio_of_variables_to_fix = .25;
 
     RENS(const RENS& t_src);
