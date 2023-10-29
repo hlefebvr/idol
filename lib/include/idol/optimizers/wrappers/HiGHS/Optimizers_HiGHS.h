@@ -58,6 +58,8 @@ protected:
 
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
 
+    void set_var_type(int t_index, int t_type);
+
     void set_ctr_attr(int t_index, int t_type, double t_rhs);
 
     [[nodiscard]] SolutionStatus get_status() const override;

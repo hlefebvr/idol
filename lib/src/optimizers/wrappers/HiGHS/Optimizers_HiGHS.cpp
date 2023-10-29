@@ -37,6 +37,18 @@ void idol::Optimizers::HiGHS::hook_write(const std::string &t_name) {
     m_model.writeModel(t_name);
 }
 
+void idol::Optimizers::HiGHS::set_var_type(int t_index, int t_type) {
+
+    if (m_continuous_relaxation || t_type == Continuous) {
+        m_model.changeColIntegrality(t_index, HighsVarType::kContinuous);
+    } else if (t_type == Integer || t_type == Binary) {
+        m_model.changeColIntegrality(t_index, HighsVarType::kInteger);
+    } else {
+        throw std::runtime_error("Unknown variable type.");
+    }
+
+}
+
 void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj) {
 
     const bool has_lb = !is_neg_inf(t_lb);
@@ -45,14 +57,7 @@ void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb,
     // Set obj
     m_model.changeColCost(t_index, t_obj);
 
-    // Set type
-    if (m_continuous_relaxation || t_type == Continuous) {
-        m_model.changeColIntegrality(t_index, HighsVarType::kContinuous);
-    } else if (t_type == Integer || t_type == Binary) {
-        m_model.changeColIntegrality(t_index, HighsVarType::kInteger);
-    } else {
-        throw std::runtime_error("Unknown variable type.");
-    }
+    set_var_type(t_index, t_type);
 
     // Set bounds
     if (has_lb && has_ub) {
@@ -70,22 +75,45 @@ void idol::Optimizers::HiGHS::set_var_attr(int t_index, int t_type, double t_lb,
 int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
     const int index = (int) m_model.getNumCol();
-    m_model.addCol(0., 0., 0., 0, nullptr, nullptr);
 
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    set_var_attr(index, type, lb, ub, as_numeric(column.obj()));
-
     if (t_add_column) {
 
-        for (const auto& [ctr, constant] : column.linear()) {
-            m_model.changeCoeff(lazy(ctr).impl(), index, as_numeric(constant));
+        const auto& column_linear = column.linear();
+
+        unsigned int n_coefficients = column_linear.size();
+        auto* ctr_indices = new int[n_coefficients];
+        auto* ctr_coefficients = new double[n_coefficients];
+
+        unsigned int i = 0;
+        for (const auto& [ctr, constant] : column_linear) {
+            int ctr_index = lazy(ctr).impl();
+            ctr_indices[i] = ctr_index;
+            ctr_coefficients[i] = as_numeric(constant);
+            ++i;
         }
 
+        m_model.addCol(as_numeric(column.obj()),
+                       lb,
+                       ub,
+                       (int) n_coefficients,
+                       ctr_indices,
+                       ctr_coefficients);
+
+    } else {
+        m_model.addCol(as_numeric(column.obj()),
+                       lb,
+                       ub,
+                       0,
+                       nullptr,
+                       nullptr);
     }
+
+    set_var_type(index, type);
 
     return index;
 }
@@ -111,16 +139,48 @@ void idol::Optimizers::HiGHS::set_ctr_attr(int t_index, int t_type, double t_rhs
 int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
 
     const int index = (int) m_model.getNumRow();
-    m_model.addRow(0., 0., 0, nullptr, nullptr);
 
     const auto& row = parent().get_ctr_row(t_ctr);
+    const auto& row_linear = row.linear();
     const double rhs = as_numeric(row.rhs());
     const auto type = parent().get_ctr_type(t_ctr);
 
-    set_ctr_attr(index, type, rhs);
+    unsigned int n_coefficients = row_linear.size();
+    auto* var_indices = new int[n_coefficients];
+    auto* var_coefficients = new double[n_coefficients];
 
-    for (const auto& [var, coeff] : row.linear()) {
-        m_model.changeCoeff(index, lazy(var).impl(), as_numeric(coeff));
+    unsigned int i = 0;
+    for (const auto& [var, constant] : row.linear()) {
+        int ctr_index = lazy(var).impl();
+        var_indices[i] = ctr_index;
+        var_coefficients[i] = as_numeric(constant);
+        ++i;
+    }
+
+    switch (type) {
+        case LessOrEqual:
+            m_model.addRow(-m_model.getInfinity(),
+                           rhs,
+                           (int) n_coefficients,
+                           var_indices,
+                           var_coefficients);
+            break;
+        case GreaterOrEqual:
+            m_model.addRow(rhs,
+                           m_model.getInfinity(),
+                           (int) n_coefficients,
+                           var_indices,
+                           var_coefficients);
+            break;
+        case Equal:
+            m_model.addRow(rhs,
+                           rhs,
+                           (int) n_coefficients,
+                           var_indices,
+                           var_coefficients);
+            break;
+        default:
+            throw std::runtime_error("Unknown constraint type.");
     }
 
     return index;
