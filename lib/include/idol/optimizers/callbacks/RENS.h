@@ -27,6 +27,8 @@ public:
         double m_minimum_ratio_of_integer_variables_to_fix;
         double m_minimum_ratio_of_variables_to_fix;
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+        unsigned int m_n_relevant_calls = 0;
+        unsigned int m_frequency = 10;
     protected:
         void operator()(CallbackEvent t_event) override;
     public:

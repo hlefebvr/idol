@@ -70,6 +70,12 @@ void idol::Heuristics::RENS::Strategy::operator()(idol::CallbackEvent t_event) {
         return;
     }
 
+    ++m_n_relevant_calls;
+
+    if (m_n_relevant_calls % m_frequency != 0) {
+        return;
+    }
+
     model->use(*m_optimizer_factory);
 
     model->optimize();
