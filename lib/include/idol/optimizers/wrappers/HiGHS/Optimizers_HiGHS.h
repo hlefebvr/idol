@@ -80,6 +80,8 @@ protected:
 public:
     explicit HiGHS(const Model& t_model, bool t_continuous_relaxation);
 
+    ~HiGHS();
+
     [[nodiscard]] std::string name() const override { return "glpk"; }
 
     void set_param_time_limit(double t_time_limit) override;

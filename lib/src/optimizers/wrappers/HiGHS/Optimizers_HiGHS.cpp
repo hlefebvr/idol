@@ -76,10 +76,13 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
     const int index = (int) m_model.getNumCol();
 
-    const double lb = parent().get_var_lb(t_var);
-    const double ub = parent().get_var_ub(t_var);
+    double lb = parent().get_var_lb(t_var);
+    double ub = parent().get_var_ub(t_var);
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
+
+    lb = is_neg_inf(lb) ? -m_model.getInfinity() : lb;
+    ub = is_pos_inf(ub) ? m_model.getInfinity() : ub;
 
     if (t_add_column) {
 
@@ -301,7 +304,7 @@ void idol::Optimizers::HiGHS::hook_optimize() {
 
     }
 
-    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible) {
+    if (get_param_infeasible_or_unbounded_info() && m_solution_status == Infeasible && get_remaining_time() > 0) {
 
         bool has_dual_ray;
         m_farkas_certificate = new double[m_model.getNumRow()];
@@ -311,7 +314,7 @@ void idol::Optimizers::HiGHS::hook_optimize() {
             run_without_presolve();
             m_model.getDualRay(has_dual_ray, m_farkas_certificate);
             if (!has_dual_ray) {
-                throw Exception("Cannot save dual ray.");
+                throw Exception("Cannot save Farkas certificate.");
             }
         }
 
@@ -395,7 +398,7 @@ void idol::Optimizers::HiGHS::set_param_best_bound_stop(double t_best_bound_stop
 }
 
 void idol::Optimizers::HiGHS::set_param_presolve(bool t_value) {
-    m_model.setOptionValue("presolve", t_value);
+    m_model.setOptionValue("presolve", t_value ? "on" : "off");
     Optimizer::set_param_presolve(t_value);
 }
 
@@ -425,6 +428,9 @@ double idol::Optimizers::HiGHS::get_best_bound() const {
 }
 
 double idol::Optimizers::HiGHS::get_var_primal(const Var &t_var) const {
+    if (!m_model.getSolution().value_valid) {
+        throw Exception("Cannot access primal values");
+    }
     return m_model.getSolution().col_value[lazy(t_var).impl()];
 }
 
@@ -482,6 +488,11 @@ void idol::Optimizers::HiGHS::set_param_log_level(idol::LogLevel t_log_level) {
     }
 
     Optimizer::set_param_log_level(t_log_level);
+}
+
+idol::Optimizers::HiGHS::~HiGHS() {
+    delete[] m_farkas_certificate;
+    delete[] m_extreme_ray;
 }
 
 #endif
