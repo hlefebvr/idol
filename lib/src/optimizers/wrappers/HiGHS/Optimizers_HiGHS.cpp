@@ -317,7 +317,7 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
 }
 
 void idol::Optimizers::HiGHS::set_param_time_limit(double t_time_limit) {
-    m_model.setOptionValue("time_limit", t_time_limit);
+    m_model.setOptionValue("time_limit", m_model.getRunTime() + t_time_limit);
     Optimizer::set_param_time_limit(t_time_limit);
 }
 
