@@ -628,8 +628,8 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::log_node(LogLevel t_msg_lev
               << "<TimT=" << std::setw(7) << time().count() << "> "
               << "<TimI=" << std::setw(7) << m_relaxation.get()->optimizer().time().count() << "> "
               << "<Levl=" << std::setw(3) << t_node.level() << "> "
-              << "<Stat=" << t_node.info().status() << "> "
-              << "<Reas=" << t_node.info().reason() << "> "
+              << "<Stat=" << std::setw(10) << t_node.info().status() << "> "
+              << "<Reas=" << std::setw(9) << t_node.info().reason() << "> "
               << "<ObjVal=" << std::setw(9) << objective_value << "> "
               << "<BestBnd="   << std::setw(9) << get_best_bound() << "> "
               << "<BestObj="   << std::setw(9) << get_best_obj() << "> "
@@ -715,9 +715,7 @@ std::vector<idol::Node<NodeVarInfoT>> idol::Optimizers::BranchAndBound<NodeVarIn
 
 template<class NodeVarInfoT>
 bool idol::Optimizers::BranchAndBound<NodeVarInfoT>::gap_is_closed() const {
-    return is_terminated()
-           || get_remaining_time() == 0
-           || get_relative_gap() <= get_tol_mip_relative_gap()
+    return get_relative_gap() <= get_tol_mip_relative_gap()
            || get_absolute_gap() <= get_tol_mip_absolute_gap();
 }
 
