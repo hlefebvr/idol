@@ -11,6 +11,7 @@
 #include "idol/optimizers/callbacks/SimpleRounding.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/wrappers/MinKnap/MinKnap.h"
 
 using namespace idol;
 

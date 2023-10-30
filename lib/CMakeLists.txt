@@ -175,6 +175,10 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/branching-rules/factories/Diver.h
         include/idol/optimizers/branch-and-bound/watchers/ExportBranchAndBoundTreeToCSV.h
         src/optimizers/branch-and-bound/watchers/BranchAndBoundTree.cpp
+        include/idol/optimizers/wrappers/MinKnap/MinKnap.h
+        include/idol/optimizers/wrappers/MinKnap/Optimizers_MinKnap.h
+        src/optimizers/wrappers/MinKnap/MinKnap.cpp
+        src/optimizers/wrappers/MinKnap/Optimizers_MinKnap.cpp
 )
 
 find_package(OpenMP REQUIRED)
@@ -230,6 +234,14 @@ if (${USE_HIGHS})
     target_link_libraries(idol PUBLIC highs::highs)
     target_compile_definitions(idol PUBLIC IDOL_USE_HIGHS)
     list(APPEND AVAILABLE_MILP_SOLVERS "HiGHS")
+
+endif()
+
+if (${USE_MINKNAP})
+
+    find_package(minknap REQUIRED)
+    target_link_libraries(idol PUBLIC minknap)
+    target_compile_definitions(idol PUBLIC IDOL_USE_MINKNAP)
 
 endif()
 
