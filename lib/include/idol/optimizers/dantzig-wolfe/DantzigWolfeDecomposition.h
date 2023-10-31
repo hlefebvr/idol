@@ -11,6 +11,7 @@
 #include "idol/containers/Map.h"
 #include "DantzigWolfeFormulation.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
+#include "idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"
 
 namespace idol::DantzigWolfe {
     class Decomposition;
@@ -20,6 +21,7 @@ class idol::DantzigWolfe::Decomposition : public OptimizerFactoryWithDefaultPara
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<InfeasibilityStrategyFactory> m_infeasibility_strategy;
+    std::unique_ptr<DualPriceSmoothingStabilization> m_dual_price_smoothing_stabilization;
     std::optional<unsigned int> m_max_parallel_sub_problems;
     std::optional<bool> m_use_hard_branching;
     std::optional<SubProblem> m_default_sub_problem_spec;
@@ -46,6 +48,8 @@ public:
     Decomposition& with_hard_branching(bool t_value);
 
     Decomposition& with_max_parallel_sub_problems(unsigned int t_n_sub_problems);
+
+    Decomposition& with_dual_price_smoothing_stabilization(const DualPriceSmoothingStabilization& t_stabilization);
 
     const SubProblem& get_sub_problem_spec(unsigned int t_id) const;
 };

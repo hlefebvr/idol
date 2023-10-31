@@ -6,6 +6,7 @@
 idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_model,
                                                                        idol::DantzigWolfe::Formulation &&t_formulation,
                                                                        const OptimizerFactory& t_master_optimizer_factory,
+                                                                       const DantzigWolfe::DualPriceSmoothingStabilization& t_stabilization,
                                                                        unsigned int t_max_parallel_pricing,
                                                                        bool t_use_hard_branching,
                                                                        std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
@@ -16,6 +17,7 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
       m_max_parallel_pricing(t_max_parallel_pricing),
       m_use_hard_branching(t_use_hard_branching),
       m_sub_problem_specifications(std::move(t_sub_problem_specifications)),
+      m_stabilization(t_stabilization()),
       m_strategy(t_strategy())
 {
 

@@ -193,6 +193,10 @@ add_library(idol STATIC
         include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
         src/optimizers/column-generation/infeasibility-strategies/FarkasPricing.cpp
         src/optimizers/column-generation/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
+        include/idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
+        include/idol/optimizers/dantzig-wolfe/stabilization/Neame.h
+        include/idol/optimizers/dantzig-wolfe/stabilization/Wentges.h
+        include/idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
 )
 
 find_package(OpenMP REQUIRED)

@@ -14,7 +14,6 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     SolutionReason m_reason = NotSpecified;
     std::optional<Solution::Primal> m_master_primal_solution;
     std::optional<Solution::Dual> m_last_master_solution;
-    std::optional<Solution::Dual> m_stability_center;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;

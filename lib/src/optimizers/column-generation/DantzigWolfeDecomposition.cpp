@@ -7,6 +7,7 @@
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h"
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
 
 idol::OptimizerFactory *idol::DantzigWolfe::Decomposition::clone() const {
     return new Decomposition(*this);
@@ -19,6 +20,7 @@ idol::DantzigWolfe::Decomposition::Decomposition(const Decomposition& t_src)
     : OptimizerFactoryWithDefaultParameters<Decomposition>(t_src),
       m_decomposition(t_src.m_decomposition),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
+      m_dual_price_smoothing_stabilization(t_src.m_dual_price_smoothing_stabilization ? t_src.m_dual_price_smoothing_stabilization->clone() : nullptr),
       m_max_parallel_sub_problems(t_src.m_max_parallel_sub_problems),
       m_use_hard_branching(t_src.m_use_hard_branching),
       m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
@@ -43,9 +45,15 @@ idol::Optimizer *idol::DantzigWolfe::Decomposition::operator()(const Model &t_mo
         default_strategy = std::make_unique<FarkasPricing>();
     }
 
+    std::unique_ptr<DualPriceSmoothingStabilization> dual_price_smoothing;
+    if (!m_dual_price_smoothing_stabilization) {
+        dual_price_smoothing = std::make_unique<NoStabilization>();
+    }
+
     return new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
+                                                     m_dual_price_smoothing_stabilization ? *m_dual_price_smoothing_stabilization : *dual_price_smoothing,
                                                      m_max_parallel_sub_problems.has_value() ? m_max_parallel_sub_problems.value() : 1,
                                                      m_use_hard_branching.has_value() && m_use_hard_branching.value(),
                                                      std::move(sub_problems_specifications),
@@ -177,6 +185,18 @@ idol::DantzigWolfe::Decomposition::with_max_parallel_sub_problems(unsigned int t
     }
 
     m_max_parallel_sub_problems = t_n_sub_problems;
+
+    return *this;
+}
+
+idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_dual_price_smoothing_stabilization(
+        const idol::DantzigWolfe::DualPriceSmoothingStabilization &t_stabilization) {
+
+    if (m_dual_price_smoothing_stabilization) {
+        throw Exception("A dual price smoothing stabilization has already been configured.");
+    }
+
+    m_dual_price_smoothing_stabilization.reset(t_stabilization.clone());
 
     return *this;
 }

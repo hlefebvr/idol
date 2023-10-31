@@ -16,7 +16,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_status = Loaded;
     m_reason = NotSpecified;
     m_last_master_solution.reset();
-    m_stability_center.reset();
     m_iteration_count = 0;
     m_n_generated_columns = 0;
     m_solve_dual_master = true;
@@ -25,6 +24,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_is_terminated = false;
     m_current_iteration_is_using_farkas = false;
     initialize_sub_problem_phases();
+    m_parent.m_stabilization->initialize();
 
     if (m_use_farkas_for_infeasibility) {
         m_parent.m_formulation.master().optimizer().set_param_infeasible_or_unbounded_info(true);
@@ -96,7 +96,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_problems() {
 
     auto& formulation = m_parent.m_formulation;
-    auto& dual_values = m_last_master_solution.value(); // TODO change this for the smoothened one
+    auto dual_values = m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
         formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
@@ -163,7 +163,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
     if (m_best_bound <= iter_lower_bound) {
 
-        m_stability_center = m_last_master_solution;
+        m_parent.m_stabilization->update_stability_center(m_last_master_solution.value());
         m_best_bound = iter_lower_bound;
 
         if (m_best_bound >= m_parent.get_param_best_bound_stop()) {

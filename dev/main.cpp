@@ -11,6 +11,8 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/optimizers/dantzig-wolfe/stabilization/Wentges.h"
 
 using namespace idol;
 
@@ -53,15 +55,16 @@ int main(int t_argc, char** t_argv) {
     model.use(BranchAndBound()
                       .with_node_optimizer(
                               DantzigWolfe::Decomposition(decomposition)
-                                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
+                                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
                                     .with_default_sub_problem_spec(
                                             DantzigWolfe::SubProblem()
-                                                          .add_optimizer(HiGHS())
+                                                          .add_optimizer(Gurobi())
                                                           .with_multiplicities(0, 1)
                                       )
                                     .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
                                     .with_hard_branching(false)
                                     .with_max_parallel_sub_problems(5)
+                                    .with_dual_price_smoothing_stabilization(DantzigWolfe::Wentges(.3))
                                     .with_log_level(Info, Yellow)
                       )
                       .with_subtree_depth(0)
