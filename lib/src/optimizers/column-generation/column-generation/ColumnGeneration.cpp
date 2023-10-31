@@ -96,7 +96,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_problems() {
 
     auto& formulation = m_parent.m_formulation;
-    auto dual_values = m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
+    auto dual_values = m_current_iteration_is_using_farkas ? m_last_master_solution.value() : m_parent.m_stabilization->compute_smoothed_dual_solution(m_last_master_solution.value());
 
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
         formulation.update_sub_problem_objective(i, dual_values, m_current_iteration_is_using_farkas);
@@ -124,6 +124,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
     auto& formulation = m_parent.m_formulation;
 
+    std::cout << "Master obj = " << formulation.master().get_best_obj() << std::endl;
+
     for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
 
         const auto& model = formulation.sub_problem(i);
@@ -133,6 +135,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
             const double upper_multiplicity = m_parent.m_sub_problem_specifications[i].upper_multiplicity();
             const double objective_value = model.get_best_obj();
             sum_reduced_costs += upper_multiplicity * std::min(0., objective_value);
+            std::cout << "SP " << i << " is optimal, obj = " << objective_value << "]] sum = " << sum_reduced_costs << std::endl;
             continue;
         }
 
@@ -151,7 +154,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         m_status = status;
         m_reason = model.get_reason();
         m_is_terminated = true;
-        break;
+        return;
 
     }
 
@@ -164,7 +167,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
     if (m_best_bound <= iter_lower_bound) {
 
         m_parent.m_stabilization->update_stability_center(m_last_master_solution.value());
-        m_best_bound = iter_lower_bound;
+        m_best_bound = std::min(m_best_obj, iter_lower_bound);
 
         if (m_best_bound >= m_parent.get_param_best_bound_stop()) {
             m_reason = ObjLimit;
@@ -176,6 +179,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 }
 
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stopping_criterion() {
+
+    std::cout << "LB: " << m_best_bound << ", UB: " << m_best_obj << ", Farkas: " << m_current_iteration_is_using_farkas << std::endl;
 
     if (m_is_terminated) {
         return true;

@@ -21,6 +21,8 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
       m_strategy(t_strategy())
 {
 
+    ::operator<<(std::cout, m_formulation.master()) << std::endl;
+
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {

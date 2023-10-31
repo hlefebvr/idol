@@ -75,7 +75,7 @@ int main(int t_argc, char** t_argv) {
                       .with_branching_rule(MostInfeasible())
                       .with_node_selection_rule(BestBound())
                       .add_callback(Heuristics::IntegerMaster().with_optimizer(Gurobi()))
-                      .with_log_level(Info, Blue)
+                      .with_log_level(Trace, Blue)
                       .with_log_frequency(1)
     );
 
