@@ -94,15 +94,14 @@ void idol::Optimizers::MinKnap::hook_optimize() {
 
         const auto& column = model.get_var_column(var);
         const double weight = as_numeric(column.linear().get(ctr));
+        const double profit = as_numeric(column.obj());
 
-        if (ub < 1 - Tolerance::Integer || weight < -Tolerance::Feasibility) {
+        if (ub < 1. - 2 * Tolerance::Integer) {
             lazy(var).impl() = 0.; // fixed to 0
             continue;
         }
 
-        const double profit = as_numeric(column.obj());
-
-        if (lb > Tolerance::Integer) {
+        if (lb > 2 * Tolerance::Integer) {
             lazy(var).impl() = 1.; // fixed to 1
             unscaled_capacity -= weight;
             fixed_profit += profit;
@@ -118,7 +117,7 @@ void idol::Optimizers::MinKnap::hook_optimize() {
     auto* profits = new int[n];
     auto* weights = new int[n];
     auto* values = new int[n];
-    auto scaling_factor = (double) Tolerance::Digits;
+    auto scaling_factor = (double) 1000;
     auto capacity = (int) (scaling_factor * unscaled_capacity);
 
     unsigned int i = 0;

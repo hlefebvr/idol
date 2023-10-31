@@ -58,7 +58,7 @@ int main(int t_argc, const char** t_argv) {
                                   .with_log_level(Info, Yellow)
                                   .with_farkas_pricing(true)
                                   .with_artificial_variables_cost(1e+4)
-                                  .with_branching_on_master(false)
+                                  .with_branching_on_master(true)
                                   .with_dual_price_smoothing_stabilization(.3)
                                   .with_column_pool_clean_up(1e+8, .75)
                   )
