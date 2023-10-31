@@ -251,11 +251,18 @@ const idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Ctr &t
     return sub_problem_id == MasterId ? m_master : m_sub_problems[sub_problem_id];
 }
 
-void
-idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_sub_problem_id,
-                                                            double t_lower_multiplicity,
-                                                            double t_upper_multiplicity) {
+void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_sub_problem_id,
+                                                                 double t_lower_multiplicity,
+                                                                 double t_upper_multiplicity) {
 
+    auto& env = m_master.env();
 
+    Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
+    m_master.add(lower);
+    m_generation_patterns[t_sub_problem_id].linear().set(lower, 1);
+
+    Ctr upper(env, LessOrEqual, t_upper_multiplicity);
+    m_master.add(upper);
+    m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
 
 }

@@ -31,7 +31,6 @@ void idol::DantzigWolfe::Relaxation::add_aggregation_constraints(Formulation &t_
     for (unsigned int i = 0, n = t_dantzig_wolfe_formulation.n_sub_problems() ; i < n ; ++i) {
         const auto& spec = get_sub_problem_spec(i);
         t_dantzig_wolfe_formulation.add_aggregation_constraint(i, spec.lower_multiplicity(), spec.upper_multiplicity());
-
     }
 
 }
