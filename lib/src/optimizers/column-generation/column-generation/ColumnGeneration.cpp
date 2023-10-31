@@ -235,12 +235,12 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             model.set_solution_index(k);
 
-            const auto generator = save_primal(model);
+            auto generator = save_primal(model);
 
             const double reduced_cost = formulation.compute_reduced_cost(i, m_last_master_solution.value(), generator);
 
             if (reduced_cost < -Tolerance::Optimality) {
-                formulation.generate_column(i, generator);
+                formulation.generate_column(i, std::move(generator));
                 at_least_one_column_have_been_generated = true;
             }
 

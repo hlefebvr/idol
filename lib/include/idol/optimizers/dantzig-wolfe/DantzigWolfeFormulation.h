@@ -6,23 +6,30 @@
 #define IDOL_DANTZIGWOLFEFORMULATION_H
 
 #include "idol/modeling/models/Model.h"
+#include "idol/containers/GeneratorPool.h"
 
 namespace idol::DantzigWolfe {
     class Formulation;
 }
 
 class idol::DantzigWolfe::Formulation {
+    using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
+
     Annotation<Ctr, unsigned int> m_decomposition_by_ctr;
     Annotation<Var, unsigned int> m_decomposition_by_var;
 
     Model m_master;
     std::vector<Model> m_sub_problems;
     std::vector<Column> m_generation_patterns;
+    std::vector<GeneratorPool<Var>> m_pools;
+    std::vector<PresentGeneratorsList> m_present_generators;
 
     unsigned int compute_n_sub_problems(const Model& t_original_formulation);
     void set_decomposition_by_var(const Model& t_original_formulation);
-    void init_sub_problems(unsigned int t_n_sub_problems);
-    void init_generation_patterns(unsigned int t_n_sub_problems);
+    void initialize_sub_problems(unsigned int t_n_sub_problems);
+    void initialize_generation_patterns(unsigned int t_n_sub_problems);
+    void initialize_pools(unsigned int t_n_sub_problems);
+    void initialize_present_generators(unsigned int t_n_sub_problems);
     void dispatch_variables(const Model& t_original_formulation);
     void dispatch_constraints(const Model& t_original_formulation);
     void dispatch_linking_constraint(const Ctr& t_original_ctr, const Row& t_row, CtrType t_type);
@@ -52,7 +59,7 @@ public:
 
     void update_sub_problem_objective(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, bool t_use_farkas = false);
 
-    void generate_column(unsigned int t_sub_problem_id, const Solution::Primal& t_generator);
+    void generate_column(unsigned int t_sub_problem_id, Solution::Primal t_generator);
 
     double compute_reduced_cost(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, const Solution::Primal& t_generator);
 

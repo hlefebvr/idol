@@ -18,8 +18,10 @@ idol::DantzigWolfe::Formulation::Formulation(const Model &t_original_formulation
 
     set_decomposition_by_var(t_original_formulation);
 
-    init_sub_problems(n_sub_problems);
-    init_generation_patterns(n_sub_problems);
+    initialize_sub_problems(n_sub_problems);
+    initialize_generation_patterns(n_sub_problems);
+    initialize_pools(n_sub_problems);
+    initialize_present_generators(n_sub_problems);
 
     dispatch_variables(t_original_formulation);
     dispatch_constraints(t_original_formulation);
@@ -83,7 +85,7 @@ void idol::DantzigWolfe::Formulation::set_decomposition_by_var(const Model& t_or
 
 }
 
-void idol::DantzigWolfe::Formulation::init_sub_problems(unsigned int t_n_sub_problems) {
+void idol::DantzigWolfe::Formulation::initialize_sub_problems(unsigned int t_n_sub_problems) {
 
     auto& env = m_master.env();
 
@@ -94,9 +96,21 @@ void idol::DantzigWolfe::Formulation::init_sub_problems(unsigned int t_n_sub_pro
 
 }
 
-void idol::DantzigWolfe::Formulation::init_generation_patterns(unsigned int t_n_sub_problems) {
+void idol::DantzigWolfe::Formulation::initialize_generation_patterns(unsigned int t_n_sub_problems) {
 
     m_generation_patterns = std::vector<Column>(t_n_sub_problems);
+
+}
+
+void idol::DantzigWolfe::Formulation::initialize_pools(unsigned int t_n_sub_problems) {
+
+    m_pools = std::vector<GeneratorPool<Var>>(t_n_sub_problems);
+
+}
+
+void idol::DantzigWolfe::Formulation::initialize_present_generators(unsigned int t_n_sub_problems) {
+
+    m_present_generators = std::vector<PresentGeneratorsList>(t_n_sub_problems);
 
 }
 
@@ -268,7 +282,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 }
 
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
-                                                      const idol::Solution::Primal &t_generator) {
+                                                      idol::Solution::Primal t_generator) {
 
     auto alpha = m_master.add_var(0.,
                                 Inf,
@@ -276,8 +290,11 @@ void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem
                                 m_generation_patterns[t_sub_problem_id].fix(t_generator)
                                 );
 
-    // TODO add generator to pool
-    // TODO add to present generator
+    auto& pool = m_pools[t_sub_problem_id];
+    auto& present_generators = m_present_generators[t_sub_problem_id];
+
+    pool.add(alpha, std::move(t_generator));
+    present_generators.emplace_back(alpha, pool.last_inserted());
 
 }
 
@@ -376,14 +393,12 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
     }
 
     double result = 0;
-    /*
-    for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
+    for (const auto& [alpha, generator] : m_present_generators[sub_problem_id]) {
         const double alpha_val = t_master_primal.get(alpha);
         if (alpha_val > Tolerance::Sparsity) {
             result += alpha_val * generator.get(t_var);
         }
     }
-     */
 
     return result;
 
