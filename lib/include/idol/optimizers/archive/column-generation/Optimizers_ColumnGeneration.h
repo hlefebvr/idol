@@ -10,18 +10,18 @@
 #include "idol/containers/GeneratorPool.h"
 
 namespace idol::Optimizers {
-    class ColumnGeneration;
-    class DantzigWolfeDecomposition;
+    class ArchivedColumnGeneration;
+    class ArchivedDantzigWolfeDecomposition;
 }
 
-class idol::Optimizers::ColumnGeneration : public Algorithm {
+class idol::Optimizers::ArchivedColumnGeneration : public Algorithm {
 public:
     class Subproblem;
 
-    ColumnGeneration(const Model& t_model,
-                     Model *t_master_problem,
-                     const std::vector<Model *> &t_subproblems,
-                     std::vector<Column> t_generation_patterns);
+    ArchivedColumnGeneration(const Model& t_model,
+                             Model *t_master_problem,
+                             const std::vector<Model *> &t_subproblems,
+                             std::vector<Column> t_generation_patterns);
 
     [[nodiscard]] std::string name() const override { return "column-generation"; }
 
@@ -143,14 +143,14 @@ protected:
     std::optional<std::pair<double, double>> m_non_optimal_pricing_phase;
 };
 
-class idol::Optimizers::ColumnGeneration::Subproblem {
-    friend class ::idol::Optimizers::ColumnGeneration;
-    friend class ::idol::Optimizers::DantzigWolfeDecomposition;
+class idol::Optimizers::ArchivedColumnGeneration::Subproblem {
+    friend class ::idol::Optimizers::ArchivedColumnGeneration;
+    friend class ::idol::Optimizers::ArchivedDantzigWolfeDecomposition;
 
     using PresentGeneratorsList = std::list<std::pair<Var, const Solution::Primal&>>;
 
     unsigned int m_index;
-    ColumnGeneration& m_parent;
+    ArchivedColumnGeneration& m_parent;
     std::unique_ptr<Model> m_model;
     Column m_generation_pattern;
     bool m_skip = false;
@@ -177,7 +177,7 @@ class idol::Optimizers::ColumnGeneration::Subproblem {
 
     void update_generation_pattern_objective(Constant&& t_objective);
 public:
-    Subproblem(ColumnGeneration& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
+    Subproblem(ArchivedColumnGeneration& t_parent, unsigned int t_index, Model* t_model, Column&& t_generation_pattern);
 
     [[nodiscard]] auto present_generators() const { return ConstIteratorForward(m_present_generators); }
 

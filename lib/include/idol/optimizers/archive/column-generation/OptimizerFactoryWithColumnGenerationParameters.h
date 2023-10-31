@@ -39,7 +39,7 @@ class idol::impl::OptimizerFactoryWithColumnGenerationParameters : public Optimi
     // Non-optimal pricing phase (time_limit, gap)
     std::optional<std::pair<double, double>> m_non_optimal_pricing_phase;
 protected:
-    void handle_column_generation_parameters(Optimizers::ColumnGeneration* t_optimizer) const;
+    void handle_column_generation_parameters(Optimizers::ArchivedColumnGeneration* t_optimizer) const;
 public:
     /**
      * Configures the maximum number of pricing problems which can be solved in parallel
@@ -134,7 +134,7 @@ idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::with_max_colum
 }
 
 template<class CRTP>
-void idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_generation_parameters(Optimizers::ColumnGeneration *t_optimizer) const {
+void idol::impl::OptimizerFactoryWithColumnGenerationParameters<CRTP>::handle_column_generation_parameters(Optimizers::ArchivedColumnGeneration *t_optimizer) const {
 
     if (m_parallel_pricing_limit.has_value()) {
         t_optimizer->set_parallel_pricing_limit(m_parallel_pricing_limit.value());

@@ -2,16 +2,16 @@
 // Created by henri on 24/03/23.
 //
 
-#ifndef IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
-#define IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
+#ifndef IDOL_OPTIMIZERS_ARCHIVEDDANTZIGWOLFEDECOMPOSITION_H
+#define IDOL_OPTIMIZERS_ARCHIVEDDANTZIGWOLFEDECOMPOSITION_H
 
-#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "idol/optimizers/archive/column-generation/Optimizers_ColumnGeneration.h"
 
 namespace idol::Optimizers {
-    class DantzigWolfeDecomposition;
+    class ArchivedDantzigWolfeDecomposition;
 }
 
-class idol::Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGeneration {
+class idol::Optimizers::ArchivedDantzigWolfeDecomposition : public Optimizers::ArchivedColumnGeneration {
     std::unique_ptr<OptimizerFactory> m_pricing_optimizer;
 
     Annotation<Ctr, unsigned int> m_ctr_annotation;
@@ -22,13 +22,13 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Optimizers::ColumnGen
     Map<Var, Ctr> m_lower_bound_constraints;
     Map<Var, Ctr> m_upper_bound_constraints;
 public:
-    DantzigWolfeDecomposition(const Model& t_original_formulation,
-                              const Annotation<Ctr, unsigned int>& t_constraint_flag,
-                              const Annotation<Var, unsigned int>& t_variable_flag,
-                              Model *t_master_problem,
-                              const std::vector<Model *> &t_subproblems,
-                              std::vector<Column> t_generation_patterns,
-                              const OptimizerFactory& t_pricing_optimizer);
+    ArchivedDantzigWolfeDecomposition(const Model& t_original_formulation,
+                                      const Annotation<Ctr, unsigned int>& t_constraint_flag,
+                                      const Annotation<Var, unsigned int>& t_variable_flag,
+                                      Model *t_master_problem,
+                                      const std::vector<Model *> &t_subproblems,
+                                      std::vector<Column> t_generation_patterns,
+                                      const OptimizerFactory& t_pricing_optimizer);
 
     [[nodiscard]] std::string name() const override { return "dantzig-wolfe"; }
 
@@ -59,4 +59,4 @@ protected:
     void add(const Ctr &t_ctr) override;
 };
 
-#endif //IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
+#endif //IDOL_OPTIMIZERS_ARCHIVEDDANTZIGWOLFEDECOMPOSITION_H

@@ -6,8 +6,8 @@
 #include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
+#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
 #include "idol/optimizers/callbacks/SimpleRounding.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
@@ -52,7 +52,7 @@ int main(int t_argc, const char** t_argv) {
     // Set optimizer
     model.use(BranchAndBound()
                   .with_node_optimizer(
-                          DantzigWolfeDecomposition(decomposition)
+                          ArchivedDantzigWolfeDecomposition(decomposition)
                                   .with_master_optimizer(HiGHS::ContinuousRelaxation())
                                   .with_pricing_optimizer(HiGHS())
                                   .with_log_level(Info, Yellow)

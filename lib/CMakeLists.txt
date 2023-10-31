@@ -107,21 +107,21 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/Gurobi/Gurobi.h
         include/idol/optimizers/wrappers/GLPK/GLPK.h
         include/idol/optimizers/wrappers/Mosek/Mosek.h
-        include/idol/optimizers/column-generation/ColumnGeneration.h
-        include/idol/optimizers/column-generation/Optimizers_ColumnGeneration.h
-        src/optimizers/column-generation/ColumnGeneration.cpp
-        src/optimizers/column-generation/Optimizers_ColumnGeneration.cpp
-        include/idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h
-        src/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
-        src/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
+        include/idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h
+        include/idol/optimizers/archive/column-generation/Optimizers_ColumnGeneration.h
+        src/optimizers/archive/column-generation/ColumnGeneration.cpp
+        src/optimizers/archive/column-generation/Optimizers_ColumnGeneration.cpp
+        include/idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h
+        src/optimizers/archive/dantzig-wolfe/DantzigWolfeDecomposition.cpp
+        include/idol/optimizers/archive/dantzig-wolfe/Optimizers_ArchivedDantzigWolfeDecomposition.h
+        src/optimizers/archive/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
         src/optimizers/wrappers/gurobi/Gurobi.cpp
         src/optimizers/wrappers/GLPK/GLPK.cpp
         src/optimizers/wrappers/Mosek/Mosek.cpp
-        include/idol/optimizers/column-generation/OptimizerFactoryWithColumnGenerationParameters.h
+        include/idol/optimizers/archive/column-generation/OptimizerFactoryWithColumnGenerationParameters.h
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
-        include/idol/optimizers/column-generation/IntegerMaster.h
-        src/optimizers/column-generation/IntegerMaster.cpp
+        include/idol/optimizers/archive/column-generation/IntegerMaster.h
+        src/optimizers/archive/column-generation/IntegerMaster.cpp
         src/optimizers/wrappers/gurobi/GurobiCallbackI.cpp
         include/idol/optimizers/callbacks/Callback.h
         src/optimizers/callbacks/Callback.cpp
@@ -179,6 +179,12 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/MinKnap/Optimizers_MinKnap.h
         src/optimizers/wrappers/MinKnap/MinKnap.cpp
         src/optimizers/wrappers/MinKnap/Optimizers_MinKnap.cpp
+        include/idol/optimizers/column-generation/DantzigWolfeRelaxation.h
+        src/optimizers/column-generation/DantzigWolfeRelaxation.cpp
+        include/idol/optimizers/column-generation/DantzigWolfeSubProblem.h
+        src/optimizers/column-generation/DantzigWolfeSubProblem.cpp
+        include/idol/optimizers/column-generation/DantzigWolfeFormulation.h
+        src/optimizers/column-generation/DantzigWolfeFormulation.cpp
 )
 
 find_package(OpenMP REQUIRED)

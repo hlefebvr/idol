@@ -1,8 +1,8 @@
 //
 // Created by henri on 30/03/23.
 //
-#include "idol/optimizers/column-generation/IntegerMaster.h"
-#include "idol/optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
+#include "idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h"
 
 idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
@@ -106,7 +106,7 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     }
 
     const auto& relaxation = this->relaxation();
-    const auto& column_generation_optimizer = relaxation.optimizer().as<Optimizers::ColumnGeneration>();
+    const auto& column_generation_optimizer = relaxation.optimizer().as<Optimizers::ArchivedColumnGeneration>();
     const auto& original_model = this->original_model();
 
     std::unique_ptr<Model> integer_master(column_generation_optimizer.master().clone());

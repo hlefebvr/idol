@@ -4,34 +4,71 @@
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/column-generation/DantzigWolfeRelaxation.h"
 
 using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
-    using Solver = Gurobi;
 
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/examples/assignment.data.txt");
+
+    const unsigned int n_agents = instance.n_agents();
+    const unsigned int n_jobs = instance.n_jobs();
+
+    // Create optimization environment
     Env env;
 
+    // Create model
     Model model(env);
 
-    model.use(Solver());
+    // Create decomposition annotation
+    Annotation<Ctr> decomposition(env, "decomposition", MasterId);
 
-    auto x = model.add_vars(Dim<1>(2), 0, 1, Binary, "x");
+    // Create assignment variables (x_ij binaries)
+    auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
 
-    model.remove(x[0]);
+    // Create knapsack constraints (i.e., capacity constraints)
+    for (unsigned int i = 0 ; i < n_agents ; ++i) {
+        auto capacity = model.add_ctr(idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
 
-    model.write("model.lp");
+        capacity.set(decomposition, i); // Assign constraint to i-th subproblem
+    }
 
-    std::unique_ptr<Model> copy(model.clone());
+    // Create assignment constraints
+    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
+        model.add_ctr(idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
+    }
 
-    copy->use(Solver());
+    // Set the objective function
+    model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    copy->write("copy.lp");
+    // Set optimizer
+    model.use(BranchAndBound()
+                      .with_node_optimizer(
+                              DantzigWolfe::Relaxation(decomposition)
+                                    .with_master_optimizer(HiGHS())
+                                    .with_default_sub_problem_spec(
+                                            DantzigWolfe::SubProblem()
+                                                          .with_exact_optimizer(HiGHS())
+                                                          .with_multiplicities(0, 1)
+                                      )
+                                    .with_log_level(Info, Yellow)
+                      )
+                      .with_subtree_depth(0)
+                      .with_branching_rule(MostInfeasible())
+                      .with_node_selection_rule(WorstBound())
+                      .with_log_level(Info, Blue)
+                      .with_log_frequency(1)
+    );
+
+    // Solve
+    model.optimize();
 
     return 0;
 }

@@ -1,14 +1,14 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "idol/optimizers/column-generation/Optimizers_ColumnGeneration.h"
+#include "idol/optimizers/archive/column-generation/Optimizers_ColumnGeneration.h"
 #include "idol/optimizers/Logger.h"
 #include "idol/modeling//expressions/operations/operators.h"
 
-idol::Optimizers::ColumnGeneration::ColumnGeneration(const Model& t_model,
-                                               Model *t_master_problem,
-                                               const std::vector<Model *> &t_subproblems,
-                                               std::vector<Column> t_generation_patterns)
+idol::Optimizers::ArchivedColumnGeneration::ArchivedColumnGeneration(const Model& t_model,
+                                                                     Model *t_master_problem,
+                                                                     const std::vector<Model *> &t_subproblems,
+                                                                     std::vector<Column> t_generation_patterns)
      : Algorithm(t_model),
        m_master(t_master_problem) {
 
@@ -23,31 +23,31 @@ idol::Optimizers::ColumnGeneration::ColumnGeneration(const Model& t_model,
 
 }
 
-void idol::Optimizers::ColumnGeneration::add(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::add(const Var &t_var) {
     m_master->add(t_var);
 }
 
-void idol::Optimizers::ColumnGeneration::add(const Ctr &t_ctr) {
+void idol::Optimizers::ArchivedColumnGeneration::add(const Ctr &t_ctr) {
     m_master->add(t_ctr);
 }
 
-void idol::Optimizers::ColumnGeneration::remove(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::remove(const Var &t_var) {
     m_master->remove(t_var);
 }
 
-void idol::Optimizers::ColumnGeneration::remove(const Ctr &t_ctr) {
+void idol::Optimizers::ArchivedColumnGeneration::remove(const Ctr &t_ctr) {
     m_master->remove(t_ctr);
 }
 
-void idol::Optimizers::ColumnGeneration::update() {
+void idol::Optimizers::ArchivedColumnGeneration::update() {
     m_master->update();
 }
 
-void idol::Optimizers::ColumnGeneration::write(const std::string &t_name) {
+void idol::Optimizers::ArchivedColumnGeneration::write(const std::string &t_name) {
     m_master->write(t_name);
 }
 
-void idol::Optimizers::ColumnGeneration::hook_before_optimize() {
+void idol::Optimizers::ArchivedColumnGeneration::hook_before_optimize() {
 
     set_best_bound(-Inf);
     set_best_obj(+Inf);
@@ -71,7 +71,7 @@ void idol::Optimizers::ColumnGeneration::hook_before_optimize() {
     Algorithm::hook_before_optimize();
 }
 
-void idol::Optimizers::ColumnGeneration::add_artificial_variables() {
+void idol::Optimizers::ArchivedColumnGeneration::add_artificial_variables() {
 
     auto& env = m_master->env();
     const auto add_to = [&](const Ctr& t_ctr, double t_sign) {
@@ -103,7 +103,7 @@ void idol::Optimizers::ColumnGeneration::add_artificial_variables() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::hook_optimize() {
+void idol::Optimizers::ArchivedColumnGeneration::hook_optimize() {
 
     if (m_farkas_pricing) {
         run_column_generation();
@@ -153,7 +153,7 @@ void idol::Optimizers::ColumnGeneration::hook_optimize() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::set_phase_I_objective_function() {
+void idol::Optimizers::ArchivedColumnGeneration::set_phase_I_objective_function() {
 
     Expr objective;
     for (const auto& var : m_artificial_variables) {
@@ -164,11 +164,11 @@ void idol::Optimizers::ColumnGeneration::set_phase_I_objective_function() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::restore_objective_function() {
+void idol::Optimizers::ArchivedColumnGeneration::restore_objective_function() {
     set_objective(parent().get_obj_expr());
 }
 
-bool idol::Optimizers::ColumnGeneration::has_artificial_variable_in_basis() const {
+bool idol::Optimizers::ArchivedColumnGeneration::has_artificial_variable_in_basis() const {
 
     std::function<double(const Var&)> value;
 
@@ -188,7 +188,7 @@ bool idol::Optimizers::ColumnGeneration::has_artificial_variable_in_basis() cons
 
 }
 
-void idol::Optimizers::ColumnGeneration::run_column_generation() {
+void idol::Optimizers::ArchivedColumnGeneration::run_column_generation() {
 
     do {
 
@@ -243,11 +243,11 @@ void idol::Optimizers::ColumnGeneration::run_column_generation() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::solve_master_problem() {
+void idol::Optimizers::ArchivedColumnGeneration::solve_master_problem() {
     m_master->optimize();
 }
 
-void idol::Optimizers::ColumnGeneration::log_master_solution(bool t_force) const {
+void idol::Optimizers::ArchivedColumnGeneration::log_master_solution(bool t_force) const {
 
     if (!t_force && m_iteration_count % m_log_frequency != 0) {
         return;
@@ -279,8 +279,8 @@ void idol::Optimizers::ColumnGeneration::log_master_solution(bool t_force) const
 
 }
 
-void idol::Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizers::ColumnGeneration::Subproblem &t_subproblem,
-                                                           bool t_force) const {
+void idol::Optimizers::ArchivedColumnGeneration::log_subproblem_solution(const Optimizers::ArchivedColumnGeneration::Subproblem &t_subproblem,
+                                                                         bool t_force) const {
 
     if (!t_force && m_iteration_count % m_log_frequency != 0) {
         return;
@@ -305,7 +305,7 @@ void idol::Optimizers::ColumnGeneration::log_subproblem_solution(const Optimizer
 
 }
 
-void idol::Optimizers::ColumnGeneration::analyze_master_problem_solution() {
+void idol::Optimizers::ArchivedColumnGeneration::analyze_master_problem_solution() {
 
     auto status = m_master->get_status();
 
@@ -365,7 +365,7 @@ void idol::Optimizers::ColumnGeneration::analyze_master_problem_solution() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::update_subproblems() {
+void idol::Optimizers::ArchivedColumnGeneration::update_subproblems() {
 
     if (!m_adjusted_dual_solution) {
 
@@ -387,7 +387,7 @@ void idol::Optimizers::ColumnGeneration::update_subproblems() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::solve_subproblems() {
+void idol::Optimizers::ArchivedColumnGeneration::solve_subproblems() {
 
     const unsigned int n_threads = std::min(get_param_threads(), m_parallel_pricing_limit);
 
@@ -418,7 +418,7 @@ void idol::Optimizers::ColumnGeneration::solve_subproblems() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
+void idol::Optimizers::ArchivedColumnGeneration::analyze_subproblems_solution() {
 
     double reduced_costs = 0;
     bool some_subproblems_had_been_skipped = false;
@@ -483,7 +483,7 @@ void idol::Optimizers::ColumnGeneration::analyze_subproblems_solution() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::enrich_master_problem() {
+void idol::Optimizers::ArchivedColumnGeneration::enrich_master_problem() {
 
     m_n_generated_columns_at_last_iteration = 0;
 
@@ -507,7 +507,7 @@ void idol::Optimizers::ColumnGeneration::enrich_master_problem() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::clean_up() {
+void idol::Optimizers::ArchivedColumnGeneration::clean_up() {
 
     for (auto& subproblem : m_subproblems) {
         subproblem.clean_up();
@@ -515,7 +515,7 @@ void idol::Optimizers::ColumnGeneration::clean_up() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::remove_artificial_variables() {
+void idol::Optimizers::ArchivedColumnGeneration::remove_artificial_variables() {
 
     for (const Var& var : m_artificial_variables) {
         m_master->remove(var);
@@ -524,18 +524,18 @@ void idol::Optimizers::ColumnGeneration::remove_artificial_variables() {
     m_artificial_variables.clear();
 }
 
-bool idol::Optimizers::ColumnGeneration::stopping_condition() const {
+bool idol::Optimizers::ArchivedColumnGeneration::stopping_condition() const {
     return get_absolute_gap() <= Tolerance::MIPAbsoluteGap
            || get_relative_gap() <= Tolerance::MIPRelativeGap
            || get_remaining_time() == 0;
 }
 
-idol::Optimizers::ColumnGeneration::Subproblem& idol::Optimizers::ColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
+idol::Optimizers::ArchivedColumnGeneration::Subproblem& idol::Optimizers::ArchivedColumnGeneration::add_subproblem(Model *t_sub_problem_model, Column t_generation_pattern) {
     m_subproblems.emplace_back(*this, m_subproblems.size(), t_sub_problem_model, std::move(t_generation_pattern));
     return m_subproblems.back();
 }
 
-void idol::Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_artificial_variables() {
+void idol::Optimizers::ArchivedColumnGeneration::terminate_for_master_infeasible_with_artificial_variables() {
 
     idol_Log(Fatal, "Master problem should not be infeasible when using artificial variables.");
     set_status(Fail);
@@ -544,101 +544,101 @@ void idol::Optimizers::ColumnGeneration::terminate_for_master_infeasible_with_ar
 
 }
 
-double idol::Optimizers::ColumnGeneration::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::ArchivedColumnGeneration::get_var_primal(const Var &t_var) const {
     return m_master->get_var_primal(t_var);
 }
 
-double idol::Optimizers::ColumnGeneration::get_var_ray(const Var &t_var) const {
+double idol::Optimizers::ArchivedColumnGeneration::get_var_ray(const Var &t_var) const {
     return m_master->get_var_ray(t_var);
 }
 
-double idol::Optimizers::ColumnGeneration::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::ArchivedColumnGeneration::get_ctr_dual(const Ctr &t_ctr) const {
     return m_master->get_ctr_dual(t_ctr);
 }
 
-double idol::Optimizers::ColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
+double idol::Optimizers::ArchivedColumnGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
     return m_master->get_ctr_farkas(t_ctr);
 }
 
-void idol::Optimizers::ColumnGeneration::set_objective(Expr<Var, Var> &&t_objective) {
+void idol::Optimizers::ArchivedColumnGeneration::set_objective(Expr<Var, Var> &&t_objective) {
     m_master->set_obj_expr(std::move(t_objective));
 }
 
-void idol::Optimizers::ColumnGeneration::set_objective(const Expr<Var, Var> &t_objective) {
+void idol::Optimizers::ArchivedColumnGeneration::set_objective(const Expr<Var, Var> &t_objective) {
     set_objective(Expr<Var, Var>(t_objective));
 }
 
-void idol::Optimizers::ColumnGeneration::update_obj_sense() {
+void idol::Optimizers::ArchivedColumnGeneration::update_obj_sense() {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::ColumnGeneration::update_obj() {
+void idol::Optimizers::ArchivedColumnGeneration::update_obj() {
     set_objective(parent().get_obj_expr());
 }
 
-void idol::Optimizers::ColumnGeneration::update_rhs() {
+void idol::Optimizers::ArchivedColumnGeneration::update_rhs() {
     m_master->set_rhs_expr(parent().get_rhs_expr());
 }
 
-void idol::Optimizers::ColumnGeneration::update_obj_constant() {
+void idol::Optimizers::ArchivedColumnGeneration::update_obj_constant() {
     m_master->set_obj_const(parent().get_obj_expr().constant());
 }
 
-void idol::Optimizers::ColumnGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     m_master->set_mat_coeff(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
 }
 
-void idol::Optimizers::ColumnGeneration::update_ctr_type(const Ctr &t_ctr) {
+void idol::Optimizers::ArchivedColumnGeneration::update_ctr_type(const Ctr &t_ctr) {
     m_master->set_ctr_type(t_ctr, parent().get_ctr_type(t_ctr));
 }
 
-void idol::Optimizers::ColumnGeneration::update_ctr_rhs(const Ctr &t_ctr) {
+void idol::Optimizers::ArchivedColumnGeneration::update_ctr_rhs(const Ctr &t_ctr) {
     m_master->set_ctr_rhs(t_ctr, parent().get_ctr_row(t_ctr).rhs());
 }
 
-void idol::Optimizers::ColumnGeneration::update_var_type(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::update_var_type(const Var &t_var) {
     m_master->set_var_type(t_var, parent().get_var_type(t_var));
 }
 
-void idol::Optimizers::ColumnGeneration::update_var_lb(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::update_var_lb(const Var &t_var) {
     m_master->set_var_lb(t_var, parent().get_var_lb(t_var));
 }
 
-void idol::Optimizers::ColumnGeneration::update_var_ub(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::update_var_ub(const Var &t_var) {
     m_master->set_var_ub(t_var, parent().get_var_ub(t_var));
 }
 
-void idol::Optimizers::ColumnGeneration::update_var_obj(const Var &t_var) {
+void idol::Optimizers::ArchivedColumnGeneration::update_var_obj(const Var &t_var) {
     m_master->set_var_obj(t_var, parent().get_var_column(t_var).obj());
 }
 
-unsigned int idol::Optimizers::ColumnGeneration::get_n_solutions() const {
+unsigned int idol::Optimizers::ArchivedColumnGeneration::get_n_solutions() const {
     return 1;
 }
 
-unsigned int idol::Optimizers::ColumnGeneration::get_solution_index() const {
+unsigned int idol::Optimizers::ArchivedColumnGeneration::get_solution_index() const {
     return 0;
 }
 
-void idol::Optimizers::ColumnGeneration::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::ArchivedColumnGeneration::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Solution index out of bounds.");
     }
 }
 
-void idol::Optimizers::ColumnGeneration::set_non_optimal_pricing_phase(double t_time_limit, double t_relative_gap) {
+void idol::Optimizers::ArchivedColumnGeneration::set_non_optimal_pricing_phase(double t_time_limit, double t_relative_gap) {
     m_non_optimal_pricing_phase = { t_time_limit, t_relative_gap };
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::hook_before_optimize() {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::hook_before_optimize() {
     m_skip = false;
     m_is_non_optimal_phase = m_parent.m_non_optimal_pricing_phase.has_value();
 }
 
-idol::Optimizers::ColumnGeneration::Subproblem::Subproblem(Optimizers::ColumnGeneration &t_parent,
-                                                     unsigned int t_index,
-                                                     Model* t_model,
-                                                     Column&& t_generation_pattern)
+idol::Optimizers::ArchivedColumnGeneration::Subproblem::Subproblem(Optimizers::ArchivedColumnGeneration &t_parent,
+                                                                   unsigned int t_index,
+                                                                   Model* t_model,
+                                                                   Column&& t_generation_pattern)
     : m_parent(t_parent),
       m_index(t_index),
       m_model(t_model),
@@ -648,7 +648,7 @@ idol::Optimizers::ColumnGeneration::Subproblem::Subproblem(Optimizers::ColumnGen
 
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::update_objective(bool t_farkas_pricing, const Solution::Dual &t_duals) {
 
     ::idol::Expr<Var, Var> objective;
 
@@ -685,7 +685,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::update_objective(bool t_far
 
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::optimize() {
 
     if (!m_parent.m_current_iteration_is_farkas_pricing && m_is_non_optimal_phase) {
 
@@ -722,7 +722,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::optimize() {
 
 }
 
-double idol::Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(const Solution::Dual &t_duals) const {
+double idol::Optimizers::ArchivedColumnGeneration::Subproblem::compute_reduced_cost(const Solution::Dual &t_duals) const {
 
     double result = 0.;
 
@@ -749,7 +749,7 @@ double idol::Optimizers::ColumnGeneration::Subproblem::compute_reduced_cost(cons
     return result;
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::enrich_master_problem() {
 
     auto& env = m_model->env();
     const unsigned int n_solutions = m_model->get_n_solutions();
@@ -801,7 +801,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::enrich_master_problem() {
 }
 
 idol::TempVar
-idol::Optimizers::ColumnGeneration::Subproblem::create_column_from_generator(const Solution::Primal &t_primals) const {
+idol::Optimizers::ArchivedColumnGeneration::Subproblem::create_column_from_generator(const Solution::Primal &t_primals) const {
     return {
             0.,
             Inf,
@@ -811,7 +811,7 @@ idol::Optimizers::ColumnGeneration::Subproblem::create_column_from_generator(con
 
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::clean_up() {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::clean_up() {
 
     if (m_pool.size() < m_parent.m_clean_up_threshold) {
         return;
@@ -862,7 +862,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::clean_up() {
 
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::remove_column_if(const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
 
     auto& master = m_parent.m_master;
 
@@ -881,7 +881,7 @@ void idol::Optimizers::ColumnGeneration::Subproblem::remove_column_if(const std:
 
 }
 
-void idol::Optimizers::ColumnGeneration::Subproblem::update_generation_pattern_objective(Constant &&t_objective) {
+void idol::Optimizers::ArchivedColumnGeneration::Subproblem::update_generation_pattern_objective(Constant &&t_objective) {
 
     for (const auto& [var, generator] : m_present_generators) {
         m_parent.m_master->set_var_obj(var, t_objective.fix(generator));

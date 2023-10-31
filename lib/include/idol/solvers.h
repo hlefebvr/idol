@@ -6,7 +6,7 @@
 #define OPTIMIZE_optimizerS_H
 
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h"
 #include "idol/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"

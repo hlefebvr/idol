@@ -1,20 +1,20 @@
 //
 // Created by henri on 24/03/23.
 //
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
 #include "idol/modeling//models/Model.h"
 #include "idol/modeling//expressions/operations/operators.h"
 #include "idol/modeling//objects/Versions.h"
-#include "idol/optimizers/column-generation/ColumnGeneration.h"
-#include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h"
+#include "idol/optimizers/archive/dantzig-wolfe/Optimizers_ArchivedDantzigWolfeDecomposition.h"
 
-idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Annotation<Ctr, unsigned int> &t_decomposition)
+idol::ArchivedDantzigWolfeDecomposition::ArchivedDantzigWolfeDecomposition(const Annotation<Ctr, unsigned int> &t_decomposition)
         : m_decomposition(t_decomposition) {
 
 }
 
-idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
-        : impl::OptimizerFactoryWithColumnGenerationParameters<DantzigWolfeDecomposition>(t_src),
+idol::ArchivedDantzigWolfeDecomposition::ArchivedDantzigWolfeDecomposition(const ArchivedDantzigWolfeDecomposition& t_src)
+        : impl::OptimizerFactoryWithColumnGenerationParameters<ArchivedDantzigWolfeDecomposition>(t_src),
           m_decomposition(t_src.m_decomposition),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_pricing_optimizer(t_src.m_pricing_optimizer ? t_src.m_pricing_optimizer->clone() : nullptr),
@@ -23,7 +23,7 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
 
 }
 
-idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_original_formulation) const {
+idol::Optimizer *idol::ArchivedDantzigWolfeDecomposition::operator()(const Model &t_original_formulation) const {
 
     if (!m_master_optimizer) {
         throw Exception("No master solver has been given, please call DantzigWolfeDecomposition::with_master_optimizer to configure.");
@@ -55,13 +55,13 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_orig
         subproblems[i]->use(*m_pricing_optimizer);
     }
 
-    auto* result = new Optimizers::DantzigWolfeDecomposition(t_original_formulation,
-                                                             m_decomposition,
-                                                             variable_flag,
-                                                             master,
-                                                             subproblems,
-                                                             generation_patterns,
-                                                             *m_pricing_optimizer);
+    auto* result = new Optimizers::ArchivedDantzigWolfeDecomposition(t_original_formulation,
+                                                                     m_decomposition,
+                                                                     variable_flag,
+                                                                     master,
+                                                                     subproblems,
+                                                                     generation_patterns,
+                                                                     *m_pricing_optimizer);
 
     this->handle_default_parameters(result);
     this->handle_column_generation_parameters(result);
@@ -73,11 +73,11 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_orig
     return result;
 }
 
-idol::DantzigWolfeDecomposition *idol::DantzigWolfeDecomposition::clone() const {
-    return new DantzigWolfeDecomposition(*this);
+idol::ArchivedDantzigWolfeDecomposition *idol::ArchivedDantzigWolfeDecomposition::clone() const {
+    return new ArchivedDantzigWolfeDecomposition(*this);
 }
 
-idol::Annotation<idol::Var, unsigned int> idol::DantzigWolfeDecomposition::create_variable_flag(const Model &t_model, unsigned int *t_n_subproblem) const {
+idol::Annotation<idol::Var, unsigned int> idol::ArchivedDantzigWolfeDecomposition::create_variable_flag(const Model &t_model, unsigned int *t_n_subproblem) const {
 
     Annotation<Var, unsigned int> result(t_model.env(), "variable_flag", MasterId);
 
@@ -128,7 +128,7 @@ idol::Annotation<idol::Var, unsigned int> idol::DantzigWolfeDecomposition::creat
 }
 
 std::vector<idol::Model*>
-idol::DantzigWolfeDecomposition::create_empty_subproblems(Env& t_env, unsigned int t_n_subproblems) const {
+idol::ArchivedDantzigWolfeDecomposition::create_empty_subproblems(Env& t_env, unsigned int t_n_subproblems) const {
 
     std::vector<Model*> result;
     result.reserve(t_n_subproblems);
@@ -141,11 +141,11 @@ idol::DantzigWolfeDecomposition::create_empty_subproblems(Env& t_env, unsigned i
 }
 
 std::vector<idol::Column>
-idol::DantzigWolfeDecomposition::create_empty_generation_patterns(unsigned int t_n_subproblems) const {
+idol::ArchivedDantzigWolfeDecomposition::create_empty_generation_patterns(unsigned int t_n_subproblems) const {
     return std::vector<Column>(t_n_subproblems);
 }
 
-void idol::DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigned int> &t_variable_flag,
+void idol::ArchivedDantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, unsigned int> &t_variable_flag,
                                                const Model& t_original_formulation,
                                                Model *t_master,
                                                const std::vector<Model *> &t_subproblems) const {
@@ -167,7 +167,7 @@ void idol::DantzigWolfeDecomposition::dispatch_variables(const Annotation<Var, u
 
 }
 
-void idol::DantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var, unsigned int> &t_variable_flag,
+void idol::ArchivedDantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var, unsigned int> &t_variable_flag,
                                                  const Model &t_original_formulation,
                                                  Model *t_master,
                                                  const std::vector<Model *> &t_subproblems,
@@ -193,7 +193,7 @@ void idol::DantzigWolfeDecomposition::dispatch_constraints(const Annotation<Var,
 
 }
 
-void idol::DantzigWolfeDecomposition::dispatch_linking_constraint(const Annotation<Var, unsigned int> &t_variable_flag,
+void idol::ArchivedDantzigWolfeDecomposition::dispatch_linking_constraint(const Annotation<Var, unsigned int> &t_variable_flag,
                                                         const Ctr& t_ctr,
                                                         const Row &t_row,
                                                         CtrType t_type,
@@ -213,7 +213,7 @@ void idol::DantzigWolfeDecomposition::dispatch_linking_constraint(const Annotati
 
 }
 
-void idol::DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigned int> &t_variable_flag,
+void idol::ArchivedDantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, unsigned int> &t_variable_flag,
                                                const Model &t_original_formulation, Model *t_master,
                                                std::vector<Column> &t_generation_patterns) const {
 
@@ -234,7 +234,7 @@ void idol::DantzigWolfeDecomposition::dispatch_objective(const Annotation<Var, u
 }
 
 std::pair<idol::Expr<idol::Var, idol::Var>, std::vector<idol::Constant>>
-idol::DantzigWolfeDecomposition::dispatch_linking_expression(const Annotation<Var, unsigned int> &t_variable_flag,
+idol::ArchivedDantzigWolfeDecomposition::dispatch_linking_expression(const Annotation<Var, unsigned int> &t_variable_flag,
                                                    const QuadExpr<Var, Var> &t_quad,
                                                    const LinExpr<Var> &t_lin,
                                                    Model *t_master,
@@ -289,7 +289,7 @@ idol::DantzigWolfeDecomposition::dispatch_linking_expression(const Annotation<Va
 
 }
 
-void idol::DantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Model *t_master, std::vector<Column> &t_generation_patterns) const {
+void idol::ArchivedDantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Model *t_master, std::vector<Column> &t_generation_patterns) const {
 
     const unsigned int n_subproblems = t_generation_patterns.size();
 
@@ -301,7 +301,7 @@ void idol::DantzigWolfeDecomposition::add_convexity_constraints(Env& t_env, Mode
 
 }
 
-idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_pricing_optimizer(const OptimizerFactory &t_pricing_optimizer) {
+idol::ArchivedDantzigWolfeDecomposition &idol::ArchivedDantzigWolfeDecomposition::with_pricing_optimizer(const OptimizerFactory &t_pricing_optimizer) {
 
     if (m_pricing_optimizer) {
         throw Exception("A pricing solver has already been set.");
@@ -312,7 +312,7 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_pricing_o
     return *this;
 }
 
-idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_master_optimizer(const OptimizerFactory &t_master_optimizer) {
+idol::ArchivedDantzigWolfeDecomposition &idol::ArchivedDantzigWolfeDecomposition::with_master_optimizer(const OptimizerFactory &t_master_optimizer) {
 
     if (m_master_optimizer) {
         throw Exception("A master solver has already been set.");
@@ -323,7 +323,7 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_master_op
     return *this;
 }
 
-idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_branching_on_master(bool t_value) {
+idol::ArchivedDantzigWolfeDecomposition &idol::ArchivedDantzigWolfeDecomposition::with_branching_on_master(bool t_value) {
 
     if (m_branching_on_master.has_value()) {
         throw Exception("Branching on master setting has already been given.");
@@ -334,7 +334,7 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_branching
     return *this;
 }
 
-idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_aggregation_type(idol::CtrType t_type) {
+idol::ArchivedDantzigWolfeDecomposition &idol::ArchivedDantzigWolfeDecomposition::with_aggregation_type(idol::CtrType t_type) {
 
     if (m_aggregation_type.has_value()) {
         throw Exception("Aggregation type has already been given.");

@@ -7,8 +7,8 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/column-generation/IntegerMaster.h"
+#include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
+#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
 #include <idol/modeling.h>
 #include <idol/problems/generalized-assignment-problem/GAP_Instance.h>
 #include <idol/optimizers/wrappers/GLPK/GLPK.h>
@@ -73,7 +73,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     std::vector<std::pair<std::string, std::shared_ptr<OptimizerFactory>>> relaxation_solvers = {
             { "CG",
                     std::shared_ptr<OptimizerFactory>(
-                            DantzigWolfeDecomposition(std_decomposition)
+                            ArchivedDantzigWolfeDecomposition(std_decomposition)
                                     .with_master_optimizer(OPTIMIZER::ContinuousRelaxation())
                                     .with_pricing_optimizer(OPTIMIZER())
                                     .with_branching_on_master(branching_on_master)
@@ -85,7 +85,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
 
             { "CG + B&B",
                     std::shared_ptr<OptimizerFactory>(
-                            DantzigWolfeDecomposition(std_decomposition)
+                            ArchivedDantzigWolfeDecomposition(std_decomposition)
                                     .with_master_optimizer(OPTIMIZER::ContinuousRelaxation())
                                     .with_pricing_optimizer(
                                             BranchAndBound<NodeVarInfo>()
@@ -102,12 +102,12 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
 
             { "CG + nested B&P",
                     std::shared_ptr<OptimizerFactory>(
-                            DantzigWolfeDecomposition(nested_decomposition1)
+                            ArchivedDantzigWolfeDecomposition(nested_decomposition1)
                                     .with_master_optimizer(OPTIMIZER::ContinuousRelaxation())
                                     .with_pricing_optimizer(
                                             BranchAndBound<NodeVarInfo>()
                                                     .with_node_optimizer(
-                                                            DantzigWolfeDecomposition(nested_decomposition2)
+                                                            ArchivedDantzigWolfeDecomposition(nested_decomposition2)
                                                                     .with_master_optimizer(OPTIMIZER::ContinuousRelaxation())
                                                                     .with_pricing_optimizer(
                                                                             BranchAndBound<NodeVarInfo>()
