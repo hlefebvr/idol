@@ -10,6 +10,7 @@
 #include "DantzigWolfeSubProblem.h"
 #include "idol/containers/Map.h"
 #include "DantzigWolfeFormulation.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 
 namespace idol::DantzigWolfe {
     class Decomposition;
@@ -18,6 +19,7 @@ namespace idol::DantzigWolfe {
 class idol::DantzigWolfe::Decomposition : public OptimizerFactoryWithDefaultParameters<Decomposition> {
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
+    std::unique_ptr<InfeasibilityStrategyFactory> m_infeasibility_strategy;
     std::optional<unsigned int> m_max_parallel_pricing;
     std::optional<SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, SubProblem> m_sub_problem_specs;
@@ -37,6 +39,8 @@ public:
     Decomposition& with_default_sub_problem_spec(SubProblem t_sub_problem);
 
     Decomposition& with_sub_problem_spec(unsigned int t_id, SubProblem t_sub_problem);
+
+    Decomposition& with_infeasibility_strategy(const InfeasibilityStrategyFactory& t_strategy);
 
     const SubProblem& get_sub_problem_spec(unsigned int t_id) const;
 };

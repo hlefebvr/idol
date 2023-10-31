@@ -10,6 +10,7 @@
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 
 using namespace idol;
 
@@ -58,7 +59,7 @@ int main(int t_argc, char** t_argv) {
                                                           .add_optimizer(HiGHS())
                                                           .with_multiplicities(0, 1)
                                       )
-                                    // .with_feasibility_phase_strategy(DantzigWolfe::ArtificialCosts())
+                                    .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
                                     .with_log_level(Info, Yellow)
                       )
                       .with_subtree_depth(0)

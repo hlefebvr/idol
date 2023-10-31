@@ -55,6 +55,8 @@ public:
     void generate_column(unsigned int t_sub_problem_id, const Solution::Primal& t_generator);
 
     double compute_reduced_cost(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, const Solution::Primal& t_generator);
+
+    double get_original_space_var_primal(const Var& t_var, const Solution::Primal& t_master_primal) const;
 };
 
 #endif //IDOL_DANTZIGWOLFEFORMULATION_H

@@ -12,6 +12,7 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
+    std::optional<Solution::Primal> m_master_primal_solution;
     std::optional<Solution::Dual> m_last_master_solution;
     std::optional<Solution::Dual> m_stability_center;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
@@ -34,7 +35,17 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void analyze_sub_problems();
     void enrich_master();
 public:
-    explicit ColumnGeneration(DantzigWolfeDecomposition& t_parent);
+    ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility);
+
+    SolutionStatus status() const { return m_status; }
+
+    SolutionReason reason() const { return m_reason; }
+
+    double best_obj() const { return m_best_obj; }
+
+    double best_bound() const { return m_best_bound; }
+
+    const Solution::Primal& primal_solution() const { return m_master_primal_solution.value(); }
 
     void execute();
 };

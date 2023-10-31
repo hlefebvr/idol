@@ -1,9 +1,12 @@
 //
 // Created by henri on 31.10.23.
 //
+#include <memory>
+
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h"
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 
 idol::OptimizerFactory *idol::DantzigWolfe::Decomposition::clone() const {
     return new Decomposition(*this);
@@ -15,7 +18,8 @@ idol::DantzigWolfe::Decomposition::Decomposition(idol::Annotation<idol::Ctr, uns
 idol::DantzigWolfe::Decomposition::Decomposition(const Decomposition& t_src)
     : OptimizerFactoryWithDefaultParameters<Decomposition>(t_src),
       m_decomposition(t_src.m_decomposition),
-      m_master_optimizer_factory(t_src.m_master_optimizer_factory->clone()),
+      m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
+      m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
       m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
       m_sub_problem_specs(t_src.m_sub_problem_specs)
 {}
@@ -32,11 +36,17 @@ idol::Optimizer *idol::DantzigWolfe::Decomposition::operator()(const Model &t_mo
 
     add_aggregation_constraints(dantzig_wolfe_formulation, sub_problems_specifications);
 
+    std::unique_ptr<InfeasibilityStrategyFactory> default_strategy;
+    if (!m_infeasibility_strategy) {
+        default_strategy = std::make_unique<FarkasPricing>();
+    }
+
     return new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
                                                      m_max_parallel_pricing.has_value() ? m_max_parallel_pricing.value() : 1,
-                                                     std::move(sub_problems_specifications)
+                                                     std::move(sub_problems_specifications),
+                                                     m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy
                                                      );
 }
 
@@ -129,6 +139,18 @@ idol::DantzigWolfe::Decomposition::with_sub_problem_spec(unsigned int t_id, idol
     if (!success) {
         throw Exception("A sub-problem specification with id " + std::to_string(t_id) + " has already been given.");
     }
+
+    return *this;
+}
+
+idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_infeasibility_strategy(
+        const idol::DantzigWolfe::InfeasibilityStrategyFactory &t_strategy) {
+
+    if (m_infeasibility_strategy) {
+        throw Exception("An infeasibility strategy has already been configured.");
+    }
+
+    m_infeasibility_strategy.reset(t_strategy.clone());
 
     return *this;
 }

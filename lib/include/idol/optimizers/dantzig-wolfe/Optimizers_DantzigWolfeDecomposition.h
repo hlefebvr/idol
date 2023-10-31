@@ -8,6 +8,7 @@
 #include "idol/optimizers/Algorithm.h"
 #include "DantzigWolfeFormulation.h"
 #include "DantzigWolfeSubProblem.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 
 namespace idol::Optimizers {
     class DantzigWolfeDecomposition;
@@ -16,18 +17,20 @@ namespace idol::Optimizers {
 class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     idol::DantzigWolfe::Formulation m_formulation;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
+    std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory::Strategy> m_strategy;
     std::vector<DantzigWolfe::SubProblem> m_sub_problem_specifications;
     unsigned int m_max_parallel_pricing;
-
-    class ColumnGeneration;
 public:
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,
                               const OptimizerFactory& t_master_optimizer_factory,
                               unsigned int t_max_parallel_pricing,
-                              std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications);
+                              std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
+                              const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy);
 
     std::string name() const override;
+
+    class ColumnGeneration;
 protected:
     void hook_before_optimize() override;
     void hook_optimize() override;

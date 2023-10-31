@@ -3,8 +3,10 @@
 //
 #include "idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h"
 
-idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent)
-        : m_parent(t_parent)
+idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent,
+                                                                                bool t_use_farkas_for_infeasibility)
+        : m_parent(t_parent),
+          m_use_farkas_for_infeasibility(t_use_farkas_for_infeasibility)
 {
 
 }
@@ -24,9 +26,15 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     m_current_iteration_is_using_farkas = false;
     initialize_sub_problem_phases();
 
+    if (m_use_farkas_for_infeasibility) {
+        m_parent.m_formulation.master().optimizer().set_param_infeasible_or_unbounded_info(true);
+    }
+
     while (true) {
 
         if (m_solve_dual_master) { solve_dual_master(); }
+
+        ++m_iteration_count;
 
         if (check_stopping_criterion()) { break; }
 
@@ -40,9 +48,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
         enrich_master();
 
-        ++m_iteration_count;
+    }
 
-        if (check_stopping_criterion()) { break; }
+    if (m_status == Feasible || m_status == Optimal) {
+        m_master_primal_solution = save_primal(m_parent.m_formulation.master());
     }
 
 }
@@ -222,7 +231,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         const auto n_solutions = model.get_n_solutions();
 
-        for (unsigned int k = 0 ; k < n_solutions && k < 1 /* TODO n_max_columns_per_pricing */ ; ++k) {
+        for (unsigned int k = 0 ; k < n_solutions && k < m_parent.m_max_parallel_pricing ; ++k) {
 
             model.set_solution_index(k);
 

@@ -8,12 +8,14 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
                                                                        idol::DantzigWolfe::Formulation &&t_formulation,
                                                                        const OptimizerFactory& t_master_optimizer_factory,
                                                                        unsigned int t_max_parallel_pricing,
-                                                                       std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications)
+                                                                       std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
+                                                                       const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy)
     : Algorithm(t_model),
       m_formulation(std::move(t_formulation)),
       m_master_optimizer_factory(t_master_optimizer_factory.clone()),
       m_max_parallel_pricing(t_max_parallel_pricing),
-      m_sub_problem_specifications(std::move(t_sub_problem_specifications))
+      m_sub_problem_specifications(std::move(t_sub_problem_specifications)),
+      m_strategy(t_strategy())
 {
 
 }
@@ -31,15 +33,18 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
 
     if (!master.has_optimizer()) {
         master.use(*m_master_optimizer_factory);
-        master.optimizer().set_param_infeasible_or_unbounded_info(true); // TODO condition this on Farkas pricing only
     }
 
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::hook_optimize() {
 
-    ColumnGeneration alg(*this);
-    alg.execute();
+    m_strategy->execute(*this);
+
+    set_status(m_strategy->status());
+    set_reason(m_strategy->reason());
+    set_best_obj(m_strategy->best_obj());
+    set_best_obj(m_strategy->best_bound());
 
 }
 
@@ -86,7 +91,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::write(const std::string &t_nam
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_primal(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_primal");
+    return m_formulation.get_original_space_var_primal(t_var, m_strategy->primal_solution());
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_ray(const idol::Var &t_var) const {

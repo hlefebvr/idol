@@ -187,9 +187,12 @@ add_library(idol STATIC
         src/optimizers/column-generation/DantzigWolfeFormulation.cpp
         include/idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
         src/optimizers/column-generation/Optimizers_DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/dantzig-wolfe/DantzigWolfeFeasibilityPhase.h
+        include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h
         include/idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h
         src/optimizers/column-generation/column-generation/ColumnGeneration.cpp
+        include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
+        src/optimizers/column-generation/infeasibility-strategies/FarkasPricing.cpp
+        src/optimizers/column-generation/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
 )
 
 find_package(OpenMP REQUIRED)

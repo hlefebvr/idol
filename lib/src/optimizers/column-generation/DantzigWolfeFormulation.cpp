@@ -365,3 +365,26 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
     m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
 
 }
+
+double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol::Var &t_var,
+                                                                      const idol::Solution::Primal &t_master_primal) const {
+
+    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+
+    if (sub_problem_id == MasterId) {
+        return t_master_primal.get(t_var);
+    }
+
+    double result = 0;
+    /*
+    for (const auto& [alpha, generator] : m_subproblems[t_subproblem_id].m_present_generators) {
+        const double alpha_val = t_master_primal.get(alpha);
+        if (alpha_val > Tolerance::Sparsity) {
+            result += alpha_val * generator.get(t_var);
+        }
+    }
+     */
+
+    return result;
+
+}
