@@ -27,7 +27,7 @@ Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](http
 - Column Generation and Branch-and-Price
   - Automatic Dantzig-Wolfe reformulation
   - Soft and hard branching available (i.e, branching on master or sub-problem)
-  - Stabilization by dual price smoothing
+  - Stabilization by dual price smoothing: [Wentges (1997)](https://doi.org/10.1016/S0969-6016(97)00001-4), [Neame (2000)](https://scholar.google.com/scholar?&q=Neame%2C%20P.J.%3A%20Nonsmooth%20Dual%20Methods%20in%20Integer%20Programming.%20PhD%20thesis%20%281999%29).
   - Heuristics: Integer Master
 
 ## Benchmark 
