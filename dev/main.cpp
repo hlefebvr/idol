@@ -54,7 +54,7 @@ int main(int t_argc, char** t_argv) {
     // Set optimizer
     model.use(BranchAndBound()
                       .with_node_optimizer(
-                              DantzigWolfe::Decomposition(decomposition)
+                              DantzigWolfeDecomposition(decomposition)
                                     .with_master_optimizer(Gurobi::ContinuousRelaxation())
                                     .with_default_sub_problem_spec(
                                             DantzigWolfe::SubProblem()

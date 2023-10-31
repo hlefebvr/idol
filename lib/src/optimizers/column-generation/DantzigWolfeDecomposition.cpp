@@ -9,15 +9,15 @@
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
 
-idol::OptimizerFactory *idol::DantzigWolfe::Decomposition::clone() const {
-    return new Decomposition(*this);
+idol::OptimizerFactory *idol::DantzigWolfeDecomposition::clone() const {
+    return new DantzigWolfeDecomposition(*this);
 }
 
-idol::DantzigWolfe::Decomposition::Decomposition(idol::Annotation<idol::Ctr, unsigned int> t_decomposition)
+idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(idol::Annotation<idol::Ctr, unsigned int> t_decomposition)
     : m_decomposition(std::move(t_decomposition)) {}
 
-idol::DantzigWolfe::Decomposition::Decomposition(const Decomposition& t_src)
-    : OptimizerFactoryWithDefaultParameters<Decomposition>(t_src),
+idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
+    : OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition>(t_src),
       m_decomposition(t_src.m_decomposition),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
       m_dual_price_smoothing_stabilization(t_src.m_dual_price_smoothing_stabilization ? t_src.m_dual_price_smoothing_stabilization->clone() : nullptr),
@@ -28,26 +28,26 @@ idol::DantzigWolfe::Decomposition::Decomposition(const Decomposition& t_src)
       m_sub_problem_specs(t_src.m_sub_problem_specs)
 {}
 
-idol::Optimizer *idol::DantzigWolfe::Decomposition::operator()(const Model &t_model) const {
+idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_model) const {
 
     if (!m_master_optimizer_factory) {
         throw Exception("No optimizer for master has been configured.");
     }
 
-    Formulation dantzig_wolfe_formulation(t_model, m_decomposition);
+    DantzigWolfe::Formulation dantzig_wolfe_formulation(t_model, m_decomposition);
 
     auto sub_problems_specifications = create_sub_problems_specifications(dantzig_wolfe_formulation);
 
     add_aggregation_constraints(dantzig_wolfe_formulation, sub_problems_specifications);
 
-    std::unique_ptr<InfeasibilityStrategyFactory> default_strategy;
+    std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> default_strategy;
     if (!m_infeasibility_strategy) {
-        default_strategy = std::make_unique<FarkasPricing>();
+        default_strategy = std::make_unique<DantzigWolfe::FarkasPricing>();
     }
 
-    std::unique_ptr<DualPriceSmoothingStabilization> dual_price_smoothing;
+    std::unique_ptr<DantzigWolfe::DualPriceSmoothingStabilization> dual_price_smoothing;
     if (!m_dual_price_smoothing_stabilization) {
-        dual_price_smoothing = std::make_unique<NoStabilization>();
+        dual_price_smoothing = std::make_unique<DantzigWolfe::NoStabilization>();
     }
 
     return new Optimizers::DantzigWolfeDecomposition(t_model,
@@ -61,12 +61,12 @@ idol::Optimizer *idol::DantzigWolfe::Decomposition::operator()(const Model &t_mo
                                                      );
 }
 
-std::vector<idol::DantzigWolfe::SubProblem> idol::DantzigWolfe::Decomposition::create_sub_problems_specifications(
-        const Formulation &t_dantzig_wolfe_formulation) const {
+std::vector<idol::DantzigWolfe::SubProblem> idol::DantzigWolfeDecomposition::create_sub_problems_specifications(
+        const DantzigWolfe::Formulation &t_dantzig_wolfe_formulation) const {
 
     const auto n_sub_problems = t_dantzig_wolfe_formulation.n_sub_problems();
 
-    std::vector<SubProblem> result;
+    std::vector<DantzigWolfe::SubProblem> result;
     result.reserve(n_sub_problems);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
@@ -83,9 +83,9 @@ std::vector<idol::DantzigWolfe::SubProblem> idol::DantzigWolfe::Decomposition::c
     return result;
 }
 
-void idol::DantzigWolfe::Decomposition::add_aggregation_constraints(
-        Formulation &t_dantzig_wolfe_formulation,
-        const std::vector<SubProblem>& t_sub_problem_specifications) {
+void idol::DantzigWolfeDecomposition::add_aggregation_constraints(
+        DantzigWolfe::Formulation &t_dantzig_wolfe_formulation,
+        const std::vector<DantzigWolfe::SubProblem>& t_sub_problem_specifications) {
 
     const auto n_sub_problems = t_dantzig_wolfe_formulation.n_sub_problems();
 
@@ -101,7 +101,7 @@ void idol::DantzigWolfe::Decomposition::add_aggregation_constraints(
 
 }
 
-const idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::Decomposition::get_sub_problem_spec(unsigned int t_id) const {
+const idol::DantzigWolfe::SubProblem &idol::DantzigWolfeDecomposition::get_sub_problem_spec(unsigned int t_id) const {
 
     auto it = m_sub_problem_specs.find(t_id);
     if (it == m_sub_problem_specs.end()) {
@@ -118,8 +118,8 @@ const idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::Decomposition::get_sub
 
 }
 
-idol::DantzigWolfe::Decomposition &
-idol::DantzigWolfe::Decomposition::with_master_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_master_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
 
     if (m_master_optimizer_factory) {
         throw Exception("An optimizer factory has already been given.");
@@ -130,8 +130,8 @@ idol::DantzigWolfe::Decomposition::with_master_optimizer(const idol::OptimizerFa
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &
-idol::DantzigWolfe::Decomposition::with_default_sub_problem_spec(idol::DantzigWolfe::SubProblem t_sub_problem) {
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_default_sub_problem_spec(idol::DantzigWolfe::SubProblem t_sub_problem) {
 
     if (m_default_sub_problem_spec) {
         throw Exception("A default sub-problem specification has already been given.");
@@ -142,8 +142,8 @@ idol::DantzigWolfe::Decomposition::with_default_sub_problem_spec(idol::DantzigWo
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &
-idol::DantzigWolfe::Decomposition::with_sub_problem_spec(unsigned int t_id, idol::DantzigWolfe::SubProblem t_sub_problem) {
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_sub_problem_spec(unsigned int t_id, idol::DantzigWolfe::SubProblem t_sub_problem) {
 
     auto [it, success] = m_sub_problem_specs.emplace(t_id, std::move(t_sub_problem));
 
@@ -154,7 +154,7 @@ idol::DantzigWolfe::Decomposition::with_sub_problem_spec(unsigned int t_id, idol
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_infeasibility_strategy(
+idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_infeasibility_strategy(
         const idol::DantzigWolfe::InfeasibilityStrategyFactory &t_strategy) {
 
     if (m_infeasibility_strategy) {
@@ -166,7 +166,7 @@ idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_infea
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_hard_branching(bool t_value) {
+idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_hard_branching(bool t_value) {
 
     if (m_use_hard_branching.has_value()) {
         throw Exception("Hard branching has already been configured.");
@@ -177,8 +177,8 @@ idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_hard_
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &
-idol::DantzigWolfe::Decomposition::with_max_parallel_sub_problems(unsigned int t_n_sub_problems) {
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_max_parallel_sub_problems(unsigned int t_n_sub_problems) {
 
     if (m_max_parallel_sub_problems.has_value()) {
         throw Exception("Maximum number of parallel sub-problems has already been configured.");
@@ -189,7 +189,7 @@ idol::DantzigWolfe::Decomposition::with_max_parallel_sub_problems(unsigned int t
     return *this;
 }
 
-idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_dual_price_smoothing_stabilization(
+idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_dual_price_smoothing_stabilization(
         const idol::DantzigWolfe::DualPriceSmoothingStabilization &t_stabilization) {
 
     if (m_dual_price_smoothing_stabilization) {
