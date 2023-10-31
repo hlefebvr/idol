@@ -403,3 +403,107 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
     return result;
 
 }
+
+void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard) {
+
+    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+
+    if (sub_problem_id == MasterId) {
+        m_master.set_var_lb(t_var, t_lb);
+        return;
+    }
+
+    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
+        //return true;
+        return t_generator.get(t_var) < t_lb;
+    });
+
+    if (t_hard) {
+        sub_problem(sub_problem_id).set_var_lb(t_var, t_lb);
+        return;
+    }
+
+    apply_sub_problem_bound_on_master(true, t_var, sub_problem_id, t_lb);
+
+}
+
+void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard) {
+
+    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+
+    if (sub_problem_id == MasterId) {
+        m_master.set_var_ub(t_var, t_ub);
+        return;
+    }
+
+    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
+        //return true;
+        return t_generator.get(t_var) > t_ub;
+    });
+
+    if (t_hard) {
+        sub_problem(sub_problem_id).set_var_ub(t_var, t_ub);
+        return;
+    }
+
+    apply_sub_problem_bound_on_master(false, t_var, sub_problem_id, t_ub);
+
+}
+
+void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_is_lb,
+                                                                        const idol::Var &t_var,
+                                                                        unsigned int t_sub_problem_id, double t_value) {
+
+
+    auto& applied_bounds = t_is_lb ? m_soft_branching_lower_bound_constraints : m_soft_branching_upper_bound_constraints;
+    const auto it = applied_bounds.find(t_var);
+
+    if (it == applied_bounds.end()) { // Create a new constraint
+
+        auto expanded = reformulate_sub_problem_variable(t_var, t_sub_problem_id);
+        const CtrType type = t_is_lb ? GreaterOrEqual : LessOrEqual;
+
+        Ctr bound_constraint(m_master.env(), Equal, 0);
+
+        m_master.add(bound_constraint, TempCtr(::idol::Row(expanded, t_value), type));
+        m_generation_patterns[t_sub_problem_id].linear().set(bound_constraint, !t_var);
+
+        applied_bounds.emplace(t_var, bound_constraint);
+
+        return;
+    }
+
+    m_master.set_ctr_rhs(it->second, t_value);
+
+}
+
+idol::LinExpr<idol::Var> idol::DantzigWolfe::Formulation::reformulate_sub_problem_variable(const idol::Var &t_var,
+                                                                                           unsigned int t_sub_problem_id) {
+
+    LinExpr<Var> result;
+
+    for (const auto& [alpha, generator] : m_present_generators[t_sub_problem_id]) {
+        result += generator.get(t_var) * alpha;
+    }
+
+    return result;
+}
+
+void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_problem_id,
+                       const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+
+    auto& present_generators = m_present_generators[t_sub_problem_id];
+    auto it = present_generators.begin();
+    const auto end = present_generators.end();
+
+    while (it != end) {
+        const auto& [column_variable, ptr_to_column] = *it;
+        if (t_indicator_for_removal(column_variable, ptr_to_column)) {
+            m_master.remove(column_variable);
+            it = present_generators.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+}

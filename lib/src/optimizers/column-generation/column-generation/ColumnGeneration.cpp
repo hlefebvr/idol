@@ -62,12 +62,12 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     master.optimize();
 
-    auto status = master.get_status();
-    auto reason = master.get_reason();
+    m_status = master.get_status();
+    m_reason = master.get_reason();
 
     m_current_iteration_is_using_farkas = false;
 
-    if (status == Optimal || status == Feasible) {
+    if (m_status == Optimal || m_status == Feasible) {
 
         const double iter_upper_bound = master.get_best_obj();
 
@@ -78,7 +78,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
         return;
     }
 
-    if (status == Infeasible && m_use_farkas_for_infeasibility) {
+    if (m_status == Infeasible && m_use_farkas_for_infeasibility) {
 
         m_current_iteration_is_using_farkas = true;
 
@@ -87,12 +87,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
         return;
     }
 
-    Solution::Dual solution;
+    m_last_master_solution.reset();
 
-    solution.set_status(status);
-    solution.set_reason(reason);
-
-    m_last_master_solution = solution;
     m_is_terminated = true;
 
 }
@@ -224,6 +220,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
             if (model.get_best_obj() < -Tolerance::Feasibility) {
                 formulation.generate_column(i, save_primal(model));
                 at_least_one_column_have_been_generated = true;
+                ++m_n_generated_columns;
             }
 
             continue;
@@ -242,6 +239,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
             if (reduced_cost < -Tolerance::Optimality) {
                 formulation.generate_column(i, std::move(generator));
                 at_least_one_column_have_been_generated = true;
+                ++m_n_generated_columns;
             }
 
         }

@@ -60,6 +60,8 @@ int main(int t_argc, char** t_argv) {
                                                           .with_multiplicities(0, 1)
                                       )
                                     .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                    .with_hard_branching(false)
+                                    .with_max_parallel_sub_problems(5)
                                     .with_log_level(Info, Yellow)
                       )
                       .with_subtree_depth(0)
@@ -71,6 +73,8 @@ int main(int t_argc, char** t_argv) {
 
     // Solve
     model.optimize();
+
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

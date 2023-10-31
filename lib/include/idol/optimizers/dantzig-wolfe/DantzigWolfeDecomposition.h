@@ -20,7 +20,8 @@ class idol::DantzigWolfe::Decomposition : public OptimizerFactoryWithDefaultPara
     Annotation<Ctr, unsigned int> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<InfeasibilityStrategyFactory> m_infeasibility_strategy;
-    std::optional<unsigned int> m_max_parallel_pricing;
+    std::optional<unsigned int> m_max_parallel_sub_problems;
+    std::optional<bool> m_use_hard_branching;
     std::optional<SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, SubProblem> m_sub_problem_specs;
 
@@ -41,6 +42,10 @@ public:
     Decomposition& with_sub_problem_spec(unsigned int t_id, SubProblem t_sub_problem);
 
     Decomposition& with_infeasibility_strategy(const InfeasibilityStrategyFactory& t_strategy);
+
+    Decomposition& with_hard_branching(bool t_value);
+
+    Decomposition& with_max_parallel_sub_problems(unsigned int t_n_sub_problems);
 
     const SubProblem& get_sub_problem_spec(unsigned int t_id) const;
 };

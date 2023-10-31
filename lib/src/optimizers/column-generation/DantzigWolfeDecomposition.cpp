@@ -19,6 +19,8 @@ idol::DantzigWolfe::Decomposition::Decomposition(const Decomposition& t_src)
     : OptimizerFactoryWithDefaultParameters<Decomposition>(t_src),
       m_decomposition(t_src.m_decomposition),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
+      m_max_parallel_sub_problems(t_src.m_max_parallel_sub_problems),
+      m_use_hard_branching(t_src.m_use_hard_branching),
       m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
       m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
       m_sub_problem_specs(t_src.m_sub_problem_specs)
@@ -44,7 +46,8 @@ idol::Optimizer *idol::DantzigWolfe::Decomposition::operator()(const Model &t_mo
     return new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
-                                                     m_max_parallel_pricing.has_value() ? m_max_parallel_pricing.value() : 1,
+                                                     m_max_parallel_sub_problems.has_value() ? m_max_parallel_sub_problems.value() : 1,
+                                                     m_use_hard_branching.has_value() && m_use_hard_branching.value(),
                                                      std::move(sub_problems_specifications),
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy
                                                      );
@@ -151,6 +154,29 @@ idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_infea
     }
 
     m_infeasibility_strategy.reset(t_strategy.clone());
+
+    return *this;
+}
+
+idol::DantzigWolfe::Decomposition &idol::DantzigWolfe::Decomposition::with_hard_branching(bool t_value) {
+
+    if (m_use_hard_branching.has_value()) {
+        throw Exception("Hard branching has already been configured.");
+    }
+
+    m_use_hard_branching = t_value;
+
+    return *this;
+}
+
+idol::DantzigWolfe::Decomposition &
+idol::DantzigWolfe::Decomposition::with_max_parallel_sub_problems(unsigned int t_n_sub_problems) {
+
+    if (m_max_parallel_sub_problems.has_value()) {
+        throw Exception("Maximum number of parallel sub-problems has already been configured.");
+    }
+
+    m_max_parallel_sub_problems = t_n_sub_problems;
 
     return *this;
 }

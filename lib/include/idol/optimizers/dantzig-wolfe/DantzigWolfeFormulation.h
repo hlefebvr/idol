@@ -24,6 +24,9 @@ class idol::DantzigWolfe::Formulation {
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
 
+    Map<Var, Ctr> m_soft_branching_lower_bound_constraints;
+    Map<Var, Ctr> m_soft_branching_upper_bound_constraints;
+
     unsigned int compute_n_sub_problems(const Model& t_original_formulation);
     void set_decomposition_by_var(const Model& t_original_formulation);
     void initialize_sub_problems(unsigned int t_n_sub_problems);
@@ -35,6 +38,9 @@ class idol::DantzigWolfe::Formulation {
     void dispatch_linking_constraint(const Ctr& t_original_ctr, const Row& t_row, CtrType t_type);
     std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear, const QuadExpr<Var, Var>& t_quadratic);
     void dispatch_objective_function(const Model& t_original_formulation);
+
+    void apply_sub_problem_bound_on_master(bool t_is_lb, const idol::Var &t_var, unsigned int t_sub_problem_id, double t_value);
+    LinExpr<Var> reformulate_sub_problem_variable(const Var &t_var, unsigned int t_sub_problem_id);
 public:
     Formulation(const Model& t_original_formulation, Annotation<Ctr, unsigned int> t_decomposition);
 
@@ -64,6 +70,12 @@ public:
     double compute_reduced_cost(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, const Solution::Primal& t_generator);
 
     double get_original_space_var_primal(const Var& t_var, const Solution::Primal& t_master_primal) const;
+
+    void update_var_lb(const Var& t_var, double t_lb, bool t_hard);
+
+    void update_var_ub(const Var& t_var, double t_ub, bool t_hard);
+
+    void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal);
 };
 
 #endif //IDOL_DANTZIGWOLFEFORMULATION_H

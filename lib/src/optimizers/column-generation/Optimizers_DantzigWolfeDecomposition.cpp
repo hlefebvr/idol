@@ -2,18 +2,19 @@
 // Created by henri on 31.10.23.
 //
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
-#include "idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_model,
                                                                        idol::DantzigWolfe::Formulation &&t_formulation,
                                                                        const OptimizerFactory& t_master_optimizer_factory,
                                                                        unsigned int t_max_parallel_pricing,
+                                                                       bool t_use_hard_branching,
                                                                        std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
                                                                        const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy)
     : Algorithm(t_model),
       m_formulation(std::move(t_formulation)),
       m_master_optimizer_factory(t_master_optimizer_factory.clone()),
       m_max_parallel_pricing(t_max_parallel_pricing),
+      m_use_hard_branching(t_use_hard_branching),
       m_sub_problem_specifications(std::move(t_sub_problem_specifications)),
       m_strategy(t_strategy())
 {
@@ -151,11 +152,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_var_type(const idol::Va
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_lb(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_lb");
+    m_formulation.update_var_lb(t_var, parent().get_var_lb(t_var), m_use_hard_branching);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_ub(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_ub");
+    m_formulation.update_var_ub(t_var, parent().get_var_ub(t_var), m_use_hard_branching);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_obj(const idol::Var &t_var) {
