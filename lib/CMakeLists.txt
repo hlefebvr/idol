@@ -179,12 +179,17 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/MinKnap/Optimizers_MinKnap.h
         src/optimizers/wrappers/MinKnap/MinKnap.cpp
         src/optimizers/wrappers/MinKnap/Optimizers_MinKnap.cpp
-        include/idol/optimizers/column-generation/DantzigWolfeRelaxation.h
-        src/optimizers/column-generation/DantzigWolfeRelaxation.cpp
-        include/idol/optimizers/column-generation/DantzigWolfeSubProblem.h
+        include/idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h
+        src/optimizers/column-generation/DantzigWolfeDecomposition.cpp
+        include/idol/optimizers/dantzig-wolfe/DantzigWolfeSubProblem.h
         src/optimizers/column-generation/DantzigWolfeSubProblem.cpp
-        include/idol/optimizers/column-generation/DantzigWolfeFormulation.h
+        include/idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h
         src/optimizers/column-generation/DantzigWolfeFormulation.cpp
+        include/idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
+        src/optimizers/column-generation/Optimizers_DantzigWolfeDecomposition.cpp
+        include/idol/optimizers/dantzig-wolfe/DantzigWolfeFeasibilityPhase.h
+        include/idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h
+        src/optimizers/column-generation/column-generation/ColumnGeneration.cpp
 )
 
 find_package(OpenMP REQUIRED)

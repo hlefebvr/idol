@@ -544,7 +544,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::analyze(const BranchAndBoun
         return;
     }
 
-    if (status == Fail) {
+    if (status == Fail || status == Loaded) {
 
         /*
         if (m_n_postponed_nodes < m_max_postponed_nodes) {

@@ -9,7 +9,7 @@
 #include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "idol/optimizers/column-generation/DantzigWolfeRelaxation.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 
 using namespace idol;
 
@@ -51,13 +51,14 @@ int main(int t_argc, char** t_argv) {
     // Set optimizer
     model.use(BranchAndBound()
                       .with_node_optimizer(
-                              DantzigWolfe::Relaxation(decomposition)
-                                    .with_master_optimizer(HiGHS())
+                              DantzigWolfe::Decomposition(decomposition)
+                                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
                                     .with_default_sub_problem_spec(
                                             DantzigWolfe::SubProblem()
-                                                          .with_exact_optimizer(HiGHS())
+                                                          .add_optimizer(HiGHS())
                                                           .with_multiplicities(0, 1)
                                       )
+                                    // .with_feasibility_phase_strategy(DantzigWolfe::ArtificialCosts())
                                     .with_log_level(Info, Yellow)
                       )
                       .with_subtree_depth(0)

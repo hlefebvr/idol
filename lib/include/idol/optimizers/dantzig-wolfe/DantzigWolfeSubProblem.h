@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include "idol/optimizers/OptimizerFactory.h"
+#include "idol/containers/IteratorForward.h"
 
 namespace idol::DantzigWolfe {
     class SubProblem;
@@ -18,8 +19,7 @@ class idol::DantzigWolfe::SubProblem {
     std::optional<double> m_lower_multiplicity;
     std::optional<double> m_upper_multiplicity;
 
-    std::list<std::unique_ptr<OptimizerFactory>> m_heuristic_optimizer_factories;
-    std::unique_ptr<OptimizerFactory> m_exact_optimizer_factory;
+    std::list<std::unique_ptr<OptimizerFactory>> m_phase_optimizers;
 
     std::optional<unsigned int> m_max_column_per_pricing;
 public:
@@ -37,15 +37,17 @@ public:
 
     SubProblem& with_upper_multiplicity(double t_upper);
 
-    SubProblem& add_heuristic_optimizer(const OptimizerFactory& t_heuristic_optimizer);
-
-    SubProblem& with_exact_optimizer(const OptimizerFactory &t_exact_optimizer);
+    SubProblem& add_optimizer(const OptimizerFactory &t_optimizer);
 
     SubProblem& with_max_column_per_pricing(unsigned int t_n_columns);
 
     double lower_multiplicity() const;
 
     double upper_multiplicity() const;
+
+    using PhaseId = std::list<std::unique_ptr<OptimizerFactory>>::const_iterator;
+
+    auto phases() const { return ConstIteratorForward(m_phase_optimizers); }
 };
 
 #endif //IDOL_DANTZIGWOLFESUBPROBLEM_H

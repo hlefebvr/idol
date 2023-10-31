@@ -3,7 +3,7 @@
 //
 #include <utility>
 
-#include "idol/optimizers/column-generation/DantzigWolfeFormulation.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h"
 #include "idol/modeling/objects/Env.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
@@ -264,5 +264,104 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
     Ctr upper(env, LessOrEqual, t_upper_multiplicity);
     m_master.add(upper);
     m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
+
+}
+
+void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
+                                                      const idol::Solution::Primal &t_generator) {
+
+    auto alpha = m_master.add_var(0.,
+                                Inf,
+                                Continuous,
+                                m_generation_patterns[t_sub_problem_id].fix(t_generator)
+                                );
+
+    // TODO add generator to pool
+    // TODO add to present generator
+
+}
+
+double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_problem_id,
+                                                             const idol::Solution::Dual &t_master_dual,
+                                                             const idol::Solution::Primal &t_generator) {
+
+    double result = 0.;
+
+    const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
+
+    for (const auto &[ctr, constant] : generation_pattern.linear()) {
+        result += constant.numerical() * -t_master_dual.get(ctr);
+        for (const auto &[param, coefficient] : constant.linear()) {
+            result += -t_master_dual.get(ctr) * coefficient * t_generator.get(param.as<Var>());
+        }
+        for (const auto &[pair, coefficient] : constant.quadratic()) {
+            result += -t_master_dual.get(ctr) * coefficient * t_generator.get(pair.first.as<Var>()) * t_generator.get(pair.second.as<Var>());
+        }
+    }
+
+    for (const auto &[param, coefficient] : generation_pattern.obj().linear()) {
+        result += coefficient * t_generator.get(param.as<Var>());
+    }
+
+    for (const auto &[pair, coefficient] : generation_pattern.obj().quadratic()) {
+        result += coefficient * t_generator.get(pair.first.as<Var>()) * t_generator.get(pair.second.as<Var>());
+    }
+
+    return result;
+
+}
+
+void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int t_sub_problem_id,
+                                                                   const idol::Solution::Dual &t_master_dual,
+                                                                   bool t_use_farkas) {
+
+    Expr<Var, Var> objective;
+
+    const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
+
+    for (const auto &[ctr, constant] : generation_pattern.linear()) {
+
+        objective += constant.numerical() * -t_master_dual.get(ctr);
+
+        for (const auto &[param, coefficient] : constant.linear()) {
+
+            const double cost = -t_master_dual.get(ctr) * coefficient;
+            if (!equals(cost, 0., Tolerance::Sparsity)) {
+                objective += cost * param.as<Var>();
+            }
+
+        }
+
+        for (const auto &[pair, coefficient] : constant.quadratic()) {
+
+            const double cost = -t_master_dual.get(ctr) * coefficient;
+            if (!equals(cost, 0., Tolerance::Sparsity)) {
+                objective += cost * pair.first.as<Var>() * pair.second.as<Var>();
+            }
+
+        }
+    }
+
+    if (!t_use_farkas) {
+
+        for (const auto &[param, coefficient] : generation_pattern.obj().linear()) {
+
+            if (!equals(coefficient, 0., Tolerance::Sparsity)) {
+                objective += coefficient * param.as<Var>();
+            }
+
+        }
+
+        for (const auto &[pair, coefficient] : generation_pattern.obj().quadratic()) {
+
+            if (!equals(coefficient, 0., Tolerance::Sparsity)) {
+                objective += coefficient * pair.first.as<Var>() * pair.second.as<Var>();
+            }
+
+        }
+
+    }
+
+    m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
 
 }

@@ -31,6 +31,15 @@ class idol::DantzigWolfe::Formulation {
 public:
     Formulation(const Model& t_original_formulation, Annotation<Ctr, unsigned int> t_decomposition);
 
+    Model& master() { return m_master; }
+    const Model& master() const { return m_master; }
+
+    auto sub_problems() { return IteratorForward(m_sub_problems); }
+    auto sub_problems() const { return ConstIteratorForward(m_sub_problems); }
+
+    Model& sub_problem(unsigned int t_id) { return m_sub_problems[t_id]; }
+    const Model& sub_problem(unsigned int t_id) const { return m_sub_problems[t_id]; }
+
     Model& get_model(const Var& t_var);
     const Model& get_model(const Var& t_var) const;
 
@@ -40,6 +49,12 @@ public:
     unsigned int n_sub_problems() const { return m_sub_problems.size(); }
 
     void add_aggregation_constraint(unsigned int t_sub_problem_id, double t_lower_multiplicity, double t_upper_multiplicity);
+
+    void update_sub_problem_objective(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, bool t_use_farkas = false);
+
+    void generate_column(unsigned int t_sub_problem_id, const Solution::Primal& t_generator);
+
+    double compute_reduced_cost(unsigned int t_sub_problem_id, const Solution::Dual& t_master_dual, const Solution::Primal& t_generator);
 };
 
 #endif //IDOL_DANTZIGWOLFEFORMULATION_H

@@ -5,6 +5,7 @@
 #include "idol/optimizers/archive/dantzig-wolfe/Optimizers_ArchivedDantzigWolfeDecomposition.h"
 #include "idol/modeling//objects/Versions.h"
 #include "idol/modeling//expressions/operations/operators.h"
+#include "idol/optimizers/Optimizer.h"
 
 idol::Optimizers::ArchivedDantzigWolfeDecomposition::ArchivedDantzigWolfeDecomposition(const Model& t_original_formulation,
                                                                                        const Annotation<Ctr, unsigned int>& t_constraint_flag,

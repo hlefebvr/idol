@@ -2,8 +2,8 @@
 // Created by henri on 24/03/23.
 //
 
-#ifndef IDOL_OPTIMIZERS_COLUMNGENERATION_H
-#define IDOL_OPTIMIZERS_COLUMNGENERATION_H
+#ifndef IDOL_ARCHIVED_COLUMNGENERATION_H
+#define IDOL_ARCHIVED_COLUMNGENERATION_H
 
 #include "idol/optimizers/Algorithm.h"
 #include "idol/modeling/models/Model.h"
@@ -23,7 +23,7 @@ public:
                              const std::vector<Model *> &t_subproblems,
                              std::vector<Column> t_generation_patterns);
 
-    [[nodiscard]] std::string name() const override { return "column-generation"; }
+    [[nodiscard]] std::string name() const override { return "dantzig-wolfe"; }
 
     [[nodiscard]] const Model& master() const { return *m_master; }
 
@@ -188,4 +188,4 @@ public:
     [[nodiscard]] unsigned int index() const { return m_index; }
 };
 
-#endif //IDOL_OPTIMIZERS_COLUMNGENERATION_H
+#endif //IDOL_ARCHIVED_COLUMNGENERATION_H

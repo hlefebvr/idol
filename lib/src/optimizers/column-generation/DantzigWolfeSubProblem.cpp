@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/column-generation/DantzigWolfeSubProblem.h"
+#include "idol/optimizers/dantzig-wolfe/DantzigWolfeSubProblem.h"
 
 idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::SubProblem::with_multiplicities(double t_lower, double t_upper) {
 
@@ -36,21 +36,9 @@ idol::DantzigWolfe::SubProblem::with_upper_multiplicity(double t_upper) {
 }
 
 idol::DantzigWolfe::SubProblem &
-idol::DantzigWolfe::SubProblem::add_heuristic_optimizer(const idol::OptimizerFactory &t_heuristic_optimizer) {
+idol::DantzigWolfe::SubProblem::add_optimizer(const OptimizerFactory &t_optimizer) {
 
-    m_heuristic_optimizer_factories.emplace_back(t_heuristic_optimizer.clone());
-
-    return *this;
-}
-
-idol::DantzigWolfe::SubProblem &
-idol::DantzigWolfe::SubProblem::with_exact_optimizer(const OptimizerFactory &t_exact_optimizer) {
-
-    if (m_exact_optimizer_factory) {
-        throw Exception("An exact optimizer factory has already been configured.");
-    }
-
-    m_exact_optimizer_factory.reset(t_exact_optimizer.clone());
+    m_phase_optimizers.emplace_back(t_optimizer.clone());
 
     return *this;
 }
@@ -69,12 +57,11 @@ idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::SubProblem::with_max_column_
 idol::DantzigWolfe::SubProblem::SubProblem(const idol::DantzigWolfe::SubProblem &t_src)
     : m_lower_multiplicity(t_src.m_lower_multiplicity),
       m_upper_multiplicity(t_src.m_upper_multiplicity),
-      m_exact_optimizer_factory(t_src.m_exact_optimizer_factory ? t_src.m_exact_optimizer_factory->clone() : nullptr),
       m_max_column_per_pricing(t_src.m_max_column_per_pricing)
 {
 
-    for (auto& ptr_optimizer : t_src.m_heuristic_optimizer_factories) {
-        m_heuristic_optimizer_factories.emplace_back(ptr_optimizer->clone());
+    for (auto& ptr_optimizer : t_src.m_phase_optimizers) {
+        m_phase_optimizers.emplace_back(ptr_optimizer->clone());
     }
 
 }
