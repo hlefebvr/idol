@@ -7,7 +7,7 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
-#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
+#include "idol/optimizers/callbacks/IntegerMaster.h"
 #include "idol/optimizers/callbacks/SimpleRounding.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
@@ -51,23 +51,23 @@ int main(int t_argc, const char** t_argv) {
 
     // Set optimizer
     model.use(BranchAndBound()
-                  .with_node_optimizer(
-                          ArchivedDantzigWolfeDecomposition(decomposition)
-                                  .with_master_optimizer(HiGHS::ContinuousRelaxation())
-                                  .with_pricing_optimizer(HiGHS())
-                                  .with_log_level(Info, Yellow)
-                                  .with_farkas_pricing(true)
-                                  .with_artificial_variables_cost(1e+4)
-                                  .with_branching_on_master(true)
-                                  .with_dual_price_smoothing_stabilization(.3)
-                                  .with_column_pool_clean_up(1e+8, .75)
-                  )
-                .with_subtree_depth(0)
-                .with_branching_rule(MostInfeasible())
-                .with_node_selection_rule(WorstBound())
-                .with_log_level(Info, Blue)
-                .with_log_frequency(1)
-                .with_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS()))
+                      .with_node_optimizer(
+                              ArchivedDantzigWolfeDecomposition(decomposition)
+                                      .with_master_optimizer(HiGHS::ContinuousRelaxation())
+                                      .with_pricing_optimizer(HiGHS())
+                                      .with_log_level(Info, Yellow)
+                                      .with_farkas_pricing(true)
+                                      .with_artificial_variables_cost(1e+4)
+                                      .with_branching_on_master(true)
+                                      .with_dual_price_smoothing_stabilization(.3)
+                                      .with_column_pool_clean_up(1e+8, .75)
+                      )
+                      .with_subtree_depth(0)
+                      .with_branching_rule(MostInfeasible())
+                      .with_node_selection_rule(WorstBound())
+                      .with_log_level(Info, Blue)
+                      .with_log_frequency(1)
+                      .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS()))
             );
 
     // Solve

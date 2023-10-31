@@ -35,6 +35,8 @@ public:
 
     std::string name() const override;
 
+    [[nodiscard]] const DantzigWolfe::Formulation& formulation() const { return m_formulation; }
+
     class ColumnGeneration;
 protected:
     void hook_before_optimize() override;

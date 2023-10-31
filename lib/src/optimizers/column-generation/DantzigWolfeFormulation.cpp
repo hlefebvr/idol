@@ -437,7 +437,7 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
     }
 
     remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
-        //return true;
+        // return true;
         return t_generator.get(t_var) > t_ub;
     });
 
@@ -454,7 +454,6 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
                                                                         const idol::Var &t_var,
                                                                         unsigned int t_sub_problem_id, double t_value) {
 
-
     auto& applied_bounds = t_is_lb ? m_soft_branching_lower_bound_constraints : m_soft_branching_upper_bound_constraints;
     const auto it = applied_bounds.find(t_var);
 
@@ -465,7 +464,7 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
 
         Ctr bound_constraint(m_master.env(), Equal, 0);
 
-        m_master.add(bound_constraint, TempCtr(::idol::Row(expanded, t_value), type));
+        m_master.add(bound_constraint, TempCtr(Row(expanded, t_value), type));
         m_generation_patterns[t_sub_problem_id].linear().set(bound_constraint, !t_var);
 
         applied_bounds.emplace(t_var, bound_constraint);
@@ -504,6 +503,28 @@ void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_proble
         } else {
             ++it;
         }
+    }
+
+}
+
+void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, idol::Var> &t_expr) {
+
+    const unsigned int n_sub_problems = m_sub_problems.size();
+
+    auto [master_part, sub_problem_parts] = decompose_expression(t_expr.linear(), t_expr.quadratic());
+
+    master_part += t_expr.constant();
+
+    m_master.set_obj_expr(std::move(master_part));
+
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+
+        for (const auto& [var, generator] : m_present_generators[i]) {
+            m_master.set_var_obj(var, sub_problem_parts[i].fix(generator));
+        }
+
+        m_generation_patterns[i].set_obj(std::move(sub_problem_parts[i]));
+
     }
 
 }

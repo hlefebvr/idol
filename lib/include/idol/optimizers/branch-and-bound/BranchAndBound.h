@@ -191,7 +191,7 @@ public:
      * @param t_callback the callback factory
      * @return the optimizer factory itself
      */
-    BranchAndBound<NodeT>& with_callback(const BranchAndBoundCallbackFactory<NodeT> & t_callback);
+    BranchAndBound<NodeT>& add_callback(const BranchAndBoundCallbackFactory<NodeT> & t_callback);
 
     /**
      * Adds a (solver independent) callback which will be called by the optimizer.
@@ -222,11 +222,11 @@ idol::BranchAndBound<NodeT>::with_cutting_planes(const CuttingPlaneGenerator &t_
 template<class NodeT>
 idol::BranchAndBound<NodeT> &
 idol::BranchAndBound<NodeT>::with_callback(const CallbackFactory &t_callback) {
-    return with_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
+    return add_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
 }
 
 template<class NodeT>
-idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::add_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
 
     m_callbacks.emplace_back(t_callback.clone());
 

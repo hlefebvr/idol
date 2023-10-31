@@ -50,6 +50,8 @@ public:
     auto sub_problems() { return IteratorForward(m_sub_problems); }
     auto sub_problems() const { return ConstIteratorForward(m_sub_problems); }
 
+    auto present_generators(unsigned int t_id) const { return ConstIteratorForward(m_present_generators[t_id]); }
+
     Model& sub_problem(unsigned int t_id) { return m_sub_problems[t_id]; }
     const Model& sub_problem(unsigned int t_id) const { return m_sub_problems[t_id]; }
 
@@ -76,6 +78,8 @@ public:
     void update_var_ub(const Var& t_var, double t_ub, bool t_hard);
 
     void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal);
+
+    void update_obj(const Expr<Var, Var>& t_expr);
 };
 
 #endif //IDOL_DANTZIGWOLFEFORMULATION_H

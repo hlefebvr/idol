@@ -259,6 +259,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_s
     m_sub_problems_phases.reserve(n_sub_problems);
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         const auto phase = m_parent.m_sub_problem_specifications[i].phases().begin();
+        if (formulation.sub_problem(i).has_optimizer()) { continue; }
         formulation.sub_problem(i).use(**phase);
         m_sub_problems_phases.emplace_back(phase);
     }

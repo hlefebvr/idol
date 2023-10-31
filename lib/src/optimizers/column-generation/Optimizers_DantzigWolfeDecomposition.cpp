@@ -126,7 +126,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_obj_sense() {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_obj() {
-    throw Exception("Not implemented update_obj");
+    m_formulation.update_obj(parent().get_obj_expr());
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_rhs() {

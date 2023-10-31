@@ -1,8 +1,9 @@
 //
 // Created by henri on 30/03/23.
 //
-#include "idol/optimizers/archive/column-generation/IntegerMaster.h"
+#include "idol/optimizers/callbacks/IntegerMaster.h"
 #include "idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h"
+#include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
 idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
@@ -106,10 +107,13 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     }
 
     const auto& relaxation = this->relaxation();
-    const auto& column_generation_optimizer = relaxation.optimizer().as<Optimizers::ArchivedColumnGeneration>();
+    const auto& dantzig_wolfe_optimizer = relaxation.optimizer().as<Optimizers::DantzigWolfeDecomposition>();
     const auto& original_model = this->original_model();
+    const auto& formulation = dantzig_wolfe_optimizer.formulation();
 
-    std::unique_ptr<Model> integer_master(column_generation_optimizer.master().clone());
+    const unsigned int n_sub_problems = formulation.n_sub_problems();
+
+    std::unique_ptr<Model> integer_master(formulation.master().clone());
 
     integer_master->unuse();
 
@@ -121,8 +125,8 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     }
 
     if (m_integer_columns) {
-        for (const auto &subproblem: column_generation_optimizer.subproblems()) {
-            for (const auto &[alpha, generator]: subproblem.present_generators()) {
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            for (const auto &[alpha, generator]: formulation.present_generators(i)) {
                 integer_master->set_var_type(alpha, Binary);
             }
         }
@@ -134,6 +138,8 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     // TODO set bound stop
     integer_master->optimizer().set_param_iteration_limit(m_iteration_limit);
 
+    integer_master->optimize();
+
     const int status = integer_master->get_status();
 
     if (status != Optimal && status != Feasible) {
@@ -143,8 +149,8 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
     auto solution = save_primal(*integer_master);
 
     // search for alpha = 1, add generator to solution
-    for (const auto& subproblem : column_generation_optimizer.subproblems()) {
-        for (const auto &[alpha, generator]: subproblem.present_generators()) {
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        for (const auto &[alpha, generator]: formulation.present_generators(i)) {
             if (solution.get(alpha) > .5) {
                 solution.merge_without_conflict(generator);
                 solution.set(alpha, 0.);

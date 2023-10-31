@@ -120,8 +120,8 @@ add_library(idol STATIC
         src/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/optimizers/archive/column-generation/OptimizerFactoryWithColumnGenerationParameters.h
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
-        include/idol/optimizers/archive/column-generation/IntegerMaster.h
-        src/optimizers/archive/column-generation/IntegerMaster.cpp
+        include/idol/optimizers/callbacks/IntegerMaster.h
+        src/optimizers/callbacks/IntegerMaster.cpp
         src/optimizers/wrappers/gurobi/GurobiCallbackI.cpp
         include/idol/optimizers/callbacks/Callback.h
         src/optimizers/callbacks/Callback.cpp
