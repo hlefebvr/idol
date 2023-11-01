@@ -128,6 +128,11 @@ namespace idol {
     static bool is_integer(double t_value, double t_tolerance) {
         return std::abs(t_value - std::round(t_value)) <= t_tolerance;
     }
+
+    static double round(double t_value, unsigned int t_n_digits = 1) {
+        const double multiplier = std::pow(10, t_n_digits);
+        return std::round(t_value * multiplier) / multiplier;
+    }
 }
 
 #endif //OPTIMIZE_NUMERICALS_H

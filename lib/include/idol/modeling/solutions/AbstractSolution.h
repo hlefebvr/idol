@@ -125,6 +125,8 @@ public:
      */
     CRTP& normalize(double t_p = 2.);
 
+    CRTP& round(unsigned int t_n_digits = 0);
+
     CRTP& operator +=(const CRTP& t_rhs);
     CRTP& operator *=(double t_factor);
 };
@@ -161,6 +163,16 @@ CRTP& idol::AbstractSolution<KeyT, CRTP>::normalize(double t_p) {
 
     for (auto& [key, value] : m_values) {
         value /= scale;
+    }
+
+    return dynamic_cast<CRTP&>(*this);
+}
+
+template<class KeyT, class CRTP>
+CRTP& idol::AbstractSolution<KeyT, CRTP>::round(unsigned int t_n_digits) {
+
+    for (auto& [key, value] : m_values) {
+        value = ::idol::round(value, t_n_digits);
     }
 
     return dynamic_cast<CRTP&>(*this);

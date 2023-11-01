@@ -56,6 +56,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         m_master_primal_solution = save_primal(m_parent.m_formulation.master());
     }
 
+    std::cout << "N cols: " << m_n_generated_columns << std::endl;
+
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_master() {
@@ -214,8 +216,8 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stoppi
 }
 
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::gap_is_closed() const {
-    return relative_gap(m_best_bound, m_best_obj) <= Tolerance::MIPRelativeGap
-           || absolute_gap(m_best_bound, m_best_obj) <= Tolerance::MIPAbsoluteGap;
+    return relative_gap(m_best_bound, m_best_obj) < m_parent.get_tol_mip_relative_gap()
+           || absolute_gap(m_best_bound, m_best_obj) < m_parent.get_tol_mip_absolute_gap();
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_master() {
@@ -240,11 +242,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             }
 
-            m_status = Infeasible;
-            m_reason = Proved;
-            m_is_terminated = true;
-            return;
-
         }
 
         const auto n_solutions = model.get_n_solutions();
@@ -265,6 +262,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         }
 
+    }
+
+    if (m_current_iteration_is_using_farkas && !at_least_one_column_have_been_generated) {
+        m_status = Infeasible;
+        m_reason = Proved;
+        m_is_terminated = true;
+        return;
     }
 
     m_solve_dual_master = at_least_one_column_have_been_generated;

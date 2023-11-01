@@ -47,7 +47,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_optimize() {
     set_status(m_strategy->status());
     set_reason(m_strategy->reason());
     set_best_obj(m_strategy->best_obj());
-    set_best_obj(m_strategy->best_bound());
+    set_best_bound(m_strategy->best_bound());
 
 }
 

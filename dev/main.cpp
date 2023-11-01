@@ -57,7 +57,7 @@ int main(int t_argc, char** t_argv) {
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     bool branching_on_sub_problem = true;
-    double smoothing_factor = .0;
+    double smoothing_factor = .3;
     bool integer_master_heuristic = true;
 
     // Set optimizer

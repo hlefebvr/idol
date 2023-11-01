@@ -150,12 +150,12 @@ bool idol::Constant::is_numerical() const {
 
 double idol::Constant::fix(const Solution::Primal &t_primals) const {
     double result = m_constant;
-    for (const auto& [param, coeff] : m_linear_terms) {
-        result += coeff * t_primals.get(param.as<Var>());
+    for (const auto& [param, coefficient] : m_linear_terms) {
+        result += coefficient * t_primals.get(param.as<Var>());
     }
-    for (const auto& [pair, coeff] : m_quadratic_terms) {
+    for (const auto& [pair, coefficient] : m_quadratic_terms) {
         const auto [param1, param2] = pair;
-        result += coeff * t_primals.get(param1.as<Var>()) * t_primals.get(param2.as<Var>());
+        result += coefficient * t_primals.get(param1.as<Var>()) * t_primals.get(param2.as<Var>());
     }
     return result;
 }
