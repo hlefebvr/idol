@@ -41,6 +41,8 @@ public:
 
     SubProblem& with_max_column_per_pricing(unsigned int t_n_columns);
 
+    unsigned int max_column_per_pricing() const { return m_max_column_per_pricing.has_value() ? m_max_column_per_pricing.value() : 1; }
+
     double lower_multiplicity() const;
 
     double upper_multiplicity() const;

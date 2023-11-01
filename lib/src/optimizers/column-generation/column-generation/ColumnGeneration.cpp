@@ -123,7 +123,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_pr
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_problems() {
 
     bool all_sub_problems_have_optimal_status = true;
-    bool all_sub_problems_are_feasible = true;
     double sum_reduced_costs = 0.;
 
     auto& formulation = m_parent.m_formulation;
@@ -132,6 +131,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
         const auto& model = formulation.sub_problem(i);
         const auto status = model.get_status();
+        const auto reason = model.get_reason();
 
         if (status == Optimal) {
             const double upper_multiplicity = m_parent.m_sub_problem_specifications[i].upper_multiplicity();
@@ -146,14 +146,12 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
             continue;
         }
 
-        all_sub_problems_are_feasible = false;
-
-        if (m_current_iteration_is_using_farkas) {
+        if (status == Unbounded) {
             continue;
         }
 
         m_status = status;
-        m_reason = model.get_reason();
+        m_reason = reason;
         m_is_terminated = true;
         return;
 
@@ -170,7 +168,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         m_parent.m_stabilization->update_stability_center(m_last_master_solution.value());
         m_best_bound = std::min(m_best_obj, iter_lower_bound);
 
-        if (m_best_bound >= m_parent.get_param_best_bound_stop()) {
+        if (m_best_bound > m_parent.get_param_best_bound_stop()) {
             m_reason = ObjLimit;
             m_is_terminated = true;
         }
@@ -221,8 +219,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         if (m_current_iteration_is_using_farkas) {
 
-            if (model.get_best_obj() < -Tolerance::Feasibility) {
-                formulation.generate_column(i, save_primal(model));
+            if (model.get_best_obj() < -1e-4 /* TODO: Tolerance::Feasibility */) {
+                auto generator = save_primal(model);
+                formulation.generate_column(i, std::move(generator));
                 at_least_one_column_have_been_generated = true;
                 ++m_n_generated_columns;
             }
@@ -232,7 +231,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         const auto n_solutions = model.get_n_solutions();
 
-        for (unsigned int k = 0 ; k < n_solutions && k < m_parent.m_max_parallel_pricing ; ++k) {
+        for (unsigned int k = 0 ; k < n_solutions && k < m_parent.m_sub_problem_specifications[i].max_column_per_pricing() ; ++k) {
 
             model.set_solution_index(k);
 
@@ -240,7 +239,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             const double reduced_cost = formulation.compute_reduced_cost(i, m_last_master_solution.value(), generator);
 
-            if (reduced_cost < -Tolerance::Optimality) {
+            if (reduced_cost < 0 /* TODO -Tolerance::Optimality */) {
                 formulation.generate_column(i, std::move(generator));
                 at_least_one_column_have_been_generated = true;
                 ++m_n_generated_columns;
