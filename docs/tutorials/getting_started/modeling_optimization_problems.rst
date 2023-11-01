@@ -80,7 +80,7 @@ will create a new variable, called "x", which is continuous and non-negative.
 
     model.add(x); // Variable x is added to the model
 
-A more straightforward way of creating variables is by directly calling the method ``add_var`` of the ``Model`` class.
+A more straightforward way of creating variables is by directly calling the ``add_var`` method of the ``Model`` class.
 For instance, the following piece of code is equivalent to the previous one.
 
 .. code-block:: cpp
@@ -131,7 +131,7 @@ See for instance.
     model.add(x_1);
     model.add(constraint);
 
-A more compact of this code is obtained by making use of the ``Model::add_vars`` and ``Model::add_ctr`` methods.
+A more compact version of this code is obtained by making use of the ``Model::add_vars`` and ``Model::add_ctr`` methods.
 
 .. code-block:: cpp
 
@@ -207,12 +207,16 @@ Objective function
 
 The objective function of an optimization model can specified by the ``Model::set_obj_expr`` method.
 
-Here is an example which sets the objective function to :math:`-x_0 + 2 * x_1`;
+Here is an example which sets the objective function to :math:`-x_0 + 2 x_1`;
 
 .. code-block::
 
     model.set_obj_expr(-x_0 + 2 * x_1);
 
-In the following tutorial, we will dive into a more practical way to build expressions by considering the simple example
-of the combinatorial Knapsack problem. We will also see how to call an external solver like Gurobi or GLPK using idol.
+What then?
+----------
+
+In the following tutorial, we will dive into even more practical ways of building expressions, considering a simple
+example based on the combinatorial Knapsack problem.
+We will also see how to call an external solver like Gurobi or HiGHS using idol.
 See you there!

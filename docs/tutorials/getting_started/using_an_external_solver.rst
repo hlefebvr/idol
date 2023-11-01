@@ -6,9 +6,9 @@
 Using an external solver
 ========================
 
-In this tutorial, we will see how to use an external optimization solver like GLPK or GLPK to solve
+In this tutorial, we will see how to use an external optimization solver like Gurobi or HiGHS to solve
 a small combinatorial problem.
-The considered problem is the Knapsack Problem (see the `Knapsack Problem wikipedia page <https://en.wikipedia.org/wiki/Knapsack_problem>`_).
+The considered problem is the Knapsack Problem; see the `Knapsack Problem wikipedia page <https://en.wikipedia.org/wiki/Knapsack_problem>`_.
 
 Modeling
 --------
@@ -19,12 +19,12 @@ The first step is to model our problem using idol. Recall the standard model for
 
     \begin{array}{lll}
         \max\  & \displaystyle \sum_{j=1}^n p_jx_j \\
-        \textrm{s.t. } & \displaystyle \sum_{j=1}^n w_jx_j \le W \\
-        & x_j \in \{ 0, 1 \} & j=1,...,n
+        \textrm{s.t. } & \displaystyle \sum_{j=1}^n w_jx_j \le W, \\
+        & x_j \in \{ 0, 1 \} & j=1,...,n,
     \end{array}
 
-where :math:`n` denotes the number of items and for each item :math:`j\in\{1,...,n\}`, :math:`p_j` denotes its profit while
-:math:`w_j` denotes its weight. Finally, we let :math:`W` denote the knapsack capacity.
+in which :math:`n` denotes the number of items. For each item :math:`j\in\{1,...,n\}`, :math:`p_j` denotes the profit of
+item while :math:`i` and :math:`w_j` denotes its weight. Finally, we let :math:`W` denote the knapsack capacity.
 
 We will assume to have the following input data at hand.
 
@@ -35,9 +35,9 @@ We will assume to have the following input data at hand.
     const std::vector<double> w = { 2., 3.14, 1.98, 5., 3. }; // weights
     const double W = 10; // capacity
 
-Then, using idol's modeling API contained in :cpp:`#include <api/modeling.h>`, we can create our model easily.
+Then, using idol's modeling API contained in :cpp:`#include <idol/modeling.h>`, we can create our model easily.
 We will first present a naive implementation using only the knowledge introduced in the previous tutorial.
-Then, we will show a more compact way of implementing it.
+Then, we will show a more compact way of implementing it using the :code:`idol_Sum` macro.
 
 A first approach
 ^^^^^^^^^^^^^^^^
@@ -82,8 +82,8 @@ assumed to be minimization problems.
 A more elegant approach
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Though our first approach works well, its size and readability can greatly be reduced by using the predefined macro :cpp:`idol_Sum`
-and calls to methods of the ``Model`` class.
+Though our first approach works well, its size can greatly be reduced while improving readability by using the
+predefined macro :cpp:`idol_Sum` combined with clever calls to  methods of the :code:`Model` class.
 
 .. code-block:: cpp
 
@@ -112,7 +112,9 @@ taking value in the :cpp:`{iteratable}` (here, :cpp:`Range(n)`) while :cpp:`{exp
 .. admonition:: About Range
 
     In the above example, :cpp:`Range` is used to define an iterable ranging from :math:`0` to :math:`n` (note that it is also possible to range from :math:`l` to :math:`n` for :math:`l < n`
-    by calling :cpp:`Range(l, n)`). The objective function is created similarly.
+    by calling :cpp:`Range(l, n)`).
+
+The objective function is created similarly.
 
 Solving the problem using an external solver
 --------------------------------------------
@@ -121,16 +123,17 @@ The idol library offers different ways for solving optimization problems.
 To select the desired approach for a given model, one must call the :cpp:`Model::use` method and specify the
 "optimizer" to be used.
 
-For instance, the following will set the optimizer to GLPK for solving our model.
+For instance, the following will set the optimizer to HiGHS for solving our model.
 
 .. code-block:: cpp
 
-    model.use(GLPK());
+    model.use(HiGHS());
 
 .. hint::
 
-    Here, GLPK is actually an ``OptimizerFactory`` which will eventually create an optimizer to solve our model.
-    Indeed, the “real” optimizer in this case will be an instance of ``Optimizers::GLPK`` which will be created when necessary.
+    Here, HiGHS is actually an ``OptimizerFactory`` which will eventually create an optimizer to solve our model.
+    Indeed, the “real” optimizer in this case will be an instance of ``Optimizers::HiGHS`` which will be created just in
+    time, when necessary.
 
     If you want to learn more about optimizers and optimizer factories, please refer to :ref:`this page <api_optimizers>`.
 
@@ -164,10 +167,10 @@ Finally, you may access pieces of information regarding the solution by using on
         \textrm{absolute_gap} = | \textrm{best_obj} - \textrm{best_bound} |.
 
 * ``get_var_primal`` returns the primal value (when status is ``Optimal`` or ``Feasible``) of a given variable.
-* ``get_var_ray`` returns the ray value (when status ``Unbounded``) of a given variable.
-* ``get_ctr_dual`` returns the dual value (when status is ``Optimal`` or ``Feasible`` for continuous problems) of a given
+* ``get_var_ray`` returns the ray value (when status is ``Unbounded``) of a given variable.
+* ``get_ctr_dual`` returns the dual value (when status is ``Optimal`` or ``Feasible`` and for continuous problems) of a given
   constraint.
-* ``get_ctr_farkas`` returns the Farkas certificate value (when status is ``Infeasible`` for continuous problems) of a given
+* ``get_ctr_farkas`` returns the Farkas certificate value (when status is ``Infeasible`` and for continuous problems) of a given
   constraint.
 
 Additionally, functions ``save_primal``, ``save_ray``, ``save_dual`` and ``save_farkas`` will create objects of the class
@@ -176,11 +179,11 @@ methods.
 
 .. admonition:: Example
 
-    This example shows how to solve a model using GLPK and retrieves some piece of information about its solution.
+    This example shows how to solve a model using HiGHS and retrieves some pieces of information about its solution.
 
     .. code-block::
 
-        model.use(GLPK());
+        model.use(HiGHS());
 
         model.optimize();
 
@@ -198,13 +201,13 @@ methods.
 
             std::cout << "An optimal solution could not be found" << std::endl;
 
-            std::cout << "GLPK returned status " << status << std::endl;
+            std::cout << "HiGHS returned status " << status << std::endl;
 
-            std::cout << "The reason for this status is " << get_reason(model) << std::endl;
+            std::cout << "The reason for this status is " << model.get_reason() << std::endl;
 
             if (status == Feasible) {
 
-                std::cout << "The optimality gap is " << get_relative_gap(model) * 100 << " %" << std::endl;
+                std::cout << "The optimality gap is " << model.get_relative_gap() * 100 << " %" << std::endl;
 
             } else if (status == Unbounded) {
 
