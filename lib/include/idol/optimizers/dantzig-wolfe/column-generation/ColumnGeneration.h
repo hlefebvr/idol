@@ -18,7 +18,7 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;
 
-    bool m_use_farkas_for_infeasibility = true;
+    const bool m_use_farkas_for_infeasibility;
     unsigned int m_iteration_count = 0;
     unsigned int m_n_generated_columns = 0;
     bool m_solve_dual_master = false;
