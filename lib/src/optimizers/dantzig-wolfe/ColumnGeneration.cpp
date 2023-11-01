@@ -32,8 +32,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
 
     while (true) {
 
-        std::cout << m_iteration_count << ", " << m_best_bound << ", " << m_best_obj << ", " << m_current_iteration_is_using_farkas << std::endl;
-
         if (m_solve_dual_master) { solve_dual_master(); }
 
         ++m_iteration_count;
@@ -57,8 +55,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     if (m_status == Feasible || m_status == Optimal) {
         m_master_primal_solution = save_primal(m_parent.m_formulation.master());
     }
-
-    std::cout << "N cols: " << m_n_generated_columns << std::endl;
 
 }
 
@@ -99,7 +95,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     m_last_master_solution.reset();
 
-    std::cout << "master is " << m_status << std::endl;
     m_is_terminated = true;
 
 }
@@ -140,8 +135,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         const auto status = model.get_status();
         const auto reason = model.get_reason();
 
-        std::cout << "SP " << i << " is " << status << std::endl;
-
         if (status == Optimal) {
             const double upper_multiplicity = m_parent.m_sub_problem_specifications[i].upper_multiplicity();
             const double objective_value = model.get_best_obj();
@@ -162,7 +155,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
         m_status = status;
         m_reason = reason;
         m_is_terminated = true;
-        std::cout << "terminate for SP is " << m_status << std::endl;
         return;
 
     }
@@ -185,31 +177,26 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stopping_criterion() {
 
     if (m_is_terminated) {
-        std::cout << "is terminated" << std::endl;
         return true;
     }
 
     if (gap_is_closed()) {
-        std::cout << "gap is closed" << std::endl;
         m_status = Optimal;
         m_reason = Proved;
         return true;
     }
 
     if (m_parent.get_remaining_time() <= 0) {
-        std::cout << "no more time" << std::endl;
         m_reason = TimeLimit;
         return true;
     }
 
     if (m_iteration_count >= m_parent.get_param_iteration_limit()) {
-        std::cout << "iteration count" << std::endl;
         m_reason = IterLimit;
         return true;
     }
 
     if (m_best_bound > m_parent.get_param_best_bound_stop()) {
-        std::cout << "terminate for ObjLimit" << std::endl;
         m_reason = ObjLimit;
         return true;
     }
