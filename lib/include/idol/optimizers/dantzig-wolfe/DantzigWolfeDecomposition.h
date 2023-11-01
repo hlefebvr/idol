@@ -7,9 +7,9 @@
 
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/annotations/Annotation.h"
-#include "DantzigWolfeSubProblem.h"
+#include "SubProblem.h"
 #include "idol/containers/Map.h"
-#include "DantzigWolfeFormulation.h"
+#include "Formulation.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"
 

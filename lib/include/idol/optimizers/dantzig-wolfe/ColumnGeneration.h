@@ -5,7 +5,7 @@
 #ifndef IDOL_COLUMNGENERATION_H
 #define IDOL_COLUMNGENERATION_H
 
-#include "../Optimizers_DantzigWolfeDecomposition.h"
+#include "Optimizers_DantzigWolfeDecomposition.h"
 
 class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     DantzigWolfeDecomposition& m_parent;
@@ -33,6 +33,7 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void solve_sub_problems_in_parallel();
     void analyze_sub_problems();
     void enrich_master();
+    void pool_clean_up();
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility);
 

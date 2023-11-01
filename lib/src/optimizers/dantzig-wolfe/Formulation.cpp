@@ -3,7 +3,7 @@
 //
 #include <utility>
 
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h"
+#include "idol/optimizers/dantzig-wolfe/Formulation.h"
 #include "idol/modeling/objects/Env.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
@@ -524,6 +524,52 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, ido
         }
 
         m_generation_patterns[i].set_obj(std::move(sub_problem_parts[i]));
+
+    }
+
+}
+
+void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio) {
+
+    auto& pool = m_pools[t_sub_problem_id];
+    auto& present_generators = m_present_generators[t_sub_problem_id];
+    const auto n_to_remove = (unsigned int) (pool.size() * (1 - t_ratio));
+    unsigned int n_removed = 0;
+
+    present_generators.clear();
+
+    for (auto it = pool.values().begin(), end = pool.values().end() ; it != end ; ) {
+
+        const bool is_already_in_master = m_master.has(it->first);
+        const bool done_removing = n_removed >= n_to_remove;
+
+        if (done_removing) {
+
+            if (is_already_in_master) {
+                present_generators.emplace_back(it->first, it->second);
+            }
+
+            ++it;
+            continue;
+
+        }
+
+        if (is_already_in_master) {
+
+            if (m_master.get_var_primal(it->first) > 0) {
+
+                present_generators.emplace_back(it->first, it->second);
+                ++it;
+                continue;
+
+            }
+
+            m_master.remove(it->first);
+
+        }
+
+        it = pool.erase(it);
+        ++n_removed;
 
     }
 

@@ -6,8 +6,8 @@
 #define IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H
 
 #include "idol/optimizers/Algorithm.h"
-#include "DantzigWolfeFormulation.h"
-#include "DantzigWolfeSubProblem.h"
+#include "Formulation.h"
+#include "SubProblem.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"
 

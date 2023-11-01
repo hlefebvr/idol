@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h"
+#include "idol/optimizers/dantzig-wolfe/ColumnGeneration.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent,
                                                                                 bool t_use_farkas_for_infeasibility)
@@ -49,6 +49,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         if (check_stopping_criterion()) { break; }
 
         enrich_master();
+
+        pool_clean_up();
 
     }
 
@@ -289,6 +291,22 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_s
         if (formulation.sub_problem(i).has_optimizer()) { continue; }
         formulation.sub_problem(i).use(**phase);
         m_sub_problems_phases.emplace_back(phase);
+    }
+
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_up() {
+
+    auto& formulation = m_parent.m_formulation;
+    unsigned int n_sub_problems = formulation.n_sub_problems();
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        const auto& sub_problem_specifications = m_parent.m_sub_problem_specifications[i];
+        const auto& column_pool = formulation.column_pool(i);
+        const unsigned int threshold = sub_problem_specifications.column_pool_clean_up_threshold();
+        if (column_pool.size() >= threshold) {
+            const double ratio = sub_problem_specifications.column_pool_clean_up_ratio();
+            formulation.clean_up(i, ratio);
+        }
     }
 
 }

@@ -180,19 +180,19 @@ add_library(idol STATIC
         src/optimizers/wrappers/MinKnap/MinKnap.cpp
         src/optimizers/wrappers/MinKnap/Optimizers_MinKnap.cpp
         include/idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h
-        src/optimizers/column-generation/DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/dantzig-wolfe/DantzigWolfeSubProblem.h
-        src/optimizers/column-generation/DantzigWolfeSubProblem.cpp
-        include/idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h
-        src/optimizers/column-generation/DantzigWolfeFormulation.cpp
+        src/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.cpp
+        include/idol/optimizers/dantzig-wolfe/SubProblem.h
+        src/optimizers/dantzig-wolfe/SubProblem.cpp
+        include/idol/optimizers/dantzig-wolfe/Formulation.h
+        src/optimizers/dantzig-wolfe/Formulation.cpp
         include/idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
-        src/optimizers/column-generation/Optimizers_DantzigWolfeDecomposition.cpp
+        src/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
         include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h
-        include/idol/optimizers/dantzig-wolfe/column-generation/ColumnGeneration.h
-        src/optimizers/column-generation/column-generation/ColumnGeneration.cpp
+        include/idol/optimizers/dantzig-wolfe/ColumnGeneration.h
+        src/optimizers/dantzig-wolfe/ColumnGeneration.cpp
         include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
-        src/optimizers/column-generation/infeasibility-strategies/FarkasPricing.cpp
-        src/optimizers/column-generation/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
+        src/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.cpp
+        src/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
         include/idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
         include/idol/optimizers/dantzig-wolfe/stabilization/Neame.h
         include/idol/optimizers/dantzig-wolfe/stabilization/Wentges.h

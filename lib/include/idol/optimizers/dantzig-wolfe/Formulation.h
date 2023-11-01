@@ -2,8 +2,8 @@
 // Created by henri on 31.10.23.
 //
 
-#ifndef IDOL_DANTZIGWOLFEFORMULATION_H
-#define IDOL_DANTZIGWOLFEFORMULATION_H
+#ifndef IDOL_FORMULATION_H
+#define IDOL_FORMULATION_H
 
 #include "idol/modeling/models/Model.h"
 #include "idol/containers/GeneratorPool.h"
@@ -61,6 +61,8 @@ public:
     Model& get_model(const Ctr& t_ctr);
     const Model& get_model(const Ctr& t_ctr) const;
 
+    const GeneratorPool<Var>& column_pool(unsigned int t_sub_problem_id) const { return m_pools[t_sub_problem_id]; }
+
     unsigned int n_sub_problems() const { return m_sub_problems.size(); }
 
     void add_aggregation_constraint(unsigned int t_sub_problem_id, double t_lower_multiplicity, double t_upper_multiplicity);
@@ -80,6 +82,8 @@ public:
     void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal);
 
     void update_obj(const Expr<Var, Var>& t_expr);
+
+    void clean_up(unsigned int t_sub_problem_id, double t_ratio);
 };
 
-#endif //IDOL_DANTZIGWOLFEFORMULATION_H
+#endif //IDOL_FORMULATION_H

@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeFormulation.h"
+#include "idol/optimizers/dantzig-wolfe/Formulation.h"
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"

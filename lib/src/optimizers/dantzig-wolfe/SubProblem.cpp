@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeSubProblem.h"
+#include "idol/optimizers/dantzig-wolfe/SubProblem.h"
 
 idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::SubProblem::with_multiplicities(double t_lower, double t_upper) {
 
@@ -72,4 +72,34 @@ double idol::DantzigWolfe::SubProblem::lower_multiplicity() const {
 
 double idol::DantzigWolfe::SubProblem::upper_multiplicity() const {
     return m_upper_multiplicity.has_value() ? m_upper_multiplicity.value() : 1.;
+}
+
+idol::DantzigWolfe::SubProblem &
+idol::DantzigWolfe::SubProblem::with_column_pool_clean_up(unsigned int t_threshold, double t_ratio) {
+
+    if (m_column_pool_clean_up_parameters.has_value()) {
+        throw Exception("Column pool clean up has already been configured.");
+    }
+
+    m_column_pool_clean_up_parameters = { t_threshold, t_ratio };
+
+    return *this;
+}
+
+unsigned int idol::DantzigWolfe::SubProblem::column_pool_clean_up_threshold() const {
+
+    if (!m_column_pool_clean_up_parameters.has_value()) {
+        return std::numeric_limits<unsigned int>::max();
+    }
+
+    return m_column_pool_clean_up_parameters.value().first;
+}
+
+double idol::DantzigWolfe::SubProblem::column_pool_clean_up_ratio() const {
+
+    if (!m_column_pool_clean_up_parameters.has_value()) {
+        return .66;
+    }
+
+    return m_column_pool_clean_up_parameters.value().second;
 }
