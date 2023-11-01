@@ -197,6 +197,8 @@ add_library(idol STATIC
         include/idol/optimizers/dantzig-wolfe/stabilization/Neame.h
         include/idol/optimizers/dantzig-wolfe/stabilization/Wentges.h
         include/idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
+        include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
+        src/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
 )
 
 find_package(OpenMP REQUIRED)

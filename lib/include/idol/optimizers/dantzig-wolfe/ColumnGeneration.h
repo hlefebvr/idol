@@ -37,6 +37,10 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility);
 
+    const DantzigWolfeDecomposition& parent() const { return m_parent; }
+
+    DantzigWolfeDecomposition& parent() { return m_parent; }
+
     SolutionStatus status() const { return m_status; }
 
     SolutionReason reason() const { return m_reason; }

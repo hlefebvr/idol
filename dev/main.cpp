@@ -13,6 +13,7 @@
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Wentges.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 
 using namespace idol;
 
@@ -67,7 +68,9 @@ int main(int t_argc, char** t_argv) {
                                       .with_master_optimizer(Gurobi::ContinuousRelaxation())
                                       .with_default_sub_problem_spec(DantzigWolfe::SubProblem().add_optimizer(Gurobi()))
                                       .with_hard_branching(branching_on_sub_problem)
-                                      .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                      .with_infeasibility_strategy(
+                                              DantzigWolfe::ArtificialCosts()
+                                      )
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                                       .with_log_level(Mute, Yellow)
                       )
