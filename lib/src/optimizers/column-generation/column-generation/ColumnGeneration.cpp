@@ -62,12 +62,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     master.optimize();
 
-    m_status = master.get_status();
-    m_reason = master.get_reason();
+    const auto status = master.get_status();
 
     m_current_iteration_is_using_farkas = false;
 
     if (m_status == Optimal || m_status == Feasible) {
+
+        m_status = Feasible;
 
         const double iter_upper_bound = master.get_best_obj();
 
@@ -77,6 +78,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
         return;
     }
+
+    m_status = status;
+    m_reason = master.get_reason();
 
     if (m_status == Infeasible && m_use_farkas_for_infeasibility) {
 
@@ -251,6 +255,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::initialize_sub_problem_phases() {
+
+    // TODO handle phase restart here
 
     auto& formulation = m_parent.m_formulation;
     unsigned int n_sub_problems = formulation.n_sub_problems();

@@ -189,7 +189,6 @@ bool idol::Optimizers::ArchivedColumnGeneration::has_artificial_variable_in_basi
 }
 
 void idol::Optimizers::ArchivedColumnGeneration::run_column_generation() {
-
     do {
 
         if (m_n_generated_columns_at_last_iteration > 0 || m_iteration_count == 0) {
