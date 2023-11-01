@@ -14,6 +14,8 @@ methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
 or any other cutting-edge method, idol is your trusted companion.
 
+![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/refacto_column_generation/docs/branch-and-price-implementation.png)
+
 Visit our [documentation](https://hlefebvr.github.io/idol/) and [benchmark](https://hlefebvr.github.io/idol_benchmark/GAP.render.html).
 
 ## Features
