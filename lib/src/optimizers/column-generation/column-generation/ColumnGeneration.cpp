@@ -230,7 +230,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         if (m_current_iteration_is_using_farkas) {
 
-            if (model.get_best_obj() < -1e-4 /* TODO: Tolerance::Feasibility */) {
+            if (model.get_best_obj() < -Tolerance::Feasibility) {
 
                 auto generator = save_primal(model);
                 formulation.generate_column(i, std::move(generator));
@@ -257,7 +257,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             const double reduced_cost = formulation.compute_reduced_cost(i, m_last_master_solution.value(), generator);
 
-            if (reduced_cost < 0 /* TODO -Tolerance::Optimality */) {
+            if (reduced_cost < -Tolerance::Optimality) {
                 formulation.generate_column(i, std::move(generator));
                 at_least_one_column_have_been_generated = true;
                 ++m_n_generated_columns;
