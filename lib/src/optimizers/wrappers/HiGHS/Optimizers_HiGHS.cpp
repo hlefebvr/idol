@@ -278,14 +278,14 @@ void idol::Optimizers::HiGHS::hook_optimize() {
     delete[] m_farkas_certificate;
     m_farkas_certificate = nullptr;
 
-    m_model.run();
+    auto result = m_model.run();
 
-    analyze_status();
+    analyze_status(result);
 
     if (m_solution_status == Fail) {
         m_model.clearSolver();
-        m_model.run();
-        analyze_status();
+        result = m_model.run();
+        analyze_status(result);
     }
 
     if (get_param_infeasible_or_unbounded_info() && m_solution_status == Unbounded) {
@@ -322,7 +322,13 @@ void idol::Optimizers::HiGHS::hook_optimize() {
 
 }
 
-void idol::Optimizers::HiGHS::analyze_status() {
+void idol::Optimizers::HiGHS::analyze_status(HighsStatus t_status) {
+
+    if (t_status != HighsStatus::kOk) {
+        m_solution_status = Fail;
+        m_solution_reason = NotSpecified;
+        return;
+    }
 
     const auto status = m_model.getModelStatus();
 
@@ -378,8 +384,13 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
         return;
     }
     m_model.setOptionValue("presolve", "off");
-    m_model.run();
+    auto result = m_model.run();
     m_model.setOptionValue("presolve", old_presolve_setting);
+
+    if (result != HighsStatus::kOk) {
+        m_solution_status = Fail;
+        m_solution_reason = NotSpecified;
+    }
 }
 
 void idol::Optimizers::HiGHS::set_param_time_limit(double t_time_limit) {
