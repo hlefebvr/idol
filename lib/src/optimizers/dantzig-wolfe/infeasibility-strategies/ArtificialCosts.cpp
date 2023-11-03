@@ -63,6 +63,10 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
         const auto status = t_column_generation.status();
 
+        if (status == Fail) {
+            break;
+        }
+
         if (status != Optimal) {
             set_status(status);
             set_reason(t_column_generation.reason());
