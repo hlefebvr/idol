@@ -12,6 +12,7 @@
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include <idol/modeling.h>
 #include <idol/problems/generalized-assignment-problem/GAP_Instance.h>
 #include <idol/optimizers/wrappers/GLPK/GLPK.h>
@@ -35,7 +36,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
     const auto integer_master_heuristic = GENERATE(false, true);
-    const auto farkas_pricing = GENERATE(true); // TODO take into accound arg farkas_pricing
+    const auto farkas_pricing = GENERATE(true, false);
     const auto branching_on_sub_problem = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
     const auto subtree_depth = GENERATE(0, 1);
@@ -48,6 +49,11 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
 
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
+
+    std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(farkas_pricing ?
+        (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::FarkasPricing() :
+        (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::ArtificialCosts()
+    );
 
     Model model(env);
 
@@ -83,7 +89,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                             .add_optimizer(OPTIMIZER())
                                     )
                                     .with_hard_branching(branching_on_sub_problem)
-                                    .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                    .with_infeasibility_strategy( *infeasibility_strategy)
                                     .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                                     .clone()
                     )
@@ -103,7 +109,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                             )
                                     )
                                     .with_hard_branching(branching_on_sub_problem)
-                                    .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                    .with_infeasibility_strategy( *infeasibility_strategy)
                                     .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                                     .clone()
                     )
@@ -131,7 +137,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                                     )
                                                                             )
                                                                             .with_hard_branching(branching_on_sub_problem)
-                                                                            .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                                                            .with_infeasibility_strategy( *infeasibility_strategy)
                                                                             .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                                                                             .with_log_level(Mute, Cyan)
                                                             )
@@ -148,7 +154,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                             )
                                     )
                                     .with_hard_branching(branching_on_sub_problem)
-                                    .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                    .with_infeasibility_strategy( *infeasibility_strategy)
                                     .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                                     .with_log_level(Mute, Yellow)
                                     .clone()

@@ -11,8 +11,6 @@ idol::DantzigWolfe::ArtificialCosts::Strategy::Strategy(double t_initial_costs,
       m_update_factor(t_update_factor),
       m_max_updates_before_phase_I(t_max_updates_before_phase_I) {
 
-    std::cout << "WARNING: Artificial costs are not safe to use inside of branch-and-bound because ObjLimit might be triggered because off violation." << std::endl;
-
 }
 
 
@@ -59,11 +57,13 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
     for (unsigned int current_phase = 0 ; current_phase < m_max_updates_before_phase_I ; ++current_phase) {
 
+        std::cout << "**** Phase " << current_phase << std::endl;
+
         t_column_generation.execute();
 
         const auto status = t_column_generation.status();
 
-        if (status == Fail) {
+        if (status == Fail || status == Unbounded || status == InfOrUnbnd) {
             break;
         }
 

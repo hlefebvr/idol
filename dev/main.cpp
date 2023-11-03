@@ -61,19 +61,55 @@ int main(int t_argc, char** t_argv) {
     double smoothing_factor = .3;
     bool integer_master_heuristic = true;
 
+    std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(new DantzigWolfe::ArtificialCosts());
+
+    auto node_solver = std::shared_ptr<OptimizerFactory>(
+            DantzigWolfeDecomposition(nested_decomposition1)
+                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                    .with_default_sub_problem_spec(
+                            DantzigWolfe::SubProblem()
+                                    .add_optimizer(
+                                            BranchAndBound<NodeVarInfo>()
+                                                    .with_node_optimizer(
+                                                            DantzigWolfeDecomposition(nested_decomposition2)
+                                                                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                                                                    .with_default_sub_problem_spec(
+                                                                            DantzigWolfe::SubProblem()
+                                                                                    .add_optimizer(
+                                                                                            BranchAndBound<NodeVarInfo>()
+                                                                                                    .with_node_optimizer(
+                                                                                                            Gurobi::ContinuousRelaxation())
+                                                                                                    .with_branching_rule(MostInfeasible())
+                                                                                                    .with_node_selection_rule(BestBound())
+                                                                                    )
+                                                                    )
+                                                                    .with_hard_branching(branching_on_sub_problem)
+                                                                    .with_infeasibility_strategy( *infeasibility_strategy)
+                                                                    .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
+                                                                    .with_log_level(Mute, Cyan)
+                                                    )
+                                                    .with_branching_rule(MostInfeasible())
+                                                    .with_node_selection_rule(BestBound())
+                                                    .conditional(integer_master_heuristic, [](auto &x) {
+                                                        x.add_callback(
+                                                                Heuristics::IntegerMaster()
+                                                                        .with_optimizer(Gurobi())
+                                                        );
+                                                    })
+                                                    .with_log_level(Mute, Green)
+                                                    .with_log_frequency(1)
+                                    )
+                    )
+                    .with_hard_branching(branching_on_sub_problem)
+                    .with_infeasibility_strategy( *infeasibility_strategy)
+                    .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
+                    .with_log_level(Mute, Yellow)
+                    .clone()
+    );
+
     // Set optimizer
     model.use(BranchAndBound()
-                      .with_node_optimizer(
-                              DantzigWolfeDecomposition(std_decomposition)
-                                      .with_master_optimizer(Gurobi::ContinuousRelaxation())
-                                      .with_default_sub_problem_spec(DantzigWolfe::SubProblem().add_optimizer(Gurobi()))
-                                      .with_hard_branching(branching_on_sub_problem)
-                                      .with_infeasibility_strategy(
-                                              DantzigWolfe::ArtificialCosts()
-                                      )
-                                      .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
-                                      .with_log_level(Mute, Yellow)
-                      )
+                      .with_node_optimizer(*node_solver)
                       .with_subtree_depth(0)
                       .with_branching_rule(MostInfeasible())
                       .with_node_selection_rule(BestBound())

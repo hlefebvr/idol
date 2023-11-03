@@ -28,9 +28,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     initialize_sub_problem_phases();
     m_parent.m_stabilization->initialize();
 
-    if (m_use_farkas_for_infeasibility) {
+    //if (m_use_farkas_for_infeasibility) {
         m_parent.m_formulation.master().optimizer().set_param_infeasible_or_unbounded_info(true);
-    }
+    //}
 
     while (true) {
 
@@ -99,6 +99,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     m_last_master_solution.reset();
 
+    std::cout << "solve dual master " << m_status << std::endl;
     m_is_terminated = true;
 
 }
@@ -158,6 +159,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
         m_status = status;
         m_reason = reason;
+        std::cout << m_status << std::endl;
         m_is_terminated = true;
         return;
 
@@ -181,26 +183,31 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stopping_criterion() {
 
     if (m_is_terminated) {
+        std::cout << "is terminated" << std::endl;
         return true;
     }
 
     if (gap_is_closed()) {
+        std::cout << "gap is closed" << std::endl;
         m_status = Optimal;
         m_reason = Proved;
         return true;
     }
 
     if (m_parent.get_remaining_time() <= 0) {
+        std::cout << "time limit" << std::endl;
         m_reason = TimeLimit;
         return true;
     }
 
     if (m_iteration_count >= m_parent.get_param_iteration_limit()) {
+        std::cout << "iter limit" << std::endl;
         m_reason = IterLimit;
         return true;
     }
 
     if (m_best_bound > m_best_bound_stop) {
+        std::cout << "best bound stop" << std::endl;
         m_reason = ObjLimit;
         return true;
     }
@@ -260,6 +267,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
     if (m_current_iteration_is_using_farkas && !at_least_one_column_have_been_generated) {
         m_status = Infeasible;
         m_reason = Proved;
+        std::cout << "HERE" << std::endl;
         m_is_terminated = true;
         return;
     }
