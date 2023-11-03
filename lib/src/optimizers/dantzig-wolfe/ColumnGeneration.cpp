@@ -4,9 +4,11 @@
 #include "idol/optimizers/dantzig-wolfe/ColumnGeneration.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent,
-                                                                                bool t_use_farkas_for_infeasibility)
+                                                                                bool t_use_farkas_for_infeasibility,
+                                                                                double t_best_bound_stop)
         : m_parent(t_parent),
-          m_use_farkas_for_infeasibility(t_use_farkas_for_infeasibility)
+          m_use_farkas_for_infeasibility(t_use_farkas_for_infeasibility),
+          m_best_bound_stop(t_best_bound_stop)
 {
 
 }
@@ -33,6 +35,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     while (true) {
 
         if (m_solve_dual_master) { solve_dual_master(); }
+
+        log();
 
         ++m_iteration_count;
 
@@ -196,7 +200,7 @@ bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stoppi
         return true;
     }
 
-    if (m_best_bound > m_parent.get_param_best_bound_stop()) {
+    if (m_best_bound > m_best_bound_stop) {
         m_reason = ObjLimit;
         return true;
     }
@@ -295,5 +299,16 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
             formulation.clean_up(i, ratio);
         }
     }
+
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log() {
+
+    std::cout << m_iteration_count << "\t"
+              << m_last_master_solution->objective_value() << "\t"
+              << m_best_bound << "\t"
+              << m_best_obj << "\t"
+              << m_n_generated_columns
+              << std::endl;
 
 }

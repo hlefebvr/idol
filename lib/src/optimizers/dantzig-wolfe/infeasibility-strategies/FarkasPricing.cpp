@@ -6,7 +6,7 @@
 
 void idol::DantzigWolfe::FarkasPricing::Strategy::execute(Optimizers::DantzigWolfeDecomposition &t_parent) {
 
-    Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, true);
+    Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, true, t_parent.get_param_best_bound_stop());
     column_generation.execute();
 
     const auto status = column_generation.status();

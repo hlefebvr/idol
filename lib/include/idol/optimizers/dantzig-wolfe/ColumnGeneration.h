@@ -9,6 +9,7 @@
 
 class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     DantzigWolfeDecomposition& m_parent;
+    double m_best_bound_stop;
 
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
@@ -34,8 +35,10 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void analyze_sub_problems();
     void enrich_master();
     void pool_clean_up();
+
+    void log();
 public:
-    ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility);
+    ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility, double t_best_bound_stop);
 
     const DantzigWolfeDecomposition& parent() const { return m_parent; }
 
@@ -50,6 +53,8 @@ public:
     double best_bound() const { return m_best_bound; }
 
     const Solution::Primal& primal_solution() const { return m_master_primal_solution.value(); }
+
+    void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
 
     void execute();
 };

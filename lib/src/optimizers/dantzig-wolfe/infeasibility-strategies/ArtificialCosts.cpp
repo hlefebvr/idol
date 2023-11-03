@@ -23,7 +23,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigW
     save_objective_function(t_parent.parent());
     create_artificial_variables(formulation);
 
-    Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, false);
+    Optimizers::DantzigWolfeDecomposition::ColumnGeneration column_generation(t_parent, false, Inf);
 
     find_initial_columns(column_generation);
 
@@ -36,6 +36,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::execute(Optimizers::DantzigW
         return;
     }
 
+    column_generation.set_best_bound_stop(t_parent.get_param_best_bound_stop());
     column_generation.execute();
 
     const auto status = column_generation.status();
