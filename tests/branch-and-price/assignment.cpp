@@ -23,6 +23,8 @@
 using namespace Catch::literals;
 using namespace idol;
 
+#define STRING(s) std::string(#s)
+
 TEST_CASE("Solve Generalized Assignment Problem instances with different branch-and-price approaches",
                         "[branch-and-bound][assignment]") {
 
@@ -40,6 +42,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     const auto branching_on_sub_problem = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
     const auto subtree_depth = GENERATE(0, 1);
+    const auto solver_index = GENERATE(0, 1, 2);
 
     const auto instance = read_instance("../data/generalized-assignment-problem/" + filename);
     const unsigned int n_agents = instance.n_agents();
@@ -49,6 +52,10 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
 
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
+
+    if (STRING(OPTIMIZER) == "HiGHS" && !farkas_pricing && solver_index == 2) {
+        SKIP();
+    }
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(farkas_pricing ?
         (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::FarkasPricing() :
@@ -161,8 +168,6 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                     )
             }
     };
-
-    const auto solver_index = GENERATE(0, 1, 2);
 
     model.use(
             BranchAndBound<NodeVarInfo>()

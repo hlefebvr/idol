@@ -113,7 +113,7 @@ namespace idol {
         }
 
         if (equals(t_lb, 0.0, 1e-3) && equals(t_ub, 0.0, 1e-3)) {
-            std::cout << "REL: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << (std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub))) << std::endl;
+            //std::cout << "REL: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << (std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub))) << std::endl;
             //return relative_gap(1 + t_lb, 1 + t_ub);
         }
 
@@ -124,7 +124,7 @@ namespace idol {
         if (is_pos_inf(t_ub) || is_neg_inf(t_lb)) {
             return Inf;
         }
-        std::cout << "ABS: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << std::abs(t_ub - t_lb) << std::endl;
+        //std::cout << "ABS: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << std::abs(t_ub - t_lb) << std::endl;
         return std::abs(t_ub - t_lb);
     }
 
