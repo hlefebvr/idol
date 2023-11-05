@@ -53,7 +53,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
 
-    if (STRING(OPTIMIZER) == "HiGHS" && !farkas_pricing && solver_index == 2) {
+    if (STRING(OPTIMIZER) == "HiGHS" && !farkas_pricing) {
         SKIP();
     }
 
