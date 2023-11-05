@@ -6,7 +6,7 @@
 #define IDOL_NODESELECTIONRULE_H
 
 #include "idol/optimizers/branch-and-bound/nodes/Node.h"
-#include "idol/optimizers/branch-and-bound/NodeSet.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeSet.h"
 
 namespace idol {
     namespace Optimizers {

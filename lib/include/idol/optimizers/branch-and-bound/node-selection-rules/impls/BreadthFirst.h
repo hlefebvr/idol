@@ -6,7 +6,7 @@
 #define IDOL_BREADTHFIRST_IMPL_H
 
 #include "NodeSelectionRule.h"
-#include "idol/optimizers/branch-and-bound/NodeSet.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeSet.h"
 
 namespace idol::NodeSelectionRules {
     template<class NodeT> class BreadthFirst;

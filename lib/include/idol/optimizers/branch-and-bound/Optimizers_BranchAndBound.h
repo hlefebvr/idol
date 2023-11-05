@@ -5,7 +5,7 @@
 #ifndef IDOL_OPTIMIZERS_BRANCHANDBOUND_H
 #define IDOL_OPTIMIZERS_BRANCHANDBOUND_H
 
-#include "NodeSet.h"
+#include "idol/optimizers/branch-and-bound/nodes/NodeSet.h"
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h"
