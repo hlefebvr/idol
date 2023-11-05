@@ -107,6 +107,9 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
                        ctr_indices,
                        ctr_coefficients);
 
+        delete[] ctr_indices;
+        delete[] ctr_coefficients;
+
     } else {
         m_model.addCol(as_numeric(column.obj()),
                        lb,
@@ -185,6 +188,9 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
         default:
             throw std::runtime_error("Unknown constraint type.");
     }
+
+    delete[] var_indices;
+    delete[] var_coefficients;
 
     return index;
 }

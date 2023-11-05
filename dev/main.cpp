@@ -58,7 +58,7 @@ int main(int t_argc, char** t_argv) {
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     bool branching_on_sub_problem = true;
-    double smoothing_factor = .3;
+    double smoothing_factor = .5;
     bool integer_master_heuristic = true;
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(new DantzigWolfe::ArtificialCosts());
@@ -72,13 +72,13 @@ int main(int t_argc, char** t_argv) {
                                             BranchAndBound<NodeVarInfo>()
                                                     .with_node_optimizer(
                                                             DantzigWolfeDecomposition(nested_decomposition2)
-                                                                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                                                                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
                                                                     .with_default_sub_problem_spec(
                                                                             DantzigWolfe::SubProblem()
                                                                                     .add_optimizer(
                                                                                             BranchAndBound<NodeVarInfo>()
                                                                                                     .with_node_optimizer(
-                                                                                                            Gurobi::ContinuousRelaxation())
+                                                                                                            HiGHS::ContinuousRelaxation())
                                                                                                     .with_branching_rule(MostInfeasible())
                                                                                                     .with_node_selection_rule(BestBound())
                                                                                     )
@@ -93,7 +93,7 @@ int main(int t_argc, char** t_argv) {
                                                     .conditional(integer_master_heuristic, [](auto &x) {
                                                         x.add_callback(
                                                                 Heuristics::IntegerMaster()
-                                                                        .with_optimizer(Gurobi())
+                                                                        .with_optimizer(HiGHS())
                                                         );
                                                     })
                                                     .with_log_level(Mute, Green)
