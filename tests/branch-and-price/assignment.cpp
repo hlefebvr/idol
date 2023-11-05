@@ -154,7 +154,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                             .conditional(integer_master_heuristic, [](auto &x) {
                                                                 x.add_callback(
                                                                         Heuristics::IntegerMaster()
-                                                                                .with_optimizer(OPTIMIZER())
+                                                                                .with_optimizer(OPTIMIZER().with_presolve(false))
                                                                 );
                                                             })
                                                             .with_log_level(Mute, Green)
@@ -179,8 +179,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                     .conditional(integer_master_heuristic, [](auto& x){
                         x.add_callback(
                                 Heuristics::IntegerMaster()
-                                        .with_optimizer(OPTIMIZER()
-                                        )
+                                        .with_optimizer(OPTIMIZER().with_presolve(false))
                         );
                     })
                     .with_log_level(Info, Blue)
