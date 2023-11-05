@@ -23,7 +23,11 @@
 using namespace Catch::literals;
 using namespace idol;
 
-#define OPTIMIZER_HIGHS HiGHS
+template<class T>
+bool is_HiGHS() {
+    const std::string name = typeid(T()).name();
+    return name.find("HiGHS") != std::string::npos;
+}
 
 TEST_CASE("Solve Generalized Assignment Problem instances with different branch-and-price approaches",
                         "[branch-and-bound][assignment]") {
@@ -38,7 +42,6 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
             std::make_pair<std::string, double>("GAP_instance2.txt", -40.)
     );
     const auto integer_master_heuristic = GENERATE(false, true);
-    const auto farkas_pricing = GENERATE(true, false);
     const auto branching_on_sub_problem = GENERATE(true, false);
     const double smoothing_factor = GENERATE(0., .3, .5, .8);
     const auto subtree_depth = GENERATE(0, 1);
@@ -53,11 +56,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
 
-#if OPTIMIZER == OPTIMIZER_HIGHS
-    if (!farkas_pricing) {
-        SKIP();
-    }
-#endif
+    const auto farkas_pricing = is_HiGHS<OPTIMIZER>() ? GENERATE(true) : GENERATE(true, false);
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(farkas_pricing ?
         (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::FarkasPricing() :
