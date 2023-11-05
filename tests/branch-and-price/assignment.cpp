@@ -23,7 +23,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-#define STRING(s) std::string(#s)
+#define OPTIMIZER_HIGHS HiGHS
 
 TEST_CASE("Solve Generalized Assignment Problem instances with different branch-and-price approaches",
                         "[branch-and-bound][assignment]") {
@@ -53,9 +53,11 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
 
-    if (STRING(OPTIMIZER) == "HiGHS" && !farkas_pricing) {
+#if OPTIMIZER == OPTIMIZER_HIGHS
+    if (!farkas_pricing) {
         SKIP();
     }
+#endif
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(farkas_pricing ?
         (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::FarkasPricing() :
