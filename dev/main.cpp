@@ -20,7 +20,7 @@ using namespace idol;
 int main(int t_argc, char** t_argv) {
 
 
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance1.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -58,14 +58,14 @@ int main(int t_argc, char** t_argv) {
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
     bool branching_on_sub_problem = true;
-    double smoothing_factor = .5;
+    double smoothing_factor = .0;
     bool integer_master_heuristic = true;
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(new DantzigWolfe::ArtificialCosts());
 
     auto node_solver = std::shared_ptr<OptimizerFactory>(
             DantzigWolfeDecomposition(nested_decomposition1)
-                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
                     .with_default_sub_problem_spec(
                             DantzigWolfe::SubProblem()
                                     .add_optimizer(
