@@ -22,15 +22,16 @@ using an external solver to solve each sub-problem.
 
     A `Benchmark on Generalized Assignemnt Problem <https://hlefebvr.github.io/idol_benchmark/GAP.render.html>`_ is
     available.
-    This includes a comparison with `Coluna.jl <https://github.com/atoptima/Coluna.jl>`_.
 
 Mathematical models
 -------------------
 
 In this section, we assume that the reader is familiar with GAP.
-Let :math:`m` be a given of agents and let :math:`n` be a set of tasks to perform. Let :math:`c_{ij}` be the cost for
-assigning task :math:`j` to agent :math:`i`, :math:`w_{ij}` be the resource consumption of task :math:`j` when performed
-by agent :math:`i` and let :math:`t_i` be the resource capacity of agent :math:`i`.
+Let :math:`m` be the number of agents and let :math:`n` be the number of tasks to be performed.
+
+Let :math:`c_{ij}` be the cost for assigning task :math:`j` to agent :math:`i`, :math:`w_{ij}` be the resource
+consumption of task :math:`j` when performed by agent :math:`i` and let :math:`t_i` be the resource capacity of agent
+:math:`i`.
 
 Direct model
 ^^^^^^^^^^^^
@@ -39,10 +40,10 @@ The Generalized Assignment Problem (GAP) can be modeled as
 
 .. math::
 
-    \min \ & \sum_{i=1}^m\sum_{j=1}^n c_{ij} x_{ij} \\
-    \textrm{s.t. } & \sum_{j=1}^n w_{ij} x_{ij} \le t_i & i=1,...,m \\
-    & \sum_{i=1}^m x_{ij} = 1 & j = 1,...,n \\
-    & x_{ij}\in\{0,1\} & i=1,...,m, j=1,...,n
+    \min_x \quad & \sum_{i=1}^m\sum_{j=1}^n c_{ij} x_{ij} \\
+    \textrm{s.t.} \quad & \sum_{j=1}^n w_{ij} x_{ij} \le t_i & i=1,...,m, \\
+    & \sum_{i=1}^m x_{ij} = 1 & j = 1,...,n, \\
+    & x_{ij}\in\{0,1\} & i=1,...,m, j=1,...,n.
 
 Here, variable :math:`x_{ij}` encodes the assignment decision and equals 1 if and only if task :math:`j` is assigned to
 agent :math:`i`.
@@ -54,19 +55,19 @@ Let us enumerate the list of all feasible assignments, i.e., let
 
 .. math::
 
-    \{\bar x^e_{ij} \}_{e\in E} = \{ x \in \{ 0,1 \}^{mn} : \sum_{j=1}^n w_{ij}x_{ij} \le t_i \quad i=1,...,m \},
+    \{\bar x^e_{ij} \}_{e\in E} = \left\{ x \in \{ 0,1 \}^{mn} : \sum_{j=1}^n w_{ij}x_{ij} \le t_i \quad i=1,...,m \right\},
 
-where :math:`E` denotes a list for their indices. The Dantzig-Wolfe reformulation of GAP reads
+in which :math:`E` denotes a list for their indices. The Dantzig-Wolfe reformulation of GAP reads
 
 .. math::
 
-    \min \ & \sum_{e\in E} \lambda_e\left( \sum_{i=1}^m\sum_{j=1}^n c_{ij}\bar x_{ij}^e \right) \\
-    \textrm{s.t. } & \sum_{e\in E} \lambda_e \left( \sum_{i=1}^m \bar x_{ij}^e \right) = 1 & j=1,...,n \\
-    & \sum_{e\in E} \lambda_e = 1 \\
-    & \lambda_e \in \{ 0, 1 \} & \forall e\in E
+    \min_{\lambda} \quad & \sum_{e\in E} \lambda_e\left( \sum_{i=1}^m\sum_{j=1}^n c_{ij}\bar x_{ij}^e \right) \\
+    \textrm{s.t.} \quad & \sum_{e\in E} \lambda_e \left( \sum_{i=1}^m \bar x_{ij}^e \right) = 1 & j=1,...,n, \\
+    & \sum_{e\in E} \lambda_e = 1, \\
+    & \lambda_e \in \{ 0, 1 \} & \forall e\in E.
 
 Though this model contains an exponential number of variables (i.e., columns) it can be solved efficiently using
-Column Generation and Branch-and-price. In such case, the pricing problem is a Knapsack Problem.
+Column Generation and Branch-and-price. In such a case, the pricing problem is a Knapsack Problem.
 
 Automatic reformulation in idol
 -------------------------------
@@ -124,8 +125,8 @@ Note that annotations are global, i.e., they do not relate to a given optimizati
 
 Every annotation is formed with two template arguments: an optimization object type and a value type. Here, we want to add
 annotations to constraints, thus, the optimization object type must be :code:`Ctr`. The value type can typically be any desired
-type. Here, however, the Dantzig-Wolfe decomposition needs an annotation corresponding to an :code:`unsigned int`. Thus, we create
-the annotation as follows.
+type. Here, however, the Dantzig-Wolfe decomposition needs an annotation corresponding to an :code:`unsigned int` which corresponds
+to the sub-problem index to which the constraint shall be moved to. Thus, we create the annotation as follows.
 
 .. code-block:: cpp
 
@@ -150,7 +151,6 @@ the second constraint to the second pricing problem (id: 1), and so on.
 
 Note that another decomposition would be materialized as follows.
 
-
 .. code:: cpp
 
     for (unsigned int i = 0 ; i < n_agents ; ++i) {
@@ -158,47 +158,62 @@ Note that another decomposition would be materialized as follows.
         capacity.set(decomposition, 0); // <-- Annotating the capacity constraint
     }
 
-Here, all the knapsack constraints are moved to the same pricing problem (id: 0).
+Here, all the knapsack constraints would be moved to the same pricing problem (id: 0).
 
-Decomposing and solving the model
----------------------------------
+Creating our Branch-and-Price algorithm
+---------------------------------------
 
 Now that the desired decomposition has been specified, we can specify the desired optimizer to solve our model.
-Here, we want to solve our problem using a branch-and-price algorithm, i.e., a branch-and-bound algorithm where each relaxation
-in the branch-and-bound tree is solved by a Dantzig-Wolfe decomposition. This is done as follows.
+Here, we want to solve our problem using a Branch-and-Price algorithm, i.e., a Branch-and-Bound algorithm where each node
+in the Branch-and-Bound tree is solved by a Dantzig-Wolfe decomposition.
+
+To begin with, we need to give some specification about how each sub-problem will be solved. In other words, we need
+to specify the optimizer(s) used for pricing during the column generation process. This is done by first creating a
+:code:`DantzigWolfe::SubProblem` object.
 
 .. code:: cpp
 
-    model.use(
-        /* The overall algorithm is a branch-and-bound */
-        BranchAndBound()
+    const auto sub_problem_specifications = DantzigWolfe::SubProblem()
+                                                .add_optimizer(Gurobi());
 
-            /* Each node is solved with a Dantzig-Wolfe decomposition algorithm */
-            .with_node_optimizer(
+Then, we can create our Column Generation algorithm (factory) in the following way.
 
-                /* The annotation "decomposition" is used to automatically decompose the problem */
-                DantzigWolfeDecomposition(decomposition1)
+.. code:: cpp
 
-                    /* The master problem is solved using Gurobi */
-                    .with_master_optimizer(Gurobi::ContinuousRelaxation())
+    const auto column_generation = DantzigWolfeDecomposition(decomposition)
+                                        .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                                        .with_default_sub_problem_spec(sub_problem_specifications);
 
-                    /* Each pricing problem is solved by Gurobi as well */
-                    .with_pricing_optimizer(Gurobi())
+Here, we are solving the relaxed master problem using Gurobi. We also define our default sub-problem specifications to
+be the one we just defined.
 
-            )
+Our remaining task is to embed our Column Generation routine inside of a Branch-and-Bound algorithm.
+This can be done as follows.
 
-            /* Variables are selected for branching using the most-infeasible rule */
-            .with_branching_rule(MostInfeasible())
+.. code:: cpp
 
-            /* Nodes are selected using the best-bound rule */
-            .with_node_selection_rule(BestBound()
+    const auto branch_and_bound = BranchAndBound()
+                                    /* Each node is solved by Column Generation */
+                                    .with_node_optimizer(column_generation)
 
-            /* The algorithm will run with a time limit of 3600 */
-            .with_time_limit(3600)
+                                    /* Variables are selected for branching using the most-infeasible rule */
+                                    .with_branching_rule(MostInfeasible())
+
+                                    /* Nodes are selected using the best-bound rule */
+                                    .with_node_selection_rule(BestBound())
+
+                                    /* The algorithm will run with a time limit of 3600 */
+                                    .with_time_limit(3600)
 
     );
 
-Then, one can simply call the :code:`Model::optimize` method as follows.
+Then, we can tell idol to use this algorithm for solving our model by using the :code:`Model::use` method.
+
+.. code:: cpp
+
+    model.use(branch_and_bound);
+
+Finally, one can simply call the :code:`Model::optimize` method as follows.
 
 .. code:: cpp
 
@@ -206,7 +221,6 @@ Then, one can simply call the :code:`Model::optimize` method as follows.
 
 
 That's it! The problem is being solved by column generation, and possibly branching on fractional variables.
-
 
 .. hint::
 

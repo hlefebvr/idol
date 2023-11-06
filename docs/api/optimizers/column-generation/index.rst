@@ -10,5 +10,4 @@ Table of contents
     :maxdepth: 4
     :glob:
 
-    ColumnGeneration
     DantzigWolfeDecomposition

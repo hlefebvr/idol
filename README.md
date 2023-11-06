@@ -34,8 +34,8 @@ Look at how easy it is to implement a Branch-and-Price algorithm using idol.
 const auto [model, decomposition] = create_model(); // Creates the model with an annotation for automatic decomposition
 
 const auto sub_problem_specifications = 
-          DantzigWolfe::SubProblem()
-            .add_optimizer(Gurobi()); // Each sub-problem will be solved by Gurobi
+        DantzigWolfe::SubProblem()
+          .add_optimizer(Gurobi()); // Each sub-problem will be solved by Gurobi
 
 const auto column_generation = 
         DantzigWolfeDecomposition(decomposition)
