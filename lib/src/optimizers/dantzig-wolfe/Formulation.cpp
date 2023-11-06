@@ -37,12 +37,16 @@ unsigned int idol::DantzigWolfe::Formulation::compute_n_sub_problems(const Model
 
         const unsigned int sub_problem_id = ctr.get(m_decomposition_by_ctr);
 
+        if (sub_problem_id == MasterId) {
+            continue;
+        }
+
         if (!n_sub_problems.has_value()) {
             n_sub_problems = sub_problem_id;
             continue;
         }
 
-        if (sub_problem_id != MasterId && sub_problem_id >= n_sub_problems.value()) {
+        if (sub_problem_id >= n_sub_problems.value()) {
             n_sub_problems = sub_problem_id;
         }
 
