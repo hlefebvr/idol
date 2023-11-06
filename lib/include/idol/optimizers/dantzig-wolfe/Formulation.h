@@ -92,6 +92,8 @@ public:
     void remove(const Var& t_var);
 
     void remove(const Ctr& t_ctr);
+
+    unsigned int get_n_present_generators() const;
 };
 
 #endif //IDOL_FORMULATION_H

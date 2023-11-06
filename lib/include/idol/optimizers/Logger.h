@@ -11,7 +11,7 @@
 #include <iomanip>
 
 // see https://sematext.com/blog/logging-levels/#:~:text=A%20log%20level%20or%20log,look%20at%20the%20severity%20first.
-// for log levels
+// for log_master levels
 
 namespace idol {
 

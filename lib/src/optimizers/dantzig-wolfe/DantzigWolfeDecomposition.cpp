@@ -8,6 +8,7 @@
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
+#include "idol/optimizers/dantzig-wolfe/logs/Debug.h"
 
 idol::OptimizerFactory *idol::DantzigWolfeDecomposition::clone() const {
     return new DantzigWolfeDecomposition(*this);
@@ -25,7 +26,8 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
       m_use_hard_branching(t_src.m_use_hard_branching),
       m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
       m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
-      m_sub_problem_specs(t_src.m_sub_problem_specs)
+      m_sub_problem_specs(t_src.m_sub_problem_specs),
+      m_logger_factory(t_src.m_logger_factory ? t_src.m_logger_factory->clone() : nullptr)
 {}
 
 idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_model) const {
@@ -50,6 +52,11 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         dual_price_smoothing = std::make_unique<DantzigWolfe::NoStabilization>();
     }
 
+    std::unique_ptr<DantzigWolfe::LoggerFactory> logger_factory;
+    if (!m_logger_factory) {
+        logger_factory = std::make_unique<DantzigWolfe::Loggers::Debug>();
+    }
+
     return new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
@@ -57,7 +64,8 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
                                                      m_max_parallel_sub_problems.has_value() ? m_max_parallel_sub_problems.value() : 1,
                                                      m_use_hard_branching.has_value() && m_use_hard_branching.value(),
                                                      std::move(sub_problems_specifications),
-                                                     m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy
+                                                     m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
+                                                     *logger_factory
                                                      );
 }
 
@@ -197,6 +205,18 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_dual_pric
     }
 
     m_dual_price_smoothing_stabilization.reset(t_stabilization.clone());
+
+    return *this;
+}
+
+idol::DantzigWolfeDecomposition &
+idol::DantzigWolfeDecomposition::with_logger(const idol::DantzigWolfe::LoggerFactory &t_logger) {
+
+    if (m_logger_factory) {
+        throw Exception("A logger has already been configured.");
+    }
+
+    m_logger_factory.reset(t_logger.clone());
 
     return *this;
 }

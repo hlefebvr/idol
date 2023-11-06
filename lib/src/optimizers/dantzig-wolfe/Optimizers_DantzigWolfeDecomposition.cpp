@@ -10,7 +10,8 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
                                                                        unsigned int t_max_parallel_pricing,
                                                                        bool t_use_hard_branching,
                                                                        std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
-                                                                       const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy)
+                                                                       const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
+                                                                       const DantzigWolfe::LoggerFactory& t_logger_factory)
     : Algorithm(t_model),
       m_formulation(std::move(t_formulation)),
       m_master_optimizer_factory(t_master_optimizer_factory.clone()),
@@ -18,7 +19,8 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
       m_use_hard_branching(t_use_hard_branching),
       m_sub_problem_specifications(std::move(t_sub_problem_specifications)),
       m_stabilization(t_stabilization()),
-      m_strategy(t_strategy())
+      m_strategy(t_strategy()),
+      m_logger(t_logger_factory())
 {
 
 }

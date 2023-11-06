@@ -32,11 +32,13 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         m_parent.m_formulation.master().optimizer().set_param_infeasible_or_unbounded_info(true);
     //}
 
+    log_init();
+
     while (true) {
 
         if (m_solve_dual_master) { solve_dual_master(); }
 
-        log();
+        log_master();
 
         ++m_iteration_count;
 
@@ -47,6 +49,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
         solve_sub_problems_in_parallel();
 
         analyze_sub_problems();
+
+        log_sub_problems();
 
         if (check_stopping_criterion()) { break; }
 
@@ -59,6 +63,10 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     if (m_status == Feasible || m_status == Optimal) {
         m_master_primal_solution = save_primal(m_parent.m_formulation.master());
     }
+
+    log_master();
+
+    log_end();
 
 }
 
@@ -99,7 +107,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_dual_m
 
     m_last_master_solution.reset();
 
-    std::cout << "solve dual master " << m_status << std::endl;
     m_is_terminated = true;
 
 }
@@ -159,7 +166,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 
         m_status = status;
         m_reason = reason;
-        std::cout << m_status << std::endl;
         m_is_terminated = true;
         return;
 
@@ -183,31 +189,26 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::analyze_sub_
 bool idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::check_stopping_criterion() {
 
     if (m_is_terminated) {
-        std::cout << "is terminated" << std::endl;
         return true;
     }
 
     if (gap_is_closed()) {
-        std::cout << "gap is closed" << std::endl;
         m_status = Optimal;
         m_reason = Proved;
         return true;
     }
 
     if (m_parent.get_remaining_time() <= 0) {
-        std::cout << "time limit" << std::endl;
         m_reason = TimeLimit;
         return true;
     }
 
     if (m_iteration_count >= m_parent.get_param_iteration_limit()) {
-        std::cout << "iter limit" << std::endl;
         m_reason = IterLimit;
         return true;
     }
 
     if (m_best_bound > m_best_bound_stop) {
-        std::cout << "best bound stop" << std::endl;
         m_reason = ObjLimit;
         return true;
     }
@@ -310,13 +311,74 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
 
 }
 
-void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log() {
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_init() {
 
-    std::cout << m_iteration_count << "\t"
-              << m_last_master_solution->objective_value() << "\t"
-              << m_best_bound << "\t"
-              << m_best_obj << "\t"
-              << m_n_generated_columns
-              << std::endl;
+    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+        return;
+    }
 
+    m_parent.m_logger->log_init(
+            m_parent.m_formulation.n_sub_problems()
+    );
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_master() {
+
+    if (m_parent.log_level() == Mute || !m_parent.m_logger || !m_last_master_solution.has_value()) {
+        return;
+    }
+
+    const auto& formulation = m_parent.m_formulation;
+
+    m_parent.m_logger->log_master(
+                m_iteration_count,
+                m_parent.time().count(),
+                m_status,
+                m_last_master_solution->status(),
+                m_last_master_solution->reason(),
+                m_last_master_solution->objective_value(),
+                formulation.master().optimizer().time().count(),
+                m_best_bound,
+                m_best_obj,
+                m_n_generated_columns,
+                formulation.get_n_present_generators()
+            );
+
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_sub_problems() {
+
+    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+        return;
+    }
+
+    const auto& formulation = m_parent.m_formulation;
+
+    for (unsigned int i = 0, n = formulation.n_sub_problems() ; i < n ; ++i) {
+        const auto& sub_problem = formulation.sub_problem(i);
+        m_parent.m_logger->log_sub_problem(
+            m_iteration_count,
+            m_parent.time().count(),
+            i,
+            m_status,
+            sub_problem.get_status(),
+            sub_problem.get_reason(),
+            sub_problem.get_best_obj(),
+            sub_problem.optimizer().time().count(),
+            m_best_bound,
+            m_best_obj,
+            m_n_generated_columns,
+            formulation.get_n_present_generators()
+        );
+    }
+
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_end() {
+
+    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+        return;
+    }
+
+    m_parent.m_logger->log_end();
 }

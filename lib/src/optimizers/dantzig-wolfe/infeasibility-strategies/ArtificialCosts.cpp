@@ -57,8 +57,6 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
 
     for (unsigned int current_phase = 0 ; current_phase < m_max_updates_before_phase_I ; ++current_phase) {
 
-        std::cout << "**** Phase " << current_phase << std::endl;
-
         t_column_generation.execute();
 
         const auto status = t_column_generation.status();

@@ -36,7 +36,10 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
     void enrich_master();
     void pool_clean_up();
 
-    void log();
+    void log_init();
+    void log_master();
+    void log_sub_problems();
+    void log_end();
 public:
     ColumnGeneration(DantzigWolfeDecomposition& t_parent, bool t_use_farkas_for_infeasibility, double t_best_bound_stop);
 

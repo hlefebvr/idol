@@ -10,6 +10,7 @@
 #include "SubProblem.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"
+#include "idol/optimizers/dantzig-wolfe/logs/LoggerFactory.h"
 
 namespace idol::Optimizers {
     class DantzigWolfeDecomposition;
@@ -20,6 +21,7 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory::Strategy> m_strategy;
     std::unique_ptr<DantzigWolfe::DualPriceSmoothingStabilization::Strategy> m_stabilization;
+    std::unique_ptr<DantzigWolfe::LoggerFactory::Strategy> m_logger;
     std::vector<DantzigWolfe::SubProblem> m_sub_problem_specifications;
     unsigned int m_max_parallel_pricing;
     bool m_use_hard_branching = false;
@@ -31,7 +33,8 @@ public:
                               unsigned int t_max_parallel_pricing,
                               bool t_use_hard_branching,
                               std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
-                              const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy);
+                              const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
+                              const DantzigWolfe::LoggerFactory& t_logger_factory);
 
     std::string name() const override;
 

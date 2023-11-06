@@ -18,7 +18,6 @@ using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
-
     const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance1.txt");
 
     const unsigned int n_agents = instance.n_agents();
@@ -103,6 +102,7 @@ int main(int t_argc, char** t_argv) {
                     .with_infeasibility_strategy( *infeasibility_strategy)
                     .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
                     .with_log_level(Mute, Yellow)
+                    .with_max_parallel_sub_problems(4)
                     .clone()
     );
 

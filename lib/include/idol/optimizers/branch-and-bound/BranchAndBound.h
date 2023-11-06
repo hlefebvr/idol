@@ -164,15 +164,15 @@ public:
     BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
 
     /**
-     * Sets the log frequency of the optimizer, i.e., nodes are logged every t_log_frequency nodes.
+     * Sets the log_master frequency of the optimizer, i.e., nodes are logged every t_log_frequency nodes.
      *
-     * Note that this in only relevant when the log level is at least set to `Info`.
+     * Note that this in only relevant when the log_master level is at least set to `Info`.
      *
      * Example:
      * ```cpp
      * auto algorithm = BranchAndBound()
      *                      .with_log_level(Info, Blue)
-     *                      .with_log_frequency(1); // log every explored node
+     *                      .with_log_frequency(1); // log_master every explored node
      * ```
      * @param t_log_frequency the frequency for logging
      * @return the optimizer factory itself
@@ -237,7 +237,7 @@ template<class NodeT>
 idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
 
     if (m_log_frequency.has_value()) {
-        throw Exception("A log frequency has already been given.");
+        throw Exception("A log_master frequency has already been given.");
     }
 
     m_log_frequency = t_log_frequency;

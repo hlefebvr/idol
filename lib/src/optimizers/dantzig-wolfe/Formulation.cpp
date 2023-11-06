@@ -645,3 +645,14 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
     m_generation_patterns[sub_problem_id].linear().set(t_ctr, 0.);
 
 }
+
+unsigned int idol::DantzigWolfe::Formulation::get_n_present_generators() const {
+
+    unsigned int result = 0;
+
+    for (unsigned int i = 0, n = n_sub_problems() ; i < n ; ++i) {
+        result += m_present_generators[i].size();
+    }
+
+    return result;
+}

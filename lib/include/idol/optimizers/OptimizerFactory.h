@@ -62,14 +62,14 @@ protected:
     void handle_default_parameters(Optimizer* t_optimizer) const;
 public:
     /**
-     * Sets the log level and color for the optimizer
+     * Sets the log_master level and color for the optimizer
      *
      * Example:
      * ```cpp
      * auto algorithm = GLPK()
      *                      .with_log_level(Info, Green);
      * ```
-     * @param t_log_level the log level
+     * @param t_log_level the log_master level
      * @param t_log_color the output color
      * @return the optimizer factory itself
      */

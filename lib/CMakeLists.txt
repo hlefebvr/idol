@@ -190,6 +190,10 @@ add_library(idol STATIC
         include/idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
         include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
         src/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
+        include/idol/optimizers/dantzig-wolfe/logs/LoggerFactory.h
+        include/idol/optimizers/dantzig-wolfe/logs/Debug.h
+        src/optimizers/dantzig-wolfe/logs/Debug.cpp
+        include/idol/optimizers/logs.h
 )
 
 find_package(OpenMP REQUIRED)
