@@ -85,6 +85,10 @@ public:
     [[nodiscard]] Row fix(const Solution::Primal& t_primals) const;
     [[nodiscard]] Row fix(const Solution::Dual& t_duals) const;
 
+    double value(const Solution::Primal& t_primals) const;
+
+    bool is_violated(const Solution::Primal& t_primals, CtrType t_type, double t_tolerance = Tolerance::Feasibility) const;
+
     static const Row EmptyRow;
 };
 

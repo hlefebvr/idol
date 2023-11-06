@@ -185,3 +185,10 @@ void idol::Constant::set(const idol::Param &t_param_1, const idol::Param &t_para
     }
 }
 
+double idol::Constant::as_numerical() const {
+    if (!is_numerical()) {
+        throw Exception("Non-numerical found when converting constant to numerical.");
+    }
+    return numerical();
+}
+

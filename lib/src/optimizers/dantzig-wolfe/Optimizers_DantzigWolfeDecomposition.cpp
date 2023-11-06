@@ -60,19 +60,27 @@ std::string idol::Optimizers::DantzigWolfeDecomposition::name() const {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Var &t_var) {
-    throw Exception("Not implemented add");
+    const auto& parent = this->parent();
+    const auto lb = parent.get_var_lb(t_var);
+    const auto ub = parent.get_var_ub(t_var);
+    const auto type = parent.get_var_type(t_var);
+    const auto& column = parent.get_var_column(t_var);
+    m_formulation.add(t_var, lb, ub, type, column);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented add");
+    const auto& parent = this->parent();
+    const auto type = parent.get_ctr_type(t_ctr);
+    const auto& row = parent.get_ctr_row(t_ctr);
+    m_formulation.add(t_ctr, type, row);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::remove(const idol::Var &t_var) {
-    throw Exception("Not implemented remove");
+    m_formulation.remove(t_var);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::remove(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented remove");
+    m_formulation.remove(t_ctr);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update() {
@@ -102,7 +110,7 @@ double idol::Optimizers::DantzigWolfeDecomposition::get_var_ray(const idol::Var 
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_ctr_dual(const idol::Ctr &t_ctr) const {
-    throw Exception("Not implemented get_ctr_dual");
+    return m_formulation.master().get_ctr_dual(t_ctr);
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_ctr_farkas(const idol::Ctr &t_ctr) const {
@@ -110,15 +118,24 @@ double idol::Optimizers::DantzigWolfeDecomposition::get_ctr_farkas(const idol::C
 }
 
 unsigned int idol::Optimizers::DantzigWolfeDecomposition::get_n_solutions() const {
-    throw Exception("Not implemented get_n_solutions");
+    if (const auto status = m_strategy->status() ; status == Feasible || status == Optimal) {
+        return 1;
+    }
+    return 0;
 }
 
 unsigned int idol::Optimizers::DantzigWolfeDecomposition::get_solution_index() const {
-    throw Exception("Not implemented get_solution_index");
+    if (const auto status = m_strategy->status() ; status == Feasible || status == Optimal) {
+        return 1;
+    }
+    return 0;
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::set_solution_index(unsigned int t_index) {
-    throw Exception("Not implemented set_solution_index");
+    if (t_index == 0) {
+        return;
+    }
+    throw Exception("Solution index out of bounds.");
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_obj_sense() {
@@ -134,7 +151,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_rhs() {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_obj_constant() {
-    throw Exception("Not implemented update_obj_constant");
+    m_formulation.master().set_obj_const(parent().get_obj_expr().constant());
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_mat_coeff(const idol::Ctr &t_ctr, const idol::Var &t_var) {

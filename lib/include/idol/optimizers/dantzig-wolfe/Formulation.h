@@ -84,6 +84,14 @@ public:
     void update_obj(const Expr<Var, Var>& t_expr);
 
     void clean_up(unsigned int t_sub_problem_id, double t_ratio);
+
+    void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const Column& t_column);
+
+    void add(const Ctr& t_ctr, CtrType t_type, const Row& t_row);
+
+    void remove(const Var& t_var);
+
+    void remove(const Ctr& t_ctr);
 };
 
 #endif //IDOL_FORMULATION_H

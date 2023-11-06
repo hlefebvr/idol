@@ -120,6 +120,8 @@ public:
      */
     double numerical() const { return m_constant; }
 
+    double as_numerical() const;
+
     /**
      * Returns true if the constant is equal to zero (i.e., if its numerical term is zero and no Param-double pair can be found)
      */
