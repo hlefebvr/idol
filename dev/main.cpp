@@ -6,7 +6,6 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/callbacks/IntegerMaster.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
