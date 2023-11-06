@@ -2,7 +2,6 @@
 // Created by henri on 30/03/23.
 //
 #include "idol/optimizers/callbacks/IntegerMaster.h"
-#include "idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h"
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 
 idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)

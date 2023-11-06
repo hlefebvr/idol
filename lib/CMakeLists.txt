@@ -107,18 +107,9 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/Gurobi/Gurobi.h
         include/idol/optimizers/wrappers/GLPK/GLPK.h
         include/idol/optimizers/wrappers/Mosek/Mosek.h
-        include/idol/optimizers/archive/column-generation/ArchivedColumnGeneration.h
-        include/idol/optimizers/archive/column-generation/Optimizers_ColumnGeneration.h
-        src/optimizers/archive/column-generation/ColumnGeneration.cpp
-        src/optimizers/archive/column-generation/Optimizers_ColumnGeneration.cpp
-        include/idol/optimizers/archive/dantzig-wolfe/ArchivedDantzigWolfeDecomposition.h
-        src/optimizers/archive/dantzig-wolfe/DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/archive/dantzig-wolfe/Optimizers_ArchivedDantzigWolfeDecomposition.h
-        src/optimizers/archive/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
         src/optimizers/wrappers/gurobi/Gurobi.cpp
         src/optimizers/wrappers/GLPK/GLPK.cpp
         src/optimizers/wrappers/Mosek/Mosek.cpp
-        include/idol/optimizers/archive/column-generation/OptimizerFactoryWithColumnGenerationParameters.h
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
         include/idol/optimizers/callbacks/IntegerMaster.h
         src/optimizers/callbacks/IntegerMaster.cpp
