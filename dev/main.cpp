@@ -18,7 +18,7 @@ using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance1.txt");
+    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -55,67 +55,18 @@ int main(int t_argc, char** t_argv) {
 
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-    bool branching_on_sub_problem = true;
-    double smoothing_factor = .0;
-    bool integer_master_heuristic = true;
-
-    std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(new DantzigWolfe::ArtificialCosts());
-
-    auto node_solver = std::shared_ptr<OptimizerFactory>(
-            DantzigWolfeDecomposition(nested_decomposition1)
-                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
-                    .with_default_sub_problem_spec(
-                            DantzigWolfe::SubProblem()
-                                    .add_optimizer(
-                                            BranchAndBound<NodeVarInfo>()
-                                                    .with_node_optimizer(
-                                                            DantzigWolfeDecomposition(nested_decomposition2)
-                                                                    .with_master_optimizer(HiGHS::ContinuousRelaxation())
-                                                                    .with_default_sub_problem_spec(
-                                                                            DantzigWolfe::SubProblem()
-                                                                                    .add_optimizer(
-                                                                                            BranchAndBound<NodeVarInfo>()
-                                                                                                    .with_node_optimizer(
-                                                                                                            HiGHS::ContinuousRelaxation())
-                                                                                                    .with_branching_rule(MostInfeasible())
-                                                                                                    .with_node_selection_rule(BestBound())
-                                                                                    )
-                                                                    )
-                                                                    .with_hard_branching(branching_on_sub_problem)
-                                                                    .with_infeasibility_strategy( *infeasibility_strategy)
-                                                                    .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
-                                                                    .with_log_level(Mute, Cyan)
-                                                    )
-                                                    .with_branching_rule(MostInfeasible())
-                                                    .with_node_selection_rule(BestBound())
-                                                    .conditional(integer_master_heuristic, [](auto &x) {
-                                                        x.add_callback(
-                                                                Heuristics::IntegerMaster()
-                                                                        .with_optimizer(HiGHS())
-                                                        );
-                                                    })
-                                                    .with_log_level(Mute, Green)
-                                                    .with_log_frequency(1)
-                                    )
-                    )
-                    .with_hard_branching(branching_on_sub_problem)
-                    .with_infeasibility_strategy( *infeasibility_strategy)
-                    .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
-                    .with_log_level(Mute, Yellow)
-                    .with_max_parallel_sub_problems(4)
-                    .clone()
-    );
+    const auto sub_problem_specifications = DantzigWolfe::SubProblem().add_optimizer(Gurobi());
+    const auto column_generation = DantzigWolfeDecomposition(std_decomposition)
+                                        .with_master_optimizer(Gurobi::ContinuousRelaxation())
+                                        .with_default_sub_problem_spec(sub_problem_specifications);
+    const auto branch_and_bound = BranchAndBound()
+                                    .with_branching_rule(MostInfeasible())
+                                    .with_node_selection_rule(BestBound())
+                                    .with_log_level(Info, Blue);
+    const auto branch_and_price = branch_and_bound + column_generation;
 
     // Set optimizer
-    model.use(BranchAndBound()
-                      .with_node_optimizer(*node_solver)
-                      .with_subtree_depth(0)
-                      .with_branching_rule(MostInfeasible())
-                      .with_node_selection_rule(BestBound())
-                      .add_callback(Heuristics::IntegerMaster().with_optimizer(Gurobi()))
-                      .with_log_level(Trace, Blue)
-                      .with_log_frequency(1)
-    );
+    model.use(branch_and_price);
 
     // Solve
     model.optimize();

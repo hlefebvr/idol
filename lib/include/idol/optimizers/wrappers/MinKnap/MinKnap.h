@@ -12,9 +12,10 @@ namespace idol {
 }
 
 class idol::MinKnap : public OptimizerFactoryWithDefaultParameters<MinKnap> {
-    MinKnap(const MinKnap&) = default;
 public:
     MinKnap() = default;
+
+    MinKnap(const MinKnap&) = default;
     MinKnap(MinKnap&&) noexcept = default;
 
     MinKnap& operator=(const MinKnap&) = delete;

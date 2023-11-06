@@ -35,8 +35,6 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
-protected:
-    BranchAndBound(const BranchAndBound& t_rhs);
 public:
     /**
      * This type is used to exploit [SFINAE](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
@@ -57,6 +55,12 @@ public:
     BranchAndBound() = default;
 
     /**
+     * Copy constructor
+     * @param t_rhs the object to copy
+     */
+    BranchAndBound(const BranchAndBound& t_rhs);
+
+    /**
      * Sets the optimizer for solving each of the branch-and-bound tree nodes
      *
      * Example:
@@ -69,6 +73,8 @@ public:
      * @return the optimizer factory itself
      */
     BranchAndBound<NodeT>& with_node_optimizer(const OptimizerFactory& t_node_optimizer);
+
+    BranchAndBound<NodeT>& operator+=(const OptimizerFactory& t_node_optimizer);
 
     /**
      * Sets the branching rule used to create child nodes
@@ -133,7 +139,7 @@ public:
     template<class NodeSelectionRuleFactoryT>
     only_if_has_Strategy<BranchAndBound<NodeT>&, NodeSelectionRuleFactoryT> with_node_selection_rule(const NodeSelectionRuleFactoryT& t_node_selection_rule);
 
-    BranchAndBound(BranchAndBound&&) noexcept = delete;
+    BranchAndBound(BranchAndBound&&) noexcept = default;
     BranchAndBound& operator=(const BranchAndBound&) = delete;
     BranchAndBound& operator=(BranchAndBound&&) noexcept = delete;
 
@@ -211,6 +217,11 @@ public:
 
     BranchAndBound<NodeT>& with_cutting_planes(const CuttingPlaneGenerator& t_cutting_place_generator);
 };
+
+template<class NodeT>
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::operator+=(const idol::OptimizerFactory &t_node_optimizer) {
+    return with_node_optimizer(t_node_optimizer);
+}
 
 template<class NodeT>
 idol::BranchAndBound<NodeT> &
@@ -375,6 +386,15 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 template<class NodeT>
 idol::OptimizerFactory *idol::BranchAndBound<NodeT>::clone() const {
     return new BranchAndBound(*this);
+}
+
+namespace idol {
+    template<class NodeInfoT>
+    BranchAndBound<NodeInfoT> operator+(const BranchAndBound<NodeInfoT>& t_branch_and_bound, const OptimizerFactory& t_node_optimizer) {
+        BranchAndBound<NodeInfoT> result(t_branch_and_bound);
+        result += t_node_optimizer;
+        return result;
+    }
 }
 
 #endif //IDOL_BRANCHANDBOUND_H

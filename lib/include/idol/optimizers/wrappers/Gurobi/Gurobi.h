@@ -31,10 +31,10 @@ class idol::Gurobi : public OptimizerFactoryWithDefaultParameters<Gurobi> {
 
     Map<GRB_IntParam, int> m_int_params;
     Map<GRB_DoubleParam, double> m_double_params;
-
-    Gurobi(const Gurobi& t_src);
 public:
     Gurobi() = default;
+
+    Gurobi(const Gurobi& t_src);
     Gurobi(Gurobi&&) noexcept = default;
 
     Gurobi& operator=(const Gurobi&) = delete;

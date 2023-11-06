@@ -15,9 +15,10 @@ class idol::GLPK : public OptimizerFactoryWithDefaultParameters<GLPK> {
     bool m_continuous_relaxation = false;
 
     explicit GLPK(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
-    GLPK(const GLPK&) = default;
 public:
     GLPK() = default;
+
+    GLPK(const GLPK&) = default;
     GLPK(GLPK&&) noexcept = default;
 
     GLPK& operator=(const GLPK&) = delete;

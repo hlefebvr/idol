@@ -19,9 +19,10 @@ class idol::Mosek : public OptimizerFactoryWithDefaultParameters<Mosek> {
     Map<std::string, std::string> m_string_parameter;
 
     explicit Mosek(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
-    Mosek(const Mosek&) = default;
 public:
     Mosek() = default;
+
+    Mosek(const Mosek&) = default;
     Mosek(Mosek&&) noexcept = default;
 
     Mosek& operator=(const Mosek&) = delete;

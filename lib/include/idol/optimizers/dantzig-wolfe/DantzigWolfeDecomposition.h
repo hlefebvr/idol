@@ -29,11 +29,12 @@ class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParame
     std::optional<DantzigWolfe::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, DantzigWolfe::SubProblem> m_sub_problem_specs;
 
-    DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
     std::vector<DantzigWolfe::SubProblem> create_sub_problems_specifications(const DantzigWolfe::Formulation &t_dantzig_wolfe_formulation) const;
     static void add_aggregation_constraints(DantzigWolfe::Formulation& t_dantzig_wolfe_formulation, const std::vector<DantzigWolfe::SubProblem>& t_sub_problem_specifications) ;
 public:
     explicit DantzigWolfeDecomposition(Annotation<Ctr, unsigned int> t_decomposition);
+
+    DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
 
     Optimizer *operator()(const Model &t_model) const override;
 
