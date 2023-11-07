@@ -164,7 +164,7 @@ Benchmark
 
 .. image:: https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/profile.png
 
-This is a performance profile computed according to *Dolan, E., Moré, J. Benchmarking optimization software with performance profiles. Math. Program. 91, 201–213 (2002)* `https://doi.org/10.1007/s101070100263 <https://doi.org/10.1007/s101070100263>`_.
+This is a performance profile computed according to :cite:`Dolan2002`.
 
 Table of contents
 -----------------
@@ -178,5 +178,4 @@ Table of contents
     api/index
     examples/index
     developer_guide/index
-
-* :ref:`genindex`
+    references
