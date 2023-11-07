@@ -80,7 +80,9 @@ public:
 
     VariableBranching(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates)
         : BranchingRule<NodeVarInfoT>(t_parent),
-          m_branching_candidates(std::move(t_branching_candidates)) {}
+          m_branching_candidates(std::move(t_branching_candidates)) {
+
+    }
 
 protected:
     std::list<Var> get_invalid_variables(const Solution::Primal& t_primal_solution) {

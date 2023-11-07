@@ -33,12 +33,13 @@ public:
     class Strategy : public BranchingRuleFactory<NodeT> {
         std::optional<std::list<Var>> m_explicit_branching_candidates;
     protected:
-        Strategy(const Strategy& t_src)
-            : m_explicit_branching_candidates(t_src.m_explicit_branching_candidates) {}
-
         [[nodiscard]] std::list<Var> create_branching_candidates(const idol::Model &t_model) const;
     public:
         Strategy() = default;
+
+        Strategy(const Strategy& t_src)
+                : BranchingRuleFactory<NodeT>(t_src),
+                  m_explicit_branching_candidates(t_src.m_explicit_branching_candidates) {}
 
         template<class IteratorT>
         Strategy(IteratorT t_begin, IteratorT t_end) : m_explicit_branching_candidates(std::list<Var>()) {
