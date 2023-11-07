@@ -3,7 +3,7 @@
 .. role:: bash(code)
    :language: bash
 
-Local installation
+Local Installation
 ==================
 
 This page is dedicated to local installations of idol. This is the easiest way to get your project working with

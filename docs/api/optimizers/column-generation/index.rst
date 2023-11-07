@@ -1,13 +1,10 @@
 .. _api_column_generation:
 
-Column-Generation algorithms
+Column-Generation Algorithms
 ============================
 
-Table of contents
------------------
-
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 1
     :glob:
 
     DantzigWolfeDecomposition

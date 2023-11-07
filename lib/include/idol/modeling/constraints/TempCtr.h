@@ -20,14 +20,14 @@ namespace idol {
 }
 
 /**
- * Temporary constraint object.
+ * Temporary constraint class.
  *
  * This class represents a constraint which has not been built yet by a Model.
  * It contains all the arguments needed to create a real constraint
- * as instantiated by the Ctr class. It is made of a row (i.e., a Row) and a type (i.e., a CtrType).
+ * as instantiated by the `Ctr` class. It is made of a row (see `Row`) and a type (see `CtrType`).
  *
- * Typically, one creates a TempCtr by using the overloaded <=, >= and == operators between variable expressions (i.e., Expr) and
- * constant terms (i.e., Constant).
+ * Typically, one creates a `TempCtr` by using the overloaded operators `<=`, `>=` and `==` between variable expressions (i.e., `Expr`) and
+ * constant terms (i.e., `Constant`).
  *
  * **Example 1**:
  * ```
@@ -44,35 +44,68 @@ class idol::TempCtr {
     Row m_row;
     CtrType m_type = LessOrEqual;
 public:
-    TempCtr() = default;
     /**
+     * Default constructor.
+     *
+     * Creates an empty temporary constraint. The default type is `LessOrEqual`.
+     */
+    TempCtr() = default;
+
+    /**
+     * Constructor.
+     *
      * Creates a new temporary constraint.
      * @param t_row The desired row.
      * @param t_type The desired constraint type.
      */
     TempCtr(Row&& t_row, CtrType t_type) : m_row(std::move(t_row)), m_type(t_type) {}
 
-    TempCtr(const TempCtr&) = default;
-    TempCtr(TempCtr&&) noexcept = default;
-
-    TempCtr& operator=(const TempCtr&) = default;
-    TempCtr& operator=(TempCtr&&) noexcept = default;
+    /**
+     * Copy constructor.
+     * @param t_src The object to copy.
+     */
+    TempCtr(const TempCtr& t_src) = default;
 
     /**
-     * Returns the row for the constraint (see Row).
+     * Move constructor.
+     * @param t_src The object to move.
      */
+    TempCtr(TempCtr&& t_src) noexcept = default;
+
+    /**
+     * Copy-assignment operator.
+     * @param t_src The object to copy.
+     */
+    TempCtr& operator=(const TempCtr& t_src) = default;
+
+    /**
+     * Move-assignment operator.
+     * @param t_src The object to move.
+     */
+    TempCtr& operator=(TempCtr&& t_src) noexcept = default;
+
+     /**
+      * Returns the row of the temporary constraint (see Row).
+      * @return The row of the temporary constraint.
+      */
     [[nodiscard]] const Row& row() const { return m_row; }
 
     /**
-     * Returns the row for the constraint (see Row).
+     * Returns the row of the temporary constraint (see Row).
+     * @return The row of the temporary constraint.
      */
     Row& row() { return m_row; }
 
     /**
-     * Returns the constraint type.
+     * Returns the temporary constraint type.
+     * @return The temporary constraint type.
      */
     [[nodiscard]] CtrType type() const { return m_type; }
 
+    /**
+     * Sets the type of the temporary constraint.
+     * @param t_type the desired type.
+     */
     void set_type(CtrType t_type) {
         if (t_type < 0 || t_type > 2) {
             throw Exception("Constraint type out of bounds.");

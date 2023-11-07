@@ -4,3 +4,5 @@ Var
 ===
 
 .. doxygenclass:: idol::Var
+
+.. doxygenenum:: idol::VarType

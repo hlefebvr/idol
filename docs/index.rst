@@ -6,13 +6,15 @@ Welcome to idol!
 .. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main
 .. image:: https://img.shields.io/github/issues-raw/hlefebvr/idol
 .. image:: https://www.repostatus.org/badges/latest/wip.svg
-.. image:: https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol
+.. image:: https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)
+
+.. image:: https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png
 
 .. toctree::
     :maxdepth: 3
     :caption: Contents:
 
-What is idol?
+What Is Idol?
 -------------
 
 Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
@@ -21,7 +23,7 @@ methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
 or any other cutting-edge method, idol is your trusted companion.
 
-Why choose idol?
+Why Choose Idol?
 ----------------
 
 * **Versatility:** idol is all about freedom and flexibility. You can easily tailor, refine, and combine standard optimization algorithms to create novel solutions that perfectly fit your problem.
@@ -30,7 +32,7 @@ Why choose idol?
 * **Collaboration:** Mathematical optimization is a collaborative field. With idol, you can easily share your custom algorithms with other researchers, fostering a spirit of innovation and exploration.
 * **Open-source:** As an open-source library, idol is not only a tool for your research but also a community-driven project where you can contribute, share your enhancements, and collaborate with others.
 
-Getting started with idol
+Getting Started With Idol
 -------------------------
 
 If you are new to idol, I advise you to visit our :ref:`installation guideline <installation>`.
@@ -66,11 +68,11 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         model.optimize();
 
-If you want to learn more about idol's modeling interface, be sure to visit :ref:`beginner tutorials <basics>`.
+If you want to learn more about idol's modeling interface, be sure to visit :ref:`our introductory tutorials <tutorials_basics>`.
 
-If you are more experienced, you may want to have a look at our :ref:`decomposition methods tutorials <decomposition>`.
+If you are looking for a Branch-and-Price tutorial, directly got to :ref:`our Dantzig-Wolfe Decomposition tutorials <tutorials_dantzig_wolfe>`.
 
-Is this a MIP solver?
+Is This a MIP Solver?
 ---------------------
 
 The idol library is not a MIP solver in itself. Indeed, it typically needs to call external
@@ -83,18 +85,19 @@ cannot directly be modeled as reasonable MIPs (e.g., :math:`\Sigma_i^P`-hard pro
 Typically, each subproblem is then solved by an external and dedicated solver.
 Currently, the following external solvers can be interfaced with through idol:
 
-* `Gurobi <https://www.gurobi.com/>`_;
-* `Mosek <https://www.mosek.com/>`_;
-* `GLPK <https://www.gnu.org/software/glpk/>`_.
+* `Gurobi <https://www.gurobi.com/>`_
+* `Mosek <https://www.mosek.com/>`_
+* `GLPK <https://www.gnu.org/software/glpk/>`_
+* `HiGHS <https://highs.dev/>`_
 
-Current features
+Current Features
 ----------------
 
 .. warning::
 
     Handling quadratic expressions is an experimental feature and extreme care should be taken if used.
 
-Interfacing external optimization solvers
+Interfacing External Optimization Solvers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The idol library can be used to interface external solvers like `GLPK <https://www.gnu.org/software/glpk/>`_
@@ -107,7 +110,7 @@ Thus, you can write your code once and test it with different solvers!
 It also provides classical callbacks one would need to implement when solving hard problems like generating user cuts
 or lazy constraints. Simply give idol the separation model and let it handle the rest.
 
-Branch-and-Bound (B&B) algorithms
+Branch-and-Bound (B&B) Algorithms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Idol can be used to create a custom branch-and-bound scheme very easily in which virtually anything can be tweaked.
@@ -115,25 +118,35 @@ Idol can be used to create a custom branch-and-bound scheme very easily in which
 * **Node-agnostic:** The B&B algorithm can work with any node type as long as the user properly
   defines how nodes must be updated. A default node type is already implemented for classical variable branching. This
   node type can also be inherited, e.g., to enrich the information carried out from each parent node to its children.
-* **Customizable branching rules:** The default branching rules include: most infeasible, least infeasible, first infeasible found, uniformly random, strong branching and pseudo-cost branching. The user can create its own branching rule if needed.
-* **Customizable node selection rules:** The default node selection rules include: best bound, worst bound, depth first, breadth first. The user can create its own node selection rule if needed.
-* **Callbacks:** The user can specify its own callback to locally or globally modify a node's problem, submit heuristic solutions, or influence the execution of the overall tree search.
-* *Sub-tree exploration*. The B&B algorithm supports sub-trees exploration to reach valid solutions to the original problem as quick as possible.
+* **Customizable branching rules:** The default branching rules include: most infeasible, least infeasible, first
+  infeasible found, uniformly random, strong branching (with phases) and pseudo-cost branching. The user can create its
+  own branching rule if needed.
+* **Customizable node selection rules:** The default node selection rules include: best estimate, best bound, worst bound,
+  depth first, breadth first. The user can create its own node selection rule if needed.
+* **Callbacks:** The user can specify its own callback to locally or globally modify a node's problem, submit heuristic
+  solutions, or influence the execution of the overall tree search.
+* **Sub-tree exploration**. The B&B algorithm supports sub-trees exploration to reach valid solutions to the original
+  problem as quick as possible.
 
 **Features to come/desired features**
 
 * *Parallelization of the algorithm*.
-* *New branching rules*: pseudo-cost, strong-branching with phase and reliability branching.
+* *New branching rules*: reliability branching.
 * *Default cutting planes*.
 
-Column Generation (CG) and Dantzig-Wolfe decomposition
+Column Generation (CG) and Dantzig-Wolfe Decomposition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Idol can be used to build and custom CG algorithms with the following features.
 
-* **Infeasible master problem procedures:** Idol can handle infeasible master problems by resorting to Farkas pricing or by adding artificial variables to the original problem (if this fails, idol will automatically switch to pure phase I so as to exactly prove infeasibility).
-* **Automatic pool clean up:** If the master problem contains too many variables, they can be automatically removed. This behavior is controlled by user parameters.
-* **Stabilization via dual price smoothing:** The CG procedure can be stabilized using dual price smoothing controlled by user inputs.
+* **Infeasible master problem procedures:** Idol can handle infeasible master problems by resorting to Farkas pricing or
+  by adding artificial variables to the original problem (if this fails, idol will automatically switch to pure phase I
+  so as to exactly prove infeasibility).
+* **Automatic pool clean up:** If the master problem contains too many variables, they can be automatically removed.
+  This behavior is controlled by user parameters.
+* **Stabilization via dual price smoothing:** The CG procedure can be stabilized using dual price smoothing controlled
+  by user inputs. Default implementation include `Wentges (1997) <https://doi.org/10.1016/S0969-6016(97)00001-4>`_ and
+  `Neame (2000) <https://scholar.google.com/scholar?&q=Neame%2C%20P.J.%3A%20Nonsmooth%20Dual%20Methods%20in%20Integer%20Programming.%20PhD%20thesis%20%281999%29>`_.
 * **Parallel pricing:** Each pricing problem can be solved in parallel.
 * **Nested column generation:** A key idea of idol is that every optimizer is seen as a black-box to solve a given optimization model.
   As such, a CG algorithm can easily be "plugged in" any algorithmic phase. For instance, solving the pricing of
@@ -142,6 +155,16 @@ Idol can be used to build and custom CG algorithms with the following features.
 **Features to come/desired features**
 
 * *Handling identical sub-systems*.
+
+Benchmark
+---------
+
+* A benchmark for the **Branch-and-Price** implementation is available for the `Generalized Assignment Problem <https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html>`_.
+* A benchmark for the **Branch-and-Bound** implementation is available for the `Knapsack Problem <https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html>`_
+
+.. image:: https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/profile.png
+
+This is a performance profile computed according to *Dolan, E., Moré, J. Benchmarking optimization software with performance profiles. Math. Program. 91, 201–213 (2002)* `https://doi.org/10.1007/s101070100263 <https://doi.org/10.1007/s101070100263>`_.
 
 Table of contents
 -----------------

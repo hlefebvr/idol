@@ -10,7 +10,59 @@
 #include "AbstractSolution.h"
 
 namespace idol::Solution {
+
+    /**
+     * Primal solution class.
+     *
+     * This class is used to store a primal solution to an optimization problem.
+     *
+     * Typically, it is obtained by calling the `save_primal` function, or by creating a new solution from scratch.
+     *
+     * **Example 1**:
+     * ```cpp
+     * model.optimize();
+     * if (model.get_status() == Optimal) {
+     *      Solution::Primal solution = save_primal(model);
+     *      std::cout << solution << std::endl;
+     * }
+     * ```
+     *
+     * **Example 2**:
+     * ```cpp
+     * Solution::Primal solution;
+     *
+     * solution.set_status(Feasible);
+     * solution.set_objective_value(13.);
+     * solution.set(x, 1.);
+     * ```
+     */
     class Primal : public AbstractSolution<Var, Primal> {};
+
+    /**
+     * Dual solution class.
+     *
+     * This class is used to store a dual solution to an optimization problem.
+     *
+     * Typically, it is obtained by calling the `save_dual` function, or by creating a new solution from scratch.
+     *
+     * **Example 1**:
+     * ```cpp
+     * model.optimize();
+     * if (model.get_status() == Optimal) {
+     *      Solution::Dual solution = save_dual(model);
+     *      std::cout << solution << std::endl;
+     * }
+     * ```
+     *
+     * **Example 2**:
+     * ```cpp
+     * Solution::Dual solution;
+     *
+     * solution.set_status(Feasible);
+     * solution.set_objective_value(13.);
+     * solution.set(constraint_1, -100.);
+     * ```
+     */
     class Dual : public AbstractSolution<Ctr, Dual> {};
 
 

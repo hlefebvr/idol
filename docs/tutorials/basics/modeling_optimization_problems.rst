@@ -3,7 +3,7 @@
 .. role:: cpp(code)
    :language: cpp
 
-Modeling optimization problems
+Modeling Optimization Problems
 ==============================
 
 On this page, we discuss the very basic ideas of idol's modeling API.

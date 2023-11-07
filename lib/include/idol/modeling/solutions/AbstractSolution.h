@@ -31,7 +31,10 @@ class idol::AbstractSolution {
     [[nodiscard]] double norm_inf() const;
 public:
     /**
-     * Creates a new empty solution.
+     * Default constructor.
+     *
+     * Creates a new empty solution. The status is set to `Loaded` and the reason to `NotSpecified`.
+     * No objective value nor solution entries is originally set.
      */
     AbstractSolution() = default;
 
@@ -54,34 +57,58 @@ public:
      */
     [[nodiscard]] SolutionStatus status() const { return m_status; }
 
+    /**
+     * Sets the reason for the solution status.
+     *
+     * **Example**:
+     * ```cpp
+     * solution.set_status(Feasible);
+     * solution.set_reason(IterLimit); // We only found a feasible solution because of iteration limit reached
+     * ```
+     * @param t_reason The desired reason.
+     */
     void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
 
+    /**
+     * Returns the reason for the solution status.
+     * @return The reason for the solution status.
+     */
     [[nodiscard]] SolutionReason reason() const { return m_reason; }
 
     /**
-     * Sets the stored objective value.
+     * Sets the objective value of the solution.
      * @param t_value The desired objective value.
      */
     void set_objective_value(double t_value) { m_objective_value = t_value; }
 
     /**
-     * Returns the stored objective value.
+     * Returns the objective value of the solution.
      */
     [[nodiscard]] double objective_value() const { return m_objective_value.value(); }
 
+    /**
+     * Returns true if the solution has an objective value, false otherwise.
+     * @return True if the solution has an objective value, false otherwise.
+     */
     [[nodiscard]] bool has_objective_value() const { return m_objective_value.has_value(); }
 
+    /**
+     * Resets the stored objective value.
+     *
+     * Trying to access the objective value after calling this method will throw an
+     * exception.
+     */
     void reset_objective_value() { m_objective_value.reset(); }
 
     /**
-     * Sets the value associated to the key given as argument.
+     * Sets the value associated to the object `t_key` given as argument.
      * @param t_key The key for which the entry should be set.
      * @param t_value The desired value associated to the key.
      */
     void set(const KeyT& t_key, double t_value);
 
     /**
-     * Returns the value associated to the key given as argument.
+     * Returns the value associated to the object `t_key` given as argument.
      *
      * If no value is stored, zero is returned.
      * @param t_key  The queried key.
@@ -89,45 +116,82 @@ public:
     [[nodiscard]] double get(const KeyT& t_key) const;
 
     /**
-     * Returns the size of the solution, i.e., the number of non-zero entries.
-     * @return the size of the solution
+     * Returns the number of non-zero entries in the solution.
+     * @return The number of non-zero entries in the solution
      */
     [[nodiscard]] unsigned int size() const { return m_values.size(); }
 
     using const_iterator = typename Map<KeyT, double>::const_iterator;
 
+    /**
+     * Returns an iterator on the values stored in the solution.
+     * @return An iterator on the values stored in the solution.
+     */
     const_iterator begin() const { return const_iterator(m_values.begin()); }
+
+    /**
+     * Returns an iterator on the values stored in the solution.
+     * @return An iterator on the values stored in the solution.
+     */
     const_iterator end() const { return const_iterator(m_values.end()); }
+
+    /**
+     * Returns an iterator on the values stored in the solution.
+     * @return An iterator on the values stored in the solution.
+     */
     const_iterator cbegin() const { return const_iterator(m_values.begin()); }
+
+    /**
+     * Returns an iterator on the values stored in the solution.
+     * @return An iterator on the values stored in the solution.
+     */
     const_iterator cend() const { return const_iterator(m_values.end()); }
 
     /**
      * Returns the \f$ l_p \f$-norm of the solution.
      *
-     * Note that Inf is a possible value for t_p, in which case, the infinite norm is computed.
-     * @param t_p The \f$ p \f$ parameter for the \f$ l_p \f$-norm.
+     * Note that `Inf` is a possible value for `t_p`, in which case, the infinity norm is computed.
+     * @param t_p The \f$ p \f$ parameter in the \f$ l_p \f$-norm.
      */
     [[nodiscard]] double norm(double t_p = 2.) const;
 
     /**
-     * Merges the solution with another solution, explicitly expecting that no conflict will arise (i.e., expecting that no
-     * entry from the solution is also present in the other solution).
-     * If a conflict is detected, an Exception is thrown.
+     * Merges the solution with another solution, explicitly requiring that no conflict arises (i.e., that no
+     * entry from the solution `t_rhs` is already stored in the solution).
+     * If a conflict is detected, an exception is thrown.
      * @param t_rhs The solution to merge.
-     * @return The object itself.
+     * @return *this
      */
     CRTP& merge_without_conflict(CRTP t_rhs);
 
     /**
-     * Normalizes the solution (i.e., divides by the norm every entry) with a given \f$ l_p \f$-norm.
+     * Normalizes the solution (i.e., divides every entry by the norm of the solution) with respect to a given \f$ l_p \f$-norm.
      * @param t_p The parameter \f$ p \f$ for the norm.
-     * @return The object itself.
+     * @return *this
      */
     CRTP& normalize(double t_p = 2.);
 
+    /**
+     * Rounds all the entries of the solution to the closest `double` with `t_n_digits`.
+     *
+     * Using `t_n_digits = 0` leads to the usual rounding, i.e., closest integer.
+     * @param t_n_digits The number of digits for the closest `double`.
+     * @return *this
+     */
     CRTP& round(unsigned int t_n_digits = 0);
 
+    /**
+     * Adds the solution to another solution `t_rhs`.
+     * @param t_rhs The solution to add.
+     * @return *this
+     */
     CRTP& operator +=(const CRTP& t_rhs);
+
+    /**
+     * Multiplies every entries in the solution by `t_factor`.
+     * @param t_factor The factor for multiplication.
+     * @return *this
+     */
     CRTP& operator *=(double t_factor);
 };
 

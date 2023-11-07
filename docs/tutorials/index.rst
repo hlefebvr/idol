@@ -4,9 +4,8 @@ Tutorials
 =========
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
     :glob:
 
-    getting_started/index
-    decomposition_methods/index
-    robust_optimization/index
+    basics/index
+    dantzig-wolfe/index

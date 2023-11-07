@@ -1,13 +1,10 @@
 .. _api_wrappers:
 
-Solver wrappers
-===============
-
-Table of contents
------------------
+External Solvers
+================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :glob:
 
     *

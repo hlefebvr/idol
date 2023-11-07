@@ -66,7 +66,7 @@ Table of contents
 -----------------
 
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 2
     :glob:
 
     branch-and-bound/index

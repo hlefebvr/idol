@@ -3,7 +3,7 @@
 .. role:: bash(code)
    :language: bash
 
-Linking your C++ project with idol
+Linking Your C++ Project with Idol
 ==================================
 
 Idol is built with and for CMake (even though it is still possible to link using :bash:`Makefile` or pure :bash:`gcc, clang, ...`).

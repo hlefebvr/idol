@@ -1,11 +1,11 @@
 .. _installation:
 
-Installation guidelines
+Installation Guidelines
 =======================
 
 Welcome to idol! You are here on the installation guidelines.
 
-Installation types
+Installation Types
 ------------------
 
 There are two ways of installing idol:
@@ -14,7 +14,7 @@ There are two ways of installing idol:
 * :ref:`A local installation <installation_local>`  lets CMake automatically download and manage idol's installation on a sub-folder of your
   CMake project.
 
-Table of contents
+Table of Contents
 -----------------
 
 .. toctree::

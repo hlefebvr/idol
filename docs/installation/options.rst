@@ -3,13 +3,13 @@
 .. role:: bash(code)
    :language: bash
 
-List of CMake options
+List of CMake Options
 =====================
 
-Linking with external solvers
+Linking with External Solvers
 -----------------------------
 
-For Gurobi (commercial solver)
+For Gurobi (Commercial Solver)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with Gurobi, you will need to pass the :bash:`USE_GUROBI` CMake option with value :bash:`YES`.
@@ -35,7 +35,7 @@ another directory to look for Gurobi.
         set(GUROBI_DIR /path/to/gurobi/install/dir)
 
 
-For Mosek (commercial solver)
+For Mosek (Commercial Solver)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with Mosek, you will need to pass the :bash:`USE_MOSEK` CMake option with value :bash:`YES`.
@@ -66,7 +66,7 @@ folders :bash:`h` and :bash:`bin` can be found. For instance, :bash:`MOSEK_HOME=
 
     If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
 
-For GLPK (open-source solver)
+For GLPK (Open-Source Solver)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with GLPK, you will need to pass the :bash:`USE_GLPK` CMake option with value :bash:`YES`.
@@ -92,7 +92,7 @@ another directory to look for GLPK.
         set(GLPK_DIR /path/to/glpk/install/dir)
 
 
-For HiGHS (open-source solver)
+For HiGHS (Open-Source Solver)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with GLPK, you will need to pass the :bash:`USE_HIGHS` CMake option with value :bash:`YES`.
@@ -117,7 +117,7 @@ another directory to look for GLPK.
         set(HIGHS_DIR /path/to/glpk/install/dir)
 
 
-Building examples
+Building Examples
 -----------------
 
 :ref:`Examples :<examples>` can be found at the root level of the idol repository, inside the directory ``examples``.
@@ -170,7 +170,7 @@ stored in the environment variable :code:`ROBINHOOD_HOME`.
         cmake -DUSE_ROBINhOOD=YES -DROBINHOOD_DIR=/path/to/robin_hood/folder ..
 
 
-Building unit and integration tests
+Building Unit and Integration Tests
 -----------------------------------
 
 To build tests for idol, please refer to this :ref:`developer page <tests>`.

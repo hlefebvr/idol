@@ -4,3 +4,5 @@ Ctr
 ===
 
 .. doxygenclass:: idol::Ctr
+
+.. doxygenenum:: idol::CtrType

@@ -39,12 +39,29 @@ public:
 
     [[nodiscard]] virtual bool is_ctr_annotation() const = 0;
 
+    /**
+     * Returns the id of the annotation.
+     *
+     * The id is unique within the environment.
+     * @return The id of the annotation
+     */
     [[nodiscard]] unsigned int id() const { return m_id->id; }
 
+    /**
+     * Returns the given name of the annotation.
+     * @return The given name of the annotation
+     */
     [[nodiscard]] const std::string& name() const { return m_id->name; }
 
+    /**
+     * Returns true if the annotation has a default value, false otherwise.
+     * @return true if the annotation has a default value, false otherwise
+     */
     [[nodiscard]] bool has_default() const { return m_id->default_value.has_value(); }
 
+    /**
+     * Frees the memory kept for the annotation in the environment.
+     */
     void free();
 };
 

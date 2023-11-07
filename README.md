@@ -8,7 +8,7 @@
 [![codecov](https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)](https://app.codecov.io/gh/hlefebvr/idol)
 [![GitHub sponsors](https://img.shields.io/github/sponsors/hlefebvr)](https://github.com/sponsors/hlefebvr)
 
-![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/refacto_column_generation/docs/branch-and-price-implementation.png)
+![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png)
 
 Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
 It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art

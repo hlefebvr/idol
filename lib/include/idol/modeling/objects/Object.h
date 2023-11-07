@@ -43,16 +43,48 @@ public:
     Object& operator=(const Object&) = default;
     Object& operator=(Object&&) noexcept = default;
 
+    /**
+     * Returns the name of the optimization object.
+     * @return The name of the optimization object.
+     */
     [[nodiscard]] const std::string& name() const { return m_object_id->name(); }
 
+    /**
+     * Returns the id of the optimization object.
+     * @return The id of the optimization object.
+     */
     [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
 
+    /**
+     * Returns true if the two optimization objects have the same id, false otherwise.
+     * @param t_rhs the other optimization object.
+     * @return True if the two optimization objects have the same id, false otherwise.
+     */
     bool operator==(const Object<T, CRTP>& t_rhs) const { return id() == t_rhs.id(); }
 
+    /**
+     * Returns false if the two optimization objects have the same id, true otherwise.
+     * @param t_rhs the other optimization object.
+     * @return False if the two optimization objects have the same id, true otherwise.
+     */
     bool operator!=(const Object<T, CRTP>& t_rhs) const { return id() != t_rhs.id(); }
 
+    /**
+     * Returns true if the optimization object is part of the model `t_model`, false otherwise.
+     * @param t_model The model.
+     * @return True if the optimization object is part of the model `t_model`, false otherwise.
+     */
     [[nodiscard]] bool is_in(const Model& t_model) const { return m_object_id->versions().has(t_model); }
 
+    /**
+     * Returns the value of the given annotation `t_annotation` associated to the object.
+     *
+     * If no value is found, the default value of the annotation is returned. If no default value was set, an exception is
+     * thrown.
+     * @tparam ValueT The value type of the annotation.
+     * @param t_annotation The annotation.
+     * @return The value of the annotation.
+     */
     template<class ValueT> const ValueT& get(const Annotation<CRTP, ValueT>& t_annotation) const {
         const auto& result = m_object_id->versions().template get_annotation<ValueT>(t_annotation.id());
         if (result) {
@@ -64,6 +96,13 @@ public:
         throw Exception("No value could be found and no default value was given for annotation " + t_annotation.name());
     }
 
+    /**
+     * Sets the value of the given annotation `t_annotation` associated to the object.
+     * @tparam ValueT The value type of the annotation.
+     * @tparam ArgsT The parameter pack types for constructing the value of the annotation.
+     * @param t_annotation The annotation.
+     * @param t_args The parameter pack arguments used to construct "in place" the value of the annotation.
+     */
     template<class ValueT, class ...ArgsT> void set(const Annotation<CRTP, ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
 };
 

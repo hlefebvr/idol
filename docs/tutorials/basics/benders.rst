@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-Benders Decomposition (with LazyCutCallback)
-============================================
+Lazy Cuts and Benders Decomposition
+===================================
 
 In this section, we will show how to use the LazyCutCallback callback to implement a simple Benders Decomposition
 algorithm.
@@ -124,7 +124,7 @@ This is done as follows.
 
     master.use(
         GLPK()
-            .with_callback(
+            .add_callback(
                 LazyCutCallback(dual_space, benders_cut)
                     .with_separation_optimizer(GLPK())
             )
@@ -146,7 +146,7 @@ See how we specified also an optimizer for solving the separation problem. Here,
         master.use(
                 Gurobi()
                     .with_lazy_cuts(true)
-                    .with_callback(
+                    .add_callback(
                         LazyCutCallback(dual_space, benders_cut)
                             .with_separation_optimizer(Gurobi())
                     )

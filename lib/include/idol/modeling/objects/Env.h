@@ -112,6 +112,12 @@ public:
     Env& operator=(const Env&) = delete;
     Env& operator=(Env&&) noexcept = delete;
 
+    /**
+     * Returns the default version of an optimization object.
+     * @tparam T The type of object queried.
+     * @param t_object The object.
+     * @returnthe The default version of an optimization object.
+     */
     template<class T>
     const auto& operator[](const T& t_object) const {
         return t_object.versions().get_default();
@@ -120,10 +126,35 @@ public:
 };
 
 /**
- * This class manages an "optimization environment". It is used to actually store the versions of each variables and
- * constraints which may arise in optimization problems.
+ * Environment class.
+ *
+ * This class stores and manages every optimization objects and
+ * annotations in idol.
+ *
+ * Essentially, it is the environment that controls the death and lives of such objects. It is through the environment
+ * that idol manages the different versions each optimization object may have during the execution of your program.
+ *
+ * **Important**: If an optimization environment is destroyed, all of its objects are also destroyed. Trying to access them
+ * will lead to undefined behavior and, eventually, segmentation fault.
+ *
+ *
+ * Typically, only one environment should be used by your code, though it is possible to instantiate many environment (not advised).
+ *
+ * Environments are objects of the Env class and can be created as follows.
+ *
+ * ```cpp
+ * Env env; // Creates a new optimization environment.
+ * ```
  */
 class idol::Env : public impl::Env {
+public:
+    /**
+     * Constructor.
+     *
+     * Creates a new optimization environment.
+     */
+    Env() = default;
+
     friend class Model;
     friend class Var;
     friend class Ctr;

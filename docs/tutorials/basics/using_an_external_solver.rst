@@ -3,7 +3,7 @@
 .. role:: cpp(code)
    :language: cpp
 
-Using an external solver
+Using An External Solver
 ========================
 
 In this tutorial, we will see how to use an external optimization solver like Gurobi or HiGHS to solve

@@ -3,7 +3,7 @@
 .. role:: bash(code)
    :language: bash
 
-Global installation
+Global Installation
 ===================
 
 The installation process is managed by the CMake build system. You will therefore need to have it
@@ -13,7 +13,7 @@ installed on your computer (at least version 3.22 is required but it may work wi
 
     If you simply want to "try out" idol, we advise you to opt for a :ref:`local installation <installation_local>`.
 
-Creating the :bash:`install` target
+Creating the :bash:`install` Target
 -----------------------------------
 
 The first step is to create a :bash:`build` directory.
@@ -78,7 +78,7 @@ If you want to install idol on your computer, run the following command.
         cmake -CMAKE_INSTALL_PREFIX=/my/custom/installation/folder <YOUR_CMAKE_OPTIONS_SHOULD_GO_HERE> ..
         make install
 
-Linking with external solvers
+Linking with External Solvers
 ------------------------------
 
 To link idol with external solvers, specific options need to be passed to CMake.

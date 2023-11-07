@@ -1,10 +1,10 @@
-.. _decomposition_dantzig_wolfe:
+.. _tutorials_dantzig_wolfe_gap:
 
 .. role:: cpp(code)
    :language: cpp
 
-Dantzig-Wolfe Decomposition (Automatic)
-=======================================
+Generalized Assignment Problem
+==============================
 
 In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
 using an external solver to solve each sub-problem.
@@ -20,10 +20,10 @@ using an external solver to solve each sub-problem.
 
 .. seealso::
 
-    A `Benchmark on Generalized Assignemnt Problem <https://hlefebvr.github.io/idol_benchmark/GAP.render.html>`_ is
+    A `Benchmark on Generalized Assignment Problem <https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html>`_ is
     available.
 
-Mathematical models
+Mathematical Models
 -------------------
 
 In this section, we assume that the reader is familiar with GAP.
@@ -33,7 +33,7 @@ Let :math:`c_{ij}` be the cost for assigning task :math:`j` to agent :math:`i`, 
 consumption of task :math:`j` when performed by agent :math:`i` and let :math:`t_i` be the resource capacity of agent
 :math:`i`.
 
-Direct model
+Direct Model
 ^^^^^^^^^^^^
 
 The Generalized Assignment Problem (GAP) can be modeled as
@@ -48,7 +48,7 @@ The Generalized Assignment Problem (GAP) can be modeled as
 Here, variable :math:`x_{ij}` encodes the assignment decision and equals 1 if and only if task :math:`j` is assigned to
 agent :math:`i`.
 
-Dantzig-Wolfe reformulation
+Dantzig-Wolfe Reformulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let us enumerate the list of all feasible assignments, i.e., let
@@ -69,14 +69,14 @@ in which :math:`E` denotes a list for their indices. The Dantzig-Wolfe reformula
 Though this model contains an exponential number of variables (i.e., columns) it can be solved efficiently using
 Column Generation and Branch-and-price. In such a case, the pricing problem is a Knapsack Problem.
 
-Automatic reformulation in idol
+Automatic Reformulation in Idol
 -------------------------------
 
 The simplest way to solve a problem using column generation and idol is through its automatic reformulation feature.
 To use this, one simply needs to give the *original space* formulation of the problem (here, the *so-called* direct model)
 and to indicate which constraints should be moved to the pricing problem (here, the knapsack constraints).
 
-Implementing the direct model with idol
+Implementing the Direct Model with Idol
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To read an instance for GAP, we first need to include the header file located in :code:`"idol/problems/generalized-assignment-problem/GAP_Instance.h"`.
@@ -116,7 +116,7 @@ We are now ready to model our problem (for more details, refer to :ref:`this tut
     // Set the objective function
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
-Giving decomposition instructions
+Giving Decomposition Instructions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We are now at the crucial step of indicating which constraint should be moved to the pricing problem. In idol, this is done by using
@@ -160,7 +160,7 @@ Note that another decomposition would be materialized as follows.
 
 Here, all the knapsack constraints would be moved to the same pricing problem (id: 0).
 
-Creating our Branch-and-Price algorithm
+Creating the Branch-and-Price Algorithm
 ---------------------------------------
 
 Now that the desired decomposition has been specified, we can specify the desired optimizer to solve our model.

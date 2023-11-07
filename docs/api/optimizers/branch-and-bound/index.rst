@@ -1,10 +1,10 @@
 .. _api_branch_and_bound:
 
-Branch-And-Bound algorithms
+Branch-And-Bound Algorithms
 ===========================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :glob:
 
     BranchAndBound

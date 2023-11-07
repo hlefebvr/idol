@@ -1,6 +1,6 @@
 .. _mosek_and_socp:
 
-Using idol with Eigen
+Using Idol with Eigen
 =====================
 
 This page elaborates on some operations made by idol which require usage of the `Eigen <https://eigen.tuxfamily.org/index.php?title=Main_Page>`_
@@ -31,7 +31,7 @@ option to ``YES``.
         cmake -DUSE_MOSEK=YES -DUSE_EIGEN=YES ..
 
 
-Interfacing Mosek for solving QPs and SOCPs
+Interfacing Mosek for Solving QPs and SOCPs
 -------------------------------------------
 
 The interface of idol
