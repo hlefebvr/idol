@@ -18,9 +18,9 @@ namespace idol::Problems::MKP {
  */
 class idol::Problems::MKP::Instance {
 protected:
-    std::vector<double> m_p;
-    std::vector<double> m_w;
-    std::vector<double> m_t;
+    std::vector<double> m_profits;
+    std::vector<double> m_weights;
+    std::vector<double> m_capacities;
 public:
     Instance(unsigned int t_n_knapsacks, unsigned int t_n_items);
 
@@ -31,15 +31,19 @@ public:
     Instance& operator=(Instance&&) noexcept = default;
 
     ~Instance() = default;
-    [[nodiscard]] unsigned int n_knapsacks() const { return m_t.size(); }
-    [[nodiscard]] unsigned int n_items() const { return m_p.size(); }
-    [[nodiscard]] double p(unsigned int t_item) const { return m_p[t_item]; }
-    [[nodiscard]] double w(unsigned int t_item) const { return m_w[t_item]; }
-    [[nodiscard]] double t(unsigned int t_knapsack) const { return m_t[t_knapsack]; }
+    [[nodiscard]] unsigned int n_knapsacks() const { return m_capacities.size(); }
+    [[nodiscard]] unsigned int n_items() const { return m_profits.size(); }
+    [[nodiscard]] double profit(unsigned int t_item) const { return m_profits[t_item]; }
+    [[nodiscard]] double weight(unsigned int t_item) const { return m_weights[t_item]; }
+    [[nodiscard]] double capacity(unsigned int t_knapsack) const { return m_capacities[t_knapsack]; }
 
-    void set_p(unsigned int t_item, double t_value) { m_p[t_item] = t_value; }
-    void set_w(unsigned int t_item, double t_value) { m_w[t_item] = t_value; }
-    void set_t(unsigned int t_knapsack, double t_value) { m_t[t_knapsack] = t_value; }
+    [[nodiscard]] const auto& profits() const { return m_profits; }
+    [[nodiscard]] const auto& weights() const { return m_weights; }
+    [[nodiscard]] const auto& capacities() const { return m_capacities; }
+
+    void set_profit(unsigned int t_item, double t_value) { m_profits[t_item] = t_value; }
+    void set_weight(unsigned int t_item, double t_value) { m_weights[t_item] = t_value; }
+    void set_capacity(unsigned int t_knapsack, double t_value) { m_capacities[t_knapsack] = t_value; }
 
 };
 

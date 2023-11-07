@@ -40,7 +40,7 @@ public:
         }
 
         if (!this->parent().has_incumbent()) {
-            return --t_active_nodes.by_objective_value().end();
+            return t_active_nodes.by_objective_value().begin();
         }
 
         double max = std::numeric_limits<double>::lowest();
