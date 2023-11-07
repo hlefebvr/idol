@@ -15,11 +15,13 @@ namespace idol::DantzigWolfe::Loggers {
 
 class idol::DantzigWolfe::Loggers::Debug : public DantzigWolfe::LoggerFactory {
     std::optional<unsigned int> m_frequency;
+    std::optional<bool> m_log_for_sub_problems;
 public:
     class Strategy : public DantzigWolfe::LoggerFactory::Strategy {
         const unsigned int m_frequency;
+        bool m_log_for_sub_problems;
     public:
-        Strategy(unsigned int t_frequency);
+        Strategy(unsigned int t_frequency, bool t_log_sub_problems);
 
         void log_init(unsigned int t_n_sub_problems) override;
 
@@ -53,8 +55,13 @@ public:
 
     Debug& with_frequency(unsigned int t_frequency);
 
+    Debug& with_sub_problems(bool t_value);
+
     Strategy *operator()() const override {
-        return new Strategy(m_frequency.has_value() ? m_frequency.value() : 1);
+        return new Strategy(
+                m_frequency.has_value() ? m_frequency.value() : 1,
+                m_log_for_sub_problems.has_value() && m_log_for_sub_problems.value()
+                );
     }
 
     [[nodiscard]] LoggerFactory *clone() const override {
