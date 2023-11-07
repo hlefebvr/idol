@@ -275,13 +275,21 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 
     auto& env = m_master.env();
 
-    Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
-    m_master.add(lower);
-    m_generation_patterns[t_sub_problem_id].linear().set(lower, 1);
+    if (!equals(t_lower_multiplicity, 0., Tolerance::Feasibility) && !is_neg_inf(t_lower_multiplicity)) {
 
-    Ctr upper(env, LessOrEqual, t_upper_multiplicity);
-    m_master.add(upper);
-    m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
+        Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
+        m_master.add(lower);
+        m_generation_patterns[t_sub_problem_id].linear().set(lower, 1);
+
+    }
+
+    if (!is_pos_inf(t_upper_multiplicity)) {
+
+        Ctr upper(env, LessOrEqual, t_upper_multiplicity);
+        m_master.add(upper);
+        m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
+
+    }
 
 }
 
