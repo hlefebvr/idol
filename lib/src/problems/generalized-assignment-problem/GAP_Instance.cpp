@@ -64,7 +64,7 @@ idol::Problems::GAP::Instance idol::Problems::GAP::read_instance(const std::stri
     return result;
 }
 
-std::ostream& operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance) {
+std::ostream& idol::Problems::GAP::operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance) {
 
     const unsigned int n_agents = t_instance.n_agents();
     const unsigned int n_jobs = t_instance.n_jobs();

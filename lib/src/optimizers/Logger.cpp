@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 
-std::ostream& operator<<(std::ostream& t_os, idol::LogLevel t_level) {
+std::ostream& idol::operator<<(std::ostream& t_os, idol::LogLevel t_level) {
     using namespace idol;
     switch (t_level) {
         case Mute:  return t_os << "mute";
@@ -20,7 +20,7 @@ std::ostream& operator<<(std::ostream& t_os, idol::LogLevel t_level) {
     throw Exception("Enum out of bounds");
 }
 
-std::ostream& operator<<(std::ostream& t_os, idol::Color t_color) {
+std::ostream& idol::operator<<(std::ostream& t_os, idol::Color t_color) {
     using namespace idol;
     switch (t_color) {
 

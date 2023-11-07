@@ -23,21 +23,19 @@ namespace idol {
         InvalidSolution, /*!< Occurs when a solution of the relaxation is not valid (e.g., not integer) */
         PrunedSolution
     };
-}
 
-static std::ostream &operator<<(std::ostream& t_os, idol::CallbackEvent t_event) {
-    using namespace idol;
-    switch (t_event) {
-        case IncumbentSolution: return t_os << "IncumbentSolution";
-        case InvalidSolution: return t_os << "InvalidSolution";
-        case NodeLoaded: return t_os << "NodeLoaded";
-        case PrunedSolution: return t_os << "PrunedSolution";
-        default:;
+    static std::ostream &operator<<(std::ostream& t_os, idol::CallbackEvent t_event) {
+        using namespace idol;
+        switch (t_event) {
+            case IncumbentSolution: return t_os << "IncumbentSolution";
+            case InvalidSolution: return t_os << "InvalidSolution";
+            case NodeLoaded: return t_os << "NodeLoaded";
+            case PrunedSolution: return t_os << "PrunedSolution";
+            default:;
+        }
+        throw Exception("Enum out of bounds.");
     }
-    throw Exception("Enum out of bounds.");
-}
 
-namespace idol {
     class Callback;
     class CallbackI;
 }

@@ -58,8 +58,12 @@ public:
 static idol::Param operator!(const idol::Var& t_var) { return idol::Param(t_var); }
 static idol::Param operator!(const idol::Ctr& t_ctr) { return idol::Param(t_ctr); }
 
-static std::ostream& operator<<(std::ostream& t_os, const idol::Param& t_param) {
-    return t_os << '!' << t_param.name();
+namespace idol {
+
+    static std::ostream &operator<<(std::ostream &t_os, const idol::Param &t_param) {
+        return t_os << '!' << t_param.name();
+    }
+
 }
 
 IDOL_MAKE_HASHABLE(Param)

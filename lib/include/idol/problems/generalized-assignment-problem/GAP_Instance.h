@@ -44,6 +44,8 @@ public:
     void set_capacity(unsigned int t_agent, double t_value) { m_capacities[t_agent] = t_value; }
 };
 
-std::ostream& operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance);
+namespace idol::Problems::GAP {
+    std::ostream& operator<<(std::ostream& t_os, const idol::Problems::GAP::Instance& t_instance);
+}
 
 #endif //OPTIMIZE_INSTANCE_H

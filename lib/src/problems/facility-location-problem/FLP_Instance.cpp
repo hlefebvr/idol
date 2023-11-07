@@ -95,7 +95,7 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_1991_Cornuejols
     return result;
 }
 
-std::ostream& operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance) {
+std::ostream& idol::Problems::FLP::operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance) {
     t_os << t_instance.n_facilities() << '\t' << t_instance.n_customers() << '\n';
     for (unsigned int i = 0, n = t_instance.n_facilities() ; i < n ; ++i) {
         t_os << t_instance.fixed_cost(i) << '\t' << t_instance.capacity(i) << '\n';

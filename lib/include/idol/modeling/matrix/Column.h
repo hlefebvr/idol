@@ -85,15 +85,19 @@ public:
     static const Column EmptyColumn;
 };
 
-static std::ostream &operator<<(std::ostream& t_os, const idol::Column& t_column) {
+namespace idol {
 
-    t_os << "[Obj: " << t_column.obj() << "]\n";
+    static std::ostream &operator<<(std::ostream& t_os, const idol::Column& t_column) {
 
-    for (const auto& [ctr, constant] : t_column.linear()) {
-        t_os << '[' << ctr.name() << ": " << constant << "]\n";
+        t_os << "[Obj: " << t_column.obj() << "]\n";
+
+        for (const auto& [ctr, constant] : t_column.linear()) {
+            t_os << '[' << ctr.name() << ": " << constant << "]\n";
+        }
+
+        return t_os;
     }
 
-    return t_os;
 }
 
 #endif //OPTIMIZE_COLUMN_H

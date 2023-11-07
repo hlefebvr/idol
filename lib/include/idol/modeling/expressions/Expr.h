@@ -227,35 +227,39 @@ public:
     Expr& operator=(Expr&&) noexcept = default;
 };
 
-template<class Key1, class Key2>
-std::ostream &operator<<(std::ostream& t_os, const idol::Expr<Key1, Key2>& t_expr) {
+namespace idol {
 
-    if (t_expr.constant().is_zero()) {
+    template<class Key1, class Key2>
+    std::ostream &operator<<(std::ostream &t_os, const idol::Expr<Key1, Key2> &t_expr) {
 
-        if (t_expr.linear().empty()) {
-            return t_os << t_expr.quadratic();
+        if (t_expr.constant().is_zero()) {
+
+            if (t_expr.linear().empty()) {
+                return t_os << t_expr.quadratic();
+            }
+
+            t_os << t_expr.linear();
+
+            if (!t_expr.quadratic().empty()) {
+                return t_os << " + " << t_expr.quadratic();
+            }
+
+            return t_os;
         }
 
-        t_os << t_expr.linear();
+        t_os << t_expr.constant();
+
+        if (!t_expr.linear().empty()) {
+            t_os << " + " << t_expr.linear();
+        }
 
         if (!t_expr.quadratic().empty()) {
-            return t_os << " + " << t_expr.quadratic();
+            t_os << " + " << t_expr.quadratic();
         }
 
         return t_os;
     }
 
-    t_os << t_expr.constant();
-
-    if (!t_expr.linear().empty()) {
-        t_os << " + " << t_expr.linear();
-    }
-
-    if (!t_expr.quadratic().empty()) {
-        t_os << " + " << t_expr.quadratic();
-    }
-
-    return t_os;
 }
 
 #endif //IDOL_EXPR_H

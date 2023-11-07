@@ -59,6 +59,8 @@ public:
 
 };
 
-std::ostream& operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance);
+namespace idol::Problems::FLP {
+    std::ostream& operator<<(std::ostream& t_os, const idol::Problems::FLP::Instance& t_instance);
+}
 
 #endif //IDOL_FLP_INSTANCE_H

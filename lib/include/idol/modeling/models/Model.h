@@ -1364,71 +1364,82 @@ namespace idol {
 
 }
 
-static std::ostream& operator<<(std::ostream& t_os, const idol::Model& t_model) {
+namespace idol {
 
-    using namespace idol;
+    static std::ostream &operator<<(std::ostream &t_os, const idol::Model &t_model) {
 
-    if (t_model.get_obj_sense() == Minimize) {
-        t_os << "Minimize";
-    } else {
-        t_os << "Maximize";
-    }
+        using namespace idol;
 
-    t_os << " " << t_model.get_obj_expr() << "\nSubject to:\n";
-    for (const auto& ctr : t_model.ctrs()) {
-
-        const auto& row = t_model.get_ctr_row(ctr);
-        const auto& linear = row.linear();
-        const auto& quadratic = row.quadratic();
-        const auto type = t_model.get_ctr_type(ctr);
-
-        t_os << ctr << ": ";
-
-        if (linear.empty()) {
-            t_os << quadratic;
+        if (t_model.get_obj_sense() == Minimize) {
+            t_os << "Minimize";
         } else {
-            t_os << linear;
-            if (!quadratic.empty()) {
-                t_os << " + " << quadratic;
+            t_os << "Maximize";
+        }
+
+        t_os << " " << t_model.get_obj_expr() << "\nSubject to:\n";
+        for (const auto &ctr: t_model.ctrs()) {
+
+            const auto &row = t_model.get_ctr_row(ctr);
+            const auto &linear = row.linear();
+            const auto &quadratic = row.quadratic();
+            const auto type = t_model.get_ctr_type(ctr);
+
+            t_os << ctr << ": ";
+
+            if (linear.empty()) {
+                t_os << quadratic;
+            } else {
+                t_os << linear;
+                if (!quadratic.empty()) {
+                    t_os << " + " << quadratic;
+                }
             }
+
+            switch (type) {
+                case LessOrEqual:
+                    t_os << " <= ";
+                    break;
+                case Equal:
+                    t_os << " = ";
+                    break;
+                case GreaterOrEqual:
+                    t_os << " >= ";
+                    break;
+                default:
+                    t_os << " ?undefined? ";
+            }
+
+            t_os << row.rhs() << '\n';
         }
 
-        switch (type) {
-            case LessOrEqual: t_os << " <= "; break;
-            case Equal: t_os << " = "; break;
-            case GreaterOrEqual: t_os << " >= "; break;
-            default: t_os << " ?undefined? ";
-        }
+        t_os << "Variables:\n";
+        for (const auto &var: t_model.vars()) {
 
-        t_os << row.rhs() << '\n';
+            const double lb = t_model.get_var_lb(var);
+            const double ub = t_model.get_var_ub(var);
+            const int type = t_model.get_var_type(var);
+
+            if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
+                t_os << lb << " <= " << var << " <= " << ub;
+            } else if (!is_pos_inf(ub)) {
+                t_os << var << " <= " << ub;
+            } else if (!is_neg_inf(lb)) {
+                t_os << var << " >= " << lb;
+            } else {
+                t_os << var;
+            }
+
+            if (type == Binary) {
+                t_os << " [binary]";
+            } else if (type == Integer) {
+                t_os << " [integer]";
+            }
+
+            t_os << '\n';
+        }
+        return t_os;
     }
 
-    t_os << "Variables:\n";
-    for (const auto& var : t_model.vars()) {
-
-        const double lb = t_model.get_var_lb(var);
-        const double ub = t_model.get_var_ub(var);
-        const int type = t_model.get_var_type(var);
-
-        if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
-            t_os << lb << " <= " << var << " <= " << ub;
-        } else if (!is_pos_inf(ub)) {
-            t_os << var << " <= " << ub;
-        } else if (!is_neg_inf(lb)) {
-            t_os << var << " >= " << lb;
-        } else {
-            t_os << var;
-        }
-
-        if (type == Binary) {
-            t_os << " [binary]";
-        } else if (type == Integer) {
-            t_os << " [integer]";
-        }
-
-        t_os << '\n';
-    }
-    return t_os;
 }
 
 #endif //IDOL_MODEL_H

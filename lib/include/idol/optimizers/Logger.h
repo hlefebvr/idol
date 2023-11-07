@@ -20,11 +20,12 @@ namespace idol {
     enum Color { Default, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White };
 
     class Logger;
+
+    std::ostream& operator<<(std::ostream& t_os, idol::LogLevel t_level);
+
+    std::ostream& operator<<(std::ostream& t_os, idol::Color t_color);
+
 }
-
-std::ostream& operator<<(std::ostream& t_os, idol::LogLevel t_level);
-
-std::ostream& operator<<(std::ostream& t_os, idol::Color t_color);
 
 class idol::Logger {
     std::ostream& m_ostream = std::cout;
