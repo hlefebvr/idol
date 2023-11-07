@@ -202,7 +202,7 @@ As mentioned, you can access parts of an expression as follows.
             std::cout << coeff << " * " << param << std::endl; // output: 2 * !xi_0
         }
 
-Objective function
+Objective Function
 ------------------
 
 The objective function of an optimization model can specified by the ``Model::set_obj_expr`` method.
@@ -213,10 +213,37 @@ Here is an example which sets the objective function to :math:`-x_0 + 2 x_1`;
 
     model.set_obj_expr(-x_0 + 2 * x_1);
 
-What then?
+Accessing the Objects of a Model
+--------------------------------
+
+Once you have your model created, note that you can access all of its components. For instance, we can iterate over
+all variables as follows.
+
+.. code-block::
+
+    for (const Var& var : model.vars()) {
+        std::cout << model.get_var_lb(var) << " <= " << var.name() << " <= " << model.get_var_ub(var) << std::endl;
+    }
+
+Here, we use the :code:`Model::vars` method to get an iterable set of variables contained in our optimization model.
+Then, we use the methods :code:`Model::get_var_lb` and :code:`Model::get_var_ub` to retrieve the lower and upper
+bound of each variable in the model.
+
+.. hint::
+
+    As you have seen, there is no such thing as :code:`var.get_lb()`. This is because each variable may have a different
+    lower bound in another model. Thus, there is no such thing as "*the*" lower bound of a variable, but well *a* lower
+    bound associated to a variable **in a specific model**.
+
+Similarly, constraints can be accessed using the :code:`Model::ctrs` method. The objective function is retrieved by calling
+:code:`Model::get_obj_expr` and :code:`Model::get_obj_sense`.
+
+What Then?
 ----------
 
-In the following tutorial, we will dive into even more practical ways of building expressions, considering a simple
-example based on the combinatorial Knapsack problem.
-We will also see how to call an external solver like Gurobi or HiGHS using idol.
+You now know how to model an optimization problem in idol! It's time we do something of this model :-).
+
+In the following tutorial, we will see how to model the 0-1 Knapsack Problem, a well-known combinatorial problem, and
+how to call an external solver, *HiGHS*, to solve it.
+
 See you there!

@@ -1,7 +1,7 @@
 .. _installation:
 
-Installation Guidelines
-=======================
+Installation
+============
 
 Welcome to idol! You are here on the installation guidelines.
 

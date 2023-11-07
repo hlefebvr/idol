@@ -20,7 +20,7 @@ algorithm.
 Mathematical Model
 ------------------
 
-Original formulation
+Original Formulation
 ^^^^^^^^^^^^^^^^^^^^
 
 We will base our example on the following model taken from `Blanco, V., (2016), Benders Decomposition, MINLP School: Theory
@@ -35,7 +35,7 @@ and Applications <http://metodoscuantitativos.ugr.es/pages/web/vblanco/minlp16/s
         & x,y\ge 0.
     \end{align}
 
-Benders reformulation
+Benders Reformulation
 ^^^^^^^^^^^^^^^^^^^^^
 
 We apply a Benders reformulation to this problem by considering :math:`y` as the complicating variable.
@@ -45,7 +45,7 @@ The Benders reformulation reads:
 
     \begin{align}
         \min_{y,z} \ & 2y + z \\
-        \text{s.t.} \ & z \ge \lambda_1 ( 3 - y ) + \lambda_2(4 - 3y) \quad \lambda \in \Lambda, \\
+        \text{s.t.} \ & z \ge \lambda_1 ( 3 - y ) + \lambda_2(4 - 3y) \qquad \forall \lambda \in \Lambda, \\
         & z \ge 0,
     \end{align}
 
@@ -67,7 +67,7 @@ We are now ready to implement our decomposition method. We will need to define t
 - the dual space :math:`\Lambda`;
 - the  shape of the cuts to be added.
 
-The master problem
+The Master Problem
 ^^^^^^^^^^^^^^^^^^
 
 The master problem is created like any optimization model; see our :ref:`Modeling tutorial <modeling_optimization_problems>`.
@@ -83,7 +83,7 @@ The master problem is created like any optimization model; see our :ref:`Modelin
 
     master.set_obj_expr(2 * y + z);
 
-The dual space :math:`\Lambda`
+The Dual Space :math:`\Lambda`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To provide the description of the dual space :math:`\Lambda`, we use another Model object which will contain the variables
@@ -98,7 +98,7 @@ and constraints defining :math:`\Lambda`. The objective function is not used and
     dual_space.add_ctr(lambda[0] + 2 + lambda[1] <= 2);
     dual_space.add_ctr(2 * lambda[0] - lambda[1] <= 3);
 
-The cuts to be added
+The Cuts to be Added
 ^^^^^^^^^^^^^^^^^^^^
 
 Finally, we need to define the cuts to be added to the master problem for a given dual variable :math:`\lambda`.
@@ -113,7 +113,7 @@ This is done as follows.
 
 See how the lambda variables are "turned into" constants by prepending them with an "!" symbol.
 
-Solving the model
+Solving the Model
 -----------------
 
 In this section, we solve our model using GLPK and the LazyCutCallback from idol.

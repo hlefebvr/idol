@@ -8,3 +8,6 @@ Branch-and-Price Algorithm
     :glob:
 
     dantzig_wolfe
+    strong-branching
+    stabilization
+    heuristic

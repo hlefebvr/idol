@@ -6,7 +6,7 @@
 Using An External Solver
 ========================
 
-In this tutorial, we will see how to use an external optimization solver like Gurobi or HiGHS to solve
+In this tutorial, we will see how to use an external solver like Gurobi or HiGHS to solve
 a small combinatorial problem.
 The considered problem is the Knapsack Problem; see the `Knapsack Problem wikipedia page <https://en.wikipedia.org/wiki/Knapsack_problem>`_.
 

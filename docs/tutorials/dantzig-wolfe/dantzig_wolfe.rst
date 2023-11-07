@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-Generalized Assignment Problem
-==============================
+Column Generation
+=================
 
 In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
 using an external solver to solve each sub-problem.
@@ -33,8 +33,8 @@ Let :math:`c_{ij}` be the cost for assigning task :math:`j` to agent :math:`i`, 
 consumption of task :math:`j` when performed by agent :math:`i` and let :math:`t_i` be the resource capacity of agent
 :math:`i`.
 
-Direct Model
-^^^^^^^^^^^^
+Original Formulation
+^^^^^^^^^^^^^^^^^^^^
 
 The Generalized Assignment Problem (GAP) can be modeled as
 
@@ -69,15 +69,15 @@ in which :math:`E` denotes a list for their indices. The Dantzig-Wolfe reformula
 Though this model contains an exponential number of variables (i.e., columns) it can be solved efficiently using
 Column Generation and Branch-and-price. In such a case, the pricing problem is a Knapsack Problem.
 
-Automatic Reformulation in Idol
--------------------------------
+Automatic Reformulation
+-----------------------
 
-The simplest way to solve a problem using column generation and idol is through its automatic reformulation feature.
-To use this, one simply needs to give the *original space* formulation of the problem (here, the *so-called* direct model)
+The simplest way to solve a problem using Column Generation and idol is through its automatic reformulation feature.
+To use this, one simply needs to give the *original space formulation* of the problem
 and to indicate which constraints should be moved to the pricing problem (here, the knapsack constraints).
 
-Implementing the Direct Model with Idol
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Original Formulation
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 To read an instance for GAP, we first need to include the header file located in :code:`"idol/problems/generalized-assignment-problem/GAP_Instance.h"`.
 This will allow us to use idol's instance parser for GAP.
