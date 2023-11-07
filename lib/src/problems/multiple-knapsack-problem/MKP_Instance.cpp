@@ -10,9 +10,9 @@ idol::Problems::MKP::Instance::Instance(unsigned int t_n_knapsacks, unsigned int
     assert(t_n_knapsacks >= 1);
     assert(t_n_items > 1);
 
-    m_p.resize(t_n_items);
-    m_w.resize(t_n_items);
-    m_t.resize(t_n_knapsacks);
+    m_profits.resize(t_n_items);
+    m_weights.resize(t_n_items);
+    m_capacities.resize(t_n_knapsacks);
 }
 
 idol::Problems::MKP::Instance idol::Problems::MKP::read_instance(const std::string& t_filename) {
@@ -32,17 +32,17 @@ idol::Problems::MKP::Instance idol::Problems::MKP::read_instance(const std::stri
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
         file >> x;
-        result.set_p(j, x);
+        result.set_profit(j, x);
     }
 
     for (unsigned int j = 0 ; j < n_items ; ++j) {
         file >> x;
-        result.set_w(j, x);
+        result.set_weight(j, x);
     }
 
     for (unsigned int i = 0 ; i < n_knapsacks ; ++i) {
         file >> x;
-        result.set_t(i, x);
+        result.set_capacity(i, x);
     }
 
     file.close();

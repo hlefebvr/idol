@@ -13,65 +13,11 @@
 #include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Wentges.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
+#include "idol/problems/facility-location-problem/FLP_Instance.h"
 
 using namespace idol;
 
 int main(int t_argc, char** t_argv) {
-
-    const auto instance = Problems::GAP::read_instance("/home/henri/Research/idol/tests/data/generalized-assignment-problem/GAP_instance0.txt");
-
-    const unsigned int n_agents = instance.n_agents();
-    const unsigned int n_jobs = instance.n_jobs();
-
-    // Create optimization environment
-    Env env;
-
-    Annotation<Ctr> std_decomposition(env, "by_machines", MasterId);
-
-    Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
-    Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
-
-    Model model(env);
-
-    auto x = Var::make_vector(env, Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
-    model.add_vector<Var, 2>(x);
-
-    for (unsigned int i = 0 ; i < n_agents ; ++i) {
-
-        Ctr capacity(env, idol_Sum(j, Range(n_jobs), instance.resource_consumption(i, j) * x[i][j]) <= instance.capacity(i), "capacity_" + std::to_string(i));
-
-        capacity.set(std_decomposition, i);
-        capacity.set(nested_decomposition1, i / 2);
-        capacity.set(nested_decomposition2, i % 2);
-
-        model.add(capacity);
-
-    }
-
-    for (unsigned int j = 0 ; j < n_jobs ; ++j) {
-        Ctr assignment(env, idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
-        model.add(assignment);
-    }
-
-    model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
-
-    const auto sub_problem_specifications = DantzigWolfe::SubProblem().add_optimizer(Gurobi());
-    const auto column_generation = DantzigWolfeDecomposition(std_decomposition)
-                                        .with_master_optimizer(Gurobi::ContinuousRelaxation())
-                                        .with_default_sub_problem_spec(sub_problem_specifications);
-    const auto branch_and_bound = BranchAndBound()
-                                    .with_branching_rule(MostInfeasible())
-                                    .with_node_selection_rule(BestBound())
-                                    .with_log_level(Info, Blue);
-    const auto branch_and_price = branch_and_bound + column_generation;
-
-    // Set optimizer
-    model.use(branch_and_price);
-
-    // Solve
-    model.optimize();
-
-    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }
