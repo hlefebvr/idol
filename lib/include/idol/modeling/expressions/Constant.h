@@ -192,14 +192,14 @@ namespace idol {
             if (!idol::equals(t_coeff, 1., idol::Tolerance::Sparsity)) {
                 t_os << t_coeff << ' ';
             }
-            t_os << t_param;
+            t_os << t_param.name();
         };
 
         const auto print_quad_term = [&t_os](const std::pair<idol::Param, idol::Param> &t_pair, double t_coeff) {
             if (!idol::equals(t_coeff, 1., idol::Tolerance::Sparsity)) {
                 t_os << t_coeff << ' ';
             }
-            t_os << t_pair.first << ' ' << t_pair.second;
+            t_os << t_pair.first << ' ' <<  t_pair.second.name();
         };
 
         if (t_coefficient.is_zero()) {

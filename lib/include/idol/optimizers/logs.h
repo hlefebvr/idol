@@ -15,7 +15,11 @@ namespace idol {
         if (t_width < t_string.size()) {
             return center(t_os, t_string, t_string.size(), t_fill);
         }
-        const int padding = ((int) t_width - (int) t_string.size()) / 2;
+        const int total_blank = ((int) t_width - (int) t_string.size());
+        const int padding = total_blank / 2;
+        if (total_blank % 2 == 1) {
+            t_os << t_fill;
+        }
         for (unsigned int i = 0 ; i < padding ; ++i) { t_os << t_fill; }
         t_os << t_string;
         for (unsigned int i = 0 ; i < padding ; ++i) { t_os << t_fill; }
