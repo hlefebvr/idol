@@ -1,6 +1,6 @@
 .. _api_Heuristics_LocalBranching:
 
-Local Branching Heuristic
-=========================
+Local Branching
+===============
 
 .. doxygenclass:: idol::Heuristics::LocalBranching
