@@ -32,7 +32,7 @@ public:
 
         Strategy(const Strategy<NodeVarInfoT>& t_src);
 
-        explicit Strategy(const StrongBranching& t_parent) : VariableBranching::Strategy<NodeVarInfoT>(t_parent) {}
+        explicit Strategy(const StrongBranching& t_parent);
 
         BranchingRules::VariableBranching<NodeVarInfoT> *
         operator()(const Optimizers::BranchAndBound<NodeVarInfoT> &t_parent) const override {
@@ -54,7 +54,7 @@ public:
 
     StrongBranching& with_node_scoring_function(const NodeScoreFunction& t_score_function);
 
-    StrongBranching& with_phase(const StrongBranchingPhaseType& t_phase, unsigned int t_max_n_variables, unsigned int t_max_depth);
+    StrongBranching& add_phase(const StrongBranchingPhaseType &t_phase, unsigned int t_max_n_variables, unsigned int t_max_depth);
 private:
     std::optional<unsigned int> m_max_n_variables;
     std::unique_ptr<NodeScoreFunction> m_node_scoring_function;
@@ -62,8 +62,18 @@ private:
 };
 
 template<class NodeVarInfoT>
+idol::StrongBranching::Strategy<NodeVarInfoT>::Strategy(const idol::StrongBranching &t_parent)
+        : VariableBranching::Strategy<NodeVarInfoT>(t_parent),
+          m_max_n_variables(t_parent.m_max_n_variables),
+          m_node_scoring_function(t_parent.m_node_scoring_function ? t_parent.m_node_scoring_function->clone() : nullptr),
+          m_phases(t_parent.m_phases) {
+
+}
+
+template<class NodeVarInfoT>
 idol::StrongBranching::Strategy<NodeVarInfoT>::Strategy(const Strategy<NodeVarInfoT>& t_src)
-    : m_max_n_variables(t_src.m_max_n_variables),
+    : VariableBranching::Strategy<NodeVarInfoT>(t_src),
+      m_max_n_variables(t_src.m_max_n_variables),
       m_node_scoring_function(t_src.m_node_scoring_function ? t_src.m_node_scoring_function->clone() : nullptr),
       m_phases(t_src.m_phases)
 {}

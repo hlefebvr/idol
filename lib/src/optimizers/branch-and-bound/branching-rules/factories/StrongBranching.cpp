@@ -27,9 +27,9 @@ idol::StrongBranching::with_node_scoring_function(const idol::NodeScoreFunction 
 }
 
 idol::StrongBranching &
-idol::StrongBranching::with_phase(const idol::StrongBranchingPhaseType &t_phase,
-                                  unsigned int t_max_n_variables,
-                                  unsigned int t_max_depth) {
+idol::StrongBranching::add_phase(const StrongBranchingPhaseType &t_phase,
+                                 unsigned int t_max_n_variables,
+                                 unsigned int t_max_depth) {
 
     m_phases.emplace_back(t_phase, t_max_n_variables, t_max_depth);
 

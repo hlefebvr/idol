@@ -53,11 +53,12 @@ idol::BranchingRules::StrongBranching<NodeVarInfoT>::StrongBranching(
           m_score_function(t_score_function->clone()),
           m_phases(t_phases)
 {
+
       // add last phase
       m_phases.emplace_back(
               StrongBranchingPhases::WithNodeOptimizer(),
               t_max_n_variables,
-              0
+              std::numeric_limits<unsigned int>::max()
       );
 }
 
@@ -166,7 +167,7 @@ idol::BranchingRules::StrongBranching<NodeVarInfoT>::current_phase(const idol::N
     const unsigned int level = t_node.level();
 
     for (auto& phase : m_phases) {
-        if (phase.max_depth() <= level) {
+        if (level <= phase.max_depth()) {
             return phase;
         }
     }
