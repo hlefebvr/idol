@@ -44,10 +44,12 @@ Empirically, Strong Branching is known to produce substantially smaller Branch-a
 branching rules. Unfortunately, computing :math:`\text{Score}(j)` typically requires a lot of time. To avoid this,
 several techniques have been designed such as *Restricted Strong Branching* and *Strong Branching with Phases* (see below).
 
+For more details, please refer to :cite:p:`ACHTERBERG200542`.
+
 Scoring Functions
 ^^^^^^^^^^^^^^^^^
 
-Two common scoring functions :math:`\text{Score}(j)` are found in the literature. The *linear* formula
+Two common scoring functions :math:`\text{Score}(j)` are found in the literature. The *linear* formula :cite:`Linderoth1999`
 
 .. math::
 
@@ -194,3 +196,8 @@ Conclusion
 
 Strong Branching is a possible approach to try to reduce the computation time of a Branch-and-Price algorithm.
 Another approach, which can be complementary, is stabilization. This is the topic of the next tutorial, see you there!
+
+References
+----------
+
+.. bibliography::

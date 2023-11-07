@@ -41,8 +41,11 @@ extensions = [
     'breathe',
     'sphinx.ext.mathjax',
     'sphinx_copybutton',
-    'sphinxmermaid'
+    'sphinxmermaid',
+    'sphinxcontrib.bibtex'
 ]
+bibtex_bibfiles = ['bibliography.bib']
+bibtex_default_style = 'plain'
 
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 

@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-python@v2
       - name: Install dependencies
         run: |
-          pip install sphinx breathe sphinx-sitemap sphinx-rtd-theme sphinx-copybutton sphinx-mermaid
+          pip install sphinx breathe sphinx-sitemap sphinx-rtd-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
           sudo apt-get install doxygen
       - name: Sphinx build
         run: |
