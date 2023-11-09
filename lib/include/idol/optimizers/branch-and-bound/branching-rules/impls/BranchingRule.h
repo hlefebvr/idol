@@ -42,6 +42,8 @@ public:
 
     virtual void on_node_solved(const Node<NodeVarInfoT>& t_node) {}
 
+    virtual void on_nodes_have_been_created() {}
+
     template<class T> T& as() {
         auto* result = dynamic_cast<T*>(this);
         if (!result) {

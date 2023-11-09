@@ -710,6 +710,8 @@ std::vector<idol::Node<NodeVarInfoT>> idol::Optimizers::BranchAndBound<NodeVarIn
         result.emplace_back(ptr_to_info, m_n_created_nodes++, t_node);
     }
 
+    m_branching_rule->on_nodes_have_been_created();
+
     return result;
 }
 

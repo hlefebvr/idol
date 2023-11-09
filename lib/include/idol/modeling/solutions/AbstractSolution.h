@@ -9,6 +9,7 @@
 #include "idol/containers/IteratorForward.h"
 #include "types.h"
 #include "idol/modeling/numericals.h"
+#include "idol/optimizers/logs.h"
 #include <optional>
 
 namespace idol {
@@ -326,7 +327,7 @@ namespace idol {
         }
         t_os << "| Values:" << '\n';
         for (const auto &[key, value]: t_solution) {
-            t_os << "| \t" << key.name() << " = " << pretty_double(value) << '\n';
+            t_os << "| \t" << std::setw(8) << key.name() << " = " << pretty_double(value) << '\n';
         }
         t_os << "+-----------------------\n";
         return t_os;

@@ -66,6 +66,10 @@ public:
 
         auto invalid_variables = get_invalid_variables(primal_solution);
 
+        if (invalid_variables.empty()) {
+            return {};
+        }
+
         Var selected_variable = invalid_variables.front();
 
         if (invalid_variables.size() > 1) {
