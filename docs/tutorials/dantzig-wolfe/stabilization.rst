@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-In-Out Stabilization
-====================
+In-Out Stabilization (to come)
+==============================
 
 Hey, you've implemented your first Branch-and-Price algorithm and are curious about how to stabilize your Column
 Generation algorithm? Then you are at the right place! If not, make sure to check the

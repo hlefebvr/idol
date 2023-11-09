@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-Column Generation
-=================
+Branch-and-Price 101
+====================
 
 In this section, we will show how to use the Branch-and-Price solver to solve the *Generalized Assignment Problem* (GAP)
 using an external solver to solve each sub-problem.

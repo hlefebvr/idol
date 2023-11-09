@@ -3,8 +3,8 @@
 .. role:: cpp(code)
    :language: cpp
 
-Heuristic Pricing
-=================
+Heuristic Pricing (to come)
+===========================
 
 Hey, you've implemented your first Branch-and-Price algorithm and are curious about how to use your own heuristic for
 pricing during the Column Generation algorithm? Then you are at the right place! If not, make sure to check the

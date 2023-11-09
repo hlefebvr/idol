@@ -1,7 +1,7 @@
 .. _tutorials_dantzig_wolfe:
 
-Branch-and-Price Algorithm
-==========================
+Branch-and-Price
+================
 
 .. toctree::
     :maxdepth: 1
