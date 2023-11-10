@@ -416,7 +416,7 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
 
 }
 
-void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard) {
+void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
@@ -425,10 +425,11 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
         return;
     }
 
-    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
-        //return true;
-        return t_generator.get(t_var) < t_lb;
-    });
+    if (t_remove_infeasible_columns) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+            return Row(t_var, t_lb).is_violated(t_generator, GreaterOrEqual, Tolerance::Feasibility);
+        });
+    }
 
     if (t_hard) {
         sub_problem(sub_problem_id).set_var_lb(t_var, t_lb);
@@ -439,7 +440,7 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
 
 }
 
-void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard) {
+void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
@@ -448,10 +449,11 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
         return;
     }
 
-    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
-        // return true;
-        return t_generator.get(t_var) > t_ub;
-    });
+    if (t_remove_infeasible_columns) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+            return Row(t_var, t_ub).is_violated(t_generator, LessOrEqual, Tolerance::Feasibility);
+        });
+    }
 
     if (t_hard) {
         sub_problem(sub_problem_id).set_var_ub(t_var, t_ub);
@@ -667,4 +669,65 @@ unsigned int idol::DantzigWolfe::Formulation::get_n_present_generators() const {
     }
 
     return result;
+}
+
+void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
+
+    const unsigned int n_sub_problems = m_sub_problems.size();
+
+    for (unsigned int sub_problem_id = 0 ; sub_problem_id < n_sub_problems ; ++sub_problem_id) {
+
+        for (const auto& [var, generator] : m_pools[sub_problem_id].values()) {
+
+            if (!m_master.has(var) && is_feasible(generator, sub_problem_id)) {
+
+                m_master.add(var, TempVar(
+                    0,
+                    Inf,
+                    Continuous,
+                    m_generation_patterns[sub_problem_id].fix(generator)
+                ));
+                m_present_generators[sub_problem_id].emplace_back(var, generator);
+
+            }
+
+        }
+
+    }
+
+}
+
+bool
+idol::DantzigWolfe::Formulation::is_feasible(const idol::Solution::Primal &t_primal, unsigned int t_sub_problem_id) {
+
+    const auto& model = m_sub_problems[t_sub_problem_id];
+
+    // Check bounds
+    for (const auto& var : model.vars()) {
+
+        const double lb = model.get_var_lb(var);
+        const double ub = model.get_var_ub(var);
+
+        if (
+                Row(var, lb).is_violated(t_primal, GreaterOrEqual, Tolerance::Feasibility)
+                || Row(var, ub).is_violated(t_primal, LessOrEqual, Tolerance::Feasibility)
+            ) {
+            return false;
+        }
+
+    }
+
+    // Check constraints
+    for (const auto& ctr : model.ctrs()) {
+
+        const auto& row = model.get_ctr_row(ctr);
+        const auto& type = model.get_ctr_type(ctr);
+
+        if (row.is_violated(t_primal, type, Tolerance::Feasibility)) {
+            return false;
+        }
+
+    }
+
+    return true;
 }

@@ -38,6 +38,7 @@ class idol::DantzigWolfe::Formulation {
     void dispatch_linking_constraint(const Ctr& t_original_ctr, const Row& t_row, CtrType t_type);
     std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear, const QuadExpr<Var, Var>& t_quadratic);
     void dispatch_objective_function(const Model& t_original_formulation);
+    bool is_feasible(const Solution::Primal& t_primal, unsigned int t_sub_problem_id);
 
     void apply_sub_problem_bound_on_master(bool t_is_lb, const idol::Var &t_var, unsigned int t_sub_problem_id, double t_value);
     LinExpr<Var> reformulate_sub_problem_variable(const Var &t_var, unsigned int t_sub_problem_id);
@@ -75,9 +76,9 @@ public:
 
     double get_original_space_var_primal(const Var& t_var, const Solution::Primal& t_master_primal) const;
 
-    void update_var_lb(const Var& t_var, double t_lb, bool t_hard);
+    void update_var_lb(const Var& t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns);
 
-    void update_var_ub(const Var& t_var, double t_ub, bool t_hard);
+    void update_var_ub(const Var& t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns);
 
     void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal);
 
@@ -94,6 +95,8 @@ public:
     void remove(const Ctr& t_ctr);
 
     unsigned int get_n_present_generators() const;
+
+    void load_columns_from_pool();
 };
 
 #endif //IDOL_FORMULATION_H

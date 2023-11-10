@@ -24,7 +24,8 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     std::unique_ptr<DantzigWolfe::LoggerFactory::Strategy> m_logger;
     std::vector<DantzigWolfe::SubProblem> m_sub_problem_specifications;
     unsigned int m_max_parallel_pricing;
-    bool m_use_hard_branching = false;
+    bool m_use_hard_branching;
+    bool m_remove_infeasible_columns;
 public:
     DantzigWolfeDecomposition(const Model& t_model,
                               idol::DantzigWolfe::Formulation&& t_formulation,
@@ -32,6 +33,7 @@ public:
                               const DantzigWolfe::DualPriceSmoothingStabilization& t_stabilization,
                               unsigned int t_max_parallel_pricing,
                               bool t_use_hard_branching,
+                              bool t_remove_infeasible_columns,
                               std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
                               const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
                               const DantzigWolfe::LoggerFactory& t_logger_factory);

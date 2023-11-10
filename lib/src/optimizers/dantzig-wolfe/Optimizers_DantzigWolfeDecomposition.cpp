@@ -9,6 +9,7 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
                                                                        const DantzigWolfe::DualPriceSmoothingStabilization& t_stabilization,
                                                                        unsigned int t_max_parallel_pricing,
                                                                        bool t_use_hard_branching,
+                                                                       bool t_remove_infeasible_columns,
                                                                        std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
                                                                        const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
                                                                        const DantzigWolfe::LoggerFactory& t_logger_factory)
@@ -17,6 +18,7 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
       m_master_optimizer_factory(t_master_optimizer_factory.clone()),
       m_max_parallel_pricing(t_max_parallel_pricing),
       m_use_hard_branching(t_use_hard_branching),
+      m_remove_infeasible_columns(t_remove_infeasible_columns),
       m_sub_problem_specifications(std::move(t_sub_problem_specifications)),
       m_stabilization(t_stabilization()),
       m_strategy(t_strategy()),
@@ -43,6 +45,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::hook_optimize() {
+
+    m_formulation.load_columns_from_pool();
 
     m_strategy->execute(*this);
 
@@ -173,11 +177,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_var_type(const idol::Va
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_lb(const idol::Var &t_var) {
-    m_formulation.update_var_lb(t_var, parent().get_var_lb(t_var), m_use_hard_branching);
+    m_formulation.update_var_lb(t_var, parent().get_var_lb(t_var), m_use_hard_branching, m_remove_infeasible_columns);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_ub(const idol::Var &t_var) {
-    m_formulation.update_var_ub(t_var, parent().get_var_ub(t_var), m_use_hard_branching);
+    m_formulation.update_var_ub(t_var, parent().get_var_ub(t_var), m_use_hard_branching, m_remove_infeasible_columns);
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_obj(const idol::Var &t_var) {
