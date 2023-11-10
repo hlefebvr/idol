@@ -26,6 +26,7 @@ class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParame
     std::unique_ptr<DantzigWolfe::LoggerFactory> m_logger_factory;
     std::optional<unsigned int> m_max_parallel_sub_problems;
     std::optional<bool> m_use_hard_branching;
+    std::optional<bool> m_use_infeasible_column_removal_when_branching;
     std::optional<DantzigWolfe::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, DantzigWolfe::SubProblem> m_sub_problem_specs;
 
@@ -49,6 +50,8 @@ public:
     DantzigWolfeDecomposition& with_infeasibility_strategy(const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy);
 
     DantzigWolfeDecomposition& with_hard_branching(bool t_value);
+
+    DantzigWolfeDecomposition& with_infeasible_columns_removal(bool t_value);
 
     DantzigWolfeDecomposition& with_max_parallel_sub_problems(unsigned int t_n_sub_problems);
 

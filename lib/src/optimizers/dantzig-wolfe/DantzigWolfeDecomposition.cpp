@@ -24,6 +24,7 @@ idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDec
       m_dual_price_smoothing_stabilization(t_src.m_dual_price_smoothing_stabilization ? t_src.m_dual_price_smoothing_stabilization->clone() : nullptr),
       m_max_parallel_sub_problems(t_src.m_max_parallel_sub_problems),
       m_use_hard_branching(t_src.m_use_hard_branching),
+      m_use_infeasible_column_removal_when_branching(t_src.m_use_infeasible_column_removal_when_branching),
       m_infeasibility_strategy(t_src.m_infeasibility_strategy ? t_src.m_infeasibility_strategy->clone() : nullptr),
       m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
       m_sub_problem_specs(t_src.m_sub_problem_specs),
@@ -57,12 +58,16 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         logger_factory = std::make_unique<DantzigWolfe::Loggers::Debug>();
     }
 
+    const bool use_hard_branching = m_use_hard_branching.has_value() && m_use_hard_branching.value();
+    const bool remove_infeasible_column = m_use_infeasible_column_removal_when_branching.has_value() ? m_use_infeasible_column_removal_when_branching.value() : use_hard_branching;
+
     return new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
                                                      m_dual_price_smoothing_stabilization ? *m_dual_price_smoothing_stabilization : *dual_price_smoothing,
                                                      m_max_parallel_sub_problems.has_value() ? m_max_parallel_sub_problems.value() : 1,
-                                                     m_use_hard_branching.has_value() && m_use_hard_branching.value(),
+                                                     use_hard_branching,
+                                                     remove_infeasible_column,
                                                      std::move(sub_problems_specifications),
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
                                                      *logger_factory
@@ -217,6 +222,17 @@ idol::DantzigWolfeDecomposition::with_logger(const idol::DantzigWolfe::LoggerFac
     }
 
     m_logger_factory.reset(t_logger.clone());
+
+    return *this;
+}
+
+idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_infeasible_columns_removal(bool t_value) {
+
+    if (m_use_infeasible_column_removal_when_branching.has_value()) {
+        throw Exception("Infeasible column removal has already been configured.");
+    }
+
+    m_use_infeasible_column_removal_when_branching = t_value;
 
     return *this;
 }

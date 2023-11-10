@@ -416,7 +416,7 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
 
 }
 
-void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard) {
+void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
@@ -425,10 +425,11 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
         return;
     }
 
-    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
-        //return true;
-        return t_generator.get(t_var) < t_lb;
-    });
+    if (t_remove_infeasible_columns) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+            return t_generator.get(t_var) < t_lb;
+        });
+    }
 
     if (t_hard) {
         sub_problem(sub_problem_id).set_var_lb(t_var, t_lb);
@@ -439,7 +440,7 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
 
 }
 
-void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard) {
+void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
@@ -448,10 +449,11 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
         return;
     }
 
-    remove_column_if(sub_problem_id, [&](const Var& t_object, const Solution::Primal& t_generator) {
-        // return true;
-        return t_generator.get(t_var) > t_ub;
-    });
+    if (t_remove_infeasible_columns) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+            return t_generator.get(t_var) > t_ub;
+        });
+    }
 
     if (t_hard) {
         sub_problem(sub_problem_id).set_var_ub(t_var, t_ub);

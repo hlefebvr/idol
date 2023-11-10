@@ -23,6 +23,8 @@ class idol::DantzigWolfe::Formulation {
     std::vector<Column> m_generation_patterns;
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
+    std::vector<bool> m_sub_problem_bounds_have_been_updated;
+    std::vector<bool> m_sub_problem_constraints_have_been_updated;
 
     Map<Var, Ctr> m_soft_branching_lower_bound_constraints;
     Map<Var, Ctr> m_soft_branching_upper_bound_constraints;
@@ -75,9 +77,9 @@ public:
 
     double get_original_space_var_primal(const Var& t_var, const Solution::Primal& t_master_primal) const;
 
-    void update_var_lb(const Var& t_var, double t_lb, bool t_hard);
+    void update_var_lb(const Var& t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns);
 
-    void update_var_ub(const Var& t_var, double t_ub, bool t_hard);
+    void update_var_ub(const Var& t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns);
 
     void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal);
 
