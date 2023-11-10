@@ -46,6 +46,8 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_before_optimize() {
 
 void idol::Optimizers::DantzigWolfeDecomposition::hook_optimize() {
 
+    m_formulation.load_columns_from_pool();
+
     m_strategy->execute(*this);
 
     set_status(m_strategy->status());

@@ -64,7 +64,7 @@ int main(int t_argc, const char** t_argv) {
                                       .with_log_level(Info, Yellow)
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
                                       .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
-                                      .with_hard_branching(false)
+                                      .with_hard_branching(true)
                       )
                       .with_subtree_depth(0)
                       .with_branching_rule(MostInfeasible())

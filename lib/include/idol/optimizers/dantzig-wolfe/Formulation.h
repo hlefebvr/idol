@@ -23,8 +23,6 @@ class idol::DantzigWolfe::Formulation {
     std::vector<Column> m_generation_patterns;
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
-    std::vector<bool> m_sub_problem_bounds_have_been_updated;
-    std::vector<bool> m_sub_problem_constraints_have_been_updated;
 
     Map<Var, Ctr> m_soft_branching_lower_bound_constraints;
     Map<Var, Ctr> m_soft_branching_upper_bound_constraints;
@@ -40,6 +38,7 @@ class idol::DantzigWolfe::Formulation {
     void dispatch_linking_constraint(const Ctr& t_original_ctr, const Row& t_row, CtrType t_type);
     std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear, const QuadExpr<Var, Var>& t_quadratic);
     void dispatch_objective_function(const Model& t_original_formulation);
+    bool is_feasible(const Solution::Primal& t_primal, unsigned int t_sub_problem_id);
 
     void apply_sub_problem_bound_on_master(bool t_is_lb, const idol::Var &t_var, unsigned int t_sub_problem_id, double t_value);
     LinExpr<Var> reformulate_sub_problem_variable(const Var &t_var, unsigned int t_sub_problem_id);
@@ -96,6 +95,8 @@ public:
     void remove(const Ctr& t_ctr);
 
     unsigned int get_n_present_generators() const;
+
+    void load_columns_from_pool();
 };
 
 #endif //IDOL_FORMULATION_H
