@@ -29,5 +29,7 @@ std::ostream& idol::center(std::ostream& t_os, const std::string& t_string, unsi
 std::string idol::pretty_double(double t_value, unsigned int t_precision) {
     if (is_pos_inf(t_value)) { return "Inf"; }
     if (is_neg_inf(t_value)) { return "-Inf"; }
-    return (std::stringstream() << std::setw((int) t_precision) << std::setprecision((int) t_precision) << t_value).str();
+    std::stringstream stream;
+    stream << std::setw((int) t_precision) << std::setprecision((int) t_precision) << t_value;
+    return stream.str();
 }
