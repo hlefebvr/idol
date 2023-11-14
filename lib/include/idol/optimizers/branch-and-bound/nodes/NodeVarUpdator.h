@@ -38,6 +38,11 @@ public:
     void apply_local_updates(const Node<NodeVarInfoT> &t_node) override;
 
     void clear_local_updates() override;
+
+protected:
+    Model& relaxation() { return m_relaxation; }
+
+    const Model& relaxation() const { return m_relaxation; }
 };
 
 template<class NodeT>
@@ -83,17 +88,21 @@ void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<No
         return;
     }
 
-    const auto& branching_decision = t_node.info().branching_decision();
+    if (t_node.info().has_branching_decision()) {
 
-    switch (branching_decision.type) {
-        case LessOrEqual:
-            apply_local_update(branching_decision, m_changed_upper_bounds, t_changed_upper_bounds);
-            break;
-        case GreaterOrEqual:
-            apply_local_update(branching_decision, m_changed_lower_bounds, t_changed_lower_bounds);
-            break;
-        default:
-            throw Exception("Branching on equality constraints is not implemented.");
+        const auto &branching_decision = t_node.info().branching_decision();
+
+        switch (branching_decision.type) {
+            case LessOrEqual:
+                apply_local_update(branching_decision, m_changed_upper_bounds, t_changed_upper_bounds);
+                break;
+            case GreaterOrEqual:
+                apply_local_update(branching_decision, m_changed_lower_bounds, t_changed_lower_bounds);
+                break;
+            default:
+                throw Exception("Branching on equality constraints is not implemented.");
+        }
+
     }
 
     apply_local_updates(t_node.parent(), t_changed_lower_bounds, t_changed_upper_bounds);

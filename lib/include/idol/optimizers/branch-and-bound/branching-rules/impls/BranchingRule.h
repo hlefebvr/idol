@@ -7,6 +7,7 @@
 
 #include "idol/optimizers/branch-and-bound/nodes/Node.h"
 #include "idol/optimizers/Logger.h"
+#include <list>
 
 namespace idol {
     namespace Optimizers {

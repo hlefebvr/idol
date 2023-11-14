@@ -44,13 +44,15 @@ public:
 
     void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 
-    virtual void save(const Optimizers::BranchAndBound<NodeVarInfo>& t_parent, const Model& t_original_formulation, const Model& t_model);
+    virtual void save(const Model& t_original_formulation, const Model& t_model);
 
     [[nodiscard]] virtual NodeVarInfo* create_child() const;
 
     void set_local_lower_bound(const Var& t_var, double t_lb);
 
     void set_local_upper_bound(const Var& t_var, double t_ub);
+
+    bool has_branching_decision() const { return m_branching_decision.has_value(); }
 
     [[nodiscard]] const BranchingDecision& branching_decision() const { return m_branching_decision.value(); }
 
