@@ -268,7 +268,6 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
     if (m_current_iteration_is_using_farkas && !at_least_one_column_have_been_generated) {
         m_status = Infeasible;
         m_reason = Proved;
-        std::cout << "HERE" << std::endl;
         m_is_terminated = true;
         return;
     }
