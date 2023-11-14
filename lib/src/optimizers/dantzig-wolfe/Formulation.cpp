@@ -678,12 +678,12 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
 
     const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
 
-    if (sub_problem_id != MasterId) {
-        m_sub_problems[sub_problem_id].remove(t_ctr);
+    if (sub_problem_id == MasterId) {
+        m_master.remove(t_ctr);
         return;
     }
 
-    m_master.remove(t_ctr);
+    m_sub_problems[sub_problem_id].remove(t_ctr);
     m_generation_patterns[sub_problem_id].linear().set(t_ctr, 0.);
 
 }

@@ -66,6 +66,10 @@ public:
     Model& get_model(const Ctr& t_ctr);
     const Model& get_model(const Ctr& t_ctr) const;
 
+    const Annotation<Ctr, unsigned int>& decomposition_by_constraint() const { return m_decomposition_by_ctr; }
+
+    const Annotation<Var, unsigned int>& decomposition_by_variable() const { return m_decomposition_by_var; }
+
     const GeneratorPool<Var>& column_pool(unsigned int t_sub_problem_id) const { return m_pools[t_sub_problem_id]; }
 
     unsigned int n_sub_problems() const { return m_sub_problems.size(); }
