@@ -7,10 +7,11 @@
 #include "idol/modeling/objects/Env.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
-idol::DantzigWolfe::Formulation::Formulation(const Model &t_original_formulation,
-                                             Annotation<Ctr, unsigned int> t_decomposition)
-    : m_decomposition_by_ctr(std::move(t_decomposition)),
-      m_decomposition_by_var(t_original_formulation.env(), m_decomposition_by_ctr.name(), MasterId),
+idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formulation,
+                                             idol::Annotation<idol::Ctr, unsigned int> t_ctr_decomposition,
+                                             idol::Annotation<idol::Var, unsigned int> t_var_decomposition)
+    : m_decomposition_by_ctr(std::move(t_ctr_decomposition)),
+      m_decomposition_by_var(std::move(t_var_decomposition)),
       m_master(t_original_formulation.env())
 {
 
@@ -29,6 +30,14 @@ idol::DantzigWolfe::Formulation::Formulation(const Model &t_original_formulation
 
 }
 
+idol::DantzigWolfe::Formulation::Formulation(const Model &t_original_formulation,
+                                             const Annotation<Ctr, unsigned int>& t_decomposition)
+    : Formulation(t_original_formulation,
+                  t_decomposition,
+                  Annotation<Var, unsigned int>(t_original_formulation.env(), t_decomposition.name(), MasterId)) {
+
+}
+
 unsigned int idol::DantzigWolfe::Formulation::compute_n_sub_problems(const Model& t_original_formulation) {
 
     std::optional<unsigned int> n_sub_problems;
@@ -36,6 +45,25 @@ unsigned int idol::DantzigWolfe::Formulation::compute_n_sub_problems(const Model
     for (const auto& ctr : t_original_formulation.ctrs()) {
 
         const unsigned int sub_problem_id = ctr.get(m_decomposition_by_ctr);
+
+        if (sub_problem_id == MasterId) {
+            continue;
+        }
+
+        if (!n_sub_problems.has_value()) {
+            n_sub_problems = sub_problem_id;
+            continue;
+        }
+
+        if (sub_problem_id >= n_sub_problems.value()) {
+            n_sub_problems = sub_problem_id;
+        }
+
+    }
+
+    for (const auto& var : t_original_formulation.vars()) {
+
+        const unsigned int sub_problem_id = var.get(m_decomposition_by_var);
 
         if (sub_problem_id == MasterId) {
             continue;
@@ -650,12 +678,12 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
 
     const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
 
-    if (sub_problem_id != MasterId) {
-        m_sub_problems[sub_problem_id].remove(t_ctr);
+    if (sub_problem_id == MasterId) {
+        m_master.remove(t_ctr);
         return;
     }
 
-    m_master.remove(t_ctr);
+    m_sub_problems[sub_problem_id].remove(t_ctr);
     m_generation_patterns[sub_problem_id].linear().set(t_ctr, 0.);
 
 }

@@ -486,7 +486,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::solve(TreeNode& t_node) con
 
     idol_Log(Debug, "Node " << t_node.id() << " has been solved.");
 
-    t_node.info().save(*this, parent(), *m_relaxation);
+    t_node.info().save(parent(), *m_relaxation);
 
     m_branching_rule->on_node_solved(t_node);
 

@@ -10,7 +10,7 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    const auto instance = Problems::KP::read_instance("facility.data.txt");
+    const auto instance = Problems::KP::read_instance("knapsack.data.txt");
 
     const auto n_items = instance.n_items();
 

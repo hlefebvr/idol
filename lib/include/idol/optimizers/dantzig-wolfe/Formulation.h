@@ -43,7 +43,11 @@ class idol::DantzigWolfe::Formulation {
     void apply_sub_problem_bound_on_master(bool t_is_lb, const idol::Var &t_var, unsigned int t_sub_problem_id, double t_value);
     LinExpr<Var> reformulate_sub_problem_variable(const Var &t_var, unsigned int t_sub_problem_id);
 public:
-    Formulation(const Model& t_original_formulation, Annotation<Ctr, unsigned int> t_decomposition);
+    Formulation(const Model& t_original_formulation, const Annotation<Ctr, unsigned int>& t_decomposition);
+
+    Formulation(const Model& t_original_formulation,
+                Annotation<Ctr, unsigned int> t_ctr_decomposition,
+                Annotation<Var, unsigned int> t_var_decomposition);
 
     Model& master() { return m_master; }
     const Model& master() const { return m_master; }
@@ -61,6 +65,10 @@ public:
 
     Model& get_model(const Ctr& t_ctr);
     const Model& get_model(const Ctr& t_ctr) const;
+
+    const Annotation<Ctr, unsigned int>& decomposition_by_constraint() const { return m_decomposition_by_ctr; }
+
+    const Annotation<Var, unsigned int>& decomposition_by_variable() const { return m_decomposition_by_var; }
 
     const GeneratorPool<Var>& column_pool(unsigned int t_sub_problem_id) const { return m_pools[t_sub_problem_id]; }
 

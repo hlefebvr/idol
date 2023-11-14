@@ -2,6 +2,7 @@
 // Created by henri on 31.10.23.
 //
 #include <memory>
+#include <utility>
 
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/Formulation.h"
@@ -15,11 +16,21 @@ idol::OptimizerFactory *idol::DantzigWolfeDecomposition::clone() const {
 }
 
 idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(idol::Annotation<idol::Ctr, unsigned int> t_decomposition)
-    : m_decomposition(std::move(t_decomposition)) {}
+    : m_ctr_decomposition(std::move(t_decomposition)) {}
+
+idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(
+        idol::Annotation<idol::Ctr, unsigned int> t_ctr_decomposition,
+        idol::Annotation<idol::Var, unsigned int> t_var_decomposition)
+    : m_ctr_decomposition(std::move(t_ctr_decomposition)),
+      m_var_decomposition(std::move(t_var_decomposition))
+{
+
+}
 
 idol::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src)
     : OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition>(t_src),
-      m_decomposition(t_src.m_decomposition),
+      m_ctr_decomposition(t_src.m_ctr_decomposition),
+      m_var_decomposition(t_src.m_var_decomposition),
       m_master_optimizer_factory(t_src.m_master_optimizer_factory ? t_src.m_master_optimizer_factory->clone() : nullptr),
       m_dual_price_smoothing_stabilization(t_src.m_dual_price_smoothing_stabilization ? t_src.m_dual_price_smoothing_stabilization->clone() : nullptr),
       m_max_parallel_sub_problems(t_src.m_max_parallel_sub_problems),
@@ -37,11 +48,19 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         throw Exception("No optimizer for master has been configured.");
     }
 
-    DantzigWolfe::Formulation dantzig_wolfe_formulation(t_model, m_decomposition);
+    std::unique_ptr<DantzigWolfe::Formulation> dantzig_wolfe_formulation;
+    if (m_var_decomposition.has_value()) {
+        dantzig_wolfe_formulation = std::make_unique<DantzigWolfe::Formulation>(t_model,
+                                                                                m_ctr_decomposition,
+                                                                                m_var_decomposition.value());
+    } else {
+        dantzig_wolfe_formulation = std::make_unique<DantzigWolfe::Formulation>(t_model,
+                                                                                m_ctr_decomposition);
+    }
 
-    auto sub_problems_specifications = create_sub_problems_specifications(dantzig_wolfe_formulation);
+    auto sub_problems_specifications = create_sub_problems_specifications(*dantzig_wolfe_formulation);
 
-    add_aggregation_constraints(dantzig_wolfe_formulation, sub_problems_specifications);
+    add_aggregation_constraints(*dantzig_wolfe_formulation, sub_problems_specifications);
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> default_strategy;
     if (!m_infeasibility_strategy) {
@@ -62,7 +81,7 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
     const bool remove_infeasible_column = m_use_infeasible_column_removal_when_branching.has_value() ? m_use_infeasible_column_removal_when_branching.value() : use_hard_branching;
 
     return new Optimizers::DantzigWolfeDecomposition(t_model,
-                                                     std::move(dantzig_wolfe_formulation),
+                                                     std::move(*dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
                                                      m_dual_price_smoothing_stabilization ? *m_dual_price_smoothing_stabilization : *dual_price_smoothing,
                                                      m_max_parallel_sub_problems.has_value() ? m_max_parallel_sub_problems.value() : 1,
@@ -236,4 +255,3 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_infeasibl
 
     return *this;
 }
-

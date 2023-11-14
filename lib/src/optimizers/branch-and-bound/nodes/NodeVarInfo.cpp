@@ -16,8 +16,7 @@ idol::NodeVarInfo::create_updator(idol::Model &t_relaxation) {
     return new NodeVarUpdator<NodeVarInfo>(t_relaxation);
 }
 
-void idol::NodeVarInfo::save(const Optimizers::BranchAndBound<NodeVarInfo>& t_parent,
-                             const idol::Model &t_original_formulation,
+void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
                              const idol::Model &t_model) {
 
     const auto status = t_model.get_status();
