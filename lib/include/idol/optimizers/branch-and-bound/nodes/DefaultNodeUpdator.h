@@ -40,6 +40,8 @@ public:
 
     DefaultNodeUpdator(const DefaultNodeUpdator&) = delete;
 
+    void initialize() override {}
+
     void prepare(const Node<NodeInfoT> &t_node) override;
 
     void clear() override;
