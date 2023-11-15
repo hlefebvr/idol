@@ -381,7 +381,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::hook_optimize() {
         set_best_bound(get_best_obj());
     }
 
-    m_node_updator->clear_local_updates();
+    m_node_updator->clear();
 
     if (get_status() == Fail) {
         return;
@@ -475,7 +475,7 @@ void idol::Optimizers::BranchAndBound<NodeVarInfoT>::solve(TreeNode& t_node) con
 
     idol_Log(Trace, "Preparing to solve node " << t_node.id() << ".");
 
-    m_node_updator->apply_local_updates(t_node);
+    m_node_updator->prepare(t_node);
 
     m_relaxation->optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
     m_relaxation->optimizer().set_param_time_limit(get_remaining_time());

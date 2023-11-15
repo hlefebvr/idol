@@ -97,7 +97,6 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/nodes/Node.h
         include/idol/optimizers/branch-and-bound/nodes/NodeUpdator.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/impls/DepthFirst.h
-        include/idol/optimizers/branch-and-bound/branching-rules/impls/VariableBranchingRule.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h

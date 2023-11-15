@@ -26,6 +26,12 @@ public:
         VarBranchingDecision(Var  t_variable, CtrType t_type, double t_bound) : variable(std::move(t_variable)), type(t_type), bound(t_bound) {}
     };
 
+    struct CtrBranchingDecision {
+        Ctr constraint;
+        TempCtr temporary_constraint;
+        CtrBranchingDecision(const Ctr& t_constraint, TempCtr&& t_temporary_constraint) : constraint(t_constraint), temporary_constraint(t_temporary_constraint) {}
+    };
+
     DefaultNodeInfo() = default;
 
     virtual ~DefaultNodeInfo() = default;
@@ -48,17 +54,20 @@ public:
 
     [[nodiscard]] virtual DefaultNodeInfo* create_child() const;
 
-    void set_local_lower_bound(const Var& t_var, double t_lb);
+    void add_branching_variable(const Var& t_var, CtrType t_type, double t_bound);
 
-    void set_local_upper_bound(const Var& t_var, double t_ub);
+    void add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint);
 
-    [[nodiscard]] auto variable_branching_decisions() const { return ConstIteratorForward(m_branching_decision); }
+    [[nodiscard]] auto variable_branching_decisions() const { return ConstIteratorForward(m_variable_branching_decisions); }
+
+    [[nodiscard]] auto constraint_branching_decisions() const { return ConstIteratorForward(m_constraint_branching_decisions); }
 
     static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(Model& t_relaxation);
 private:
     Solution::Primal m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;
-    std::list<VarBranchingDecision> m_branching_decision;
+    std::list<VarBranchingDecision> m_variable_branching_decisions;
+    std::list<CtrBranchingDecision> m_constraint_branching_decisions;
 };
 
 #endif //IDOL_DEFAULTNODEINFO_H

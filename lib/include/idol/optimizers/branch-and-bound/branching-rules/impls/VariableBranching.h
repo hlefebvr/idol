@@ -44,10 +44,10 @@ public:
         const double ub = std::floor(value);
 
         auto* n1 = t_node.info().create_child();
-        n1->set_local_lower_bound(t_var, lb);
+        n1->add_branching_variable(t_var, GreaterOrEqual, lb);
 
         auto* n2 = t_node.info().create_child();
-        n2->set_local_upper_bound(t_var, ub);
+        n2->add_branching_variable(t_var, LessOrEqual, ub);
 
         idol_Log(Trace,
                  "Node " << t_node.id() << " has 2 child nodes with "

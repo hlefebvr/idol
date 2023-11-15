@@ -4,16 +4,17 @@
 #include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 
-void idol::DefaultNodeInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
-    m_branching_decision.emplace_back(t_var, LessOrEqual, t_ub);
-}
-
-void idol::DefaultNodeInfo::set_local_lower_bound(const idol::Var &t_var, double t_lb) {
-    m_branching_decision.emplace_back(t_var, GreaterOrEqual, t_lb);
-}
 idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
 idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {
     return new DefaultNodeUpdator<DefaultNodeInfo>(t_relaxation);
+}
+
+void idol::DefaultNodeInfo::add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint) {
+    m_constraint_branching_decisions.emplace_back(t_ctr, std::move(t_temporary_constraint));
+}
+
+void idol::DefaultNodeInfo::add_branching_variable(const idol::Var &t_var, idol::CtrType t_type, double t_bound) {
+    m_variable_branching_decisions.emplace_back(t_var, t_type, t_bound);
 }
 
 void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,

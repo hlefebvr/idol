@@ -21,23 +21,26 @@ class idol::DefaultNodeUpdator : public NodeUpdator<NodeVarInfoT> {
 
     Map<Var, double> m_changed_lower_bounds; // variable -> old_bound
     Map<Var, double> m_changed_upper_bounds;
+    std::list<Ctr> m_added_constraints;
 
 
-    void apply_local_updates(const Node<NodeVarInfoT>& t_node,
-                             Map<Var, double> &t_changed_lower_bounds,
-                             Map<Var, double> &t_changed_upper_bounds);
+    void apply_variable_branching_decisions(const Node<NodeVarInfoT> &t_node,
+                                            Map<Var, double> &t_changed_lower_bounds,
+                                            Map<Var, double> &t_changed_upper_bounds);
 
-    void apply_local_update(const typename NodeVarInfoT::VarBranchingDecision& t_branching_decision,
-                             Map<Var, double> &t_current_changed_bounds,
-                             Map<Var, double> &t_changed_bounds);
+    void apply_variable_branching_decision(const typename NodeVarInfoT::VarBranchingDecision& t_branching_decision,
+                                           Map<Var, double> &t_current_changed_bounds,
+                                           Map<Var, double> &t_changed_bounds);
+
+    void apply_constraint_branching_decisions(const Node<NodeVarInfoT> &t_node);
 public:
     explicit DefaultNodeUpdator(Model& t_relaxation);
 
     DefaultNodeUpdator(const DefaultNodeUpdator&) = delete;
 
-    void apply_local_updates(const Node<NodeVarInfoT> &t_node) override;
+    void prepare(const Node<NodeVarInfoT> &t_node) override;
 
-    void clear_local_updates() override;
+    void clear() override;
 
 protected:
     Model& relaxation() { return m_relaxation; }
@@ -45,44 +48,69 @@ protected:
     const Model& relaxation() const { return m_relaxation; }
 };
 
+template<class NodeVarInfoT>
+void
+idol::DefaultNodeUpdator<NodeVarInfoT>::apply_constraint_branching_decisions(const idol::Node<NodeVarInfoT> &t_node) {
+
+    if (t_node.level() == 0) {
+        return;
+    }
+
+    apply_constraint_branching_decisions(t_node.parent());
+
+    for (const auto& [ctr, temporary_constraint] : t_node.info().constraint_branching_decisions()) {
+        m_relaxation.add(ctr, temporary_constraint);
+        m_added_constraints.emplace_back(ctr);
+    }
+
+}
+
 template<class NodeT>
 idol::DefaultNodeUpdator<NodeT>::DefaultNodeUpdator(idol::Model &t_relaxation) : m_relaxation(t_relaxation) {
 
 }
 
 template<class NodeVarInfoT>
-void idol::DefaultNodeUpdator<NodeVarInfoT>::clear_local_updates() {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::clear() {
 
+    // Clear LB
     for (const auto& [var, lb] : m_changed_lower_bounds) {
         m_relaxation.set_var_lb(var, lb);
     }
     m_changed_lower_bounds.clear();
 
+    // Clear UB
     for (const auto& [var, ub] : m_changed_upper_bounds) {
         m_relaxation.set_var_ub(var, ub);
     }
     m_changed_upper_bounds.clear();
 
+    // Clear Ctr
+    for (const auto& ctr : m_added_constraints) {
+        m_relaxation.remove(ctr);
+    }
+    m_added_constraints.clear();
 }
 
 template<class NodeVarInfoT>
-void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const Node<NodeVarInfoT> &t_node) {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::prepare(const Node<NodeVarInfoT> &t_node) {
 
     Map<Var, double> changed_lower_bounds;
     Map<Var, double> changed_upper_bounds;
 
-    apply_local_updates(t_node, changed_lower_bounds, changed_upper_bounds);
-    clear_local_updates();
+    apply_variable_branching_decisions(t_node, changed_lower_bounds, changed_upper_bounds);
+    clear();
     m_changed_lower_bounds = changed_lower_bounds;
     m_changed_upper_bounds = changed_upper_bounds;
 
+    apply_constraint_branching_decisions(t_node);
 }
 
 template<class NodeVarInfoT>
-void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<NodeVarInfoT> &t_node,
-                                                          Map<Var, double> &t_changed_lower_bounds,
-                                                          Map<Var, double> &t_changed_upper_bounds
-                                                          ) {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_variable_branching_decisions(const idol::Node<NodeVarInfoT> &t_node,
+                                                                                Map<Var, double> &t_changed_lower_bounds,
+                                                                                Map<Var, double> &t_changed_upper_bounds
+                                                                                ) {
 
     if (t_node.level() == 0) {
         return;
@@ -92,10 +120,10 @@ void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const idol::Nod
 
         switch (branching_decision.type) {
             case LessOrEqual:
-                apply_local_update(branching_decision, m_changed_upper_bounds, t_changed_upper_bounds);
+                apply_variable_branching_decision(branching_decision, m_changed_upper_bounds, t_changed_upper_bounds);
                 break;
             case GreaterOrEqual:
-                apply_local_update(branching_decision, m_changed_lower_bounds, t_changed_lower_bounds);
+                apply_variable_branching_decision(branching_decision, m_changed_lower_bounds, t_changed_lower_bounds);
                 break;
             default:
                 throw Exception("Branching on equality constraints is not implemented.");
@@ -103,14 +131,14 @@ void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const idol::Nod
 
     }
 
-    apply_local_updates(t_node.parent(), t_changed_lower_bounds, t_changed_upper_bounds);
+    apply_variable_branching_decisions(t_node.parent(), t_changed_lower_bounds, t_changed_upper_bounds);
 
 }
 
 template<class NodeVarInfoT>
-void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_update(const typename NodeVarInfoT::VarBranchingDecision &t_branching_decision,
-                                                         idol::Map<idol::Var, double> &t_current_changed_bounds,
-                                                         idol::Map<idol::Var, double> &t_changed_bounds) {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_variable_branching_decision(const typename NodeVarInfoT::VarBranchingDecision &t_branching_decision,
+                                                                               idol::Map<idol::Var, double> &t_current_changed_bounds,
+                                                                               idol::Map<idol::Var, double> &t_changed_bounds) {
 
     const auto& var = t_branching_decision.variable;
 
