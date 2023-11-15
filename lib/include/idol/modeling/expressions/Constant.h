@@ -48,7 +48,7 @@ struct idol::QuadParam {
  */
 class idol::Constant {
     Map<Param, double> m_linear_terms;
-    Map<std::pair<Param, Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to> m_quadratic_terms;
+    Map<idol::Pair<Param, Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to> m_quadratic_terms;
     double m_constant = 0.;
 
     void insert_or_add(const Param& t_param, double t_value);
@@ -285,7 +285,7 @@ namespace idol {
             t_os << '!' << t_param.name();
         };
 
-        const auto print_quad_term = [&t_os](const std::pair<idol::Param, idol::Param> &t_pair, double t_coeff) {
+        const auto print_quad_term = [&t_os](const auto &t_pair, double t_coeff) {
             if (!idol::equals(t_coeff, 1., idol::Tolerance::Sparsity)) {
                 t_os << t_coeff << ' ';
             }

@@ -27,7 +27,7 @@ namespace idol {
         SquareMatrix Q(indices);
 
         for (const auto &[var1, var2, constant]: t_expr) {
-            if (var1 == var2) {
+            if (var1.id() == var2.id()) {
                 Q.set(var1, var2, constant.numerical());
             } else {
                 Q.set(var1, var2, constant.numerical() / 2.);
