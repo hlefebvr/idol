@@ -639,10 +639,13 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
     const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
 
     if (sub_problem_id != MasterId) {
-        m_sub_problems[sub_problem_id].add(t_ctr, TempCtr(Row(t_row), t_type));
+
         remove_column_if(sub_problem_id, [&](const Var& t_alpha, const Solution::Primal& t_generator) {
             return t_row.is_violated(t_generator, t_type);
         });
+
+        m_sub_problems[sub_problem_id].add(t_ctr, TempCtr(Row(t_row), t_type));
+
         return;
     }
 
