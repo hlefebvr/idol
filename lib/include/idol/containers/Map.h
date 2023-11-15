@@ -8,11 +8,12 @@
 
 #ifdef IDOL_USE_ROBINHOOD
 #include <robin_hood.h>
-#include "Pair.h"
 
 #else
 #include <unordered_map>
 #endif
+
+#include "Pair.h"
 
 // Implements hash for pairs (non-symmetric by default (std::hash<idol::Pair<T, U>>) and symmetric impls)
 // See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
