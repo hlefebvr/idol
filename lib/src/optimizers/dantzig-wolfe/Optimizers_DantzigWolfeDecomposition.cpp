@@ -104,7 +104,17 @@ void idol::Optimizers::DantzigWolfeDecomposition::update() {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::write(const std::string &t_name) {
-    m_formulation.master().write(t_name);
+
+    const auto extension_index = t_name.find_last_of('.');
+    const auto base_name = (extension_index != std::string::npos) ? t_name.substr(0, extension_index) : t_name;
+    const auto extension = (extension_index != std::string::npos) ? t_name.substr(extension_index) : "";
+
+
+    m_formulation.master().write( base_name + ".master" + extension );
+    for (unsigned int sub_problem_index = 0, n_sub_problems = m_formulation.n_sub_problems() ; sub_problem_index < n_sub_problems ; ++sub_problem_index) {
+        m_formulation.sub_problem(sub_problem_index)
+            .write( base_name + ".sub_problem." + std::to_string(sub_problem_index) + extension );
+    }
 }
 
 double idol::Optimizers::DantzigWolfeDecomposition::get_var_primal(const idol::Var &t_var) const {
