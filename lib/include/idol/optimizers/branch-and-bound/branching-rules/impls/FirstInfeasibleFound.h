@@ -8,26 +8,26 @@
 #include "VariableBranching.h"
 
 namespace idol::BranchingRules {
-    template<class NodeVarInfoT> class FirstInfeasibleFound;
+    template<class NodeInfoT> class FirstInfeasibleFound;
 }
 
-template<class NodeVarInfoT>
-class idol::BranchingRules::FirstInfeasibleFound : public VariableBranching<NodeVarInfoT> {
+template<class NodeInfoT>
+class idol::BranchingRules::FirstInfeasibleFound : public VariableBranching<NodeInfoT> {
 protected:
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeVarInfoT> &t_node) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
 public:
-    explicit FirstInfeasibleFound(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates);
+    explicit FirstInfeasibleFound(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates);
 };
 
-template<class NodeVarInfoT>
-idol::BranchingRules::FirstInfeasibleFound<NodeVarInfoT>::FirstInfeasibleFound(
-        const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent, std::list<Var> t_branching_candidates)
-        : VariableBranching<NodeVarInfoT>(t_parent, std::move(t_branching_candidates)) {}
+template<class NodeInfoT>
+idol::BranchingRules::FirstInfeasibleFound<NodeInfoT>::FirstInfeasibleFound(
+        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent, std::list<Var> t_branching_candidates)
+        : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)) {}
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 std::list<std::pair<idol::Var, double>>
-idol::BranchingRules::FirstInfeasibleFound<NodeVarInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                        const Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::FirstInfeasibleFound<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
+                                                                        const Node<NodeInfoT> &t_node) {
     return { { t_variables.front(), -1. } };
 }
 

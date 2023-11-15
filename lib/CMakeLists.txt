@@ -196,6 +196,7 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/branching-rules/factories/BracnhingWithPriority.h
         src/optimizers/logs.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
+        include/idol/optimizers/branch-and-bound/nodes/BranchingDecision.h
 )
 
 find_package(OpenMP REQUIRED)

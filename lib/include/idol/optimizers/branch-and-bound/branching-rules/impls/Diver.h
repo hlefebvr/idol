@@ -15,21 +15,21 @@ namespace idol::BranchingRules {
 template<class BranchingRuleT>
 class idol::BranchingRules::Diver : public BranchingRuleT {
 public:
-    using NodeVarInfoT = typename BranchingRuleT::NodeInfoT;
+    using NodeInfoT = typename BranchingRuleT::NodeInfoT;
 
-    explicit Diver(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates);
+    explicit Diver(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates);
 
-    std::list<NodeVarInfoT *> create_child_nodes(const Node<NodeVarInfoT> &t_node) override;
+    std::list<NodeInfoT *> create_child_nodes(const Node<NodeInfoT> &t_node) override;
 };
 
 template<class BranchingRuleT>
-idol::BranchingRules::Diver<BranchingRuleT>::Diver(const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent,
+idol::BranchingRules::Diver<BranchingRuleT>::Diver(const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent,
                                                    std::list<Var> t_branching_candidates)
                                                    : BranchingRuleT(t_parent, std::move(t_branching_candidates)) {}
 
 template<class BranchingRuleT>
 std::list<typename BranchingRuleT::NodeInfoT *>
-idol::BranchingRules::Diver<BranchingRuleT>::create_child_nodes(const idol::Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::Diver<BranchingRuleT>::create_child_nodes(const idol::Node<NodeInfoT> &t_node) {
 
     auto children = BranchingRuleT::create_child_nodes(t_node);
 

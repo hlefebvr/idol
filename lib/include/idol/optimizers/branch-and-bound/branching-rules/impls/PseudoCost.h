@@ -10,11 +10,11 @@
 #include "NodeScoreFunction.h"
 
 namespace idol::BranchingRules {
-    template<class NodeVarInfoT> class PseudoCost;
+    template<class NodeInfoT> class PseudoCost;
 }
 
-template<class NodeVarInfoT>
-class idol::BranchingRules::PseudoCost : public VariableBranching<NodeVarInfoT> {
+template<class NodeInfoT>
+class idol::BranchingRules::PseudoCost : public VariableBranching<NodeInfoT> {
 
     std::unique_ptr<NodeScoreFunction> m_scoring_function;
 
@@ -29,26 +29,26 @@ class idol::BranchingRules::PseudoCost : public VariableBranching<NodeVarInfoT> 
 
     Map<Var, PseudoCostData> m_pseudo_cost_data;
 
-    double compute_upper_bounding_score(const Var& t_var, const PseudoCostData& t_data, const Node<NodeVarInfoT>& t_node) const;
+    double compute_upper_bounding_score(const Var& t_var, const PseudoCostData& t_data, const Node<NodeInfoT>& t_node) const;
 
-    double compute_lower_bounding_score(const Var& t_var, const PseudoCostData& t_data, const Node<NodeVarInfoT>& t_node) const;
+    double compute_lower_bounding_score(const Var& t_var, const PseudoCostData& t_data, const Node<NodeInfoT>& t_node) const;
 
-    double compute_average_lower_bounding_score(const Node<NodeVarInfoT>& t_node) const;
+    double compute_average_lower_bounding_score(const Node<NodeInfoT>& t_node) const;
 
-    double compute_average_upper_bounding_score(const Node<NodeVarInfoT>& t_node) const;
+    double compute_average_upper_bounding_score(const Node<NodeInfoT>& t_node) const;
 public:
-    explicit PseudoCost(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates);
+    explicit PseudoCost(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates);
 
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeVarInfoT> &t_node) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
 
-    void on_node_solved(const Node<NodeVarInfoT> &t_node) override;
+    void on_node_solved(const Node<NodeInfoT> &t_node) override;
 
 };
 
-template<class NodeVarInfoT>
-typename idol::BranchingRules::PseudoCost<NodeVarInfoT>::PseudoCostData &
-idol::BranchingRules::PseudoCost<NodeVarInfoT>::PseudoCostData::operator+=(
-        const idol::BranchingRules::PseudoCost<NodeVarInfoT>::PseudoCostData &t_rhs) {
+template<class NodeInfoT>
+typename idol::BranchingRules::PseudoCost<NodeInfoT>::PseudoCostData &
+idol::BranchingRules::PseudoCost<NodeInfoT>::PseudoCostData::operator+=(
+        const idol::BranchingRules::PseudoCost<NodeInfoT>::PseudoCostData &t_rhs) {
 
     objective_gains_by_upper_boundings += t_rhs.objective_gains_by_upper_boundings;
     objective_gains_by_lower_boundings += t_rhs.objective_gains_by_lower_boundings;
@@ -58,10 +58,10 @@ idol::BranchingRules::PseudoCost<NodeVarInfoT>::PseudoCostData::operator+=(
     return *this;
 }
 
-template<class NodeVarInfoT>
-void idol::BranchingRules::PseudoCost<NodeVarInfoT>::on_node_solved(const idol::Node<NodeVarInfoT> &t_node) {
+template<class NodeInfoT>
+void idol::BranchingRules::PseudoCost<NodeInfoT>::on_node_solved(const idol::Node<NodeInfoT> &t_node) {
 
-    BranchingRule<NodeVarInfoT>::on_node_solved(t_node);
+    BranchingRule<NodeInfoT>::on_node_solved(t_node);
 
     if (t_node.level() == 0) {
         return;
@@ -105,17 +105,17 @@ void idol::BranchingRules::PseudoCost<NodeVarInfoT>::on_node_solved(const idol::
 
 }
 
-template<class NodeVarInfoT>
-idol::BranchingRules::PseudoCost<NodeVarInfoT>::PseudoCost(
-        const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent, std::list<Var> t_branching_candidates)
-        : VariableBranching<NodeVarInfoT>(t_parent, std::move(t_branching_candidates)),
+template<class NodeInfoT>
+idol::BranchingRules::PseudoCost<NodeInfoT>::PseudoCost(
+        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent, std::list<Var> t_branching_candidates)
+        : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)),
           m_scoring_function(new NodeScoreFunctions::Linear())
 {}
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 std::list<std::pair<idol::Var, double>>
-idol::BranchingRules::PseudoCost<NodeVarInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                  const Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::PseudoCost<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
+                                                                  const Node<NodeInfoT> &t_node) {
 
     std::list<std::pair<idol::Var, double>> result;
 
@@ -139,10 +139,10 @@ idol::BranchingRules::PseudoCost<NodeVarInfoT>::scoring_function(const std::list
     return result;
 }
 
-template<class NodeVarInfoT>
-double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_lower_bounding_score(const idol::Var &t_var,
+template<class NodeInfoT>
+double idol::BranchingRules::PseudoCost<NodeInfoT>::compute_lower_bounding_score(const idol::Var &t_var,
                                                                               const PseudoCostData& t_data,
-                                                                              const idol::Node<NodeVarInfoT> &t_node) const {
+                                                                              const idol::Node<NodeInfoT> &t_node) const {
 
     const double sum_of_objective_gains_per_unit_change = t_data.objective_gains_by_lower_boundings;
     const unsigned int n_entries = t_data.n_entries_for_lower_bounds;
@@ -151,10 +151,10 @@ double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_lower_bounding_sc
     return (std::ceil(var_value) - var_value) * sum_of_objective_gains_per_unit_change / (double) n_entries;
 }
 
-template<class NodeVarInfoT>
-double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_upper_bounding_score(const idol::Var &t_var,
+template<class NodeInfoT>
+double idol::BranchingRules::PseudoCost<NodeInfoT>::compute_upper_bounding_score(const idol::Var &t_var,
                                                                               const PseudoCostData& t_data,
-                                                                              const idol::Node<NodeVarInfoT> &t_node) const {
+                                                                              const idol::Node<NodeInfoT> &t_node) const {
 
     const double sum_of_objective_gains_per_unit_change = t_data.objective_gains_by_upper_boundings;
     const unsigned int n_entries = t_data.n_entries_for_upper_bounds;
@@ -163,9 +163,9 @@ double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_upper_bounding_sc
     return (var_value - std::floor(var_value)) * sum_of_objective_gains_per_unit_change / (double) n_entries;
 }
 
-template<class NodeVarInfoT>
-double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_average_upper_bounding_score(
-        const idol::Node<NodeVarInfoT> &t_node) const {
+template<class NodeInfoT>
+double idol::BranchingRules::PseudoCost<NodeInfoT>::compute_average_upper_bounding_score(
+        const idol::Node<NodeInfoT> &t_node) const {
 
     double sum = 0.;
     unsigned int n = 0;
@@ -187,9 +187,9 @@ double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_average_upper_bou
     return sum / (double) n;
 }
 
-template<class NodeVarInfoT>
-double idol::BranchingRules::PseudoCost<NodeVarInfoT>::compute_average_lower_bounding_score(
-        const idol::Node<NodeVarInfoT> &t_node) const {
+template<class NodeInfoT>
+double idol::BranchingRules::PseudoCost<NodeInfoT>::compute_average_lower_bounding_score(
+        const idol::Node<NodeInfoT> &t_node) const {
 
     double sum = 0.;
     unsigned int n = 0;

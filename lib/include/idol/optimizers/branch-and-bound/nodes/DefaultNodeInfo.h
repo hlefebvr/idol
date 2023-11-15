@@ -7,6 +7,7 @@
 
 #include "idol/modeling/models/Model.h"
 #include "DefaultNodeUpdator.h"
+#include "BranchingDecision.h"
 
 namespace idol {
     class DefaultNodeInfo;
@@ -19,19 +20,6 @@ namespace idol {
 
 class idol::DefaultNodeInfo {
 public:
-    struct VarBranchingDecision {
-        Var variable;
-        CtrType type;
-        double bound;
-        VarBranchingDecision(Var  t_variable, CtrType t_type, double t_bound) : variable(std::move(t_variable)), type(t_type), bound(t_bound) {}
-    };
-
-    struct CtrBranchingDecision {
-        Ctr constraint;
-        TempCtr temporary_constraint;
-        CtrBranchingDecision(const Ctr& t_constraint, TempCtr&& t_temporary_constraint) : constraint(t_constraint), temporary_constraint(t_temporary_constraint) {}
-    };
-
     DefaultNodeInfo() = default;
 
     virtual ~DefaultNodeInfo() = default;

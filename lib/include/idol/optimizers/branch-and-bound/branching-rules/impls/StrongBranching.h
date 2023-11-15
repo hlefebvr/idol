@@ -12,44 +12,44 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 
 namespace idol::BranchingRules {
-    template<class NodeVarInfoT> class StrongBranching;
+    template<class NodeInfoT> class StrongBranching;
 }
 
-template<class NodeVarInfoT>
-class idol::BranchingRules::StrongBranching : public VariableBranching<NodeVarInfoT> {
-    std::unique_ptr<VariableBranching<NodeVarInfoT>> m_inner_variable_branching_rule;
+template<class NodeInfoT>
+class idol::BranchingRules::StrongBranching : public VariableBranching<NodeInfoT> {
+    std::unique_ptr<VariableBranching<NodeInfoT>> m_inner_variable_branching_rule;
     std::unique_ptr<NodeScoreFunction> m_score_function;
     std::list<StrongBranchingPhase> m_phases;
 
     std::vector<std::pair<Var, double>> sort_variables_by_score(const std::list<std::pair<Var, double>>& t_scores);
 
-    std::list<Node<NodeVarInfoT>> make_nodes(const std::list<NodeVarInfoT*>& t_node_infos, const Node<NodeVarInfoT>& t_parent_node);
+    std::list<Node<NodeInfoT>> make_nodes(const std::list<NodeInfoT*>& t_node_infos, const Node<NodeInfoT>& t_parent_node);
 
-    StrongBranchingPhase& current_phase(const Node<NodeVarInfoT>& t_node);
+    StrongBranchingPhase& current_phase(const Node<NodeInfoT>& t_node);
 
-    void solve_nodes(StrongBranchingPhase& t_phase, std::list<Node<NodeVarInfoT>>& t_nodes);
+    void solve_nodes(StrongBranchingPhase& t_phase, std::list<Node<NodeInfoT>>& t_nodes);
 
-    double compute_score(double t_parent_objective, std::list<Node<NodeVarInfoT>>& t_nodes);
+    double compute_score(double t_parent_objective, std::list<Node<NodeInfoT>>& t_nodes);
 public:
-    explicit StrongBranching(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent,
+    explicit StrongBranching(const Optimizers::BranchAndBound<NodeInfoT>& t_parent,
                              std::list<Var> t_branching_candidates,
                              unsigned int t_max_n_variables,
                              NodeScoreFunction* t_score_function,
                              const std::list<StrongBranchingPhase>& t_phases);
 
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeVarInfoT> &t_node) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
 };
 
-template<class NodeVarInfoT>
-idol::BranchingRules::StrongBranching<NodeVarInfoT>::StrongBranching(
-        const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent,
+template<class NodeInfoT>
+idol::BranchingRules::StrongBranching<NodeInfoT>::StrongBranching(
+        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent,
         std::list<Var> t_branching_candidates,
         unsigned int t_max_n_variables,
         NodeScoreFunction* t_score_function,
         const std::list<StrongBranchingPhase>& t_phases
         )
-        : VariableBranching<NodeVarInfoT>(t_parent, std::move(t_branching_candidates)),
-          m_inner_variable_branching_rule(new BranchingRules::MostInfeasible<NodeVarInfoT>(t_parent, {})),
+        : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)),
+          m_inner_variable_branching_rule(new BranchingRules::MostInfeasible<NodeInfoT>(t_parent, {})),
           m_score_function(t_score_function->clone()),
           m_phases(t_phases)
 {
@@ -62,10 +62,10 @@ idol::BranchingRules::StrongBranching<NodeVarInfoT>::StrongBranching(
       );
 }
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 std::list<std::pair<idol::Var, double>>
-idol::BranchingRules::StrongBranching<NodeVarInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                   const Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::StrongBranching<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
+                                                                   const Node<NodeInfoT> &t_node) {
 
     std::list<std::pair<Var, double>> result;
 
@@ -92,8 +92,8 @@ idol::BranchingRules::StrongBranching<NodeVarInfoT>::scoring_function(const std:
     return result;
 }
 
-template<class NodeVarInfoT>
-std::vector<std::pair<idol::Var, double>> idol::BranchingRules::StrongBranching<NodeVarInfoT>::sort_variables_by_score(
+template<class NodeInfoT>
+std::vector<std::pair<idol::Var, double>> idol::BranchingRules::StrongBranching<NodeInfoT>::sort_variables_by_score(
         const std::list<std::pair<Var, double>> &t_scores) {
 
     std::vector<std::pair<Var, double>> result;
@@ -107,12 +107,12 @@ std::vector<std::pair<idol::Var, double>> idol::BranchingRules::StrongBranching<
 
     return result;
 }
-template<class NodeVarInfoT>
-std::list<idol::Node<NodeVarInfoT>>
-idol::BranchingRules::StrongBranching<NodeVarInfoT>::make_nodes(const std::list<NodeVarInfoT*>& t_node_infos,
-                                                             const Node<NodeVarInfoT>& t_parent_node) {
+template<class NodeInfoT>
+std::list<idol::Node<NodeInfoT>>
+idol::BranchingRules::StrongBranching<NodeInfoT>::make_nodes(const std::list<NodeInfoT*>& t_node_infos,
+                                                             const Node<NodeInfoT>& t_parent_node) {
 
-    std::list<idol::Node<NodeVarInfoT>> result;
+    std::list<idol::Node<NodeInfoT>> result;
 
     const unsigned int id = t_parent_node.id();
 
@@ -123,8 +123,8 @@ idol::BranchingRules::StrongBranching<NodeVarInfoT>::make_nodes(const std::list<
     return result;
 }
 
-template<class NodeVarInfoT>
-void idol::BranchingRules::StrongBranching<NodeVarInfoT>::solve_nodes(StrongBranchingPhase& t_phase, std::list<Node<NodeVarInfoT>>& t_nodes) {
+template<class NodeInfoT>
+void idol::BranchingRules::StrongBranching<NodeInfoT>::solve_nodes(StrongBranchingPhase& t_phase, std::list<Node<NodeInfoT>>& t_nodes) {
 
     auto& branch_and_bound = this->parent();
     auto& optimizer = const_cast<Optimizer&>(branch_and_bound.relaxation().optimizer());
@@ -140,9 +140,9 @@ void idol::BranchingRules::StrongBranching<NodeVarInfoT>::solve_nodes(StrongBran
 
 }
 
-template<class NodeVarInfoT>
-double idol::BranchingRules::StrongBranching<NodeVarInfoT>::compute_score(double t_parent_objective,
-                                                                       std::list<Node<NodeVarInfoT>>& t_nodes) {
+template<class NodeInfoT>
+double idol::BranchingRules::StrongBranching<NodeInfoT>::compute_score(double t_parent_objective,
+                                                                       std::list<Node<NodeInfoT>>& t_nodes) {
 
     if (t_nodes.size() != 2) {
         throw Exception("Strong branching expected two nodes, got " + std::to_string(t_nodes.size()) + ".");
@@ -160,9 +160,9 @@ double idol::BranchingRules::StrongBranching<NodeVarInfoT>::compute_score(double
 
 }
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 idol::StrongBranchingPhase &
-idol::BranchingRules::StrongBranching<NodeVarInfoT>::current_phase(const idol::Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::StrongBranching<NodeInfoT>::current_phase(const idol::Node<NodeInfoT> &t_node) {
 
     const unsigned int level = t_node.level();
 

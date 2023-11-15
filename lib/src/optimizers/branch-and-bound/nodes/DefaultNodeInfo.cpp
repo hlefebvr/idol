@@ -3,6 +3,7 @@
 //
 #include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h"
 
 idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
 idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {

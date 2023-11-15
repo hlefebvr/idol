@@ -19,19 +19,19 @@ public:
     template<class IteratorT>
     MostInfeasible(IteratorT t_begin, IteratorT t_end) : idol::VariableBranching(t_begin, t_end) {}
 
-    template<class NodeVarInfoT>
-    class Strategy : public VariableBranching::Strategy<NodeVarInfoT> {
+    template<class NodeInfoT>
+    class Strategy : public VariableBranching::Strategy<NodeInfoT> {
     public:
         Strategy() = default;
 
-        explicit Strategy(const MostInfeasible& t_parent) : VariableBranching::Strategy<NodeVarInfoT>(t_parent) {}
+        explicit Strategy(const MostInfeasible& t_parent) : VariableBranching::Strategy<NodeInfoT>(t_parent) {}
 
-        BranchingRules::VariableBranching<NodeVarInfoT> *
-        operator()(const Optimizers::BranchAndBound<NodeVarInfoT> &t_parent) const override {
-            return new BranchingRules::MostInfeasible<NodeVarInfoT>(t_parent, idol::VariableBranching::Strategy<NodeVarInfoT>::create_branching_candidates(t_parent.parent()));
+        BranchingRules::VariableBranching<NodeInfoT> *
+        operator()(const Optimizers::BranchAndBound<NodeInfoT> &t_parent) const override {
+            return new BranchingRules::MostInfeasible<NodeInfoT>(t_parent, idol::VariableBranching::Strategy<NodeInfoT>::create_branching_candidates(t_parent.parent()));
         }
 
-        VariableBranching::Strategy<NodeVarInfoT> *clone() const override {
+        VariableBranching::Strategy<NodeInfoT> *clone() const override {
             return new Strategy(*this);
         }
     };
