@@ -1,6 +1,6 @@
 #include "idol/modeling.h"
 #include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"

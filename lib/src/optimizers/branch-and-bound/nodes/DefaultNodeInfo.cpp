@@ -1,22 +1,24 @@
 //
 // Created by henri on 18.10.23.
 //
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h"
 
-void idol::NodeVarInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
-    m_branching_decision = std::make_optional<BranchingDecision>(t_var, LessOrEqual, t_ub);
+idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
+idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {
+    return new DefaultNodeUpdator<DefaultNodeInfo>(t_relaxation);
 }
 
-void idol::NodeVarInfo::set_local_lower_bound(const idol::Var &t_var, double t_lb) {
-    m_branching_decision = std::make_optional<BranchingDecision>(t_var, GreaterOrEqual, t_lb);
-}
-idol::NodeVarUpdator<idol::NodeVarInfo> *
-idol::NodeVarInfo::create_updator(idol::Model &t_relaxation) {
-    return new NodeVarUpdator<NodeVarInfo>(t_relaxation);
+void idol::DefaultNodeInfo::add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint) {
+    m_constraint_branching_decisions.emplace_back(t_ctr, std::move(t_temporary_constraint));
 }
 
-void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
+void idol::DefaultNodeInfo::add_branching_variable(const idol::Var &t_var, idol::CtrType t_type, double t_bound) {
+    m_variable_branching_decisions.emplace_back(t_var, t_type, t_bound);
+}
+
+void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
                              const idol::Model &t_model) {
 
     const auto status = t_model.get_status();
@@ -54,6 +56,6 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
 
 }
 
-idol::NodeVarInfo *idol::NodeVarInfo::create_child() const {
-    return new NodeVarInfo();
+idol::DefaultNodeInfo *idol::DefaultNodeInfo::create_child() const {
+    return new DefaultNodeInfo();
 }

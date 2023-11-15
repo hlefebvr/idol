@@ -5,7 +5,7 @@
 #ifndef IDOL_INTEGERMASTER_H
 #define IDOL_INTEGERMASTER_H
 
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 #include "idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 
@@ -13,7 +13,7 @@ namespace idol::Heuristics {
     class IntegerMaster;
 }
 
-class idol::Heuristics::IntegerMaster : public BranchAndBoundCallbackFactory<NodeVarInfo> {
+class idol::Heuristics::IntegerMaster : public BranchAndBoundCallbackFactory<DefaultNodeInfo> {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     std::optional<bool> m_integer_columns;
@@ -32,7 +32,7 @@ public:
     IntegerMaster& operator=(const IntegerMaster&) = delete;
     IntegerMaster& operator=(IntegerMaster&&) noexcept = default;
 
-    class Strategy : public BranchAndBoundCallback<NodeVarInfo> {
+    class Strategy : public BranchAndBoundCallback<DefaultNodeInfo> {
         std::unique_ptr<OptimizerFactory> m_optimizer_factory;
         bool m_integer_columns = true;
         double m_time_limit = std::numeric_limits<double>::max();
@@ -58,9 +58,9 @@ public:
         void set_frequency(unsigned int t_frequency) { m_frequency = t_frequency; }
     };
 
-    BranchAndBoundCallback<NodeVarInfo> *operator()() override;
+    BranchAndBoundCallback<DefaultNodeInfo> *operator()() override;
 
-    [[nodiscard]] BranchAndBoundCallbackFactory<NodeVarInfo> *clone() const override;
+    [[nodiscard]] BranchAndBoundCallbackFactory<DefaultNodeInfo> *clone() const override;
 
     IntegerMaster& with_optimizer(const OptimizerFactory& t_optimizer);
 

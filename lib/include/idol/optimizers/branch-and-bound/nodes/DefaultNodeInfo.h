@@ -2,14 +2,15 @@
 // Created by henri on 18.10.23.
 //
 
-#ifndef IDOL_NODEVARINFO_H
-#define IDOL_NODEVARINFO_H
+#ifndef IDOL_DEFAULTNODEINFO_H
+#define IDOL_DEFAULTNODEINFO_H
 
 #include "idol/modeling/models/Model.h"
-#include "NodeVarUpdator.h"
+#include "DefaultNodeUpdator.h"
+#include "BranchingDecision.h"
 
 namespace idol {
-    class NodeVarInfo;
+    class DefaultNodeInfo;
 
     namespace Optimizers {
         template<class NodeInfoT> class BranchAndBound;
@@ -17,18 +18,11 @@ namespace idol {
 
 }
 
-class idol::NodeVarInfo {
+class idol::DefaultNodeInfo {
 public:
-    struct BranchingDecision {
-        Var variable;
-        CtrType type;
-        double bound;
-        BranchingDecision(Var  t_variable, CtrType t_type, double t_bound) : variable(std::move(t_variable)), type(t_type), bound(t_bound) {}
-    };
+    DefaultNodeInfo() = default;
 
-    NodeVarInfo() = default;
-
-    virtual ~NodeVarInfo() = default;
+    virtual ~DefaultNodeInfo() = default;
 
     [[nodiscard]] SolutionStatus status() const { return m_primal_solution.status(); }
 
@@ -46,21 +40,22 @@ public:
 
     virtual void save(const Model& t_original_formulation, const Model& t_model);
 
-    [[nodiscard]] virtual NodeVarInfo* create_child() const;
+    [[nodiscard]] virtual DefaultNodeInfo* create_child() const;
 
-    void set_local_lower_bound(const Var& t_var, double t_lb);
+    void add_branching_variable(const Var& t_var, CtrType t_type, double t_bound);
 
-    void set_local_upper_bound(const Var& t_var, double t_ub);
+    void add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint);
 
-    bool has_branching_decision() const { return m_branching_decision.has_value(); }
+    [[nodiscard]] auto variable_branching_decisions() const { return ConstIteratorForward(m_variable_branching_decisions); }
 
-    [[nodiscard]] const BranchingDecision& branching_decision() const { return m_branching_decision.value(); }
+    [[nodiscard]] auto constraint_branching_decisions() const { return ConstIteratorForward(m_constraint_branching_decisions); }
 
-    static NodeVarUpdator<NodeVarInfo>* create_updator(Model& t_relaxation);
+    static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(Model& t_relaxation);
 private:
     Solution::Primal m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;
-    std::optional<BranchingDecision> m_branching_decision;
+    std::list<VarBranchingDecision> m_variable_branching_decisions;
+    std::list<CtrBranchingDecision> m_constraint_branching_decisions;
 };
 
-#endif //IDOL_NODEVARINFO_H
+#endif //IDOL_DEFAULTNODEINFO_H

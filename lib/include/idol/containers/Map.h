@@ -8,11 +8,14 @@
 
 #ifdef IDOL_USE_ROBINHOOD
 #include <robin_hood.h>
+
 #else
 #include <unordered_map>
 #endif
 
-// Implements hash for pairs (non-symmetric by default (std::hash<std::pair<T, U>>) and symmetric impls)
+#include "Pair.h"
+
+// Implements hash for pairs (non-symmetric by default (std::hash<idol::Pair<T, U>>) and symmetric impls)
 // See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
 namespace idol::impl {
 
@@ -47,18 +50,18 @@ namespace idol::impl {
 
     struct symmetric_pair_hash {
         template<class Key>
-        std::size_t operator()(const std::pair<Key, Key> &t_pair) const {
+        std::size_t operator()(const idol::Pair<Key, Key> &t_pair) const {
             return std::less<Key>()(t_pair.first, t_pair.second) ?
-                   hash<std::pair<Key, Key>>()(t_pair)
-                 : hash<std::pair<Key, Key>>()(std::make_pair(t_pair.second, t_pair.first));
+                   hash<idol::Pair<Key, Key>>()(t_pair)
+                 : hash<idol::Pair<Key, Key>>()(idol::Pair(t_pair.second, t_pair.first));
         }
     };
 
     struct symmetric_pair_equal_to {
         template<class Key>
-        std::size_t operator()(const std::pair<Key, Key>& t_a, const std::pair<Key, Key>& t_b) const {
-            const auto a = std::less<Key>()(t_a.first, t_a.second) ? t_a : std::make_pair(t_a.second, t_a.first);
-            const auto b = std::less<Key>()(t_b.first, t_b.second) ? t_b : std::make_pair(t_b.second, t_b.first);
+        std::size_t operator()(const idol::Pair<Key, Key>& t_a, const idol::Pair<Key, Key>& t_b) const {
+            const auto a = std::less<Key>()(t_a.first, t_a.second) ? t_a : idol::Pair(t_a.second, t_a.first);
+            const auto b = std::less<Key>()(t_b.first, t_b.second) ? t_b : idol::Pair(t_b.second, t_b.first);
             return std::equal_to<Key>()(a.first, b.first) && std::equal_to<Key>()(a.second, b.second);
         }
     };
@@ -66,8 +69,8 @@ namespace idol::impl {
 }
 
 template<class Key1, class Key2>
-struct std::hash<std::pair<Key1, Key2>> {
-    std::size_t operator()(const std::pair<Key1, Key2>& t_pair) const {
+struct std::hash<idol::Pair<Key1, Key2>> {
+    std::size_t operator()(const idol::Pair<Key1, Key2>& t_pair) const {
         return idol::impl::hash_val(t_pair.first, t_pair.second);
     }
 };
@@ -95,7 +98,7 @@ namespace idol {
             class T,
             class Hash = std::hash<Key>,
             class KeyEqual = std::equal_to<Key>,
-            class Allocator = std::allocator<std::pair<const Key, T> >
+            class Allocator = std::allocator<idol::Pair<const Key, T> >
     >
     using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
 

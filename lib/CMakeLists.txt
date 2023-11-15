@@ -97,7 +97,6 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/nodes/Node.h
         include/idol/optimizers/branch-and-bound/nodes/NodeUpdator.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/impls/DepthFirst.h
-        include/idol/optimizers/branch-and-bound/branching-rules/impls/VariableBranchingRule.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h
         include/idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h
@@ -154,9 +153,9 @@ add_library(idol STATIC
         src/optimizers/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h
         include/idol/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h
-        include/idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h
-        include/idol/optimizers/branch-and-bound/nodes/NodeVarUpdator.h
-        src/optimizers/branch-and-bound/nodes/NodeVarInfo.cpp
+        include/idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h
+        include/idol/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h
+        src/optimizers/branch-and-bound/nodes/DefaultNodeInfo.cpp
         include/idol/optimizers/wrappers/HiGHS/HiGHS.h
         src/optimizers/wrappers/HiGHS/HiGHS.cpp
         src/optimizers/wrappers/HiGHS/Optimizers_HiGHS.cpp
@@ -197,6 +196,8 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/branching-rules/factories/BracnhingWithPriority.h
         src/optimizers/logs.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
+        include/idol/optimizers/branch-and-bound/nodes/BranchingDecision.h
+        include/idol/containers/Pair.h
 )
 
 find_package(OpenMP REQUIRED)

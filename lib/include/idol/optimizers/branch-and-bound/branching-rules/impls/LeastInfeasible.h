@@ -9,26 +9,26 @@
 #include "VariableBranching.h"
 
 namespace idol::BranchingRules {
-    template<class NodeVarInfoT> class LeastInfeasible;
+    template<class NodeInfoT> class LeastInfeasible;
 }
 
-template<class NodeVarInfoT>
-class idol::BranchingRules::LeastInfeasible : public VariableBranching<NodeVarInfoT> {
+template<class NodeInfoT>
+class idol::BranchingRules::LeastInfeasible : public VariableBranching<NodeInfoT> {
 protected:
-    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeVarInfoT> &t_node) override;
+    std::list<std::pair<Var, double>> scoring_function(const std::list<Var> &t_var, const Node<NodeInfoT> &t_node) override;
 public:
-    explicit LeastInfeasible(const Optimizers::BranchAndBound<NodeVarInfoT>& t_parent, std::list<Var> t_branching_candidates);
+    explicit LeastInfeasible(const Optimizers::BranchAndBound<NodeInfoT>& t_parent, std::list<Var> t_branching_candidates);
 };
 
-template<class NodeVarInfoT>
-idol::BranchingRules::LeastInfeasible<NodeVarInfoT>::LeastInfeasible(
-        const idol::Optimizers::BranchAndBound<NodeVarInfoT> &t_parent, std::list<Var> t_branching_candidates)
-        : VariableBranching<NodeVarInfoT>(t_parent, std::move(t_branching_candidates)) {}
+template<class NodeInfoT>
+idol::BranchingRules::LeastInfeasible<NodeInfoT>::LeastInfeasible(
+        const idol::Optimizers::BranchAndBound<NodeInfoT> &t_parent, std::list<Var> t_branching_candidates)
+        : VariableBranching<NodeInfoT>(t_parent, std::move(t_branching_candidates)) {}
 
-template<class NodeVarInfoT>
+template<class NodeInfoT>
 std::list<std::pair<idol::Var, double>>
-idol::BranchingRules::LeastInfeasible<NodeVarInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
-                                                                   const Node<NodeVarInfoT> &t_node) {
+idol::BranchingRules::LeastInfeasible<NodeInfoT>::scoring_function(const std::list<idol::Var> &t_variables,
+                                                                   const Node<NodeInfoT> &t_node) {
 
     const auto& primal_solution = t_node.info().primal_solution();
 

@@ -60,7 +60,7 @@ public:
     Strategy *operator()() const override {
         return new Strategy(
                 m_frequency.has_value() ? m_frequency.value() : 1,
-                m_log_for_sub_problems.has_value() && m_log_for_sub_problems.value()
+                true // m_log_for_sub_problems.has_value() && m_log_for_sub_problems.value()
                 );
     }
 

@@ -20,9 +20,11 @@ class idol::NodeUpdator {
 public:
     virtual ~NodeUpdator() = default;
 
-    virtual void apply_local_updates(const Node<NodeT>& t_node) = 0;
+    virtual void initialize() = 0;
 
-    virtual void clear_local_updates() = 0;
+    virtual void prepare(const Node<NodeT>& t_node) = 0;
+
+    virtual void clear() = 0;
 };
 
 #endif //IDOL_NODEUPDATOR_H

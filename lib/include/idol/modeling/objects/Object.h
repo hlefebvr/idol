@@ -8,6 +8,7 @@
 #include <memory>
 #include "ObjectId.h"
 #include "idol/containers/Vector.h"
+#include "idol/containers/Pair.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/errors/Exception.h"
 
@@ -54,20 +55,6 @@ public:
      * @return The id of the optimization object.
      */
     [[nodiscard]] unsigned int id() const { return m_object_id->id(); }
-
-    /**
-     * Returns true if the two optimization objects have the same id, false otherwise.
-     * @param t_rhs the other optimization object.
-     * @return True if the two optimization objects have the same id, false otherwise.
-     */
-    bool operator==(const Object<T, CRTP>& t_rhs) const { return id() == t_rhs.id(); }
-
-    /**
-     * Returns false if the two optimization objects have the same id, true otherwise.
-     * @param t_rhs the other optimization object.
-     * @return False if the two optimization objects have the same id, true otherwise.
-     */
-    bool operator!=(const Object<T, CRTP>& t_rhs) const { return id() != t_rhs.id(); }
 
     /**
      * Returns true if the optimization object is part of the model `t_model`, false otherwise.
@@ -153,6 +140,12 @@ template<> \
 struct std::less<idol::name> { \
     std::size_t operator()(const idol::name& t_a, const idol::name& t_b) const { \
         return t_a.id() < t_b.id(); \
+    } \
+};                               \
+template<> \
+struct std::equal_to<idol::Pair<idol::name, idol::name>> { \
+    std::size_t operator()(const idol::Pair<idol::name, idol::name>& t_a, const idol::Pair<idol::name, idol::name>& t_b) const { \
+        return std::equal_to<idol::name>()(t_a.first, t_b.first) && std::equal_to<idol::name>()(t_a.second, t_b.second); \
     } \
 };
 

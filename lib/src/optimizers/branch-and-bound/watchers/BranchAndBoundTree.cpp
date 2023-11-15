@@ -8,11 +8,11 @@ idol::Utils::ExportBranchAndBoundTreeToCSV::ExportBranchAndBoundTreeToCSV(std::s
 
 }
 
-idol::BranchAndBoundCallbackFactory<idol::NodeVarInfo> *idol::Utils::ExportBranchAndBoundTreeToCSV::clone() const {
+idol::BranchAndBoundCallbackFactory<idol::DefaultNodeInfo> *idol::Utils::ExportBranchAndBoundTreeToCSV::clone() const {
     return new ExportBranchAndBoundTreeToCSV(*this);
 }
 
-idol::BranchAndBoundCallback<idol::NodeVarInfo> *idol::Utils::ExportBranchAndBoundTreeToCSV::operator()() {
+idol::BranchAndBoundCallback<idol::DefaultNodeInfo> *idol::Utils::ExportBranchAndBoundTreeToCSV::operator()() {
     return new Strategy(m_filename);
 }
 
@@ -59,14 +59,15 @@ void idol::Utils::ExportBranchAndBoundTreeToCSV::Strategy::operator()(idol::Call
     } else {
         parent_id = node.parent().id();
 
-        const auto& branching_decision = node.info().branching_decision();
-        branch_label << branching_decision.variable.name() << " ";
-        if (branching_decision.type == LessOrEqual) {
-            branch_label << "&le;";
-        } else {
-            branch_label << "&ge;";
+        for (const auto& branching_decision : node.info().variable_branching_decisions()) {
+            branch_label << branching_decision.variable.name() << " ";
+            if (branching_decision.type == LessOrEqual) {
+                branch_label << "&le;";
+            } else {
+                branch_label << "&ge;";
+            }
+            branch_label << " " << branching_decision.bound;
         }
-        branch_label << " " << branching_decision.bound;
     }
 
     if (status == Optimal || status == Feasible) {

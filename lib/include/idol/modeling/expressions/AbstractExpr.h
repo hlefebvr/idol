@@ -13,6 +13,7 @@
 #include "idol/modeling/matrix/MatrixCoefficient.h"
 #include "idol/modeling/variables/Var.h"
 #include "idol/errors/Exception.h"
+#include "idol/containers/Pair.h"
 #include <memory>
 #include <utility>
 #include <functional>
@@ -169,13 +170,16 @@ template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
 idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
 
-    if (this == &t_src) { return *this; }
+    if (this == &t_src) {
+        return *this;
+    }
+
     m_map.clear();
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
         m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
     }
-    return *this;
 
+    return *this;
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
@@ -325,11 +329,11 @@ public:
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
-    IteratorOutputT operator*() const { return { m_it->first, m_it->second->value() }; }
+    IteratorOutputT operator*() const { return IteratorOutputT(m_it->first, m_it->second->value()); }
 };
 
 template<class Key,
-        class IteratorOutputT = std::pair<const Key&, const idol::Constant&>,
+        class IteratorOutputT = idol::Pair<const Key&, const idol::Constant&>,
         class Hash = std::hash<Key>,
         class EqualTo = std::equal_to<Key>
 >

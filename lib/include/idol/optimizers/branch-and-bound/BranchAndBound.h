@@ -13,7 +13,7 @@
 #include "idol/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "idol/optimizers/callbacks/CallbackFactory.h"
 #include "idol/optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 
 namespace idol {
     template<class NodeT>
@@ -24,7 +24,7 @@ namespace idol {
  * @tparam NodeT the class used to store nodes information.
  * It is strongly advised to inherit from NodeVarInfo in order to create your own node type.
  */
-template<class NodeT = idol::NodeVarInfo>
+template<class NodeT = idol::DefaultNodeInfo>
 class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<BranchAndBound<NodeT>> {
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;

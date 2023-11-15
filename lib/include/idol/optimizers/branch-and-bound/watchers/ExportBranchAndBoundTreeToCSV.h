@@ -6,7 +6,7 @@
 #define IDOL_EXPORTBRANCHANDBOUNDTREETOCSV_H
 
 
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h"
 #include "idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 
@@ -14,16 +14,16 @@ namespace idol::Utils {
     class ExportBranchAndBoundTreeToCSV;
 }
 
-class idol::Utils::ExportBranchAndBoundTreeToCSV : public BranchAndBoundCallbackFactory<NodeVarInfo> {
+class idol::Utils::ExportBranchAndBoundTreeToCSV : public BranchAndBoundCallbackFactory<DefaultNodeInfo> {
     const std::string m_filename;
 public:
     explicit ExportBranchAndBoundTreeToCSV(std::string t_filename);
 
-    BranchAndBoundCallback<NodeVarInfo> *operator()() override;
+    BranchAndBoundCallback<DefaultNodeInfo> *operator()() override;
 
-    BranchAndBoundCallbackFactory<NodeVarInfo> *clone() const override;
+    BranchAndBoundCallbackFactory<DefaultNodeInfo> *clone() const override;
 
-    class Strategy : public BranchAndBoundCallback<NodeVarInfo> {
+    class Strategy : public BranchAndBoundCallback<DefaultNodeInfo> {
         const std::string m_filename;
     protected:
         void operator()(CallbackEvent t_event) override;
