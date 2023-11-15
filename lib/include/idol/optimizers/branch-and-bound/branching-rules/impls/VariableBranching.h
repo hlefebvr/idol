@@ -20,7 +20,7 @@ class idol::BranchingRules::VariableBranching : public BranchingRule<NodeInfoT> 
     std::list<Var> m_branching_candidates;
 public:
 
-    virtual bool is_valid(const Node<NodeInfoT> &t_node) const {
+    virtual bool is_valid(const Node<NodeInfoT> &t_node) {
 
         const auto& primal_solution = t_node.info().primal_solution();
 

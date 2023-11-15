@@ -39,7 +39,7 @@ public:
 
     virtual void initialize() {}
 
-    [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) const = 0;
+    [[nodiscard]] virtual bool is_valid(const Node<NodeInfoT>& t_node) = 0;
 
     [[nodiscard]] virtual std::list<NodeInfoT*> create_child_nodes(const Node<NodeInfoT>& t_node) = 0;
 
