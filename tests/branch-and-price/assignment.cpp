@@ -109,7 +109,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                     .with_default_sub_problem_spec(
                                         DantzigWolfe::SubProblem()
                                             .add_optimizer(
-                                                    BranchAndBound<NodeVarInfo>()
+                                                    BranchAndBound<DefaultNodeInfo>()
                                                             .with_node_optimizer(OPTIMIZER::ContinuousRelaxation())
                                                             .with_branching_rule(MostInfeasible())
                                                             .with_node_selection_rule(BestBound())
@@ -129,14 +129,14 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                     .with_default_sub_problem_spec(
                                         DantzigWolfe::SubProblem()
                                             .add_optimizer(
-                                                    BranchAndBound<NodeVarInfo>()
+                                                    BranchAndBound<DefaultNodeInfo>()
                                                             .with_node_optimizer(
                                                                     DantzigWolfeDecomposition(nested_decomposition2)
                                                                             .with_master_optimizer(OPTIMIZER::ContinuousRelaxation())
                                                                             .with_default_sub_problem_spec(
                                                                                 DantzigWolfe::SubProblem()
                                                                                     .add_optimizer(
-                                                                                            BranchAndBound<NodeVarInfo>()
+                                                                                            BranchAndBound<DefaultNodeInfo>()
                                                                                                     .with_node_optimizer(
                                                                                                             OPTIMIZER::ContinuousRelaxation())
                                                                                                     .with_branching_rule(MostInfeasible())
@@ -170,7 +170,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     };
 
     model.use(
-            BranchAndBound<NodeVarInfo>()
+            BranchAndBound<DefaultNodeInfo>()
                     .with_node_optimizer(*relaxation_solvers[solver_index].second)
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())

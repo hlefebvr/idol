@@ -2,8 +2,8 @@
 // Created by henri on 18.10.23.
 //
 
-#ifndef IDOL_NODEVARUPDATOR_H
-#define IDOL_NODEVARUPDATOR_H
+#ifndef IDOL_DEFAULTNODEUPDATOR_H
+#define IDOL_DEFAULTNODEUPDATOR_H
 
 #include "NodeUpdator.h"
 #include "idol/modeling/models/Model.h"
@@ -11,11 +11,11 @@
 
 namespace idol {
     template<class NodeT>
-    class NodeVarUpdator;
+    class DefaultNodeUpdator;
 }
 
 template<class NodeVarInfoT>
-class idol::NodeVarUpdator : public NodeUpdator<NodeVarInfoT> {
+class idol::DefaultNodeUpdator : public NodeUpdator<NodeVarInfoT> {
 
     Model& m_relaxation;
 
@@ -27,13 +27,13 @@ class idol::NodeVarUpdator : public NodeUpdator<NodeVarInfoT> {
                              Map<Var, double> &t_changed_lower_bounds,
                              Map<Var, double> &t_changed_upper_bounds);
 
-    void apply_local_update(const typename NodeVarInfoT::BranchingDecision& t_branching_decision,
+    void apply_local_update(const typename NodeVarInfoT::VarBranchingDecision& t_branching_decision,
                              Map<Var, double> &t_current_changed_bounds,
                              Map<Var, double> &t_changed_bounds);
 public:
-    explicit NodeVarUpdator(Model& t_relaxation);
+    explicit DefaultNodeUpdator(Model& t_relaxation);
 
-    NodeVarUpdator(const NodeVarUpdator&) = delete;
+    DefaultNodeUpdator(const DefaultNodeUpdator&) = delete;
 
     void apply_local_updates(const Node<NodeVarInfoT> &t_node) override;
 
@@ -46,12 +46,12 @@ protected:
 };
 
 template<class NodeT>
-idol::NodeVarUpdator<NodeT>::NodeVarUpdator(idol::Model &t_relaxation) : m_relaxation(t_relaxation) {
+idol::DefaultNodeUpdator<NodeT>::DefaultNodeUpdator(idol::Model &t_relaxation) : m_relaxation(t_relaxation) {
 
 }
 
 template<class NodeVarInfoT>
-void idol::NodeVarUpdator<NodeVarInfoT>::clear_local_updates() {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::clear_local_updates() {
 
     for (const auto& [var, lb] : m_changed_lower_bounds) {
         m_relaxation.set_var_lb(var, lb);
@@ -66,7 +66,7 @@ void idol::NodeVarUpdator<NodeVarInfoT>::clear_local_updates() {
 }
 
 template<class NodeVarInfoT>
-void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const Node<NodeVarInfoT> &t_node) {
+void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const Node<NodeVarInfoT> &t_node) {
 
     Map<Var, double> changed_lower_bounds;
     Map<Var, double> changed_upper_bounds;
@@ -79,7 +79,7 @@ void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const Node<NodeVarI
 }
 
 template<class NodeVarInfoT>
-void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<NodeVarInfoT> &t_node,
+void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<NodeVarInfoT> &t_node,
                                                           Map<Var, double> &t_changed_lower_bounds,
                                                           Map<Var, double> &t_changed_upper_bounds
                                                           ) {
@@ -88,9 +88,7 @@ void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<No
         return;
     }
 
-    if (t_node.info().has_branching_decision()) {
-
-        const auto &branching_decision = t_node.info().branching_decision();
+    for (const auto& branching_decision : t_node.info().variable_branching_decisions()) {
 
         switch (branching_decision.type) {
             case LessOrEqual:
@@ -110,7 +108,7 @@ void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_updates(const idol::Node<No
 }
 
 template<class NodeVarInfoT>
-void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_update(const typename NodeVarInfoT::BranchingDecision &t_branching_decision,
+void idol::DefaultNodeUpdator<NodeVarInfoT>::apply_local_update(const typename NodeVarInfoT::VarBranchingDecision &t_branching_decision,
                                                          idol::Map<idol::Var, double> &t_current_changed_bounds,
                                                          idol::Map<idol::Var, double> &t_changed_bounds) {
 
@@ -144,4 +142,4 @@ void idol::NodeVarUpdator<NodeVarInfoT>::apply_local_update(const typename NodeV
 
 }
 
-#endif //IDOL_NODEVARUPDATOR_H
+#endif //IDOL_DEFAULTNODEUPDATOR_H

@@ -154,9 +154,9 @@ add_library(idol STATIC
         src/optimizers/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h
         include/idol/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h
-        include/idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h
-        include/idol/optimizers/branch-and-bound/nodes/NodeVarUpdator.h
-        src/optimizers/branch-and-bound/nodes/NodeVarInfo.cpp
+        include/idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h
+        include/idol/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h
+        src/optimizers/branch-and-bound/nodes/DefaultNodeInfo.cpp
         include/idol/optimizers/wrappers/HiGHS/HiGHS.h
         src/optimizers/wrappers/HiGHS/HiGHS.cpp
         src/optimizers/wrappers/HiGHS/Optimizers_HiGHS.cpp

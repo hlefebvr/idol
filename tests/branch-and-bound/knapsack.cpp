@@ -32,11 +32,11 @@ using node_selection_rules = std::tuple<
 >;
 
 using branching_rules = std::tuple<
-        MostInfeasible::Strategy<NodeVarInfo>,
-        LeastInfeasible::Strategy<NodeVarInfo>,
-        UniformlyRandom::Strategy<NodeVarInfo>,
-        StrongBranching::Strategy<NodeVarInfo>,
-        PseudoCost::Strategy<NodeVarInfo>
+        MostInfeasible::Strategy<DefaultNodeInfo>,
+        LeastInfeasible::Strategy<DefaultNodeInfo>,
+        UniformlyRandom::Strategy<DefaultNodeInfo>,
+        StrongBranching::Strategy<DefaultNodeInfo>,
+        PseudoCost::Strategy<DefaultNodeInfo>
 >;
 
 using test_parameters = cartesian_product<node_selection_rules, branching_rules>;
@@ -70,7 +70,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Knapsack Problem instances with different node se
     model.add(c);
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
-    model.use(BranchAndBound<NodeVarInfo>()
+    model.use(BranchAndBound<DefaultNodeInfo>()
                       .with_node_optimizer(OPTIMIZER::ContinuousRelaxation())
                       .with_branching_rule(BranchingRuleT())
                       .with_node_selection_rule(NodeSelectionRuleT())

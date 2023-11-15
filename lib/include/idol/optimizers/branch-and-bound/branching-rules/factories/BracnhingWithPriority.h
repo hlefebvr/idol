@@ -10,13 +10,13 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h"
 
 namespace idol {
-    class NodeVarInfo;
+    class DefaultNodeInfo;
 
     template<class NodeT>
     class BranchingWithPriority;
 }
 
-template<class NodeT = idol::NodeVarInfo>
+template<class NodeT = idol::DefaultNodeInfo>
 class idol::BranchingWithPriority : public BranchingRuleFactory<NodeT> {
     std::list<std::unique_ptr<BranchingRuleFactory<NodeT>>> m_branching_rules;
 public:

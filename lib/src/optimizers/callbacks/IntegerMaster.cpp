@@ -13,7 +13,7 @@ idol::Heuristics::IntegerMaster::IntegerMaster(const IntegerMaster& t_src)
       m_frequency(t_src.m_frequency)
     {}
 
-idol::BranchAndBoundCallback<idol::NodeVarInfo> *idol::Heuristics::IntegerMaster::operator()() {
+idol::BranchAndBoundCallback<idol::DefaultNodeInfo> *idol::Heuristics::IntegerMaster::operator()() {
 
     if (!m_optimizer_factory) {
         throw Exception("No solver was given to solve the integer master problem, please call IntegerMaster.rst::with_optimizer to configure.");
@@ -55,7 +55,7 @@ idol::Heuristics::IntegerMaster &idol::Heuristics::IntegerMaster::with_optimizer
     return *this;
 }
 
-idol::BranchAndBoundCallbackFactory<idol::NodeVarInfo> *idol::Heuristics::IntegerMaster::clone() const {
+idol::BranchAndBoundCallbackFactory<idol::DefaultNodeInfo> *idol::Heuristics::IntegerMaster::clone() const {
     return new IntegerMaster(*this);
 }
 
@@ -157,7 +157,7 @@ void idol::Heuristics::IntegerMaster::Strategy::operator()(CallbackEvent t_event
         }
     }
 
-    auto* info = new NodeVarInfo();
+    auto* info = new DefaultNodeInfo();
     info->set_primal_solution(std::move(solution));
 
     submit_heuristic_solution(info);

@@ -1,22 +1,22 @@
 //
 // Created by henri on 18.10.23.
 //
-#include "idol/optimizers/branch-and-bound/nodes/NodeVarInfo.h"
+#include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 #include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 
-void idol::NodeVarInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
-    m_branching_decision = std::make_optional<BranchingDecision>(t_var, LessOrEqual, t_ub);
+void idol::DefaultNodeInfo::set_local_upper_bound(const idol::Var &t_var, double t_ub) {
+    m_branching_decision.emplace_back(t_var, LessOrEqual, t_ub);
 }
 
-void idol::NodeVarInfo::set_local_lower_bound(const idol::Var &t_var, double t_lb) {
-    m_branching_decision = std::make_optional<BranchingDecision>(t_var, GreaterOrEqual, t_lb);
+void idol::DefaultNodeInfo::set_local_lower_bound(const idol::Var &t_var, double t_lb) {
+    m_branching_decision.emplace_back(t_var, GreaterOrEqual, t_lb);
 }
-idol::NodeVarUpdator<idol::NodeVarInfo> *
-idol::NodeVarInfo::create_updator(idol::Model &t_relaxation) {
-    return new NodeVarUpdator<NodeVarInfo>(t_relaxation);
+idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
+idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {
+    return new DefaultNodeUpdator<DefaultNodeInfo>(t_relaxation);
 }
 
-void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
+void idol::DefaultNodeInfo::save(const idol::Model &t_original_formulation,
                              const idol::Model &t_model) {
 
     const auto status = t_model.get_status();
@@ -54,6 +54,6 @@ void idol::NodeVarInfo::save(const idol::Model &t_original_formulation,
 
 }
 
-idol::NodeVarInfo *idol::NodeVarInfo::create_child() const {
-    return new NodeVarInfo();
+idol::DefaultNodeInfo *idol::DefaultNodeInfo::create_child() const {
+    return new DefaultNodeInfo();
 }
