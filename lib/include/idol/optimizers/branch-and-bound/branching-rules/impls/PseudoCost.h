@@ -67,35 +67,40 @@ void idol::BranchingRules::PseudoCost<NodeVarInfoT>::on_node_solved(const idol::
         return;
     }
 
-    // Current node
-    const auto& branching_decision = t_node.info().branching_decision();
-    const auto& var = branching_decision.variable;
-    const double bound = branching_decision.bound;
-    const bool is_upper_bound = branching_decision.type == LessOrEqual;
-    const double node_objective_value = t_node.info().objective_value();
-
     // Parent
     const auto& parent = t_node.parent();
     const auto& parent_solution = parent.info().primal_solution();
     const double parent_objective_value = parent_solution.objective_value();
-    const double parent_var_primal_value = parent_solution.get(var);
 
-    const double objective_gain_per_unit_change = (node_objective_value - parent_objective_value) / std::abs(bound - parent_var_primal_value);
+    // Current node
+    for (const auto &branching_decision : t_node.info().variable_branching_decisions()) {
 
-    PseudoCostData data;
+        const auto &var = branching_decision.variable;
+        const double bound = branching_decision.bound;
+        const bool is_upper_bound = branching_decision.type == LessOrEqual;
+        const double node_objective_value = t_node.info().objective_value();
 
-    if (is_upper_bound) {
-        data.n_entries_for_upper_bounds = 1;
-        data.objective_gains_by_upper_boundings = objective_gain_per_unit_change;
-    } else {
-        data.n_entries_for_lower_bounds = 1;
-        data.objective_gains_by_lower_boundings = objective_gain_per_unit_change;
-    }
+        const double parent_var_primal_value = parent_solution.get(var);
 
-    auto [it, success] = m_pseudo_cost_data.emplace(var, data);
+        const double objective_gain_per_unit_change =
+                (node_objective_value - parent_objective_value) / std::abs(bound - parent_var_primal_value);
 
-    if (!success) {
-        it->second += data;
+        PseudoCostData data;
+
+        if (is_upper_bound) {
+            data.n_entries_for_upper_bounds = 1;
+            data.objective_gains_by_upper_boundings = objective_gain_per_unit_change;
+        } else {
+            data.n_entries_for_lower_bounds = 1;
+            data.objective_gains_by_lower_boundings = objective_gain_per_unit_change;
+        }
+
+        auto [it, success] = m_pseudo_cost_data.emplace(var, data);
+
+        if (!success) {
+            it->second += data;
+        }
+
     }
 
 }
