@@ -366,7 +366,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     m_root_node_best_obj = Inf;
 
     m_callback->initialize(parent());
-
+    m_branching_rule->initialize();
     m_node_updator->initialize();
 }
 
