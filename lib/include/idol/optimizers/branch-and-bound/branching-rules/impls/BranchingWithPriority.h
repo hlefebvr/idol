@@ -34,7 +34,7 @@ public:
         }
     }
 
-    bool is_valid(const Node<NodeInfoT> &t_node) const override {
+    bool is_valid(const Node<NodeInfoT> &t_node) override {
 
         for (auto& branching_rule : m_branching_rules) {
 

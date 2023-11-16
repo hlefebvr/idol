@@ -111,7 +111,6 @@ add_library(idol STATIC
         src/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
         include/idol/optimizers/callbacks/IntegerMaster.h
-        src/optimizers/callbacks/IntegerMaster.cpp
         src/optimizers/wrappers/gurobi/GurobiCallbackI.cpp
         include/idol/optimizers/callbacks/Callback.h
         src/optimizers/callbacks/Callback.cpp
