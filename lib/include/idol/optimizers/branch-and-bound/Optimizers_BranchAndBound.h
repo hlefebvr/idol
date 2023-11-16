@@ -41,7 +41,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
     unsigned int m_log_frequency = 10;
-    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 1, 0 };
+    std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
     unsigned int m_n_solved_nodes = 0;
     double m_root_node_best_bound = -Inf;
@@ -275,13 +275,13 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::submit_heuristic_solution(Node
 
     if (t_node.info().objective_value() < get_best_obj()) {
 
-        if (m_branching_rule->is_valid(t_node)) {
+        //if (m_branching_rule->is_valid(t_node)) {
             set_as_incumbent(t_node);
             log_node(Info, t_node);
             idol_Log(Trace, "New incumbent with objective value " << t_node.info().objective_value() << " was submitted by heuristic.");
-        } else {
-            idol_Log(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
-        }
+        //} else {
+        //    idol_Log(Trace, "Ignoring submitted heuristic solution, solution is not valid.");
+        //}
 
     } else {
         idol_Log(Trace, "Ignoring submitted heuristic solution, objective value is " << t_node.info().objective_value() << " while best obj is " << get_best_obj() << '.');
