@@ -34,6 +34,16 @@ public:
         }
     }
 
+    void initialize() override {
+
+        BranchingRule<NodeInfoT>::initialize();
+
+        for (auto& branching_rule : m_branching_rules) {
+            branching_rule->initialize();
+        }
+
+    }
+
     bool is_valid(const Node<NodeInfoT> &t_node) override {
 
         for (auto& branching_rule : m_branching_rules) {
