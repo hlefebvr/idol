@@ -118,8 +118,6 @@ public:
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb);
 
-    virtual void add_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_plane_generator);
-
     void submit_heuristic_solution(NodeInfoT* t_info);
 
     void submit_lower_bound(double t_lower_bound);
@@ -142,11 +140,6 @@ public:
 
     const TreeNode& incumbent() const { return m_incumbent.value(); }
 };
-
-template<class NodeInfoT>
-void idol::Optimizers::BranchAndBound<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
-    m_callback->add_cutting_plane_generator(t_cutting_plane_generator);
-}
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_solution_index(unsigned int t_index) {

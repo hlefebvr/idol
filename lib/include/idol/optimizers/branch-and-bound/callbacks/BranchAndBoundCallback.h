@@ -9,7 +9,6 @@
 #include "idol/optimizers/branch-and-bound/nodes/Node.h"
 #include "idol/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
 #include "AbstractBranchAndBoundCallbackI.h"
-#include "idol/optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
 #include "CallbackAsBranchAndBoundCallback.h"
 
 namespace idol {
@@ -29,8 +28,6 @@ class idol::BranchAndBoundCallbackI : public AbstractBranchAndBoundCallbackI<Nod
     friend class BranchAndBoundCallback<NodeInfoT>;
 
     std::list<std::unique_ptr<BranchAndBoundCallback<NodeInfoT>>> m_callbacks;
-    std::list<std::unique_ptr<BranchAndBoundCallback<NodeInfoT>>> m_cutting_plane_callbacks;
-    std::list<std::unique_ptr<CuttingPlaneGenerator>> m_cutting_plane_generators;
 
     Optimizers::BranchAndBound<NodeInfoT>* m_parent = nullptr;
     std::optional<Node<NodeInfoT>> m_node;
@@ -66,9 +63,7 @@ protected:
 
     void add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) override;
 
-    void add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) override;
-
-    void initialize(const Model& t_model) override;
+    void initialize(const Model &t_model) override;
 };
 
 template<class NodeInfoT>
@@ -85,33 +80,19 @@ const idol::Timer &idol::BranchAndBoundCallbackI<NodeInfoT>::time() const {
 }
 
 template<class NodeInfoT>
-void idol::BranchAndBoundCallbackI<NodeInfoT>::initialize(const Model& t_model) {
-
-    m_cutting_plane_callbacks.clear();
-
-    for (auto& generator : m_cutting_plane_generators) {
-        generator->operator()(t_model);
-        for (auto& cb : generator->generated_callbacks()) {
-            m_cutting_plane_callbacks.emplace_back(CallbackAsBranchAndBoundCallback<NodeInfoT>(*cb).operator()());
-        }
-        generator->clear_generated_callbacks();
-    }
-
-}
-
-template<class NodeInfoT>
-void idol::BranchAndBoundCallbackI<NodeInfoT>::add_cutting_plane_generator(const CuttingPlaneGenerator &t_cutting_plane_generator) {
-    m_cutting_plane_generators.emplace_back(t_cutting_plane_generator.clone());
-}
-
-template<class NodeInfoT>
 class idol::BranchAndBoundCallback {
 public:
     virtual ~BranchAndBoundCallback() = default;
 protected:
 
     /**
+     * This method is called at the very beginning of the Branch-and-Bound algorithm
+     */
+    virtual void initialize() {}
+
+    /**
      * This method is left for the user to write and consists in the main execution block of the callback.
+     * @param t_event The event triggering the callback
      */
     virtual void operator()(CallbackEvent t_event) = 0;
 
@@ -249,20 +230,10 @@ idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<
     m_relaxation = t_relaxation;
     m_registry = &result;
 
-    for (auto& cb : m_cutting_plane_callbacks) {
+    for (auto &cb: m_callbacks) {
         cb->m_interface = this;
         cb->operator()(t_event);
         cb->m_interface = nullptr;
-    }
-
-    if (result.n_added_user_cuts == 0) {
-
-        for (auto &cb: m_callbacks) {
-            cb->m_interface = this;
-            cb->operator()(t_event);
-            cb->m_interface = nullptr;
-        }
-
     }
 
     m_parent = nullptr;
@@ -276,6 +247,13 @@ idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<
 template<class NodeInfoT>
 void idol::BranchAndBoundCallbackI<NodeInfoT>::add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) {
     m_callbacks.emplace_back(t_cb);
+}
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallbackI<NodeInfoT>::initialize(const idol::Model &t_model) {
+    for (auto& ptr_callback : m_callbacks) {
+        ptr_callback->initialize();
+    }
 }
 
 template<class NodeInfoT>

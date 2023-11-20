@@ -45,8 +45,6 @@ protected:
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb) = 0;
 
-    virtual void add_cutting_plane_generator(const CuttingPlaneGenerator& t_cutting_plane_generator) = 0;
-
     virtual void initialize(const Model& t_model) = 0;
 
     friend class Optimizers::BranchAndBound<NodeInfoT>;

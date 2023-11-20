@@ -122,8 +122,6 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h
         include/idol/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h
         include/idol/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h
-        include/idol/optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h
-        include/idol/optimizers/branch-and-bound/cutting-planes/CoverCuts.h
         include/idol/problems/staff-rostering-problem/SRP_Instance.h
         src/problems/staff-rostering-problem/SRP_Instance.cpp
         src/modeling/numericals.cpp

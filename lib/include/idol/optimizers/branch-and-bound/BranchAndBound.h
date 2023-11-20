@@ -12,7 +12,6 @@
 #include "idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h"
 #include "idol/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "idol/optimizers/callbacks/CallbackFactory.h"
-#include "idol/optimizers/branch-and-bound/cutting-planes/CuttingPlaneGenerator.h"
 #include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
 
 namespace idol {
@@ -31,7 +30,6 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
 
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
-    std::list<std::unique_ptr<CuttingPlaneGenerator>> m_cutting_plane_generators;
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
@@ -213,9 +211,7 @@ public:
      * @param t_callback the callback factory
      * @return the optimizer factory itself
      */
-    BranchAndBound<NodeT>& with_callback(const CallbackFactory& t_callback);
-
-    BranchAndBound<NodeT>& with_cutting_planes(const CuttingPlaneGenerator& t_cutting_place_generator);
+    BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
 };
 
 template<class NodeT>
@@ -225,14 +221,7 @@ idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::operator+=(const idol:
 
 template<class NodeT>
 idol::BranchAndBound<NodeT> &
-idol::BranchAndBound<NodeT>::with_cutting_planes(const CuttingPlaneGenerator &t_cutting_place_generator) {
-    m_cutting_plane_generators.emplace_back(t_cutting_place_generator.clone());
-    return *this;
-}
-
-template<class NodeT>
-idol::BranchAndBound<NodeT> &
-idol::BranchAndBound<NodeT>::with_callback(const CallbackFactory &t_callback) {
+idol::BranchAndBound<NodeT>::add_callback(const CallbackFactory &t_callback) {
     return add_callback(CallbackAsBranchAndBoundCallback<NodeT>(t_callback));
 }
 
@@ -333,10 +322,6 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
         m_callbacks.emplace_back(cb->clone());
     }
 
-    for (auto& generator : t_rhs.m_cutting_plane_generators) {
-        m_cutting_plane_generators.emplace_back(generator->clone());
-    }
-
 }
 
 template<class NodeT>
@@ -374,10 +359,6 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     for (auto& cb : m_callbacks) {
         result->add_callback(cb->operator()());
-    }
-
-    for (auto& generator : m_cutting_plane_generators) {
-        result->add_cutting_plane_generator(*generator);
     }
 
     return result;
