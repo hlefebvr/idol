@@ -7,7 +7,7 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/callbacks/IntegerMaster.h"
+#include "idol/optimizers/callbacks/heuristics/IntegerMaster.h"
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"

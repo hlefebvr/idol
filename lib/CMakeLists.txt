@@ -110,14 +110,14 @@ add_library(idol STATIC
         src/optimizers/wrappers/GLPK/GLPK.cpp
         src/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
-        include/idol/optimizers/callbacks/IntegerMaster.h
+        include/idol/optimizers/callbacks/heuristics/IntegerMaster.h
         src/optimizers/wrappers/gurobi/GurobiCallbackI.cpp
         include/idol/optimizers/callbacks/Callback.h
         src/optimizers/callbacks/Callback.cpp
-        include/idol/optimizers/callbacks/CutSeparation.h
+        include/idol/optimizers/callbacks/cutting-planes/CutSeparation.h
         src/optimizers/callbacks/CutSeparation.cpp
-        include/idol/optimizers/callbacks/LazyCutCallback.h
-        include/idol/optimizers/callbacks/UserCutCallback.h
+        include/idol/optimizers/callbacks/cutting-planes/LazyCutCallback.h
+        include/idol/optimizers/callbacks/cutting-planes/UserCutCallback.h
         include/idol/optimizers/callbacks/CallbackFactory.h
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h
         include/idol/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h
@@ -125,13 +125,13 @@ add_library(idol STATIC
         include/idol/problems/staff-rostering-problem/SRP_Instance.h
         src/problems/staff-rostering-problem/SRP_Instance.cpp
         src/modeling/numericals.cpp
-        include/idol/optimizers/callbacks/SimpleRounding.h
-        src/optimizers/callbacks/SimpleRounding.cpp
+        include/idol/optimizers/callbacks/heuristics/SimpleRounding.h
+        src/optimizers/callbacks/heuristics/SimpleRounding.cpp
         src/modeling/expressions/operations/operators.cpp
-        include/idol/optimizers/callbacks/RENS.h
-        src/optimizers/callbacks/RENS.cpp
-        include/idol/optimizers/callbacks/LocalBranching.h
-        src/optimizers/callbacks/LocalBranching.cpp
+        include/idol/optimizers/callbacks/heuristics/RENS.h
+        src/optimizers/callbacks/heuristics/RENS.cpp
+        include/idol/optimizers/callbacks/heuristics/LocalBranching.h
+        src/optimizers/callbacks/heuristics/LocalBranching.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h
         include/idol/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h
         include/idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h

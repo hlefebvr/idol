@@ -6,7 +6,7 @@
 #define CCG_WITH_NESTED_CG_CUTSEPARATIONCALLBACK_H
 
 #include "idol/modeling/models/Model.h"
-#include "Callback.h"
+#include "idol/optimizers/callbacks/Callback.h"
 
 namespace idol::impl {
     class CutSeparation;

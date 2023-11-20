@@ -1,7 +1,7 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "idol/optimizers/callbacks/LocalBranching.h"
+#include "idol/optimizers/callbacks/heuristics/LocalBranching.h"
 #include "idol/modeling//models/Model.h"
 #include "idol/modeling//expressions/operations/operators.h"
 

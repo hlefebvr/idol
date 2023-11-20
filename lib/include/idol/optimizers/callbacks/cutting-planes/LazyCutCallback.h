@@ -6,7 +6,7 @@
 #define CCG_WITH_NESTED_CG_LAZYCUTCALLBACK_H
 
 #include "CutSeparation.h"
-#include "CallbackFactory.h"
+#include "idol/optimizers/callbacks/CallbackFactory.h"
 
 namespace idol {
     class LazyCutCallback;

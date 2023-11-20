@@ -5,8 +5,8 @@
 #ifndef IDOL_SIMPLEROUNDING_H
 #define IDOL_SIMPLEROUNDING_H
 
-#include "CallbackFactory.h"
-#include "Callback.h"
+#include "idol/optimizers/callbacks/CallbackFactory.h"
+#include "idol/optimizers/callbacks/Callback.h"
 
 namespace idol::Heuristics {
     class SimpleRounding;

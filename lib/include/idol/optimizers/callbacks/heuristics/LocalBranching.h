@@ -5,8 +5,8 @@
 #ifndef IDOL_LOCAL_BRANCHING_H
 #define IDOL_LOCAL_BRANCHING_H
 
-#include "CallbackFactory.h"
-#include "Callback.h"
+#include "idol/optimizers/callbacks/CallbackFactory.h"
+#include "idol/optimizers/callbacks/Callback.h"
 #include "idol/optimizers/OptimizerFactory.h"
 
 namespace idol::Heuristics {

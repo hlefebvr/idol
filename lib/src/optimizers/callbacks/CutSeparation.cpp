@@ -2,7 +2,7 @@
 // Created by henri on 11/04/23.
 //
 
-#include "idol/optimizers/callbacks/CutSeparation.h"
+#include "idol/optimizers/callbacks/cutting-planes/CutSeparation.h"
 #include "idol/modeling//expressions/operations/operators.h"
 
 idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
