@@ -14,6 +14,7 @@
 #include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/optimizers/dantzig-wolfe/logs/Debug.h"
 
 using namespace idol;
 
@@ -61,6 +62,7 @@ int main(int t_argc, const char** t_argv) {
                                                                 .add_optimizer(HiGHS())
                                                                 .with_column_pool_clean_up(1500, .75)
                                       )
+                                      .with_logger(DantzigWolfe::Loggers::Debug())
                                       .with_log_level(Info, Yellow)
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
                                       .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())

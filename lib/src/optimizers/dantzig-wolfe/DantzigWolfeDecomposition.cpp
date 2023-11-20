@@ -72,9 +72,9 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         dual_price_smoothing = std::make_unique<DantzigWolfe::NoStabilization>();
     }
 
-    std::unique_ptr<DantzigWolfe::LoggerFactory> logger_factory;
+    std::unique_ptr<DantzigWolfe::LoggerFactory> default_logger_factory;
     if (!m_logger_factory) {
-        logger_factory = std::make_unique<DantzigWolfe::Loggers::Debug>();
+        default_logger_factory = std::make_unique<DantzigWolfe::Loggers::Debug>();
     }
 
     const bool use_hard_branching = m_use_hard_branching.has_value() && m_use_hard_branching.value();
@@ -89,7 +89,7 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
                                                      remove_infeasible_column,
                                                      std::move(sub_problems_specifications),
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
-                                                     *logger_factory
+                                                     m_logger_factory ? *m_logger_factory : *default_logger_factory
                                                      );
 }
 
