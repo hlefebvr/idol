@@ -1,7 +1,7 @@
 //
 // Created by henri on 06.11.23.
 //
-#include "idol/optimizers/dantzig-wolfe/logs/Debug.h"
+#include "idol/optimizers/dantzig-wolfe/logs/Info.h"
 #include "idol/optimizers/logs.h"
 
 #define DOUBLE_PRECISION 5
@@ -27,7 +27,7 @@ constexpr auto iteration_space = (LOG_WIDTH_ITER_TYPE + LOG_WIDTH_ITER_STATUS + 
 constexpr auto column_space = (LOG_WIDTH_COL_GENERATED + LOG_WIDTH_COL_PRESENT);
 constexpr auto table_space = algorithm_space + problem_space + iteration_space + column_space + N_SECTIONS * 3 + 1;
 
-void idol::DantzigWolfe::Loggers::Debug::Strategy::log_init(unsigned int t_n_sub_problems) {
+void idol::DantzigWolfe::Loggers::Info::Strategy::log_init(unsigned int t_n_sub_problems) {
 
     std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
     std::cout << ' ';center(std::cout, " Dantzig-Wolfe Decomposition ", table_space) << '\n';
@@ -69,7 +69,7 @@ void idol::DantzigWolfe::Loggers::Debug::Strategy::log_init(unsigned int t_n_sub
 }
 
 void
-idol::DantzigWolfe::Loggers::Debug::Strategy::log_master(unsigned int t_iteration,
+idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration,
                                                          double t_total_time,
                                                          idol::SolutionStatus t_problem_status,
                                                         idol::SolutionStatus t_last_master_status,
@@ -107,7 +107,7 @@ idol::DantzigWolfe::Loggers::Debug::Strategy::log_master(unsigned int t_iteratio
 }
 
 void
-idol::DantzigWolfe::Loggers::Debug::Strategy::log_sub_problem(unsigned int t_iteration,
+idol::DantzigWolfe::Loggers::Info::Strategy::log_sub_problem(unsigned int t_iteration,
                                                               double t_total_time,
                                                               unsigned int t_sub_problem_id,
                                                              idol::SolutionStatus t_problem_status,
@@ -148,17 +148,17 @@ idol::DantzigWolfe::Loggers::Debug::Strategy::log_sub_problem(unsigned int t_ite
     std::cout << std::endl;
 }
 
-void idol::DantzigWolfe::Loggers::Debug::Strategy::log_end() {
+void idol::DantzigWolfe::Loggers::Info::Strategy::log_end() {
     std::cout << " ";center(std::cout, "-", table_space, '-') << std::endl;
 }
 
-idol::DantzigWolfe::Loggers::Debug::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)
+idol::DantzigWolfe::Loggers::Info::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)
     : m_frequency(t_frequency),
       m_log_for_sub_problems(t_log_sub_problems) {
 
 }
 
-idol::DantzigWolfe::Loggers::Debug &idol::DantzigWolfe::Loggers::Debug::with_frequency(unsigned int t_frequency) {
+idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_frequency(unsigned int t_frequency) {
 
     if (m_frequency.has_value()) {
         throw Exception("A log frequency has already been configured.");
@@ -169,7 +169,7 @@ idol::DantzigWolfe::Loggers::Debug &idol::DantzigWolfe::Loggers::Debug::with_fre
     return *this;
 }
 
-idol::DantzigWolfe::Loggers::Debug &idol::DantzigWolfe::Loggers::Debug::with_sub_problems(bool t_value) {
+idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_sub_problems(bool t_value) {
 
     if (m_log_for_sub_problems.has_value()) {
         throw Exception("Logging sub-problems has already been configured.");

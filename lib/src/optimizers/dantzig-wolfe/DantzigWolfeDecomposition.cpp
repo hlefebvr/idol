@@ -9,7 +9,7 @@
 #include "idol/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
-#include "idol/optimizers/dantzig-wolfe/logs/Debug.h"
+#include "idol/optimizers/dantzig-wolfe/logs/Info.h"
 
 idol::OptimizerFactory *idol::DantzigWolfeDecomposition::clone() const {
     return new DantzigWolfeDecomposition(*this);
@@ -74,7 +74,7 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
 
     std::unique_ptr<DantzigWolfe::LoggerFactory> default_logger_factory;
     if (!m_logger_factory) {
-        default_logger_factory = std::make_unique<DantzigWolfe::Loggers::Debug>();
+        default_logger_factory = std::make_unique<DantzigWolfe::Loggers::Info>();
     }
 
     const bool use_hard_branching = m_use_hard_branching.has_value() && m_use_hard_branching.value();

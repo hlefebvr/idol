@@ -10,10 +10,10 @@
 #include <optional>
 
 namespace idol::DantzigWolfe::Loggers {
-    class Debug;
+    class Info;
 }
 
-class idol::DantzigWolfe::Loggers::Debug : public DantzigWolfe::LoggerFactory {
+class idol::DantzigWolfe::Loggers::Info : public DantzigWolfe::LoggerFactory {
     std::optional<unsigned int> m_frequency;
     std::optional<bool> m_log_for_sub_problems;
 public:
@@ -53,9 +53,9 @@ public:
         void log_end() override;
     };
 
-    Debug& with_frequency(unsigned int t_frequency);
+    Info& with_frequency(unsigned int t_frequency);
 
-    Debug& with_sub_problems(bool t_value);
+    Info& with_sub_problems(bool t_value);
 
     Strategy *operator()() const override {
         return new Strategy(
@@ -65,7 +65,7 @@ public:
     }
 
     [[nodiscard]] LoggerFactory *clone() const override {
-        return new Debug(*this);
+        return new Info(*this);
     }
 };
 
