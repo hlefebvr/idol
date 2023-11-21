@@ -46,8 +46,6 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     unsigned int m_n_solved_nodes = 0;
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
-    unsigned int m_n_postponed_nodes = 0;
-    unsigned int m_max_postponed_nodes = 10;
 
     std::optional<TreeNode> m_incumbent;
 protected:
@@ -353,14 +351,13 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
-    m_n_postponed_nodes = 0;
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
 
-    m_callback->initialize(parent());
     m_branching_rule->initialize();
     m_node_updator->initialize();
+    m_callback->initialize(this);
 }
 
 template<class NodeInfoT>

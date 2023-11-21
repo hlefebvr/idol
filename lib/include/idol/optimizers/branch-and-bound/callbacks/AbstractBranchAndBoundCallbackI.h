@@ -45,7 +45,7 @@ protected:
 
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb) = 0;
 
-    virtual void initialize(const Model& t_model) = 0;
+    virtual void initialize(Optimizers::BranchAndBound<NodeInfoT>* t_parent) = 0;
 
     friend class Optimizers::BranchAndBound<NodeInfoT>;
 };

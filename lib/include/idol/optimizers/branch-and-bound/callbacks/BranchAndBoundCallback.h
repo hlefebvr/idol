@@ -63,7 +63,7 @@ protected:
 
     void add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) override;
 
-    void initialize(const Model &t_model) override;
+    void initialize(Optimizers::BranchAndBound<NodeInfoT>* t_parent) override;
 };
 
 template<class NodeInfoT>
@@ -221,8 +221,10 @@ void idol::BranchAndBoundCallback<NodeInfoT>::throw_if_no_interface() const {
 
 template<class NodeInfoT>
 idol::SideEffectRegistry
-idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT> *t_parent, CallbackEvent t_event,
-                                               const Node<NodeInfoT> &t_current_node, Model *t_relaxation) {
+idol::BranchAndBoundCallbackI<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT> *t_parent,
+                                                     CallbackEvent t_event,
+                                                     const Node<NodeInfoT> &t_current_node,
+                                                     Model *t_relaxation) {
     SideEffectRegistry result;
 
     m_parent = t_parent;
@@ -250,10 +252,18 @@ void idol::BranchAndBoundCallbackI<NodeInfoT>::add_callback(BranchAndBoundCallba
 }
 
 template<class NodeInfoT>
-void idol::BranchAndBoundCallbackI<NodeInfoT>::initialize(const idol::Model &t_model) {
+void idol::BranchAndBoundCallbackI<NodeInfoT>::initialize(Optimizers::BranchAndBound<NodeInfoT>* t_parent) {
+
+    m_parent = t_parent;
+
     for (auto& ptr_callback : m_callbacks) {
+        ptr_callback->m_interface = this;
         ptr_callback->initialize();
+        ptr_callback->m_interface = nullptr;
     }
+
+    m_parent = nullptr;
+
 }
 
 template<class NodeInfoT>

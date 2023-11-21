@@ -8,6 +8,7 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/callbacks/cutting-planes/KnapsackCover.h"
 
 using namespace idol;
 
@@ -25,14 +26,20 @@ int main(int t_argc, const char** t_argv) {
     Model model(env);
 
     auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]);
+        model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
         model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == 1);
+    }
+
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        for (unsigned int j = 0 ; j < n_customers ; ++j) {
+            model.add_ctr(y[i][j] <= x[i]);
+        }
     }
 
     model.set_obj_expr(idol_Sum(i, Range(n_facilities),
@@ -49,9 +56,10 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             BranchAndBound()
                     .with_node_optimizer(HiGHS::ContinuousRelaxation())
+                    .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
-                    .with_log_level(Trace, Blue)
+                    .with_log_level(Info, Blue)
     );
 
     model.optimize();

@@ -86,6 +86,12 @@ public:
      */
     Var(Env& t_env, double t_lb, double t_ub, VarType t_type, const Column& t_column, std::string t_name = "");
 
+    Var(const Var&) = default;
+    Var(Var&&) = default;
+
+    Var& operator=(const Var&) = default;
+    Var& operator=(Var&&) = default;
+
     /**
      * Creates a (nested) vector of variables.
      *
