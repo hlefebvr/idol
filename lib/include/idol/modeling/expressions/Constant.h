@@ -268,6 +268,8 @@ public:
      */
     double fix(const Solution::Dual& t_duals) const;
 
+    void round();
+
     /**
      * Represents an empty constant.
      */

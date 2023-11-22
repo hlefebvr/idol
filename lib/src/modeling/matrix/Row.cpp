@@ -98,3 +98,7 @@ idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, const ::idol::Expr<Var> &t_
     ) {
 
 }
+
+double idol::impl::Row::scale_to_integers(double t_precision) {
+    return m_impl.scale_to_integers(t_precision);
+}

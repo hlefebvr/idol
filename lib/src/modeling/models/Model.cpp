@@ -501,3 +501,11 @@ idol::Ctr idol::Model::get_ctr_by_index(unsigned int t_index) const {
 idol::Var idol::Model::get_var_by_index(unsigned int t_index) const {
     return m_variables.at(t_index);
 }
+
+void idol::Model::scale_to_integers(double t_precision) {
+
+    for (const auto& ctr : m_constraints) {
+        access_row(ctr).scale_to_integers(t_precision);
+    }
+
+}

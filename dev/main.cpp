@@ -36,9 +36,27 @@ int main(int t_argc, char** t_argv) {
 
     auto x = model.add_vars(Dim<1>(n_items), 0, 1, Binary, "x");
 
-    model.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
+    auto c = model.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
+
+    std::cout << model << std::endl;
+
+    model.scale_to_integers(Tolerance::Digits);
+
+    std::cout << model << std::endl;
+
+    auto row = model.get_ctr_row(c);
+
+    std::cout << row << std::endl;
+
+    std::cout << "scaling factor: " << row.scale_to_integers(Tolerance::Digits) << std::endl;
+
+    std::cout << row << std::endl;
+
+    std::cout << std::setprecision(8) << multiply_with_precision(1.52, 2.001, 2) << std::endl;
+
+    return 0;
 
     // Set optimizer
     model.use(

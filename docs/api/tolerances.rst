@@ -1,4 +1,4 @@
-Tolerances
-==========
+Tolerances and Numerics
+=======================
 
-.. doxygennamespace:: idol::Tolerance
+.. doxygenfile:: numericals.h

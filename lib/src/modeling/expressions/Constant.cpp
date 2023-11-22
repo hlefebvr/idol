@@ -192,3 +192,15 @@ double idol::Constant::as_numerical() const {
     return numerical();
 }
 
+void idol::Constant::round() {
+
+    m_constant = std::round(m_constant);
+    for (auto& [param, coeff] : m_linear_terms) {
+        coeff = std::round(coeff);
+    }
+    for (auto& [params, coeff] : m_quadratic_terms) {
+        coeff = std::round(coeff);
+    }
+
+}
+

@@ -128,6 +128,8 @@ public:
      * @return *this
      */
     Row& operator*=(double t_rhs) { m_impl *= t_rhs; return *this; }
+
+    double scale_to_integers(double t_precision);
 };
 
 /**

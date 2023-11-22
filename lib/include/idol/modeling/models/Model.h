@@ -1219,6 +1219,8 @@ public:
      * @return the number of available solution primal solutions
      */
     void set_solution_index(unsigned int t_index);
+
+    void scale_to_integers(double t_precision);
 };
 
 template<class T, unsigned int N>

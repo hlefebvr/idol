@@ -155,7 +155,27 @@ public:
      * Removes all entries from the expression.
      */
     void clear() { m_map.clear(); }
+
+    void round();
+
+    std::int64_t gcd() const;
 };
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+std::int64_t idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::gcd() const {
+    std::int64_t result = 0;
+    for (const auto& [key, ptr_to_value] : m_map) {
+        result = std::gcd(result, (std::int64_t) ptr_to_value->value().as_numerical());
+    }
+    return result;
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::round() {
+    for (const auto& [key, ptr_to_value] : m_map) {
+        ptr_to_value->value().round();
+    }
+}
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {

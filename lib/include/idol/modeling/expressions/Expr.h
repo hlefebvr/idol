@@ -62,6 +62,7 @@ public:
     Expr<Key1, Key2>& operator+=(const Expr<Key1, Key2>& t_rhs);
     Expr<Key1, Key2>& operator-=(const Expr<Key1, Key2>& t_rhs);
     Expr<Key1, Key2>& operator*=(double t_rhs);
+    Expr<Key1, Key2>& operator/=(double t_rhs);
 
     LinExpr<Key1>& linear() { return m_linear; }
     [[nodiscard]] const LinExpr<Key1>& linear() const { return m_linear; }
@@ -74,12 +75,41 @@ public:
 
     [[nodiscard]] bool is_zero() const { return constant().is_zero() && linear().empty() && quadratic().empty(); }
 
+    void round();
+
+    double gcd() const;
+
+    double scale_to_integers(double t_precision);
+
     void clear() {
         constant() = 0;
         m_linear.clear();
         m_quadratic.clear();
     }
 };
+
+template<class Key1, class Key2>
+double idol::impl::Expr<Key1, Key2>::gcd() const {
+    return std::gcd((int) m_constant->value().as_numerical(),std::gcd(m_linear.gcd(), m_quadratic.gcd()));
+}
+
+template<class Key1, class Key2>
+void idol::impl::Expr<Key1, Key2>::round() {
+    m_constant->value().round();
+    m_linear.round();
+    m_quadratic.round();
+}
+
+template<class Key1, class Key2>
+double idol::impl::Expr<Key1, Key2>::scale_to_integers(double t_precision) {
+
+    *this *= std::pow(10., t_precision);
+    round();
+    const double scaling_factor = 1. / gcd();
+    *this *= scaling_factor;
+
+    return scaling_factor;
+}
 
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2>::Expr()
@@ -201,6 +231,11 @@ idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator*=(double t_
     m_quadratic *= t_rhs;
     m_constant->value() *= t_rhs;
     return *this;
+}
+
+template<class Key1, class Key2>
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator/=(double t_rhs) {
+    return *this *= 1. / t_rhs;
 }
 
 template<class Key1 = idol::Var, class Key2 = Key1>
