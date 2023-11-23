@@ -348,8 +348,6 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
 
     auto cut = create_cut(N, rhs);
 
-    std::cout << "Found violated cut: " << cut << std::endl;
-
     this->add_user_cut(cut);
 
 }

@@ -50,6 +50,7 @@ int main(int t_argc, char** t_argv) {
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
                     .with_log_level(Info, Blue)
+                    .with_log_frequency(1)
             );
 
     // Solve

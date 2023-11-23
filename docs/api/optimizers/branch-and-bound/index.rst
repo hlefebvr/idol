@@ -11,4 +11,5 @@ Branch-And-Bound
     branching-rules/index
     node-selection-rules/index
     BranchAndBoundCallback
+    cutting-planes/index
     heuristics/index
