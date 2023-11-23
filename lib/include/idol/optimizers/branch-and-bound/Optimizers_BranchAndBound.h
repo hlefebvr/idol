@@ -324,6 +324,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
     const auto &original_model = parent();
 
     m_relaxation.reset(original_model.clone());
+    m_relaxation->scale_to_integers(Tolerance::Digits);
     m_relaxation->use(*m_relaxation_optimizer_factory);
 
     m_node_updator.reset(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(*m_relaxation)));
