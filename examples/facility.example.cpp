@@ -10,6 +10,7 @@
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/optimizers/callbacks/cutting-planes/KnapsackCover.h"
 #include "idol/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 
@@ -56,11 +57,12 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(GLPK::ContinuousRelaxation())
+                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
                     .with_log_level(Info, Blue)
+                    .with_log_frequency(1)
     );
 
     model.optimize();

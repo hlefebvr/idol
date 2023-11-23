@@ -15,11 +15,26 @@ namespace idol::Cuts {
 
 template<class NodeInfoT = idol::DefaultNodeInfo>
 class idol::Cuts::KnapsackCover: public BranchAndBoundCallbackFactory<NodeInfoT> {
+    std::optional<bool> m_lifting;
 public:
     class Strategy;
     BranchAndBoundCallback<NodeInfoT> *operator()() override;
     BranchAndBoundCallbackFactory<NodeInfoT> *clone() const override;
+
+    KnapsackCover& with_lifting(bool t_value);
 };
+
+template<class NodeInfoT>
+idol::Cuts::KnapsackCover<NodeInfoT> &idol::Cuts::KnapsackCover<NodeInfoT>::with_lifting(bool t_value) {
+
+    if (m_lifting.has_value()) {
+        throw Exception("Lifting has already been configured.");
+    }
+
+    m_lifting = t_value;
+
+    return *this;
+}
 
 template<class NodeInfoT>
 class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCallback<NodeInfoT> {
@@ -28,10 +43,10 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
 
         struct Item {
             Var variable;
-            double weight;
+            int weight;
             double current_value = -1.;
-            std::optional<double> cut_coefficient;
-            Item(const Var& t_var, double t_weight);
+            std::optional<int> cut_coefficient;
+            Item(const Var& t_var, int t_weight);
 
             Item(const Item&) = default;
             Item(Item&&) = default;
@@ -41,8 +56,8 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
         };
 
         std::vector<Item> items;
-        double capacity;
-        KnapsackStructure(std::vector<Item> t_items, double t_capacity);
+        int capacity;
+        KnapsackStructure(std::vector<Item> t_items, int t_capacity);
     };
 
     using ItemIterator = typename std::vector<typename KnapsackStructure::Item>::iterator;
@@ -61,6 +76,7 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
     };
 
     std::list<KnapsackStructure> m_knapsack_structures;
+    const bool m_lifting;
 protected:
     // Detect structure
     void detect_knapsack_structure(const Ctr& t_ctr);
@@ -72,25 +88,32 @@ protected:
     void separate_cut(const KnapsackStructure& t_knapsack_structure);
     std::tuple<SetOfItems, SetOfItems, SetOfItems> fix_variables_equal_to_one_or_zero(const SetOfItems& t_set_of_items);
     void set_current_values(const SetOfItems& t_set_of_items);
-    double sum_of_weights(const SetOfItems& t_set_of_items);
-    std::pair<SetOfItems, SetOfItems> compute_initial_cover(const SetOfItems& t_N_1, const SetOfItems& t_N_free, const SetOfItems& t_N_0, double t_capacity);
-    std::pair<SetOfItems, SetOfItems> solve_knapsack_approximately(const SetOfItems& t_set_of_items, double t_capacity);
+    int sum_of_weights(const SetOfItems& t_set_of_items);
+    std::pair<SetOfItems, SetOfItems> compute_initial_cover(const SetOfItems& t_N_1, const SetOfItems& t_N_free, const SetOfItems& t_N_0, int t_capacity);
+    std::pair<SetOfItems, SetOfItems> solve_knapsack_approximately(const SetOfItems& t_set_of_items, int t_capacity);
     std::pair<SetOfItems, SetOfItems> swap_items(const SetOfItems& t_a, const SetOfItems& t_b);
-    std::pair<SetOfItems, SetOfItems> compute_minimal_cover(const SetOfItems& t_initial_cover, double t_capacity);
+    std::pair<SetOfItems, SetOfItems> compute_minimal_cover(const SetOfItems& t_initial_cover, int t_capacity);
     std::pair<SetOfItems, SetOfItems> partition_minimal_cover(const SetOfItems& t_minimal_cover);
     std::pair<SetOfItems, SetOfItems> partition_remaining_items(const SetOfItems& t_remaining_items);
     void sort_by_non_decreasing_weights(const SetOfItems& t_set_of_items);
     void sort_by_non_increasing_weights(const SetOfItems& t_set_of_items);
-    double sequential_up_and_down_lifting(const SetOfItems& t_C1, const SetOfItems& t_C2, const SetOfItems &t_F, const SetOfItems& t_R, double t_capacity);
-    double compute_activity(const SetOfItems& t_set_of_items, double t_right_hand_side);
-    TempCtr create_cut(const SetOfItems& t_set_of_items, double t_right_hand_side);
+    int sequential_up_and_down_lifting(const SetOfItems& t_C1, const SetOfItems& t_C2, const SetOfItems &t_F, const SetOfItems& t_R, int t_capacity);
+    double compute_cut_activity(const SetOfItems& t_set_of_items, int t_right_hand_side);
+    TempCtr create_cut(const SetOfItems& t_set_of_items, int t_right_hand_side);
 
     void debug(const std::string& t_name, const SetOfItems& t_set_of_items, bool t_with_values = false, bool t_with_cut = false);
 
     void initialize() override;
 
     void operator()(CallbackEvent t_event) override;
+public:
+    Strategy(bool t_use_lifting);
 };
+
+template<class NodeInfoT>
+idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::Strategy(bool t_use_lifting) : m_lifting(t_use_lifting) {
+
+}
 
 template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::debug(const std::string &t_name,
@@ -135,13 +158,13 @@ idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::SetOfItems::merge_consecutive(co
 }
 
 template<class NodeInfoT>
-idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::KnapsackStructure::KnapsackStructure(std::vector<Item> t_items, double t_capacity)
+idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::KnapsackStructure::KnapsackStructure(std::vector<Item> t_items, int t_capacity)
         : items(std::move(t_items)), capacity(t_capacity) {
 
 }
 
 template<class NodeInfoT>
-idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::KnapsackStructure::Item::Item(const idol::Var &t_var, double t_weight)
+idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::KnapsackStructure::Item::Item(const idol::Var &t_var, int t_weight)
         : variable(t_var), weight(t_weight) {
 
 }
@@ -274,7 +297,7 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
     set_current_values(N);
 
     const auto [N_1, N_free, N_0] = fix_variables_equal_to_one_or_zero(N);
-    const double sum_weights_of_variables_not_fixed_to_zero = sum_of_weights(N_1) + sum_of_weights(N_free);
+    const int sum_weights_of_variables_not_fixed_to_zero = sum_of_weights(N_1) + sum_of_weights(N_free);
 
     if (sum_weights_of_variables_not_fixed_to_zero < knapsack_structure.capacity + 1) {
         return;
@@ -288,35 +311,40 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
                                                                 sum_weights_of_variables_not_fixed_to_zero - (knapsack_structure.capacity + 1)
                                                                 );
 
-    // Minimal cover and partition
+    // Minimal cover
     auto [C, others] = compute_minimal_cover(initial_cover, t_knapsack_structure.capacity);
-    auto not_in_C = SetOfItems::merge_consecutive(others, not_initial_cover);
-    auto [C1, C2] = partition_minimal_cover(C);
 
-    // Lifting sequence and computing the lifting coefficients
-    auto [F, R] = partition_remaining_items(not_in_C);
-    sort_by_non_decreasing_weights(C1);
-    sort_by_non_increasing_weights(C2);
-    sort_by_non_increasing_weights(F);
-    sort_by_non_increasing_weights(R);
+    int rhs;
 
-    const double rhs = sequential_up_and_down_lifting(C1, C2, F, R, knapsack_structure.capacity);
+    if (m_lifting) {
 
-    /*
-    std::cout << "CUT:" << std::endl;
-    debug("C1", C1, false, true);
-    debug("C2", C2, false, true);
-    debug("F", F, false, true);
-    debug("R", R, false, true);
-    std::cout << std::endl;
-    */
+        // Partition
+        auto not_in_C = SetOfItems::merge_consecutive(others, not_initial_cover);
+        auto [C1, C2] = partition_minimal_cover(C);
 
-    const double activity = compute_activity(N, rhs);
+        // Lifting sequence and computing the lifting coefficients
+        auto [F, R] = partition_remaining_items(not_in_C);
+        sort_by_non_decreasing_weights(C1);
+        sort_by_non_increasing_weights(C2);
+        sort_by_non_increasing_weights(F);
+        sort_by_non_increasing_weights(R);
+
+        rhs = sequential_up_and_down_lifting(C1, C2, F, R, knapsack_structure.capacity);
+
+    } else {
+
+        rhs = C.size() - 1;
+        for (auto& item : C) {
+            item.cut_coefficient = 1.;
+        }
+
+    }
+
+    const double activity = compute_cut_activity(N, rhs);
 
     if (activity < Tolerance::Feasibility) {
         return;
     }
-
 
     auto cut = create_cut(N, rhs);
 
@@ -327,7 +355,7 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
 }
 
 template<class NodeInfoT>
-idol::TempCtr idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::create_cut(const SetOfItems &t_set_of_items, double t_right_hand_side) {
+idol::TempCtr idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::create_cut(const SetOfItems &t_set_of_items, int t_right_hand_side) {
 
     Expr result;
 
@@ -345,7 +373,8 @@ idol::TempCtr idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::create_cut(const S
 }
 
 template<class NodeInfoT>
-double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_activity(const SetOfItems &t_set_of_items, double t_right_hand_side) {
+double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_cut_activity(const SetOfItems &t_set_of_items, int t_right_hand_side) {
+
     double result = 0.;
 
     for (const auto& item : t_set_of_items) {
@@ -362,29 +391,29 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_activity(const Se
 }
 
 template<class NodeInfoT>
-double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_lifting(const SetOfItems &t_C1,
+int idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_lifting(const SetOfItems &t_C1,
                                                                                     const SetOfItems &t_C2,
                                                                                     const SetOfItems &t_F,
                                                                                     const SetOfItems &t_R,
-                                                                                    double t_capacity) {
+                                                                                    int t_capacity) {
 
     // Set coefficients of variables in C1 to one
     for (auto& item : t_C1) {
-        item.cut_coefficient = 1.;
+        item.cut_coefficient = 1;
     }
 
     const auto initialize_min_weights = [](const SetOfItems& t_C1) {
 
         const unsigned int n_C1 = t_C1.size();
 
-        std::vector<double> result;
+        std::vector<int> result;
         result.reserve(n_C1 + 1);
-        result.emplace_back(0.);
+        result.emplace_back(0);
 
-        auto begin = t_C1.begin();
-
-        for (unsigned int i = 0 ; i < n_C1 ; ++i) {
-            result[i+1] = result[i] + (begin + i)->weight;
+        auto it = t_C1.begin();
+        for (unsigned int w = 0 ; w < n_C1 ; ++w) {
+            result.emplace_back(result[w] + it->weight);
+            ++it;
         }
 
         return result;
@@ -393,30 +422,41 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_li
     auto min_weights = initialize_min_weights(t_C1);
 
     int alpha_0 = t_C1.size() - 1;
+    int lift_rhs = alpha_0;
 
-    const double sum_weights_in_C2 = sum_of_weights(t_C2);
+    int fixed_ones_weight = sum_of_weights(t_C2);
+
+    assert(fixed_ones_weight >= 0);
 
     // Lifting items in F
     for (auto& item : t_F) {
 
-        double z;
-        if (t_capacity - sum_weights_in_C2 - item.weight < 0) { // knapsack is infeasible
-            z = 0.;
-        } else if (min_weights[alpha_0] <= t_capacity - sum_weights_in_C2 - item.weight) { // easy case
-            z = alpha_0;
+        int z;
+        if (t_capacity - fixed_ones_weight - item.weight < 0) { // knapsack is infeasible
+            z = 0;
+        } else if (min_weights[alpha_0] <= t_capacity - fixed_ones_weight - item.weight) { // easy case
+            z = lift_rhs;
         } else { // binary search for z
 
             int lb = 0;
-            int ub = alpha_0 + 1;
+            int ub = lift_rhs + 1;
             while (lb < ub - 1) {
-                int middle = (lb + ub) / 2;
-                if ( min_weights[middle] <= t_capacity - sum_weights_in_C2 - item.weight ) {
+                const int middle = (lb + ub) / 2;
+                if ( min_weights[middle] <= t_capacity - fixed_ones_weight - item.weight ) {
                     lb = middle;
                 } else {
                     ub = middle;
                 }
             }
+
+            assert(lb == ub - 1);
+            assert(0 <= lb && lb < min_weights.size());
+            assert(min_weights[lb] <= t_capacity - fixed_ones_weight - item.weight);
+            assert(lb == min_weights.size() - 1 || min_weights[lb + 1] > t_capacity - fixed_ones_weight - item.weight);
+
             z = lb;
+
+            assert(z <= lift_rhs);
 
         }
 
@@ -428,7 +468,7 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_li
             continue;
         }
 
-        min_weights.resize(min_weights.size() + alpha_j);
+        min_weights.resize(min_weights.size() + alpha_j, std::numeric_limits<int>::infinity());
 
         for (int w = min_weights.size() - 1 ; w >= 0 ; w--) {
 
@@ -446,10 +486,10 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_li
     for (auto& item : t_C2) {
 
         int lb = 0;
-        int ub = alpha_0 + 1;
+        int ub = min_weights.size();
         while (lb < ub - 1) {
             int middle = (lb + ub) / 2;
-            if ( min_weights[middle] <= t_capacity - sum_weights_in_C2 + item.weight ) {
+            if ( min_weights[middle] <= t_capacity - fixed_ones_weight + item.weight ) {
                 lb = middle;
             } else {
                 ub = middle;
@@ -463,11 +503,15 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_li
 
         alpha_0 += alpha_j;
 
+        fixed_ones_weight -= item.weight;
+
         if (alpha_j == 0) {
             continue;
         }
 
-        min_weights.resize(min_weights.size() + alpha_j);
+        if (alpha_j > 0) {
+            min_weights.resize(min_weights.size() + alpha_j, std::numeric_limits<int>::infinity());
+        }
 
         for (int w = min_weights.size() - 1 ; w >= 0 ; w--) {
 
@@ -482,12 +526,14 @@ double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_li
 
     }
 
+    assert(fixed_ones_weight == 0);
+
     // Lifting in R
     for (auto& item : t_R) {
 
         int z;
         if (min_weights[alpha_0] <= t_capacity - item.weight) {
-            z = 0;
+            z = alpha_0;
         } else { // binary search for z
 
             int lb = 0;
@@ -533,7 +579,7 @@ template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sort_by_non_increasing_weights(const SetOfItems &t_set_of_items) {
 
     std::sort(t_set_of_items.begin(), t_set_of_items.end(), [](const auto& t_a, const auto& t_b) {
-        return t_a.weight <= t_b.weight;
+        return t_a.weight >= t_b.weight;
     });
 
 }
@@ -542,7 +588,7 @@ template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sort_by_non_decreasing_weights(const SetOfItems &t_set_of_items) {
 
     std::sort(t_set_of_items.begin(), t_set_of_items.end(), [](const auto& t_a, const auto& t_b) {
-        return t_a.weight >= t_b.weight;
+        return t_a.weight <= t_b.weight;
     });
 
 }
@@ -596,9 +642,9 @@ idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::fix_variables_equal_to_one_or_ze
 }
 
 template<class NodeInfoT>
-double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sum_of_weights(const SetOfItems &t_set_of_items) {
+int idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sum_of_weights(const SetOfItems &t_set_of_items) {
 
-    double result = 0.;
+    int result = 0.;
 
     for (auto it = t_set_of_items.begin(), end = t_set_of_items.end() ; it != end ; ++it) {
         result += it->weight;
@@ -615,7 +661,7 @@ std::pair<
 idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_initial_cover(const SetOfItems &t_N_1,
                                                                      const SetOfItems &t_N_free,
                                                                      const SetOfItems &t_N_0,
-                                                                     double t_capacity) {
+                                                                     int t_capacity) {
 
     auto [ones, zeroes] = solve_knapsack_approximately(t_N_free, t_capacity);
 
@@ -690,7 +736,7 @@ std::pair<
         typename idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::SetOfItems
     >
 idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::solve_knapsack_approximately(const SetOfItems &t_set_of_items,
-                                                                            double t_capacity) {
+                                                                            int t_capacity) {
 
     std::sort(t_set_of_items.begin(),
               t_set_of_items.end(),
@@ -703,7 +749,7 @@ idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::solve_knapsack_approximately(con
 
     });
 
-    double weight_of_packed_items = 0.;
+    int weight_of_packed_items = 0.;
     auto it = t_set_of_items.begin();
     auto end = t_set_of_items.end();
 
@@ -758,7 +804,7 @@ std::pair<
     typename idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::SetOfItems
 >
 idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_minimal_cover(const SetOfItems &t_initial_cover,
-                                                                     double t_capacity) {
+                                                                     int t_capacity) {
 
     std::sort(t_initial_cover.begin(), t_initial_cover.end(), [](const auto& t_a, const auto& t_b) {
 
@@ -772,7 +818,7 @@ idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_minimal_cover(const SetO
         return score_a >= score_b;
     });
 
-    double sum_of_weights_in_C = sum_of_weights(t_initial_cover);
+    int sum_of_weights_in_C = sum_of_weights(t_initial_cover);
     auto end = t_initial_cover.end();
 
     for (auto it = t_initial_cover.begin() ; it != end ; ) {
@@ -802,7 +848,7 @@ idol::BranchAndBoundCallbackFactory<NodeInfoT> *idol::Cuts::KnapsackCover<NodeIn
 
 template<class NodeInfoT>
 idol::BranchAndBoundCallback<NodeInfoT> *idol::Cuts::KnapsackCover<NodeInfoT>::operator()() {
-    return new Strategy();
+    return new Strategy(m_lifting.has_value() ? m_lifting.value() : true);
 }
 
 #endif //IDOL_KNAPSACKCOVER_H
