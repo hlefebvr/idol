@@ -123,6 +123,8 @@ public:
      */
     AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator*=(double t_factor);
 
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator/=(double t_factor);
+
     /**
      * Returns the size of the expression (i.e., number of non-zero entries which are currently stored).
      *
@@ -158,14 +160,40 @@ public:
 
     void round();
 
-    std::int64_t gcd() const;
+    AbstractExpr multiply_with_precision(double t_factor, unsigned int t_n_digits);
+
+    AbstractExpr multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits);
+
+    long gcd() const;
 };
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-std::int64_t idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::gcd() const {
-    std::int64_t result = 0;
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
+
     for (const auto& [key, ptr_to_value] : m_map) {
-        result = std::gcd(result, (std::int64_t) ptr_to_value->value().as_numerical());
+        ptr_to_value->value().multiply_with_precision_by_power_of_10(t_exponent, t_n_digits);
+    }
+
+    return *this;
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
+
+    for (const auto& [key, ptr_to_value] : m_map) {
+        ptr_to_value->value().multiply_with_precision(t_factor, t_n_digits);
+    }
+
+    return *this;
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+long idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::gcd() const {
+    long result = 0;
+    for (const auto& [key, ptr_to_value] : m_map) {
+        result = std::gcd(result, (long) ptr_to_value->value().as_numerical());
     }
     return result;
 }
@@ -253,6 +281,21 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double
 
     for (const auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value() *= t_factor;
+    }
+
+    return *this;
+}
+
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator/=(double t_factor) {
+
+    if (equals(t_factor, 1., Tolerance::Sparsity)) {
+        return *this;
+    }
+
+    for (const auto& [key, ptr_to_value] : m_map) {
+        ptr_to_value->value() /= t_factor;
     }
 
     return *this;

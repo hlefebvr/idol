@@ -210,6 +210,8 @@ public:
      */
     Constant& operator*=(double t_coefficient);
 
+    Constant& operator/=(double t_coefficient);
+
     /**
      * Adds up a numerical term to the current numerical term.
      * @param t_term The numerical term to add.
@@ -269,6 +271,10 @@ public:
     double fix(const Solution::Dual& t_duals) const;
 
     void round();
+
+    Constant& multiply_with_precision(double t_factor, unsigned int t_n_digits);
+
+    Constant& multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits);
 
     /**
      * Represents an empty constant.

@@ -50,11 +50,13 @@ int main(int t_argc, char** t_argv) {
 
     std::cout << row << std::endl;
 
-    std::cout << "scaling factor: " << row.scale_to_integers(Tolerance::Digits) << std::endl;
+    row.scale_to_integers(Tolerance::Digits);
+
+    row.scale_to_integers(Tolerance::Digits);
 
     std::cout << row << std::endl;
 
-    std::cout << std::setprecision(8) << multiply_with_precision(1.52, 2.001, 2) << std::endl;
+    std::cout << std::setprecision(8) << multiply_with_precision(1.5, 2.001, 3) << std::endl;
 
     return 0;
 

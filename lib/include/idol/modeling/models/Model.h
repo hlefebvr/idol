@@ -1220,7 +1220,7 @@ public:
      */
     void set_solution_index(unsigned int t_index);
 
-    void scale_to_integers(double t_precision);
+    void scale_to_integers(unsigned int t_n_digits);
 };
 
 template<class T, unsigned int N>

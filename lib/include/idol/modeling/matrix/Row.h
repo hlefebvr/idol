@@ -129,7 +129,13 @@ public:
      */
     Row& operator*=(double t_rhs) { m_impl *= t_rhs; return *this; }
 
-    double scale_to_integers(double t_precision);
+    Row& operator/=(double t_rhs) { m_impl /= t_rhs; return *this; }
+
+    double scale_to_integers(unsigned int t_n_significant_digits);
+
+    void multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_significant_digits);
+
+    double gcd() const;
 };
 
 /**

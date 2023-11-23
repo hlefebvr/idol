@@ -70,6 +70,23 @@ idol::Constant &idol::Constant::operator*=(double t_factor) {
     return *this;
 }
 
+idol::Constant &idol::Constant::operator/=(double t_coefficient) {
+
+    if (equals(t_coefficient, 1., Tolerance::Sparsity)) {
+        return *this;
+    }
+
+    m_constant /= t_coefficient;
+    for (auto& [param, value] : m_linear_terms) {
+        value /= t_coefficient;
+    }
+    for (auto& [pair, value] : m_quadratic_terms) {
+        value /= t_coefficient;
+    }
+
+    return *this;
+}
+
 idol::Constant &idol::Constant::operator+=(double t_term) {
     m_constant += t_term;
     return *this;
@@ -202,5 +219,32 @@ void idol::Constant::round() {
         coeff = std::round(coeff);
     }
 
+}
+
+idol::Constant &idol::Constant::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
+
+    m_constant = ::idol::multiply_with_precision(m_constant, t_factor, t_n_digits);
+    for (auto& [param, value] : m_linear_terms) {
+        value = ::idol::multiply_with_precision(value, t_factor, t_n_digits);
+    }
+    for (auto& [params, value] : m_quadratic_terms) {
+        value = ::idol::multiply_with_precision(value, t_factor, t_n_digits);
+    }
+
+    return *this;
+}
+
+idol::Constant &
+idol::Constant::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
+
+    m_constant = ::idol::multiply_with_precision_by_power_of_10(m_constant, t_exponent, t_n_digits);
+    for (auto& [param, value] : m_linear_terms) {
+        value = ::idol::multiply_with_precision_by_power_of_10(value, t_exponent, t_n_digits);
+    }
+    for (auto& [params, value] : m_quadratic_terms) {
+        value = ::idol::multiply_with_precision_by_power_of_10(value, t_exponent, t_n_digits);
+    }
+
+    return *this;
 }
 

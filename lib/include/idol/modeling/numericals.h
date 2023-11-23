@@ -35,7 +35,7 @@ namespace idol {
          */
         static double Sparsity = 1e-8;
 
-        static unsigned int Digits = 5;
+        static unsigned int Digits = 8;
 
         /**
          * **Default:** \f$ 10^{-4} \f$
@@ -133,7 +133,7 @@ namespace idol {
         return std::abs(t_value - std::round(t_value)) <= t_tolerance;
     }
 
-    static double round(double t_value, unsigned int t_n_digits = 1) {
+    static double round(double t_value, unsigned int t_n_digits = 0) {
         const double multiplier = std::pow(10, t_n_digits);
         return std::round(t_value * multiplier) / multiplier;
     }
@@ -163,9 +163,17 @@ namespace idol {
     static double multiply_with_precision(double t_a, double t_b, unsigned int t_n_digits) {
         const auto n_a = std::min<int>(std::floor( std::log10(t_a) ) + 1, t_n_digits);
         const auto n_b = std::min<int>(std::floor( std::log10(t_b) ) + 1, t_n_digits);
-        return int(int(t_a * std::pow<double>(10., t_n_digits - n_a)) * std::pow<int>(10, n_a))
-                * int(int(t_b * std::pow<double>(10., t_n_digits - n_b)) * std::pow<int>(10, n_b))
-                / std::pow<double>(10, 2 * t_n_digits);
+        const long scaled_a = long(long(t_a * std::pow<double>(10., t_n_digits - n_a)) * std::pow<long>(10, n_a));
+        const long scaled_b = long(long(t_b * std::pow<double>(10., t_n_digits - n_b)) * std::pow<long>(10, n_b));
+        const long exact_product = scaled_a * scaled_b;
+        const double result = exact_product / std::pow<double>(10,  2 * t_n_digits);
+        return result;
+    }
+
+    static double multiply_with_precision_by_power_of_10(double t_x, unsigned int t_exponent, unsigned int t_n_digits) {
+        const auto n_x = std::min<int>(std::floor( std::log10(t_x) ) + 1, t_n_digits);
+        const double result = long(t_x * std::pow<double>(10., t_n_digits - n_x)) * std::pow(10, n_x + t_exponent - t_n_digits);
+        return result;
     }
 
 }

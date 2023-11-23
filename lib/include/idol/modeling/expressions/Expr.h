@@ -77,9 +77,13 @@ public:
 
     void round();
 
-    double gcd() const;
+    [[nodiscard]] double gcd() const;
 
-    double scale_to_integers(double t_precision);
+    double scale_to_integers(unsigned int t_n_significant_digits);
+
+    Expr& multiply_with_precision(double t_factor, unsigned int t_n_digits);
+
+    Expr& multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits);
 
     void clear() {
         constant() = 0;
@@ -90,7 +94,28 @@ public:
 
 template<class Key1, class Key2>
 double idol::impl::Expr<Key1, Key2>::gcd() const {
-    return std::gcd((int) m_constant->value().as_numerical(),std::gcd(m_linear.gcd(), m_quadratic.gcd()));
+    return std::gcd((long) m_constant->value().as_numerical(),std::gcd(m_linear.gcd(), m_quadratic.gcd()));
+}
+
+template<class Key1, class Key2>
+idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
+
+    m_constant->value().multiply_with_precision(t_factor, t_n_digits);
+    m_linear.multiply_with_precision(t_factor, t_n_digits);
+    m_quadratic.multiply_with_precision(t_factor, t_n_digits);
+
+    return *this;
+}
+
+template<class Key1, class Key2>
+idol::impl::Expr<Key1, Key2> &
+idol::impl::Expr<Key1, Key2>::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
+
+    m_constant->value().multiply_with_precision_by_power_of_10(t_exponent, t_n_digits);
+    m_linear.multiply_with_precision_by_power_of_10(t_exponent, t_n_digits);
+    m_quadratic.multiply_with_precision_by_power_of_10(t_exponent, t_n_digits);
+
+    return *this;
 }
 
 template<class Key1, class Key2>
@@ -101,12 +126,12 @@ void idol::impl::Expr<Key1, Key2>::round() {
 }
 
 template<class Key1, class Key2>
-double idol::impl::Expr<Key1, Key2>::scale_to_integers(double t_precision) {
+double idol::impl::Expr<Key1, Key2>::scale_to_integers(unsigned int t_n_significant_digits) {
 
-    *this *= std::pow(10., t_precision);
-    round();
-    const double scaling_factor = 1. / gcd();
-    *this *= scaling_factor;
+    multiply_with_precision_by_power_of_10( t_n_significant_digits, t_n_significant_digits);
+    const double scaling_factor = std::pow<double>(10., t_n_significant_digits) / gcd();
+    *this /= gcd();
+    // multiply_with_precision(scaling_factor, t_n_significant_digits);
 
     return scaling_factor;
 }
@@ -235,7 +260,10 @@ idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator*=(double t_
 
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator/=(double t_rhs) {
-    return *this *= 1. / t_rhs;
+    m_linear /= t_rhs;
+    m_quadratic /= t_rhs;
+    m_constant->value() /= t_rhs;
+    return *this;
 }
 
 template<class Key1 = idol::Var, class Key2 = Key1>
