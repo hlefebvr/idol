@@ -327,15 +327,11 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 
     const auto &original_model = parent();
 
-    std::cout << original_model << std::endl;
-
     m_relaxation.reset(original_model.clone());
     if (m_perform_scaling) {
         m_relaxation->scale_to_integers(Tolerance::Digits);
     }
     m_relaxation->use(*m_relaxation_optimizer_factory);
-
-    std::cout << *m_relaxation << std::endl;
 
     m_node_updator.reset(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(*m_relaxation)));
 
