@@ -92,7 +92,7 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    set_var_attr(index, type, lb, ub, as_numeric(column.obj()));
+    set_var_attr(index, type, lb, ub, column.obj().as_numerical());
 
     glp_set_col_name(m_model, index, t_var.name().c_str());
 
@@ -105,7 +105,7 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
         int i = 1;
         for (const auto& [ctr, coeff] : column.linear()) {
             indices[i] = lazy(ctr).impl();
-            coefficients[i] = as_numeric(coeff);
+            coefficients[i] = coeff.as_numerical();
             ++i;
         }
 
@@ -142,7 +142,7 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     }
 
     const auto& row = parent().get_ctr_row(t_ctr);
-    const double rhs = as_numeric(row.rhs());
+    const double rhs = row.rhs().as_numerical();
     const auto type = parent().get_ctr_type(t_ctr);
 
     set_ctr_attr(index, type, rhs);
@@ -156,7 +156,7 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     int i = 1;
     for (const auto& [var, coeff] : row.linear()) {
         indices[i] = lazy(var).impl();
-        coefficients[i] = as_numeric(coeff);
+        coefficients[i] = coeff.as_numerical();
         ++i;
     }
 
@@ -189,7 +189,7 @@ void idol::Optimizers::GLPK::hook_update(const Var &t_var) {
     const int type = model.get_var_type(t_var);
     const Constant& obj = model.get_var_column(t_var).obj();
 
-    set_var_attr(impl, type, lb, ub, as_numeric(obj));
+    set_var_attr(impl, type, lb, ub, obj.as_numerical());
 
 }
 
@@ -200,7 +200,7 @@ void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
     const auto& rhs = model.get_ctr_row(t_ctr).rhs();
     const auto type = model.get_ctr_type(t_ctr);
 
-    set_ctr_attr(impl, type, as_numeric(rhs));
+    set_ctr_attr(impl, type, rhs.as_numerical());
 
 }
 
@@ -210,7 +210,7 @@ void idol::Optimizers::GLPK::hook_update_objective() {
 
     for (const auto& var : model.vars()) {
         const auto& obj = model.get_var_column(var).obj();
-        glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(obj));
+        glp_set_obj_coef(m_model, lazy(var).impl(), obj.as_numerical());
     }
 
 }
@@ -406,11 +406,11 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = Solution::Dual();
-    double objective_value = as_numeric(model.get_obj_expr().constant());
+    double objective_value = model.get_obj_expr().constant().as_numerical();
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
-        objective_value += dual * as_numeric(model.get_ctr_row(ctr).rhs());
+        objective_value += dual * model.get_ctr_row(ctr).rhs().as_numerical();
     }
     m_farkas_certificate->set_objective_value(objective_value);
 
@@ -419,7 +419,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
 
     // Restore objective function
     for (const auto& [var, constant] : model.get_obj_expr().linear()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), as_numeric(constant));
+        glp_set_obj_coef(m_model, lazy(var).impl(), constant.as_numerical());
     }
 
     // Restore basis
@@ -506,7 +506,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
     // Save ray
     m_unbounded_ray = Solution::Primal();
-    const double objective_value = as_numeric(model.get_obj_expr().constant()) + glp_get_obj_val(m_model);
+    const double objective_value = model.get_obj_expr().constant().as_numerical() + glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
         m_unbounded_ray->set(var, glp_get_col_prim(m_model, lazy(var).impl()));
@@ -535,7 +535,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         const double lb = model.get_var_lb(var);
         const double ub = model.get_var_ub(var);
         const auto& column = model.get_var_column(var);
-        const double obj = as_numeric(column.obj());
+        const double obj = column.obj().as_numerical();
         set_var_attr(index, type, lb, ub, obj);
     }
 
@@ -544,7 +544,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         const int index = lazy(ctr).impl();
         const int type = model.get_ctr_type(ctr);
         const auto& row = model.get_ctr_row(ctr);
-        const double rhs = as_numeric(row.rhs());
+        const double rhs = row.rhs().as_numerical();
         set_ctr_attr(index, type, rhs);
     }
 
@@ -618,7 +618,7 @@ idol::SolutionReason idol::Optimizers::GLPK::get_reason() const {
 double idol::Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
     if (m_solution_status == Infeasible) { return +Inf; }
-    const double constant_term = as_numeric(parent().get_obj_expr().constant());
+    const double constant_term = parent().get_obj_expr().constant().as_numerical();
     return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
 }
 

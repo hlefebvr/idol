@@ -171,7 +171,12 @@ namespace idol {
     }
 
     static double multiply_with_precision_by_power_of_10(double t_x, unsigned int t_exponent, unsigned int t_n_digits) {
-        const auto n_x = std::min<int>(std::floor( std::log10(t_x) ) + 1, t_n_digits);
+
+        if (equals(t_x, 0., Tolerance::Sparsity)) {
+            return 0.;
+        }
+
+        const auto n_x = std::min<int>(std::floor( std::log10(std::abs(t_x)) ) + 1, t_n_digits);
         const double result = long(t_x * std::pow<double>(10., t_n_digits - n_x)) * std::pow(10, n_x + t_exponent - t_n_digits);
         return result;
     }

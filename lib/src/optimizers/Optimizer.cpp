@@ -4,18 +4,6 @@
 #include "idol/optimizers/Optimizer.h"
 #include "idol/modeling//models/Model.h"
 
-double idol::impl::Optimizer::as_numeric(const Constant &t_constant) {
-
-    if (!t_constant.is_numerical()) {
-        throw Exception("Constant is not numeric.");
-    }
-
-    const double multiplier = std::pow(10, Tolerance::Digits);
-    const double numerical = t_constant.numerical();
-
-    return std::round(numerical * multiplier) / multiplier;
-}
-
 idol::impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {
 
 }

@@ -41,6 +41,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
     unsigned int m_log_frequency = 10;
+    bool m_perform_scaling = false;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
     unsigned int m_n_solved_nodes = 0;
@@ -100,7 +101,8 @@ public:
                               const OptimizerFactory& t_node_optimizer,
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
-                              AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback);
+                              AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
+                              bool t_scaling);
 
     [[nodiscard]] std::string name() const override { return "branch-and-bound"; }
 
@@ -307,12 +309,14 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
                                                       const OptimizerFactory& t_node_optimizer,
                                                       const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                                                       const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
-                                                      AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback)
+                                                      AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
+                                                      bool t_scaling)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(*this)),
       m_node_selection_rule(t_node_selection_rule_factory(*this)),
-      m_callback(t_callback) {
+      m_callback(t_callback),
+      m_perform_scaling(t_scaling) {
 
     create_relaxations();
 
@@ -323,9 +327,15 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 
     const auto &original_model = parent();
 
+    std::cout << original_model << std::endl;
+
     m_relaxation.reset(original_model.clone());
-    m_relaxation->scale_to_integers(Tolerance::Digits);
+    if (m_perform_scaling) {
+        m_relaxation->scale_to_integers(Tolerance::Digits);
+    }
     m_relaxation->use(*m_relaxation_optimizer_factory);
+
+    std::cout << *m_relaxation << std::endl;
 
     m_node_updator.reset(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(*m_relaxation)));
 

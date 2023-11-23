@@ -33,6 +33,7 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
+    std::optional<bool> m_scaling;
 public:
     /**
      * This type is used to exploit [SFINAE](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
@@ -183,6 +184,8 @@ public:
      */
     BranchAndBound<NodeT>& with_log_frequency(unsigned int t_log_frequency);
 
+    BranchAndBound<NodeT>& with_scaling(bool t_value);
+
     /**
      * Adds a callback which will be called by the optimizer.
      *
@@ -213,6 +216,18 @@ public:
      */
     BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
 };
+
+template<class NodeT>
+idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_scaling(bool t_value) {
+
+    if (m_scaling.has_value()) {
+        throw Exception("Scaling has already been configured.");
+    }
+
+    m_scaling = t_value;
+
+    return *this;
+}
 
 template<class NodeT>
 idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::operator+=(const idol::OptimizerFactory &t_node_optimizer) {
@@ -316,7 +331,8 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr),
           m_log_frequency(t_rhs.m_log_frequency),
-          m_subtree_depth(t_rhs.m_subtree_depth) {
+          m_subtree_depth(t_rhs.m_subtree_depth),
+          m_scaling(t_rhs.m_scaling) {
 
     for (auto& cb : t_rhs.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
@@ -345,7 +361,8 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
                                      *m_relaxation_optimizer_factory,
                                      *m_branching_rule_factory,
                                      *m_node_selection_rule_factory,
-                                     callback_interface);
+                                     callback_interface,
+                                     m_scaling.has_value() && m_scaling.value());
 
     this->handle_default_parameters(result);
 

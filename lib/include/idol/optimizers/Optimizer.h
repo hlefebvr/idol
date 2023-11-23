@@ -74,8 +74,6 @@ protected:
 
     void restart() { m_is_terminated = false; hook_before_optimize(); }
 
-    static double as_numeric(const Constant& t_constant);
-
     [[nodiscard]] virtual SolutionStatus get_status() const = 0;
 
     [[nodiscard]] virtual SolutionReason get_reason() const = 0;

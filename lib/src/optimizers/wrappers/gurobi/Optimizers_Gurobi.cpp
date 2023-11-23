@@ -118,7 +118,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
     const auto& column = model.get_var_column(t_var);
     const auto lb = model.get_var_lb(t_var);
     const auto ub = model.get_var_ub(t_var);
-    const auto objective = as_numeric(column.obj());
+    const auto objective = column.obj().as_numerical();
     const auto type = gurobi_var_type(model.get_var_type(t_var));
     const auto& name = t_var.name();
 
@@ -133,7 +133,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
                 throw Exception("Cannot add column to quadratic constraints.");
             }
 
-            col.addTerm( as_numeric(constant), std::get<GRBConstr>(impl) );
+            col.addTerm( constant.as_numerical(), std::get<GRBConstr>(impl) );
 
         }
 
@@ -150,7 +150,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
     const auto type = gurobi_ctr_type(model.get_ctr_type(t_ctr));
-    const auto rhs = as_numeric(row.rhs());
+    const auto rhs = row.rhs().as_numerical();
     const auto& name = t_ctr.name();
 
 
@@ -158,7 +158,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
 
         GRBLinExpr expr = 0.;
         for (const auto &[var, constant]: row.linear()) {
-            expr += as_numeric(constant) * lazy(var).impl();
+            expr += constant.as_numerical() * lazy(var).impl();
         }
         return m_model.addConstr(expr, type, rhs, name);
 
@@ -166,10 +166,10 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
 
     GRBQuadExpr expr = 0.;
     for (const auto &[var, constant]: row.linear()) {
-        expr.addTerm(as_numeric(constant), lazy(var).impl());
+        expr.addTerm(constant.as_numerical(), lazy(var).impl());
     }
     for (const auto& [var1, var2, constant] : row.quadratic()) {
-        expr.addTerm(as_numeric(constant), lazy(var1).impl(), lazy(var2).impl());
+        expr.addTerm(constant.as_numerical(), lazy(var1).impl(), lazy(var2).impl());
     }
 
     return m_model.addQConstr(expr, type, rhs, name);
@@ -187,7 +187,7 @@ void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
     impl.set(GRB_DoubleAttr_LB, gurobi_numeric(lb));
     impl.set(GRB_DoubleAttr_UB, gurobi_numeric(ub));
     impl.set(GRB_CharAttr_VType, gurobi_var_type(type));
-    impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(as_numeric(obj)));
+    impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(obj.as_numerical()));
 
 }
 
@@ -202,7 +202,7 @@ void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
         const auto& rhs = model.get_ctr_row(t_ctr).rhs();
         const auto type = model.get_ctr_type(t_ctr);
 
-        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(as_numeric(rhs)));
+        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs.as_numerical()));
         linear_impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
 
     } else {
@@ -217,10 +217,10 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
-    GRBLinExpr linear_expr = gurobi_numeric(as_numeric(objective.constant()));
+    GRBLinExpr linear_expr = gurobi_numeric(objective.constant().as_numerical());
 
     for (const auto& [var, constant] : objective.linear()) {
-        linear_expr += gurobi_numeric(as_numeric(constant)) * lazy(var).impl();
+        linear_expr += gurobi_numeric(constant.as_numerical()) * lazy(var).impl();
     }
 
     if (objective.quadratic().empty()) {
@@ -231,7 +231,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     GRBQuadExpr quadratic_expr;
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
-        quadratic_expr.addTerm(gurobi_numeric(as_numeric(constant)), lazy(var1).impl(), lazy(var2).impl());
+        quadratic_expr.addTerm(gurobi_numeric(constant.as_numerical()), lazy(var1).impl(), lazy(var2).impl());
     }
 
     m_model.setObjective(linear_expr + quadratic_expr, sense);
@@ -247,7 +247,7 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
         auto& impl = lazy(ctr).impl();
         if (std::holds_alternative<GRBConstr>(impl)) {
             const auto& rhs = model.get_ctr_row(ctr).rhs();
-            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(as_numeric(rhs)));
+            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs.as_numerical()));
         } else {
             idol_Log(Warn, "Updating RHS on an SOCP constraint was skipped.")
         }
@@ -299,7 +299,7 @@ void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t
     const auto& var_impl = lazy(t_var).impl();
     const auto& ctr_impl = std::get<GRBConstr>(lazy(t_ctr).impl());
 
-    m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(as_numeric(t_constant)));
+    m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(t_constant.as_numerical()));
 
 }
 

@@ -48,7 +48,7 @@ void idol::GurobiCallbackI::add_user_cut(const TempCtr &t_user_cut) {
 GRBTempConstr idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ctr) {
 
     const auto& row = t_temp_ctr.row();
-    const auto& rhs = m_parent.gurobi_numeric(m_parent.as_numeric(row.rhs())); // NOLINT(readability-static-accessed-through-instance)
+    const auto& rhs = m_parent.gurobi_numeric(row.rhs().as_numerical()); // NOLINT(readability-static-accessed-through-instance)
 
     if (!row.quadratic().empty()) {
         throw Exception("Cannot add quadratic cuts in Gurobi.");
@@ -57,7 +57,7 @@ GRBTempConstr idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ct
     GRBLinExpr lhs;
 
     for (const auto& [var, constant] : row.linear()) {
-        lhs += m_parent.lazy(var).impl() * m_parent.as_numeric(constant); // NOLINT(readability-static-accessed-through-instance)
+        lhs += m_parent.lazy(var).impl() * constant.as_numerical(); // NOLINT(readability-static-accessed-through-instance)
     }
 
     switch (t_temp_ctr.type()) {

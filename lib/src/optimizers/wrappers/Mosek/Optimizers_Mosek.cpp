@@ -134,13 +134,13 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    set_var_attr(result, type, lb, ub, as_numeric(column.obj()));
+    set_var_attr(result, type, lb, ub, column.obj().as_numerical());
 
     if (t_add_column) {
 
         for (const auto& [ctr, constant] : column.linear()) {
             lazy(ctr).impl().constraint->index(0)->update(
-                    mosek::fusion::Expr::mul(as_numeric(constant), result.variable->index(0)),
+                    mosek::fusion::Expr::mul(constant.as_numerical(), result.variable->index(0)),
                     result.variable->index(0)
                 );
         }
@@ -159,7 +159,7 @@ mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const 
         result = mosek::fusion::Expr::add(
                 std::move(result),
                 mosek::fusion::Expr::mul(
-                        as_numeric(constant),
+                        constant.as_numerical(),
                         lazy(var).impl().variable
                 )
         );
@@ -171,7 +171,7 @@ mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const 
 mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
     assert(t_expr.quadratic().empty());
     return mosek::fusion::Expr::add(
-                as_numeric(t_expr.constant()),
+                t_expr.constant().as_numerical(),
                 to_mosek_expression(t_expr.linear())
             );
 }
@@ -236,7 +236,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     // Build expression
     auto expr = to_mosek_expression(row.linear());
-    expr = mosek::fusion::Expr::add(std::move(expr), -as_numeric(row.rhs()));
+    expr = mosek::fusion::Expr::add(std::move(expr), -row.rhs().as_numerical());
 
     // Set constraint type
     switch (type) {
@@ -276,7 +276,7 @@ void idol::Optimizers::Mosek::hook_update(const Var &t_var) {
     const int type = model.get_var_type(t_var);
     const Constant& obj = model.get_var_column(t_var).obj();
 
-    set_var_attr(impl, type, lb, ub, as_numeric(obj));
+    set_var_attr(impl, type, lb, ub, obj.as_numerical());
 
 }
 
@@ -284,7 +284,7 @@ void idol::Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
     const auto& row = parent().get_ctr_row(t_ctr);
 
-    auto rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -as_numeric(row.rhs()));
+    auto rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -row.rhs().as_numerical());
     lazy(t_ctr).impl().constraint->index(0)->update(rhs);
 
 }
@@ -295,13 +295,13 @@ void idol::Optimizers::Mosek::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const int sense = model.get_obj_sense();
 
-    auto expr = mosek::fusion::Expr::constTerm(as_numeric(objective.constant()));
+    auto expr = mosek::fusion::Expr::constTerm(objective.constant().as_numerical());
 
     for (const auto& [var, constant] : objective.linear()) {
         expr = mosek::fusion::Expr::add(
                 std::move(expr),
                 mosek::fusion::Expr::mul(
-                        as_numeric(constant),
+                        constant.as_numerical(),
                         lazy(var).impl().variable
                 )
         );

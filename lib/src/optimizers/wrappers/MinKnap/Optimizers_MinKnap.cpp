@@ -72,8 +72,8 @@ void idol::Optimizers::MinKnap::hook_optimize() {
         Item(Var t_var, double t_profit, double t_weight) : variable(std::move(t_var)), profit(t_profit), weight(t_weight) {}
     };
 
-    double unscaled_capacity = as_numeric(row.rhs());
-    double fixed_profit = as_numeric(model.get_obj_expr().constant());
+    double unscaled_capacity = row.rhs().as_numerical();
+    double fixed_profit = model.get_obj_expr().constant().as_numerical();
     std::list<Item> free_variables;
 
     // "presolve"
@@ -93,8 +93,8 @@ void idol::Optimizers::MinKnap::hook_optimize() {
         }
 
         const auto& column = model.get_var_column(var);
-        const double weight = as_numeric(column.linear().get(ctr));
-        const double profit = as_numeric(column.obj());
+        const double weight = column.linear().get(ctr).as_numerical();
+        const double profit = column.obj().as_numerical();
 
         if (ub < 1. - 2 * Tolerance::Integer) {
             lazy(var).impl() = 0.; // fixed to 0

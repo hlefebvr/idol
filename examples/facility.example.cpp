@@ -9,6 +9,7 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 #include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/optimizers/callbacks/cutting-planes/KnapsackCover.h"
+#include "idol/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
 
@@ -17,7 +18,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("facility.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/tests/data/facility-location-problem/instance_F10_C20__0.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -55,8 +56,9 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(HiGHS::ContinuousRelaxation())
-                    .add_callback(Cuts::KnapsackCover())
+                    .with_node_optimizer(GLPK::ContinuousRelaxation())
+                    .with_scaling(true)
+                    //.add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
                     .with_log_level(Info, Blue)
