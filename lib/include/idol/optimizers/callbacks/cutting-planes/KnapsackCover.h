@@ -30,6 +30,7 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
             Var variable;
             double weight;
             double current_value = -1.;
+            std::optional<double> cut_coefficient;
             Item(const Var& t_var, double t_weight);
 
             Item(const Item&) = default;
@@ -59,7 +60,6 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
         static SetOfItems merge_consecutive(const SetOfItems& t_a, const SetOfItems& t_b);
     };
 
-    double m_scaling_factor = 1e6;
     std::list<KnapsackStructure> m_knapsack_structures;
 protected:
     // Detect structure
@@ -80,9 +80,12 @@ protected:
     std::pair<SetOfItems, SetOfItems> partition_minimal_cover(const SetOfItems& t_minimal_cover);
     std::pair<SetOfItems, SetOfItems> partition_remaining_items(const SetOfItems& t_remaining_items);
     void sort_by_non_decreasing_weights(const SetOfItems& t_set_of_items);
-    void sort_by_non_increasing_wights(const SetOfItems& t_set_of_items);
+    void sort_by_non_increasing_weights(const SetOfItems& t_set_of_items);
+    double sequential_up_and_down_lifting(const SetOfItems& t_C1, const SetOfItems& t_C2, const SetOfItems &t_F, const SetOfItems& t_R, double t_capacity);
+    double compute_activity(const SetOfItems& t_set_of_items, double t_right_hand_side);
+    TempCtr create_cut(const SetOfItems& t_set_of_items, double t_right_hand_side);
 
-    void debug(const std::string& t_name, const SetOfItems& t_set_of_items, bool t_with_values = false);
+    void debug(const std::string& t_name, const SetOfItems& t_set_of_items, bool t_with_values = false, bool t_with_cut = false);
 
     void initialize() override;
 
@@ -92,10 +95,19 @@ protected:
 template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::debug(const std::string &t_name,
                                                            const SetOfItems &t_set_of_items,
-                                                           bool t_with_values) {
+                                                           bool t_with_values,
+                                                           bool t_with_cut) {
 
     std::cout << t_name << ": ";
     for (const auto& item : t_set_of_items) {
+        if (t_with_cut) {
+            if (item.cut_coefficient.has_value()) {
+                std::cout << item.cut_coefficient.value();
+            } else {
+                std::cout << "?";
+            }
+            std::cout << " ";
+        }
         std::cout << item.variable;
         if (t_with_values) {
             std::cout << "(" << item.current_value << ")";
@@ -181,16 +193,19 @@ template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::add_knapsack_structure(const idol::Row &t_row, idol::CtrType t_type) {
 
     const unsigned int n_items = t_row.linear().size();
-    const double factor = (t_type == LessOrEqual ? 1. : -1.) * m_scaling_factor;
+    const double factor = (t_type == LessOrEqual ? 1. : -1.);
+
+    auto copy = t_row;
+    copy.scale_to_integers(Tolerance::Digits);
 
     std::vector<typename KnapsackStructure::Item> items;
     items.reserve(n_items);
 
-    for (const auto& [var, coefficient] : t_row.linear()) {
+    for (const auto& [var, coefficient] : copy.linear()) {
         items.emplace_back(var, factor * coefficient.as_numerical());
     }
 
-    m_knapsack_structures.emplace_back(std::move(items), factor * t_row.rhs().as_numerical());
+    m_knapsack_structures.emplace_back(std::move(items), factor * copy.rhs().as_numerical());
 
 }
 
@@ -244,8 +259,8 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::operator()(idol::CallbackEv
         separate_cut(knapsack_structure);
     }
 
-    if (this->node().level() == 0) {
-        throw Exception("Manual stop");
+    if (this->node().level() > 0) {
+        //throw Exception("Manual stop");
     }
 
 }
@@ -281,18 +296,241 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
     // Lifting sequence and computing the lifting coefficients
     auto [F, R] = partition_remaining_items(not_in_C);
     sort_by_non_decreasing_weights(C1);
-    sort_by_non_increasing_wights(C2);
-    sort_by_non_increasing_wights(F);
-    sort_by_non_increasing_wights(R);
+    sort_by_non_increasing_weights(C2);
+    sort_by_non_increasing_weights(F);
+    sort_by_non_increasing_weights(R);
 
-    debug("not_in_C", not_in_C, true);
-    debug("F", F, true);
-    debug("R", R, true);
+    const double rhs = sequential_up_and_down_lifting(C1, C2, F, R, knapsack_structure.capacity);
+
+    /*
+    std::cout << "CUT:" << std::endl;
+    debug("C1", C1, false, true);
+    debug("C2", C2, false, true);
+    debug("F", F, false, true);
+    debug("R", R, false, true);
+    std::cout << std::endl;
+    */
+
+    const double activity = compute_activity(N, rhs);
+
+    if (activity < Tolerance::Feasibility) {
+        return;
+    }
+
+
+    auto cut = create_cut(N, rhs);
+
+    std::cout << "Found violated cut: " << cut << std::endl;
+
+    this->add_user_cut(cut);
 
 }
 
 template<class NodeInfoT>
-void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sort_by_non_increasing_wights(const SetOfItems &t_set_of_items) {
+idol::TempCtr idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::create_cut(const SetOfItems &t_set_of_items, double t_right_hand_side) {
+
+    Expr result;
+
+    for (const auto& item : t_set_of_items) {
+
+        if (!item.cut_coefficient.has_value()) {
+            continue;
+        }
+
+        result += item.cut_coefficient.value() * item.variable;
+
+    }
+
+    return result <= t_right_hand_side;
+}
+
+template<class NodeInfoT>
+double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::compute_activity(const SetOfItems &t_set_of_items, double t_right_hand_side) {
+    double result = 0.;
+
+    for (const auto& item : t_set_of_items) {
+
+        if (!item.cut_coefficient.has_value()) {
+            continue;
+        }
+
+        result += item.cut_coefficient.value() * item.current_value;
+
+    }
+
+    return result - t_right_hand_side;
+}
+
+template<class NodeInfoT>
+double idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sequential_up_and_down_lifting(const SetOfItems &t_C1,
+                                                                                    const SetOfItems &t_C2,
+                                                                                    const SetOfItems &t_F,
+                                                                                    const SetOfItems &t_R,
+                                                                                    double t_capacity) {
+
+    // Set coefficients of variables in C1 to one
+    for (auto& item : t_C1) {
+        item.cut_coefficient = 1.;
+    }
+
+    const auto initialize_min_weights = [](const SetOfItems& t_C1) {
+
+        const unsigned int n_C1 = t_C1.size();
+
+        std::vector<double> result;
+        result.reserve(n_C1 + 1);
+        result.emplace_back(0.);
+
+        auto begin = t_C1.begin();
+
+        for (unsigned int i = 0 ; i < n_C1 ; ++i) {
+            result[i+1] = result[i] + (begin + i)->weight;
+        }
+
+        return result;
+    };
+
+    auto min_weights = initialize_min_weights(t_C1);
+
+    int alpha_0 = t_C1.size() - 1;
+
+    const double sum_weights_in_C2 = sum_of_weights(t_C2);
+
+    // Lifting items in F
+    for (auto& item : t_F) {
+
+        double z;
+        if (t_capacity - sum_weights_in_C2 - item.weight < 0) { // knapsack is infeasible
+            z = 0.;
+        } else if (min_weights[alpha_0] <= t_capacity - sum_weights_in_C2 - item.weight) { // easy case
+            z = alpha_0;
+        } else { // binary search for z
+
+            int lb = 0;
+            int ub = alpha_0 + 1;
+            while (lb < ub - 1) {
+                int middle = (lb + ub) / 2;
+                if ( min_weights[middle] <= t_capacity - sum_weights_in_C2 - item.weight ) {
+                    lb = middle;
+                } else {
+                    ub = middle;
+                }
+            }
+            z = lb;
+
+        }
+
+        const int alpha_j = alpha_0 - z;
+
+        item.cut_coefficient = alpha_j;
+
+        if (alpha_j == 0) {
+            continue;
+        }
+
+        min_weights.resize(min_weights.size() + alpha_j);
+
+        for (int w = min_weights.size() - 1 ; w >= 0 ; w--) {
+
+            if (w < alpha_j ) {
+                min_weights[w] = std::min(min_weights[w], item.weight);
+            } else {
+                min_weights[w] = std::min(min_weights[w], min_weights[w - alpha_j] + item.weight);
+            }
+
+        }
+
+    }
+
+    // Lifting in C2
+    for (auto& item : t_C2) {
+
+        int lb = 0;
+        int ub = alpha_0 + 1;
+        while (lb < ub - 1) {
+            int middle = (lb + ub) / 2;
+            if ( min_weights[middle] <= t_capacity - sum_weights_in_C2 + item.weight ) {
+                lb = middle;
+            } else {
+                ub = middle;
+            }
+        }
+        int z = lb;
+
+        const int alpha_j = z - alpha_0;
+
+        item.cut_coefficient = alpha_j;
+
+        alpha_0 += alpha_j;
+
+        if (alpha_j == 0) {
+            continue;
+        }
+
+        min_weights.resize(min_weights.size() + alpha_j);
+
+        for (int w = min_weights.size() - 1 ; w >= 0 ; w--) {
+
+            if (w < alpha_j ) {
+                min_weights[w] = std::min(min_weights[w], item.weight);
+            } else {
+                min_weights[w] = std::min(min_weights[w], min_weights[w - alpha_j] + item.weight);
+            }
+
+        }
+
+
+    }
+
+    // Lifting in R
+    for (auto& item : t_R) {
+
+        int z;
+        if (min_weights[alpha_0] <= t_capacity - item.weight) {
+            z = 0;
+        } else { // binary search for z
+
+            int lb = 0;
+            int ub = alpha_0 + 1;
+            while (lb < ub - 1) {
+                int middle = (lb + ub) / 2;
+                if ( min_weights[middle] <= t_capacity - item.weight ) {
+                    lb = middle;
+                } else {
+                    ub = middle;
+                }
+            }
+            z = lb;
+
+        }
+
+        const int alpha_j = alpha_0 - z;
+
+        item.cut_coefficient = alpha_j;
+
+        if (alpha_j == 0) {
+            continue;
+        }
+
+        for (int w = min_weights.size() - 1 ; w >= 0 ; w--) {
+
+            if (w < alpha_j ) {
+                min_weights[w] = std::min(min_weights[w], item.weight);
+            } else {
+                min_weights[w] = std::min(min_weights[w], min_weights[w - alpha_j] + item.weight);
+            }
+
+        }
+
+
+    }
+
+    return alpha_0;
+
+}
+
+template<class NodeInfoT>
+void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::sort_by_non_increasing_weights(const SetOfItems &t_set_of_items) {
 
     std::sort(t_set_of_items.begin(), t_set_of_items.end(), [](const auto& t_a, const auto& t_b) {
         return t_a.weight <= t_b.weight;

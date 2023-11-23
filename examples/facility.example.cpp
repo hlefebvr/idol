@@ -57,7 +57,7 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             BranchAndBound()
                     .with_node_optimizer(GLPK::ContinuousRelaxation())
-                    //.add_callback(Cuts::KnapsackCover())
+                    .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
                     .with_log_level(Info, Blue)
