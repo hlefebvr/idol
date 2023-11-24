@@ -138,28 +138,6 @@ namespace idol {
         return std::round(t_value * multiplier) / multiplier;
     }
 
-    /**
-     * Performs the multiplication of parameters `t_a` and `t_b` by considering only `t_n_digits` digits.
-     *
-     * Let \f$ n_a \f$ and \f$ n_b \f$ denote the number
-     * of significant digits before the point (in base 10) of `t_a` and `t_b`, respectively; i.e.,
-     * \f[ n_a = \min(\lfloor \log_{10}(a) \rfloor + 1, \text{t_n_digits}). \f]
-     * We define \f$z_a\f$ as
-     * \f[
-     *     int\; z_a = int( \text{t_a} \times 10^{ \text{t_n_digits} - n_a } ) \times 10^{ n_a }
-     * \f]
-     * and \f$z_b\f$ similarly. Thus, \f$z_a\f$ is equal to `t_a` multiplied by \f$ 10^\text{t_n_digits} \f$
-     * keeping only significant digits.
-     *
-     * Then, the product is computed as
-     * \f[
-     *  (double) \; result = z_a.z_b. 10^{ - 2 \times \text{t_n_digits} }
-     * \f]
-     * @param t_a the first term
-     * @param t_b the second term
-     * @param t_n_digits the number of digits to be taken into account
-     * @return the product of `t_a` and `t_b` with finite precision
-     */
     static double multiply_with_precision(double t_a, double t_b, unsigned int t_n_digits) {
         const auto n_a = std::min<int>(std::floor( std::log10(t_a) ) + 1, t_n_digits);
         const auto n_b = std::min<int>(std::floor( std::log10(t_b) ) + 1, t_n_digits);
