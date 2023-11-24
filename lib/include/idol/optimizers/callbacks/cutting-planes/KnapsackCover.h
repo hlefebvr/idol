@@ -16,13 +16,58 @@ namespace idol::Cuts {
 template<class NodeInfoT = idol::DefaultNodeInfo>
 class idol::Cuts::KnapsackCover: public BranchAndBoundCallbackFactory<NodeInfoT> {
     std::optional<bool> m_lifting;
+    std::optional<bool> m_apply_to_tree_nodes;
+    std::optional<unsigned int> m_max_pass_root_node;
+    std::optional<double> m_max_cuts_factor;
 public:
     class Strategy;
     BranchAndBoundCallback<NodeInfoT> *operator()() override;
     BranchAndBoundCallbackFactory<NodeInfoT> *clone() const override;
 
     KnapsackCover& with_lifting(bool t_value);
+
+    KnapsackCover& with_tree_node_cuts(bool t_value);
+
+    KnapsackCover& with_max_pass_root_node(unsigned int t_value);
+
+    KnapsackCover& with_max_cuts_factor(double t_value);
 };
+
+template<class NodeInfoT>
+idol::Cuts::KnapsackCover<NodeInfoT> &idol::Cuts::KnapsackCover<NodeInfoT>::with_max_pass_root_node(unsigned int t_value) {
+
+    if (m_max_pass_root_node.has_value()) {
+        throw Exception("Maximum pass at root node has already been configured.");
+    }
+
+    m_max_pass_root_node = t_value;
+
+    return *this;
+}
+
+template<class NodeInfoT>
+idol::Cuts::KnapsackCover<NodeInfoT> &idol::Cuts::KnapsackCover<NodeInfoT>::with_max_cuts_factor(double t_value) {
+
+    if (m_max_cuts_factor.has_value()) {
+        throw Exception("Maximum cuts factor has already been configured.");
+    }
+
+    m_max_cuts_factor = t_value;
+
+    return *this;
+}
+
+template<class NodeInfoT>
+idol::Cuts::KnapsackCover<NodeInfoT> &idol::Cuts::KnapsackCover<NodeInfoT>::with_tree_node_cuts(bool t_value) {
+
+    if (m_apply_to_tree_nodes.has_value()) {
+        throw Exception("Tree node cuts have already been configured.");
+    }
+
+    m_apply_to_tree_nodes = t_value;
+
+    return *this;
+}
 
 template<class NodeInfoT>
 idol::Cuts::KnapsackCover<NodeInfoT> &idol::Cuts::KnapsackCover<NodeInfoT>::with_lifting(bool t_value) {
@@ -77,7 +122,12 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
 
     std::list<KnapsackStructure> m_knapsack_structures;
     const bool m_lifting;
+    const bool m_apply_to_tree_nodes;
+    const unsigned int m_max_pass_root_node;
+    const double m_max_cuts_factor;
+    unsigned int m_max_cuts = 0;
     unsigned int m_n_cuts = 0;
+    unsigned int m_n_separations = 0;
 protected:
     // Detect structure
     void detect_knapsack_structure(const Ctr& t_ctr);
@@ -111,7 +161,10 @@ protected:
     void log_after_termination() override;
 
 public:
-    Strategy(bool t_use_lifting);
+    Strategy(bool t_use_lifting,
+             bool t_apply_to_tree_nodes,
+             unsigned int t_max_pass_root_node,
+             double t_max_cuts_factor);
 };
 
 template<class NodeInfoT>
@@ -123,7 +176,14 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::log_after_termination() {
 }
 
 template<class NodeInfoT>
-idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::Strategy(bool t_use_lifting) : m_lifting(t_use_lifting) {
+idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::Strategy(bool t_use_lifting,
+                                                         bool t_apply_to_tree_nodes,
+                                                         unsigned int t_max_pass_root_node,
+                                                         double t_max_cuts_factor)
+    : m_lifting(t_use_lifting),
+      m_apply_to_tree_nodes(t_apply_to_tree_nodes),
+      m_max_pass_root_node(t_max_pass_root_node),
+      m_max_cuts_factor(t_max_cuts_factor) {
 
 }
 
@@ -187,12 +247,15 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::initialize() {
 
     m_knapsack_structures.clear();
     m_n_cuts = 0;
+    m_n_separations = 0;
 
     const auto& model = this->original_model();
 
-    for (const auto& ctr : this->original_model().ctrs()) {
+    for (const auto& ctr : model.ctrs()) {
         detect_knapsack_structure(ctr);
     }
+
+    m_max_cuts = m_max_cuts_factor * model.ctrs().size();
 
     std::cout << "Lifted Minimal KnapsackStructure Cuts 1, " << m_knapsack_structures.size() << " candidates found" << std::endl;
 }
@@ -291,18 +354,35 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::operator()(idol::CallbackEv
         return;
     }
 
-    for (const auto& knapsack_structure : m_knapsack_structures) {
-        separate_cut(knapsack_structure);
+    if (m_n_cuts >= m_max_cuts) {
+        return;
     }
 
-    if (this->node().level() > 0) {
-        //throw Exception("Manual stop");
+    if (this->node().level() == 0) {
+
+        if (m_n_separations > m_max_pass_root_node) {
+            return;
+        }
+
+    }
+
+    if (!m_apply_to_tree_nodes && this->node().level() != 0) {
+        return;
+    }
+
+    for (const auto& knapsack_structure : m_knapsack_structures) {
+        separate_cut(knapsack_structure);
+        ++m_n_separations;
     }
 
 }
 
 template<class NodeInfoT>
 void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::KnapsackStructure &t_knapsack_structure) {
+
+    if (m_n_cuts >= m_max_cuts) {
+        return;
+    }
 
     auto knapsack_structure = t_knapsack_structure;
     SetOfItems N(knapsack_structure.items.begin(), knapsack_structure.items.end());
@@ -860,7 +940,12 @@ idol::BranchAndBoundCallbackFactory<NodeInfoT> *idol::Cuts::KnapsackCover<NodeIn
 
 template<class NodeInfoT>
 idol::BranchAndBoundCallback<NodeInfoT> *idol::Cuts::KnapsackCover<NodeInfoT>::operator()() {
-    return new Strategy(m_lifting.has_value() ? m_lifting.value() : true);
+    return new Strategy(
+            m_lifting.has_value() ? m_lifting.value() : true,
+            m_apply_to_tree_nodes.has_value() ? m_apply_to_tree_nodes.value() : true,
+            m_max_pass_root_node.has_value() ? m_max_pass_root_node.value() : 400,
+            m_max_cuts_factor.has_value() ? m_max_cuts_factor.value() : 100
+        );
 }
 
 #endif //IDOL_KNAPSACKCOVER_H
