@@ -49,7 +49,6 @@ int main(int t_argc, char** t_argv) {
                     .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
-                    .with_log_frequency(1)
                     .with_logger(LogInfo())
             );
 

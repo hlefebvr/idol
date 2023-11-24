@@ -157,7 +157,6 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                 );
                                                             })
                                                             .with_logs(false)
-                                                            .with_log_frequency(1)
                                             )
                                     )
                                     .with_hard_branching(branching_on_sub_problem)
@@ -182,7 +181,6 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                         );
                     })
                     .with_logs(true)
-                    .with_log_frequency(1)
     );
 
     WHEN("The instance \"" + filename + "\" is solved by branch-and-bound "
