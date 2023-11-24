@@ -63,7 +63,6 @@ int main(int t_argc, const char** t_argv) {
                                                                 .with_column_pool_clean_up(1500, .75)
                                       )
                                       .with_logger(DantzigWolfe::Loggers::Info())
-                                      .with_log_level(Info, Yellow)
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
                                       .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
                                       .with_hard_branching(true)
@@ -71,8 +70,6 @@ int main(int t_argc, const char** t_argv) {
                       .with_subtree_depth(0)
                       .with_branching_rule(MostInfeasible())
                       .with_node_selection_rule(WorstBound())
-                      .with_log_level(Info, Blue)
-                      .with_log_frequency(1)
                       .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS()))
             );
 

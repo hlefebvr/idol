@@ -7,14 +7,10 @@
 
 idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
                                    Model *t_separation_problem,
-                                   TempCtr t_cut,
-                                   LogLevel t_level,
-                                   Color t_color)
+                                   TempCtr t_cut)
     : m_triggering_event(t_triggering_event),
       m_separation_problem(t_separation_problem),
-      m_cut(std::move(t_cut)),
-      m_log_level(t_level),
-      m_log_color(t_color) {
+      m_cut(std::move(t_cut)) {
 
     if (!m_cut.row().quadratic().empty()) {
         throw Exception("Adding non-linear cut is not available.");
@@ -39,9 +35,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
     m_separation_problem->set_obj_expr(std::move(objective));
     m_separation_problem->set_obj_sense(sense);
 
-    idol_Log(Debug, "Start solving separation problem");
     m_separation_problem->optimize();
-    idol_Log(Debug, "Stop solving separation problem");
 
     const auto status = m_separation_problem->get_status();
 
@@ -56,8 +50,6 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        idol_Log(Debug, "Solution " << k << " has a violation of " << std::abs(m_separation_problem->get_best_obj()) << ".")
-
         if (k == 0 && m_separation_problem->get_best_obj() >= -m_tolerance) {
             break;
         }
@@ -66,12 +58,8 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         TempCtr cut(m_cut.row().fix(solution), m_cut.type());
 
-        idol_Log(Trace, "The following cut was added: " << cut << ".")
-
         hook_add_cut(cut);
     }
-
-    idol_Log(Info, "In total, " << k << " cuts have been added.")
 
 }
 

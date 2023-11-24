@@ -511,21 +511,17 @@ void idol::Optimizers::Mosek::set_parameter(const std::string &t_param, const st
     m_model->setSolverParam(t_param, t_value);
 }
 
-void idol::Optimizers::Mosek::set_param_log_level(LogLevel t_log_level) {
+void idol::Optimizers::Mosek::set_param_logs(bool t_value) {
 
-    if (t_log_level == Mute) {
-
+    if (!t_value) {
         m_model->setLogHandler(nullptr);
-
     } else {
-
         m_model->setLogHandler([this](const std::string& t_msg){
-            idol_Log(Info, t_msg.substr(0, t_msg.size() - 1))
+            std::cout << t_msg << std::endl;
         });
-
     }
 
-    Optimizer::set_param_log_level(t_log_level);
+    Optimizer::set_param_logs(t_value);
 }
 
 idol::MosekKiller::~MosekKiller() {

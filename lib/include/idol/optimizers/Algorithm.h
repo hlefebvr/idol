@@ -24,6 +24,8 @@ protected:
     void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
     void set_best_bound(double t_value) { m_best_bound = t_value; }
     void set_best_obj(double t_value) { m_best_obj = t_value; }
+public:
+    explicit Algorithm(const Model& t_model);
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;
@@ -31,8 +33,6 @@ protected:
     [[nodiscard]] double get_best_bound() const override;
     [[nodiscard]] double get_relative_gap() const override;
     [[nodiscard]] double get_absolute_gap() const override;
-public:
-    explicit Algorithm(const Model& t_model);
 };
 
 #endif //IDOL_ALGORITHM_H

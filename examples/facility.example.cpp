@@ -19,7 +19,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/tests/data/facility-location-problem/instance_F10_C20__0.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("facility.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -61,7 +61,6 @@ int main(int t_argc, const char** t_argv) {
                     .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
-                    .with_log_level(Info, Blue)
                     .with_log_frequency(1)
     );
 

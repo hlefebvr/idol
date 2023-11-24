@@ -48,14 +48,6 @@ public:
         auto* n2 = t_node.info().create_child();
         n2->add_branching_variable(t_var, LessOrEqual, ub);
 
-        idol_Log(Trace,
-                 "Node " << t_node.id() << " has 2 child nodes with "
-                         << t_var << " >= " << lb
-                         << " and "
-                         << t_var << " <= " << ub
-                         << " (current value of " << t_var << " is " << value << ").";
-        );
-
         return { n1, n2 };
     }
 

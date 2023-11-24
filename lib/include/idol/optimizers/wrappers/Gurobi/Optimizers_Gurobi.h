@@ -98,7 +98,7 @@ public:
 
     void set_max_n_solution_in_pool(unsigned int t_value);
 
-    void set_param_log_level(LogLevel t_log_level) override;
+    void set_param_logs(bool t_value) override;
 
     void set_param(GRB_IntParam t_param, int t_value);
 

@@ -5,7 +5,6 @@
 #ifndef IDOL_OPTIMIZERFACTORY_H
 #define IDOL_OPTIMIZERFACTORY_H
 
-#include "Logger.h"
 #include "Optimizer.h"
 
 #include <optional>
@@ -44,8 +43,7 @@ public:
 
 template<class CRTP>
 class idol::OptimizerFactoryWithDefaultParameters : public OptimizerFactory {
-    std::optional<LogLevel> m_log_level;
-    std::optional<Color> m_log_color;
+    std::optional<bool> m_logs;
     std::optional<double> m_time_limit;
     std::optional<unsigned int> m_thread_limit;
     std::optional<unsigned int> m_iteration_count_limit;
@@ -67,13 +65,13 @@ public:
      * Example:
      * ```cpp
      * auto algorithm = GLPK()
-     *                      .with_log_level(Info, Green);
+     *                      .with_logs(true);
      * ```
      * @param t_log_level the log_master level
      * @param t_log_color the output color
      * @return the optimizer factory itself
      */
-    CRTP& with_log_level(LogLevel t_log_level, Color t_log_color = Color::Default);
+    CRTP& with_logs(bool t_value);
 
     /**
      * Sets the time limit for the optimizer
@@ -364,14 +362,13 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_time_limit(double 
 }
 
 template<class CRTP>
-CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_log_level(LogLevel t_log_level, Color t_log_color) {
+CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_logs(bool t_value) {
 
-    if (m_log_color.has_value() || m_log_level.has_value()) {
+    if (m_logs.has_value()) {
         throw Exception("Logging settings have already been given.");
     }
 
-    m_log_level = t_log_level;
-    m_log_color = t_log_color;
+    m_logs = t_value;
 
     return crtp();
 }
@@ -379,12 +376,8 @@ CRTP &idol::OptimizerFactoryWithDefaultParameters<CRTP>::with_log_level(LogLevel
 template<class CRTP>
 void idol::OptimizerFactoryWithDefaultParameters<CRTP>::handle_default_parameters(Optimizer *t_optimizer) const {
 
-    if (m_log_level.has_value()) {
-        t_optimizer->set_param_log_level(m_log_level.value());
-    }
-
-    if (m_log_color.has_value()) {
-        t_optimizer->set_param_log_color(m_log_color.value());
+    if (m_logs.has_value()) {
+        t_optimizer->set_param_logs(m_logs.value());
     }
 
     if (m_time_limit.has_value()) {

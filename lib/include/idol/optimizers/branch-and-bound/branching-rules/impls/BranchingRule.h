@@ -6,8 +6,9 @@
 #define IDOL_BRANCHINGRULE_H
 
 #include "idol/optimizers/branch-and-bound/nodes/Node.h"
-#include "idol/optimizers/Logger.h"
+#include "idol/errors/Exception.h"
 #include <list>
+#include <string>
 
 namespace idol {
     namespace Optimizers {
@@ -23,11 +24,7 @@ template<class NodeInfoT>
 class idol::BranchingRule {
     friend class Optimizers::BranchAndBound<NodeInfoT>;
     const Optimizers::BranchAndBound<NodeInfoT>& m_parent;
-    LogLevel m_log_level = Warn;
-    Color m_log_color = Default;
 protected:
-    [[nodiscard]] LogLevel log_level() const { return m_log_level; }
-    [[nodiscard]] Color log_color() const { return m_log_color; }
     [[nodiscard]] std::string name() const { return "branching-rule"; }
 public:
     explicit BranchingRule(const Optimizers::BranchAndBound<NodeInfoT>& t_parent) : m_parent(t_parent) {}

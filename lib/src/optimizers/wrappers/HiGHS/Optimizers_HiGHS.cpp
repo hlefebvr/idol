@@ -498,15 +498,9 @@ void idol::Optimizers::HiGHS::set_solution_index(unsigned int t_index) {
     }
 }
 
-void idol::Optimizers::HiGHS::set_param_log_level(idol::LogLevel t_log_level) {
-
-    if (t_log_level > Mute) {
-        m_model.setOptionValue("output_flag", true);
-    } else {
-        m_model.setOptionValue("output_flag", false);
-    }
-
-    Optimizer::set_param_log_level(t_log_level);
+void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
+    m_model.setOptionValue("output_flag", t_value);
+    Optimizer::set_param_logs(t_value);
 }
 
 idol::Optimizers::HiGHS::~HiGHS() {

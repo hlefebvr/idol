@@ -13,6 +13,8 @@
 #include "idol/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "idol/optimizers/callbacks/CallbackFactory.h"
 #include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
+#include "idol/optimizers/branch-and-bound/logs/LoggerFactory.h"
+#include "idol/optimizers/branch-and-bound/logs/Info.h"
 
 namespace idol {
     template<class NodeT>
@@ -28,6 +30,7 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
+    std::unique_ptr<LoggerFactory<NodeT>> m_logger_factory;
 
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
 
@@ -168,21 +171,7 @@ public:
      */
     BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
 
-    /**
-     * Sets the log_master frequency of the optimizer, i.e., nodes are logged every t_log_frequency nodes.
-     *
-     * Note that this in only relevant when the log_master level is at least set to `Info`.
-     *
-     * Example:
-     * ```cpp
-     * auto algorithm = BranchAndBound()
-     *                      .with_log_level(Info, Blue)
-     *                      .with_log_frequency(1); // log_master every explored node
-     * ```
-     * @param t_log_frequency the frequency for logging
-     * @return the optimizer factory itself
-     */
-    BranchAndBound<NodeT>& with_log_frequency(unsigned int t_log_frequency);
+    BranchAndBound<NodeT>& with_logger(const LoggerFactory<NodeT>& t_log_factory);
 
     BranchAndBound<NodeT>& with_scaling(bool t_value);
 
@@ -218,6 +207,19 @@ public:
 };
 
 template<class NodeT>
+idol::BranchAndBound<NodeT> &
+idol::BranchAndBound<NodeT>::with_logger(const typename idol::LoggerFactory<NodeT> &t_log_factory) {
+
+    if (m_logger_factory) {
+        throw Exception("Logs have already been configured.");
+    }
+
+    m_logger_factory.reset(t_log_factory.clone());
+
+    return *this;
+}
+
+template<class NodeT>
 idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_scaling(bool t_value) {
 
     if (m_scaling.has_value()) {
@@ -244,18 +246,6 @@ template<class NodeT>
 idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::add_callback(const BranchAndBoundCallbackFactory<NodeT> &t_callback) {
 
     m_callbacks.emplace_back(t_callback.clone());
-
-    return *this;
-}
-
-template<class NodeT>
-idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_log_frequency(unsigned int t_log_frequency) {
-
-    if (m_log_frequency.has_value()) {
-        throw Exception("A log_master frequency has already been given.");
-    }
-
-    m_log_frequency = t_log_frequency;
 
     return *this;
 }
@@ -330,9 +320,9 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
           m_relaxation_optimizer_factory(t_rhs.m_relaxation_optimizer_factory ? t_rhs.m_relaxation_optimizer_factory->clone() : nullptr),
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr),
-          m_log_frequency(t_rhs.m_log_frequency),
           m_subtree_depth(t_rhs.m_subtree_depth),
-          m_scaling(t_rhs.m_scaling) {
+          m_scaling(t_rhs.m_scaling),
+          m_logger_factory(t_rhs.m_logger_factory ? t_rhs.m_logger_factory->clone() : nullptr) {
 
     for (auto& cb : t_rhs.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
@@ -357,12 +347,18 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     auto* callback_interface = new BranchAndBoundCallbackI<NodeT>();
 
+    std::unique_ptr<LoggerFactory<NodeT>> default_logger_factory;
+    if (!m_logger_factory) {
+        default_logger_factory = std::make_unique<LogInfo<NodeT>>();
+    }
+
     auto* result = new Optimizers::BranchAndBound<NodeT>(t_model,
                                      *m_relaxation_optimizer_factory,
                                      *m_branching_rule_factory,
                                      *m_node_selection_rule_factory,
                                      callback_interface,
-                                     m_scaling.has_value() && m_scaling.value());
+                                     m_scaling.has_value() && m_scaling.value(),
+                                     m_logger_factory ? *m_logger_factory : *default_logger_factory);
 
     this->handle_default_parameters(result);
 

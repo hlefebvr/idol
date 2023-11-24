@@ -92,7 +92,7 @@ public:
 
     ~Mosek() override;
 
-    [[nodiscard]] std::string name() const override { return "mosek"; }
+    [[nodiscard]] std::string name() const override { return "Mosek"; }
 
     void set_param_time_limit(double t_time_limit) override;
 
@@ -112,7 +112,7 @@ public:
 
     void set_parameter(const std::string& t_param, const std::string& t_value);
 
-    void set_param_log_level(LogLevel t_log_level) override;
+    void set_param_logs(bool t_value) override;
 };
 
 #endif

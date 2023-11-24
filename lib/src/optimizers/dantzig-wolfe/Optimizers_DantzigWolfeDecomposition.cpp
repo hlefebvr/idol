@@ -62,7 +62,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::hook_after_optimize() {
 }
 
 std::string idol::Optimizers::DantzigWolfeDecomposition::name() const {
-    return "dantzig-wolfe";
+    return "Column Generation";
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Var &t_var) {

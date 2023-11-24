@@ -312,7 +312,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::pool_clean_u
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_init() {
 
-    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+    if (!m_parent.get_param_logs() || !m_parent.m_logger) {
         return;
     }
 
@@ -323,7 +323,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_init() {
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_master() {
 
-    if (m_parent.log_level() == Mute || !m_parent.m_logger || !m_last_master_solution.has_value()) {
+    if (!m_parent.get_param_logs() || !m_parent.m_logger || !m_last_master_solution.has_value()) {
         return;
     }
 
@@ -347,7 +347,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_master()
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_sub_problems() {
 
-    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+    if (!m_parent.get_param_logs() || !m_parent.m_logger) {
         return;
     }
 
@@ -375,7 +375,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_sub_prob
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::log_end() {
 
-    if (m_parent.log_level() == Mute || !m_parent.m_logger) {
+    if (!m_parent.get_param_logs() || !m_parent.m_logger) {
         return;
     }
 

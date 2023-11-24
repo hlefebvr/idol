@@ -68,7 +68,6 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/OptimizerWithLazyUpdates.h
         src/optimizers/wrappers/gurobi/Optimizers_Gurobi.cpp
         src/optimizers/Optimizer.cpp
-        src/optimizers/Logger.cpp
         include/idol/optimizers/Algorithm.h
         src/optimizers/Algorithm.cpp
         src/optimizers/Timer.cpp
@@ -196,6 +195,8 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/nodes/BranchingDecision.h
         include/idol/containers/Pair.h
         include/idol/optimizers/callbacks/cutting-planes/KnapsackCover.h
+        include/idol/optimizers/branch-and-bound/logs/LoggerFactory.h
+        include/idol/optimizers/branch-and-bound/logs/Info.h
 )
 
 find_package(OpenMP REQUIRED)

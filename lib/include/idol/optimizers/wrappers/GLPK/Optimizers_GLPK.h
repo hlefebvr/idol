@@ -87,7 +87,7 @@ protected:
 public:
     explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 
-    [[nodiscard]] std::string name() const override { return "glpk"; }
+    [[nodiscard]] std::string name() const override { return "GLPK"; }
 
     void set_param_time_limit(double t_time_limit) override;
 

@@ -146,7 +146,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                             .with_hard_branching(branching_on_sub_problem)
                                                                             .with_infeasibility_strategy( *infeasibility_strategy)
                                                                             .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
-                                                                            .with_log_level(Mute, Cyan)
+                                                                            .with_logs(false)
                                                             )
                                                             .with_branching_rule(MostInfeasible())
                                                             .with_node_selection_rule(BestBound())
@@ -156,14 +156,14 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                                                                 .with_optimizer(OPTIMIZER().with_presolve(false))
                                                                 );
                                                             })
-                                                            .with_log_level(Mute, Green)
+                                                            .with_logs(false)
                                                             .with_log_frequency(1)
                                             )
                                     )
                                     .with_hard_branching(branching_on_sub_problem)
                                     .with_infeasibility_strategy( *infeasibility_strategy)
                                     .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(smoothing_factor))
-                                    .with_log_level(Mute, Yellow)
+                                    .with_logs(false)
                                     .clone()
                     )
             }
@@ -181,7 +181,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
                                         .with_optimizer(OPTIMIZER().with_presolve(false))
                         );
                     })
-                    .with_log_level(Info, Blue)
+                    .with_logs(true)
                     .with_log_frequency(1)
     );
 

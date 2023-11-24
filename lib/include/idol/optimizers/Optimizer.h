@@ -7,9 +7,8 @@
 
 #include <string>
 
-#include "Logger.h"
 #include "Timer.h"
-
+#include "idol/modeling/numericals.h"
 #include "idol/modeling/solutions/types.h"
 
 namespace idol {
@@ -30,17 +29,13 @@ class idol::impl::Optimizer {
 
     bool m_is_terminated = false;
 
-    LogLevel m_param_log_level = Warn;
-
-    Color m_param_log_color = Default;
-
     unsigned int m_param_threads = 1;
     unsigned int m_param_iteration_limit = std::numeric_limits<unsigned int>::max();
 
+    bool m_param_logs = true;
     double m_param_time_limit = std::numeric_limits<double>::max();
     double m_param_best_obj_stop = -Inf;
     double m_param_best_bound_stop = +Inf;
-
     bool m_param_presolve = true;
     bool m_param_infeasible_or_unbounded_info = false;
 
@@ -130,13 +125,9 @@ public:
 
     [[nodiscard]] virtual const ::idol::Model& parent() const { return m_parent; }
 
-    [[nodiscard]] LogLevel log_level() const { return m_param_log_level; }
+    [[nodiscard]] bool get_param_logs() const { return m_param_logs; }
 
-    virtual void set_param_log_level(LogLevel t_log_level) { m_param_log_level = t_log_level; }
-
-    [[nodiscard]] Color log_color() const { return m_param_log_color; }
-
-    virtual void set_param_log_color(Color t_log_color) { m_param_log_color = t_log_color; }
+    virtual void set_param_logs(bool t_value) { m_param_logs = t_value; }
 
     [[nodiscard]] double get_param_time_limit() const { return m_param_time_limit; }
 

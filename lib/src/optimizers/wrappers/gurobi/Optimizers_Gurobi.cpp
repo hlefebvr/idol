@@ -4,7 +4,6 @@
 #ifdef IDOL_USE_GUROBI
 
 #include "idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
-#include "idol/optimizers/Logger.h"
 
 std::unique_ptr<GRBEnv> idol::Optimizers::Gurobi::s_global_env;
 
@@ -249,7 +248,7 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
             const auto& rhs = model.get_ctr_row(ctr).rhs();
             std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs.as_numerical()));
         } else {
-            idol_Log(Warn, "Updating RHS on an SOCP constraint was skipped.")
+            std::cout << "Warning: Updating RHS on an SOCP constraint was skipped" << std::endl;
         }
     }
 
@@ -456,9 +455,9 @@ void idol::Optimizers::Gurobi::set_max_n_solution_in_pool(unsigned int t_value) 
     m_model.set(GRB_IntParam_PoolSolutions, (int) std::min<unsigned int>(GRB_MAXINT, t_value));
 }
 
-void idol::Optimizers::Gurobi::set_param_log_level(LogLevel t_log_level) {
-    m_model.set(GRB_IntParam_OutputFlag, t_log_level != Mute);
-    Optimizer::set_param_log_level(t_log_level);
+void idol::Optimizers::Gurobi::set_param_logs(bool t_value) {
+    m_model.set(GRB_IntParam_OutputFlag, t_value);
+    Optimizer::set_param_logs(t_value);
 }
 
 void idol::Optimizers::Gurobi::set_param(GRB_IntParam t_param, int t_value) {
