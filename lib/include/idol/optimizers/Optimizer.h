@@ -67,32 +67,6 @@ protected:
 
     virtual void hook_after_optimize() {}
 
-    void restart() { m_is_terminated = false; hook_before_optimize(); }
-
-    [[nodiscard]] virtual SolutionStatus get_status() const = 0;
-
-    [[nodiscard]] virtual SolutionReason get_reason() const = 0;
-
-    [[nodiscard]] virtual double get_best_obj() const = 0;
-
-    [[nodiscard]] virtual double get_best_bound() const = 0;
-
-    [[nodiscard]] virtual double get_var_primal(const Var& t_var) const = 0;
-
-    [[nodiscard]] virtual double get_var_ray(const Var& t_var) const = 0;
-
-    [[nodiscard]] virtual double get_ctr_dual(const Ctr& t_ctr) const = 0;
-
-    [[nodiscard]] virtual double get_ctr_farkas(const Ctr& t_ctr) const = 0;
-
-    [[nodiscard]] virtual double get_relative_gap() const = 0;
-
-    [[nodiscard]] virtual double get_absolute_gap() const = 0;
-
-    [[nodiscard]] virtual unsigned int get_n_solutions() const = 0;
-
-    [[nodiscard]] virtual unsigned int get_solution_index() const = 0;
-
     virtual void set_solution_index(unsigned int t_index) = 0;
 
     virtual void update_obj_sense() = 0;
@@ -124,6 +98,30 @@ public:
     [[nodiscard]] virtual std::string name() const = 0;
 
     [[nodiscard]] virtual const ::idol::Model& parent() const { return m_parent; }
+
+    [[nodiscard]] virtual SolutionStatus get_status() const = 0;
+
+    [[nodiscard]] virtual SolutionReason get_reason() const = 0;
+
+    [[nodiscard]] virtual double get_best_obj() const = 0;
+
+    [[nodiscard]] virtual double get_best_bound() const = 0;
+
+    [[nodiscard]] virtual double get_var_primal(const Var& t_var) const = 0;
+
+    [[nodiscard]] virtual double get_var_ray(const Var& t_var) const = 0;
+
+    [[nodiscard]] virtual double get_ctr_dual(const Ctr& t_ctr) const = 0;
+
+    [[nodiscard]] virtual double get_ctr_farkas(const Ctr& t_ctr) const = 0;
+
+    [[nodiscard]] virtual double get_relative_gap() const = 0;
+
+    [[nodiscard]] virtual double get_absolute_gap() const = 0;
+
+    [[nodiscard]] virtual unsigned int get_n_solutions() const = 0;
+
+    [[nodiscard]] virtual unsigned int get_solution_index() const = 0;
 
     [[nodiscard]] bool get_param_logs() const { return m_param_logs; }
 

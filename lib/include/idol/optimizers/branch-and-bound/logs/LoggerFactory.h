@@ -32,6 +32,8 @@ public:
         virtual void initialize() {}
 
         virtual void log_node_after_solve(const Node<NodeInfoT>& t_node) {}
+
+        virtual void log_after_termination() {}
     };
 
     virtual Strategy* operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const = 0;

@@ -362,10 +362,6 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     this->handle_default_parameters(result);
 
-    if (m_log_frequency.has_value()) {
-        result->set_log_frequency(m_log_frequency.value());
-    }
-
     if (m_subtree_depth.has_value()) {
         result->set_subtree_depth(m_subtree_depth.value());
     }

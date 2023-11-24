@@ -39,11 +39,14 @@ class idol::LogInfo : public LoggerFactory<NodeInfoT> {
 public:
     class Strategy : public LoggerFactory<NodeInfoT>::Strategy {
         double m_last_log_timestamp = 0;
-        double m_frequency_in_milliseconds = 50;
+        double m_frequency_in_seconds = 5;
         bool m_header_has_been_printed = false;
         bool m_root_node_has_been_printed = false;
         bool m_log_after_root_node = false;
+    protected:
+        void log_header();
     public:
+
         Strategy(Optimizers::BranchAndBound<NodeInfoT>& t_parent);
 
         void initialize() override;
@@ -52,7 +55,7 @@ public:
 
         void log_root_node(const Node<NodeInfoT>& t_node);
 
-        void log_header();
+        void log_after_termination() override;
     };
 
     Strategy *operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const override;
@@ -94,14 +97,14 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeIn
 
     const auto& parent = this->parent();
 
-    const double total_time = parent.time().count(Timer::Milliseconds);
+    const double total_time = parent.time().count();
 
     if (!m_root_node_has_been_printed) {
         log_root_node(t_node);
         return;
     }
 
-    if (total_time - m_last_log_timestamp < m_frequency_in_milliseconds) {
+    if (total_time - m_last_log_timestamp < m_frequency_in_seconds) {
         return;
     }
 
@@ -118,7 +121,7 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeIn
     std::cout << " | ";
     std::cout << std::setw(log_width_problem_best_bound) << pretty_double(parent.get_best_bound(), double_precision);
     std::cout << std::setw(log_width_problem_best_obj) << pretty_double(parent.get_best_obj(), double_precision);
-    std::cout << std::setw(log_width_problem_rel_gap) << pretty_double(parent.get_relative_gap(), double_precision);
+    std::cout << std::setw(log_width_problem_rel_gap) << pretty_double(parent.get_relative_gap() * 100, double_precision);
     std::cout << std::setw(log_width_problem_abs_gap) << pretty_double(parent.get_absolute_gap(), double_precision);
 
     // Current Node
@@ -192,6 +195,83 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_header() {
     std::cout << std::endl;
 
     m_header_has_been_printed = true;
+}
+
+template<class NodeInfoT>
+void idol::LogInfo<NodeInfoT>::Strategy::log_after_termination() {
+
+    LoggerFactory<NodeInfoT>::Strategy::Strategy::log_after_termination();
+
+    auto& parent = this->parent();
+
+    std::cout << "Explored " << parent.n_solved_nodes() << " nodes in " << parent.time().count() << " seconds\n" << std::endl;
+
+    const unsigned int n_solutions = parent.get_n_solutions();
+
+    std::cout << "Solution count " << n_solutions << ":";
+
+    for (unsigned int i = 0 ; i < n_solutions ; ++i) {
+        parent.set_solution_index(i);
+        std::cout << '\t' << parent.get_best_obj();
+    }
+
+    parent.set_solution_index(0);
+
+    std::cout << std::endl;
+
+    const auto status = parent.get_status();
+    const auto reason = parent.get_reason();
+
+    switch (reason) {
+        case TimeLimit:
+            std::cout << "Time limit was reached." << std::endl;
+            break;
+        case IterLimit:
+            std::cout << "Iteration limit was reached." << std::endl;
+            break;
+        case ObjLimit:
+            std::cout << "Objective limit was reached." << std::endl;
+            break;
+        case Numerical:
+            std::cout << "There was unrecoverable numerical troubles during the execution of the algorithm." << std::endl;
+            break;
+        case NotSpecified:
+            std::cout << "The reason for termination is not specified." << std::endl;
+            break;
+        default:;
+    }
+
+    switch (status) {
+        case Optimal:
+            std::cout << "Optimal solution found (tolerance " << parent.get_tol_mip_relative_gap() << ")" << std::endl;
+            break;
+        case Feasible:
+            std::cout << "Feasible solution found" << std::endl;
+            break;
+        case Infeasible:
+            std::cout << "No feasible solution found" << std::endl;
+            break;
+        case InfOrUnbnd:
+            std::cout << "Problem is infeasible or unbounded" << std::endl;
+            break;
+        case Unbounded:
+            std::cout << "Problem is unbounded" << std::endl;
+            break;
+        case Fail:
+            std::cout << "There was unrecoverable errors." << std::endl;
+            break;
+        case SubOptimal:
+            std::cout << "Sub-optimal solution found" << std::endl;
+            break;
+        default:;
+    }
+
+    std::cout
+            << "Best objective " << pretty_double(parent.get_best_obj(), double_precision)
+            << ", best bound " << pretty_double(parent.get_best_bound(), double_precision)
+            << ", gap " << pretty_double(parent.get_relative_gap() * 100, double_precision) << " %"
+            << std::endl;
+
 }
 
 #endif //IDOL_INFO_H

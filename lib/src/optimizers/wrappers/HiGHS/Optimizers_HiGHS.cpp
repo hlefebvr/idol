@@ -11,7 +11,7 @@ idol::Optimizers::HiGHS::HiGHS(const Model &t_model, bool t_continuous_relaxatio
     : OptimizerWithLazyUpdates(t_model),
       m_continuous_relaxation(t_continuous_relaxation) {
 
-    m_model.setOptionValue("output_flag", false);
+    m_model.setOptionValue("output_flag", get_param_logs());
 
 }
 

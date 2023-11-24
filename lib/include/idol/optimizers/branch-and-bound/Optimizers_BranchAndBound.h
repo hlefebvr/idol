@@ -41,7 +41,6 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
-    unsigned int m_log_frequency = 10;
     bool m_perform_scaling = false;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
@@ -54,6 +53,7 @@ protected:
     void build() override;
     void hook_before_optimize() override;
     void hook_optimize() override;
+    void hook_after_optimize() override;
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;
     void remove(const Var &t_var) override;
@@ -73,15 +73,10 @@ protected:
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
 
-    SideEffectRegistry call_callbacks(CallbackEvent t_event, const TreeNode& t_node);
+    void log_node_after_solve(const Node<NodeInfoT>& t_node);
+    void log_after_termination();
 
-    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
-    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
-    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
-    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
-    [[nodiscard]] unsigned int get_n_solutions() const override;
-    [[nodiscard]] unsigned int get_solution_index() const override;
-    void set_solution_index(unsigned int t_index) override;
+    SideEffectRegistry call_callbacks(CallbackEvent t_event, const TreeNode& t_node);
 
     void update_obj_sense() override;
     void update_obj() override;
@@ -107,10 +102,6 @@ public:
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
 
     void solve(TreeNode& t_node) const;
-
-    virtual void set_log_frequency(unsigned int t_log_frequency) { m_log_frequency = t_log_frequency; }
-
-    [[nodiscard]] unsigned int log_frequency() const { return m_log_frequency; }
 
     virtual void set_subtree_depth(unsigned int t_depth) { m_steps.at(1) = t_depth; }
 
@@ -141,7 +132,47 @@ public:
     [[nodiscard]] bool has_incumbent() const { return m_incumbent.has_value(); }
 
     const TreeNode& incumbent() const { return m_incumbent.value(); }
+
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
+
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
+
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+
+    [[nodiscard]] unsigned int get_solution_index() const override;
+
+    void set_solution_index(unsigned int t_index) override;
 };
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::log_after_termination() {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    if (m_callback) {
+        m_callback->log_after_termination();
+    }
+
+    m_logger->log_after_termination();
+
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node_after_solve(const idol::Node<NodeInfoT> &t_node) {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    m_logger->log_node_after_solve(t_node);
+
+}
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_solution_index(unsigned int t_index) {
@@ -415,6 +446,15 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_optimize() {
 }
 
 template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_after_optimize() {
+
+    Optimizer::hook_after_optimize();
+
+    log_after_termination();
+
+}
+
+template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
                                                     SetOfActiveNodes & t_active_nodes,
                                                     unsigned int t_step) {
@@ -430,7 +470,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
 
         analyze(t_node, &explore_children_flag, &reoptimize_flag);
 
-        m_logger->log_node_after_solve(t_node);
+        log_node_after_solve(t_node);
 
     } while (reoptimize_flag);
 

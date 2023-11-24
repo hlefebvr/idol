@@ -56,10 +56,10 @@ int main(int t_argc, const char** t_argv) {
     model.use(BranchAndBound()
                       .with_node_optimizer(
                               DantzigWolfeDecomposition(decomposition)
-                                      .with_master_optimizer(HiGHS::ContinuousRelaxation())
+                                      .with_master_optimizer(HiGHS::ContinuousRelaxation().with_logs(false))
                                       .with_default_sub_problem_spec(
                                               DantzigWolfe::SubProblem()
-                                                                .add_optimizer(HiGHS())
+                                                                .add_optimizer(HiGHS().with_logs(false))
                                                                 .with_column_pool_clean_up(1500, .75)
                                       )
                                       .with_logger(DantzigWolfe::Loggers::Info())
@@ -70,7 +70,7 @@ int main(int t_argc, const char** t_argv) {
                       .with_subtree_depth(0)
                       .with_branching_rule(MostInfeasible())
                       .with_node_selection_rule(WorstBound())
-                      .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS()))
+                      .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
             );
 
     // Solve

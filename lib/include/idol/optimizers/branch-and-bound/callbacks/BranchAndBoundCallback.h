@@ -64,7 +64,26 @@ protected:
     void add_callback(BranchAndBoundCallback<NodeInfoT> *t_cb) override;
 
     void initialize(Optimizers::BranchAndBound<NodeInfoT>* t_parent) override;
+
+    void log_after_termination() override;
 };
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallbackI<NodeInfoT>::log_after_termination() {
+
+    if (m_callbacks.empty()) {
+        return;
+    }
+
+    std::cout << "Callbacks:" << std::endl;
+
+    for (auto& ptr_to_cb : m_callbacks) {
+        ptr_to_cb->log_after_termination();
+    }
+
+    std::cout << std::endl;
+
+}
 
 template<class NodeInfoT>
 const idol::SideEffectRegistry &idol::BranchAndBoundCallbackI<NodeInfoT>::side_effect_registry() const {
@@ -95,6 +114,8 @@ protected:
      * @param t_event The event triggering the callback
      */
     virtual void operator()(CallbackEvent t_event) = 0;
+
+    virtual void log_after_termination() {}
 
     /**
      * Adds a user cut to the relaxation

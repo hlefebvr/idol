@@ -77,6 +77,7 @@ class idol::Cuts::KnapsackCover<NodeInfoT>::Strategy : public BranchAndBoundCall
 
     std::list<KnapsackStructure> m_knapsack_structures;
     const bool m_lifting;
+    unsigned int m_n_cuts = 0;
 protected:
     // Detect structure
     void detect_knapsack_structure(const Ctr& t_ctr);
@@ -106,9 +107,20 @@ protected:
     void initialize() override;
 
     void operator()(CallbackEvent t_event) override;
+
+    void log_after_termination() override;
+
 public:
     Strategy(bool t_use_lifting);
 };
+
+template<class NodeInfoT>
+void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::log_after_termination() {
+
+    BranchAndBoundCallback<NodeInfoT>::log_after_termination();
+
+    std::cout << "\tKnapsack Cover Cuts: " << m_n_cuts << std::endl;
+}
 
 template<class NodeInfoT>
 idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::Strategy(bool t_use_lifting) : m_lifting(t_use_lifting) {
@@ -174,6 +186,7 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::initialize() {
     BranchAndBoundCallback<NodeInfoT>::initialize();
 
     m_knapsack_structures.clear();
+    m_n_cuts = 0;
 
     const auto& model = this->original_model();
 
@@ -349,6 +362,7 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
     auto cut = create_cut(N, rhs);
 
     this->add_user_cut(cut);
+    ++m_n_cuts;
 
 }
 

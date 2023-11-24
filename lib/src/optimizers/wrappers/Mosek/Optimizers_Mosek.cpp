@@ -13,8 +13,11 @@ idol::Optimizers::Mosek::Mosek(const Model &t_model, bool t_continuous_relaxatio
       m_model(new mosek::fusion::Model()),
       m_continuous_relaxation(t_continuous_relaxation) {
 
-    m_model->setLogHandler(NULL);
     m_model->acceptedSolutionStatus(mosek::fusion::AccSolutionStatus::Feasible);
+
+    if (!get_param_logs()) {
+        m_model->setLogHandler(NULL);
+    }
 
 }
 

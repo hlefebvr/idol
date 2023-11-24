@@ -90,11 +90,12 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
     m_model.set(GRB_DoubleParam_OptimalityTol, get_tol_optimality());
 
     // Parameters
-    //m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
-    //m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
+    m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
+    m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
     m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
     m_model.set(GRB_IntParam_Presolve, get_param_presolve());
     m_model.set(GRB_IntParam_Threads, (int) get_param_threads());
+    m_model.set(GRB_IntParam_OutputFlag, get_param_logs());
 }
 
 void idol::Optimizers::Gurobi::hook_build() {

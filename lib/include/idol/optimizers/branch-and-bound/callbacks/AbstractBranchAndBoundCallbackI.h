@@ -13,8 +13,6 @@ namespace idol {
     template<class NodeInfoT>
     class BranchAndBoundCallback;
 
-    class CuttingPlaneGenerator;
-
     namespace Optimizers {
         template<class NodeInfoT>
         class BranchAndBound;
@@ -46,6 +44,8 @@ protected:
     virtual void add_callback(BranchAndBoundCallback<NodeInfoT>* t_cb) = 0;
 
     virtual void initialize(Optimizers::BranchAndBound<NodeInfoT>* t_parent) = 0;
+
+    virtual void log_after_termination() = 0;
 
     friend class Optimizers::BranchAndBound<NodeInfoT>;
 };
