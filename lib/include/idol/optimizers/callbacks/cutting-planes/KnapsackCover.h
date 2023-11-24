@@ -944,7 +944,7 @@ idol::BranchAndBoundCallback<NodeInfoT> *idol::Cuts::KnapsackCover<NodeInfoT>::o
             m_lifting.has_value() ? m_lifting.value() : true,
             m_apply_to_tree_nodes.has_value() ? m_apply_to_tree_nodes.value() : true,
             m_max_pass_root_node.has_value() ? m_max_pass_root_node.value() : 400,
-            m_max_cuts_factor.has_value() ? m_max_cuts_factor.value() : 100
+            m_max_cuts_factor.has_value() ? m_max_cuts_factor.value() : 3
         );
 }
 
