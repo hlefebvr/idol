@@ -14,12 +14,13 @@ namespace idol::DantzigWolfe::Loggers {
 }
 
 class idol::DantzigWolfe::Loggers::Info : public DantzigWolfe::LoggerFactory {
-    std::optional<unsigned int> m_frequency;
+    std::optional<unsigned int> m_frequency_in_seconds;
     std::optional<bool> m_log_for_sub_problems;
 public:
     class Strategy : public DantzigWolfe::LoggerFactory::Strategy {
-        const unsigned int m_frequency;
+        const double m_frequency_in_seconds;
         bool m_log_for_sub_problems;
+        double m_last_log_timestamp = 0;
     public:
         Strategy(unsigned int t_frequency, bool t_log_sub_problems);
 
@@ -53,13 +54,13 @@ public:
         void log_end() override;
     };
 
-    Info& with_frequency(unsigned int t_frequency);
+    Info& with_frequency_in_seconds(double t_frequency);
 
     Info& with_sub_problems(bool t_value);
 
     Strategy *operator()() const override {
         return new Strategy(
-                m_frequency.has_value() ? m_frequency.value() : 1,
+                m_frequency_in_seconds.has_value() ? m_frequency_in_seconds.value() : 5,
                 m_log_for_sub_problems.has_value() && m_log_for_sub_problems.value()
                 );
     }

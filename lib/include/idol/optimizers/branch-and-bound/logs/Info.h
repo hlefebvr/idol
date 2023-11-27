@@ -36,10 +36,12 @@ class idol::LogInfo : public LoggerFactory<NodeInfoT> {
     static constexpr auto current_node_space = (log_width_current_node_status + log_width_current_node_reason + log_width_current_node_obj + log_width_current_node_depth);
     static constexpr auto table_space = log_section_width_algorithm + log_section_width_problem + current_node_space + n_sections * 3 + 1;
 
+
+    std::optional<double> m_log_frequency_in_seconds;
 public:
     class Strategy : public LoggerFactory<NodeInfoT>::Strategy {
         double m_last_log_timestamp = 0;
-        double m_frequency_in_seconds = 5;
+        double m_frequency_in_seconds;
         bool m_header_has_been_printed = false;
         bool m_root_node_has_been_printed = false;
         bool m_log_after_root_node = false;
@@ -47,7 +49,7 @@ public:
         void log_header();
     public:
 
-        Strategy(Optimizers::BranchAndBound<NodeInfoT>& t_parent);
+        Strategy(Optimizers::BranchAndBound<NodeInfoT>& t_parent, double t_frequency_in_seconds);
 
         void initialize() override;
 
@@ -61,11 +63,25 @@ public:
     Strategy *operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const override;
 
     LoggerFactory<NodeInfoT> *clone() const override;
+
+    LogInfo& with_frequency_in_seconds(double t_frequency);
 };
 
 template<class NodeInfoT>
+idol::LogInfo<NodeInfoT> &idol::LogInfo<NodeInfoT>::with_frequency_in_seconds(double t_frequency) {
+
+    if (m_log_frequency_in_seconds.has_value()) {
+        throw Exception("Log frequency has already been configured.");
+    }
+
+    m_log_frequency_in_seconds = t_frequency;
+
+    return *this;
+}
+
+template<class NodeInfoT>
 typename idol::LogInfo<NodeInfoT>::Strategy *idol::LogInfo<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const {
-    return new Strategy(t_parent);
+    return new Strategy(t_parent, m_log_frequency_in_seconds.has_value() ? m_log_frequency_in_seconds.value() : 5);
 }
 
 template<class NodeInfoT>
@@ -74,8 +90,9 @@ idol::LoggerFactory<NodeInfoT> *idol::LogInfo<NodeInfoT>::clone() const {
 }
 
 template<class NodeInfoT>
-idol::LogInfo<NodeInfoT>::Strategy::Strategy(Optimizers::BranchAndBound<NodeInfoT> &t_parent)
-        : LoggerFactory<NodeInfoT>::Strategy(t_parent) {
+idol::LogInfo<NodeInfoT>::Strategy::Strategy(Optimizers::BranchAndBound<NodeInfoT> &t_parent, double t_frequency_in_seconds)
+        : LoggerFactory<NodeInfoT>::Strategy(t_parent),
+          m_frequency_in_seconds(t_frequency_in_seconds) {
 
 }
 

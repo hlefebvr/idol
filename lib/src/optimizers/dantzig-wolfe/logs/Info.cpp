@@ -66,6 +66,8 @@ void idol::DantzigWolfe::Loggers::Info::Strategy::log_init(unsigned int t_n_sub_
     std::cout << " | ";
 
     std::cout << std::endl;
+
+    m_last_log_timestamp = 0;
 }
 
 void
@@ -80,6 +82,12 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration
                                                         double t_best_obj,
                                                         unsigned int t_n_generated_columns,
                                                         unsigned int t_n_present_columns) {
+
+    if (m_last_log_timestamp != 0 && t_total_time - m_last_log_timestamp < m_frequency_in_seconds) {
+        return;
+    }
+
+    m_last_log_timestamp = t_total_time;
 
     std::cout << " | ";
     std::cout << std::setw(LOG_WIDTH_ITERATION) << t_iteration;
@@ -153,18 +161,18 @@ void idol::DantzigWolfe::Loggers::Info::Strategy::log_end() {
 }
 
 idol::DantzigWolfe::Loggers::Info::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)
-    : m_frequency(t_frequency),
+    : m_frequency_in_seconds(t_frequency),
       m_log_for_sub_problems(t_log_sub_problems) {
 
 }
 
-idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_frequency(unsigned int t_frequency) {
+idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_frequency_in_seconds(double t_frequency) {
 
-    if (m_frequency.has_value()) {
+    if (m_frequency_in_seconds.has_value()) {
         throw Exception("A log frequency has already been configured.");
     }
 
-    m_frequency = t_frequency;
+    m_frequency_in_seconds = t_frequency;
 
     return *this;
 }

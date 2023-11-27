@@ -62,7 +62,7 @@ int main(int t_argc, const char** t_argv) {
                                                                 .add_optimizer(HiGHS().with_logs(false))
                                                                 .with_column_pool_clean_up(1500, .75)
                                       )
-                                      .with_logger(DantzigWolfe::Loggers::Info())
+                                      .with_logger(DantzigWolfe::Loggers::Info().with_frequency_in_seconds(.1))
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
                                       .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
                                       .with_hard_branching(true)
