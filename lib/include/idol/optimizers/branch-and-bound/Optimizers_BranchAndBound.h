@@ -45,6 +45,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
     unsigned int m_n_solved_nodes = 0;
+    unsigned int m_n_active_nodes = 0;
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
@@ -116,6 +117,8 @@ public:
     [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
 
     [[nodiscard]] unsigned int n_solved_nodes() const { return m_n_solved_nodes; }
+
+    [[nodiscard]] unsigned int n_active_nodes() const { return m_n_active_nodes; }
 
     [[nodiscard]] const Model& relaxation() const { return *m_relaxation; }
 
@@ -391,6 +394,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
+    m_n_active_nodes = 0;
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
@@ -490,6 +494,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
 
         if (t_step == 0) {
             update_lower_bound(t_active_nodes);
+            m_n_active_nodes = t_active_nodes.size();
         }
 
         if (t_active_nodes.empty()) { break; }
