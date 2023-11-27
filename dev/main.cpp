@@ -16,7 +16,7 @@
 #include "idol/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/BracnhingWithPriority.h"
+#include "idol/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h"
 #include "idol/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/problems/knapsack-problem/KP_Instance.h"
 #include "idol/optimizers/callbacks/cutting-planes/KnapsackCover.h"

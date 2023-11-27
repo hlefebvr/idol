@@ -189,7 +189,7 @@ add_library(idol STATIC
         include/idol/optimizers/dantzig-wolfe/logs/Info.h
         src/optimizers/dantzig-wolfe/logs/Info.cpp
         include/idol/optimizers/logs.h
-        include/idol/optimizers/branch-and-bound/branching-rules/factories/BracnhingWithPriority.h
+        include/idol/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h
         src/optimizers/logs.cpp
         include/idol/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
         include/idol/optimizers/branch-and-bound/nodes/BranchingDecision.h
