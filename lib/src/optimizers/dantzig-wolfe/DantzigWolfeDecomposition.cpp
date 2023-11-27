@@ -80,7 +80,7 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
     const bool use_hard_branching = m_use_hard_branching.has_value() && m_use_hard_branching.value();
     const bool remove_infeasible_column = m_use_infeasible_column_removal_when_branching.has_value() ? m_use_infeasible_column_removal_when_branching.value() : use_hard_branching;
 
-    return new Optimizers::DantzigWolfeDecomposition(t_model,
+    auto result = new Optimizers::DantzigWolfeDecomposition(t_model,
                                                      std::move(*dantzig_wolfe_formulation),
                                                      *m_master_optimizer_factory,
                                                      m_dual_price_smoothing_stabilization ? *m_dual_price_smoothing_stabilization : *dual_price_smoothing,
@@ -91,6 +91,10 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
                                                      m_logger_factory ? *m_logger_factory : *default_logger_factory
                                                      );
+
+    this->handle_default_parameters(result);
+
+    return result;
 }
 
 std::vector<idol::DantzigWolfe::SubProblem> idol::DantzigWolfeDecomposition::create_sub_problems_specifications(

@@ -5,6 +5,13 @@
 
 #include "idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 
+#define GUROBI_CATCH(cmd) \
+try { \
+    cmd \
+} catch (GRBException& error) { \
+throw Exception("Gurobi exception [" + std::to_string(error.getErrorCode()) + "] " + error.getMessage() ); \
+}
+
 std::unique_ptr<GRBEnv> idol::Optimizers::Gurobi::s_global_env;
 
 GRBEnv &idol::Optimizers::Gurobi::get_global_env() {
@@ -277,12 +284,9 @@ void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 void idol::Optimizers::Gurobi::hook_optimize() {
     set_solution_index(0);
 
-    try {
+    GUROBI_CATCH(
         m_model.optimize();
-    } catch (const GRBException& err) {
-        std::cout << "[Gurobi exception]" << err.getErrorCode() << ": " << err.getMessage() << std::endl;
-        __throw_exception_again;
-    }
+    )
 
 }
 
@@ -402,24 +406,34 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
 double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
 
     if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
-        return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+        GUROBI_CATCH(
+            return lazy(t_var).impl().get(GRB_DoubleAttr_X);
+        )
     }
 
-    return lazy(t_var).impl().get(GRB_DoubleAttr_Xn);
+    GUROBI_CATCH(
+        return lazy(t_var).impl().get(GRB_DoubleAttr_Xn);
+    )
 }
 
 double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
-    return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
+    GUROBI_CATCH(
+        return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
+    )
 }
 
 double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
     const auto& impl = lazy(t_ctr).impl();
 
     if (std::holds_alternative<GRBConstr>(impl)) {
-        return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
+        GUROBI_CATCH(
+            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
+        )
     }
 
-    return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCPi);
+    GUROBI_CATCH(
+        return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCPi);
+    )
 }
 
 double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -429,7 +443,9 @@ double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
         throw Exception("Gurobi does not handle Farkas certificates with quadratic constraints.");
     }
 
-    return -std::get<GRBConstr>(impl).get(GRB_DoubleAttr_FarkasDual);
+    GUROBI_CATCH(
+        return -std::get<GRBConstr>(impl).get(GRB_DoubleAttr_FarkasDual);
+    )
 }
 
 double idol::Optimizers::Gurobi::get_relative_gap() const {
