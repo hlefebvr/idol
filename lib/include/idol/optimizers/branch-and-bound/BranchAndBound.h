@@ -76,6 +76,8 @@ public:
      */
     BranchAndBound<NodeT>& with_node_optimizer(const OptimizerFactory& t_node_optimizer);
 
+    void set_node_optimizer(const OptimizerFactory& t_node_optimizer);
+
     BranchAndBound<NodeT>& operator+=(const OptimizerFactory& t_node_optimizer);
 
     /**
@@ -205,6 +207,11 @@ public:
      */
     BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
 };
+
+template<class NodeT>
+void idol::BranchAndBound<NodeT>::set_node_optimizer(const idol::OptimizerFactory &t_node_optimizer) {
+    m_relaxation_optimizer_factory.reset(t_node_optimizer.clone());
+}
 
 template<class NodeT>
 idol::BranchAndBound<NodeT> &

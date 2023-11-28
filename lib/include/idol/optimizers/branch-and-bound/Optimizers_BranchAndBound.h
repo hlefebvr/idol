@@ -168,13 +168,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::log_after_termination() {
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node_after_solve(const idol::Node<NodeInfoT> &t_node) {
-
-    if (!get_param_logs()) {
-        return;
-    }
-
     m_logger->log_node_after_solve(t_node);
-
 }
 
 template<class NodeInfoT>

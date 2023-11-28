@@ -116,11 +116,16 @@ idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::Strategy(Optimizers::Bran
 
 template<class NodeInfoT>
 void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::initialize() {
-    Factory<NodeInfoT>::Strategy::initialize();
 
     m_last_log_timestamp = 0;
     m_header_has_been_printed = false;
     m_root_node_has_been_printed = false;
+
+    if (!this->parent().get_param_logs()) {
+        return;
+    }
+
+    Factory<NodeInfoT>::Strategy::initialize();
 
     std::cout << "Solving root node with " << this->parent().relaxation().optimizer().name() << "...\n" << std::endl;
 
@@ -128,6 +133,11 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::initialize() {
 
 template<class NodeInfoT>
 void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeInfoT> &t_node) {
+
+    if (!this->parent().get_param_logs()) {
+        return;
+    }
+
     Factory<NodeInfoT>::Strategy::Strategy::log_node_after_solve(t_node);
 
     const auto& parent = this->parent();
@@ -173,6 +183,10 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve
 
 template<class NodeInfoT>
 void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_root_node(const Node<NodeInfoT> &t_node) {
+
+    if (!this->parent().get_param_logs()) {
+        return;
+    }
 
     auto& branch_and_bound = this->parent();
     const double total_time = branch_and_bound.time().count();
@@ -234,6 +248,10 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_header() {
 
 template<class NodeInfoT>
 void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_after_termination() {
+
+    if (!this->parent().get_param_logs()) {
+        return;
+    }
 
     Factory<NodeInfoT>::Strategy::Strategy::log_after_termination();
 

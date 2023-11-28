@@ -442,6 +442,10 @@ public:
      */
     [[nodiscard]] bool has_optimizer() const;
 
+    [[nodiscard]] bool has_optimizer_factory() const { return bool(m_optimizer_factory); }
+
+    [[nodiscard]] const OptimizerFactory& optimizer_factory() const { return *m_optimizer_factory; }
+
     /**
      * Removes an existing optimizer.
      *
