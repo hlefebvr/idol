@@ -185,7 +185,7 @@ add_library(idol STATIC
         include/idol/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
         include/idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
         src/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
-        include/idol/optimizers/dantzig-wolfe/logs/LoggerFactory.h
+        include/idol/optimizers/dantzig-wolfe/logs/Factory.h
         include/idol/optimizers/dantzig-wolfe/logs/Info.h
         src/optimizers/dantzig-wolfe/logs/Info.cpp
         include/idol/optimizers/logs.h
@@ -195,7 +195,7 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/nodes/BranchingDecision.h
         include/idol/containers/Pair.h
         include/idol/optimizers/callbacks/cutting-planes/KnapsackCover.h
-        include/idol/optimizers/branch-and-bound/logs/LoggerFactory.h
+        include/idol/optimizers/branch-and-bound/logs/Factory.h
         include/idol/optimizers/branch-and-bound/logs/Info.h
 )
 

@@ -2,22 +2,22 @@
 // Created by henri on 06.11.23.
 //
 
-#ifndef IDOL_DANTZIGWOLFE_LOGGER_INFO_H
-#define IDOL_DANTZIGWOLFE_LOGGER_INFO_H
+#ifndef IDOL_LOGS_DANTZIGWOLFE_INFO_H
+#define IDOL_LOGS_DANTZIGWOLFE_INFO_H
 
-#include "LoggerFactory.h"
+#include "Factory.h"
 #include "idol/modeling/solutions/types.h"
 #include <optional>
 
-namespace idol::DantzigWolfe::Loggers {
+namespace idol::Logs::DantzigWolfe {
     class Info;
 }
 
-class idol::DantzigWolfe::Loggers::Info : public DantzigWolfe::LoggerFactory {
+class idol::Logs::DantzigWolfe::Info : public idol::Logs::DantzigWolfe::Factory {
     std::optional<unsigned int> m_frequency_in_seconds;
     std::optional<bool> m_log_for_sub_problems;
 public:
-    class Strategy : public DantzigWolfe::LoggerFactory::Strategy {
+    class Strategy : public idol::Logs::DantzigWolfe::Factory::Strategy {
         const double m_frequency_in_seconds;
         bool m_log_for_sub_problems;
         double m_last_log_timestamp = 0;
@@ -66,9 +66,9 @@ public:
                 );
     }
 
-    [[nodiscard]] LoggerFactory *clone() const override {
+    [[nodiscard]] Factory *clone() const override {
         return new Info(*this);
     }
 };
 
-#endif //IDOL_DANTZIGWOLFE_LOGGER_INFO_H
+#endif //IDOL_LOGS_DANTZIGWOLFE_INFO_H

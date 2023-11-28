@@ -2,19 +2,19 @@
 // Created by henri on 06.11.23.
 //
 
-#ifndef IDOL_DANTZIGWOLFE_LOGGER_H
-#define IDOL_DANTZIGWOLFE_LOGGER_H
+#ifndef IDOL_LOGS_DANTZIGWOLFE_FACTORY_H
+#define IDOL_LOGS_DANTZIGWOLFE_FACTORY_H
 
 #include "idol/modeling/numericals.h"
 #include "idol/modeling/solutions/types.h"
 
-namespace idol::DantzigWolfe {
-    class LoggerFactory;
+namespace idol::Logs::DantzigWolfe {
+    class Factory;
 }
 
-class idol::DantzigWolfe::LoggerFactory {
+class idol::Logs::DantzigWolfe::Factory {
 public:
-    virtual ~LoggerFactory() = default;
+    virtual ~Factory() = default;
 
     class Strategy {
     public:
@@ -52,7 +52,7 @@ public:
 
     virtual Strategy* operator()() const = 0;
 
-    [[nodiscard]] virtual LoggerFactory* clone() const = 0;
+    [[nodiscard]] virtual Factory* clone() const = 0;
 };
 
-#endif //IDOL_DANTZIGWOLFE_LOGGER_H
+#endif //IDOL_LOGS_DANTZIGWOLFE_FACTORY_H

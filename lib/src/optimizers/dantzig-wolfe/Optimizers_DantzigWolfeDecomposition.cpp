@@ -12,7 +12,7 @@ idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Mod
                                                                        bool t_remove_infeasible_columns,
                                                                        std::vector<idol::DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
                                                                        const idol::DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
-                                                                       const DantzigWolfe::LoggerFactory& t_logger_factory)
+                                                                       const Logs::DantzigWolfe::Factory& t_logger_factory)
     : Algorithm(t_model),
       m_formulation(std::move(t_formulation)),
       m_master_optimizer_factory(t_master_optimizer_factory.clone()),

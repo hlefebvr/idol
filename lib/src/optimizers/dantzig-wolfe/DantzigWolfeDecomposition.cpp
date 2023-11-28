@@ -72,9 +72,9 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         dual_price_smoothing = std::make_unique<DantzigWolfe::NoStabilization>();
     }
 
-    std::unique_ptr<DantzigWolfe::LoggerFactory> default_logger_factory;
+    std::unique_ptr<Logs::DantzigWolfe::Factory> default_logger_factory;
     if (!m_logger_factory) {
-        default_logger_factory = std::make_unique<DantzigWolfe::Loggers::Info>();
+        default_logger_factory = std::make_unique<Logs::DantzigWolfe::Info>();
     }
 
     const bool use_hard_branching = m_use_hard_branching.has_value() && m_use_hard_branching.value();
@@ -238,7 +238,7 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_dual_pric
 }
 
 idol::DantzigWolfeDecomposition &
-idol::DantzigWolfeDecomposition::with_logger(const idol::DantzigWolfe::LoggerFactory &t_logger) {
+idol::DantzigWolfeDecomposition::with_logger(const idol::Logs::DantzigWolfe::Factory &t_logger) {
 
     if (m_logger_factory) {
         throw Exception("A logger has already been configured.");

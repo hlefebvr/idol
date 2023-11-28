@@ -13,7 +13,7 @@
 #include "idol/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h"
 #include "idol/optimizers/callbacks/CallbackFactory.h"
 #include "idol/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
-#include "idol/optimizers/branch-and-bound/logs/LoggerFactory.h"
+#include "idol/optimizers/branch-and-bound/logs/Factory.h"
 #include "idol/optimizers/branch-and-bound/logs/Info.h"
 
 namespace idol {
@@ -30,7 +30,7 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
     std::unique_ptr<BranchingRuleFactory<NodeT>> m_branching_rule_factory;
     std::unique_ptr<NodeSelectionRuleFactory<NodeT>> m_node_selection_rule_factory;
-    std::unique_ptr<LoggerFactory<NodeT>> m_logger_factory;
+    std::unique_ptr<Logs::BranchAndBound::Factory<NodeT>> m_logger_factory;
 
     std::list<std::unique_ptr<BranchAndBoundCallbackFactory<NodeT>>> m_callbacks;
 
@@ -171,7 +171,7 @@ public:
      */
     BranchAndBound<NodeT>& with_subtree_depth(unsigned int t_depth);
 
-    BranchAndBound<NodeT>& with_logger(const LoggerFactory<NodeT>& t_log_factory);
+    BranchAndBound<NodeT>& with_logger(const Logs::BranchAndBound::Factory<NodeT>& t_log_factory);
 
     BranchAndBound<NodeT>& with_scaling(bool t_value);
 
@@ -208,7 +208,7 @@ public:
 
 template<class NodeT>
 idol::BranchAndBound<NodeT> &
-idol::BranchAndBound<NodeT>::with_logger(const typename idol::LoggerFactory<NodeT> &t_log_factory) {
+idol::BranchAndBound<NodeT>::with_logger(const typename idol::Logs::BranchAndBound::Factory<NodeT> &t_log_factory) {
 
     if (m_logger_factory) {
         throw Exception("Logs have already been configured.");
@@ -347,9 +347,9 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
 
     auto* callback_interface = new BranchAndBoundCallbackI<NodeT>();
 
-    std::unique_ptr<LoggerFactory<NodeT>> default_logger_factory;
+    std::unique_ptr<Logs::BranchAndBound::Factory<NodeT>> default_logger_factory;
     if (!m_logger_factory) {
-        default_logger_factory = std::make_unique<LogInfo<NodeT>>();
+        default_logger_factory = std::make_unique<Logs::BranchAndBound::Info<NodeT>>();
     }
 
     auto* result = new Optimizers::BranchAndBound<NodeT>(t_model,

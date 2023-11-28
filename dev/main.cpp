@@ -44,13 +44,13 @@ int main(int t_argc, char** t_argv) {
 
     // Set optimizer
     model.use(
-                BranchAndBound()
+            BranchAndBound()
                     .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(MostInfeasible())
                     .with_node_selection_rule(BestBound())
-                    .with_logger(LogInfo())
-            );
+                    .with_logger(Logs::BranchAndBound::Info())
+    );
 
     // Solve
     model.optimize();

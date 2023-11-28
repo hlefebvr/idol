@@ -16,7 +16,7 @@
 #include "idol/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h"
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/models/Model.h"
-#include "idol/optimizers/branch-and-bound/logs/LoggerFactory.h"
+#include "idol/optimizers/branch-and-bound/logs/Factory.h"
 
 #include <memory>
 #include <cassert>
@@ -37,7 +37,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
-    std::unique_ptr<typename LoggerFactory<NodeInfoT>::Strategy> m_logger;
+    std::unique_ptr<typename Logs::BranchAndBound::Factory<NodeInfoT>::Strategy> m_logger;
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
@@ -98,7 +98,7 @@ public:
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                               AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
                               bool t_scaling,
-                              const LoggerFactory<NodeInfoT>& t_logger_factory);
+                              const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory);
 
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
 
@@ -345,7 +345,7 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
                                                       const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                                                       AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
                                                       bool t_scaling,
-                                                      const LoggerFactory<NodeInfoT>& t_logger_factory)
+                                                      const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(*this)),

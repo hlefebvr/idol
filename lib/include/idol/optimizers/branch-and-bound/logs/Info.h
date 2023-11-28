@@ -2,17 +2,17 @@
 // Created by henri on 23.11.23.
 //
 
-#ifndef IDOL_INFO_H
-#define IDOL_INFO_H
+#ifndef IDOL_BRANCHANDBOUND_INFO_H
+#define IDOL_BRANCHANDBOUND_INFO_H
 
-#include "LoggerFactory.h"
+#include "Factory.h"
 
-namespace idol {
-    template<class NodeInfoT> class LogInfo;
+namespace idol::Logs::BranchAndBound {
+    template<class NodeInfoT> class Info;
 }
 
 template<class NodeInfoT = idol::DefaultNodeInfo>
-class idol::LogInfo : public LoggerFactory<NodeInfoT> {
+class idol::Logs::BranchAndBound::Info : public Factory<NodeInfoT> {
 
     static constexpr auto double_precision = 5;
     static constexpr auto n_sections = 3;
@@ -40,7 +40,7 @@ class idol::LogInfo : public LoggerFactory<NodeInfoT> {
     std::optional<double> m_log_frequency_in_seconds;
     std::optional<double> m_node_logs;
 public:
-    class Strategy : public LoggerFactory<NodeInfoT>::Strategy {
+    class Strategy : public Factory<NodeInfoT>::Strategy {
         double m_last_log_timestamp = 0;
         double m_frequency_in_seconds;
         bool m_node_logs;
@@ -63,15 +63,15 @@ public:
 
     Strategy *operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const override;
 
-    LoggerFactory<NodeInfoT> *clone() const override;
+    Factory<NodeInfoT> *clone() const override;
 
-    LogInfo& with_frequency_in_seconds(double t_frequency);
+    Info& with_frequency_in_seconds(double t_frequency);
 
-    LogInfo& with_node_logs(bool t_value);
+    Info& with_node_logs(bool t_value);
 };
 
 template<class NodeInfoT>
-idol::LogInfo<NodeInfoT> &idol::LogInfo<NodeInfoT>::with_node_logs(bool t_value) {
+idol::Logs::BranchAndBound::Info<NodeInfoT> &idol::Logs::BranchAndBound::Info<NodeInfoT>::with_node_logs(bool t_value) {
 
     if (m_node_logs.has_value()) {
         throw Exception("Node logs have already been configured.");
@@ -83,7 +83,7 @@ idol::LogInfo<NodeInfoT> &idol::LogInfo<NodeInfoT>::with_node_logs(bool t_value)
 }
 
 template<class NodeInfoT>
-idol::LogInfo<NodeInfoT> &idol::LogInfo<NodeInfoT>::with_frequency_in_seconds(double t_frequency) {
+idol::Logs::BranchAndBound::Info<NodeInfoT> &idol::Logs::BranchAndBound::Info<NodeInfoT>::with_frequency_in_seconds(double t_frequency) {
 
     if (m_log_frequency_in_seconds.has_value()) {
         throw Exception("Log frequency has already been configured.");
@@ -95,28 +95,28 @@ idol::LogInfo<NodeInfoT> &idol::LogInfo<NodeInfoT>::with_frequency_in_seconds(do
 }
 
 template<class NodeInfoT>
-typename idol::LogInfo<NodeInfoT>::Strategy *idol::LogInfo<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const {
+typename idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy *idol::Logs::BranchAndBound::Info<NodeInfoT>::operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const {
     return new Strategy(t_parent,
                         m_log_frequency_in_seconds.has_value() ? m_log_frequency_in_seconds.value() : 5,
                         m_node_logs.has_value() ? m_node_logs.value() : false);
 }
 
 template<class NodeInfoT>
-idol::LoggerFactory<NodeInfoT> *idol::LogInfo<NodeInfoT>::clone() const {
-    return new LogInfo<NodeInfoT>(*this);
+idol::Logs::BranchAndBound::Factory<NodeInfoT> *idol::Logs::BranchAndBound::Info<NodeInfoT>::clone() const {
+    return new Info<NodeInfoT>(*this);
 }
 
 template<class NodeInfoT>
-idol::LogInfo<NodeInfoT>::Strategy::Strategy(Optimizers::BranchAndBound<NodeInfoT> &t_parent, double t_frequency_in_seconds, bool t_node_logs)
-        : LoggerFactory<NodeInfoT>::Strategy(t_parent),
+idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::Strategy(Optimizers::BranchAndBound<NodeInfoT> &t_parent, double t_frequency_in_seconds, bool t_node_logs)
+        : Factory<NodeInfoT>::Strategy(t_parent),
           m_frequency_in_seconds(t_frequency_in_seconds),
           m_node_logs(t_node_logs) {
 
 }
 
 template<class NodeInfoT>
-void idol::LogInfo<NodeInfoT>::Strategy::initialize() {
-    LoggerFactory<NodeInfoT>::Strategy::initialize();
+void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::initialize() {
+    Factory<NodeInfoT>::Strategy::initialize();
 
     m_last_log_timestamp = 0;
     m_header_has_been_printed = false;
@@ -127,8 +127,8 @@ void idol::LogInfo<NodeInfoT>::Strategy::initialize() {
 }
 
 template<class NodeInfoT>
-void idol::LogInfo<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeInfoT> &t_node) {
-    LoggerFactory<NodeInfoT>::Strategy::Strategy::log_node_after_solve(t_node);
+void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeInfoT> &t_node) {
+    Factory<NodeInfoT>::Strategy::Strategy::log_node_after_solve(t_node);
 
     const auto& parent = this->parent();
 
@@ -172,7 +172,7 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_node_after_solve(const Node <NodeIn
 }
 
 template<class NodeInfoT>
-void idol::LogInfo<NodeInfoT>::Strategy::log_root_node(const Node<NodeInfoT> &t_node) {
+void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_root_node(const Node<NodeInfoT> &t_node) {
 
     auto& branch_and_bound = this->parent();
     const double total_time = branch_and_bound.time().count();
@@ -191,7 +191,7 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_root_node(const Node<NodeInfoT> &t_
 }
 
 template<class NodeInfoT>
-void idol::LogInfo<NodeInfoT>::Strategy::log_header() {
+void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_header() {
 
     if (m_header_has_been_printed) {
         return;
@@ -233,9 +233,9 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_header() {
 }
 
 template<class NodeInfoT>
-void idol::LogInfo<NodeInfoT>::Strategy::log_after_termination() {
+void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::log_after_termination() {
 
-    LoggerFactory<NodeInfoT>::Strategy::Strategy::log_after_termination();
+    Factory<NodeInfoT>::Strategy::Strategy::log_after_termination();
 
     auto& parent = this->parent();
 
@@ -309,4 +309,4 @@ void idol::LogInfo<NodeInfoT>::Strategy::log_after_termination() {
 
 }
 
-#endif //IDOL_INFO_H
+#endif //IDOL_BRANCHANDBOUND_INFO_H
