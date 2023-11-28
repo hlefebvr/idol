@@ -21,6 +21,7 @@ public:
         const double m_frequency_in_seconds;
         bool m_log_for_sub_problems;
         double m_last_log_timestamp = 0;
+        bool m_sub_problems_should_currently_be_logged = false;
     public:
         Strategy(unsigned int t_frequency, bool t_log_sub_problems);
 

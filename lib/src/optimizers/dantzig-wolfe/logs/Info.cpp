@@ -68,6 +68,7 @@ void idol::DantzigWolfe::Loggers::Info::Strategy::log_init(unsigned int t_n_sub_
     std::cout << std::endl;
 
     m_last_log_timestamp = 0;
+    m_sub_problems_should_currently_be_logged = false;
 }
 
 void
@@ -88,6 +89,7 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration
     }
 
     m_last_log_timestamp = t_total_time;
+    m_sub_problems_should_currently_be_logged = m_log_for_sub_problems;
 
     std::cout << " | ";
     std::cout << std::setw(LOG_WIDTH_ITERATION) << t_iteration;
@@ -127,7 +129,7 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_sub_problem(unsigned int t_iter
                                                              unsigned int t_n_generated_columns,
                                                              unsigned int t_n_present_columns) {
 
-    if (!m_log_for_sub_problems) {
+    if (!m_sub_problems_should_currently_be_logged) {
         return;
     }
 
