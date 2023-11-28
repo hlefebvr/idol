@@ -1,7 +1,7 @@
 //
 // Created by henri on 27.10.23.
 //
-#include "idol/optimizers/branch-and-bound/watchers/ExportBranchAndBoundTreeToCSV.h"
+#include "idol/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h"
 #include <fstream>
 
 idol::Utils::ExportBranchAndBoundTreeToCSV::ExportBranchAndBoundTreeToCSV(std::string t_filename) : m_filename(std::move(t_filename)) {
