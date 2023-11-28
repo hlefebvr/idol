@@ -198,32 +198,34 @@ bool idol::Model::has(const Ctr &t_ctr) const {
 }
 
 idol::Model* idol::Model::clone() const {
-    auto* result = new Model(m_env);
+    return new Model(*this);
+}
 
-    for (const auto& var : vars()) {
-        result->add(var, TempVar(
-                    get_var_lb(var),
-                    get_var_ub(var),
-                    get_var_type(var),
-                    Column()
-                ));
+idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
+
+    for (const auto& var : t_src.vars()) {
+        add(var, TempVar(
+                t_src.get_var_lb(var),
+                t_src.get_var_ub(var),
+                t_src.get_var_type(var),
+                Column()
+        ));
     }
 
-    for (const auto& ctr : ctrs()) {
-        result->add(ctr, TempCtr(
-                Row(get_ctr_row(ctr)),
-                get_ctr_type(ctr)
-            ));
+    for (const auto& ctr : t_src.ctrs()) {
+        add(ctr, TempCtr(
+                Row(t_src.get_ctr_row(ctr)),
+                t_src.get_ctr_type(ctr)
+        ));
     }
 
-    result->set_obj_sense(get_obj_sense());
-    result->set_obj_expr(get_obj_expr());
+    set_obj_sense(t_src.get_obj_sense());
+    set_obj_expr(t_src.get_obj_expr());
 
-    if (m_optimizer_factory) {
-        result->use(*m_optimizer_factory);
+    if (t_src.m_optimizer_factory) {
+        use(*t_src.m_optimizer_factory);
     }
 
-    return result;
 }
 
 void idol::Model::optimize() {
@@ -508,4 +510,8 @@ void idol::Model::scale_to_integers(unsigned int t_n_digits) {
         access_row(ctr).scale_to_integers(t_n_digits);
     }
 
+}
+
+idol::Model idol::Model::copy() const {
+    return idol::Model(*this);
 }
