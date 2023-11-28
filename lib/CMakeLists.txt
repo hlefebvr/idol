@@ -160,7 +160,6 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/branching-rules/impls/Diver.h
         include/idol/optimizers/branch-and-bound/branching-rules/factories/Diver.h
         include/idol/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h
-        src/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.cpp
         include/idol/optimizers/wrappers/MinKnap/MinKnap.h
         include/idol/optimizers/wrappers/MinKnap/Optimizers_MinKnap.h
         src/optimizers/wrappers/MinKnap/MinKnap.cpp
