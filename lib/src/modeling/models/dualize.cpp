@@ -86,11 +86,18 @@ void idol::Dualizer::create_dual_variables_for_constraints() {
     const unsigned int n_constraints = m_primal.ctrs().size();
     m_dual_variables_for_constraints.reserve(n_constraints);
     for (unsigned int i = 0 ; i < n_constraints ; ++i) {
+
         const auto& ctr = m_primal.get_ctr_by_index(i);
+
+        if (!m_primal.get_ctr_row(ctr).quadratic().empty()) {
+            throw Exception("Only LPs can be dualized.");
+        }
+
         const auto type = m_primal.get_ctr_type(ctr);
         double lb = dual_var_lb_for_ctr_type(type);
         double ub = dual_var_ub_for_ctr_type(type);
         m_dual_variables_for_constraints.emplace_back(m_env, lb, ub, Continuous, "dual_" + ctr.name());
+
     }
 }
 
