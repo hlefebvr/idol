@@ -196,6 +196,8 @@ add_library(idol STATIC
         include/idol/optimizers/callbacks/cutting-planes/KnapsackCover.h
         include/idol/optimizers/branch-and-bound/logs/Factory.h
         include/idol/optimizers/branch-and-bound/logs/Info.h
+        include/idol/modeling/models/dualize.h
+        src/modeling/models/dualize.cpp
 )
 
 find_package(OpenMP REQUIRED)

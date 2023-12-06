@@ -376,10 +376,10 @@ double idol::Optimizers::Gurobi::get_best_obj() const {
     }
 
     if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
-        return m_model.get(GRB_DoubleAttr_ObjVal);
+        GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_ObjVal);)
     }
 
-    return m_model.get(GRB_DoubleAttr_PoolObjVal);
+    GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_PoolObjVal);)
 
 }
 
