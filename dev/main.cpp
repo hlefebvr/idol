@@ -13,32 +13,23 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    // Create primal
-    Model primal(env);
+    auto model = read_mps_file(env, "/home/henri/Downloads/SMALL/knapsack.mps");
 
-    auto x = primal.add_vars(Dim<1>(n_items), 0, 1, Continuous, "x");
+    model.set_obj_sense(Maximize);
 
-    auto c = primal.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
+    model.use(Gurobi::ContinuousRelaxation());
 
-    primal.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
+    model.optimize();
 
-    primal.use(Gurobi());
+    std::cout << "Primal: " << model.get_best_obj() << std::endl;
 
-    primal.optimize();
+    auto dual = dualize(model);
 
-    auto dual = dualize(primal);
-
-    std::cout << primal << std::endl;
-    std::cout << dual << std::endl;
-
-    dual.use(Gurobi().with_infeasible_or_unbounded_info(true));
+    dual.use(Gurobi());
 
     dual.optimize();
 
-    std::cout << primal.get_status() << std::endl;
-    std::cout << primal.get_best_obj() << std::endl;
-    std::cout << dual.get_status() << std::endl;
-    std::cout << dual.get_best_obj() << std::endl;
+    std::cout << "Dual: " << dual.get_best_obj() << std::endl;
 
     return 0;
 }
