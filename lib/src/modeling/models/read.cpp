@@ -6,7 +6,6 @@
 
 #ifdef IDOL_USE_GLPK
 #include <glpk.h>
-#endif
 
 class finally {
     std::function<void()> m_function;
@@ -19,7 +18,7 @@ public:
 idol::Model read_from_glpk(idol::Env& t_env, glp_prob* t_model) {
 
     using namespace idol;
-#ifdef IDOL_USE_GLPK
+
     const int n_variables = glp_get_num_cols(t_model);
     const int n_constraints = glp_get_num_rows(t_model);
 
@@ -89,10 +88,9 @@ idol::Model read_from_glpk(idol::Env& t_env, glp_prob* t_model) {
     }
 
     return std::move(result);
-#else
-    throw Exception("You need to link idol with GLPK to parse from GLPK.");
-#endif
 }
+
+#endif
 
 idol::Model idol::read_mps_file(Env& t_env, const std::string& t_filename, bool t_use_fixed_format) {
 #ifdef IDOL_USE_GLPK
