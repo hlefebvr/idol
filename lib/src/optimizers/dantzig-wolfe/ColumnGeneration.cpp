@@ -231,6 +231,23 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
         auto& model = formulation.sub_problem(i);
 
+        const bool is_unbounded = model.get_status() == Unbounded;
+
+        if (is_unbounded) {
+
+            // TODO: if unbounded, compute reduced cost differently and add column differently
+
+            throw Exception("Unbounded SP not implemented.");
+
+            std::cout << "Let's read the unbounded ray!" << std::endl;
+
+            auto generator = save_ray(model);
+
+            std::cout << generator << std::endl;
+
+            continue;
+        }
+
         if (m_current_iteration_is_using_farkas) {
 
             if (model.get_best_obj() < -Tolerance::Feasibility) {
@@ -251,7 +268,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::enrich_maste
 
             model.set_solution_index(k);
 
-            auto generator = save_primal(model);
+            auto generator =  save_primal(model);
 
             const double reduced_cost = formulation.compute_reduced_cost(i, m_last_master_solution.value(), generator);
 

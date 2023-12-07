@@ -16,7 +16,7 @@
 #include "idol/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h"
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/models/Model.h"
-#include "idol/optimizers/branch-and-bound/logs/LoggerFactory.h"
+#include "idol/optimizers/branch-and-bound/logs/Factory.h"
 
 #include <memory>
 #include <cassert>
@@ -37,7 +37,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
 
     std::unique_ptr<BranchingRule<NodeInfoT>> m_branching_rule;
     std::unique_ptr<NodeSelectionRule<NodeInfoT>> m_node_selection_rule;
-    std::unique_ptr<typename LoggerFactory<NodeInfoT>::Strategy> m_logger;
+    std::unique_ptr<typename Logs::BranchAndBound::Factory<NodeInfoT>::Strategy> m_logger;
 
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
@@ -45,6 +45,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
     unsigned int m_n_solved_nodes = 0;
+    unsigned int m_n_active_nodes = 0;
     double m_root_node_best_bound = -Inf;
     double m_root_node_best_obj = +Inf;
 
@@ -97,7 +98,7 @@ public:
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                               AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
                               bool t_scaling,
-                              const LoggerFactory<NodeInfoT>& t_logger_factory);
+                              const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory);
 
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
 
@@ -116,6 +117,8 @@ public:
     [[nodiscard]] unsigned int n_created_nodes() const { return m_n_created_nodes; }
 
     [[nodiscard]] unsigned int n_solved_nodes() const { return m_n_solved_nodes; }
+
+    [[nodiscard]] unsigned int n_active_nodes() const { return m_n_active_nodes; }
 
     [[nodiscard]] const Model& relaxation() const { return *m_relaxation; }
 
@@ -165,13 +168,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::log_after_termination() {
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::log_node_after_solve(const idol::Node<NodeInfoT> &t_node) {
-
-    if (!get_param_logs()) {
-        return;
-    }
-
     m_logger->log_node_after_solve(t_node);
-
 }
 
 template<class NodeInfoT>
@@ -342,7 +339,7 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
                                                       const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                                                       AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
                                                       bool t_scaling,
-                                                      const LoggerFactory<NodeInfoT>& t_logger_factory)
+                                                      const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
       m_branching_rule(t_branching_rule_factory(*this)),
@@ -391,6 +388,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
+    m_n_active_nodes = 0;
 
     m_root_node_best_bound = -Inf;
     m_root_node_best_obj = Inf;
@@ -490,6 +488,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(TreeNode &t_node,
 
         if (t_step == 0) {
             update_lower_bound(t_active_nodes);
+            m_n_active_nodes = t_active_nodes.size();
         }
 
         if (t_active_nodes.empty()) { break; }

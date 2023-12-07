@@ -51,6 +51,11 @@ public:
         return new ArtificialCosts(*this);
     }
 
+    ArtificialCosts& with_max_updates_before_phase_I(unsigned int t_value);
+
+    ArtificialCosts& with_update_factor(double t_value);
+
+    ArtificialCosts& with_initial_costs(double t_value);
 
 };
 

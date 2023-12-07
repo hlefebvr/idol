@@ -27,7 +27,7 @@ constexpr auto iteration_space = (LOG_WIDTH_ITER_TYPE + LOG_WIDTH_ITER_STATUS + 
 constexpr auto column_space = (LOG_WIDTH_COL_GENERATED + LOG_WIDTH_COL_PRESENT);
 constexpr auto table_space = algorithm_space + problem_space + iteration_space + column_space + N_SECTIONS * 3 + 1;
 
-void idol::DantzigWolfe::Loggers::Info::Strategy::log_init(unsigned int t_n_sub_problems) {
+void idol::Logs::DantzigWolfe::Info::Strategy::log_init(unsigned int t_n_sub_problems) {
 
     std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
     std::cout << ' ';center(std::cout, " Dantzig-Wolfe Decomposition ", table_space) << '\n';
@@ -66,10 +66,13 @@ void idol::DantzigWolfe::Loggers::Info::Strategy::log_init(unsigned int t_n_sub_
     std::cout << " | ";
 
     std::cout << std::endl;
+
+    m_last_log_timestamp = 0;
+    m_sub_problems_should_currently_be_logged = false;
 }
 
 void
-idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration,
+idol::Logs::DantzigWolfe::Info::Strategy::log_master(unsigned int t_iteration,
                                                          double t_total_time,
                                                          idol::SolutionStatus t_problem_status,
                                                         idol::SolutionStatus t_last_master_status,
@@ -80,6 +83,13 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration
                                                         double t_best_obj,
                                                         unsigned int t_n_generated_columns,
                                                         unsigned int t_n_present_columns) {
+
+    if (m_last_log_timestamp != 0 && t_total_time - m_last_log_timestamp < m_frequency_in_seconds) {
+        return;
+    }
+
+    m_last_log_timestamp = t_total_time;
+    m_sub_problems_should_currently_be_logged = m_log_for_sub_problems;
 
     std::cout << " | ";
     std::cout << std::setw(LOG_WIDTH_ITERATION) << t_iteration;
@@ -107,7 +117,7 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_master(unsigned int t_iteration
 }
 
 void
-idol::DantzigWolfe::Loggers::Info::Strategy::log_sub_problem(unsigned int t_iteration,
+idol::Logs::DantzigWolfe::Info::Strategy::log_sub_problem(unsigned int t_iteration,
                                                               double t_total_time,
                                                               unsigned int t_sub_problem_id,
                                                              idol::SolutionStatus t_problem_status,
@@ -119,7 +129,7 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_sub_problem(unsigned int t_iter
                                                              unsigned int t_n_generated_columns,
                                                              unsigned int t_n_present_columns) {
 
-    if (!m_log_for_sub_problems) {
+    if (!m_sub_problems_should_currently_be_logged) {
         return;
     }
 
@@ -148,28 +158,28 @@ idol::DantzigWolfe::Loggers::Info::Strategy::log_sub_problem(unsigned int t_iter
     std::cout << std::endl;
 }
 
-void idol::DantzigWolfe::Loggers::Info::Strategy::log_end() {
+void idol::Logs::DantzigWolfe::Info::Strategy::log_end() {
     std::cout << " ";center(std::cout, "-", table_space, '-') << std::endl;
 }
 
-idol::DantzigWolfe::Loggers::Info::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)
-    : m_frequency(t_frequency),
+idol::Logs::DantzigWolfe::Info::Strategy::Strategy(unsigned int t_frequency, bool t_log_sub_problems)
+    : m_frequency_in_seconds(t_frequency),
       m_log_for_sub_problems(t_log_sub_problems) {
 
 }
 
-idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_frequency(unsigned int t_frequency) {
+idol::Logs::DantzigWolfe::Info &idol::Logs::DantzigWolfe::Info::with_frequency_in_seconds(double t_frequency) {
 
-    if (m_frequency.has_value()) {
+    if (m_frequency_in_seconds.has_value()) {
         throw Exception("A log frequency has already been configured.");
     }
 
-    m_frequency = t_frequency;
+    m_frequency_in_seconds = t_frequency;
 
     return *this;
 }
 
-idol::DantzigWolfe::Loggers::Info &idol::DantzigWolfe::Loggers::Info::with_sub_problems(bool t_value) {
+idol::Logs::DantzigWolfe::Info &idol::Logs::DantzigWolfe::Info::with_sub_problems(bool t_value) {
 
     if (m_log_for_sub_problems.has_value()) {
         throw Exception("Logging sub-problems has already been configured.");

@@ -60,6 +60,8 @@ class idol::Model : public Matrix {
     LinExpr<Ctr> &access_rhs() override;
     Column &access_column(const Var &t_var) override;
     Row &access_row(const Ctr &t_ctr) override;
+
+    Model(const Model& t_src);
 public:
     /**
      * Creates a new model for a mathematical optimization problem.
@@ -75,7 +77,6 @@ public:
 
     Model(Env& t_env, ObjectiveSense t_sense);
 
-    Model(const Model&) = delete;
     Model(Model&&) noexcept;
 
     Model& operator=(const Model&) = delete;
@@ -398,6 +399,8 @@ public:
      */
     [[nodiscard]] Model* clone() const;
 
+    [[nodiscard]] Model copy() const;
+
     /**
      * Returns the optimization environment of the model
      *
@@ -438,6 +441,10 @@ public:
      * @return true if and only if the model currently has an optimizer.
      */
     [[nodiscard]] bool has_optimizer() const;
+
+    [[nodiscard]] bool has_optimizer_factory() const { return bool(m_optimizer_factory); }
+
+    [[nodiscard]] const OptimizerFactory& optimizer_factory() const { return *m_optimizer_factory; }
 
     /**
      * Removes an existing optimizer.

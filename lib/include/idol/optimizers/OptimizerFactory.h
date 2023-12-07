@@ -39,6 +39,27 @@ public:
      * @return A copied object of the current object (i.e., *this)
      */
     [[nodiscard]] virtual OptimizerFactory* clone() const = 0;
+
+
+    template<class T> T& as() {
+        auto* result = dynamic_cast<T*>(this);
+        if (!result) {
+            throw Exception("Optimizer factory could not be cast to desired type.");
+        }
+        return *result;
+    }
+
+    template<class T> const T& as() const {
+        auto* result = dynamic_cast<const T*>(this);
+        if (!result) {
+            throw Exception("Optimizer factory could not be cast to desired type.");
+        }
+        return *result;
+    }
+
+    template<class T> [[nodiscard]] bool is() const {
+        return dynamic_cast<const T*>(this);
+    }
 };
 
 template<class CRTP>

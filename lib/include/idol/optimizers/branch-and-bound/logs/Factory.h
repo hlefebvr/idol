@@ -11,13 +11,15 @@ namespace idol {
     namespace Optimizers {
         template<class NodeInfoT> class BranchAndBound;
     }
-    template<class NodeInfoT> class LoggerFactory;
+    namespace Logs::BranchAndBound {
+        template<class NodeInfoT> class Factory;
+    }
 }
 
 template<class NodeInfoT = idol::DefaultNodeInfo>
-class idol::LoggerFactory {
+class idol::Logs::BranchAndBound::Factory {
 public:
-    virtual ~LoggerFactory() = default;
+    virtual ~Factory() = default;
 
     class Strategy {
         Optimizers::BranchAndBound<NodeInfoT>& m_parent;
@@ -38,7 +40,7 @@ public:
 
     virtual Strategy* operator()(Optimizers::BranchAndBound<NodeInfoT>& t_parent) const = 0;
 
-    virtual LoggerFactory* clone() const = 0;
+    virtual Factory* clone() const = 0;
 };
 
 #endif //IDOL_BRANCHADNDBOUND_LOGGERFACTORY_H

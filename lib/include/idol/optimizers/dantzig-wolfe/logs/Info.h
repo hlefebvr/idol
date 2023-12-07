@@ -2,24 +2,26 @@
 // Created by henri on 06.11.23.
 //
 
-#ifndef IDOL_DANTZIGWOLFE_LOGGER_INFO_H
-#define IDOL_DANTZIGWOLFE_LOGGER_INFO_H
+#ifndef IDOL_LOGS_DANTZIGWOLFE_INFO_H
+#define IDOL_LOGS_DANTZIGWOLFE_INFO_H
 
-#include "LoggerFactory.h"
+#include "Factory.h"
 #include "idol/modeling/solutions/types.h"
 #include <optional>
 
-namespace idol::DantzigWolfe::Loggers {
+namespace idol::Logs::DantzigWolfe {
     class Info;
 }
 
-class idol::DantzigWolfe::Loggers::Info : public DantzigWolfe::LoggerFactory {
-    std::optional<unsigned int> m_frequency;
+class idol::Logs::DantzigWolfe::Info : public idol::Logs::DantzigWolfe::Factory {
+    std::optional<unsigned int> m_frequency_in_seconds;
     std::optional<bool> m_log_for_sub_problems;
 public:
-    class Strategy : public DantzigWolfe::LoggerFactory::Strategy {
-        const unsigned int m_frequency;
+    class Strategy : public idol::Logs::DantzigWolfe::Factory::Strategy {
+        const double m_frequency_in_seconds;
         bool m_log_for_sub_problems;
+        double m_last_log_timestamp = 0;
+        bool m_sub_problems_should_currently_be_logged = false;
     public:
         Strategy(unsigned int t_frequency, bool t_log_sub_problems);
 
@@ -53,20 +55,20 @@ public:
         void log_end() override;
     };
 
-    Info& with_frequency(unsigned int t_frequency);
+    Info& with_frequency_in_seconds(double t_frequency);
 
     Info& with_sub_problems(bool t_value);
 
     Strategy *operator()() const override {
         return new Strategy(
-                m_frequency.has_value() ? m_frequency.value() : 1,
+                m_frequency_in_seconds.has_value() ? m_frequency_in_seconds.value() : 5,
                 m_log_for_sub_problems.has_value() && m_log_for_sub_problems.value()
                 );
     }
 
-    [[nodiscard]] LoggerFactory *clone() const override {
+    [[nodiscard]] Factory *clone() const override {
         return new Info(*this);
     }
 };
 
-#endif //IDOL_DANTZIGWOLFE_LOGGER_INFO_H
+#endif //IDOL_LOGS_DANTZIGWOLFE_INFO_H

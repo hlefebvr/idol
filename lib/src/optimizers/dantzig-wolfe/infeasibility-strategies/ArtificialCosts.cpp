@@ -192,3 +192,37 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
     t_formulation.update_obj(objective);
 
 }
+
+idol::DantzigWolfe::ArtificialCosts &
+idol::DantzigWolfe::ArtificialCosts::with_max_updates_before_phase_I(unsigned int t_value) {
+
+    if (m_max_updates_before_phase_I.has_value()) {
+        throw Exception("Maximum updates before phase I has already been configured.");
+    }
+
+    m_max_updates_before_phase_I = t_value;
+
+    return *this;
+}
+
+idol::DantzigWolfe::ArtificialCosts &idol::DantzigWolfe::ArtificialCosts::with_update_factor(double t_value) {
+
+    if (m_update_factor.has_value()) {
+        throw Exception("Update factor has already been configured.");
+    }
+
+    m_update_factor = t_value;
+
+    return *this;
+}
+
+idol::DantzigWolfe::ArtificialCosts &idol::DantzigWolfe::ArtificialCosts::with_initial_costs(double t_value) {
+
+    if (m_initial_costs.has_value()) {
+        throw Exception("Initial costs have already been configured.");
+    }
+
+    m_initial_costs = t_value;
+
+    return *this;
+}

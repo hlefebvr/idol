@@ -2,8 +2,8 @@
 // Created by henri on 09.11.23.
 //
 
-#ifndef IDOL_BRACNHINGWITHPRIORITY_H
-#define IDOL_BRACNHINGWITHPRIORITY_H
+#ifndef IDOL_BRANCHINGWITHPRIORITY_H
+#define IDOL_BRANCHINGWITHPRIORITY_H
 
 #include "VariableBranching.h"
 #include "idol/optimizers/branch-and-bound/branching-rules/impls/LeastInfeasible.h"
@@ -57,4 +57,4 @@ public:
     }
 };
 
-#endif //IDOL_BRACNHINGWITHPRIORITY_H
+#endif //IDOL_BRANCHINGWITHPRIORITY_H

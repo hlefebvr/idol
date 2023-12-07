@@ -32,7 +32,7 @@ class idol::impl::Optimizer {
     unsigned int m_param_threads = 1;
     unsigned int m_param_iteration_limit = std::numeric_limits<unsigned int>::max();
 
-    bool m_param_logs = true;
+    bool m_param_logs = false;
     double m_param_time_limit = std::numeric_limits<double>::max();
     double m_param_best_obj_stop = -Inf;
     double m_param_best_bound_stop = +Inf;
