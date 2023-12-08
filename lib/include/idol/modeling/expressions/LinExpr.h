@@ -100,7 +100,15 @@ public:
      */
     void remove(const Key& t_key) override;
 
+    LinExpr fix(const Solution::Primal& t_primals) const;
 };
+
+template<class Key>
+idol::LinExpr<Key> idol::LinExpr<Key>::fix(const idol::Solution::Primal &t_primals) const {
+    auto result = *this;
+    result.internal_fix(t_primals);
+    return result;
+}
 
 template<class Key>
 void idol::LinExpr<Key>::remove(const Key &t_key) {

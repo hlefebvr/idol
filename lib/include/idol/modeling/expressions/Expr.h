@@ -37,6 +37,8 @@ protected:
     };
 
     References refs() { return References(this); }
+
+    void internal_fix(const Solution::Primal& t_primals);
 public:
     Expr();
     Expr(double t_num); // NOLINT(google-explicit-constructor)
@@ -91,6 +93,13 @@ public:
         m_quadratic.clear();
     }
 };
+
+template<class Key1, class Key2>
+void idol::impl::Expr<Key1, Key2>::internal_fix(const idol::Solution::Primal &t_primals) {
+    m_constant->value() = m_constant->value().fix(t_primals);
+    m_linear = m_linear.fix(t_primals);
+    m_quadratic = m_quadratic.fix(t_primals);
+}
 
 template<class Key1, class Key2>
 double idol::impl::Expr<Key1, Key2>::gcd() const {
@@ -288,7 +297,16 @@ public:
 
     Expr& operator=(const Expr& t_rhs) = default;
     Expr& operator=(Expr&&) noexcept = default;
+
+    Expr fix(const Solution::Primal& t_primals) const;
 };
+
+template<class Key1, class Key2>
+idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::fix(const Solution::Primal& t_primals) const {
+    auto result = *this;
+    result.internal_fix(t_primals);
+    return result;
+}
 
 namespace idol {
 

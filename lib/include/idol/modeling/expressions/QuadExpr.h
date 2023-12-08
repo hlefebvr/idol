@@ -65,6 +65,8 @@ public:
     void set(const Key1& t_a, const Key2& t_b, Constant t_coefficient);
 
     const Constant& get(const Key1& t_a, const Key2& t_b) const;
+
+    QuadExpr fix(const Solution::Primal& t_primals) const;
 };
 
 template<class Key1, class Key2, class Hash, class EqualTo>
@@ -90,6 +92,13 @@ void idol::QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2&
 template<class Key1, class Key2, class Hash, class EqualTo>
 const idol::Constant &idol::QuadExpr<Key1, Key2, Hash, EqualTo>::get(const Key1 &t_a, const Key2 &t_b) const {
     return get({ t_a, t_b });
+}
+
+template<class Key1, class Key2, class Hash, class EqualTo>
+idol::QuadExpr<Key1, Key2, Hash, EqualTo> idol::QuadExpr<Key1, Key2, Hash, EqualTo>::fix(const Solution::Primal& t_primals) const {
+    auto result = *this;
+    result.internal_fix(t_primals);
+    return result;
 }
 
 namespace idol {

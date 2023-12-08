@@ -53,6 +53,7 @@ void idol::Dualizer::dualize() {
     m_dual.add_vector<Var, 1>(m_dual_variables_for_upper_bounds);
 
     m_dual.set_obj_expr(
+    m_primal.get_obj_expr().constant() +
         idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
         + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
         + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var))
