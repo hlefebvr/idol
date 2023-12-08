@@ -61,12 +61,17 @@ void idol::Dualizer::dualize() {
         add_parameters_as_variables_in_the_dual();
     }
 
-    m_dual.set_obj_expr(
-    m_primal.get_obj_expr().constant() +
-        idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
-        + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
-        + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var))
-    );
+    auto objective = idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
+                     + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
+                     + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var));
+
+    if (!m_see_parameters_as_dual_variables) {
+        objective += m_primal.get_obj_expr().constant();
+    } else {
+        objective += as_expr(m_primal.get_obj_expr().constant());
+    }
+
+    m_dual.set_obj_expr(std::move(objective));
 
     for (const auto& var : m_primal.vars()) {
         auto lhs = idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).linear().get(var) * dual(ctr))
