@@ -95,7 +95,10 @@ idol::Model read_from_glpk(idol::Env& t_env, glp_prob* t_model) {
 idol::Model idol::read_mps_file(Env& t_env, const std::string& t_filename, bool t_use_fixed_format) {
 #ifdef IDOL_USE_GLPK
     glp_prob *model = glp_create_prob();
-    glp_read_mps(model, t_use_fixed_format ? GLP_MPS_DECK : GLP_MPS_FILE, NULL, t_filename.c_str());
+    auto result = glp_read_mps(model, t_use_fixed_format ? GLP_MPS_DECK : GLP_MPS_FILE, NULL, t_filename.c_str());
+    if (result != 0) {
+        throw Exception("Could not parse MPS file.");
+    }
     return read_from_glpk(t_env, model);
 #else
     throw Exception("You need to link idol with GLPK to parse MPS files.");
@@ -105,7 +108,10 @@ idol::Model idol::read_mps_file(Env& t_env, const std::string& t_filename, bool 
 idol::Model idol::read_lp_file(Env& t_env, const std::string& t_filename) {
 #ifdef IDOL_USE_GLPK
     glp_prob* model = glp_create_prob();
-    glp_read_lp(model,  NULL, t_filename.c_str());
+    auto result = glp_read_lp(model,  NULL, t_filename.c_str());
+    if (result != 0) {
+        throw Exception("Could not parse MPS file.");
+    }
     return read_from_glpk(t_env, model);
 #else
     throw Exception("You need to link idol with GLPK to parse LP files.");
