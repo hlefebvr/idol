@@ -149,7 +149,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
         }
     }
 
-    return m_model.addVar(lb, ub, objective, type, col, name);
+    GUROBI_CATCH(return m_model.addVar(lb, ub, objective, type, col, name);)
 }
 
 std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
@@ -167,7 +167,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
         for (const auto &[var, constant]: row.linear()) {
             expr += constant.as_numerical() * lazy(var).impl();
         }
-        return m_model.addConstr(expr, type, rhs, name);
+        GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
 
     }
 
@@ -179,7 +179,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
         expr.addTerm(constant.as_numerical(), lazy(var1).impl(), lazy(var2).impl());
     }
 
-    return m_model.addQConstr(expr, type, rhs, name);
+    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs, name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
