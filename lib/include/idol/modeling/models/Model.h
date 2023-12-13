@@ -401,6 +401,10 @@ public:
 
     [[nodiscard]] Model copy() const;
 
+    void reserve_vars(unsigned int t_size);
+
+    void reserve_ctrs(unsigned int t_size);
+
     /**
      * Returns the optimization environment of the model
      *

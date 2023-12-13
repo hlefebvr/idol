@@ -544,3 +544,11 @@ idol::Model idol::Model::fix(const idol::Solution::Primal &t_primals) const {
 
     return result;
 }
+
+void idol::Model::reserve_vars(unsigned int t_size) {
+    m_variables.reserve(t_size);
+}
+
+void idol::Model::reserve_ctrs(unsigned int t_size) {
+    m_constraints.reserve(t_size);
+}
