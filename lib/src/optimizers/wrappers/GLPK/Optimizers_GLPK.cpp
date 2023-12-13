@@ -97,6 +97,10 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     if (t_add_column) {
 
+        if (!column.quadratic().empty()) {
+            throw Exception("GLPK cannot handle quadratic expressions.");
+        }
+
         const auto n = (int) column.linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
@@ -143,6 +147,10 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     const auto& row = parent().get_ctr_row(t_ctr);
     const double rhs = row.rhs().as_numerical();
     const auto type = parent().get_ctr_type(t_ctr);
+
+    if (!row.quadratic().empty()) {
+        throw Exception("GLPK cannot handle quadratic expressions.");
+    }
 
     set_ctr_attr(index, type, rhs);
 
@@ -206,6 +214,10 @@ void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 void idol::Optimizers::GLPK::hook_update_objective() {
 
     const auto& model = parent();
+
+    if (!model.get_obj_expr().quadratic().empty()) {
+        throw Exception("GLPK cannot handle quadratic expressions.");
+    }
 
     for (const auto& var : model.vars()) {
         const auto& obj = model.get_var_column(var).obj();
