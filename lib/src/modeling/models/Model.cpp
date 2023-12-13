@@ -20,7 +20,6 @@ idol::Model::Model(idol::Model && t_src) noexcept
       m_rhs(std::move(t_src.m_rhs)),
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
-      m_optimizer(std::move(t_src.m_optimizer)),
       m_optimizer_factory(std::move(t_src.m_optimizer_factory))
 {
 
