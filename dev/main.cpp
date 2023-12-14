@@ -2,34 +2,17 @@
 #include "idol/problems/knapsack-problem/KP_Instance.h"
 #include "idol/modeling/models/dualize.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 
 using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
-    const auto instance = Problems::KP::read_instance("/home/henri/Research/idol/examples/knapsack.data.txt");
-
-    const auto n_items = instance.n_items();
-
     Env env;
 
-    auto model = read_mps_file(env, "/home/henri/Downloads/SMALL/knapsack.mps");
+    auto model = Gurobi::read_from_file(env, "/home/henri/Research/bilevel-ccg/code/cmake-build-debug/instance.lp");
 
-    model.set_obj_sense(Maximize);
-
-    model.use(Gurobi::ContinuousRelaxation());
-
-    model.optimize();
-
-    std::cout << "Primal: " << model.get_best_obj() << std::endl;
-
-    auto dual = dualize(model);
-
-    dual.use(Gurobi());
-
-    dual.optimize();
-
-    std::cout << "Dual: " << dual.get_best_obj() << std::endl;
+    std::cout << model << std::endl;
 
     return 0;
 }

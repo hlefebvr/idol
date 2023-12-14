@@ -4,6 +4,7 @@
 #ifdef IDOL_USE_GUROBI
 
 #include "idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/modeling/expressions/operations/operators.h"
 
 #define GUROBI_CATCH(cmd) \
 try { \
@@ -508,6 +509,128 @@ void idol::Optimizers::Gurobi::set_tol_optimality(double t_tol_optimality) {
 void idol::Optimizers::Gurobi::set_tol_integer(double t_tol_integer) {
     Optimizer::set_tol_integer(t_tol_integer);
     m_model.set(GRB_DoubleParam_IntFeasTol, t_tol_integer);
+}
+
+idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+
+    Model result(t_env);
+
+    std::unique_ptr<GRBModel> model;
+    GUROBI_CATCH(model = std::make_unique<GRBModel>(get_global_env(), t_filename);)
+
+    const unsigned int n_vars = model->get(GRB_IntAttr_NumVars);
+    const unsigned int n_ctrs = model->get(GRB_IntAttr_NumConstrs);
+    const unsigned int n_quad_ctrs = model->get(GRB_IntAttr_NumQConstrs);
+
+    for (unsigned int j = 0 ; j < n_vars ; ++j) {
+
+        const auto& var = model->getVar(j);
+        const double lb = var.get(GRB_DoubleAttr_LB);
+        const double ub = var.get(GRB_DoubleAttr_UB);
+        VarType type = idol_var_type(var.get(GRB_CharAttr_VType));
+
+        result.add_var(lb, ub, type, var.get(GRB_StringAttr_VarName));
+    }
+
+    const auto parse_linear = [&](const GRBLinExpr& t_lin_expr) {
+        Expr result_ = t_lin_expr.getConstant();
+
+        for (unsigned int j = 0, n = t_lin_expr.size() ; j < n ; ++j) {
+            auto var = t_lin_expr.getVar(j);
+            result_ += t_lin_expr.getCoeff(j) * result.get_var_by_index(var.index());
+        }
+
+        return result_;
+    };
+
+    const auto parse_quadratic = [&](const GRBQuadExpr& t_quad_expr) {
+        Expr result_ = parse_linear(t_quad_expr.getLinExpr());
+
+        for (unsigned int j = 0, n = t_quad_expr.size() ; j < n ; ++j) {
+            auto var1 = t_quad_expr.getVar1(j);
+            auto var2 = t_quad_expr.getVar2(j);
+            result_ += t_quad_expr.getCoeff(j) * result.get_var_by_index(var1.index()) * result.get_var_by_index(var2.index());
+        }
+
+        return result_;
+    };
+
+    const auto add_ctr = [&](const auto& t_lhs, const auto& t_rhs, char t_type) {
+
+        switch (t_type) {
+            case LessOrEqual: result.add_ctr(t_lhs <= t_rhs); break;
+            case GreaterOrEqual: result.add_ctr(t_lhs >= t_rhs); break;
+            case Equal: result.add_ctr(t_lhs == t_rhs); break;
+            default: throw Exception("Enum out of bounds.");
+        }
+
+    };
+
+    for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
+
+        const auto& ctr = model->getConstr(i);
+        const auto& expr = model->getRow(ctr);
+        const double rhs = ctr.get(GRB_DoubleAttr_RHS);
+        const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_Sense));
+
+        Expr lhs = parse_linear(expr);
+        add_ctr(lhs, rhs, type);
+    }
+
+    for (unsigned int i = 0 ; i < n_quad_ctrs ; ++i) {
+
+        const auto& ctr = model->getQConstrs()[i];
+        const auto& expr = model->getQCRow(ctr);
+        const double rhs = ctr.get(GRB_DoubleAttr_QCRHS);
+        const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_QCSense));
+
+        Expr lhs = parse_quadratic(expr);
+        add_ctr(lhs, rhs, type);
+
+    }
+
+    const auto sense = model->get(GRB_IntAttr_ModelSense);
+    model->set(GRB_IntAttr_ModelSense, idol_obj_sense(sense));
+
+    const auto& objective = model->getObjective();
+    result.set_obj_expr(parse_quadratic(objective));
+
+    return std::move(result);
+}
+
+idol::VarType idol::Optimizers::Gurobi::idol_var_type(char t_type) {
+
+    switch (t_type) {
+        case GRB_INTEGER: return Integer;
+        case GRB_BINARY: return Binary;
+        case GRB_CONTINUOUS: return Continuous;
+        default:;
+    }
+
+    throw Exception("Unexpected variable type.");
+}
+
+idol::CtrType idol::Optimizers::Gurobi::idol_ctr_type(char t_type) {
+
+    switch (t_type) {
+        case GRB_LESS_EQUAL: return LessOrEqual;
+        case GRB_GREATER_EQUAL: return GreaterOrEqual;
+        case GRB_EQUAL: return Equal;
+        default:;
+    }
+
+    throw Exception("Unexpected constraint type.");
+}
+
+idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
+
+    switch (t_sense) {
+        case GRB_MINIMIZE: return Minimize;
+        case GRB_MAXIMIZE: return Maximize;
+        default:;
+    }
+
+    throw Exception("Unexpected constraint type.");
 }
 
 #endif

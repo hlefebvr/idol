@@ -116,3 +116,7 @@ idol::Gurobi &idol::Gurobi::with_external_param(GRB_DoubleParam t_param, double 
 
     return *this;
 }
+
+idol::Model idol::Gurobi::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+    return Optimizers::Gurobi::read_from_file(t_env, t_filename);
+}

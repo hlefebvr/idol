@@ -34,6 +34,9 @@ class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::va
     static char gurobi_ctr_type(int t_type);
     static char gurobi_obj_sense(int t_sense);
     static double gurobi_numeric(double t_value);
+    static VarType idol_var_type(char t_type);
+    static CtrType idol_ctr_type(char t_type);
+    static ObjectiveSense idol_obj_sense(int t_sense);
     [[nodiscard]] std::pair<SolutionStatus, SolutionReason> gurobi_status(int t_status) const;
 protected:
     void hook_build() override;
@@ -113,6 +116,8 @@ public:
     void set_tol_optimality(double t_tol_optimality) override;
 
     void set_tol_integer(double t_tol_integer) override;
+
+    static Model read_from_file(Env& t_quad_expr, const std::string& t_filename);
 };
 
 #endif
