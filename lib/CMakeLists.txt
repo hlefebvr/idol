@@ -198,8 +198,7 @@ add_library(idol STATIC
         include/idol/optimizers/branch-and-bound/logs/Info.h
         include/idol/modeling/models/dualize.h
         src/modeling/models/dualize.cpp
-        include/idol/modeling/models/read.h
-        src/modeling/models/read.cpp
+        include/idol/containers/Finally.h
 )
 
 find_package(OpenMP REQUIRED)

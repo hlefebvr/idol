@@ -6,6 +6,7 @@
 #define IDOL_GLPK_H
 
 #include "idol/optimizers/OptimizerFactory.h"
+#include "idol/modeling/objects/Env.h"
 
 namespace idol {
     class GLPK;
@@ -29,6 +30,8 @@ public:
     static GLPK ContinuousRelaxation();
 
     [[nodiscard]] GLPK *clone() const override;
+
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 

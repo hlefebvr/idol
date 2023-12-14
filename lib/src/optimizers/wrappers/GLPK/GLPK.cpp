@@ -23,3 +23,10 @@ idol::GLPK *idol::GLPK::clone() const {
     return new GLPK(*this);
 }
 
+idol::Model idol::GLPK::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+#ifdef IDOL_USE_GLPK
+    return Optimizers::GLPK::read_from_file(t_env, t_filename);
+#else
+    throw Exception("idol was not linked with GLPK.");
+#endif
+}

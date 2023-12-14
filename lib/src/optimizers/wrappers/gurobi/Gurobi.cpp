@@ -118,5 +118,9 @@ idol::Gurobi &idol::Gurobi::with_external_param(GRB_DoubleParam t_param, double 
 }
 
 idol::Model idol::Gurobi::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+#if IDOL_USE_GUROBI
     return Optimizers::Gurobi::read_from_file(t_env, t_filename);
+#else
+    throw Exception("idol was not linked with Gurobi.");
+#endif
 }

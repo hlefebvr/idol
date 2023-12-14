@@ -12,7 +12,6 @@
 
 #include "idol/modeling/constraints/TempCtr.h"
 
-#include "idol/modeling/models/read.h"
 #include "idol/modeling/models/dualize.h"
 
 #endif //OPTIMIZE_MODELING_H

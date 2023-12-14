@@ -117,7 +117,7 @@ public:
 
     void set_tol_integer(double t_tol_integer) override;
 
-    static Model read_from_file(Env& t_quad_expr, const std::string& t_filename);
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 #endif
