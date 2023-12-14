@@ -3,6 +3,8 @@
 //
 #include "idol/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/optimizers/Algorithm.h"
+#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/containers/Finally.h"
 
 #ifdef IDOL_USE_GLPK
 
@@ -97,6 +99,10 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     if (t_add_column) {
 
+        if (!column.quadratic().empty()) {
+            throw Exception("GLPK cannot handle quadratic expressions.");
+        }
+
         const auto n = (int) column.linear().size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
@@ -143,6 +149,10 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     const auto& row = parent().get_ctr_row(t_ctr);
     const double rhs = row.rhs().as_numerical();
     const auto type = parent().get_ctr_type(t_ctr);
+
+    if (!row.quadratic().empty()) {
+        throw Exception("GLPK cannot handle quadratic expressions.");
+    }
 
     set_ctr_attr(index, type, rhs);
 
@@ -206,6 +216,10 @@ void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 void idol::Optimizers::GLPK::hook_update_objective() {
 
     const auto& model = parent();
+
+    if (!model.get_obj_expr().quadratic().empty()) {
+        throw Exception("GLPK cannot handle quadratic expressions.");
+    }
 
     for (const auto& var : model.vars()) {
         const auto& obj = model.get_var_column(var).obj();
@@ -673,6 +687,117 @@ void idol::Optimizers::GLPK::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Solution index out of bounds");
     }
+}
+
+idol::Model idol::Optimizers::GLPK::read_from_file(idol::Env &t_env, const std::string &t_filename) {
+
+    const unsigned int size = t_filename.size();
+
+    if (size >= 3 && (t_filename.substr(size - 3) == ".lp") || t_filename.substr(size - 6) == ".lp.gz") {
+        return read_from_lp_file(t_env, t_filename);
+    }
+
+    if (size >= 3 && (t_filename.substr(size - 4) == ".mps") || t_filename.substr(size - 7) == ".mps.gz") {
+        return read_from_mps_file(t_env, t_filename);
+    }
+
+    throw Exception("Could not infer file type from file extension.");
+}
+
+idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t_model) {
+
+    const int n_variables = glp_get_num_cols(t_model);
+    const int n_constraints = glp_get_num_rows(t_model);
+
+    Model result(t_env);
+
+    Finally on_terminate([&]() { glp_delete_prob(t_model); });
+
+    for (int j = 1 ; j <= n_variables ; ++j) {
+
+        const double lb = glp_get_col_lb(t_model, j);
+        const double ub = glp_get_col_ub(t_model, j);
+        const double obj = glp_get_obj_coef(t_model, j);
+        VarType type;
+        switch (glp_get_col_kind(t_model, j)) {
+            case GLP_CV: type = Continuous; break;
+            case GLP_IV: type = Integer; break;
+            case GLP_BV: type = Binary; break;
+            default: throw Exception("Unexpected variable type while parsing.");
+        }
+
+        const std::string name = glp_get_col_name(t_model, j);
+        result.add_var(lb, ub, type, Column(obj),name);
+    }
+
+    for (int i = 1 ; i <= n_constraints ; ++i) {
+
+        CtrType type;
+        double rhs;
+        switch (glp_get_row_type(t_model, i)) {
+            case GLP_UP:
+                type = LessOrEqual;
+                rhs = glp_get_row_ub(t_model, i);
+                break;
+            case GLP_LO:
+                type = GreaterOrEqual;
+                rhs = glp_get_row_lb(t_model, i);
+                break;
+            case GLP_FX:
+                type = Equal;
+                rhs = glp_get_row_ub(t_model, i);
+                break;
+            default: throw Exception("Unexpected variable type while parsing.");
+        }
+
+        const std::string name = glp_get_row_name(t_model, i);
+        const int nz = glp_get_mat_row(t_model, i, NULL, NULL);
+
+        auto* indices = new int[nz+1];
+        auto* coefficients = new double[nz+1];
+        glp_get_mat_row(t_model, i, indices, coefficients);
+
+        Expr<Var> lhs;
+        for (int k = 1 ; k <= nz ; ++k) {
+            const unsigned int var_index = indices[k] - 1;
+            const double coefficient = coefficients[k];
+            lhs += coefficient * result.get_var_by_index(var_index);
+        }
+
+        delete[] indices;
+        delete[] coefficients;
+
+        result.add_ctr(TempCtr(Row(std::move(lhs), rhs), type), name);
+    }
+
+    if (glp_get_obj_dir(t_model) == GLP_MAX) {
+        result.set_obj_sense(Maximize);
+    }
+
+    return std::move(result);
+}
+
+idol::Model idol::Optimizers::GLPK::read_from_lp_file(idol::Env &t_env, const std::string &t_filename) {
+
+    glp_prob* model = glp_create_prob();
+    auto result = glp_read_lp(model,  NULL, t_filename.c_str());
+    if (result != 0) {
+        throw Exception("Could not parse MPS file.");
+    }
+    return read_from_glpk(t_env, model);
+
+}
+
+idol::Model idol::Optimizers::GLPK::read_from_mps_file(idol::Env &t_env, const std::string &t_filename) {
+
+    constexpr bool use_fixed_format = false;
+
+    glp_prob *model = glp_create_prob();
+    auto result = glp_read_mps(model, use_fixed_format ? GLP_MPS_DECK : GLP_MPS_FILE, NULL, t_filename.c_str());
+    if (result != 0) {
+        throw Exception("Could not parse MPS file.");
+    }
+    return read_from_glpk(t_env, model);
 }
 
 #endif

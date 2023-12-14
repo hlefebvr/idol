@@ -84,6 +84,10 @@ protected:
     [[nodiscard]] unsigned int get_n_solutions() const override;
     [[nodiscard]] unsigned int get_solution_index() const override;
     void set_solution_index(unsigned int t_index) override;
+
+    static Model read_from_glpk(idol::Env& t_env, glp_prob* t_model);
+    static Model read_from_lp_file(Env& t_env, const std::string& t_filename);
+    static Model read_from_mps_file(Env& t_env, const std::string& t_filename);
 public:
     explicit GLPK(const Model& t_model, bool t_continuous_relaxation);
 
@@ -97,6 +101,7 @@ public:
 
     void set_param_presolve(bool t_value) override;
 
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
 #endif

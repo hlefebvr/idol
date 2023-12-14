@@ -401,6 +401,10 @@ public:
 
     [[nodiscard]] Model copy() const;
 
+    void reserve_vars(unsigned int t_size);
+
+    void reserve_ctrs(unsigned int t_size);
+
     /**
      * Returns the optimization environment of the model
      *
@@ -1228,6 +1232,8 @@ public:
     void set_solution_index(unsigned int t_index);
 
     void scale_to_integers(unsigned int t_n_digits);
+
+    Model fix(const Solution::Primal& t_primals) const;
 };
 
 template<class T, unsigned int N>
@@ -1385,7 +1391,8 @@ namespace idol {
             t_os << "Maximize";
         }
 
-        t_os << " " << t_model.get_obj_expr() << "\nSubject to:\n";
+        t_os << "\n\t" << t_model.get_obj_expr() << "\nSubject to:\n";
+
         for (const auto &ctr: t_model.ctrs()) {
 
             const auto &row = t_model.get_ctr_row(ctr);
@@ -1393,7 +1400,7 @@ namespace idol {
             const auto &quadratic = row.quadratic();
             const auto type = t_model.get_ctr_type(ctr);
 
-            t_os << ctr << ": ";
+            t_os << '\t' << ctr << ": ";
 
             if (linear.empty()) {
                 t_os << quadratic;
@@ -1427,6 +1434,8 @@ namespace idol {
             const double lb = t_model.get_var_lb(var);
             const double ub = t_model.get_var_ub(var);
             const int type = t_model.get_var_type(var);
+
+            t_os << '\t';
 
             if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
                 t_os << lb << " <= " << var << " <= " << ub;

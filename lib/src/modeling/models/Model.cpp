@@ -20,7 +20,6 @@ idol::Model::Model(idol::Model && t_src) noexcept
       m_rhs(std::move(t_src.m_rhs)),
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
-      m_optimizer(std::move(t_src.m_optimizer)),
       m_optimizer_factory(std::move(t_src.m_optimizer_factory))
 {
 
@@ -513,5 +512,43 @@ void idol::Model::scale_to_integers(unsigned int t_n_digits) {
 }
 
 idol::Model idol::Model::copy() const {
-    return idol::Model(*this);
+    return Model(*this);
+}
+
+idol::Model idol::Model::fix(const idol::Solution::Primal &t_primals) const {
+
+    Model result(m_env);
+
+    for (const auto& var : vars()) {
+        result.add(var, TempVar(
+                get_var_lb(var),
+                get_var_ub(var),
+                get_var_type(var),
+                Column()
+        ));
+    }
+
+    for (const auto& ctr : ctrs()) {
+        result.add(ctr, TempCtr(
+                std::move(get_ctr_row(ctr).fix(t_primals)),
+                get_ctr_type(ctr)
+        ));
+    }
+
+    result.set_obj_sense(get_obj_sense());
+    result.set_obj_expr(get_obj_expr().fix(t_primals));
+
+    if (m_optimizer_factory) {
+        result.use(*m_optimizer_factory);
+    }
+
+    return result;
+}
+
+void idol::Model::reserve_vars(unsigned int t_size) {
+    m_variables.reserve(t_size);
+}
+
+void idol::Model::reserve_ctrs(unsigned int t_size) {
+    m_constraints.reserve(t_size);
 }

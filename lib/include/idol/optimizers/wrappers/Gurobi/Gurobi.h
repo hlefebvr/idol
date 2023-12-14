@@ -10,6 +10,7 @@
 #include <memory>
 #include "idol/optimizers/callbacks/CallbackFactory.h"
 #include "idol/containers/Map.h"
+#include "idol/modeling/objects/Env.h"
 
 #ifdef IDOL_USE_GUROBI
 #include <gurobi_c++.h>
@@ -55,6 +56,8 @@ public:
     Gurobi& with_external_param(GRB_IntParam t_param, int t_value);
 
     Gurobi& with_external_param(GRB_DoubleParam t_param, double t_value);
+
+    static Model read_from_file(Env& t_env, const std::string& t_filename);
 
     [[nodiscard]] Gurobi *clone() const override;
 };

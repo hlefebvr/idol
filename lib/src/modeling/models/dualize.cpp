@@ -12,6 +12,7 @@ class idol::Dualizer {
     Env& m_env;
     const Model& m_primal;
     Model& m_dual;
+    const bool m_see_parameters_as_dual_variables;
 
     std::vector<Var> m_dual_variables_for_constraints;
     std::vector<Var> m_dual_variables_for_lower_bounds;
@@ -20,6 +21,7 @@ class idol::Dualizer {
     void create_dual_variables_for_constraints();
     void create_dual_variables_for_lower_bounds();
     void create_dual_variables_for_upper_bounds();
+    void add_parameters_as_variables_in_the_dual();
 
     [[nodiscard]] Var dual(const Ctr& t_ctr) const;
     [[nodiscard]] Var dual_lb(const Var& t_var) const;
@@ -27,16 +29,19 @@ class idol::Dualizer {
 
     [[nodiscard]] double dual_var_lb_for_ctr_type(const CtrType& t_type) const;
     [[nodiscard]] double dual_var_ub_for_ctr_type(const CtrType& t_type) const;
+
+    Expr<Var> as_expr(const Constant& t_constant);
 public:
-    Dualizer(const Model& t_primal, Model& t_dual);
+    Dualizer(const Model& t_primal, Model& t_dual, bool t_see_parameters_as_dual_variables);
 
     void dualize();
 };
 
-idol::Dualizer::Dualizer(const idol::Model &t_primal, idol::Model &t_dual)
+idol::Dualizer::Dualizer(const idol::Model &t_primal, idol::Model &t_dual, bool t_see_parameters_as_dual_variables)
     : m_env(t_primal.env()),
       m_primal(t_primal),
-      m_dual(t_dual) {
+      m_dual(t_dual),
+      m_see_parameters_as_dual_variables(t_see_parameters_as_dual_variables) {
 
     create_dual_variables_for_constraints();
     create_dual_variables_for_lower_bounds();
@@ -52,17 +57,32 @@ void idol::Dualizer::dualize() {
     m_dual.add_vector<Var, 1>(m_dual_variables_for_lower_bounds);
     m_dual.add_vector<Var, 1>(m_dual_variables_for_upper_bounds);
 
-    m_dual.set_obj_expr(
-        idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
-        + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
-        + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var))
-    );
+    if (m_see_parameters_as_dual_variables) {
+        add_parameters_as_variables_in_the_dual();
+    }
+
+    auto objective = idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
+                     + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
+                     + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var));
+
+    if (!m_see_parameters_as_dual_variables) {
+        objective += m_primal.get_obj_expr().constant();
+    } else {
+        objective += as_expr(m_primal.get_obj_expr().constant());
+    }
+
+    m_dual.set_obj_expr(std::move(objective));
 
     for (const auto& var : m_primal.vars()) {
         auto lhs = idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).linear().get(var) * dual(ctr))
                             + dual_lb(var)
                             + dual_ub(var);
-        m_dual.add_ctr(std::move(lhs) == m_primal.get_obj_expr().linear().get(var), "dual_" + var.name());
+        const auto& rhs = m_primal.get_obj_expr().linear().get(var);
+        if (!m_see_parameters_as_dual_variables) {
+            m_dual.add_ctr(std::move(lhs) == rhs, "dual_" + var.name());
+        } else {
+            m_dual.add_ctr(std::move(lhs) == as_expr(rhs), "dual_" + var.name());
+        }
     }
 
     for (const auto& var : m_primal.vars()) {
@@ -153,11 +173,60 @@ idol::Var idol::Dualizer::dual_ub(const idol::Var &t_var) const {
     return m_dual_variables_for_upper_bounds.at(m_primal.get_var_index(t_var));
 }
 
-idol::Model idol::dualize(const idol::Model& t_primal) {
+idol::Expr<idol::Var> idol::Dualizer::as_expr(const idol::Constant &t_constant) {
+
+    Expr result = t_constant.numerical();
+
+    for (const auto& [var, coefficient] : t_constant.linear()) {
+        result += coefficient * var.as<Var>();
+    }
+
+    for (const auto& [pair, coefficient] : t_constant.quadratic()) {
+        result += coefficient * pair.first.as<Var>() * pair.second.as<Var>();
+    }
+
+    return result;
+}
+
+void idol::Dualizer::add_parameters_as_variables_in_the_dual() {
+
+    const auto& objective = m_primal.get_obj_expr();
+
+    auto add_variable = [this](const Param& t_param) {
+        const auto& var = t_param.as<Var>();
+        if (!m_dual.has(var)) {
+            m_dual.add(var);
+        }
+    };
+
+    auto add_variables = [&](const Constant& t_constant) {
+
+        for (const auto& [param, coefficient] : t_constant.linear()) {
+            add_variable(param);
+        }
+
+        for (const auto& [pair, coefficient] : t_constant.quadratic()) {
+            add_variable(pair.first);
+            add_variable(pair.second);
+        }
+
+    };
+
+    add_variables(objective.constant());
+    for (const auto& [var, coefficient] : objective.linear()) {
+        add_variables(coefficient);
+    }
+    for (const auto& [var1, var2, coefficient] : objective.quadratic()) {
+        add_variables(coefficient);
+    }
+
+}
+
+idol::Model idol::dualize(const idol::Model& t_primal, bool t_see_parameters_as_variables_in_the_dual) {
 
     Model result(t_primal.env());
 
-    Dualizer dualizer(t_primal, result);
+    Dualizer dualizer(t_primal, result, t_see_parameters_as_variables_in_the_dual);
 
     dualizer.dualize();
 
