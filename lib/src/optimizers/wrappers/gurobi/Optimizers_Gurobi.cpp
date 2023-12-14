@@ -555,12 +555,16 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         return result_;
     };
 
-    const auto add_ctr = [&](const auto& t_lhs, const auto& t_rhs, char t_type) {
+    const auto add_ctr = [&](
+            const auto& t_lhs,
+            const auto& t_rhs,
+            char t_type,
+            const std::string& t_name) {
 
         switch (t_type) {
-            case LessOrEqual: result.add_ctr(t_lhs <= t_rhs); break;
-            case GreaterOrEqual: result.add_ctr(t_lhs >= t_rhs); break;
-            case Equal: result.add_ctr(t_lhs == t_rhs); break;
+            case LessOrEqual: result.add_ctr(t_lhs <= t_rhs, t_name); break;
+            case GreaterOrEqual: result.add_ctr(t_lhs >= t_rhs, t_name); break;
+            case Equal: result.add_ctr(t_lhs == t_rhs, t_name); break;
             default: throw Exception("Enum out of bounds.");
         }
 
@@ -572,9 +576,10 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const auto& expr = model->getRow(ctr);
         const double rhs = ctr.get(GRB_DoubleAttr_RHS);
         const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_Sense));
+        const auto& name = ctr.get(GRB_StringAttr_ConstrName);
 
         Expr lhs = parse_linear(expr);
-        add_ctr(lhs, rhs, type);
+        add_ctr(lhs, rhs, type, name);
     }
 
     for (unsigned int i = 0 ; i < n_quad_ctrs ; ++i) {
@@ -583,9 +588,10 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const auto& expr = model->getQCRow(ctr);
         const double rhs = ctr.get(GRB_DoubleAttr_QCRHS);
         const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_QCSense));
+        const auto& name = ctr.get(GRB_StringAttr_QCName);
 
         Expr lhs = parse_quadratic(expr);
-        add_ctr(lhs, rhs, type);
+        add_ctr(lhs, rhs, type, name);
 
     }
 
