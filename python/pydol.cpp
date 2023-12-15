@@ -93,6 +93,8 @@ PYBIND11_MODULE(pydol, m) {
                  py::arg("t_type"),
                  py::arg("t_name") = ""
             )
+
+            .def("add",(void (Model::*)(const Var&)) &Model::add)
         ;
 }
 
