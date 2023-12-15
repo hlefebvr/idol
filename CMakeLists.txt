@@ -22,3 +22,4 @@ endif()
 
 add_custom_target(doc COMMAND sphinx-build -M html . _build WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/docs)
 
+add_subdirectory(python)

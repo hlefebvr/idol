@@ -201,6 +201,8 @@ add_library(idol STATIC
         include/idol/containers/Finally.h
 )
 
+set_target_properties(idol PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
 
