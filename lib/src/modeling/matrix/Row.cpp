@@ -16,6 +16,10 @@ idol::Row idol::Row::fix(const Solution::Primal &t_primals) const {
         result.linear() += constant.fix(t_primals) * var;
     }
 
+    for (const auto& [var1, var2, constant] : quadratic()) {
+        result.quadratic() += constant.fix(t_primals) * var1 * var2;
+    }
+
     result.rhs() = rhs().fix(t_primals);
 
     return result;
