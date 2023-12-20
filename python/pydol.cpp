@@ -449,6 +449,27 @@ PYBIND11_MODULE(pydol, m) {
             .def("__add__", [](BranchAndBound<DefaultNodeInfo>& t_self, const NodeSelectionRuleFactory<DefaultNodeInfo>& t_branching_rule){ return t_self.with_node_selection_rule(t_branching_rule); })
             ;
 
+    py::class_<DantzigWolfe::SubProblem>(algorithms, "DantzigWolfeSubProblem")
+            .def(py::init<>())
+            .def("add_optimizer", (DantzigWolfe::SubProblem& (DantzigWolfe::SubProblem::*)(const OptimizerFactory&)) &DantzigWolfe::SubProblem::add_optimizer)
+            ;
+
+    py::class_<DantzigWolfeDecomposition, OptimizerFactory>(algorithms, "DantzigWolfeDecomposition")
+            .def(py::init<Annotation<Ctr, unsigned int>>())
+            .def("with_master_optimizer", (DantzigWolfeDecomposition& (DantzigWolfeDecomposition::*)(const OptimizerFactory&)) &DantzigWolfeDecomposition::with_master_optimizer)
+            .def("with_default_sub_problem_spec", (DantzigWolfeDecomposition& (DantzigWolfeDecomposition::*)(const DantzigWolfe::SubProblem&)) &DantzigWolfeDecomposition::with_default_sub_problem_spec)
+
+            DEF_DEFAULT_PARAMETERS(DantzigWolfeDecomposition)
+            ;
+
+    /*
+      .with_default_sub_problem_spec(
+              DantzigWolfe::SubProblem()
+                                .add_optimizer(HiGHS().with_logs(false))
+                                .with_column_pool_clean_up(1500, .75)
+      )
+     */
+
     // Problems
 
     auto problems = m.def_submodule("Problems", "Sub-module for problem parsers.");
