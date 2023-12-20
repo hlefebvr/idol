@@ -17,7 +17,7 @@ std::unique_ptr<GRBEnv> idol::Optimizers::Gurobi::s_global_env;
 
 GRBEnv &idol::Optimizers::Gurobi::get_global_env() {
     if (!s_global_env) {
-        s_global_env = std::make_unique<GRBEnv>();
+        GUROBI_CATCH(s_global_env = std::make_unique<GRBEnv>();)
     }
     return *s_global_env;
 }
