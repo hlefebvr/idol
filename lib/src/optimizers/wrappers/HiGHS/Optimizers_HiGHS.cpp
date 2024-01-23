@@ -24,6 +24,7 @@ void idol::Optimizers::HiGHS::hook_build() {
     }
 
     hook_update_objective_sense();
+    update_objective_constant();
     set_objective_as_updated();
     set_rhs_as_updated();
 
@@ -240,7 +241,7 @@ void idol::Optimizers::HiGHS::hook_update_objective() {
         m_model.changeColCost(lazy(var).impl(), obj.as_numerical());
     }
 
-    m_model.changeObjectiveOffset(model.get_obj_expr().constant().as_numerical());
+    update_objective_constant();
 
 }
 
@@ -506,6 +507,11 @@ void idol::Optimizers::HiGHS::set_param_logs(bool t_value) {
 idol::Optimizers::HiGHS::~HiGHS() {
     delete[] m_farkas_certificate;
     delete[] m_extreme_ray;
+}
+
+void idol::Optimizers::HiGHS::update_objective_constant() {
+    const double constant = parent().get_obj_expr().constant().as_numerical();
+    m_model.changeObjectiveOffset(constant);
 }
 
 #endif

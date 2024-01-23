@@ -53,6 +53,7 @@ protected:
     void hook_update() override;
     void hook_remove(const Var& t_var) override;
     void hook_remove(const Ctr& t_ctr) override;
+    void update_objective_constant();
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;

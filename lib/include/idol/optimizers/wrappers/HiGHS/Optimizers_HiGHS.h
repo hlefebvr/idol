@@ -40,6 +40,8 @@ protected:
 
     void hook_update_objective_sense() override;
 
+    void update_objective_constant();
+
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) override;
 
     void hook_update() override;

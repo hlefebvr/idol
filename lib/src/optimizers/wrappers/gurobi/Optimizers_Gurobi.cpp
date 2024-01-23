@@ -113,6 +113,7 @@ void idol::Optimizers::Gurobi::hook_build() {
 
     if (objective.quadratic().empty()) {
         hook_update_objective_sense();
+        update_objective_constant();
         set_objective_as_updated();
     }
 
@@ -637,6 +638,11 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
     }
 
     throw Exception("Unexpected constraint type.");
+}
+
+void idol::Optimizers::Gurobi::update_objective_constant() {
+    const double constant = parent().get_obj_expr().constant().as_numerical();
+    m_model.set(GRB_DoubleAttr_ObjCon, constant);
 }
 
 #endif
