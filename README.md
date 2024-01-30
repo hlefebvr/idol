@@ -18,8 +18,9 @@ Benders decomposition, Column-and-Constraint generation for adjustable robust pr
 or any other cutting-edge method, idol is your trusted companion.
 
 - [Documentation](#Documentation)
+- [Using idol for Research?](#using-idol-for-research)
 - [Examples](#Examples)
-- [Implemented features](#Implemented-Features)
+- [Implemented Features](#Implemented-Features)
   - [Branch-and-Bound](#Branch-and-Bound)
   - [Column Generation and Branch-and-Price](#Column-Generation-and-Branch-and-Price)
 
