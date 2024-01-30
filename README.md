@@ -11,6 +11,7 @@
 ![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png)
 
 Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+
 It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
 methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
@@ -26,7 +27,13 @@ or any other cutting-edge method, idol is your trusted companion.
 
 Visit our [online documentation](https://hlefebvr.github.io/idol/).
 
+## Using idol for Research?
+
+If you are opting for idol in one of your research project and encounter some issues, please contact us at lefebvre(at)uni-trier.de.
+
 ## Examples
+
+### Branch-and-Price
 
 Look at how easy it is to implement a Branch-and-Price algorithm using idol.
 
