@@ -43,7 +43,6 @@ else()
             HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
             PATH_SUFFIXES lib)
     set(GUROBI_CXX_DEBUG_LIBRARY ${GUROBI_CXX_LIBRARY})
-    message("CXX library: ${GUROBI_CXX_LIBRARY}")
 endif()
 
 include(FindPackageHandleStandardArgs)

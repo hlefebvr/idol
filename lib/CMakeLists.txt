@@ -265,6 +265,14 @@ if (${USE_MINKNAP})
 
 endif()
 
+if (${USE_MIBS})
+
+    find_package(MIBS REQUIRED)
+    target_link_libraries(idol PUBLIC mibs)
+    target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
+
+endif()
+
 set(AVAILABLE_MILP_SOLVERS "${AVAILABLE_MILP_SOLVERS}" PARENT_SCOPE)
 
 if (${WITH_PROFILING})
