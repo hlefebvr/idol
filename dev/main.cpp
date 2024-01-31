@@ -1,17 +1,19 @@
-#include <MibSSolution.hpp>
-#include <OsiSymSolverInterface.hpp>
-
 #include "OsiSolverInterface.hpp"
 #include "OsiClpSolverInterface.hpp"
+#include "OsiSymSolverInterface.hpp"
 
 #include "MibSModel.hpp"
 
 #include "AlpsKnowledgeBrokerSerial.h"
 
+#include <iostream>
+#include <OsiCpxSolverInterface.hpp>
+
 int main(int t_argc, char** t_argv) {
 
-    auto solver = std::make_unique<OsiSymSolverInterface>();
-    solver->messageHandler()->setLogLevel(0);
+    std::unique_ptr<OsiSolverInterface> solver(new OsiCpxSolverInterface());
+    // solver->messageHandler()->setLogLevel(0);
+
 
     /*
     *  optimal solution: x* = (1,1)
@@ -40,22 +42,41 @@ int main(int t_argc, char** t_argv) {
 
     solver->initialSolve();
 
-    // Check the solution
-    if ( solver->isProvenOptimal() ) {
-        std::cout << "Found optimal solution!" << std::endl;
-        std::cout << "Objective value is " << solver->getObjValue() << std::endl;
+    MibSModel model;
+    model.setSolver(solver.get());
 
-        int n = solver->getNumCols();
-        const double* solution = solver->getColSolution();
+    std::vector<int> indices {0, 1 };
+    std::vector<double> lower_objective { -1., -1. };
 
-        // We can then print the solution or could examine it.
-        for( int i = 0; i < n; ++i )
-            std::cout << solver->getColName(i) << " = " << solution[i] << std::endl;
+    model.loadAuxiliaryData(
+            2,
+            2,
+            indices.data(),
+            indices.data(),
+            1.,
+            lower_objective.data(),
+            0,
+            0,
+            nullptr,
+            nullptr,
+            0,
+            nullptr,
+            0,
+            nullptr,
+            nullptr,
+            nullptr
+            );
 
-    } else {
-        std::cout << "Didn't find optimal solution." << std::endl;
-        // Could then check other status functions.
-    }
+    int argc = 1;
+    std::string arg = "mibs";
+    char** argv = new char* [1];
+    argv[0] = arg.data();
+
+    std::cout << argv[0] << std::endl;
+
+    AlpsKnowledgeBrokerSerial broker(argc, argv, model);
+
+    broker.search(&model);
 
     return 0;
 }

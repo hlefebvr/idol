@@ -269,7 +269,6 @@ if (${USE_MIBS})
 
     find_package(MIBS REQUIRED)
     target_link_libraries(idol PUBLIC mibs)
-    target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
 
 endif()
 
