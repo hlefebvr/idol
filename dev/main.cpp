@@ -147,8 +147,18 @@ using namespace idol;
 
 void solve_bilevel(const Model& t_model,
                    const Annotation<Var, unsigned int>& t_follower_var,
-                   const Annotation<Ctr, unsigned int>& t_follower_ctr
+                   const Annotation<Ctr, unsigned int>& t_follower_ctr,
+                   const Ctr& t_follower_objective
                    ) {
+
+    const auto follower_objective_index = t_model.get_ctr_index(t_follower_objective);
+    const auto get_ctr_index = [&](const Ctr& t_ctr) {
+        const auto result = t_model.get_ctr_index(t_ctr);
+        if (result > follower_objective_index) {
+            return result - 1;
+        }
+        return result;
+    };
 
     const unsigned int n_variables = t_model.vars().size();
 
@@ -172,7 +182,7 @@ void solve_bilevel(const Model& t_model,
         if (var.get(t_follower_var) != MasterId) {
             n_lower_variables++;
             lower_variable_indices.emplace_back(index);
-            lower_objective.emplace_back(-1.); // TODO handle this somehow...
+            lower_objective.emplace_back(t_model.get_mat_coeff(t_follower_objective, var).as_numerical());
             continue;
         }
 
@@ -183,7 +193,11 @@ void solve_bilevel(const Model& t_model,
 
     for (const auto& ctr : t_model.ctrs()) {
 
-        const auto index = t_model.get_ctr_index(ctr);
+        if (ctr.id() == t_follower_objective.id()) {
+            continue;
+        }
+
+        const auto index = get_ctr_index(ctr);
 
         if (ctr.get(t_follower_ctr) != MasterId) {
             n_lower_constraints++;
@@ -225,6 +239,10 @@ void solve_bilevel(const Model& t_model,
     matrix.setDimensions(0, (int) n_variables);
 
     for (const auto& ctr : t_model.ctrs()) {
+
+        if (ctr.id() == t_follower_objective.id()) {
+            continue;
+        }
 
         const auto& row = t_model.get_ctr_row(ctr);
         const double rhs = row.rhs().as_numerical();
@@ -304,11 +322,11 @@ void solve_bilevel(const Model& t_model,
     char** argv = new char* [1];
     argv[0] = arg.data();
 
-    std::cout << argv[0] << std::endl;
-
     AlpsKnowledgeBrokerSerial broker(argc, argv, model);
 
     broker.search(&model);
+
+    model.getSolver()->writeLp("model.lp");
 }
 
 int main(int t_argc, char** t_argv) {
@@ -320,9 +338,10 @@ int main(int t_argc, char** t_argv) {
 
     Model model(env);
 
+    //auto y = model.add_var(-Inf,Inf,Continuous, "y");
     auto x = model.add_vars(Dim<1>(2), 0, Inf, Continuous, "x");
-    //model.add_ctr(-x[0] - x[1] == 0);
     model.set_obj_expr(-x[0] - x[1]);
+    auto follower_objective = model.add_ctr(-x[0] - x[1] == 0);
     auto c1 = model.add_ctr(x[0] + 2 * x[1] <= 3.);
     auto c2 = model.add_ctr(2 * x[0] + x[1] <= 3.);
 
@@ -333,7 +352,10 @@ int main(int t_argc, char** t_argv) {
 
     std::cout << model << std::endl;
 
-    solve_bilevel(model, follower_variables, follower_constraints);
+    solve_bilevel(model,
+                  follower_variables,
+                  follower_constraints,
+                  follower_objective);
 
     return 0;
 }
