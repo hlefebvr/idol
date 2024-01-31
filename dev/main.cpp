@@ -23,42 +23,20 @@ int main(int t_argc, char** t_argv) {
     *              x1        >= 0
     */
 
-    {
-
-    int n_cols = 2;
-    std::vector<double> objective{-1., -1.};
-    std::vector<double> lower_bounds{0., 0.};
-    std::vector<double> upper_bounds{solver->getInfinity(), solver->getInfinity()};
-
-    int n_rows = 2;
-    std::vector<double> row_lower_bounds = {-solver->getInfinity(), -solver->getInfinity()};
-    std::vector<double> row_upper_bounds = {3., 3.};
-
-    //Define the constraint matrix.
-    CoinPackedMatrix matrix(false, 0, 0);
-    matrix.setDimensions(0, n_cols);
+    solver->addCol(CoinPackedVector(), 0., solver->getInfinity(), -1.);
+    solver->addCol(CoinPackedVector(), 0., solver->getInfinity(), -1.);
 
     //-infinity <= 1 x0 + 2 x2 <= 3
     CoinPackedVector row1;
     row1.insert(0, 1.0);
     row1.insert(1, 2.0);
-    matrix.appendRow(row1);
+    solver->addRow(row1, -solver->getInfinity(), 3.);
 
     //-infinity <= 2 x0 + 1 x1 <= 3
     CoinPackedVector row2;
     row2.insert(0, 2.0);
     row2.insert(1, 1.0);
-    matrix.appendRow(row2);
-
-    //load the problem to OSI
-    solver->loadProblem(matrix,
-                        lower_bounds.data(),
-                        upper_bounds.data(),
-                        objective.data(),
-                        row_lower_bounds.data(),
-                        row_upper_bounds.data());
-
-    }
+    solver->addRow(row2, -solver->getInfinity(), 3.);
 
     solver->initialSolve();
 
