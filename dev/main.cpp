@@ -7,6 +7,7 @@
 #include "AlpsKnowledgeBrokerSerial.h"
 #include "idol/modeling.h"
 #include "idol/optimizers/wrappers/MibS/impl_MibS.h"
+#include "idol/optimizers/wrappers/MibS/MibS.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -178,16 +179,13 @@ int main(int t_argc, char** t_argv) {
     follower_c1.set(follower_constraints, 0);
     follower_c2.set(follower_constraints, 0);
 
-    impl::MibS impl(model, follower_variables, follower_constraints, follower_objective);
+    model.use(MibS(follower_variables,
+                   follower_constraints,
+                   follower_objective));
 
-    impl.solve();
+    model.optimize();
 
-    std::cout << "objective value = " << impl.get_objective_value() << std::endl;
-    std::cout << "status = " << impl.get_status() << std::endl;
-    std::cout << "reason = " << impl.get_reason() << std::endl;
-    std::cout << "x = " << impl.get_var_primal(x) << std::endl;
-    std::cout << "y = " << impl.get_var_primal(y) << std::endl;
-
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

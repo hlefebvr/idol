@@ -18,6 +18,7 @@ class idol::impl::MibS {
     const idol::Annotation<idol::Var, unsigned int> m_lower_level_variables;
     const idol::Annotation<idol::Ctr, unsigned int> m_lower_level_constraints;
     const idol::Ctr m_lower_level_objective;
+    const bool m_logs;
 
     MibSModel m_mibs;
     std::unique_ptr<AlpsKnowledgeBroker> m_broker;
@@ -39,11 +40,14 @@ public:
     MibS(const idol::Model& t_model,
          const idol::Annotation<idol::Var, unsigned int>& t_lower_level_variables,
          const idol::Annotation<idol::Ctr, unsigned int>& t_lower_level_constraints,
-         idol::Ctr  t_lower_level_objective);
+         idol::Ctr  t_lower_level_objective,
+         bool t_logs);
 
     void solve();
 
-    double get_objective_value() const;
+    double get_best_obj() const;
+
+    double get_best_bound() const;
 
     double get_var_primal(const Var& t_var) const;
 

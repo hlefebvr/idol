@@ -24,11 +24,13 @@ namespace idol {
 idol::impl::MibS::MibS(const idol::Model &t_model,
                        const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
                        const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
-                       idol::Ctr t_lower_level_objective)
+                       idol::Ctr t_lower_level_objective,
+                       bool t_logs)
                        : m_model(t_model),
                          m_lower_level_constraints(t_lower_level_constraints),
                          m_lower_level_variables(t_lower_level_variables),
-                         m_lower_level_objective(std::move(t_lower_level_objective)) {
+                         m_lower_level_objective(std::move(t_lower_level_objective)),
+                         m_logs(t_logs) {
 
     load_auxiliary_data();
     load_problem_data();
@@ -109,9 +111,17 @@ void idol::impl::MibS::solve() {
 
     try {
         m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, argv, m_mibs);
+
+        if (!m_logs) {
+            m_osi_solver->messageHandler()->setLogLevel(0);
+            m_mibs.blisMessageHandler()->setLogLevel(0);
+            m_mibs.bcpsMessageHandler()->setLogLevel(0);
+            m_broker->messageHandler()->setLogLevel(0);
+        }
+
         m_broker->search(&m_mibs);
     } catch (const CoinError& t_error) {
-        throw Exception("Mibs thrown an exception: " + t_error.message() + ".");
+        throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
 
 }
@@ -324,7 +334,7 @@ double idol::impl::MibS::get_var_primal(const idol::Var &t_var) const {
     return solution.getValues()[index];
 }
 
-double idol::impl::MibS::get_objective_value() const {
+double idol::impl::MibS::get_best_obj() const {
     return m_broker->getBestQuality();
 }
 
@@ -363,4 +373,8 @@ idol::SolutionReason idol::impl::MibS::get_reason() const {
     }
 
     throw Exception("enum out of bounds.");
+}
+
+double idol::impl::MibS::get_best_bound() const {
+    return m_broker->getBestEstimateQuality();
 }
