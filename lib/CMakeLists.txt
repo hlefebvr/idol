@@ -199,6 +199,12 @@ add_library(idol STATIC
         include/idol/modeling/models/dualize.h
         src/modeling/models/dualize.cpp
         include/idol/containers/Finally.h
+        include/idol/optimizers/wrappers/MibS/MibS.cpp
+        include/idol/optimizers/wrappers/MibS/MibS.h
+        include/idol/optimizers/wrappers/MibS/Optimizers_MibS.cpp
+        include/idol/optimizers/wrappers/MibS/Optimizers_MibS.h
+        include/idol/optimizers/wrappers/MibS/impl_MibS.cpp
+        include/idol/optimizers/wrappers/MibS/impl_MibS.h
 )
 
 find_package(OpenMP REQUIRED)

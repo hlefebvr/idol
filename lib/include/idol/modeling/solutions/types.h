@@ -30,7 +30,8 @@ namespace idol {
         TimeLimit,
         IterLimit,
         ObjLimit,
-        Numerical
+        Numerical,
+        MemoryLimit
     };
 
     template<class T>
@@ -118,6 +119,8 @@ namespace idol {
                 return t_os << "ObjLimit";
             case Numerical:
                 return t_os << "Numerical";
+            case MemoryLimit:
+                return t_os << "MemoryLimit";
             default:;
         }
 
