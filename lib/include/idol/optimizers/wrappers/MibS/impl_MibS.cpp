@@ -9,6 +9,7 @@
 #include <OsiSymSolverInterface.hpp>
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <OsiCpxSolverInterface.hpp>
+#include <MibSSolution.hpp>
 
 namespace idol {
     template<class T>
@@ -318,10 +319,9 @@ CoinPackedVector idol::impl::MibS::to_packed_vector(const idol::LinExpr<idol::Va
 }
 
 double idol::impl::MibS::get_var_primal(const idol::Var &t_var) const {
-
     const unsigned int index = m_model.get_var_index(t_var);
-
-    return m_osi_solver->getColSolution()[index];
+    const auto& solution = dynamic_cast<MibSSolution&>(*m_broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
+    return solution.getValues()[index];
 }
 
 double idol::impl::MibS::get_objective_value() const {
