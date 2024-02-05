@@ -52,98 +52,6 @@ void hello_world_osi() {
     solver->initialSolve();
 }
 
-void hello_world_mibs() {
-
-    std::unique_ptr<OsiSolverInterface> solver(new OsiCpxSolverInterface());
-
-    MibSModel model;
-    model.setSolver(solver.get());
-
-    /**
-     * min  -x − 7y
-     * s.t. −3x + 2y ≤ 12
-             x + 2y ≤ 20
-             x ≤ 10
-             y ∈ arg min {z : 2x - z ≤ 7,
-                              -2x + 4z ≤ 16,
-                              z ≤ 5}
-     */
-
-    std::vector<int> upper_level_variables_indices = { 0,  };
-    std::vector<int> lower_level_variables_indices = { 1,  };
-    std::vector<int> upper_level_constraints_indices = { 0, 1,  };
-    std::vector<int> lower_level_constraints_indices = { 2, 3,  };
-    std::vector<double> lower_level_objective_coefficients = { 1  };
-
-    model.loadAuxiliaryData(
-            (int) lower_level_variables_indices.size(),
-            (int) lower_level_constraints_indices.size(),
-            lower_level_variables_indices.data(),
-            lower_level_constraints_indices.data(),
-            1.,
-            lower_level_objective_coefficients.data(),
-            (int) upper_level_variables_indices.size(),
-            (int) upper_level_constraints_indices.size(),
-            upper_level_variables_indices.data(),
-            upper_level_constraints_indices.data(),
-            0,
-            nullptr,
-            0,
-            nullptr,
-            nullptr,
-            nullptr
-    );
-
-    std::vector<double> variable_lower_bounds = { 0, 0,  };
-    std::vector<double> variable_upper_bounds = { 10, 5,  };
-    std::vector<char> variable_types = { 'I', 'I',  };
-    std::vector<double> constraint_lower_bounds = { -1e+20, -1e+20, -1e+20, -1e+20,  };
-    std::vector<double> constraint_upper_bounds = { 12, 20, 7, 16,  };
-    std::vector<char> constraint_types = { 'L', 'L', 'L', 'L',  };
-    std::vector<double> objective = { -1, -7,  };
-
-    CoinPackedMatrix matrix(false, 0, 2);
-
-    CoinPackedVector row1;
-    row1.insert(0, -3);
-    row1.insert(1, 2);
-    matrix.appendRow(row1);
-
-    CoinPackedVector row2;
-    row2.insert(0, 1);
-    row2.insert(1, 2);
-    matrix.appendRow(row2);
-
-    CoinPackedVector row3;
-    row3.insert(0, 2);
-    row3.insert(1, -1);
-    matrix.appendRow(row3);
-
-    CoinPackedVector row4;
-    row4.insert(0, -2);
-    row4.insert(1, 4);
-    matrix.appendRow(row4);
-
-    matrix.setMinorDim(4);
-
-    std::cout << "Here: " << matrix.getMinorDim() << std::endl;
-
-    model.loadProblemData(
-            matrix,
-            variable_lower_bounds.data(),
-            variable_upper_bounds.data(),
-            objective.data(),
-            constraint_lower_bounds.data(),
-            constraint_upper_bounds.data(),
-            variable_types.data(),
-            1.,
-            1e+20,
-            constraint_types.data()
-    );
-
-    std::cout << "SUCCESS!" << std::endl;
-}
-
 using namespace idol;
 
 int main(int t_argc, char** t_argv) {
@@ -179,7 +87,7 @@ int main(int t_argc, char** t_argv) {
     follower_c1.set(follower_constraints, 0);
     follower_c2.set(follower_constraints, 0);
 
-    model.use(MibS(follower_variables,
+    model.use(BiLevel::MibS(follower_variables,
                    follower_constraints,
                    follower_objective));
 

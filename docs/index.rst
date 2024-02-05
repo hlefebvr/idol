@@ -18,6 +18,7 @@ What Is Idol?
 -------------
 
 Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+
 It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
 methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
