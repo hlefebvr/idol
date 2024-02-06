@@ -2,6 +2,8 @@
 // Created by henri on 05.02.24.
 //
 
+#ifdef IDOL_USE_OSI
+
 #include "OsiIdolSolverInterface.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
@@ -321,3 +323,5 @@ void OsiIdolSolverInterface::writeLp(const char *filename, const char *extension
                                      int decimals, double objSense, bool useRowNames) const {
     const_cast<idol::Model &>(m_model).write(std::string(filename).append(".").append(extension));
 }
+
+#endif

@@ -5,6 +5,8 @@
 #ifndef IDOL_OPTIMIZERS_MIBS_H
 #define IDOL_OPTIMIZERS_MIBS_H
 
+#ifdef IDOL_USE_MIBS
+
 #include "idol/optimizers/Optimizer.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
@@ -65,5 +67,6 @@ protected:
     void update_var_obj(const Var &t_var) override;
 };
 
+#endif
 
 #endif //IDOL_OPTIMIZERS_MIBS_H

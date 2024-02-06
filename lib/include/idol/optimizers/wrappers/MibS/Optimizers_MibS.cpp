@@ -1,6 +1,7 @@
 //
 // Created by henri on 01.02.24.
 //
+#ifdef IDOL_USE_MIBS
 
 #include "Optimizers_MibS.h"
 
@@ -168,3 +169,5 @@ void idol::Optimizers::MibS::throw_if_no_mibs() const {
     throw Exception("It seems like the model has been modified since your last solve.\n"
                     "Please, call Model::optimize first. ");
 }
+
+#endif

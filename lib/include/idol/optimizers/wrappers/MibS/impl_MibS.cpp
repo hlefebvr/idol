@@ -2,6 +2,8 @@
 // Created by henri on 01.02.24.
 //
 
+#ifdef IDOL_USE_MIBS
+
 #include "impl_MibS.h"
 #include "idol/modeling/objects/Versions.h"
 
@@ -378,3 +380,5 @@ idol::SolutionReason idol::impl::MibS::get_reason() const {
 double idol::impl::MibS::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
 }
+
+#endif

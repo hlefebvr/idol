@@ -5,6 +5,8 @@
 #ifndef IDOL_OSIIDOLSOLVERINTERFACE_H
 #define IDOL_OSIIDOLSOLVERINTERFACE_H
 
+#ifdef IDOL_USE_OSI
+
 #include <OsiSolverInterface.hpp>
 #include "idol/modeling/models/Model.h"
 
@@ -96,5 +98,6 @@ protected:
     void applyColCut(const OsiColCut &cc) override;
 };
 
+#endif
 
 #endif //IDOL_OSIIDOLSOLVERINTERFACE_H
