@@ -293,7 +293,7 @@ void idol::Optimizers::Gurobi::hook_optimize() {
 }
 
 void idol::Optimizers::Gurobi::hook_write(const std::string &t_name) {
-    m_model.write(t_name);
+    GUROBI_CATCH(m_model.write(t_name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update_objective_sense() {

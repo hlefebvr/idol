@@ -205,6 +205,12 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/MibS/Optimizers_MibS.h
         include/idol/optimizers/wrappers/MibS/impl_MibS.cpp
         include/idol/optimizers/wrappers/MibS/impl_MibS.h
+        include/idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.cpp
+        include/idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.h
+        include/idol/optimizers/wrappers/Osi/Osi.cpp
+        include/idol/optimizers/wrappers/Osi/Osi.h
+        include/idol/optimizers/wrappers/Osi/Optimizers_Osi.cpp
+        include/idol/optimizers/wrappers/Osi/Optimizers_Osi.h
 )
 
 find_package(OpenMP REQUIRED)
