@@ -199,17 +199,17 @@ add_library(idol STATIC
         include/idol/modeling/models/dualize.h
         src/modeling/models/dualize.cpp
         include/idol/containers/Finally.h
-        include/idol/optimizers/wrappers/MibS/MibS.cpp
+        src/optimizers/wrappers/MibS/MibS.cpp
         include/idol/optimizers/wrappers/MibS/MibS.h
-        include/idol/optimizers/wrappers/MibS/Optimizers_MibS.cpp
+        src/optimizers/wrappers/MibS/Optimizers_MibS.cpp
         include/idol/optimizers/wrappers/MibS/Optimizers_MibS.h
-        include/idol/optimizers/wrappers/MibS/impl_MibS.cpp
+        src/optimizers/wrappers/MibS/impl_MibS.cpp
         include/idol/optimizers/wrappers/MibS/impl_MibS.h
-        include/idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.cpp
+        src/optimizers/wrappers/Osi/OsiIdolSolverInterface.cpp
         include/idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.h
-        include/idol/optimizers/wrappers/Osi/Osi.cpp
+        src/optimizers/wrappers/Osi/Osi.cpp
         include/idol/optimizers/wrappers/Osi/Osi.h
-        include/idol/optimizers/wrappers/Osi/Optimizers_Osi.cpp
+        src/optimizers/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/wrappers/Osi/Optimizers_Osi.h
 )
 

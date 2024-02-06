@@ -4,7 +4,7 @@
 
 #ifdef IDOL_USE_MIBS
 
-#include "impl_MibS.h"
+#include "idol/optimizers/wrappers/MibS/impl_MibS.h"
 #include "idol/modeling/objects/Versions.h"
 
 #include <utility>

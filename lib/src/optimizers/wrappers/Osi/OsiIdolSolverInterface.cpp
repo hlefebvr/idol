@@ -4,7 +4,7 @@
 
 #ifdef IDOL_USE_OSI
 
-#include "OsiIdolSolverInterface.h"
+#include "idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
 OsiIdolSolverInterface::OsiIdolSolverInterface(idol::Model &t_model) : m_model(t_model.copy()) {
