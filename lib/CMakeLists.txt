@@ -269,6 +269,62 @@ if (${USE_HIGHS})
 
 endif()
 
+if (${USE_CPLEX})
+
+    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
+        message(WARNING "Cplex can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
+        set(USE_OSI YES)
+    endif()
+
+    find_package(CPLEX REQUIRED)
+    target_link_libraries(idol PUBLIC cplex)
+    target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
+
+endif()
+
+if (${USE_SYMPHONY})
+
+    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
+        message(WARNING "Symphony can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
+        set(USE_OSI YES)
+    endif()
+
+    find_package(SYMPHONY REQUIRED)
+    target_link_libraries(idol PUBLIC symphony)
+    target_compile_definitions(idol PUBLIC IDOL_USE_SYMPHONY)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Symphony")
+
+endif()
+
+if (${USE_CBC})
+
+    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
+        message(WARNING "Cbc can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
+        set(USE_OSI YES)
+    endif()
+
+    find_package(CBC REQUIRED)
+    target_link_libraries(idol PUBLIC cbc)
+    target_compile_definitions(idol PUBLIC IDOL_USE_CBC)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Cbc")
+
+endif()
+
+if (${USE_CLP})
+
+    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
+        message(WARNING "Clp can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
+        set(USE_OSI YES)
+    endif()
+
+    find_package(CLP REQUIRED)
+    target_link_libraries(idol PUBLIC clp)
+    target_compile_definitions(idol PUBLIC IDOL_USE_CLP)
+    list(APPEND AVAILABLE_MILP_SOLVERS "Clp")
+
+endif()
+
 if (${USE_MINKNAP})
 
     find_package(minknap REQUIRED)
@@ -279,8 +335,31 @@ endif()
 
 if (${USE_MIBS})
 
+    set(USE_OSI YES)
+
+    find_package(ALPS REQUIRED)
+    find_package(BCPS REQUIRED)
+    find_package(BLIS REQUIRED)
+    find_package(CGL REQUIRED)
+
     find_package(MIBS REQUIRED)
+    target_link_libraries(idol PUBLIC alps)
+    target_link_libraries(idol PUBLIC bcps)
+    target_link_libraries(idol PUBLIC blis)
+
     target_link_libraries(idol PUBLIC mibs)
+    target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
+
+endif()
+
+if (${USE_OSI})
+
+    find_package(COINUTILS REQUIRED)
+    find_package(OSI REQUIRED)
+
+    target_link_libraries(idol PUBLIC coinUtils)
+    target_link_libraries(idol PUBLIC osi)
+    target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
 
 endif()
 
