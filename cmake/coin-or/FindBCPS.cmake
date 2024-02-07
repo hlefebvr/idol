@@ -1,13 +1,17 @@
+if (NOT DEFINED COIN_OR_DIR)
+    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
+endif()
+
 find_path(
         BCPS_INCLUDE_DIRS
         NAMES Bcps.h
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
 find_library(
         BCPS_LIBRARY
         NAMES Bcps
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)

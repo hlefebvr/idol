@@ -1,13 +1,17 @@
+if (NOT DEFINED CPLEX_DIR)
+    set(CPLEX_DIR $ENV{CPLEX_HOME})
+endif()
+
 find_path(
         CPLEX_INCLUDE_DIRS
         NAMES cplex.h
-        HINTS /opt/ibm/ILOG/CPLEX_Studio2211/cplex/ ${CPLEX_DIR} $ENV{CPLEX_HOME}
+        HINTS /opt/ibm/ILOG/CPLEX_Studio2211/cplex/ ${CPLEX_DIR}
         PATH_SUFFIXES include/ilcplex)
 
 find_library(
         CPLEX_LIBRARY
         NAMES cplex
-        HINTS /opt/ibm/ILOG/CPLEX_Studio2211/cplex/ ${CPLEX_DIR} $ENV{CPLEX_HOME}
+        HINTS /opt/ibm/ILOG/CPLEX_Studio2211/cplex/ ${CPLEX_DIR}
         PATH_SUFFIXES /lib/x86-64_linux/static_pic/
 )
 

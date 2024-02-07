@@ -1,14 +1,17 @@
+if (NOT DEFINED GLPK_DIR)
+    set(GLPK_DIR $ENV{GLPK_HOME})
+endif()
 
 find_path(
         GLPK_INCLUDE_DIRS
         NAMES glpk.h
-        HINTS /usr/include/ ${GLPK_DIR} $ENV{GLPK_HOME}
+        HINTS /usr/include/ ${GLPK_DIR}
 )
 
 find_library(
         GLPK_LIBRARY
         NAMES glpk
-        HINTS /usr/lib/ ${GLPK_DIR} $ENV{GLPK_HOME}
+        HINTS /usr/lib/ ${GLPK_DIR}
 )
 
 include(FindPackageHandleStandardArgs)

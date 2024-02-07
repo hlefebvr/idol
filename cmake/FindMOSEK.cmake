@@ -1,20 +1,25 @@
+if (NOT DEFINED MOSEK_DIR)
+    set(MOSEK_DIR $ENV{MOSEK_HOME})
+endif()
+
+
 find_path(
         MOSEK_INCLUDE_DIRS
         NAMES fusion.h
-        HINTS ${MOSEK_DIR} $ENV{MOSEK_HOME}
+        HINTS ${MOSEK_DIR}
         PATH_SUFFIXES h
 )
 
 find_library(
         MOSEK_LIBRARY
         NAMES mosek64 mosek
-        HINTS ${MOSEK_DIR} $ENV{MOSEK_HOME}
+        HINTS ${MOSEK_DIR}
         PATH_SUFFIXES bin)
 
 find_library(
         FUSION_LIBRARY
         NAMES fusion64 fusion
-        HINTS ${MOSEK_DIR} $ENV{MOSEK_HOME}
+        HINTS ${MOSEK_DIR}
         PATH_SUFFIXES bin)
 
 

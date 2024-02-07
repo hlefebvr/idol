@@ -1,20 +1,24 @@
+if (NOT DEFINED COIN_OR_DIR)
+    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
+endif()
+
 find_path(
         MIBS_INCLUDE_DIRS
         NAMES MibSModel.hpp
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
 
 find_library(
         MIBS_LIBRARY
         NAMES Mibs
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 find_library(
         MIBS_LIBRARY
         NAMES MibS
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)

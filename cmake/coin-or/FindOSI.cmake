@@ -1,14 +1,18 @@
+if (NOT DEFINED COIN_OR_DIR)
+    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
+endif()
+
 find_path(
         OSI_INCLUDE_DIRS
         NAMES OsiConfig.h
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
 if (${USE_CBC})
     find_library(
             OSI_CBC_LIBRARY
             NAMES OsiCbc
-            HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+            HINTS ${COIN_OR_DIR}
             PATH_SUFFIXES lib)
     list(APPEND REQUIRED_FILES "OSI_CBC_LIBRARY")
 endif()
@@ -17,7 +21,7 @@ if (${USE_CLP})
     find_library(
             OSI_CLP_LIBRARY
             NAMES OsiClp
-            HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+            HINTS ${COIN_OR_DIR}
             PATH_SUFFIXES lib)
     list(APPEND REQUIRED_FILES "OSI_CLP_LIBRARY")
 endif()
@@ -26,7 +30,7 @@ if (${USE_CPLEX})
     find_library(
             OSI_CPX_LIBRARY
             NAMES OsiCpx
-            HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+            HINTS ${COIN_OR_DIR}
             PATH_SUFFIXES lib)
     list(APPEND REQUIRED_FILES "OSI_CPX_LIBRARY")
 endif()
@@ -35,7 +39,7 @@ if (${USE_SYMPHONY})
     find_library(
             OSI_SYM_LIBRARY
             NAMES OsiSym
-            HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+            HINTS ${COIN_OR_DIR}
             PATH_SUFFIXES lib)
     list(APPEND REQUIRED_FILES "OSI_SYM_LIBRARY")
 endif()
@@ -43,7 +47,7 @@ endif()
 find_library(
         OSI_LIBRARY
         NAMES Osi
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)

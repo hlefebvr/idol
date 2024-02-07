@@ -1,13 +1,17 @@
+if (NOT DEFINED COIN_OR_DIR)
+    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
+endif()
+
 find_path(
         ALPS_INCLUDE_DIRS
         NAMES Alps.h
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
 find_library(
         ALPS_LIBRARY
         NAMES Alps
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)

@@ -27,7 +27,7 @@ endif()
 
 if (@USE_HIGHS@)
 
-    set(HIGHS_DIR "@HIGHS_DIR@")
+    set(HIGHS_DIR "@HIGHS_INSTALL_DIR@")
     find_dependency(Threads REQUIRED)
     find_dependency(HIGHS REQUIRED)
     add_compile_definitions(IDOL_USE_HIGHS)
@@ -36,7 +36,7 @@ endif()
 
 if (@USE_MOSEK@)
 
-    set(MOSEK_DIR "@MOSEK_DIR@")
+    set(MOSEK_DIR "@MOSEK_DIRS@")
     find_dependency(MOSEK REQUIRED)
     add_compile_definitions(IDOL_USE_MOSEK)
 
@@ -47,6 +47,38 @@ if (@USE_EIGEN@)
     set(EIGEN_DIR "@EIGEN_DIR@")
     find_dependency(EIGEN REQUIRED)
     add_compile_definitions(IDOL_USE_EIGEN)
+
+endif()
+
+if (@USE_CPLEX@)
+
+    set(CPLEX_DIR "@CPLEX_DIR@")
+    find_dependency(CPLEX REQUIRED)
+    add_compile_definitions(IDOL_USE_CPLEX)
+
+endif()
+
+if (@USE_SYMPHONY@)
+
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+    find_dependency(SYMPHONY REQUIRED)
+    add_compile_definitions(IDOL_USE_SYMPHONY)
+
+endif()
+
+if (@USE_CBC@)
+
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+    find_dependency(CBC REQUIRED)
+    add_compile_definitions(IDOL_USE_CBC)
+
+endif()
+
+if (@USE_CLP@)
+
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+    find_dependency(CLP REQUIRED)
+    add_compile_definitions(IDOL_USE_CLP)
 
 endif()
 
@@ -63,6 +95,31 @@ if (@USE_MINKNAP@)
     set(MINKNAP_DIR "@MINKNAP_DIR@")
     find_dependency(minknap REQUIRED)
     add_compile_definitions(IDOL_USE_MINKNAP)
+
+endif()
+
+if (@USE_MIBS@)
+
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+
+    find_dependency(ALPS REQUIRED)
+    find_dependency(BCPS REQUIRED)
+    find_dependency(BLIS REQUIRED)
+    find_dependency(CGL REQUIRED)
+
+    find_dependency(MIBS REQUIRED)
+
+    add_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
+
+endif()
+
+if (@USE_OSI@)
+
+    set(COIN_OR_DIR "@COIN_OR_DIR@")
+    find_dependency(COINUTILS REQUIRED)
+    find_dependency(OSI REQUIRED)
+
+    add_compile_definitions(IDOL_USE_OSI)
 
 endif()
 
