@@ -93,46 +93,5 @@ int main(int t_argc, char** t_argv) {
 
     hello_world_osi_idol();
 
-    // return 0;
-
-    Env env;
-
-    Annotation<Var> follower_variables(env, "follower_variable", MasterId);
-    Annotation<Ctr> follower_constraints(env, "follower_constraints", MasterId);
-
-    /**
-     * min  -x − 7y
-     * s.t. −3x + 2y ≤ 12
-             x + 2y ≤ 20
-             x ≤ 10
-             y ∈ arg min {z : 2x - z ≤ 7,
-                              -2x + 4z ≤ 16,
-                              z ≤ 5}
-     */
-
-    Model model(env);
-
-    auto x = model.add_var(0, 10, Integer, "x");
-    auto y = model.add_var(0, 5, Integer, "y");
-
-    model.set_obj_expr(-x - 7 * y);
-    model.add_ctr(-3 * x + 2 * y <= 12);
-    model.add_ctr(x + 2 * y <= 20);
-    auto follower_objective = model.add_ctr(y == 0);
-    auto follower_c1 = model.add_ctr(2 * x - y <= 7);
-    auto follower_c2 = model.add_ctr(-2 * x + 4 * y <= 16);
-
-    y.set(follower_variables, 0);
-    follower_c1.set(follower_constraints, 0);
-    follower_c2.set(follower_constraints, 0);
-
-    model.use(BiLevel::MibS(follower_variables,
-                   follower_constraints,
-                   follower_objective));
-
-    model.optimize();
-
-    std::cout << save_primal(model) << std::endl;
-
     return 0;
 }
