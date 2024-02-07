@@ -5,7 +5,14 @@
 #ifndef IDOL_OSI_H
 #define IDOL_OSI_H
 
+#ifdef IDOL_USE_OSI
 #include <OsiSolverInterface.hpp>
+#else
+struct OsiSolverInterface {
+    virtual OsiSolverInterface* clone() const = 0;
+};
+#endif
+
 #include "idol/optimizers/OptimizerFactory.h"
 
 namespace idol {

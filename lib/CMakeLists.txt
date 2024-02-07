@@ -279,7 +279,7 @@ if (${USE_CPLEX})
     find_package(CPLEX REQUIRED)
     target_link_libraries(idol PUBLIC cplex)
     target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
+    list(APPEND AVAILABLE_MILP_SOLVERS "Osi::Cplex")
 
 endif()
 
@@ -293,7 +293,7 @@ if (${USE_SYMPHONY})
     find_package(SYMPHONY REQUIRED)
     target_link_libraries(idol PUBLIC symphony)
     target_compile_definitions(idol PUBLIC IDOL_USE_SYMPHONY)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Symphony")
+    list(APPEND AVAILABLE_MILP_SOLVERS "Osi::Symphony")
 
 endif()
 
@@ -307,7 +307,7 @@ if (${USE_CBC})
     find_package(CBC REQUIRED)
     target_link_libraries(idol PUBLIC cbc)
     target_compile_definitions(idol PUBLIC IDOL_USE_CBC)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Cbc")
+    list(APPEND AVAILABLE_MILP_SOLVERS "Osi::Cbc")
 
 endif()
 
@@ -321,7 +321,7 @@ if (${USE_CLP})
     find_package(CLP REQUIRED)
     target_link_libraries(idol PUBLIC clp)
     target_compile_definitions(idol PUBLIC IDOL_USE_CLP)
-    list(APPEND AVAILABLE_MILP_SOLVERS "Clp")
+    list(APPEND AVAILABLE_MILP_SOLVERS "Osi::Clp")
 
 endif()
 
