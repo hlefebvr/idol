@@ -14,11 +14,13 @@ idol::Optimizers::Osi::Osi(const idol::Model &t_model,
                              m_solver_interface(t_solver_interface.clone()),
                              m_continuous_relaxation(t_continuous_relaxation) {
 
-    m_solver_interface->messageHandler()->setLogLevel(0);
+    m_solver_interface->messageHandler()->setLogLevel(get_param_logs());
 
     // TODO, make this optional
     m_solver_interface->setHintParam(OsiHintParam::OsiDoDualInInitial, false, OsiHintStrength::OsiHintDo);
     m_solver_interface->setHintParam(OsiHintParam::OsiDoDualInResolve, true, OsiHintStrength::OsiHintDo);
+
+
 }
 
 std::string idol::Optimizers::Osi::name() const {
@@ -43,6 +45,16 @@ idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
         return Infeasible;
     }
 
+    if (m_solver_interface->isPrimalObjectiveLimitReached()) {
+        return Feasible;
+    }
+
+    if (m_solver_interface->isDualObjectiveLimitReached()) {
+        return SubOptimal;
+    }
+
+    return Infeasible;
+
     throw Exception("Osi::get_status could not infer status.");
 }
 
@@ -56,11 +68,26 @@ idol::SolutionReason idol::Optimizers::Osi::get_reason() const {
         return Proved;
     }
 
+    if (m_solver_interface->isPrimalObjectiveLimitReached()) {
+        return ObjLimit;
+    }
+
     return NotSpecified;
 
 }
 
 double idol::Optimizers::Osi::get_best_obj() const {
+
+    const auto status = get_status();
+
+    if (status == Infeasible) {
+        return Inf;
+    }
+
+    if (status == Unbounded) {
+        return -Inf;
+    }
+
     const auto& objective = parent().get_obj_expr();
     return objective.constant().as_numerical() + m_solver_interface->getObjValue();
 }

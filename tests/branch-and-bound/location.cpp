@@ -20,6 +20,7 @@
 #include <idol/optimizers/wrappers/Mosek/Mosek.h>
 #include <idol/optimizers/wrappers/Gurobi/Gurobi.h>
 #include <idol/optimizers/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;

@@ -36,3 +36,7 @@ idol::Osi idol::Osi::ContinuousRelaxation(const OsiSolverInterface& t_solver_int
 idol::Osi *idol::Osi::clone() const {
     return new Osi(*this);
 }
+
+idol::Osi::Osi(const std::string &t_solver) {
+    throw Exception("idol was not linked with " + t_solver + ". Thus, osi cannot be used with this solver.");
+}

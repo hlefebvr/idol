@@ -7,6 +7,7 @@
 #include <idol/optimizers/wrappers/Mosek/Mosek.h>
 #include <idol/optimizers/wrappers/Gurobi/Gurobi.h>
 #include <idol/optimizers/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;
@@ -140,14 +141,13 @@ TEST_CASE("Solving small LPs") {
 
         model.optimize();
 
-
         THEN("The solution status should be Infeasible") {
 
             CHECK(model.get_status() == Infeasible);
 
         }
 
-        AND_THEN("The objective value should be -Inf") {
+        AND_THEN("The objective value should be +Inf") {
 
             CHECK(is_pos_inf(model.get_best_obj()));
 

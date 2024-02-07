@@ -7,6 +7,7 @@
 #include <idol/optimizers/wrappers/Mosek/Mosek.h>
 #include <idol/optimizers/wrappers/Gurobi/Gurobi.h>
 #include <idol/optimizers/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;
@@ -150,6 +151,10 @@ TEST_CASE("Solving small MIPs") {
             model.use(OPTIMIZER());
 
             model.optimize();
+
+            std::cout << "reason: " << model.get_reason() << std::endl;
+            std::cout << "obj: " << model.get_best_obj() << std::endl;
+            std::cout << "status: " << model.get_status() << std::endl;
 
             THEN("The solution status should be Infeasible") {
 

@@ -88,8 +88,6 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
       m_env(t_env),
       m_model(t_env) {
 
-    m_model.set(GRB_IntParam_OutputFlag, 0);
-
     // Tolerances
     m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());
     m_model.set(GRB_DoubleParam_MIPGapAbs, get_tol_mip_absolute_gap());
