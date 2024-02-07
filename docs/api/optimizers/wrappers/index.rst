@@ -4,7 +4,12 @@ External Solvers
 ================
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
     :glob:
 
-    *
+    GLPK
+    Gurobi
+    HiGHS
+    MibS
+    Osi/index
+    Mosek

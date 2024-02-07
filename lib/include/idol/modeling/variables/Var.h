@@ -109,6 +109,8 @@ public:
      * @tparam I Used for recursion.
      * @param t_env The environment to store the variables.
      * @param t_dim The number of elements in each dimension.
+     * @param t_lb The lower bound.
+     * @param t_ub The upper bound.
      * @param t_type The type of the variables.
      * @param t_name The given name of the variables.
      * @return A (nested) vector of variables.

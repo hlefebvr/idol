@@ -53,7 +53,7 @@ idol::SolutionStatus idol::Optimizers::Osi::get_status() const {
         return SubOptimal;
     }
 
-    return Infeasible;
+    return Infeasible; // TODO This is done because MILPs do not have a proper status when infeasible... at least for Cplex
 
     throw Exception("Osi::get_status could not infer status.");
 }
@@ -324,7 +324,21 @@ void idol::Optimizers::Osi::hook_update(const idol::Var &t_var) {
 }
 
 void idol::Optimizers::Osi::hook_update(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented Osi::hook_update");
+
+    const auto& model = parent();
+    auto& impl = lazy(t_ctr).impl();
+    const auto& rhs = model.get_ctr_row(t_ctr).rhs().as_numerical();
+    const auto type = model.get_ctr_type(t_ctr);
+
+    double lb = -Inf, ub = Inf;
+    switch (type) {
+        case LessOrEqual: ub = rhs; break;
+        case GreaterOrEqual: lb = rhs; break;
+        case Equal: ub = lb = rhs; break;
+    }
+
+    m_solver_interface->setRowBounds(impl, lb, ub);
+
 }
 
 void idol::Optimizers::Osi::hook_update_objective() {

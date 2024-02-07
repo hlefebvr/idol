@@ -106,7 +106,7 @@ public:
 
     /**
      * Sets the upper bound of the temporary variable.
-     * @param t_lb The desired upper bound of the temporary variable.
+     * @param t_ub The desired upper bound of the temporary variable.
      */
     void set_ub(double t_ub) { m_ub = t_ub; }
 

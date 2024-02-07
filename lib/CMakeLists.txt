@@ -66,7 +66,7 @@ add_library(idol STATIC
         include/idol/optimizers/Optimizer.h
         include/idol/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h
         include/idol/optimizers/wrappers/OptimizerWithLazyUpdates.h
-        src/optimizers/wrappers/gurobi/Optimizers_Gurobi.cpp
+        src/optimizers/wrappers/Gurobi/Optimizers_Gurobi.cpp
         src/optimizers/Optimizer.cpp
         include/idol/optimizers/Algorithm.h
         src/optimizers/Algorithm.cpp
@@ -105,12 +105,12 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/Gurobi/Gurobi.h
         include/idol/optimizers/wrappers/GLPK/GLPK.h
         include/idol/optimizers/wrappers/Mosek/Mosek.h
-        src/optimizers/wrappers/gurobi/Gurobi.cpp
+        src/optimizers/wrappers/Gurobi/Gurobi.cpp
         src/optimizers/wrappers/GLPK/GLPK.cpp
         src/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
         include/idol/optimizers/callbacks/heuristics/IntegerMaster.h
-        src/optimizers/wrappers/gurobi/GurobiCallbackI.cpp
+        src/optimizers/wrappers/Gurobi/GurobiCallbackI.cpp
         include/idol/optimizers/callbacks/Callback.h
         src/optimizers/callbacks/Callback.cpp
         include/idol/optimizers/callbacks/cutting-planes/CutSeparation.h
