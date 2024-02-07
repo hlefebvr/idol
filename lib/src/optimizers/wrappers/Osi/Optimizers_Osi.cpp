@@ -2,6 +2,8 @@
 // Created by henri on 05.02.24.
 //
 
+#ifdef IDOL_USE_OSI
+
 #include "idol/optimizers/wrappers/Osi/Optimizers_Osi.h"
 #include "CoinPackedVector.hpp"
 
@@ -110,6 +112,17 @@ void idol::Optimizers::Osi::hook_optimize() {
 
     m_solver_interface->initialSolve(); // TODO handle resolve
 
+    if (m_solver_interface->isProvenOptimal()) {
+
+        if (m_continuous_relaxation || m_solver_interface->getNumIntegers() == 0) {
+            return;
+        }
+
+        m_solver_interface->branchAndBound();
+        return;
+
+    }
+
     if (m_solver_interface->isProvenPrimalInfeasible() || m_solver_interface->isProvenDualInfeasible()){
 
         if (!get_param_infeasible_or_unbounded_info()) {
@@ -123,13 +136,6 @@ void idol::Optimizers::Osi::hook_optimize() {
         }
 
         return;
-    }
-
-    if (m_solver_interface->isProvenOptimal() && !m_continuous_relaxation && m_solver_interface->getNumIntegers() > 0) {
-
-        m_solver_interface->branchAndBound();
-        return;
-
     }
 
 }
@@ -326,8 +332,8 @@ void idol::Optimizers::Osi::hook_remove(const idol::Var &t_var) {
     m_solver_interface->deleteCols(1, &index);
 
     for (auto& lazy : lazy_vars()) {
-        if (lazy.has_impl() && lazy.impl() > index) {
-            lazy.impl()--;
+        if (lazy.impl() > index) {
+            lazy.impl() -= 1;
         }
     }
 
@@ -340,8 +346,8 @@ void idol::Optimizers::Osi::hook_remove(const idol::Ctr &t_ctr) {
     m_solver_interface->deleteCols(1, &index);
 
     for (auto& lazy : lazy_ctrs()) {
-        if (lazy.has_impl() && lazy.impl() > index) {
-            lazy.impl()--;
+        if (lazy.impl() > index) {
+            lazy.impl() -= 1;
         }
     }
 
@@ -357,3 +363,5 @@ void idol::Optimizers::Osi::set_param_presolve(bool t_value) {
     m_solver_interface->setHintParam(OsiHintParam::OsiDoPresolveInInitial, t_value, OsiHintStrength::OsiHintDo);
     m_solver_interface->setHintParam(OsiHintParam::OsiDoPresolveInResolve, t_value, OsiHintStrength::OsiHintDo);
 }
+
+#endif

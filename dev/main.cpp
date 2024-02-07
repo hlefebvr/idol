@@ -24,9 +24,11 @@
 #include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/callbacks/heuristics/IntegerMaster.h"
+#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
+#include <OsiCbcSolverInterface.hpp>
 
 void hello_world_osi() {
 
@@ -146,7 +148,7 @@ int main(int t_argc, char** t_argv) {
                               DantzigWolfeDecomposition(decomposition)
                                       .with_master_optimizer(
                                               Osi::ContinuousRelaxation(OsiCpxSolverInterface())
-                                                                .with_logs(true)
+                                                                .with_logs(false)
                                       )
                                       .with_default_sub_problem_spec(
                                               DantzigWolfe::SubProblem()
@@ -156,7 +158,7 @@ int main(int t_argc, char** t_argv) {
                                       .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.0001).with_sub_problems(true))
                                       .with_logs(true)
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
-                                      .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+                                      .with_infeasibility_strategy(DantzigWolfe::ArtificialCosts().with_max_updates_before_phase_I(0))
                                       .with_hard_branching(true)
                       )
                       .with_subtree_depth(0)

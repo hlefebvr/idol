@@ -5,6 +5,8 @@
 #ifndef IDOL_OPTIMIZERS_OSI_H
 #define IDOL_OPTIMIZERS_OSI_H
 
+#ifdef IDOL_USE_OSI
+
 #include <OsiSolverInterface.hpp>
 #include <stack>
 #include "idol/optimizers/wrappers/OptimizerWithLazyUpdates.h"
@@ -82,5 +84,6 @@ public:
     void set_param_presolve(bool t_value) override;
 };
 
+#endif
 
 #endif //IDOL_OPTIMIZERS_OSI_H
