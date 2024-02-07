@@ -21,7 +21,7 @@ or any other cutting-edge method, idol is your trusted companion.
 - [Using idol for Research?](#using-idol-for-research)
 - [Examples](#Examples)
   - [Branch-and-Price](#branch-and-price)
-  - [Bi-level Problem (using coin-or/Mibs)](#branch-and-price)
+  - [Bi-level Problem (using coin-or/Mibs)](#bi-level-problem-using-mibs)
 - [Implemented Features](#Implemented-Features)
   - [Branch-and-Bound](#Branch-and-Bound)
   - [Column Generation and Branch-and-Price](#Column-Generation-and-Branch-and-Price)
