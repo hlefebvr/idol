@@ -12,3 +12,4 @@ Table of contents
     knapsack-problem
     facility-location-problem
     generalized-assignment-problem
+    bilevel-problem
