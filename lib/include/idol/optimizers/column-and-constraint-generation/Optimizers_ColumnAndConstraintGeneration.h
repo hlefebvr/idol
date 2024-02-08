@@ -17,13 +17,16 @@ namespace idol::Optimizers {
 }
 
 class idol::Optimizers::ColumnAndConstraintGeneration : public Algorithm {
+    std::unique_ptr<ColumnAndConstraintGenerationSeparator> m_separator;
+
     Model m_master_problem;
     Model m_uncertainty_set;
     const Annotation<Var, unsigned int> m_lower_level_variables;
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
 
-    std::optional<Ctr> m_epigraph_constraint;
+    std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;
+    std::list<Var> m_upper_level_variables;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const Model& t_uncertainty_set,
@@ -40,15 +43,26 @@ public:
     double get_ctr_farkas(const Ctr &t_ctr) const override;
     unsigned int get_n_solutions() const override;
     unsigned int get_solution_index() const override;
+
+    const Model& uncertainty_set() const { return m_uncertainty_set; }
+    const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_lower_level_constraints; };
+    const Annotation<Var, unsigned int> lower_level_variables() const { return m_lower_level_variables; };
 protected:
     void build_master_problem();
     void build_master_problem_variables();
     void build_master_problem_constraints();
     void build_master_problem_objective_and_epigraph();
     void build_coupling_constraints_list();
+    void build_upper_level_variables_list();
 
     bool contains_lower_level_variable(const LinExpr<Var>& t_expr);
     bool contains_lower_level_variable(const QuadExpr<Var, Var>& t_expr);
+
+    void solve_master_problem();
+    void analyze_master_problem_solution();
+    void check_stopping_condition();
+    std::pair<double, Solution::Primal> solve_separation_problems();
+    Solution::Primal save_upper_level_primal() const;
 
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;

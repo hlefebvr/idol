@@ -107,7 +107,7 @@ int main(int t_argc, char** t_argv) {
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == 1);
+        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) <= 1);
     }
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -119,7 +119,7 @@ int main(int t_argc, char** t_argv) {
     model.set_obj_expr(idol_Sum(i, Range(n_facilities),
                                 instance.fixed_cost(i) * x[i]
                                 + idol_Sum(j, Range(n_customers),
-                                           instance.per_unit_transportation_cost(i, j) *
+                                           -instance.per_unit_transportation_cost(i, j) *
                                            instance.demand(j) *
                                            y[i][j]
                                 )
@@ -152,7 +152,13 @@ int main(int t_argc, char** t_argv) {
 
     model.optimize();
 
-    std::cout << save_primal(model) << std::endl;
+    const auto status = model.get_status();
+
+    if (status == Optimal) {
+        std::cout << save_primal(model) << std::endl;
+    } else {
+        std::cout << "CCG ended with status " << status << std::endl;
+    }
 
     return 0;
 }

@@ -12,8 +12,21 @@ namespace idol::ColumnAndConstraintGenerationSeparators {
 }
 
 class idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel : public idol::ColumnAndConstraintGenerationSeparator {
+protected:
+    void add_lower_level_variables(Model& t_hpr, const Optimizers::ColumnAndConstraintGeneration &t_parent) const;
+    void add_lower_level_constraints(Model& t_hpr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
+    void add_lower_level_constraint(Model& t_hpr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution, const Ctr& t_ctr) const;
+    idol::Ctr set_upper_and_lower_objectives(idol::Model &t_hpr, const idol::Optimizers::ColumnAndConstraintGeneration &t_parent, const idol::Solution::Primal &t_upper_level_solution, const idol::Row &t_row, idol::CtrType t_type) const;
+
+    Expr<Var, Var> fix_and_revert(const LinExpr<Var>& t_expr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
+    Expr<Var, Var> revert(const Constant& t_constant, const Optimizers::ColumnAndConstraintGeneration &t_parent) const;
 public:
     ColumnAndConstraintGenerationSeparator *clone() const override;
+
+    Solution::Primal operator()(const Optimizers::ColumnAndConstraintGeneration &t_parent,
+                                const Solution::Primal &t_upper_level_solution,
+                                const Row& t_row,
+                                CtrType t_type) const override;
 };
 
 #endif //IDOL_MAXMINBILEVEL_H

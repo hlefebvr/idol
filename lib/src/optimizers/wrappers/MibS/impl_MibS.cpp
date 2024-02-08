@@ -78,7 +78,7 @@ void idol::impl::MibS::load_problem_data() {
     for (const char type : constraint_types) {
         n_equalities += (type == 'E');
     }
-    matrix.setMinorDim((int) constraint_lower_bounds.size() + (int) n_equalities);
+    matrix.setMinorDim((int) constraint_lower_bounds.size() + (int) n_equalities); // TODO why is this needed for MibS?
     /* ----------------- */
 
     m_mibs.loadProblemData(
