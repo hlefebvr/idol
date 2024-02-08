@@ -14,13 +14,13 @@ namespace idol::BiLevel {
 }
 
 class idol::BiLevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
-    const idol::Annotation<idol::Var, unsigned int> m_follower_variables;
-    const idol::Annotation<idol::Ctr, unsigned int> m_follower_constraints;
-    const idol::Ctr m_follower_objective;
+    const Annotation<Var, unsigned int> m_follower_variables;
+    const Annotation<Ctr, unsigned int> m_follower_constraints;
+    const Ctr m_follower_objective;
 public:
-    MibS(const idol::Annotation<idol::Var, unsigned int>& t_follower_variables,
-         const idol::Annotation<idol::Ctr, unsigned int>& t_follower_constraints,
-         idol::Ctr  t_follower_objective);
+    MibS(const Annotation<Var, unsigned int>& t_follower_variables,
+         const Annotation<Ctr, unsigned int>& t_follower_constraints,
+         Ctr  t_follower_objective);
 
     MibS(const MibS&) = default;
     MibS(MibS&&) noexcept = default;

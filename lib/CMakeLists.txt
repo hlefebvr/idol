@@ -211,6 +211,13 @@ add_library(idol STATIC
         include/idol/optimizers/wrappers/Osi/Osi.h
         src/optimizers/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/wrappers/Osi/Optimizers_Osi.h
+        include/idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h
+        include/idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h
+        src/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
+        src/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h
+        src/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.cpp
 )
 
 find_package(OpenMP REQUIRED)
