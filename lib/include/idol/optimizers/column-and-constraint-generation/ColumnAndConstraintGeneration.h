@@ -13,7 +13,7 @@ namespace idol::Robust {
     class ColumnAndConstraintGeneration;
 }
 
-class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactory {
+class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration> {
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<ColumnAndConstraintGenerationSeparator> m_separator;
 

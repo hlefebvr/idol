@@ -145,6 +145,7 @@ int main(int t_argc, char** t_argv) {
     auto ccg = Robust::ColumnAndConstraintGeneration(lower_level_variables,lower_level_constraints, uncertainty_set)
             .with_master_optimizer(Gurobi())
             .with_separator(MaxMinBiLevel())
+            .with_logs(true)
         ;
 
     model.use(ccg);
