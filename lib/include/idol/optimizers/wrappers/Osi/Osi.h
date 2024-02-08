@@ -56,6 +56,8 @@ public:
 
     Optimizer *operator()(const Model &t_model) const override;
 
+    OsiSolverInterface* create_osi_solver_interface() const;
+
     static Osi ContinuousRelaxation(const OsiSolverInterface& t_solver_interface);
 
     [[nodiscard]] Osi *clone() const override;

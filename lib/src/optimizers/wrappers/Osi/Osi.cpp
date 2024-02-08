@@ -40,3 +40,7 @@ idol::Osi *idol::Osi::clone() const {
 idol::Osi::Osi(const std::string &t_solver) {
     throw Exception("idol was not linked with " + t_solver + ". Thus, osi cannot be used with this solver.");
 }
+
+OsiSolverInterface *idol::Osi::create_osi_solver_interface() const {
+    return m_solver_interface->clone();
+}
