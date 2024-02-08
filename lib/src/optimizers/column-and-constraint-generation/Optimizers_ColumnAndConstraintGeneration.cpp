@@ -232,7 +232,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
         const auto& parent = this->parent();
 
         const unsigned int n_master_constraints = m_master_problem.ctrs().size();
-        const unsigned int n_coupling_constraints = m_coupling_constraints.size() + m_epigraph.has_value();
+        const unsigned int n_coupling_constraints = m_coupling_constraints.size();
         const unsigned int n_lower_level_constraints = parent.ctrs().size() - n_master_constraints - n_coupling_constraints;
         const unsigned int n_upper_level_variables = m_master_problem.vars().size();
         const unsigned int n_lower_level_variables = parent.vars().size() - n_upper_level_variables;
@@ -247,7 +247,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
 
         std::cout << "Constraints: \n";
         std::cout << "\tN. pure upper level: " << n_master_constraints << '\n';
-        std::cout << "\tN. coupling: " << n_coupling_constraints << '\n';
+        std::cout << "\tN. coupling: " << (n_coupling_constraints + m_epigraph.has_value()) << '\n';
         std::cout << "\tN. lower level: " << n_lower_level_constraints << '\n';
     }
 

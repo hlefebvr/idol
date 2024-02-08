@@ -72,15 +72,6 @@ void idol::impl::MibS::load_problem_data() {
     auto [matrix, constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
     auto objective = parse_objective();
 
-    /* ----------------- */
-    // WARNING: This is currently needed by MibS for whatever reason
-    unsigned int n_equalities = 0;
-    for (const char type : constraint_types) {
-        n_equalities += (type == 'E');
-    }
-    matrix.setMinorDim((int) constraint_lower_bounds.size() + (int) n_equalities + 1); // TODO why is this needed for MibS?
-    /* ----------------- */
-
     m_mibs.loadProblemData(
             matrix,
             variable_lower_bounds.data(),
@@ -102,7 +93,7 @@ void idol::impl::MibS::solve() {
         throw Exception("Internal error: MibS::solve was called twice.");
     }
 
-    m_osi_solver = std::make_unique<OsiCpxSolverInterface>();
+    m_osi_solver = std::make_unique<OsiSymSolverInterface>();
 
     m_mibs.setSolver(m_osi_solver.get());
 
@@ -125,6 +116,9 @@ void idol::impl::MibS::solve() {
     } catch (const CoinError& t_error) {
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
+
+    m_osi_solver->writeLp("model.lp");
+    m_mibs.writeAuxiliaryData("model.aux");
 
 }
 
