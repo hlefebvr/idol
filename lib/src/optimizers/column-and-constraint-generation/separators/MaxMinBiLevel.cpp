@@ -38,6 +38,8 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLe
                                    lower_level_constraints,
                                    lower_level_objective);
 
+    std::cout << model << std::endl;
+
     model.use(optimizer);
 
     // Solve
@@ -115,7 +117,7 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_lev
         throw Exception("Quadratic terms in the lower level are not implemented.");
     }
 
-    t_hpr.add_ctr(TempCtr(Row(std::move(lhs), std::move(rhs)), type));
+    t_hpr.add(t_ctr, TempCtr(Row(std::move(lhs), std::move(rhs)), type));
 
 }
 
