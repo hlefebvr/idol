@@ -24,6 +24,8 @@ class idol::Optimizers::ColumnAndConstraintGeneration : public Algorithm {
     const Annotation<Var, unsigned int> m_lower_level_variables;
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
 
+    unsigned int m_iteration_count = 0;
+
     std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;
     std::list<Var> m_upper_level_variables;
@@ -61,7 +63,9 @@ protected:
     void solve_master_problem();
     void analyze_master_problem_solution();
     void check_stopping_condition();
-    std::pair<double, Solution::Primal> solve_separation_problems();
+    void analyze_most_violated_scenario(const Solution::Primal& t_most_violated_scenario);
+    void add_scenario(const Solution::Primal& t_most_violated_scenario);
+    Solution::Primal solve_separation_problems();
     Solution::Primal save_upper_level_primal() const;
 
     void add(const Var &t_var) override;

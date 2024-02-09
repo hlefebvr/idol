@@ -61,7 +61,23 @@ void idol::Dualizer::dualize() {
         add_parameters_as_variables_in_the_dual();
     }
 
-    auto objective = idol_Sum(ctr, m_primal.ctrs(), m_primal.get_ctr_row(ctr).rhs() * dual(ctr))
+    const auto product = [this](const Constant& t_constant, const Var& t_var)-> Expr<Var, Var> {
+
+        if (!m_see_parameters_as_dual_variables) {
+            return t_constant * t_var;
+        }
+
+        auto expr = as_expr(t_constant);
+
+        if (!expr.quadratic().empty()) {
+            throw Exception("Dualizing with quadratic constant terms is not implemented.");
+        }
+
+        return expr.constant() + expr.linear() * t_var;
+
+    };
+
+    auto objective = idol_Sum(ctr, m_primal.ctrs(), product(m_primal.get_ctr_row(ctr).rhs(), dual(ctr)))
                      + idol_Sum(var, m_primal.vars(), m_primal.get_var_lb(var) * dual_lb(var))
                      + idol_Sum(var, m_primal.vars(), m_primal.get_var_ub(var) * dual_ub(var));
 

@@ -88,20 +88,20 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
       m_env(t_env),
       m_model(t_env) {
 
+    // Parameters
+    m_model.set(GRB_IntParam_OutputFlag, get_param_logs());
+    m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
+    m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
+    m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
+    m_model.set(GRB_IntParam_Presolve, get_param_presolve());
+    m_model.set(GRB_IntParam_Threads, (int) get_param_threads());
+
     // Tolerances
     m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());
     m_model.set(GRB_DoubleParam_MIPGapAbs, get_tol_mip_absolute_gap());
     m_model.set(GRB_DoubleParam_IntFeasTol, get_tol_integer());
     m_model.set(GRB_DoubleParam_FeasibilityTol, get_tol_feasibility());
     m_model.set(GRB_DoubleParam_OptimalityTol, get_tol_optimality());
-
-    // Parameters
-    m_model.set(GRB_DoubleParam_BestBdStop, get_param_best_bound_stop());
-    m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
-    m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
-    m_model.set(GRB_IntParam_Presolve, get_param_presolve());
-    m_model.set(GRB_IntParam_Threads, (int) get_param_threads());
-    m_model.set(GRB_IntParam_OutputFlag, get_param_logs());
 }
 
 void idol::Optimizers::Gurobi::hook_build() {

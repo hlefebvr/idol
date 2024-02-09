@@ -255,15 +255,19 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
     set_best_obj(+Inf);
     set_status(Loaded);
     set_reason(NotSpecified);
+
+    m_iteration_count = 0;
 }
 
 void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
 
-    unsigned int iteration = 0;
-
     while (!is_terminated()) {
 
-        std::cout << "ITERATION n°" << iteration << std::endl;
+        std::cout << "MASTER PROBLEM ITER " << m_iteration_count
+                  << "\n************************\n"
+                  << m_master_problem
+                  << "\n************************\n"
+                  << std::endl;
 
         solve_master_problem();
 
@@ -271,13 +275,19 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
 
         if (is_terminated()) { break; }
 
-        solve_separation_problems();
+        auto most_violated_scenario = solve_separation_problems();
 
         if (is_terminated()) { break; }
 
+        analyze_most_violated_scenario(most_violated_scenario);
+
+        if (is_terminated()) { break; }
+
+        add_scenario(most_violated_scenario);
+
         check_stopping_condition();
 
-        ++iteration;
+        ++m_iteration_count;
 
     }
 
@@ -385,6 +395,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::analyze_master_problem_sol
         set_status(status);
         set_reason(reason);
         terminate();
+        return;
     }
 
     const double objective = m_master_problem.get_best_obj();
@@ -402,7 +413,13 @@ void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition()
         return;
     }
 
-    if (true || get_relative_gap() < get_tol_mip_relative_gap()
+    if (m_iteration_count >= get_param_iteration_limit()) {
+        set_reason(IterLimit);
+        terminate();
+        return;
+    }
+
+    if (get_relative_gap() < get_tol_mip_relative_gap()
         || get_absolute_gap() < get_tol_mip_absolute_gap()) {
         set_status(Optimal);
         set_reason(Proved);
@@ -412,7 +429,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition()
 
 }
 
-std::pair<double, idol::Solution::Primal>
+idol::Solution::Primal
 idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     const auto& parent = this->parent();
@@ -420,10 +437,18 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     double max = -Inf;
     Solution::Primal argmax;
+    argmax.set_objective_value(-Inf);
 
     const auto evaluate = [&](const Row& t_row, CtrType t_type) {
 
         auto solution = m_separator->operator()(*this, upper_level_solution, t_row, t_type);
+
+        std::cout << "SEPARATION SOLUTION "
+                  << "\n************************\n"
+                  << solution
+                  << "\n************************\n"
+                  << std::endl;
+
 
         const auto status = solution.status();
 
@@ -455,7 +480,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
     }
 
     if (is_terminated()) {
-        return { max, argmax };
+        return argmax;
     }
 
     for (const auto& ctr : m_coupling_constraints) {
@@ -472,9 +497,9 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
     }
 
     std::cout << "Max: " << max << std::endl;
-    std::cout << "Argmax: " << argmax << std::endl;
+    std::cout << "Argmax: \n" << argmax << std::endl;
 
-    return { max, argmax };
+    return argmax;
 }
 
 idol::Solution::Primal idol::Optimizers::ColumnAndConstraintGeneration::save_upper_level_primal() const {
@@ -501,4 +526,109 @@ idol::Solution::Primal idol::Optimizers::ColumnAndConstraintGeneration::save_upp
     }
 
     return result;
+}
+
+void idol::Optimizers::ColumnAndConstraintGeneration::analyze_most_violated_scenario(
+        const idol::Solution::Primal &t_most_violated_scenario) {
+
+    const auto status = t_most_violated_scenario.status();
+
+    if (status != Optimal) {
+        set_status(status);
+        set_reason(t_most_violated_scenario.reason());
+        terminate();
+        return;
+    }
+
+}
+
+void
+idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
+
+    const auto& parent = this->parent();
+
+    const unsigned int n_variables = parent.vars().size();
+
+    std::vector<std::unique_ptr<Var>> variables(n_variables);
+
+    // Create new lower level variables
+    for (const auto& var : parent.vars()) {
+
+        if (var.get(m_lower_level_variables) == MasterId) {
+            continue;
+        }
+
+        const unsigned int index = parent.get_var_index(var);
+        const double lb = parent.get_var_lb(var);
+        const double ub = parent.get_var_ub(var);
+        const auto type = parent.get_var_type(var);
+
+        auto new_var = m_master_problem.add_var(lb, ub, type, var.name() + "__" + std::to_string(m_iteration_count));
+
+        variables[index] = std::make_unique<Var>(new_var);
+
+    }
+
+    // Create new lower level constraints
+    for (const auto& ctr : parent.ctrs()) {
+
+        if (ctr.get(m_lower_level_constraints) == MasterId) {
+            continue;
+        }
+
+        const auto& row = parent.get_ctr_row(ctr);
+        const auto type = parent.get_ctr_type(ctr);
+
+        Expr<Var, Var> lhs;
+        Constant rhs = row.rhs().fix(t_most_violated_scenario);
+
+        for (const auto& [var, constant] : row.linear()) {
+
+            if (var.get(m_lower_level_variables) == MasterId) {
+                lhs += constant.fix(t_most_violated_scenario) * var;
+                continue;
+            }
+
+            const unsigned int index = parent.get_var_index(var);
+
+            lhs += constant.fix(t_most_violated_scenario) * *variables[index];
+
+        }
+
+        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), ctr.name() + "__" + std::to_string(m_iteration_count));
+
+    }
+
+    // Add epigraph
+    if (m_epigraph) {
+
+        if (!m_master_problem.has(m_epigraph->first)) {
+            m_master_problem.add(m_epigraph->first, TempVar(-Inf, Inf, Continuous, Column(1)));
+        }
+
+        const auto& env = m_master_problem.env();
+        const auto& default_version = env[m_epigraph->second];
+        const auto& row = default_version.row();
+        const auto type = default_version.type();
+
+        Expr<Var, Var> lhs;
+        Constant rhs = row.rhs().fix(t_most_violated_scenario);
+
+        for (const auto& [var, constant] : row.linear()) {
+
+            if (var.get(m_lower_level_variables) == MasterId) {
+                lhs += constant.fix(t_most_violated_scenario) * var;
+                continue;
+            }
+
+            const unsigned int index = parent.get_var_index(var);
+
+            lhs += constant.fix(t_most_violated_scenario) * *variables[index];
+
+        }
+
+        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), "epigraph__" + std::to_string(m_iteration_count));
+
+    }
+
 }

@@ -224,70 +224,67 @@ int main(int t_argc, char** t_argv) {
     using namespace idol::BiLevel;
     using namespace idol::ColumnAndConstraintGenerationSeparators;
 
+    const unsigned int n_facilities = 3;
+    const unsigned int n_customers = 3;
+    const std::vector<double> capacity { 800, 800, 800 };
+    const std::vector<double> nominal_demand { 206, 274, 220 };
+    const std::vector<double> max_deviation { 40, 40, 40 };
+    const std::vector<double> opening_cost { 400, 414, 326 };
+    const std::vector<double> capacity_cost { 18, 25, 20 };
+    const std::vector<std::vector<double>> transportation_cost {
+            { 22, 33, 24 },
+            { 33, 23, 30 },
+            { 20, 25, 27 },
+    };
+
     Env env;
 
-    // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/examples/facility.data.txt");
-    const unsigned int n_customers = instance.n_customers();
-    const unsigned int n_facilities = instance.n_facilities();
-    const double Gamma = 2;
+    // Annotations
+    Annotation<Var> variable_level(env, "lower_level_variable", MasterId);
+    Annotation<Ctr> constraint_level(env, "constraint_level", MasterId);
 
     // Make uncertainty set
     Model uncertainty_set(env);
 
-    auto xi = uncertainty_set.add_vars(Dim<1>(n_facilities), 0, 1, Binary, "xi");
-    uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), xi[i]) <= Gamma);
+    auto g = uncertainty_set.add_vars(Dim<1>(3), 0, 1, Continuous, "xi");
+    uncertainty_set.add_ctr(g[0] + g[1] + g[2] <= 1.8);
+    uncertainty_set.add_ctr(g[0] + g[1] <= 1.2);
 
     // Make model
     Model model(env);
 
-    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    auto y = model.add_vars(Dim<1>(3), 0., 1., Binary, "y");
+    auto z = model.add_vars(Dim<1>(3), 0., Inf, Continuous, "z");
+    auto x = model.add_vars(Dim<2>(3, 3), 0., Inf, Continuous, "x");
 
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
+    for (unsigned int i = 0 ; i < 3 ; ++i) {
+        model.add_ctr(z[i] <= capacity[i] * y[i]);
+        model.add_ctr(idol_Sum(j, Range(3), x[i][j]) <= z[i]).set(constraint_level, 0);
     }
 
-    for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) <= 1);
+    for (unsigned int j = 0 ; j < 3 ; ++j) {
+        model.add_ctr(idol_Sum(i, Range(3), x[i][j]) >= nominal_demand[j] + max_deviation[j] * !g[j]).set(constraint_level, 0);
     }
+
+    model.set_obj_expr(
+            idol_Sum(i, Range(n_facilities),
+                         opening_cost[i] * y[i] + capacity_cost[i] * z[i]
+                         + idol_Sum(j, Range(n_customers), transportation_cost[i][j] * x[i][j])
+                     )
+    );
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            model.add_ctr(y[i][j] <= (1 - !xi[i]) * x[i]);
+            x[i][j].set(variable_level, 0);
         }
-    }
-
-    model.set_obj_expr(idol_Sum(i, Range(n_facilities),
-                                instance.fixed_cost(i) * x[i]
-                                + idol_Sum(j, Range(n_customers),
-                                           -instance.per_unit_transportation_cost(i, j) *
-                                           instance.demand(j) *
-                                           y[i][j]
-                                )
-                       )
-    );
-
-    // Annotations
-    Annotation<Var> lower_level_variables(env, "lower_level_variable", MasterId);
-    Annotation<Ctr> lower_level_constraints(env, "lower_level_constraints", MasterId);
-
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0; j < n_customers; ++j) {
-            y[i][j].set(lower_level_variables, 0);
-        }
-    }
-
-    for (auto& ctr : model.ctrs()) {
-        ctr.set(lower_level_constraints, 0);
     }
 
     // Set Optimizer
-
-    auto ccg = Robust::ColumnAndConstraintGeneration(lower_level_variables,lower_level_constraints, uncertainty_set)
-            .with_master_optimizer(Gurobi())
+    auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
+            .with_master_optimizer(Gurobi().with_logs(true).with_presolve(false))
             .with_separator(MaxMinDualize())
             .with_logs(true)
+            .with_iteration_limit(5)
         ;
 
     model.use(ccg);
@@ -300,6 +297,7 @@ int main(int t_argc, char** t_argv) {
         std::cout << save_primal(model) << std::endl;
     } else {
         std::cout << "CCG ended with status " << status << std::endl;
+        std::cout << "\treason: " << model.get_reason() << std::endl;
     }
 
     return 0;

@@ -21,7 +21,12 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
         const Row& t_row,
         CtrType t_type) const {
 
-    std::cout << "Separate UL solution: \n" << t_upper_level_solution << std::endl;
+    std::cout << "CURRENT MASTER SOLUTION "
+              << "\n************************\n"
+              << t_upper_level_solution
+              << "\n************************"
+              << std::endl;
+
 
     const auto& uncertainty_set = t_parent.uncertainty_set();
 
@@ -89,7 +94,22 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
 
     }
 
-    dual.use(Gurobi());
+    dual.use(Gurobi().with_logs(true));
+
+    dual.set_obj_sense(Minimize);
+    dual.set_obj_expr(-1. * dual.get_obj_expr());
+
+    std::cout << "PRIMAL OF SECOND-STAGE "
+              << "\n************************\n"
+              << primal
+              << "\n************************"
+              << std::endl;
+
+    std::cout << "SEPARATION PROBLEM"
+              << "\n************************\n"
+              << dual
+              << "\n************************"
+              << std::endl;
 
     dual.optimize();
 
