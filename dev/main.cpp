@@ -28,6 +28,7 @@
 #include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h"
 #include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -241,7 +242,7 @@ int main(int t_argc, char** t_argv) {
     Model model(env);
 
     auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, "y");
+    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
@@ -285,7 +286,7 @@ int main(int t_argc, char** t_argv) {
 
     auto ccg = Robust::ColumnAndConstraintGeneration(lower_level_variables,lower_level_constraints, uncertainty_set)
             .with_master_optimizer(Gurobi())
-            .with_separator(MaxMinBiLevel())
+            .with_separator(MaxMinDualize())
             .with_logs(true)
         ;
 

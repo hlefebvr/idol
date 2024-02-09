@@ -19,6 +19,9 @@ namespace idol {
 }
 
 class idol::ColumnAndConstraintGenerationSeparator {
+protected:
+    [[nodiscard]] static Expr<Var, Var> fix_and_revert(const LinExpr<Var>& t_expr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) ;
+    [[nodiscard]] static Expr<Var, Var> revert(const Constant& t_constant, const Optimizers::ColumnAndConstraintGeneration &t_parent) ;
 public:
     virtual ~ColumnAndConstraintGenerationSeparator() = default;
 
