@@ -27,6 +27,7 @@
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h"
+#include "idol/optimizers/wrappers/MibS/MibS.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -74,7 +75,147 @@ void hello_world_osi_idol() {
     solver->writeLp("model");
 }
 
+void test_mibs() {
+
+    OsiSymSolverInterface solver;
+
+    MibSModel mibs;
+    mibs.setSolver(&solver);
+
+    const double inf = solver.getInfinity();
+
+    int xi_1 = 0;
+    int xi_2 = 1;
+    int y_1  = 2;
+    int y_2  = 3;
+
+    {
+
+        int n_lower_level_variables = 2;
+        int n_upper_level_variables = 2;
+        int n_lower_level_constraints = 2;
+        int n_upper_level_constraints = 1;
+        auto* lower_level_variables_indices = new int[2]{ y_1, y_2 };
+        auto* lower_level_constraints_indices = new int[2]{1, 2};
+        auto* lower_level_objective_coefficients = new double[2]{2, 3};
+        auto* upper_level_variables_indices = new int[2]{xi_1, xi_2};
+        auto* upper_level_constraints_indices = new int[1]{0};
+
+        mibs.loadAuxiliaryData(n_lower_level_variables,
+                               n_lower_level_constraints,
+                               lower_level_variables_indices,
+                               lower_level_constraints_indices,
+                               1.,
+                               lower_level_objective_coefficients,
+                               n_upper_level_variables,
+                               n_upper_level_constraints,
+                               upper_level_variables_indices,
+                               upper_level_constraints_indices,
+                               0,
+                               nullptr,
+                               0,
+                               nullptr,
+                               nullptr,
+                               nullptr);
+
+    }
+
+    {
+
+        CoinPackedMatrix matrix(false, 0, 4);
+
+        {
+            CoinPackedVector row;
+            row.insert(xi_1, 1);
+            row.insert(xi_2, 1);
+            matrix.appendRow(row);
+        }
+
+        {
+            CoinPackedVector row;
+            row.insert(y_1, -2);
+            row.insert(y_2, 1);
+            row.insert(xi_1, 3);
+            matrix.appendRow(row);
+        }
+
+        {
+            CoinPackedVector row;
+            row.insert(y_1, 3);
+            row.insert(y_2, 3);
+            row.insert(xi_1, -2);
+            row.insert(xi_2, 3);
+            matrix.appendRow(row);
+        }
+
+        auto* constraint_lower_bounds = new double[3]{-inf, 0, 1};
+        auto* constraint_upper_bounds = new double[3]{1, inf, inf};
+        auto* constraint_types = new char[3]{'L', 'G', 'G'};
+        auto* variable_types = new char[4]{'B', 'B', 'B', 'B'};
+        auto* variable_lower_bounds = new double[4]{0, 0, 0, 0};
+        auto* variable_upper_bounds = new double[4]{1, 1, 1, 1};
+        auto* objective = new double[4]{0, 0, -2, -3};
+
+        std::cout << matrix.getNumCols() << ", " << matrix.getNumRows() << std::endl;
+        std::cout << matrix.getMajorDim() << ", " << matrix.getMinorDim() << std::endl;
+
+        mibs.loadProblemData(matrix,
+                             variable_lower_bounds,
+                             variable_upper_bounds,
+                             objective,
+                             constraint_lower_bounds,
+                             constraint_upper_bounds,
+                             variable_types,
+                             1.,
+                             inf,
+                             constraint_types);
+
+    }
+
+    std::string arg = "mibs";
+    int argc = 1;
+    char** argv = new char* [1];
+    argv[0] = arg.data();
+
+    AlpsKnowledgeBrokerSerial broker(argc, argv, mibs);
+    broker.search(&mibs);
+
+}
+
+void test_idol_mibs() {
+
+    using namespace idol;
+
+    Env env;
+
+    Model model(env);
+
+    auto xi = model.add_vars(Dim<1>(2), 0, 1, Binary, "xi");
+    auto y = model.add_vars(Dim<1>(2), 0, 1, Binary, "y");
+
+    auto c1 = model.add_ctr(xi[0] + xi[1] <= 1);
+    auto c2 = model.add_ctr(-2 * y[0] + y[1] >= -3 * xi[0]);
+    auto c3 = model.add_ctr(3 * y[0] + 3 * y[1] >= 1 + 2 * xi[0] - 3 * xi[1]);
+    auto lower_level_objective = model.add_ctr(2 * y[0] + 3 * y[1] == 0);
+
+    Annotation<Var> lower_level_var(env, "ll_vars", MasterId);
+    Annotation<Ctr> lower_level_ctr(env, "ll_ctrs", MasterId);
+
+    y[0].set(lower_level_var, 0);
+    y[1].set(lower_level_var, 0);
+    c2.set(lower_level_ctr, 0);
+    c3.set(lower_level_ctr, 0);
+
+    model.use(BiLevel::MibS(lower_level_var, lower_level_ctr, lower_level_objective));
+
+    model.optimize();
+
+}
+
 int main(int t_argc, char** t_argv) {
+
+    //test_mibs();
+    //test_idol_mibs();
 
     // hello_world_osi_idol();
 

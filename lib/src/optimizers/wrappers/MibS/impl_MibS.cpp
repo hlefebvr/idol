@@ -117,9 +117,6 @@ void idol::impl::MibS::solve() {
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
 
-    m_osi_solver->writeLp("model.lp");
-    m_mibs.writeAuxiliaryData("model.aux");
-
 }
 
 std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_variable_indices() {
@@ -267,6 +264,8 @@ idol::impl::MibS::parse_constraints() {
                 upper_bounds.emplace_back(rhs);
                 types.emplace_back('E');
                 break;
+            default:
+                throw Exception("Enum out of bounds.");
         }
 
         auto packed_vector = to_packed_vector(row.linear());
