@@ -31,6 +31,25 @@ void idol::impl::Optimizer::terminate() {
     m_is_terminated = true;
 }
 
+double idol::impl::Optimizer::get_param_best_obj_stop() const {
+
+    if (m_param_best_obj_stop.has_value()) {
+        return m_param_best_obj_stop.value();
+    }
+
+    return m_parent.get_obj_sense() == Minimize ? -Inf : Inf;
+}
+
+double idol::impl::Optimizer::get_param_best_bound_stop() const {
+
+    if (m_param_best_bound_stop.has_value()) {
+        return m_param_best_bound_stop.value();
+    }
+
+    return m_parent.get_obj_sense() == Minimize ? Inf : -Inf;
+
+}
+
 idol::Optimizer::Optimizer(const Model &t_parent) : impl::Optimizer(t_parent) {
 
 }
