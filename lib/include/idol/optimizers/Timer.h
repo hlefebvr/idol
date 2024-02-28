@@ -12,7 +12,7 @@ namespace idol {
 }
 
 class idol::Timer {
-    using time = std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>>;
+    using time = std::chrono::high_resolution_clock::time_point;
     using duration = std::chrono::duration<double>;
     bool m_has_started = false, m_has_stopped = false;
     time m_starting_clock;
