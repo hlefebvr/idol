@@ -595,7 +595,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     }
 
     const auto sense = model->get(GRB_IntAttr_ModelSense);
-    model->set(GRB_IntAttr_ModelSense, idol_obj_sense(sense));
+    result.set_obj_sense(idol_obj_sense(sense));
 
     const auto& objective = model->getObjective();
     result.set_obj_expr(parse_quadratic(objective));
