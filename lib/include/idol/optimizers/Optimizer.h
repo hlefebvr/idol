@@ -6,6 +6,7 @@
 #define IDOL_OPTIMIZER_H
 
 #include <string>
+#include <optional>
 
 #include "Timer.h"
 #include "idol/modeling/numericals.h"
