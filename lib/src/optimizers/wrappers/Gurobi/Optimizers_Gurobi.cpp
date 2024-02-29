@@ -643,4 +643,10 @@ void idol::Optimizers::Gurobi::update_objective_constant() {
     m_model.set(GRB_DoubleAttr_ObjCon, constant);
 }
 
+double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) const {
+    GUROBI_CATCH(
+        return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
+    )
+}
+
 #endif

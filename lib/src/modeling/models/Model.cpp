@@ -552,3 +552,7 @@ void idol::Model::reserve_vars(unsigned int t_size) {
 void idol::Model::reserve_ctrs(unsigned int t_size) {
     m_constraints.reserve(t_size);
 }
+
+double idol::Model::get_var_reduced_cost(const idol::Var &t_var) const {
+    return optimizer().get_var_reduced_cost(t_var);
+}

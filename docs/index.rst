@@ -6,7 +6,6 @@ Welcome to idol!
 .. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main
 .. image:: https://img.shields.io/github/issues-raw/hlefebvr/idol
 .. image:: https://www.repostatus.org/badges/latest/wip.svg
-.. image:: https://codecov.io/github/hlefebvr/idol/branch/main/graph/badge.svg?token=BWMH5522QP)
 
 .. image:: https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png
 

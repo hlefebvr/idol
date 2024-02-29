@@ -110,6 +110,8 @@ public:
 
     [[nodiscard]] virtual double get_var_primal(const Var& t_var) const = 0;
 
+    [[nodiscard]] virtual double get_var_reduced_cost(const Var& t_var) const = 0;
+
     [[nodiscard]] virtual double get_var_ray(const Var& t_var) const = 0;
 
     [[nodiscard]] virtual double get_ctr_dual(const Ctr& t_ctr) const = 0;

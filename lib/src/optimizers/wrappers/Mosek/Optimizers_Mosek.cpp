@@ -527,6 +527,10 @@ void idol::Optimizers::Mosek::set_param_logs(bool t_value) {
     Optimizer::set_param_logs(t_value);
 }
 
+double idol::Optimizers::Mosek::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
+
 idol::MosekKiller::~MosekKiller() {
     mosek::releaseGlobalEnv();
 }

@@ -138,6 +138,8 @@ public:
 
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
+    double get_var_reduced_cost(const Var &t_var) const override;
+
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
 
     [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
@@ -150,6 +152,11 @@ public:
 
     void set_solution_index(unsigned int t_index) override;
 };
+
+template<class NodeInfoT>
+double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::log_after_termination() {

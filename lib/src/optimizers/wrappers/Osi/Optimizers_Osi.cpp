@@ -405,4 +405,8 @@ void idol::Optimizers::Osi::set_param_presolve(bool t_value) {
     m_solver_interface->setHintParam(OsiHintParam::OsiDoPresolveInResolve, t_value, OsiHintStrength::OsiHintDo);
 }
 
+double idol::Optimizers::Osi::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
+
 #endif

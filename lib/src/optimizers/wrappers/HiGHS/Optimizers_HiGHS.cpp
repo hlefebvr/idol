@@ -514,4 +514,8 @@ void idol::Optimizers::HiGHS::update_objective_constant() {
     m_model.changeObjectiveOffset(constant);
 }
 
+double idol::Optimizers::HiGHS::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
+
 #endif
