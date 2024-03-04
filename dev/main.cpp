@@ -240,7 +240,22 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    auto [high_point_relaxation, var_annotation, ctr_annotation] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+    auto [high_point_relaxation,
+          var_annotation,
+          ctr_annotation,
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+
+    /*
+    high_point_relaxation.use(
+                Bilevel::ColumnAndConstraintGeneration(var_annotation,
+                                                       ctr_annotation,
+                                                       lower_level_objective)
+                    .with_master_optimizer(Gurobi())
+                    .with_lower_level_optimizer(Gurobi())
+            );
+
+    high_point_relaxation.optimize();
+    */
 
     std::cout << high_point_relaxation << std::endl;
 

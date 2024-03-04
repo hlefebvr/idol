@@ -36,6 +36,7 @@ class AuxParser {
 
     void set_var_annotations();
     void set_ctr_annotations();
+    Ctr create_lower_level_objective_constraint();
 public:
     explicit AuxParser(Env& t_env,
                        const Annotation<Var, unsigned int>& t_var_annotation,
@@ -44,16 +45,20 @@ public:
                          m_var_annotation(t_var_annotation),
                          m_ctr_annotation(t_ctr_annotation) {}
 
-    Model operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
+    std::tuple<Model, Ctr> operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
 };
 
-Model AuxParser::operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
+std::tuple<Model, Ctr> AuxParser::operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
 
     read_aux_file(t_path_to_aux, t_read_model_from_file);
     set_var_annotations();
     set_ctr_annotations();
+    auto lower_level_objective = create_lower_level_objective_constraint();
 
-    return std::move(*m_high_point_relaxation);
+    return {
+        std::move(*m_high_point_relaxation),
+        lower_level_objective
+    };
 }
 
 void AuxParser::read_aux_file(const std::string &t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
@@ -227,7 +232,23 @@ void AuxParser::set_ctr_annotations() {
 
 }
 
-idol::Model
+Ctr AuxParser::create_lower_level_objective_constraint() {
+
+    Expr lhs;
+
+    for (const auto& var : m_high_point_relaxation->vars()) {
+
+        if (auto it = m_lower_level_variables.find(var.name()) ; it != m_lower_level_variables.end()) {
+            lhs += it->second * var;
+        }
+
+    }
+
+
+    return m_high_point_relaxation->add_ctr(lhs == 0, "__lower_level_objective");
+}
+
+std::tuple<idol::Model, idol::Ctr>
 idol::Bilevel::impl::read_from_file(Env& t_env,
                               const std::string& t_path_to_aux,
                               const Annotation<Var, unsigned int>& t_var_annotation,

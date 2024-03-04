@@ -10,10 +10,10 @@
 
 namespace idol::Bilevel {
 
-    using ParsingResult = std::tuple<Model, Annotation<Var, unsigned int>, Annotation<Ctr, unsigned int>>;
+    using ParsingResult = std::tuple<Model, Annotation<Var, unsigned int>, Annotation<Ctr, unsigned int>, idol::Ctr>;
 
     namespace impl {
-        Model
+        std::tuple<Model, Ctr>
         read_from_file(Env &t_env,
                        const std::string &t_path_to_aux,
                        const Annotation<Var, unsigned int>& t_var_annotation,
@@ -21,7 +21,7 @@ namespace idol::Bilevel {
                        const std::function<Model(Env &, const std::string &)> &t_read_model_from_file);
     }
 
-    template<class BackendT> Model read_from_file(
+    template<class BackendT> std::tuple<Model, Ctr> read_from_file(
             Env& t_env,
             const std::string& t_path_to_aux,
             const Annotation<Var, unsigned int>& t_var_annotation,
@@ -34,7 +34,7 @@ namespace idol::Bilevel {
 }
 
 template<class BackendT>
-idol::Model
+std::tuple<idol::Model, idol::Ctr>
 idol::Bilevel::read_from_file(idol::Env& t_env,
                               const std::string& t_path_to_aux,
                               const Annotation<Var, unsigned int>& t_var_annotation,
@@ -58,7 +58,8 @@ idol::Bilevel::read_from_file(idol::Env& t_env,
     Annotation<Var, unsigned int> var_annotation(t_env, "var_annotation", MasterId);
     Annotation<Ctr, unsigned int> ctr_annotation(t_env, "ctr_annotation", MasterId);
 
-    auto high_point_relaxation = idol::Bilevel::impl::read_from_file(t_env,
+    auto [high_point_relaxation,
+          lower_level_objective] = idol::Bilevel::impl::read_from_file(t_env,
                                                                t_path_to_aux,
                                                                var_annotation,
                                                                ctr_annotation,
@@ -69,7 +70,8 @@ idol::Bilevel::read_from_file(idol::Env& t_env,
     return {
         std::move(high_point_relaxation),
         std::move(var_annotation),
-        std::move(ctr_annotation)
+        std::move(ctr_annotation),
+        lower_level_objective
     };
 
 }
