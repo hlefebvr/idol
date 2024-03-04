@@ -7,8 +7,8 @@
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
-idol::Expr<idol::Var, idol::Var> idol::ColumnAndConstraintGenerationSeparator::fix_and_revert(const LinExpr<Var> &t_expr,
-                                                                             const Optimizers::ColumnAndConstraintGeneration &t_parent,
+idol::Expr<idol::Var, idol::Var> idol::Robust::ColumnAndConstraintGenerationSeparator::fix_and_revert(const LinExpr<Var> &t_expr,
+                                                                             const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                              const Solution::Primal &t_upper_level_solution) {
     Expr<Var, Var> result;
 
@@ -46,8 +46,8 @@ idol::Expr<idol::Var, idol::Var> idol::ColumnAndConstraintGenerationSeparator::f
     return result;
 }
 
-idol::Expr<idol::Var, idol::Var> idol::ColumnAndConstraintGenerationSeparator::revert(const idol::Constant &t_constant,
-                                                                                      const idol::Optimizers::ColumnAndConstraintGeneration &t_parent) {
+idol::Expr<idol::Var, idol::Var> idol::Robust::ColumnAndConstraintGenerationSeparator::revert(const idol::Constant &t_constant,
+                                                                                      const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) {
 
     if (t_constant.quadratic().size() > 0) {
         throw Exception("Quadratic terms in uncertainty not implemented.");

@@ -3,4 +3,4 @@
 MaxMinBilevel
 =============
 
-.. doxygenclass:: idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel
+.. doxygenclass:: idol::ColumnAndConstraintSeparators::MaxMinBiLevel

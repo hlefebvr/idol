@@ -12,12 +12,12 @@
 
 #include <optional>
 
-namespace idol::Optimizers {
+namespace idol::Optimizers::Robust {
     class ColumnAndConstraintGeneration;
 }
 
-class idol::Optimizers::ColumnAndConstraintGeneration : public Algorithm {
-    std::unique_ptr<ColumnAndConstraintGenerationSeparator> m_separator;
+class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm {
+    std::unique_ptr<idol::Robust::ColumnAndConstraintGenerationSeparator> m_separator;
 
     Model m_master_problem;
     Model m_uncertainty_set;
@@ -34,7 +34,7 @@ public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const Model& t_uncertainty_set,
                                   const OptimizerFactory& t_master_optimizer,
-                                  const ColumnAndConstraintGenerationSeparator& t_separator,
+                                  const idol::Robust::ColumnAndConstraintGenerationSeparator& t_separator,
                                   const Annotation<Var, unsigned int>& t_lower_level_variables,
                                   const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
                                   bool t_complete_recourse

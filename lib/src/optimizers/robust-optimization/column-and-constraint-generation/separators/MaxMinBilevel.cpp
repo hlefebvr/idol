@@ -9,12 +9,12 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
-idol::ColumnAndConstraintGenerationSeparator *idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::clone() const {
+idol::Robust::ColumnAndConstraintGenerationSeparator *idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::clone() const {
     return new MaxMinBilevel(*this);
 }
 
-idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::operator()(
-        const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
+idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::operator()(
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
         CtrType t_type) const {
@@ -57,9 +57,9 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBile
     return save_primal(model);
 }
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_variables(
+void idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::add_lower_level_variables(
         idol::Model &t_hpr,
-        const idol::Optimizers::ColumnAndConstraintGeneration &t_parent) const {
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) const {
 
     const auto& model = t_parent.parent();
     const auto& lower_level_variables = t_parent.lower_level_variables();
@@ -81,9 +81,9 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_lev
 }
 
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_constraints(
+void idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::add_lower_level_constraints(
         idol::Model &t_hpr,
-        const Optimizers::ColumnAndConstraintGeneration &t_parent,
+        const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution) const {
 
     const auto& model = t_parent.parent();
@@ -101,10 +101,10 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_lev
 
 }
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_constraint(idol::Model &t_hpr,
-                                                                                              const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
-                                                                                              const Solution::Primal &t_upper_level_solution,
-                                                                                              const idol::Ctr &t_ctr) const {
+void idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::add_lower_level_constraint(idol::Model &t_hpr,
+                                                                                            const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                                                                            const Solution::Primal &t_upper_level_solution,
+                                                                                            const idol::Ctr &t_ctr) const {
 
     const auto& model = t_parent.parent();
     const auto& row = model.get_ctr_row(t_ctr);
@@ -121,9 +121,9 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_lev
 
 }
 
-idol::Ctr idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::set_upper_and_lower_objectives(
+idol::Ctr idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel::set_upper_and_lower_objectives(
         idol::Model &t_hpr,
-        const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const idol::Solution::Primal &t_upper_level_solution,
         const idol::Row &t_row,
         idol::CtrType t_type) const {

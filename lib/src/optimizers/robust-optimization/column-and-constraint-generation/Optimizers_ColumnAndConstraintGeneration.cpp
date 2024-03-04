@@ -7,10 +7,10 @@
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Env.h"
 
-idol::Optimizers::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                const idol::Model &t_uncertainty_set,
                                                                                const idol::OptimizerFactory &t_master_optimizer,
-                                                                               const idol::ColumnAndConstraintGenerationSeparator &t_separator,
+                                                                               const idol::Robust::ColumnAndConstraintGenerationSeparator &t_separator,
                                                                                const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
                                                                                const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
                                                                                bool t_complete_recourse)
@@ -30,7 +30,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(c
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem() {
 
     build_master_problem_variables();
     build_master_problem_constraints();
@@ -38,7 +38,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_variables() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_variables() {
 
     const auto& parent = this->parent();
 
@@ -58,7 +58,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_varia
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_constraints() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_constraints() {
 
     const auto& parent = this->parent();
 
@@ -82,7 +82,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_const
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objective_and_epigraph() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_objective_and_epigraph() {
 
     const auto& parent = this->parent();
     auto& env = m_master_problem.env();
@@ -126,7 +126,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objec
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_coupling_constraints_list() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_constraints_list() {
 
     const auto& parent = this->parent();
 
@@ -150,7 +150,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_coupling_constraints
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_upper_level_variables_list() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_level_variables_list() {
 
     const auto& parent = this->parent();
 
@@ -168,11 +168,11 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_upper_level_variable
 
 }
 
-std::string idol::Optimizers::ColumnAndConstraintGeneration::name() const {
+std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() const {
     return "column-and-constraint generation";
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
 
     if (t_var.get(m_lower_level_variables) != MasterId) {
         return 0.;
@@ -181,51 +181,51 @@ double idol::Optimizers::ColumnAndConstraintGeneration::get_var_primal(const Var
     return m_master_problem.get_var_primal(t_var);
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_ctr_dual(const Ctr &t_ctr) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-unsigned int idol::Optimizers::ColumnAndConstraintGeneration::get_n_solutions() const {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_n_solutions() const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-unsigned int idol::Optimizers::ColumnAndConstraintGeneration::get_solution_index() const {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_solution_index() const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::add(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::add(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::remove(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::remove(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::remove(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::remove(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::write(const std::string &t_name) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::write(const std::string &t_name) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimize() {
     Optimizer::hook_before_optimize();
 
     if (get_param_logs()) {
@@ -260,7 +260,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
     m_iteration_count = 0;
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
     while (!is_terminated()) {
 
@@ -296,56 +296,56 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj_sense() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj_sense() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_rhs() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_rhs() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj_constant() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj_constant() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_ctr_type(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_ctr_type(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_ctr_rhs(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_ctr_rhs(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_type(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_type(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_lb(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_lb(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_ub(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_ub(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_obj(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_obj(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
 bool
-idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(const idol::LinExpr<idol::Var> &t_expr) {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_variable(const idol::LinExpr<idol::Var> &t_expr) {
 
     for (const auto& [var, constant] : t_expr) {
 
@@ -358,7 +358,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(c
     return false;
 }
 
-bool idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(
+bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_variable(
         const idol::QuadExpr<idol::Var, idol::Var> &t_expr) {
 
 
@@ -374,11 +374,11 @@ bool idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_varia
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::solve_master_problem() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
     m_master_problem.optimize();
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::analyze_master_problem_solution() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_master_problem_solution() {
 
     const auto status = m_master_problem.get_status();
 
@@ -408,7 +408,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::analyze_master_problem_sol
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_stopping_condition() {
 
     if (get_remaining_time() < 0) {
         set_reason(TimeLimit);
@@ -433,7 +433,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition()
 }
 
 idol::Solution::Primal
-idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     const auto& parent = this->parent();
     Solution::Primal upper_level_solution = save_upper_level_primal();
@@ -506,7 +506,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
     return argmax;
 }
 
-idol::Solution::Primal idol::Optimizers::ColumnAndConstraintGeneration::save_upper_level_primal() const {
+idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::save_upper_level_primal() const {
 
     Solution::Primal result;
 
@@ -532,7 +532,7 @@ idol::Solution::Primal idol::Optimizers::ColumnAndConstraintGeneration::save_upp
     return result;
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::analyze_most_violated_scenario(
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_most_violated_scenario(
         const idol::Solution::Primal &t_most_violated_scenario) {
 
     const auto status = t_most_violated_scenario.status();
@@ -556,7 +556,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::analyze_most_violated_scen
 }
 
 void
-idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
 
     const auto& parent = this->parent();
 
@@ -646,6 +646,6 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
 
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
     throw Exception("Not implemented ColumnAndConstraintGeneration::get_var_reduced_cost.");
 }

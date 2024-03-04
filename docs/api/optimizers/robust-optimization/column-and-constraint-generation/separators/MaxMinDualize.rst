@@ -3,4 +3,4 @@
 MaxMinDualize
 =============
 
-.. doxygenclass:: idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize
+.. doxygenclass:: idol::ColumnAndConstraintSeparators::MaxMinDualize

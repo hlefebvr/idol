@@ -39,7 +39,7 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("No separator has been configured.");
     }
 
-    auto *result = new Optimizers::ColumnAndConstraintGeneration(t_model,
+    auto *result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
                                                          m_uncertainty_set,
                                                          *m_master_optimizer,
                                                          *m_separator,
@@ -70,7 +70,7 @@ idol::Robust::ColumnAndConstraintGeneration::with_master_optimizer(const idol::O
 }
 
 idol::Robust::ColumnAndConstraintGeneration &idol::Robust::ColumnAndConstraintGeneration::with_separator(
-        const idol::ColumnAndConstraintGenerationSeparator &t_separator) {
+        const idol::Robust::ColumnAndConstraintGenerationSeparator &t_separator) {
 
     if (m_separator) {
         throw Exception("A separator has already been configured.");

@@ -8,19 +8,19 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
 #include "idol/optimizers/OptimizerFactory.h"
 
-namespace idol::ColumnAndConstraintGenerationSeparators {
+namespace idol::Robust::ColumnAndConstraintSeparators {
     class MaxMinDualize;
 }
 
-class idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize : public idol::ColumnAndConstraintGenerationSeparator {
+class idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize : public idol::Robust::ColumnAndConstraintGenerationSeparator {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
-    Model create_second_stage_primal_problem(Env& t_env, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
+    Model create_second_stage_primal_problem(Env& t_env, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
     void make_feasibility_problem(Model& t_model) const;
     Solution::Primal solve_max_min(const Model& t_max, const Model& t_min) const;
-    void add_lower_level_constraint(Model& t_primal, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution, const Ctr& t_ctr) const;
-    void set_lower_level_objective(Model& t_primal, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
+    void add_lower_level_constraint(Model& t_primal, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution, const Ctr& t_ctr) const;
+    void set_lower_level_objective(Model& t_primal, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
 
-    [[nodiscard]] static Expr<Var, Var> fix(const LinExpr<Var>& t_expr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) ;
+    [[nodiscard]] static Expr<Var, Var> fix(const LinExpr<Var>& t_expr, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) ;
 public:
     MaxMinDualize() = default;
 
@@ -28,7 +28,7 @@ public:
 
     [[nodiscard]] ColumnAndConstraintGenerationSeparator *clone() const override;
 
-    Solution::Primal operator()(const Optimizers::ColumnAndConstraintGeneration &t_parent,
+    Solution::Primal operator()(const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                 const Solution::Primal &t_upper_level_solution,
                                 const Row& t_row,
                                 CtrType t_type) const override;

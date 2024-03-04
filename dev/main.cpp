@@ -223,7 +223,7 @@ int main(int t_argc, char** t_argv) {
 
     using namespace idol;
     using namespace idol::Bilevel;
-    using namespace idol::ColumnAndConstraintGenerationSeparators;
+    using namespace idol::Robust::ColumnAndConstraintSeparators;
 
     const unsigned int n_facilities = 3;
     const unsigned int n_customers = 3;
