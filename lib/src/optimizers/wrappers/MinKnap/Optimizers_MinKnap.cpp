@@ -182,4 +182,8 @@ unsigned int idol::Optimizers::MinKnap::get_n_solutions() const {
     return m_objective_value.has_value() ? 1 : 0;
 }
 
+double idol::Optimizers::MinKnap::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
+
 #endif

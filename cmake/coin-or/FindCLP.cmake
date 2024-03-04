@@ -1,19 +1,23 @@
+if (NOT DEFINED COIN_OR_DIR)
+    set(COIN_OR_DIR $ENV{COIN_OR_HOME})
+endif()
+
 find_path(
         CLP_INCLUDE_DIRS
         NAMES ClpConfig.h
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES include/coin)
 
 find_library(
         CLP_LIBRARY
         NAMES Clp
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 find_library(
         CLP_SOLVER_LIBRARY
         NAMES ClpSolver
-        HINTS ${COIN_OR_DIR} $ENV{COIN_OR_HOME}
+        HINTS ${COIN_OR_DIR}
         PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)

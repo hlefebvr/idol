@@ -1,13 +1,17 @@
+if (NOT DEFINED GUROBI_DIR)
+    set(GUROBI_DIR $ENV{GUROBI_HOME})
+endif()
+
 find_path(
         GUROBI_INCLUDE_DIRS
         NAMES gurobi_c.h
-        HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
+        HINTS ${GUROBI_DIR}
         PATH_SUFFIXES include)
 
 find_library(
         GUROBI_LIBRARY
         NAMES gurobi gurobi81 gurobi90 gurobi95 gurobi1000 gurobi100 gurobi110
-        HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
+        HINTS ${GUROBI_DIR}
         PATH_SUFFIXES lib)
 
 if(MSVC)

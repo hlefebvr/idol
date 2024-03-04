@@ -1045,6 +1045,22 @@ public:
     [[nodiscard]] double get_var_primal(const Var& t_var) const;
 
     /**
+     * Returns the reduced cost of a variable in the model
+     *
+     * Example:
+     * ```cpp
+     * model.optimize();
+     *
+     * if (model.get_status() == Optimal) {
+     *      std::cout << "Reduced cost of x_0 is " << model.get_var_reduced_cost(x[0]) << std::endl;
+     * }
+     * ```
+     * @param t_var the variable
+     * @return the reduced cost
+     */
+    [[nodiscard]] double get_var_reduced_cost(const Var& t_var) const;
+
+    /**
      * When the model is unbounded, returns the ray value of a variable of the model
      *
      * Example:

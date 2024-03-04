@@ -36,6 +36,7 @@ public:
     double get_best_obj() const override;
     double get_best_bound() const override;
     double get_var_primal(const Var &t_var) const override;
+    double get_var_reduced_cost(const Var &t_var) const override;
     double get_var_ray(const Var &t_var) const override;
     double get_ctr_dual(const Ctr &t_ctr) const override;
     double get_ctr_farkas(const Ctr &t_ctr) const override;

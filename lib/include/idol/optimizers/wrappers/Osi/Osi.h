@@ -13,6 +13,7 @@
 #include <OsiClpSolverInterface.hpp>
 #else
 struct OsiSolverInterface {
+    virtual ~OsiSolverInterface() = default;
     virtual OsiSolverInterface* clone() const = 0;
 };
 #endif

@@ -595,7 +595,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     }
 
     const auto sense = model->get(GRB_IntAttr_ModelSense);
-    model->set(GRB_IntAttr_ModelSense, idol_obj_sense(sense));
+    result.set_obj_sense(idol_obj_sense(sense));
 
     const auto& objective = model->getObjective();
     result.set_obj_expr(parse_quadratic(objective));
@@ -641,6 +641,12 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 void idol::Optimizers::Gurobi::update_objective_constant() {
     const double constant = parent().get_obj_expr().constant().as_numerical();
     m_model.set(GRB_DoubleAttr_ObjCon, constant);
+}
+
+double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) const {
+    GUROBI_CATCH(
+        return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
+    )
 }
 
 #endif

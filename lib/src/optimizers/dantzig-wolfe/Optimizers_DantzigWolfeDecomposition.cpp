@@ -197,3 +197,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_var_ub(const idol::Var 
 void idol::Optimizers::DantzigWolfeDecomposition::update_var_obj(const idol::Var &t_var) {
     throw Exception("Not implemented update_var_obj");
 }
+
+double idol::Optimizers::DantzigWolfeDecomposition::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}

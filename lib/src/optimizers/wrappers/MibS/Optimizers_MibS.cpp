@@ -170,4 +170,8 @@ void idol::Optimizers::MibS::throw_if_no_mibs() const {
                     "Please, call Model::optimize first. ");
 }
 
+double idol::Optimizers::MibS::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented get_var_reduced_cost");
+}
+
 #endif

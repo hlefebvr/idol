@@ -6,6 +6,7 @@
 #define IDOL_OPTIMIZER_H
 
 #include <string>
+#include <optional>
 
 #include "Timer.h"
 #include "idol/modeling/numericals.h"
@@ -34,8 +35,8 @@ class idol::impl::Optimizer {
 
     bool m_param_logs = false;
     double m_param_time_limit = std::numeric_limits<double>::max();
-    double m_param_best_obj_stop = -Inf;
-    double m_param_best_bound_stop = +Inf;
+    std::optional<double> m_param_best_obj_stop;
+    std::optional<double> m_param_best_bound_stop;
     bool m_param_presolve = true;
     bool m_param_infeasible_or_unbounded_info = false;
 
@@ -109,6 +110,8 @@ public:
 
     [[nodiscard]] virtual double get_var_primal(const Var& t_var) const = 0;
 
+    [[nodiscard]] virtual double get_var_reduced_cost(const Var& t_var) const = 0;
+
     [[nodiscard]] virtual double get_var_ray(const Var& t_var) const = 0;
 
     [[nodiscard]] virtual double get_ctr_dual(const Ctr& t_ctr) const = 0;
@@ -135,11 +138,11 @@ public:
 
     virtual void set_param_threads(unsigned int t_threads) { m_param_threads = t_threads; }
 
-    [[nodiscard]] double get_param_best_obj_stop() const { return m_param_best_obj_stop; }
+    [[nodiscard]] double get_param_best_obj_stop() const;
 
     virtual void set_param_best_obj_stop(double t_best_obj_stop) { m_param_best_obj_stop = t_best_obj_stop; }
 
-    [[nodiscard]] double get_param_best_bound_stop() const { return m_param_best_bound_stop; }
+    [[nodiscard]] double get_param_best_bound_stop() const;
 
     virtual void set_param_best_bound_stop(double t_best_bound_stop) { m_param_best_bound_stop = t_best_bound_stop; }
 

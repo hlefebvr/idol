@@ -98,7 +98,7 @@ namespace idol {
             class T,
             class Hash = std::hash<Key>,
             class KeyEqual = std::equal_to<Key>,
-            class Allocator = std::allocator<idol::Pair<const Key, T> >
+            class Allocator = std::allocator<std::pair<const Key, T> >
     >
     using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
 

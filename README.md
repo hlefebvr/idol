@@ -20,9 +20,12 @@ or any other cutting-edge method, idol is your trusted companion.
 - [Documentation](#Documentation)
 - [Using idol for Research?](#using-idol-for-research)
 - [Examples](#Examples)
+  - [Branch-and-Price](#branch-and-price)
+  - [Bi-level Problem (using coin-or/Mibs)](#bi-level-problem-using-mibs)
 - [Implemented Features](#Implemented-Features)
   - [Branch-and-Bound](#Branch-and-Bound)
   - [Column Generation and Branch-and-Price](#Column-Generation-and-Branch-and-Price)
+  - [External Solvers](#External-Solvers)
 
 ## Documentation
 
@@ -63,6 +66,60 @@ model.use(branch_and_price);
 model.optimize();
 ```
 
+### Bi-level Problem (using MibS)
+
+Here, idol uses the external solver [coin-or/MibS](https://github.com/coin-or/MibS) to solve a bi-level optimization problem with integer lower level.
+
+```cpp
+/**
+ * min  -x − 7y
+ * s.t. −3x + 2y ≤ 12
+         x + 2y ≤ 20
+         0 ≤ x ≤ 10
+         x integer
+         y ∈ arg min {z : 2x - z ≤ 7,
+                          -2x + 4z ≤ 16,
+                          0 ≤ z ≤ 5
+                          z integer}
+ */
+
+Env env; // Create environment
+
+// Define High Point Relaxation
+Model model(env);
+
+auto x = model.add_var(0, 10, Integer, "x");
+auto y = model.add_var(0, 5, Integer, "y");
+
+model.set_obj_expr(-x - 7 * y);
+auto c1 = model.add_ctr(-3 * x + 2 * y <= 12);
+auto c2 = model.add_ctr(x + 2 * y <= 20);
+auto c3 = model.add_ctr(y == 0);
+auto c4 = model.add_ctr(2 * x - y <= 7);
+auto c5 = model.add_ctr(-2 * x + 4 * y <= 16);
+
+// Annotate follower variables
+// * If not annotated, the default value is MasterId, i.e., leader variables and constraints
+// * Otherwise, it indicates the id of the follower (here, we have only one follower)
+Annotation<Var> follower_variables(env, "follower_variable", MasterId);
+Annotation<Ctr> follower_constraints(env, "follower_constraints", MasterId);
+
+y.set(follower_variables, 0); // "y" is a lower level variable
+c4.set(follower_constraints, 0); // "c4" is a lower level constraint
+c5.set(follower_constraints, 0); // "c5" is a lower level constraint
+
+// Use coin-or/MibS as external solver
+model.use(BiLevel::MibS(follower_variables,
+                        follower_constraints,
+                        follower_objective));
+
+// Optimize and print solution
+model.optimize();
+
+// Print the solution
+std::cout << save_primal(model) << std::endl;
+```
+
 ## Implemented Features
 
 ### Branch-and-Bound
@@ -81,6 +138,17 @@ model.optimize();
 - Can solve sub-problems in parallel
 - Supports pricing heuristics
 - Heuristics: Integer Master
+
+### External Solvers
+
+Idol can be used as a unified interface to several open-source or commercial solvers like
+
+- [Gurobi](https://www.gurobi.com/)
+- [Mosek](https://www.mosek.com/)
+- [GLPK](https://www.gnu.org/software/glpk/)
+- [HiGHS](https://highs.dev/)
+- [coin-or/MibS](https://github.com/coin-or/MibS) (for bi-level problems)
+- [coin-or/Osi](https://github.com/coin-or/Osi) --> [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [Symphony](https://github.com/coin-or/SYMPHONY), [Cbc](https://github.com/coin-or/Cbc)
 
 ## Benchmark 
 

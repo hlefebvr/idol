@@ -1,3 +1,7 @@
+if (NOT DEFINED EIGEN_DIR)
+    set(EIGEN_DIR $ENV{EIGEN_HOME})
+endif()
+
 find_path(
         EIGEN_INCLUDE_DIRS
         NAMES Eigen/Core
