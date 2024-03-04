@@ -263,11 +263,13 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
 
     while (!is_terminated()) {
 
+        /*
         std::cout << "MASTER PROBLEM ITER " << m_iteration_count
                   << "\n************************\n"
                   << m_master_problem
                   << "\n************************\n"
                   << std::endl;
+        */
 
         solve_master_problem();
 
@@ -443,12 +445,13 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
         auto solution = m_separator->operator()(*this, upper_level_solution, t_row, t_type);
 
+        /*
         std::cout << "SEPARATION SOLUTION "
                   << "\n************************\n"
                   << solution
                   << "\n************************\n"
                   << std::endl;
-
+        */
 
         const auto status = solution.status();
 
@@ -496,8 +499,8 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     }
 
-    std::cout << "Max: " << max << std::endl;
-    std::cout << "Argmax: \n" << argmax << std::endl;
+    // std::cout << "Max: " << max << std::endl;
+    // std::cout << "Argmax: \n" << argmax << std::endl;
 
     return argmax;
 }
@@ -536,6 +539,15 @@ void idol::Optimizers::ColumnAndConstraintGeneration::analyze_most_violated_scen
     if (status != Optimal) {
         set_status(status);
         set_reason(t_most_violated_scenario.reason());
+        terminate();
+        return;
+    }
+
+    std::cout << "Objective value = " << t_most_violated_scenario.objective_value() << std::endl;
+
+    if (t_most_violated_scenario.objective_value() >= Tolerance::Optimality) {
+        set_status(Optimal);
+        set_reason(Proved);
         terminate();
         return;
     }

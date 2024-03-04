@@ -21,12 +21,13 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
         const Row& t_row,
         CtrType t_type) const {
 
+    /*
     std::cout << "CURRENT MASTER SOLUTION "
               << "\n************************\n"
               << t_upper_level_solution
               << "\n************************"
               << std::endl;
-
+    */
 
     const auto& uncertainty_set = t_parent.uncertainty_set();
 
@@ -48,7 +49,6 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
         primal.add(var, TempVar(lb, ub, type, Column()));
 
     }
-
 
     const auto& lower_level_constraints = t_parent.lower_level_constraints();
 
@@ -97,7 +97,11 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
     dual.set_obj_sense(Minimize);
     dual.set_obj_expr(-1. * dual.get_obj_expr());
 
-    dual.use(Gurobi().with_logs(true));
+    if (!m_optimizer_factory) {
+        throw Exception("An optimizer for MaxMinDualize has not been given.");
+    }
+
+    dual.use(*m_optimizer_factory);
 
     std::cout << "PRIMAL OF SECOND-STAGE "
               << "\n************************\n"
@@ -105,11 +109,13 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
               << "\n************************"
               << std::endl;
 
+    /*
     std::cout << "SEPARATION PROBLEM"
               << "\n************************\n"
               << dual
               << "\n************************"
               << std::endl;
+    */
 
     dual.optimize();
 
@@ -121,6 +127,11 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
         result.set_reason(dual.get_reason());
         return result;
     }
+
+    std::cout << dual.get_best_obj() << std::endl;
+    std::cout << t_upper_level_solution.objective_value() << std::endl;
+    std::cout << dual.get_best_obj() + t_upper_level_solution.objective_value() << std::endl;
+    std::cout << dual.get_best_obj() - t_upper_level_solution.objective_value() << std::endl;
 
     return save_primal(uncertainty_set, dual);
 }
@@ -192,5 +203,23 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize::set_lower_lev
     auto primal_objective = fix(objective, t_parent, t_upper_level_solution);
 
     t_primal.set_obj_expr(std::move(primal_objective));
+
+}
+
+idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize &
+idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize::with_optimizer(
+        const idol::OptimizerFactory &t_optimizer_factory) {
+
+    if (m_optimizer_factory) {
+        throw Exception("An optimizer for MaxMinDualize has already been given.");
+    }
+
+    m_optimizer_factory.reset(t_optimizer_factory.clone());
+
+    return *this;
+}
+
+idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize::MaxMinDualize(const idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize &t_src)
+        : m_optimizer_factory(t_src.m_optimizer_factory->clone()) {
 
 }

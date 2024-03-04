@@ -286,8 +286,11 @@ int main(int t_argc, char** t_argv) {
 
     // Set Optimizer
     auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
-            .with_master_optimizer(Gurobi().with_logs(true).with_presolve(false))
-            .with_separator(MaxMinDualize())
+            .with_master_optimizer(Gurobi().with_logs(false))
+            .with_separator(
+                    MaxMinDualize()
+                                .with_optimizer(Gurobi().with_logs(false))
+            )
             .with_logs(true)
             .with_iteration_limit(5)
         ;
@@ -298,10 +301,11 @@ int main(int t_argc, char** t_argv) {
 
     const auto status = model.get_status();
 
+    std::cout << "CCG ended with status " << status << std::endl;
+
     if (status == Optimal) {
         std::cout << save_primal(model) << std::endl;
     } else {
-        std::cout << "CCG ended with status " << status << std::endl;
         std::cout << "\treason: " << model.get_reason() << std::endl;
         std::cout << "\tbest obj: " << model.get_best_obj() << std::endl;
         std::cout << "\tbest bound: " << model.get_best_bound() << std::endl;
