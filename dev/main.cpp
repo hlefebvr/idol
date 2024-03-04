@@ -256,7 +256,6 @@ int main(int t_argc, char** t_argv) {
     auto y = model.add_vars(Dim<1>(3), 0., 1., Binary, "y");
     auto z = model.add_vars(Dim<1>(3), 0., Inf, Continuous, "z");
     auto x = model.add_vars(Dim<2>(3, 3), 0., Inf, Continuous, "x");
-    auto s = model.add_vars(Dim<1>(3), 0., Inf, Continuous, "s");
 
     for (unsigned int i = 0 ; i < 3 ; ++i) {
         model.add_ctr(z[i] <= capacity[i] * y[i]);
@@ -264,7 +263,7 @@ int main(int t_argc, char** t_argv) {
     }
 
     for (unsigned int j = 0 ; j < 3 ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(3), x[i][j]) + s[j] >= nominal_demand[j] + max_deviation[j] * !g[j]).set(constraint_level, 0);
+        model.add_ctr(idol_Sum(i, Range(3), x[i][j]) >= nominal_demand[j] + max_deviation[j] * !g[j]).set(constraint_level, 0);
     }
 
     model.set_obj_expr(
@@ -272,16 +271,12 @@ int main(int t_argc, char** t_argv) {
                          opening_cost[i] * y[i] + capacity_cost[i] * z[i]
                          + idol_Sum(j, Range(n_customers), transportation_cost[i][j] * x[i][j])
                      )
-            + idol_Sum(j, Range(n_customers), 1e10 * s[j])
     );
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
             x[i][j].set(variable_level, 0);
         }
-    }
-    for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        s[j].set(variable_level, 0);
     }
 
     // Set Optimizer
@@ -291,6 +286,7 @@ int main(int t_argc, char** t_argv) {
                     MaxMinDualize()
                                 .with_optimizer(Gurobi().with_logs(false))
             )
+            .with_complete_recourse(false)
             .with_logs(true)
             .with_iteration_limit(5)
         ;

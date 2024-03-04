@@ -23,6 +23,7 @@ class idol::Optimizers::ColumnAndConstraintGeneration : public Algorithm {
     Model m_uncertainty_set;
     const Annotation<Var, unsigned int> m_lower_level_variables;
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
+    bool m_complete_recourse;
 
     unsigned int m_iteration_count = 0;
 
@@ -35,7 +36,8 @@ public:
                                   const OptimizerFactory& t_master_optimizer,
                                   const ColumnAndConstraintGenerationSeparator& t_separator,
                                   const Annotation<Var, unsigned int>& t_lower_level_variables,
-                                  const Annotation<Ctr, unsigned int>& t_lower_level_constraints
+                                  const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
+                                  bool t_complete_recourse
                                   );
 
     std::string name() const override;
@@ -50,6 +52,7 @@ public:
     const Model& uncertainty_set() const { return m_uncertainty_set; }
     const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_lower_level_constraints; };
     const Annotation<Var, unsigned int> lower_level_variables() const { return m_lower_level_variables; };
+    bool complete_recourse() const { return m_complete_recourse; }
 protected:
     void build_master_problem();
     void build_master_problem_variables();

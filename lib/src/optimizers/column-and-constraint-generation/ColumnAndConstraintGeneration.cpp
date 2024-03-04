@@ -24,7 +24,8 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_lower_level_constraints(t_src.m_lower_level_constraints),
           m_uncertainty_set(t_src.m_uncertainty_set),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
-          m_separator(t_src.m_separator ? t_src.m_separator->clone() : nullptr) {
+          m_separator(t_src.m_separator ? t_src.m_separator->clone() : nullptr),
+          m_complete_recourse(t_src.m_complete_recourse) {
 
 }
 
@@ -43,7 +44,8 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                          *m_master_optimizer,
                                                          *m_separator,
                                                          m_lower_level_variables,
-                                                         m_lower_level_constraints
+                                                         m_lower_level_constraints,
+                                                         m_complete_recourse.has_value() && m_complete_recourse.value()
                                                          );
 
     this->handle_default_parameters(result);
@@ -75,6 +77,18 @@ idol::Robust::ColumnAndConstraintGeneration &idol::Robust::ColumnAndConstraintGe
     }
 
     m_separator.reset(t_separator.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_complete_recourse(bool t_value) {
+
+    if (m_complete_recourse.has_value()) {
+        throw Exception("Complete recourse has already been configured.");
+    }
+
+    m_complete_recourse = t_value;
 
     return *this;
 }

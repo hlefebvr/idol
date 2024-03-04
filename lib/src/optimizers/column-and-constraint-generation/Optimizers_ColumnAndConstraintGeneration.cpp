@@ -12,14 +12,15 @@ idol::Optimizers::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(c
                                                                                const idol::OptimizerFactory &t_master_optimizer,
                                                                                const idol::ColumnAndConstraintGenerationSeparator &t_separator,
                                                                                const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
-                                                                               const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints)
+                                                                               const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
+                                                                               bool t_complete_recourse)
         : Algorithm(t_parent),
           m_uncertainty_set(t_uncertainty_set.copy()),
           m_lower_level_variables(t_lower_level_variables),
           m_lower_level_constraints(t_lower_level_constraints),
           m_master_problem(t_parent.env()),
-          m_separator(t_separator.clone())
-{
+          m_separator(t_separator.clone()),
+          m_complete_recourse(t_complete_recourse) {
 
     build_master_problem();
     build_coupling_constraints_list();

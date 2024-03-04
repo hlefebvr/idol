@@ -14,6 +14,9 @@ namespace idol::ColumnAndConstraintGenerationSeparators {
 
 class idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize : public idol::ColumnAndConstraintGenerationSeparator {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+    Model create_second_stage_primal_problem(Env& t_env, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
+    void make_feasibility_problem(Model& t_model) const;
+    Solution::Primal solve_max_min(const Model& t_max, const Model& t_min) const;
     void add_lower_level_constraint(Model& t_primal, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution, const Ctr& t_ctr) const;
     void set_lower_level_objective(Model& t_primal, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
 

@@ -16,6 +16,7 @@ namespace idol::Robust {
 class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration> {
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<ColumnAndConstraintGenerationSeparator> m_separator;
+    std::optional<bool> m_complete_recourse;
 
     const Annotation<Var, unsigned int> m_lower_level_variables;
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
@@ -38,6 +39,8 @@ public:
     ColumnAndConstraintGeneration& with_master_optimizer(const OptimizerFactory& t_optimizer);
 
     ColumnAndConstraintGeneration& with_separator(const ColumnAndConstraintGenerationSeparator& t_separator);
+
+    ColumnAndConstraintGeneration& with_complete_recourse(bool t_value);
 };
 
 #endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H
