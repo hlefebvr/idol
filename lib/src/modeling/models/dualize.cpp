@@ -73,7 +73,7 @@ void idol::Dualizer::dualize() {
             throw Exception("Dualizing with quadratic constant terms is not implemented.");
         }
 
-        return expr.constant() + expr.linear() * t_var;
+        return expr.constant() * t_var + expr.linear() * t_var;
 
     };
 
