@@ -1,7 +1,7 @@
 //
 // Created by henri on 08.02.24.
 //
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h"
+#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h"
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
@@ -9,11 +9,11 @@
 #include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/wrappers/MibS/MibS.h"
 
-idol::ColumnAndConstraintGenerationSeparator *idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::clone() const {
-    return new MaxMinBiLevel(*this);
+idol::ColumnAndConstraintGenerationSeparator *idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::clone() const {
+    return new MaxMinBilevel(*this);
 }
 
-idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::operator()(
+idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::operator()(
         const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
@@ -34,7 +34,7 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLe
     const auto& lower_level_variables = t_parent.lower_level_variables();
     const auto& lower_level_constraints = t_parent.lower_level_constraints();
 
-    auto optimizer = BiLevel::MibS(lower_level_variables,
+    auto optimizer = Bilevel::MibS(lower_level_variables,
                                    lower_level_constraints,
                                    lower_level_objective);
 
@@ -57,7 +57,7 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLe
     return save_primal(model);
 }
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_level_variables(
+void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_variables(
         idol::Model &t_hpr,
         const idol::Optimizers::ColumnAndConstraintGeneration &t_parent) const {
 
@@ -81,7 +81,7 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_lev
 }
 
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_level_constraints(
+void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_constraints(
         idol::Model &t_hpr,
         const Optimizers::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution) const {
@@ -101,7 +101,7 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_lev
 
 }
 
-void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_level_constraint(idol::Model &t_hpr,
+void idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::add_lower_level_constraint(idol::Model &t_hpr,
                                                                                               const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
                                                                                               const Solution::Primal &t_upper_level_solution,
                                                                                               const idol::Ctr &t_ctr) const {
@@ -121,7 +121,7 @@ void idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::add_lower_lev
 
 }
 
-idol::Ctr idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel::set_upper_and_lower_objectives(
+idol::Ctr idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::set_upper_and_lower_objectives(
         idol::Model &t_hpr,
         const idol::Optimizers::ColumnAndConstraintGeneration &t_parent,
         const idol::Solution::Primal &t_upper_level_solution,

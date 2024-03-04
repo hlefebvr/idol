@@ -8,10 +8,10 @@
 #include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
 
 namespace idol::ColumnAndConstraintGenerationSeparators {
-    class MaxMinBiLevel;
+    class MaxMinBilevel;
 }
 
-class idol::ColumnAndConstraintGenerationSeparators::MaxMinBiLevel : public idol::ColumnAndConstraintGenerationSeparator {
+class idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel : public idol::ColumnAndConstraintGenerationSeparator {
 protected:
     void add_lower_level_variables(Model& t_hpr, const Optimizers::ColumnAndConstraintGeneration &t_parent) const;
     void add_lower_level_constraints(Model& t_hpr, const Optimizers::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;

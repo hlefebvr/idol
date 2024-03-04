@@ -26,9 +26,10 @@
 #include "idol/optimizers/callbacks/heuristics/IntegerMaster.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h"
+#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h"
 #include "idol/optimizers/wrappers/MibS/MibS.h"
 #include "idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/modeling/bilevel/read_from_file.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -207,7 +208,7 @@ void test_idol_mibs() {
     c2.set(lower_level_ctr, 0);
     c3.set(lower_level_ctr, 0);
 
-    model.use(BiLevel::MibS(lower_level_var, lower_level_ctr, lower_level_objective));
+    model.use(Bilevel::MibS(lower_level_var, lower_level_ctr, lower_level_objective));
 
     model.optimize();
 
@@ -221,7 +222,7 @@ int main(int t_argc, char** t_argv) {
     // hello_world_osi_idol();
 
     using namespace idol;
-    using namespace idol::BiLevel;
+    using namespace idol::Bilevel;
     using namespace idol::ColumnAndConstraintGenerationSeparators;
 
     const unsigned int n_facilities = 3;
@@ -238,6 +239,12 @@ int main(int t_argc, char** t_argv) {
     };
 
     Env env;
+
+    auto [high_point_relaxation, var_annotation, ctr_annotation] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+
+    std::cout << high_point_relaxation << std::endl;
+
+    return 0;
 
     // Annotations
     Annotation<Var> variable_level(env, "lower_level_variable", MasterId);

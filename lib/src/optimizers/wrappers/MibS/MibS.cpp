@@ -7,7 +7,7 @@
 #include <utility>
 #include "idol/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
-idol::BiLevel::MibS::MibS(const Annotation<Var, unsigned int> &t_follower_variables,
+idol::Bilevel::MibS::MibS(const Annotation<Var, unsigned int> &t_follower_variables,
                  const Annotation<Ctr, unsigned int> &t_follower_constraints,
                  Ctr t_follower_objective)
         : m_follower_variables(t_follower_variables),
@@ -16,7 +16,7 @@ idol::BiLevel::MibS::MibS(const Annotation<Var, unsigned int> &t_follower_variab
 
 }
 
-idol::Optimizer *idol::BiLevel::MibS::operator()(const idol::Model &t_model) const {
+idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
     return new Optimizers::MibS(
                 t_model,
@@ -29,6 +29,6 @@ idol::Optimizer *idol::BiLevel::MibS::operator()(const idol::Model &t_model) con
 #endif
 }
 
-idol::BiLevel::MibS *idol::BiLevel::MibS::clone() const {
+idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
     return new MibS(*this);
 }

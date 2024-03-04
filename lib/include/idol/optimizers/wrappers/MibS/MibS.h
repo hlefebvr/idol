@@ -9,11 +9,11 @@
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
 
-namespace idol::BiLevel {
+namespace idol::Bilevel {
     class MibS;
 }
 
-class idol::BiLevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
+class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     const Annotation<Var, unsigned int> m_follower_variables;
     const Annotation<Ctr, unsigned int> m_follower_constraints;
     const Ctr m_follower_objective;

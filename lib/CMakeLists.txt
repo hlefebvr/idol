@@ -216,11 +216,13 @@ add_library(idol STATIC
         src/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
         src/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.h
-        src/optimizers/column-and-constraint-generation/separators/MaxMinBiLevel.cpp
+        include/idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h
+        src/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.cpp
         include/idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h
         src/optimizers/column-and-constraint-generation/separators/MaxMinDualize.cpp
         src/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.cpp
+        include/idol/modeling/bilevel/read_from_file.h
+        src/modeling/bilevel/read_from_file.cpp
 )
 
 find_package(OpenMP REQUIRED)
