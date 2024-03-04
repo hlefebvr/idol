@@ -94,10 +94,10 @@ idol::Solution::Primal idol::ColumnAndConstraintGenerationSeparators::MaxMinDual
 
     }
 
-    dual.use(Gurobi().with_logs(true));
-
     dual.set_obj_sense(Minimize);
     dual.set_obj_expr(-1. * dual.get_obj_expr());
+
+    dual.use(Gurobi().with_logs(true));
 
     std::cout << "PRIMAL OF SECOND-STAGE "
               << "\n************************\n"

@@ -632,3 +632,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
     }
 
 }
+
+double idol::Optimizers::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
+    throw Exception("Not implemented ColumnAndConstraintGeneration::get_var_reduced_cost.");
+}
