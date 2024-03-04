@@ -199,30 +199,30 @@ add_library(idol STATIC
         include/idol/modeling/models/dualize.h
         src/modeling/models/dualize.cpp
         include/idol/containers/Finally.h
-        src/optimizers/wrappers/MibS/MibS.cpp
-        include/idol/optimizers/wrappers/MibS/MibS.h
-        src/optimizers/wrappers/MibS/Optimizers_MibS.cpp
-        include/idol/optimizers/wrappers/MibS/Optimizers_MibS.h
-        src/optimizers/wrappers/MibS/impl_MibS.cpp
-        include/idol/optimizers/wrappers/MibS/impl_MibS.h
+        src/optimizers/bilevel-optimization/wrappers/MibS/MibS.cpp
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h
+        src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h
+        src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.cpp
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
         src/optimizers/wrappers/Osi/OsiIdolSolverInterface.cpp
         include/idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.h
         src/optimizers/wrappers/Osi/Osi.cpp
         include/idol/optimizers/wrappers/Osi/Osi.h
         src/optimizers/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/wrappers/Osi/Optimizers_Osi.h
-        include/idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h
-        include/idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h
-        src/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
-        src/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h
-        src/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.cpp
-        include/idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h
-        src/optimizers/column-and-constraint-generation/separators/MaxMinDualize.cpp
-        src/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.cpp
-        include/idol/modeling/bilevel/read_from_file.h
-        src/modeling/bilevel/read_from_file.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.cpp
+        src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.cpp
+        include/idol/modeling/bilevel-optimization/read_from_file.h
+        src/modeling/bilevel-optimization/read_from_file.cpp
 )
 
 find_package(OpenMP REQUIRED)

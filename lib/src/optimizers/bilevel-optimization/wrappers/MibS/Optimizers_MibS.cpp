@@ -3,7 +3,7 @@
 //
 #ifdef IDOL_USE_MIBS
 
-#include "idol/optimizers/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
 
 #include <utility>
 

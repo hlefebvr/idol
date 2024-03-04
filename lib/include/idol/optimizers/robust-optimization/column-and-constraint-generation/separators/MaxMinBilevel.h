@@ -5,7 +5,7 @@
 #ifndef IDOL_MAXMINBILEVEL_H
 #define IDOL_MAXMINBILEVEL_H
 
-#include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
 
 namespace idol::ColumnAndConstraintGenerationSeparators {
     class MaxMinBilevel;

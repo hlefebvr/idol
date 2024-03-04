@@ -1,8 +1,8 @@
 //
 // Created by henri on 08.02.24.
 //
-#include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,

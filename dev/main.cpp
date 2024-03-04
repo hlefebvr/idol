@@ -6,7 +6,7 @@
 
 #include "AlpsKnowledgeBrokerSerial.h"
 #include "idol/modeling.h"
-#include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
 #include "idol/problems/knapsack-problem/KP_Instance.h"
@@ -25,11 +25,11 @@
 #include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/callbacks/heuristics/IntegerMaster.h"
 #include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
-#include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h"
-#include "idol/optimizers/wrappers/MibS/MibS.h"
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h"
-#include "idol/modeling/bilevel/read_from_file.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/modeling/bilevel-optimization/read_from_file.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>

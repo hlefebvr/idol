@@ -2,7 +2,7 @@
 // Created by henri on 08.02.24.
 //
 
-#include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Env.h"

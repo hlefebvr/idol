@@ -1,7 +1,7 @@
 //
 // Created by henri on 04.03.24.
 //
-#include "idol/modeling/bilevel/read_from_file.h"
+#include "idol/modeling/bilevel-optimization/read_from_file.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/containers/Set.h"
 #include "idol/modeling/objects/Versions.h"

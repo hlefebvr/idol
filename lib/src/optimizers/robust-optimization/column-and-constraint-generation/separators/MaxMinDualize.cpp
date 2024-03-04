@@ -1,13 +1,12 @@
 //
 // Created by henri on 08.02.24.
 //
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h"
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/models/dualize.h"
 #include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
 

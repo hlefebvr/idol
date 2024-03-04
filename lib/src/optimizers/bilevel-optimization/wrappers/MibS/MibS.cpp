@@ -2,10 +2,10 @@
 // Created by henri on 01.02.24.
 //
 
-#include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
 #include <utility>
-#include "idol/optimizers/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
 
 idol::Bilevel::MibS::MibS(const Annotation<Var, unsigned int> &t_follower_variables,
                  const Annotation<Ctr, unsigned int> &t_follower_constraints,

@@ -1,13 +1,13 @@
 //
 // Created by henri on 08.02.24.
 //
-#include "idol/optimizers/column-and-constraint-generation/separators/MaxMinBilevel.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h"
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
 idol::ColumnAndConstraintGenerationSeparator *idol::ColumnAndConstraintGenerationSeparators::MaxMinBilevel::clone() const {
     return new MaxMinBilevel(*this);

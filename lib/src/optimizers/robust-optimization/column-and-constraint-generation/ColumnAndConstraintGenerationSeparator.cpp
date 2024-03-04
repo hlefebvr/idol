@@ -1,8 +1,8 @@
 //
 // Created by henri on 09.02.24.
 //
-#include "idol/optimizers/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
-#include "idol/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
