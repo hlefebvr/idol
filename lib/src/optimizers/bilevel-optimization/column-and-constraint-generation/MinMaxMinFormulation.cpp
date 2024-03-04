@@ -9,18 +9,22 @@
 #include "idol/modeling/models/dualize.h"
 
 idol::Bilevel::impl::MinMaxMinFormulation::MinMaxMinFormulation(const idol::Optimizers::Bilevel::ColumnAndConstraintGeneration &t_parent,
+                                                                const Annotation<Var, unsigned int>& t_variable_stage,
+                                                                const Annotation<Ctr, unsigned int>& t_constraint_stage,
                                                                 double t_penalty_parameter)
     : m_parent(t_parent),
       m_uncertainty_set(t_parent.parent().env()),
       m_second_stage_dual(t_parent.parent().env()),
       m_two_stage_robust_formulation(t_parent.parent().copy()),
-      m_penalty_parameter(t_penalty_parameter)
+      m_penalty_parameter(t_penalty_parameter),
+      m_variable_stage(t_variable_stage),
+      m_constraint_stage(t_constraint_stage)
     {
 
     identify_complicating_variables();
     auto coupling_variables = identify_coupling_variables();
     identify_easy_constraints();
-    add_penalty_function_to_second_stage_dual(coupling_variables);
+    set_second_stage_dual_objective(coupling_variables);
     m_uncertainty_set.set_obj_expr(0);
     fill_two_stage_robust_formulation();
 
@@ -41,21 +45,17 @@ void idol::Bilevel::impl::MinMaxMinFormulation::identify_complicating_variables(
         const double lb = high_point_relaxation.get_var_lb(var);
         const double ub = high_point_relaxation.get_var_ub(var);
         const VarType type = high_point_relaxation.get_var_type(var);
-        const auto& obj = high_point_relaxation.get_var_column(var).obj();
 
         // Complicating variables are those which are integer or appear in a quadratic term
         // All others are moved in the second stage dual
         if (high_point_relaxation.get_var_column(var).quadratic().empty() && high_point_relaxation.get_var_type(var) == Continuous) {
-            m_second_stage_dual.add(var, TempVar(lb, ub, type, Column(obj)));
+            m_second_stage_dual.add(var, TempVar(lb, ub, type, Column(0)));
             continue;
         }
 
-        m_uncertainty_set.add(var, TempVar(lb, ub, type, Column(obj)));
-        second_stage_dual_obj += obj.as_numerical() * !var;
+        m_uncertainty_set.add(var, TempVar(lb, ub, type, Column(0)));
 
     }
-
-    m_second_stage_dual.set_obj_expr(std::move(second_stage_dual_obj));
 
 }
 
@@ -90,7 +90,7 @@ std::list<idol::Var> idol::Bilevel::impl::MinMaxMinFormulation::identify_couplin
                 throw Exception("Coupling variables must be binary");
             }
 
-            m_second_stage_dual.add(var, TempVar(lb, ub, Continuous, Column(obj)));
+            m_second_stage_dual.add(var, TempVar(std::max(lb, 0.), std::min(ub, 1.), Continuous, Column(0)));
             result.emplace_back(var);
 
         }
@@ -184,10 +184,25 @@ void idol::Bilevel::impl::MinMaxMinFormulation::add_ctr_to_second_stage_dual(con
 
 }
 
-void idol::Bilevel::impl::MinMaxMinFormulation::add_penalty_function_to_second_stage_dual(const std::list<idol::Var> &t_coupling_variables) {
+void idol::Bilevel::impl::MinMaxMinFormulation::set_second_stage_dual_objective(const std::list<idol::Var> &t_coupling_variables) {
+
+    const auto& high_point_relaxation = m_parent.parent();
+    const auto& lower_level_objective = high_point_relaxation.get_ctr_row(m_parent.lower_level_objective());
+
+    Expr objective = lower_level_objective.rhs();
+
+    for (const auto& [var, constant] : lower_level_objective.linear()) {
+
+        if (m_uncertainty_set.has(var)) {
+            objective += constant.as_numerical() * !var;
+        } else {
+            objective += constant * var;
+        }
+
+    }
 
     m_second_stage_dual.set_obj_expr(
-            m_second_stage_dual.get_obj_expr() +
+            objective +
             idol_Sum(var, t_coupling_variables, m_penalty_parameter * (!var + var - 2 * !var * var))
             );
 
@@ -198,6 +213,7 @@ void idol::Bilevel::impl::MinMaxMinFormulation::fill_two_stage_robust_formulatio
     const auto& high_point_relaxation = m_parent.parent();
 
     m_two_stage_robust_formulation.unuse();
+
     m_two_stage_robust_formulation.remove(m_parent.lower_level_objective());
 
     const auto second_stage_primal = dualize(m_second_stage_dual);
@@ -209,6 +225,8 @@ void idol::Bilevel::impl::MinMaxMinFormulation::fill_two_stage_robust_formulatio
         const VarType type = second_stage_primal.get_var_type(var);
 
         m_two_stage_robust_formulation.add(var, TempVar(lb, ub, type, Column(0)));
+
+        var.set(m_variable_stage, 0);
 
     }
 
@@ -224,6 +242,7 @@ void idol::Bilevel::impl::MinMaxMinFormulation::fill_two_stage_robust_formulatio
 
         m_two_stage_robust_formulation.add(ctr, TempCtr(Row(lhs, rhs), type));
 
+        ctr.set(m_constraint_stage, 0);
     }
 
     const auto& second_stage_dual_objective = second_stage_primal.get_obj_expr();
@@ -238,14 +257,17 @@ void idol::Bilevel::impl::MinMaxMinFormulation::fill_two_stage_robust_formulatio
 
     }
 
-    m_two_stage_robust_formulation.add_ctr(high_point_relaxation.get_obj_expr() <= objective);
+    const auto& lower_level_objective_ctr = high_point_relaxation.get_ctr_row(m_parent.lower_level_objective());
+    const auto lower_level_objective = lower_level_objective_ctr.linear() - lower_level_objective_ctr.rhs();
+
+    m_two_stage_robust_formulation.add_ctr(lower_level_objective <= objective);
 
 }
 
 idol::Expr<idol::Var, idol::Var>
 idol::Bilevel::impl::MinMaxMinFormulation::to_two_stage_robust_formulation_space(const idol::Constant &t_src) const {
 
-    Expr result;
+    Expr result = t_src.numerical();
 
     for (const auto& [param, coefficient] : t_src.linear()) {
 

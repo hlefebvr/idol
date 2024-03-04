@@ -3,6 +3,9 @@
 //
 
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 
 idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                         const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
@@ -78,13 +81,33 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::write(const std::
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
 
-    m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this, 1e8);
+    auto& env = parent().env();
+
+    Annotation<Var, unsigned int> variable_stage(env, "variable_stage", MasterId);
+    Annotation<Ctr, unsigned int> constraint_stage(env, "constraint_stage", MasterId);
+
+    m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this,
+                                                                                variable_stage,
+                                                                                constraint_stage,
+                                                                                1e8);
 
     std::cout << "Uncertainty set:\n" << m_formulation->uncertainty_set() << std::endl;
     std::cout << "Second-stage dual:\n" << m_formulation->second_stage_dual() << std::endl;
     std::cout << "Two-stage robust formulation:\n" << m_formulation->two_stage_robust_formulation() << std::endl;
 
-    // 2. Solve the reformulation
+    auto model = m_formulation->two_stage_robust_formulation().copy();
+
+    using Separator = idol::Robust::ColumnAndConstraintSeparators::Dualize;
+
+    model.use(
+        idol::Robust::ColumnAndConstraintGeneration(variable_stage,
+                                              constraint_stage,
+                                              m_formulation->uncertainty_set())
+                .with_master_optimizer(*m_master_optimizer)
+                .with_separator(Separator().with_optimizer(*m_lower_level_optimizer))
+    );
+
+    model.optimize();
 
 }
 

@@ -23,16 +23,22 @@ class idol::Bilevel::impl::MinMaxMinFormulation {
     Model m_second_stage_dual;
     Model m_two_stage_robust_formulation;
 
+    const Annotation<Var, unsigned int> m_variable_stage;
+    const Annotation<Ctr, unsigned int> m_constraint_stage;
+
     void identify_complicating_variables();
     std::list<Var> identify_coupling_variables();
     void identify_easy_constraints();
     bool all_variables_are_in_the_uncertainty_set(const idol::Row& t_row) const;
     void add_ctr_to_second_stage_dual(const idol::Ctr& t_ctr, const idol::Row& t_row);
-    void add_penalty_function_to_second_stage_dual(const std::list<idol::Var>& t_coupling_variables);
+    void set_second_stage_dual_objective(const std::list<idol::Var>& t_coupling_variables);
     void fill_two_stage_robust_formulation();
     Expr<Var, Var> to_two_stage_robust_formulation_space(const Constant& t_src) const;
 public:
-    MinMaxMinFormulation(const idol::Optimizers::Bilevel::ColumnAndConstraintGeneration& t_parent, double t_penalty_parameter);
+    MinMaxMinFormulation(const idol::Optimizers::Bilevel::ColumnAndConstraintGeneration& t_parent,
+                         const Annotation<Var, unsigned int>& t_variable_stage,
+                         const Annotation<Ctr, unsigned int>& t_constraint_stage,
+                         double t_penalty_parameter);
 
     const Model& uncertainty_set() const { return m_uncertainty_set; }
 

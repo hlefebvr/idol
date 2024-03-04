@@ -221,20 +221,46 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    auto [high_point_relaxation,
+    /*
+    auto [model,
           var_annotation,
           ctr_annotation,
           lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+          */
 
-    high_point_relaxation.use(
+    Model model(env);
+
+    auto x = model.add_var(0, 10, Binary, "x");
+    auto z = model.add_var(0, 5, Integer, "z");
+
+    model.set_obj_expr(-x - 7 * z);
+    auto c1 = model.add_ctr(-3 * x + 2 * z <= 12);
+    auto c2 = model.add_ctr(x + 2 * z <= 20);
+    auto c3 = model.add_ctr(z == 0);
+    auto c4 = model.add_ctr(2 * x - z <= 7);
+    auto c5 = model.add_ctr(-2 * x + 4 * z <= 16);
+
+    // Annotate follower variables
+    // * If not annotated, the default value is MasterId, i.e., leader variables and constraints
+    // * Otherwise, it indicates the id of the follower (here, we have only one follower)
+    Annotation<Var> var_annotation(env, "follower_variable", MasterId);
+    Annotation<Ctr> ctr_annotation(env, "ctr_annotation", MasterId);
+
+    z.set(var_annotation, 0); // "z" is a lower level variable
+    c4.set(ctr_annotation, 0); // "c4" is a lower level constraint
+    c5.set(ctr_annotation, 0); // "c5" is a lower level constraint
+
+    const auto& lower_level_objective = c3;
+
+    model.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,
                                                       ctr_annotation,
-                                                       lower_level_objective)
+                                                      lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
             );
 
-    high_point_relaxation.optimize();
+    model.optimize();
 
     /*
     // Set Optimizer
