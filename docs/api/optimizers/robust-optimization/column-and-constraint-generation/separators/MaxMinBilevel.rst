@@ -1,6 +1,6 @@
 .. _api_ro_ccg_MaxMinBilevel:
 
-MaxMinBilevel
+Bilevel
 =============
 
 .. doxygenclass:: idol::ColumnAndConstraintSeparators::MaxMinBiLevel

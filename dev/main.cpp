@@ -26,9 +26,9 @@
 #include "idol/optimizers/mixed-integer-programming/callbacks/heuristics/IntegerMaster.h"
 #include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 
 #include <iostream>
@@ -243,7 +243,7 @@ int main(int t_argc, char** t_argv) {
     auto [high_point_relaxation,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+          lower_level_objective] = idol::Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
 
     /*
     high_point_relaxation.use(
@@ -305,7 +305,7 @@ int main(int t_argc, char** t_argv) {
     auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
             .with_master_optimizer(Gurobi().with_logs(false))
             .with_separator(
-                    MaxMinDualize()
+                    Dualize()
                                 .with_optimizer(Gurobi().with_logs(false))
             )
             .with_complete_recourse(false)

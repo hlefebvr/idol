@@ -216,10 +216,10 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
         src/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.cpp
         src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.cpp
         include/idol/modeling/bilevel-optimization/read_from_file.h
         src/modeling/bilevel-optimization/read_from_file.cpp

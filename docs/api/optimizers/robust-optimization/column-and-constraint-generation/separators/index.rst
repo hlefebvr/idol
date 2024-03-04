@@ -7,6 +7,6 @@ Separators
     :maxdepth: 2
     :glob:
 
-    MaxMinBilevel
+    Bilevel
     MaxMinDualize
 

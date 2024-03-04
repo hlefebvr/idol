@@ -2,8 +2,8 @@
 // Created by henri on 08.02.24.
 //
 
-#ifndef IDOL_MAXMINBILEVEL_H
-#define IDOL_MAXMINBILEVEL_H
+#ifndef IDOL_BILEVEL_H
+#define IDOL_BILEVEL_H
 
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
 
@@ -12,10 +12,10 @@ namespace idol::Optimizers::Robust {
 }
 
 namespace idol::Robust::ColumnAndConstraintSeparators {
-    class MaxMinBilevel;
+    class Bilevel;
 }
 
-class idol::Robust::ColumnAndConstraintSeparators::MaxMinBilevel : public idol::Robust::ColumnAndConstraintGenerationSeparator {
+class idol::Robust::ColumnAndConstraintSeparators::Bilevel : public idol::Robust::ColumnAndConstraintGenerationSeparator {
 protected:
     void add_lower_level_variables(Model& t_hpr, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) const;
     void add_lower_level_constraints(Model& t_hpr, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) const;
@@ -30,4 +30,4 @@ public:
                                 CtrType t_type) const override;
 };
 
-#endif //IDOL_MAXMINBILEVEL_H
+#endif //IDOL_BILEVEL_H

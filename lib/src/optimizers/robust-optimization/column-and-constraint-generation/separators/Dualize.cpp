@@ -1,7 +1,7 @@
 //
 // Created by henri on 08.02.24.
 //
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
@@ -10,11 +10,11 @@
 #include "idol/modeling/models/dualize.h"
 #include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h"
 
-idol::Robust::ColumnAndConstraintGenerationSeparator *idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::clone() const {
-    return new MaxMinDualize(*this);
+idol::Robust::ColumnAndConstraintGenerationSeparator *idol::Robust::ColumnAndConstraintSeparators::Dualize::clone() const {
+    return new Dualize(*this);
 }
 
-idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::operator()(
+idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::operator()(
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
@@ -51,7 +51,7 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::MaxMinDualiz
     throw Exception("STOP, Complete recourse not implemented");
 }
 
-void idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::add_lower_level_constraint(idol::Model &t_primal,
+void idol::Robust::ColumnAndConstraintSeparators::Dualize::add_lower_level_constraint(idol::Model &t_primal,
                                                                                             const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                                             const idol::Solution::Primal &t_upper_level_solution,
                                                                                             const idol::Ctr &t_ctr) const {
@@ -72,7 +72,7 @@ void idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::add_lower_level
 }
 
 idol::Expr<idol::Var, idol::Var>
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::fix(const idol::LinExpr<idol::Var> &t_expr,
+idol::Robust::ColumnAndConstraintSeparators::Dualize::fix(const idol::LinExpr<idol::Var> &t_expr,
                                                                 const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                 const idol::Solution::Primal &t_upper_level_solution) {
     Expr<Var, Var> result;
@@ -109,7 +109,7 @@ idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::fix(const idol::LinE
     return result;
 }
 
-void idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::set_lower_level_objective(idol::Model &t_primal,
+void idol::Robust::ColumnAndConstraintSeparators::Dualize::set_lower_level_objective(idol::Model &t_primal,
                                                                                            const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                                            const idol::Solution::Primal &t_upper_level_solution) const {
 
@@ -121,8 +121,8 @@ void idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::set_lower_level
 
 }
 
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize &
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::with_optimizer(
+idol::Robust::ColumnAndConstraintSeparators::Dualize &
+idol::Robust::ColumnAndConstraintSeparators::Dualize::with_optimizer(
         const idol::OptimizerFactory &t_optimizer_factory) {
 
     if (m_optimizer_factory) {
@@ -134,13 +134,13 @@ idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::with_optimizer(
     return *this;
 }
 
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::MaxMinDualize(const idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize &t_src)
+idol::Robust::ColumnAndConstraintSeparators::Dualize::Dualize(const idol::Robust::ColumnAndConstraintSeparators::Dualize &t_src)
         : m_optimizer_factory(t_src.m_optimizer_factory->clone()) {
 
 }
 
 idol::Model
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::create_second_stage_primal_problem(idol::Env &t_env,
+idol::Robust::ColumnAndConstraintSeparators::Dualize::create_second_stage_primal_problem(idol::Env &t_env,
                                                                                                const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                                                const idol::Solution::Primal &t_upper_level_solution) const {
 
@@ -181,7 +181,7 @@ idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::create_second_stage_
 }
 
 void
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::make_feasibility_problem(idol::Model &t_model) const {
+idol::Robust::ColumnAndConstraintSeparators::Dualize::make_feasibility_problem(idol::Model &t_model) const {
 
     t_model.set_obj_expr(Expr());
 
@@ -217,7 +217,7 @@ idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::make_feasibility_pro
 }
 
 idol::Solution::Primal
-idol::Robust::ColumnAndConstraintSeparators::MaxMinDualize::solve_max_min(const idol::Model &t_max,
+idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::Model &t_max,
                                                                           const idol::Model &t_min) const {
 
     auto dual = dualize(t_min, true);
