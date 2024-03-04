@@ -30,6 +30,7 @@
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
+#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -214,93 +215,30 @@ void test_idol_mibs() {
 
 }
 
+using namespace idol;
+
 int main(int t_argc, char** t_argv) {
-
-    //test_mibs();
-    //test_idol_mibs();
-
-    // hello_world_osi_idol();
-
-    using namespace idol;
-    using namespace idol::Bilevel;
-    using namespace idol::Robust::ColumnAndConstraintSeparators;
-
-    const unsigned int n_facilities = 3;
-    const unsigned int n_customers = 3;
-    const std::vector<double> capacity { 800, 800, 800 };
-    const std::vector<double> nominal_demand { 206, 274, 220 };
-    const std::vector<double> max_deviation { 40, 40, 40 };
-    const std::vector<double> opening_cost { 400, 414, 326 };
-    const std::vector<double> capacity_cost { 18, 25, 20 };
-    const std::vector<std::vector<double>> transportation_cost {
-            { 22, 33, 24 },
-            { 33, 23, 30 },
-            { 20, 25, 27 },
-    };
 
     Env env;
 
     auto [high_point_relaxation,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = idol::Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
 
-    /*
     high_point_relaxation.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,
-                                                       ctr_annotation,
+                                                      ctr_annotation,
                                                        lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
             );
 
     high_point_relaxation.optimize();
-    */
 
     std::cout << high_point_relaxation << std::endl;
 
-    return 0;
-
-    // Annotations
-    Annotation<Var> variable_level(env, "lower_level_variable", MasterId);
-    Annotation<Ctr> constraint_level(env, "constraint_level", MasterId);
-
-    // Make uncertainty set
-    Model uncertainty_set(env);
-
-    auto g = uncertainty_set.add_vars(Dim<1>(3), 0, 1, Continuous, "xi");
-    uncertainty_set.add_ctr(g[0] + g[1] + g[2] <= 1.8);
-    uncertainty_set.add_ctr(g[0] + g[1] <= 1.2);
-
-    // Make model
-    Model model(env);
-
-    auto y = model.add_vars(Dim<1>(3), 0., 1., Binary, "y");
-    auto z = model.add_vars(Dim<1>(3), 0., Inf, Continuous, "z");
-    auto x = model.add_vars(Dim<2>(3, 3), 0., Inf, Continuous, "x");
-
-    for (unsigned int i = 0 ; i < 3 ; ++i) {
-        model.add_ctr(z[i] <= capacity[i] * y[i]);
-        model.add_ctr(idol_Sum(j, Range(3), x[i][j]) <= z[i]).set(constraint_level, 0);
-    }
-
-    for (unsigned int j = 0 ; j < 3 ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(3), x[i][j]) >= nominal_demand[j] + max_deviation[j] * !g[j]).set(constraint_level, 0);
-    }
-
-    model.set_obj_expr(
-            idol_Sum(i, Range(n_facilities),
-                         opening_cost[i] * y[i] + capacity_cost[i] * z[i]
-                         + idol_Sum(j, Range(n_customers), transportation_cost[i][j] * x[i][j])
-                     )
-    );
-
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            x[i][j].set(variable_level, 0);
-        }
-    }
-
+    /*
     // Set Optimizer
     auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
             .with_master_optimizer(Gurobi().with_logs(false))
@@ -312,22 +250,7 @@ int main(int t_argc, char** t_argv) {
             .with_logs(true)
             .with_iteration_limit(5)
         ;
-
-    model.use(ccg);
-
-    model.optimize();
-
-    const auto status = model.get_status();
-
-    std::cout << "CCG ended with status " << status << std::endl;
-
-    if (status == Optimal) {
-        std::cout << save_primal(model) << std::endl;
-    } else {
-        std::cout << "\treason: " << model.get_reason() << std::endl;
-        std::cout << "\tbest obj: " << model.get_best_obj() << std::endl;
-        std::cout << "\tbest bound: " << model.get_best_bound() << std::endl;
-    }
+        */
 
     return 0;
 }

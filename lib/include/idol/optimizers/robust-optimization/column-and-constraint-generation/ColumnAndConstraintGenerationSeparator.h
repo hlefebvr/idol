@@ -2,8 +2,8 @@
 // Created by henri on 08.02.24.
 //
 
-#ifndef IDOL_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
-#define IDOL_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
+#ifndef IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
+#define IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
 
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/matrix/Row.h"
@@ -35,4 +35,4 @@ public:
                                         CtrType t_type) const = 0;
 };
 
-#endif //IDOL_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
+#endif //IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H

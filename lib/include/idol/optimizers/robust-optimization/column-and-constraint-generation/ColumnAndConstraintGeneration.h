@@ -2,8 +2,8 @@
 // Created by henri on 08.02.24.
 //
 
-#ifndef IDOL_COLUMNANDCONSTRAINTGENERATION_H
-#define IDOL_COLUMNANDCONSTRAINTGENERATION_H
+#ifndef IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
+#define IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
 
 #include "idol/optimizers/OptimizerFactory.h"
 #include "ColumnAndConstraintGenerationSeparator.h"
@@ -43,4 +43,4 @@ public:
     ColumnAndConstraintGeneration& with_complete_recourse(bool t_value);
 };
 
-#endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H
+#endif //IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
