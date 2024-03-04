@@ -41,8 +41,8 @@ extensions = [
     'breathe',
     'sphinx.ext.mathjax',
     'sphinx_copybutton',
-    'sphinxmermaid'#,
-    #'sphinxcontrib.bibtex'
+    'sphinxmermaid',
+    'sphinxcontrib.bibtex'
 ]
 bibtex_bibfiles = ['bibliography.bib']
 bibtex_default_style = 'plain'

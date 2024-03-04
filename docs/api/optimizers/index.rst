@@ -69,7 +69,6 @@ Table of contents
     :maxdepth: 2
     :glob:
 
-    branch-and-bound/index
-    column-generation/index
-    wrappers/index
-    callbacks/index
+    mixed-integer-programming/index
+    robust-optimization/index
+    bilevel-optimization/index

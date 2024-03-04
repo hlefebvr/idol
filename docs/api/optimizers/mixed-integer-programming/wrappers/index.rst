@@ -10,6 +10,5 @@ External Solvers
     GLPK
     Gurobi
     HiGHS
-    MibS
     Osi/index
     Mosek
