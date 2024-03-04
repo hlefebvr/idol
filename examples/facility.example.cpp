@@ -4,13 +4,13 @@
 #include <iostream>
 #include "idol/modeling.h"
 #include "idol/problems/facility-location-problem/FLP_Instance.h"
-#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
-#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/callbacks/cutting-planes/KnapsackCover.h"
-#include "idol/optimizers/wrappers/GLPK/GLPK.h"
-#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/mixed-integer-programming/callbacks/cutting-planes/KnapsackCover.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/GLPK/GLPK.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 

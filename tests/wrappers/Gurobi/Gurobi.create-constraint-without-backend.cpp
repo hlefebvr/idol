@@ -1,7 +1,7 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 

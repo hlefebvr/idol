@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <idol/modeling.h>
-#include "idol/optimizers/wrappers/MibS/MibS.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/MibS/MibS.h"
 
 using namespace idol;
 
@@ -45,7 +45,7 @@ int main(int t_argc, const char** t_argv) {
     follower_c2.set(follower_constraints, 0);
 
     // Use coin-or/MibS as external solver
-    model.use(BiLevel::MibS(follower_variables,
+    model.use(Bilevel::MibS(follower_variables,
                             follower_constraints,
                             follower_objective));
 
