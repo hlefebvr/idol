@@ -4,17 +4,17 @@
 #include <iostream>
 #include "idol/modeling.h"
 #include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/callbacks/heuristics/IntegerMaster.h"
-#include "idol/optimizers/callbacks/heuristics/SimpleRounding.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/wrappers/MinKnap/MinKnap.h"
-#include "idol/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/dantzig-wolfe/stabilization/Neame.h"
-#include "idol/optimizers/dantzig-wolfe/logs/Info.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/mixed-integer-programming/callbacks/heuristics/IntegerMaster.h"
+#include "idol/optimizers/mixed-integer-programming/callbacks/heuristics/SimpleRounding.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/MinKnap/MinKnap.h"
+#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/logs/Info.h"
 
 using namespace idol;
 

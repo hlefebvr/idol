@@ -8,7 +8,7 @@
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/models/dualize.h"
-#include "idol/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h"
 
 idol::ColumnAndConstraintGenerationSeparator *idol::ColumnAndConstraintGenerationSeparators::MaxMinDualize::clone() const {
     return new MaxMinDualize(*this);

@@ -4,23 +4,23 @@
 
 #include <catch2/catch_all.hpp>
 #include "../cartesian_product.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "idol/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "idol/optimizers/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
-#include "idol/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/LeastInfeasible.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/StrongBranching.h"
+#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include <idol/modeling.h>
 #include <idol/problems/knapsack-problem/KP_Instance.h>
-#include <idol/optimizers/wrappers/GLPK/GLPK.h>
-#include <idol/optimizers/wrappers/Mosek/Mosek.h>
-#include <idol/optimizers/wrappers/Gurobi/Gurobi.h>
-#include <idol/optimizers/wrappers/HiGHS/HiGHS.h>
-#include <idol/optimizers/wrappers/Osi/Osi.h>
+#include <idol/optimizers/mixed-integer-programming/wrappers/GLPK/GLPK.h>
+#include <idol/optimizers/mixed-integer-programming/wrappers/Mosek/Mosek.h>
+#include <idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h>
+#include <idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/mixed-integer-programming/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;

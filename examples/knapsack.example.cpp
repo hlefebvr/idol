@@ -4,7 +4,7 @@
 #include <iostream>
 #include "idol/problems/knapsack-problem/KP_Instance.h"
 #include "idol/modeling.h"
-#include "idol/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h"
 
 using namespace idol;
 
