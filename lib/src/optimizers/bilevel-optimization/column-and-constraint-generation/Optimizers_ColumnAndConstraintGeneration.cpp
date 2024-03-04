@@ -69,7 +69,7 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::remove(const idol
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update() {
-    throw Exception("Not implemented update");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::write(const std::string &t_name) {
@@ -77,7 +77,15 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::write(const std::
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
-    throw Exception("Not implemented hook_optimize");
+
+    m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this, 1e8);
+
+    std::cout << "Uncertainty set:\n" << m_formulation->uncertainty_set() << std::endl;
+    std::cout << "Second-stage dual:\n" << m_formulation->second_stage_dual() << std::endl;
+    std::cout << "Two-stage robust formulation:\n" << m_formulation->two_stage_robust_formulation() << std::endl;
+
+    // 2. Solve the reformulation
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {

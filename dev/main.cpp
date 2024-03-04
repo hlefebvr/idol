@@ -236,8 +236,6 @@ int main(int t_argc, char** t_argv) {
 
     high_point_relaxation.optimize();
 
-    std::cout << high_point_relaxation << std::endl;
-
     /*
     // Set Optimizer
     auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)

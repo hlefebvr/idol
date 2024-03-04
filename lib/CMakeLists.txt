@@ -227,6 +227,8 @@ add_library(idol STATIC
         src/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
         src/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.h
+        src/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.cpp
 )
 
 find_package(OpenMP REQUIRED)

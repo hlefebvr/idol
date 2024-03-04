@@ -9,6 +9,7 @@
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
+#include "MinMaxMinFormulation.h"
 
 namespace idol::Optimizers::Bilevel {
     class ColumnAndConstraintGeneration;
@@ -21,6 +22,8 @@ class idol::Optimizers::Bilevel::ColumnAndConstraintGeneration : public idol::Al
     Annotation<Var, unsigned int> m_lower_level_variables;
     Annotation<Ctr, unsigned int> m_lower_level_constraints;
     Ctr m_lower_level_objective;
+
+    std::unique_ptr<idol::Bilevel::impl::MinMaxMinFormulation> m_formulation;
 public:
     ColumnAndConstraintGeneration(const Model& t_model,
                                   const Annotation<Var, unsigned int>& t_lower_level_variables,
@@ -37,6 +40,10 @@ public:
     double get_ctr_farkas(const Ctr &t_ctr) const override;
     unsigned int get_n_solutions() const override;
     unsigned int get_solution_index() const override;
+
+    const Annotation<Var, unsigned int> lower_level_variables() const { return m_lower_level_variables; }
+    const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_lower_level_constraints; }
+    const Ctr& lower_level_objective() const { return m_lower_level_objective; }
 protected:
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;
