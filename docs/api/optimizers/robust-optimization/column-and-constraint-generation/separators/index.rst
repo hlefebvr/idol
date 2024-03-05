@@ -8,5 +8,5 @@ Separators
     :glob:
 
     Bilevel
-    MaxMinDualize
+    Dualize
 

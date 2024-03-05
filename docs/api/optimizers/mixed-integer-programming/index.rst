@@ -3,10 +3,6 @@
 Mixed-Integer Programming
 =========================
 
-
-Table of contents
------------------
-
 .. toctree::
     :maxdepth: 2
     :glob:

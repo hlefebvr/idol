@@ -259,7 +259,6 @@ int main(int t_argc, char** t_argv) {
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
                     .with_logs(true)
-                    .with_iteration_limit(30)
             );
 
     model.optimize();

@@ -42,7 +42,6 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::ope
 
     auto result = solve_max_min(uncertainty_set, primal);
 
-
     return result;
 }
 
@@ -281,5 +280,9 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::
         return result;
     }
 
-    return save_primal(t_max, dual);
+    auto result = save_primal(t_max, dual);
+
+    result.set_objective_value(-result.objective_value());
+
+    return result;
 }

@@ -3,9 +3,6 @@
 Optimizers
 ==========
 
-Introduction
-------------
-
 Optimizers denote the algorithms which are being used by idol to solve a given ``Model``.
 They are set by using the ``Model::use`` method, as done in the following example.
 
@@ -62,11 +59,8 @@ solve the model.
 
     my_model.optimize();
 
-Table of contents
------------------
-
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :glob:
 
     mixed-integer-programming/index

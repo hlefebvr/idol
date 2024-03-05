@@ -309,11 +309,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         analyze_last_separation();
 
+        log(false);
+
         if (is_terminated()) { break; }
 
         add_scenario(m_last_scenario);
-
-        log(false);
 
         check_stopping_condition();
 
@@ -570,9 +570,12 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_last_separ
         return;
     }
 
-    if (m_last_scenario.objective_value() >= Tolerance::Optimality) {
+    // TODO for <= only
+
+    if (m_last_scenario.objective_value() <= Tolerance::Feasibility) {
         set_status(Optimal);
         set_reason(Proved);
+        set_best_obj(get_best_bound());
         terminate();
         return;
     }
