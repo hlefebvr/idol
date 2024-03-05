@@ -1,6 +1,7 @@
 //
 // Created by henri on 08.02.24.
 //
+#include <cassert>
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/solutions/Solution.h"
 #include "idol/modeling/models/Model.h"
@@ -20,14 +21,6 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::ope
         const Row& t_row,
         CtrType t_type) const {
 
-    /*
-    std::cout << "CURRENT MASTER SOLUTION "
-              << "\n************************\n"
-              << t_upper_level_solution
-              << "\n************************"
-              << std::endl;
-    */
-
     const auto& uncertainty_set = t_parent.uncertainty_set();
     auto& env = uncertainty_set.env();
 
@@ -36,17 +29,21 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::ope
         Model primal = create_second_stage_primal_problem(env, t_parent, t_upper_level_solution);
         make_feasibility_problem(primal);
 
-        const auto solution = solve_max_min(uncertainty_set, primal);
+        const auto result = solve_max_min(uncertainty_set, primal);
 
-        if (solution.status() != Optimal || solution.objective_value() < -Tolerance::Feasibility) {
-            return solution;
+        if (result.status() != Optimal || result.objective_value() < -Tolerance::Feasibility) {
+            return result;
         }
 
     }
 
     Model primal = create_second_stage_primal_problem(env, t_parent, t_upper_level_solution);
+    set_second_stage_primal_objective(primal, t_parent, t_upper_level_solution, t_row, t_type);
 
-    return solve_max_min(uncertainty_set, primal);
+    auto result = solve_max_min(uncertainty_set, primal);
+
+
+    return result;
 }
 
 void idol::Robust::ColumnAndConstraintSeparators::Dualize::add_lower_level_constraint(idol::Model &t_primal,
@@ -107,15 +104,19 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::fix(const idol::LinExpr<id
     return result;
 }
 
-void idol::Robust::ColumnAndConstraintSeparators::Dualize::set_lower_level_objective(idol::Model &t_primal,
-                                                                                           const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
-                                                                                           const idol::Solution::Primal &t_upper_level_solution) const {
+void idol::Robust::ColumnAndConstraintSeparators::Dualize::set_second_stage_primal_objective(idol::Model &t_primal,
+                                                                                             const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                                                                             const idol::Solution::Primal &t_upper_level_solution,
+                                                                                             const idol::Row &t_row,
+                                                                                             idol::CtrType t_type) const {
 
-    const auto& objective = t_parent.parent().get_obj_expr().linear();
+    assert(t_type == LessOrEqual);
+
+    const auto& objective = t_row.linear();
 
     auto primal_objective = fix(objective, t_parent, t_upper_level_solution);
 
-    t_primal.set_obj_expr(std::move(primal_objective));
+    t_primal.set_obj_expr(primal_objective - t_row.rhs());
 
 }
 
@@ -172,8 +173,6 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::create_second_stage_primal
         add_lower_level_constraint(result, t_parent, t_upper_level_solution, ctr);
 
     }
-
-    set_lower_level_objective(result, t_parent, t_upper_level_solution);
 
     return std::move(result);
 }
