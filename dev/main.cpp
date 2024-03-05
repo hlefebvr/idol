@@ -224,33 +224,7 @@ int main(int t_argc, char** t_argv) {
     auto [model,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/BCPIns_8_7_1.txt_trad.txt_K5.aux");
-
-    /*
-    Model model(env);
-
-    auto x = model.add_var(0, 10, Binary, "x");
-    auto z = model.add_var(0, 5, Integer, "z");
-
-    model.set_obj_expr(-x - 7 * z);
-    auto c1 = model.add_ctr(-3 * x + 2 * z <= 12);
-    auto c2 = model.add_ctr(x + 2 * z <= 20);
-    auto c3 = model.add_ctr(z == 0);
-    auto c4 = model.add_ctr(2 * x - z <= 7);
-    auto c5 = model.add_ctr(-2 * x + 4 * z <= 16);
-
-    // Annotate follower variables
-    // * If not annotated, the default value is MasterId, i.e., leader variables and constraints
-    // * Otherwise, it indicates the id of the follower (here, we have only one follower)
-    Annotation<Var> var_annotation(env, "follower_variable", MasterId);
-    Annotation<Ctr> ctr_annotation(env, "ctr_annotation", MasterId);
-
-    z.set(var_annotation, 0); // "z" is a lower level variable
-    c4.set(ctr_annotation, 0); // "c4" is a lower level constraint
-    c5.set(ctr_annotation, 0); // "c5" is a lower level constraint
-
-    const auto& lower_level_objective = c3;
-    */
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5010W03.KNP.aux");
 
     model.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,
@@ -263,26 +237,9 @@ int main(int t_argc, char** t_argv) {
 
     model.update();
 
-    Timer timer;
-    timer.start();
     model.optimize();
-    timer.stop();
 
-    std::cout << "Total Time " << timer.count() << std::endl;
-
-    /*
-    // Set Optimizer
-    auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
-            .with_master_optimizer(Gurobi().with_logs(false))
-            .with_separator(
-                    Dualize()
-                                .with_optimizer(Gurobi().with_logs(false))
-            )
-            .with_complete_recourse(false)
-            .with_logs(true)
-            .with_iteration_limit(5)
-        ;
-        */
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

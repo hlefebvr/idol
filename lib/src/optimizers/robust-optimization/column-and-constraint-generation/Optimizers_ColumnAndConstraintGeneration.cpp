@@ -44,7 +44,8 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
 
     build_master_problem();
     build_coupling_constraints_list();
-    build_upper_level_variables_list();
+    build_upper_and_lower_level_variables_list();
+    build_upper_and_lower_level_constraints_list();
 
     m_master_problem.use(t_master_optimizer);
 
@@ -140,8 +141,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
         return;
     }
 
-    auto epigraph_variable = Var(env, -Inf, Inf, Continuous, "epigraph");
-    auto epigraph_constraint = Ctr(env, epigraph_variable >= lower_level_variables_part);
+    auto epigraph_variable = Var(env, -Inf, Inf, Continuous, "__epigraph_var");
+    auto epigraph_constraint = Ctr(env, epigraph_variable >= lower_level_variables_part, "__epigraph_ctr");
     m_epigraph = std::make_optional<std::pair<Var, Ctr>>(epigraph_variable, epigraph_constraint);
 
 }
@@ -170,19 +171,39 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_con
 
 }
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_level_variables_list() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lower_level_variables_list() {
 
     const auto& parent = this->parent();
 
-    m_upper_level_variables.clear();
+    m_upper_level_variables_list.clear();
+    m_lower_level_variables_list.clear();
 
     for (const auto& var : parent.vars()) {
 
         if (var.get(m_lower_level_variables) != MasterId) {
-            continue;
+            m_lower_level_variables_list.emplace_back(var);
+        } else {
+            m_upper_level_variables_list.emplace_back(var);
         }
 
-        m_upper_level_variables.emplace_back(var);
+    }
+
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lower_level_constraints_list() {
+
+    const auto& parent = this->parent();
+
+    m_upper_level_constraints_list.clear();
+    m_lower_level_constraints_list.clear();
+
+    for (const auto& ctr : parent.ctrs()) {
+
+        if (ctr.get(m_lower_level_constraints) != MasterId) {
+            m_lower_level_constraints_list.emplace_back(ctr);
+        } else {
+            m_upper_level_constraints_list.emplace_back(ctr);
+        }
 
     }
 
@@ -279,6 +300,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
 
     m_iteration_count = 0;
     m_last_scenario = Solution::Primal();
+
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
@@ -286,14 +308,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
     log_init();
 
     while (!is_terminated()) {
-
-        /*
-        std::cout << "MASTER PROBLEM ITER " << m_iteration_count
-                  << "\n************************\n"
-                  << m_master_problem
-                  << "\n************************\n"
-                  << std::endl;
-        */
 
         solve_master_problem();
 
@@ -322,9 +336,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
         ++m_iteration_count;
 
     }
-
-    std::cout << "Master time: " << m_master_problem.optimizer().time().cumulative_count() << std::endl;
-    std::cout << "Separation time: " << m_separation_timer.cumulative_count() << std::endl;
 
 }
 
@@ -556,7 +567,7 @@ idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::
         result.set(epigraph_var, value);
     }
 
-    for (const auto& var : m_upper_level_variables) {
+    for (const auto& var : m_upper_level_variables_list) {
         const double value = m_master_problem.get_var_primal(var);
         result.set(var, value);
     }
@@ -597,11 +608,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
     std::vector<std::unique_ptr<Var>> variables(n_variables);
 
     // Create new lower level variables
-    for (const auto& var : parent.vars()) {
-
-        if (var.get(m_lower_level_variables) == MasterId) {
-            continue;
-        }
+    for (const auto& var : m_lower_level_variables_list) {
 
         const unsigned int index = parent.get_var_index(var);
         const double lb = parent.get_var_lb(var);
@@ -614,37 +621,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
     }
 
-    // Create new lower level constraints
-    for (const auto& ctr : parent.ctrs()) {
-
-        if (ctr.get(m_lower_level_constraints) == MasterId) {
-            continue;
-        }
-
-        const auto& row = parent.get_ctr_row(ctr);
-        const auto type = parent.get_ctr_type(ctr);
-
-        Expr<Var, Var> lhs;
-        Constant rhs = row.rhs().fix(t_most_violated_scenario);
-
-        for (const auto& [var, constant] : row.linear()) {
-
-            if (var.get(m_lower_level_variables) == MasterId) {
-                lhs += constant.fix(t_most_violated_scenario) * var;
-                continue;
-            }
-
-            const unsigned int index = parent.get_var_index(var);
-
-            lhs += constant.fix(t_most_violated_scenario) * *variables[index];
-
-        }
-
-        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), ctr.name() + "__" + std::to_string(m_iteration_count));
-
-    }
-
-    const auto add_coupling_constraint = [&](const Ctr& t_ctr, const Row& t_row, CtrType t_type) {
+    const auto add_lower_level_constraint = [&](const Ctr& t_ctr, const Row& t_row, CtrType t_type) {
 
         Expr<Var, Var> lhs;
         Constant rhs = t_row.rhs().fix(t_most_violated_scenario);
@@ -662,23 +639,32 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
         }
 
-        auto temp_ctr = TempCtr(Row(lhs, rhs), t_type);
-
-        m_master_problem.add_ctr(std::move(temp_ctr), t_ctr.name() + "__" + std::to_string(m_iteration_count));
+        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), t_type), t_ctr.name() + "__" + std::to_string(m_iteration_count));
 
 
     };
 
+    // Create new lower level constraints
+    for (const auto& ctr : m_lower_level_constraints_list) {
+
+        const auto& row = parent.get_ctr_row(ctr);
+        const auto type = parent.get_ctr_type(ctr);
+
+        add_lower_level_constraint(ctr, row, type);
+
+    }
+
+    // Create new coupling constraints
     for (const auto& ctr : m_coupling_constraints) {
 
         const auto& row = parent.get_ctr_row(ctr);
         const auto type = parent.get_ctr_type(ctr);
 
-        add_coupling_constraint(ctr, row, type);
+        add_lower_level_constraint(ctr, row, type);
 
     }
 
-    // Add epigraph
+    // Create new epigraph constraint (if needed)
     if (m_epigraph) {
 
         if (!m_master_problem.has(m_epigraph->first)) {
@@ -690,7 +676,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
         const auto& row = default_version.row();
         const auto type = default_version.type();
 
-        add_coupling_constraint(m_epigraph->second, row, type);
+        add_lower_level_constraint(m_epigraph->second, row, type);
 
     }
 

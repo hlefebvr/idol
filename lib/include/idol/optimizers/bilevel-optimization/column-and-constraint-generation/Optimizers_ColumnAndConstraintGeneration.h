@@ -10,6 +10,7 @@
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
 #include "MinMaxMinFormulation.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
 
 namespace idol::Optimizers::Bilevel {
     class ColumnAndConstraintGeneration;
@@ -28,6 +29,8 @@ class idol::Optimizers::Bilevel::ColumnAndConstraintGeneration : public idol::Al
     std::optional<Annotation<Ctr, unsigned int>> m_constraint_stage;
 
     std::unique_ptr<idol::Bilevel::impl::MinMaxMinFormulation> m_formulation;
+    std::unique_ptr<idol::Robust::ColumnAndConstraintGenerationSeparator> m_separator;
+    std::unique_ptr<idol::Model> m_two_stage_robust_model;
 public:
     ColumnAndConstraintGeneration(const Model& t_model,
                                   const Annotation<Var, unsigned int>& t_lower_level_variables,

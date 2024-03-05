@@ -57,7 +57,7 @@ ExtendedLowerLevelSeparator::operator()(const idol::Optimizers::Robust::ColumnAn
         return result;
     }
 
-    auto result = idol::save_primal(m_extended_model);
+    auto result = idol::save_primal(m_formulation.uncertainty_set(), m_extended_model);
 
     // Compute current follower objective, TODO: move to a function
     const auto follower_objective = m_formulation.high_point_relaxation().get_ctr_row(m_formulation.parent().lower_level_objective());
@@ -103,47 +103,65 @@ std::string idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::name() con
 }
 
 double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_var_primal(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_primal");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Not available.");
+    }
+    return m_two_stage_robust_model->get_var_primal(t_var);
 }
 
 double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Not available.");
+    }
+    return m_two_stage_robust_model->get_var_reduced_cost(t_var);
 }
 
 double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_var_ray(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_ray");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Not available.");
+    }
+    return m_two_stage_robust_model->get_var_ray(t_var);
 }
 
 double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_ctr_dual(const idol::Ctr &t_ctr) const {
-    throw Exception("Not implemented get_ctr_dual");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Not available.");
+    }
+    return m_two_stage_robust_model->get_ctr_dual(t_ctr);
 }
 
 double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_ctr_farkas(const idol::Ctr &t_ctr) const {
-    throw Exception("Not implemented get_ctr_farkas");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Not available.");
+    }
+    return m_two_stage_robust_model->get_ctr_farkas(t_ctr);
 }
 
 unsigned int idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_n_solutions() const {
-    throw Exception("Not implemented get_n_solutions");
+    if (!m_two_stage_robust_model) {
+        return 0;
+    }
+    return m_two_stage_robust_model->get_n_solutions();
 }
 
 unsigned int idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::get_solution_index() const {
-    throw Exception("Not implemented get_solution_index");
+    return 0;
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::add(const idol::Var &t_var) {
-    throw Exception("Not implemented add");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::add(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented add");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::remove(const idol::Var &t_var) {
-    throw Exception("Not implemented remove");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::remove(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented remove");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update() {
@@ -163,88 +181,95 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optim
     m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this,
                                                                                 *m_variable_stage,
                                                                                 *m_constraint_stage,
-                                                                                8);
+                                                                                1e8);
 
-}
+    m_two_stage_robust_model = std::make_unique<Model>(m_formulation->two_stage_robust_formulation().copy());
 
-void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
-
-    auto model = m_formulation->two_stage_robust_formulation().copy();
-
-    std::unique_ptr<idol::Robust::ColumnAndConstraintGenerationSeparator> separator;
     if (m_use_extended_level_separator) {
 
-        separator = std::make_unique<ExtendedLowerLevelSeparator>(*m_formulation, *m_lower_level_optimizer);
+        m_separator = std::make_unique<ExtendedLowerLevelSeparator>(*m_formulation, *m_lower_level_optimizer);
 
     } else {
 
-        separator.reset(idol::Robust::ColumnAndConstraintSeparators::Dualize()
+        m_separator.reset(idol::Robust::ColumnAndConstraintSeparators::Dualize()
                                 .with_optimizer(*m_lower_level_optimizer)
                                 .clone()
         );
 
     }
 
-    model.use(
+    m_two_stage_robust_model->use(
             idol::Robust::ColumnAndConstraintGeneration(*m_variable_stage,
                                                         *m_constraint_stage,
                                                         m_formulation->uncertainty_set())
                     .with_master_optimizer(*m_master_optimizer)
-                    .with_separator(*separator)
+                    .with_separator(*m_separator)
                     .with_complete_recourse(true)
                     .with_logs(get_param_logs())
                     .with_iteration_limit(get_param_iteration_limit())
     );
-    
-    model.optimize();
+
+}
+
+void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
+
+    m_two_stage_robust_model->optimize();
+
+    set_status(m_two_stage_robust_model->get_status());
+    set_reason(m_two_stage_robust_model->get_reason());
+    set_best_obj(m_two_stage_robust_model->get_best_obj());
+    set_best_bound(m_two_stage_robust_model->get_best_bound());
 
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
-    throw Exception("Not implemented set_solution_index");
+    if (!m_two_stage_robust_model) {
+        throw Exception("Cannot set solution index before optimize is called.");
+    }
+    m_two_stage_robust_model->set_solution_index(t_index);
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_obj_sense() {
-    throw Exception("Not implemented update_obj_sense");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_obj() {
-    throw Exception("Not implemented update_obj");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_rhs() {
-    throw Exception("Not implemented update_rhs");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_obj_constant() {
-    throw Exception("Not implemented update_obj_constant");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_mat_coeff(const idol::Ctr &t_ctr,
                                                                                 const idol::Var &t_var) {
-    throw Exception("Not implemented update_mat_coeff");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_ctr_type(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented update_ctr_type");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_ctr_rhs(const idol::Ctr &t_ctr) {
-    throw Exception("Not implemented update_ctr_rhs");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_type(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_type");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_lb(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_lb");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_ub(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_ub");
+
 }
 
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_obj(const idol::Var &t_var) {
-    throw Exception("Not implemented update_var_obj");
+
 }
