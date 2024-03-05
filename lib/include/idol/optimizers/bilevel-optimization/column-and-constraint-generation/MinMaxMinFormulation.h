@@ -21,6 +21,7 @@ class idol::Bilevel::impl::MinMaxMinFormulation {
     const double m_penalty_parameter;
     Model m_uncertainty_set;
     Model m_second_stage_dual;
+    Model m_extended_lower_level_problem;
     Model m_two_stage_robust_formulation;
 
     const Annotation<Var, unsigned int> m_variable_stage;
@@ -34,6 +35,7 @@ class idol::Bilevel::impl::MinMaxMinFormulation {
     void set_second_stage_dual_objective(const std::list<idol::Var>& t_coupling_variables);
     void fill_two_stage_robust_formulation();
     Expr<Var, Var> to_two_stage_robust_formulation_space(const Constant& t_src) const;
+    void build_extended_lower_level_problem(const std::list<idol::Var>& t_coupling_variables);
 public:
     MinMaxMinFormulation(const idol::Optimizers::Bilevel::ColumnAndConstraintGeneration& t_parent,
                          const Annotation<Var, unsigned int>& t_variable_stage,

@@ -25,6 +25,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
     bool m_complete_recourse;
 
+    Timer m_separation_timer;
     unsigned int m_iteration_count = 0;
     Solution::Primal m_last_scenario;
 

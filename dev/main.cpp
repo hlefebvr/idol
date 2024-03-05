@@ -261,7 +261,12 @@ int main(int t_argc, char** t_argv) {
                     .with_logs(true)
             );
 
+    Timer timer;
+    timer.start();
     model.optimize();
+    timer.stop();
+
+    std::cout << "Total Time " << timer.count() << std::endl;
 
     /*
     // Set Optimizer

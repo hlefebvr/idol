@@ -89,11 +89,7 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
     m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this,
                                                                                 variable_stage,
                                                                                 constraint_stage,
-                                                                                1e8);
-
-    std::cout << "Uncertainty set:\n" << m_formulation->uncertainty_set() << std::endl;
-    std::cout << "Second-stage dual:\n" << m_formulation->second_stage_dual() << std::endl;
-    std::cout << "Two-stage robust formulation:\n" << m_formulation->two_stage_robust_formulation() << std::endl;
+                                                                                8);
 
     auto model = m_formulation->two_stage_robust_formulation().copy();
 
@@ -110,7 +106,10 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
                 .with_iteration_limit(get_param_iteration_limit())
     );
 
+    Timer timer;
+    timer.start();
     model.optimize();
+    timer.stop();
 
 }
 

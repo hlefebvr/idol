@@ -74,7 +74,7 @@ Then, a scenario :math:`\xi^*` is added if, and only if,
 
 .. math::
 
-    \max_{\ell=1,...,L} \left\{ \ \min_{ y\in Y(\hat x,\xi^*) } \ G_\ell(\hat x,y,\xi^*) \right\} > 0.
+    \max_{\ell=1,...,L} \left\{ \ \min_{ y\in Y(\hat x,\xi^*) } \ G_\ell(\hat x,y,\xi^*) \right\} > \varepsilon_\text{feas}.
 
 Note that we use the convention :math:`\max \emptyset = -\infty` and :math:`\min \emptyset = +\infty`.
 

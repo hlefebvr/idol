@@ -303,7 +303,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         if (is_terminated()) { break; }
 
+        m_separation_timer.start();
         m_last_scenario = solve_separation_problems();
+        m_separation_timer.stop();
 
         if (is_terminated()) { break; }
 
@@ -320,6 +322,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
         ++m_iteration_count;
 
     }
+
+    std::cout << "Master time: " << m_master_problem.optimizer().time().cumulative_count() << std::endl;
+    std::cout << "Separation time: " << m_separation_timer.cumulative_count() << std::endl;
 
 }
 

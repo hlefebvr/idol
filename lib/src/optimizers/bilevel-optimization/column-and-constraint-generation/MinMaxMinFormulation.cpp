@@ -15,6 +15,7 @@ idol::Bilevel::impl::MinMaxMinFormulation::MinMaxMinFormulation(const idol::Opti
     : m_parent(t_parent),
       m_uncertainty_set(t_parent.parent().env()),
       m_second_stage_dual(t_parent.parent().env()),
+      m_extended_lower_level_problem(t_parent.parent().env()),
       m_two_stage_robust_formulation(t_parent.parent().copy()),
       m_penalty_parameter(t_penalty_parameter),
       m_variable_stage(t_variable_stage),
@@ -27,6 +28,8 @@ idol::Bilevel::impl::MinMaxMinFormulation::MinMaxMinFormulation(const idol::Opti
     set_second_stage_dual_objective(coupling_variables);
     m_uncertainty_set.set_obj_expr(0);
     fill_two_stage_robust_formulation();
+
+    build_extended_lower_level_problem(coupling_variables);
 
 }
 
@@ -282,6 +285,59 @@ idol::Bilevel::impl::MinMaxMinFormulation::to_two_stage_robust_formulation_space
     }
 
     return result;
+
+}
+
+void idol::Bilevel::impl::MinMaxMinFormulation::build_extended_lower_level_problem(const std::list<idol::Var>& t_coupling_variables) {
+
+    const auto& high_point_relaxation = m_parent.parent();
+
+    for (const auto& var : m_uncertainty_set.vars()) {
+
+        const double lb = m_uncertainty_set.get_var_lb(var);
+        const double ub = m_uncertainty_set.get_var_ub(var);
+        const auto type = m_uncertainty_set.get_var_type(var);
+
+        m_extended_lower_level_problem.add(var, TempVar(lb, ub, type, Column(0)));
+
+    }
+
+    for (const auto& var : m_second_stage_dual.vars()) {
+
+        const double lb = m_second_stage_dual.get_var_lb(var);
+        const double ub = m_second_stage_dual.get_var_ub(var);
+        const auto type = m_second_stage_dual.get_var_type(var);
+
+        m_extended_lower_level_problem.add(var, TempVar(lb, ub, type, Column(0)));
+
+    }
+
+    for (const auto& ctr : m_uncertainty_set.ctrs()) {
+
+        const auto& row = high_point_relaxation.get_ctr_row(ctr);
+        const auto type = high_point_relaxation.get_ctr_type(ctr);
+
+        m_extended_lower_level_problem.add(ctr, TempCtr(Row(row), type));
+
+    }
+
+    for (const auto& ctr : m_second_stage_dual.ctrs()) {
+
+        const auto& row = high_point_relaxation.get_ctr_row(ctr);
+        const auto type = high_point_relaxation.get_ctr_type(ctr);
+
+        m_extended_lower_level_problem.add(ctr, TempCtr(Row(row), type));
+
+    }
+
+    const auto& lower_level_objective_row = high_point_relaxation.get_ctr_row(m_parent.lower_level_objective());
+
+    assert(lower_level_objective_row.quadratic().empty());
+
+    m_extended_lower_level_problem.set_obj_expr(
+            lower_level_objective_row.linear()
+            + idol_Sum(var, t_coupling_variables, m_penalty_parameter * (!var + var - 2 * !var * var))
+            );
 
 }
 

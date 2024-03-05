@@ -218,8 +218,6 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::
 
     auto dual = dualize(t_min, true);
 
-    // add uncertain parameters to primal
-
     for (const auto& var : t_max.vars()) {
 
         const auto lb = t_max.get_var_lb(var);
@@ -254,20 +252,6 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::
     }
 
     dual.use(*m_optimizer_factory);
-
-    /*
-    std::cout << "PRIMAL OF SECOND-STAGE "
-              << "\n************************\n"
-              << t_min
-              << "\n************************"
-              << std::endl;
-
-    std::cout << "SEPARATION PROBLEM"
-              << "\n************************\n"
-              << dual
-              << "\n************************"
-              << std::endl;
-    */
 
     dual.optimize();
 
