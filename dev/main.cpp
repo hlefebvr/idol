@@ -261,6 +261,8 @@ int main(int t_argc, char** t_argv) {
                     .with_logs(true)
             );
 
+    model.update();
+
     Timer timer;
     timer.start();
     model.optimize();

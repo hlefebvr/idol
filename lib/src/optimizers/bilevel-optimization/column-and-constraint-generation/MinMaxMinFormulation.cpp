@@ -341,3 +341,7 @@ void idol::Bilevel::impl::MinMaxMinFormulation::build_extended_lower_level_probl
 
 }
 
+const idol::Model &idol::Bilevel::impl::MinMaxMinFormulation::high_point_relaxation() const {
+    return m_parent.parent();
+}
+

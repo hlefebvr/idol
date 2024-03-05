@@ -19,9 +19,13 @@ class idol::Optimizers::Bilevel::ColumnAndConstraintGeneration : public idol::Al
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<OptimizerFactory> m_lower_level_optimizer;
 
-    Annotation<Var, unsigned int> m_lower_level_variables;
-    Annotation<Ctr, unsigned int> m_lower_level_constraints;
-    Ctr m_lower_level_objective;
+    const Annotation<Var, unsigned int> m_lower_level_variables;
+    const Annotation<Ctr, unsigned int> m_lower_level_constraints;
+    const Ctr m_lower_level_objective;
+    const bool m_use_extended_level_separator = true;
+
+    std::optional<Annotation<Var, unsigned int>> m_variable_stage;
+    std::optional<Annotation<Ctr, unsigned int>> m_constraint_stage;
 
     std::unique_ptr<idol::Bilevel::impl::MinMaxMinFormulation> m_formulation;
 public:
@@ -51,6 +55,7 @@ protected:
     void remove(const Ctr &t_ctr) override;
     void update() override;
     void write(const std::string &t_name) override;
+    void hook_before_optimize() override;
     void hook_optimize() override;
     void set_solution_index(unsigned int t_index) override;
     void update_obj_sense() override;

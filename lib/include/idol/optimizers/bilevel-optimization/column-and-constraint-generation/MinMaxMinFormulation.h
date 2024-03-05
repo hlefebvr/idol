@@ -47,6 +47,12 @@ public:
     const Model& second_stage_dual() const { return m_second_stage_dual; }
 
     const Model& two_stage_robust_formulation() const { return m_two_stage_robust_formulation; }
+
+    const Model& extended_lower_level() const { return m_extended_lower_level_problem; }
+
+    const idol::Optimizers::Bilevel::ColumnAndConstraintGeneration& parent() const { return m_parent; }
+
+    const idol::Model& high_point_relaxation() const;
 };
 
 #endif //IDOL_MINMAXMINFORMULATION_H
