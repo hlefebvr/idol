@@ -26,6 +26,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     bool m_complete_recourse;
 
     unsigned int m_iteration_count = 0;
+    Solution::Primal m_last_scenario;
 
     std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;
@@ -67,7 +68,7 @@ protected:
     void solve_master_problem();
     void analyze_master_problem_solution();
     void check_stopping_condition();
-    void analyze_most_violated_scenario(const Solution::Primal& t_most_violated_scenario);
+    void analyze_last_separation();
     void add_scenario(const Solution::Primal& t_most_violated_scenario);
     Solution::Primal solve_separation_problems();
     Solution::Primal save_upper_level_primal() const;
@@ -92,6 +93,9 @@ protected:
     void update_var_lb(const Var &t_var) override;
     void update_var_ub(const Var &t_var) override;
     void update_var_obj(const Var &t_var) override;
+
+    void log_init() const;
+    void log(bool t_is_rmp) const;
 };
 
 #endif //IDOL_OPTIMIZERS_ROBUST_COLUMNANDCONSTRAINTGENERATION_H

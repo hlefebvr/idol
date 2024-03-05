@@ -62,15 +62,17 @@ int main(int t_argc, const char** t_argv) {
                                                                 .add_optimizer(HiGHS().with_logs(false))
                                                                 .with_column_pool_clean_up(1500, .75)
                                       )
-                                      .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.1))
+                                      .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.00000001))
                                       .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
                                       .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
                                       .with_hard_branching(true)
+                                      .with_logs(true)
                       )
                       .with_subtree_depth(0)
                       .with_branching_rule(MostInfeasible())
                       .with_node_selection_rule(WorstBound())
                       .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
+                      .with_logs(true)
             );
 
     // Solve

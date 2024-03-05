@@ -105,6 +105,9 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_optimize() {
                                               m_formulation->uncertainty_set())
                 .with_master_optimizer(*m_master_optimizer)
                 .with_separator(Separator().with_optimizer(*m_lower_level_optimizer))
+                .with_complete_recourse(true)
+                .with_logs(get_param_logs())
+                .with_iteration_limit(get_param_iteration_limit())
     );
 
     model.optimize();

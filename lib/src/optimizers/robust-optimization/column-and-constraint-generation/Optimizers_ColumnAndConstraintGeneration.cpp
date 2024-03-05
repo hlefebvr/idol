@@ -2,10 +2,30 @@
 // Created by henri on 08.02.24.
 //
 
+#include <cassert>
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Env.h"
+
+#define N_SECTIONS 3
+#define LOG_WIDTH_ITERATION 5
+#define LOG_WIDTH_TOTAL_TIME 12
+#define LOG_WIDTH_PROBLEM_STATUS 12
+#define LOG_WIDTH_ITER_TYPE 7
+#define LOG_WIDTH_ITER_STATUS 12
+#define LOG_WIDTH_ITER_REASON 12
+#define LOG_WIDTH_BEST_BOUND 10
+#define LOG_WIDTH_BEST_OBJ 10
+#define LOG_WIDTH_REL_GAP 10
+#define LOG_WIDTH_ABS_GAP 10
+#define LOG_WIDTH_ITER_OBJ 10
+#define DOUBLE_PRECISION 5
+
+constexpr auto algorithm_space = (LOG_WIDTH_ITERATION + LOG_WIDTH_TOTAL_TIME);
+constexpr auto problem_space = (LOG_WIDTH_PROBLEM_STATUS + LOG_WIDTH_BEST_BOUND + LOG_WIDTH_BEST_OBJ + LOG_WIDTH_REL_GAP + LOG_WIDTH_ABS_GAP);
+constexpr auto iteration_space = (LOG_WIDTH_ITER_TYPE + LOG_WIDTH_ITER_STATUS + LOG_WIDTH_ITER_REASON + LOG_WIDTH_ITER_OBJ);
+constexpr auto table_space = algorithm_space + problem_space + iteration_space + N_SECTIONS * 3 + 1;
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                const idol::Model &t_uncertainty_set,
@@ -258,9 +278,12 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     set_reason(NotSpecified);
 
     m_iteration_count = 0;
+    m_last_scenario = Solution::Primal();
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
+
+    log_init();
 
     while (!is_terminated()) {
 
@@ -276,17 +299,21 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         analyze_master_problem_solution();
 
-        if (is_terminated()) { break; }
-
-        auto most_violated_scenario = solve_separation_problems();
+        log(true);
 
         if (is_terminated()) { break; }
 
-        analyze_most_violated_scenario(most_violated_scenario);
+        m_last_scenario = solve_separation_problems();
 
         if (is_terminated()) { break; }
 
-        add_scenario(most_violated_scenario);
+        analyze_last_separation();
+
+        if (is_terminated()) { break; }
+
+        add_scenario(m_last_scenario);
+
+        log(false);
 
         check_stopping_condition();
 
@@ -532,21 +559,18 @@ idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::
     return result;
 }
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_most_violated_scenario(
-        const idol::Solution::Primal &t_most_violated_scenario) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_last_separation() {
 
-    const auto status = t_most_violated_scenario.status();
+    const auto status = m_last_scenario.status();
 
     if (status != Optimal) {
         set_status(status);
-        set_reason(t_most_violated_scenario.reason());
+        set_reason(m_last_scenario.reason());
         terminate();
         return;
     }
 
-    std::cout << "Objective value = " << t_most_violated_scenario.objective_value() << std::endl;
-
-    if (t_most_violated_scenario.objective_value() >= Tolerance::Optimality) {
+    if (m_last_scenario.objective_value() >= Tolerance::Optimality) {
         set_status(Optimal);
         set_reason(Proved);
         terminate();
@@ -612,22 +636,12 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
     }
 
-    // Add epigraph
-    if (m_epigraph) {
-
-        if (!m_master_problem.has(m_epigraph->first)) {
-            m_master_problem.add(m_epigraph->first, TempVar(-Inf, Inf, Continuous, Column(1)));
-        }
-
-        const auto& env = m_master_problem.env();
-        const auto& default_version = env[m_epigraph->second];
-        const auto& row = default_version.row();
-        const auto type = default_version.type();
+    const auto add_coupling_constraint = [&](const Ctr& t_ctr, const Row& t_row, CtrType t_type) {
 
         Expr<Var, Var> lhs;
-        Constant rhs = row.rhs().fix(t_most_violated_scenario);
+        Constant rhs = t_row.rhs().fix(t_most_violated_scenario);
 
-        for (const auto& [var, constant] : row.linear()) {
+        for (const auto& [var, constant] : t_row.linear()) {
 
             if (var.get(m_lower_level_variables) == MasterId) {
                 lhs += constant.fix(t_most_violated_scenario) * var;
@@ -640,7 +654,35 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
         }
 
-        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), "epigraph__" + std::to_string(m_iteration_count));
+        auto temp_ctr = TempCtr(Row(lhs, rhs), t_type);
+
+        m_master_problem.add_ctr(std::move(temp_ctr), t_ctr.name() + "__" + std::to_string(m_iteration_count));
+
+
+    };
+
+    for (const auto& ctr : m_coupling_constraints) {
+
+        const auto& row = parent.get_ctr_row(ctr);
+        const auto type = parent.get_ctr_type(ctr);
+
+        add_coupling_constraint(ctr, row, type);
+
+    }
+
+    // Add epigraph
+    if (m_epigraph) {
+
+        if (!m_master_problem.has(m_epigraph->first)) {
+            m_master_problem.add(m_epigraph->first, TempVar(-Inf, Inf, Continuous, Column(1)));
+        }
+
+        const auto& env = m_master_problem.env();
+        const auto& default_version = env[m_epigraph->second];
+        const auto& row = default_version.row();
+        const auto type = default_version.type();
+
+        add_coupling_constraint(m_epigraph->second, row, type);
 
     }
 
@@ -648,4 +690,73 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
     throw Exception("Not implemented ColumnAndConstraintGeneration::get_var_reduced_cost.");
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log(bool t_is_rmp) const {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    const std::string iter_type = t_is_rmp ? "RMP" : "SP";
+
+    const SolutionStatus iter_status = t_is_rmp ? m_master_problem.get_status() : m_last_scenario.status();
+    const SolutionReason iter_reason = t_is_rmp ? m_master_problem.get_reason() : m_last_scenario.reason();
+    const double iter_obj = t_is_rmp ? m_master_problem.get_best_obj() : m_last_scenario.objective_value();
+
+    std::cout
+            << " | "
+            << std::setw(LOG_WIDTH_ITERATION) << m_iteration_count
+            << std::setw(LOG_WIDTH_TOTAL_TIME) << parent().optimizer().time().count()  << " | "
+            << std::setw(LOG_WIDTH_PROBLEM_STATUS) << get_status()
+            << std::setw(LOG_WIDTH_BEST_BOUND) << pretty_double(get_best_bound(), DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_BEST_OBJ) << pretty_double(get_best_obj(), DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_REL_GAP) << pretty_double(get_relative_gap() * 100., DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_ABS_GAP) << pretty_double(get_absolute_gap(), DOUBLE_PRECISION)  << " | "
+            << std::setw(LOG_WIDTH_ITER_TYPE) << iter_type
+            << std::setw(LOG_WIDTH_ITER_STATUS) << iter_status
+            << std::setw(LOG_WIDTH_ITER_REASON) << iter_reason
+            << std::setw(LOG_WIDTH_ITER_OBJ) << iter_obj << " | "
+            << std::endl;
+
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_init() const {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
+    std::cout << ' ';center(std::cout, " Column-and-Constraint Generation ", table_space) << '\n';
+    std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
+
+    std::cout << " | ";
+    center(std::cout, "Algorithm", algorithm_space);std::cout << " | ";
+    center(std::cout, "Problem", problem_space);std::cout << " | ";
+    center(std::cout, "Iteration", iteration_space);std::cout << " | ";
+    std::cout << '\n';
+
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_ITERATION) << "Iter.";
+    std::cout << std::setw(LOG_WIDTH_TOTAL_TIME) << "Time";
+
+    // Problem
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_PROBLEM_STATUS) << "Status";
+    std::cout << std::setw(LOG_WIDTH_BEST_BOUND) << "Bound";
+    std::cout << std::setw(LOG_WIDTH_BEST_OBJ) << "Obj";
+    std::cout << std::setw(LOG_WIDTH_REL_GAP) << "Gap (%)";
+    std::cout << std::setw(LOG_WIDTH_ABS_GAP) << "Abs.";
+
+    // Iteration
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_ITER_TYPE) << "Type";
+    std::cout << std::setw(LOG_WIDTH_ITER_STATUS) << "Status";
+    std::cout << std::setw(LOG_WIDTH_ITER_REASON) << "Reason";
+    std::cout << std::setw(LOG_WIDTH_ITER_OBJ) << "Value";
+    std::cout << " | ";
+
+    std::cout << std::endl;
+
 }

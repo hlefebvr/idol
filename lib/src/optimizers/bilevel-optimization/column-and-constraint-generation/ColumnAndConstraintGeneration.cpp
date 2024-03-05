@@ -67,7 +67,7 @@ idol::Optimizer *idol::Bilevel::ColumnAndConstraintGeneration::operator()(const 
         throw Exception("A lower level optimizer for ColumnAndConstraintGeneration has not been given.");
     }
 
-    return new Optimizers::Bilevel::ColumnAndConstraintGeneration(
+    auto* result = new Optimizers::Bilevel::ColumnAndConstraintGeneration(
                 t_model,
                 m_lower_level_variables,
                 m_lower_level_constraints,
@@ -75,4 +75,8 @@ idol::Optimizer *idol::Bilevel::ColumnAndConstraintGeneration::operator()(const 
                 *m_master_optimizer,
                 *m_lower_level_optimizer
             );
+
+    this->handle_default_parameters(result);
+
+    return result;
 }

@@ -221,13 +221,12 @@ int main(int t_argc, char** t_argv) {
 
     Env env;
 
-    /*
     auto [model,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
-          */
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/BCPIns_8_7_1.txt_trad.txt_K5.aux");
 
+    /*
     Model model(env);
 
     auto x = model.add_var(0, 10, Binary, "x");
@@ -251,6 +250,7 @@ int main(int t_argc, char** t_argv) {
     c5.set(ctr_annotation, 0); // "c5" is a lower level constraint
 
     const auto& lower_level_objective = c3;
+    */
 
     model.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,
@@ -258,6 +258,8 @@ int main(int t_argc, char** t_argv) {
                                                       lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
+                    .with_logs(true)
+                    .with_iteration_limit(5)
             );
 
     model.optimize();

@@ -38,8 +38,6 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::ope
 
         const auto solution = solve_max_min(uncertainty_set, primal);
 
-        std::cout << solution << std::endl;
-
         if (solution.status() != Optimal || solution.objective_value() < -Tolerance::Feasibility) {
             return solution;
         }
@@ -48,7 +46,7 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Dualize::ope
 
     Model primal = create_second_stage_primal_problem(env, t_parent, t_upper_level_solution);
 
-    throw Exception("STOP, Complete recourse not implemented");
+    return solve_max_min(uncertainty_set, primal);
 }
 
 void idol::Robust::ColumnAndConstraintSeparators::Dualize::add_lower_level_constraint(idol::Model &t_primal,
@@ -259,6 +257,7 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::
 
     dual.use(*m_optimizer_factory);
 
+    /*
     std::cout << "PRIMAL OF SECOND-STAGE "
               << "\n************************\n"
               << t_min
@@ -270,6 +269,7 @@ idol::Robust::ColumnAndConstraintSeparators::Dualize::solve_max_min(const idol::
               << dual
               << "\n************************"
               << std::endl;
+    */
 
     dual.optimize();
 
