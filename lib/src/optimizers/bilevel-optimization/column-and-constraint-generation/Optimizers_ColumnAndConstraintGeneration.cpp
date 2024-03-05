@@ -8,6 +8,7 @@
 #include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/expressions/operations/operators.h"
+#include "idol/modeling/objects/Versions.h"
 
 class ExtendedLowerLevelSeparator : public idol::Robust::ColumnAndConstraintGenerationSeparator {
     const idol::Bilevel::impl::MinMaxMinFormulation& m_formulation;
@@ -172,16 +173,41 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::write(const std::
     throw Exception("Not implemented write");
 }
 
+double idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::compute_penalty_parameter() const {
+
+    const auto& parent = this->parent();
+
+    double result = 0;
+
+    for (const auto& var : parent.vars()) {
+
+        if (var.get(m_lower_level_variables) == MasterId) {
+            continue;
+        }
+
+        const double lb = parent.get_var_lb(var);
+        const double ub = parent.get_var_ub(var);
+        const double obj = parent.get_var_column(var).obj().as_numerical();
+
+        result += std::abs(obj) * (ub - lb);
+
+    }
+
+    return result;
+}
+
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optimize() {
     Optimizer::hook_before_optimize();
 
     assert(m_variable_stage.has_value());
     assert(m_constraint_stage.has_value());
 
+    const double penalty = compute_penalty_parameter();
+
     m_formulation = std::make_unique<idol::Bilevel::impl::MinMaxMinFormulation>(*this,
                                                                                 *m_variable_stage,
                                                                                 *m_constraint_stage,
-                                                                                1e8);
+                                                                                penalty);
 
     m_two_stage_robust_model = std::make_unique<Model>(m_formulation->two_stage_robust_formulation().copy());
 

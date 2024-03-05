@@ -72,6 +72,8 @@ protected:
     void update_var_lb(const Var &t_var) override;
     void update_var_ub(const Var &t_var) override;
     void update_var_obj(const Var &t_var) override;
+
+    double compute_penalty_parameter() const;
 };
 
 #endif //IDOL_OPTIMIZERS_BILEVEL_COLUMNANDCONSTRAINTGENERATION_H

@@ -543,8 +543,10 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
 
     }
 
-    // std::cout << "Max: " << max << std::endl;
-    // std::cout << "Argmax: \n" << argmax << std::endl;
+    // If there are no coupling constraint, this is a feasibility problem, i.e., we optimize 0.
+    if (m_coupling_constraints.empty() && !m_epigraph.has_value()) {
+        evaluate(Row(), LessOrEqual);
+    }
 
     return argmax;
 }
