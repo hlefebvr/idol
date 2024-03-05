@@ -207,6 +207,12 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optim
                     .with_complete_recourse(true)
                     .with_logs(get_param_logs())
                     .with_iteration_limit(get_param_iteration_limit())
+                    .with_time_limit(get_param_time_limit())
+                    .with_thread_limit(get_param_thread_limit())
+                    .with_presolve(get_param_presolve())
+                    .with_infeasible_or_unbounded_info(get_param_infeasible_or_unbounded_info())
+                    .with_best_bound_stop(get_param_best_bound_stop())
+                    .with_best_obj_stop(get_param_best_obj_stop())
     );
 
 }

@@ -134,7 +134,7 @@ public:
 
     virtual void set_param_time_limit(double t_time_limit) { m_param_time_limit = t_time_limit; }
 
-    [[nodiscard]] unsigned int get_param_threads() const { return m_param_threads; }
+    [[nodiscard]] unsigned int get_param_thread_limit() const { return m_param_threads; }
 
     virtual void set_param_threads(unsigned int t_threads) { m_param_threads = t_threads; }
 
