@@ -64,6 +64,7 @@ highlight_language = 'c++'
 # The theme to use for HTML and HTML Help pages.  See the docs for
 # a list of builtin themes.
 #
+
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     "navigation_depth": -1,
