@@ -10,7 +10,7 @@
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Versions.h"
 
-class ExtendedLowerLevelSeparator : public idol::Robust::ColumnAndConstraintGenerationSeparator {
+class ExtendedLowerLevelSeparator : public idol::Robust::CCGSeparator {
     const idol::Bilevel::impl::MinMaxMinFormulation& m_formulation;
     mutable idol::Model m_extended_model;
 public:
@@ -24,7 +24,7 @@ public:
                                 const idol::Row& t_row,
                                       idol::CtrType t_type) const override;
 
-    [[nodiscard]] ColumnAndConstraintGenerationSeparator *clone() const override;
+    [[nodiscard]] CCGSeparator *clone() const override;
 };
 
 ExtendedLowerLevelSeparator::ExtendedLowerLevelSeparator(const idol::Bilevel::impl::MinMaxMinFormulation& t_formulation,
@@ -71,7 +71,7 @@ ExtendedLowerLevelSeparator::operator()(const idol::Optimizers::Robust::ColumnAn
 
 }
 
-idol::Robust::ColumnAndConstraintGenerationSeparator *ExtendedLowerLevelSeparator::clone() const {
+idol::Robust::CCGSeparator *ExtendedLowerLevelSeparator::clone() const {
     return new ExtendedLowerLevelSeparator(*this);
 }
 
@@ -87,7 +87,8 @@ idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::ColumnAndConstraintGen
                                                                                         const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
                                                                                         idol::Ctr t_lower_level_objective,
                                                                                         const idol::OptimizerFactory &t_master_optimizer,
-                                                                                        const idol::OptimizerFactory &t_lower_level_optimizer)
+                                                                                        const idol::OptimizerFactory &t_lower_level_optimizer,
+                                                                                        const idol::Robust::CCGStabilizer& t_stabilizer)
     : idol::Algorithm(t_parent),
       m_lower_level_objective(std::move(t_lower_level_objective)),
       m_lower_level_variables(t_lower_level_variables),
@@ -95,7 +96,8 @@ idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::ColumnAndConstraintGen
       m_master_optimizer(t_master_optimizer.clone()),
       m_lower_level_optimizer(t_lower_level_optimizer.clone()),
       m_variable_stage(std::make_optional<Annotation<Var, unsigned int>>(t_parent.env(), "variable_stage", MasterId)),
-      m_constraint_stage(std::make_optional<Annotation<Ctr, unsigned int>>(t_parent.env(), "constraint_stage", MasterId)) {
+      m_constraint_stage(std::make_optional<Annotation<Ctr, unsigned int>>(t_parent.env(), "constraint_stage", MasterId)),
+      m_stabilizer(t_stabilizer.clone()) {
 
 }
 
@@ -217,7 +219,7 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optim
 
     } else {
 
-        m_separator.reset(idol::Robust::ColumnAndConstraintSeparators::Dualize()
+        m_separator.reset(idol::Robust::CCGSeparators::Dualize()
                                 .with_optimizer(*m_lower_level_optimizer)
                                 .clone()
         );
@@ -231,6 +233,7 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optim
                     .with_master_optimizer(*m_master_optimizer)
                     .with_separator(*m_separator)
                     .with_complete_recourse(true)
+                    .with_stabilization(*m_stabilizer)
                     .with_logs(get_param_logs())
                     .with_iteration_limit(get_param_iteration_limit())
                     .with_time_limit(get_param_time_limit())

@@ -4,6 +4,7 @@
 #include <utility>
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 idol::Bilevel::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
@@ -23,7 +24,8 @@ idol::Bilevel::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
             m_lower_level_variables(t_src.m_lower_level_variables),
             m_lower_level_constraints(t_src.m_lower_level_constraints),
             m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
-            m_lower_level_optimizer(t_src.m_lower_level_optimizer ? t_src.m_lower_level_optimizer->clone() : nullptr) {
+            m_lower_level_optimizer(t_src.m_lower_level_optimizer ? t_src.m_lower_level_optimizer->clone() : nullptr),
+            m_stabilizer(t_src.m_stabilizer ? t_src.m_stabilizer->clone() : nullptr) {
 
 }
 
@@ -73,10 +75,23 @@ idol::Optimizer *idol::Bilevel::ColumnAndConstraintGeneration::operator()(const 
                 m_lower_level_constraints,
                 m_lower_level_objective,
                 *m_master_optimizer,
-                *m_lower_level_optimizer
+                *m_lower_level_optimizer,
+                m_stabilizer ? *m_stabilizer : (const idol::Robust::CCGStabilizer&) idol::Robust::CCGStabilizers::NoStabilization()
             );
 
     this->handle_default_parameters(result);
 
     return result;
+}
+
+idol::Bilevel::ColumnAndConstraintGeneration &
+idol::Bilevel::ColumnAndConstraintGeneration::with_stabilization(const idol::Robust::CCGStabilizer &t_stabilizer) {
+
+        if (m_stabilizer) {
+            throw Exception("A stabilizer for ColumnAndConstraintGeneration has already been given.");
+        }
+
+        m_stabilizer.reset(t_stabilizer.clone());
+
+        return *this;
 }

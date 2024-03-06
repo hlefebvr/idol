@@ -10,7 +10,8 @@
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
 #include "MinMaxMinFormulation.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h"
 
 namespace idol::Optimizers::Bilevel {
     class ColumnAndConstraintGeneration;
@@ -19,6 +20,7 @@ namespace idol::Optimizers::Bilevel {
 class idol::Optimizers::Bilevel::ColumnAndConstraintGeneration : public idol::Algorithm {
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<OptimizerFactory> m_lower_level_optimizer;
+    std::unique_ptr<idol::Robust::CCGStabilizer> m_stabilizer;
 
     const Annotation<Var, unsigned int> m_lower_level_variables;
     const Annotation<Ctr, unsigned int> m_lower_level_constraints;
@@ -29,7 +31,7 @@ class idol::Optimizers::Bilevel::ColumnAndConstraintGeneration : public idol::Al
     std::optional<Annotation<Ctr, unsigned int>> m_constraint_stage;
 
     std::unique_ptr<idol::Bilevel::impl::MinMaxMinFormulation> m_formulation;
-    std::unique_ptr<idol::Robust::ColumnAndConstraintGenerationSeparator> m_separator;
+    std::unique_ptr<idol::Robust::CCGSeparator> m_separator;
     std::unique_ptr<idol::Model> m_two_stage_robust_model;
 public:
     ColumnAndConstraintGeneration(const Model& t_model,
@@ -37,7 +39,8 @@ public:
                                   const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
                                   Ctr t_lower_level_objective,
                                   const OptimizerFactory& t_master_optimizer,
-                                  const OptimizerFactory& t_lower_level_optimizer);
+                                  const OptimizerFactory& t_lower_level_optimizer,
+                                  const idol::Robust::CCGStabilizer& t_stabilizer);
 
     std::string name() const override;
     double get_var_primal(const Var &t_var) const override;

@@ -3,4 +3,4 @@
 Bilevel
 =======
 
-.. doxygenclass:: idol::Robust::ColumnAndConstraintSeparators::Bilevel
+.. doxygenclass:: idol::Robust::CCGSeparators::Bilevel

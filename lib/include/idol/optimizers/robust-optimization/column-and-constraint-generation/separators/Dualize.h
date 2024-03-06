@@ -5,14 +5,14 @@
 #ifndef IDOL_MAXMINDUALIZE_H
 #define IDOL_MAXMINDUALIZE_H
 
-#include "ColumnAndConstraintGenerationSeparator.h"
+#include "CCGSeparator.h"
 #include "idol/optimizers/OptimizerFactory.h"
 
-namespace idol::Robust::ColumnAndConstraintSeparators {
+namespace idol::Robust::CCGSeparators {
     class Dualize;
 }
 
-class idol::Robust::ColumnAndConstraintSeparators::Dualize : public idol::Robust::ColumnAndConstraintGenerationSeparator {
+class idol::Robust::CCGSeparators::Dualize : public idol::Robust::CCGSeparator {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     Model create_second_stage_primal_problem(Env& t_env,
@@ -41,7 +41,7 @@ public:
 
     Dualize(const Dualize& t_src);
 
-    [[nodiscard]] ColumnAndConstraintGenerationSeparator *clone() const override;
+    [[nodiscard]] CCGSeparator *clone() const override;
 
     Solution::Primal operator()(const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                 const Solution::Primal &t_upper_level_solution,

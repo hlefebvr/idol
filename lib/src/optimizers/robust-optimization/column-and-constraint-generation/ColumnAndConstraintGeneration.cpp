@@ -3,6 +3,7 @@
 //
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
@@ -25,6 +26,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_uncertainty_set(t_src.m_uncertainty_set),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_separator(t_src.m_separator ? t_src.m_separator->clone() : nullptr),
+          m_stabilizer(t_src.m_stabilizer ? t_src.m_stabilizer->clone() : nullptr),
           m_complete_recourse(t_src.m_complete_recourse) {
 
 }
@@ -43,6 +45,7 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                          m_uncertainty_set,
                                                          *m_master_optimizer,
                                                          *m_separator,
+                                                         m_stabilizer ? *m_stabilizer : (const CCGStabilizer&) CCGStabilizers::NoStabilization(),
                                                          m_lower_level_variables,
                                                          m_lower_level_constraints,
                                                          m_complete_recourse.has_value() && m_complete_recourse.value()
@@ -70,7 +73,7 @@ idol::Robust::ColumnAndConstraintGeneration::with_master_optimizer(const idol::O
 }
 
 idol::Robust::ColumnAndConstraintGeneration &idol::Robust::ColumnAndConstraintGeneration::with_separator(
-        const idol::Robust::ColumnAndConstraintGenerationSeparator &t_separator) {
+        const idol::Robust::CCGSeparator &t_separator) {
 
     if (m_separator) {
         throw Exception("A separator has already been configured.");
@@ -89,6 +92,18 @@ idol::Robust::ColumnAndConstraintGeneration::with_complete_recourse(bool t_value
     }
 
     m_complete_recourse = t_value;
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_stabilization(const idol::Robust::CCGStabilizer &t_stabilizer) {
+
+    if (m_stabilizer) {
+        throw Exception("A stabilizer has already been configured.");
+    }
+
+    m_stabilizer.reset(t_stabilizer.clone());
 
     return *this;
 }

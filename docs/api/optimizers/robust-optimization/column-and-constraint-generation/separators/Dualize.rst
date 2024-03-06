@@ -3,4 +3,4 @@
 Dualize
 =======
 
-.. doxygenclass:: idol::Robust::ColumnAndConstraintSeparators::Dualize
+.. doxygenclass:: idol::Robust::CCGSeparators::Dualize

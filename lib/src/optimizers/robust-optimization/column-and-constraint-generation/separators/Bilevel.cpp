@@ -9,11 +9,11 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
-idol::Robust::ColumnAndConstraintGenerationSeparator *idol::Robust::ColumnAndConstraintSeparators::Bilevel::clone() const {
+idol::Robust::CCGSeparator *idol::Robust::CCGSeparators::Bilevel::clone() const {
     return new Bilevel(*this);
 }
 
-idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Bilevel::operator()(
+idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
@@ -57,7 +57,7 @@ idol::Solution::Primal idol::Robust::ColumnAndConstraintSeparators::Bilevel::ope
     return save_primal(model);
 }
 
-void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_variables(
+void idol::Robust::CCGSeparators::Bilevel::add_lower_level_variables(
         idol::Model &t_hpr,
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) const {
 
@@ -81,7 +81,7 @@ void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_varia
 }
 
 
-void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_constraints(
+void idol::Robust::CCGSeparators::Bilevel::add_lower_level_constraints(
         idol::Model &t_hpr,
         const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution) const {
@@ -101,10 +101,10 @@ void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_const
 
 }
 
-void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_constraint(idol::Model &t_hpr,
-                                                                                            const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
-                                                                                            const Solution::Primal &t_upper_level_solution,
-                                                                                            const idol::Ctr &t_ctr) const {
+void idol::Robust::CCGSeparators::Bilevel::add_lower_level_constraint(idol::Model &t_hpr,
+                                                                      const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                                                      const Solution::Primal &t_upper_level_solution,
+                                                                      const idol::Ctr &t_ctr) const {
 
     const auto& model = t_parent.parent();
     const auto& row = model.get_ctr_row(t_ctr);
@@ -121,7 +121,7 @@ void idol::Robust::ColumnAndConstraintSeparators::Bilevel::add_lower_level_const
 
 }
 
-idol::Ctr idol::Robust::ColumnAndConstraintSeparators::Bilevel::set_upper_and_lower_objectives(
+idol::Ctr idol::Robust::CCGSeparators::Bilevel::set_upper_and_lower_objectives(
         idol::Model &t_hpr,
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const idol::Solution::Primal &t_upper_level_solution,

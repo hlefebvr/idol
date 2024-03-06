@@ -1,13 +1,13 @@
 //
 // Created by henri on 09.02.24.
 //
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
-idol::Expr<idol::Var, idol::Var> idol::Robust::ColumnAndConstraintGenerationSeparator::fix_and_revert(const LinExpr<Var> &t_expr,
+idol::Expr<idol::Var, idol::Var> idol::Robust::CCGSeparator::fix_and_revert(const LinExpr<Var> &t_expr,
                                                                              const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                                                              const Solution::Primal &t_upper_level_solution) {
     Expr<Var, Var> result;
@@ -46,7 +46,7 @@ idol::Expr<idol::Var, idol::Var> idol::Robust::ColumnAndConstraintGenerationSepa
     return result;
 }
 
-idol::Expr<idol::Var, idol::Var> idol::Robust::ColumnAndConstraintGenerationSeparator::revert(const idol::Constant &t_constant,
+idol::Expr<idol::Var, idol::Var> idol::Robust::CCGSeparator::revert(const idol::Constant &t_constant,
                                                                                       const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) {
 
     if (t_constant.quadratic().size() > 0) {

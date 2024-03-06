@@ -11,7 +11,7 @@
 
 namespace idol {
     namespace Robust {
-        class ColumnAndConstraintGenerationSeparator;
+        class CCGSeparator;
     }
 
     namespace Optimizers::Robust {
@@ -20,14 +20,14 @@ namespace idol {
 
 }
 
-class idol::Robust::ColumnAndConstraintGenerationSeparator {
+class idol::Robust::CCGSeparator {
 protected:
     [[nodiscard]] static Expr<Var, Var> fix_and_revert(const LinExpr<Var>& t_expr, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent, const Solution::Primal &t_upper_level_solution) ;
     [[nodiscard]] static Expr<Var, Var> revert(const Constant& t_constant, const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) ;
 public:
-    virtual ~ColumnAndConstraintGenerationSeparator() = default;
+    virtual ~CCGSeparator() = default;
 
-    [[nodiscard]] virtual ColumnAndConstraintGenerationSeparator* clone() const = 0;
+    [[nodiscard]] virtual CCGSeparator* clone() const = 0;
 
     virtual Solution::Primal operator()(const Optimizers::Robust::ColumnAndConstraintGeneration& t_parent,
                                         const Solution::Primal& t_upper_level_solution,

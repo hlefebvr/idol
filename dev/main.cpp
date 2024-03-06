@@ -31,6 +31,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -232,6 +233,7 @@ int main(int t_argc, char** t_argv) {
                                                       lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
+                    .with_stabilization(Robust::CCGStabilizers::NoStabilization())
                     .with_logs(true)
             );
 

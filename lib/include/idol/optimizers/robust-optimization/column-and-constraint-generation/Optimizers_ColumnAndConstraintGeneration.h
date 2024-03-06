@@ -7,8 +7,9 @@
 
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/OptimizerFactory.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
 #include "idol/modeling/models/Model.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h"
 
 #include <optional>
 
@@ -17,7 +18,8 @@ namespace idol::Optimizers::Robust {
 }
 
 class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm {
-    std::unique_ptr<idol::Robust::ColumnAndConstraintGenerationSeparator> m_separator;
+    std::unique_ptr<idol::Robust::CCGSeparator> m_separator;
+    std::unique_ptr<idol::Robust::CCGStabilizer> m_stabilizer;
 
     Model m_master_problem;
     Model m_uncertainty_set;
@@ -39,7 +41,8 @@ public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const Model& t_uncertainty_set,
                                   const OptimizerFactory& t_master_optimizer,
-                                  const idol::Robust::ColumnAndConstraintGenerationSeparator& t_separator,
+                                  const idol::Robust::CCGSeparator& t_separator,
+                                  const idol::Robust::CCGStabilizer& t_stabilizer,
                                   const Annotation<Var, unsigned int>& t_lower_level_variables,
                                   const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
                                   bool t_complete_recourse

@@ -212,7 +212,7 @@ add_library(idol STATIC
         src/optimizers/mixed-integer-programming/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/mixed-integer-programming/wrappers/Osi/Optimizers_Osi.h
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h
         src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
         src/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
@@ -229,6 +229,11 @@ add_library(idol STATIC
         src/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.h
         src/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.cpp
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
 )
 
 find_package(OpenMP REQUIRED)

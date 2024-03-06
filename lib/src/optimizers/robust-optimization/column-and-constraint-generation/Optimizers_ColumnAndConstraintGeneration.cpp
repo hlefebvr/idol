@@ -30,7 +30,8 @@ constexpr auto table_space = algorithm_space + problem_space + iteration_space +
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                const idol::Model &t_uncertainty_set,
                                                                                const idol::OptimizerFactory &t_master_optimizer,
-                                                                               const idol::Robust::ColumnAndConstraintGenerationSeparator &t_separator,
+                                                                               const idol::Robust::CCGSeparator &t_separator,
+                                                                               const idol::Robust::CCGStabilizer &t_stabilizer,
                                                                                const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
                                                                                const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
                                                                                bool t_complete_recourse)
@@ -40,6 +41,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
           m_lower_level_constraints(t_lower_level_constraints),
           m_master_problem(t_parent.env()),
           m_separator(t_separator.clone()),
+          m_stabilizer(t_stabilizer.clone()),
           m_complete_recourse(t_complete_recourse) {
 
     build_master_problem();
