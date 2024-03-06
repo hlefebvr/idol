@@ -33,6 +33,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     unsigned int m_iteration_count = 0;
     std::optional<Solution::Primal> m_current_separation_solution;
     std::optional<Solution::Primal> m_current_master_solution;
+    std::optional<Solution::Primal> m_incumbent;
 
     std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;

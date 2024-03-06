@@ -243,6 +243,8 @@ int main(int t_argc, char** t_argv) {
 
     model.optimize();
 
+    std::cout << "Done!" << std::endl;
+
     std::cout << save_primal(model) << std::endl;
 
     return 0;

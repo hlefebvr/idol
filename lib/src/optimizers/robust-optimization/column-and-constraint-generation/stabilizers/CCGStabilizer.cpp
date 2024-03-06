@@ -48,3 +48,7 @@ void idol::Robust::CCGStabilizer::Strategy::check_stopping_condition() const {
     m_parent->check_stopping_condition();
 }
 
+void idol::Robust::CCGStabilizer::Strategy::set_incumbent(const idol::Solution::Primal &t_incumbent) {
+    m_parent->m_incumbent = t_incumbent;
+}
+

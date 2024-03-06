@@ -40,6 +40,7 @@ public:
         const Solution::Primal& current_master_solution() const;
         const Solution::Primal& current_separation_solution() const;
         void check_stopping_condition() const;
+        void set_incumbent(const Solution::Primal& t_incumbent);
     public:
         virtual ~Strategy() = default;
 

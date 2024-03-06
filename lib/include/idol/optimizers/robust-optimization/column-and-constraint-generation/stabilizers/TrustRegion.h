@@ -14,6 +14,10 @@ namespace idol::Robust::CCGStabilizers {
 class idol::Robust::CCGStabilizers::TrustRegion : public idol::Robust::CCGStabilizer {
     std::optional<std::vector<double>> m_trust_factors;
 public:
+    TrustRegion() = default;
+
+    TrustRegion(const TrustRegion& t_other) = default;
+
     class Strategy : public CCGStabilizer::Strategy {
         std::vector<double> m_trust_factor;
         unsigned int m_current_trust_factor_index = 0;

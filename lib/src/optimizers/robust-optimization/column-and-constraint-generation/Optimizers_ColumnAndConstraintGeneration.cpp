@@ -216,7 +216,12 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
-    return m_master_problem.get_var_primal(t_var);
+
+    if (!m_incumbent.has_value()) {
+        throw Exception("No incumbent solution available.");
+    }
+
+    return m_incumbent->get(t_var);
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
@@ -298,6 +303,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     set_reason(NotSpecified);
 
     m_iteration_count = 0;
+    m_incumbent.reset();
 
     m_stabilizer->set_parent(this);
     m_stabilizer->initialize();

@@ -65,6 +65,7 @@ void idol::Robust::CCGStabilizers::NoStabilization::Strategy::analyze_last_separ
         set_status(Optimal);
         set_reason(Proved);
         set_best_obj(parent().get_best_bound());
+        set_incumbent(current_master_solution());
         terminate();
         return;
     }

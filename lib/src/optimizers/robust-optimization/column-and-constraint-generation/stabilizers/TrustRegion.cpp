@@ -7,7 +7,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 
 idol::Robust::CCGStabilizers::TrustRegion::Strategy *idol::Robust::CCGStabilizers::TrustRegion::operator()() const {
-    return new Strategy(m_trust_factors.has_value() ? *m_trust_factors : std::vector<double>{ 01, .02, .5 });
+    return new Strategy(m_trust_factors.has_value() ? *m_trust_factors : std::vector<double>{ .01, .02, .5 });
 }
 
 idol::Robust::CCGStabilizers::TrustRegion *idol::Robust::CCGStabilizers::TrustRegion::clone() const {
@@ -36,11 +36,20 @@ idol::Robust::CCGStabilizers::TrustRegion::Strategy::Strategy(const std::vector<
 
 void idol::Robust::CCGStabilizers::TrustRegion::Strategy::initialize() {
 
+    const auto& master_problem = this->master_problem();
+
     remove_all_stabilization_constraints(this->master_problem());
     m_stability_center.reset();
     m_reversed_local_branching_constraints.clear();
 
     m_current_trust_factor_index = 0;
+
+    m_n_binary_first_stage_decisions = 0;
+    for (const auto& var : upper_level_vars()) {
+        if (master_problem.get_var_type(var) == Binary) {
+            ++m_n_binary_first_stage_decisions;
+        }
+    }
 
 }
 
@@ -62,6 +71,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_current_master
         } else {
             add_reversed_local_branching_constraint();
             update_radius();
+            update_local_branching_constraint();
             return;
         }
 
@@ -80,9 +90,6 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_current_master
         update_local_branching_constraint();
     }
 
-    const double objective = solution.objective_value();
-
-    set_best_bound(objective);
     if (parent().get_status() != Feasible) {
         set_status(SubOptimal);
     }
@@ -98,7 +105,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_local_branching
     const auto distance_to_point = build_distance_to_point(m_stability_center.value());
 
     if (!m_local_branching_constraint) {
-        m_local_branching_constraint = master_problem.add_ctr(distance_to_point <= current_radius());
+        m_local_branching_constraint = master_problem.add_ctr(distance_to_point <= current_radius(), "__local_branching");
     } else {
         assert(master_problem.has(*m_local_branching_constraint));
 
@@ -119,7 +126,6 @@ idol::Robust::CCGStabilizers::TrustRegion::Strategy::build_distance_to_point(con
     const auto& master_problem = this->master_problem();
 
     Expr result;
-    m_n_binary_first_stage_decisions = 0;
     for (const auto& var : upper_level_vars()) {
 
         const auto type = master_problem.get_var_type(var);
@@ -136,7 +142,6 @@ idol::Robust::CCGStabilizers::TrustRegion::Strategy::build_distance_to_point(con
             result += var;
         }
 
-        ++m_n_binary_first_stage_decisions;
     }
 
     return result;
@@ -172,6 +177,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::remove_all_stabilizati
 
 void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separation_solution() {
 
+    const auto& parent = this->parent();
     const auto& current_separation_solution = this->current_separation_solution();
     const auto status = current_separation_solution.status();
 
@@ -187,31 +193,39 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separatio
         return;
     }
 
-    // Update UB
     set_status(Feasible);
     set_reason(Proved);
-    const double iter_obj = m_stability_center->objective_value();
-    const double ub = parent().get_best_bound();
-    set_best_obj(std::min(ub, iter_obj));
+
+    // Update UB
+    const auto& current_master_solution = this->current_master_solution();
+    const double iter_obj = current_master_solution.objective_value();
+    const double ub = parent.get_best_obj();
+    if (iter_obj <= ub) {
+        set_best_obj(iter_obj);
+        set_incumbent(current_master_solution);
+    }
 
     // Update LB
     auto lb_model = this->master_problem().copy();
     remove_all_stabilization_constraints(lb_model);
     lb_model.optimize();
-    set_best_bound(lb_model.get_best_obj());
+    const double lb = parent.get_best_bound();
+    const double iter_lb = lb_model.get_best_obj();
+    if (iter_lb >= lb) {
+        set_best_bound(iter_lb);
+    }
 
+    // Check if we closed the gap
     check_stopping_condition();
 
-    if (parent().is_terminated()) {
+    if (parent.is_terminated()) {
         return;
     }
 
     // Update stability center
     add_reversed_local_branching_constraint();
-    m_stability_center = current_master_solution();
+    m_stability_center = current_master_solution;
     update_local_branching_constraint();
-
-    // Optionally, reset radius to initial value
 
 }
 
@@ -221,7 +235,7 @@ unsigned int idol::Robust::CCGStabilizers::TrustRegion::Strategy::current_radius
         return m_n_binary_first_stage_decisions;
     }
 
-    return std::ceil(m_trust_factor[m_current_trust_factor_index] * m_n_binary_first_stage_decisions);
+    return std::ceil( m_trust_factor[m_current_trust_factor_index] * (double) m_n_binary_first_stage_decisions);
 }
 
 void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_radius() {
@@ -229,7 +243,6 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_radius() {
     double old_radius = current_radius();
 
     do {
-        std::cout << "update" << std::endl;
         ++m_current_trust_factor_index;
     } while (m_current_trust_factor_index < m_trust_factor.size() && current_radius() == old_radius);
 
