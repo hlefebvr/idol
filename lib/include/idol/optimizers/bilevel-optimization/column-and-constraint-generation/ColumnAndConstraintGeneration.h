@@ -44,4 +44,6 @@ public:
     ColumnAndConstraintGeneration& with_stabilization(const idol::Robust::CCGStabilizer& t_stabilizer);
 };
 
+#include "stabilizers.h"
+
 #endif //IDOL_BILEVEL_COLUMNANDCONSTRAINTGENERATION_H

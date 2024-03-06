@@ -234,6 +234,7 @@ add_library(idol STATIC
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.cpp
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/stabilizers.h
 )
 
 find_package(OpenMP REQUIRED)
