@@ -1,7 +1,7 @@
 .. _api_ro_ccg_separators:
 
-Separators
-==========
+Separation and Separators
+=========================
 
 .. toctree::
     :maxdepth: 2
