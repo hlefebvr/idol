@@ -126,7 +126,7 @@ idol::Robust::CCGStabilizers::TrustRegion::Strategy::build_distance_to_point(con
     const auto& master_problem = this->master_problem();
 
     Expr result;
-    for (const auto& var : upper_level_vars()) {
+    for (const auto& var : coupling_vars()) {
 
         const auto type = master_problem.get_var_type(var);
 

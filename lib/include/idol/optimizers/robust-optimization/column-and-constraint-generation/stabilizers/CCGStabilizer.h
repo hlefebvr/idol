@@ -37,6 +37,7 @@ public:
         idol::Model& master_problem();
 
         const std::list<Var>& upper_level_vars() const;
+        const std::list<Var>& coupling_vars() const;
         const Solution::Primal& current_master_solution() const;
         const Solution::Primal& current_separation_solution() const;
         void check_stopping_condition() const;

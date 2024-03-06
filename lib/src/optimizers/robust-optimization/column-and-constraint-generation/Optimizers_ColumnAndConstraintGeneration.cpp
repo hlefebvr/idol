@@ -7,6 +7,7 @@
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Env.h"
+#include "idol/containers/Set.h"
 
 #define N_SECTIONS 3
 #define LOG_WIDTH_ITERATION 5
@@ -48,6 +49,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
     build_coupling_constraints_list();
     build_upper_and_lower_level_variables_list();
     build_upper_and_lower_level_constraints_list();
+    build_coupling_variables_list();
 
     m_master_problem.use(t_master_optimizer);
 
@@ -170,6 +172,48 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_con
         m_coupling_constraints.emplace_back(ctr);
 
     }
+
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_variables_list() {
+
+    const auto& parent = this->parent();
+
+    m_coupling_variables.clear();
+
+    Set<Var> coupling_variables;
+
+    const auto add_coupling_variables = [&](const Ctr& t_ctr) {
+
+        const auto& row = parent.get_ctr_row(t_ctr);
+
+        for (const auto& [var, coefficient] : row.linear()) {
+
+            if (var.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var);
+            }
+
+        }
+
+        for (const auto& [var1, var2, coefficient] : row.quadratic()) {
+
+            if (var1.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var1);
+            }
+
+            if (var2.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var2);
+            }
+
+        }
+
+    };
+
+    for (const auto& ctr : m_lower_level_constraints_list) {
+        add_coupling_variables(ctr);
+    }
+
+    std::copy(coupling_variables.begin(), coupling_variables.end(), std::back_inserter(m_coupling_variables));
 
 }
 

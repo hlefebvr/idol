@@ -52,3 +52,7 @@ void idol::Robust::CCGStabilizer::Strategy::set_incumbent(const idol::Solution::
     m_parent->m_incumbent = t_incumbent;
 }
 
+const std::list<idol::Var> &idol::Robust::CCGStabilizer::Strategy::coupling_vars() const {
+    return m_parent->m_coupling_variables;
+}
+

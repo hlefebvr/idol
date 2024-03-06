@@ -225,7 +225,16 @@ int main(int t_argc, char** t_argv) {
     auto [model,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/nlp/BCPIns_8_7_1.txt_trad.txt_K5_p25_k25_s25.aux");
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5010W04.KNP.aux");
+
+    // hard: /home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux
+
+    std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
+    if (false) {
+        stabilization.reset(Bilevel::CCGStabilizers::TrustRegion().clone());
+    } else {
+        stabilization.reset(Bilevel::CCGStabilizers::NoStabilization().clone());
+    }
 
     model.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,
@@ -233,9 +242,7 @@ int main(int t_argc, char** t_argv) {
                                                       lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
-                    .with_stabilization(
-                            Bilevel::CCGStabilizers::TrustRegion().with_trust_factors({ .01, .02, .5 })
-                    )
+                    .with_stabilization(*stabilization)
                     .with_logs(true)
             );
 

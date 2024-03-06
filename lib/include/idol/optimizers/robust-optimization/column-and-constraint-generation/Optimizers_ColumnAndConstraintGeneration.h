@@ -37,6 +37,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
 
     std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;
+    std::list<Var> m_coupling_variables;
     std::list<Var> m_upper_level_variables_list;
     std::list<Var> m_lower_level_variables_list;
     std::list<Ctr> m_upper_level_constraints_list;
@@ -72,6 +73,7 @@ protected:
     void build_master_problem_constraints();
     void build_master_problem_objective_and_epigraph();
     void build_coupling_constraints_list();
+    void build_coupling_variables_list();
     void build_upper_and_lower_level_variables_list();
     void build_upper_and_lower_level_constraints_list();
 
