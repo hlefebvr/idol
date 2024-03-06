@@ -5,7 +5,7 @@
 #ifndef IDOL_MAXMINDUALIZE_H
 #define IDOL_MAXMINDUALIZE_H
 
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
+#include "ColumnAndConstraintGenerationSeparator.h"
 #include "idol/optimizers/OptimizerFactory.h"
 
 namespace idol::Robust::ColumnAndConstraintSeparators {

@@ -7,7 +7,7 @@
 
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/OptimizerFactory.h"
-#include "ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
 #include "idol/modeling/models/Model.h"
 
 #include <optional>

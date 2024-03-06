@@ -6,7 +6,7 @@
 #define IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
 
 #include "idol/optimizers/OptimizerFactory.h"
-#include "ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
 #include "idol/modeling/models/Model.h"
 
 namespace idol::Robust {

@@ -5,7 +5,7 @@
 #ifndef IDOL_BILEVEL_H
 #define IDOL_BILEVEL_H
 
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
+#include "ColumnAndConstraintGenerationSeparator.h"
 
 namespace idol::Optimizers::Robust {
     class ColumnAndConstraintGeneration;

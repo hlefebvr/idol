@@ -59,6 +59,14 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 highlight_language = 'c++'
 
+html_css_files = [
+    'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css',
+]
+
+html_js_files = [
+    'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js'
+]
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the docs for

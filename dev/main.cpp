@@ -224,7 +224,7 @@ int main(int t_argc, char** t_argv) {
     auto [model,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5010W03.KNP.aux");
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/nlp/BCPIns_8_7_1.txt_trad.txt_K5_p25_k25_s25.aux");
 
     model.use(
                 Bilevel::ColumnAndConstraintGeneration(var_annotation,

@@ -5,9 +5,9 @@
 #ifndef IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
 #define IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATIONSEPARATOR_H
 
-#include "idol/modeling/solutions/Solution.h"
-#include "idol/modeling/matrix/Row.h"
-#include "idol/modeling/constraints/Ctr.h"
+#include "../../../../modeling/solutions/Solution.h"
+#include "../../../../modeling/matrix/Row.h"
+#include "../../../../modeling/constraints/Ctr.h"
 
 namespace idol {
     namespace Robust {

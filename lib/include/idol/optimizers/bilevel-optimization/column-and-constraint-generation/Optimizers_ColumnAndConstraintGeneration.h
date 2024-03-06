@@ -10,7 +10,7 @@
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
 #include "MinMaxMinFormulation.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.h"
 
 namespace idol::Optimizers::Bilevel {
     class ColumnAndConstraintGeneration;

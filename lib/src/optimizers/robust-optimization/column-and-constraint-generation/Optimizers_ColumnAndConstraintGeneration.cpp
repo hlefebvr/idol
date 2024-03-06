@@ -291,6 +291,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
         std::cout << "\tN. pure upper level: " << n_master_constraints << '\n';
         std::cout << "\tN. coupling: " << (n_coupling_constraints + m_epigraph.has_value()) << '\n';
         std::cout << "\tN. lower level: " << n_lower_level_constraints << '\n';
+
+        std::cout << std::endl;
     }
 
     set_best_bound(-Inf);
