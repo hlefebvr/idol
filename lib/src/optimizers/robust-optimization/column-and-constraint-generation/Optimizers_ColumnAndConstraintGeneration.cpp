@@ -216,7 +216,7 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
-    return m_current_master_solution->get(t_var);
+    return m_master_problem.get_var_primal(t_var);
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {

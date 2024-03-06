@@ -167,11 +167,6 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separatio
         return;
     }
 
-    // Update stability center
-    add_reversed_local_branching_constraint();
-    m_stability_center = current_master_solution();
-    update_local_branching_constraint();
-
     // Update UB
     set_status(Feasible);
     set_reason(Proved);
@@ -184,6 +179,17 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separatio
     remove_all_stabilization_constraints(lb_model);
     lb_model.optimize();
     set_best_bound(lb_model.get_best_obj());
+
+    check_stopping_condition();
+
+    if (parent().is_terminated()) {
+        return;
+    }
+
+    // Update stability center
+    add_reversed_local_branching_constraint();
+    m_stability_center = current_master_solution();
+    update_local_branching_constraint();
 
     // Optionally, reset radius to initial value
 

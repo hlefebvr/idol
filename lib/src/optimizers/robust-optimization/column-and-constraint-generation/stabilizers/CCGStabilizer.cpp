@@ -44,3 +44,7 @@ const idol::Solution::Primal &idol::Robust::CCGStabilizer::Strategy::current_mas
     return *m_parent->m_current_master_solution;
 }
 
+void idol::Robust::CCGStabilizer::Strategy::check_stopping_condition() const {
+    m_parent->check_stopping_condition();
+}
+
