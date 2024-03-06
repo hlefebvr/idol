@@ -37,11 +37,11 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                bool t_complete_recourse)
         : Algorithm(t_parent),
           m_uncertainty_set(t_uncertainty_set.copy()),
-          m_lower_level_variables(t_lower_level_variables),
-          m_lower_level_constraints(t_lower_level_constraints),
+          m_variable_stage(t_lower_level_variables),
+          m_constraint_stage(t_lower_level_constraints),
           m_master_problem(t_parent.env()),
           m_separator(t_separator.clone()),
-          m_stabilizer(t_stabilizer.clone()),
+          m_stabilizer(t_stabilizer.operator()()),
           m_complete_recourse(t_complete_recourse) {
 
     build_master_problem();
@@ -67,7 +67,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
+        if (var.get(m_variable_stage) != MasterId) {
             continue;
         }
 
@@ -87,7 +87,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_lower_level_constraints) != MasterId) {
+        if (ctr.get(m_constraint_stage) != MasterId) {
             continue;
         }
 
@@ -116,7 +116,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
     Expr lower_level_variables_part;
     for (const auto& [var, constant] : objective.linear()) {
 
-        if (var.get(m_lower_level_variables) == MasterId) {
+        if (var.get(m_variable_stage) == MasterId) {
             upper_level_variables_part += constant * var;
         } else {
             lower_level_variables_part += constant * var;
@@ -126,8 +126,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
 
-        const auto id1 = var1.get(m_lower_level_variables);
-        const auto id2 = var2.get(m_lower_level_variables);
+        const auto id1 = var1.get(m_variable_stage);
+        const auto id2 = var2.get(m_variable_stage);
 
         if (id1 != MasterId || id2 != MasterId) {
             lower_level_variables_part += constant * var1 * var2;
@@ -157,7 +157,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_con
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_lower_level_constraints) != MasterId) {
+        if (ctr.get(m_constraint_stage) != MasterId) {
             continue;
         }
 
@@ -182,7 +182,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lo
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
+        if (var.get(m_variable_stage) != MasterId) {
             m_lower_level_variables_list.emplace_back(var);
         } else {
             m_upper_level_variables_list.emplace_back(var);
@@ -201,7 +201,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lo
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_lower_level_constraints) != MasterId) {
+        if (ctr.get(m_constraint_stage) != MasterId) {
             m_lower_level_constraints_list.emplace_back(ctr);
         } else {
             m_upper_level_constraints_list.emplace_back(ctr);
@@ -216,12 +216,7 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
-
-    if (t_var.get(m_lower_level_variables) != MasterId) {
-        return 0.;
-    }
-
-    return m_master_problem.get_var_primal(t_var);
+    return m_current_master_solution->get(t_var);
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
@@ -303,7 +298,9 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     set_reason(NotSpecified);
 
     m_iteration_count = 0;
-    m_last_scenario = Solution::Primal();
+
+    m_stabilizer->set_parent(this);
+    m_stabilizer->initialize();
 
 }
 
@@ -313,27 +310,27 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
     while (!is_terminated()) {
 
-        solve_master_problem();
+        m_current_master_solution = solve_master_problem();
 
-        analyze_master_problem_solution();
+        m_stabilizer->analyze_current_master_problem_solution();
 
         log(true);
 
         if (is_terminated()) { break; }
 
         m_separation_timer.start();
-        m_last_scenario = solve_separation_problems();
+        m_current_separation_solution = solve_separation_problems();
         m_separation_timer.stop();
 
         if (is_terminated()) { break; }
 
-        analyze_last_separation();
+        m_stabilizer->analyze_last_separation_solution();
 
         log(false);
 
         if (is_terminated()) { break; }
 
-        add_scenario(m_last_scenario);
+        add_scenario(*m_current_separation_solution);
 
         check_stopping_condition();
 
@@ -396,7 +393,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_va
 
     for (const auto& [var, constant] : t_expr) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
+        if (var.get(m_variable_stage) != MasterId) {
             return true;
         }
 
@@ -411,7 +408,7 @@ bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_lev
 
     for (const auto& [var1, var2, constant] : t_expr) {
 
-        if (var1.get(m_lower_level_variables) != MasterId || var2.get(m_lower_level_variables) != MasterId) {
+        if (var1.get(m_variable_stage) != MasterId || var2.get(m_variable_stage) != MasterId) {
             return true;
         }
 
@@ -421,37 +418,36 @@ bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_lev
 
 }
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
-    m_master_problem.optimize();
-}
+idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
 
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_master_problem_solution() {
+    m_master_problem.optimize();
+
+    Solution::Primal result;
 
     const auto status = m_master_problem.get_status();
+    const auto reason = m_master_problem.get_reason();
+    const auto objective_value = m_master_problem.get_best_obj();
 
-    if (status == Unbounded) {
-        throw Exception("Not implemented: cannot handle unbounded master problem, yet.");
+    result.set_status(status);
+    result.set_reason(reason);
+    result.set_objective_value(objective_value);
+
+    if (status != Optimal && status != Feasible) {
+        return result;
     }
 
-    if (status == Infeasible) {
-        set_status(Infeasible);
-        set_reason(Proved);
-        terminate();
-        return;
+    if (m_epigraph.has_value() && m_master_problem.has(m_epigraph->first)) {
+        const auto& epigraph_var = m_epigraph->first;
+        const double value = m_master_problem.get_var_primal(epigraph_var);
+        result.set(epigraph_var, value);
     }
 
-    if (status != Optimal) {
-        const auto reason = m_master_problem.get_reason();
-        set_status(status);
-        set_reason(reason);
-        terminate();
-        return;
+    for (const auto& var : m_upper_level_variables_list) {
+        const double value = m_master_problem.get_var_primal(var);
+        result.set(var, value);
     }
 
-    const double objective = m_master_problem.get_best_obj();
-
-    set_best_bound(objective);
-    set_status(SubOptimal);
+    return result;
 
 }
 
@@ -483,7 +479,6 @@ idol::Solution::Primal
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     const auto& parent = this->parent();
-    Solution::Primal upper_level_solution = save_upper_level_primal();
 
     double max = -Inf;
     Solution::Primal argmax;
@@ -491,7 +486,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
 
     const auto evaluate = [&](const Row& t_row, CtrType t_type) {
 
-        auto solution = m_separator->operator()(*this, upper_level_solution, t_row, t_type);
+        auto solution = m_separator->operator()(*this, *m_current_master_solution, t_row, t_type);
 
         /*
         std::cout << "SEPARATION SOLUTION "
@@ -555,55 +550,6 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
     return argmax;
 }
 
-idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::save_upper_level_primal() const {
-
-    Solution::Primal result;
-
-    const auto status = m_master_problem.get_status();
-    const auto reason = m_master_problem.get_reason();
-    const auto objective_value = m_master_problem.get_best_obj();
-
-    result.set_status(status);
-    result.set_reason(reason);
-    result.set_objective_value(objective_value);
-
-    if (m_epigraph.has_value() && m_master_problem.has(m_epigraph->first)) {
-        const auto& epigraph_var = m_epigraph->first;
-        const double value = m_master_problem.get_var_primal(epigraph_var);
-        result.set(epigraph_var, value);
-    }
-
-    for (const auto& var : m_upper_level_variables_list) {
-        const double value = m_master_problem.get_var_primal(var);
-        result.set(var, value);
-    }
-
-    return result;
-}
-
-void idol::Optimizers::Robust::ColumnAndConstraintGeneration::analyze_last_separation() {
-
-    const auto status = m_last_scenario.status();
-
-    if (status != Optimal) {
-        set_status(status);
-        set_reason(m_last_scenario.reason());
-        terminate();
-        return;
-    }
-
-    // TODO for <= only
-
-    if (m_last_scenario.objective_value() <= Tolerance::Feasibility) {
-        set_status(Optimal);
-        set_reason(Proved);
-        set_best_obj(get_best_bound());
-        terminate();
-        return;
-    }
-
-}
-
 void
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
 
@@ -634,7 +580,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
         for (const auto& [var, constant] : t_row.linear()) {
 
-            if (var.get(m_lower_level_variables) == MasterId) {
+            if (var.get(m_variable_stage) == MasterId) {
                 lhs += constant.fix(t_most_violated_scenario) * var;
                 continue;
             }
@@ -700,9 +646,10 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log(bool t_is_rmp)
 
     const std::string iter_type = t_is_rmp ? "RMP" : "SP";
 
-    const SolutionStatus iter_status = t_is_rmp ? m_master_problem.get_status() : m_last_scenario.status();
-    const SolutionReason iter_reason = t_is_rmp ? m_master_problem.get_reason() : m_last_scenario.reason();
-    const double iter_obj = t_is_rmp ? m_master_problem.get_best_obj() : m_last_scenario.objective_value();
+    const Solution::Primal& iter_solution = t_is_rmp ? *m_current_master_solution : *m_current_separation_solution;
+    const SolutionStatus iter_status = iter_solution.status();
+    const SolutionReason iter_reason = iter_solution.reason();
+    const double iter_obj = iter_solution.objective_value();
 
     std::cout
             << " | "

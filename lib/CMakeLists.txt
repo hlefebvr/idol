@@ -235,6 +235,7 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.cpp
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
         include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/stabilizers.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.cpp
 )
 
 find_package(OpenMP REQUIRED)

@@ -19,17 +19,20 @@ namespace idol::Optimizers::Robust {
 
 class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm {
     std::unique_ptr<idol::Robust::CCGSeparator> m_separator;
-    std::unique_ptr<idol::Robust::CCGStabilizer> m_stabilizer;
+    std::unique_ptr<idol::Robust::CCGStabilizer::Strategy> m_stabilizer;
+
+    friend idol::Robust::CCGStabilizer::Strategy;
 
     Model m_master_problem;
     Model m_uncertainty_set;
-    const Annotation<Var, unsigned int> m_lower_level_variables;
-    const Annotation<Ctr, unsigned int> m_lower_level_constraints;
+    const Annotation<Var, unsigned int> m_variable_stage;
+    const Annotation<Ctr, unsigned int> m_constraint_stage;
     bool m_complete_recourse;
 
     Timer m_separation_timer;
     unsigned int m_iteration_count = 0;
-    Solution::Primal m_last_scenario;
+    std::optional<Solution::Primal> m_current_separation_solution;
+    std::optional<Solution::Primal> m_current_master_solution;
 
     std::optional<std::pair<Var, Ctr>> m_epigraph;
     std::list<Ctr> m_coupling_constraints;
@@ -57,9 +60,10 @@ public:
     unsigned int get_n_solutions() const override;
     unsigned int get_solution_index() const override;
 
+    const Model& master_problem() const { return m_master_problem; }
     const Model& uncertainty_set() const { return m_uncertainty_set; }
-    const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_lower_level_constraints; };
-    const Annotation<Var, unsigned int> lower_level_variables() const { return m_lower_level_variables; };
+    const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_constraint_stage; };
+    const Annotation<Var, unsigned int> lower_level_variables() const { return m_variable_stage; };
     bool complete_recourse() const { return m_complete_recourse; }
 protected:
     void build_master_problem();
@@ -73,13 +77,10 @@ protected:
     bool contains_lower_level_variable(const LinExpr<Var>& t_expr);
     bool contains_lower_level_variable(const QuadExpr<Var, Var>& t_expr);
 
-    void solve_master_problem();
-    void analyze_master_problem_solution();
-    void check_stopping_condition();
-    void analyze_last_separation();
-    void add_scenario(const Solution::Primal& t_most_violated_scenario);
+    Solution::Primal solve_master_problem();
     Solution::Primal solve_separation_problems();
-    Solution::Primal save_upper_level_primal() const;
+    void add_scenario(const Solution::Primal& t_most_violated_scenario);
+    void check_stopping_condition();
 
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;

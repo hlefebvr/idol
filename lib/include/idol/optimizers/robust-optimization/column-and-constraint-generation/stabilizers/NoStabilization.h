@@ -22,6 +22,10 @@ public:
     NoStabilization& operator=(NoStabilization&&) = default;
 
     class Strategy : public CCGStabilizer::Strategy {
+    public:
+        void initialize() override;
+        void analyze_current_master_problem_solution() override;
+        void analyze_last_separation_solution() override;
     };
 
     CCGStabilizer::Strategy *operator()() const override;
