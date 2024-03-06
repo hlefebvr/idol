@@ -233,7 +233,9 @@ int main(int t_argc, char** t_argv) {
                                                       lower_level_objective)
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
-                    .with_stabilization(Bilevel::CCGStabilizers::TrustRegion())
+                    .with_stabilization(
+                            Bilevel::CCGStabilizers::TrustRegion().with_trust_factors({ .01, .02, .5 })
+                    )
                     .with_logs(true)
             );
 

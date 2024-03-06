@@ -7,11 +7,31 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 
 idol::Robust::CCGStabilizers::TrustRegion::Strategy *idol::Robust::CCGStabilizers::TrustRegion::operator()() const {
-    return new Strategy();
+    return new Strategy(*m_trust_factors);
 }
 
-idol::Robust::CCGStabilizer *idol::Robust::CCGStabilizers::TrustRegion::clone() const {
+idol::Robust::CCGStabilizers::TrustRegion *idol::Robust::CCGStabilizers::TrustRegion::clone() const {
     return new TrustRegion(*this);
+}
+
+idol::Robust::CCGStabilizers::TrustRegion &
+idol::Robust::CCGStabilizers::TrustRegion::with_trust_factors(std::vector<double> t_trust_factors) {
+
+    if (m_trust_factors.has_value()) {
+        throw Exception("Trust factors already set.");
+    }
+
+    m_trust_factors = std::move(t_trust_factors);
+
+    if (std::any_of(m_trust_factors->begin(), m_trust_factors->end(), [](const double& t_value) { return t_value <= 0; })) {
+        throw Exception("Trust factors must be positive.");
+    }
+
+    return *this;
+}
+
+idol::Robust::CCGStabilizers::TrustRegion::Strategy::Strategy(const std::vector<double> &t_trust_factors) : m_trust_factor(t_trust_factors) {
+
 }
 
 void idol::Robust::CCGStabilizers::TrustRegion::Strategy::initialize() {
@@ -20,8 +40,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::initialize() {
     m_stability_center.reset();
     m_reversed_local_branching_constraints.clear();
 
-    m_initial_radius = 2; // TODO change this
-    m_current_radius = m_initial_radius;
+    m_current_trust_factor_index = 0;
 
 }
 
@@ -36,13 +55,13 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_current_master
 
     if (status == Infeasible) {
 
-        if ((!m_stability_center || m_current_radius >= m_n_binary_first_stage_decisions)) {
+        if ((!m_stability_center || current_radius() >= m_n_binary_first_stage_decisions)) {
             set_reason(Proved);
             terminate();
             return;
         } else {
             add_reversed_local_branching_constraint();
-            m_current_radius *= 2;
+            update_radius();
             return;
         }
 
@@ -79,7 +98,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_local_branching
     const auto distance_to_point = build_distance_to_point(m_stability_center.value());
 
     if (!m_local_branching_constraint) {
-        m_local_branching_constraint = master_problem.add_ctr(distance_to_point <= m_current_radius);
+        m_local_branching_constraint = master_problem.add_ctr(distance_to_point <= current_radius());
     } else {
         assert(master_problem.has(*m_local_branching_constraint));
 
@@ -89,7 +108,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_local_branching
         //master_problem.remove(*m_local_branching_constraint);
         //m_local_branching_constraint = master_problem.add_ctr(distance_to_point <= m_current_radius);
 
-        master_problem.set_ctr_row(*m_local_branching_constraint, Row(distance_to_point, m_current_radius));
+        master_problem.set_ctr_row(*m_local_branching_constraint, Row(distance_to_point, current_radius()));
     }
 
 }
@@ -129,10 +148,11 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::add_reversed_local_bra
     auto& master_problem = this->master_problem();
 
     const auto distance_to_point = build_distance_to_point(m_stability_center.value());
+    const double current_radius = this->current_radius();
 
-    auto c = master_problem.add_ctr(distance_to_point >= m_current_radius + 1);
+    auto c = master_problem.add_ctr(distance_to_point >= current_radius + 1);
 
-    m_reversed_local_branching_constraints.emplace_back(c, m_stability_center.value(), m_current_radius);
+    m_reversed_local_branching_constraints.emplace_back(c, m_stability_center.value(), current_radius);
 
 }
 
@@ -192,5 +212,25 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separatio
     update_local_branching_constraint();
 
     // Optionally, reset radius to initial value
+
+}
+
+unsigned int idol::Robust::CCGStabilizers::TrustRegion::Strategy::current_radius() const {
+
+    if (m_current_trust_factor_index >= m_trust_factor.size()) {
+        return m_n_binary_first_stage_decisions;
+    }
+
+    return std::ceil(m_trust_factor[m_current_trust_factor_index] * m_n_binary_first_stage_decisions);
+}
+
+void idol::Robust::CCGStabilizers::TrustRegion::Strategy::update_radius() {
+
+    double old_radius = current_radius();
+
+    do {
+        std::cout << "update" << std::endl;
+        ++m_current_trust_factor_index;
+    } while (m_current_trust_factor_index < m_trust_factor.size() && current_radius() == old_radius);
 
 }
