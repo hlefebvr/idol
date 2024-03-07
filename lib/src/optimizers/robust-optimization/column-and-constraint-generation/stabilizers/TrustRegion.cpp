@@ -57,6 +57,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_current_master
 
     const auto &solution = this->current_master_solution();
     const auto status = solution.status();
+    const auto reason = solution.reason();
 
     if (status == Unbounded) {
         throw Exception("Not implemented: cannot handle unbounded master problem, yet.");
@@ -64,21 +65,20 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_current_master
 
     if (status == Infeasible) {
 
-        if ((!m_stability_center || current_radius() >= m_n_binary_first_stage_decisions)) {
-            set_reason(Proved);
+        if (reason != Proved || (!m_stability_center || current_radius() >= m_n_binary_first_stage_decisions)) {
+            set_status(status);
+            set_reason(reason);
             terminate();
-            return;
-        } else {
-            add_reversed_local_branching_constraint();
-            update_radius();
-            update_local_branching_constraint();
             return;
         }
 
+        add_reversed_local_branching_constraint();
+        update_radius();
+        update_local_branching_constraint();
+        return;
     }
 
     if (status != Optimal) {
-        const auto reason = solution.reason();
         set_status(status);
         set_reason(reason);
         terminate();
@@ -208,6 +208,7 @@ void idol::Robust::CCGStabilizers::TrustRegion::Strategy::analyze_last_separatio
     // Update LB
     auto lb_model = this->master_problem().copy();
     remove_all_stabilization_constraints(lb_model);
+    lb_model.optimizer().set_param_time_limit(parent.get_remaining_time());
     lb_model.optimize();
     const double lb = parent.get_best_bound();
     const double iter_lb = lb_model.get_best_obj();

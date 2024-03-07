@@ -470,6 +470,7 @@ bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_lev
 
 idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
 
+    m_master_problem.optimizer().set_param_time_limit(get_remaining_time());
     m_master_problem.optimize();
 
     Solution::Primal result;
@@ -536,7 +537,11 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
 
     const auto evaluate = [&](const Row& t_row, CtrType t_type) {
 
-        auto solution = m_separator->operator()(*this, *m_current_master_solution, t_row, t_type);
+        auto solution = m_separator->operator()(
+                *this,
+                *m_current_master_solution,
+                t_row,
+                t_type);
 
         /*
         std::cout << "SEPARATION SOLUTION "

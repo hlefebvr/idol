@@ -21,6 +21,7 @@ void idol::Robust::CCGStabilizers::NoStabilization::Strategy::analyze_current_ma
 
     const auto& solution = this->current_master_solution();
     const auto status = solution.status();
+    const auto reason = solution.reason();
 
     if (status == Unbounded) {
         throw Exception("Not implemented: cannot handle unbounded master problem, yet.");
@@ -28,13 +29,12 @@ void idol::Robust::CCGStabilizers::NoStabilization::Strategy::analyze_current_ma
 
     if (status == Infeasible) {
         set_status(Infeasible);
-        set_reason(Proved);
+        set_reason(reason);
         terminate();
         return;
     }
 
     if (status != Optimal) {
-        const auto reason = solution.reason();
         set_status(status);
         set_reason(reason);
         terminate();

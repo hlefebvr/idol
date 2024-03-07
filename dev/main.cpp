@@ -220,17 +220,25 @@ using namespace idol;
 
 int main(int t_argc, char** t_argv) {
 
+    if (t_argc != 4) {
+        throw Exception("Expected arguments: <path_to_file> <stabilization=0|1> <time_limit>");
+    }
+
+    const std::string instance_file = t_argv[1];
+    const bool use_stabilization = std::stoi(t_argv[2]);
+    const double time_limit = std::stod(t_argv[3]);
+
     Env env;
 
     auto [model,
           var_annotation,
           ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5010W04.KNP.aux");
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, instance_file);
 
     // hard: /home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux
 
     std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
-    if (false) {
+    if (use_stabilization) {
         stabilization.reset(Bilevel::CCGStabilizers::TrustRegion().clone());
     } else {
         stabilization.reset(Bilevel::CCGStabilizers::NoStabilization().clone());
@@ -243,6 +251,7 @@ int main(int t_argc, char** t_argv) {
                     .with_master_optimizer(Gurobi())
                     .with_lower_level_optimizer(Gurobi())
                     .with_stabilization(*stabilization)
+                    .with_time_limit(time_limit)
                     .with_logs(true)
             );
 
@@ -250,9 +259,18 @@ int main(int t_argc, char** t_argv) {
 
     model.optimize();
 
-    std::cout << "Done!" << std::endl;
-
-    std::cout << save_primal(model) << std::endl;
+    std::cout
+            << "result,"
+            << instance_file << ','
+            << model.vars().size() << ','
+            << model.ctrs().size() << ','
+            << use_stabilization << ','
+            << model.optimizer().time().count() << ','
+            << model.get_status() << ','
+            << model.get_reason() << ','
+            << model.get_best_bound() << ','
+            << model.get_best_obj() << ','
+            << std::endl;
 
     return 0;
 }

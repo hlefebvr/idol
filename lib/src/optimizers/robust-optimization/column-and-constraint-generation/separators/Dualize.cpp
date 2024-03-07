@@ -24,12 +24,14 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Dualize::operator()(
     const auto& uncertainty_set = t_parent.uncertainty_set();
     auto& env = uncertainty_set.env();
 
+    const double time_limit = t_parent.get_remaining_time();
+
     if (!t_parent.complete_recourse()) {
 
         Model primal = create_second_stage_primal_problem(env, t_parent, t_upper_level_solution);
         make_feasibility_problem(primal);
 
-        const auto result = solve_max_min(uncertainty_set, primal);
+        const auto result = solve_max_min(uncertainty_set, primal, time_limit);
 
         if (result.status() != Optimal || result.objective_value() < -Tolerance::Feasibility) {
             return result;
@@ -40,7 +42,7 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Dualize::operator()(
     Model primal = create_second_stage_primal_problem(env, t_parent, t_upper_level_solution);
     set_second_stage_primal_objective(primal, t_parent, t_upper_level_solution, t_row, t_type);
 
-    auto result = solve_max_min(uncertainty_set, primal);
+    const auto result = solve_max_min(uncertainty_set, primal, time_limit);
 
     return result;
 }
@@ -214,7 +216,8 @@ idol::Robust::CCGSeparators::Dualize::make_feasibility_problem(idol::Model &t_mo
 
 idol::Solution::Primal
 idol::Robust::CCGSeparators::Dualize::solve_max_min(const idol::Model &t_max,
-                                                    const idol::Model &t_min) const {
+                                                    const idol::Model &t_min,
+                                                    double t_time_limit) const {
 
     auto dual = dualize(t_min, true);
 
@@ -253,6 +256,7 @@ idol::Robust::CCGSeparators::Dualize::solve_max_min(const idol::Model &t_max,
 
     dual.use(*m_optimizer_factory);
 
+    dual.optimizer().set_param_time_limit(t_time_limit);
     dual.optimize();
 
     const auto status = dual.get_status();

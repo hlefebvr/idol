@@ -5,6 +5,7 @@
 #include <cassert>
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/expressions/operations/operators.h"
@@ -43,10 +44,13 @@ ExtendedLowerLevelSeparator::operator()(const idol::Optimizers::Robust::ColumnAn
                                         const idol::Row &t_row,
                                         idol::CtrType t_type) const {
 
+    const auto time_limit = t_parent.get_param_time_limit();
+
     auto objective = m_formulation.extended_lower_level().get_obj_expr().fix(t_upper_level_solution);
 
     m_extended_model.set_obj_expr(objective);
 
+    m_extended_model.optimizer().set_param_time_limit(time_limit);
     m_extended_model.optimize();
 
     const auto status = m_extended_model.get_status();

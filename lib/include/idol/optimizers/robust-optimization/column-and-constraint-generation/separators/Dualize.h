@@ -21,7 +21,7 @@ class idol::Robust::CCGSeparators::Dualize : public idol::Robust::CCGSeparator {
 
     void make_feasibility_problem(Model& t_model) const;
 
-    Solution::Primal solve_max_min(const Model& t_max, const Model& t_min) const;
+    Solution::Primal solve_max_min(const Model& t_max, const Model& t_min, double t_time_limit) const;
 
     void add_lower_level_constraint(Model& t_primal,
                                     const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
