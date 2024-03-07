@@ -61,6 +61,7 @@ highlight_language = 'c++'
 
 html_css_files = [
     'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css',
+    'https://fonts.googleapis.com/css2?family=Lora&display=swap',
     'design.css'
 ]
 
