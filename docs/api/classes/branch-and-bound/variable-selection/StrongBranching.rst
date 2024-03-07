@@ -1,0 +1,4 @@
+StrongBranching
+===============
+
+.. doxygenclass:: idol::StrongBranching

@@ -1,0 +1,4 @@
+UserCutCallback
+===============
+
+.. doxygenclass:: idol::UserCutCallback

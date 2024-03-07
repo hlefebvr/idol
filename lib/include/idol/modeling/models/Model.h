@@ -537,7 +537,7 @@ public:
      * Asks the model's optimizer to update his current version of the model.
      *
      * Note that you typically do not need to call this method since updates are automatically done.
-     * While some optimizers perform "lazy updates" and actually update their representation of the model only when necessary
+     * While some external-mip perform "lazy updates" and actually update their representation of the model only when necessary
      * (e.g., before solving or writing to file), even in this case, updates are automatically done so that the user
      * should not need to use this method.
      *
@@ -836,7 +836,7 @@ public:
      *
      * Example:
      * ```cpp
-     * CtrType type = model.get_ctr_type(c1);
+     * CtrType.rst type = model.get_ctr_type(c1);
      *
      * if (type == LessOrEqual) {
      *      std::cout << "c1 is a <= constraint" << std::endl;
@@ -1192,7 +1192,7 @@ public:
     /**
      * Returns the number of available primal solutions.
      *
-     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * Some external-mip can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
      * solution pools). This function can be used to query the number of available solutions.
      * The solution is selected with `Model::set_solution_index` and retrieved via get_var_primal and get_best_obj.
      *
@@ -1210,7 +1210,7 @@ public:
     /**
      * Returns the current solution index.
      *
-     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * Some external-mip can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
      * solution pools). This function return the current solution index which is being returned by the model.
      *
      * Example:
@@ -1226,7 +1226,7 @@ public:
     /**
      * Sets the index of the solution returned by get_var_primal, get_status and get_reason.
      *
-     * Some optimizers can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
+     * Some external-mip can find several optimal or sub-optimal solutions (e.g., in branch-and-bound algorithms with
      * solution pools). This method can be used to change the solution index which is being returned by the model.
      *
      * Example:

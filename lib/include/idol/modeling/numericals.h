@@ -18,7 +18,7 @@ namespace idol {
     /**
      * Stores the default high-level tolerances used in idol.
      *
-     * It is possible for optimizers to have additional tolerance parameters, yet, the tolerances defined in this namespace
+     * It is possible for external-mip to have additional tolerance parameters, yet, the tolerances defined in this namespace
      * should always be taken into account by the optimizer. Apart from the Sparsity tolerance,
      * users can also change tolerance values at a local level (i.e., at an optimizer level) rather than at a global level.
      */

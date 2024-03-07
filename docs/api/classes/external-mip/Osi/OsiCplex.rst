@@ -1,0 +1,4 @@
+OsiCplex
+========
+
+.. doxygenclass:: idol::OsiCplex

@@ -1,0 +1,4 @@
+WorstBound
+==========
+
+.. doxygenclass:: idol::WorstBound

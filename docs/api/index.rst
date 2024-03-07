@@ -4,10 +4,8 @@ API
 ===
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
     :glob:
 
-    modeling/index
-    optimizers/index
-    problems/index
-    tolerances
+    classes/index
+    types/index

@@ -1,0 +1,4 @@
+FirstInfeasibleFound
+====================
+
+.. doxygenclass:: idol::FirstInfeasibleFound

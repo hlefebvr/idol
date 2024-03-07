@@ -21,7 +21,7 @@ namespace idol {
  * OptimizerFactory is the base class for all optimizer factories.
  *
  * An optimizer Factory is used to create an optimizer when actually needed. They can be seen as customizable
- * "building plans" for actually creating optimizers.
+ * "building plans" for actually creating external-mip.
  */
 class idol::OptimizerFactory {
 public:

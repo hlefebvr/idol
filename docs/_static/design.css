@@ -73,6 +73,7 @@
             "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
+            font-weight:150;
             font-size :2.25em;
             overflow-wrap: break-word;
         }
@@ -88,8 +89,8 @@
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
             color:#6ab0de;
-            font-weight: normal;
             font-size:0.7em;
+            font-weight:150;
         }
 
     }

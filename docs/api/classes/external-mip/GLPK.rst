@@ -1,0 +1,4 @@
+GLPK
+====
+
+.. doxygenclass:: idol::GLPK

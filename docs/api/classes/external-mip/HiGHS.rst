@@ -1,0 +1,4 @@
+HiGHS
+=====
+
+.. doxygenclass:: idol::HiGHS
