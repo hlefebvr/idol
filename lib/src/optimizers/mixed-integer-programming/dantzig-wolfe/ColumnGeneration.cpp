@@ -124,7 +124,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::update_sub_p
 
 void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::solve_sub_problems_in_parallel() {
 
-    const unsigned int n_threads = std::min(m_parent.get_param_threads(), m_parent.m_max_parallel_pricing);
+    const unsigned int n_threads = std::min(m_parent.get_param_thread_limit(), m_parent.m_max_parallel_pricing);
 
     #pragma omp parallel for num_threads(n_threads) default(none)
     for (auto& sub_problem : m_parent.m_formulation.sub_problems()) {

@@ -26,10 +26,14 @@
 #include "idol/optimizers/mixed-integer-programming/callbacks/heuristics/IntegerMaster.h"
 #include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
+#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -214,120 +218,110 @@ void test_idol_mibs() {
 
 }
 
-int main(int t_argc, char** t_argv) {
+using namespace idol;
 
-    //test_mibs();
-    //test_idol_mibs();
+std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>
+count_variables_and_constraints(const Model& t_model,
+                               const Annotation<Var, unsigned int>& t_var_level,
+                               const Annotation<Ctr, unsigned int>& t_ctr_level) {
 
-    // hello_world_osi_idol();
+    unsigned int n_lower_level_vars = 0;
+    unsigned int n_upper_level_vars = 0;
+    unsigned int n_lower_level_ctrs = 0;
+    unsigned int n_upper_level_ctrs = 0;
 
-    using namespace idol;
-    using namespace idol::Bilevel;
-    using namespace idol::ColumnAndConstraintGenerationSeparators;
-
-    const unsigned int n_facilities = 3;
-    const unsigned int n_customers = 3;
-    const std::vector<double> capacity { 800, 800, 800 };
-    const std::vector<double> nominal_demand { 206, 274, 220 };
-    const std::vector<double> max_deviation { 40, 40, 40 };
-    const std::vector<double> opening_cost { 400, 414, 326 };
-    const std::vector<double> capacity_cost { 18, 25, 20 };
-    const std::vector<std::vector<double>> transportation_cost {
-            { 22, 33, 24 },
-            { 33, 23, 30 },
-            { 20, 25, 27 },
-    };
-
-    Env env;
-
-    auto [high_point_relaxation,
-          var_annotation,
-          ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, "/home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux");
-
-    /*
-    high_point_relaxation.use(
-                Bilevel::ColumnAndConstraintGeneration(var_annotation,
-                                                       ctr_annotation,
-                                                       lower_level_objective)
-                    .with_master_optimizer(Gurobi())
-                    .with_lower_level_optimizer(Gurobi())
-            );
-
-    high_point_relaxation.optimize();
-    */
-
-    std::cout << high_point_relaxation << std::endl;
-
-    return 0;
-
-    // Annotations
-    Annotation<Var> variable_level(env, "lower_level_variable", MasterId);
-    Annotation<Ctr> constraint_level(env, "constraint_level", MasterId);
-
-    // Make uncertainty set
-    Model uncertainty_set(env);
-
-    auto g = uncertainty_set.add_vars(Dim<1>(3), 0, 1, Continuous, "xi");
-    uncertainty_set.add_ctr(g[0] + g[1] + g[2] <= 1.8);
-    uncertainty_set.add_ctr(g[0] + g[1] <= 1.2);
-
-    // Make model
-    Model model(env);
-
-    auto y = model.add_vars(Dim<1>(3), 0., 1., Binary, "y");
-    auto z = model.add_vars(Dim<1>(3), 0., Inf, Continuous, "z");
-    auto x = model.add_vars(Dim<2>(3, 3), 0., Inf, Continuous, "x");
-
-    for (unsigned int i = 0 ; i < 3 ; ++i) {
-        model.add_ctr(z[i] <= capacity[i] * y[i]);
-        model.add_ctr(idol_Sum(j, Range(3), x[i][j]) <= z[i]).set(constraint_level, 0);
-    }
-
-    for (unsigned int j = 0 ; j < 3 ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(3), x[i][j]) >= nominal_demand[j] + max_deviation[j] * !g[j]).set(constraint_level, 0);
-    }
-
-    model.set_obj_expr(
-            idol_Sum(i, Range(n_facilities),
-                         opening_cost[i] * y[i] + capacity_cost[i] * z[i]
-                         + idol_Sum(j, Range(n_customers), transportation_cost[i][j] * x[i][j])
-                     )
-    );
-
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            x[i][j].set(variable_level, 0);
+    for (const auto& var : t_model.vars()) {
+        if (var.get(t_var_level) != MasterId) {
+            n_lower_level_vars++;
+        } else {
+            n_upper_level_vars++;
         }
     }
 
-    // Set Optimizer
-    auto ccg = Robust::ColumnAndConstraintGeneration(variable_level, constraint_level, uncertainty_set)
-            .with_master_optimizer(Gurobi().with_logs(false))
-            .with_separator(
-                    MaxMinDualize()
-                                .with_optimizer(Gurobi().with_logs(false))
-            )
-            .with_complete_recourse(false)
-            .with_logs(true)
-            .with_iteration_limit(5)
-        ;
+    for (const auto& ctr : t_model.ctrs()) {
+        if (ctr.get(t_ctr_level) != MasterId) {
+            n_lower_level_ctrs++;
+        } else {
+            n_upper_level_ctrs++;
+        }
+    }
 
-    model.use(ccg);
+    return {
+        n_lower_level_vars,
+        n_upper_level_vars,
+        n_lower_level_ctrs,
+        n_upper_level_ctrs
+    };
+}
+
+int main(int t_argc, char** t_argv) {
+
+    if (t_argc != 4) {
+        throw Exception("Expected arguments: <path_to_file> <stabilization=0|1> <time_limit>");
+    }
+
+    const std::string instance_file = t_argv[1];
+    const bool use_stabilization = std::stoi(t_argv[2]);
+    const double time_limit = std::stod(t_argv[3]);
+
+    Env env;
+
+    auto [model,
+          var_annotation,
+          ctr_annotation,
+          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, instance_file);
+
+    const auto [
+            n_lower_level_vars,
+            n_upper_level_vars,
+            n_lower_level_ctrs,
+            n_upper_level_ctrs
+            ] = count_variables_and_constraints(model, var_annotation, ctr_annotation);
+
+    std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
+    if (use_stabilization) {
+        stabilization.reset(Bilevel::CCGStabilizers::TrustRegion().clone());
+    } else {
+        stabilization.reset(Bilevel::CCGStabilizers::NoStabilization().clone());
+    }
+
+    model.use(
+                Bilevel::ColumnAndConstraintGeneration(var_annotation,
+                                                      ctr_annotation,
+                                                      lower_level_objective)
+                    .with_master_optimizer(Gurobi())
+                    .with_lower_level_optimizer(Gurobi())
+                    .with_stabilization(*stabilization)
+                    .with_time_limit(time_limit)
+                    .with_logs(true)
+            );
+
+    model.update();
 
     model.optimize();
 
-    const auto status = model.get_status();
+    const auto& optimizer = model.optimizer().as<Optimizers::Bilevel::ColumnAndConstraintGeneration>();
+    const auto& ro_optimizer = optimizer.two_stage_robust_model().optimizer().as<Optimizers::Robust::ColumnAndConstraintGeneration>();
 
-    std::cout << "CCG ended with status " << status << std::endl;
-
-    if (status == Optimal) {
-        std::cout << save_primal(model) << std::endl;
-    } else {
-        std::cout << "\treason: " << model.get_reason() << std::endl;
-        std::cout << "\tbest obj: " << model.get_best_obj() << std::endl;
-        std::cout << "\tbest bound: " << model.get_best_bound() << std::endl;
-    }
+    std::cout
+            << "result,"
+            << instance_file << ','
+            << model.vars().size() << ','
+            << model.ctrs().size() << ','
+            << n_lower_level_vars << ','
+            << n_upper_level_vars << ','
+            << n_lower_level_ctrs << ','
+            << n_upper_level_ctrs << ','
+            << ro_optimizer.uncertainty_set().vars().size() << ','
+            << ro_optimizer.uncertainty_set().ctrs().size() << ','
+            << use_stabilization << ','
+            << model.optimizer().time().count() << ','
+            << model.get_status() << ','
+            << model.get_reason() << ','
+            << model.get_best_bound() << ','
+            << model.get_best_obj() << ','
+            << optimizer.n_iterations() << ','
+            << std::endl;
 
     return 0;
 }

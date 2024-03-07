@@ -2,12 +2,13 @@
 // Created by henri on 08.02.24.
 //
 
-#ifndef IDOL_COLUMNANDCONSTRAINTGENERATION_H
-#define IDOL_COLUMNANDCONSTRAINTGENERATION_H
+#ifndef IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
+#define IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H
 
 #include "idol/optimizers/OptimizerFactory.h"
-#include "ColumnAndConstraintGenerationSeparator.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
 #include "idol/modeling/models/Model.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers//CCGStabilizer.h"
 
 namespace idol::Robust {
     class ColumnAndConstraintGeneration;
@@ -15,7 +16,8 @@ namespace idol::Robust {
 
 class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration> {
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
-    std::unique_ptr<ColumnAndConstraintGenerationSeparator> m_separator;
+    std::unique_ptr<CCGSeparator> m_separator;
+    std::unique_ptr<CCGStabilizer> m_stabilizer;
     std::optional<bool> m_complete_recourse;
 
     const Annotation<Var, unsigned int> m_lower_level_variables;
@@ -38,9 +40,11 @@ public:
 
     ColumnAndConstraintGeneration& with_master_optimizer(const OptimizerFactory& t_optimizer);
 
-    ColumnAndConstraintGeneration& with_separator(const ColumnAndConstraintGenerationSeparator& t_separator);
+    ColumnAndConstraintGeneration& with_separator(const CCGSeparator& t_separator);
+
+    ColumnAndConstraintGeneration& with_stabilization(const CCGStabilizer& t_stabilizer);
 
     ColumnAndConstraintGeneration& with_complete_recourse(bool t_value);
 };
 
-#endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H
+#endif //IDOL_ROBUST_COLUMNANDCONSTRAINTGENERATION_H

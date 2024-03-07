@@ -5,6 +5,8 @@
 #ifndef IDOL_OSI_H
 #define IDOL_OSI_H
 
+#include <memory>
+
 #ifdef IDOL_USE_OSI
 #include <OsiSolverInterface.hpp>
 #include <OsiCpxSolverInterface.hpp>

@@ -3,4 +3,4 @@
 COIN-OR/MibS (BiLevel)
 ======================
 
-.. doxygenclass:: idol::BiLevel::MibS
+.. doxygenclass:: idol::Bilevel::MibS

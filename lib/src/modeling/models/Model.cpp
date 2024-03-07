@@ -389,15 +389,19 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, const Row &t_row) {
 
 void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
 
+    // TODO: Do this properly
+    if (has_optimizer()) {
+        const auto type = get_ctr_type(t_ctr);
+        remove(t_ctr);
+        add(t_ctr, TempCtr(std::move(t_row), type));
+        return;
+    }
+
     remove_row_from_columns(t_ctr);
 
     m_env.version(*this, t_ctr).row() = std::move(t_row);
 
     add_row_to_columns(t_ctr);
-
-    if (has_optimizer()) {
-        throw Exception("Updating row is not implemented.");
-    }
 
 }
 

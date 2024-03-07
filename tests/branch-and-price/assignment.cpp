@@ -190,7 +190,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
          + relaxation_solvers[solver_index].first + " with "
          + (farkas_pricing ? "farkas pricing" : "artificial variables")
          + ", branching applied to " + (branching_on_sub_problem ? "sub-problem" : "master")
-         + " and stabilization factor of " + std::to_string(smoothing_factor)
+         + " and stabilizers factor of " + std::to_string(smoothing_factor)
     ) {
 
         model.optimize();

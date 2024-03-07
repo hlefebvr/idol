@@ -2,35 +2,60 @@
 // Created by henri on 08.02.24.
 //
 
+#include <cassert>
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/modeling/objects/Env.h"
+#include "idol/containers/Set.h"
 
-idol::Optimizers::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
+#define N_SECTIONS 3
+#define LOG_WIDTH_ITERATION 5
+#define LOG_WIDTH_TOTAL_TIME 12
+#define LOG_WIDTH_PROBLEM_STATUS 12
+#define LOG_WIDTH_ITER_TYPE 7
+#define LOG_WIDTH_ITER_STATUS 12
+#define LOG_WIDTH_ITER_REASON 12
+#define LOG_WIDTH_BEST_BOUND 10
+#define LOG_WIDTH_BEST_OBJ 10
+#define LOG_WIDTH_REL_GAP 10
+#define LOG_WIDTH_ABS_GAP 10
+#define LOG_WIDTH_ITER_OBJ 10
+#define DOUBLE_PRECISION 5
+
+constexpr auto algorithm_space = (LOG_WIDTH_ITERATION + LOG_WIDTH_TOTAL_TIME);
+constexpr auto problem_space = (LOG_WIDTH_PROBLEM_STATUS + LOG_WIDTH_BEST_BOUND + LOG_WIDTH_BEST_OBJ + LOG_WIDTH_REL_GAP + LOG_WIDTH_ABS_GAP);
+constexpr auto iteration_space = (LOG_WIDTH_ITER_TYPE + LOG_WIDTH_ITER_STATUS + LOG_WIDTH_ITER_REASON + LOG_WIDTH_ITER_OBJ);
+constexpr auto table_space = algorithm_space + problem_space + iteration_space + N_SECTIONS * 3 + 1;
+
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                const idol::Model &t_uncertainty_set,
                                                                                const idol::OptimizerFactory &t_master_optimizer,
-                                                                               const idol::ColumnAndConstraintGenerationSeparator &t_separator,
+                                                                               const idol::Robust::CCGSeparator &t_separator,
+                                                                               const idol::Robust::CCGStabilizer &t_stabilizer,
                                                                                const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
                                                                                const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
                                                                                bool t_complete_recourse)
         : Algorithm(t_parent),
           m_uncertainty_set(t_uncertainty_set.copy()),
-          m_lower_level_variables(t_lower_level_variables),
-          m_lower_level_constraints(t_lower_level_constraints),
+          m_variable_stage(t_lower_level_variables),
+          m_constraint_stage(t_lower_level_constraints),
           m_master_problem(t_parent.env()),
           m_separator(t_separator.clone()),
+          m_stabilizer(t_stabilizer.operator()()),
           m_complete_recourse(t_complete_recourse) {
 
     build_master_problem();
     build_coupling_constraints_list();
-    build_upper_level_variables_list();
+    build_upper_and_lower_level_variables_list();
+    build_upper_and_lower_level_constraints_list();
+    build_coupling_variables_list();
 
     m_master_problem.use(t_master_optimizer);
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem() {
 
     build_master_problem_variables();
     build_master_problem_constraints();
@@ -38,13 +63,13 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_variables() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_variables() {
 
     const auto& parent = this->parent();
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
+        if (var.get(m_variable_stage) != MasterId) {
             continue;
         }
 
@@ -58,13 +83,13 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_varia
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_constraints() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_constraints() {
 
     const auto& parent = this->parent();
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_lower_level_constraints) != MasterId) {
+        if (ctr.get(m_constraint_stage) != MasterId) {
             continue;
         }
 
@@ -82,7 +107,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_const
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objective_and_epigraph() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_problem_objective_and_epigraph() {
 
     const auto& parent = this->parent();
     auto& env = m_master_problem.env();
@@ -93,7 +118,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objec
     Expr lower_level_variables_part;
     for (const auto& [var, constant] : objective.linear()) {
 
-        if (var.get(m_lower_level_variables) == MasterId) {
+        if (var.get(m_variable_stage) == MasterId) {
             upper_level_variables_part += constant * var;
         } else {
             lower_level_variables_part += constant * var;
@@ -103,8 +128,8 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objec
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
 
-        const auto id1 = var1.get(m_lower_level_variables);
-        const auto id2 = var2.get(m_lower_level_variables);
+        const auto id1 = var1.get(m_variable_stage);
+        const auto id2 = var2.get(m_variable_stage);
 
         if (id1 != MasterId || id2 != MasterId) {
             lower_level_variables_part += constant * var1 * var2;
@@ -120,13 +145,13 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_master_problem_objec
         return;
     }
 
-    auto epigraph_variable = Var(env, -Inf, Inf, Continuous, "epigraph");
-    auto epigraph_constraint = Ctr(env, epigraph_variable >= lower_level_variables_part);
+    auto epigraph_variable = Var(env, -Inf, Inf, Continuous, "__epigraph_var");
+    auto epigraph_constraint = Ctr(env, epigraph_variable >= lower_level_variables_part, "__epigraph_ctr");
     m_epigraph = std::make_optional<std::pair<Var, Ctr>>(epigraph_variable, epigraph_constraint);
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_coupling_constraints_list() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_constraints_list() {
 
     const auto& parent = this->parent();
 
@@ -134,7 +159,7 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_coupling_constraints
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_lower_level_constraints) != MasterId) {
+        if (ctr.get(m_constraint_stage) != MasterId) {
             continue;
         }
 
@@ -150,82 +175,144 @@ void idol::Optimizers::ColumnAndConstraintGeneration::build_coupling_constraints
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::build_upper_level_variables_list() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_variables_list() {
 
     const auto& parent = this->parent();
 
-    m_upper_level_variables.clear();
+    m_coupling_variables.clear();
+
+    Set<Var> coupling_variables;
+
+    const auto add_coupling_variables = [&](const Ctr& t_ctr) {
+
+        const auto& row = parent.get_ctr_row(t_ctr);
+
+        for (const auto& [var, coefficient] : row.linear()) {
+
+            if (var.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var);
+            }
+
+        }
+
+        for (const auto& [var1, var2, coefficient] : row.quadratic()) {
+
+            if (var1.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var1);
+            }
+
+            if (var2.get(m_variable_stage) == MasterId) {
+                m_coupling_variables.emplace_back(var2);
+            }
+
+        }
+
+    };
+
+    for (const auto& ctr : m_lower_level_constraints_list) {
+        add_coupling_variables(ctr);
+    }
+
+    std::copy(coupling_variables.begin(), coupling_variables.end(), std::back_inserter(m_coupling_variables));
+
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lower_level_variables_list() {
+
+    const auto& parent = this->parent();
+
+    m_upper_level_variables_list.clear();
+    m_lower_level_variables_list.clear();
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
-            continue;
+        if (var.get(m_variable_stage) != MasterId) {
+            m_lower_level_variables_list.emplace_back(var);
+        } else {
+            m_upper_level_variables_list.emplace_back(var);
         }
-
-        m_upper_level_variables.emplace_back(var);
 
     }
 
 }
 
-std::string idol::Optimizers::ColumnAndConstraintGeneration::name() const {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lower_level_constraints_list() {
+
+    const auto& parent = this->parent();
+
+    m_upper_level_constraints_list.clear();
+    m_lower_level_constraints_list.clear();
+
+    for (const auto& ctr : parent.ctrs()) {
+
+        if (ctr.get(m_constraint_stage) != MasterId) {
+            m_lower_level_constraints_list.emplace_back(ctr);
+        } else {
+            m_upper_level_constraints_list.emplace_back(ctr);
+        }
+
+    }
+
+}
+
+std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() const {
     return "column-and-constraint generation";
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const Var &t_var) const {
 
-    if (t_var.get(m_lower_level_variables) != MasterId) {
-        return 0.;
+    if (!m_incumbent.has_value()) {
+        throw Exception("No incumbent solution available.");
     }
 
-    return m_master_problem.get_var_primal(t_var);
+    return m_incumbent->get(t_var);
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_ray(const Var &t_var) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_ctr_dual(const Ctr &t_ctr) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_ctr_dual(const Ctr &t_ctr) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_ctr_farkas(const Ctr &t_ctr) const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-unsigned int idol::Optimizers::ColumnAndConstraintGeneration::get_n_solutions() const {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_n_solutions() const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-unsigned int idol::Optimizers::ColumnAndConstraintGeneration::get_solution_index() const {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_solution_index() const {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::add(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::add(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::remove(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::remove(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::remove(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::remove(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::write(const std::string &t_name) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::write(const std::string &t_name) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimize() {
     Optimizer::hook_before_optimize();
 
     if (get_param_logs()) {
@@ -250,6 +337,8 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
         std::cout << "\tN. pure upper level: " << n_master_constraints << '\n';
         std::cout << "\tN. coupling: " << (n_coupling_constraints + m_epigraph.has_value()) << '\n';
         std::cout << "\tN. lower level: " << n_lower_level_constraints << '\n';
+
+        std::cout << std::endl;
     }
 
     set_best_bound(-Inf);
@@ -258,35 +347,40 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_before_optimize() {
     set_reason(NotSpecified);
 
     m_iteration_count = 0;
+    m_incumbent.reset();
+
+    m_stabilizer->set_parent(this);
+    m_stabilizer->initialize();
+
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
+
+    log_init();
 
     while (!is_terminated()) {
 
-        /*
-        std::cout << "MASTER PROBLEM ITER " << m_iteration_count
-                  << "\n************************\n"
-                  << m_master_problem
-                  << "\n************************\n"
-                  << std::endl;
-        */
+        m_current_master_solution = solve_master_problem();
 
-        solve_master_problem();
+        m_stabilizer->analyze_current_master_problem_solution();
 
-        analyze_master_problem_solution();
+        log(true);
 
         if (is_terminated()) { break; }
 
-        auto most_violated_scenario = solve_separation_problems();
+        m_separation_timer.start();
+        m_current_separation_solution = solve_separation_problems();
+        m_separation_timer.stop();
 
         if (is_terminated()) { break; }
 
-        analyze_most_violated_scenario(most_violated_scenario);
+        m_stabilizer->analyze_last_separation_solution();
+
+        log(false);
 
         if (is_terminated()) { break; }
 
-        add_scenario(most_violated_scenario);
+        add_scenario(*m_current_separation_solution);
 
         check_stopping_condition();
 
@@ -296,60 +390,60 @@ void idol::Optimizers::ColumnAndConstraintGeneration::hook_optimize() {
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::set_solution_index(unsigned int t_index) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj_sense() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj_sense() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_rhs() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_rhs() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_obj_constant() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_obj_constant() {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_ctr_type(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_ctr_type(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_ctr_rhs(const Ctr &t_ctr) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_ctr_rhs(const Ctr &t_ctr) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_type(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_type(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_lb(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_lb(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_ub(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_ub(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::update_var_obj(const Var &t_var) {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_obj(const Var &t_var) {
     throw Exception("Not implemented: Optimizers::ColumnAndConstraintGeneration::" + std::string(__FUNCTION__) );
 }
 
 bool
-idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(const idol::LinExpr<idol::Var> &t_expr) {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_variable(const idol::LinExpr<idol::Var> &t_expr) {
 
     for (const auto& [var, constant] : t_expr) {
 
-        if (var.get(m_lower_level_variables) != MasterId) {
+        if (var.get(m_variable_stage) != MasterId) {
             return true;
         }
 
@@ -358,13 +452,13 @@ idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(c
     return false;
 }
 
-bool idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_variable(
+bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_variable(
         const idol::QuadExpr<idol::Var, idol::Var> &t_expr) {
 
 
     for (const auto& [var1, var2, constant] : t_expr) {
 
-        if (var1.get(m_lower_level_variables) != MasterId || var2.get(m_lower_level_variables) != MasterId) {
+        if (var1.get(m_variable_stage) != MasterId || var2.get(m_variable_stage) != MasterId) {
             return true;
         }
 
@@ -374,41 +468,41 @@ bool idol::Optimizers::ColumnAndConstraintGeneration::contains_lower_level_varia
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::solve_master_problem() {
-    m_master_problem.optimize();
-}
+idol::Solution::Primal idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_problem() {
 
-void idol::Optimizers::ColumnAndConstraintGeneration::analyze_master_problem_solution() {
+    m_master_problem.optimizer().set_param_time_limit(get_remaining_time());
+    m_master_problem.optimize();
+
+    Solution::Primal result;
 
     const auto status = m_master_problem.get_status();
+    const auto reason = m_master_problem.get_reason();
+    const auto objective_value = m_master_problem.get_best_obj();
 
-    if (status == Unbounded) {
-        throw Exception("Not implemented: cannot handle unbounded master problem, yet.");
+    result.set_status(status);
+    result.set_reason(reason);
+    result.set_objective_value(objective_value);
+
+    if (status != Optimal && status != Feasible) {
+        return result;
     }
 
-    if (status == Infeasible) {
-        set_status(Infeasible);
-        set_reason(Proved);
-        terminate();
-        return;
+    if (m_epigraph.has_value() && m_master_problem.has(m_epigraph->first)) {
+        const auto& epigraph_var = m_epigraph->first;
+        const double value = m_master_problem.get_var_primal(epigraph_var);
+        result.set(epigraph_var, value);
     }
 
-    if (status != Optimal) {
-        const auto reason = m_master_problem.get_reason();
-        set_status(status);
-        set_reason(reason);
-        terminate();
-        return;
+    for (const auto& var : m_upper_level_variables_list) {
+        const double value = m_master_problem.get_var_primal(var);
+        result.set(var, value);
     }
 
-    const double objective = m_master_problem.get_best_obj();
-
-    set_best_bound(objective);
-    set_status(SubOptimal);
+    return result;
 
 }
 
-void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition() {
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_stopping_condition() {
 
     if (get_remaining_time() < 0) {
         set_reason(TimeLimit);
@@ -433,10 +527,9 @@ void idol::Optimizers::ColumnAndConstraintGeneration::check_stopping_condition()
 }
 
 idol::Solution::Primal
-idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     const auto& parent = this->parent();
-    Solution::Primal upper_level_solution = save_upper_level_primal();
 
     double max = -Inf;
     Solution::Primal argmax;
@@ -444,7 +537,11 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     const auto evaluate = [&](const Row& t_row, CtrType t_type) {
 
-        auto solution = m_separator->operator()(*this, upper_level_solution, t_row, t_type);
+        auto solution = m_separator->operator()(
+                *this,
+                *m_current_master_solution,
+                t_row,
+                t_type);
 
         /*
         std::cout << "SEPARATION SOLUTION "
@@ -500,63 +597,16 @@ idol::Optimizers::ColumnAndConstraintGeneration::solve_separation_problems() {
 
     }
 
-    // std::cout << "Max: " << max << std::endl;
-    // std::cout << "Argmax: \n" << argmax << std::endl;
+    // If there are no coupling constraint, this is a feasibility problem, i.e., we optimize 0.
+    if (m_coupling_constraints.empty() && !m_epigraph.has_value()) {
+        evaluate(Row(), LessOrEqual);
+    }
 
     return argmax;
 }
 
-idol::Solution::Primal idol::Optimizers::ColumnAndConstraintGeneration::save_upper_level_primal() const {
-
-    Solution::Primal result;
-
-    const auto status = m_master_problem.get_status();
-    const auto reason = m_master_problem.get_reason();
-    const auto objective_value = m_master_problem.get_best_obj();
-
-    result.set_status(status);
-    result.set_reason(reason);
-    result.set_objective_value(objective_value);
-
-    if (m_epigraph.has_value() && m_master_problem.has(m_epigraph->first)) {
-        const auto& epigraph_var = m_epigraph->first;
-        const double value = m_master_problem.get_var_primal(epigraph_var);
-        result.set(epigraph_var, value);
-    }
-
-    for (const auto& var : m_upper_level_variables) {
-        const double value = m_master_problem.get_var_primal(var);
-        result.set(var, value);
-    }
-
-    return result;
-}
-
-void idol::Optimizers::ColumnAndConstraintGeneration::analyze_most_violated_scenario(
-        const idol::Solution::Primal &t_most_violated_scenario) {
-
-    const auto status = t_most_violated_scenario.status();
-
-    if (status != Optimal) {
-        set_status(status);
-        set_reason(t_most_violated_scenario.reason());
-        terminate();
-        return;
-    }
-
-    std::cout << "Objective value = " << t_most_violated_scenario.objective_value() << std::endl;
-
-    if (t_most_violated_scenario.objective_value() >= Tolerance::Optimality) {
-        set_status(Optimal);
-        set_reason(Proved);
-        terminate();
-        return;
-    }
-
-}
-
 void
-idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol::Solution::Primal &t_most_violated_scenario) {
 
     const auto& parent = this->parent();
 
@@ -565,11 +615,7 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
     std::vector<std::unique_ptr<Var>> variables(n_variables);
 
     // Create new lower level variables
-    for (const auto& var : parent.vars()) {
-
-        if (var.get(m_lower_level_variables) == MasterId) {
-            continue;
-        }
+    for (const auto& var : m_lower_level_variables_list) {
 
         const unsigned int index = parent.get_var_index(var);
         const double lb = parent.get_var_lb(var);
@@ -582,22 +628,14 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
 
     }
 
-    // Create new lower level constraints
-    for (const auto& ctr : parent.ctrs()) {
-
-        if (ctr.get(m_lower_level_constraints) == MasterId) {
-            continue;
-        }
-
-        const auto& row = parent.get_ctr_row(ctr);
-        const auto type = parent.get_ctr_type(ctr);
+    const auto add_lower_level_constraint = [&](const Ctr& t_ctr, const Row& t_row, CtrType t_type) {
 
         Expr<Var, Var> lhs;
-        Constant rhs = row.rhs().fix(t_most_violated_scenario);
+        Constant rhs = t_row.rhs().fix(t_most_violated_scenario);
 
-        for (const auto& [var, constant] : row.linear()) {
+        for (const auto& [var, constant] : t_row.linear()) {
 
-            if (var.get(m_lower_level_variables) == MasterId) {
+            if (var.get(m_variable_stage) == MasterId) {
                 lhs += constant.fix(t_most_violated_scenario) * var;
                 continue;
             }
@@ -608,11 +646,32 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
 
         }
 
-        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), ctr.name() + "__" + std::to_string(m_iteration_count));
+        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), t_type), t_ctr.name() + "__" + std::to_string(m_iteration_count));
+
+
+    };
+
+    // Create new lower level constraints
+    for (const auto& ctr : m_lower_level_constraints_list) {
+
+        const auto& row = parent.get_ctr_row(ctr);
+        const auto type = parent.get_ctr_type(ctr);
+
+        add_lower_level_constraint(ctr, row, type);
 
     }
 
-    // Add epigraph
+    // Create new coupling constraints
+    for (const auto& ctr : m_coupling_constraints) {
+
+        const auto& row = parent.get_ctr_row(ctr);
+        const auto type = parent.get_ctr_type(ctr);
+
+        add_lower_level_constraint(ctr, row, type);
+
+    }
+
+    // Create new epigraph constraint (if needed)
     if (m_epigraph) {
 
         if (!m_master_problem.has(m_epigraph->first)) {
@@ -624,28 +683,82 @@ idol::Optimizers::ColumnAndConstraintGeneration::add_scenario(const idol::Soluti
         const auto& row = default_version.row();
         const auto type = default_version.type();
 
-        Expr<Var, Var> lhs;
-        Constant rhs = row.rhs().fix(t_most_violated_scenario);
-
-        for (const auto& [var, constant] : row.linear()) {
-
-            if (var.get(m_lower_level_variables) == MasterId) {
-                lhs += constant.fix(t_most_violated_scenario) * var;
-                continue;
-            }
-
-            const unsigned int index = parent.get_var_index(var);
-
-            lhs += constant.fix(t_most_violated_scenario) * *variables[index];
-
-        }
-
-        m_master_problem.add_ctr(TempCtr(Row(lhs, rhs), type), "epigraph__" + std::to_string(m_iteration_count));
+        add_lower_level_constraint(m_epigraph->second, row, type);
 
     }
 
 }
 
-double idol::Optimizers::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
+double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
     throw Exception("Not implemented ColumnAndConstraintGeneration::get_var_reduced_cost.");
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log(bool t_is_rmp) const {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    const std::string iter_type = t_is_rmp ? "RMP" : "SP";
+
+    const Solution::Primal& iter_solution = t_is_rmp ? *m_current_master_solution : *m_current_separation_solution;
+    const SolutionStatus iter_status = iter_solution.status();
+    const SolutionReason iter_reason = iter_solution.reason();
+    const double iter_obj = iter_solution.objective_value();
+
+    std::cout
+            << " | "
+            << std::setw(LOG_WIDTH_ITERATION) << m_iteration_count
+            << std::setw(LOG_WIDTH_TOTAL_TIME) << parent().optimizer().time().count()  << " | "
+            << std::setw(LOG_WIDTH_PROBLEM_STATUS) << get_status()
+            << std::setw(LOG_WIDTH_BEST_BOUND) << pretty_double(get_best_bound(), DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_BEST_OBJ) << pretty_double(get_best_obj(), DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_REL_GAP) << pretty_double(get_relative_gap() * 100., DOUBLE_PRECISION)
+            << std::setw(LOG_WIDTH_ABS_GAP) << pretty_double(get_absolute_gap(), DOUBLE_PRECISION)  << " | "
+            << std::setw(LOG_WIDTH_ITER_TYPE) << iter_type
+            << std::setw(LOG_WIDTH_ITER_STATUS) << iter_status
+            << std::setw(LOG_WIDTH_ITER_REASON) << iter_reason
+            << std::setw(LOG_WIDTH_ITER_OBJ) << iter_obj << " | "
+            << std::endl;
+
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_init() const {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
+    std::cout << ' ';center(std::cout, " Column-and-Constraint Generation ", table_space) << '\n';
+    std::cout << ' ';center(std::cout, "*", table_space, '*') << '\n';
+
+    std::cout << " | ";
+    center(std::cout, "Algorithm", algorithm_space);std::cout << " | ";
+    center(std::cout, "Problem", problem_space);std::cout << " | ";
+    center(std::cout, "Iteration", iteration_space);std::cout << " | ";
+    std::cout << '\n';
+
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_ITERATION) << "Iter.";
+    std::cout << std::setw(LOG_WIDTH_TOTAL_TIME) << "Time";
+
+    // Problem
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_PROBLEM_STATUS) << "Status";
+    std::cout << std::setw(LOG_WIDTH_BEST_BOUND) << "Bound";
+    std::cout << std::setw(LOG_WIDTH_BEST_OBJ) << "Obj";
+    std::cout << std::setw(LOG_WIDTH_REL_GAP) << "Gap (%)";
+    std::cout << std::setw(LOG_WIDTH_ABS_GAP) << "Abs.";
+
+    // Iteration
+    std::cout << " | ";
+    std::cout << std::setw(LOG_WIDTH_ITER_TYPE) << "Type";
+    std::cout << std::setw(LOG_WIDTH_ITER_STATUS) << "Status";
+    std::cout << std::setw(LOG_WIDTH_ITER_REASON) << "Reason";
+    std::cout << std::setw(LOG_WIDTH_ITER_OBJ) << "Value";
+    std::cout << " | ";
+
+    std::cout << std::endl;
+
 }

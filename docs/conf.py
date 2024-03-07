@@ -59,11 +59,21 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 highlight_language = 'c++'
 
+html_css_files = [
+    'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css',
+    'design.css'
+]
+
+html_js_files = [
+    'https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js'
+]
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the docs for
 # a list of builtin themes.
 #
+
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     "navigation_depth": -1,

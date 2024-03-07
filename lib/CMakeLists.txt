@@ -212,17 +212,30 @@ add_library(idol STATIC
         src/optimizers/mixed-integer-programming/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/mixed-integer-programming/wrappers/Osi/Optimizers_Osi.h
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h
         src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
         include/idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
         src/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinBilevel.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/MaxMinDualize.cpp
-        src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGenerationSeparator.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.cpp
+        src/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.cpp
         include/idol/modeling/bilevel-optimization/read_from_file.h
         src/modeling/bilevel-optimization/read_from_file.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
+        src/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
+        src/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.h
+        src/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.cpp
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h
+        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.cpp
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
+        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/stabilizers.h
+        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.cpp
 )
 
 find_package(OpenMP REQUIRED)

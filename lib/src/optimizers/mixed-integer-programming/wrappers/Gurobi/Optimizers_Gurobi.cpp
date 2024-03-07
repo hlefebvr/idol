@@ -94,7 +94,7 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
     m_model.set(GRB_DoubleParam_BestObjStop, get_param_best_obj_stop());
     m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
     m_model.set(GRB_IntParam_Presolve, get_param_presolve());
-    m_model.set(GRB_IntParam_Threads, (int) get_param_threads());
+    m_model.set(GRB_IntParam_Threads, (int) get_param_thread_limit());
 
     // Tolerances
     m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());

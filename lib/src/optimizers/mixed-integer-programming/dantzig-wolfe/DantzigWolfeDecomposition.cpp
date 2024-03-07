@@ -229,7 +229,7 @@ idol::DantzigWolfeDecomposition &idol::DantzigWolfeDecomposition::with_dual_pric
         const idol::DantzigWolfe::DualPriceSmoothingStabilization &t_stabilization) {
 
     if (m_dual_price_smoothing_stabilization) {
-        throw Exception("A dual price smoothing stabilization has already been configured.");
+        throw Exception("A dual price smoothing stabilizers has already been configured.");
     }
 
     m_dual_price_smoothing_stabilization.reset(t_stabilization.clone());
