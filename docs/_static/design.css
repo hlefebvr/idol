@@ -1,43 +1,60 @@
 @media screen and (min-width: 768px){
 
-    .wy-grid-for-nav {
-        /*position: initial;
-        margin: auto;*/
-        width: 1300px;
+    html {
+        scroll-behavior: smooth;
     }
 
-    .wy-side-nav-search {
-        width: 400px;
+    .wy-nav-content {
+        font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+        line-height: 2.5em;
     }
 
-    .wy-side-scroll {
-        width: 420px;
+    * {
+        font-weight:300;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight:300;
+        font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+
+    .my-button {
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 0.3em 1em;
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #7253ed;
+        text-decoration: none;
+        vertical-align: baseline;
+        cursor: pointer;
+        background-color: #f7f7f7;
+        border-width: 0;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        appearance: none;
+    }
+
+    .wy-nav-content-wrap {
+        background-color:#fcfcfc;
     }
 
     .wy-nav-side {
-        width: 400px;
         border-right: 1px solid #eeebee;
         background-color:#f5f6fa;
     }
 
-    .wy-menu-vertical {
-        width: 400px;
-    }
-
-    .wy-nav-content-wrap {
-        margin-left: 400px;
-    }
-
-    .wy-nav-content {
-        max-width: 1000px;
-    }
-
     .wy-menu-vertical a {
         color: #404040;
-    }
-
-    .wy-nav-content-wrap {
-        background-color: white;
     }
 
     .wy-side-nav-search {
@@ -52,20 +69,30 @@
 
         a {
             color: #404040;
+            font-family: -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", "Oxygen",
+            "Ubuntu", "Cantarell", "Fira Sans",
+            "Droid Sans", "Helvetica Neue", sans-serif;
             font-size :1.5em;
-            font-family: 'Lora', serif;
+            overflow-wrap: break-word;
         }
 
         a:before {
             content: "{ ";
-            font-family: Consolas, monospace;
+            font-family: -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", "Oxygen",
+            "Ubuntu", "Cantarell", "Fira Sans",
+            "Droid Sans", "Helvetica Neue", sans-serif;
             font-weight: normal;
             color:#8B0000;
         }
 
         a:after {
             content: " }";
-            font-family: Consolas, monospace;
+            font-family: -apple-system, BlinkMacSystemFont,
+            "Segoe UI", "Roboto", "Oxygen",
+            "Ubuntu", "Cantarell", "Fira Sans",
+            "Droid Sans", "Helvetica Neue", sans-serif;
             color:#8B0000;
             font-weight: normal;
         }

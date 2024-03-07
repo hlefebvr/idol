@@ -1,24 +1,25 @@
-Welcome to idol!
-================
+.. raw:: html
 
-.. image:: https://img.shields.io/github/license/hlefebvr/idol
-.. image:: https://img.shields.io/github/v/tag/hlefebvr/idol?label=version
-.. image:: https://img.shields.io/github/actions/workflow/status/hlefebvr/idol/tests.yml?branch=main
-.. image:: https://img.shields.io/github/issues-raw/hlefebvr/idol
-.. image:: https://www.repostatus.org/badges/latest/wip.svg
+    <div style="padding-bottom:25px;margin-bottom:25px;border-bottom:1px solid #eeebee;">
 
-.. image:: https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png
+        <h1 style="font-size:2.5em;">A C++ framework for optimization and complex decision making</h1>
 
-.. toctree::
-    :maxdepth: 3
-    :caption: Contents:
+        <h2 style="font-size:1.5em;color:gray;">
+            Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+        </h2>
+
+        <span style="font-size:1.2em;">
+            <a href="tutorials/index.html" class="my-button" style="background-color:#5739ce;color:white;"> Get started now </a>
+            &nbsp;
+            <a href="installation/index.html" class="my-button"> To installation guidelines </a>
+        </span>
+
+    </div>
 
 What Is Idol?
 -------------
 
-Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
-
-It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
+Idol is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
 methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
 or any other cutting-edge method, idol is your trusted companion.
@@ -172,7 +173,6 @@ Table of contents
 .. toctree::
     :maxdepth: 2
 
-    self
     installation/index
     tutorials/index
     api/index
