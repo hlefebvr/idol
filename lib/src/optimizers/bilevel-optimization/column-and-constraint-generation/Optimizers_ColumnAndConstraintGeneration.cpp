@@ -312,3 +312,7 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_ub(con
 void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::update_var_obj(const idol::Var &t_var) {
 
 }
+
+unsigned int idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::n_iterations() const {
+    return m_two_stage_robust_model->optimizer().as<Optimizers::Robust::ColumnAndConstraintGeneration>().n_iterations();
+}

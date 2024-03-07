@@ -31,6 +31,8 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 #include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 #include <iostream>
@@ -298,6 +300,9 @@ int main(int t_argc, char** t_argv) {
 
     model.optimize();
 
+    const auto& optimizer = model.optimizer().as<Optimizers::Bilevel::ColumnAndConstraintGeneration>();
+    const auto& ro_optimizer = optimizer.two_stage_robust_model().optimizer().as<Optimizers::Robust::ColumnAndConstraintGeneration>();
+
     std::cout
             << "result,"
             << instance_file << ','
@@ -307,12 +312,15 @@ int main(int t_argc, char** t_argv) {
             << n_upper_level_vars << ','
             << n_lower_level_ctrs << ','
             << n_upper_level_ctrs << ','
+            << ro_optimizer.uncertainty_set().vars().size() << ','
+            << ro_optimizer.uncertainty_set().ctrs().size() << ','
             << use_stabilization << ','
             << model.optimizer().time().count() << ','
             << model.get_status() << ','
             << model.get_reason() << ','
             << model.get_best_bound() << ','
             << model.get_best_obj() << ','
+            << optimizer.n_iterations() << ','
             << std::endl;
 
     return 0;

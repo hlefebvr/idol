@@ -67,6 +67,8 @@ public:
     const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_constraint_stage; };
     const Annotation<Var, unsigned int> lower_level_variables() const { return m_variable_stage; };
     bool complete_recourse() const { return m_complete_recourse; }
+
+    unsigned int n_iterations() const { return m_iteration_count; }
 protected:
     void build_master_problem();
     void build_master_problem_variables();

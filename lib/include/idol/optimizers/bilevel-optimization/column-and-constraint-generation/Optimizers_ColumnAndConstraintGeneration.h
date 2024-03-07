@@ -54,6 +54,9 @@ public:
     const Annotation<Var, unsigned int> lower_level_variables() const { return m_lower_level_variables; }
     const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_lower_level_constraints; }
     const Ctr& lower_level_objective() const { return m_lower_level_objective; }
+
+    unsigned int n_iterations() const;
+    const Model& two_stage_robust_model() const { return *m_two_stage_robust_model; }
 protected:
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;
