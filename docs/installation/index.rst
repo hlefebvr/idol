@@ -10,9 +10,9 @@ Installation Types
 
 There are two ways of installing idol:
 
-* :ref:`A global installation <basics_installation>` installs idol globally on your computer (e.g., in `/usr/lib`).
 * :ref:`A local installation <installation_local>`  lets CMake automatically download and manage idol's installation on a sub-folder of your
   CMake project.
+* :ref:`A global installation <basics_installation>` installs idol globally on your computer (e.g., in `/usr/lib`).
 
 Table of Contents
 -----------------
@@ -21,8 +21,8 @@ Table of Contents
    :maxdepth: 1
    :glob:
 
-   global_installation
-   options
-   linking
    local_installation
+   global_installation
+   linking
+   options
    mosek-and-socp

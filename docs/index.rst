@@ -24,15 +24,6 @@ methods. Whether you're exploring Branch-and-Price,
 Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
 or any other cutting-edge method, idol is your trusted companion.
 
-Why Choose Idol?
-----------------
-
-* **Versatility:** idol is all about freedom and flexibility. You can easily tailor, refine, and combine standard optimization algorithms to create novel solutions that perfectly fit your problem.
-* **State-of-the-art:** idol offers a solid foundation of well-established mathematical optimization methods, with the ability to break free from conventions, enabling you to customize and adapt these methods to your specific needs.
-* **Modularity:** idol encourages modularity. Whether you need to fine-tune a parameter or replace a component entirely, idol empowers you to do so seamlessly.
-* **Collaboration:** Mathematical optimization is a collaborative field. With idol, you can easily share your custom algorithms with other researchers, fostering a spirit of innovation and exploration.
-* **Open-source:** As an open-source library, idol is not only a tool for your research but also a community-driven project where you can contribute, share your enhancements, and collaborate with others.
-
 Getting Started With Idol
 -------------------------
 

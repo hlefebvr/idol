@@ -73,28 +73,23 @@
             "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
-            font-size :1.5em;
+            font-size :2.25em;
             overflow-wrap: break-word;
         }
 
         a:before {
-            content: "{ ";
-            font-family: -apple-system, BlinkMacSystemFont,
-            "Segoe UI", "Roboto", "Oxygen",
-            "Ubuntu", "Cantarell", "Fira Sans",
-            "Droid Sans", "Helvetica Neue", sans-serif;
-            font-weight: normal;
-            color:#8B0000;
+            content: "";
         }
 
         a:after {
-            content: " }";
+            content: ".cpp";
             font-family: -apple-system, BlinkMacSystemFont,
             "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
-            color:#8B0000;
+            color:#6ab0de;
             font-weight: normal;
+            font-size:0.7em;
         }
 
     }
