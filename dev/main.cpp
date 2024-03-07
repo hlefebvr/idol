@@ -218,6 +218,40 @@ void test_idol_mibs() {
 
 using namespace idol;
 
+std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>
+count_variables_and_constraints(const Model& t_model,
+                               const Annotation<Var, unsigned int>& t_var_level,
+                               const Annotation<Ctr, unsigned int>& t_ctr_level) {
+
+    unsigned int n_lower_level_vars = 0;
+    unsigned int n_upper_level_vars = 0;
+    unsigned int n_lower_level_ctrs = 0;
+    unsigned int n_upper_level_ctrs = 0;
+
+    for (const auto& var : t_model.vars()) {
+        if (var.get(t_var_level) != MasterId) {
+            n_lower_level_vars++;
+        } else {
+            n_upper_level_vars++;
+        }
+    }
+
+    for (const auto& ctr : t_model.ctrs()) {
+        if (ctr.get(t_ctr_level) != MasterId) {
+            n_lower_level_ctrs++;
+        } else {
+            n_upper_level_ctrs++;
+        }
+    }
+
+    return {
+        n_lower_level_vars,
+        n_upper_level_vars,
+        n_lower_level_ctrs,
+        n_upper_level_ctrs
+    };
+}
+
 int main(int t_argc, char** t_argv) {
 
     if (t_argc != 4) {
@@ -235,7 +269,12 @@ int main(int t_argc, char** t_argv) {
           ctr_annotation,
           lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, instance_file);
 
-    // hard: /home/henri/Research/bilevel-ccg/code/data/milp/K5020W01.KNP.aux
+    const auto [
+            n_lower_level_vars,
+            n_upper_level_vars,
+            n_lower_level_ctrs,
+            n_upper_level_ctrs
+            ] = count_variables_and_constraints(model, var_annotation, ctr_annotation);
 
     std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
     if (use_stabilization) {
@@ -264,6 +303,10 @@ int main(int t_argc, char** t_argv) {
             << instance_file << ','
             << model.vars().size() << ','
             << model.ctrs().size() << ','
+            << n_lower_level_vars << ','
+            << n_upper_level_vars << ','
+            << n_lower_level_ctrs << ','
+            << n_upper_level_ctrs << ','
             << use_stabilization << ','
             << model.optimizer().time().count() << ','
             << model.get_status() << ','
