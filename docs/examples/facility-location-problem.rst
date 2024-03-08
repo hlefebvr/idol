@@ -1,5 +1,5 @@
-Facility Location Problem / Branch-and-Bound
-============================================
+Facility Location Problem
+=========================
 
 
 .. literalinclude:: ../../examples/facility.example.cpp
