@@ -8,3 +8,6 @@ Mixed-Integer Programming
     :glob:
 
     modeling/index
+    optimizers/index
+    branch-and-bound/index
+    dantzig-wolfe/index

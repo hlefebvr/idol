@@ -1,4 +1,4 @@
-.. _modeling_optimization_problems:
+.. _mip_modeling:
 
 .. role:: cpp(code)
    :language: cpp

@@ -47,6 +47,21 @@ To do this, idol relies on an external solver. The following code reads a model 
     auto model = Gurobi::read_from_file(env, "/path/to/model.mps");
     // auto model = GLPK::read_from_file(env, "/path/to/model.mps");
 
+Writing a Model to a File
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To write an optimization model to a file, the easiest way is again to rely on an external solver.
+This is done by attaching a solver to a model, then by calling the :code:`Model::write` method.
+
+.. code::
+
+    Env env;
+    Model model = some_function_creating_my_model(env); // this is assumed to create the desired optimization model
+
+    model.use(Gurobi()); // We will use Gurobi as the optimizer
+
+    model.write("instance.lp"); // Creates a new file "instance.lp" storing the model
+
 Iterating over the Variables and Constraints
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -1,13 +1,10 @@
-.. _tutorials_dantzig_wolfe:
+Column Generation and Branch-and-Price Algorithm
+================================================
 
-Branch-and-Price
-================
+.. warning::
+
+   This is a work in progress. Thank you for your understanding.
 
 .. toctree::
     :maxdepth: 1
     :glob:
-
-    dantzig_wolfe
-    strong-branching
-    stabilization
-    heuristic
