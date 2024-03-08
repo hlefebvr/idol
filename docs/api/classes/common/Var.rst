@@ -1,4 +1,4 @@
-.. _api_variables_Var:
+.. _api_Var:
 
 Var
 ===

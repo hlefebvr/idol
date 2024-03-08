@@ -1,10 +1,8 @@
-.. _tutorials_basics:
-
-Basics
-======
+Modeling
+========
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
     :glob:
 
     modeling_optimization_problems

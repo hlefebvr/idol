@@ -5,11 +5,11 @@
         <h1 style="font-size:2.5em;">A C++ framework for optimization and complex decision making</h1>
 
         <h2 style="font-size:1.5em;color:gray;">
-            Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+            Idol is a powerful and flexible library designed to help you build new mathematical optimization algorithms and solve more and more challenging problems.
         </h2>
 
         <span style="font-size:1.2em;">
-            <a href="tutorials/index.html" class="my-button" style="background-color:#5739ce;color:white;"> Get started now </a>
+            <a href="tutorials/index.html" class="my-button" style="background-color:#1f883d;color:white;"> Get started now </a>
             &nbsp;
             <a href="installation/index.html" class="my-button"> To installation guidelines </a>
         </span>
@@ -19,18 +19,29 @@
 What Is Idol?
 -------------
 
-Idol is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
-methods. Whether you're exploring Branch-and-Price,
-Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
-or any other cutting-edge method, idol is your trusted companion.
+Idol is a C++ library for **mathematical optimization** and **complex decision making**. It is designed to help you build new
+algorithms easily for solving more and more challenging problems. It is a **versatile** and **powerful tool** that can be
+used to solve a wide range of optimization problems, including mixed-integer linear programming (MILP), quadratically constrained
+problems (MIQCQP and MIQP), bilevel problems (BO), robust optimization problems (RO and ARO) and many more.
+
+It is designed to be **easy to use** and to **integrate with other software**, so that you can use it
+to build new algorithms and solve new problems without having to start from scratch. For instance, here is a piece of
+code which create a Branch-and-Price algorithm.
+
+.. code::
+
+    const auto branch_and_price = branch_and_bound + column_generation;
+
+Here, `branch_and_bound` and `column_generation` are two objects which are
+combined to create a new algorithm, `branch_and_price`, which can be instantiated and executed.
 
 Getting Started With Idol
 -------------------------
 
-If you are new to idol, I advise you to visit our :ref:`installation guideline <installation>`.
-In particular, have a look at the :ref:`local installation guideline <installation_local>`.
-It is the easiest installation process one could think of since it automatically downloads the latest version of idol and
-installs it in a local folder. It's really a mater of seconds before you can start using idol.
+If you are new to idol, be sure to have a look at our :ref:`tutorials <tutorials_basics>`. If you want to get a fast hands-on
+start, have a look at our :ref:`local installation guideline <installation_local>`. It is the easiest installation process
+one could think of since it automatically downloads the latest version of idol, and installs it locally in a sub-folder.
+It's really a mater of seconds before you can start using idol.
 
 .. admonition:: Example
 
@@ -60,34 +71,31 @@ installs it in a local folder. It's really a mater of seconds before you can sta
 
         model.optimize();
 
-If you want to learn more about idol's modeling interface, be sure to visit :ref:`our introductory tutorials <tutorials_basics>`.
-
-If you are looking for a Branch-and-Price tutorial, directly got to :ref:`our Dantzig-Wolfe Decomposition tutorials <tutorials_dantzig_wolfe>`.
-
 Is This a MIP Solver?
 ---------------------
 
 The idol library is not a MIP solver in itself. Indeed, it typically needs to call external
-solvers (e.g., `GLPK <https://www.gnu.org/software/glpk/>`_ or `Gurobi <https://www.gurobi.com/>`_)
-as a sub-routine of more complex algorithmic schemes (e.g., Column Generation).
-The idea is to work hand in hand with existing fine-tuned and well-engineered optimization
-software to enhance their possibilities to solve, e.g., larger problems or problems which
-cannot directly be modeled as reasonable MIPs (e.g., :math:`\Sigma_i^P`-hard problems).
+solvers (e.g., `GLPK <https://www.gnu.org/software/glpk/>`_, `Gurobi <https://www.gurobi.com/>`_ or many others)
+as a sub-routine of more complex algorithmic schemes (e.g., within a Branch-and-Price scheme).
 
-Typically, each subproblem is then solved by an external and dedicated solver.
-Currently, the following external solvers can be interfaced with through idol:
+The idea is to work hand in hand with existing fine-tuned and well-engineered optimization
+software to enhance their possibilities. By doing so, we aim at solving larger and more complex problems than what is currently possible,
+or even problems for which theoretical evidence indicate that no MIP of reasonable size can model them completely (e.g., :math:`\Sigma_i^P`-hard problems).
+
+Even though idol is not a MIP solver, it can be used to solve standalone LPs, QPs, MILPs, MIQPs, and MIQCQPs though the
+many external solvers it interfaces with.
+A clear advantage of using idol to solve these problems is that it offers a unified and common interface to every solver.
+Thus, you can write your code once and test it with different solvers!
+The following solvers are currently supported by idol
 
 * `Gurobi <https://www.gurobi.com/>`_
 * `Mosek <https://www.mosek.com/>`_
 * `GLPK <https://www.gnu.org/software/glpk/>`_
 * `HiGHS <https://highs.dev/>`_
+* `COIN-OR/Osi <https://github.com/coin-or/Osi>`_ which then gives you access to CPLEX, Symphony or any Osi compatible solver.
 
 Current Features
 ----------------
-
-.. warning::
-
-    Handling quadratic expressions is an experimental feature and extreme care should be taken if used.
 
 Interfacing External Optimization Solvers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -95,15 +103,11 @@ Interfacing External Optimization Solvers
 The idol library can be used to interface external solvers like `GLPK <https://www.gnu.org/software/glpk/>`_
 or `Gurobi <https://www.gurobi.com/>`_ to solve standalone LPs, QPs, MILPs, MIQPs, and MIQCQPs.
 
-It offers a unified and common
-interface to every solver including standard parameters and branch-and-bound callbacks.
-Thus, you can write your code once and test it with different solvers!
-
 It also provides classical callbacks one would need to implement when solving hard problems like generating user cuts
 or lazy constraints. Simply give idol the separation model and let it handle the rest.
 
-Branch-and-Bound (B&B) Algorithms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Branch-and-Bound Algorithms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Idol can be used to create a custom branch-and-bound scheme very easily in which virtually anything can be tweaked.
 
@@ -120,14 +124,8 @@ Idol can be used to create a custom branch-and-bound scheme very easily in which
 * **Sub-tree exploration**. The B&B algorithm supports sub-trees exploration to reach valid solutions to the original
   problem as quick as possible.
 
-**Features to come/desired features**
-
-* *Parallelization of the algorithm*.
-* *New branching rules*: reliability branching.
-* *Default cutting planes*.
-
-Column Generation (CG) and Dantzig-Wolfe Decomposition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Column Generation and Dantzig-Wolfe Decomposition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Idol can be used to build and custom CG algorithms with the following features.
 
@@ -144,29 +142,17 @@ Idol can be used to build and custom CG algorithms with the following features.
   As such, a CG algorithm can easily be "plugged in" any algorithmic phase. For instance, solving the pricing of
   a CG algorithm can be done by yet another CG algorithm.
 
-**Features to come/desired features**
-
-* *Handling identical sub-systems*.
-
-Benchmark
----------
-
-* A benchmark for the **Branch-and-Price** implementation is available for the `Generalized Assignment Problem <https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html>`_.
-* A benchmark for the **Branch-and-Bound** implementation is available for the `Knapsack Problem <https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html>`_
-
-.. image:: https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/profile.png
-
-This is a performance profile computed according to :cite:`Dolan2002`.
-
-Table of contents
+Table of Contents
 -----------------
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     installation/index
     tutorials/index
-    api/index
     examples/index
+    api/index
+    faq/index
+    benchmark/index
     developer_guide/index
     references

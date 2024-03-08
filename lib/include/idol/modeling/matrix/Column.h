@@ -165,7 +165,7 @@ public:
 };
 
 /**
- * Column modeling object.
+ * Column modeling-old object.
  *
  * This class is used to represent an optimization model's column. It is made of an objective coefficient and a set of
  * `{ Ctr, Constant }`

@@ -7,7 +7,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-TEST_CASE("Expr: operators type deduction", "[unit][modeling][Expr]") {
+TEST_CASE("Expr: operators type deduction", "[unit][modeling-old][Expr]") {
 
     Env env;
     Model model(env);

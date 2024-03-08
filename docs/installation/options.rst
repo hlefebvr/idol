@@ -6,11 +6,18 @@
 List of CMake Options
 =====================
 
+This page contains a list of all CMake options that can be used to configure idol. In particular, this is useful to
+link idol with external solvers.
+
+.. contents:: Table of Contents
+    :local:
+    :depth: 2
+
 Linking with External Solvers
 -----------------------------
 
-For Gurobi (Commercial Solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gurobi (Commercial Solver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with Gurobi, you will need to pass the :bash:`USE_GUROBI` CMake option with value :bash:`YES`.
 
@@ -35,8 +42,8 @@ another directory to look for Gurobi.
         set(GUROBI_DIR /path/to/gurobi/install/dir)
 
 
-For Mosek (Commercial Solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Mosek (Commercial Solver)
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with Mosek, you will need to pass the :bash:`USE_MOSEK` CMake option with value :bash:`YES`.
 
@@ -66,8 +73,8 @@ folders :bash:`h` and :bash:`bin` can be found. For instance, :bash:`MOSEK_HOME=
 
     If you intend to use Mosek for solving QPs or SOCPs, please :ref:`read this <mosek_and_socp>`.
 
-For GLPK (Open-Source Solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GLPK (Open-Source Solver)
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with GLPK, you will need to pass the :bash:`USE_GLPK` CMake option with value :bash:`YES`.
 
@@ -92,8 +99,8 @@ another directory to look for GLPK.
         set(GLPK_DIR /path/to/glpk/install/dir)
 
 
-For HiGHS (Open-Source Solver)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+HiGHS (Open-Source Solver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To link with GLPK, you will need to pass the :bash:`USE_HIGHS` CMake option with value :bash:`YES`.
 
@@ -122,7 +129,7 @@ Building Examples
 
 :ref:`Examples :<examples>` can be found at the root level of the idol repository, inside the directory ``examples``.
 
-By default, CMake will not generate targets to build these example. To tell CMake to generate them, you
+By default, CMake will not generate targets to build these example. To tell CMake to generate these, you
 need to set the CMake option ``BUILD_EXAMPLE`` to ``YES``.
 
 .. admonition:: Example
@@ -145,20 +152,22 @@ need to set the CMake option ``BUILD_EXAMPLE`` to ``YES``.
 
         cd examples && ./example_knapsack
 
+Other optional dependencies
+---------------------------
 
-Linking with martinus/robin-hood-hashing
-----------------------------------------
+Using martinus/robin-hood-hashing hash map
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Internally, idol uses unordered map. Unfortunately, the default :code:`std` implementation is not the best choice when
-it comes to performance. To avoid this, if found relevant, users can link idol with the hash map implementation of
+Internally, idol uses unordered maps (also called hash maps).
+Unfortunately, the default :code:`std` implementation is not the best choice when
+it comes to performance. To avoid this, if found relevant, users can tell idol to use the hash-map implementation of
 `martinus/robin-hood-hashing <https://github.com/martinus/robin-hood-hashing>`_. It's actually a header-only library, so
-all you have to do is to tell us where the :code:`robin_hood.hpp` file is. This is done thourgh the CMake option
+all you have to do is to tell CMake where the :code:`robin_hood.hpp` file is. This is done through the CMake option
 :code:`ROBINHOOD_DIR=/path/to/robin_hood/folder` together with :code:`USE_ROBINHOOD=YES`.
 
 Note that, if :code:`ROBINHOOD_DIR` is not specified, :code:`robin_hood.hpp` is searched for in :code:`/usr/include`,
 :code:`/usr/include/robin_hood/`, :code:`/usr/local/include/`, :code:`/usr/local/include/robin_hood/` and in the path
 stored in the environment variable :code:`ROBINHOOD_HOME`.
-
 
 .. admonition:: Example
 
@@ -167,8 +176,25 @@ stored in the environment variable :code:`ROBINHOOD_HOME`.
 
     .. code-block::
 
-        cmake -DUSE_ROBINhOOD=YES -DROBINHOOD_DIR=/path/to/robin_hood/folder ..
+        cmake -DUSE_ROBINHOOD=YES -DROBINHOOD_DIR=/path/to/robin_hood/folder ..
 
+Using Eigen
+^^^^^^^^^^^
+
+Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
+It is internally used by idol for some of its functionalities. In particular, this is *necessary* for solving QPs and SOCPs
+with the Mosek solver.
+
+Since Eigen is a header-only library, all you have to do is to tell CMake where the :code:`Eigen` folder is. This is done
+through the CMake option :code:`EIGEN_DIR=/path/to/eigen/folder` together with :code:`USE_EIGEN=YES`.
+
+.. admonition:: Example
+
+    The following will create an :bash:`install` target which will install idol with Eigen.
+
+    .. code-block::
+
+        cmake -DUSE_EIGEN=YES -DEIGEN_DIR=/path/to/eigen/folder ..
 
 Building Unit and Integration Tests
 -----------------------------------

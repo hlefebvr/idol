@@ -31,7 +31,7 @@ struct idol::QuadParam {
 };
 
 /**
- * Constant term modeling object.
+ * Constant term modeling-old object.
  *
  * This class is used to build constant terms which will appear in models.
  *

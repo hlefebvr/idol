@@ -139,7 +139,7 @@ public:
 };
 
 /**
- * Row modeling object.
+ * Row modeling-old object.
  *
  * This class is used to represent an optimization model's row. It is made of a right hand-side and a set of `{ Var, Constant }`
  * pairs representing the coefficient (`Constant`) of the row in each column (`Var`). Such pairs are called left hand-side terms.

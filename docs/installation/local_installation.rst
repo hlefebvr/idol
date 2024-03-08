@@ -6,17 +6,12 @@
 Local Installation
 ==================
 
-This page is dedicated to local installations of idol. This is the easiest way to get your project working with
+This page is dedicated to the local installation of idol. This is the easiest way to get your project working with
 idol without installing it globally on your computer.
+If you want to install idol globally, please read our :ref:`global installation guide <basics_installation>`.
 
-.. hint::
-
-    If you want to install idol globally, please read our :ref:`global installation guide <basics_installation>`.
-
-The idea behind local installations is to let CMake download and manage the installation of idol in a sub-folder of your
+The idea behind local installation is to let CMake download and manage the installation of idol in a sub-folder of your
 project. This is done by using the CMake :bash:`FetchContent_*` directives.
-
-Using this method, you can also explicitly specify the desired version of idol which you want to use.
 
 We provide here a minimal :bash:`CMakeLists.txt`.
 
@@ -29,14 +24,14 @@ We provide here a minimal :bash:`CMakeLists.txt`.
 
     include(FetchContent)
 
-    # Define your CMake options here
-    set(USE_GUROBI YES) # For instance, tell CMake to link idol with Gurobi
+    # Define your idol CMake options here
+    set(USE_GUROBI YES) # For instance, here, we specify that Gurobi will be used by idol
 
     # Tell CMake which version of idol you desire
     FetchContent_Declare(
             idol
             GIT_REPOSITORY https://github.com/hlefebvr/idol.git
-            GIT_TAG        origin/main # You may also use a tag, e.g., v0.2.4-alpha
+            GIT_TAG        origin/main
     )
 
     # Ask CMake to download idol and install it to a sub-folder
@@ -48,21 +43,19 @@ We provide here a minimal :bash:`CMakeLists.txt`.
     # Link your CMake target with idol as classically done
     target_link_libraries(my_target PUBLIC idol)
 
+By default, CMake will download the latest version of idol. However, you can also explicitly specify the desired version
+of idol you want to use by setting the :bash:`GIT_TAG` variable in the :bash:`FetchContent_Declare` function to the specific
+version, e.g., :bash:`v0.2.4-alpha`.
+
 .. hint::
 
-    As you have seen, some options must be set in CMake in order to tell it to link idol with external solvers.
-    This is done with the :bash:`set` CMake function. Say you want
-    to set the option :bash:`MY_OPTION` to the value :bash:`MY_VALUE`. Then, you should add the following
-    function call.
+    As you can see in the above example, some options must be set to tell CMake to look for external solvers. Here, we
+    specify that Gurobi will be used by idol. You can, of course, add other solvers such as Mosek or GLPK.
 
-    .. code-block:: bash
+    This is done with the :bash:`set` CMake function. For instance, to set the option :bash:`MY_OPTION` to the
+    value :bash:`MY_VALUE`. You should add :code:`set(MY_OPTION MY_VALUE)` to your :bash:`CMakeLists.txt` file.
 
-        set(MY_OPTION MY_VALUE)
-
-.. seealso::
-
-    A list of all possible options which can be set can be found on the :ref:`global installation guide <basics_installation>`.
-    In particular, you will find options to link with Gurobi, Mosek and GLPK.
+    A list of **all possible options** can be found on :ref:`this page <cmake_options>`.
 
 Then, here is a starting :bash:`main.cpp`.
 
@@ -73,12 +66,13 @@ Then, here is a starting :bash:`main.cpp`.
 
     int main(int t_argc, const char** t_argv) {
 
+        using namespace idol;
+
         Env env;
 
         Model model(env);
 
-        Var x(env, 0., 1., Binary, "x");
-        model.add(x);
+        const auto x = model.add_var(0., 1., Binary, "x");
 
         // ...
 

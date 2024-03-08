@@ -26,7 +26,7 @@ namespace idol {
 }
 
 /**
- * Constraint modeling object.
+ * Constraint modeling-old object.
  *
  * The class is used to represent a constraint in an optimization model.
  *

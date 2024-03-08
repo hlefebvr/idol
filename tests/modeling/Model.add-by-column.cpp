@@ -7,7 +7,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-SCENARIO("Model: Add a variable by column", "[unit][modeling][Model]") {
+SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
 
     Env env;
 

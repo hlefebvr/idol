@@ -19,7 +19,7 @@ namespace idol {
 }
 
 /**
- * Parameter modeling object.
+ * Parameter modeling-old object.
  *
  * This class is used to model parameters for optimization models. More precisely, it represents a variable, or a constraint,
  * from a model `A` which is considered constant in another model `B`.

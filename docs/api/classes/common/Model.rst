@@ -1,25 +1,7 @@
-.. _api_model:
+.. _api_Model:
 
 Model
 =====
-
-The Model class is probably the most central of idol. It is used to represent a mathematical optimization problem of the
-following general form.
-
-.. math::
-
-    \begin{array}{lll}
-        \textrm{minimize } & \displaystyle \sum_{j=1}^n a_{0j}x_j + \sum_{j=1}^n\sum_{k=1}^n q_{jk}^0x_jx_k + b_0\\
-        \textrm{subject to } & \displaystyle \sum_{j=1}^n a_{ij}x_j + \sum_{j=1}^n\sum_{k=1}^n q^i_{jk}x_jx_k \le b_i & i=1,...,m \\
-        & l_j \le x_j \le u_j & j=1,...,m \\
-        & x_j\in\mathbb Z & j\in J_I,
-    \end{array}
-
-Here, :math:`x_1, ..., x_n` are the decision variables with bounds :math:`[l_1,u_1],...,[l_n,u_n]` (possibly,
-:math:`l_j = -\infty` or :math:`u_j = +\infty`). Note that some variables have integrality requirements (i.e., those whose
-indices are in :math:`J_I`). Other entities are input parameters of the problem and must typically have real values
-(e.g., :math:`c_j, a_{ij}, q_{jk}^i` and :math:`b_i\in\mathbb R`). Alternatively, optimization problems can also be maximization
-problems.
 
 .. admonition:: Example:
 

@@ -12,11 +12,11 @@
 #include "idol/modeling/constraints/Ctr.h"
 #include "impl_MibS.h"
 
-namespace idol::Optimizers {
+namespace idol::Optimizers::Bilevel {
     class MibS;
 }
 
-class idol::Optimizers::MibS : public Optimizer {
+class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Annotation<idol::Var, unsigned int> m_follower_variables;
     const idol::Annotation<idol::Ctr, unsigned int> m_follower_constraints;
     const idol::Ctr m_follower_objective;

@@ -8,7 +8,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-SCENARIO("Model: Update a variable", "[unit][modeling][Model]") {
+SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
 
     Env env;
 

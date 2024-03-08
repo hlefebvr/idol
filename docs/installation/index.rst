@@ -3,26 +3,19 @@
 Installation
 ============
 
-Welcome to idol! You are here on the installation guidelines.
+You are here on the installation guidelines. This page will guide through the installation process of idol.
 
-Installation Types
-------------------
+There are two ways to install idol:
 
-There are two ways of installing idol:
-
-* :ref:`A local installation <installation_local>`  lets CMake automatically download and manage idol's installation on a sub-folder of your
-  CMake project.
+* :ref:`A local installation <installation_local>` lets CMake automatically download and install idol a sub-folder of your
+  CMake project. This is the easiest way to get started with idol.
 * :ref:`A global installation <basics_installation>` installs idol globally on your computer (e.g., in `/usr/lib`).
 
-Table of Contents
------------------
-
 .. toctree::
+   :hidden:
    :maxdepth: 1
    :glob:
 
    local_installation
-   global_installation
-   linking
+   global-installation/index
    options
-   mosek-and-socp

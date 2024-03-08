@@ -18,7 +18,7 @@ idol::Bilevel::MibS::MibS(const Annotation<Var, unsigned int> &t_follower_variab
 
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
-    return new Optimizers::MibS(
+    return new Optimizers::Bilevel::MibS(
                 t_model,
                 m_follower_variables,
                 m_follower_constraints,

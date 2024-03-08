@@ -9,3 +9,4 @@ API
 
     classes/index
     types/index
+    constants/index

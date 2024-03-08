@@ -33,7 +33,7 @@
         font-size: inherit;
         font-weight: 500;
         line-height: 1.5;
-        color: #7253ed;
+        color: gray;
         text-decoration: none;
         vertical-align: baseline;
         cursor: pointer;
@@ -42,6 +42,10 @@
         border-radius: 4px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
         appearance: none;
+    }
+
+    .my-button:visited {
+        color: gray;
     }
 
     .wy-nav-content-wrap {
@@ -73,24 +77,13 @@
             "Segoe UI", "Roboto", "Oxygen",
             "Ubuntu", "Cantarell", "Fira Sans",
             "Droid Sans", "Helvetica Neue", sans-serif;
-            font-weight:150;
+            font-weight:800;
             font-size :2.25em;
             overflow-wrap: break-word;
         }
 
         a:before {
             content: "";
-        }
-
-        a:after {
-            content: ".cpp";
-            font-family: -apple-system, BlinkMacSystemFont,
-            "Segoe UI", "Roboto", "Oxygen",
-            "Ubuntu", "Cantarell", "Fira Sans",
-            "Droid Sans", "Helvetica Neue", sans-serif;
-            color:#6ab0de;
-            font-size:0.7em;
-            font-weight:150;
         }
 
     }

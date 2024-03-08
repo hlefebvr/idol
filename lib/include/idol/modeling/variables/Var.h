@@ -26,7 +26,7 @@ namespace idol {
 
 
 /**
- * Variable modeling object.
+ * Variable modeling-old object.
  *
  * The class is used to represent a variable in an optimization model.
  *

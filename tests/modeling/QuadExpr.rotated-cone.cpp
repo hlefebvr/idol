@@ -32,7 +32,7 @@ double eval(const Expr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
     return t_expr.constant().numerical() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
 }
 
-TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling][QuadExpr]") {
+TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling-old][QuadExpr]") {
 
     Env env;
 
