@@ -76,7 +76,7 @@ html_js_files = [
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-    "navigation_depth": -1,
+    "navigation_depth": 2,
     "titles_only": True,
     "style_external_links": True
 }

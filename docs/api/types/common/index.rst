@@ -1,5 +1,5 @@
-Universal Callbacks
-===================
+Common
+======
 
 .. toctree::
     :maxdepth: 1

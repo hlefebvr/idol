@@ -3,13 +3,14 @@
 Type List
 =========
 
-Common
-^^^^^^
+Mixed-Integer Programming
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. toctree::
     :maxdepth: 2
     :glob:
 
     common/index
+    universal-callbacks/index
 
 
