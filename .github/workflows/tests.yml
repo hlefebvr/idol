@@ -176,7 +176,7 @@ jobs:
   Coverage:
     name: "Upload coverage report"
     runs-on: ubuntu-latest
-    needs: [GLPK, Mosek, HiGHS, modeling-old]
+    needs: [GLPK, Mosek, HiGHS, modeling]
     steps:
       - uses: actions/checkout@v3
 
