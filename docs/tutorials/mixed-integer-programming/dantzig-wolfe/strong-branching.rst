@@ -1,29 +1,31 @@
-.. _tutorials_dantzig_wolfe_strong_branching:
+Using Strong Branching
+======================
 
-.. role:: cpp(code)
-   :language: cpp
+.. contents:: Table of Contents
+    :local:
+    :depth: 2
 
-Strong Branching
-================
+Basics
+------
 
-Hey, you've implemented your first Branch-and-Price algorithm and are curious about how to implement strong branching in
-idol? Then you are at the right place! If not, make sure to check the
-`Generalized Assignment Problem tutorial <_tutorials_dantzig_wolfe>`_.
+Strong Branching is a technique that falls into the category of *variable selection rules*, a crucial aspect of
+Branch-and-Bound algorithms.
 
-Introduction
-------------
-
-If you've landed here, you should already know what strong branching is. To be sure though, let's give a small introduction.
-
-First of all, *Strong Branching* is variable-branching rule. Thus, it is used inside a branch-and-bound algorithm to
-select a variable for branching. In particular, among a set of branching candidates whose value must be integer, one must
-decide which variable with fractional value in the current relaxation to choose for creating
-the child nodes, i.e., for branching.
+More specifically, the task is to decide which variable to branch on at each node of the Branch-and-Bound tree, i.e,
+among a set of branching candidates whose value must be integer, one must
+decide which variable with fractional value in the current solution of the relaxation to choose for creating
+child nodes.
 
 The most common rule is the so-called *Most-Infeasible* rule, which selects a variable whose fractional
 part is closest to `0.5`. Unfortunately, this rule performs badly in practice. Most importantly, if solving a node is
-computationally hard, it makes sense to spend some time in carefully choosing the variable to branch. This is typically
-the case when nodes are solved using Column Generation, and that's why we are here.
+computationally hard, it makes sense to spend some time in carefully choosing the variable to branch on. This is typically
+the case when nodes are solved using Column Generation.
+
+.. info::
+
+    Clearly, Strong Branching is not only used in the context of column generation. It is a general technique that can be
+    used in any context where solving a node is computationally expensive. Thus, this tutorial is not specific to the
+    context of column generation, though we will use it as an example.
 
 The idea of Strong Branching is to evaluate the effect of branching on a variable before branching actually happens.
 
@@ -65,46 +67,37 @@ in which :math:`\Delta_j^\le := z_j^\le - z^*` and :math:`\Delta_j^\ge := z_j^\g
 (optimal) value of the current node. Parameters :math:`\mu\in[0,1]` and :math:`\varepsilon > 0` are given.
 In idol, :math:`\mu = 1/6` and :math:`\varepsilon = 10^{-6}`.
 
-Full Strong Branching
-^^^^^^^^^^^^^^^^^^^^^
+Variants
+^^^^^^^^
 
-*Full Strong Branching* denotes the standard Strong Branching rule which solves all :math:`2|C|` nodes at each branching
-decision. The drawback of this approach is that it may take a lot of time to solve all these sub-problems before branching
-actually happens.
+There are several variants of Strong Branching. The most common ones are:
 
-Restricted Strong Branching
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*Restricted Strong Branching* is an attempt to reduce the computational burden of Full Strong Branching. The idea is to
-consider only a maximum of :math:`K` branching candidates at each branching decision instead of the whole set :math:`C`.
-Thus, :math:`C` is replaced by a smaller set :math:`R\subseteq C` such that :math:`|R| = K` with :math:`K` fixed.
-The "restricted branching candidate set" :math:`R` is created by taking the :math:`K` first variables selected by, yet
-another, branching rule, e.g., the most-infeasible rule.
-
-Strong Branching with Look Ahead
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*Strong Branching with Look Ahead* is similar to *Restricted Strong Branching* yet differs from it by not specifying a
-fixed size for the "restricted branching candidate set" :math:`R`. Instead, it considers a look ahead parameter, noted
-:math:`L`, and applies the Full Strong Branching rule. However, if the branching candidate does not change after :math:`L`
-iterations, the algorithm stops and the current branching candidate is returned.
-
-Strong Branching with Phases
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*Strong Branching with Phases* is a combination of the above three approaches which applies different schemes depending
-on the level of the current node in the Branch-and-Bound tree. Additionally, it allows to solve each node only approximately
-by, e.g., imposing a maximum number of iterations for the underlying Column Generation algorithm.
+* **Full Strong Branching** denotes the standard Strong Branching rule which solves all :math:`2|C|` nodes at each branching
+  decision. The drawback of this approach is that it may take a lot of time to solve all these sub-problems before branching
+  actually happens.
+* **Restricted Strong Branching** is an attempt to reduce the computational burden of Full Strong Branching. The idea is to
+  consider only a maximum of :math:`K` branching candidates at each branching decision instead of the whole set :math:`C`.
+  Thus, :math:`C` is replaced by a smaller set :math:`R\subseteq C` such that :math:`|R| = K` with :math:`K` fixed.
+  The "restricted branching candidate set" :math:`R` is created by taking the :math:`K` first variables selected by, yet
+  another, branching rule, e.g., the most-infeasible rule.
+* **Strong Branching with Look Ahead** is similar to *Restricted Strong Branching* yet differs from it by not specifying a
+  fixed size for the "restricted branching candidate set" :math:`R`. Instead, it considers a look ahead parameter, noted
+  :math:`L`, and applies the Full Strong Branching rule. However, if the branching candidate does not change after :math:`L`
+  iterations, the algorithm stops and the current branching candidate is returned.
+* **Strong Branching with Phases** is a combination of the above three approaches which applies different schemes depending
+  on the level of the current node in the Branch-and-Bound tree. Additionally, it allows to solve each node only approximately
+  by, e.g., imposing a maximum number of iterations for the underlying Column Generation algorithm.
 
 Implementation
 --------------
 
+This section explains how to use the Strong Branching rule in idol.
+It is based on the Generalized Assignment Problem example from the :ref:`Column Generation <tutorial_column_generation>`.
+More specifically, we will assume that you have a variable
+:code:`model` of type :code:`Model` which has a decomposable structure specified by the annotation :code:`(Annotation<Ctr, unsigned int>) decomposition`.
+
 Full Strong Branching
 ^^^^^^^^^^^^^^^^^^^^^
-
-Enough talking, let's implement strong branching. To do so, we will assume that you followed the previous tutorial
-on Generalized Assignment Problem and Branch-and-Price. More specifically, we will assume that you have a variable
-:code:`model` of type :code:`Model` which has a decomposable structure specified by the annotation :code:`(Annotation<Ctr, unsigned int>) decomposition`.
 
 Recall that the Branch-and-Price algorithm is created by the following code.
 
@@ -118,7 +111,7 @@ Recall that the Branch-and-Price algorithm is created by the following code.
                     .add_optimizer(Gurobi())
             );
 
-You should be already familiar with this. What is new is the way in which we create our Branch-and-Bound algorithm. In
+Now, we will show how to use Strong Branching as a branching rule. This is done while creating our Branch-and-Bound algorithm. In
 particular, we will use the :code:`StrongBranching` class to define our branching rule. We can, for instance, simply
 declare
 
@@ -137,7 +130,7 @@ which will create a new Full Strong Branching rule. Just like any other branchin
             .with_branching_rule(branching_rule)
             .with_node_selection_strategy(BestBound());
 
-Then, we can build a Branch-and-Price algorithm and solve our problem as follows.
+Then, we can write a Branch-and-Price algorithm and solve our problem as follows.
 
 .. code:: cpp
 
@@ -147,10 +140,8 @@ Then, we can build a Branch-and-Price algorithm and solve our problem as follows
 
     model.optimize();
 
-Pretty easy no?
-
-But wait! Here, we only implemented Full Strong Branching which, as we saw, is not computationally convenient...
-Let's see how to implemented Restricted Strong Branching!
+Beware that here, we only implemented Full Strong Branching which, as we saw, is not computationally convenient...
+Let's see how to implemented Restricted Strong Branching.
 
 Restricted Strong Branching
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,7 +160,7 @@ Here, we set the maximum number of considered variables equal to :math:`K = 50`.
 Phases
 ^^^^^^
 
-In this section, we will discuss how to implement phases with the strong branching rule. This is done using the
+In this section, we will discuss how to implement phases with the strong branching rule. This is done by using the
 :code:`StrongBranching::add_phase` method. This method takes three arguments: a phase type, which is used to indicate
 how each node should be solved, e.g., with some iteration limit, a maximum number of variables to consider, for restricted
 strong branching, and a maximum depth, used to trigger the phase based on the level of the current node in the Branch-and-Bound
@@ -191,8 +182,17 @@ considered variables and on the maximum depth for the final phase. Note that, by
 given depth, e.g., because it was not specified, Full Strong Branching is applied. Here, however, we make sure that the
 second phase is always triggered.
 
-Conclusion
-----------
+Changing the Scoring Function
+-----------------------------
 
-Strong Branching is a possible approach to try to reduce the computation time of a Branch-and-Price algorithm.
-Another approach, which can be complementary, is stabilization. This is the topic of the next tutorial, see you there!
+The scoring function can be changed by calling the :code:`StrongBranching::with_scoring_function` method. This method
+takes a scoring function as an argument. The scoring function is a sub-class of :code:`NodeScoreFunction` and can be
+:code:`Linear` or :code:`Product`.
+
+By default, idol uses the product scoring function. To change it to the linear scoring function, one can simply write
+
+.. code::
+
+    const auto branching_rule =
+        StrongBranching()
+            .with_scoring_function(NodeScoreFunctions::Linear());

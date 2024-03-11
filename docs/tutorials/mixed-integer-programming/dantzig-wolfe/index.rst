@@ -13,4 +13,5 @@ Column Generation and Branch-and-Price Algorithm
     in-out-stabilization
     writing-branch-and-price
     integer-master
+    strong-branching
     writing-branch-and-cut-and-price
