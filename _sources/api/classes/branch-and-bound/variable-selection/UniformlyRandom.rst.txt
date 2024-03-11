@@ -1,0 +1,4 @@
+UniformlyRandom
+===============
+
+.. doxygenclass:: idol::UniformlyRandom

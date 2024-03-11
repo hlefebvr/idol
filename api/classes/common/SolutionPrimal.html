@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solution::Primal &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=d39c50ef" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/SolutionPrimal.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TempCtr" href="TempCtr.html" />
+    <link rel="prev" title="Solution::Dual" href="SolutionDual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Solution::Primal</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/SolutionPrimal.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solution-primal">
+<span id="api-solution-primal"></span><h1>Solution::Primal<a class="headerlink" href="#solution-primal" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6PrimalE">
+<span id="_CPPv3N4idol8Solution6PrimalE"></span><span id="_CPPv2N4idol8Solution6PrimalE"></span><span id="idol::Solution::Primal"></span><span class="target" id="classidol_1_1Solution_1_1Primal"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Primal</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">AbstractSolution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4idol8Solution6PrimalE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classidol_1_1Solution_1_1Primal"><span class="std std-ref">Primal</span></a> solution class.</p>
+<p>This class is used to store a primal solution to an optimization problem.</p>
+<p>Typically, it is obtained by calling the <code class="docutils literal notranslate"><span class="pre">save_primal</span></code> function, or by creating a new solution from scratch.</p>
+<p><strong>Example 1</strong>: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">get_status</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Optimal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">Solution</span><span class="o">::</span><span class="n">Primal</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p><strong>Example 2</strong>: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Solution</span><span class="o">::</span><span class="n">Primal</span><span class="w"> </span><span class="n">solution</span><span class="p">;</span>
+
+<span class="n">solution</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">Feasible</span><span class="p">);</span>
+<span class="n">solution</span><span class="p">.</span><span class="n">set_objective_value</span><span class="p">(</span><span class="mf">13.</span><span class="p">);</span>
+<span class="n">solution</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal14const_iteratorE">
+<span id="_CPPv3N4idol8Solution6Primal14const_iteratorE"></span><span id="_CPPv2N4idol8Solution6Primal14const_iteratorE"></span><span class="target" id="classidol_1_1AbstractSolution_1afea66c120ef1945cec7d7b9f754d6119"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_iterator</span></span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal14const_iteratorE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal10set_statusE14SolutionStatus">
+<span id="_CPPv3N4idol8Solution6Primal10set_statusE14SolutionStatus"></span><span id="_CPPv2N4idol8Solution6Primal10set_statusE14SolutionStatus"></span><span id="idol::Solution::Primal::set_status__SolutionStatus"></span><span class="target" id="classidol_1_1AbstractSolution_1a80fd5ad6ce783a1682a5f496e36c4d7d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_status</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SolutionStatus</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal10set_statusE14SolutionStatus" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the solution status. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_status</strong> – The desired solution status. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal6statusEv">
+<span id="_CPPv3NK4idol8Solution6Primal6statusEv"></span><span id="_CPPv2NK4idol8Solution6Primal6statusEv"></span><span id="idol::Solution::Primal::statusC"></span><span class="target" id="classidol_1_1AbstractSolution_1ac2c2a2db504fda1ce8ce4a7f2190383d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">SolutionStatus</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal6statusEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the stored solution status. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal10set_reasonE14SolutionReason">
+<span id="_CPPv3N4idol8Solution6Primal10set_reasonE14SolutionReason"></span><span id="_CPPv2N4idol8Solution6Primal10set_reasonE14SolutionReason"></span><span id="idol::Solution::Primal::set_reason__SolutionReason"></span><span class="target" id="classidol_1_1AbstractSolution_1a1f9feae67f4e8cef10eaad625177bb24"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_reason</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SolutionReason</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_reason</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal10set_reasonE14SolutionReason" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the reason for the solution status.</p>
+<p><strong>Example</strong>: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">solution</span><span class="p">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">Feasible</span><span class="p">);</span>
+<span class="n">solution</span><span class="p">.</span><span class="n">set_reason</span><span class="p">(</span><span class="n">IterLimit</span><span class="p">);</span><span class="w"> </span><span class="c1">// We only found a feasible solution because of iteration limit reached</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_reason</strong> – The desired reason. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal6reasonEv">
+<span id="_CPPv3NK4idol8Solution6Primal6reasonEv"></span><span id="_CPPv2NK4idol8Solution6Primal6reasonEv"></span><span id="idol::Solution::Primal::reasonC"></span><span class="target" id="classidol_1_1AbstractSolution_1a5fe2bc800b6843dea30daa38c84822c9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">SolutionReason</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal6reasonEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the reason for the solution status. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The reason for the solution status. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal19set_objective_valueEd">
+<span id="_CPPv3N4idol8Solution6Primal19set_objective_valueEd"></span><span id="_CPPv2N4idol8Solution6Primal19set_objective_valueEd"></span><span id="idol::Solution::Primal::set_objective_value__double"></span><span class="target" id="classidol_1_1AbstractSolution_1a5d54204d7de528eaa354c28f4fb4d4c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_objective_value</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal19set_objective_valueEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the objective value of the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_value</strong> – The desired objective value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal15objective_valueEv">
+<span id="_CPPv3NK4idol8Solution6Primal15objective_valueEv"></span><span id="_CPPv2NK4idol8Solution6Primal15objective_valueEv"></span><span id="idol::Solution::Primal::objective_valueC"></span><span class="target" id="classidol_1_1AbstractSolution_1a5dc8cc8839a6a05636347c2f4e582a89"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal15objective_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the objective value of the solution. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal19has_objective_valueEv">
+<span id="_CPPv3NK4idol8Solution6Primal19has_objective_valueEv"></span><span id="_CPPv2NK4idol8Solution6Primal19has_objective_valueEv"></span><span id="idol::Solution::Primal::has_objective_valueC"></span><span class="target" id="classidol_1_1AbstractSolution_1aef102073d3b9cd2e3a55eb67e011f205"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal19has_objective_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the solution has an objective value, false otherwise. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the solution has an objective value, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal21reset_objective_valueEv">
+<span id="_CPPv3N4idol8Solution6Primal21reset_objective_valueEv"></span><span id="_CPPv2N4idol8Solution6Primal21reset_objective_valueEv"></span><span id="idol::Solution::Primal::reset_objective_value"></span><span class="target" id="classidol_1_1AbstractSolution_1a930bcbf3f1279d0ed3e7ecc3330686a9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset_objective_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal21reset_objective_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Resets the stored objective value.</p>
+<p>Trying to access the objective value after calling this method will throw an exception. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal3setERK3Vard">
+<span id="_CPPv3N4idol8Solution6Primal3setERK3Vard"></span><span id="_CPPv2N4idol8Solution6Primal3setERK3Vard"></span><span id="idol::Solution::Primal::set__VarCR.double"></span><span class="target" id="classidol_1_1AbstractSolution_1ae2ddad9647dab9d78fcbdf7cec788c59"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_key</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal3setERK3Vard" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the value associated to the object <code class="docutils literal notranslate"><span class="pre">t_key</span></code> given as argument. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_key</strong> – The key for which the entry should be set. </p></li>
+<li><p><strong>t_value</strong> – The desired value associated to the key. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal3getERK3Var">
+<span id="_CPPv3NK4idol8Solution6Primal3getERK3Var"></span><span id="_CPPv2NK4idol8Solution6Primal3getERK3Var"></span><span id="idol::Solution::Primal::get__VarCRC"></span><span class="target" id="classidol_1_1AbstractSolution_1a22a067489fed63b51487e573b04a81c6"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_key</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal3getERK3Var" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the value associated to the object <code class="docutils literal notranslate"><span class="pre">t_key</span></code> given as argument.</p>
+<p>If no value is stored, zero is returned. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_key</strong> – The queried key. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal4sizeEv">
+<span id="_CPPv3NK4idol8Solution6Primal4sizeEv"></span><span id="_CPPv2NK4idol8Solution6Primal4sizeEv"></span><span id="idol::Solution::Primal::sizeC"></span><span class="target" id="classidol_1_1AbstractSolution_1a09973106888e1ced5648431661186d87"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal4sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the number of non-zero entries in the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of non-zero entries in the solution </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal5beginEv">
+<span id="_CPPv3NK4idol8Solution6Primal5beginEv"></span><span id="_CPPv2NK4idol8Solution6Primal5beginEv"></span><span id="idol::Solution::Primal::beginC"></span><span class="target" id="classidol_1_1AbstractSolution_1ac038f407e8ac72c1e10aaab8664a1ecb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6Primal14const_iteratorE" title="idol::Solution::Primal::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal5beginEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns an iterator on the values stored in the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator on the values stored in the solution. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal3endEv">
+<span id="_CPPv3NK4idol8Solution6Primal3endEv"></span><span id="_CPPv2NK4idol8Solution6Primal3endEv"></span><span id="idol::Solution::Primal::endC"></span><span class="target" id="classidol_1_1AbstractSolution_1a87639d97822e268b3e2cae0054b29ac0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6Primal14const_iteratorE" title="idol::Solution::Primal::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal3endEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns an iterator on the values stored in the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator on the values stored in the solution. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal6cbeginEv">
+<span id="_CPPv3NK4idol8Solution6Primal6cbeginEv"></span><span id="_CPPv2NK4idol8Solution6Primal6cbeginEv"></span><span id="idol::Solution::Primal::cbeginC"></span><span class="target" id="classidol_1_1AbstractSolution_1a39cf02b1c9d7c7e0d739309e8446e7c2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6Primal14const_iteratorE" title="idol::Solution::Primal::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal6cbeginEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns an iterator on the values stored in the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator on the values stored in the solution. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal4cendEv">
+<span id="_CPPv3NK4idol8Solution6Primal4cendEv"></span><span id="_CPPv2NK4idol8Solution6Primal4cendEv"></span><span id="idol::Solution::Primal::cendC"></span><span class="target" id="classidol_1_1AbstractSolution_1a172b54ff89183d9ddad17939f2b32b70"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6Primal14const_iteratorE" title="idol::Solution::Primal::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal4cendEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns an iterator on the values stored in the solution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator on the values stored in the solution. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Solution6Primal4normEd">
+<span id="_CPPv3NK4idol8Solution6Primal4normEd"></span><span id="_CPPv2NK4idol8Solution6Primal4normEd"></span><span id="idol::Solution::Primal::norm__doubleC"></span><span class="target" id="classidol_1_1AbstractSolution_1ad0ea249b3c53154c6993f7f0b1565f58"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">norm</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_p</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2.</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Solution6Primal4normEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the <span class="math notranslate nohighlight">\( l_p \)</span>-norm of the solution.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">Inf</span></code> is a possible value for <code class="docutils literal notranslate"><span class="pre">t_p</span></code>, in which case, the infinity norm is computed. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_p</strong> – The <span class="math notranslate nohighlight">\( p \)</span> parameter in the <span class="math notranslate nohighlight">\( l_p \)</span>-norm. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal22merge_without_conflictE6Primal">
+<span id="_CPPv3N4idol8Solution6Primal22merge_without_conflictE6Primal"></span><span id="_CPPv2N4idol8Solution6Primal22merge_without_conflictE6Primal"></span><span id="idol::Solution::Primal::merge_without_conflict__Primal"></span><span class="target" id="classidol_1_1AbstractSolution_1a3c3793b89a4dbd74b6f46e8ce9e78fbe"></span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">merge_without_conflict</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal22merge_without_conflictE6Primal" title="Link to this definition"></a><br /></dt>
+<dd><p>Merges the solution with another solution, explicitly requiring that no conflict arises (i.e., that no entry from the solution <code class="docutils literal notranslate"><span class="pre">t_rhs</span></code> is already stored in the solution). If a conflict is detected, an exception is thrown. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – The solution to merge. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal9normalizeEd">
+<span id="_CPPv3N4idol8Solution6Primal9normalizeEd"></span><span id="_CPPv2N4idol8Solution6Primal9normalizeEd"></span><span id="idol::Solution::Primal::normalize__double"></span><span class="target" id="classidol_1_1AbstractSolution_1a819bb9b8000080b40410946e91f16e98"></span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">normalize</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_p</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2.</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal9normalizeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Normalizes the solution (i.e., divides every entry by the norm of the solution) with respect to a given <span class="math notranslate nohighlight">\( l_p \)</span>-norm. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_p</strong> – The parameter <span class="math notranslate nohighlight">\( p \)</span> for the norm. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6Primal5roundEj">
+<span id="_CPPv3N4idol8Solution6Primal5roundEj"></span><span id="_CPPv2N4idol8Solution6Primal5roundEj"></span><span id="idol::Solution::Primal::round__unsigned-i"></span><span class="target" id="classidol_1_1AbstractSolution_1aa5a0d261cdc242b68bb831cc62164c17"></span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">round</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_digits</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6Primal5roundEj" title="Link to this definition"></a><br /></dt>
+<dd><p>Rounds all the entries of the solution to the closest <code class="docutils literal notranslate"><span class="pre">double</span></code> with <code class="docutils literal notranslate"><span class="pre">t_n_digits</span></code>.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">t_n_digits</span> <span class="pre">=</span> <span class="pre">0</span></code> leads to the usual rounding, i.e., closest integer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_n_digits</strong> – The number of digits for the closest <code class="docutils literal notranslate"><span class="pre">double</span></code>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6PrimalpLERK6Primal">
+<span id="_CPPv3N4idol8Solution6PrimalpLERK6Primal"></span><span id="_CPPv2N4idol8Solution6PrimalpLERK6Primal"></span><span id="idol::Solution::Primal::add-assign-operator__PrimalCR"></span><span class="target" id="classidol_1_1AbstractSolution_1af11240af191b3ec55ca0580f3bad48ef"></span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6PrimalpLERK6Primal" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds the solution to another solution <code class="docutils literal notranslate"><span class="pre">t_rhs</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – The solution to add. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Solution6PrimalmLEd">
+<span id="_CPPv3N4idol8Solution6PrimalmLEd"></span><span id="_CPPv2N4idol8Solution6PrimalmLEd"></span><span id="idol::Solution::Primal::mul-assign-operator__double"></span><span class="target" id="classidol_1_1AbstractSolution_1adb84d8dc085a2b4b11160b7436329e5b"></span><a class="reference internal" href="#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Solution6PrimalmLEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Multiplies every entries in the solution by <code class="docutils literal notranslate"><span class="pre">t_factor</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_factor</strong> – The factor for multiplication. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SolutionDual.html" class="btn btn-neutral float-left" title="Solution::Dual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TempCtr.html" class="btn btn-neutral float-right" title="TempCtr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
