@@ -1,4 +1,4 @@
-Writing A Branch-and-Cut-and-Price Algorithm (TODO)
+Writing A Branch-and-Cut-and-Price Algorithm [TODO]
 ===================================================
 
 .. warning::

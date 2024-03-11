@@ -1,4 +1,4 @@
-Solving Bilevel Problems with Coin-OR/MibS (TODO)
+Solving Bilevel Problems with Coin-OR/MibS [TODO]
 =================================================
 
 .. warning::

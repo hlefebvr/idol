@@ -1,4 +1,4 @@
-Modeling a Two-Stage Robust Problem (TODO)
+Modeling a Two-Stage Robust Problem [TODO]
 ==========================================
 
 

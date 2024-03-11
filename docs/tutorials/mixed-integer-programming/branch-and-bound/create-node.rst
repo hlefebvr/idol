@@ -1,4 +1,4 @@
-Creating Your Own Node Class (Advanced) (TODO)
+Creating Your Own Node Class (Advanced) [TODO]
 ==============================================
 
 .. warning::

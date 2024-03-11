@@ -1,4 +1,4 @@
-Writing Your Own Separator (Advanced) (TODO)
+Writing Your Own Separator (Advanced) [TODO]
 ============================================
 
 .. warning::

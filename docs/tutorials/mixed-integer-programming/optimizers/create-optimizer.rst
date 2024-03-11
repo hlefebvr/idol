@@ -1,4 +1,4 @@
-Creating Your Own Optimizer (Advanced) (TODO)
+Creating Your Own Optimizer (Advanced) [TODO]
 =============================================
 
 .. warning::

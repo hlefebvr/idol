@@ -1,6 +1,6 @@
 .. _tutorial_create_bb_callback:
 
-Create Your Own Callback (Advanced) (TODO)
+Create Your Own Callback (Advanced) [TODO]
 ==========================================
 
 .. warning::

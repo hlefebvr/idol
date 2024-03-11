@@ -1,4 +1,4 @@
-Using Trust Region Stabilization (TODO)
+Using Trust Region Stabilization [TODO]
 =======================================
 
 .. warning::

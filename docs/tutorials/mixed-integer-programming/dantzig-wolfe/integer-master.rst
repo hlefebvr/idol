@@ -1,4 +1,4 @@
-The Integer Master Heuristic (TODO)
+The Integer Master Heuristic [TODO]
 ===================================
 
 .. warning::

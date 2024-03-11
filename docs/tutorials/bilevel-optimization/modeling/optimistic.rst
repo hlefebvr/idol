@@ -1,4 +1,4 @@
-Modeling an Optimistic Bilevel Problem (TODO)
+Modeling an Optimistic Bilevel Problem [TODO]
 =============================================
 
 

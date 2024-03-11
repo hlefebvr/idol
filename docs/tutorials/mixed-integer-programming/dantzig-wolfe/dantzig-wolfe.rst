@@ -1,6 +1,6 @@
 .. _tutorial_column_generation:
 
-Modeling and Solving A Dantzig-Wolfe Reformulation (TODO)
+Modeling and Solving A Dantzig-Wolfe Reformulation [TODO]
 =========================================================
 
 .. warning::

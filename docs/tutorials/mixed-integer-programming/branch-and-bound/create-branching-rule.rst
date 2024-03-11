@@ -1,4 +1,4 @@
-Creating Your Own Branching Rule (Advanced) (TODO)
+Creating Your Own Branching Rule (Advanced) [TODO]
 ==================================================
 
 .. warning::

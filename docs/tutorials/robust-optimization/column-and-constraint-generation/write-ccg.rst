@@ -1,4 +1,4 @@
-Writing a Column-and-Constraint-Generation Algorithm (TODO)
+Writing a Column-and-Constraint-Generation Algorithm [TODO]
 ===========================================================
 
 .. warning::

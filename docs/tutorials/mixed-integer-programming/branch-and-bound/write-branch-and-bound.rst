@@ -1,4 +1,4 @@
-Writing an LP-based Branch-and-Bound (TODO)
+Writing an LP-based Branch-and-Bound [TODO]
 ===========================================
 
 .. warning::

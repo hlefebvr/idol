@@ -1,4 +1,4 @@
-Using In-Out Stabilization (TODO)
+Using In-Out Stabilization [TODO]
 =================================
 
 .. warning::

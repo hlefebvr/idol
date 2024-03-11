@@ -1,4 +1,4 @@
-Adding User Cuts and Lazy Constraints (TODO)
+Adding User Cuts and Lazy Constraints [TODO]
 ============================================
 
 .. warning::
