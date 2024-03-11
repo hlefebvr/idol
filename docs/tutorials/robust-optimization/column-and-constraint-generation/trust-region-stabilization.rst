@@ -1,5 +1,5 @@
-Passing Parameters to an Optimizer
-==================================
+Using Trust Region Stabilization (TODO)
+=======================================
 
 .. warning::
 

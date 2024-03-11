@@ -8,3 +8,10 @@ Branch-and-Bound Algorithm
 .. toctree::
     :maxdepth: 1
     :glob:
+
+    write-branch-and-bound
+    user-cuts-lazy-constraints
+    create-callback
+    create-node
+    create-branching-rule
+    create-node-selection-rule

@@ -8,3 +8,9 @@ Column Generation and Branch-and-Price Algorithm
 .. toctree::
     :maxdepth: 1
     :glob:
+
+    dantzig-wolfe
+    in-out-stabilization
+    writing-branch-and-price
+    integer-master
+    writing-branch-and-cut-and-price

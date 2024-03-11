@@ -1,4 +1,4 @@
-Adding User Cuts and Lazy Constraints (TODO)
+Writing Your Own Separator (Advanced) (TODO)
 ============================================
 
 .. warning::

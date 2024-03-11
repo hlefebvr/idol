@@ -1,5 +1,5 @@
-Getting Access to An Underlying Optimizer
-=========================================
+Getting Access to The Underlying Optimizer (TODO)
+=================================================
 
 .. warning::
 

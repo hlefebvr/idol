@@ -7,4 +7,5 @@ Robust Optimization
     :maxdepth: 3
     :glob:
 
-
+    modeling/index
+    column-and-constraint-generation/index

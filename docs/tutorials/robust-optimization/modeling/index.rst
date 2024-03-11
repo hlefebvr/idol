@@ -1,15 +1,12 @@
-.. _bilevel:
-
-Bilevel Optimization
-====================
+Modeling
+========
 
 .. warning::
 
    This is a work in progress. Thank you for your understanding.
 
-
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
     :glob:
 
-    modeling/index
+    two-stage-robust

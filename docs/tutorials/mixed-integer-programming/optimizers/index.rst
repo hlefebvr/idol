@@ -16,6 +16,7 @@ Optimizers
     :glob:
 
     solving
-    passing-parameters
     access-optimizer
     universal-callbacks
+    create-universal-callback
+    create-optimizer

@@ -1,4 +1,4 @@
-Solving a Model and Accessing the Solution (TODO)
+Solving Bilevel Problems with Coin-OR/MibS (TODO)
 =================================================
 
 .. warning::
