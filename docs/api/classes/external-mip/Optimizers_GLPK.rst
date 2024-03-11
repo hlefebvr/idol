@@ -1,3 +1,5 @@
+.. _api_Optimizers_GLPK:
+
 Optimizers::GLPK
 ================
 

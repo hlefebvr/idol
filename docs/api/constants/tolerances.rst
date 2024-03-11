@@ -1,3 +1,5 @@
+.. _api_api_tolerances:
+
 Tolerances and Numerics
 =======================
 

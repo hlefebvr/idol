@@ -61,7 +61,7 @@ It's really a mater of seconds before you can start using idol.
 
         Model model(env);
 
-        auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, "x");
+        const auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, "x");
 
         model.add_ctr(idol_Sum(j, Range(n_items), weight[j] * x[j]) <= capacity);
 
