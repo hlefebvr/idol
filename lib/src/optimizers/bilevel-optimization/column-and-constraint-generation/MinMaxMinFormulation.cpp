@@ -87,7 +87,6 @@ std::list<idol::Var> idol::Bilevel::impl::MinMaxMinFormulation::identify_couplin
             const auto type = high_point_relaxation.get_var_type(var);
             const double lb = high_point_relaxation.get_var_lb(var);
             const double ub = high_point_relaxation.get_var_ub(var);
-            const auto& obj = high_point_relaxation.get_var_column(var).obj();
 
             if (type != Binary) {
                 throw Exception("Coupling variables must be binary");
