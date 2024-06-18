@@ -202,10 +202,12 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
         if (!row.linear().empty() || !row.rhs().is_zero()) {
 
-            auto& head1 = *it;
+            const auto& head1 = *it;
             ++it;
-            auto& head2 = *it;
+            const auto& head2 = *it;
+            ++it;
 
+            // Here, we have a constraint of the form c^T x + x^T Q x <= b \iff 2 * (1/2) * (b - c^Tx) >= (x^T Q x) = [Q^{1/2} x]^2
             if (head1.is_zero() && head2.is_zero()) {
 
                 expression = mosek::fusion::Expr::vstack(
@@ -214,11 +216,25 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
                         to_mosek_expression(sign * row.rhs() - sign * row.linear())
                 );
 
+            } else if (row.linear().empty()) { // Here, we have a constraint of the form x^T Q x - 2yz <= b \iff 2 * .5 * y * z >= xQx + sqrt(b)^2
+
+                std::cout << "Warning: Assuming \"" << head1 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
+                std::cout << "Warning: Assuming \"" << head2 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
+
+                if (sign * row.rhs().numerical() >= 0) {
+                    throw Exception("Non-convex constraint was found.");
+                }
+
+                expression = mosek::fusion::Expr::vstack(
+                        to_mosek_expression(head1),
+                        to_mosek_expression(head2),
+                        std::sqrt(-sign * row.rhs().numerical())
+                );
+
             } else {
                 throw Exception("Non-convex constraint was found.");
             }
 
-            ++it;
         }
 
         for (const auto end = rq_cone_expr.end() ; it != end ; ++it) {
