@@ -150,7 +150,7 @@ jobs:
         run: sudo apt-get install lcov
 
       - name: Download HiGHS
-        run: git clone https://github.com/ERGO-Code/HiGHS.git
+        run: git clone --depth 1 --branch v1.7.1 https://github.com/ERGO-Code/HiGHS.git
 
       - name: Install HiGHS
         run: mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install

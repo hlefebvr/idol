@@ -391,6 +391,7 @@ void idol::Optimizers::HiGHS::run_without_presolve() {
         return;
     }
     m_model.setOptionValue("presolve", "off");
+    //m_model.setOptionValue("solver", "simplex");
     auto result = m_model.run();
     m_model.setOptionValue("presolve", old_presolve_setting);
 
