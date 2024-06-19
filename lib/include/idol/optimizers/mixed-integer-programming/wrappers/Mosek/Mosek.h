@@ -5,8 +5,10 @@
 #ifndef IDOL_MOSEK_H
 #define IDOL_MOSEK_H
 
+#include <list>
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/containers/Map.h"
+#include "idol/optimizers/mixed-integer-programming/callbacks/CallbackFactory.h"
 
 namespace idol {
     class Mosek;
@@ -17,12 +19,13 @@ class idol::Mosek : public OptimizerFactoryWithDefaultParameters<Mosek> {
     Map<std::string, double> m_double_parameter;
     Map<std::string, int> m_int_parameter;
     Map<std::string, std::string> m_string_parameter;
+    std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
     explicit Mosek(bool t_continuous_relaxation) : m_continuous_relaxation(t_continuous_relaxation) {}
 public:
     Mosek() = default;
 
-    Mosek(const Mosek&) = default;
+    Mosek(const Mosek&);
     Mosek(Mosek&&) noexcept = default;
 
     Mosek& operator=(const Mosek&) = delete;
@@ -33,6 +36,8 @@ public:
     static Mosek ContinuousRelaxation();
 
     [[nodiscard]] Mosek *clone() const override;
+
+    Mosek& add_callback(const CallbackFactory& t_cb);
 
     Mosek& with_continuous_relaxation_only(bool t_value);
 

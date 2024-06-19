@@ -51,7 +51,7 @@ idol::Gurobi &idol::Gurobi::with_lazy_cut(bool t_value) {
     return *this;
 }
 
-idol::Gurobi &idol::Gurobi::with_callback(const CallbackFactory &t_cb) {
+idol::Gurobi &idol::Gurobi::add_callback(const CallbackFactory &t_cb) {
     m_callbacks.emplace_back(t_cb.clone());
     return *this;
 }

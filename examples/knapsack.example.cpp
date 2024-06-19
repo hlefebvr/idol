@@ -5,8 +5,37 @@
 #include "idol/problems/knapsack-problem/KP_Instance.h"
 #include "idol/modeling.h"
 #include "idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h"
+#include "idol/optimizers/mixed-integer-programming/wrappers/Mosek/Mosek.h"
+#include "idol/optimizers/mixed-integer-programming/callbacks/cutting-planes/LazyCutCallback.h"
 
 using namespace idol;
+
+class EarlyStopCallback : public CallbackFactory {
+public:
+    EarlyStopCallback() = default;
+
+    EarlyStopCallback(const EarlyStopCallback&) = default;
+    EarlyStopCallback(EarlyStopCallback&&) = default;
+
+    EarlyStopCallback& operator=(const EarlyStopCallback&) = default;
+    EarlyStopCallback& operator=(EarlyStopCallback&&) = default;
+
+    class Strategy : public Callback {
+    protected:
+        void operator()(CallbackEvent t_event) override {
+            std::cout << "Time: " << time().count() << std::endl;
+            std::cout << primal_solution() << std::endl;
+        }
+    };
+
+    Callback *operator()() override {
+        return new Strategy();
+    }
+
+    [[nodiscard]] CallbackFactory *clone() const override {
+        return new EarlyStopCallback(*this);
+    }
+};
 
 int main(int t_argc, const char** t_argv) {
 
@@ -26,7 +55,12 @@ int main(int t_argc, const char** t_argv) {
     model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
 
     // Set optimizer
-    model.use(HiGHS());
+    model.use(
+            Mosek()
+                .add_callback(
+                        EarlyStopCallback()
+                )
+            );
 
     // Solve
     model.optimize();

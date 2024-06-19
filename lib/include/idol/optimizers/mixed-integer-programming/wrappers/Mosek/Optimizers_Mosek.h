@@ -8,6 +8,7 @@
 #ifdef IDOL_USE_MOSEK
 
 #include "idol/optimizers/mixed-integer-programming/wrappers/OptimizerWithLazyUpdates.h"
+#include "MosekCallbackI.h"
 #include <fusion.h>
 
 namespace idol {
@@ -39,6 +40,8 @@ class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekC
     mosek::fusion::Model::t m_model;
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
+
+    std::unique_ptr<MosekCallbackI> m_mosek_callback;
 protected:
     void set_var_attr(MosekVar& t_mosek_var, int t_type, double t_lb, double t_ub, double t_obj);
     void set_var_lb(MosekVar& t_mosek_var, double t_bound);
@@ -114,6 +117,8 @@ public:
     void set_parameter(const std::string& t_param, const std::string& t_value);
 
     void set_param_logs(bool t_value) override;
+
+    void add_callback(Callback* t_ptr_to_callback);
 };
 
 #endif

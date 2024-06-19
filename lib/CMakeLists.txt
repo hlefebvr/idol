@@ -236,6 +236,8 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
         include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/stabilizers.h
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.cpp
+        include/idol/optimizers/mixed-integer-programming/wrappers/Mosek/MosekCallbackI.h
+        src/optimizers/mixed-integer-programming/wrappers/Mosek/MosekCallbackI.cpp
 )
 
 find_package(OpenMP REQUIRED)

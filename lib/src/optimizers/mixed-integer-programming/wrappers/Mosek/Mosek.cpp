@@ -11,6 +11,10 @@ idol::Optimizer *idol::Mosek::operator()(const Model &t_model) const {
 
     this->handle_default_parameters(result);
 
+    for (auto& cb : m_callbacks) {
+        result->add_callback(cb->operator()());
+    }
+
     for (const auto& [param, value] : m_int_parameter) {
         result->set_parameter(param, value);
     }
@@ -28,6 +32,20 @@ idol::Optimizer *idol::Mosek::operator()(const Model &t_model) const {
     throw Exception("idol was not linked with Mosek.");
 #endif
 }
+
+idol::Mosek::Mosek(const idol::Mosek & t_src)
+        : m_continuous_relaxation(t_src.m_continuous_relaxation),
+          m_double_parameter(t_src.m_double_parameter),
+          m_int_parameter(t_src.m_int_parameter),
+          m_string_parameter(t_src.m_string_parameter)
+{
+
+    for (const auto& cb : t_src.m_callbacks) {
+        m_callbacks.emplace_back(cb->clone());
+    }
+
+}
+
 
 idol::Mosek idol::Mosek::ContinuousRelaxation() {
     return Mosek(true);
@@ -81,3 +99,7 @@ idol::Mosek &idol::Mosek::with_external_parameter(const std::string &t_param, st
     return *this;
 }
 
+idol::Mosek &idol::Mosek::add_callback(const idol::CallbackFactory &t_cb) {
+    m_callbacks.emplace_back(t_cb.clone());
+    return *this;
+}

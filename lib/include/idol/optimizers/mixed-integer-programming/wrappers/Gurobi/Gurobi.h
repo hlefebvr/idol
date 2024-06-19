@@ -45,7 +45,7 @@ public:
 
     static Gurobi ContinuousRelaxation();
 
-    Gurobi& with_callback(const CallbackFactory& t_cb);
+    Gurobi& add_callback(const CallbackFactory& t_cb);
 
     Gurobi& with_lazy_cut(bool t_value);
 
