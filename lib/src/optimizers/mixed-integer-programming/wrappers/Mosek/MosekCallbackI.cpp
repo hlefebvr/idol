@@ -4,6 +4,8 @@
 #include "idol/optimizers/mixed-integer-programming/wrappers/Mosek/MosekCallbackI.h"
 #include "idol/optimizers/mixed-integer-programming/wrappers/Mosek/Optimizers_Mosek.h"
 
+#ifdef IDOL_USE_MOSEK
+
 idol::MosekCallbackI::MosekCallbackI(Optimizers::Mosek &t_parent) : m_parent(t_parent) {
 
 }
@@ -88,3 +90,5 @@ double idol::MosekCallbackI::best_bound() const {
 void idol::MosekCallbackI::terminate() {
     m_parent.terminate();
 }
+
+#endif

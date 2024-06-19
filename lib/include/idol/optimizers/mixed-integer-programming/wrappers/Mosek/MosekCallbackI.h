@@ -5,6 +5,8 @@
 #ifndef IDOL_MOSEKCALLBACKI_H
 #define IDOL_MOSEKCALLBACKI_H
 
+#ifdef IDOL_USE_MOSEK
+
 #include <mosek.h>
 #include "../../callbacks/Callback.h"
 
@@ -52,5 +54,7 @@ protected:
 
     void terminate() override;
 };
+
+#endif
 
 #endif //IDOL_MOSEKCALLBACKI_H
