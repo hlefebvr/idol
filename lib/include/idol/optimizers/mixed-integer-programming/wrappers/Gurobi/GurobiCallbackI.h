@@ -46,6 +46,12 @@ protected:
     [[nodiscard]] Solution::Primal primal_solution() const override;
 
     [[nodiscard]] const Timer &time() const override;
+
+    double best_obj() const override;
+
+    double best_bound() const override;
+
+    void terminate() override;
 };
 
 #endif

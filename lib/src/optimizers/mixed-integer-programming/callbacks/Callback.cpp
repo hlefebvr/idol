@@ -40,6 +40,21 @@ void idol::Callback::submit_heuristic_solution(const idol::Solution::Primal &t_s
     m_interface->submit_heuristic_solution(t_solution);
 }
 
+double idol::Callback::best_obj() const {
+    throw_if_no_interface();
+    return m_interface->best_obj();
+}
+
+double idol::Callback::best_bound() const {
+    throw_if_no_interface();
+    return m_interface->best_bound();
+}
+
+void idol::Callback::terminate() {
+    throw_if_no_interface();
+    m_interface->terminate();
+}
+
 void idol::CallbackI::execute(Callback &t_cb, CallbackEvent t_event) {
     t_cb.m_interface = this;
     t_cb.operator()(t_event);

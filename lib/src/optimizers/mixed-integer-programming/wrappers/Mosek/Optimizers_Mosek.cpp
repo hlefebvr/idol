@@ -550,12 +550,15 @@ double idol::Optimizers::Mosek::get_var_reduced_cost(const idol::Var &t_var) con
 void idol::Optimizers::Mosek::add_callback(idol::Callback *t_ptr_to_callback) {
 
     if (!m_mosek_callback) {
+
         m_mosek_callback = std::make_unique<MosekCallbackI>(*this);
-        auto cb = [&](MSKcallbackcodee caller,
-                      const double * t_double_info, const int32_t* t_int32_info, const int64_t* t_int64_info) {
-            m_mosek_callback->callback(caller, t_double_info, t_int32_info, t_int64_info);
-            return 0;
-        };
+
+        auto cb =
+            [&](MSKcallbackcodee caller, const double * t_double_info, const int32_t* t_int32_info, const int64_t* t_int64_info) {
+                m_mosek_callback->callback(caller, t_double_info, t_int32_info, t_int64_info);
+                return is_terminated();
+            };
+
         m_model->setDataCallbackHandler(cb);
     }
 

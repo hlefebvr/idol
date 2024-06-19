@@ -45,6 +45,12 @@ protected:
     Solution::Primal primal_solution() const override;
 
     const Timer &time() const override;
+
+    double best_obj() const override;
+
+    double best_bound() const override;
+
+    void terminate() override;
 };
 
 #endif //IDOL_MOSEKCALLBACKI_H

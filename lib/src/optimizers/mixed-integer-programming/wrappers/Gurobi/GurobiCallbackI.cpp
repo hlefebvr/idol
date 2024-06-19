@@ -146,4 +146,18 @@ void idol::GurobiCallbackI::submit_heuristic_solution(idol::Solution::Primal t_s
 
 }
 
+double idol::GurobiCallbackI::best_obj() const {
+    auto* me = const_cast<GurobiCallbackI*>(this);
+    return me->getDoubleInfo(GRB_CB_MIP_OBJBST);
+}
+
+double idol::GurobiCallbackI::best_bound() const {
+    auto* me = const_cast<GurobiCallbackI*>(this);
+    return me->getDoubleInfo(GRB_CB_MIP_OBJBND);
+}
+
+void idol::GurobiCallbackI::terminate() {
+    GRBCallback::abort();
+}
+
 #endif

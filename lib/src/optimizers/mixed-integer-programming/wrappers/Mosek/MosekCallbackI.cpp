@@ -24,13 +24,6 @@ void idol::MosekCallbackI::callback(MSKcallbackcodee t_caller,
     m_int32_info = t_int32_info;
     m_int64_info = t_int64_info;
 
-    if (t_int32_info[MSK_IINF_MIO_NUM_INT_SOLUTIONS] > 0) {
-        std::cout << "Best Obj.: " << t_double_info[MSK_DINF_MIO_OBJ_INT] << std::endl;
-    }
-    if (t_int32_info[MSK_IINF_MIO_NUM_RELAX] > 0) {
-        std::cout << "Best Bound: " << t_double_info[MSK_DINF_MIO_OBJ_BOUND] << std::endl;
-    }
-
     try {
 
         call(event);
@@ -82,4 +75,16 @@ idol::Solution::Primal idol::MosekCallbackI::primal_solution() const {
 
 const idol::Timer &idol::MosekCallbackI::time() const {
     return m_parent.time();
+}
+
+double idol::MosekCallbackI::best_obj() const {
+    return m_int32_info[MSK_IINF_MIO_NUM_INT_SOLUTIONS] > 0 ? m_double_info[MSK_DINF_MIO_OBJ_INT] : Inf;
+}
+
+double idol::MosekCallbackI::best_bound() const {
+    return m_int32_info[MSK_IINF_MIO_NUM_RELAX] > 0 ? m_double_info[MSK_DINF_MIO_OBJ_BOUND] : -Inf;
+}
+
+void idol::MosekCallbackI::terminate() {
+    m_parent.terminate();
 }

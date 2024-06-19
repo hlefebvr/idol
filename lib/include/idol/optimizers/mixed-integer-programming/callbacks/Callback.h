@@ -55,6 +55,12 @@ protected:
 
     [[nodiscard]] virtual const Timer& time() const = 0;
 
+    [[nodiscard]] virtual double best_obj() const = 0;
+
+    [[nodiscard]] virtual double best_bound() const = 0;
+
+    virtual void terminate() = 0;
+
     void execute(Callback& t_cb, CallbackEvent t_event);
 public:
     virtual ~CallbackI() = default;
@@ -98,6 +104,23 @@ protected:
      * @return the optimizer's time
      */
     [[nodiscard]] const Timer& time() const;
+
+    /**
+     * Returns the best objective value found so far
+     * @return the best objective value
+     */
+    [[nodiscard]] double best_obj() const;
+
+    /**
+     * Returns the best bound found so far
+     * @return the best bound
+     */
+    [[nodiscard]] double best_bound() const;
+
+    /**
+     * Asks the optimizer to terminate the optimization process as soon as possible
+     */
+    void terminate();
 
     /**
      * This method is left for the user to write and consists in the main execution block of the callback.
