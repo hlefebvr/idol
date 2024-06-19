@@ -6,6 +6,7 @@
 #define IDOL_MOSEK_H
 
 #include <list>
+#include <memory>
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/containers/Map.h"
 #include "idol/optimizers/mixed-integer-programming/callbacks/CallbackFactory.h"
