@@ -56,7 +56,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
     Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
 
-    const auto farkas_pricing = is_HiGHS<OPTIMIZER>() ? GENERATE(true) : GENERATE(true, false);
+    const auto farkas_pricing = is_HiGHS<OPTIMIZER>() ? GENERATE(false) : GENERATE(true, false);
 
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> infeasibility_strategy(farkas_pricing ?
         (DantzigWolfe::InfeasibilityStrategyFactory*) new DantzigWolfe::FarkasPricing() :
