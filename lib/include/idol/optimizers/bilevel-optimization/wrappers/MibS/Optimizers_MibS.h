@@ -10,7 +10,7 @@
 #include "idol/optimizers/Optimizer.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
-#include "impl_MibS.h"
+#include "impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/Description.h"
 
 namespace idol::Optimizers::Bilevel {
@@ -20,7 +20,7 @@ namespace idol::Optimizers::Bilevel {
 class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Bilevel::Description m_description;
 
-    std::unique_ptr<idol::impl::MibS> m_mibs;
+    std::unique_ptr<idol::impl::MibSFromFile> m_mibs;
 public:
     MibS(const idol::Model& t_parent,
          idol::Bilevel::Description  t_description);

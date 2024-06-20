@@ -71,7 +71,7 @@ unsigned int idol::Optimizers::Bilevel::MibS::get_solution_index() const {
 }
 
 void idol::Optimizers::Bilevel::MibS::build() {
-    m_mibs = std::make_unique<impl::MibS>(parent(),
+    m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
                                           m_description,
                                           get_param_logs());
 }

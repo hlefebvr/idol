@@ -37,6 +37,7 @@ int main(int t_argc, const char** t_argv) {
     auto follower_objective = model.add_ctr(y == 0);
     auto follower_c1 = model.add_ctr(2 * x - y <= 7);
     auto follower_c2 = model.add_ctr(-2 * x + 4 * y <= 16);
+    auto follower_c3 = model.add_ctr(y <= 5);
 
     // Prepare bilevel description
     Bilevel::Description description(env);
@@ -44,16 +45,13 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_var(y);
     description.make_follower_ctr(follower_c1);
     description.make_follower_ctr(follower_c2);
+    description.make_follower_ctr(follower_c3);
 
     // Use coin-or/MibS as external solver
-    //model.use(Bilevel::MibS(description));
-
-    Bilevel::write_to_file(model, description, "instance");
-
-    Bilevel::read_from_file<Gurobi>(env, "instance.aux");
+    model.use(Bilevel::MibS(description).with_logs(true));
 
     // Optimize and print solution
-    //model.optimize();
+    model.optimize();
 
     //std::cout << save_primal(model) << std::endl;
 

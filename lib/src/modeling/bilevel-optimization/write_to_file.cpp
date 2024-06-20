@@ -3,6 +3,7 @@
 //
 
 #include "idol/modeling/bilevel-optimization/write_to_file.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 
@@ -43,7 +44,7 @@ void AuxWriter::write() {
     }
     aux_file << "@CONSTRSEND\n";
     aux_file << "@NAME\n" << m_filename << "\n";
-    aux_file << "@LP\n" << m_filename << ".lp\n";
+    aux_file << "@LP\n" << m_filename << ".mps\n";
 
     aux_file.close();
 }
@@ -81,6 +82,7 @@ std::list<Ctr> AuxWriter::make_lower_level_ctrs_list() {
 void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::Description& t_description, const std::string& t_filename) {
 
     // LP file
+    /*
     std::ofstream lp_file(t_filename + ".lp");
 
     if (!lp_file.is_open()) {
@@ -90,6 +92,10 @@ void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::Descripti
     lp_file << t_model;
 
     lp_file.close();
+     */
+    auto copy = t_model.copy();
+    copy.use(Gurobi());
+    copy.write(t_filename + ".mps");
 
     // AUX file
     AuxWriter(t_model, t_description, t_filename).write();

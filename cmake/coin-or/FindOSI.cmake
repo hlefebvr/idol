@@ -69,6 +69,10 @@ if (OSI_FOUND)
         target_link_libraries(osi INTERFACE ${OSI_CPL_LIBRARY})
     endif()
 
+    if (OSI_CLP_LIBRARY)
+        target_link_libraries(osi INTERFACE ${OSI_CLP_LIBRARY})
+    endif()
+
     if (OSI_SYM_LIBRARY)
         target_link_libraries(osi INTERFACE ${OSI_SYM_LIBRARY})
     endif()
