@@ -4,6 +4,7 @@
 #ifdef IDOL_USE_MIBS
 
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h"
 
 #include <utility>
 
@@ -71,9 +72,6 @@ unsigned int idol::Optimizers::Bilevel::MibS::get_solution_index() const {
 }
 
 void idol::Optimizers::Bilevel::MibS::build() {
-    m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
-                                          m_description,
-                                          get_param_logs());
 }
 
 void idol::Optimizers::Bilevel::MibS::add(const idol::Var &t_var) {
@@ -101,8 +99,11 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 }
 
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
-    m_mibs.reset();
-    build();
+
+    m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
+                                          m_description,
+                                          get_param_logs());
+
     m_mibs->solve();
 }
 

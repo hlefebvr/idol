@@ -12,6 +12,7 @@
 #include "idol/modeling/constraints/Ctr.h"
 #include "impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/Description.h"
+#include "impl_MibS.h"
 
 namespace idol::Optimizers::Bilevel {
     class MibS;

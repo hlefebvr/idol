@@ -34,6 +34,7 @@ idol::impl::MibS::MibS(const idol::Model &t_model,
     load_problem_data();
 
 }
+
 void idol::impl::MibS::load_auxiliary_data() {
 
     auto [upper_level_variables_indices, lower_level_variables_indices] = dispatch_variable_indices();
@@ -143,13 +144,12 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constra
 
     const auto& follower_constraints = m_description.follower_ctrs();
 
-    unsigned int index = 0;
     for (const auto& ctr : m_model.ctrs()) {
 
         auto& level = (ctr.get(follower_constraints) == MasterId) ? upper_level : lower_level;
+        const auto index = m_model.get_ctr_index(ctr);
 
         level.emplace_back(index);
-        ++index;
 
     }
 
@@ -170,7 +170,7 @@ idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int>
     for (const auto& var_id : t_lower_level_variables_indices) {
 
         const auto& var = m_model.get_var_by_index(var_id);
-        const double coefficient = m_model.get_var_column(var).obj().as_numerical();
+        const double coefficient = follower_obj.linear().get(var).as_numerical();
 
         result.emplace_back(coefficient);
 
@@ -216,7 +216,7 @@ std::tuple<CoinPackedMatrix, std::vector<double>, std::vector<double>, std::vect
 idol::impl::MibS::parse_constraints() {
 
     const auto n_variables = m_model.vars().size();
-    const auto n_constraints = m_model.ctrs().size() - 1; // here, we remove 1 to account for the lower level objective function
+    const auto n_constraints = m_model.ctrs().size();
 
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
