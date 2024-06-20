@@ -2,6 +2,8 @@
 // Created by henri on 20.06.24.
 //
 
+#ifdef IDOL_USE_MIBS
+
 #ifndef IDOL_IMPL_MIBSFROMFILE_H
 #define IDOL_IMPL_MIBSFROMFILE_H
 
@@ -42,3 +44,5 @@ public:
 };
 
 #endif //IDOL_IMPL_MIBSFROMFILE_H
+
+#endif

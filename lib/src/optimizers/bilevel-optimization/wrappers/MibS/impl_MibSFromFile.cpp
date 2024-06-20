@@ -1,6 +1,9 @@
 //
 // Created by henri on 20.06.24.
 //
+
+#ifdef IDOL_USE_MIBS
+
 #include <OsiSymSolverInterface.hpp>
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <MibSSolution.hpp>
@@ -107,3 +110,5 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
 double idol::impl::MibSFromFile::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
 }
+
+#endif
