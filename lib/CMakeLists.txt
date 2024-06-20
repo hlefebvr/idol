@@ -241,6 +241,7 @@ add_library(idol STATIC
         include/idol/modeling/bilevel-optimization/Description.h
         include/idol/modeling/bilevel-optimization/write_to_file.h
         src/modeling/bilevel-optimization/write_to_file.cpp
+        include/idol/containers/LimitedWidthStream.h
 )
 
 find_package(OpenMP REQUIRED)

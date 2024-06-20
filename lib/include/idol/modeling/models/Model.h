@@ -23,6 +23,7 @@
 #include "idol/optimizers/OptimizerFactory.h"
 
 #include "idol/optimizers/Timer.h"
+#include "idol/containers/LimitedWidthStream.h"
 
 namespace idol {
     static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
@@ -1401,13 +1402,15 @@ namespace idol {
 
         using namespace idol;
 
+        LimitedWidthStream stream(t_os, 560);
+
         if (t_model.get_obj_sense() == Minimize) {
-            t_os << "Minimize";
+            stream << "Minimize";
         } else {
-            t_os << "Maximize";
+            stream << "Maximize";
         }
 
-        t_os << "\n\t" << t_model.get_obj_expr() << "\nSubject To\n";
+        stream << "\n\t" << t_model.get_obj_expr() << "\nSubject To\n";
 
         for (const auto &ctr: t_model.ctrs()) {
 
@@ -1416,53 +1419,53 @@ namespace idol {
             const auto &quadratic = row.quadratic();
             const auto type = t_model.get_ctr_type(ctr);
 
-            t_os << '\t' << ctr << ": ";
+            stream << '\t' << ctr << ": ";
 
             if (linear.empty()) {
-                t_os << quadratic;
+                stream << quadratic;
             } else {
-                t_os << linear;
+                stream << linear;
                 if (!quadratic.empty()) {
-                    t_os << " + " << quadratic;
+                    stream << " + " << quadratic;
                 }
             }
 
             switch (type) {
                 case LessOrEqual:
-                    t_os << " <= ";
+                    stream << " <= ";
                     break;
                 case Equal:
-                    t_os << " = ";
+                    stream << " = ";
                     break;
                 case GreaterOrEqual:
-                    t_os << " >= ";
+                    stream << " >= ";
                     break;
                 default:
-                    t_os << " ?undefined? ";
+                    stream << " ?undefined? ";
             }
 
-            t_os << row.rhs() << '\n';
+            stream << row.rhs() << '\n';
         }
 
         std::list<Var> generals, binaries;
 
-        t_os << "Bounds\n";
+        stream << "Bounds\n";
         for (const auto &var: t_model.vars()) {
 
             const double lb = t_model.get_var_lb(var);
             const double ub = t_model.get_var_ub(var);
             const int type = t_model.get_var_type(var);
 
-            t_os << '\t';
+            stream << '\t';
 
             if (!is_neg_inf(lb) && !is_pos_inf(ub)) {
-                t_os << lb << " <= " << var << " <= " << ub;
+                stream << lb << " <= " << var << " <= " << ub;
             } else if (!is_pos_inf(ub)) {
-                t_os << var << " <= " << ub;
+                stream << var << " <= " << ub;
             } else if (!is_neg_inf(lb)) {
-                t_os << var << " >= " << lb;
+                stream << var << " >= " << lb;
             } else {
-                t_os << var;
+                stream << var;
             }
 
             if (type == Binary) {
@@ -1471,20 +1474,20 @@ namespace idol {
                 generals.emplace_back(var);
             }
 
-            t_os << '\n';
+            stream << '\n';
         }
 
         if (!generals.empty()) {
-            t_os << "Generals\n";
+            stream << "Generals\n";
             for (const auto& var : generals) {
-                t_os << var.name() << '\n';
+                stream << '\t' << var.name() << '\n';
             }
         }
 
         if (!binaries.empty()) {
-            t_os << "Binaries\n";
+            stream << "Binaries\n";
             for (const auto& var : binaries) {
-                t_os << var.name() << '\n';
+                stream << '\t' << var.name() << '\n';
             }
         }
 
