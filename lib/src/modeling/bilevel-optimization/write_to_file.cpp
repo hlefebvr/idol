@@ -36,14 +36,11 @@ void AuxWriter::write() {
     aux_file << "@NUMCONSTRS\n" << lower_level_ctrs.size() << "\n";
     aux_file << "@VARSBEGIN\n";
     for (const auto& var : lower_level_vars) {
-        aux_file << var.name() << '\t' << m_model.get_ctr_row(lower_level_obj).linear().get(var).as_numerical() << "\n";
+        aux_file << var.name() << '\t' << lower_level_obj.linear().get(var).as_numerical() << "\n";
     }
     aux_file << "@VARSEND\n";
     aux_file << "@CONSTRSBEGIN\n";
     for (const auto& ctr : lower_level_ctrs) {
-        if (ctr.id() == lower_level_obj.id()) {
-            continue;
-        }
         aux_file << ctr.name() << "\n";
     }
     aux_file << "@CONSTRSEND\n";
@@ -97,8 +94,6 @@ public:
 
 void MpsWriter::write() {
 
-    const auto follower_obj_id = m_description.follower_obj().id();
-
     const auto continuous_vars = make_vars_list([this](const Var& t_var) {
         return m_model.get_var_type(t_var) == Continuous;
     });
@@ -122,9 +117,6 @@ void MpsWriter::write() {
     file << " N  OBJ\n";
 
     for (const auto& ctr : m_model.ctrs()) {
-        if (ctr.id() == follower_obj_id) {
-            continue;
-        }
 
         const auto type = m_model.get_ctr_type(ctr);
         switch (type) {
@@ -154,7 +146,6 @@ void MpsWriter::write() {
         const auto& column = m_model.get_var_column(t_var);
         add_entry(t_var.name(), "OBJ", column.obj().as_numerical());
         for (const auto& [ctr, constant] : column.linear()) {
-            if (ctr.id() == follower_obj_id) { continue; }
             add_entry(t_var.name(), ctr.name(), constant.as_numerical());
         }
     };
@@ -174,7 +165,6 @@ void MpsWriter::write() {
     file << "RHS\n";
 
     for (const auto& ctr : m_model.ctrs()) {
-        if (ctr.id() == follower_obj_id) { continue; }
         file << "    RHS       " << std::setw(10) << ctr.name() << ' ' << m_model.get_ctr_row(ctr).rhs().as_numerical() << '\n';
     }
 

@@ -88,7 +88,7 @@ void idol::impl::MibS::solve() {
         throw Exception("Internal error: MibS::solve was called twice.");
     }
 
-    m_osi_solver = std::make_unique<OsiSymSolverInterface>();
+    m_osi_solver = std::make_unique<OsiClpSolverInterface>();
 
     m_mibs.setSolver(m_osi_solver.get());
 
@@ -141,15 +141,10 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constra
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
-    const auto follower_obj_id = m_description.follower_obj().id();
     const auto& follower_constraints = m_description.follower_ctrs();
 
     unsigned int index = 0;
     for (const auto& ctr : m_model.ctrs()) {
-
-        if (ctr.id() == follower_obj_id) {
-            continue;
-        }
 
         auto& level = (ctr.get(follower_constraints) == MasterId) ? upper_level : lower_level;
 
@@ -170,16 +165,15 @@ idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int>
     std::vector<double> result;
     result.reserve(t_lower_level_variables_indices.size());
 
-    const auto& row = m_model.get_ctr_row(m_description.follower_obj());
+    const auto& follower_obj = m_description.follower_obj();
 
-    if (!row.quadratic().empty()) {
-        throw Exception("Quadratic lower level objective is not allowed.");
-    }
+    for (const auto& var_id : t_lower_level_variables_indices) {
 
-    for (auto index : t_lower_level_variables_indices) {
-        const auto& var = m_model.get_var_by_index(index);
-        const double coefficient = row.linear().get(var).as_numerical();
+        const auto& var = m_model.get_var_by_index(var_id);
+        const double coefficient = m_model.get_var_column(var).obj().as_numerical();
+
         result.emplace_back(coefficient);
+
     }
 
     return result;
@@ -224,8 +218,6 @@ idol::impl::MibS::parse_constraints() {
     const auto n_variables = m_model.vars().size();
     const auto n_constraints = m_model.ctrs().size() - 1; // here, we remove 1 to account for the lower level objective function
 
-    const auto follower_obj_id = m_description.follower_obj().id();
-
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
     std::vector<char> types;
@@ -237,10 +229,6 @@ idol::impl::MibS::parse_constraints() {
     CoinPackedMatrix matrix(false, 0, n_variables);
 
     for (const auto& ctr : m_model.ctrs()) {
-
-        if (ctr.id() == follower_obj_id) {
-            continue;
-        }
 
         const auto& row = m_model.get_ctr_row(ctr);
         const auto type = m_model.get_ctr_type(ctr);

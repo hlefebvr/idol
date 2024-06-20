@@ -121,7 +121,7 @@ void idol::Robust::CCGSeparators::Bilevel::add_lower_level_constraint(idol::Mode
 
 }
 
-idol::Ctr idol::Robust::CCGSeparators::Bilevel::set_upper_and_lower_objectives(
+idol::Expr<idol::Var, idol::Var> idol::Robust::CCGSeparators::Bilevel::set_upper_and_lower_objectives(
         idol::Model &t_hpr,
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const idol::Solution::Primal &t_upper_level_solution,
@@ -135,8 +135,7 @@ idol::Ctr idol::Robust::CCGSeparators::Bilevel::set_upper_and_lower_objectives(
     Expr<Var, Var> hpr_objective = fix_and_revert(t_row.linear(), t_parent, t_upper_level_solution) + revert(t_row.rhs(), t_parent);
 
     t_hpr.set_obj_sense(Minimize);
-    auto result = t_hpr.add_ctr(-1. * hpr_objective == 0);
     t_hpr.set_obj_expr(std::move(hpr_objective));
 
-    return result;
+    return -1. * hpr_objective;
 }
