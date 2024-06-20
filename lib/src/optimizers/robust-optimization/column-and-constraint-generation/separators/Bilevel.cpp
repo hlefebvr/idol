@@ -30,6 +30,8 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     // Add lower level objective
     auto lower_level_objective = set_upper_and_lower_objectives(model, t_parent, t_upper_level_solution, t_row, t_type);
 
+    std::cout << model << std::endl;
+
     // Create MibS
     const auto& lower_level_variables = t_parent.lower_level_variables();
     const auto& lower_level_constraints = t_parent.lower_level_constraints();
@@ -38,7 +40,7 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
                                                   lower_level_constraints,
                                                   lower_level_objective);
 
-    auto optimizer = idol::Bilevel::MibS(description);
+    auto optimizer = idol::Bilevel::MibS(description).with_logs(false);
 
     model.use(optimizer);
 
@@ -48,11 +50,14 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     const auto status = model.get_status();
 
     if (status != Optimal) {
+        std::cout << "Separation is " << status << std::endl;
         Solution::Primal result;
         result.set_status(status);
         result.set_reason(model.get_reason());
         return result;
     }
+
+    std::cout << save_primal(model) << std::endl;
 
     return save_primal(model);
 }
@@ -111,7 +116,7 @@ void idol::Robust::CCGSeparators::Bilevel::add_lower_level_constraint(idol::Mode
     const auto& type = model.get_ctr_type(t_ctr);
 
     Expr<Var, Var> lhs = fix_and_revert(row.linear(), t_parent, t_upper_level_solution);
-    Constant rhs = row.rhs();
+    Expr<Var, Var> rhs = revert(row.rhs(), t_parent);
 
     if (!row.quadratic().empty()) {
         throw Exception("Quadratic terms in the lower level are not implemented.");

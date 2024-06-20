@@ -24,6 +24,10 @@ void idol::impl::MibSFromFile::solve() {
 
     Bilevel::write_to_file(m_model, m_description, "bilevel");
 
+    // WARNING: This is needed because the order of variables is changed when writing to MPS file.
+    // Indeed, continuous variables are written first, then integer variables.
+    make_variable_index_in_mps();
+
     if (m_osi_solver) {
         throw Exception("Internal error: MibS::solve was called twice.");
     }
@@ -61,7 +65,7 @@ void idol::impl::MibSFromFile::solve() {
 
 
 double idol::impl::MibSFromFile::get_var_primal(const idol::Var &t_var) const {
-    const unsigned int index = m_model.get_var_index(t_var);
+    const unsigned int index = m_variable_index_in_mps[m_model.get_var_index(t_var)];
     const auto& solution = dynamic_cast<MibSSolution&>(*m_broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
     return solution.getValues()[index];
 }
@@ -109,6 +113,31 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
 
 double idol::impl::MibSFromFile::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
+}
+
+void idol::impl::MibSFromFile::make_variable_index_in_mps() {
+
+    std::list<Var> integer_variables;
+
+    m_variable_index_in_mps.resize(m_model.vars().size());
+
+    unsigned int index = 0;
+    for (const auto& var : m_model.vars()) {
+
+        if (m_model.get_var_type(var) == Continuous) {
+            m_variable_index_in_mps[m_model.get_var_index(var)] = index;
+            ++index;
+        } else {
+            integer_variables.push_back(var);
+        }
+
+    }
+
+    for (const auto& var : integer_variables) {
+        m_variable_index_in_mps[m_model.get_var_index(var)] = index;
+        ++index;
+    }
+
 }
 
 #endif

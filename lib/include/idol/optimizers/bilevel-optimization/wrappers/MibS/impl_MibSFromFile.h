@@ -24,6 +24,9 @@ class idol::impl::MibSFromFile {
     MibSModel m_mibs;
     std::unique_ptr<AlpsKnowledgeBroker> m_broker;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
+    std::vector<unsigned int> m_variable_index_in_mps;
+
+    void make_variable_index_in_mps();
 public:
     MibSFromFile(const idol::Model& t_model,
          const idol::Bilevel::Description& t_description,
