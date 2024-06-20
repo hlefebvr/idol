@@ -16,6 +16,15 @@ Mixed-Integer Programming
 
     mixed-integer-programming/index
 
+Bilevel Optimization
+--------------------
+
+.. toctree::
+    :maxdepth: 3
+    :glob:
+
+    bilevel-optimization/index
+
 Robust Optimization
 -------------------
 
@@ -25,12 +34,3 @@ Robust Optimization
 
     robust-optimization/index
 
-
-Bilevel Optimization
---------------------
-
-.. toctree::
-    :maxdepth: 3
-    :glob:
-
-    bilevel-optimization/index
