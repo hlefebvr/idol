@@ -1407,7 +1407,7 @@ namespace idol {
             t_os << "Maximize";
         }
 
-        t_os << "\n\t" << t_model.get_obj_expr() << "\nSubject to:\n";
+        t_os << "\n\t" << t_model.get_obj_expr() << "\nSubject To\n";
 
         for (const auto &ctr: t_model.ctrs()) {
 
@@ -1444,7 +1444,9 @@ namespace idol {
             t_os << row.rhs() << '\n';
         }
 
-        t_os << "Variables:\n";
+        std::list<Var> generals, binaries;
+
+        t_os << "Bounds\n";
         for (const auto &var: t_model.vars()) {
 
             const double lb = t_model.get_var_lb(var);
@@ -1464,13 +1466,28 @@ namespace idol {
             }
 
             if (type == Binary) {
-                t_os << " [binary]";
+                binaries.emplace_back(var);
             } else if (type == Integer) {
-                t_os << " [integer]";
+                generals.emplace_back(var);
             }
 
             t_os << '\n';
         }
+
+        if (!generals.empty()) {
+            t_os << "Generals\n";
+            for (const auto& var : generals) {
+                t_os << var.name() << '\n';
+            }
+        }
+
+        if (!binaries.empty()) {
+            t_os << "Binaries\n";
+            for (const auto& var : binaries) {
+                t_os << var.name() << '\n';
+            }
+        }
+
         return t_os;
     }
 

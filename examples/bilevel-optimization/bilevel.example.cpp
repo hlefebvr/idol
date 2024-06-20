@@ -5,6 +5,9 @@
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/Description.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/modeling/bilevel-optimization/write_to_file.h"
+#include "idol/modeling/bilevel-optimization/read_from_file.h"
 
 using namespace idol;
 
@@ -43,12 +46,16 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(follower_c2);
 
     // Use coin-or/MibS as external solver
-    model.use(Bilevel::MibS(description));
+    //model.use(Bilevel::MibS(description));
+
+    Bilevel::write_to_file(model, description, "instance");
+
+    Bilevel::read_from_file<Gurobi>(env, "instance.aux");
 
     // Optimize and print solution
-    model.optimize();
+    //model.optimize();
 
-    std::cout << save_primal(model) << std::endl;
+    //std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

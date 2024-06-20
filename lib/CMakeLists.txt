@@ -239,6 +239,8 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.h
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.cpp
         include/idol/modeling/bilevel-optimization/Description.h
+        include/idol/modeling/bilevel-optimization/write_to_file.h
+        src/modeling/bilevel-optimization/write_to_file.cpp
 )
 
 find_package(OpenMP REQUIRED)
