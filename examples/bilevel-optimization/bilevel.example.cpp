@@ -13,14 +13,21 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    /**
-     * min  -x − 7y
-     * s.t. −3x + 2y ≤ 12
-             x + 2y ≤ 20
-             x ≤ 10
-             y ∈ arg min {z : 2x - z ≤ 7,
-                              -2x + 4z ≤ 16,
-                              z ≤ 5}
+    /*
+     This example is taken from "The Mixed Integer Linear Bilevel Programming Problem" (Moore and Bard, 1990).
+
+        min -1 x + -10 y
+        s.t.
+
+        y in argmin { y :
+            -25 x + 20 y <= 30,
+            1 x + 2 y <= 10,
+            2 x + -1 y <= 15,
+            2 x + 10 y >= 15,
+            y >= 0 and integer.
+        }
+        x >= 0 and integer.
+
      */
 
     Env env;
@@ -28,16 +35,15 @@ int main(int t_argc, const char** t_argv) {
     // Define High Point Relaxation
     Model model(env);
 
-    auto x = model.add_var(0, 10, Integer, "x");
-    auto y = model.add_var(0, 5, Integer, "y");
+    auto x = model.add_var(0, Inf, Integer, "x");
+    auto y = model.add_var(0, Inf, Integer, "y");
 
-    model.set_obj_expr(-x - 7 * y);
-    model.add_ctr(-3 * x + 2 * y <= 12);
-    model.add_ctr(x + 2 * y <= 20);
+    model.set_obj_expr(-x - 10 * y);
     auto follower_objective = model.add_ctr(y == 0);
-    auto follower_c1 = model.add_ctr(2 * x - y <= 7);
-    auto follower_c2 = model.add_ctr(-2 * x + 4 * y <= 16);
-    auto follower_c3 = model.add_ctr(y <= 5);
+    auto follower_c1 = model.add_ctr(-25 * x + 20 * y <= 30);
+    auto follower_c2 = model.add_ctr(x + 2 * y <= 10);
+    auto follower_c3 = model.add_ctr(2 * x - y <= 15);
+    auto follower_c4 = model.add_ctr(2 * x + 10 * y >= 15);
 
     // Prepare bilevel description
     Bilevel::Description description(env);
@@ -46,6 +52,9 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(follower_c1);
     description.make_follower_ctr(follower_c2);
     description.make_follower_ctr(follower_c3);
+    description.make_follower_ctr(follower_c4);
+
+    std::cout << model << std::endl;
 
     // Use coin-or/MibS as external solver
     model.use(Bilevel::MibS(description).with_logs(true));
@@ -53,7 +62,9 @@ int main(int t_argc, const char** t_argv) {
     // Optimize and print solution
     model.optimize();
 
-    //std::cout << save_primal(model) << std::endl;
+    std::cout << model.get_status() << std::endl;
+    std::cout << model.get_reason() << std::endl;
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }
