@@ -1402,7 +1402,7 @@ namespace idol {
 
         using namespace idol;
 
-        LimitedWidthStream stream(t_os, 560);
+        LimitedWidthStream stream(t_os, 120);
 
         if (t_model.get_obj_sense() == Minimize) {
             stream << "Minimize";

@@ -362,6 +362,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         m_current_master_solution = solve_master_problem();
 
+        //std::cout << m_master_problem << std::endl;
+
         m_stabilizer->analyze_current_master_problem_solution();
 
         log(true);
@@ -543,14 +545,6 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
                 t_row,
                 t_type);
 
-        /*
-        std::cout << "SEPARATION SOLUTION "
-                  << "\n************************\n"
-                  << solution
-                  << "\n************************\n"
-                  << std::endl;
-        */
-
         const auto status = solution.status();
 
         if (status != Optimal) {
@@ -570,6 +564,8 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
     };
 
     if (m_epigraph.has_value()) {
+
+        std::cout << "HAS EPIGRAPH\n" << std::endl;
 
         const auto& env = m_master_problem.env();
         const auto& default_version = env.operator[](m_epigraph->second);

@@ -19,8 +19,6 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
         const Row& t_row,
         CtrType t_type) const {
 
-    std::cout << "Separate UL solution: \n" << t_upper_level_solution << std::endl;
-
     Model model = t_parent.uncertainty_set().copy();
 
     // Add lower level variables and constraints (fixes upper level variables and add parameters as variables)
@@ -30,7 +28,7 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     // Add lower level objective
     auto lower_level_objective = set_upper_and_lower_objectives(model, t_parent, t_upper_level_solution, t_row, t_type);
 
-    std::cout << model << std::endl;
+    std::cout << "First-Stage Decision \n" << t_upper_level_solution << std::endl;
 
     // Create MibS
     const auto& lower_level_variables = t_parent.lower_level_variables();
@@ -50,16 +48,19 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     const auto status = model.get_status();
 
     if (status != Optimal) {
-        std::cout << "Separation is " << status << std::endl;
         Solution::Primal result;
         result.set_status(status);
         result.set_reason(model.get_reason());
         return result;
     }
 
-    std::cout << save_primal(model) << std::endl;
+    auto result = save_primal(model);
 
-    return save_primal(model);
+    result.set_objective_value(-result.objective_value());
+
+    std::cout << result << std::endl;
+
+    return result;
 }
 
 void idol::Robust::CCGSeparators::Bilevel::add_lower_level_variables(

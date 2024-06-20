@@ -41,7 +41,7 @@ int main(int t_argc, const char** t_argv) {
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         auto c = model.add_ctr(
-                idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i],
+                idol_Sum(j, Range(n_customers), y[i][j]) <= instance.capacity(i) * x[i],
                 "capacity_" + std::to_string(i));
         c.set(second_stage_constraints, 0);
     }
@@ -80,6 +80,7 @@ int main(int t_argc, const char** t_argv) {
                     )
                     .with_master_optimizer(Gurobi())
                     .with_separator(Robust::CCGSeparators::Bilevel())
+                    .with_iteration_limit(3)
                     .with_logs(true)
     );
 
