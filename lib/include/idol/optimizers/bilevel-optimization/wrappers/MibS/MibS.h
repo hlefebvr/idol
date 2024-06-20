@@ -8,19 +8,16 @@
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
+#include "idol/modeling/bilevel-optimization/Description.h"
 
 namespace idol::Bilevel {
     class MibS;
 }
 
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
-    const Annotation<Var, unsigned int> m_follower_variables;
-    const Annotation<Ctr, unsigned int> m_follower_constraints;
-    const Ctr m_follower_objective;
+    Bilevel::Description m_description;
 public:
-    MibS(const Annotation<Var, unsigned int>& t_follower_variables,
-         const Annotation<Ctr, unsigned int>& t_follower_constraints,
-         Ctr  t_follower_objective);
+    MibS(Bilevel::Description t_description);
 
     MibS(const MibS&) = default;
     MibS(MibS&&) noexcept = default;

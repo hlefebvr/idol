@@ -4,6 +4,7 @@
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
+#include "idol/modeling/bilevel-optimization/Description.h"
 
 using namespace idol;
 
@@ -34,20 +35,15 @@ int main(int t_argc, const char** t_argv) {
     auto follower_c1 = model.add_ctr(2 * x - y <= 7);
     auto follower_c2 = model.add_ctr(-2 * x + 4 * y <= 16);
 
-    // Annotate follower variables
-    // * If not annotated, the default value is MasterId, i.e., leader variables and constraints
-    // * Otherwise, it indicates the id of the follower (here, we have only one follower)
-    Annotation<Var> follower_variables(env, "follower_variable", MasterId);
-    Annotation<Ctr> follower_constraints(env, "follower_constraints", MasterId);
-
-    y.set(follower_variables, 0);
-    follower_c1.set(follower_constraints, 0);
-    follower_c2.set(follower_constraints, 0);
+    // Prepare bilevel description
+    Bilevel::Description description(env);
+    description.make_follower_objective(follower_objective);
+    description.make_follower_var(y);
+    description.make_follower_ctr(follower_c1);
+    description.make_follower_ctr(follower_c2);
 
     // Use coin-or/MibS as external solver
-    model.use(Bilevel::MibS(follower_variables,
-                            follower_constraints,
-                            follower_objective));
+    model.use(Bilevel::MibS(description));
 
     // Optimize and print solution
     model.optimize();

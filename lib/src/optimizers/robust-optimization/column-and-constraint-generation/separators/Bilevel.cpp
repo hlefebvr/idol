@@ -34,11 +34,11 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     const auto& lower_level_variables = t_parent.lower_level_variables();
     const auto& lower_level_constraints = t_parent.lower_level_constraints();
 
-    auto optimizer = idol::Bilevel::MibS(lower_level_variables,
-                                   lower_level_constraints,
-                                   lower_level_objective);
+    auto description = idol::Bilevel::Description(lower_level_variables,
+                                                  lower_level_constraints,
+                                                  lower_level_objective);
 
-    std::cout << model << std::endl;
+    auto optimizer = idol::Bilevel::MibS(description);
 
     model.use(optimizer);
 

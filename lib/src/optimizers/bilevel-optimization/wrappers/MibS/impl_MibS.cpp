@@ -24,21 +24,16 @@ namespace idol {
 }
 
 idol::impl::MibS::MibS(const idol::Model &t_model,
-                       const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
-                       const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
-                       idol::Ctr t_lower_level_objective,
+                       const idol::Bilevel::Description &t_description,
                        bool t_logs)
                        : m_model(t_model),
-                         m_lower_level_constraints(t_lower_level_constraints),
-                         m_lower_level_variables(t_lower_level_variables),
-                         m_lower_level_objective(std::move(t_lower_level_objective)),
+                         m_description(t_description),
                          m_logs(t_logs) {
 
     load_auxiliary_data();
     load_problem_data();
 
 }
-
 void idol::impl::MibS::load_auxiliary_data() {
 
     auto [upper_level_variables_indices, lower_level_variables_indices] = dispatch_variable_indices();
@@ -124,9 +119,11 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_variabl
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
+    const auto& follower_variables = m_description.follower_vars();
+
     for (const auto& var : m_model.vars()) {
 
-        auto& level = (var.get(m_lower_level_variables) == MasterId) ? upper_level : lower_level;
+        auto& level = (var.get(follower_variables) == MasterId) ? upper_level : lower_level;
         const auto index = m_model.get_var_index(var);
 
         level.emplace_back(index);
@@ -144,14 +141,17 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constra
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
+    const auto follower_obj_id = m_description.follower_obj().id();
+    const auto& follower_constraints = m_description.follower_ctrs();
+
     unsigned int index = 0;
     for (const auto& ctr : m_model.ctrs()) {
 
-        if (ctr.id() == m_lower_level_objective.id()) {
+        if (ctr.id() == follower_obj_id) {
             continue;
         }
 
-        auto& level = (ctr.get(m_lower_level_constraints) == MasterId) ? upper_level : lower_level;
+        auto& level = (ctr.get(follower_constraints) == MasterId) ? upper_level : lower_level;
 
         level.emplace_back(index);
         ++index;
@@ -170,7 +170,7 @@ idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int>
     std::vector<double> result;
     result.reserve(t_lower_level_variables_indices.size());
 
-    const auto& row = m_model.get_ctr_row(m_lower_level_objective);
+    const auto& row = m_model.get_ctr_row(m_description.follower_obj());
 
     if (!row.quadratic().empty()) {
         throw Exception("Quadratic lower level objective is not allowed.");
@@ -224,6 +224,8 @@ idol::impl::MibS::parse_constraints() {
     const auto n_variables = m_model.vars().size();
     const auto n_constraints = m_model.ctrs().size() - 1; // here, we remove 1 to account for the lower level objective function
 
+    const auto follower_obj_id = m_description.follower_obj().id();
+
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
     std::vector<char> types;
@@ -236,7 +238,7 @@ idol::impl::MibS::parse_constraints() {
 
     for (const auto& ctr : m_model.ctrs()) {
 
-        if (ctr.id() == m_lower_level_objective.id()) {
+        if (ctr.id() == follower_obj_id) {
             continue;
         }
 
@@ -373,5 +375,6 @@ idol::SolutionReason idol::impl::MibS::get_reason() const {
 double idol::impl::MibS::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
 }
+
 
 #endif

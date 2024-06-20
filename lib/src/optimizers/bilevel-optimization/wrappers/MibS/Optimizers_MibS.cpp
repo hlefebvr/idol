@@ -7,14 +7,11 @@
 
 #include <utility>
 
-idol::Optimizers::Bilevel::MibS::MibS(const idol::Model& t_parent,
-                             const idol::Annotation<idol::Var, unsigned int> &t_follower_variables,
-                             const idol::Annotation<idol::Ctr, unsigned int> &t_follower_constraints,
-                             idol::Ctr t_follower_objective)
-                             : Optimizer(t_parent),
-                               m_follower_variables(t_follower_variables),
-                               m_follower_constraints(t_follower_constraints),
-                               m_follower_objective(std::move(t_follower_objective)) {
+idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
+                                      idol::Bilevel::Description t_description)
+                                      : Optimizer(t_parent),
+                                        m_description(std::move(t_description))
+{
 
 }
 
@@ -75,9 +72,7 @@ unsigned int idol::Optimizers::Bilevel::MibS::get_solution_index() const {
 
 void idol::Optimizers::Bilevel::MibS::build() {
     m_mibs = std::make_unique<impl::MibS>(parent(),
-                                          m_follower_variables,
-                                          m_follower_constraints,
-                                          m_follower_objective,
+                                          m_description,
                                           get_param_logs());
 }
 
