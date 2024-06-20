@@ -3,11 +3,11 @@
 //
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/GLPK/GLPK.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Mosek/Mosek.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Osi/Osi.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;

@@ -4,21 +4,21 @@
 
 #include <catch2/catch_all.hpp>
 #include "../cartesian_product.h"
-#include "idol/optimizers/mixed-integer-programming/branch-and-bound/node-selection-rules/factories/BestBound.h"
-#include "idol/optimizers/mixed-integer-programming/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/mixed-integer-programming/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/mixed-integer-programming/callbacks/heuristics/IntegerMaster.h"
-#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/stabilization/Neame.h"
-#include "idol/optimizers/mixed-integer-programming/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
+#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h"
+#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/IntegerMaster.h"
+#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include <idol/modeling.h>
 #include <idol/problems/generalized-assignment-problem/GAP_Instance.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/GLPK/GLPK.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Mosek/Mosek.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/HiGHS/HiGHS.h>
-#include <idol/optimizers/mixed-integer-programming/wrappers/Osi/Osi.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h>
+#include <idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h>
 
 using namespace Catch::literals;
 using namespace idol;

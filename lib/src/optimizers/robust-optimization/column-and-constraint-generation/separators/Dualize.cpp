@@ -9,7 +9,7 @@
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/models/dualize.h"
-#include "idol/optimizers/mixed-integer-programming/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 
 idol::Robust::CCGSeparator *idol::Robust::CCGSeparators::Dualize::clone() const {
     return new Dualize(*this);

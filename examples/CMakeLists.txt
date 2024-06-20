@@ -6,7 +6,4 @@ function(ADD_EXAMPLE NAME)
     endif()
 endfunction()
 
-add_example(knapsack)
-add_example(facility)
-add_example(assignment)
-add_example(bilevel)
+add_subdirectory(mixed-integer-optimization)
