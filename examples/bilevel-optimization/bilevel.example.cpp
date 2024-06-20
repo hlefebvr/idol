@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
-#include "idol/optimizers/mixed-integer-optimization/wrappers/MibS/MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
 using namespace idol;
 

@@ -7,3 +7,5 @@ function(ADD_EXAMPLE NAME)
 endfunction()
 
 add_subdirectory(mixed-integer-optimization)
+add_subdirectory(bilevel-optimization)
+add_subdirectory(robust-optimization)
