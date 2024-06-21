@@ -10,7 +10,7 @@
 #include "idol/modeling/models/Model.h"
 
 #include "MibSModel.hpp"
-#include "idol/modeling/bilevel-optimization/Description.h"
+#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 
 namespace idol::impl {
     class MibS;
@@ -18,7 +18,7 @@ namespace idol::impl {
 
 class idol::impl::MibS {
     const idol::Model& m_model;
-    const idol::Bilevel::Description& m_description;
+    const idol::Bilevel::LowerLevelDescription& m_description;
     const bool m_logs;
 
     MibSModel m_mibs;
@@ -39,7 +39,7 @@ class idol::impl::MibS {
     std::vector<double> parse_objective();
 public:
     MibS(const idol::Model& t_model,
-         const idol::Bilevel::Description& t_description,
+         const idol::Bilevel::LowerLevelDescription& t_description,
          bool t_logs);
 
     void solve();

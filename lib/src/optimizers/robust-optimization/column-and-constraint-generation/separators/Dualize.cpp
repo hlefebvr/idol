@@ -73,11 +73,11 @@ idol::Robust::CCGSeparators::Dualize::fix(const idol::LinExpr<idol::Var> &t_expr
                                           const idol::Solution::Primal &t_upper_level_solution) {
     Expr<Var, Var> result;
 
-    const auto& lower_level_variables = t_parent.lower_level_variables();
+    const auto& stage_description = t_parent.stage_description();
 
     for (const auto& [var, constant] : t_expr) {
 
-        const bool is_upper_level_variable = var.get(lower_level_variables) == MasterId;
+        const bool is_upper_level_variable = stage_description.stage(var) == 1;
 
         for (const auto& [param, coefficient] : constant.linear()) {
 
@@ -147,11 +147,11 @@ idol::Robust::CCGSeparators::Dualize::create_second_stage_primal_problem(idol::E
     Model result(t_env);
 
     const auto& original_model = t_parent.parent();
-    const auto& lower_level_variables = t_parent.lower_level_variables();
+    const auto& stage_description = t_parent.stage_description();
 
     for (const auto& var : original_model.vars()) {
 
-        if (var.get(lower_level_variables) == MasterId) {
+        if (stage_description.stage(var) == 1) {
             continue;
         }
 
@@ -163,11 +163,9 @@ idol::Robust::CCGSeparators::Dualize::create_second_stage_primal_problem(idol::E
 
     }
 
-    const auto& lower_level_constraints = t_parent.lower_level_constraints();
-
     for (const auto& ctr : original_model.ctrs()) {
 
-        if (ctr.get(lower_level_constraints) == MasterId) {
+        if (stage_description.stage(ctr) == 1) {
             continue;
         }
 

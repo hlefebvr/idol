@@ -11,7 +11,7 @@ two variables:
 
 1. :code:`high_point_relaxation` which is a :code:`Model` representing the high-point relaxation of your bilevel problem.
 
-2. :code:`description` which is a :code:`Bilevel:Description` object representing the bilevel problem. If you do not know what this is or how to create it, please refer to the :ref:`previous tutorial <tutorial_optimistic_bilevel>`.
+2. :code:`description` which is a :code:`Bilevel:LowerLevelDescription` object representing the bilevel problem. If you do not know what this is or how to create it, please refer to the :ref:`previous tutorial <tutorial_optimistic_bilevel>`.
 
 Then, you can solve your bilevel problem with MibS as follows:
 

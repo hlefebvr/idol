@@ -9,6 +9,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers//CCGStabilizer.h"
+#include "idol/modeling/robust-optimization/StageDescription.h"
 
 namespace idol::Robust {
     class ColumnAndConstraintGeneration;
@@ -20,12 +21,10 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     std::unique_ptr<CCGStabilizer> m_stabilizer;
     std::optional<bool> m_complete_recourse;
 
-    const Annotation<Var, unsigned int> m_lower_level_variables;
-    const Annotation<Ctr, unsigned int> m_lower_level_constraints;
+    Robust::StageDescription m_stage_description;
     const Model& m_uncertainty_set;
 public:
-    ColumnAndConstraintGeneration(const Annotation<Var, unsigned int>& t_lower_level_variables,
-                                  const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
+    ColumnAndConstraintGeneration(Robust::StageDescription t_stage_description,
                                   const Model& t_uncertainty_set);
 
     ColumnAndConstraintGeneration(const ColumnAndConstraintGeneration& t_src);

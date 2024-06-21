@@ -9,7 +9,7 @@
 #include <utility>
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
-                                      idol::Bilevel::Description t_description)
+                                      idol::Bilevel::LowerLevelDescription t_description)
                                       : Optimizer(t_parent),
                                         m_description(std::move(t_description))
 {

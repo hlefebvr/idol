@@ -10,6 +10,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h"
+#include "idol/modeling/robust-optimization/StageDescription.h"
 
 #include <optional>
 
@@ -25,8 +26,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
 
     Model m_master_problem;
     Model m_uncertainty_set;
-    const Annotation<Var, unsigned int> m_variable_stage;
-    const Annotation<Ctr, unsigned int> m_constraint_stage;
+    const idol::Robust::StageDescription m_stage_description;
     bool m_complete_recourse;
 
     Timer m_separation_timer;
@@ -48,8 +48,7 @@ public:
                                   const OptimizerFactory& t_master_optimizer,
                                   const idol::Robust::CCGSeparator& t_separator,
                                   const idol::Robust::CCGStabilizer& t_stabilizer,
-                                  const Annotation<Var, unsigned int>& t_lower_level_variables,
-                                  const Annotation<Ctr, unsigned int>& t_lower_level_constraints,
+                                  idol::Robust::StageDescription t_stage_description,
                                   bool t_complete_recourse
                                   );
 
@@ -64,8 +63,7 @@ public:
 
     const Model& master_problem() const { return m_master_problem; }
     const Model& uncertainty_set() const { return m_uncertainty_set; }
-    const Annotation<Ctr, unsigned int> lower_level_constraints() const { return m_constraint_stage; };
-    const Annotation<Var, unsigned int> lower_level_variables() const { return m_variable_stage; };
+    const idol::Robust::StageDescription stage_description() const { return m_stage_description; };
     bool complete_recourse() const { return m_complete_recourse; }
 
     unsigned int n_iterations() const { return m_iteration_count; }

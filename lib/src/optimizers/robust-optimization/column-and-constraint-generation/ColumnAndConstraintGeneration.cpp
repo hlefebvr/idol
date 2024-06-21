@@ -1,17 +1,17 @@
 //
 // Created by henri on 08.02.24.
 //
+#include <utility>
+
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
-        const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
-        const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
+        Robust::StageDescription t_stage_description,
         const idol::Model &t_uncertainty_set)
         : OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration>(),
-          m_lower_level_variables(t_lower_level_variables),
-          m_lower_level_constraints(t_lower_level_constraints),
+          m_stage_description(std::move(t_stage_description)),
           m_uncertainty_set(t_uncertainty_set)
         {
 
@@ -21,8 +21,7 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
         const idol::Robust::ColumnAndConstraintGeneration &t_src)
         :
           OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration>(t_src),
-          m_lower_level_variables(t_src.m_lower_level_variables),
-          m_lower_level_constraints(t_src.m_lower_level_constraints),
+          m_stage_description(t_src.m_stage_description),
           m_uncertainty_set(t_src.m_uncertainty_set),
           m_master_optimizer(t_src.m_master_optimizer ? t_src.m_master_optimizer->clone() : nullptr),
           m_separator(t_src.m_separator ? t_src.m_separator->clone() : nullptr),
@@ -46,8 +45,7 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
                                                          *m_master_optimizer,
                                                          *m_separator,
                                                          m_stabilizer ? *m_stabilizer : (const CCGStabilizer&) CCGStabilizers::NoStabilization(),
-                                                         m_lower_level_variables,
-                                                         m_lower_level_constraints,
+                                                         m_stage_description,
                                                          m_complete_recourse.has_value() && m_complete_recourse.value()
                                                          );
 

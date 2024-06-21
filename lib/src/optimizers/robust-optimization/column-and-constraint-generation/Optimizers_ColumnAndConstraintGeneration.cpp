@@ -3,6 +3,7 @@
 //
 
 #include <cassert>
+#include <utility>
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
@@ -33,13 +34,11 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                const idol::OptimizerFactory &t_master_optimizer,
                                                                                const idol::Robust::CCGSeparator &t_separator,
                                                                                const idol::Robust::CCGStabilizer &t_stabilizer,
-                                                                               const idol::Annotation<idol::Var, unsigned int> &t_lower_level_variables,
-                                                                               const idol::Annotation<idol::Ctr, unsigned int> &t_lower_level_constraints,
+                                                                               idol::Robust::StageDescription t_stage_description,
                                                                                bool t_complete_recourse)
         : Algorithm(t_parent),
           m_uncertainty_set(t_uncertainty_set.copy()),
-          m_variable_stage(t_lower_level_variables),
-          m_constraint_stage(t_lower_level_constraints),
+          m_stage_description(std::move(t_stage_description)),
           m_master_problem(t_parent.env()),
           m_separator(t_separator.clone()),
           m_stabilizer(t_stabilizer.operator()()),
@@ -69,7 +68,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_variable_stage) != MasterId) {
+        if (m_stage_description.stage(var) != 1) {
             continue;
         }
 
@@ -89,7 +88,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_constraint_stage) != MasterId) {
+        if (m_stage_description.stage(ctr) != 1) {
             continue;
         }
 
@@ -118,7 +117,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
     Expr lower_level_variables_part;
     for (const auto& [var, constant] : objective.linear()) {
 
-        if (var.get(m_variable_stage) == MasterId) {
+        if (m_stage_description.stage(var) == 1) {
             upper_level_variables_part += constant * var;
         } else {
             lower_level_variables_part += constant * var;
@@ -128,10 +127,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_master_probl
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
 
-        const auto id1 = var1.get(m_variable_stage);
-        const auto id2 = var2.get(m_variable_stage);
-
-        if (id1 != MasterId || id2 != MasterId) {
+        if (m_stage_description.stage(var1) != 1 || m_stage_description.stage(var2) != 1) {
             lower_level_variables_part += constant * var1 * var2;
         } else {
             upper_level_variables_part += constant * var1 * var2;
@@ -159,7 +155,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_con
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_constraint_stage) != MasterId) {
+        if (m_stage_description.stage(ctr) != 1) {
             continue;
         }
 
@@ -189,7 +185,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_var
 
         for (const auto& [var, coefficient] : row.linear()) {
 
-            if (var.get(m_variable_stage) == MasterId) {
+            if (m_stage_description.stage(var) == 1) {
                 m_coupling_variables.emplace_back(var);
             }
 
@@ -197,11 +193,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_coupling_var
 
         for (const auto& [var1, var2, coefficient] : row.quadratic()) {
 
-            if (var1.get(m_variable_stage) == MasterId) {
+            if (m_stage_description.stage(var1) == 1) {
                 m_coupling_variables.emplace_back(var1);
             }
 
-            if (var2.get(m_variable_stage) == MasterId) {
+            if (m_stage_description.stage(var2) == 1) {
                 m_coupling_variables.emplace_back(var2);
             }
 
@@ -226,7 +222,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lo
 
     for (const auto& var : parent.vars()) {
 
-        if (var.get(m_variable_stage) != MasterId) {
+        if (m_stage_description.stage(var) != 1) {
             m_lower_level_variables_list.emplace_back(var);
         } else {
             m_upper_level_variables_list.emplace_back(var);
@@ -245,7 +241,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::build_upper_and_lo
 
     for (const auto& ctr : parent.ctrs()) {
 
-        if (ctr.get(m_constraint_stage) != MasterId) {
+        if (m_stage_description.stage(ctr) != 1) {
             m_lower_level_constraints_list.emplace_back(ctr);
         } else {
             m_upper_level_constraints_list.emplace_back(ctr);
@@ -445,7 +441,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_level_va
 
     for (const auto& [var, constant] : t_expr) {
 
-        if (var.get(m_variable_stage) != MasterId) {
+        if (m_stage_description.stage(var) != 1) {
             return true;
         }
 
@@ -460,7 +456,7 @@ bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::contains_lower_lev
 
     for (const auto& [var1, var2, constant] : t_expr) {
 
-        if (var1.get(m_variable_stage) != MasterId || var2.get(m_variable_stage) != MasterId) {
+        if (m_stage_description.stage(var1) != 1 || m_stage_description.stage(var2) != 1) {
             return true;
         }
 
@@ -629,7 +625,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_scenario(const idol
 
         for (const auto& [var, constant] : t_row.linear()) {
 
-            if (var.get(m_variable_stage) == MasterId) {
+            if (m_stage_description.stage(var) == 1) {
                 lhs += constant.fix(t_most_violated_scenario) * var;
                 continue;
             }

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/modeling/bilevel-optimization/Description.h"
+#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 
@@ -44,7 +44,7 @@ int main(int t_argc, const char** t_argv) {
     auto follower_c4 = high_point_relaxation.add_ctr(2 * x + 10 * y >= 15);
 
     // Prepare bilevel description
-    Bilevel::Description description(env);
+    Bilevel::LowerLevelDescription description(env);
     description.set_follower_obj_expr(y);
     description.set_follower_var(y);
     description.set_follower_ctr(follower_c1);

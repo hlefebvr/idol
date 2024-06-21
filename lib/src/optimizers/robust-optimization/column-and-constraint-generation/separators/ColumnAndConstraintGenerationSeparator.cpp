@@ -12,11 +12,11 @@ idol::Expr<idol::Var, idol::Var> idol::Robust::CCGSeparator::fix_and_revert(cons
                                                                              const Solution::Primal &t_upper_level_solution) {
     Expr<Var, Var> result;
 
-    const auto& lower_level_variables = t_parent.lower_level_variables();
+    const auto& stage_description = t_parent.stage_description();
 
     for (const auto& [var, constant] : t_expr) {
 
-        const bool is_upper_level_variable = var.get(lower_level_variables) == MasterId;
+        const bool is_upper_level_variable = stage_description.stage(var) == 1;
 
         for (const auto& [param, coefficient] : constant.linear()) {
 

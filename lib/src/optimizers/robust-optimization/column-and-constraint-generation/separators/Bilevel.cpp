@@ -29,10 +29,11 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     auto lower_level_objective = set_upper_and_lower_objectives(model, t_parent, t_upper_level_solution, t_row, t_type);
 
     // Create MibS
-    const auto& lower_level_variables = t_parent.lower_level_variables();
-    const auto& lower_level_constraints = t_parent.lower_level_constraints();
+    const auto& stage_description = t_parent.stage_description();
+    const auto& lower_level_variables = stage_description.stage_vars();
+    const auto& lower_level_constraints = stage_description.stage_ctrs();
 
-    auto description = idol::Bilevel::Description(lower_level_variables,
+    auto description = idol::Bilevel::LowerLevelDescription(lower_level_variables,
                                                   lower_level_constraints,
                                                   lower_level_objective);
 
@@ -64,11 +65,11 @@ void idol::Robust::CCGSeparators::Bilevel::add_lower_level_variables(
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent) const {
 
     const auto& model = t_parent.parent();
-    const auto& lower_level_variables = t_parent.lower_level_variables();
+    const auto& stage_description = t_parent.stage_description();
 
     for (const auto& var : model.vars()) {
 
-        if (var.get(lower_level_variables) == MasterId) {
+        if (stage_description.stage(var) == 1) {
             continue;
         }
 
@@ -89,11 +90,11 @@ void idol::Robust::CCGSeparators::Bilevel::add_lower_level_constraints(
         const Solution::Primal &t_upper_level_solution) const {
 
     const auto& model = t_parent.parent();
-    const auto& lower_level_constraints = t_parent.lower_level_constraints();
+    const auto& stage_description = t_parent.stage_description();
 
     for (const auto& ctr : model.ctrs()) {
 
-        if (ctr.get(lower_level_constraints) == MasterId) {
+        if (stage_description.stage(ctr) == 1) {
             continue;
         }
 

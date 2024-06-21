@@ -230,9 +230,10 @@ void idol::Optimizers::Bilevel::ColumnAndConstraintGeneration::hook_before_optim
 
     }
 
+    idol::Robust::StageDescription stage_description(*m_variable_stage, *m_constraint_stage);
+
     m_two_stage_robust_model->use(
-            idol::Robust::ColumnAndConstraintGeneration(*m_variable_stage,
-                                                        *m_constraint_stage,
+            idol::Robust::ColumnAndConstraintGeneration(stage_description,
                                                         m_formulation->uncertainty_set())
                     .with_master_optimizer(*m_master_optimizer)
                     .with_separator(*m_separator)

@@ -8,16 +8,16 @@
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
-#include "idol/modeling/bilevel-optimization/Description.h"
+#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 
 namespace idol::Bilevel {
     class MibS;
 }
 
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
-    Bilevel::Description m_description;
+    Bilevel::LowerLevelDescription m_description;
 public:
-    MibS(Bilevel::Description t_description);
+    MibS(Bilevel::LowerLevelDescription t_description);
 
     MibS(const MibS&) = default;
     MibS(MibS&&) noexcept = default;

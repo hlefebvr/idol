@@ -24,7 +24,7 @@ namespace idol {
 }
 
 idol::impl::MibS::MibS(const idol::Model &t_model,
-                       const idol::Bilevel::Description &t_description,
+                       const idol::Bilevel::LowerLevelDescription &t_description,
                        bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),

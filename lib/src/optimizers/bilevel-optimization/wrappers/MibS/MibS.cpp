@@ -7,7 +7,7 @@
 #include <utility>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
 
-idol::Bilevel::MibS::MibS(Bilevel::Description  t_description)
+idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
         : m_description(std::move(t_description)) {
 
 }

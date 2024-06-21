@@ -238,13 +238,14 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.cpp
         include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.h
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.cpp
-        include/idol/modeling/bilevel-optimization/Description.h
+        include/idol/modeling/bilevel-optimization/LowerLevelDescription.h
         include/idol/modeling/bilevel-optimization/write_to_file.h
         src/modeling/bilevel-optimization/write_to_file.cpp
         include/idol/containers/LimitedWidthStream.h
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
         include/idol/containers/SilentMode.h
+        include/idol/modeling/robust-optimization/StageDescription.h
 )
 
 find_package(OpenMP REQUIRED)

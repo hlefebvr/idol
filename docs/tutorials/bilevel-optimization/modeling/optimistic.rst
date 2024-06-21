@@ -79,12 +79,12 @@ Describing the Lower-Level Problem
 ----------------------------------
 
 To describe the lower-level problem, we need to specify which variables and constraints are part of the lower-level problem.
-This done by creating an object of type :code:`Bilevel::Description` and calling the methods :code:`set_follower_var`
+This done by creating an object of type :code:`Bilevel::LowerLevelDescription` and calling the methods :code:`set_follower_var`
 and :code:`set_follower_ctr`.
 
 .. code::
 
-    Bilevel::Description description(env);
+    Bilevel::LowerLevelDescription description(env);
     description.set_follower_var(y);
     description.set_follower_ctr(follower_c1);
     description.set_follower_ctr(follower_c2);
@@ -111,14 +111,14 @@ Also note that it is possible to create and use your own annotation. For instanc
     follower_c4.set(follower_ctrs, 0);
 
 
-    Bilevel::Description description(follower_vars, follower_ctrs);
+    Bilevel::LowerLevelDescription description(follower_vars, follower_ctrs);
 
 
 Defining the Lower-Level Objective Function
 -------------------------------------------
 
 Finally, we need to define the lower-level objective function.
-This is done by calling the method :code:`set_follower_obj_expr` on the object of type :code:`Bilevel::Description`.
+This is done by calling the method :code:`set_follower_obj_expr` on the object of type :code:`Bilevel::LowerLevelDescription`.
 An :code:`Expr` object is passed as argument to this method.
 
 .. code::

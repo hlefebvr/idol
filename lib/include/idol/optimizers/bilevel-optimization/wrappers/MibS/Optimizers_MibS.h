@@ -11,7 +11,7 @@
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
 #include "impl_MibSFromFile.h"
-#include "idol/modeling/bilevel-optimization/Description.h"
+#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "impl_MibS.h"
 
 namespace idol::Optimizers::Bilevel {
@@ -19,12 +19,12 @@ namespace idol::Optimizers::Bilevel {
 }
 
 class idol::Optimizers::Bilevel::MibS : public Optimizer {
-    const idol::Bilevel::Description m_description;
+    const idol::Bilevel::LowerLevelDescription m_description;
 
     std::unique_ptr<idol::impl::MibSFromFile> m_mibs;
 public:
     MibS(const idol::Model& t_parent,
-         idol::Bilevel::Description  t_description);
+         idol::Bilevel::LowerLevelDescription  t_description);
 
     std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;
