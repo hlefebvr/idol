@@ -1,3 +1,5 @@
+.. _example_flp:
+
 Facility Location Problem
 =========================
 
@@ -10,7 +12,7 @@ a subset of facility location to activate in order to serve all customers' deman
 
 Each facility :math:`i\in V_1` has an opening cost :math:`f_i` and a maximum capacity :math:`q_i`.
 Each customer :math:`j\in V_2` has a demand :math:`d_j`.
-The unitary cost of serving customer :math:`j` from facility :math:`i` is :math:`t_{ij}`.
+The unitary cost for serving customer :math:`j\in V_2` from facility :math:`i\in V_1` is :math:`t_{ij}`.
 
 We model the capacitated FLP with the MILP
 

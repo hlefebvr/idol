@@ -3,6 +3,9 @@
 MILP-MILP Example with MibS
 ===========================
 
+Problem Definition
+------------------
+
 This example is taken from :cite:`Moore1990` and is a bilevel optimization problem where the upper level is a mixed-integer linear program (MILP) and the lower level is a mixed-integer linear program (MILP).
 
 The problem is formulated as follows:
@@ -24,7 +27,10 @@ The problem is formulated as follows:
             \end{array}
     \end{align}
 
-Here is one possible implementation of the problem with idol and solved with MibS.
+Implementation with idol
+------------------------
+
+In this example, we show how to model this MILP-MILP bilevel problem and how to solve it using the MibS solver.
 
 .. literalinclude:: ../../examples/bilevel-optimization/bilevel.example.cpp
     :language: cpp
