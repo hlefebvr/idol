@@ -21,7 +21,7 @@ int main(int t_argc, const char** t_argv) {
     const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("robust_ccg.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
-    const double Gamma = 0;
+    const double Gamma = 3;
     const double percentage_increase = .2;
 
     // Make Uncertainty Set
@@ -80,7 +80,7 @@ int main(int t_argc, const char** t_argv) {
                     )
                     .with_master_optimizer(Gurobi())
                     .with_separator(Robust::CCGSeparators::Bilevel())
-                    .with_iteration_limit(3)
+                    .with_iteration_limit(10)
                     .with_logs(true)
     );
 

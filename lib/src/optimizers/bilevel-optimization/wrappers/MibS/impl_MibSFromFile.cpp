@@ -71,7 +71,7 @@ double idol::impl::MibSFromFile::get_var_primal(const idol::Var &t_var) const {
 }
 
 double idol::impl::MibSFromFile::get_best_obj() const {
-    return m_broker->getBestQuality();
+    return m_model.get_obj_expr().constant().as_numerical() + m_broker->getBestQuality();
 }
 
 idol::SolutionStatus idol::impl::MibSFromFile::get_status() const {
