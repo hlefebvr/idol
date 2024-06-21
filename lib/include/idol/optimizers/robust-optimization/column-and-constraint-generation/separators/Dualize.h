@@ -43,10 +43,13 @@ public:
 
     [[nodiscard]] CCGSeparator *clone() const override;
 
-    Solution::Primal operator()(const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
-                                const Solution::Primal &t_upper_level_solution,
-                                const Row& t_row,
-                                CtrType t_type) const override;
+    Solution::Primal solve_feasibility_separation_problem(const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                              const Solution::Primal &t_upper_level_solution) const override;
+
+    Solution::Primal solve_separation_problem(const Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                              const Solution::Primal &t_upper_level_solution,
+                                              const Row& t_row,
+                                              CtrType t_type) const override;
 
     Dualize &with_optimizer(const OptimizerFactory& t_optimizer_factory);
 };

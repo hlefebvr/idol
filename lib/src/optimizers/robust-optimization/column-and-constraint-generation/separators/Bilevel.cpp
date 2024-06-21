@@ -13,7 +13,62 @@ idol::Robust::CCGSeparator *idol::Robust::CCGSeparators::Bilevel::clone() const 
     return new Bilevel(*this);
 }
 
-idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
+idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::solve_feasibility_separation_problem(
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+        const idol::Solution::Primal &t_upper_level_solution) const {
+
+    Model model = t_parent.uncertainty_set().copy();
+
+    const auto& stage_description = t_parent.stage_description();
+    const auto& lower_level_variables = stage_description.stage_vars();
+    const auto& lower_level_constraints = stage_description.stage_ctrs();
+
+    auto description = idol::Bilevel::LowerLevelDescription(lower_level_variables,
+                                                            lower_level_constraints);
+
+
+    // Add lower level variables and constraints (fixes upper level variables and add parameters as variables)
+    add_lower_level_variables(model, t_parent);
+    add_lower_level_constraints(model, t_parent, t_upper_level_solution);
+
+    std::list<Var> slacks;
+
+    const auto add_slack = [&](double t_coefficient, const Ctr& t_ctr) {
+        Column column(-1);
+        column.linear().set(t_ctr, t_coefficient);
+        const auto slack = model.add_var(0, 1e4, Continuous, column);
+        description.set_follower_var(slack);
+        slacks.emplace_back(slack);
+    };
+
+    for (const auto& ctr : model.ctrs()) {
+
+        if (description.is_leader(ctr)) {
+            continue;
+        }
+
+        const auto type = model.get_ctr_type(ctr);
+        switch (type) {
+            case LessOrEqual:
+                add_slack(-1, ctr);
+                break;
+            case GreaterOrEqual:
+                add_slack(1, ctr);
+                break;
+            case Equal:
+                add_slack(-1, ctr);
+                add_slack(1, ctr);
+                break;
+        }
+
+    }
+
+    description.set_follower_obj_expr(idol_Sum(var, slacks, var));
+
+    return solve_bilevel(t_parent, model, description);
+}
+
+idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::solve_separation_problem(
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
@@ -28,32 +83,40 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     // Add lower level objective
     auto lower_level_objective = set_upper_and_lower_objectives(model, t_parent, t_upper_level_solution, t_row, t_type);
 
-    // Create MibS
+    // Create lower level description
     const auto& stage_description = t_parent.stage_description();
     const auto& lower_level_variables = stage_description.stage_vars();
     const auto& lower_level_constraints = stage_description.stage_ctrs();
 
     auto description = idol::Bilevel::LowerLevelDescription(lower_level_variables,
-                                                  lower_level_constraints,
-                                                  lower_level_objective);
+                                                            lower_level_constraints,
+                                                            lower_level_objective);
 
-    auto optimizer = idol::Bilevel::MibS(description).with_logs(false);
+    return solve_bilevel(t_parent, model, description);
+}
 
-    model.use(optimizer);
+idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::solve_bilevel(
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+        idol::Model& t_model,
+        const idol::Bilevel::LowerLevelDescription &t_description) {
+
+    auto optimizer = idol::Bilevel::MibS(t_description).with_logs(false);
+
+    t_model.use(optimizer);
 
     // Solve
-    model.optimize();
+    t_model.optimize();
 
-    const auto status = model.get_status();
+    const auto status = t_model.get_status();
 
     if (status != Optimal) {
         Solution::Primal result;
         result.set_status(status);
-        result.set_reason(model.get_reason());
+        result.set_reason(t_model.get_reason());
         return result;
     }
 
-    auto result = save_primal(model);
+    auto result = save_primal(t_model);
 
     result.set_objective_value(-result.objective_value());
 

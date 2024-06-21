@@ -15,7 +15,7 @@ idol::Robust::CCGSeparator *idol::Robust::CCGSeparators::Dualize::clone() const 
     return new Dualize(*this);
 }
 
-idol::Solution::Primal idol::Robust::CCGSeparators::Dualize::operator()(
+idol::Solution::Primal idol::Robust::CCGSeparators::Dualize::solve_separation_problem(
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const Solution::Primal &t_upper_level_solution,
         const Row& t_row,
@@ -271,4 +271,10 @@ idol::Robust::CCGSeparators::Dualize::solve_max_min(const idol::Model &t_max,
     result.set_objective_value(-result.objective_value());
 
     return result;
+}
+
+idol::Solution::Primal idol::Robust::CCGSeparators::Dualize::solve_feasibility_separation_problem(
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+        const idol::Solution::Primal &t_upper_level_solution) const {
+    throw Exception("Not implemented.");
 }

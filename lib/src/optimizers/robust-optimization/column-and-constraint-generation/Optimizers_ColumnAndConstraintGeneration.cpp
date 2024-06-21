@@ -358,8 +358,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         m_current_master_solution = solve_master_problem();
 
-        //std::cout << m_master_problem << std::endl;
-
         m_stabilizer->analyze_current_master_problem_solution();
 
         log(true);
@@ -529,13 +527,34 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
 
     const auto& parent = this->parent();
 
+    if (!m_complete_recourse) {
+
+        auto solution = m_separator->solve_feasibility_separation_problem(
+                *this,
+                *m_current_master_solution);
+
+        const auto status = solution.status();
+
+        if (status != Optimal) {
+            set_status(status);
+            set_reason(solution.reason());
+            terminate();
+            return solution;
+        }
+
+        if (solution.objective_value() > Tolerance::Feasibility) {
+            return solution;
+        }
+
+    }
+
     double max = -Inf;
     Solution::Primal argmax;
     argmax.set_objective_value(-Inf);
 
     const auto evaluate = [&](const Row& t_row, CtrType t_type) {
 
-        auto solution = m_separator->operator()(
+        auto solution = m_separator->solve_separation_problem(
                 *this,
                 *m_current_master_solution,
                 t_row,
@@ -585,11 +604,6 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
             break;
         }
 
-    }
-
-    // If there are no coupling constraint, this is a feasibility problem, i.e., we optimize 0.
-    if (m_coupling_constraints.empty() && !m_epigraph.has_value()) {
-        evaluate(Row(), LessOrEqual);
     }
 
     return argmax;

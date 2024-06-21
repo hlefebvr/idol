@@ -47,6 +47,7 @@ int main(int t_argc, const char** t_argv) {
                     .with_separator(
                             Robust::CCGSeparators::Bilevel()
                     )
+                    //.with_complete_recourse(true)
                     //.with_stabilization(Robust::CCGStabilizers::TrustRegion())
                     .with_logs(true)
     );
@@ -85,7 +86,6 @@ create_deterministic_model(Env& t_env, const Problems::FLP::Instance& t_instance
 
     const auto x = result.add_vars(Dim<1>(n_facilities), 0., 1., Binary, "x");
     const auto y = result.add_vars(Dim<2>(n_facilities, n_customers), 0., Inf, Continuous, "y");
-    const auto s = result.add_vars(Dim<1>(n_customers), 0., Inf, Continuous, "s");
 
     // Capacity constraints
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -94,7 +94,7 @@ create_deterministic_model(Env& t_env, const Problems::FLP::Instance& t_instance
 
     // Demand satisfaction constraints
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        result.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) + s[j] == t_instance.demand(j) * (1 + t_percentage_increase * !t_xi[j]));
+        result.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == t_instance.demand(j) * (1 + t_percentage_increase * !t_xi[j]));
     }
 
     // Objective function
@@ -104,7 +104,6 @@ create_deterministic_model(Env& t_env, const Problems::FLP::Instance& t_instance
                                            t_instance.per_unit_transportation_cost(i, j) * y[i][j]
                                 )
                        )
-                        + idol_Sum(j, Range(n_customers), 1e4 * s[j])
     );
 
     return std::move(result);

@@ -14,10 +14,14 @@ idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
 
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
-    return new Optimizers::Bilevel::MibS(
+    auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
                 m_description
             );
+
+    this->handle_default_parameters(result);
+
+    return result;
 #else
     throw Exception("idol was not linked with MibS.");
 #endif

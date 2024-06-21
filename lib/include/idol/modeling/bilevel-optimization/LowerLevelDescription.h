@@ -54,6 +54,14 @@ public:
     void set_follower_ctr(const Ctr& t_ctr) { t_ctr.set(m_follower_constraints, 0); }
 
     void set_follower_obj_expr(Expr<Var, Var> t_objective) { m_follower_objective = std::move(t_objective); }
+
+    bool is_leader(const Var& t_var) const { return t_var.get(m_follower_variables) == MasterId; }
+
+    bool is_leader(const Ctr& t_ctr) const { return t_ctr.get(m_follower_constraints) == MasterId; }
+
+    bool is_follower(const Var& t_var) const { return t_var.get(m_follower_variables) != MasterId; }
+
+    bool is_follower(const Ctr& t_ctr) const { return t_ctr.get(m_follower_constraints) != MasterId; }
 };
 
 #endif //IDOL_LOWERLEVELDESCRIPTION_H

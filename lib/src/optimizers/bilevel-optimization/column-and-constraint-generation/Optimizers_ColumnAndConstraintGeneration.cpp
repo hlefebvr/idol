@@ -20,10 +20,13 @@ public:
 
     ExtendedLowerLevelSeparator(const ExtendedLowerLevelSeparator& t_src);
 
-    idol::Solution::Primal operator()(const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
-                                const idol::Solution::Primal &t_upper_level_solution,
-                                const idol::Row& t_row,
-                                      idol::CtrType t_type) const override;
+    idol::Solution::Primal solve_feasibility_separation_problem(const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                                    const idol::Solution::Primal &t_upper_level_solution) const override;
+
+    idol::Solution::Primal solve_separation_problem(const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+                                                    const idol::Solution::Primal &t_upper_level_solution,
+                                                    const idol::Row& t_row,
+                                                    idol::CtrType t_type) const override;
 
     [[nodiscard]] CCGSeparator *clone() const override;
 };
@@ -39,7 +42,7 @@ ExtendedLowerLevelSeparator::ExtendedLowerLevelSeparator(const idol::Bilevel::im
 }
 
 idol::Solution::Primal
-ExtendedLowerLevelSeparator::operator()(const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+ExtendedLowerLevelSeparator::solve_separation_problem(const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
                                         const idol::Solution::Primal &t_upper_level_solution,
                                         const idol::Row &t_row,
                                         idol::CtrType t_type) const {
@@ -73,6 +76,13 @@ ExtendedLowerLevelSeparator::operator()(const idol::Optimizers::Robust::ColumnAn
 
     return result;
 
+}
+
+idol::Solution::Primal
+ExtendedLowerLevelSeparator::solve_feasibility_separation_problem(
+        const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
+        const idol::Solution::Primal &t_upper_level_solution) const {
+    throw idol::Exception("Feasibility separation problem should not be called.");
 }
 
 idol::Robust::CCGSeparator *ExtendedLowerLevelSeparator::clone() const {
