@@ -3,11 +3,19 @@
 Modeling an Optimistic Bilevel Problem
 ======================================
 
-Introduction
-------------
-
 In this tutorial, we will see how to model an optimistic bilevel problem in idol.
-To this end, we consider the bilevel problem
+
+To follow this tutorial, you should be familiar with bilevel optimization and modeling optimization problems in idol.
+If this is not the case, we recommend you to read the tutorial on :ref:`MIP modeling <mip_modeling>`.
+
+.. contents:: Table of Contents
+    :local:
+    :depth: 2
+
+Problem Definition and Main Steps
+----------------------------------
+
+We consider the optimistic bilevel problem
 
 .. math::
 
@@ -15,7 +23,7 @@ To this end, we consider the bilevel problem
         \min_{x, y} \ & -x + -10 y \\
         \text{s.t.} \ & x \in \mathbb Z_+ \\
         & y\in
-            \begin{array}[t]{l}
+            \begin{array}[t]{rl}
                 \displaystyle \underset{y}{\text{arg min}} \ & y \\
                 \text{s.t.} \ & -25 x + 20 y \leq 30, \\
                 & x + 2 y \leq 10, \\
@@ -26,7 +34,7 @@ To this end, we consider the bilevel problem
             \end{array}
     \end{align}
 
-This MILP-MILP bilevel problem is taken from :cite:`Moore1990`.
+This is an ILP-ILP bilevel problem which is taken from :cite:`Moore1990` (Example 1).
 
 To model this problem in idol, there are three main steps:
 

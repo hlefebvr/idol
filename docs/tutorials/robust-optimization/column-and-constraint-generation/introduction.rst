@@ -1,13 +1,11 @@
-.. _api_ro_ccg:
-
-Column-and-Constraint Generation
-================================
+Introduction
+============
 
 The Column-and-Constraint Generation (CCG) algorithm is a classical method for solving two-stage robust optimization problems.
 It was originally introduced by :cite:`Zeng2013`.
 
-In idol, the implementation of CCG alows to solve a class of problems which is slightly more general than classical two-stage robust optimization problems.
-This class of problems is defined in the following sub-section.
+In idol, the implementation of CCG alows to solve a class of problems which is slightly more general than classical
+two-stage robust optimization problems. This class of problems is defined in the following sub-section.
 
 Problem Class
 -------------
@@ -157,11 +155,3 @@ which is a feasibility problem.
 
 Though the two approaches are equivalent, in the sense that they will both lead to a solution of :math:numref:`eq:original-problem`,
 they may lead to different computational performances. An interested reader may refer to, e.g., :cite:`Ayoub2016` for more details.
-
-.. toctree::
-    :maxdepth: 2
-    :glob:
-
-    ColumnAndConstraintGeneration.doxygen.rst
-    separators/index
-    stabilization/index

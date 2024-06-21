@@ -1,5 +1,5 @@
-Calling the Coin-OR/MibS Solver
-===============================
+Solving Mixed-Integer Bilevel Problems with MibS
+================================================
 
 MibS is an optimization solver for mixed-integer bilevel problems.
 Idol seemlessly integrates with MibS to solve bilevel problems.
