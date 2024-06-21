@@ -11,6 +11,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h"
 #include "idol/modeling/robust-optimization/StageDescription.h"
+#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h"
 
 using namespace idol;
 
@@ -46,6 +47,7 @@ int main(int t_argc, const char** t_argv) {
                     .with_separator(
                             Robust::CCGSeparators::Bilevel()
                     )
+                    //.with_stabilization(Robust::CCGStabilizers::TrustRegion())
                     .with_logs(true)
     );
 

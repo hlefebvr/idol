@@ -1,3 +1,5 @@
+.. _tutorial_write_ccg_separator:
+
 Writing Your Own Separator (Advanced) [TODO]
 ============================================
 

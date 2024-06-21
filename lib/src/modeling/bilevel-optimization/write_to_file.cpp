@@ -170,7 +170,7 @@ void MpsWriter::write() {
 
     file << "BOUNDS\n";
 
-    for (const auto& var : integer_vars) {
+    for (const auto& var : m_model.vars()) {
         const auto lb = m_model.get_var_lb(var);
         const auto ub = m_model.get_var_ub(var);
         const auto type = m_model.get_var_type(var);
