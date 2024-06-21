@@ -28,8 +28,6 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     // Add lower level objective
     auto lower_level_objective = set_upper_and_lower_objectives(model, t_parent, t_upper_level_solution, t_row, t_type);
 
-    std::cout << "First-Stage Decision \n" << t_upper_level_solution << std::endl;
-
     // Create MibS
     const auto& lower_level_variables = t_parent.lower_level_variables();
     const auto& lower_level_constraints = t_parent.lower_level_constraints();
@@ -57,8 +55,6 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::operator()(
     auto result = save_primal(model);
 
     result.set_objective_value(-result.objective_value());
-
-    std::cout << result << std::endl;
 
     return result;
 }

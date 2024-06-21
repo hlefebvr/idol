@@ -244,6 +244,7 @@ add_library(idol STATIC
         include/idol/containers/LimitedWidthStream.h
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
+        include/idol/containers/SilentMode.h
 )
 
 find_package(OpenMP REQUIRED)

@@ -8,8 +8,17 @@
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <MibSSolution.hpp>
 #include <OsiCpxSolverInterface.hpp>
+#include <fcntl.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/write_to_file.h"
+#include "idol/containers/Finally.h"
+#include "idol/containers/SilentMode.h"
+
+#ifdef _WIN32
+#define DEV_NULL "NUL"
+#else
+#define DEV_NULL "/dev/null"
+#endif
 
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
                                        const idol::Bilevel::Description &t_description,
@@ -36,12 +45,19 @@ void idol::impl::MibSFromFile::solve() {
 
     m_mibs.setSolver(m_osi_solver.get());
 
+    const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
+
     const char* argv[] = {"./mibs",
                      "-Alps_instance",
                      "bilevel.mps",
                      "-MibS_auxiliaryInfoFile",
-                     "bilevel.aux"};
-    const int argc = 5;
+                     "bilevel.aux",
+                     "-Alps_timeLimit",
+                     time_limit.data()
+    };
+    const int argc = 7;
+
+    idol::SilentMode silent_mode(!m_logs);
 
     try {
         m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, false);

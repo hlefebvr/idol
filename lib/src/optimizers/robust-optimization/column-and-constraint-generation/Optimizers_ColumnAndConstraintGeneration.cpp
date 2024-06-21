@@ -565,8 +565,6 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_separation_proble
 
     if (m_epigraph.has_value()) {
 
-        std::cout << "HAS EPIGRAPH\n" << std::endl;
-
         const auto& env = m_master_problem.env();
         const auto& default_version = env.operator[](m_epigraph->second);
         const auto& row = default_version.row();
