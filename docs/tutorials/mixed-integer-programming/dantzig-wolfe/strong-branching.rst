@@ -21,7 +21,7 @@ part is closest to `0.5`. Unfortunately, this rule performs badly in practice. M
 computationally hard, it makes sense to spend some time in carefully choosing the variable to branch on. This is typically
 the case when nodes are solved using Column Generation.
 
-.. info::
+.. hint::
 
     Clearly, Strong Branching is not only used in the context of column generation. It is a general technique that can be
     used in any context where solving a node is computationally expensive. Thus, this tutorial is not specific to the

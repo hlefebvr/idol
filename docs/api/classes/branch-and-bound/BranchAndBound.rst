@@ -8,7 +8,7 @@ It can be used to create customized branch-and-bound algorithms with a large deg
 
 .. seealso::
 
-    If you are not familiar with optimizers and optimizer factories, please refer to :ref:`this page <api_optimizers>`.
+    If you are not familiar with optimizers and optimizer factories, please refer to :ref:`this page <mip_optimizers>`.
 
 .. admonition:: Example
 

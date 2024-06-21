@@ -837,7 +837,7 @@ public:
      *
      * Example:
      * ```cpp
-     * CtrType.rst type = model.get_ctr_type(c1);
+     * CtrType.rst.rst type = model.get_ctr_type(c1);
      *
      * if (type == LessOrEqual) {
      *      std::cout << "c1 is a <= constraint" << std::endl;

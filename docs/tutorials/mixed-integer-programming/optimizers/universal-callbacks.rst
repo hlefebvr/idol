@@ -252,7 +252,7 @@ We are now ready to create the callback factory and pass it to the optimizer. Th
 
 That's it! The optimizer will now call the callback function at each node of the branch-and-cut tree, and add the cuts to the master problem whenever a violated constraint is found.
 
-.. info::
+.. hint::
 
     Here, we added a call to :code:`Gurobi::with_lazy_cut`. This is because the Gurobi optimizer does not support lazy cuts by default
     and one needs to explicitly enable them.

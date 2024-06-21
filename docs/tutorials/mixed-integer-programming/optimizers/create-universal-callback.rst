@@ -66,7 +66,7 @@ The nested class :code:`Strategy` is the actual callback implementation. It is a
 overrides the :code:`operator()` method. In this example, the callback prints the value of the primal solution whenever the event
 triggering the callback is :code:`IncumbentSolution`. In other words, this callback will print out all incumbent solutions found by the solver.
 
-As for the :ref:`UserCutCallback <api_UserCutCallback>` and :ref:`LazyConstraintCallback <api_LazyConstraintCallback>` classes,
+As for the :ref:`UserCutCallback <api_UserCutCallback>` and :ref:`LazyConstraintCallback <api_LazyCutCallback>` classes,
 our new callback can be added to an optimizer as follows.
 
 .. code:: cpp

@@ -1,5 +1,5 @@
-Generalized Assignment Problem
-==============================
+Generalized Assignment Problem (Branch-and-Price)
+=================================================
 
 Problem Definition
 ------------------

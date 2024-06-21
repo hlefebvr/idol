@@ -1,7 +1,7 @@
 .. _example_mibs:
 
-MILP-MILP Example with MibS
-===========================
+Bilevel MILP-MILP (MibS)
+========================
 
 Problem Definition
 ------------------

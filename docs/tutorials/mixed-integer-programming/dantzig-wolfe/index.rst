@@ -1,3 +1,5 @@
+.. _tutorial_DantzigWolfe:
+
 Column Generation and Branch-and-Price Algorithm
 ================================================
 

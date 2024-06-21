@@ -1,7 +1,7 @@
 .. _example_flp:
 
-Facility Location Problem
-=========================
+Facility Location Problem (Branch-and-Bound)
+============================================
 
 Problem Definition
 ------------------

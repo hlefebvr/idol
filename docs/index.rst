@@ -38,7 +38,7 @@ combined to create a new algorithm, `branch_and_price`, which can be instantiate
 Getting Started With Idol
 -------------------------
 
-If you are new to idol, be sure to have a look at our :ref:`tutorials <tutorials_basics>`. If you want to get a fast hands-on
+If you are new to idol, be sure to have a look at our :ref:`tutorials <tutorials>`. If you want to get a fast hands-on
 start, have a look at our :ref:`local installation guideline <installation_local>`. It is the easiest installation process
 one could think of since it automatically downloads the latest version of idol, and installs it locally in a sub-folder.
 It's really a mater of seconds before you can start using idol.

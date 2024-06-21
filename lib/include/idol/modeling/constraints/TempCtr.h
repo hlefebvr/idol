@@ -24,7 +24,7 @@ namespace idol {
  *
  * This class represents a constraint which has not been built yet by a Model.
  * It contains all the arguments needed to create a real constraint
- * as instantiated by the `Ctr` class. It is made of a row (see `Row`) and a type (see `CtrType.rst`).
+ * as instantiated by the `Ctr` class. It is made of a row (see `Row`) and a type (see `CtrType.rst.rst`).
  *
  * Typically, one creates a `TempCtr` by using the overloaded operators `<=`, `>=` and `==` between variable expressions (i.e., `Expr`) and
  * constant terms (i.e., `Constant`).

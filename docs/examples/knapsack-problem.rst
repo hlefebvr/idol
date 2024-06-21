@@ -1,5 +1,5 @@
-Knapsack Problem
-================
+Knapsack Problem (HiGHS)
+=========================
 
 Problem Definition
 ------------------

@@ -90,7 +90,7 @@ Assuming that the instance file is named :code:`instance.txt`, it can be loaded 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
-We are now ready to model our problem (for more details, refer to :ref:`this tutorial on modeling <modeling_optimization_problems>`)
+We are now ready to model our problem (for more details, refer to :ref:`this tutorial on modeling <mip_modeling>`)
 
 .. code-block:: cpp
 

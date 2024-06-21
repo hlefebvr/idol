@@ -72,7 +72,7 @@ parameters. For instance, the following code is equivalent to the previous one.
     Model model2(env);
     model2.add(x, TempVar(0, 10, Continuous));
 
-Here, we used the class :ref:`TempVar <api_TempVar>` to create a temporary variable. A temporary variable is a variable
+Here, we used the class :ref:`TempVar <api_mip_variables_TempVar>` to create a temporary variable. A temporary variable is a variable
 which has not been instantiate yet. It is only a "template" of a variable specifying its bounds and type. Here, we therefore
 add the variable :math:`x` to the second model and directly set its attributes (bounds and type) accordingly.
 

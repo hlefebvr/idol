@@ -9,7 +9,7 @@ This page explains how to build the documentation on a local machine.
 Dependencies
 ------------
 
-LowerLevelDescription
+Description
 ^^^^^^^^^^^
 
 The documentation is built using `doxygen`_ and a bunch of other tools, in particular:

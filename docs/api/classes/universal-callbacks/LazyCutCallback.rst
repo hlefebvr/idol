@@ -54,7 +54,7 @@ with :math:`\varepsilon` a given tolerance (by default, :code:`Tolerance::Feasib
 .. hint::
 
     You may also be interested by a tutorial showing how you can implement a simple Benders Decomposition using lazy
-    cuts. :ref:`See Benders Decomposition tutorial <decomposition_benders>`.
+    cuts. :ref:`See Benders Decomposition tutorial <tutorial_user_lazy_cuts>`.
 
 
 .. doxygenclass:: idol::LazyCutCallback
