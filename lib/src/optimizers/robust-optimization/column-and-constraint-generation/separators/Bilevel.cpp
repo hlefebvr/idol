@@ -17,6 +17,8 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::solve_feasibility_s
         const idol::Optimizers::Robust::ColumnAndConstraintGeneration &t_parent,
         const idol::Solution::Primal &t_upper_level_solution) const {
 
+    std::cout << "WARNING: Introducing slack variables with fake upper bound of 1e4 to bound HPR for MibS." << std::endl;
+
     Model model = t_parent.uncertainty_set().copy();
 
     const auto& stage_description = t_parent.stage_description();
