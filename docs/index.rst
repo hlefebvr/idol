@@ -9,7 +9,7 @@
         </h2>
 
         <span style="font-size:1.2em;">
-            <a href="tutorials/index.html" class="my-button" style="background-color:#1f883d;color:white;"> Get started now </a>
+            <a href="tutorials/index.html" class="my-button" id="get-started" > Get started now </a>
             &nbsp;
             <a href="installation/index.html" class="my-button"> To installation guidelines </a>
         </span>
