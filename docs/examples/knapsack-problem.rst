@@ -1,5 +1,5 @@
 Knapsack Problem
 ================
 
-.. literalinclude:: ../../examples/knapsack.example.cpp
+.. literalinclude:: ../../examples/mixed-integer-optimization/knapsack.example.cpp
     :language: cpp

@@ -1,5 +1,5 @@
 Generalized Assignment Problem
 ==============================
 
-.. literalinclude:: ../../examples/assignment.example.cpp
+.. literalinclude:: ../../examples/mixed-integer-optimization/assignment.example.cpp
     :language: cpp
