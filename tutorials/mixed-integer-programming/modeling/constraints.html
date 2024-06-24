@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constraints &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/modeling/constraints.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Objective Functions" href="objective-function.html" />
+    <link rel="prev" title="Expressions" href="expressions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Mixed-Integer Programming</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Modeling</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="environment.html">The Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variables.html">Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objective-function.html">Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../optimizers/index.html">Optimizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dantzig-wolfe/index.html">Column Generation and Branch-and-Price Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bilevel-optimization/index.html">Bilevel Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../robust-optimization/index.html">Robust Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Mixed-Integer Programming</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Modeling</a></li>
+      <li class="breadcrumb-item active">Constraints</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/tutorials/mixed-integer-programming/modeling/constraints.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="constraints">
+<span id="api-constraints"></span><h1>Constraints<a class="headerlink" href="#constraints" title="Link to this heading"></a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#creating-constraints" id="id1">Creating Constraints</a></p></li>
+<li><p><a class="reference internal" href="#accessing-constraints" id="id2">Accessing Constraints</a></p></li>
+<li><p><a class="reference internal" href="#modifying-constraints" id="id3">Modifying Constraints</a></p></li>
+<li><p><a class="reference internal" href="#removing-constraints" id="id4">Removing Constraints</a></p></li>
+</ul>
+</nav>
+<section id="creating-constraints">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Creating Constraints</a><a class="headerlink" href="#creating-constraints" title="Link to this heading"></a></h2>
+<p>Similarly to variables, constraints are easily created and added to a given <code class="docutils literal notranslate"><span class="pre">Model</span></code>.</p>
+<p>Constraints can be created by calling the constructor of the <a class="reference internal" href="../../../api/classes/common/Ctr.html#api-ctr"><span class="std std-ref">Ctr</span></a> class and added to a model by means of
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">add</span></code> or by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">add_ctr</span></code> method. See for instance.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="n">Var</span><span class="w"> </span><span class="n">x_0</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x_0&quot;</span><span class="p">);</span>
+<span class="n">Var</span><span class="w"> </span><span class="n">x_1</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x_1&quot;</span><span class="p">);</span>
+<span class="n">Ctr</span><span class="w"> </span><span class="nf">constraint</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">x_0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x_1</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x_0</span><span class="p">);</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x_1</span><span class="p">);</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">constraint</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A more compact version of this code is obtained by making use of the <code class="docutils literal notranslate"><span class="pre">Model::add_vars</span></code> and <code class="docutils literal notranslate"><span class="pre">Model::add_ctr</span></code> methods.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">constraint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As you can see, a constraint is created using the pattern <code class="code docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">{sign}</span> <span class="pre">{expression}</span></code> where</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">{sign}</span></code> is one of <code class="code docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="code docutils literal notranslate"><span class="pre">&gt;=</span></code> and <code class="code docutils literal notranslate"><span class="pre">==</span></code>;</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">{expression}</span></code> is an expression, i.e., an instance of <code class="code docutils literal notranslate"><span class="pre">Expr</span></code>.</p></li>
+</ul>
+<p>Actually, the pattern <code class="code docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">{sign}</span> <span class="pre">{expression}</span></code> only creates a “temporary” constraint, i.e., a constraint
+which is not associated to any model. This is why we need to add it to a model by calling the <code class="code docutils literal notranslate"><span class="pre">Model::add_ctr</span></code> method.
+Temporary constraints are objects of the class <a class="reference internal" href="../../../api/classes/common/TempCtr.html#api-tempctr"><span class="std std-ref">TempCtr</span></a>. An equivalent code would be.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">temporary_constraint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TempCtr</span><span class="p">(</span><span class="n">Row</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">GreaterThan</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">temporary_constraint</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, we used the class <a class="reference internal" href="../../../api/classes/common/Row.html#api-row"><span class="std std-ref">Row</span></a> to create the row associated to the constraint. The sign of the constraint is
+specified by the second argument of the constructor of the <a class="reference internal" href="../../../api/classes/common/TempCtr.html#api-tempctr"><span class="std std-ref">TempCtr</span></a> class, and can take values
+<code class="code docutils literal notranslate"><span class="pre">LessThan</span></code>, <code class="code docutils literal notranslate"><span class="pre">GreaterThan</span></code> and <code class="code docutils literal notranslate"><span class="pre">EqualTo</span></code>.</p>
+</section>
+<section id="accessing-constraints">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Accessing Constraints</a><a class="headerlink" href="#accessing-constraints" title="Link to this heading"></a></h2>
+<p>Information about a given constraint in a model can be accessed by calling the corresponding methods of the model.
+The type of a constraint can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_ctr_type</span></code> method. The row of a constraint can be
+accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_ctr_row</span></code> method.</p>
+<p>If a given model has been solved and feasibility could be proved (or better, optimality), the dual value of a constraint
+can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_ctr_dual</span></code> method.
+For infeasible models, a Farkas certificate (dual ray) can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_ctr_farkas</span></code> method.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">has</span></code> method can be used to check if a given constraint is in the model.</p>
+<p>The current index of a constraint in the model can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_ctr_index</span></code> method.
+Beware, however, that the index may change if the model is modified.</p>
+<p>For more details, see the <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class.</p>
+</section>
+<section id="modifying-constraints">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Modifying Constraints</a><a class="headerlink" href="#modifying-constraints" title="Link to this heading"></a></h2>
+<p>The type of a constraint can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Ctr</span><span class="o">::</span><span class="n">set_ctr_type</span></code> method.
+The value of the right-hand side of a constraint can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Ctr</span><span class="o">::</span><span class="n">set_rhs</span></code> method.</p>
+<p>The row of a constraint in the model can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Ctr</span><span class="o">::</span><span class="n">set_row</span></code> method.
+For instance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Row</span><span class="w"> </span><span class="n">row</span><span class="p">;</span>
+<span class="n">row</span><span class="p">.</span><span class="n">set_rhs</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">row</span><span class="p">.</span><span class="n">linear</span><span class="p">().</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">coefficient_for_x_in_constraint</span><span class="p">);</span>
+<span class="n">row</span><span class="p">.</span><span class="n">linear</span><span class="p">().</span><span class="n">set</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">coefficient_for_y_in_constraint</span><span class="p">);</span>
+
+<span class="n">constraint</span><span class="p">.</span><span class="n">set_ctr_row</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For more details, see the <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class.</p>
+</section>
+<section id="removing-constraints">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Removing Constraints</a><a class="headerlink" href="#removing-constraints" title="Link to this heading"></a></h2>
+<p>A constraint can be removed from a model by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">remove</span></code> method.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="expressions.html" class="btn btn-neutral float-left" title="Expressions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="objective-function.html" class="btn btn-neutral float-right" title="Objective Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FirstInfeasibleFound &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/branch-and-bound/variable-selection/FirstInfeasibleFound.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="LeastInfeasible" href="LeastInfeasible.html" />
+    <link rel="prev" title="Branching Rules" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Class List</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../common/index.html">Common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Branch-and-Bound Algorithm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBound.html">BranchAndBound</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBoundCallback.html">BranchAndBoundCallback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBoundCallbackFactory.html">BranchAndBoundCallbackFactory</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">Branching Rules</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">FirstInfeasibleFound</a></li>
+<li class="toctree-l5"><a class="reference internal" href="LeastInfeasible.html">LeastInfeasible</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MostInfeasible.html">MostInfeasible</a></li>
+<li class="toctree-l5"><a class="reference internal" href="PseudoCost.html">PseudoCost</a></li>
+<li class="toctree-l5"><a class="reference internal" href="StrongBranching.html">StrongBranching</a></li>
+<li class="toctree-l5"><a class="reference internal" href="UniformlyRandom.html">UniformlyRandom</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../node-selection/index.html">Node Selection Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../heuristics/index.html">Heuristics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cuts/index.html">Cutting Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Branch-and-Bound Algorithm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Branching Rules</a></li>
+      <li class="breadcrumb-item active">FirstInfeasibleFound</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/classes/branch-and-bound/variable-selection/FirstInfeasibleFound.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firstinfeasiblefound">
+<h1>FirstInfeasibleFound<a class="headerlink" href="#firstinfeasiblefound" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol20FirstInfeasibleFoundE">
+<span id="_CPPv3N4idol20FirstInfeasibleFoundE"></span><span id="_CPPv2N4idol20FirstInfeasibleFoundE"></span><span id="idol::FirstInfeasibleFound"></span><span class="target" id="classidol_1_1FirstInfeasibleFound"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FirstInfeasibleFound</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VariableBranching</span></span><a class="headerlink" href="#_CPPv4N4idol20FirstInfeasibleFoundE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol20FirstInfeasibleFound20FirstInfeasibleFoundEv">
+<span id="_CPPv3N4idol20FirstInfeasibleFound20FirstInfeasibleFoundEv"></span><span id="_CPPv2N4idol20FirstInfeasibleFound20FirstInfeasibleFoundEv"></span><span id="idol::FirstInfeasibleFound::FirstInfeasibleFound"></span><span class="target" id="classidol_1_1FirstInfeasibleFound_1a5b3740f547ad4926c55636891fe5b45a"></span><span class="sig-name descname"><span class="n"><span class="pre">FirstInfeasibleFound</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol20FirstInfeasibleFound20FirstInfeasibleFoundEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT">
+<span id="_CPPv3I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT"></span><span id="_CPPv2I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IteratorT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1FirstInfeasibleFound_1ad9d0148815d7f657c2f498ba7153d160"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FirstInfeasibleFound</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT" title="idol::FirstInfeasibleFound::FirstInfeasibleFound::IteratorT"><span class="n"><span class="pre">IteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_begin</span></span>, <a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT" title="idol::FirstInfeasibleFound::FirstInfeasibleFound::IteratorT"><span class="n"><span class="pre">IteratorT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_end</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4idol20FirstInfeasibleFound20FirstInfeasibleFoundE9IteratorT9IteratorT" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE">
+<span id="_CPPv3I0EN4idol20FirstInfeasibleFound8StrategyE"></span><span id="_CPPv2I0EN4idol20FirstInfeasibleFound8StrategyE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NodeInfoT</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1FirstInfeasibleFound_1_1Strategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VariableBranching</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Strategy</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE" title="idol::FirstInfeasibleFound::Strategy::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol20FirstInfeasibleFound8Strategy8StrategyEv">
+<span id="_CPPv3N4idol20FirstInfeasibleFound8Strategy8StrategyEv"></span><span id="_CPPv2N4idol20FirstInfeasibleFound8Strategy8StrategyEv"></span><span id="idol::FirstInfeasibleFound::Strategy::Strategy"></span><span class="target" id="classidol_1_1FirstInfeasibleFound_1_1Strategy_1a51319d51713e3862f73d4a5911eb7f5c"></span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol20FirstInfeasibleFound8Strategy8StrategyEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol20FirstInfeasibleFound8Strategy8StrategyERK20FirstInfeasibleFound">
+<span id="_CPPv3N4idol20FirstInfeasibleFound8Strategy8StrategyERK20FirstInfeasibleFound"></span><span id="_CPPv2N4idol20FirstInfeasibleFound8Strategy8StrategyERK20FirstInfeasibleFound"></span><span id="idol::FirstInfeasibleFound::Strategy::Strategy__FirstInfeasibleFoundCR"></span><span class="target" id="classidol_1_1FirstInfeasibleFound_1_1Strategy_1abf9ef48ca8e983b66dad5a9289127ef1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol20FirstInfeasibleFoundE" title="idol::FirstInfeasibleFound"><span class="n"><span class="pre">FirstInfeasibleFound</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_parent</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol20FirstInfeasibleFound8Strategy8StrategyERK20FirstInfeasibleFound" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI9NodeInfoTEE">
+<span id="_CPPv3NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI9NodeInfoTEE"></span><span id="_CPPv2NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI9NodeInfoTEE"></span><span id="idol::FirstInfeasibleFound::Strategy::call-operator__Optimizers::BranchAndBound:NodeInfoT:CRC"></span><span class="target" id="classidol_1_1FirstInfeasibleFound_1_1Strategy_1a42066063f802aa74f8b9a121ec7fbdaf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">BranchingRules</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VariableBranching</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE" title="idol::FirstInfeasibleFound::Strategy::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Optimizers</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">BranchAndBound</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE" title="idol::FirstInfeasibleFound::Strategy::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_parent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI9NodeInfoTEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol20FirstInfeasibleFound8Strategy5cloneEv">
+<span id="_CPPv3NK4idol20FirstInfeasibleFound8Strategy5cloneEv"></span><span id="_CPPv2NK4idol20FirstInfeasibleFound8Strategy5cloneEv"></span><span id="idol::FirstInfeasibleFound::Strategy::cloneC"></span><span class="target" id="classidol_1_1FirstInfeasibleFound_1_1Strategy_1abe42438ee5afb8e979e6db741396a50d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">VariableBranching</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Strategy</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4idol20FirstInfeasibleFound8StrategyE" title="idol::FirstInfeasibleFound::Strategy::NodeInfoT"><span class="n"><span class="pre">NodeInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol20FirstInfeasibleFound8Strategy5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI5NodeTEE">
+<span id="_CPPv3NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI5NodeTEE"></span><span id="_CPPv2NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI5NodeTEE"></span><span id="idol::FirstInfeasibleFound::Strategy::call-operator__Optimizers::BranchAndBound:NodeT:CRC"></span><span class="target" id="classidol_1_1BranchingRuleFactory_1a769332fb039e7db9bb7f7aa2a4178848"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">BranchingRule</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">NodeT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Optimizers</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">BranchAndBound</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">NodeT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_parent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK4idol20FirstInfeasibleFound8StrategyclERKN10Optimizers14BranchAndBoundI5NodeTEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Branching Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LeastInfeasible.html" class="btn btn-neutral float-right" title="LeastInfeasible" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constant &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/Constant.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Ctr" href="Ctr.html" />
+    <link rel="prev" title="Column" href="Column.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Constant</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/Constant.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="constant">
+<span id="api-constant"></span><h1>Constant<a class="headerlink" href="#constant" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantE">
+<span id="_CPPv3N4idol8ConstantE"></span><span id="_CPPv2N4idol8ConstantE"></span><span id="idol::Constant"></span><span class="target" id="classidol_1_1Constant"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><a class="headerlink" href="#_CPPv4N4idol8ConstantE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref">Constant</span></a> term modeling-old object.</p>
+<p>This class is used to build constant terms which will appear in models.</p>
+<p>Typically, they represent a real number. However, they can also be an affine combination of <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code>. This can be useful to define specific decomposition schemes such as Dantzig-Wolfe reformulations where decision variables from a model <code class="docutils literal notranslate"><span class="pre">A</span></code> are seen as constant terms in a model <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p>
+<p>It is composed of a numerical term and a set of <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pairs representing the following mathematical expression.</p>
+<p><span class="math notranslate nohighlight">\( \text{numerical}_0 + \sum_{j=1}^n \text{numerical}_j \times \text{Param}_j \)</span></p>
+<p><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref">Constant</span></a> terms can be created by calling the appropriate constructor, or by using overloaded operators such as <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code>. For instance, <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">xi</span></code> where <code class="docutils literal notranslate"><span class="pre">xi</span></code> is a <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code> will yield a <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantEv">
+<span id="_CPPv3N4idol8Constant8ConstantEv"></span><span id="_CPPv2N4idol8Constant8ConstantEv"></span><span id="idol::Constant::Constant"></span><span class="target" id="classidol_1_1Constant_1a7759f805ca0b92864744cf986679f090"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a new constant term equal to zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantERK5Paramd">
+<span id="_CPPv3N4idol8Constant8ConstantERK5Paramd"></span><span id="_CPPv2N4idol8Constant8ConstantERK5Paramd"></span><span id="idol::Constant::Constant__ParamCR.double"></span><span class="target" id="classidol_1_1Constant_1ac7a90190087d5f48b84861e0a9e2becd"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantERK5Paramd" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constant term representing <code class="docutils literal notranslate"><span class="pre">t_value</span> <span class="pre">*</span> <span class="pre">t_param</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_param</strong> – The parameter. </p></li>
+<li><p><strong>t_value</strong> – The coefficient for the parameter. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantERK5ParamRK5Paramd">
+<span id="_CPPv3N4idol8Constant8ConstantERK5ParamRK5Paramd"></span><span id="_CPPv2N4idol8Constant8ConstantERK5ParamRK5Paramd"></span><span id="idol::Constant::Constant__ParamCR.ParamCR.double"></span><span class="target" id="classidol_1_1Constant_1a947453d0dab643024f2fe1aa994de78f"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantERK5ParamRK5Paramd" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constant term representing <code class="docutils literal notranslate"><span class="pre">t_value</span> <span class="pre">*</span> <span class="pre">t_param_1</span> <span class="pre">*</span> <span class="pre">t_param_2</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_param_1</strong> – The first parameter. </p></li>
+<li><p><strong>t_param_2</strong> – The second parameter. </p></li>
+<li><p><strong>t_value</strong> – The coefficient for the parameters. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantEd">
+<span id="_CPPv3N4idol8Constant8ConstantEd"></span><span id="_CPPv2N4idol8Constant8ConstantEd"></span><span id="idol::Constant::Constant__double"></span><span class="target" id="classidol_1_1Constant_1a39a30ff9f5ea1dd36ddf7194aa0cdff1"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_constant</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constant term equal to the constant given as argument. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_constant</strong> – The constant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantERK8Constant">
+<span id="_CPPv3N4idol8Constant8ConstantERK8Constant"></span><span id="_CPPv2N4idol8Constant8ConstantERK8Constant"></span><span id="idol::Constant::Constant__ConstantCR"></span><span class="target" id="classidol_1_1Constant_1a1b7326ede27d26f558a0bbc4547ed2ee"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8Constant8ConstantERK8Constant" title="idol::Constant::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant8ConstantERR8Constant">
+<span id="_CPPv3N4idol8Constant8ConstantERR8Constant"></span><span id="_CPPv2N4idol8Constant8ConstantERR8Constant"></span><span id="idol::Constant::Constant__ConstantRR"></span><span class="target" id="classidol_1_1Constant_1a1021a2211922f3caf0c094efb4d21c44"></span><span class="sig-name descname"><span class="n"><span class="pre">Constant</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol8Constant8ConstantERR8Constant" title="idol::Constant::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8Constant8ConstantERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Move constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantaSERK8Constant">
+<span id="_CPPv3N4idol8ConstantaSERK8Constant"></span><span id="_CPPv2N4idol8ConstantaSERK8Constant"></span><span id="idol::Constant::assign-operator__ConstantCR"></span><span class="target" id="classidol_1_1Constant_1a43fdb718a98ac4d701cf9d54ad359b17"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantaSERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy-assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantaSERR8Constant">
+<span id="_CPPv3N4idol8ConstantaSERR8Constant"></span><span id="_CPPv2N4idol8ConstantaSERR8Constant"></span><span id="idol::Constant::assign-operator__ConstantRR"></span><span class="target" id="classidol_1_1Constant_1ac09fe0698ab580adc584de49fe69e652"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol8ConstantaSERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Move-assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant3setERK5Paramd">
+<span id="_CPPv3N4idol8Constant3setERK5Paramd"></span><span id="_CPPv2N4idol8Constant3setERK5Paramd"></span><span id="idol::Constant::set__ParamCR.double"></span><span class="target" id="classidol_1_1Constant_1a011c50fa96f87cb9ff647f9d7607cc93"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant3setERK5Paramd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the coefficient for a given parameter in the constant term.</p>
+<p>If t_coefficient is zero, the entry for <code class="docutils literal notranslate"><span class="pre">t_param</span></code> is removed (i.e., not stored). The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_param</strong> – The parameter. </p></li>
+<li><p><strong>t_value</strong> – The coefficient associated to the parameter. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant3setERK5ParamRK5Paramd">
+<span id="_CPPv3N4idol8Constant3setERK5ParamRK5Paramd"></span><span id="_CPPv2N4idol8Constant3setERK5ParamRK5Paramd"></span><span id="idol::Constant::set__ParamCR.ParamCR.double"></span><span class="target" id="classidol_1_1Constant_1afa2fd855806e44ee8a0aa3199f1ce32d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant3setERK5ParamRK5Paramd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the coefficient for a given pair of parameters in the constant term.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">t_coefficient</span></code> is zero, the entry for t_param is removed (i.e., not stored). The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_param_1</strong> – The first parameter. </p></li>
+<li><p><strong>t_param_2</strong> – The second parameter. </p></li>
+<li><p><strong>t_value</strong> – The coefficient associated to the pair of parameters. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant3getERK5Param">
+<span id="_CPPv3NK4idol8Constant3getERK5Param"></span><span id="_CPPv2NK4idol8Constant3getERK5Param"></span><span id="idol::Constant::get__ParamCRC"></span><span class="target" id="classidol_1_1Constant_1a9020fcd08a13777bfa005cb9fccc110c"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant3getERK5Param" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the coefficient of the parameter given as argument.</p>
+<p>If no coefficient is found, zero is returned. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_param</strong> – The queried parameter. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant3getERK5ParamRK5Param">
+<span id="_CPPv3NK4idol8Constant3getERK5ParamRK5Param"></span><span id="_CPPv2NK4idol8Constant3getERK5ParamRK5Param"></span><span id="idol::Constant::get__ParamCR.ParamCRC"></span><span class="target" id="classidol_1_1Constant_1adb554781c36787e0e764a6bbe1bb9181"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param_2</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant3getERK5ParamRK5Param" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the coefficient of the pair of parameters given as arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_param_1</strong> – The first parameter. </p></li>
+<li><p><strong>t_param_2</strong> – The second parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The queried parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant13set_numericalEd">
+<span id="_CPPv3N4idol8Constant13set_numericalEd"></span><span id="_CPPv2N4idol8Constant13set_numericalEd"></span><span id="idol::Constant::set_numerical__double"></span><span class="target" id="classidol_1_1Constant_1a7fb298481076d3ad2cf21b547d868e94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_numerical</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_constant</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant13set_numericalEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the numerical term equal to the constant given as parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_constant</strong> – The numerical term. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant9numericalEv">
+<span id="_CPPv3NK4idol8Constant9numericalEv"></span><span id="_CPPv2NK4idol8Constant9numericalEv"></span><span id="idol::Constant::numericalC"></span><span class="target" id="classidol_1_1Constant_1a7c675cd42419b5b362c86096960e1670"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">numerical</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant9numericalEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the numerical term of the constant. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant12as_numericalEv">
+<span id="_CPPv3NK4idol8Constant12as_numericalEv"></span><span id="_CPPv2NK4idol8Constant12as_numericalEv"></span><span id="idol::Constant::as_numericalC"></span><span class="target" id="classidol_1_1Constant_1a8718650b814760114ace0cfe7dc868ef"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">as_numerical</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant12as_numericalEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the numerical term of the constant, and throws an exception if the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> also contains non-numerical terms, i.e., the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> is a parametrized constant. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The numerical term of the constant </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant7is_zeroEv">
+<span id="_CPPv3NK4idol8Constant7is_zeroEv"></span><span id="_CPPv2NK4idol8Constant7is_zeroEv"></span><span id="idol::Constant::is_zeroC"></span><span class="target" id="classidol_1_1Constant_1ab4bd0f987a17851fdaa84435a6bd0d53"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_zero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant7is_zeroEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the constant is equal to zero (i.e., if its numerical term is zero and no <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pair can be found). The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant4sizeEv">
+<span id="_CPPv3NK4idol8Constant4sizeEv"></span><span id="_CPPv2NK4idol8Constant4sizeEv"></span><span id="idol::Constant::sizeC"></span><span class="target" id="classidol_1_1Constant_1ae686c6f0fea99d6d3802fbb674f07d1d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant4sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the number of <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pairs stored inside the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant12is_numericalEv">
+<span id="_CPPv3NK4idol8Constant12is_numericalEv"></span><span id="_CPPv2NK4idol8Constant12is_numericalEv"></span><span id="idol::Constant::is_numericalC"></span><span class="target" id="classidol_1_1Constant_1af580857b561688297ed6e565a48b929f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_numerical</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant12is_numericalEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> is a pure numerical, i.e., the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> is not a parametrized constant, false otherwise. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant6linearEv">
+<span id="_CPPv3N4idol8Constant6linearEv"></span><span id="_CPPv2N4idol8Constant6linearEv"></span><span id="idol::Constant::linear"></span><span class="target" id="classidol_1_1Constant_1a60fa7a3a2077a7574cdbdbf2dc3a7abc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant6linearEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the linear part of the parametrized expression. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The linear part of the parametrized expression. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant6linearEv">
+<span id="_CPPv3NK4idol8Constant6linearEv"></span><span id="_CPPv2NK4idol8Constant6linearEv"></span><span id="idol::Constant::linearC"></span><span class="target" id="classidol_1_1Constant_1a0a583dfbc3d436640bc3014bf25555e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant6linearEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the linear part of the parametrized expression. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The linear part of the parametrized expression. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant9quadraticEv">
+<span id="_CPPv3N4idol8Constant9quadraticEv"></span><span id="_CPPv2N4idol8Constant9quadraticEv"></span><span id="idol::Constant::quadratic"></span><span class="target" id="classidol_1_1Constant_1a8ca5e3866927a138c6b307355436f17a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the quadratic part of the parametrized expression. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The quadratic part of the parametrized expression. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant9quadraticEv">
+<span id="_CPPv3NK4idol8Constant9quadraticEv"></span><span id="_CPPv2NK4idol8Constant9quadraticEv"></span><span id="idol::Constant::quadraticC"></span><span class="target" id="classidol_1_1Constant_1a4199dfbe061113c74fb1322e58cf560b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the quadratic part of the parametrized expression. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The quadratic part of the parametrized expression. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantmLEd">
+<span id="_CPPv3N4idol8ConstantmLEd"></span><span id="_CPPv2N4idol8ConstantmLEd"></span><span id="idol::Constant::mul-assign-operator__double"></span><span class="target" id="classidol_1_1Constant_1a33e35f0462763cb9d966fd11b1a8dc9d"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_coefficient</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantmLEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Multiplies the <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> by <code class="docutils literal notranslate"><span class="pre">t_coefficient</span></code> (i.e., every <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pairs and the numerical term are multiplied). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_coefficient</strong> – The coefficient for multiplication. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantdVEd">
+<span id="_CPPv3N4idol8ConstantdVEd"></span><span id="_CPPv2N4idol8ConstantdVEd"></span><span id="idol::Constant::div-assign-operator__double"></span><span class="target" id="classidol_1_1Constant_1a2b95b04d67a68de6dda081e79e9af628"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">/=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_coefficient</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantdVEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantpLEd">
+<span id="_CPPv3N4idol8ConstantpLEd"></span><span id="_CPPv2N4idol8ConstantpLEd"></span><span id="idol::Constant::add-assign-operator__double"></span><span class="target" id="classidol_1_1Constant_1ae5efce9a39e2fe839d7a2b4264ff99d6"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantpLEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds up a numerical term to the current numerical term. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – The numerical term to add. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantpLERK5Param">
+<span id="_CPPv3N4idol8ConstantpLERK5Param"></span><span id="_CPPv2N4idol8ConstantpLERK5Param"></span><span id="idol::Constant::add-assign-operator__ParamCR"></span><span class="target" id="classidol_1_1Constant_1a05978f04b2cfdab612f2a4f2e869ce95"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantpLERK5Param" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a parameter to the constant (equivalent to adding <code class="docutils literal notranslate"><span class="pre">Constant(t_param,</span> <span class="pre">1)</span></code>).</p>
+<p>Resulting zero entries are removed. The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – The parameter to add. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantpLERK8Constant">
+<span id="_CPPv3N4idol8ConstantpLERK8Constant"></span><span id="_CPPv2N4idol8ConstantpLERK8Constant"></span><span id="idol::Constant::add-assign-operator__ConstantCR"></span><span class="target" id="classidol_1_1Constant_1af01223acb6e280bfc5d630861c1e7549"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantpLERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds up another constant term (i.e., both the numerical terms and every <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pairs are added up).</p>
+<p>Resulting zero-entries are removed. The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantmIERK8Constant">
+<span id="_CPPv3N4idol8ConstantmIERK8Constant"></span><span id="_CPPv2N4idol8ConstantmIERK8Constant"></span><span id="idol::Constant::sub-assign-operator__ConstantCR"></span><span class="target" id="classidol_1_1Constant_1af379c565e604cbf733b26cbff926974f"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantmIERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtracts another constant term (i.e., both the numerical terms and every <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a><span class="pre">,</span> <span class="pre">numerical</span> <span class="pre">}</span></code> pairs are substracted).</p>
+<p>Resulting zero-entries are removed. The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – The constant to subtract. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantmIEd">
+<span id="_CPPv3N4idol8ConstantmIEd"></span><span id="_CPPv2N4idol8ConstantmIEd"></span><span id="idol::Constant::sub-assign-operator__double"></span><span class="target" id="classidol_1_1Constant_1ad17771dd631d4736d43fa9cf7e245e5b"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantmIEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtracts a numerical term to the current numerical term. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – The numerical term to subtract. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8ConstantmIE5Param">
+<span id="_CPPv3N4idol8ConstantmIE5Param"></span><span id="_CPPv2N4idol8ConstantmIE5Param"></span><span id="idol::Constant::sub-assign-operator__Param"></span><span class="target" id="classidol_1_1Constant_1aa007852cfbced20d8afe819d86de338b"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_term</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8ConstantmIE5Param" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtracts parameter to the constant (equivalent to subtracting <code class="docutils literal notranslate"><span class="pre">Constant(t_param,</span> <span class="pre">1)</span></code>).</p>
+<p>Resulting zero entries are removed. The tolerance <code class="docutils literal notranslate"><a class="reference internal" href="../../constants/tolerances.html#namespaceidol_1_1Tolerance_1af9089aedbd007a648ad7f6d032b64a77"><span class="std std-ref"><span class="pre">Tolerance::Sparsity</span></span></a></code> is used to compare with zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_term</strong> – The parameter to subtract. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant3fixERKN8Solution6PrimalE">
+<span id="_CPPv3NK4idol8Constant3fixERKN8Solution6PrimalE"></span><span id="_CPPv2NK4idol8Constant3fixERKN8Solution6PrimalE"></span><span id="idol::Constant::fix__Solution::PrimalCRC"></span><span class="target" id="classidol_1_1Constant_1a7c6667bff8366daf5db211a5aa555608"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="SolutionPrimal.html#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_primals</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant3fixERKN8Solution6PrimalE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the resulting numerical by replacing each <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code> by their corresponding values in <code class="docutils literal notranslate"><span class="pre">t_primals</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_primals</strong> – Primal values associated to the stored <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the resulting numerical </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol8Constant3fixERKN8Solution4DualE">
+<span id="_CPPv3NK4idol8Constant3fixERKN8Solution4DualE"></span><span id="_CPPv2NK4idol8Constant3fixERKN8Solution4DualE"></span><span id="idol::Constant::fix__Solution::DualCRC"></span><span class="target" id="classidol_1_1Constant_1a059b6cb4d11ae26b5836de1dbc541e0e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="SolutionDual.html#_CPPv4N4idol8Solution4DualE" title="idol::Solution::Dual"><span class="n"><span class="pre">Dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_duals</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol8Constant3fixERKN8Solution4DualE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the resulting numerical by replacing each <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code> by their corresponding values in <code class="docutils literal notranslate"><span class="pre">t_duals</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_primals</strong> – Dual values associated to the stored <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the resulting numerical </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant5roundEv">
+<span id="_CPPv3N4idol8Constant5roundEv"></span><span id="_CPPv2N4idol8Constant5roundEv"></span><span id="idol::Constant::round"></span><span class="target" id="classidol_1_1Constant_1abcce9a8fb93973c0ecdb6dc351948d9c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">round</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant5roundEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant23multiply_with_precisionEdj">
+<span id="_CPPv3N4idol8Constant23multiply_with_precisionEdj"></span><span id="_CPPv2N4idol8Constant23multiply_with_precisionEdj"></span><span id="idol::Constant::multiply_with_precision__double.unsigned-i"></span><span class="target" id="classidol_1_1Constant_1abd953f72022e53e3f54d463c7da2e7f7"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">multiply_with_precision</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_factor</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_digits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant23multiply_with_precisionEdj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant38multiply_with_precision_by_power_of_10Ejj">
+<span id="_CPPv3N4idol8Constant38multiply_with_precision_by_power_of_10Ejj"></span><span id="_CPPv2N4idol8Constant38multiply_with_precision_by_power_of_10Ejj"></span><span id="idol::Constant::multiply_with_precision_by_power_of_10__unsigned-i.unsigned-i"></span><span class="target" id="classidol_1_1Constant_1a3d9b8ac775568b995630ba230c109745"></span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">multiply_with_precision_by_power_of_10</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_exponent</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_digits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol8Constant38multiply_with_precision_by_power_of_10Ejj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol8Constant4ZeroE">
+<span id="_CPPv3N4idol8Constant4ZeroE"></span><span id="_CPPv2N4idol8Constant4ZeroE"></span><span id="idol::Constant::Zero__Constant"></span><span class="target" id="classidol_1_1Constant_1af91964d29bf12381a96c14d6cd760c5e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Zero</span></span></span><a class="headerlink" href="#_CPPv4N4idol8Constant4ZeroE" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents an empty constant. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Column.html" class="btn btn-neutral float-left" title="Column" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Ctr.html" class="btn btn-neutral float-right" title="Ctr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

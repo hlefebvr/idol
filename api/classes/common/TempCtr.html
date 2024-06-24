@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TempCtr &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/TempCtr.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TempVar" href="TempVar.html" />
+    <link rel="prev" title="Solution::Primal" href="SolutionPrimal.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">TempCtr</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/TempCtr.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tempctr">
+<span id="api-tempctr"></span><h1>TempCtr<a class="headerlink" href="#tempctr" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtrE">
+<span id="_CPPv3N4idol7TempCtrE"></span><span id="_CPPv2N4idol7TempCtrE"></span><span id="idol::TempCtr"></span><span class="target" id="classidol_1_1TempCtr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempCtr</span></span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Temporary constraint class.</p>
+<p>This class represents a constraint which has not been built yet by a <a class="reference internal" href="Model.html#classidol_1_1Model"><span class="std std-ref">Model</span></a>. It contains all the arguments needed to create a real constraint as instantiated by the <code class="docutils literal notranslate"><a class="reference internal" href="Ctr.html#classidol_1_1Ctr"><span class="std std-ref"><span class="pre">Ctr</span></span></a></code> class. It is made of a row (see <code class="docutils literal notranslate"><a class="reference internal" href="Row.html#classidol_1_1Row"><span class="std std-ref"><span class="pre">Row</span></span></a></code>) and a type (see <code class="docutils literal notranslate"><span class="pre">CtrType.rst.rst</span></code>).</p>
+<p>Typically, one creates a <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1TempCtr"><span class="std std-ref"><span class="pre">TempCtr</span></span></a></code> by using the overloaded operators <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> and <code class="docutils literal notranslate"><span class="pre">==</span></code> between variable expressions (i.e., <code class="docutils literal notranslate"><a class="reference internal" href="Expr.html#classidol_1_1Expr"><span class="std std-ref"><span class="pre">Expr</span></span></a></code>) and constant terms (i.e., <code class="docutils literal notranslate"><a class="reference internal" href="Constant.html#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code>).</p>
+<p><strong>Example 1</strong>: <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">1.</span><span class="p">);</span>
+</pre></div>
+</div>
+ <strong>Example 2</strong> (equivalent to Example 1): <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">TempCtr</span><span class="p">(</span><span class="n">Row</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">),</span><span class="w"> </span><span class="n">LessOrEqual</span><span class="p">));</span>
+</pre></div>
+</div>
+</p>
+<p>Subclassed by idol::CtrVersion</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr7TempCtrEv">
+<span id="_CPPv3N4idol7TempCtr7TempCtrEv"></span><span id="_CPPv2N4idol7TempCtr7TempCtrEv"></span><span id="idol::TempCtr::TempCtr"></span><span class="target" id="classidol_1_1TempCtr_1a8503d65fdcf740bd162ee265d8e636d5"></span><span class="sig-name descname"><span class="n"><span class="pre">TempCtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtr7TempCtrEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor.</p>
+<p>Creates an empty temporary constraint. The default type is <code class="docutils literal notranslate"><span class="pre">LessOrEqual</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr7TempCtrERR3Row7CtrType">
+<span id="_CPPv3N4idol7TempCtr7TempCtrERR3Row7CtrType"></span><span id="_CPPv2N4idol7TempCtr7TempCtrERR3Row7CtrType"></span><span id="idol::TempCtr::TempCtr__RowRR.CtrType"></span><span class="target" id="classidol_1_1TempCtr_1a3a6535e0ecee3e9d1d05549a47c27773"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TempCtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Row.html#_CPPv4N4idol3RowE" title="idol::Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_row</span></span>, <a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7TempCtr7TempCtrERR3Row7CtrType" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new temporary constraint. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_row</strong> – The desired row. </p></li>
+<li><p><strong>t_type</strong> – The desired constraint type. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr7TempCtrERK7TempCtr">
+<span id="_CPPv3N4idol7TempCtr7TempCtrERK7TempCtr"></span><span id="_CPPv2N4idol7TempCtr7TempCtrERK7TempCtr"></span><span id="idol::TempCtr::TempCtr__TempCtrCR"></span><span class="target" id="classidol_1_1TempCtr_1afdc31296a1c8e3324a914aa64226995d"></span><span class="sig-name descname"><span class="n"><span class="pre">TempCtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol7TempCtr7TempCtrERK7TempCtr" title="idol::TempCtr::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtr7TempCtrERK7TempCtr" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr7TempCtrERR7TempCtr">
+<span id="_CPPv3N4idol7TempCtr7TempCtrERR7TempCtr"></span><span id="_CPPv2N4idol7TempCtr7TempCtrERR7TempCtr"></span><span id="idol::TempCtr::TempCtr__TempCtrRR"></span><span class="target" id="classidol_1_1TempCtr_1a5654058d43f58ccd067a807ec8e2c426"></span><span class="sig-name descname"><span class="n"><span class="pre">TempCtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol7TempCtr7TempCtrERR7TempCtr" title="idol::TempCtr::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtr7TempCtrERR7TempCtr" title="Link to this definition"></a><br /></dt>
+<dd><p>Move constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to move. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtraSERK7TempCtr">
+<span id="_CPPv3N4idol7TempCtraSERK7TempCtr"></span><span id="_CPPv2N4idol7TempCtraSERK7TempCtr"></span><span id="idol::TempCtr::assign-operator__TempCtrCR"></span><span class="target" id="classidol_1_1TempCtr_1a0956c57f032dd53518ebcab5c965bc6c"></span><a class="reference internal" href="#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtraSERK7TempCtr" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy-assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to copy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtraSERR7TempCtr">
+<span id="_CPPv3N4idol7TempCtraSERR7TempCtr"></span><span id="_CPPv2N4idol7TempCtraSERR7TempCtr"></span><span id="idol::TempCtr::assign-operator__TempCtrRR"></span><span class="target" id="classidol_1_1TempCtr_1a2349f21da693b4bb1d111ae6e66b9040"></span><a class="reference internal" href="#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol7TempCtraSERR7TempCtr" title="Link to this definition"></a><br /></dt>
+<dd><p>Move-assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to move. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7TempCtr3rowEv">
+<span id="_CPPv3NK4idol7TempCtr3rowEv"></span><span id="_CPPv2NK4idol7TempCtr3rowEv"></span><span id="idol::TempCtr::rowC"></span><span class="target" id="classidol_1_1TempCtr_1a6226fadca2fad3bdd6a73b775b58d703"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Row.html#_CPPv4N4idol3RowE" title="idol::Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">row</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7TempCtr3rowEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the row of the temporary constraint (see <a class="reference internal" href="Row.html#classidol_1_1Row"><span class="std std-ref">Row</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The row of the temporary constraint. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr3rowEv">
+<span id="_CPPv3N4idol7TempCtr3rowEv"></span><span id="_CPPv2N4idol7TempCtr3rowEv"></span><span id="idol::TempCtr::row"></span><span class="target" id="classidol_1_1TempCtr_1a07e7b8ed9fcf4f908a03655f944b9097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="Row.html#_CPPv4N4idol3RowE" title="idol::Row"><span class="n"><span class="pre">Row</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">row</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7TempCtr3rowEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the row of the temporary constraint (see <a class="reference internal" href="Row.html#classidol_1_1Row"><span class="std std-ref">Row</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The row of the temporary constraint. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7TempCtr4typeEv">
+<span id="_CPPv3NK4idol7TempCtr4typeEv"></span><span id="_CPPv2NK4idol7TempCtr4typeEv"></span><span id="idol::TempCtr::typeC"></span><span class="target" id="classidol_1_1TempCtr_1a117dd60c8d8e68e87f24311b497f7bcd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7TempCtr4typeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the temporary constraint type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The temporary constraint type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol7TempCtr8set_typeE7CtrType">
+<span id="_CPPv3N4idol7TempCtr8set_typeE7CtrType"></span><span id="_CPPv2N4idol7TempCtr8set_typeE7CtrType"></span><span id="idol::TempCtr::set_type__CtrType"></span><span class="target" id="classidol_1_1TempCtr_1a864b1daa13c5671d4d1bd111c50de72b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_type</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol7TempCtr8set_typeE7CtrType" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the type of the temporary constraint. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_type</strong> – the desired type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol7TempCtr11is_violatedERKN8Solution6PrimalE">
+<span id="_CPPv3NK4idol7TempCtr11is_violatedERKN8Solution6PrimalE"></span><span id="_CPPv2NK4idol7TempCtr11is_violatedERKN8Solution6PrimalE"></span><span id="idol::TempCtr::is_violated__Solution::PrimalCRC"></span><span class="target" id="classidol_1_1TempCtr_1a6fbf215b579a9fa4f36c9a5174488fac"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_violated</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="SolutionPrimal.html#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_solution</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol7TempCtr11is_violatedERKN8Solution6PrimalE" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the temporary constraint is violated by the given solution, false otherwise. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_solution</strong> – The solution to check. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SolutionPrimal.html" class="btn btn-neutral float-left" title="Solution::Primal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TempVar.html" class="btn btn-neutral float-right" title="TempVar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

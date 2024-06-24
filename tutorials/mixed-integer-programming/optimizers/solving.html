@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solving a Model and Accessing the Solution &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/optimizers/solving.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Getting Access to The Underlying Optimizer" href="access-optimizer.html" />
+    <link rel="prev" title="Optimizers" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Mixed-Integer Programming</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modeling/index.html">Modeling</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Optimizers</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Solving a Model and Accessing the Solution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="access-optimizer.html">Getting Access to The Underlying Optimizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="universal-callbacks.html">Adding User Cuts and Lazy Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="create-universal-callback.html">Creating Your Own Universal Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="create-optimizer.html">Creating Your Own Optimizer (Advanced) [TODO]</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dantzig-wolfe/index.html">Column Generation and Branch-and-Price Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bilevel-optimization/index.html">Bilevel Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../robust-optimization/index.html">Robust Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Mixed-Integer Programming</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Optimizers</a></li>
+      <li class="breadcrumb-item active">Solving a Model and Accessing the Solution</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/tutorials/mixed-integer-programming/optimizers/solving.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solving-a-model-and-accessing-the-solution">
+<h1>Solving a Model and Accessing the Solution<a class="headerlink" href="#solving-a-model-and-accessing-the-solution" title="Link to this heading"></a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#solving-a-model" id="id1">Solving a Model</a></p></li>
+<li><p><a class="reference internal" href="#saving-a-solution" id="id2">Saving a Solution</a></p></li>
+<li><p><a class="reference internal" href="#saving-a-projected-solution" id="id3">Saving a Projected Solution</a></p></li>
+</ul>
+</nav>
+<section id="solving-a-model">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Solving a Model</a><a class="headerlink" href="#solving-a-model" title="Link to this heading"></a></h2>
+<p>This page shoes how to solve a model and access the solution.
+The reader should be familiar with the concept of optimizer and optimizer factories. If this is not the case,
+please refer to the page on <a class="reference internal" href="index.html#mip-optimizers"><span class="std std-ref">Optimizers</span></a>.</p>
+<p>Let us consider the following code.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">idol</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="p">[]</span><span class="w"> </span><span class="n">profit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">40.</span><span class="p">,</span><span class="w"> </span><span class="mf">50.</span><span class="p">,</span><span class="w"> </span><span class="mf">100.</span><span class="p">,</span><span class="w"> </span><span class="mf">95.</span><span class="p">,</span><span class="w"> </span><span class="mf">30.</span><span class="p">,</span><span class="w"> </span><span class="p">};</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="p">[]</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">2.</span><span class="p">,</span><span class="w"> </span><span class="mf">3.14</span><span class="p">,</span><span class="w"> </span><span class="mf">1.98</span><span class="p">,</span><span class="w"> </span><span class="mf">5.</span><span class="p">,</span><span class="w"> </span><span class="mf">3.</span><span class="p">,</span><span class="w"> </span><span class="p">};</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.</span><span class="p">;</span>
+
+<span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">Maximize</span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_items</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_items</span><span class="p">),</span><span class="w"> </span><span class="n">weight</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">capacity</span><span class="p">);</span>
+<span class="n">model</span><span class="p">.</span><span class="n">set_obj_expr</span><span class="p">(</span><span class="n">idol_Sum</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">Range</span><span class="p">(</span><span class="n">n_items</span><span class="p">),</span><span class="w"> </span><span class="n">profit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>This code creates a model for the knapsack problem. As described in the page on <a class="reference internal" href="index.html#mip-optimizers"><span class="std std-ref">this page</span></a>,
+we now set up an optimizer and solve the model. We use GLPK.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">GLPK</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Solving the model is done by a single class to the <code class="code docutils literal notranslate"><span class="pre">optimize</span></code> method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Then, idol provides several methods to access the solution.</p>
+<p>First, <code class="code docutils literal notranslate"><span class="pre">get_status</span></code> and <code class="code docutils literal notranslate"><span class="pre">get_reason</span></code> return the status and the reason of the solution.
+The status can be, for instance, <code class="code docutils literal notranslate"><span class="pre">Optimal</span></code> or <code class="code docutils literal notranslate"><span class="pre">Infeasible</span></code>. The reason provides more details about the status.
+For instance, if the status is <code class="code docutils literal notranslate"><span class="pre">Infeasible</span></code>, the reason can be that the original problem is infeasible (<code class="code docutils literal notranslate"><span class="pre">Proved</span></code>),
+or that the solver reached a time limit before finding a feasible solution (<code class="code docutils literal notranslate"><span class="pre">TimeLimit</span></code>).</p>
+<p>The best objective value found can be accessed using <code class="code docutils literal notranslate"><span class="pre">get_best_obj</span></code>. This is the best objective value among feasible solutions considered during the execution of the algorithm.
+The best objective value bound can be accessed using <code class="code docutils literal notranslate"><span class="pre">get_best_bound</span></code>. For instance, this can be a dual bound.
+The methods <code class="code docutils literal notranslate"><span class="pre">get_relative_gap</span></code> and <code class="code docutils literal notranslate"><span class="pre">get_absolute_gap</span></code> return the relative and absolute optimality gaps, respectively.
+See <a class="reference internal" href="../../../api/constants/tolerances.html#api-tolerances"><span class="std std-ref">this page</span></a> for more details about gaps and tolerances.</p>
+<p>The methods <code class="code docutils literal notranslate"><span class="pre">get_var_primal</span></code> and <code class="code docutils literal notranslate"><span class="pre">get_var_ray</span></code> return the primal value and the (primal) ray value of a given variable, respectively.
+Note that primal values are only accessible if the model has status <code class="code docutils literal notranslate"><span class="pre">Feasible</span></code>, <code class="code docutils literal notranslate"><span class="pre">SubOptimal</span></code> or <code class="code docutils literal notranslate"><span class="pre">Optimal</span></code>.
+Similarly, a primal ray is only accessible if the model has status <code class="code docutils literal notranslate"><span class="pre">Unbounded</span></code>.</p>
+<p>The methods <code class="code docutils literal notranslate"><span class="pre">get_ctr_dual</span></code> and <code class="code docutils literal notranslate"><span class="pre">get_ctr_farkas</span></code> return the dual value and the Farkas certificate value of a given constraint, respectively.
+Note that dual values are only accessible if the model is continuous and has status <code class="code docutils literal notranslate"><span class="pre">Optimal</span></code> or <code class="code docutils literal notranslate"><span class="pre">Feasible</span></code>.
+Similarly, a Farkas certificate is only accessible if the model has status <code class="code docutils literal notranslate"><span class="pre">Infeasible</span></code>.</p>
+</section>
+<section id="saving-a-solution">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Saving a Solution</a><a class="headerlink" href="#saving-a-solution" title="Link to this heading"></a></h2>
+<p>Sometimes, you will find it useful to save a solution to access it later. idol provides the following functions to do so:
+<code class="code docutils literal notranslate"><span class="pre">save_primal</span></code>, <code class="code docutils literal notranslate"><span class="pre">save_ray</span></code>, <code class="code docutils literal notranslate"><span class="pre">save_dual</span></code> and <code class="code docutils literal notranslate"><span class="pre">save_farkas</span></code>.
+Each of these functions takes a model as argument and returns an object of the class <a class="reference internal" href="../../../api/classes/common/SolutionPrimal.html#api-solution-primal"><span class="std std-ref">Solution::Primal</span></a> or <a class="reference internal" href="../../../api/classes/common/SolutionDual.html#api-solution-dual"><span class="std std-ref">Solution::Primal</span></a> depending on the function.
+The returned object stores the results of corresponding calls to <code class="code docutils literal notranslate"><span class="pre">get_var_primal</span></code>, <code class="code docutils literal notranslate"><span class="pre">get_var_ray</span></code>, <code class="code docutils literal notranslate"><span class="pre">get_ctr_dual</span></code> or <code class="code docutils literal notranslate"><span class="pre">get_ctr_farkas</span></code> methods.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>This example shows how to solve a model using HiGHS and retrieves some piece of information about its solution.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">HiGHS</span><span class="p">());</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">get_status</span><span class="p">();</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Optimal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Optimal solution found!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">primal_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">primal_values</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;An optimal solution could not be found.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;HiGHS returned status &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The reason for this status is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">get_reason</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Feasible</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The optimality gap is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">get_relative_gap</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; %&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Unbounded</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;An unbounded ray is&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">primal_ray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">save_ray</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">primal_ray</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Infeasible</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;A Farkas certificate is&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">farkas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">save_farkas</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">farkas</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="saving-a-projected-solution">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Saving a Projected Solution</a><a class="headerlink" href="#saving-a-projected-solution" title="Link to this heading"></a></h2>
+<p>In a more advanced solution scheme, you may deal with extended formulations of an original model, and may want to save
+the projected solution on the original problem space.
+In such a case, you can use the functions <code class="code docutils literal notranslate"><span class="pre">save_*</span></code> with an additional argument to specify the original model.
+For instance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">primal_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">original_model</span><span class="p">,</span><span class="w"> </span><span class="n">higher_dimensional_model</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This code will return an object of the class <a class="reference internal" href="../../../api/classes/common/SolutionPrimal.html#api-solution-primal"><span class="std std-ref">Solution::Primal</span></a> storing the results of corresponding calls to <code class="code docutils literal notranslate"><span class="pre">get_var_primal</span></code> methods on the higher dimensional model
+for the original model variables.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Optimizers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="access-optimizer.html" class="btn btn-neutral float-right" title="Getting Access to The Underlying Optimizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit and integration tests &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/developer_guide/tests.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="References" href="../references.html" />
+    <link rel="prev" title="Build the doc!" href="build-the-doc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="build-the-doc.html">Build the doc!</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Unit and integration tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developer guide</a></li>
+      <li class="breadcrumb-item active">Unit and integration tests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/developer_guide/tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="unit-and-integration-tests">
+<span id="tests"></span><h1>Unit and integration tests<a class="headerlink" href="#unit-and-integration-tests" title="Link to this heading"></a></h1>
+<p>This page explains how to build the unit and integration tests on a local machine.</p>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<p>Tests are managed by the C++ unit testing framework <a class="reference external" href="https://github.com/catchorg/Catch2">Catch2</a>.</p>
+<p>When CMake is told to create test targets, it will automatically look for an installation of Catch2 on your
+machine. If it cannot be found, CMake will attempt to download Catch2 from its GitHub repository.</p>
+<section id="installation-guide-ubuntu">
+<h3>Installation guide (Ubuntu)<a class="headerlink" href="#installation-guide-ubuntu" title="Link to this heading"></a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/catchorg/Catch2.git<span class="w"> </span><span class="c1"># Clone Catch2 repository</span>
+
+<span class="nb">cd</span><span class="w"> </span>Catch2<span class="w"> </span><span class="c1"># go inside the new directory</span>
+
+cmake<span class="w"> </span>-Bbuild<span class="w"> </span>-H.<span class="w"> </span>-DBUILD_TESTING<span class="o">=</span>OFF<span class="w"> </span><span class="c1"># Create install target</span>
+
+sudo<span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build/<span class="w"> </span>--target<span class="w"> </span>install<span class="w"> </span><span class="c1"># Build and install</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="build-instructions">
+<h2>Build instructions<a class="headerlink" href="#build-instructions" title="Link to this heading"></a></h2>
+<p>By default, CMake will not create test targets nor look for Catch2.  To tell CMake to generate them, you
+need to set the CMake option <code class="docutils literal notranslate"><span class="pre">BUILD_TESTS</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following will tell CMake to create targets for tests.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DBUILD_TESTS</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+<p>For instance, we can now build all the existing tests</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="w"> </span><span class="n">tests</span>
+</pre></div>
+</div>
+<p>and run them.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">tests</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="code-coverage-options">
+<h2>Code coverage options<a class="headerlink" href="#code-coverage-options" title="Link to this heading"></a></h2>
+<p>Code coverage is done via <code class="docutils literal notranslate"><span class="pre">gcov</span></code>.</p>
+<p>If you want to active code coverage options, you shall set the CMake option <code class="docutils literal notranslate"><span class="pre">WITH_TEST_COVERAGE</span></code> to <code class="docutils literal notranslate"><span class="pre">YES</span></code>.
+Note that this only has an effect when <code class="docutils literal notranslate"><span class="pre">BUILD_TESTS</span></code> is also set to <code class="docutils literal notranslate"><span class="pre">YES</span></code>.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The following command will tell CMake to generate targets for tests with code coverage options.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span><span class="w"> </span><span class="o">-</span><span class="n">DBUILD_TESTS</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="o">-</span><span class="n">DWITH_CODE_COVERAGE</span><span class="o">=</span><span class="n">YES</span><span class="w"> </span><span class="p">..</span>
+</pre></div>
+</div>
+<p>Then, you should build and run the tests.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">make</span><span class="w"> </span><span class="n">tests</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">tests</span>
+</pre></div>
+</div>
+<p>Once you are there, you may generate a report to a file called <code class="docutils literal notranslate"><span class="pre">coverage.info</span></code> by using <code class="docutils literal notranslate"><span class="pre">gcov</span></code>.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">lcov</span><span class="w"> </span><span class="o">--</span><span class="n">directory</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="o">--</span><span class="n">capture</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="n">file</span><span class="w"> </span><span class="n">coverage</span><span class="p">.</span><span class="n">info</span>
+</pre></div>
+</div>
+</div>
+<p>Also note that this forces <code class="docutils literal notranslate"><span class="pre">g++</span></code> to be used for compiling.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Code coverage reports are also automatically generated at every push action on idol’s GitHub repository and
+are available on <a class="reference external" href="https://app.codecov.io/gh/hlefebvr/idol">codecov</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="build-the-doc.html" class="btn btn-neutral float-left" title="Build the doc!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ctr &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/Ctr.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Env" href="Env.html" />
+    <link rel="prev" title="Constant" href="Constant.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Ctr</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/Ctr.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ctr">
+<span id="api-ctr"></span><h1>Ctr<a class="headerlink" href="#ctr" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3CtrE">
+<span id="_CPPv3N4idol3CtrE"></span><span id="_CPPv2N4idol3CtrE"></span><span id="idol::Ctr"></span><span class="target" id="classidol_1_1Ctr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ctr</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Object</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">CtrVersion</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4idol3CtrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constraint modeling-old object.</p>
+<p>The class is used to represent a constraint in an optimization model.</p>
+<p>Constraints can be created by calling a constructor of <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Ctr"><span class="std std-ref"><span class="pre">Ctr</span></span></a></code>, passing the optimization environment which will store the constraint’s versions as argument. The constraint can then be added to a model using the <code class="docutils literal notranslate"><a class="reference internal" href="Model.html#classidol_1_1Model_1a61f27f3afe631d3bd406c7155f6dcd0a"><span class="std std-ref"><span class="pre">Model::add</span></span></a></code> method.</p>
+<p>Another approach is to directly use the <code class="docutils literal notranslate"><a class="reference internal" href="Model.html#classidol_1_1Model_1a6bac8c7fcaabb1cd3a6b2fed1f35e331"><span class="std std-ref"><span class="pre">Model::add_ctr</span></span></a></code> method.</p>
+<p>Note that constraints are created naturally by using intermediate temporary constraints <code class="docutils literal notranslate"><a class="reference internal" href="TempCtr.html#classidol_1_1TempCtr"><span class="std std-ref"><span class="pre">TempCtr</span></span></a></code> using operators such as <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>. For instance, one may do</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">.</span><span class="n">add_ctr</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">2.</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Ctr3CtrER3EnvRR7TempCtrNSt6stringE">
+<span id="_CPPv3N4idol3Ctr3CtrER3EnvRR7TempCtrNSt6stringE"></span><span id="_CPPv2N4idol3Ctr3CtrER3EnvRR7TempCtrNSt6stringE"></span><span id="idol::Ctr::Ctr__EnvR.TempCtrRR.ss"></span><span class="target" id="classidol_1_1Ctr_1a69a0cb3db3a3a73048288c7711849b93"></span><span class="sig-name descname"><span class="n"><span class="pre">Ctr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <a class="reference internal" href="TempCtr.html#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_temp_ctr</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Ctr3CtrER3EnvRR7TempCtrNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constraint in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_temp_ctr</strong> – The temporary constraint used to create the default version of the constraint. </p></li>
+<li><p><strong>t_name</strong> – The given name for the constraint. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Ctr3CtrER3EnvRK7TempCtrNSt6stringE">
+<span id="_CPPv3N4idol3Ctr3CtrER3EnvRK7TempCtrNSt6stringE"></span><span id="_CPPv2N4idol3Ctr3CtrER3EnvRK7TempCtrNSt6stringE"></span><span id="idol::Ctr::Ctr__EnvR.TempCtrCR.ss"></span><span class="target" id="classidol_1_1Ctr_1a3f5753ff928dcea592a729c4a80c066f"></span><span class="sig-name descname"><span class="n"><span class="pre">Ctr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="TempCtr.html#_CPPv4N4idol7TempCtrE" title="idol::TempCtr"><span class="n"><span class="pre">TempCtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_temp_ctr</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Ctr3CtrER3EnvRK7TempCtrNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constraint in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_temp_ctr</strong> – The temporary constraint used to create the default version of the constraint. </p></li>
+<li><p><strong>t_name</strong> – The given name for the constraint. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Ctr3CtrER3Env7CtrTypeRR8ConstantNSt6stringE">
+<span id="_CPPv3N4idol3Ctr3CtrER3Env7CtrTypeRR8ConstantNSt6stringE"></span><span id="_CPPv2N4idol3Ctr3CtrER3Env7CtrTypeRR8ConstantNSt6stringE"></span><span id="idol::Ctr::Ctr__EnvR.CtrType.ConstantRR.ss"></span><span class="target" id="classidol_1_1Ctr_1a5cdf352b2ecafbdf6eab8335ed4aa73f"></span><span class="sig-name descname"><span class="n"><span class="pre">Ctr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_constant</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Ctr3CtrER3Env7CtrTypeRR8ConstantNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constraint in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_type</strong> – The type of the constraint in its default version. </p></li>
+<li><p><strong>t_constant</strong> – The right hand-side of the constraint in its default version. </p></li>
+<li><p><strong>t_name</strong> – The given name for the constraint. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Ctr3CtrER3Env7CtrTypeRK8ConstantNSt6stringE">
+<span id="_CPPv3N4idol3Ctr3CtrER3Env7CtrTypeRK8ConstantNSt6stringE"></span><span id="_CPPv2N4idol3Ctr3CtrER3Env7CtrTypeRK8ConstantNSt6stringE"></span><span id="idol::Ctr::Ctr__EnvR.CtrType.ConstantCR.ss"></span><span class="target" id="classidol_1_1Ctr_1ac3e6328ef6e07835720a25fe08c360f3"></span><span class="sig-name descname"><span class="n"><span class="pre">Ctr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_constant</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Ctr3CtrER3Env7CtrTypeRK8ConstantNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new constraint in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_type</strong> – The type of the constraint in its default version. </p></li>
+<li><p><strong>t_constant</strong> – The right hand-side of the constraint in its default version. </p></li>
+<li><p><strong>t_name</strong> – The given name for the constraint. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Ctr4nameEv">
+<span id="_CPPv3NK4idol3Ctr4nameEv"></span><span id="_CPPv2NK4idol3Ctr4nameEv"></span><span id="idol::Ctr::nameC"></span><span class="target" id="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Ctr4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the name of the optimization object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the optimization object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Ctr2idEv">
+<span id="_CPPv3NK4idol3Ctr2idEv"></span><span id="_CPPv2NK4idol3Ctr2idEv"></span><span id="idol::Ctr::idC"></span><span class="target" id="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Ctr2idEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the id of the optimization object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The id of the optimization object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Ctr5is_inERK5Model">
+<span id="_CPPv3NK4idol3Ctr5is_inERK5Model"></span><span id="_CPPv2NK4idol3Ctr5is_inERK5Model"></span><span id="idol::Ctr::is_in__ModelCRC"></span><span class="target" id="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_in</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_model</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Ctr5is_inERK5Model" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the optimization object is part of the model <code class="docutils literal notranslate"><span class="pre">t_model</span></code>, false otherwise. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_model</strong> – The model. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the optimization object is part of the model <code class="docutils literal notranslate"><span class="pre">t_model</span></code>, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Ctr3getERK10AnnotationI3Ctr6ValueTE">
+<span id="_CPPv3NK4idol3Ctr3getERK10AnnotationI3Ctr6ValueTE"></span><span id="_CPPv2NK4idol3Ctr3getERK10AnnotationI3Ctr6ValueTE"></span><span id="idol::Ctr::get__Annotation:Ctr.ValueT:CRC"></span><span class="target" id="classidol_1_1Object_1a480ca9df3d3327cbb562934105c7cab6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Annotation.html#_CPPv4I00EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Ctr3getERK10AnnotationI3Ctr6ValueTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the value of the given annotation <code class="docutils literal notranslate"><span class="pre">t_annotation</span></code> associated to the object.</p>
+<p>If no value is found, the default value of the annotation is returned. If no default value was set, an exception is thrown. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueT</strong> – The value type of the annotation. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>t_annotation</strong> – The annotation. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value of the annotation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Ctr3setERK10AnnotationI3Ctr6ValueTEDpRR5ArgsT">
+<span id="_CPPv3NK4idol3Ctr3setERK10AnnotationI3Ctr6ValueTEDpRR5ArgsT"></span><span id="_CPPv2NK4idol3Ctr3setERK10AnnotationI3Ctr6ValueTEDpRR5ArgsT"></span><span id="idol::Ctr::set__Annotation:Ctr.ValueT:CR.ArgsTRRDpC"></span><span class="target" id="classidol_1_1Object_1a99b26b0feaefc240d83a113dd0e60520"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Annotation.html#_CPPv4I00EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="n"><span class="pre">ArgsT</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_args</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Ctr3setERK10AnnotationI3Ctr6ValueTEDpRR5ArgsT" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the value of the given annotation <code class="docutils literal notranslate"><span class="pre">t_annotation</span></code> associated to the object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueT</strong> – The value type of the annotation. </p></li>
+<li><p><strong>ArgsT</strong> – The parameter pack types for constructing the value of the annotation. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>t_annotation</strong> – The annotation. </p></li>
+<li><p><strong>t_args</strong> – The parameter pack arguments used to construct “in place” the value of the annotation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_j_jEN4idol3Ctr11make_vectorE6VectorI3CtrXmi1N1IEER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE">
+<span id="_CPPv3I_j_jEN4idol3Ctr11make_vectorER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE"></span><span id="_CPPv2I_j_jEN4idol3Ctr11make_vectorER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Ctr_1ae65a1ff5ece4291b5d9c843fb5423c7a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Ctr11make_vectorE6VectorI3CtrXmi1N1IEER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="idol::Ctr::make_vector::N"><span class="n"><span class="pre">N</span></span></a><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Ctr11make_vectorE6VectorI3CtrXmi1N1IEER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="idol::Ctr::make_vector::I"><span class="n"><span class="pre">I</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Ctr11make_vectorE6VectorI3CtrXmi1N1IEER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="idol::Ctr::make_vector::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <a class="reference internal" href="../../types/common/CtrType.html#_CPPv4N4idol7CtrTypeE" title="idol::CtrType"><span class="n"><span class="pre">CtrType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_constant</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_j_jEN4idol3Ctr11make_vectorE6VectorI3CtrXmi1N1IEER3EnvRK3DimI1NE7CtrTypeRK8ConstantRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates a (nested) vector of constraints.</p>
+<p><em>Example</em>:</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">constraint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ctr</span><span class="o">::</span><span class="n">make_vector</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">LessOrEqual</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;constraint&quot;</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">constraint</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">].</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// &quot;constraint_1_4&quot;</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – The dimension of the (nested) vector. </p></li>
+<li><p><strong>I</strong> – Used for recursion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>t_env</strong> – The environment to store the constraints. </p></li>
+<li><p><strong>t_dim</strong> – The number of elements in each dimension. </p></li>
+<li><p><strong>t_type</strong> – The type of the constraints. </p></li>
+<li><p><strong>t_constant</strong> – The right hand-side of the constraints. </p></li>
+<li><p><strong>t_name</strong> – The given name of the constraints. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A (nested) vector of constraints. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">impl::Env</span></dt>
+</dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Constant.html" class="btn btn-neutral float-left" title="Constant" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Env.html" class="btn btn-neutral float-right" title="Env" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

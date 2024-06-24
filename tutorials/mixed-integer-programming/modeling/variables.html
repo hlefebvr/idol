@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Variables &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/modeling/variables.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Expressions" href="expressions.html" />
+    <link rel="prev" title="Models" href="models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Mixed-Integer Programming</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Modeling</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="environment.html">The Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="constraints.html">Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objective-function.html">Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../optimizers/index.html">Optimizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dantzig-wolfe/index.html">Column Generation and Branch-and-Price Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bilevel-optimization/index.html">Bilevel Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../robust-optimization/index.html">Robust Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Mixed-Integer Programming</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Modeling</a></li>
+      <li class="breadcrumb-item active">Variables</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/tutorials/mixed-integer-programming/modeling/variables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="variables">
+<span id="api-variables"></span><h1>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h1>
+<p>Variables are the decision variables of an optimization problem. They are the objects that we want to find the best
+values for, with respect to some objective function given the specified constraints.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#creating-variables" id="id1">Creating Variables</a></p></li>
+<li><p><a class="reference internal" href="#creating-several-variables-at-once" id="id2">Creating Several Variables at Once</a></p></li>
+<li><p><a class="reference internal" href="#accessing-variables" id="id3">Accessing Variables</a></p></li>
+<li><p><a class="reference internal" href="#modifying-variables" id="id4">Modifying Variables</a></p></li>
+<li><p><a class="reference internal" href="#removing-variables" id="id5">Removing Variables</a></p></li>
+</ul>
+</nav>
+<section id="creating-variables">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Creating Variables</a><a class="headerlink" href="#creating-variables" title="Link to this heading"></a></h2>
+<p>There are mainly two ways to create variables in idol. The first one is to use the <a class="reference internal" href="../../../api/classes/common/Var.html#api-var"><span class="std std-ref">Var</span></a> class directly, and the
+second one is to use the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">add_var</span></code> method.</p>
+<p>Using the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Var</span></code> class directly creates a variable that is not associated to any model. We will there need to add it
+explicitly to a model. This is done by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">add</span></code> method. See for instance the following code which
+creates a continuous variable <span class="math notranslate nohighlight">\(x\)</span>, with bounds <span class="math notranslate nohighlight">\([0,\infty)\)</span>, and adds it to the model.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Var</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="c1">// Variable x is added to the model</span>
+</pre></div>
+</div>
+<p>Note that a variable may belong to several models at the same time. Each version of the variable in each model is then independent.
+For instance, one could do the following.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Var</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">model2</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="n">model2</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">model2</span><span class="p">.</span><span class="n">set_var_ub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">10.</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this example, the variable <span class="math notranslate nohighlight">\(x\)</span> is added to two different models. The upper bound of <span class="math notranslate nohighlight">\(x\)</span> in the second model
+is then set to 10. The upper bound of <span class="math notranslate nohighlight">\(x\)</span> in the first model is not affected by this change.</p>
+<p>A more straightforward way to create variables is to call the <code class="docutils literal notranslate"><span class="pre">add_var</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Model</span></code> class.
+For instance, one can do:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, we do not need to repeat the environment since the model’s environment is used by default. Moreover, we do not need to
+explicitly add the variable to the model since it is done automatically by the <code class="docutils literal notranslate"><span class="pre">add_var</span></code> method.</p>
+<p>Again, a variable may belong to several models at the same time. And we can do as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">model2</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="n">model2</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">model2</span><span class="p">.</span><span class="n">set_var_ub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">10.</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that an even more compact version of the previous code is obtained by using the <code class="docutils literal notranslate"><span class="pre">Model::add</span></code> method with additional
+parameters. For instance, the following code is equivalent to the previous one.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">Model</span><span class="w"> </span><span class="nf">model2</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+<span class="n">model2</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">TempVar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>Here, we used the class <a class="reference internal" href="../../../api/classes/common/TempVar.html#api-mip-variables-tempvar"><span class="std std-ref">TempVar</span></a> to create a temporary variable. A temporary variable is a variable
+which has not been instantiate yet. It is only a “template” of a variable specifying its bounds and type. Here, we therefore
+add the variable <span class="math notranslate nohighlight">\(x\)</span> to the second model and directly set its attributes (bounds and type) accordingly.</p>
+</section>
+<section id="creating-several-variables-at-once">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Creating Several Variables at Once</a><a class="headerlink" href="#creating-several-variables-at-once" title="Link to this heading"></a></h2>
+<p>Sometimes, you will find it convenient to create several variables at once. This can be done by calling the <code class="docutils literal notranslate"><span class="pre">Var::make_vector</span></code>
+function, or the <code class="docutils literal notranslate"><span class="pre">Model::add_vars</span></code> method. These functions require
+an extra parameter specifying the dimension of the new variable.</p>
+<p>For instance, the following code creates variables <span class="math notranslate nohighlight">\(y_{ij}\)</span> with <span class="math notranslate nohighlight">\(i=1,...,K\)</span> and <span class="math notranslate nohighlight">\(j=1,...,T\)</span>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Var</span><span class="o">::</span><span class="n">make_vector</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">add_vector</span><span class="o">&lt;</span><span class="n">Var</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// &quot;y_0_0&quot;</span>
+</pre></div>
+</div>
+<p>Similarly, one could use the more direct <code class="docutils literal notranslate"><span class="pre">Model::add_vars</span></code> method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_vars</span><span class="p">(</span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// &quot;y_0_0&quot;</span>
+</pre></div>
+</div>
+<p>Integer and binary variables can be created by setting the type of the variable to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Integer</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Binary</span></code> respectively.</p>
+</section>
+<section id="accessing-variables">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Accessing Variables</a><a class="headerlink" href="#accessing-variables" title="Link to this heading"></a></h2>
+<p>Information about a given variable in a model can be accessed by calling the corresponding methods of the model. For instance,
+one can access the lower bound of a variable by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_lb</span></code> method. Similarly, the upper bound of a
+variable can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_ub</span></code> method. The type of a variable can be accessed by calling the
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_type</span></code> method. The column of a variable in the model can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_column</span></code>
+method.</p>
+<p>If a given model has been solved and feasibility could be proved (or better, optimality), the value of a variable
+can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_primal</span></code> method.
+When applicable, its reduced cost can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_reduced_cost</span></code> method.
+Similarly, for unbounded models, a primal ray can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_ray</span></code> method.</p>
+<p>The <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">has</span></code> method can be used to check if a given variable is in the model.</p>
+<p>The current index of a variable in the model can be accessed by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">get_var_index</span></code> method.
+Beware, however, that the index may change if the model is modified.</p>
+<p>For more details, see the <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class.</p>
+</section>
+<section id="modifying-variables">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Modifying Variables</a><a class="headerlink" href="#modifying-variables" title="Link to this heading"></a></h2>
+<p>The bounds of a variable can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">set_var_lb</span></code> and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">set_var_ub</span></code> methods.
+The type of a variable can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">set_var_type</span></code> method.</p>
+<p>The column of a variable in the model can be modified by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">set_var_column</span></code> method.
+For instance.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Column</span><span class="w"> </span><span class="nf">column</span><span class="p">(</span><span class="n">objective_coefficient_for_x</span><span class="p">);</span>
+<span class="n">column</span><span class="p">.</span><span class="n">linear</span><span class="p">().</span><span class="n">set</span><span class="p">(</span><span class="n">constraint1</span><span class="p">,</span><span class="w"> </span><span class="n">constraint1_coefficient_for_x</span><span class="p">);</span>
+<span class="n">column</span><span class="p">.</span><span class="n">linear</span><span class="p">().</span><span class="n">set</span><span class="p">(</span><span class="n">constraint2</span><span class="p">,</span><span class="w"> </span><span class="n">constraint2_coefficient_for_x</span><span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">set_var_column</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">column</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For more details, see the <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class.</p>
+</section>
+<section id="removing-variables">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Removing Variables</a><a class="headerlink" href="#removing-variables" title="Link to this heading"></a></h2>
+<p>A variable can be removed from a model by calling the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span><span class="o">::</span><span class="n">remove</span></code> method.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="models.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="expressions.html" class="btn btn-neutral float-right" title="Expressions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

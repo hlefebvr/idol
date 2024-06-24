@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expr &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/Expr.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../../_static/copybutton.js?v=f281be69"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({"startOnLoad": true})</script>
+        <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="LinExpr" href="LinExpr.html" />
+    <link rel="prev" title="Env" href="Env.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Expr</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/Expr.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="expr">
+<span id="api-expr"></span><h1>Expr<a class="headerlink" href="#expr" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4idol4ExprE">
+<span id="_CPPv3I00EN4idol4ExprE"></span><span id="_CPPv2I00EN4idol4ExprE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Key1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Key2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Expr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">impl</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Expr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I00EN4idol4ExprE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprEv">
+<span id="_CPPv3N4idol4Expr4ExprEv"></span><span id="_CPPv2N4idol4Expr4ExprEv"></span><span id="idol::Expr::Expr"></span><span class="target" id="classidol_1_1Expr_1a85ee1def56fc7854c2b5f133262acfe7"></span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprEd">
+<span id="_CPPv3N4idol4Expr4ExprEd"></span><span id="_CPPv2N4idol4Expr4ExprEd"></span><span id="idol::Expr::Expr__double"></span><span class="target" id="classidol_1_1Expr_1aa0593f0c260f8cbd13f237319793bc30"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_num</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK5Param">
+<span id="_CPPv3N4idol4Expr4ExprERK5Param"></span><span id="_CPPv2N4idol4Expr4ExprERK5Param"></span><span id="idol::Expr::Expr__ParamCR"></span><span class="target" id="classidol_1_1Expr_1a4badab26e8d3d04cf79b146892fd8fa9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Param.html#_CPPv4N4idol5ParamE" title="idol::Param"><span class="n"><span class="pre">Param</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_param</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK5Param" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERR8Constant">
+<span id="_CPPv3N4idol4Expr4ExprERR8Constant"></span><span id="_CPPv2N4idol4Expr4ExprERR8Constant"></span><span id="idol::Expr::Expr__ConstantRR"></span><span class="target" id="classidol_1_1Expr_1a72c575a6e38d7f10b0cd15c6329c1d1e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK8Constant">
+<span id="_CPPv3N4idol4Expr4ExprERK8Constant"></span><span id="_CPPv2N4idol4Expr4ExprERK8Constant"></span><span id="idol::Expr::Expr__ConstantCR"></span><span class="target" id="classidol_1_1Expr_1a6cc7a80900ea6c9763663190d6cfa3b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK4Key1">
+<span id="_CPPv3N4idol4Expr4ExprERK4Key1"></span><span id="_CPPv2N4idol4Expr4ExprERK4Key1"></span><span id="idol::Expr::Expr__Key1CR"></span><span class="target" id="classidol_1_1Expr_1ac3b93e55acf40c21b12cd5c2adebe3a4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_var</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK4Key1" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERR7LinExprI4Key1E">
+<span id="_CPPv3N4idol4Expr4ExprERR7LinExprI4Key1E"></span><span id="_CPPv2N4idol4Expr4ExprERR7LinExprI4Key1E"></span><span id="idol::Expr::Expr__LinExpr:Key1:RR"></span><span class="target" id="classidol_1_1Expr_1a677f49559bf504a83ab9e3fb85b7f80f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERR7LinExprI4Key1E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK7LinExprI4Key1E">
+<span id="_CPPv3N4idol4Expr4ExprERK7LinExprI4Key1E"></span><span id="_CPPv2N4idol4Expr4ExprERK7LinExprI4Key1E"></span><span id="idol::Expr::Expr__LinExpr:Key1:CR"></span><span class="target" id="classidol_1_1Expr_1a9cb48a46c8ceae4d61bc6af62054f392"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK7LinExprI4Key1E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERR8QuadExprI4Key1E">
+<span id="_CPPv3N4idol4Expr4ExprERR8QuadExprI4Key1E"></span><span id="_CPPv2N4idol4Expr4ExprERR8QuadExprI4Key1E"></span><span id="idol::Expr::Expr__QuadExpr:Key1:RR"></span><span class="target" id="classidol_1_1Expr_1a21da1e21253bd0ce73a30090c9542090"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERR8QuadExprI4Key1E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK8QuadExprI4Key1E">
+<span id="_CPPv3N4idol4Expr4ExprERK8QuadExprI4Key1E"></span><span id="_CPPv2N4idol4Expr4ExprERK8QuadExprI4Key1E"></span><span id="idol::Expr::Expr__QuadExpr:Key1:CR"></span><span class="target" id="classidol_1_1Expr_1a62ddcdb05a168f282d8df551fe4e28d3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK8QuadExprI4Key1E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERR7LinExprI4Key1ERR8QuadExprI4Key14Key2ERR8Constant">
+<span id="_CPPv3N4idol4Expr4ExprERR7LinExprI4Key1ERR8QuadExprI4Key14Key2ERR8Constant"></span><span id="_CPPv2N4idol4Expr4ExprERR7LinExprI4Key1ERR8QuadExprI4Key14Key2ERR8Constant"></span><span id="idol::Expr::Expr__LinExpr:Key1:RR.QuadExpr:Key1.Key2:RR.ConstantRR"></span><span class="target" id="classidol_1_1Expr_1aab22b2494f336fa15ec61c51f026a2d2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lin_expr</span></span>, <a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key2"><span class="n"><span class="pre">Key2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_quad_expr</span></span>, <a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_constant</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERR7LinExprI4Key1ERR8QuadExprI4Key14Key2ERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK7LinExprI4Key1ERK8QuadExprI4Key14Key2ERK8Constant">
+<span id="_CPPv3N4idol4Expr4ExprERK7LinExprI4Key1ERK8QuadExprI4Key14Key2ERK8Constant"></span><span id="_CPPv2N4idol4Expr4ExprERK7LinExprI4Key1ERK8QuadExprI4Key14Key2ERK8Constant"></span><span id="idol::Expr::Expr__LinExpr:Key1:CR.QuadExpr:Key1.Key2:CR.ConstantCR"></span><span class="target" id="classidol_1_1Expr_1a7847ce2479b48da892c97b216af9ab73"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lin_expr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key1"><span class="n"><span class="pre">Key1</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr::Key2"><span class="n"><span class="pre">Key2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_quad_expr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_constant</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK7LinExprI4Key1ERK8QuadExprI4Key14Key2ERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERK4Expr">
+<span id="_CPPv3N4idol4Expr4ExprERK4Expr"></span><span id="_CPPv2N4idol4Expr4ExprERK4Expr"></span><span id="idol::Expr::Expr__ExprCR"></span><span class="target" id="classidol_1_1Expr_1acade9bd94ebceaa3327dad1afb3c80aa"></span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol4Expr4ExprERK4Expr" title="idol::Expr::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERK4Expr" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr4ExprERR4Expr">
+<span id="_CPPv3N4idol4Expr4ExprERR4Expr"></span><span id="_CPPv2N4idol4Expr4ExprERR4Expr"></span><span id="idol::Expr::Expr__ExprRR"></span><span class="target" id="classidol_1_1Expr_1af9f8df0829f3469700e7dfd67fa908f2"></span><span class="sig-name descname"><span class="n"><span class="pre">Expr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol4Expr4ExprERR4Expr" title="idol::Expr::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol4Expr4ExprERR4Expr" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExpraSERK4Expr">
+<span id="_CPPv3N4idol4ExpraSERK4Expr"></span><span id="_CPPv2N4idol4ExpraSERK4Expr"></span><span id="idol::Expr::assign-operator__ExprCR"></span><span class="target" id="classidol_1_1Expr_1af5931904fc4b1e46abb866aab5c8ca25"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol4ExpraSERK4Expr" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExpraSERR4Expr">
+<span id="_CPPv3N4idol4ExpraSERR4Expr"></span><span id="_CPPv2N4idol4ExpraSERR4Expr"></span><span id="idol::Expr::assign-operator__ExprRR"></span><span class="target" id="classidol_1_1Expr_1a9e29a2e5ec6cf255fb18ff861ae2ae43"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol4ExpraSERR4Expr" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr3fixERKN8Solution6PrimalE">
+<span id="_CPPv3NK4idol4Expr3fixERKN8Solution6PrimalE"></span><span id="_CPPv2NK4idol4Expr3fixERKN8Solution6PrimalE"></span><span id="idol::Expr::fix__Solution::PrimalCRC"></span><span class="target" id="classidol_1_1Expr_1a7c7afea33d0175866dab747c502f9a3a"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="SolutionPrimal.html#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_primals</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr3fixERKN8Solution6PrimalE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExprpLERK4ExprIN4idol3VarEN4idol3VarEE">
+<span id="_CPPv3N4idol4ExprpLERK4ExprIN4idol3VarEN4idol3VarEE"></span><span id="_CPPv2N4idol4ExprpLERK4ExprIN4idol3VarEN4idol3VarEE"></span><span id="idol::Expr::add-assign-operator__Expr:idol::Var.idol::Var:CR"></span><span class="target" id="classidol_1_1impl_1_1Expr_1ab722b59cd9ee0a9fd4d304aedd450664"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4ExprpLERK4ExprIN4idol3VarEN4idol3VarEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExprmIERK4ExprIN4idol3VarEN4idol3VarEE">
+<span id="_CPPv3N4idol4ExprmIERK4ExprIN4idol3VarEN4idol3VarEE"></span><span id="_CPPv2N4idol4ExprmIERK4ExprIN4idol3VarEN4idol3VarEE"></span><span id="idol::Expr::sub-assign-operator__Expr:idol::Var.idol::Var:CR"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a7e121135815342921c2ffafdc6ea264c"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4ExprmIERK4ExprIN4idol3VarEN4idol3VarEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExprmLEd">
+<span id="_CPPv3N4idol4ExprmLEd"></span><span id="_CPPv2N4idol4ExprmLEd"></span><span id="idol::Expr::mul-assign-operator__double"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a9440496154bcf0a684c9791126b9fd6c"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4ExprmLEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4ExprdVEd">
+<span id="_CPPv3N4idol4ExprdVEd"></span><span id="_CPPv2N4idol4ExprdVEd"></span><span id="idol::Expr::div-assign-operator__double"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a767c0f15fc2ff85299243417afddbc54"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">/=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4ExprdVEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr6linearEv">
+<span id="_CPPv3N4idol4Expr6linearEv"></span><span id="_CPPv2N4idol4Expr6linearEv"></span><span id="idol::Expr::linear"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a292005501097dbdb65b0a7a6a6e05ac3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr6linearEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr6linearEv">
+<span id="_CPPv3NK4idol4Expr6linearEv"></span><span id="_CPPv2NK4idol4Expr6linearEv"></span><span id="idol::Expr::linearC"></span><span class="target" id="classidol_1_1impl_1_1Expr_1ac01b467a3afdc49288364798a4bb67d8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr6linearEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr9quadraticEv">
+<span id="_CPPv3N4idol4Expr9quadraticEv"></span><span id="_CPPv2N4idol4Expr9quadraticEv"></span><span id="idol::Expr::quadratic"></span><span class="target" id="classidol_1_1impl_1_1Expr_1aae538efd195b16d4b1ea32b9c347d472"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr9quadraticEv">
+<span id="_CPPv3NK4idol4Expr9quadraticEv"></span><span id="_CPPv2NK4idol4Expr9quadraticEv"></span><span id="idol::Expr::quadraticC"></span><span class="target" id="classidol_1_1impl_1_1Expr_1aec200fc75d82c051f8c96833b43bc49f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr8constantEv">
+<span id="_CPPv3N4idol4Expr8constantEv"></span><span id="_CPPv2N4idol4Expr8constantEv"></span><span id="idol::Expr::constant"></span><span class="target" id="classidol_1_1impl_1_1Expr_1adb475ce93bebe31164d13e0bc90b116f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">constant</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr8constantEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr8constantEv">
+<span id="_CPPv3NK4idol4Expr8constantEv"></span><span id="_CPPv2NK4idol4Expr8constantEv"></span><span id="idol::Expr::constantC"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a2366396a863d05fd98cf7b46c337d785"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">constant</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr8constantEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr7is_zeroEv">
+<span id="_CPPv3NK4idol4Expr7is_zeroEv"></span><span id="_CPPv2NK4idol4Expr7is_zeroEv"></span><span id="idol::Expr::is_zeroC"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a4acdaa80eecacf9abc11308d6e152b94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_zero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr7is_zeroEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr5roundEv">
+<span id="_CPPv3N4idol4Expr5roundEv"></span><span id="_CPPv2N4idol4Expr5roundEv"></span><span id="idol::Expr::round"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a3164e9e183da14cdae44b4a05e42d63b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">round</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr5roundEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol4Expr3gcdEv">
+<span id="_CPPv3NK4idol4Expr3gcdEv"></span><span id="_CPPv2NK4idol4Expr3gcdEv"></span><span id="idol::Expr::gcdC"></span><span class="target" id="classidol_1_1impl_1_1Expr_1acb621e787752d00ee357d6c3c3018add"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gcd</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol4Expr3gcdEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr17scale_to_integersEj">
+<span id="_CPPv3N4idol4Expr17scale_to_integersEj"></span><span id="_CPPv2N4idol4Expr17scale_to_integersEj"></span><span id="idol::Expr::scale_to_integers__unsigned-i"></span><span class="target" id="classidol_1_1impl_1_1Expr_1aa63f7c9d9694f9ea9421703e1719998f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scale_to_integers</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_significant_digits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr17scale_to_integersEj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr23multiply_with_precisionEdj">
+<span id="_CPPv3N4idol4Expr23multiply_with_precisionEdj"></span><span id="_CPPv2N4idol4Expr23multiply_with_precisionEdj"></span><span id="idol::Expr::multiply_with_precision__double.unsigned-i"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a8cefb6fc40313ada765915b5d62bc628"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">multiply_with_precision</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_factor</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_digits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr23multiply_with_precisionEdj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr38multiply_with_precision_by_power_of_10Ejj">
+<span id="_CPPv3N4idol4Expr38multiply_with_precision_by_power_of_10Ejj"></span><span id="_CPPv2N4idol4Expr38multiply_with_precision_by_power_of_10Ejj"></span><span id="idol::Expr::multiply_with_precision_by_power_of_10__unsigned-i.unsigned-i"></span><span class="target" id="classidol_1_1impl_1_1Expr_1afeb6f891952cf38df41acc3c06c68023"></span><a class="reference internal" href="#_CPPv4I00EN4idol4ExprE" title="idol::Expr"><span class="n"><span class="pre">Expr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">multiply_with_precision_by_power_of_10</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_exponent</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_n_digits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr38multiply_with_precision_by_power_of_10Ejj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol4Expr5clearEv">
+<span id="_CPPv3N4idol4Expr5clearEv"></span><span id="_CPPv2N4idol4Expr5clearEv"></span><span id="idol::Expr::clear"></span><span class="target" id="classidol_1_1impl_1_1Expr_1a6a436240bc3d5a8c7333e65cc79fa135"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol4Expr5clearEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Env.html" class="btn btn-neutral float-left" title="Env" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LinExpr.html" class="btn btn-neutral float-right" title="LinExpr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
