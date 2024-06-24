@@ -18,7 +18,7 @@ Each customer :math:`j\in V_2` has a demand :math:`d_j`.
 The unitary cost for serving customer :math:`j\in V_2` from facility :math:`i\in V_1` is :math:`t_{ij}`.
 The uncertainty in customer demands is controlled by a parameter :math:`\Gamma`.
 
-In this robust variant, we consider that the demands are uncertain and can be expressed as :math:`d_j(\xi) = d_j(1 + p\xi_j)``
+In this robust variant, we consider that the demands are uncertain and can be expressed as :math:`d_j(\xi) = d_j(1 + p\xi_j)`
 with :math:`p` being the maximum increase in demand and :math:`\xi` being an unknown vector taken in the uncertainty set
 
 .. math::
