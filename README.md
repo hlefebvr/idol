@@ -135,7 +135,6 @@ Idol can be used as a unified interface to several open-source or commercial sol
 - [Mosek](https://www.mosek.com/)
 - [GLPK](https://www.gnu.org/software/glpk/)
 - [HiGHS](https://highs.dev/)
-- [coin-or/MibS](https://github.com/coin-or/MibS) (for bi-level problems)
 - [coin-or/Osi](https://github.com/coin-or/Osi) --> [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [Symphony](https://github.com/coin-or/SYMPHONY), [Cbc](https://github.com/coin-or/Cbc)
 
 #### Branch-and-Bound
