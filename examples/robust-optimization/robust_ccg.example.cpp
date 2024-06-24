@@ -48,7 +48,7 @@ int main(int t_argc, const char** t_argv) {
                             Robust::CCGSeparators::Bilevel()
                     )
                     //.with_complete_recourse(true)
-                    //.with_stabilization(Robust::CCGStabilizers::TrustRegion())
+                    //.with_stabilization(Robust::CCGStabilizers::TrustRegion().with_trust_factors())
                     .with_logs(true)
     );
 

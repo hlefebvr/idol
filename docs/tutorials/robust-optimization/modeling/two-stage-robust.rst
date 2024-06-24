@@ -25,7 +25,7 @@ Note that there is also an example for the :ref:`deterministic version of the FL
 
 Each facility :math:`i\in V_1` has an opening cost :math:`f_i` and a maximum capacity :math:`q_i`.
 Each customer :math:`j\in V_2` has a demand :math:`d_j`.
-The unitary cost for serving customer :math:`j\in V_2` from facility :math:`i\in V_1` is :math:`{ij}`.
+The unitary cost for serving customer :math:`j\in V_2` from facility :math:`i\in V_1` is :math:`t_{ij}`.
 The uncertainty in customer demands is controlled by a parameter :math:`\Gamma`.
 
 In this robust variant, we consider that the demands are uncertain and can be expressed as :math:`d_j(\xi) = d_j(1 + p\xi_j)`
@@ -39,7 +39,7 @@ We model the two-stage robust FLP as
 
 .. math::
 
-    \min_{x\in \{0,1\}^{|V_1|}} \ \left\{ \sum_{i\in V_1} f_i x_i + \max_{\xi\in \Xi} \ \min_{y\in Y(x,\xi)} \  \sum_{i\in V_1} \sum_{j\in V_2} {ij} y_{ij} \right\}
+    \min_{x\in \{0,1\}^{|V_1|}} \ \left\{ \sum_{i\in V_1} f_i x_i + \max_{\xi\in \Xi} \ \min_{y\in Y(x,\xi)} \  \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \right\}
 
 where :math:`Y(x,\xi)` is the set of feasible solutions for the second stage problem, given the first stage solution :math:`x` and the realization :math:`\xi` of the uncertain demand vector.
 It is defined as the set of vectors :math:`y\in \mathbb{R}^{|V_1|\times|V_2|}` that satisfy the following constraints
@@ -58,9 +58,9 @@ that contains the data of the problem. Most typically, you will want to read the
 .. code::
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_eal("robusccg.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_eal("robust_ccg.data.txt");
 
-Additionally, we create an optimization environment :code:`env` and some parameters.
+Additionally, we define an optimization environment :code:`env` and some parameters.
 
 .. code::
 
@@ -72,16 +72,16 @@ Additionally, we create an optimization environment :code:`env` and some paramet
 Modeling Steps
 --------------
 
-To model a two-stage robust problem, one needs to follow the following steps:
+To model a two-stage robust problem, one needs to perform the following steps:
 
 1. Define an uncertainty set :math:`\Xi`.
 2. Define the deterministic model in which :math:`\xi` is a parameter.
 3. Assign a stage to each variable and constraint.
 
-Let's now see how to model the two-stage robust FLP in idol.
+Let's see how these steps are done in idol.
 
 Defining the Uncertainty Set
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Modeling the uncertainty set :math:`\Xi` is done in the same way as modeling any classical optimization problem.
 For instance, one can do as follows.
@@ -95,10 +95,13 @@ For instance, one can do as follows.
     auto xi = uncertainty_set.add_vars(Dim<1>(n_customers), 0., 1, Binary, "xi");
     uncertainty_set.add_ctr(idol_Sum(j, Range(n_customers), xi[j]) <= Gamma);
 
-Defining the Deterministic Model
---------------------------------
+Note that defining an objective function is not necessary since the uncertainty set is not optimized over.
+If an objective function is defined, it will be ignored by the optimizer.
 
-The deterministic model underlying the two-stage robust FLP is the same as the classical FLP, except that the demand is a parameter.
+Defining the Deterministic Model
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deterministic model underlying the two-stage robust FLP is the same as the classical FLP, except that the demand is seen as a parameter.
 
 Recall that a variable, e.g., :code:`xi[0]`, can be turned into a parameter by prepending it with :code:`!`.
 
@@ -129,25 +132,25 @@ we can define the deterministic model as follows.
     model.seobj_expr(idol_Sum(i, Range(n_facilities),
                                 instance.fixed_cost(i) * x[i]
                                 + idol_Sum(j, Range(n_customers),
-                                           instance.per_unitransportation_cost(i, j) * y[i][j]
+                                           instance.per_unit_transportation_cost(i, j) * y[i][j]
                                 )
                        )
     );
 
 Assigning Stages
-----------------
+^^^^^^^^^^^^^^^^
 
 The last step is to assign a stage to each variable and constraint. Here, variables :math:`x` are first-stage variables
 and variables :math:`y` are second-stage variables, i.e., they depend on the realization of the uncertain demand.
 Similarly, all constraints are second-stage constraints since they are part of the second-stage feasible region.
 
 Assigning stages is done by creating a new object of type :code:`idol::Robust::StageDescription`.
-Under the hood, this object does nothing more than defining new annotations for variables and constraints storing
+Under the hood, this object does nothing more but defining new annotations for variables and constraints storing
 the assigned stage of each variable and constraint. It is created as follows.
 
 .. code::
 
-    Robust::StageDescription stages(t_model.env());
+    Robust::StageDescription stages(env);
 
 By default, all variables and constraints are assigned to the first stage.
 To assign a variable or constraint to the second stage, one can use the method :code:`set_stage` of the object :code:`stages`.
@@ -172,7 +175,7 @@ Similarly, since all constraints are second-stage constraints, one can do as fol
 .. admonition:: About stage annotations
 
     Note that it is also possible to define your own annotations to assign variables and constraints to stages.
-    This is a rather advanced feeature and it is your responsability to ensure that the annotations are consistent with the model.
+    This is a rather advanced feature and it is your responsability to ensure that the annotations are consistent with the model.
 
     The annotations are based on the following conventions: all first-stage variables and constraints have the annotation evaluating to :code:`MasterId`.
     All second-stage variables and constraints have the annotation evaluating to :code:`0`.

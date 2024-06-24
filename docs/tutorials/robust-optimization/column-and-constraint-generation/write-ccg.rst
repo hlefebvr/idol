@@ -32,10 +32,10 @@ Then, you can solve this two-stage robust problem using a column-and-constraint-
     std::cout << save_primal(model) << std::endl;
 
 Notice that the optimizer is attached to the deterministic model and that both the uncertainty set and the stages are passed as arguments.
-An optimizer to solve the master problem is necessary and will be created when necessary. Here, we use the Gurobi optimizer.
+An optimizer to solve the master problem is necessary and will be called when needed. Here, we use the Gurobi optimizer.
 
 Most importantly, it is also necessary to specify a separator. The separator is a sub-routine of the CCG algorithm
-which solves the separation problem, i.e., it finds the worst-case scenario for a given solution of the master problem.
+which solves the separation problem, i.e., it finds the worst-case scenario for a given solution to the master problem.
 In this example, we use the Bilevel separator which calls the MibS bilevel optimization solver at each iteration.
 
 Finally, the method :code:`optimize` is called to solve the problem and the solution is printed.

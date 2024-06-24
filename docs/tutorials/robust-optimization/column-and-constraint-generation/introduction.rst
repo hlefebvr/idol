@@ -83,7 +83,7 @@ there exists :math:`y^t\in Y(x,\xi^t)` such that :math:`G(x,y^t,\xi^t) \le 0`.
 Note that Problem :math:numref:`eq:master-problem` is a relaxation of Problem :math:numref:`eq:original-problem` since
 any feasible point of :math:numref:`eq:original-problem` is also feasible for :math:numref:`eq:master-problem` (for some :math:`y^1,\dotsc,y^K`).
 
-Now, given a solution :math:`\hat x\in X` of the relaxed problem :math:numref:`eq:master-problem`,
+Now, given a solution :math:`\hat x\in X` to the relaxed problem :math:numref:`eq:master-problem`,
 one needs to check whether :math:`\hat x` is feasible for Problem :math:numref:`eq:original-problem`.
 Thus, one seeks a scenario :math:`\xi^*\in\Xi` such that, either :math:`Y(\hat x, \xi^*)` is empty, or :math:`G(\hat x,y,\xi^*) > 0` for all :math:`y\in Y(\hat x, \xi^*)`.
 If no such scenario exists, then :math:`\hat x` is feasible for :math:numref:`eq:original-problem`. Otherwise, the new scenario :math:`\xi^*` is added to the set of considered scenarios and the process is repeated.
@@ -96,7 +96,7 @@ Identifying a missing scenario is called *separation*, and can be done by solvin
         \max_{\xi\in \Xi} \ \max_{\ell=1,...,L} \left\{ \ \min_{ y\in Y(\hat x,\xi) } \ G_\ell(\hat x,y,\xi) \right\}.
 
 If the optimal value of the separation problem is non-positive, then :math:`\hat x` is feasible for :math:numref:`eq:original-problem`.
-Otherwise, the solution of the separation problem gives a new scenario :math:`\xi^*` to be added to the set of scenarios.
+Otherwise, the solution to the separation problem gives a new scenario :math:`\xi^*` to be added to the set of scenarios.
 
 Note that we use the convention :math:`\max \emptyset = -\infty` and :math:`\min \emptyset = +\infty`.
 
@@ -105,9 +105,8 @@ Separators
 
 Clearly, the separation problem :math:numref:`eq:separation-problem` can be solved in many different ways. In idol,
 it is therefore possible to give a user-defined functor, called a *separator*, which solves the separation problem.
-Yet, note that the most common ways to solve the separation problem are already implemented in idol.
-
-If you wish to implement your own separator, you should refer to :ref:`this tutorial <tutorial_write_ccg_separator>`.
+Note that the most common ways to solve the separation problem are already implemented in idol.
+Yet, if you wish to implement your own separator, you should refer to :ref:`this tutorial <tutorial_write_ccg_separator>`.
 
 Shortly put, the separator solves problems of the form
 
@@ -125,7 +124,7 @@ the CCG algorithm will first solve a feasibility version of the separation probl
 :math:`\hat x` is such that for all :math:`\xi\in\Xi` there exists :math:`y\in Y(\hat x,\xi)`.
 Fortunately, it is also possible to specify that the complete recourse assumption holds, in which case the feasibility version of the separation problem is not solved.
 
-Let :math:`\xi^{\ell}` denote the solution of the separation problem :math:numref:`eq:single-separation-problem` for a given :math:`\ell\in\{1,...,L\}`.
+Let :math:`\xi^{\ell}` denote the solution to the separation problem :math:numref:`eq:single-separation-problem` for a given :math:`\ell\in\{1,...,L\}`.
 Then, a scenario :math:`\xi^{\ell^*}` is added to Problem :math:numref:`eq:master-problem` if and only if
 
 .. math::
@@ -162,5 +161,5 @@ In this case, the separation problem becomes
 
 which is a feasibility problem.
 
-Though the two approaches are equivalent, in the sense that they will both lead to a solution of :math:numref:`eq:original-problem`,
+Though the two approaches are equivalent, in the sense that they will both lead to a solution to :math:numref:`eq:original-problem`,
 they may lead to different computational performances. An interested reader may refer to, e.g., :cite:`Ayoub2016` for more details.
