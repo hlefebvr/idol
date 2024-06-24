@@ -2,10 +2,10 @@
 
     <div style="padding-bottom:25px;margin-bottom:25px;border-bottom:1px solid #eeebee;">
 
-        <h1 style="font-size:2.5em;">A C++ framework for optimization and complex decision making</h1>
+        <h1 style="font-size:2.5em;">A C++ framework for optimization</h1>
 
         <h2 style="font-size:1.5em;color:gray;">
-            Idol is a powerful and flexible library designed to help you build new mathematical optimization algorithms and solve more and more challenging problems.
+            Idol is a powerful and flexible library designed to help you build new mathematical optimization algorithms and solve more and more challenging problems efficiently.
         </h2>
 
         <span style="font-size:1.2em;">
@@ -19,12 +19,12 @@
 What Is Idol?
 -------------
 
-Idol is a C++ library for **mathematical optimization** and **complex decision making**. It is designed to help you build new
-algorithms easily for solving more and more challenging problems. It is a **versatile** and **powerful tool** that can be
+Idol is a C++ library for **mathematical optimization** and complex decision making. It is designed to help you build new
+algorithms easily for solving more and more challenging problems. It is a versatile and powerful tool that can be
 used to solve a wide range of optimization problems, including mixed-integer linear programming (MILP), quadratically constrained
 problems (MIQCQP and MIQP), bilevel problems (BO), robust optimization problems (RO and ARO) and many more.
 
-It is designed to be **easy to use** and to **integrate with other software**, so that you can use it
+It is designed to be easy to use and to integrate with other software, so that you can use it
 to build new algorithms and solve new problems without having to start from scratch. For instance, here is a piece of
 code which create a Branch-and-Price algorithm.
 
@@ -82,7 +82,7 @@ The idea is to work hand in hand with existing fine-tuned and well-engineered op
 software to enhance their possibilities. By doing so, we aim at solving larger and more complex problems than what is currently possible,
 or even problems for which theoretical evidence indicate that no MIP of reasonable size can model them completely (e.g., :math:`\Sigma_i^P`-hard problems).
 
-Even though idol is not a MIP solver, it can be used to solve standalone LPs, QPs, MILPs, MIQPs, and MIQCQPs though the
+Even though idol is not a MIP solver, it can be used to solve standalone LPs, QPs, MILPs, MIQPs, and MIQCQPs through the
 many external solvers it interfaces with.
 A clear advantage of using idol to solve these problems is that it offers a unified and common interface to every solver.
 Thus, you can write your code once and test it with different solvers!
@@ -97,8 +97,11 @@ The following solvers are currently supported by idol
 Current Features
 ----------------
 
+Mixed-Integer Optimization
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Interfacing External Optimization Solvers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""""
 
 The idol library can be used to interface external solvers like `GLPK <https://www.gnu.org/software/glpk/>`_
 or `Gurobi <https://www.gurobi.com/>`_ to solve standalone LPs, QPs, MILPs, MIQPs, and MIQCQPs.
@@ -107,7 +110,7 @@ It also provides classical callbacks one would need to implement when solving ha
 or lazy constraints. Simply give idol the separation model and let it handle the rest.
 
 Branch-and-Bound Algorithms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""
 
 Idol can be used to create a custom branch-and-bound scheme very easily in which virtually anything can be tweaked.
 
@@ -125,7 +128,7 @@ Idol can be used to create a custom branch-and-bound scheme very easily in which
   problem as quick as possible.
 
 Column Generation and Dantzig-Wolfe Decomposition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
 Idol can be used to build and custom CG algorithms with the following features.
 
@@ -141,6 +144,26 @@ Idol can be used to build and custom CG algorithms with the following features.
 * **Nested column generation:** A key idea of idol is that every optimizer is seen as a black-box to solve a given optimization model.
   As such, a CG algorithm can easily be "plugged in" any algorithmic phase. For instance, solving the pricing of
   a CG algorithm can be done by yet another CG algorithm.
+
+Bilevel Optimization
+^^^^^^^^^^^^^^^^^^^^
+
+Interfacing External Optimization Solvers
+"""""""""""""""""""""""""""""""""""""""""
+
+Currently, idol can interface with the mixed-integer bilevel solver `coin-or/MibS <https://github.com/coin-or/MibS>`_.
+
+Robust Optimization
+^^^^^^^^^^^^^^^^^^^^
+
+Column-and-Constraint Generation
+""""""""""""""""""""""""""""""""
+
+Idol can be used to build and custom CCG algorithms with the following features.
+
+* **Separation Sub-Routine**: Different separation strategies are implemented in idol to solve the separation problem in
+  the CCG algorithm. Most importantly, any bilevel solver can be used to solve the max-min separation problem. If needed, the user can also easily implement its own separation strategy.
+* **Trust Region Stabilization**: The CCG algorithm can be stabilized using trust region if the first-stage decisions are binary.
 
 Table of Contents
 -----------------
