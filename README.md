@@ -21,7 +21,7 @@ or any other cutting-edge method, idol is your trusted companion.
 - [Using idol for Research?](#using-idol-for-research)
 - [Examples](#Examples)
   - [Branch-and-Price](#branch-and-price)
-  - [Bi-level Problem (using coin-or/Mibs)](#bi-level-problem-using-mibs)
+  - [Bilevel Problem (using coin-or/Mibs)](#bilevel-problem-using-mibs)
 - [Implemented Features](#Implemented-Features)
   - [Branch-and-Bound](#Branch-and-Bound)
   - [Column Generation and Branch-and-Price](#Column-Generation-and-Branch-and-Price)
@@ -66,80 +66,68 @@ model.use(branch_and_price);
 model.optimize();
 ```
 
-### Bi-level Problem (using MibS)
+### Bilevel Problem (using MibS)
 
-Here, idol uses the external solver [coin-or/MibS](https://github.com/coin-or/MibS) to solve a bi-level optimization problem with integer lower level.
+Here, idol uses the external solver [coin-or/MibS](https://github.com/coin-or/MibS) to solve a bilevel optimization problem with integer lower level.
 
 ```cpp
-/**
- * min  -x − 7y
- * s.t. −3x + 2y ≤ 12
-         x + 2y ≤ 20
-         0 ≤ x ≤ 10
-         x integer
-         y ∈ arg min {z : 2x - z ≤ 7,
-                          -2x + 4z ≤ 16,
-                          0 ≤ z ≤ 5
-                          z integer}
+
+/*
+ This example is taken from "The Mixed Integer Linear Bilevel Programming Problem" (Moore and Bard, 1990).
+
+    min -1 x + -10 y
+    s.t.
+
+    y in argmin { y :
+        -25 x + 20 y <= 30,
+        1 x + 2 y <= 10,
+        2 x + -1 y <= 15,
+        2 x + 10 y >= 15,
+        y >= 0 and integer.
+    }
+    x >= 0 and integer.
+
  */
 
-Env env; // Create environment
+Env env;
 
 // Define High Point Relaxation
-Model model(env);
+Model high_point_relaxation(env);
 
-auto x = model.add_var(0, 10, Integer, "x");
-auto y = model.add_var(0, 5, Integer, "y");
+auto x = high_point_relaxation.add_var(0, Inf, Integer, "x");
+auto y = high_point_relaxation.add_var(0, Inf, Integer, "y");
 
-model.set_obj_expr(-x - 7 * y);
-auto c1 = model.add_ctr(-3 * x + 2 * y <= 12);
-auto c2 = model.add_ctr(x + 2 * y <= 20);
-auto c3 = model.add_ctr(y == 0);
-auto c4 = model.add_ctr(2 * x - y <= 7);
-auto c5 = model.add_ctr(-2 * x + 4 * y <= 16);
+high_point_relaxation.set_obj_expr(-x - 10 * y);
+auto follower_c1 = high_point_relaxation.add_ctr(-25 * x + 20 * y <= 30);
+auto follower_c2 = high_point_relaxation.add_ctr(x + 2 * y <= 10);
+auto follower_c3 = high_point_relaxation.add_ctr(2 * x - y <= 15);
+auto follower_c4 = high_point_relaxation.add_ctr(2 * x + 10 * y >= 15);
 
-// Annotate follower variables
-// * If not annotated, the default value is MasterId, i.e., leader variables and constraints
-// * Otherwise, it indicates the id of the follower (here, we have only one follower)
-Annotation<Var> follower_variables(env, "follower_variable", MasterId);
-Annotation<Ctr> follower_constraints(env, "follower_constraints", MasterId);
-
-y.set(follower_variables, 0); // "y" is a lower level variable
-c4.set(follower_constraints, 0); // "c4" is a lower level constraint
-c5.set(follower_constraints, 0); // "c5" is a lower level constraint
+// Prepare bilevel description
+Bilevel::LowerLevelDescription description(env);
+description.set_follower_obj_expr(y);
+description.set_follower_var(y);
+description.set_follower_ctr(follower_c1);
+description.set_follower_ctr(follower_c2);
+description.set_follower_ctr(follower_c3);
+description.set_follower_ctr(follower_c4);
 
 // Use coin-or/MibS as external solver
-model.use(BiLevel::MibS(follower_variables,
-                        follower_constraints,
-                        follower_objective));
+high_point_relaxation.use(Bilevel::MibS(description));
 
 // Optimize and print solution
-model.optimize();
+high_point_relaxation.optimize();
 
-// Print the solution
-std::cout << save_primal(model) << std::endl;
+std::cout << high_point_relaxation.get_status() << std::endl;
+std::cout << high_point_relaxation.get_reason() << std::endl;
+std::cout << save_primal(high_point_relaxation) << std::endl;
 ```
 
 ## Implemented Features
 
-### Branch-and-Bound
+### Mixed-Integer Optimization
 
-- Node selection rules: Best Bound, Worst Bound, Depth First, Best Estimate, Breadth First.
-- Branching rules (for variable branching): Pseudo Cost, Strong Branching (with phases), Most Infeasible, Least Infeasible, First Found, Uniformly Random.
-- Subtree exploration
-- Heuristics (for variable branching): Simple Rounding, Relaxed Enforced Neighborhood, Local Branching
-- Callbacks: User Cuts, Lazy Cuts
-
-### Column Generation and Branch-and-Price
-
-- Automatic Dantzig-Wolfe reformulation
-- Soft and hard branching available (i.e, branching on master or sub-problem)
-- Stabilization by dual price smoothing: [Wentges (1997)](https://doi.org/10.1016/S0969-6016(97)00001-4), [Neame (2000)](https://scholar.google.com/scholar?&q=Neame%2C%20P.J.%3A%20Nonsmooth%20Dual%20Methods%20in%20Integer%20Programming.%20PhD%20thesis%20%281999%29)
-- Can solve sub-problems in parallel
-- Supports pricing heuristics
-- Heuristics: Integer Master
-
-### External Solvers
+#### External Solvers
 
 Idol can be used as a unified interface to several open-source or commercial solvers like
 
@@ -149,6 +137,35 @@ Idol can be used as a unified interface to several open-source or commercial sol
 - [HiGHS](https://highs.dev/)
 - [coin-or/MibS](https://github.com/coin-or/MibS) (for bi-level problems)
 - [coin-or/Osi](https://github.com/coin-or/Osi) --> [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [Symphony](https://github.com/coin-or/SYMPHONY), [Cbc](https://github.com/coin-or/Cbc)
+
+#### Branch-and-Bound
+
+- Node selection rules: Best Bound, Worst Bound, Depth First, Best Estimate, Breadth First.
+- Branching rules (for variable branching): Pseudo Cost, Strong Branching (with phases), Most Infeasible, Least Infeasible, First Found, Uniformly Random.
+- Subtree exploration
+- Heuristics (for variable branching): Simple Rounding, Relaxed Enforced Neighborhood, Local Branching
+- Callbacks: User Cuts, Lazy Cuts
+
+#### Column Generation and Branch-and-Price
+
+- Automatic Dantzig-Wolfe reformulation
+- Soft and hard branching available (i.e, branching on master or sub-problem)
+- Stabilization by dual price smoothing: [Wentges (1997)](https://doi.org/10.1016/S0969-6016(97)00001-4), [Neame (2000)](https://scholar.google.com/scholar?&q=Neame%2C%20P.J.%3A%20Nonsmooth%20Dual%20Methods%20in%20Integer%20Programming.%20PhD%20thesis%20%281999%29)
+- Can solve sub-problems in parallel
+- Supports pricing heuristics
+- Heuristics: Integer Master
+
+### Bilevel Optimization 
+
+- Idol can solve optimistic mixed-integer bilevel problems using the external solver [coin-or/MibS](https://github.com/coin-or/MibS).
+
+### Two-stage Robust Optimization
+
+#### Column-and-Constraint Generation (CCG)
+
+- Generic implementation of the CCG algorithm for adjustable robust optimization problems.
+- Trust region stabilization for problems with binary first stage decisions.
+- Separation problem (max-min) solved by a bilevel solver.
 
 ## Benchmark 
 

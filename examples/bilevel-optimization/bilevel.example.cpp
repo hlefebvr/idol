@@ -58,8 +58,6 @@ int main(int t_argc, const char** t_argv) {
     // Optimize and print solution
     high_point_relaxation.optimize();
 
-    std::cout << high_point_relaxation.get_status() << std::endl;
-    std::cout << high_point_relaxation.get_reason() << std::endl;
     std::cout << save_primal(high_point_relaxation) << std::endl;
 
     return 0;
