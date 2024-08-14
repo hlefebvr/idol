@@ -389,12 +389,16 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, const Row &t_row) {
 
 void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
 
+    Row old_row;
+
     // TODO: Do this properly
     if (has_optimizer()) {
-        const auto type = get_ctr_type(t_ctr);
-        remove(t_ctr);
-        add(t_ctr, TempCtr(std::move(t_row), type));
-        return;
+        old_row = get_ctr_row(t_ctr);
+
+        if (!t_row.quadratic().empty()) {
+            throw Exception("Updating a quadratic constraint lhs is not implemented.");
+        }
+
     }
 
     remove_row_from_columns(t_ctr);
@@ -402,6 +406,20 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
     m_env.version(*this, t_ctr).row() = std::move(t_row);
 
     add_row_to_columns(t_ctr);
+
+    // TODO: Do this properly
+    if (has_optimizer()) {
+
+        for (const auto& [var, constant] : old_row.linear()) {
+            optimizer().update_mat_coeff(t_ctr, var);
+        }
+
+        for (const auto& [var, constant] : get_ctr_row(t_ctr).linear()) {
+            optimizer().update_mat_coeff(t_ctr, var);
+        }
+
+        optimizer().update_ctr_rhs(t_ctr);
+    }
 
 }
 

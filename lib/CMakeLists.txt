@@ -246,6 +246,8 @@ add_library(idol STATIC
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
         include/idol/containers/SilentMode.h
         include/idol/modeling/robust-optimization/StageDescription.h
+        include/idol/optimizers/robust-optimization/convexification/Convexification.h
+        src/optimizers/robust-optimization/convexification/Convexification.cpp
 )
 
 find_package(OpenMP REQUIRED)

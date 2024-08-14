@@ -1,1 +1,2 @@
 add_example(robust_ccg)
+add_example(robust_convexification)

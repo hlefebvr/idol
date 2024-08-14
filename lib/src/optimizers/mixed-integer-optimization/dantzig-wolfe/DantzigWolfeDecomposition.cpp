@@ -11,7 +11,7 @@
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/NoStabilization.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
 
-idol::OptimizerFactory *idol::DantzigWolfeDecomposition::clone() const {
+idol::DantzigWolfeDecomposition *idol::DantzigWolfeDecomposition::clone() const {
     return new DantzigWolfeDecomposition(*this);
 }
 
@@ -48,14 +48,18 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
         throw Exception("No optimizer for master has been configured.");
     }
 
+    if (!m_ctr_decomposition.has_value()) {
+        throw Exception("No decomposition has been configured.");
+    }
+
     std::unique_ptr<DantzigWolfe::Formulation> dantzig_wolfe_formulation;
     if (m_var_decomposition.has_value()) {
         dantzig_wolfe_formulation = std::make_unique<DantzigWolfe::Formulation>(t_model,
-                                                                                m_ctr_decomposition,
+                                                                                m_ctr_decomposition.value(),
                                                                                 m_var_decomposition.value());
     } else {
         dantzig_wolfe_formulation = std::make_unique<DantzigWolfe::Formulation>(t_model,
-                                                                                m_ctr_decomposition);
+                                                                                m_ctr_decomposition.value());
     }
 
     auto sub_problems_specifications = create_sub_problems_specifications(*dantzig_wolfe_formulation);

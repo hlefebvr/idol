@@ -19,7 +19,7 @@ namespace idol {
 }
 
 class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition> {
-    Annotation<Ctr, unsigned int> m_ctr_decomposition;
+    std::optional<Annotation<Ctr, unsigned int>> m_ctr_decomposition;
     std::optional<Annotation<Var, unsigned int>> m_var_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> m_infeasibility_strategy;
@@ -34,6 +34,8 @@ class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParame
     std::vector<DantzigWolfe::SubProblem> create_sub_problems_specifications(const DantzigWolfe::Formulation &t_dantzig_wolfe_formulation) const;
     static void add_aggregation_constraints(DantzigWolfe::Formulation& t_dantzig_wolfe_formulation, const std::vector<DantzigWolfe::SubProblem>& t_sub_problem_specifications) ;
 public:
+    DantzigWolfeDecomposition() = default;
+
     explicit DantzigWolfeDecomposition(Annotation<Ctr, unsigned int> t_decomposition);
 
     DantzigWolfeDecomposition(Annotation<Ctr, unsigned int> t_ctr_decomposition,
@@ -43,7 +45,7 @@ public:
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    OptimizerFactory *clone() const override;
+    DantzigWolfeDecomposition *clone() const override;
 
     DantzigWolfeDecomposition& with_master_optimizer(const OptimizerFactory& t_optimizer_factory);
 
