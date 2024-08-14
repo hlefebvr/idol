@@ -1410,7 +1410,7 @@ namespace idol {
             stream << "Maximize";
         }
 
-        stream << "\n\t" << t_model.get_obj_expr() << "\nSubject To\n";
+        stream << std::endl << "\t" << t_model.get_obj_expr() << std::endl << "Subject To" << std::endl;
 
         for (const auto &ctr: t_model.ctrs()) {
 
@@ -1444,7 +1444,7 @@ namespace idol {
                     stream << " ?undefined? ";
             }
 
-            stream << row.rhs() << '\n';
+            stream << row.rhs() << std::endl;
         }
 
         std::list<Var> generals, binaries;
@@ -1474,20 +1474,20 @@ namespace idol {
                 generals.emplace_back(var);
             }
 
-            stream << '\n';
+            stream << std::endl;
         }
 
         if (!generals.empty()) {
             stream << "Generals\n";
             for (const auto& var : generals) {
-                stream << '\t' << var.name() << '\n';
+                stream << '\t' << var.name() << std::endl;
             }
         }
 
         if (!binaries.empty()) {
             stream << "Binaries\n";
             for (const auto& var : binaries) {
-                stream << '\t' << var.name() << '\n';
+                stream << '\t' << var.name() << std::endl;
             }
         }
 
