@@ -410,6 +410,8 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
     // TODO: Do this properly
     if (has_optimizer()) {
 
+        optimizer().update();
+
         for (const auto& [var, constant] : old_row.linear()) {
             optimizer().update_mat_coeff(t_ctr, var);
         }
