@@ -27,7 +27,7 @@ endif()
 
 if (@USE_HIGHS@)
 
-    set(HIGHS_DIR "@HIGHS_INSTALL_DIR@")
+    set(HIGHS_DIR "@HIGHS_DIR@")
     find_dependency(Threads REQUIRED)
     find_dependency(HIGHS REQUIRED)
     add_compile_definitions(IDOL_USE_HIGHS)
@@ -36,7 +36,7 @@ endif()
 
 if (@USE_MOSEK@)
 
-    set(MOSEK_DIR "@MOSEK_DIRS@")
+    set(MOSEK_DIR "@MOSEK_DIR@")
     find_dependency(MOSEK REQUIRED)
     add_compile_definitions(IDOL_USE_MOSEK)
 

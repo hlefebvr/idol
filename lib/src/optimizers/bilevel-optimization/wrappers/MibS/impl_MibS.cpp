@@ -6,6 +6,7 @@
 
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h"
 #include "idol/modeling/objects/Versions.h"
+#include "idol/containers/SilentMode.h"
 
 #include <utility>
 #include <OsiSymSolverInterface.hpp>
@@ -68,6 +69,8 @@ void idol::impl::MibS::load_problem_data() {
     auto [matrix, constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
     auto objective = parse_objective();
 
+    matrix.reverseOrdering();
+
     m_mibs.loadProblemData(
             matrix,
             variable_lower_bounds.data(),
@@ -93,13 +96,18 @@ void idol::impl::MibS::solve() {
 
     m_mibs.setSolver(m_osi_solver.get());
 
-    std::string arg = "mibs";
-    int argc = 1;
-    char** argv = new char* [1];
-    argv[0] = arg.data();
+    const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
+
+    int argc = 3;
+    const char* argv[] = {"./mibs",
+                     "-Alps_timeLimit",
+                     time_limit.data()
+    };
+
+    idol::SilentMode silent_mode(!m_logs);
 
     try {
-        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, argv, m_mibs);
+        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs);
 
         if (!m_logs) {
             m_osi_solver->messageHandler()->setLogLevel(0);
