@@ -55,6 +55,12 @@ protected:
 
     void submit_bound(double t_bound);
 
+    double best_bound() const;
+
+    double best_obj() const;
+
+    void terminate();
+
     SideEffectRegistry operator()(
             Optimizers::BranchAndBound<NodeInfoT> *t_parent,
             CallbackEvent t_event,
@@ -67,6 +73,21 @@ protected:
 
     void log_after_termination() override;
 };
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallbackI<NodeInfoT>::terminate() {
+    m_parent->terminate();
+}
+
+template<class NodeInfoT>
+double idol::BranchAndBoundCallbackI<NodeInfoT>::best_obj() const {
+    return m_parent->get_best_obj();
+}
+
+template<class NodeInfoT>
+double idol::BranchAndBoundCallbackI<NodeInfoT>::best_bound() const {
+    return m_parent->get_best_bound();
+}
 
 template<class NodeInfoT>
 void idol::BranchAndBoundCallbackI<NodeInfoT>::log_after_termination() {
@@ -171,6 +192,12 @@ protected:
      const SideEffectRegistry& side_effect_registry() const;
 
     [[nodiscard]] const Timer& time() const;
+
+    double best_bound() const;
+
+    double best_obj() const;
+
+    void terminate();
 private:
     BranchAndBoundCallbackI<NodeInfoT>* m_interface = nullptr;
 
@@ -178,6 +205,24 @@ private:
 
     friend class BranchAndBoundCallbackI<NodeInfoT>;
 };
+
+template<class NodeInfoT>
+double idol::BranchAndBoundCallback<NodeInfoT>::best_obj() const {
+    throw_if_no_interface();
+    return m_interface->best_obj();
+}
+
+template<class NodeInfoT>
+double idol::BranchAndBoundCallback<NodeInfoT>::best_bound() const {
+    throw_if_no_interface();
+    return m_interface->best_bound();
+}
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallback<NodeInfoT>::terminate() {
+    throw_if_no_interface();
+    m_interface->terminate();
+}
 
 template<class NodeInfoT>
 const idol::SideEffectRegistry &idol::BranchAndBoundCallback<NodeInfoT>::side_effect_registry() const {

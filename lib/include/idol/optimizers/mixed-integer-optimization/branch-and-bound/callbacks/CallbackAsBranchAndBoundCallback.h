@@ -60,6 +60,18 @@ public:
                 return m_parent.time();
             }
 
+            double best_obj() const override {
+                return m_parent.best_bound();
+            }
+
+            double best_bound() const override {
+                return m_parent.best_bound();
+            }
+
+            void terminate() override {
+                m_parent.terminate();
+            }
+
         };
 
         Interface m_interface;
