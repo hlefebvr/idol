@@ -129,6 +129,8 @@ void idol::Logs::BranchAndBound::Info<NodeInfoT>::Strategy::initialize() {
 
     std::cout << "Solving root node with " << this->parent().relaxation().optimizer().name() << "...\n" << std::endl;
 
+    auto& branch_and_bound = this->parent();
+    branch_and_bound.relaxation().optimizer().set_param_logs(true);
 }
 
 template<class NodeInfoT>
