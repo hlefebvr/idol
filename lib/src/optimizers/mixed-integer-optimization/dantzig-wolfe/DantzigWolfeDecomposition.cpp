@@ -92,6 +92,7 @@ idol::Optimizer *idol::DantzigWolfeDecomposition::operator()(const Model &t_mode
                                                      use_hard_branching,
                                                      remove_infeasible_column,
                                                      std::move(sub_problems_specifications),
+                                                     m_default_sub_problem_spec,
                                                      m_infeasibility_strategy ? *m_infeasibility_strategy : *default_strategy,
                                                      m_logger_factory ? *m_logger_factory : *default_logger_factory
                                                      );
