@@ -22,7 +22,9 @@ class idol::Optimizers::DantzigWolfeDecomposition : public Algorithm {
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory::Strategy> m_strategy;
     std::unique_ptr<DantzigWolfe::DualPriceSmoothingStabilization::Strategy> m_stabilization;
     std::unique_ptr<Logs::DantzigWolfe::Factory::Strategy> m_logger;
+    std::optional<DantzigWolfe::SubProblem> m_default_sub_problem_spec;
     std::vector<DantzigWolfe::SubProblem> m_sub_problem_specifications;
+    unsigned int m_with_dynamic_sub_problems = true;
     unsigned int m_max_parallel_pricing;
     bool m_use_hard_branching;
     bool m_remove_infeasible_columns;
@@ -35,6 +37,7 @@ public:
                               bool t_use_hard_branching,
                               bool t_remove_infeasible_columns,
                               std::vector<DantzigWolfe::SubProblem>&& t_sub_problem_specifications,
+                              std::optional<DantzigWolfe::SubProblem> t_default_sub_problem_spec,
                               const DantzigWolfe::InfeasibilityStrategyFactory& t_strategy,
                               const Logs::DantzigWolfe::Factory& t_logger_factory);
 
@@ -75,6 +78,7 @@ protected:
     void update_var_lb(const Var &t_var) override;
     void update_var_ub(const Var &t_var) override;
     void update_var_obj(const Var &t_var) override;
+    void add_sub_problem();
 };
 
 #endif //IDOL_OPTIMIZERS_DANTZIGWOLFEDECOMPOSITION_H

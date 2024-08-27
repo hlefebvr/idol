@@ -105,6 +105,8 @@ public:
     unsigned int get_n_present_generators() const;
 
     void load_columns_from_pool();
+
+    void add_sub_problem();
 };
 
 #endif //IDOL_FORMULATION_H

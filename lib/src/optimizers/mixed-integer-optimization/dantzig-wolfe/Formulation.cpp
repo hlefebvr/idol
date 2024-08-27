@@ -762,3 +762,10 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::Solution::Primal &t_pri
 
     return true;
 }
+
+void idol::DantzigWolfe::Formulation::add_sub_problem() {
+    m_sub_problems.emplace_back(m_master.env());
+    m_generation_patterns.emplace_back();
+    m_pools.emplace_back();
+    m_present_generators.emplace_back();
+}
