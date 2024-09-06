@@ -51,11 +51,12 @@ class idol::Constant {
     using MapForLinearTerms = Map<Param, double>;
     using MapForQuadraticTerms = Map<idol::Pair<Param, Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to>;
 
+
     static MapForLinearTerms s_empty_linear_terms;
     static MapForQuadraticTerms s_empty_quadratic_terms;
 
-    //std::unique_ptr<Map<Param, double>> m_linear_terms;
-    //std::unique_ptr<MapForQuadraticTerms> m_quadratic_terms;
+    std::unique_ptr<Map<Param, double>> m_linear_terms;
+    std::unique_ptr<MapForQuadraticTerms> m_quadratic_terms;
     double m_constant = 0.;
 
     void insert_or_add(const Param& t_param, double t_value);
@@ -184,7 +185,7 @@ public:
     /**
      * Returns the number of `{ Param, numerical }` pairs stored inside the `Constant`.
      */
-    unsigned int size() const { return 0; }
+    unsigned int size() const { return m_linear_terms ? m_linear_terms->size() : 0; }
 
     /**
      * Returns true if the `Constant` is a pure numerical, i.e., the `Constant` is not a parametrized constant, false
@@ -196,25 +197,25 @@ public:
      * Returns the linear part of the parametrized expression.
      * @return The linear part of the parametrized expression.
      */
-    auto linear() { return IteratorForward(s_empty_linear_terms); }
+    auto linear() { return IteratorForward(m_linear_terms ? *m_linear_terms : s_empty_linear_terms); }
 
     /**
      * Returns the linear part of the parametrized expression.
      * @return The linear part of the parametrized expression.
      */
-    auto linear() const { return ConstIteratorForward(s_empty_linear_terms); }
+    auto linear() const { return ConstIteratorForward(m_linear_terms ? *m_linear_terms : s_empty_linear_terms); }
 
     /**
      * Returns the quadratic part of the parametrized expression.
      * @return The quadratic part of the parametrized expression.
      */
-    auto quadratic() { return IteratorForward(s_empty_quadratic_terms); }
+    auto quadratic() { return IteratorForward(m_quadratic_terms ? *m_quadratic_terms : s_empty_quadratic_terms); }
 
     /**
      * Returns the quadratic part of the parametrized expression.
      * @return The quadratic part of the parametrized expression.
      */
-    auto quadratic() const { return ConstIteratorForward(s_empty_quadratic_terms); }
+    auto quadratic() const { return ConstIteratorForward(m_quadratic_terms ? *m_quadratic_terms : s_empty_quadratic_terms); }
 
     /**
      * Multiplies the `Constant` by `t_coefficient` (i.e., every `{ Param, numerical }` pairs and the numerical term are multiplied).
