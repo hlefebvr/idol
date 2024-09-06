@@ -24,10 +24,6 @@ struct idol::Pair {
     bool operator==(const Pair& t_rhs) const {
         return std::equal_to<T1>()(first, t_rhs.first) && std::equal_to<T2>()(second, t_rhs.second);
     }
-
-    bool operator<(const Pair& t_rhs) const {
-        return std::less<T1>()(first, t_rhs.first) && std::less<T2>()(second, t_rhs.second);
-    }
 };
 
 #endif //IDOL_PAIR_H

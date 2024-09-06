@@ -49,7 +49,7 @@ struct idol::QuadParam {
 class idol::Constant {
 
     using MapForLinearTerms = Map<Param, double>;
-    using MapForQuadraticTerms = Map<idol::Pair<Param, Param>, double, idol::impl::symmetric_pair_less>;
+    using MapForQuadraticTerms = Map<idol::Pair<Param, Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to>;
 
 
     static MapForLinearTerms s_empty_linear_terms;

@@ -23,22 +23,24 @@
 namespace idol {
 
     namespace impl {
-        template<class, class, class>
+        template<class, class, class, class>
         class AbstractExpr;
     }
 
     template<class Key,
             class IteratorOutputT,
-            class Compare
+            class Hash,
+            class EqualTo
     >
     class AbstractExpr;
 }
 
 template<class Key,
         class IteratorOutputT,
-        class Compare>
+        class Hash,
+        class EqualTo>
 class idol::impl::AbstractExpr {
-    using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Compare>;
+    using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
 protected:
     virtual void set(const Key& t_key, Constant&& t_coefficient);
@@ -58,7 +60,7 @@ public:
      *
      * @param t_src The source object to copy.
      */
-    AbstractExpr(const AbstractExpr<Key, IteratorOutputT, Compare>& t_src);
+    AbstractExpr(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_src);
 
     /**
      * Move constructor.
@@ -69,7 +71,7 @@ public:
      *
      * @param t_src
      */
-    AbstractExpr(AbstractExpr<Key, IteratorOutputT, Compare>&& t_src) noexcept = default;
+    AbstractExpr(AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>&& t_src) noexcept = default;
 
     /**
      * Assignment operator.
@@ -79,7 +81,7 @@ public:
      * @param t_src The source object to assign.
      * @return The object itself.
      */
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator=(const AbstractExpr<Key, IteratorOutputT, Compare>& t_src);
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_src);
 
     /**
      * Assignment move operator.
@@ -90,7 +92,7 @@ public:
      * @param t_src The source object to assign.
      * @return The object itself.
      */
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator=(AbstractExpr<Key, IteratorOutputT, Compare>&& t_src) noexcept = default;
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator=(AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>&& t_src) noexcept = default;
 
     /**
      * Adds each term of `t_rhs` to the expression.
@@ -100,7 +102,7 @@ public:
      * @param t_rhs the expression whose terms are to be added up.
      * @return The object itself.
      */
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator+=(const AbstractExpr<Key, IteratorOutputT, Compare>& t_rhs);
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator+=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_rhs);
 
     /**
      * Subtracts each term of `t_rhs` to the expression.
@@ -110,7 +112,7 @@ public:
      * @param t_rhs The object whose terms are to be subtracted.
      * @return The object itself.
      */
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator-=(const AbstractExpr<Key, IteratorOutputT, Compare>& t_rhs);
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator-=(const AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& t_rhs);
 
     /**
      * Multiplies every term of the expression by `t_factor`.
@@ -120,9 +122,9 @@ public:
      * @param t_factor The multiplying factor.
      * @return The object itself.
      */
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator*=(double t_factor);
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator*=(double t_factor);
 
-    AbstractExpr<Key, IteratorOutputT, Compare>& operator/=(double t_factor);
+    AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>& operator/=(double t_factor);
 
     /**
      * Returns the size of the expression (i.e., number of non-zero entries which are currently stored).
@@ -166,8 +168,8 @@ public:
     long gcd() const;
 };
 
-template<class Key, class IteratorOutputT, class Compare>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::internal_fix(const idol::Solution::Primal &t_primals) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::internal_fix(const idol::Solution::Primal &t_primals) {
 
     for (auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value() = ptr_to_value->value().fix(t_primals);
@@ -175,9 +177,9 @@ void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::internal_fix(const
 
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
 
     for (const auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value().multiply_with_precision_by_power_of_10(t_exponent, t_n_digits);
@@ -186,9 +188,9 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::multiply_with_precision
     return *this;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
 
     for (const auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value().multiply_with_precision(t_factor, t_n_digits);
@@ -197,8 +199,8 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::multiply_with_precision
     return *this;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-long idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::gcd() const {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+long idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::gcd() const {
     long result = 0;
     for (const auto& [key, ptr_to_value] : m_map) {
         result = std::gcd(result, (long) ptr_to_value->value().as_numerical());
@@ -206,15 +208,15 @@ long idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::gcd() const {
     return result;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::round() {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::round() {
     for (const auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value().round();
     }
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Compare> &t_src) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::AbstractExpr(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
 
     for (const auto& [key, ptr_to_value] : t_src.m_map) {
         m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
@@ -222,9 +224,9 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::AbstractExpr(const impl
 
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare> &
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Compare> &t_src) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_src) {
 
     if (this == &t_src) {
         return *this;
@@ -238,9 +240,9 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator=(const impl::A
     return *this;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare> &
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Compare> &t_rhs) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
@@ -258,10 +260,10 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator+=(const impl::
 
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare> &
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator-=(
-        const impl::AbstractExpr<Key, IteratorOutputT, Compare> &t_rhs) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
+        const impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &t_rhs) {
 
     for (const auto& [key, ptr_to_value] : t_rhs.m_map) {
         auto it = m_map.find(key);
@@ -278,9 +280,9 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator-=(
 
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare> &
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator*=(double t_factor) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator*=(double t_factor) {
 
     if (equals(t_factor, 0., Tolerance::Sparsity)) {
         m_map.clear();
@@ -294,9 +296,9 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator*=(double t_fac
     return *this;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare> &
-idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator/=(double t_factor) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> &
+idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator/=(double t_factor) {
 
     if (equals(t_factor, 1., Tolerance::Sparsity)) {
         return *this;
@@ -309,8 +311,8 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::operator/=(double t_fac
     return *this;
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::set(const Key &t_key, Constant &&t_coefficient) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
 
     if (t_coefficient.is_zero()) {
         m_map.erase(t_key);
@@ -327,22 +329,22 @@ void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::set(const Key &t_k
 
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-const idol::Constant &idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::get(const Key &t_key) const {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+const idol::Constant &idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
     return it == m_map.end() ? Constant::Zero : it->second->value();
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::remove(const Key &t_key) {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::remove(const Key &t_key) {
     m_map.erase(t_key);
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-class idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::References {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+class idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References {
 
-    friend class impl::AbstractExpr<Key, IteratorOutputT, Compare>;
-    using ParentT = impl::AbstractExpr<Key, IteratorOutputT, Compare>;
+    friend class impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
+    using ParentT = impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>;
 
     ParentT* m_parent;
 
@@ -387,16 +389,16 @@ public:
     }
 };
 
-template<class Key, class IteratorOutputT, class Compare>
-typename idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::References idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::refs() {
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+typename idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::References idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::refs() {
     return References(this);
 }
 
-template<class Key, class IteratorOutputT, class Compare>
-class idol::impl::AbstractExpr<Key, IteratorOutputT, Compare>::const_iterator {
-    typename AbstractExpr<Key, IteratorOutputT, Compare>::MapType::const_iterator m_it;
+template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+class idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::const_iterator {
+    typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator m_it;
 public:
-    explicit const_iterator(const typename AbstractExpr<Key, IteratorOutputT, Compare>::MapType::const_iterator& t_it) : m_it(t_it) {}
+    explicit const_iterator(const typename AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::MapType::const_iterator& t_it) : m_it(t_it) {}
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
@@ -405,9 +407,10 @@ public:
 
 template<class Key,
         class IteratorOutputT = idol::Pair<const Key&, const idol::Constant&>,
-        class Compare = idol::impl::less<Key>
+        class Hash = std::hash<Key>,
+        class EqualTo = std::equal_to<Key>
 >
-class idol::AbstractExpr : public impl::AbstractExpr<Key, IteratorOutputT, Compare> {
+class idol::AbstractExpr : public impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo> {
 public:
     AbstractExpr() = default;
     AbstractExpr(const AbstractExpr& t_src) = default;
@@ -419,8 +422,8 @@ public:
 
 namespace idol {
 
-    template<class Key, class IteratorOutputT, class Compare>
-    std::ostream &operator<<(std::ostream &t_os, const AbstractExpr <Key, IteratorOutputT, Compare> &t_expr) {
+    template<class Key, class IteratorOutputT, class Hash, class EqualTo>
+    std::ostream &operator<<(std::ostream &t_os, const AbstractExpr <Key, IteratorOutputT, Hash, EqualTo> &t_expr) {
 
         if (t_expr.empty()) {
             return t_os << "0";
