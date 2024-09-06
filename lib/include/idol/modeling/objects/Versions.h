@@ -9,6 +9,7 @@
 #include <optional>
 #include <any>
 #include "idol/errors/Exception.h"
+#include "idol/containers/Optional.h"
 #include "idol/modeling/models/Model.h"
 
 namespace idol {
@@ -26,10 +27,10 @@ template<class T>
 class idol::Versions {
     static const unsigned int s_buffer_size = 10;
 
-    std::vector<std::optional<T>> m_versions; /// Every versions are stored here, the index corresponds to the id of the model to which the version is associated
+    std::vector<Optional<T>> m_versions; /// Every versions are stored here, the index corresponds to the id of the model to which the version is associated
     std::vector<std::any> m_annotations;
 public:
-    template<class ...ArgsT> explicit Versions(ArgsT&& ...t_args) : m_versions({ std::make_optional<T>(std::forward<ArgsT&&>(t_args)...) }) {}
+    template<class ...ArgsT> explicit Versions(ArgsT&& ...t_args) : m_versions({ idol::make_optional<T>(std::forward<ArgsT&&>(t_args)...) }) {}
 
     Versions(const Versions&) = delete;
     Versions(Versions&&) noexcept = delete;
@@ -72,12 +73,12 @@ const ValueT* idol::Versions<T>::get_annotation(unsigned int t_index) const {
 
 template<class T>
 const T &idol::Versions<T>::get_default() const {
-    return m_versions.front().value();
+    return *m_versions.front();
 }
 
 template<class T>
 T &idol::Versions<T>::get_default() {
-    return m_versions.front().value();
+    return *m_versions.front();
 }
 
 template<class T>
