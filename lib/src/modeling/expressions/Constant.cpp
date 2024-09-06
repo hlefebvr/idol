@@ -8,7 +8,7 @@
 
 idol::Constant idol::Constant::Zero;
 idol::Map<idol::Param, double> idol::Constant::s_empty_linear_terms {};
-idol::Map<idol::Pair<idol::Param, idol::Param>, double, idol::impl::symmetric_pair_hash, idol::impl::symmetric_pair_equal_to> idol::Constant::s_empty_quadratic_terms {};
+idol::Map<idol::Pair<idol::Param, idol::Param>, double, idol::impl::symmetric_pair_less> idol::Constant::s_empty_quadratic_terms {};
 
 idol::Constant::Constant(const idol::Constant &t_src)
     : m_constant(t_src.m_constant),

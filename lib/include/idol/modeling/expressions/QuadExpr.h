@@ -14,8 +14,7 @@ namespace idol {
 
     template<class Key1,
             class Key2,
-            class Hash,
-            class EqualTo
+            class Compare
     >
     class QuadExpr;
 }
@@ -31,21 +30,16 @@ struct idol::QuadTerm {
 
 template<class Key1 = idol::Var,
         class Key2 = Key1,
-        class Hash = std::conditional_t<
-                std::is_same_v<Key1, Key2>,
-                idol::impl::symmetric_pair_hash,
-                std::hash<idol::Pair<Key1, Key2>>
-            >,
-        class EqualTo = std::conditional_t<
-                std::is_same_v<Key1, Key2>,
-                idol::impl::symmetric_pair_equal_to,
-                std::equal_to<idol::Pair<Key1, Key2>>
-            >
+        class Compare = std::conditional_t<
+                    std::is_same_v<Key1, Key2>,
+                    idol::impl::symmetric_pair_less,
+                    idol::impl::less<::idol::Pair<Key1, Key2>>
+                >
         >
-class idol::QuadExpr : public AbstractExpr<idol::Pair<Key1, Key2>, QuadTerm<Key1, Key2>, Hash, EqualTo> {
+class idol::QuadExpr : public AbstractExpr<idol::Pair<Key1, Key2>, QuadTerm<Key1, Key2>, Compare> {
     friend class Matrix;
 
-    using ParentT = AbstractExpr<idol::Pair<Key1, Key2>, QuadTerm<Key1, Key2>, Hash, EqualTo>;
+    using ParentT = AbstractExpr<idol::Pair<Key1, Key2>, QuadTerm<Key1, Key2>, Compare>;
     using ParentT::get;
     using ParentT::set;
 public:
@@ -69,33 +63,33 @@ public:
     QuadExpr fix(const Solution::Primal& t_primals) const;
 };
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Key1 &t_a, const Key2 &t_b) {
+template<class Key1, class Key2, class Compare>
+idol::QuadExpr<Key1, Key2, Compare>::QuadExpr(const Key1 &t_a, const Key2 &t_b) {
     set(t_a, t_b, 1);
 }
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(Constant &&t_factor, const Key1 &t_a, const Key2 &t_b) {
+template<class Key1, class Key2, class Compare>
+idol::QuadExpr<Key1, Key2, Compare>::QuadExpr(Constant &&t_factor, const Key1 &t_a, const Key2 &t_b) {
     set(t_a, t_b, std::move(t_factor));
 }
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Constant &t_factor, const Key1 &t_a, const Key2 &t_b) {
+template<class Key1, class Key2, class Compare>
+idol::QuadExpr<Key1, Key2, Compare>::QuadExpr(const Constant &t_factor, const Key1 &t_a, const Key2 &t_b) {
     set(t_a, t_b, Constant(t_factor));
 }
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-void idol::QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2& t_b, Constant t_coefficient) {
+template<class Key1, class Key2, class Compare>
+void idol::QuadExpr<Key1, Key2, Compare>::set(const Key1 &t_a, const Key2& t_b, Constant t_coefficient) {
     return set({ t_a, t_b }, std::move(t_coefficient));
 }
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-const idol::Constant &idol::QuadExpr<Key1, Key2, Hash, EqualTo>::get(const Key1 &t_a, const Key2 &t_b) const {
+template<class Key1, class Key2, class Compare>
+const idol::Constant &idol::QuadExpr<Key1, Key2, Compare>::get(const Key1 &t_a, const Key2 &t_b) const {
     return get({ t_a, t_b });
 }
 
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo> idol::QuadExpr<Key1, Key2, Hash, EqualTo>::fix(const Solution::Primal& t_primals) const {
+template<class Key1, class Key2, class Compare>
+idol::QuadExpr<Key1, Key2, Compare> idol::QuadExpr<Key1, Key2, Compare>::fix(const Solution::Primal& t_primals) const {
     auto result = *this;
     result.internal_fix(t_primals);
     return result;

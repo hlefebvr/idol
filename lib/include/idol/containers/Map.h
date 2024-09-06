@@ -8,6 +8,7 @@
 
 #ifdef IDOL_USE_ROBINHOOD
 #include <robin_hood.h>
+#include <map>
 
 #else
 #include <unordered_map>
@@ -15,9 +16,26 @@
 
 #include "Pair.h"
 
+#include "idol/modeling/variables/Var.h"
+#include "idol/modeling/constraints/Ctr.h"
+
 // Implements hash for pairs (non-symmetric by default (std::hash<idol::Pair<T, U>>) and symmetric impls)
 // See https://youngforest.github.io/2020/05/27/best-implement-to-use-pair-as-key-to-std-unordered-map-in-C/
 namespace idol::impl {
+
+    template<class T> struct less : std::less<T> {};
+
+    template<> struct less<Var> {
+        bool operator()(const Var& t_a, const Var& t_b) const {
+            return t_a.id() < t_b.id();
+        }
+    };
+
+    template<> struct less<Ctr> {
+        bool operator()(const Ctr& t_a, const Ctr& t_b) const {
+            return t_a.id() < t_b.id();
+        }
+    };
 
 #ifdef IDOL_USE_ROBINHOOD
     template<class T, class EnableT = void> using hash = robin_hood::hash<T, EnableT>;
@@ -66,6 +84,15 @@ namespace idol::impl {
         }
     };
 
+    struct symmetric_pair_less {
+        template<class Key>
+        bool operator()(const idol::Pair<Key, Key>& t_a, const idol::Pair<Key, Key>& t_b) const {
+            const auto a = less<Key>()(t_a.first, t_a.second) ? t_a : idol::Pair(t_a.second, t_a.first);
+            const auto b = less<Key>()(t_b.first, t_b.second) ? t_b : idol::Pair(t_b.second, t_b.first);
+            return less<Key>()(a.first, b.first) && less<Key>()(a.second, b.second);
+        }
+    };
+
 }
 
 template<class Key1, class Key2>
@@ -79,6 +106,7 @@ struct std::hash<idol::Pair<Key1, Key2>> {
 
 namespace idol {
 
+    /*
     template<
             class Key,
             class T,
@@ -86,7 +114,14 @@ namespace idol {
             class KeyEqual = std::equal_to<Key>
     >
     using Map = robin_hood::unordered_flat_map<Key, T, Hash, KeyEqual>;
+    */
 
+    template<
+            class Key1,
+            class Key2,
+            class Compare = impl::less<Key1>
+    >
+    using Map = std::map<Key1, Key2, Compare>;
 }
 
 #else
