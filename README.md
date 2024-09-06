@@ -10,12 +10,9 @@
 
 ![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png)
 
-Idol is a powerful and flexible library meticulously crafted for developing new mathematical optimization algorithms.
+Idol is a C++ library for mathematical optimization and complex decision making. 
 
-It is built to provide researchers with a versatile toolkit to construct, tweak, and experiment with state-of-the-art
-methods. Whether you're exploring Branch-and-Price,
-Benders decomposition, Column-and-Constraint generation for adjustable robust problems,
-or any other cutting-edge method, idol is your trusted companion.
+It is designed to help you build new algorithms easily for solving more and more challenging problems. It is a versatile and powerful tool that can be used to solve a wide range of optimization problems, including mixed-integer linear programming (MILP), quadratically constrained problems (MIQCQP and MIQP), bilevel problems (BO), robust optimization problems (RO and ARO) and many more.
 
 - [Documentation](#Documentation)
 - [Using idol for Research?](#using-idol-for-research)
