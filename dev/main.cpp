@@ -35,6 +35,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h"
+#include "idol/modeling/new-matrix/SparseMatrix.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -120,93 +121,16 @@ count_variables_and_constraints(const Model& t_model,
 
 int main(int t_argc, char** t_argv) {
 
-    Env env;
+    SparseMatrix matrix(4);
 
-    Model model(env);
+    matrix.add_major({ 0, 1 }, { 2, 3 });
+    matrix.add_major({ 0, 3 }, { 8, 7 });
+    matrix.add_major({ 1, 2 }, { .5, .25 });
+    matrix.add_major({ 2, 3 }, { 1, 1 });
 
-    const auto x = model.add_vars(Dim<1>(10), -1., 1., Continuous, "x");
+    std::cout << matrix << std::endl;
 
-    model.add_ctr(x[0] == 0, "c1");
-    auto c = model.add_ctr(idol_Sum(i, Range(10), i * x[i]) <= 5., "c2");
-
-    model.use(Gurobi());
-
-    model.write("model_before.lp");
-
-    model.set_ctr_row(c, Row(idol_Sum(i, Range(10), (i % 2) * x[i]), 4));
-
-    model.write("model_after.lp");
-
-    /*
-
-    if (t_argc != 4) {
-        throw Exception("Expected arguments: <path_to_file> <stabilization=0|1> <time_limit>");
-    }
-
-    const std::string instance_file = t_argv[1];
-    const bool use_stabilization = std::stoi(t_argv[2]);
-    const double time_limit = std::stod(t_argv[3]);
-
-    Env env;
-
-    auto [model,
-          var_annotation,
-          ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, instance_file);
-
-    const auto [
-            n_lower_level_vars,
-            n_upper_level_vars,
-            n_lower_level_ctrs,
-            n_upper_level_ctrs
-            ] = count_variables_and_constraints(model, var_annotation, ctr_annotation);
-
-    std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
-    if (use_stabilization) {
-        stabilization.reset(Bilevel::CCGStabilizers::TrustRegion().clone());
-    } else {
-        stabilization.reset(Bilevel::CCGStabilizers::NoStabilization().clone());
-    }
-
-    model.use(
-                Bilevel::ColumnAndConstraintGeneration(var_annotation,
-                                                      ctr_annotation,
-                                                      lower_level_objective)
-                    .with_master_optimizer(Gurobi())
-                    .with_lower_level_optimizer(Gurobi())
-                    .with_stabilization(*stabilization)
-                    .with_time_limit(time_limit)
-                    .with_logs(true)
-            );
-
-    model.update();
-
-    model.optimize();
-
-    const auto& optimizer = model.optimizer().as<Optimizers::Bilevel::ColumnAndConstraintGeneration>();
-    const auto& ro_optimizer = optimizer.two_stage_robust_model().optimizer().as<Optimizers::Robust::ColumnAndConstraintGeneration>();
-
-    std::cout
-            << "result,"
-            << instance_file << ','
-            << model.vars().size() << ','
-            << model.ctrs().size() << ','
-            << n_lower_level_vars << ','
-            << n_upper_level_vars << ','
-            << n_lower_level_ctrs << ','
-            << n_upper_level_ctrs << ','
-            << ro_optimizer.uncertainty_set().vars().size() << ','
-            << ro_optimizer.uncertainty_set().ctrs().size() << ','
-            << use_stabilization << ','
-            << model.optimizer().time().count() << ','
-            << model.get_status() << ','
-            << model.get_reason() << ','
-            << model.get_best_bound() << ','
-            << model.get_best_obj() << ','
-            << optimizer.n_iterations() << ','
-            << std::endl;
-
-     */
+    std::cout << matrix.get_coefficient(2, 2) << std::endl;
 
     return 0;
 }
