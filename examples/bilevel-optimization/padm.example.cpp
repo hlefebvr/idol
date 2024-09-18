@@ -6,7 +6,8 @@
 #include <idol/modeling/bilevel-optimization/LowerLevelDescription.h>
 #include <idol/modeling/models/KKT.h>
 #include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
-#include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/AlternatingDirectionMethod.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -40,17 +41,25 @@ int main(int t_argc, const char** t_argv) {
         var.set(decomposition, var.id() == delta.id());
     }
 
+    Annotation<Ctr, bool> penalize(env, "penalize");
+    for (const auto& ctr : single_level.ctrs()) {
+        ctr.set(penalize, true);
+    }
+
     single_level.use(
-        PADM(decomposition)
-            .with_default_sub_problem_spec(
-                PADM::SubProblem()
-                    .with_optimizer(Gurobi())
-            )
+            AlternatingDirectionMethod(decomposition)
+                .with_penalization(penalize)
+                .with_default_sub_problem_spec(
+            AlternatingDirection::SubProblem()
+                            .with_optimizer(Gurobi())
+                )
     );
 
     single_level.optimize();
 
-    //std::cout << save_primal(single_level) << std::endl;
+    std::cout << single_level.get_status() << std::endl;
+
+    std::cout << save_primal(single_level) << std::endl;
 
     return 0;
 }
