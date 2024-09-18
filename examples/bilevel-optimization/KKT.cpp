@@ -291,3 +291,21 @@ void idol::Reformulators::KKT::create_dual_objective() {
     }
 
 }
+
+void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination) const {
+    add_primal_variables(t_destination);
+    add_primal_constraints(t_destination);
+    add_dual_variables(t_destination);
+    add_dual_constraints(t_destination);
+    add_complementarity_constraints(t_destination);
+    add_leader_objective(t_destination);
+}
+
+void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_destination) const {
+    add_primal_variables(t_destination);
+    add_primal_constraints(t_destination);
+    add_dual_variables(t_destination);
+    add_dual_constraints(t_destination);
+    add_strong_duality_constraint(t_destination);
+    add_leader_objective(t_destination);
+}

@@ -55,25 +55,19 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(follower_c3);
     description.make_follower_ctr(follower_c4);
 
-    Reformulators::KKT kkt(high_point_relaxation, description);
+    Reformulators::KKT reformulator(high_point_relaxation, description);
 
-    Model reformulation(env);
-    kkt.add_primal_variables(reformulation);
-    kkt.add_primal_constraints(reformulation);
-    kkt.add_dual_variables(reformulation);
-    kkt.add_dual_constraints(reformulation);
-    kkt.add_complementarity_constraints(reformulation);
-    kkt.add_strong_duality_constraint(reformulation);
-    kkt.add_leader_objective(reformulation);
+    Model single_level(env);
+    reformulator.add_kkt_reformulation(single_level);
 
     std::cout << high_point_relaxation << std::endl;
-    std::cout << reformulation << std::endl;
+    std::cout << single_level << std::endl;
 
-    reformulation.use(Gurobi().with_logs(true).with_presolve(false));
+    single_level.use(Gurobi());
 
-    reformulation.optimize();
+    single_level.optimize();
 
-    std::cout << save_primal(reformulation) << std::endl;
+    std::cout << save_primal(single_level) << std::endl;
 
     return 0;
 }

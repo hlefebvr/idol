@@ -41,6 +41,9 @@ public:
     void add_complementarity_constraints(Model& t_destination) const;
     void add_strong_duality_constraint(Model& t_destination) const;
     void add_leader_objective(Model& t_destination) const;
+
+    void add_kkt_reformulation(Model& t_destination) const;
+    void add_strong_duality_reformulation(Model& t_destination) const;
 };
 
 
