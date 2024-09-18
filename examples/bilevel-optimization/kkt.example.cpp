@@ -7,7 +7,7 @@
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "KKT.h"
+#include "idol/modeling/models/KKT.h"
 
 using namespace idol;
 

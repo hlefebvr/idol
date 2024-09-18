@@ -2,7 +2,7 @@
 // Created by henri on 30.08.24.
 //
 
-#include "KKT.h"
+#include "idol/modeling/models/KKT.h"
 #include "idol/modeling/expressions/operations/operators.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,

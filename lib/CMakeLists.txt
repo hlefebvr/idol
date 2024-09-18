@@ -248,6 +248,8 @@ add_library(idol STATIC
         include/idol/modeling/robust-optimization/StageDescription.h
         include/idol/optimizers/robust-optimization/convexification/Convexification.h
         src/optimizers/robust-optimization/convexification/Convexification.cpp
+        include/idol/modeling/models/KKT.h
+        src/modeling/models/KKT.cpp
 )
 
 find_package(OpenMP REQUIRED)
