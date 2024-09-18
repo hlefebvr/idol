@@ -6,71 +6,58 @@
 #include "idol/modeling/expressions/operations/operators.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,
-                              const std::function<bool(const Var &)> &t_indicator_for_vars,
-                              const std::function<bool(const Ctr &)> &t_indicator_for_ctrs)
-                              : m_src_model(t_src_model),
-                                m_indicator_for_vars(t_indicator_for_vars),
-                                m_indicator_for_ctrs(t_indicator_for_ctrs)
-{
-
-    create_primal_variables();
-    create_primal_constraints();
+                              const idol::Bilevel::LowerLevelDescription &t_lower_level_description)
+    : m_src_model(t_src_model), m_description(t_lower_level_description) {
 
     create_dual_variables_for_constraints();
-    // create_dual_variables_for_upper_bounds();
-    // create_dual_variables_for_lower_bounds();
-    // create_dual_constraints();
-
-    // create_complementary_for_constraints();
-    // create_complementary_for_upper_bounds();
-    // create_complementary_for_lower_bounds();
+    create_dual_variables_for_bounds();
+    create_dual_constraints();
+    create_complementarity_constraints();
+    create_dual_objective();
 
 }
 
-void idol::Reformulators::KKT::create_primal_variables() {
-
-    const unsigned int n_variables = m_src_model.vars().size();
-    auto& env = m_src_model.env();
-    m_primal_vars.resize(n_variables);
+void idol::Reformulators::KKT::add_primal_variables(idol::Model &t_destination) const {
 
     for (const auto& var : m_src_model.vars()) {
 
-        if (!m_indicator_for_vars(var)) {
+        if (m_description.is_follower(var)) {
+            t_destination.add(var, TempVar(-Inf, Inf, Continuous, Column()));
             continue;
         }
 
-        const unsigned int index = m_src_model.get_var_index(var);
-
-        if (m_keep_primal_objects) {
-            m_primal_vars[index] = var;
-            continue;
-        }
-
-        m_primal_vars[index] = Var(env, 0, Inf, Continuous, "primal_" + var.name());
-
+        const auto lb = m_src_model.get_var_lb(var);
+        const auto ub = m_src_model.get_var_ub(var);
+        const auto type = m_src_model.get_var_type(var);
+        t_destination.add(var, TempVar(lb, ub, type, Column()));
     }
 
 }
 
-void idol::Reformulators::KKT::create_primal_constraints() {
-
-    const unsigned int n_constraints = m_src_model.ctrs().size();
-    auto& env = m_src_model.env();
-    m_primal_ctrs.resize(n_constraints);
+void idol::Reformulators::KKT::add_primal_constraints(Model &t_destination) const {
 
     for (const auto& ctr : m_src_model.ctrs()) {
+        const auto& row = m_src_model.get_ctr_row(ctr);
+        const auto type = m_src_model.get_ctr_type(ctr);
+        t_destination.add(ctr, TempCtr(Row(row), type));
+    }
 
-        if (!m_indicator_for_ctrs(ctr)) {
+    for (const auto& var : m_src_model.vars()) {
+
+        if (m_description.is_leader(var)) {
             continue;
         }
 
-        if (m_keep_primal_objects) {
-            m_primal_ctrs[m_src_model.get_ctr_index(ctr)] = ctr;
-            continue;
+        const auto lb = m_src_model.get_var_lb(var);
+        const auto ub = m_src_model.get_var_ub(var);
+
+        if (!is_pos_inf(ub)) {
+            t_destination.add_ctr(var <= ub, "ub_" + var.name());
         }
 
-        const unsigned int index = m_src_model.get_ctr_index(ctr);
-        m_primal_ctrs[index] = Ctr(env, TempCtr(), "primal_" + ctr.name());
+        if (!is_neg_inf(lb)) {
+            t_destination.add_ctr(var >= lb, "lb_" + var.name());
+        }
 
     }
 
@@ -78,63 +65,74 @@ void idol::Reformulators::KKT::create_primal_constraints() {
 
 void idol::Reformulators::KKT::create_dual_variables_for_constraints() {
 
-    const unsigned int n_constraints = m_src_model.ctrs().size();
     auto& env = m_src_model.env();
-
-    m_dual_vars_for_constraints.resize(n_constraints);
+    m_dual_variables_for_constraints.resize(m_src_model.ctrs().size());
 
     for (const auto& ctr : m_src_model.ctrs()) {
 
-        if (!m_indicator_for_ctrs(ctr)) {
+        if (m_description.is_leader(ctr)) {
             continue;
         }
 
-        const unsigned int index = m_src_model.get_ctr_index(ctr);
-        m_dual_vars_for_constraints[index] = Var(env, 0, idol::Inf, idol::Continuous, "dual_" + ctr.name());
+        const auto type = m_src_model.get_ctr_type(ctr);
+        const auto index = m_src_model.get_ctr_index(ctr);
+
+        double lb, ub;
+        switch (type) {
+            case LessOrEqual: lb = -Inf; ub = 0; break;
+            case Equal: lb = -Inf; ub = Inf; break;
+            case GreaterOrEqual: lb = 0; ub = Inf; break;
+        }
+
+        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, "dual_" + ctr.name());
 
     }
 
 }
 
-const idol::Var &idol::Reformulators::KKT::to_destination_space(const idol::Var &t_src_var) const {
-    return m_primal_vars[m_src_model.get_var_index(t_src_var)].value();
-}
+void idol::Reformulators::KKT::create_dual_variables_for_bounds() {
 
-const idol::Var &idol::Reformulators::KKT::dual(const idol::Ctr &t_ctr) const {
-    return m_dual_vars_for_constraints[m_src_model.get_ctr_index(t_ctr)].value();
-}
+    auto& env = m_src_model.env();
+    m_dual_variables_for_lower_bounds.resize(m_src_model.vars().size());
+    m_dual_variables_for_upper_bounds.resize(m_src_model.vars().size());
 
-void idol::Reformulators::KKT::add_dual_variables(Model& t_destination) {
+    for (const auto& var : m_src_model.vars()) {
 
-    add_variables(t_destination, m_dual_vars_for_constraints);
-    add_variables(t_destination, m_dual_vars_for_upper_bounds);
-    add_variables(t_destination, m_dual_vars_for_lower_bounds);
-
-}
-
-void idol::Reformulators::KKT::add_primal_variables(idol::Model &t_destination) {
-
-    for (const auto& opt_var : m_primal_vars) {
-
-        if (!opt_var.has_value()) {
+        if (m_description.is_leader(var)) {
             continue;
         }
 
-        const auto& var = opt_var.value();
-        const double lb = m_src_model.get_var_lb(var);
-        const double ub = m_src_model.get_var_ub(var);
-        const auto type = m_src_model.get_var_type(var);
+        const auto lb = m_src_model.get_var_lb(var);
+        const auto ub = m_src_model.get_var_ub(var);
+        const auto index = m_src_model.get_var_index(var);
 
-        t_destination.add(var, TempVar(lb, ub, type, Column()));
+        if (!is_pos_inf(ub)) {
+            m_dual_variables_for_upper_bounds[index] = Var(env, -Inf, 0, Continuous, "dual_ub_" + var.name());
+        }
+
+        if (!is_neg_inf(lb)) {
+            m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, "dual_lb_" + var.name());
+        }
 
     }
 
 }
 
-void
-idol::Reformulators::KKT::add_variables(idol::Model &t_destination, const std::vector<std::optional<Var>> &t_vars) {
+void idol::Reformulators::KKT::add_dual_variables(idol::Model &t_destination) const {
 
-    for (const auto& opt_var : t_vars) {
+    for (const auto& opt_var : m_dual_variables_for_constraints) {
+        if (opt_var.has_value()) {
+            t_destination.add(opt_var.value());
+        }
+    }
+
+    for (const auto& opt_var : m_dual_variables_for_lower_bounds) {
+        if (opt_var.has_value()) {
+            t_destination.add(opt_var.value());
+        }
+    }
+
+    for (const auto& opt_var : m_dual_variables_for_upper_bounds) {
         if (opt_var.has_value()) {
             t_destination.add(opt_var.value());
         }
@@ -142,10 +140,106 @@ idol::Reformulators::KKT::add_variables(idol::Model &t_destination, const std::v
 
 }
 
-void
-idol::Reformulators::KKT::add_constraints(idol::Model &t_destination, const std::vector<std::optional<Ctr>> &t_ctrs) {
+void idol::Reformulators::KKT::create_dual_constraints() {
 
-    for (const auto& opt_ctr : t_ctrs) {
+    m_dual_constraints.resize(m_src_model.vars().size());
+
+    for (const auto& var : m_src_model.vars()) {
+
+        if (m_description.is_leader(var)) {
+            continue;
+        }
+
+        create_dual_constraint(var);
+
+    }
+
+}
+
+void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
+
+    auto& env = m_src_model.env();
+    const auto index = m_src_model.get_var_index(t_var);
+    const auto& col = m_src_model.get_var_column(t_var);
+
+    Expr expr;
+
+    for (const auto& [ctr, coeff] : col.linear()) {
+
+        if (m_description.is_leader(ctr)) {
+            continue;
+        }
+
+        const auto index_ctr = m_src_model.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
+        expr += coeff * dual_var;
+
+    }
+
+    for (const auto& [ctr, var, coeff] : col.quadratic()) {
+
+        const auto index_ctr = m_src_model.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
+        expr += coeff * dual_var * var;
+
+    }
+
+    if (const auto dual_var = m_dual_variables_for_lower_bounds[index]; dual_var.has_value()) {
+        expr += t_var * dual_var.value();
+    }
+
+    if (const auto dual_var = m_dual_variables_for_upper_bounds[index]; dual_var.has_value()) {
+        expr += t_var * dual_var.value();
+    }
+
+    Expr obj = m_description.follower_obj().linear().get(t_var);
+
+    m_dual_constraints[index] = Ctr(env, expr == obj, "dual_" + t_var.name());
+
+}
+
+void idol::Reformulators::KKT::create_complementarity_constraints() {
+
+    m_complementarity_constraints.resize(m_src_model.ctrs().size());
+    auto& env = m_src_model.env();
+
+    for (const auto& ctr : m_src_model.ctrs()) {
+
+        if (m_description.is_leader(ctr)) {
+            continue;
+        }
+
+        const auto type = m_src_model.get_ctr_type(ctr);
+
+        if (type == Equal) {
+            continue;
+        }
+
+        const auto index = m_src_model.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index];
+        const auto& row = m_src_model.get_ctr_row(ctr);
+
+        if (!row.quadratic().empty()) {
+            throw Exception("Cannot write complementarity constraints for quadratic constraints.");
+        }
+
+        Expr expr;
+
+        for (const auto& [var, constant] : row.linear()) {
+            expr += constant.as_numerical() * var * dual_var;
+        }
+
+        expr -= row.rhs() * dual_var;
+
+        m_complementarity_constraints[index] = Ctr(env, expr == 0, "complementarity_" + ctr.name());
+
+    }
+
+}
+
+void idol::Reformulators::KKT::add_dual_constraints(idol::Model &t_destination) const {
+
+    for (const auto& opt_ctr : m_dual_constraints) {
         if (opt_ctr.has_value()) {
             t_destination.add(opt_ctr.value());
         }
@@ -153,57 +247,47 @@ idol::Reformulators::KKT::add_constraints(idol::Model &t_destination, const std:
 
 }
 
-void idol::Reformulators::KKT::add_primal_constraints(idol::Model &t_destination) {
+void idol::Reformulators::KKT::add_complementarity_constraints(idol::Model &t_destination) const {
 
-    for (const auto& opt_ctr : m_primal_ctrs) {
+    for (const auto& opt_ctr : m_complementarity_constraints) {
+        if (opt_ctr.has_value()) {
+            t_destination.add(opt_ctr.value());
+        }
+    }
 
-        if (!opt_ctr.has_value()) {
+}
+
+void idol::Reformulators::KKT::add_leader_objective(idol::Model &t_destination) const {
+    t_destination.set_obj_expr(m_src_model.get_obj_expr());
+}
+
+void idol::Reformulators::KKT::add_strong_duality_constraint(idol::Model &t_destination) const {
+
+    t_destination.add_ctr(m_description.follower_obj() == m_dual_objective, "strong_duality");
+
+}
+
+void idol::Reformulators::KKT::create_dual_objective() {
+
+    for (const auto& ctr : m_src_model.ctrs()) {
+
+        if (m_description.is_leader(ctr)) {
             continue;
         }
 
-        const auto& ctr = opt_ctr.value();
-        const auto type = m_src_model.get_ctr_type(ctr);
-        const auto& src_row = m_src_model.get_ctr_row(ctr);
-        auto row = to_destination_space(src_row);
+        const auto index = m_src_model.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index];
+        const auto& row = m_src_model.get_ctr_row(ctr);
 
-        t_destination.add(ctr, TempCtr(std::move(row), type));
-
-    }
-
-}
-
-void idol::Reformulators::KKT::add_dual_constraints(idol::Model &t_destination) {
-
-    add_constraints(t_destination, m_dual_ctrs);
-
-}
-
-idol::Row idol::Reformulators::KKT::to_destination_space(const idol::Row &t_src_row) const {
-
-    Row result;
-    result.rhs() = t_src_row.rhs();
-
-    for (const auto& [var, coeff] : t_src_row.linear()) {
-
-        if (!m_indicator_for_vars(var)) {
-
-            if (m_keep_original_variables) {
-                result.linear() += coeff * var;
-            } else {
-                result.rhs() -= coeff.as_numerical() * !var;
+        for (const auto& [var, constant] : row.linear()) {
+            if (m_description.is_follower(var)) {
+                continue;
             }
-
-        } else {
-
-            result.linear() += coeff * to_destination_space(var);
-
+            m_dual_objective -= constant.as_numerical() * var * dual_var;
         }
 
+        m_dual_objective += row.rhs() * dual_var;
+
     }
 
-    if (!t_src_row.quadratic().empty()) {
-        throw Exception("Not implemented.");
-    }
-
-    return result;
 }

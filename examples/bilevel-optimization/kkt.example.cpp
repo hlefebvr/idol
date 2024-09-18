@@ -22,7 +22,7 @@ int main(int t_argc, const char** t_argv) {
 
         y in argmin { -y :
             2 x - y >= 0,
-            -x - y >= 0,
+            -x - y >= -6,
             -x + 6 y >= -3,
             x + 3 y >= 3.
         }
@@ -41,7 +41,7 @@ int main(int t_argc, const char** t_argv) {
 
     high_point_relaxation.set_obj_expr(x + 6 * y);
     auto follower_c1 = high_point_relaxation.add_ctr(2 * x - y >= 0, "f1");
-    auto follower_c2 = high_point_relaxation.add_ctr(-x - y >= 0, "f2");
+    auto follower_c2 = high_point_relaxation.add_ctr(-x - y >= -6, "f2");
     auto follower_c3 = high_point_relaxation.add_ctr(-x + 6 * y >= -3, "f3");
     auto follower_c4 = high_point_relaxation.add_ctr(x + 3 * y >= 3, "f4");
     high_point_relaxation.add_ctr(-x + 5 * y <= 12.5);
@@ -55,18 +55,25 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(follower_c3);
     description.make_follower_ctr(follower_c4);
 
-    Reformulators::KKT kkt(high_point_relaxation,
-                           [&](const Var& t_var) { return t_var.get(description.follower_vars()) != MasterId; },
-                           [&](const Ctr& t_ctr) { return t_ctr.get(description.follower_ctrs()) != MasterId; });
+    Reformulators::KKT kkt(high_point_relaxation, description);
 
-    Model dual(env);
-    dual.add(x);
-    kkt.add_primal_variables(dual);
-    kkt.add_primal_constraints(dual);
-    kkt.add_dual_variables(dual);
-    kkt.add_dual_constraints(dual);
+    Model reformulation(env);
+    kkt.add_primal_variables(reformulation);
+    kkt.add_primal_constraints(reformulation);
+    kkt.add_dual_variables(reformulation);
+    kkt.add_dual_constraints(reformulation);
+    kkt.add_complementarity_constraints(reformulation);
+    kkt.add_strong_duality_constraint(reformulation);
+    kkt.add_leader_objective(reformulation);
 
-    std::cout << dual << std::endl;
+    std::cout << high_point_relaxation << std::endl;
+    std::cout << reformulation << std::endl;
+
+    reformulation.use(Gurobi().with_logs(true).with_presolve(false));
+
+    reformulation.optimize();
+
+    std::cout << save_primal(reformulation) << std::endl;
 
     return 0;
 }
