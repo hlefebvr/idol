@@ -6,6 +6,7 @@
 #include <idol/modeling/bilevel-optimization/LowerLevelDescription.h>
 #include <idol/modeling/models/KKT.h>
 #include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
+#include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -29,19 +30,27 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(c);
     description.set_follower_obj_expr(-2 * x - y);
 
+    Reformulators::KKT reformulator(model, description);
+
     Model single_level(env);
-    Reformulators::KKT(model, description).add_strong_duality_reformulation(single_level);
+    reformulator.add_strong_duality_reformulation(single_level);
 
-    std::cout << model << std::endl;
-    std::cout << single_level << std::endl;
+    Annotation<Var, unsigned int> decomposition(env, "sub_problem");
+    for (const auto& var : single_level.vars()) {
+        var.set(decomposition, var.id() == delta.id());
+    }
 
-    Annotation<Ctr> sub_problem(env, "sub_problem");
-
-    single_level.use(Gurobi());
+    single_level.use(
+        PADM(decomposition)
+            .with_default_sub_problem_spec(
+                PADM::SubProblem()
+                    .with_optimizer(Gurobi())
+            )
+    );
 
     single_level.optimize();
 
-    std::cout << save_primal(single_level) << std::endl;
+    //std::cout << save_primal(single_level) << std::endl;
 
     return 0;
 }

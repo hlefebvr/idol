@@ -250,6 +250,8 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/convexification/Convexification.cpp
         include/idol/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
+        include/idol/optimizers/mixed-integer-optimization/padm/PADM.cpp
+        include/idol/optimizers/mixed-integer-optimization/padm/PADM.h
 )
 
 find_package(OpenMP REQUIRED)
