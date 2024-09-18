@@ -178,6 +178,10 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     for (const auto& [ctr, var, coeff] : col.quadratic()) {
 
+        if (m_description.is_leader(ctr)) {
+            continue;
+        }
+
         const auto index_ctr = m_src_model.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
         expr += coeff * dual_var * var;
@@ -185,11 +189,11 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
     }
 
     if (const auto dual_var = m_dual_variables_for_lower_bounds[index]; dual_var.has_value()) {
-        expr += t_var * dual_var.value();
+        expr += dual_var.value();
     }
 
     if (const auto dual_var = m_dual_variables_for_upper_bounds[index]; dual_var.has_value()) {
-        expr += t_var * dual_var.value();
+        expr += dual_var.value();
     }
 
     Expr obj = m_description.follower_obj().linear().get(t_var);
@@ -220,7 +224,7 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
         const auto& row = m_src_model.get_ctr_row(ctr);
 
         if (!row.quadratic().empty()) {
-            throw Exception("Cannot write complementarity constraints for quadratic constraints.");
+            //throw Exception("Cannot write complementarity constraints for quadratic constraints.");
         }
 
         Expr expr;
