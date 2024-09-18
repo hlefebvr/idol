@@ -100,7 +100,6 @@ void idol::Optimizers::AlternatingDirectionMethod::hook_optimize() {
         if (is_feasible()) {
             set_status(Feasible);
             set_reason(Proved);
-            std::cout << "DONE mega DONE!" << std::endl;
             break;
         }
 
@@ -172,8 +171,6 @@ bool idol::Optimizers::AlternatingDirectionMethod::is_feasible() const {
 
 bool idol::Optimizers::AlternatingDirectionMethod::is_feasible(unsigned int t_sub_problem_id) const {
 
-    std::cout << m_last_solutions[t_sub_problem_id] << std::endl;
-
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
         if (m_last_solutions[t_sub_problem_id].get(var) > 1e-4) {
             return false;
@@ -210,8 +207,6 @@ void idol::Optimizers::AlternatingDirectionMethod::update_penalty_parameters() {
 
 bool idol::Optimizers::AlternatingDirectionMethod::solve_sub_problem(unsigned int t_sub_problem_id) {
 
-    std::cout << "Solving sub-problem " << t_sub_problem_id << std::endl;
-
     m_formulation.fix_sub_problem(t_sub_problem_id, m_last_solutions);
 
     auto& model = m_formulation.sub_problem(t_sub_problem_id);
@@ -219,8 +214,6 @@ bool idol::Optimizers::AlternatingDirectionMethod::solve_sub_problem(unsigned in
     model.optimize();
 
     const auto status = model.get_status();
-
-    std::cout << "Sub-problem status: " << status << std::endl;
 
     if (status != Optimal && status != Feasible) {
         set_status(status);
