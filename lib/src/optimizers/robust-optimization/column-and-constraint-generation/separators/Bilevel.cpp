@@ -39,7 +39,7 @@ idol::Solution::Primal idol::Robust::CCGSeparators::Bilevel::solve_feasibility_s
         Column column(-1);
         column.linear().set(t_ctr, t_coefficient);
         const auto slack = model.add_var(0, 1e4, Continuous, column);
-        description.set_follower_var(slack);
+        description.make_follower_var(slack);
         slacks.emplace_back(slack);
     };
 

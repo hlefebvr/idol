@@ -49,9 +49,9 @@ public:
 
     void make_leader_ctr(const Ctr& t_ctr) { t_ctr.set(m_follower_constraints, MasterId); }
 
-    void set_follower_var(const Var& t_var) { t_var.set(m_follower_variables, 0); }
+    void make_follower_var(const Var& t_var) { t_var.set(m_follower_variables, 0); }
 
-    void set_follower_ctr(const Ctr& t_ctr) { t_ctr.set(m_follower_constraints, 0); }
+    void make_follower_ctr(const Ctr& t_ctr) { t_ctr.set(m_follower_constraints, 0); }
 
     void set_follower_obj_expr(Expr<Var, Var> t_objective) { m_follower_objective = std::move(t_objective); }
 

@@ -46,11 +46,11 @@ int main(int t_argc, const char** t_argv) {
     // Prepare bilevel description
     Bilevel::LowerLevelDescription description(env);
     description.set_follower_obj_expr(y);
-    description.set_follower_var(y);
-    description.set_follower_ctr(follower_c1);
-    description.set_follower_ctr(follower_c2);
-    description.set_follower_ctr(follower_c3);
-    description.set_follower_ctr(follower_c4);
+    description.make_follower_var(y);
+    description.make_follower_ctr(follower_c1);
+    description.make_follower_ctr(follower_c2);
+    description.make_follower_ctr(follower_c3);
+    description.make_follower_ctr(follower_c4);
 
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(Bilevel::MibS(description).with_logs(true));
