@@ -34,7 +34,8 @@ Bilevel Optimization
 .. toctree::
     :maxdepth: 1
 
-    bilevel-problem
+    bilevel-kkt
+    bilevel-mibs
 
 
 Robust Optimization
