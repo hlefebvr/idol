@@ -250,10 +250,10 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/convexification/Convexification.cpp
         include/idol/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/AlternatingDirectionMethod.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/AlternatingDirectionMethod.h
-        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_AlternatingDirectionMethod.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_AlternatingDirectionMethod.h
+        include/idol/optimizers/mixed-integer-optimization/padm/PADM.cpp
+        include/idol/optimizers/mixed-integer-optimization/padm/PADM.h
+        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.cpp
+        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h
         include/idol/optimizers/mixed-integer-optimization/padm/Formulation.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/Formulation.h
         include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.cpp

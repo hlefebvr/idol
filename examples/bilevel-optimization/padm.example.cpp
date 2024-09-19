@@ -6,7 +6,7 @@
 #include <idol/modeling/bilevel-optimization/LowerLevelDescription.h>
 #include <idol/modeling/models/KKT.h>
 #include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
-#include "idol/optimizers/mixed-integer-optimization/padm/AlternatingDirectionMethod.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
 #include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
 
 int main(int t_argc, const char** t_argv) {
@@ -47,12 +47,9 @@ int main(int t_argc, const char** t_argv) {
     }
 
     single_level.use(
-            AlternatingDirectionMethod(decomposition)
+            PADM(decomposition)
                 .with_penalization(penalize)
-                .with_default_sub_problem_spec(
-            AlternatingDirection::SubProblem()
-                            .with_optimizer(Gurobi())
-                )
+                .with_default_sub_problem_spec(ADM::SubProblem().with_optimizer(Gurobi()))
     );
 
     single_level.optimize();

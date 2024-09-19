@@ -7,11 +7,11 @@
 
 #include "idol/modeling/models/Model.h"
 
-namespace idol::AlternatingDirection {
+namespace idol::ADM {
     class Formulation;
 }
 
-class idol::AlternatingDirection::Formulation {
+class idol::ADM::Formulation {
 public:
     Formulation(const Model& t_src_model,
                 Annotation<Var, unsigned int> t_decomposition,

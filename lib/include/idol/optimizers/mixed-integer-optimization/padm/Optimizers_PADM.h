@@ -2,24 +2,24 @@
 // Created by henri on 18.09.24.
 //
 
-#ifndef IDOL_OPTIMIZERS_ALTERNATINGDIRECTIONMETHOD_H
-#define IDOL_OPTIMIZERS_ALTERNATINGDIRECTIONMETHOD_H
+#ifndef IDOL_OPTIMIZERS_PADM_H
+#define IDOL_OPTIMIZERS_PADM_H
 
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
 #include "Formulation.h"
 
 namespace idol::Optimizers {
-    class AlternatingDirectionMethod;
+    class PADM;
 }
 
-class idol::Optimizers::AlternatingDirectionMethod : public Algorithm {
+class idol::Optimizers::PADM : public Algorithm {
 public:
-    AlternatingDirectionMethod(const Model& t_model,
-                               AlternatingDirection::Formulation t_formulation,
-                               std::vector<idol::AlternatingDirection::SubProblem>&& t_sub_problem_specs);
+    PADM(const Model& t_model,
+         ADM::Formulation t_formulation,
+         std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs);
 
-    std::string name() const override { return "AlternatingDirectionMethod"; }
+    std::string name() const override { return "PADM"; }
 
     double get_var_primal(const Var &t_var) const override;
 
@@ -82,8 +82,8 @@ protected:
     bool is_feasible(unsigned int t_sub_problem_id) const;
     bool solve_sub_problem(unsigned int t_sub_problem_id);
 private:
-    AlternatingDirection::Formulation m_formulation;
-    std::vector<idol::AlternatingDirection::SubProblem> m_sub_problem_specs;
+    ADM::Formulation m_formulation;
+    std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
     unsigned int m_max_inner_loop_iterations = 1000;
 
     unsigned int m_outer_loop_iteration = 0;
@@ -92,4 +92,4 @@ private:
 };
 
 
-#endif //IDOL_OPTIMIZERS_ALTERNATINGDIRECTIONMETHOD_H
+#endif //IDOL_OPTIMIZERS_PADM_H

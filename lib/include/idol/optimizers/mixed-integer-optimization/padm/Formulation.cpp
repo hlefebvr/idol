@@ -8,9 +8,9 @@
 
 #include <utility>
 
-idol::AlternatingDirection::Formulation::Formulation(const Model& t_src_model,
-                                                     Annotation<Var, unsigned int> t_decomposition,
-                                                     std::optional<Annotation<Ctr, bool>> t_penalized_constraints)
+idol::ADM::Formulation::Formulation(const Model& t_src_model,
+                                    Annotation<Var, unsigned int> t_decomposition,
+                                    std::optional<Annotation<Ctr, bool>> t_penalized_constraints)
                                                      : m_decomposition(std::move(t_decomposition)),
                                                        m_penalized_constraints(std::move(t_penalized_constraints)) {
 
@@ -26,7 +26,7 @@ idol::AlternatingDirection::Formulation::Formulation(const Model& t_src_model,
 
 }
 
-unsigned int idol::AlternatingDirection::Formulation::compute_n_sub_problems(const idol::Model &t_src_model) const {
+unsigned int idol::ADM::Formulation::compute_n_sub_problems(const idol::Model &t_src_model) const {
     unsigned int result = 0;
     for (const auto& var : t_src_model.vars()) {
         result = std::max(result, var.get(m_decomposition));
@@ -34,8 +34,8 @@ unsigned int idol::AlternatingDirection::Formulation::compute_n_sub_problems(con
     return result + 1;
 }
 
-void idol::AlternatingDirection::Formulation::initialize_sub_problems(const idol::Model &t_src_model,
-                                                                      unsigned int n_sub_problems) {
+void idol::ADM::Formulation::initialize_sub_problems(const idol::Model &t_src_model,
+                                                     unsigned int n_sub_problems) {
 
     auto& env = t_src_model.env();
     m_sub_problems.reserve(n_sub_problems);
@@ -46,20 +46,20 @@ void idol::AlternatingDirection::Formulation::initialize_sub_problems(const idol
 
 }
 
-void idol::AlternatingDirection::Formulation::initialize_patterns(const idol::Model &t_src_model,
-                                                                  unsigned int n_sub_problems) {
+void idol::ADM::Formulation::initialize_patterns(const idol::Model &t_src_model,
+                                                 unsigned int n_sub_problems) {
 
     m_objective_patterns.resize(n_sub_problems);
     m_constraint_patterns.resize(n_sub_problems);
 
 }
 
-void idol::AlternatingDirection::Formulation::initialize_slacks(const idol::Model &t_src_model,
-                                                                unsigned int n_sub_problems) {
+void idol::ADM::Formulation::initialize_slacks(const idol::Model &t_src_model,
+                                               unsigned int n_sub_problems) {
     m_l1_vars.resize(n_sub_problems);
 }
 
-void idol::AlternatingDirection::Formulation::dispatch_vars(const idol::Model &t_src_model) {
+void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
 
     for (const auto& var : t_src_model.vars()) {
 
@@ -74,7 +74,7 @@ void idol::AlternatingDirection::Formulation::dispatch_vars(const idol::Model &t
 
 }
 
-void idol::AlternatingDirection::Formulation::dispatch_ctrs(const idol::Model &t_src_model) {
+void idol::ADM::Formulation::dispatch_ctrs(const idol::Model &t_src_model) {
 
     const auto n_sub_problems = m_sub_problems.size();
 
@@ -86,7 +86,7 @@ void idol::AlternatingDirection::Formulation::dispatch_ctrs(const idol::Model &t
 
 }
 
-void idol::AlternatingDirection::Formulation::dispatch_ctr(const idol::Model &t_src_model, const idol::Ctr &t_ctr, unsigned int t_sub_problem_id) {
+void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const idol::Ctr &t_ctr, unsigned int t_sub_problem_id) {
 
     const auto& row = t_src_model.get_ctr_row(t_ctr);
     const auto type = t_src_model.get_ctr_type(t_ctr);
@@ -131,7 +131,7 @@ void idol::AlternatingDirection::Formulation::dispatch_ctr(const idol::Model &t_
 }
 
 void
-idol::AlternatingDirection::Formulation::dispatch_obj(const Model &t_src_model) {
+idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
@@ -141,10 +141,10 @@ idol::AlternatingDirection::Formulation::dispatch_obj(const Model &t_src_model) 
 
 }
 
-std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::AlternatingDirection::Formulation::dispatch(const idol::Model &t_src_model,
-                                                                       const idol::LinExpr<idol::Var> &t_lin_expr,
-                                                                       const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
-                                                                       unsigned int t_sub_problem_id) {
+std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
+                                                                                   const idol::LinExpr<idol::Var> &t_lin_expr,
+                                                                                   const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
+                                                                                   unsigned int t_sub_problem_id) {
 
     bool is_pure = true; // true if the row only has variables from the same sub-problem
 
@@ -197,7 +197,7 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::AlternatingDirection::Fo
 }
 
 void
-idol::AlternatingDirection::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_sub_problem_id) {
+idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_sub_problem_id) {
 
     const auto& obj = t_src_model.get_obj_expr();
     auto [pattern, is_pure] = dispatch(t_src_model, obj.linear(), obj.quadratic(), t_sub_problem_id);
@@ -216,8 +216,8 @@ idol::AlternatingDirection::Formulation::dispatch_obj(const Model &t_src_model, 
 
 }
 
-void idol::AlternatingDirection::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
-                                                              const std::vector<Solution::Primal> &t_primals) {
+void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
+                                             const std::vector<Solution::Primal> &t_primals) {
 
     // Constraints
     for (const auto& [ctr, pattern] : m_constraint_patterns[t_sub_problem_id]) {
@@ -254,8 +254,8 @@ void idol::AlternatingDirection::Formulation::fix_sub_problem(unsigned int t_sub
 
 }
 
-double idol::AlternatingDirection::Formulation::fix(const idol::Constant &t_constant,
-                                                    const std::vector<Solution::Primal> &t_primals) {
+double idol::ADM::Formulation::fix(const idol::Constant &t_constant,
+                                   const std::vector<Solution::Primal> &t_primals) {
     double result = t_constant.numerical();
 
     for (const auto& [param, coefficient] : t_constant.linear()) {
@@ -278,16 +278,16 @@ double idol::AlternatingDirection::Formulation::fix(const idol::Constant &t_cons
     return result;
 }
 
-idol::Model &idol::AlternatingDirection::Formulation::sub_problem(const idol::Var &t_var) {
+idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) {
     return m_sub_problems[t_var.get(m_decomposition)];
 }
 
-const idol::Model &idol::AlternatingDirection::Formulation::sub_problem(const idol::Var &t_var) const {
+const idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) const {
     return m_sub_problems[t_var.get(m_decomposition)];
 }
 
 void
-idol::AlternatingDirection::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals) {
+idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals) {
 
     for (unsigned int i = 0, n_sub_problems = m_sub_problems.size() ; i < n_sub_problems ; ++i) {
         auto& model = m_sub_problems[i];

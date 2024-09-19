@@ -2,71 +2,71 @@
 // Created by henri on 18.09.24.
 //
 
-#include "Optimizers_AlternatingDirectionMethod.h"
+#include "Optimizers_PADM.h"
 
-idol::Optimizers::AlternatingDirectionMethod::AlternatingDirectionMethod(const Model& t_model,
-                                                                         AlternatingDirection::Formulation t_formulation,
-                                                                         std::vector<idol::AlternatingDirection::SubProblem>&& t_sub_problem_specs)
+idol::Optimizers::PADM::PADM(const Model& t_model,
+                             ADM::Formulation t_formulation,
+                             std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)) {
 
 }
 
-double idol::Optimizers::AlternatingDirectionMethod::get_var_primal(const idol::Var &t_var) const {
+double idol::Optimizers::PADM::get_var_primal(const idol::Var &t_var) const {
     return m_formulation.sub_problem(t_var).get_var_primal(t_var);
 }
 
-double idol::Optimizers::AlternatingDirectionMethod::get_var_reduced_cost(const idol::Var &t_var) const {
+double idol::Optimizers::PADM::get_var_reduced_cost(const idol::Var &t_var) const {
     return m_formulation.sub_problem(t_var).get_var_reduced_cost(t_var);
 }
 
-double idol::Optimizers::AlternatingDirectionMethod::get_var_ray(const idol::Var &t_var) const {
+double idol::Optimizers::PADM::get_var_ray(const idol::Var &t_var) const {
     return m_formulation.sub_problem(t_var).get_var_ray(t_var);
 }
 
-double idol::Optimizers::AlternatingDirectionMethod::get_ctr_dual(const idol::Ctr &t_ctr) const {
+double idol::Optimizers::PADM::get_ctr_dual(const idol::Ctr &t_ctr) const {
     throw Exception("Not implemented");
 }
 
-double idol::Optimizers::AlternatingDirectionMethod::get_ctr_farkas(const idol::Ctr &t_ctr) const {
+double idol::Optimizers::PADM::get_ctr_farkas(const idol::Ctr &t_ctr) const {
     throw Exception("Not implemented");
 }
 
-unsigned int idol::Optimizers::AlternatingDirectionMethod::get_n_solutions() const {
+unsigned int idol::Optimizers::PADM::get_n_solutions() const {
     return Algorithm::get_status() == Feasible ? 1 : 0;
 }
 
-unsigned int idol::Optimizers::AlternatingDirectionMethod::get_solution_index() const {
+unsigned int idol::Optimizers::PADM::get_solution_index() const {
     return 0;
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::add(const idol::Var &t_var) {
+void idol::Optimizers::PADM::add(const idol::Var &t_var) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::add(const idol::Ctr &t_ctr) {
+void idol::Optimizers::PADM::add(const idol::Ctr &t_ctr) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::remove(const idol::Var &t_var) {
+void idol::Optimizers::PADM::remove(const idol::Var &t_var) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::remove(const idol::Ctr &t_ctr) {
+void idol::Optimizers::PADM::remove(const idol::Ctr &t_ctr) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update() {
+void idol::Optimizers::PADM::update() {
 
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::write(const std::string &t_name) {
+void idol::Optimizers::PADM::write(const std::string &t_name) {
     throw Exception("Not implemented");
 }
 
 
-void idol::Optimizers::AlternatingDirectionMethod::hook_before_optimize() {
+void idol::Optimizers::PADM::hook_before_optimize() {
     Optimizer::hook_before_optimize();
 
     set_status(Loaded);
@@ -89,7 +89,7 @@ void idol::Optimizers::AlternatingDirectionMethod::hook_before_optimize() {
 }
 
 
-void idol::Optimizers::AlternatingDirectionMethod::hook_optimize() {
+void idol::Optimizers::PADM::hook_optimize() {
 
     for (unsigned int max_outer_loop = get_param_iteration_limit() ; m_outer_loop_iteration < max_outer_loop ; ++m_outer_loop_iteration) {
 
@@ -107,60 +107,60 @@ void idol::Optimizers::AlternatingDirectionMethod::hook_optimize() {
 
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::set_solution_index(unsigned int t_index) {
+void idol::Optimizers::PADM::set_solution_index(unsigned int t_index) {
     if (t_index != 0) {
         throw Exception("Invalid solution index");
     }
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_obj_sense() {
+void idol::Optimizers::PADM::update_obj_sense() {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_obj() {
+void idol::Optimizers::PADM::update_obj() {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_rhs() {
+void idol::Optimizers::PADM::update_rhs() {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_obj_constant() {
+void idol::Optimizers::PADM::update_obj_constant() {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_mat_coeff(const idol::Ctr &t_ctr, const idol::Var &t_var) {
+void idol::Optimizers::PADM::update_mat_coeff(const idol::Ctr &t_ctr, const idol::Var &t_var) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_ctr_type(const idol::Ctr &t_ctr) {
+void idol::Optimizers::PADM::update_ctr_type(const idol::Ctr &t_ctr) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_ctr_rhs(const idol::Ctr &t_ctr) {
+void idol::Optimizers::PADM::update_ctr_rhs(const idol::Ctr &t_ctr) {
     throw Exception("Not implemented");
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_var_type(const idol::Var &t_var) {
+void idol::Optimizers::PADM::update_var_type(const idol::Var &t_var) {
     const auto type = parent().get_var_type(t_var);
     m_formulation.sub_problem(t_var).set_var_type(t_var, type);
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_var_lb(const idol::Var &t_var) {
+void idol::Optimizers::PADM::update_var_lb(const idol::Var &t_var) {
     const auto lb = parent().get_var_lb(t_var);
     m_formulation.sub_problem(t_var).set_var_lb(t_var, lb);
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_var_ub(const idol::Var &t_var) {
+void idol::Optimizers::PADM::update_var_ub(const idol::Var &t_var) {
     const auto ub = parent().get_var_ub(t_var);
     m_formulation.sub_problem(t_var).set_var_ub(t_var, ub);
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_var_obj(const idol::Var &t_var) {
+void idol::Optimizers::PADM::update_var_obj(const idol::Var &t_var) {
     throw Exception("Not implemented");
 }
 
-bool idol::Optimizers::AlternatingDirectionMethod::is_feasible() const {
+bool idol::Optimizers::PADM::is_feasible() const {
     for (unsigned int i = 0, n = m_formulation.n_sub_problems() ; i < n ; ++i) {
         if (!is_feasible(i)) {
             return false;
@@ -169,7 +169,7 @@ bool idol::Optimizers::AlternatingDirectionMethod::is_feasible() const {
     return true;
 }
 
-bool idol::Optimizers::AlternatingDirectionMethod::is_feasible(unsigned int t_sub_problem_id) const {
+bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
         if (m_last_solutions[t_sub_problem_id].get(var) > 1e-4) {
@@ -180,7 +180,7 @@ bool idol::Optimizers::AlternatingDirectionMethod::is_feasible(unsigned int t_su
     return true;
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::run_inner_loop() {
+void idol::Optimizers::PADM::run_inner_loop() {
 
     for (unsigned int inner_loop_iteration = 0 ; inner_loop_iteration < m_max_inner_loop_iterations ; ++inner_loop_iteration) {
 
@@ -199,13 +199,13 @@ void idol::Optimizers::AlternatingDirectionMethod::run_inner_loop() {
 
 }
 
-void idol::Optimizers::AlternatingDirectionMethod::update_penalty_parameters() {
+void idol::Optimizers::PADM::update_penalty_parameters() {
 
     m_formulation.update_penalty_parameters(m_last_solutions);
 
 }
 
-bool idol::Optimizers::AlternatingDirectionMethod::solve_sub_problem(unsigned int t_sub_problem_id) {
+bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     m_formulation.fix_sub_problem(t_sub_problem_id, m_last_solutions);
 

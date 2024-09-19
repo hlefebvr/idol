@@ -8,11 +8,11 @@
 
 #include "idol/optimizers/OptimizerFactory.h"
 
-namespace idol::AlternatingDirection {
+namespace idol::ADM {
     class SubProblem;
 }
 
-class idol::AlternatingDirection::SubProblem {
+class idol::ADM::SubProblem {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 public:
     SubProblem() = default;

@@ -4,7 +4,7 @@
 
 #include "SubProblem.h"
 
-idol::AlternatingDirection::SubProblem &idol::AlternatingDirection::SubProblem::with_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
+idol::ADM::SubProblem &idol::ADM::SubProblem::with_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
 
     if (m_optimizer_factory) {
         throw Exception("The optimizer has already been set.");
@@ -15,12 +15,12 @@ idol::AlternatingDirection::SubProblem &idol::AlternatingDirection::SubProblem::
     return *this;
 }
 
-idol::AlternatingDirection::SubProblem::SubProblem(const idol::AlternatingDirection::SubProblem & t_src)
+idol::ADM::SubProblem::SubProblem(const idol::ADM::SubProblem & t_src)
         : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {
 
 }
 
-const idol::OptimizerFactory &idol::AlternatingDirection::SubProblem::optimizer_factory() const {
+const idol::OptimizerFactory &idol::ADM::SubProblem::optimizer_factory() const {
     if (!m_optimizer_factory) {
         throw Exception("The optimizer has not been set.");
     }
