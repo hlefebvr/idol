@@ -2,10 +2,10 @@
 // Created by henri on 18.09.24.
 //
 
-#include "PADM.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
 
 #include <utility>
-#include "Optimizers_PADM.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h"
 
 idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition)
         : m_decomposition(std::move(t_decomposition)) {

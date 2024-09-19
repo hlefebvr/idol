@@ -2,7 +2,7 @@
 // Created by henri on 18.09.24.
 //
 
-#include "SubProblem.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
 
 idol::ADM::SubProblem &idol::ADM::SubProblem::with_optimizer(const idol::OptimizerFactory &t_optimizer_factory) {
 

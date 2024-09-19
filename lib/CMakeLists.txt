@@ -250,17 +250,17 @@ add_library(idol STATIC
         src/optimizers/robust-optimization/convexification/Convexification.cpp
         include/idol/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/PADM.cpp
+        src/optimizers/mixed-integer-optimization/padm/PADM.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/PADM.h
-        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.cpp
+        src/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h
-        include/idol/optimizers/mixed-integer-optimization/padm/Formulation.cpp
+        src/optimizers/mixed-integer-optimization/padm/Formulation.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/Formulation.h
-        include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.cpp
+        src/optimizers/mixed-integer-optimization/padm/SubProblem.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.h
-        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.cpp
+        src/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h
-        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
+        src/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h
 )
 

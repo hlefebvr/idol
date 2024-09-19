@@ -2,7 +2,7 @@
 // Created by henri on 18.09.24.
 //
 
-#include "Formulation.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/Formulation.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 

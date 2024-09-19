@@ -2,7 +2,7 @@
 // Created by henri on 19.09.24.
 //
 
-#include "PenaltyMethod.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h"
 
 #include <utility>
 
