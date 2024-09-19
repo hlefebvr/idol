@@ -4,12 +4,18 @@
 
 #include "Optimizers_PADM.h"
 
+#include <utility>
+
 idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
-                             std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs)
+                             std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
+                             std::pair<bool, double> t_rescaling,
+                             PenaltyUpdate* t_penalty_update)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
-                              m_sub_problem_specs(std::move(t_sub_problem_specs)) {
+                              m_sub_problem_specs(std::move(t_sub_problem_specs)),
+                              m_rescaling(std::move(t_rescaling)),
+                              m_penalty_update(t_penalty_update) {
 
 }
 
@@ -201,7 +207,11 @@ void idol::Optimizers::PADM::run_inner_loop() {
 
 void idol::Optimizers::PADM::update_penalty_parameters() {
 
-    m_formulation.update_penalty_parameters(m_last_solutions);
+    if (!m_formulation.has_penalized_constraints()) {
+        return;
+    }
+
+    m_formulation.update_penalty_parameters(m_last_solutions, *m_penalty_update);
 
 }
 

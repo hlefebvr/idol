@@ -6,6 +6,7 @@
 #define IDOL_ADM_FORMULATION_H
 
 #include "idol/modeling/models/Model.h"
+#include "PenaltyUpdates.h"
 
 namespace idol::ADM {
     class Formulation;
@@ -37,7 +38,7 @@ public:
 
     void fix_sub_problem(unsigned int t_sub_problem_id, const std::vector<Solution::Primal>& t_primals);
 
-    void update_penalty_parameters(const std::vector<Solution::Primal>& t_primals);
+    void update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
 private:
     Annotation<Var, unsigned int> m_decomposition;
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;

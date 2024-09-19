@@ -287,7 +287,8 @@ const idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) c
 }
 
 void
-idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals) {
+idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals,
+                                                  PenaltyUpdate& t_penalty_update) {
 
     for (unsigned int i = 0, n_sub_problems = m_sub_problems.size() ; i < n_sub_problems ; ++i) {
         auto& model = m_sub_problems[i];
@@ -301,7 +302,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
             }
 
             if (t_primals[i].get(var) > 1e-4) {
-                model.set_var_obj(var, current_penalty + 1);
+                model.set_var_obj(var, t_penalty_update(current_penalty));
             }
 
         }

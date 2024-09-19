@@ -8,6 +8,7 @@
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
 #include "Formulation.h"
+#include "PenaltyUpdates.h"
 
 namespace idol::Optimizers {
     class PADM;
@@ -17,7 +18,9 @@ class idol::Optimizers::PADM : public Algorithm {
 public:
     PADM(const Model& t_model,
          ADM::Formulation t_formulation,
-         std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs);
+         std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
+         std::pair<bool, double> t_rescaling,
+         PenaltyUpdate* t_penalty_update);
 
     std::string name() const override { return "PADM"; }
 
@@ -84,6 +87,8 @@ protected:
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
+    std::pair<bool, double> m_rescaling;
+    std::unique_ptr<PenaltyUpdate> m_penalty_update;
     unsigned int m_max_inner_loop_iterations = 1000;
 
     unsigned int m_outer_loop_iteration = 0;

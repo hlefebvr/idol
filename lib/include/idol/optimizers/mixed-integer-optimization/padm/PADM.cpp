@@ -10,6 +10,14 @@ idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition)
 
 }
 
+idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition,
+                 idol::Annotation<idol::Ctr, bool> t_penalized_constraints)
+        : m_decomposition(t_decomposition),
+          m_penalized_constraints(t_penalized_constraints)
+{
+
+}
+
 idol::PADM &idol::PADM::with_default_sub_problem_spec(idol::ADM::SubProblem t_sub_problem) {
 
     if (m_default_sub_problem_spec) {
@@ -28,17 +36,27 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
         throw Exception("The decomposition has not been set.");
     }
 
+    if (!m_penalized_constraints && (m_rescaling || m_penalty_update)) {
+        std::cout << "Warning: The penalized constraints have not been set. The rescaling and penalty update will be ignored." << std::endl;
+    }
+
     ADM::Formulation formulation(t_model,
                                  *m_decomposition,
                                  m_penalized_constraints);
 
-    // create sub-problems specs
     auto sub_problem_specs = create_sub_problem_specs(t_model, formulation);
+
+    auto* penalty_update = m_penalty_update ? m_penalty_update->clone() : nullptr;
+    if (m_penalized_constraints && !penalty_update) {
+        penalty_update = new PenaltyUpdates::Additive(1);
+    }
 
     auto* result = new Optimizers::PADM(
                 t_model,
                 std::move(formulation),
-                std::move(sub_problem_specs)
+                std::move(sub_problem_specs),
+                m_rescaling ? *m_rescaling : std::make_pair(false, 0.),
+                penalty_update
             );
 
     handle_default_parameters(result);
@@ -48,18 +66,6 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
 
 idol::OptimizerFactory *idol::PADM::clone() const {
     return new PADM(*this);
-}
-
-idol::PADM &
-idol::PADM::with_penalization(const idol::Annotation<idol::Ctr, bool>& t_penalized_constraints) {
-
-    if (m_penalized_constraints) {
-        throw Exception("The penalized constraints have already been set.");
-    }
-
-    m_penalized_constraints = t_penalized_constraints;
-
-    return *this;
 }
 
 std::vector<idol::ADM::SubProblem>
@@ -75,4 +81,37 @@ idol::PADM::create_sub_problem_specs(const idol::Model &t_model,
     }
 
     return result;
+}
+
+idol::PADM &idol::PADM::with_rescaling(bool t_rescaling, double t_threshold) {
+
+    if (m_rescaling) {
+        throw Exception("The rescaling has already been set.");
+    }
+
+    m_rescaling = std::make_pair(t_rescaling, t_threshold);
+
+    return *this;
+}
+
+idol::PADM &idol::PADM::with_penalty_update(const idol::PenaltyUpdate &t_penalty_update) {
+
+    if (m_penalty_update) {
+        throw Exception("The penalty update has already been set.");
+    }
+
+    m_penalty_update.reset(t_penalty_update.clone());
+
+    return *this;
+}
+
+idol::PADM::PADM(const idol::PADM &t_src)
+    : OptimizerFactoryWithDefaultParameters<PADM>(t_src),
+      m_decomposition(t_src.m_decomposition),
+      m_penalized_constraints(t_src.m_penalized_constraints),
+      m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
+      m_sub_problem_specs(t_src.m_sub_problem_specs),
+      m_rescaling(t_src.m_rescaling),
+      m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr) {
+
 }

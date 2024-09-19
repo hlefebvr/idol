@@ -8,6 +8,7 @@
 #include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
 #include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
 #include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -41,15 +42,16 @@ int main(int t_argc, const char** t_argv) {
         var.set(decomposition, var.id() == delta.id());
     }
 
-    Annotation<Ctr, bool> penalize(env, "penalize");
+    Annotation<Ctr, bool> penalized_constraints(env, "penalized_constraints");
     for (const auto& ctr : single_level.ctrs()) {
-        ctr.set(penalize, true);
+        ctr.set(penalized_constraints, true);
     }
 
     single_level.use(
-            PADM(decomposition)
-                .with_penalization(penalize)
+            PADM(decomposition, penalized_constraints)
                 .with_default_sub_problem_spec(ADM::SubProblem().with_optimizer(Gurobi()))
+                .with_penalty_update(PenaltyUpdates::Additive(1))
+                .with_rescaling(true, 1e3)
     );
 
     single_level.optimize();

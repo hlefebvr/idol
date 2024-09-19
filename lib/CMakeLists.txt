@@ -258,6 +258,8 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/padm/Formulation.h
         include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.h
+        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.cpp
+        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h
 )
 
 find_package(OpenMP REQUIRED)

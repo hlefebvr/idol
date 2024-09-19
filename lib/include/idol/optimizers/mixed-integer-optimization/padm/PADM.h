@@ -10,6 +10,7 @@
 #include "idol/containers/Map.h"
 #include "SubProblem.h"
 #include "Formulation.h"
+#include "PenaltyUpdates.h"
 #include <optional>
 
 namespace idol {
@@ -20,7 +21,9 @@ class idol::PADM : public OptimizerFactoryWithDefaultParameters<PADM> {
 public:
     explicit PADM(Annotation<Var, unsigned int> t_decomposition);
 
-    PADM(const PADM& t_src) = default;
+    PADM(Annotation<Var, unsigned int> t_decomposition, Annotation<Ctr, bool> t_penalized_constraints);
+
+    PADM(const PADM& t_src);
     PADM(PADM&&) = default;
 
     PADM& operator=(const PADM&) = default;
@@ -28,7 +31,9 @@ public:
 
     PADM& with_default_sub_problem_spec(ADM::SubProblem t_sub_problem);
 
-    PADM& with_penalization(const Annotation<Ctr, bool>& t_penalized_constraints);
+    PADM& with_rescaling(bool t_rescaling, double t_threshold);
+
+    PADM& with_penalty_update(const PenaltyUpdate& t_penalty_update);
 
     Optimizer *operator()(const Model &t_model) const override;
 
@@ -39,6 +44,8 @@ private:
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
     std::optional<ADM::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, ADM::SubProblem> m_sub_problem_specs;
+    std::optional<std::pair<bool, double>> m_rescaling;
+    std::unique_ptr<PenaltyUpdate> m_penalty_update;
 
     std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
 };
