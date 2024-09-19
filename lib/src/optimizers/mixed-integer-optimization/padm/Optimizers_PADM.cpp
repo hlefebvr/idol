@@ -106,7 +106,7 @@ void idol::Optimizers::PADM::hook_optimize() {
         if (is_feasible()) {
             set_status(m_feasible_solution_status);
             set_reason(Proved);
-            //compute_objective_value();
+            compute_objective_value();
             break;
         }
 
