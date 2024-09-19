@@ -25,7 +25,8 @@ Column Generation and Branch-and-Price
 .. toctree::
     :maxdepth: 1
 
-    generalized-assignment-problem
+    generalized-assignment-problem-bap
+    generalized-assignment-problem-cg-penalty
 
 Bilevel Optimization
 ^^^^^^^^^^^^^^^^^^^^

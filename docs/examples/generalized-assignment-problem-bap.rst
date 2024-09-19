@@ -1,3 +1,5 @@
+.. _example_gap_bap:
+
 Generalized Assignment Problem (Branch-and-Price)
 =================================================
 
@@ -37,5 +39,5 @@ Implementation with idol
 In this example, we show how to model the Generalized Assignment Problem with idol and how to solve it using a
 Dantzig-Wolfe decomposition within a branch-and-bound framework, i.e., a branch-and-price algorithm.
 
-.. literalinclude:: ../../examples/mixed-integer-optimization/assignment.example.cpp
+.. literalinclude:: ../../examples/mixed-integer-optimization/assignment-bap.example.cpp
     :language: cpp

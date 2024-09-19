@@ -20,7 +20,7 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    const auto instance = Problems::GAP::read_instance("assignment.data.txt");
+    const auto instance = Problems::GAP::read_instance("assignment-bap.data.txt");
 
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
@@ -52,28 +52,31 @@ int main(int t_argc, const char** t_argv) {
     // Set the objective function
     model.set_obj_expr(idol_Sum(i, Range(n_agents), idol_Sum(j, Range(n_jobs), instance.cost(i, j) * x[i][j])));
 
+    // Build algorithms
+    const auto column_generation = DantzigWolfeDecomposition(decomposition)
+            .with_master_optimizer(HiGHS::ContinuousRelaxation().with_logs(false))
+            .with_default_sub_problem_spec(
+                    DantzigWolfe::SubProblem()
+                            .add_optimizer(HiGHS().with_logs(false))
+                            .with_column_pool_clean_up(1500, .75)
+            )
+            .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.00000001))
+            .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
+            .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
+            .with_hard_branching(true)
+            .with_logs(true);
+
+    const auto branch_and_bound = BranchAndBound()
+            .with_subtree_depth(0)
+            .with_branching_rule(MostInfeasible())
+            .with_node_selection_rule(WorstBound())
+            .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
+            .with_logs(true);
+
+    const auto branch_and_price = branch_and_bound + column_generation;
+
     // Set optimizer
-    model.use(BranchAndBound()
-                      .with_node_optimizer(
-                              DantzigWolfeDecomposition(decomposition)
-                                      .with_master_optimizer(HiGHS::ContinuousRelaxation().with_logs(false))
-                                      .with_default_sub_problem_spec(
-                                              DantzigWolfe::SubProblem()
-                                                                .add_optimizer(HiGHS().with_logs(false))
-                                                                .with_column_pool_clean_up(1500, .75)
-                                      )
-                                      .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.00000001))
-                                      .with_dual_price_smoothing_stabilization(DantzigWolfe::Neame(.3))
-                                      .with_infeasibility_strategy(DantzigWolfe::FarkasPricing())
-                                      .with_hard_branching(true)
-                                      .with_logs(true)
-                      )
-                      .with_subtree_depth(0)
-                      .with_branching_rule(MostInfeasible())
-                      .with_node_selection_rule(WorstBound())
-                      .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
-                      .with_logs(true)
-            );
+    model.use(branch_and_price);
 
     // Solve
     model.optimize();

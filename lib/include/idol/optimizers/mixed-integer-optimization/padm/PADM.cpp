@@ -3,16 +3,18 @@
 //
 
 #include "PADM.h"
+
+#include <utility>
 #include "Optimizers_PADM.h"
 
 idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition)
-        : m_decomposition(t_decomposition) {
+        : m_decomposition(std::move(t_decomposition)) {
 
 }
 
 idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition,
                  idol::Annotation<idol::Ctr, bool> t_penalized_constraints)
-        : m_decomposition(t_decomposition),
+        : m_decomposition(std::move(t_decomposition)),
           m_penalized_constraints(t_penalized_constraints)
 {
 

@@ -104,6 +104,7 @@ void idol::Optimizers::PADM::hook_optimize() {
         if (is_feasible()) {
             set_status(Feasible);
             set_reason(Proved);
+            compute_objective_value();
             break;
         }
 
@@ -242,4 +243,22 @@ bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
     m_last_solutions[t_sub_problem_id] = save_primal(model);
 
     return has_changed;
+}
+
+void idol::Optimizers::PADM::compute_objective_value() {
+
+    const auto& obj = parent().get_obj_expr();
+
+    double result = obj.constant().as_numerical();
+
+    for (const auto& [var, constant] : obj.linear()) {
+        result += constant.as_numerical() * get_var_primal(var);
+    }
+
+    for (const auto& [var1, var2, constant] : obj.quadratic()) {
+        result += constant.as_numerical() * get_var_primal(var1) * get_var_primal(var2);
+    }
+
+    set_best_obj(result);
+
 }

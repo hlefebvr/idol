@@ -571,6 +571,20 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, ido
 
 }
 
+
+void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, idol::Constant t_obj) {
+
+    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+
+    if (sub_problem_id == MasterId) {
+        m_master.set_var_obj(t_var, std::move(t_obj));
+        return;
+    }
+
+    throw Exception("Updating objective of sub-problem's variable is not implemented.");
+}
+
+
 void idol::DantzigWolfe::Formulation::clean_up(unsigned int t_sub_problem_id, double t_ratio) {
 
     auto& pool = m_pools[t_sub_problem_id];

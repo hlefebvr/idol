@@ -83,6 +83,7 @@ protected:
     bool is_feasible() const;
     bool is_feasible(unsigned int t_sub_problem_id) const;
     bool solve_sub_problem(unsigned int t_sub_problem_id);
+    void compute_objective_value();
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
