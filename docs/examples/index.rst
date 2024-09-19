@@ -26,7 +26,7 @@ Column Generation and Branch-and-Price
     :maxdepth: 1
 
     generalized-assignment-problem-bap
-    generalized-assignment-problem-cg-penalty
+    generalized-assignment-problem-penalty-bap
 
 Bilevel Optimization
 ^^^^^^^^^^^^^^^^^^^^

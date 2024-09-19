@@ -19,7 +19,8 @@ public:
     PADM(const Model& t_model,
          ADM::Formulation t_formulation,
          std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
-         PenaltyUpdate* t_penalty_update);
+         PenaltyUpdate* t_penalty_update,
+         SolutionStatus t_feasible_solution_status);
 
     std::string name() const override { return "PADM"; }
 
@@ -89,6 +90,7 @@ private:
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
     unsigned int m_max_inner_loop_iterations = 1000;
+    SolutionStatus m_feasible_solution_status;
 
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;

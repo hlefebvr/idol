@@ -34,7 +34,11 @@ public:
 
     PenaltyMethod& with_penalty_update(const PenaltyUpdate& t_penalty_update);
 
+    PenaltyMethod& with_feasible_solution_status(SolutionStatus t_status);
+
     Optimizers::PADM *operator()(const Model &t_model) const override;
+
+    PenaltyMethod& operator+=(const OptimizerFactory& t_optimizer_factory);
 
     PenaltyMethod *clone() const override;
 private:
@@ -43,6 +47,9 @@ private:
     std::unique_ptr<OptimizerFactory> m_optimizer;
     std::optional<std::pair<bool, double>> m_rescaling;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
+    std::optional<SolutionStatus> m_feasible_solution_status;
 };
+
+idol::PenaltyMethod operator+(const idol::PenaltyMethod& t_penalty_method, const idol::OptimizerFactory& t_optimizer_factory);
 
 #endif //IDOL_PENALTYMETHOD_H

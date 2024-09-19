@@ -37,6 +37,8 @@ public:
 
     PADM& with_independent_penalty_update(bool t_value);
 
+    PADM& with_feasible_solution_status(SolutionStatus t_status);
+
     Optimizer *operator()(const Model &t_model) const override;
 
     OptimizerFactory *clone() const override;
@@ -49,6 +51,7 @@ private:
     std::optional<std::pair<bool, double>> m_rescaling;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
     std::optional<bool> m_independent_penalty_update;
+    std::optional<SolutionStatus> m_feasible_solution_status;
 
     std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
 };

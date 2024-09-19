@@ -9,11 +9,13 @@
 idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
                              std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
-                             PenaltyUpdate* t_penalty_update)
+                             PenaltyUpdate* t_penalty_update,
+                             SolutionStatus t_feasible_solution_status)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)),
-                              m_penalty_update(t_penalty_update) {
+                              m_penalty_update(t_penalty_update),
+                              m_feasible_solution_status(t_feasible_solution_status) {
 
 }
 
@@ -102,7 +104,7 @@ void idol::Optimizers::PADM::hook_optimize() {
         run_inner_loop();
 
         if (is_feasible()) {
-            set_status(Feasible);
+            set_status(m_feasible_solution_status);
             set_reason(Proved);
             compute_objective_value();
             break;

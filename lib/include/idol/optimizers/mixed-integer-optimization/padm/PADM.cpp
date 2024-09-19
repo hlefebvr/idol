@@ -59,7 +59,8 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 t_model,
                 std::move(formulation),
                 std::move(sub_problem_specs),
-                penalty_update
+                penalty_update,
+                m_feasible_solution_status ? *m_feasible_solution_status : Feasible
             );
 
     handle_default_parameters(result);
@@ -115,7 +116,9 @@ idol::PADM::PADM(const idol::PADM &t_src)
       m_default_sub_problem_spec(t_src.m_default_sub_problem_spec),
       m_sub_problem_specs(t_src.m_sub_problem_specs),
       m_rescaling(t_src.m_rescaling),
-      m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr) {
+      m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr),
+      m_independent_penalty_update(t_src.m_independent_penalty_update),
+      m_feasible_solution_status(t_src.m_feasible_solution_status) {
 
 }
 
@@ -126,6 +129,17 @@ idol::PADM &idol::PADM::with_independent_penalty_update(bool t_value) {
     }
 
     m_independent_penalty_update = t_value;
+
+    return *this;
+}
+
+idol::PADM &idol::PADM::with_feasible_solution_status(idol::SolutionStatus t_status) {
+
+    if (m_feasible_solution_status) {
+        throw Exception("The feasible solution status has already been set.");
+    }
+
+    m_feasible_solution_status = t_status;
 
     return *this;
 }

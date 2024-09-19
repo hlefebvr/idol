@@ -18,7 +18,8 @@ idol::PenaltyMethod::PenaltyMethod(const idol::PenaltyMethod &t_src)
       m_penalized_constraints(t_src.m_penalized_constraints),
       m_rescaling(t_src.m_rescaling),
       m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr),
-      m_optimizer(t_src.m_optimizer ? t_src.m_optimizer->clone() : nullptr) {
+      m_optimizer(t_src.m_optimizer ? t_src.m_optimizer->clone() : nullptr),
+      m_feasible_solution_status(t_src.m_feasible_solution_status) {
 
 }
 
@@ -80,10 +81,30 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
             t_model,
             std::move(formulation),
             { ADM::SubProblem().with_optimizer(*m_optimizer) },
-            penalty_update
+            penalty_update,
+            m_feasible_solution_status ? *m_feasible_solution_status : Feasible
     );
 
     handle_default_parameters(result);
 
     return result;
+}
+
+idol::PenaltyMethod &idol::PenaltyMethod::with_feasible_solution_status(idol::SolutionStatus t_status) {
+
+    if (m_feasible_solution_status) {
+        throw Exception("The feasible solution status has already been set.");
+    }
+
+    m_feasible_solution_status = t_status;
+
+    return *this;
+}
+
+idol::PenaltyMethod &idol::PenaltyMethod::operator+=(const idol::OptimizerFactory &t_optimizer_factory) {
+    return with_optimizer(t_optimizer_factory);
+}
+
+idol::PenaltyMethod operator+(const idol::PenaltyMethod& t_penalty_method, const idol::OptimizerFactory& t_optimizer_factory) {
+    return idol::PenaltyMethod(t_penalty_method) += t_optimizer_factory;
 }

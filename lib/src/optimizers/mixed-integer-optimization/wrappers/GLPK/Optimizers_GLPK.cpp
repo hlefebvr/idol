@@ -804,4 +804,17 @@ double idol::Optimizers::GLPK::get_var_reduced_cost(const idol::Var &t_var) cons
     throw Exception("Not implemented get_var_reduced_cost");
 }
 
+void idol::Optimizers::GLPK::set_param_logs(bool t_value) {
+    Optimizer::set_param_logs(t_value);
+
+    if (t_value) {
+        m_simplex_parameters.msg_lev = GLP_MSG_ALL;
+        m_mip_parameters.msg_lev = GLP_MSG_ALL;
+    } else {
+        m_simplex_parameters.msg_lev = GLP_MSG_OFF;
+        m_mip_parameters.msg_lev = GLP_MSG_OFF;
+    }
+
+}
+
 #endif

@@ -7,14 +7,12 @@
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h"
 #include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/IntegerMaster.h"
-#include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/SimpleRounding.h"
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/MinKnap/MinKnap.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
 
@@ -54,10 +52,10 @@ int main(int t_argc, const char** t_argv) {
 
     // Build algorithms
     const auto column_generation = DantzigWolfeDecomposition(decomposition)
-            .with_master_optimizer(HiGHS::ContinuousRelaxation().with_logs(false))
+            .with_master_optimizer(GLPK::ContinuousRelaxation().with_logs(false))
             .with_default_sub_problem_spec(
                     DantzigWolfe::SubProblem()
-                            .add_optimizer(HiGHS().with_logs(false))
+                            .add_optimizer(GLPK().with_logs(false))
                             .with_column_pool_clean_up(1500, .75)
             )
             .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.00000001))
@@ -70,7 +68,7 @@ int main(int t_argc, const char** t_argv) {
             .with_subtree_depth(0)
             .with_branching_rule(MostInfeasible())
             .with_node_selection_rule(WorstBound())
-            .add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
+            .add_callback(Heuristics::IntegerMaster().with_optimizer(GLPK().with_logs(false)))
             .with_logs(true);
 
     const auto branch_and_price = branch_and_bound + column_generation;

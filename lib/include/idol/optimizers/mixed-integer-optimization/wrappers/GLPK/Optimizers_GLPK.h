@@ -102,6 +102,8 @@ public:
 
     void set_param_presolve(bool t_value) override;
 
+    void set_param_logs(bool t_value) override;
+
     static Model read_from_file(Env& t_env, const std::string& t_filename);
 };
 
