@@ -186,11 +186,19 @@ bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
 
 void idol::Optimizers::PADM::run_inner_loop() {
 
+    const unsigned int n_sub_problems = m_formulation.n_sub_problems();
+
+    if (n_sub_problems == 1) {
+        solve_sub_problem(0);
+        ++m_inner_loop_iterations;
+        return;
+    }
+
     for (unsigned int inner_loop_iteration = 0 ; inner_loop_iteration < m_max_inner_loop_iterations ; ++inner_loop_iteration) {
 
         bool has_changed = false;
 
-        for (unsigned int i = 0, n = m_formulation.n_sub_problems() ; i < n ; ++i) {
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             has_changed |= solve_sub_problem(i);
         }
 
