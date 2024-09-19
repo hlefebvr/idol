@@ -296,7 +296,8 @@ double idol::Optimizers::PADM::feasibility_measure(unsigned int t_sub_problem_id
     double result = 0;
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        result += m_last_solutions[t_sub_problem_id].get(var);
+        const double val = m_last_solutions[t_sub_problem_id].get(var);
+        result = std::max(result, val);
     }
 
     return result;
