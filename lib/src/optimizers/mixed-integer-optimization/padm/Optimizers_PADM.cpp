@@ -205,7 +205,13 @@ void idol::Optimizers::PADM::run_inner_loop() {
             has_changed |= solve_sub_problem(i);
         }
 
-        if (!has_changed || is_terminated()) {
+        if (is_terminated()) {
+            break;
+        }
+
+        log_inner_loop(inner_loop_iteration);
+
+        if (!has_changed) {
             break;
         }
 
@@ -263,4 +269,35 @@ void idol::Optimizers::PADM::compute_objective_value() {
 
     set_best_obj(result);
 
+}
+
+void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration) {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    const unsigned int n_sub_problems = m_formulation.n_sub_problems();
+
+    std::cout << std::setw(5) << m_inner_loop_iterations << '\t'
+              << std::setw(5) << m_outer_loop_iteration << '\t'
+              << std::setw(5) << t_inner_loop_iteration << '\t';
+
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        std::cout << std::setw(20) << std::setprecision(12) << feasibility_measure(i) << '\t';
+    }
+
+    std::cout << std::endl;
+
+}
+
+double idol::Optimizers::PADM::feasibility_measure(unsigned int t_sub_problem_id) const {
+
+    double result = 0;
+
+    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
+        result += m_last_solutions[t_sub_problem_id].get(var);
+    }
+
+    return result;
 }

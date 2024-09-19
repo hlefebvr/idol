@@ -85,6 +85,8 @@ protected:
     bool is_feasible(unsigned int t_sub_problem_id) const;
     bool solve_sub_problem(unsigned int t_sub_problem_id);
     void compute_objective_value();
+    void log_inner_loop(unsigned int t_inner_loop_iteration);
+    double feasibility_measure(unsigned int t_sub_problem_id) const;
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
