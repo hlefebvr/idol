@@ -36,13 +36,19 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
         throw Exception("The decomposition has not been set.");
     }
 
-    if (!m_penalized_constraints && (m_rescaling || m_penalty_update)) {
+    if (!m_penalized_constraints && (m_rescaling || m_penalty_update || m_independent_penalty_update)) {
         std::cout << "Warning: The penalized constraints have not been set. The rescaling and penalty update will be ignored." << std::endl;
+    }
+
+    if (m_rescaling && m_rescaling->first && m_independent_penalty_update && m_independent_penalty_update.value()) {
+        throw Exception("The rescaling and independent penalty update cannot be used together.");
     }
 
     ADM::Formulation formulation(t_model,
                                  *m_decomposition,
-                                 m_penalized_constraints);
+                                 m_penalized_constraints,
+                                 m_independent_penalty_update && *m_independent_penalty_update,
+                                 m_rescaling ? *m_rescaling : std::make_pair(false, 0.));
 
     auto sub_problem_specs = create_sub_problem_specs(t_model, formulation);
 
@@ -55,7 +61,6 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 t_model,
                 std::move(formulation),
                 std::move(sub_problem_specs),
-                m_rescaling ? *m_rescaling : std::make_pair(false, 0.),
                 penalty_update
             );
 
@@ -114,4 +119,15 @@ idol::PADM::PADM(const idol::PADM &t_src)
       m_rescaling(t_src.m_rescaling),
       m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr) {
 
+}
+
+idol::PADM &idol::PADM::with_independent_penalty_update(bool t_value) {
+
+    if (m_independent_penalty_update) {
+        throw Exception("The independent penalty update has already been set.");
+    }
+
+    m_independent_penalty_update = t_value;
+
+    return *this;
 }

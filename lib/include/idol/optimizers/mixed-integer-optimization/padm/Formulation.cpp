@@ -10,9 +10,13 @@
 
 idol::ADM::Formulation::Formulation(const Model& t_src_model,
                                     Annotation<Var, unsigned int> t_decomposition,
-                                    std::optional<Annotation<Ctr, bool>> t_penalized_constraints)
-                                                     : m_decomposition(std::move(t_decomposition)),
-                                                       m_penalized_constraints(std::move(t_penalized_constraints)) {
+                                    std::optional<Annotation<Ctr, bool>> t_penalized_constraints,
+                                    bool t_independent_penalty_update,
+                                    std::pair<bool, double> t_rescaling)
+                                 : m_decomposition(std::move(t_decomposition)),
+                                   m_penalized_constraints(std::move(t_penalized_constraints)),
+                                   m_independent_penalty_update(t_independent_penalty_update),
+                                   m_rescaling(std::move(t_rescaling)) {
 
     const auto n_sub_problems = compute_n_sub_problems(t_src_model);
 
@@ -56,7 +60,7 @@ void idol::ADM::Formulation::initialize_patterns(const idol::Model &t_src_model,
 
 void idol::ADM::Formulation::initialize_slacks(const idol::Model &t_src_model,
                                                unsigned int n_sub_problems) {
-    m_l1_vars.resize(n_sub_problems);
+    m_l1_vars_in_sub_problem.resize(n_sub_problems);
 }
 
 void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
@@ -102,16 +106,22 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
         auto& model = m_sub_problems[t_sub_problem_id];
 
         const auto add_l1_var = [&](double t_coefficient) {
-            auto var = model.add_var(0, Inf, Continuous, Column(), "l1_norm_" + std::to_string(t_coefficient < 0) + "_" + t_ctr.name());
+            auto var = get_or_create_l1_var(t_ctr);
+            model.add(var);
             pattern.linear() += t_coefficient * var;
-            m_l1_vars[t_sub_problem_id].emplace_back(var);
+            m_l1_vars_in_sub_problem[t_sub_problem_id].emplace_back(var);
+            return var;
         };
 
         switch (type) {
-            case Equal:
-                add_l1_var(+1);
-                add_l1_var(-1);
+            case Equal: {
+                auto var = add_l1_var(0);
+                auto var_minus = model.add_var(0, Inf, Continuous, var.name() + "_minus");
+                auto var_plus = model.add_var(0, Inf, Continuous, var.name() + "_plus");
+                model.add_ctr(var == var_plus + var_minus);
+                pattern.linear() += var_plus - var_minus;
                 break;
+            }
             case LessOrEqual:
                 add_l1_var(-1);
                 break;
@@ -290,9 +300,83 @@ void
 idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals,
                                                   PenaltyUpdate& t_penalty_update) {
 
+    const unsigned int n_sub_problems = m_sub_problems.size();
+
+    if (m_independent_penalty_update) {
+        update_penalty_parameters_independently(t_primals, t_penalty_update);
+        return;
+    }
+
+    for (auto &[ctr, penalty]: m_l1_vars) {
+
+        auto &[var, value] = penalty;
+
+        if (value < 1e-3) {
+            value = 1;
+            set_penalty_in_all_sub_problems(var, 1);
+            continue;
+        }
+
+        unsigned int argmax = -1;
+        double max = 0.;
+
+        for (unsigned int i = 0; i < n_sub_problems; ++i) {
+
+            if (const double val = t_primals[i].get(var); val > max) {
+                max = val;
+                argmax = i;
+            }
+
+        }
+
+        if (argmax == -1 || max <= 1e-4) {
+            continue;
+        }
+
+        value = t_penalty_update(value);
+        set_penalty_in_all_sub_problems(var, value);
+
+    }
+
+    if (m_rescaling.first) {
+        rescale_penalty_parameters();
+    }
+
+}
+
+idol::Var idol::ADM::Formulation::get_or_create_l1_var(const idol::Ctr &t_ctr) {
+
+    auto it = std::lower_bound(m_l1_vars.begin(), m_l1_vars.end(), t_ctr, [](const auto& t_lhs, const auto& t_rhs) {
+        return t_lhs.first.id() < t_rhs.id();
+    });
+
+    if (it != m_l1_vars.end() && it->first.id() == t_ctr.id()) {
+        return it->second.first;
+    }
+
+    auto& env = m_sub_problems.front().env();
+    Var var (env, 0, Inf, Continuous, Column(), "l1_norm_" + t_ctr.name());
+    m_l1_vars.emplace_hint(it, t_ctr, std::make_pair( var, 0. ));
+
+    return var;
+}
+
+void idol::ADM::Formulation::set_penalty_in_all_sub_problems(const Var &t_var, double t_value) {
+
+    for (auto& model : m_sub_problems) {
+        if (model.has(t_var)) {
+            model.set_var_obj(t_var, t_value);
+        }
+    }
+
+}
+
+void idol::ADM::Formulation::update_penalty_parameters_independently(const std::vector<Solution::Primal> &t_primals,
+                                                                     idol::PenaltyUpdate &t_penalty_update) {
+
     for (unsigned int i = 0, n_sub_problems = m_sub_problems.size() ; i < n_sub_problems ; ++i) {
         auto& model = m_sub_problems[i];
-        for (const auto& var : m_l1_vars[i]) {
+        for (const auto& var : m_l1_vars_in_sub_problem[i]) {
 
             double current_penalty = model.get_var_column(var).obj().as_numerical();
 
@@ -306,6 +390,38 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
             }
 
         }
+    }
+
+}
+
+void idol::ADM::Formulation::rescale_penalty_parameters() {
+
+    double max = 0;
+    for (const auto& [ctr, penalty] : m_l1_vars) {
+        max = std::max(max, penalty.second);
+    }
+
+    if (max < m_rescaling.second) {
+        return;
+    }
+
+    const auto sigmoid = [&](double t_val) {
+        const double alpha = max;
+        constexpr double beta = 5;
+        const double sigma = max;
+        constexpr double omega = 5;
+        return beta * (t_val - sigma) / (alpha + std::abs(t_val - sigma)) + omega;
+    };
+
+    const unsigned int n_sub_problems = m_sub_problems.size();
+
+    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+
+        for (const auto& var : m_l1_vars_in_sub_problem[i]) {
+            const double current_penalty = m_sub_problems[i].get_var_column(var).obj().as_numerical();
+            m_sub_problems[i].set_var_obj(var, sigmoid(current_penalty));
+        }
+
     }
 
 }

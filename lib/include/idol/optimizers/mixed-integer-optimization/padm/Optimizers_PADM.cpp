@@ -9,12 +9,10 @@
 idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
                              std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
-                             std::pair<bool, double> t_rescaling,
                              PenaltyUpdate* t_penalty_update)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)),
-                              m_rescaling(std::move(t_rescaling)),
                               m_penalty_update(t_penalty_update) {
 
 }

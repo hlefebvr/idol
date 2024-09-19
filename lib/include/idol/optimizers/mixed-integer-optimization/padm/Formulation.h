@@ -16,7 +16,9 @@ class idol::ADM::Formulation {
 public:
     Formulation(const Model& t_src_model,
                 Annotation<Var, unsigned int> t_decomposition,
-                std::optional<Annotation<Ctr, bool>> t_penalized_constraints);
+                std::optional<Annotation<Ctr, bool>> t_penalized_constraints,
+                bool t_independent_penalty_update,
+                std::pair<bool, double> t_rescaling);
 
     Model& sub_problem(const Var& t_var);
 
@@ -32,7 +34,7 @@ public:
 
     auto sub_problems() const { return ConstIteratorForward(m_sub_problems); }
 
-    const auto l1_vars(unsigned int t_sub_problem_id) const { return ConstIteratorForward(m_l1_vars[t_sub_problem_id]); }
+    const auto l1_vars(unsigned int t_sub_problem_id) const { return ConstIteratorForward(m_l1_vars_in_sub_problem[t_sub_problem_id]); }
 
     bool has_penalized_constraints() const { return m_penalized_constraints.has_value(); }
 
@@ -42,11 +44,14 @@ public:
 private:
     Annotation<Var, unsigned int> m_decomposition;
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
+    bool m_independent_penalty_update;
+    std::pair<bool, double> m_rescaling;
 
     std::vector<Model> m_sub_problems;
     std::vector<std::optional<Expr<Var, Var>>> m_objective_patterns;
     std::vector<std::list<std::pair<Ctr, Expr<Var, Var>>>> m_constraint_patterns; // as ctr: lhs <= 0
-    std::vector<std::list<Var>> m_l1_vars;
+    std::vector<std::list<Var>> m_l1_vars_in_sub_problem;
+    Map<Ctr, std::pair<Var, double>> m_l1_vars;
 
     unsigned int compute_n_sub_problems(const Model& t_src_model) const;
     void initialize_sub_problems(const Model& t_src_model, unsigned int n_sub_problems);
@@ -58,6 +63,10 @@ private:
     void dispatch_obj(const Model& t_src_model);
     void dispatch_obj(const Model& t_src_model, unsigned int t_sub_problem_id);
     std::pair<Expr<Var, Var>, bool> dispatch(const Model& t_src_model, const LinExpr<Var>& t_lin_expr, const QuadExpr<Var, Var>& t_quad_expr, unsigned int t_sub_problem_id);
+    Var get_or_create_l1_var(const Ctr& t_ctr);
+    void set_penalty_in_all_sub_problems(const Var& t_var, double t_value);
+    void update_penalty_parameters_independently(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
+    void rescale_penalty_parameters();
 
     double fix(const Constant& t_constant, const std::vector<Solution::Primal>& t_primals);
 };
