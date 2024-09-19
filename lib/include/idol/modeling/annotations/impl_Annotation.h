@@ -63,6 +63,12 @@ public:
      * Frees the memory kept for the annotation in the environment.
      */
     void free();
+
+    /**
+     * Returns the underlying environment of the annotation.
+     * @return The underlying environment of the annotation.
+     */
+    [[nodiscard]] Env& env() const { return m_id->env; }
 };
 
 template<class T, class... ArgsT>

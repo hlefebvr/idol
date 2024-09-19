@@ -32,10 +32,6 @@ idol::PADM &idol::PADM::with_default_sub_problem_spec(idol::ADM::SubProblem t_su
 
 idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
 
-    if (!m_decomposition) {
-        throw Exception("The decomposition has not been set.");
-    }
-
     if (!m_penalized_constraints && (m_rescaling || m_penalty_update || m_independent_penalty_update)) {
         std::cout << "Warning: The penalized constraints have not been set. The rescaling and penalty update will be ignored." << std::endl;
     }
@@ -45,7 +41,7 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
     }
 
     ADM::Formulation formulation(t_model,
-                                 *m_decomposition,
+                                 m_decomposition,
                                  m_penalized_constraints,
                                  m_independent_penalty_update && *m_independent_penalty_update,
                                  m_rescaling ? *m_rescaling : std::make_pair(false, 0.));

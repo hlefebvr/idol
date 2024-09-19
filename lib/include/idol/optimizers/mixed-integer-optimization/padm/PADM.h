@@ -42,7 +42,7 @@ public:
     OptimizerFactory *clone() const override;
 
 private:
-    std::optional<Annotation<Var, unsigned int>> m_decomposition;
+    Annotation<Var, unsigned int> m_decomposition;
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
     std::optional<ADM::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, ADM::SubProblem> m_sub_problem_specs;
