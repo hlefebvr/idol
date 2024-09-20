@@ -87,6 +87,10 @@ protected:
     void compute_objective_value();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     double feasibility_measure(unsigned int t_sub_problem_id) const;
+
+    void check_feasibility();
+    void check_time_limit();
+    void check_outer_iteration_limit();
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;

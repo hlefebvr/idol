@@ -97,20 +97,23 @@ void idol::Optimizers::PADM::hook_before_optimize() {
 
 void idol::Optimizers::PADM::hook_optimize() {
 
-    for (unsigned int max_outer_loop = get_param_iteration_limit() ; m_outer_loop_iteration < max_outer_loop ; ++m_outer_loop_iteration) {
+    if (get_param_iteration_limit() == 0) {
+        return;
+    }
+
+    do {
 
         update_penalty_parameters();
 
         run_inner_loop();
 
-        if (is_feasible()) {
-            set_status(m_feasible_solution_status);
-            set_reason(Proved);
-            compute_objective_value();
-            break;
-        }
+        ++m_outer_loop_iteration;
 
-    }
+        check_outer_iteration_limit();
+        check_time_limit();
+        check_feasibility();
+
+    } while (!is_terminated());
 
 }
 
@@ -205,6 +208,8 @@ void idol::Optimizers::PADM::run_inner_loop() {
             has_changed |= solve_sub_problem(i);
         }
 
+        check_time_limit();
+
         if (is_terminated()) {
             break;
         }
@@ -236,6 +241,7 @@ bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     auto& model = m_formulation.sub_problem(t_sub_problem_id);
 
+    model.optimizer().set_param_time_limit(get_remaining_time());
     model.optimize();
 
     const auto status = model.get_status();
@@ -301,4 +307,45 @@ double idol::Optimizers::PADM::feasibility_measure(unsigned int t_sub_problem_id
     }
 
     return result;
+}
+
+void idol::Optimizers::PADM::check_feasibility() {
+
+    if (!is_feasible()) {
+        return;
+    }
+
+    set_status(m_feasible_solution_status);
+    set_reason(Proved);
+    compute_objective_value();
+    terminate();
+
+    if (m_feasible_solution_status == Optimal) {
+        set_best_bound(get_best_obj());
+    }
+
+}
+
+void idol::Optimizers::PADM::check_time_limit() {
+
+    if (get_remaining_time() > 0) {
+        return;
+    }
+
+    set_status(Infeasible);
+    set_reason(TimeLimit);
+    terminate();
+
+}
+
+void idol::Optimizers::PADM::check_outer_iteration_limit() {
+
+    if (m_outer_loop_iteration < get_param_iteration_limit()) {
+        return;
+    }
+
+    set_status(Infeasible);
+    set_reason(IterLimit);
+    terminate();
+
 }
