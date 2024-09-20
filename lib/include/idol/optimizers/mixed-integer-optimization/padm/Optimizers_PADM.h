@@ -91,6 +91,8 @@ protected:
     void check_feasibility();
     void check_time_limit();
     void check_outer_iteration_limit();
+
+    void write_solution(const std::string& t_name);
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;

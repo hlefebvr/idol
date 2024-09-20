@@ -5,6 +5,7 @@
 #include "idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h"
 
 #include <utility>
+#include <fstream>
 
 idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
@@ -68,9 +69,34 @@ void idol::Optimizers::PADM::update() {
 }
 
 void idol::Optimizers::PADM::write(const std::string &t_name) {
+
+    // if ends by .sol
+    if (t_name.size() > 4 && t_name.substr(t_name.size() - 4) == ".sol") {
+        write_solution(t_name);
+        return;
+    }
+
     throw Exception("Not implemented");
+
 }
 
+void idol::Optimizers::PADM::write_solution(const std::string &t_name) {
+
+    std::ofstream file(t_name);
+
+    if (!file.is_open()) {
+        throw Exception("Could not open file " + t_name);
+    }
+
+    file << "# Objective value = " << get_best_obj() << std::endl;
+    for (const auto& var : parent().vars()) {
+        file << var.name() << " " << get_var_primal(var) << std::endl;
+
+    }
+
+    file.close();
+
+}
 
 void idol::Optimizers::PADM::hook_before_optimize() {
     Optimizer::hook_before_optimize();
