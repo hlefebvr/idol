@@ -313,7 +313,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
 
         if (value < 1e-3) {
             value = 1;
-            set_penalty_in_all_sub_problems(var, 1);
+            set_penalty_in_all_sub_problems(var, m_initial_penalty_parameter);
             continue;
         }
 
@@ -381,7 +381,7 @@ void idol::ADM::Formulation::update_penalty_parameters_independently(const std::
             double current_penalty = model.get_var_column(var).obj().as_numerical();
 
             if (current_penalty < 1e-3) {
-                model.set_var_obj(var, 1);
+                model.set_var_obj(var, m_initial_penalty_parameter);
                 continue;
             }
 

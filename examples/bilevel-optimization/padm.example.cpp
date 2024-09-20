@@ -51,7 +51,7 @@ int main(int t_argc, const char** t_argv) {
             PADM(decomposition, penalized_constraints)
                 .with_default_sub_problem_spec(ADM::SubProblem().with_optimizer(Gurobi()))
                 .with_penalty_update(PenaltyUpdates::Multiplicative(2))
-                .with_rescaling(true, 1e3)
+                .with_rescaling(true, 1e5)
                 .with_logs(true)
     );
 
