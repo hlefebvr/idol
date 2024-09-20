@@ -415,6 +415,10 @@ void idol::ADM::Formulation::rescale_penalty_parameters() {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
+    for (auto& [ctr, penalty] : m_l1_vars) {
+        penalty.second = sigmoid(penalty.second);
+    }
+
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
 
         for (const auto& var : m_l1_vars_in_sub_problem[i]) {
