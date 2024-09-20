@@ -5,8 +5,8 @@
 #ifndef IDOL_ADM_SUBPROBLEM_H
 #define IDOL_ADM_SUBPROBLEM_H
 
-
 #include "idol/optimizers/OptimizerFactory.h"
+#include <memory>
 
 namespace idol::ADM {
     class SubProblem;
