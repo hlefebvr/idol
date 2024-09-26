@@ -236,6 +236,8 @@ void idol::Optimizers::PADM::run_inner_loop() {
             has_changed |= solve_sub_problem(i);
         }
 
+        ++m_inner_loop_iterations;
+
         check_time_limit();
 
         if (is_terminated()) {
@@ -248,7 +250,6 @@ void idol::Optimizers::PADM::run_inner_loop() {
             break;
         }
 
-        ++m_inner_loop_iterations;
     }
 
 }
