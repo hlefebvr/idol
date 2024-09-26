@@ -40,13 +40,14 @@ public:
 
     void fix_sub_problem(unsigned int t_sub_problem_id, const std::vector<Solution::Primal>& t_primals);
 
+    void initialize_penalty_parameters(double t_value);
+
     void update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
 private:
     Annotation<Var, unsigned int> m_decomposition;
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
     bool m_independent_penalty_update;
     std::pair<bool, double> m_rescaling;
-    double m_initial_penalty_parameter = 1e2;
 
     std::vector<Model> m_sub_problems;
     std::vector<std::optional<Expr<Var, Var>>> m_objective_patterns;

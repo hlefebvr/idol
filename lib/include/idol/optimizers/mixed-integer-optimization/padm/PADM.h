@@ -39,6 +39,8 @@ public:
 
     PADM& with_feasible_solution_status(SolutionStatus t_status);
 
+    PADM& with_initial_penalty_parameter(double t_value);
+
     Optimizer *operator()(const Model &t_model) const override;
 
     OptimizerFactory *clone() const override;
@@ -52,6 +54,7 @@ private:
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
     std::optional<bool> m_independent_penalty_update;
     std::optional<SolutionStatus> m_feasible_solution_status;
+    std::optional<double> m_initial_penalty_parameter;
 
     std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
 };

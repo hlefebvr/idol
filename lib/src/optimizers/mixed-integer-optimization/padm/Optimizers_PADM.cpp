@@ -11,12 +11,14 @@ idol::Optimizers::PADM::PADM(const Model& t_model,
                              ADM::Formulation t_formulation,
                              std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
                              PenaltyUpdate* t_penalty_update,
-                             SolutionStatus t_feasible_solution_status)
+                             SolutionStatus t_feasible_solution_status,
+                             double t_initial_penalty_parameter)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)),
                               m_penalty_update(t_penalty_update),
-                              m_feasible_solution_status(t_feasible_solution_status) {
+                              m_feasible_solution_status(t_feasible_solution_status),
+                              m_initial_penalty_parameter(t_initial_penalty_parameter) {
 
 }
 
@@ -254,6 +256,11 @@ void idol::Optimizers::PADM::run_inner_loop() {
 void idol::Optimizers::PADM::update_penalty_parameters() {
 
     if (!m_formulation.has_penalized_constraints()) {
+        return;
+    }
+
+    if (m_inner_loop_iterations == 0) {
+        m_formulation.initialize_penalty_parameters(m_initial_penalty_parameter);
         return;
     }
 

@@ -82,7 +82,8 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
             std::move(formulation),
             { ADM::SubProblem().with_optimizer(*m_optimizer) },
             penalty_update,
-            m_feasible_solution_status ? *m_feasible_solution_status : Feasible
+            m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
+            m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e2
     );
 
     handle_default_parameters(result);
@@ -103,6 +104,17 @@ idol::PenaltyMethod &idol::PenaltyMethod::with_feasible_solution_status(idol::So
 
 idol::PenaltyMethod &idol::PenaltyMethod::operator+=(const idol::OptimizerFactory &t_optimizer_factory) {
     return with_optimizer(t_optimizer_factory);
+}
+
+idol::PenaltyMethod &idol::PenaltyMethod::with_initial_penalty_parameter(double t_value) {
+
+    if (m_initial_penalty_parameter) {
+        throw Exception("The initial penalty parameter has already been set.");
+    }
+
+    m_initial_penalty_parameter = t_value;
+
+    return *this;
 }
 
 idol::PenaltyMethod operator+(const idol::PenaltyMethod& t_penalty_method, const idol::OptimizerFactory& t_optimizer_factory) {

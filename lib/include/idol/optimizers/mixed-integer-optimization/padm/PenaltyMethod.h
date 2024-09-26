@@ -36,6 +36,8 @@ public:
 
     PenaltyMethod& with_feasible_solution_status(SolutionStatus t_status);
 
+    PenaltyMethod& with_initial_penalty_parameter(double t_value);
+
     Optimizers::PADM *operator()(const Model &t_model) const override;
 
     PenaltyMethod& operator+=(const OptimizerFactory& t_optimizer_factory);
@@ -48,6 +50,7 @@ private:
     std::optional<std::pair<bool, double>> m_rescaling;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
     std::optional<SolutionStatus> m_feasible_solution_status;
+    std::optional<double> m_initial_penalty_parameter;
 };
 
 idol::PenaltyMethod operator+(const idol::PenaltyMethod& t_penalty_method, const idol::OptimizerFactory& t_optimizer_factory);

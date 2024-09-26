@@ -60,7 +60,8 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 std::move(formulation),
                 std::move(sub_problem_specs),
                 penalty_update,
-                m_feasible_solution_status ? *m_feasible_solution_status : Feasible
+                m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
+                m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e-1
             );
 
     handle_default_parameters(result);
@@ -140,6 +141,17 @@ idol::PADM &idol::PADM::with_feasible_solution_status(idol::SolutionStatus t_sta
     }
 
     m_feasible_solution_status = t_status;
+
+    return *this;
+}
+
+idol::PADM &idol::PADM::with_initial_penalty_parameter(double t_value) {
+
+    if (m_initial_penalty_parameter) {
+        throw Exception("The initial penalty parameter has already been set.");
+    }
+
+    m_initial_penalty_parameter = t_value;
 
     return *this;
 }
