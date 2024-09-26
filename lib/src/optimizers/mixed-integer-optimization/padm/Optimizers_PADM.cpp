@@ -384,6 +384,10 @@ void idol::Optimizers::PADM::check_outer_iteration_limit() {
 
 }
 
-unsigned int idol::Optimizers::PADM::get_outer_loop_iteration() const {
+unsigned int idol::Optimizers::PADM::get_outer_loop_iteration_count() const {
     return m_outer_loop_iteration;
+}
+
+unsigned int idol::Optimizers::PADM::get_inner_loop_iteration_count() const {
+    return m_inner_loop_iterations;
 }
