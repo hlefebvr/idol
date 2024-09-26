@@ -52,6 +52,7 @@ int main(int t_argc, const char** t_argv) {
                 .with_default_sub_problem_spec(ADM::SubProblem().with_optimizer(Gurobi()))
                 .with_penalty_update(PenaltyUpdates::Multiplicative(2))
                 .with_rescaling(true, 1e5)
+                .with_initial_penalty_parameter(1e2)
                 .with_logs(true)
     );
 
