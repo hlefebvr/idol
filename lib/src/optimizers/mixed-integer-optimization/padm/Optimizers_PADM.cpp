@@ -383,3 +383,7 @@ void idol::Optimizers::PADM::check_outer_iteration_limit() {
     terminate();
 
 }
+
+unsigned int idol::Optimizers::PADM::get_outer_loop_iteration() const {
+    return m_outer_loop_iteration;
+}

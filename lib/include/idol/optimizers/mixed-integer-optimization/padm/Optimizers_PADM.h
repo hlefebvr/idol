@@ -39,6 +39,8 @@ public:
 
     unsigned int get_solution_index() const override;
 
+    unsigned int get_outer_loop_iteration() const;
+
 protected:
     void add(const Var &t_var) override;
 
