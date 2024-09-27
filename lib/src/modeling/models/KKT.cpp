@@ -301,17 +301,17 @@ void idol::Reformulators::KKT::create_dual_objective() {
         }
 
         const auto index = m_src_model.get_var_index(var);
-        const auto& dual_var_lb = *m_dual_variables_for_lower_bounds[index];
-        const auto& dual_var_ub = *m_dual_variables_for_upper_bounds[index];
-
         const auto lb = m_src_model.get_var_lb(var);
         const auto ub = m_src_model.get_var_ub(var);
 
+
         if (!is_neg_inf(lb)) {
+            const auto& dual_var_lb = *m_dual_variables_for_lower_bounds[index];
             m_dual_objective += lb * dual_var_lb;
         }
 
         if (!is_pos_inf(ub)) {
+            const auto& dual_var_ub = *m_dual_variables_for_upper_bounds[index];
             m_dual_objective += ub * dual_var_ub;
         }
 
