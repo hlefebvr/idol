@@ -210,7 +210,7 @@ bool idol::Optimizers::PADM::is_feasible() const {
 bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        if (m_last_solutions[t_sub_problem_id].get(var) > 1e-5) {
+        if (m_last_solutions[t_sub_problem_id].get(var) > 1e-4) {
             return false;
         }
     }
@@ -287,8 +287,10 @@ bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
         return true;
     }
 
-    bool has_changed = m_inner_loop_iterations == 0 || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - model.get_best_obj()) > 1e-5;
-    m_last_solutions[t_sub_problem_id] = save_primal(model);
+    auto current_solution = save_primal(model);
+    // bool has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
+    const bool has_changed = m_inner_loop_iterations == 0 || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
+    m_last_solutions[t_sub_problem_id] = std::move(current_solution);
 
     return has_changed;
 }
