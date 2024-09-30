@@ -9,32 +9,12 @@
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h"
-#include "idol/problems/knapsack-problem/KP_Instance.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h"
 #include "idol/problems/facility-location-problem/FLP_Instance.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 #include "idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/KnapsackCover.h"
-#include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/IntegerMaster.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
-#include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
@@ -82,131 +62,164 @@ void hello_world_osi_idol() {
     solver->writeLp("model");
 }
 
-using namespace idol;
+void solve_with_mibs(int t_argc, const char** t_argv) {
 
-std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>
-count_variables_and_constraints(const Model& t_model,
-                               const Annotation<Var, unsigned int>& t_var_level,
-                               const Annotation<Ctr, unsigned int>& t_ctr_level) {
+    std::unique_ptr<OsiSolverInterface> solver(new OsiClpSolverInterface());
 
-    unsigned int n_lower_level_vars = 0;
-    unsigned int n_upper_level_vars = 0;
-    unsigned int n_lower_level_ctrs = 0;
-    unsigned int n_upper_level_ctrs = 0;
+    MibSModel model;
+    model.setSolver(solver.get());
 
-    for (const auto& var : t_model.vars()) {
-        if (var.get(t_var_level) != MasterId) {
-            n_lower_level_vars++;
-        } else {
-            n_upper_level_vars++;
-        }
+    // AUXILIARY DATA
+    std::vector<int> upper_level_variables_indices = { 0,  };
+    std::vector<int> lower_level_variables_indices = { 1,  };
+    std::vector<int> upper_level_constraints_indices = { 0, 1,  };
+    std::vector<int> lower_level_constraints_indices = { 2, 3,  };
+    std::vector<double> lower_level_objective_coefficients = { 1,  };
+
+    model.loadAuxiliaryData(
+            (int) lower_level_variables_indices.size(),
+            (int) lower_level_constraints_indices.size(),
+            lower_level_variables_indices.data(),
+            lower_level_constraints_indices.data(),
+            1.,
+            lower_level_objective_coefficients.data(),
+            (int) upper_level_variables_indices.size(),
+            (int) upper_level_constraints_indices.size(),
+            upper_level_variables_indices.data(),
+            upper_level_constraints_indices.data(),
+            0,
+            nullptr,
+            0,
+            nullptr,
+            nullptr,
+            nullptr
+    );
+
+    // PROBLEM DATA
+
+    std::vector<double> variable_lower_bounds = { 0, 0,  };
+    std::vector<double> variable_upper_bounds = { 10, 5,  };
+    std::vector<char> variable_types = { 'I', 'I',  };
+    std::vector<double> constraint_lower_bounds = { -1e+20, -1e+20, -1e+20, -1e+20,  };
+    std::vector<double> constraint_upper_bounds = { 12, 20, 7, 16,  };
+    std::vector<char> constraint_types = { 'L', 'L', 'L', 'L',  };
+    std::vector<double> objective = { -1, -7,  };
+
+    const bool is_column_oriented = true;
+
+    CoinPackedMatrix matrix(is_column_oriented, 0, 0);
+
+    if (is_column_oriented) {
+
+        CoinPackedVector col1;
+        col1.insert(0, -3);
+        col1.insert(1, 1);
+        col1.insert(2, 2);
+        col1.insert(3, -2);
+        matrix.appendCol(col1);
+
+        CoinPackedVector col2;
+        col2.insert(0, 2);
+        col2.insert(1, 2);
+        col2.insert(2, -1);
+        col2.insert(3, 4);
+        matrix.appendCol(col2);
+
+    } else {
+
+        CoinPackedVector row1;
+        row1.insert(0, -3);
+        row1.insert(1, 2);
+        matrix.appendRow(row1);
+
+        CoinPackedVector row2;
+        row2.insert(0, 1);
+        row2.insert(1, 2);
+        matrix.appendRow(row2);
+
+        CoinPackedVector row3;
+        row3.insert(0, 2);
+        row3.insert(1, -1);
+        matrix.appendRow(row3);
+
+        CoinPackedVector row4;
+        row4.insert(0, -2);
+        row4.insert(1, 4);
+        matrix.appendRow(row4);
+
+        matrix.reverseOrdering();
+
     }
 
-    for (const auto& ctr : t_model.ctrs()) {
-        if (ctr.get(t_ctr_level) != MasterId) {
-            n_lower_level_ctrs++;
-        } else {
-            n_upper_level_ctrs++;
-        }
-    }
+    model.loadProblemData(
+            matrix,
+            variable_lower_bounds.data(),
+            variable_upper_bounds.data(),
+            objective.data(),
+            constraint_lower_bounds.data(),
+            constraint_upper_bounds.data(),
+            variable_types.data(),
+            1.,
+            1e+20,
+            constraint_types.data()
+    );
 
-    return {
-        n_lower_level_vars,
-        n_upper_level_vars,
-        n_lower_level_ctrs,
-        n_upper_level_ctrs
-    };
+    AlpsKnowledgeBrokerSerial broker(t_argc, (char**) t_argv, model, false);
+    broker.search(&model);
+
+    std::cout << "Done." << std::endl;
+
 }
 
-int main(int t_argc, char** t_argv) {
+using namespace idol;
 
+void solve_with_idol() {
     Env env;
 
     Model model(env);
 
-    const auto x = model.add_vars(Dim<1>(10), -1., 1., Continuous, "x");
+    auto x = model.add_var(0, Inf, Integer, "x");
+    auto y = model.add_var(0, Inf, Integer, "y");
 
-    model.add_ctr(x[0] == 0, "c1");
-    auto c = model.add_ctr(idol_Sum(i, Range(10), i * x[i]) <= 5., "c2");
+    model.set_obj_expr(-x - 7 * y);
+    const auto c1 = model.add_ctr(-3 * x + 2 * y <= 12);
+    const auto c2 = model.add_ctr(x + 2 * y <= 20);
+    const auto c3 = model.add_ctr(x <= 10);
+    const auto c4 = model.add_ctr(2 * x - y <= 7);
+    const auto c5 = model.add_ctr(-2 * x + 4 * y <= 16);
+    const auto c6 = model.add_ctr(y <= 5);
 
-    model.use(Gurobi());
+    Bilevel::LowerLevelDescription decomposition(env);
+    decomposition.set_follower_obj_expr(y);
+    decomposition.make_follower_var(y);
+    decomposition.make_follower_ctr(c4);
+    decomposition.make_follower_ctr(c5);
+    decomposition.make_follower_ctr(c6);
 
-    model.write("model_before.lp");
+    // Use coin-or/MibS as external solver
+    model.use(Bilevel::MibS(decomposition).with_logs(true));
 
-    model.set_ctr_row(c, Row(idol_Sum(i, Range(10), (i % 2) * x[i]), 4));
+    // Optimize and print solution
+    model.optimize();
+}
 
-    model.write("model_after.lp");
+int main(int t_argc, const char** t_argv) {
 
     /*
-
-    if (t_argc != 4) {
-        throw Exception("Expected arguments: <path_to_file> <stabilization=0|1> <time_limit>");
-    }
-
-    const std::string instance_file = t_argv[1];
-    const bool use_stabilization = std::stoi(t_argv[2]);
-    const double time_limit = std::stod(t_argv[3]);
-
-    Env env;
-
-    auto [model,
-          var_annotation,
-          ctr_annotation,
-          lower_level_objective] = Bilevel::read_from_file<Gurobi>(env, instance_file);
-
-    const auto [
-            n_lower_level_vars,
-            n_upper_level_vars,
-            n_lower_level_ctrs,
-            n_upper_level_ctrs
-            ] = count_variables_and_constraints(model, var_annotation, ctr_annotation);
-
-    std::unique_ptr<Bilevel::CCGStabilizer> stabilization;
-    if (use_stabilization) {
-        stabilization.reset(Bilevel::CCGStabilizers::TrustRegion().clone());
-    } else {
-        stabilization.reset(Bilevel::CCGStabilizers::NoStabilization().clone());
-    }
-
-    model.use(
-                Bilevel::ColumnAndConstraintGeneration(var_annotation,
-                                                      ctr_annotation,
-                                                      lower_level_objective)
-                    .with_master_optimizer(Gurobi())
-                    .with_lower_level_optimizer(Gurobi())
-                    .with_stabilization(*stabilization)
-                    .with_time_limit(time_limit)
-                    .with_logs(true)
-            );
-
-    model.update();
-
-    model.optimize();
-
-    const auto& optimizer = model.optimizer().as<Optimizers::Bilevel::ColumnAndConstraintGeneration>();
-    const auto& ro_optimizer = optimizer.two_stage_robust_model().optimizer().as<Optimizers::Robust::ColumnAndConstraintGeneration>();
-
-    std::cout
-            << "result,"
-            << instance_file << ','
-            << model.vars().size() << ','
-            << model.ctrs().size() << ','
-            << n_lower_level_vars << ','
-            << n_upper_level_vars << ','
-            << n_lower_level_ctrs << ','
-            << n_upper_level_ctrs << ','
-            << ro_optimizer.uncertainty_set().vars().size() << ','
-            << ro_optimizer.uncertainty_set().ctrs().size() << ','
-            << use_stabilization << ','
-            << model.optimizer().time().count() << ','
-            << model.get_status() << ','
-            << model.get_reason() << ','
-            << model.get_best_bound() << ','
-            << model.get_best_obj() << ','
-            << optimizer.n_iterations() << ','
-            << std::endl;
-
+     *  min  -x − 7y
+         s.t.   -3x + 2y ≤ 12
+                     x + 2y ≤ 20
+                     x ≤ 10
+                     y ∈ arg min {z : 2x - z ≤ 7,
+                                      -2x + 4z ≤ 16,
+                                      z ≤ 5}
      */
+
+    solve_with_mibs(t_argc, t_argv);
+
+    std::cout << "------------------------\n\n\n\n" << std::endl;
+
+    solve_with_idol();
 
     return 0;
 }

@@ -100,7 +100,7 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
 
-    m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
+    m_mibs = std::make_unique<impl::MibS>(parent(),
                                           m_description,
                                           get_param_logs());
 

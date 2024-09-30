@@ -21,7 +21,7 @@ namespace idol::Optimizers::Bilevel {
 class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Bilevel::LowerLevelDescription m_description;
 
-    std::unique_ptr<idol::impl::MibSFromFile> m_mibs;
+    std::unique_ptr<idol::impl::MibS> m_mibs;
 public:
     MibS(const idol::Model& t_parent,
          idol::Bilevel::LowerLevelDescription  t_description);

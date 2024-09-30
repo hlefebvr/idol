@@ -34,7 +34,8 @@ class idol::impl::MibS {
 
     void load_problem_data();
     std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> parse_variables();
-    std::tuple<CoinPackedMatrix, std::vector<double>, std::vector<double>, std::vector<char>> parse_constraints();
+    std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> parse_constraints();
+    CoinPackedMatrix parse_matrix();
     CoinPackedVector to_packed_vector(const idol::LinExpr<idol::Var>& t_lin_expr);
     std::vector<double> parse_objective();
 public:

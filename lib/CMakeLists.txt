@@ -160,10 +160,6 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/Diver.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/Diver.h
         include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/MinKnap/MinKnap.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/MinKnap/Optimizers_MinKnap.h
-        src/optimizers/mixed-integer-optimization/wrappers/MinKnap/MinKnap.cpp
-        src/optimizers/mixed-integer-optimization/wrappers/MinKnap/Optimizers_MinKnap.cpp
         include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.cpp
         include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/SubProblem.h

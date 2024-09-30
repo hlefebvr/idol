@@ -66,10 +66,9 @@ void idol::impl::MibS::load_auxiliary_data() {
 void idol::impl::MibS::load_problem_data() {
 
     auto [variable_lower_bounds, variable_upper_bounds, variable_types] = parse_variables();
-    auto [matrix, constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
+    auto [constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
+    auto matrix = parse_matrix();
     auto objective = parse_objective();
-
-    matrix.reverseOrdering();
 
     m_mibs.loadProblemData(
             matrix,
@@ -220,10 +219,9 @@ std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::im
 
 }
 
-std::tuple<CoinPackedMatrix, std::vector<double>, std::vector<double>, std::vector<char>>
+std::tuple<std::vector<double>, std::vector<double>, std::vector<char>>
 idol::impl::MibS::parse_constraints() {
 
-    const auto n_variables = m_model.vars().size();
     const auto n_constraints = m_model.ctrs().size();
 
     std::vector<double> lower_bounds;
@@ -233,8 +231,6 @@ idol::impl::MibS::parse_constraints() {
     lower_bounds.reserve(n_constraints);
     upper_bounds.reserve(n_constraints);
     types.reserve(n_constraints);
-
-    CoinPackedMatrix matrix(false, 0, n_variables);
 
     for (const auto& ctr : m_model.ctrs()) {
 
@@ -248,13 +244,13 @@ idol::impl::MibS::parse_constraints() {
 
         switch (type) {
             case LessOrEqual:
-                lower_bounds.emplace_back(-Inf);
+                lower_bounds.emplace_back(-std::numeric_limits<double>::infinity());
                 upper_bounds.emplace_back(rhs);
                 types.emplace_back('L');
                 break;
             case GreaterOrEqual:
                 lower_bounds.emplace_back(rhs);
-                upper_bounds.emplace_back(Inf);
+                upper_bounds.emplace_back(std::numeric_limits<double>::infinity());
                 types.emplace_back('G');
                 break;
             case Equal:
@@ -266,19 +262,47 @@ idol::impl::MibS::parse_constraints() {
                 throw Exception("Enum out of bounds.");
         }
 
-        auto packed_vector = to_packed_vector(row.linear());
-        matrix.appendRow(packed_vector);
-
     }
 
     return {
-        std::move(matrix),
         std::move(lower_bounds),
         std::move(upper_bounds),
         std::move(types),
     };
 
 }
+
+CoinPackedMatrix idol::impl::MibS::parse_matrix() {
+
+    const unsigned int n_variables = m_model.vars().size();
+
+    CoinPackedMatrix result(true, n_variables, 0);
+
+    for (const auto& var : m_model.vars()) {
+
+        const auto& col = m_model.get_var_column(var);
+
+        if (!col.quadratic().empty()) {
+            throw Exception("Only linear constraints are allowed in MibS.");
+        }
+
+        const auto& lin = col.linear();
+
+        CoinPackedVector vector;
+        vector.reserve((int) lin.size());
+        for (const auto& [ctr, constant] : lin) {
+            const auto index = m_model.get_ctr_index(ctr);
+            const double coefficient = constant.as_numerical();
+            vector.insert((int) index, coefficient);
+        }
+
+        result.appendCol(vector);
+
+    }
+
+    return result;
+}
+
 
 std::vector<double> idol::impl::MibS::parse_objective() {
 
@@ -371,6 +395,5 @@ idol::SolutionReason idol::impl::MibS::get_reason() const {
 double idol::impl::MibS::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
 }
-
 
 #endif
