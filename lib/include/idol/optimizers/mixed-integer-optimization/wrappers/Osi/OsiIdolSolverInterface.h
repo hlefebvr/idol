@@ -11,7 +11,22 @@
 #include "idol/modeling/models/Model.h"
 
 class OsiIdolSolverInterface : public OsiSolverInterface {
-    idol::Model m_model;
+    idol::Model& m_model;
+
+    mutable double* m_col_lower = nullptr;
+    mutable double* m_col_upper = nullptr;
+    mutable double* m_col_obj = nullptr;
+    mutable char* m_row_sense = nullptr;
+    mutable double* m_row_rhs = nullptr;
+    mutable double* m_row_range = nullptr;
+    mutable double *m_row_lower = nullptr;
+    mutable double *m_row_upper = nullptr;
+    mutable CoinPackedMatrix *m_matrix_by_row = nullptr;
+    mutable CoinPackedMatrix *m_matrix_by_col = nullptr;
+    mutable double *m_col_solution = nullptr;
+    mutable double *m_row_price = nullptr;
+    mutable double* m_reduced_cost = nullptr;
+    mutable double* m_row_activity = nullptr;
 public:
     OsiIdolSolverInterface(idol::Model& t_model);
 
