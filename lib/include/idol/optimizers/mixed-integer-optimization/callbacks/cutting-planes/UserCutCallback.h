@@ -13,9 +13,6 @@ namespace idol {
 }
 
 class idol::UserCutCallback : public CallbackFactory {
-    LogLevel m_log_level = Warn;
-    Color m_log_color = Default;
-
     std::unique_ptr<Model> m_model;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
     TempCtr m_cut;
@@ -38,8 +35,8 @@ public:
         }
 
     public:
-        explicit Strategy(Model* t_separation_problem, TempCtr t_cut, LogLevel t_log_level, Color t_log_color)
-                : impl::CutSeparation(InvalidSolution, t_separation_problem, std::move(t_cut), t_log_level, t_log_color) {}
+        explicit Strategy(Model* t_separation_problem, TempCtr t_cut)
+                : impl::CutSeparation(InvalidSolution, t_separation_problem, std::move(t_cut)) {}
     };
 
     Callback *operator()() override {
@@ -51,7 +48,7 @@ public:
         auto* model = m_model->clone();
         model->use(*m_optimizer_factory);
 
-        auto* result = new Strategy(model, m_cut, m_log_level, m_log_color);
+        auto* result = new Strategy(model, m_cut);
 
         return result;
     }
