@@ -137,6 +137,10 @@ void idol::Optimizers::PADM::hook_optimize() {
 
         ++m_outer_loop_iteration;
 
+        if (is_terminated()) {
+            break;
+        }
+
         check_outer_iteration_limit();
         check_time_limit();
         check_feasibility();
@@ -240,11 +244,11 @@ void idol::Optimizers::PADM::run_inner_loop() {
 
         check_time_limit();
 
+        log_inner_loop(inner_loop_iteration);
+
         if (is_terminated()) {
             break;
         }
-
-        log_inner_loop(inner_loop_iteration);
 
         if (!has_changed) {
             break;
@@ -281,9 +285,19 @@ bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
     const auto status = model.get_status();
 
     if (status != Optimal && status != Feasible) {
+
+        const auto& reason = model.get_reason();
+
+        Solution::Primal sub_problem_solution;
+        sub_problem_solution.set_status(status);
+        sub_problem_solution.set_reason(reason);
+        m_last_solutions[t_sub_problem_id] = std::move(sub_problem_solution);
+
         set_status(status);
-        set_reason(NotSpecified);
+        set_reason(reason);
+
         terminate();
+
         return true;
     }
 
@@ -321,12 +335,14 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
 
     const unsigned int n_sub_problems = m_formulation.n_sub_problems();
 
-    std::cout << std::setw(5) << m_inner_loop_iterations << '\t'
+    std::cout << std::setw(10) << std::fixed << std::setprecision(5) << time().count() << '\t'
+              << std::setw(5) << m_inner_loop_iterations << '\t'
               << std::setw(5) << m_outer_loop_iteration << '\t'
               << std::setw(5) << t_inner_loop_iteration << '\t';
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-        std::cout << std::setw(20) << std::setprecision(12) << feasibility_measure(i) << '\t';
+        std::cout << std::setw(12) << m_last_solutions[i].status() << '\t';
+        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << feasibility_measure(i) << '\t';
     }
 
     std::cout << std::endl;
