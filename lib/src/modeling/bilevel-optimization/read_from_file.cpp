@@ -20,8 +20,7 @@ class AuxParser {
     unsigned int m_n_variables = 0;
     unsigned int m_n_constraints = 0;
     std::unique_ptr<Model> m_high_point_relaxation;
-    const Annotation<Var, unsigned int>& m_var_annotation;
-    const Annotation<Ctr, unsigned int>& m_ctr_annotation;
+    Bilevel::LowerLevelDescription& m_lower_level_description;
 
     void read_aux_file(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
     bool read_tag(std::ifstream& t_file, const std::string& t_tag, bool t_mandatory = true);
@@ -36,29 +35,29 @@ class AuxParser {
 
     void set_var_annotations();
     void set_ctr_annotations();
-    Ctr create_lower_level_objective_constraint();
+    void create_lower_level_objective();
 public:
     explicit AuxParser(Env& t_env,
-                       const Annotation<Var, unsigned int>& t_var_annotation,
-                       const Annotation<Ctr, unsigned int>& t_ctr_annotation)
-                       : m_env(t_env),
-                         m_var_annotation(t_var_annotation),
-                         m_ctr_annotation(t_ctr_annotation) {}
+                       Bilevel::LowerLevelDescription& t_lower_level_description,
+                       const std::string& t_path_to_aux,
+                       const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
 
-    std::tuple<Model, Ctr> operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
+    [[nodiscard]] Model model() const { return std::move(*m_high_point_relaxation); }
 };
 
-std::tuple<Model, Ctr> AuxParser::operator()(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
+AuxParser::AuxParser(Env &t_env,
+                     Bilevel::LowerLevelDescription &t_lower_level_description,
+                     const std::string& t_path_to_aux,
+                     const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps
+                     )
+    : m_env(t_env),
+      m_lower_level_description(t_lower_level_description) {
 
-    read_aux_file(t_path_to_aux, t_read_model_from_file);
+    read_aux_file(t_path_to_aux, t_create_model_from_mps);
     set_var_annotations();
     set_ctr_annotations();
-    auto lower_level_objective = create_lower_level_objective_constraint();
+    create_lower_level_objective();
 
-    return {
-        std::move(*m_high_point_relaxation),
-        lower_level_objective
-    };
 }
 
 void AuxParser::read_aux_file(const std::string &t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
@@ -207,11 +206,11 @@ void AuxParser::set_var_annotations() {
     for (const auto& var : m_high_point_relaxation->vars()) {
 
         if (m_lower_level_variables.find(var.name()) == m_lower_level_variables.end()) {
-            var.set(m_var_annotation, MasterId);
+            m_lower_level_description.make_leader_var(var);
             continue;
         }
 
-        var.set(m_var_annotation, 0);
+        m_lower_level_description.make_follower_var(var);
 
     }
 
@@ -222,39 +221,39 @@ void AuxParser::set_ctr_annotations() {
     for (const auto& ctr : m_high_point_relaxation->ctrs()) {
 
         if (m_lower_level_constraints.find(ctr.name()) == m_lower_level_constraints.end()) {
-            ctr.set(m_ctr_annotation, MasterId);
+            m_lower_level_description.make_leader_ctr(ctr);
             continue;
         }
 
-        ctr.set(m_ctr_annotation, 0);
+        m_lower_level_description.make_follower_ctr(ctr);
 
     }
 
 }
 
-Ctr AuxParser::create_lower_level_objective_constraint() {
+void AuxParser::create_lower_level_objective() {
 
-    Expr lhs;
+    Expr obj;
 
     for (const auto& var : m_high_point_relaxation->vars()) {
 
         if (auto it = m_lower_level_variables.find(var.name()) ; it != m_lower_level_variables.end()) {
-            lhs += it->second * var;
+            obj += it->second * var;
         }
 
     }
 
-
-    return m_high_point_relaxation->add_ctr(lhs == 0, "__lower_level_objective");
+    m_lower_level_description.set_follower_obj_expr(std::move(obj));
 }
 
-std::tuple<idol::Model, idol::Ctr>
+idol::Model
 idol::Bilevel::impl::read_from_file(Env& t_env,
                               const std::string& t_path_to_aux,
-                              const Annotation<Var, unsigned int>& t_var_annotation,
-                              const Annotation<Ctr, unsigned int>& t_ctr_annotation,
-                              const std::function<Model(Env&, const std::string&)>& t_read_model_from_file) {
+                              Bilevel::LowerLevelDescription& t_lower_level_description,
+                              const std::function<Model(Env&, const std::string&)>& t_mps_reader) {
 
-    return AuxParser(t_env, t_var_annotation, t_ctr_annotation)(t_path_to_aux, t_read_model_from_file);
+    AuxParser parser(t_env, t_lower_level_description, t_path_to_aux, t_mps_reader);
+
+    return parser.model();
 
 }

@@ -7,73 +7,46 @@
 
 #include <string>
 #include "idol/modeling/models/Model.h"
+#include "LowerLevelDescription.h"
 
 namespace idol::Bilevel {
 
-    using ParsingResult = std::tuple<Model, Annotation<Var, unsigned int>, Annotation<Ctr, unsigned int>, idol::Ctr>;
-
     namespace impl {
-        std::tuple<Model, Ctr>
+        idol::Model
         read_from_file(Env &t_env,
                        const std::string &t_path_to_aux,
-                       const Annotation<Var, unsigned int>& t_var_annotation,
-                       const Annotation<Ctr, unsigned int>& t_ctr_annotation,
-                       const std::function<Model(Env &, const std::string &)> &t_read_model_from_file);
+                       idol::Bilevel::LowerLevelDescription& t_lower_level_description,
+                       const std::function<Model(Env &, const std::string &)> &t_mps_reader);
     }
 
-    template<class BackendT> std::tuple<Model, Ctr> read_from_file(
-            Env& t_env,
-            const std::string& t_path_to_aux,
-            const Annotation<Var, unsigned int>& t_var_annotation,
-            const Annotation<Ctr, unsigned int>& t_ctr_annotation);
+    template<class BackendT> Model read_from_file(Env& t_env, const std::string& t_path_to_aux, Bilevel::LowerLevelDescription& t_lower_level_description);
 
-    template<class BackendT> ParsingResult read_from_file(
-            Env& t_env,
-            const std::string& t_path_to_aux);
+    template<class BackendT> std::pair<Model, Bilevel::LowerLevelDescription> read_from_file(Env& t_env, const std::string& t_path_to_aux);
 
 }
 
 template<class BackendT>
-std::tuple<idol::Model, idol::Ctr>
+idol::Model
 idol::Bilevel::read_from_file(idol::Env& t_env,
                               const std::string& t_path_to_aux,
-                              const Annotation<Var, unsigned int>& t_var_annotation,
-                              const Annotation<Ctr, unsigned int>& t_ctr_annotation) {
+                              idol::Bilevel::LowerLevelDescription& t_lower_level_description) {
 
-    return idol::Bilevel::impl::read_from_file(t_env,
-                                         t_path_to_aux,
-                                         t_var_annotation,
-                                         t_ctr_annotation,
-                                         [](Env& t_env, const std::string& t_file) {
-        return BackendT::read_from_file(t_env, t_file);
-    });
-
+    return idol::Bilevel::impl::read_from_file(t_env, t_path_to_aux, t_lower_level_description, [](Env& t_env, const std::string& t_file) { return BackendT::read_from_file(t_env, t_file); });
 }
 
 template<class BackendT>
-idol::Bilevel::ParsingResult
+std::pair<idol::Model, idol::Bilevel::LowerLevelDescription>
 idol::Bilevel::read_from_file(idol::Env& t_env,
                               const std::string& t_path_to_aux) {
 
-    Annotation<Var, unsigned int> var_annotation(t_env, "var_annotation", MasterId);
-    Annotation<Ctr, unsigned int> ctr_annotation(t_env, "ctr_annotation", MasterId);
+    Bilevel::LowerLevelDescription lower_level_description(t_env);
 
-    auto [high_point_relaxation,
-          lower_level_objective] = idol::Bilevel::impl::read_from_file(t_env,
-                                                               t_path_to_aux,
-                                                               var_annotation,
-                                                               ctr_annotation,
-                                                               [](Env& t_env, const std::string& t_file) {
-                                                                   return BackendT::read_from_file(t_env, t_file);
-                                                               });
+    auto high_point_relaxation = Bilevel::impl::read_from_file(t_env, t_path_to_aux, lower_level_description,[](Env& t_env, const std::string& t_file) { return BackendT::read_from_file(t_env, t_file); });
 
     return {
         std::move(high_point_relaxation),
-        std::move(var_annotation),
-        std::move(ctr_annotation),
-        lower_level_objective
+        std::move(lower_level_description)
     };
-
 }
 
 #endif //IDOL_READ_FROM_FILE_H
