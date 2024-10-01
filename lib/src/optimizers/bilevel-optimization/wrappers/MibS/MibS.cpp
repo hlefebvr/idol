@@ -50,14 +50,11 @@ idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
 }
 
 idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
-    : m_description(t_src.m_description),
-      m_osi_interface(
+    : m_description(t_src.m_description)
 #ifdef IDOL_USE_OSI
-              t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr
-#else
-                nullptr
+    , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
 #endif
-      ) {
+{
 
 }
 
