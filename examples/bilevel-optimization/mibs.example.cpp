@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
+#include <OsiClpSolverInterface.hpp>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
@@ -53,7 +54,11 @@ int main(int t_argc, const char** t_argv) {
     description.make_follower_ctr(follower_c4);
 
     // Use coin-or/MibS as external solver
-    high_point_relaxation.use(Bilevel::MibS(description).with_logs(true));
+    high_point_relaxation.use(
+                Bilevel::MibS(description)
+                    .with_osi_interface(OsiClpSolverInterface())
+                    .with_logs(true)
+    );
 
     // Optimize and print solution
     high_point_relaxation.optimize();

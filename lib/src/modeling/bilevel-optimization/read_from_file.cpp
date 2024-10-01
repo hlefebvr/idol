@@ -42,7 +42,7 @@ public:
                        const std::string& t_path_to_aux,
                        const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
 
-    [[nodiscard]] Model model() const { return std::move(*m_high_point_relaxation); }
+    [[nodiscard]] Model model() { auto result = std::move(*m_high_point_relaxation); m_high_point_relaxation.reset(); return result; }
 };
 
 AuxParser::AuxParser(Env &t_env,

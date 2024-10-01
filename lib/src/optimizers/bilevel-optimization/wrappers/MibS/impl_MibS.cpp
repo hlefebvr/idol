@@ -45,6 +45,7 @@ void idol::impl::MibS::load_auxiliary_data() {
     auto [upper_level_variables_indices, lower_level_variables_indices] = dispatch_variable_indices();
     auto [upper_level_constraints_indices, lower_level_constraints_indices] = dispatch_constraint_indices();
     auto lower_level_objective_coefficients = find_lower_level_objective_coefficients(lower_level_variables_indices);
+    auto [lower_level_lower_bounds, lower_level_upper_bounds] = find_lower_level_bounds(lower_level_variables_indices);
 
     m_mibs.loadAuxiliaryData(
             (int) lower_level_variables_indices.size(),
@@ -61,8 +62,8 @@ void idol::impl::MibS::load_auxiliary_data() {
             nullptr,
             0,
             nullptr,
-            nullptr,
-            nullptr
+            lower_level_lower_bounds.data(),
+            lower_level_upper_bounds.data()
     );
 
 }
@@ -92,7 +93,6 @@ void idol::impl::MibS::load_problem_data() {
 void idol::impl::MibS::solve() {
 
     m_mibs.setSolver(m_osi_solver.get());
-
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
 
     int argc = 3;
@@ -104,15 +104,7 @@ void idol::impl::MibS::solve() {
     idol::SilentMode silent_mode(!m_logs);
 
     try {
-        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs);
-
-        if (!m_logs) {
-            m_osi_solver->messageHandler()->setLogLevel(0);
-            m_mibs.blisMessageHandler()->setLogLevel(0);
-            m_mibs.bcpsMessageHandler()->setLogLevel(0);
-            m_broker->messageHandler()->setLogLevel(0);
-        }
-
+        m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, true);
         m_broker->search(&m_mibs);
     } catch (const CoinError& t_error) {
         std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
@@ -126,16 +118,34 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_variabl
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
-    const auto& follower_variables = m_description.follower_vars();
+    for (const auto& var : m_model.vars()) {
+
+        if (m_description.is_follower(var)) {
+            const auto index = m_model.get_var_index(var);
+            lower_level.emplace_back(index);
+        }
+
+    }
 
     for (const auto& var : m_model.vars()) {
 
-        auto& level = (var.get(follower_variables) == MasterId) ? upper_level : lower_level;
-        const auto index = m_model.get_var_index(var);
-
-        level.emplace_back(index);
+        if (m_description.is_leader(var) && m_model.get_var_type(var) != Continuous) {
+            const auto index = m_model.get_var_index(var);
+            upper_level.emplace_back(index);
+        }
 
     }
+
+    for (const auto& var : m_model.vars()) {
+
+        if (m_description.is_leader(var) && m_model.get_var_type(var) == Continuous) {
+            const auto index = m_model.get_var_index(var);
+            upper_level.emplace_back(index);
+        }
+
+    }
+
+    assert(upper_level.size() + lower_level.size() == m_model.vars().size());
 
     return {
         std::move(upper_level),
@@ -148,16 +158,16 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constra
     std::vector<int> upper_level;
     std::vector<int> lower_level;
 
-    const auto& follower_constraints = m_description.follower_ctrs();
-
     for (const auto& ctr : m_model.ctrs()) {
 
-        auto& level = (ctr.get(follower_constraints) == MasterId) ? upper_level : lower_level;
+        auto& level = m_description.is_leader(ctr) ? upper_level : lower_level;
         const auto index = m_model.get_ctr_index(ctr);
 
         level.emplace_back(index);
 
     }
+
+    assert(upper_level.size() + lower_level.size() == m_model.ctrs().size());
 
     return {
             std::move(upper_level),
@@ -186,6 +196,33 @@ idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int>
 
 }
 
+std::pair<std::vector<double>, std::vector<double>>
+idol::impl::MibS::find_lower_level_bounds(const std::vector<int> &t_lower_level_variables_indices) {
+
+    std::vector<double> lb, ub;
+    lb.reserve(t_lower_level_variables_indices.size());
+    ub.reserve(t_lower_level_variables_indices.size());
+
+    for (const auto& var_id : t_lower_level_variables_indices) {
+
+        const auto& var = m_model.get_var_by_index(var_id);
+        const double lower_bound = m_model.get_var_lb(var);
+        const double upper_bound = m_model.get_var_ub(var);
+
+        lb.emplace_back(lower_bound);
+        ub.emplace_back(upper_bound);
+
+    }
+
+    assert(t_lower_level_variables_indices.size() == lb.size() && t_lower_level_variables_indices.size() == ub.size());
+
+    return {
+        std::move(lb),
+        std::move(ub)
+    };
+
+}
+
 std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::impl::MibS::parse_variables() {
 
     std::vector<double> lower_bounds;
@@ -200,13 +237,13 @@ std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::im
 
     for (const auto& var : m_model.vars()) {
 
+        const auto type = m_model.get_var_type(var);
         const double lb = m_model.get_var_lb(var);
         const double ub = m_model.get_var_ub(var);
-        const auto type = m_model.get_var_type(var);
 
+        types.emplace_back(to_mibs_type(type));
         lower_bounds.emplace_back(lb);
         upper_bounds.emplace_back(ub);
-        types.emplace_back(to_mibs_type(type));
 
     }
 
@@ -294,6 +331,8 @@ CoinPackedMatrix idol::impl::MibS::parse_matrix() {
             const double coefficient = constant.as_numerical();
             vector.insert((int) index, coefficient);
         }
+
+        vector.sortIncrIndex();
 
         result.appendCol(vector);
 

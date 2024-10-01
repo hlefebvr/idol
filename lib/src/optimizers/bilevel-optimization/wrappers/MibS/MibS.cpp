@@ -23,13 +23,12 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
     if (m_osi_interface) {
         osi_interface = m_osi_interface->clone();
     } else {
-#ifdef IDOL_USE_CPLEX
-        osi_interface = new OsiCpxSolverInterface();
-#else
-        osi_interface = new OsiClpSolverInterface);
-#endif
+        if constexpr (IDOL_USE_CPLEX) {
+            osi_interface = new OsiCpxSolverInterface();
+        } else {
+            osi_interface = new OsiClpSolverInterface();
+        }
     }
-
 
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
@@ -50,7 +49,8 @@ idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
 }
 
 idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
-    : m_description(t_src.m_description)
+    : OptimizerFactoryWithDefaultParameters<MibS>(t_src),
+      m_description(t_src.m_description)
 #ifdef IDOL_USE_OSI
     , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
 #endif
@@ -64,10 +64,10 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInte
         throw Exception("The optimizer has already been set.");
     }
 
-    m_osi_interface = std::unique_ptr<OsiSolverInterface>(t_osi_optimizer.clone());
+    m_osi_interface.reset(t_osi_optimizer.clone());
 
     return *this;
 #else
-    throw Exception("idol was not linked with MibS.");
+    throw Exception("idol was not linked with Osi.");
 #endif
 }

@@ -31,6 +31,7 @@ class idol::impl::MibS {
     std::pair<std::vector<int>, std::vector<int>> dispatch_variable_indices();
     std::pair<std::vector<int>, std::vector<int>> dispatch_constraint_indices();
     std::vector<double> find_lower_level_objective_coefficients(const std::vector<int>& t_lower_level_variables_indices);
+    std::pair<std::vector<double>, std::vector<double>> find_lower_level_bounds(const std::vector<int>& t_lower_level_variables_indices);
 
     void load_problem_data();
     std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> parse_variables();
