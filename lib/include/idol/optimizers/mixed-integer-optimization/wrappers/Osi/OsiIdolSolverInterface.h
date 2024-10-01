@@ -12,6 +12,9 @@
 
 class OsiIdolSolverInterface : public OsiSolverInterface {
     idol::Model& m_model;
+    std::list<idol::Var> m_relaxed_variables;
+    std::vector<int> m_variable_indices_in_mibs;
+    std::vector<int> m_constraint_indices_in_mibs;
 
     mutable double* m_col_lower = nullptr;
     mutable double* m_col_upper = nullptr;
@@ -27,6 +30,9 @@ class OsiIdolSolverInterface : public OsiSolverInterface {
     mutable double *m_row_price = nullptr;
     mutable double* m_reduced_cost = nullptr;
     mutable double* m_row_activity = nullptr;
+
+    void relax();
+    void unrelax();
 public:
     OsiIdolSolverInterface(idol::Model& t_model);
 

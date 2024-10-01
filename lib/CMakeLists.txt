@@ -372,14 +372,6 @@ if (${USE_CLP})
 
 endif()
 
-if (${USE_MINKNAP})
-
-    find_package(minknap REQUIRED)
-    target_link_libraries(idol PUBLIC minknap)
-    target_compile_definitions(idol PUBLIC IDOL_USE_MINKNAP)
-
-endif()
-
 if (${USE_MIBS})
 
     set(USE_OSI YES)
@@ -393,6 +385,7 @@ if (${USE_MIBS})
     target_link_libraries(idol PUBLIC alps)
     target_link_libraries(idol PUBLIC bcps)
     target_link_libraries(idol PUBLIC blis)
+    target_link_libraries(idol PUBLIC cgl) # not necessary
 
     target_link_libraries(idol PUBLIC mibs)
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)

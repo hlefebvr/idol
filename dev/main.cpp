@@ -15,56 +15,48 @@
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/WorstBound.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
+#include "idol/problems/knapsack-problem/KP_Instance.h"
 
 #include <iostream>
 #include <OsiCpxSolverInterface.hpp>
 #include <OsiCbcSolverInterface.hpp>
-
-void hello_world_osi_idol() {
-
-    using namespace idol;
-
-    Env env;
-    Model model(env);
-    model.use(Gurobi().with_logs(true));
-
-    OsiIdolSolverInterface interface(model);
-    std::unique_ptr<OsiSolverInterface> solver(interface.clone());
-    // solver->messageHandler()->setLogLevel(0);
-
-    /*
-    *  optimal solution: x* = (1,1)
-    *
-    *  minimize -1 x0 - 1 x1
-    *  s.t       1 x0 + 2 x1 <= 3
-    *            2 x0 + 1 x1 <= 3
-    *              x0        >= 0
-    *              x1        >= 0
-    */
-
-    solver->addCol(CoinPackedVector(), 0., solver->getInfinity(), -1.);
-    solver->addCol(CoinPackedVector(), 0., solver->getInfinity(), -1.);
-
-    //-infinity <= 1 x0 + 2 x2 <= 3
-    CoinPackedVector row1;
-    row1.insert(0, 1.0);
-    row1.insert(1, 2.0);
-    solver->addRow(row1, -solver->getInfinity(), 3.);
-
-    //-infinity <= 2 x0 + 1 x1 <= 3
-    CoinPackedVector row2;
-    row2.insert(0, 2.0);
-    row2.insert(1, 1.0);
-    solver->addRow(row2, -solver->getInfinity(), 3.);
-
-    solver->initialSolve();
-
-    solver->writeLp("model");
-}
+#include <CglKnapsackCover.hpp>
+#include <CglPreProcess.hpp>
 
 int main(int t_argc, const char** t_argv) {
 
-    hello_world_osi_idol();
+    using namespace idol;
+
+    const auto instance = Problems::KP::read_instance("/home/henri/Research/idol/examples/mixed-integer-optimization/knapsack.data.txt");
+
+    const auto n_items = instance.n_items();
+
+    Env env;
+    Model model(env);
+
+    auto x = model.add_vars(Dim<1>(n_items), 0, 1, Binary, "x");
+
+    model.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
+
+    model.set_obj_expr(idol_Sum(j, Range(n_items), -instance.profit(j) * x[j]));
+
+    model.use(Gurobi::ContinuousRelaxation());
+    auto solver = std::make_unique<OsiIdolSolverInterface>(model);
+
+    OsiCuts cuts;
+
+    std::cout << model << std::endl;
+
+    CglKnapsackCover knapsack_cover;
+
+    for (unsigned int i = 0 ; i < 10 ; ++i) {
+        std::cout << model << std::endl;
+        solver->resolve();
+        knapsack_cover.generateCuts(*solver, cuts);
+        solver->applyCuts(cuts);
+    }
+
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

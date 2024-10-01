@@ -7,6 +7,8 @@
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/containers/SilentMode.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 
 #include <utility>
 #include <OsiSymSolverInterface.hpp>
@@ -117,6 +119,7 @@ void idol::impl::MibS::solve() {
 
         m_broker->search(&m_mibs);
     } catch (const CoinError& t_error) {
+        std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
 
@@ -329,20 +332,6 @@ char idol::impl::MibS::to_mibs_type(idol::VarType t_type) {
         default:;
     }
     throw Exception("Enum out of bounds.");
-}
-
-CoinPackedVector idol::impl::MibS::to_packed_vector(const idol::LinExpr<idol::Var> &t_lin_expr) {
-
-    CoinPackedVector result;
-    result.reserve((int) t_lin_expr.size());
-
-    for (const auto& [var, constant] : t_lin_expr) {
-        const auto index = m_model.get_var_index(var);
-        const double coefficient = constant.as_numerical();
-        result.insert((int) index, coefficient);
-    }
-
-    return result;
 }
 
 double idol::impl::MibS::get_var_primal(const idol::Var &t_var) const {
