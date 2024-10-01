@@ -11,7 +11,7 @@
 #include "idol/modeling/constraints/Ctr.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 
-#ifdef IDOL_USE_OSI
+#ifdef IDOL_USE_CPLEX
 #include <OsiSolverInterface.hpp>
 #endif
 

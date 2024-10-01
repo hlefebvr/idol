@@ -5,8 +5,11 @@
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 
 #include <utility>
-#include <OsiCpxSolverInterface.hpp>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
+
+#ifdef IDOL_USE_CPLEX
+#include <OsiCpxSolverInterface.hpp>
+#endif
 
 idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
         : m_description(std::move(t_description)) {
@@ -21,7 +24,7 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
         osi_interface = m_osi_interface->clone();
     } else {
 #ifdef IDOL_USE_CPLEX
-        osi_interface = new OsiClpSolverInterface();
+        osi_interface = new OsiCpxSolverInterface();
 #else
         osi_interface = new OsiClpSolverInterface);
 #endif
