@@ -19,6 +19,8 @@ namespace idol::Bilevel {
     class MibS;
 }
 
+class OsiSolverInterface;
+
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     Bilevel::LowerLevelDescription m_description;
 #ifdef IDOL_USE_OSI
