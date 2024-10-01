@@ -25,7 +25,8 @@ namespace idol { class name; }                            \
 class idol::name : public idol::Osi {               \
 public:                    \
     name() : Osi(osi_interface()) {}      \
-    static Osi ContinuousRelaxation() { return Osi::ContinuousRelaxation(osi_interface()); }    \
+    static Osi ContinuousRelaxation() { return Osi::ContinuousRelaxation(osi_interface()); } \
+    using OsiT = osi_interface; \
 };
 
 #define ADD_FAKE_SHORTCUT(name) \

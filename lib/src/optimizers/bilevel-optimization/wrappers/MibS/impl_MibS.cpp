@@ -28,9 +28,11 @@ namespace idol {
 
 idol::impl::MibS::MibS(const idol::Model &t_model,
                        const idol::Bilevel::LowerLevelDescription &t_description,
+                       OsiSolverInterface* t_osi_solver,
                        bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),
+                         m_osi_solver(t_osi_solver),
                          m_logs(t_logs) {
 
     load_auxiliary_data();
@@ -88,12 +90,6 @@ void idol::impl::MibS::load_problem_data() {
 }
 
 void idol::impl::MibS::solve() {
-
-    if (m_osi_solver) {
-        throw Exception("Internal error: MibS::solve was called twice.");
-    }
-
-    m_osi_solver = std::make_unique<OsiClpSolverInterface>();
 
     m_mibs.setSolver(m_osi_solver.get());
 

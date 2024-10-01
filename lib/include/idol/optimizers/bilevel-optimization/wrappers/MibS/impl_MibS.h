@@ -40,6 +40,7 @@ class idol::impl::MibS {
 public:
     MibS(const idol::Model& t_model,
          const idol::Bilevel::LowerLevelDescription& t_description,
+         OsiSolverInterface* t_osi_solver,
          bool t_logs);
 
     void solve();

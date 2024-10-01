@@ -22,9 +22,11 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     const idol::Bilevel::LowerLevelDescription m_description;
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
+    std::unique_ptr<OsiSolverInterface> m_osi_solver;
 public:
     MibS(const idol::Model& t_parent,
-         idol::Bilevel::LowerLevelDescription  t_description);
+         idol::Bilevel::LowerLevelDescription  t_description,
+         OsiSolverInterface* t_osi_solver);
 
     std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;

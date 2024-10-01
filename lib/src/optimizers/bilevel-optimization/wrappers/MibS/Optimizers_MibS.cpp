@@ -9,10 +9,11 @@
 #include <utility>
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
-                                      idol::Bilevel::LowerLevelDescription t_description)
+                                      idol::Bilevel::LowerLevelDescription t_description,
+                                      OsiSolverInterface* t_osi_solver)
                                       : Optimizer(t_parent),
-                                        m_description(std::move(t_description))
-{
+                                        m_description(std::move(t_description)),
+                                        m_osi_solver(t_osi_solver) {
 
 }
 
@@ -100,8 +101,13 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
 
+    if (m_mibs) {
+        return;
+    }
+
     m_mibs = std::make_unique<impl::MibS>(parent(),
                                           m_description,
+                                          m_osi_solver->clone(),
                                           get_param_logs());
 
     m_mibs->solve();

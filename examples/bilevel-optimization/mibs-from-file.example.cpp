@@ -6,6 +6,7 @@
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
+#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h"
 
 using namespace idol;
 
@@ -16,7 +17,11 @@ int main(int t_argc, const char** t_argv) {
     Env env;
     auto [model, description] = Bilevel::read_from_file<Gurobi>(env, aux_filename);
 
-    model.use(Bilevel::MibS(description).with_logs(true));
+    model.use(
+                Bilevel::MibS(description)
+                    .with_logs(true)
+                    .with_optimizer(OsiCpxSolverInterface())
+            );
 
     model.optimize();
 
