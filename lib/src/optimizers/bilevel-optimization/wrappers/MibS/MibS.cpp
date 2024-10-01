@@ -51,12 +51,18 @@ idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
 
 idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     : m_description(t_src.m_description),
-      m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr) {
+      m_osi_interface(
+#ifdef IDOL_USE_OSI
+              t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr
+#else
+                nullptr
+#endif
+      ) {
 
 }
 
-idol::Bilevel::MibS &idol::Bilevel::MibS::with_optimizer(const OsiSolverInterface &t_osi_optimizer) {
-
+idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInterface &t_osi_optimizer) {
+#ifdef IDOL_USE_OSI
     if (m_osi_interface) {
         throw Exception("The optimizer has already been set.");
     }
@@ -64,4 +70,7 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_optimizer(const OsiSolverInterfac
     m_osi_interface = std::unique_ptr<OsiSolverInterface>(t_osi_optimizer.clone());
 
     return *this;
+#else
+    throw Exception("idol was not linked with MibS.");
+#endif
 }

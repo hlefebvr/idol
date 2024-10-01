@@ -18,9 +18,9 @@ int main(int t_argc, const char** t_argv) {
     auto [model, description] = Bilevel::read_from_file<Gurobi>(env, aux_filename);
 
     model.use(
-                Bilevel::MibS(description)
+            Bilevel::MibS(description)
                     .with_logs(true)
-                    .with_optimizer(OsiCpxSolverInterface())
+                    .with_osi_interface(OsiCpxSolverInterface())
             );
 
     model.optimize();

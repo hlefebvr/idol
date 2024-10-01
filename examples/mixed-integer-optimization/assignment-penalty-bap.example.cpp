@@ -79,7 +79,7 @@ int main(int t_argc, const char** t_argv) {
             .with_subtree_depth(0)
             .with_branching_rule(MostInfeasible())
             .with_node_selection_rule(WorstBound())
-            //.add_callback(Heuristics::IntegerMaster().with_optimizer(HiGHS().with_logs(false)))
+            //.add_callback(Heuristics::IntegerMaster().with_osi_interface(HiGHS().with_logs(false)))
             .with_logs(true);
 
     // Set optimizer

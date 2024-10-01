@@ -37,7 +37,7 @@ public:
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    MibS& with_optimizer(const OsiSolverInterface& t_osi_optimizer);
+    MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
 
     MibS *clone() const override;
 };
