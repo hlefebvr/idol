@@ -155,3 +155,14 @@ idol::PADM &idol::PADM::with_initial_penalty_parameter(double t_value) {
 
     return *this;
 }
+
+idol::PADM &idol::PADM::with_sub_problem_spec(unsigned int t_id, idol::ADM::SubProblem t_sub_problem) {
+
+    auto [it, success] = m_sub_problem_specs.emplace(t_id, std::move(t_sub_problem));
+
+    if (!success) {
+        throw Exception("A sub-problem specification with id " + std::to_string(t_id) + " has already been given.");
+    }
+
+    return *this;
+}

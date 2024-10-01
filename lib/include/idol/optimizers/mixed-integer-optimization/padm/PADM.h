@@ -31,6 +31,8 @@ public:
 
     PADM& with_default_sub_problem_spec(ADM::SubProblem t_sub_problem);
 
+    PADM& with_sub_problem_spec(unsigned int t_id, ADM::SubProblem t_sub_problem);
+
     PADM& with_rescaling(bool t_rescaling, double t_threshold);
 
     PADM& with_penalty_update(const PenaltyUpdate& t_penalty_update);
