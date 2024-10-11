@@ -90,6 +90,7 @@ protected:
     bool is_feasible(unsigned int t_sub_problem_id) const;
     bool solve_sub_problem(unsigned int t_sub_problem_id);
     void compute_objective_value();
+    void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
     double feasibility_measure(unsigned int t_sub_problem_id) const;
@@ -99,6 +100,7 @@ protected:
     void check_outer_iteration_limit();
 
     void write_solution(const std::string& t_name);
+    void write_iteration_history(const std::string& t_name);
 private:
     ADM::Formulation m_formulation;
     std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
@@ -110,6 +112,16 @@ private:
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;
     std::vector<Solution::Primal> m_last_solutions;
+
+    struct IterationLog {
+        unsigned int outer_iteration;
+        unsigned int inner_iteration;
+        std::vector<double> objective_value;
+        IterationLog(unsigned int t_outer_iteration, unsigned int t_inner_iteration, std::vector<double> t_objective_value)
+            : outer_iteration(t_outer_iteration), inner_iteration(t_inner_iteration), objective_value(std::move(t_objective_value)) {}
+    };
+
+    std::list<IterationLog> m_history;
 };
 
 

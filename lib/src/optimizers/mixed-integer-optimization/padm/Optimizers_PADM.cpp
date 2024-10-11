@@ -72,9 +72,15 @@ void idol::Optimizers::PADM::update() {
 
 void idol::Optimizers::PADM::write(const std::string &t_name) {
 
-    // if ends by .sol
+    // if ends with .sol
     if (t_name.size() > 4 && t_name.substr(t_name.size() - 4) == ".sol") {
         write_solution(t_name);
+        return;
+    }
+
+    // if ends with .iter
+    if (t_name.size() > 5 && t_name.substr(t_name.size() - 5) == ".iter") {
+        write_iteration_history(t_name);
         return;
     }
 
@@ -95,6 +101,41 @@ void idol::Optimizers::PADM::write_solution(const std::string &t_name) {
         file << var.name() << " " << get_var_primal(var) << std::endl;
 
     }
+
+    file.close();
+
+}
+
+void idol::Optimizers::PADM::write_iteration_history(const std::string &t_name) {
+
+    std::ofstream file(t_name);
+
+    if (!file.is_open()) {
+        throw Exception("Could not open file " + t_name);
+    }
+
+    file << "[\n";
+
+    for (auto it = m_history.begin(), end = m_history.end() ; it != end ; ++it) {
+
+        const auto& log = *it;
+        file << "\t{ \"outer\": " << log.outer_iteration << ", \"inner\": " << log.inner_iteration << ", \"values\": [ ";
+
+        for (unsigned int i = 0, n = log.objective_value.size() ; i < n ; ++i) {
+            file << log.objective_value[i];
+            if (i != n - 1) {
+                file << ", ";
+            }
+        }
+
+        file << "] }";
+        if (std::next(it) != end) {
+            file << ",";
+        }
+        file << "\n";
+    }
+
+    file << " ]\n";
 
     file.close();
 
@@ -247,6 +288,7 @@ void idol::Optimizers::PADM::run_inner_loop() {
         check_time_limit();
 
         log_inner_loop(inner_loop_iteration);
+        make_history();
 
         if (is_terminated()) {
             break;
@@ -348,7 +390,6 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
     }
 
     std::cout << std::endl;
-
 }
 
 double idol::Optimizers::PADM::feasibility_measure(unsigned int t_sub_problem_id) const {
@@ -420,5 +461,21 @@ void idol::Optimizers::PADM::log_outer_loop() {
 
     center(std::cout, " Outer loop iteration: " + std::to_string(m_outer_loop_iteration) + ' ', 100, '-');
     std::cout << std::endl;
+
+}
+
+void idol::Optimizers::PADM::make_history() {
+
+    if (!is_terminated()) {
+
+        const unsigned int n_sub_problems = m_formulation.n_sub_problems();
+
+        std::vector<double> objective_values;
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            objective_values.emplace_back(m_formulation.sub_problem(i).get_best_obj());
+        }
+        m_history.emplace_back(m_outer_loop_iteration, m_inner_loop_iterations, std::move(objective_values));
+
+    }
 
 }
