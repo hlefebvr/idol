@@ -47,11 +47,11 @@ public:
     void update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
 
     struct CurrentPenalty {
-        Ctr constraint;
-        Var variable;
-        double max_violation;
-        double penalty;
-        CurrentPenalty(Ctr t_constraint, Var t_variable, double t_max_violation, double t_penalty)
+        const Ctr constraint;
+        const Var variable;
+        const double max_violation;
+        double& penalty;
+        CurrentPenalty(Ctr t_constraint, Var t_variable, double t_max_violation, double& t_penalty)
             : constraint(std::move(t_constraint)), variable(t_variable), max_violation(t_max_violation), penalty(t_penalty) {}
     };
 
