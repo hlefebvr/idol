@@ -307,6 +307,8 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
         return;
     }
 
+    std::list<CurrentPenalty> current_penalties;
+
     for (auto &[ctr, penalty]: m_l1_vars) {
 
         auto &[var, value] = penalty;
@@ -327,9 +329,13 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
             continue;
         }
 
-        value = t_penalty_update(value);
-        set_penalty_in_all_sub_problems(var, value);
+        current_penalties.emplace_back(ctr, var, max, value);
 
+    }
+
+    t_penalty_update(current_penalties);
+    for (const auto& [ctr, var, violation, penalty] : current_penalties) {
+        set_penalty_in_all_sub_problems(var, penalty);
     }
 
     if (m_rescaling.first) {

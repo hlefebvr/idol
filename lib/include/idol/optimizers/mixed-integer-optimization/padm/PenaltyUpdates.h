@@ -5,6 +5,9 @@
 #ifndef IDOL_PENALTYUPDATES_H
 #define IDOL_PENALTYUPDATES_H
 
+#include <list>
+#include "Formulation.h"
+
 namespace idol {
     class PenaltyUpdate;
 
@@ -19,6 +22,8 @@ public:
     virtual ~PenaltyUpdate() = default;
 
     virtual double operator()(double t_current_penalty) = 0;
+
+    virtual void operator()(std::list<ADM::Formulation::CurrentPenalty>& t_current_penalties);
 
     virtual PenaltyUpdate* clone() const = 0;
 };
@@ -39,12 +44,15 @@ public:
 
 class idol::PenaltyUpdates::Multiplicative : public PenaltyUpdate {
     double m_factor;
+    bool m_normalized;
 public:
-    explicit Multiplicative(double t_factor) : m_factor(t_factor) {}
+    explicit Multiplicative(double t_factor, bool t_normalized = false) : m_factor(t_factor), m_normalized(t_normalized) {}
 
     double operator()(double t_current_penalty) override {
         return t_current_penalty * m_factor;
     }
+
+    void operator()(std::list<ADM::Formulation::CurrentPenalty> &t_current_penalties) override;
 
     PenaltyUpdate* clone() const override {
         return new Multiplicative(*this);
