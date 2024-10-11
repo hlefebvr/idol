@@ -6,10 +6,12 @@
 #define IDOL_ADM_FORMULATION_H
 
 #include "idol/modeling/models/Model.h"
-#include "PenaltyUpdates.h"
 
-namespace idol::ADM {
-    class Formulation;
+namespace idol {
+    class PenaltyUpdate;
+    namespace ADM {
+        class Formulation;
+    }
 }
 
 class idol::ADM::Formulation {

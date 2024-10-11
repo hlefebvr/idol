@@ -5,6 +5,7 @@
 #include "idol/optimizers/mixed-integer-optimization/padm/Formulation.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
+#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
 
 #include <utility>
 
