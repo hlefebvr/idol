@@ -17,6 +17,7 @@ idol::PenaltyUpdates::Multiplicative::operator()(std::list<ADM::Formulation::Cur
 
     if (!m_normalized) {
         PenaltyUpdate::operator()(t_current_penalties);
+        return;
     }
 
     double max_violation = 0;
@@ -26,7 +27,8 @@ idol::PenaltyUpdates::Multiplicative::operator()(std::list<ADM::Formulation::Cur
 
     // scales the factor from 1 to m_factor
     for (auto& penalty : t_current_penalties) {
-        penalty.penalty = 1 + (m_factor - 1.) * penalty.max_violation / max_violation;
+        const double factor = 1 + (m_factor - 1.) * penalty.max_violation / max_violation;
+        penalty.penalty = factor * penalty.penalty;
     }
 
 }

@@ -310,18 +310,18 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
 
     std::list<CurrentPenalty> current_penalties;
 
-    for (auto &[ctr, penalty]: m_l1_vars) {
-
-        auto &[var, value] = penalty;
+    for (auto &[ctr, var]: m_l1_vars) {
 
         unsigned int argmax = -1;
         double max = 0.;
+        double penalty = 0;
 
         for (unsigned int i = 0; i < n_sub_problems; ++i) {
 
             if (const double val = t_primals[i].get(var); val > max) {
                 max = val;
                 argmax = i;
+                penalty = m_sub_problems[i].get_var_column(var).obj().as_numerical();
             }
 
         }
@@ -330,17 +330,18 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
             continue;
         }
 
-        current_penalties.emplace_back(ctr, var, max, value);
+        current_penalties.emplace_back(ctr, var, max, penalty);
 
     }
 
     t_penalty_update(current_penalties);
-    for (const auto& [ctr, var, violation, penalty] : current_penalties) {
-        set_penalty_in_all_sub_problems(var, penalty);
-    }
 
     if (m_rescaling.first) {
-        rescale_penalty_parameters();
+        rescale_penalty_parameters(current_penalties);
+    }
+
+    for (const auto& [ctr, var, violation, penalty] : current_penalties) {
+        set_penalty_in_all_sub_problems(var, penalty);
     }
 
 }
@@ -352,12 +353,12 @@ idol::Var idol::ADM::Formulation::get_or_create_l1_var(const idol::Ctr &t_ctr) {
     });
 
     if (it != m_l1_vars.end() && it->first.id() == t_ctr.id()) {
-        return it->second.first;
+        return it->second;
     }
 
     auto& env = m_sub_problems.front().env();
     Var var (env, 0, Inf, Continuous, Column(), "l1_norm_" + t_ctr.name());
-    m_l1_vars.emplace_hint(it, t_ctr, std::make_pair( var, 0. ));
+    m_l1_vars.emplace_hint(it, t_ctr, var);
 
     return var;
 }
@@ -375,10 +376,6 @@ void idol::ADM::Formulation::set_penalty_in_all_sub_problems(const Var &t_var, d
 void idol::ADM::Formulation::initialize_penalty_parameters(double t_value) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
-
-    for (auto& [ctr, penalty] : m_l1_vars) {
-        penalty.second = t_value;
-    }
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
 
@@ -411,11 +408,11 @@ void idol::ADM::Formulation::update_penalty_parameters_independently(const std::
 
 }
 
-void idol::ADM::Formulation::rescale_penalty_parameters() {
+void idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties) {
 
     double max = 0;
-    for (const auto& [ctr, penalty] : m_l1_vars) {
-        max = std::max(max, penalty.second);
+    for (const auto& penalty : t_penalties) {
+        max = std::max(max, penalty.penalty);
     }
 
     if (max < m_rescaling.second) {
@@ -430,19 +427,8 @@ void idol::ADM::Formulation::rescale_penalty_parameters() {
         return beta * (t_val - sigma) / (alpha + std::abs(t_val - sigma)) + omega;
     };
 
-    const unsigned int n_sub_problems = m_sub_problems.size();
-
-    for (auto& [ctr, penalty] : m_l1_vars) {
-        penalty.second = sigmoid(penalty.second);
-    }
-
-    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-
-        for (const auto& var : m_l1_vars_in_sub_problem[i]) {
-            const double current_penalty = m_sub_problems[i].get_var_column(var).obj().as_numerical();
-            m_sub_problems[i].set_var_obj(var, sigmoid(current_penalty));
-        }
-
+    for (auto& penalty: t_penalties) {
+        penalty.penalty = sigmoid(penalty.penalty);
     }
 
 }

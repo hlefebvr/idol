@@ -91,6 +91,7 @@ protected:
     bool solve_sub_problem(unsigned int t_sub_problem_id);
     void compute_objective_value();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
+    void log_outer_loop();
     double feasibility_measure(unsigned int t_sub_problem_id) const;
 
     void check_feasibility();

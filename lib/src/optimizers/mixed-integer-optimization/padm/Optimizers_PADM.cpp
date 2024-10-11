@@ -131,6 +131,8 @@ void idol::Optimizers::PADM::hook_optimize() {
 
     do {
 
+        log_outer_loop();
+
         update_penalty_parameters();
 
         run_inner_loop();
@@ -408,4 +410,15 @@ unsigned int idol::Optimizers::PADM::get_outer_loop_iteration_count() const {
 
 unsigned int idol::Optimizers::PADM::get_inner_loop_iteration_count() const {
     return m_inner_loop_iterations;
+}
+
+void idol::Optimizers::PADM::log_outer_loop() {
+
+    if (!get_param_logs()) {
+        return;
+    }
+
+    center(std::cout, " Outer loop iteration: " + std::to_string(m_outer_loop_iteration) + ' ', 100, '-');
+    std::cout << std::endl;
+
 }
