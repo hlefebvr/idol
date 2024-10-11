@@ -116,26 +116,41 @@ void idol::Optimizers::PADM::write_iteration_history(const std::string &t_name) 
 
     file << "[\n";
 
-    for (auto it = m_history.begin(), end = m_history.end() ; it != end ; ++it) {
-
+    for (auto it = m_history.begin(), end = m_history.end(); it != end; ++it) {
         const auto& log = *it;
-        file << "\t{ \"outer\": " << log.outer_iteration << ", \"inner\": " << log.inner_iteration << ", \"values\": [ ";
 
-        for (unsigned int i = 0, n = log.objective_value.size() ; i < n ; ++i) {
+        // Writing the "outer", "inner", and "values" fields
+        file << "\t{ \"outer\": " << log.outer_iteration
+             << ", \"inner\": " << log.inner_iteration
+             << ", \"values\": [ ";
+
+        for (unsigned int i = 0, n = log.objective_value.size(); i < n; ++i) {
             file << log.objective_value[i];
             if (i != n - 1) {
                 file << ", ";
             }
         }
 
-        file << "] }";
+        // Writing the "infeasibility" field as an array
+        file << " ], \"infeasibility\": [ ";
+
+        for (unsigned int i = 0, n = log.infeasibility.size(); i < n; ++i) {
+            file << log.infeasibility[i];
+            if (i != n - 1) {
+                file << ", ";
+            }
+        }
+
+        file << " ]}";
+
+        // Add a comma except for the last element in the array
         if (std::next(it) != end) {
             file << ",";
         }
         file << "\n";
     }
 
-    file << " ]\n";
+    file << "]\n";
 
     file.close();
 
@@ -386,19 +401,30 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         std::cout << std::setw(12) << m_last_solutions[i].status() << '\t';
-        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << feasibility_measure(i) << '\t';
+        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << max_infeasibility(i) << '\t';
     }
 
     std::cout << std::endl;
 }
 
-double idol::Optimizers::PADM::feasibility_measure(unsigned int t_sub_problem_id) const {
+double idol::Optimizers::PADM::max_infeasibility(unsigned int t_sub_problem_id) const {
 
     double result = 0;
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
         const double val = m_last_solutions[t_sub_problem_id].get(var);
         result = std::max(result, val);
+    }
+
+    return result;
+}
+
+double idol::Optimizers::PADM::total_infeasibility(unsigned int t_sub_problem_id) const {
+
+    double result = 0;
+
+    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
+        result += m_last_solutions[t_sub_problem_id].get(var);
     }
 
     return result;
@@ -471,10 +497,16 @@ void idol::Optimizers::PADM::make_history() {
         const unsigned int n_sub_problems = m_formulation.n_sub_problems();
 
         std::vector<double> objective_values;
+        std::vector<double> infeasibility_values;
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             objective_values.emplace_back(m_formulation.sub_problem(i).get_best_obj());
+            infeasibility_values.emplace_back(total_infeasibility(i));
         }
-        m_history.emplace_back(m_outer_loop_iteration, m_inner_loop_iterations, std::move(objective_values));
+        m_history.emplace_back(m_outer_loop_iteration,
+                               m_inner_loop_iterations,
+                               std::move(objective_values),
+                               std::move(infeasibility_values)
+                               );
 
     }
 

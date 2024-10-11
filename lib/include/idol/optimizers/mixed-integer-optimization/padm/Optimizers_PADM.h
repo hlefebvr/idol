@@ -93,7 +93,8 @@ protected:
     void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
-    double feasibility_measure(unsigned int t_sub_problem_id) const;
+    double max_infeasibility(unsigned int t_sub_problem_id) const;
+    double total_infeasibility(unsigned int t_sub_problem_id) const;
 
     void check_feasibility();
     void check_time_limit();
@@ -117,8 +118,9 @@ private:
         unsigned int outer_iteration;
         unsigned int inner_iteration;
         std::vector<double> objective_value;
-        IterationLog(unsigned int t_outer_iteration, unsigned int t_inner_iteration, std::vector<double> t_objective_value)
-            : outer_iteration(t_outer_iteration), inner_iteration(t_inner_iteration), objective_value(std::move(t_objective_value)) {}
+        std::vector<double> infeasibility;
+        IterationLog(unsigned int t_outer_iteration, unsigned int t_inner_iteration, std::vector<double> t_objective_value, std::vector<double> t_infeasibility)
+            : outer_iteration(t_outer_iteration), inner_iteration(t_inner_iteration), objective_value(std::move(t_objective_value)), infeasibility(std::move(t_infeasibility)) {}
     };
 
     std::list<IterationLog> m_history;
