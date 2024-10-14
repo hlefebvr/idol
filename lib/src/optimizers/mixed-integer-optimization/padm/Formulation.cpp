@@ -432,3 +432,7 @@ void idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty
     }
 
 }
+
+unsigned int idol::ADM::Formulation::sub_problem_id(const idol::Var &t_var) const {
+    return t_var.get(m_decomposition);
+}

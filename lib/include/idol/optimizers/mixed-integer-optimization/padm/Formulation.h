@@ -26,6 +26,8 @@ public:
 
     const Model& sub_problem(const Var& t_var) const;
 
+    unsigned int sub_problem_id(const Var& t_var) const;
+
     Model& sub_problem(unsigned int t_sub_problem_id) { return m_sub_problems[t_sub_problem_id]; }
 
     const Model& sub_problem(unsigned int t_sub_problem_id) const { return m_sub_problems[t_sub_problem_id]; }

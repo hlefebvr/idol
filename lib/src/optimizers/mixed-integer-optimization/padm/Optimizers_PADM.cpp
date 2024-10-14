@@ -23,15 +23,18 @@ idol::Optimizers::PADM::PADM(const Model& t_model,
 }
 
 double idol::Optimizers::PADM::get_var_primal(const idol::Var &t_var) const {
-    return m_formulation.sub_problem(t_var).get_var_primal(t_var);
+    const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
+    return m_last_solutions[sub_problem_id].get(t_var);
 }
 
 double idol::Optimizers::PADM::get_var_reduced_cost(const idol::Var &t_var) const {
-    return m_formulation.sub_problem(t_var).get_var_reduced_cost(t_var);
+    const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
+    return m_formulation.sub_problem(sub_problem_id).get_var_reduced_cost(t_var);
 }
 
 double idol::Optimizers::PADM::get_var_ray(const idol::Var &t_var) const {
-    return m_formulation.sub_problem(t_var).get_var_ray(t_var);
+    const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
+    return m_formulation.sub_problem(sub_problem_id).get_var_ray(t_var);
 }
 
 double idol::Optimizers::PADM::get_ctr_dual(const idol::Ctr &t_ctr) const {
