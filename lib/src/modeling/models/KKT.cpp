@@ -304,7 +304,6 @@ void idol::Reformulators::KKT::create_dual_objective() {
         const auto lb = m_src_model.get_var_lb(var);
         const auto ub = m_src_model.get_var_ub(var);
 
-
         if (!is_neg_inf(lb)) {
             const auto& dual_var_lb = *m_dual_variables_for_lower_bounds[index];
             m_dual_objective += lb * dual_var_lb;
@@ -340,5 +339,5 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
 void idol::Reformulators::KKT::add_dual(idol::Model &t_destination) const {
     add_dual_variables(t_destination);
     add_dual_constraints(t_destination);
-    t_destination.set_obj_expr(m_dual_objective);
+    t_destination.set_obj_expr(-1. * m_dual_objective);
 }
