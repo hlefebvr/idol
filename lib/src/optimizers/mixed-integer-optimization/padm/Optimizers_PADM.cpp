@@ -99,10 +99,9 @@ void idol::Optimizers::PADM::write_solution(const std::string &t_name) {
         throw Exception("Could not open file " + t_name);
     }
 
-    file << "# Objective value = " << get_best_obj() << std::endl;
+    file << "# Objective value = " << std::setprecision(12) << get_best_obj() << std::endl;
     for (const auto& var : parent().vars()) {
-        file << var.name() << " " << get_var_primal(var) << std::endl;
-
+        file << var.name() << " " << std::setprecision(12) << get_var_primal(var) << std::endl;
     }
 
     file.close();
