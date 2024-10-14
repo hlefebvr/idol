@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Installation &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/installation/local_installation.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Global Installation" href="global-installation/index.html" />
+    <link rel="prev" title="Installation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Local Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="global-installation/index.html">Global Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="options.html">List of CMake Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installation</a></li>
+      <li class="breadcrumb-item active">Local Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/installation/local_installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="local-installation">
+<span id="installation-local"></span><h1>Local Installation<a class="headerlink" href="#local-installation" title="Link to this heading"></a></h1>
+<p>This page is dedicated to the local installation of idol. This is the easiest way to get your project working with
+idol without installing it globally on your computer.
+If you want to install idol globally, please read our <a class="reference internal" href="global-installation/index.html#basics-installation"><span class="std std-ref">global installation guide</span></a>.</p>
+<p>The idea behind local installation is to let CMake download and manage the installation of idol in a sub-folder of your
+project. This is done by using the CMake <code class="code highlight bash docutils literal highlight-bash">FetchContent_*</code> directives.</p>
+<p>We provide here a minimal <code class="code highlight bash docutils literal highlight-bash">CMakeLists.txt</code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.23</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">my_project</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+
+<span class="nb">include</span><span class="p">(</span><span class="s">FetchContent</span><span class="p">)</span>
+
+<span class="c"># Define your idol CMake options here</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">USE_GUROBI</span><span class="w"> </span><span class="s">YES</span><span class="p">)</span><span class="w"> </span><span class="c"># For instance, here, we specify that Gurobi will be used by idol</span>
+
+<span class="c"># Tell CMake which version of idol you desire</span>
+<span class="nb">FetchContent_Declare</span><span class="p">(</span>
+<span class="w">        </span><span class="s">idol</span>
+<span class="w">        </span><span class="s">GIT_REPOSITORY</span><span class="w"> </span><span class="s">https://github.com/hlefebvr/idol.git</span>
+<span class="w">        </span><span class="s">GIT_TAG</span><span class="w">        </span><span class="s">origin/main</span>
+<span class="p">)</span>
+
+<span class="c"># Ask CMake to download idol and install it to a sub-folder</span>
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">idol</span><span class="p">)</span>
+
+<span class="c"># Normal executable definition</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">my_target</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+
+<span class="c"># Link your CMake target with idol as classically done</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_target</span><span class="w"> </span><span class="s">PUBLIC</span><span class="w"> </span><span class="s">idol</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, CMake will download the latest version of idol. However, you can also explicitly specify the desired version
+of idol you want to use by setting the <code class="code highlight bash docutils literal highlight-bash">GIT_TAG</code> variable in the <code class="code highlight bash docutils literal highlight-bash">FetchContent_Declare</code> function to the specific
+version, e.g., <code class="code highlight bash docutils literal highlight-bash">v0.2.4-alpha</code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>As you can see in the above example, some options must be set to tell CMake to look for external solvers. Here, we
+specify that Gurobi will be used by idol. You can, of course, add other solvers such as Mosek or GLPK.</p>
+<p>This is done with the <code class="code highlight bash docutils literal highlight-bash"><span class="nb">set</span></code> CMake function. For instance, to set the option <code class="code highlight bash docutils literal highlight-bash">MY_OPTION</code> to the
+value <code class="code highlight bash docutils literal highlight-bash">MY_VALUE</code>. You should add <code class="code docutils literal notranslate"><span class="pre">set(MY_OPTION</span> <span class="pre">MY_VALUE)</span></code> to your <code class="code highlight bash docutils literal highlight-bash">CMakeLists.txt</code> file.</p>
+<p>A list of <strong>all possible options</strong> can be found on <a class="reference internal" href="options.html#cmake-options"><span class="std std-ref">this page</span></a>.</p>
+</div>
+<p>Then, here is a starting <code class="code highlight bash docutils literal highlight-bash">main.cpp</code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;idol/modeling.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t_argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">t_argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">idol</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Binary</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="global-installation/index.html" class="btn btn-neutral float-right" title="Global Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

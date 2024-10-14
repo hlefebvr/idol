@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/mixed-integer-programming/modeling/models.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Variables" href="variables.html" />
+    <link rel="prev" title="The Environment" href="environment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Mixed-Integer Programming</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Modeling</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="environment.html">The Environment</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variables.html">Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="constraints.html">Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objective-function.html">Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../optimizers/index.html">Optimizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dantzig-wolfe/index.html">Column Generation and Branch-and-Price Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bilevel-optimization/index.html">Bilevel Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../robust-optimization/index.html">Robust Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Mixed-Integer Programming</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Modeling</a></li>
+      <li class="breadcrumb-item active">Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/tutorials/mixed-integer-programming/modeling/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Link to this heading"></a></h1>
+<p>The <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class is used to represent a (standard) optimization model, i.e., a mathematical program of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    \min_x \ &amp; c^\top x + x^\top D x + c_0 \\
+    \text{s.t.} \ &amp; a_{(i)}^\top x + x^\top Q^i x \le b_i \quad i=1,\dotsc,m \\
+    &amp; x_j \in \mathbb Z \quad j=1,\dotsc,p
+\end{align}\end{split}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(x_j\)</span> are the decision variables of this optimization problem while matrices <span class="math notranslate nohighlight">\(c, D, A\)</span> and <span class="math notranslate nohighlight">\(Q^i\)</span> are given
+input parameters for this model. Additionally, variables <span class="math notranslate nohighlight">\(x_j\)</span> having <span class="math notranslate nohighlight">\(j\in\{ 1,\dotsc,p \}\)</span> have to be integer-valued.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#creating-a-model" id="id1">Creating a Model</a></p></li>
+<li><p><a class="reference internal" href="#reading-a-model-from-a-file" id="id2">Reading a Model from a File</a></p></li>
+<li><p><a class="reference internal" href="#writing-a-model-to-a-file" id="id3">Writing a Model to a File</a></p></li>
+<li><p><a class="reference internal" href="#iterating-over-the-variables-and-constraints" id="id4">Iterating over the Variables and Constraints</a></p></li>
+</ul>
+</nav>
+<section id="creating-a-model">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Creating a Model</a><a class="headerlink" href="#creating-a-model" title="Link to this heading"></a></h2>
+<p>A Model is created by calling the constructor of the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">Model</span></code> class. Note that it is necessary to pass an environment
+to the constructor.</p>
+<p>The following code creates a new optimization model.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>We can now define our decision variables and constraints, and add an objective function to our model.
+This is detailed in the <a class="reference internal" href="variables.html#api-variables"><span class="std std-ref">Variables</span></a>, <a class="reference internal" href="constraints.html#api-constraints"><span class="std std-ref">Constraints</span></a> and <a class="reference internal" href="objective-function.html#api-objective-functions"><span class="std std-ref">Objective</span></a> sections.</p>
+</section>
+<section id="reading-a-model-from-a-file">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Reading a Model from a File</a><a class="headerlink" href="#reading-a-model-from-a-file" title="Link to this heading"></a></h2>
+<p>A Model can also be created by reading a model from a file (typically, an MPS or an LP file).
+To do this, idol relies on an external solver. The following code reads a model from a file using Gurobi.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gurobi</span><span class="o">::</span><span class="n">read_from_file</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/path/to/model.mps&quot;</span><span class="p">);</span>
+<span class="c1">// auto model = GLPK::read_from_file(env, &quot;/path/to/model.mps&quot;);</span>
+</pre></div>
+</div>
+</section>
+<section id="writing-a-model-to-a-file">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Writing a Model to a File</a><a class="headerlink" href="#writing-a-model-to-a-file" title="Link to this heading"></a></h2>
+<p>To write an optimization model to a file, the easiest way is again to rely on an external solver.
+This is done by attaching a solver to a model, then by calling the <code class="code docutils literal notranslate"><span class="pre">Model::write</span></code> method.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+<span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">some_function_creating_my_model</span><span class="p">(</span><span class="n">env</span><span class="p">);</span><span class="w"> </span><span class="c1">// this is assumed to create the desired optimization model</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">());</span><span class="w"> </span><span class="c1">// We will use Gurobi as the optimizer</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;instance.lp&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// Creates a new file &quot;instance.lp&quot; storing the model</span>
+</pre></div>
+</div>
+</section>
+<section id="iterating-over-the-variables-and-constraints">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Iterating over the Variables and Constraints</a><a class="headerlink" href="#iterating-over-the-variables-and-constraints" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="../../../api/classes/common/Model.html#api-model"><span class="std std-ref">Model</span></a> class provides methods to iterate over the variables and constraints of the model.
+See for instance, the following example.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">vars</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Variable &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">var</span><span class="p">.</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; belongs to the model.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">ctrs</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Constraint &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ctr</span><span class="p">.</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; belongs to the model.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The number of variables and constraints can be obtained by doing the following.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Nb. of variables: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">vars</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Nb. of constraints: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">ctrs</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environment.html" class="btn btn-neutral float-left" title="The Environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="variables.html" class="btn btn-neutral float-right" title="Variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

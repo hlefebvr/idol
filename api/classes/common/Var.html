@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Var &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/Var.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="External MIP solvers" href="../external-mip/index.html" />
+    <link rel="prev" title="TempVar" href="TempVar.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Column.html">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Var</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/Var.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="var">
+<span id="api-var"></span><h1>Var<a class="headerlink" href="#var" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3VarE">
+<span id="_CPPv3N4idol3VarE"></span><span id="_CPPv2N4idol3VarE"></span><span id="idol::Var"></span><span class="target" id="classidol_1_1Var"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Object</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">VarVersion</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N4idol3VarE" title="Link to this definition"></a><br /></dt>
+<dd><p>Variable modeling-old object.</p>
+<p>The class is used to represent a variable in an optimization model.</p>
+<p>Variables can be created by calling a constructor of <code class="docutils literal notranslate"><a class="reference internal" href="#classidol_1_1Var"><span class="std std-ref"><span class="pre">Var</span></span></a></code>, passing the optimization environment which will store the variable’s versions as argument. The variable can then be added to a model using the <code class="docutils literal notranslate"><a class="reference internal" href="Model.html#classidol_1_1Model_1a61f27f3afe631d3bd406c7155f6dcd0a"><span class="std std-ref"><span class="pre">Model::add</span></span></a></code> method.</p>
+<p>Another approach is to directly use the <code class="docutils literal notranslate"><a class="reference internal" href="Model.html#classidol_1_1Model_1a0f37273ceea06c6a93ab03d2a927657e"><span class="std std-ref"><span class="pre">Model::add_var</span></span></a></code> method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Var</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">add_var</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Var3VarER3Envdd7VarTypeNSt6stringE">
+<span id="_CPPv3N4idol3Var3VarER3Envdd7VarTypeNSt6stringE"></span><span id="_CPPv2N4idol3Var3VarER3Envdd7VarTypeNSt6stringE"></span><span id="idol::Var::Var__EnvR.double.double.VarType.ss"></span><span class="target" id="classidol_1_1Var_1a6724e97de4060c992f93909a7d7767af"></span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <a class="reference internal" href="../../types/common/VarType.html#_CPPv4N4idol7VarTypeE" title="idol::VarType"><span class="n"><span class="pre">VarType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Var3VarER3Envdd7VarTypeNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new variable in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_lb</strong> – The lower bound (possibly <code class="docutils literal notranslate"><span class="pre">-Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_ub</strong> – The upper bound (possibly <code class="docutils literal notranslate"><span class="pre">+Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_type</strong> – The type for the default version of the variable. </p></li>
+<li><p><strong>t_name</strong> – The given name of the variable. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Var3VarER3Envdd7VarTypeRR6ColumnNSt6stringE">
+<span id="_CPPv3N4idol3Var3VarER3Envdd7VarTypeRR6ColumnNSt6stringE"></span><span id="_CPPv2N4idol3Var3VarER3Envdd7VarTypeRR6ColumnNSt6stringE"></span><span id="idol::Var::Var__EnvR.double.double.VarType.ColumnRR.ss"></span><span class="target" id="classidol_1_1Var_1acc92984aaf1a72f28143eb4d1de5e218"></span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <a class="reference internal" href="../../types/common/VarType.html#_CPPv4N4idol7VarTypeE" title="idol::VarType"><span class="n"><span class="pre">VarType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <a class="reference internal" href="Column.html#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_column</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Var3VarER3Envdd7VarTypeRR6ColumnNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new variable in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_lb</strong> – The lower bound (possibly <code class="docutils literal notranslate"><span class="pre">-Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_ub</strong> – The upper bound (possibly <code class="docutils literal notranslate"><span class="pre">+Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_type</strong> – The type for the default version of the variable. </p></li>
+<li><p><strong>t_column</strong> – The column for the default version of the variable. </p></li>
+<li><p><strong>t_name</strong> – The given name of the variable. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Var3VarER3Envdd7VarTypeRK6ColumnNSt6stringE">
+<span id="_CPPv3N4idol3Var3VarER3Envdd7VarTypeRK6ColumnNSt6stringE"></span><span id="_CPPv2N4idol3Var3VarER3Envdd7VarTypeRK6ColumnNSt6stringE"></span><span id="idol::Var::Var__EnvR.double.double.VarType.ColumnCR.ss"></span><span class="target" id="classidol_1_1Var_1ad676336ad15aa715a07688756b45fd1f"></span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <a class="reference internal" href="../../types/common/VarType.html#_CPPv4N4idol7VarTypeE" title="idol::VarType"><span class="n"><span class="pre">VarType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Column.html#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_column</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol3Var3VarER3Envdd7VarTypeRK6ColumnNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new variable in the optimization environment.</p>
+<p>If no name is given, a unique name in the environment is given. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_env</strong> – The optimization environment. </p></li>
+<li><p><strong>t_lb</strong> – The lower bound (possibly <code class="docutils literal notranslate"><span class="pre">-Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_ub</strong> – The upper bound (possibly <code class="docutils literal notranslate"><span class="pre">+Inf</span></code>) for the default version of the variable. </p></li>
+<li><p><strong>t_type</strong> – The type for the default version of the variable. </p></li>
+<li><p><strong>t_column</strong> – The column for the default version of the variable. </p></li>
+<li><p><strong>t_name</strong> – The given name of the variable. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Var3VarERK3Var">
+<span id="_CPPv3N4idol3Var3VarERK3Var"></span><span id="_CPPv2N4idol3Var3VarERK3Var"></span><span id="idol::Var::Var__VarCR"></span><span class="target" id="classidol_1_1Var_1a099ff17c656492529f01c588a88fefe9"></span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol3Var3VarERK3Var" title="idol::Var::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol3Var3VarERK3Var" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3Var3VarERR3Var">
+<span id="_CPPv3N4idol3Var3VarERR3Var"></span><span id="_CPPv2N4idol3Var3VarERR3Var"></span><span id="idol::Var::Var__VarRR"></span><span class="target" id="classidol_1_1Var_1adf2d33a1dada1185ced26d4144349578"></span><span class="sig-name descname"><span class="n"><span class="pre">Var</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol3Var3VarERR3Var" title="idol::Var::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol3Var3VarERR3Var" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3VaraSERK3Var">
+<span id="_CPPv3N4idol3VaraSERK3Var"></span><span id="_CPPv2N4idol3VaraSERK3Var"></span><span id="idol::Var::assign-operator__VarCR"></span><span class="target" id="classidol_1_1Var_1a27e11a1aba9abf2f9dcbdc0edb112e30"></span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol3VaraSERK3Var" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol3VaraSERR3Var">
+<span id="_CPPv3N4idol3VaraSERR3Var"></span><span id="_CPPv2N4idol3VaraSERR3Var"></span><span id="idol::Var::assign-operator__VarRR"></span><span class="target" id="classidol_1_1Var_1a225a9986eb5e6a755b2e7638ad6c2f4e"></span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol3VaraSERR3Var" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Var4nameEv">
+<span id="_CPPv3NK4idol3Var4nameEv"></span><span id="_CPPv2NK4idol3Var4nameEv"></span><span id="idol::Var::nameC"></span><span class="target" id="classidol_1_1Object_1a3cc33224269c4c20bd39931cbbbe3cd4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Var4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the name of the optimization object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the optimization object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Var2idEv">
+<span id="_CPPv3NK4idol3Var2idEv"></span><span id="_CPPv2NK4idol3Var2idEv"></span><span id="idol::Var::idC"></span><span class="target" id="classidol_1_1Object_1ac8e398b9b937f08b1c5dbd2b32414036"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Var2idEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the id of the optimization object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The id of the optimization object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Var5is_inERK5Model">
+<span id="_CPPv3NK4idol3Var5is_inERK5Model"></span><span id="_CPPv2NK4idol3Var5is_inERK5Model"></span><span id="idol::Var::is_in__ModelCRC"></span><span class="target" id="classidol_1_1Object_1aa25899704860cb066f885015ec1f11f3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_in</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Model.html#_CPPv4N4idol5ModelE" title="idol::Model"><span class="n"><span class="pre">Model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_model</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Var5is_inERK5Model" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns true if the optimization object is part of the model <code class="docutils literal notranslate"><span class="pre">t_model</span></code>, false otherwise. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_model</strong> – The model. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the optimization object is part of the model <code class="docutils literal notranslate"><span class="pre">t_model</span></code>, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Var3getERK10AnnotationI3Var6ValueTE">
+<span id="_CPPv3NK4idol3Var3getERK10AnnotationI3Var6ValueTE"></span><span id="_CPPv2NK4idol3Var3getERK10AnnotationI3Var6ValueTE"></span><span id="idol::Var::get__Annotation:Var.ValueT:CRC"></span><span class="target" id="classidol_1_1Object_1a480ca9df3d3327cbb562934105c7cab6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Annotation.html#_CPPv4I00EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Var3getERK10AnnotationI3Var6ValueTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the value of the given annotation <code class="docutils literal notranslate"><span class="pre">t_annotation</span></code> associated to the object.</p>
+<p>If no value is found, the default value of the annotation is returned. If no default value was set, an exception is thrown. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueT</strong> – The value type of the annotation. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>t_annotation</strong> – The annotation. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value of the annotation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol3Var3setERK10AnnotationI3Var6ValueTEDpRR5ArgsT">
+<span id="_CPPv3NK4idol3Var3setERK10AnnotationI3Var6ValueTEDpRR5ArgsT"></span><span id="_CPPv2NK4idol3Var3setERK10AnnotationI3Var6ValueTEDpRR5ArgsT"></span><span id="idol::Var::set__Annotation:Var.ValueT:CR.ArgsTRRDpC"></span><span class="target" id="classidol_1_1Object_1a99b26b0feaefc240d83a113dd0e60520"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Annotation.html#_CPPv4I00EN4idol10AnnotationE" title="idol::Annotation"><span class="n"><span class="pre">Annotation</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">ValueT</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_annotation</span></span>, <span class="n"><span class="pre">ArgsT</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_args</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol3Var3setERK10AnnotationI3Var6ValueTEDpRR5ArgsT" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the value of the given annotation <code class="docutils literal notranslate"><span class="pre">t_annotation</span></code> associated to the object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueT</strong> – The value type of the annotation. </p></li>
+<li><p><strong>ArgsT</strong> – The parameter pack types for constructing the value of the annotation. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>t_annotation</strong> – The annotation. </p></li>
+<li><p><strong>t_args</strong> – The parameter pack arguments used to construct “in place” the value of the annotation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_j_jEN4idol3Var11make_vectorE6VectorI3VarXmi1N1IEER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE">
+<span id="_CPPv3I_j_jEN4idol3Var11make_vectorER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE"></span><span id="_CPPv2I_j_jEN4idol3Var11make_vectorER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classidol_1_1Var_1a828c0cf56be6aca6dfd33d5d6fc6b131"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Var11make_vectorE6VectorI3VarXmi1N1IEER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE" title="idol::Var::make_vector::N"><span class="n"><span class="pre">N</span></span></a><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Var11make_vectorE6VectorI3VarXmi1N1IEER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE" title="idol::Var::make_vector::I"><span class="n"><span class="pre">I</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_vector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Env.html#_CPPv4N4idol3EnvE" title="idol::Env"><span class="n"><span class="pre">Env</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_env</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Dim</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_j_jEN4idol3Var11make_vectorE6VectorI3VarXmi1N1IEER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE" title="idol::Var::make_vector::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_dim</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_lb</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_ub</span></span>, <a class="reference internal" href="../../types/common/VarType.html#_CPPv4N4idol7VarTypeE" title="idol::VarType"><span class="n"><span class="pre">VarType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t_type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_name</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_j_jEN4idol3Var11make_vectorE6VectorI3VarXmi1N1IEER3EnvRK3DimI1NEdd7VarTypeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates a (nested) vector of variables.</p>
+<p><em>Example</em>:</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Env</span><span class="w"> </span><span class="n">env</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Var</span><span class="o">::</span><span class="n">make_vector</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">Dim</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="mf">1.</span><span class="p">,</span><span class="w"> </span><span class="n">Continuous</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">].</span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// &quot;x_1_4&quot;</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – The dimension of the (nested) vector. </p></li>
+<li><p><strong>I</strong> – Used for recursion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>t_env</strong> – The environment to store the variables. </p></li>
+<li><p><strong>t_dim</strong> – The number of elements in each dimension. </p></li>
+<li><p><strong>t_lb</strong> – The lower bound. </p></li>
+<li><p><strong>t_ub</strong> – The upper bound. </p></li>
+<li><p><strong>t_type</strong> – The type of the variables. </p></li>
+<li><p><strong>t_name</strong> – The given name of the variables. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A (nested) vector of variables. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">impl::Env</span></dt>
+</dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="TempVar.html" class="btn btn-neutral float-left" title="TempVar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../external-mip/index.html" class="btn btn-neutral float-right" title="External MIP solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+OsiCbc
+======
+
+.. doxygenclass:: idol::OsiCbc

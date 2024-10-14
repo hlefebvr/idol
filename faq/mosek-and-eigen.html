@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why is Eigen necessary to solve QPs and QCQPs with Mosek? &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/faq/mosek-and-eigen.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmark" href="../benchmark/index.html" />
+    <link rel="prev" title="FAQ" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">FAQ</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Why is Eigen necessary to solve QPs and QCQPs with Mosek?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">FAQ</a></li>
+      <li class="breadcrumb-item active">Why is Eigen necessary to solve QPs and QCQPs with Mosek?</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/faq/mosek-and-eigen.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="why-is-eigen-necessary-to-solve-qps-and-qcqps-with-mosek">
+<span id="mosek-and-socp"></span><h1>Why is Eigen necessary to solve QPs and QCQPs with Mosek?<a class="headerlink" href="#why-is-eigen-necessary-to-solve-qps-and-qcqps-with-mosek" title="Link to this heading"></a></h1>
+<section id="in-short">
+<h2>In Short<a class="headerlink" href="#in-short" title="Link to this heading"></a></h2>
+<p>The interface of idol is based on quadratic expressions like</p>
+<div class="math notranslate nohighlight">
+\[\sum_{j=1}^n a_{ij}x_j + \sum_{j=1}^n\sum_{k=1}^n q_{jk}^ix_jx_k \le b_i.\]</div>
+<p>The C++ interface of Mosek, instead, is based on “conic expressions” like</p>
+<div class="math notranslate nohighlight">
+\[(x_0, \textbf{Fx}) \in \mathcal Q^n,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal Q^n\)</span> denotes the second-order cone and <span class="math notranslate nohighlight">\(F\)</span> is some matrix related to <span class="math notranslate nohighlight">\(Q^i\)</span>.</p>
+<p>In order to make the conversion between the Mosek interface and
+the idol interface (for instance, computing the matrix <span class="math notranslate nohighlight">\(F\)</span>),
+one needs to compute an eigen value decomposition.
+This is automatically done by idol using <a class="reference external" href="https://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a>.
+This is why Eigen is necessary if one wants to use Mosek with idol to solve QPs or QCQPs.</p>
+</section>
+<section id="detailed-answer">
+<h2>Detailed Answer<a class="headerlink" href="#detailed-answer" title="Link to this heading"></a></h2>
+<p>Consider the quadratic expression</p>
+<div class="math notranslate nohighlight">
+\[\sum_{j=1}^n a_{ij}x_j + \sum_{j=1}^n\sum_{k=1}^n q_{jk}^ix_jx_k \le b_i.\]</div>
+<p>It can be written as</p>
+<div class="math notranslate nohighlight">
+\[a_{(i)}^\top x + x^\top Q^i x \le b_i.\]</div>
+<p>The first task is to compute an eigen value decomposition of <span class="math notranslate nohighlight">\(Q^i\)</span>, i.e.,
+to find matrices <span class="math notranslate nohighlight">\(L\)</span> and <span class="math notranslate nohighlight">\(D\)</span> such that <span class="math notranslate nohighlight">\(Q^i = L D L^\top\)</span>
+and <span class="math notranslate nohighlight">\(D\)</span> is a diagonal matrix containing the eigen values of <span class="math notranslate nohighlight">\(Q^i\)</span>.</p>
+<p>If there are more than two negative eigen values, the constraint is not convex and an exeception is thrown.</p>
+<p>Otherwise, we compute <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(N\)</span> so that <span class="math notranslate nohighlight">\(x^\top Q^i x = \lVert Fx \rVert_2^2 + x^\top N x\)</span>.
+This is done by setting <span class="math notranslate nohighlight">\(F = \sqrt{D^+} L^\top\)</span> where <span class="math notranslate nohighlight">\(D^+\)</span> is <span class="math notranslate nohighlight">\(D\)</span> with the negative eigen values replaced by zero,
+and <span class="math notranslate nohighlight">\(N = L D^- L^\top\)</span>.</p>
+<p>Hence, we have that the constraint is expressed as</p>
+<div class="math notranslate nohighlight">
+\[\lVert Fx \rVert_2^2 + x^\top N x \le b_i - a_{(i)}^\top x.\]</div>
+<p>If <span class="math notranslate nohighlight">\(N = 0\)</span>, it can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    &amp; \lVert Fx \rVert_2^2 \le b_i - a_{(i)}^\top x \\
+    \iff &amp; (.5, b_i - a_{(i)}^\top x, Fx) \in\mathcal Q^{n+2}_r,
+\end{align}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal Q^{n+2}_r\)</span> denotes the rotated second-order cone.</p>
+<p>Otherwise, if <span class="math notranslate nohighlight">\(N\)</span> has one non-zero entry, say <span class="math notranslate nohighlight">\(n_{ij}\)</span>.
+Then, it must be that <span class="math notranslate nohighlight">\(a_{(i)} = 0\)</span> and <span class="math notranslate nohighlight">\(b_i \le 0\)</span> for the constraint to be
+converted by idol. Under this assumption, the constraint can be written as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+    &amp; \lVert Fx \rVert_2^2 + \sqrt{-b_i}^2 \le n_{ij} x_i x_j \\
+    \iff &amp; (.5 n_{i,j} x_i, x_j, Fx, \sqrt{-b_i}) \in\mathcal Q^{n+1}_r,
+\end{align}\end{split}\]</div>
+<p>where it is assumed that <span class="math notranslate nohighlight">\(n_{i,j} x_{i}x_{j} \ge 0\)</span> holds
+(for now, a warning is printed to enlight this expectation).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../benchmark/index.html" class="btn btn-neutral float-right" title="Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
