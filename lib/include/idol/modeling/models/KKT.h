@@ -44,6 +44,7 @@ public:
 
     void add_kkt_reformulation(Model& t_destination) const;
     void add_strong_duality_reformulation(Model& t_destination) const;
+    void add_dual(Model& t_destination) const;
 };
 
 

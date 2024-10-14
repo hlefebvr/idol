@@ -336,3 +336,9 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
     add_strong_duality_constraint(t_destination);
     add_leader_objective(t_destination);
 }
+
+void idol::Reformulators::KKT::add_dual(idol::Model &t_destination) const {
+    add_dual_variables(t_destination);
+    add_dual_constraints(t_destination);
+    t_destination.set_obj_expr(m_dual_objective);
+}
