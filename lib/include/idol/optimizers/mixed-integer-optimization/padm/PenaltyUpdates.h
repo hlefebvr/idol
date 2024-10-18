@@ -6,6 +6,8 @@
 #define IDOL_PENALTYUPDATES_H
 
 #include <list>
+#include <vector>
+#include <ostream>
 #include "Formulation.h"
 
 namespace idol {
@@ -14,7 +16,10 @@ namespace idol {
     namespace PenaltyUpdates {
         class Additive;
         class Multiplicative;
+        class Adaptive;
     }
+
+    std::ostream &operator<<(std::ostream &t_os, const PenaltyUpdate &t_penalty_update);
 }
 
 class idol::PenaltyUpdate {
@@ -25,7 +30,11 @@ public:
 
     virtual void operator()(std::list<ADM::Formulation::CurrentPenalty>& t_current_penalties);
 
-    virtual PenaltyUpdate* clone() const = 0;
+    virtual bool diversify() { return false; }
+
+    virtual std::ostream &describe(std::ostream &t_os) const = 0;
+
+    [[nodiscard]] virtual PenaltyUpdate* clone() const = 0;
 };
 
 class idol::PenaltyUpdates::Additive : public PenaltyUpdate {
@@ -37,25 +46,61 @@ public:
         return t_current_penalty + m_increment;
     }
 
-    PenaltyUpdate* clone() const override {
+    std::ostream &describe(std::ostream &t_os) const override {
+        return t_os << "Additive(" << m_increment << ")";
+    }
+
+    [[nodiscard]] PenaltyUpdate* clone() const override {
         return new Additive(*this);
     }
 };
 
 class idol::PenaltyUpdates::Multiplicative : public PenaltyUpdate {
-    double m_factor;
+    std::vector<double> m_factor;
+    unsigned int m_current_factor_index = 0;
     bool m_normalized;
 public:
-    explicit Multiplicative(double t_factor, bool t_normalized = false) : m_factor(t_factor), m_normalized(t_normalized) {}
+    explicit Multiplicative(double t_factor, bool t_normalized = false) : m_factor({ t_factor }), m_normalized(t_normalized) {}
+
+    explicit Multiplicative(std::vector<double> t_factor, bool t_normalized = false) : m_factor(std::move(t_factor)), m_normalized(t_normalized) {}
 
     double operator()(double t_current_penalty) override {
-        return t_current_penalty * m_factor;
+        return t_current_penalty * m_factor[m_current_factor_index];
     }
 
     void operator()(std::list<ADM::Formulation::CurrentPenalty> &t_current_penalties) override;
 
-    PenaltyUpdate* clone() const override {
+    bool diversify() override;
+
+    std::ostream &describe(std::ostream &t_os) const override;
+
+    [[nodiscard]] PenaltyUpdate* clone() const override {
         return new Multiplicative(*this);
+    }
+};
+
+class idol::PenaltyUpdates::Adaptive : public PenaltyUpdate {
+    std::vector<std::unique_ptr<PenaltyUpdate>> m_penalty_updates;
+    unsigned int m_current_penalty_update_index = 0;
+public:
+    explicit Adaptive(const std::vector<PenaltyUpdate*>& t_penalty_updates);
+
+    Adaptive(const Adaptive& t_src);
+
+    double operator()(double t_current_penalty) override {
+        return m_penalty_updates[m_current_penalty_update_index]->operator()(t_current_penalty);
+    }
+
+    void operator()(std::list<ADM::Formulation::CurrentPenalty> &t_current_penalties) override {
+        m_penalty_updates[m_current_penalty_update_index]->operator()(t_current_penalties);
+    }
+
+    bool diversify() override;
+
+    std::ostream &describe(std::ostream &t_os) const override;
+
+    [[nodiscard]] PenaltyUpdate* clone() const override {
+        return new Adaptive(*this);
     }
 };
 

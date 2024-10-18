@@ -170,8 +170,12 @@ void idol::Optimizers::PADM::hook_before_optimize() {
 
     m_outer_loop_iteration = 0;
     m_inner_loop_iterations = 0;
+    m_first_run = true;
+    m_n_restart = 0;
     m_last_iteration_with_no_feasibility_change.reset();
+    m_last_objective_value_when_rescaled.reset();
     m_last_solutions = std::vector<Solution::Primal>(n_sub_problems);
+    m_current_initial_penalty_parameter = m_initial_penalty_parameter;
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         auto& model = m_formulation.sub_problem(i);
@@ -304,6 +308,7 @@ void idol::Optimizers::PADM::run_inner_loop() {
             feasibility_has_changed |= feas;
         }
 
+        m_first_run = false;
         ++m_inner_loop_iterations;
 
         check_time_limit();
@@ -336,7 +341,11 @@ void idol::Optimizers::PADM::update_penalty_parameters() {
         return;
     }
 
-    m_formulation.update_penalty_parameters(m_last_solutions, *m_penalty_update);
+    bool has_rescaled = m_formulation.update_penalty_parameters(m_last_solutions, *m_penalty_update);
+
+    if (has_rescaled) {
+        detect_stagnation_due_to_rescaling();
+    }
 
 }
 
@@ -371,8 +380,8 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     auto current_solution = save_primal(model);
     // bool obj_has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
-    const bool obj_has_changed = m_inner_loop_iterations == 0 || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
-    const bool feas_has_changed = m_inner_loop_iterations == 0 || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
+    const bool obj_has_changed = m_first_run || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
+    const bool feas_has_changed = m_first_run || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
     m_last_solutions[t_sub_problem_id] = std::move(current_solution);
 
     return { obj_has_changed, feas_has_changed };
@@ -411,7 +420,7 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         std::cout << std::setw(12) << m_last_solutions[i].status() << '\t';
-        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << infeasibility_linf(i, m_last_solutions[i]) << '\t';
+        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << infeasibility_l1(i, m_last_solutions[i]) << '\t';
     }
 
     std::cout << std::endl;
@@ -538,6 +547,52 @@ void idol::Optimizers::PADM::detect_stagnation(bool t_feasibility_has_changed) {
         return;
     }
 
-    std::cout << "Stagnation detected." << std::endl;
+    restart();
 
+}
+
+void idol::Optimizers::PADM::detect_stagnation_due_to_rescaling() {
+
+    const auto sum_sub_problems = std::accumulate(m_formulation.sub_problems().begin(), m_formulation.sub_problems().end(), 0., [](double t_acc, const Model& t_model) {
+        return t_acc + t_model.get_best_obj();
+    });
+
+    if (!m_last_objective_value_when_rescaled.has_value()) {
+        m_last_objective_value_when_rescaled = sum_sub_problems;
+        return;
+    }
+
+    if (std::abs(sum_sub_problems - m_last_objective_value_when_rescaled.value()) > 1e-4) {
+        m_last_objective_value_when_rescaled = sum_sub_problems;
+        return;
+    }
+
+    const bool has_diversified = m_penalty_update->diversify();
+
+    if(!has_diversified) {
+        restart();
+    }
+
+}
+
+void idol::Optimizers::PADM::restart() {
+
+    if (m_n_restart >= 1) {
+        set_status(Fail);
+        set_reason(IterLimit);
+        terminate();
+        return;
+    }
+
+    std::cout << "Restarting with inverse initial penalty parameter..." << std::endl;
+
+    m_last_objective_value_when_rescaled.reset();
+    m_last_iteration_with_no_feasibility_change.reset();
+    while(m_penalty_update->diversify());
+    m_current_initial_penalty_parameter = 1. / m_initial_penalty_parameter;
+    m_first_run = true;
+
+    m_formulation.initialize_penalty_parameters(m_current_initial_penalty_parameter);
+
+    ++m_n_restart;
 }

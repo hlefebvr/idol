@@ -5,6 +5,8 @@
 #ifndef IDOL_ADM_FORMULATION_H
 #define IDOL_ADM_FORMULATION_H
 
+#include <utility>
+
 #include "idol/modeling/models/Model.h"
 
 namespace idol {
@@ -38,7 +40,7 @@ public:
 
     auto sub_problems() const { return ConstIteratorForward(m_sub_problems); }
 
-    const auto l1_vars(unsigned int t_sub_problem_id) const { return ConstIteratorForward(m_l1_vars_in_sub_problem[t_sub_problem_id]); }
+    auto l1_vars(unsigned int t_sub_problem_id) const { return ConstIteratorForward(m_l1_vars_in_sub_problem[t_sub_problem_id]); }
 
     bool has_penalized_constraints() const { return m_penalized_constraints.has_value(); }
 
@@ -46,7 +48,7 @@ public:
 
     void initialize_penalty_parameters(double t_value);
 
-    void update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
+    bool update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update); // Returns true if penalty parameters have been resacled
 
     struct CurrentPenalty {
         const Ctr constraint;
@@ -54,7 +56,7 @@ public:
         const double max_violation;
         double penalty;
         CurrentPenalty(Ctr t_constraint, Var t_variable, double t_max_violation, double t_penalty)
-            : constraint(std::move(t_constraint)), variable(t_variable), max_violation(t_max_violation), penalty(t_penalty) {}
+            : constraint(std::move(t_constraint)), variable(std::move(t_variable)), max_violation(t_max_violation), penalty(t_penalty) {}
     };
 
 private:
@@ -82,7 +84,7 @@ private:
     Var get_or_create_l1_var(const Ctr& t_ctr);
     void set_penalty_in_all_sub_problems(const Var& t_var, double t_value);
     void update_penalty_parameters_independently(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
-    void rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties);
+    bool rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties);
 
     double fix(const Constant& t_constant, const std::vector<Solution::Primal>& t_primals);
 };

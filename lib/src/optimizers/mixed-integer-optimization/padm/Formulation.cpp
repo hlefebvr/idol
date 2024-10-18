@@ -301,7 +301,7 @@ const idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) c
     return m_sub_problems[t_var.get(m_decomposition)];
 }
 
-void
+bool
 idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals,
                                                   PenaltyUpdate& t_penalty_update) {
 
@@ -309,7 +309,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
 
     if (m_independent_penalty_update) {
         update_penalty_parameters_independently(t_primals, t_penalty_update);
-        return;
+        return false;
     }
 
     std::list<CurrentPenalty> current_penalties;
@@ -340,14 +340,16 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
 
     t_penalty_update(current_penalties);
 
+    bool has_rescaled = false;
     if (m_rescaling.first) {
-        rescale_penalty_parameters(current_penalties);
+        has_rescaled = rescale_penalty_parameters(current_penalties);
     }
 
     for (const auto& [ctr, var, violation, penalty] : current_penalties) {
         set_penalty_in_all_sub_problems(var, penalty);
     }
 
+    return has_rescaled;
 }
 
 idol::Var idol::ADM::Formulation::get_or_create_l1_var(const idol::Ctr &t_ctr) {
@@ -412,7 +414,7 @@ void idol::ADM::Formulation::update_penalty_parameters_independently(const std::
 
 }
 
-void idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties) {
+bool idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties) {
 
     double max = 0;
     for (const auto& penalty : t_penalties) {
@@ -420,7 +422,7 @@ void idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty
     }
 
     if (max < m_rescaling.second) {
-        return;
+        return false;
     }
 
     const auto sigmoid = [&](double t_val) {
@@ -431,10 +433,13 @@ void idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty
         return beta * (t_val - sigma) / (alpha + std::abs(t_val - sigma)) + omega;
     };
 
+    max = 0;
     for (auto& penalty: t_penalties) {
         penalty.penalty = sigmoid(penalty.penalty);
+        max = std::max(max, penalty.penalty);
     }
 
+    return true;
 }
 
 unsigned int idol::ADM::Formulation::sub_problem_id(const idol::Var &t_var) const {

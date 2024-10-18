@@ -96,6 +96,8 @@ protected:
     double infeasibility_linf(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
     double infeasibility_l1(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
     void detect_stagnation(bool t_feasibility_has_changed);
+    void detect_stagnation_due_to_rescaling();
+    void restart();
 
     void check_feasibility();
     void check_time_limit();
@@ -108,15 +110,19 @@ private:
     const std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
     const std::unique_ptr<PenaltyUpdate> m_penalty_update;
     const double m_initial_penalty_parameter;
-    const unsigned int m_max_inner_loop_iterations = 1000;
+    const unsigned int m_max_inner_loop_iterations = std::numeric_limits<unsigned int>::max();
     const SolutionStatus m_feasible_solution_status;
-    const unsigned int m_max_iterations_without_feasibility_change = 500;
+    const unsigned int m_max_iterations_without_feasibility_change = 1000;
 
     std::optional<unsigned int> m_last_iteration_with_no_feasibility_change;
+    std::optional<double> m_last_objective_value_when_rescaled;
 
+    bool m_first_run = true;
+    unsigned int m_n_restart = 0;
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;
     std::vector<Solution::Primal> m_last_solutions;
+    double m_current_initial_penalty_parameter = m_initial_penalty_parameter;
 
     struct IterationLog {
         unsigned int outer_iteration;
