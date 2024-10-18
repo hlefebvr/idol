@@ -121,6 +121,11 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
                 auto var_plus = model.add_var(0, Inf, Continuous, var.name() + "_plus");
                 model.add_ctr(var == var_plus + var_minus);
                 pattern.linear() += var_plus - var_minus;
+                /* auto var = add_l1_var(0);
+                auto var_free = model.add_var(-Inf, Inf, Continuous, var.name() + "_free");
+                pattern.linear() += 1 * var_free;
+                model.add_ctr(var >= var_free);
+                model.add_ctr(var >= -var_free); */
                 break;
             }
             case LessOrEqual:
@@ -260,7 +265,6 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
         }
 
         m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(obj));
-
     }
 
 }

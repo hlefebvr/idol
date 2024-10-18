@@ -164,7 +164,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     Expr expr;
 
-    for (const auto& [ctr, coeff] : col.linear()) {
+    for (const auto& [ctr, constant] : col.linear()) {
 
         if (m_description.is_leader(ctr)) {
             continue;
@@ -172,11 +172,11 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
         const auto index_ctr = m_src_model.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
-        expr += coeff * dual_var;
+        expr += constant * dual_var;
 
     }
 
-    for (const auto& [ctr, var, coeff] : col.quadratic()) {
+    for (const auto& [ctr, var, constant] : col.quadratic()) {
 
         if (m_description.is_leader(ctr)) {
             continue;
@@ -184,7 +184,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
         const auto index_ctr = m_src_model.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
-        expr += coeff * dual_var * var;
+        expr += constant * dual_var * var;
 
     }
 
@@ -267,7 +267,7 @@ void idol::Reformulators::KKT::add_leader_objective(idol::Model &t_destination) 
 
 void idol::Reformulators::KKT::add_strong_duality_constraint(idol::Model &t_destination) const {
 
-    t_destination.add_ctr(m_description.follower_obj() == m_dual_objective, "strong_duality");
+    t_destination.add_ctr(m_description.follower_obj() <= m_dual_objective, "strong_duality");
 
 }
 
