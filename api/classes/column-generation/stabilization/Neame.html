@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DantzigWolfe::Neame &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/column-generation/stabilization/Neame.html" />
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="DantzigWolfe::Wentges" href="Wentges.html" />
+    <link rel="prev" title="Stabilization" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Class List</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../common/index.html">Common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Column Generation Algorithm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../ArtificialCosts.html">DantzigWolfe::ArtificialCosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../DantzigWolfeDecomposition.html">DantzigWolfeDecomposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FarkasPricing.html">DantzigWolfe::FarkasPricing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../IntegerMaster.html">Heuristics::IntegerMaster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Optimizers_DantzigWolfeDecomposition.html">Optimizers::DantzigWolfeDecomposition</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">Stabilization</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">DantzigWolfe::Neame</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Wentges.html">DantzigWolfe::Wentges</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Column Generation Algorithm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Stabilization</a></li>
+      <li class="breadcrumb-item active">DantzigWolfe::Neame</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/classes/column-generation/stabilization/Neame.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dantzigwolfe-neame">
+<h1>DantzigWolfe::Neame<a class="headerlink" href="#dantzigwolfe-neame" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5NeameE">
+<span id="_CPPv3N4idol12DantzigWolfe5NeameE"></span><span id="_CPPv2N4idol12DantzigWolfe5NeameE"></span><span id="idol::DantzigWolfe::Neame"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Neame</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DantzigWolfe</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DualPriceSmoothingStabilization</span></span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5NeameE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame5NeameEd">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame5NeameEd"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame5NeameEd"></span><span id="idol::DantzigWolfe::Neame::Neame__double"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1a9c2819551038cc40fb212fac30529db1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Neame</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_initial_factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame5NeameEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol12DantzigWolfe5NeameclEv">
+<span id="_CPPv3NK4idol12DantzigWolfe5NeameclEv"></span><span id="_CPPv2NK4idol12DantzigWolfe5NeameclEv"></span><span id="idol::DantzigWolfe::Neame::call-operatorC"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1a8018a75912c648a1ad034c45f4654a2b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">DualPriceSmoothingStabilization</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Strategy</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol12DantzigWolfe5NeameclEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol12DantzigWolfe5Neame5cloneEv">
+<span id="_CPPv3NK4idol12DantzigWolfe5Neame5cloneEv"></span><span id="_CPPv2NK4idol12DantzigWolfe5Neame5cloneEv"></span><span id="idol::DantzigWolfe::Neame::cloneC"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1ae0fc60e622e94b4b2076e0521a966fc8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">DualPriceSmoothingStabilization</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol12DantzigWolfe5Neame5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame8StrategyE">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame8StrategyE"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame8StrategyE"></span><span id="idol::DantzigWolfe::Neame::Strategy"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DantzigWolfe</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DualPriceSmoothingStabilization</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Strategy</span></span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame8StrategyE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame8Strategy8StrategyEd">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame8Strategy8StrategyEd"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame8Strategy8StrategyEd"></span><span id="idol::DantzigWolfe::Neame::Strategy::Strategy__double"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a3bc1ecc83e6b5cea20976fcf10d85146"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_initial_factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame8Strategy8StrategyEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame8Strategy10initializeEv">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame8Strategy10initializeEv"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame8Strategy10initializeEv"></span><span id="idol::DantzigWolfe::Neame::Strategy::initialize"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a63a4f9de08bef142353a3030348b0ade"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame8Strategy10initializeEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame8Strategy23update_stability_centerERKN8Solution4DualE">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame8Strategy23update_stability_centerERKN8Solution4DualE"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame8Strategy23update_stability_centerERKN8Solution4DualE"></span><span id="idol::DantzigWolfe::Neame::Strategy::update_stability_center__Solution::DualCR"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1a8087565d2984cb146e5799c3ab368541"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">update_stability_center</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../common/SolutionDual.html#_CPPv4N4idol8Solution4DualE" title="idol::Solution::Dual"><span class="n"><span class="pre">Dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_master_dual</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame8Strategy23update_stability_centerERKN8Solution4DualE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol12DantzigWolfe5Neame8Strategy30compute_smoothed_dual_solutionERKN8Solution4DualE">
+<span id="_CPPv3N4idol12DantzigWolfe5Neame8Strategy30compute_smoothed_dual_solutionERKN8Solution4DualE"></span><span id="_CPPv2N4idol12DantzigWolfe5Neame8Strategy30compute_smoothed_dual_solutionERKN8Solution4DualE"></span><span id="idol::DantzigWolfe::Neame::Strategy::compute_smoothed_dual_solution__Solution::DualCR"></span><span class="target" id="classidol_1_1DantzigWolfe_1_1Neame_1_1Strategy_1ac1db694de3ebaf633cafd559995b0440"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../common/SolutionDual.html#_CPPv4N4idol8Solution4DualE" title="idol::Solution::Dual"><span class="n"><span class="pre">Dual</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compute_smoothed_dual_solution</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../common/SolutionDual.html#_CPPv4N4idol8Solution4DualE" title="idol::Solution::Dual"><span class="n"><span class="pre">Dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_master_dual</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol12DantzigWolfe5Neame8Strategy30compute_smoothed_dual_solutionERKN8Solution4DualE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Stabilization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Wentges.html" class="btn btn-neutral float-right" title="DantzigWolfe::Wentges" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

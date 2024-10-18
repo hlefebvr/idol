@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heuristics::LocalBranching &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/branch-and-bound/heuristics/LocalBranching.html" />
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Heuristics::RENS" href="RENS.html" />
+    <link rel="prev" title="Heuristics" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Class List</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../common/index.html">Common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Branch-and-Bound Algorithm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBound.html">BranchAndBound</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBoundCallback.html">BranchAndBoundCallback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BranchAndBoundCallbackFactory.html">BranchAndBoundCallbackFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../variable-selection/index.html">Branching Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../node-selection/index.html">Node Selection Rules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">Heuristics</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Heuristics::LocalBranching</a></li>
+<li class="toctree-l5"><a class="reference internal" href="RENS.html">Heuristics::RENS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="SimpleRounding.html">Heuristics::SimpleRounding</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../cuts/index.html">Cutting Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Branch-and-Bound Algorithm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Heuristics</a></li>
+      <li class="breadcrumb-item active">Heuristics::LocalBranching</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/classes/branch-and-bound/heuristics/LocalBranching.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="heuristics-localbranching">
+<h1>Heuristics::LocalBranching<a class="headerlink" href="#heuristics-localbranching" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranchingE">
+<span id="_CPPv3N4idol10Heuristics14LocalBranchingE"></span><span id="_CPPv2N4idol10Heuristics14LocalBranchingE"></span><span id="idol::Heuristics::LocalBranching"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LocalBranching</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../universal-callbacks/CallbackFactory.html#_CPPv4N4idol15CallbackFactoryE" title="idol::CallbackFactory"><span class="n"><span class="pre">CallbackFactory</span></span></a><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranchingE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranching14LocalBranchingEv">
+<span id="_CPPv3N4idol10Heuristics14LocalBranching14LocalBranchingEv"></span><span id="_CPPv2N4idol10Heuristics14LocalBranching14LocalBranchingEv"></span><span id="idol::Heuristics::LocalBranching::LocalBranching"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1a399ac044d094ec9f55e8d651b167821a"></span><span class="sig-name descname"><span class="n"><span class="pre">LocalBranching</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranching14LocalBranchingEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranchingclEv">
+<span id="_CPPv3N4idol10Heuristics14LocalBranchingclEv"></span><span id="_CPPv2N4idol10Heuristics14LocalBranchingclEv"></span><span id="idol::Heuristics::LocalBranching::call-operator"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1a5c8ab2ccabc321a6f7f24263da7a1499"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../../universal-callbacks/Callback.html#_CPPv4N4idol8CallbackE" title="idol::Callback"><span class="n"><span class="pre">Callback</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranchingclEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol10Heuristics14LocalBranching5cloneEv">
+<span id="_CPPv3NK4idol10Heuristics14LocalBranching5cloneEv"></span><span id="_CPPv2NK4idol10Heuristics14LocalBranching5cloneEv"></span><span id="idol::Heuristics::LocalBranching::cloneC"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1a5b6275824b399c05d359090469a13b8d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../../universal-callbacks/CallbackFactory.html#_CPPv4N4idol15CallbackFactoryE" title="idol::CallbackFactory"><span class="n"><span class="pre">CallbackFactory</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK4idol10Heuristics14LocalBranching5cloneEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranching14with_optimizerERK16OptimizerFactory">
+<span id="_CPPv3N4idol10Heuristics14LocalBranching14with_optimizerERK16OptimizerFactory"></span><span id="_CPPv2N4idol10Heuristics14LocalBranching14with_optimizerERK16OptimizerFactory"></span><span id="idol::Heuristics::LocalBranching::with_optimizer__OptimizerFactoryCR"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1af568181bf9d977e34d90e62d7ad876e2"></span><a class="reference internal" href="#_CPPv4N4idol10Heuristics14LocalBranchingE" title="idol::Heuristics::LocalBranching"><span class="n"><span class="pre">LocalBranching</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">with_optimizer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_optimizer_factory</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranching14with_optimizerERK16OptimizerFactory" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranching8StrategyE">
+<span id="_CPPv3N4idol10Heuristics14LocalBranching8StrategyE"></span><span id="_CPPv2N4idol10Heuristics14LocalBranching8StrategyE"></span><span id="idol::Heuristics::LocalBranching::Strategy"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../universal-callbacks/Callback.html#_CPPv4N4idol8CallbackE" title="idol::Callback"><span class="n"><span class="pre">Callback</span></span></a><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranching8StrategyE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol10Heuristics14LocalBranching8Strategy8StrategyEjP16OptimizerFactory">
+<span id="_CPPv3N4idol10Heuristics14LocalBranching8Strategy8StrategyEjP16OptimizerFactory"></span><span id="_CPPv2N4idol10Heuristics14LocalBranching8Strategy8StrategyEjP16OptimizerFactory"></span><span id="idol::Heuristics::LocalBranching::Strategy::Strategy__unsigned-i.OptimizerFactoryP"></span><span class="target" id="classidol_1_1Heuristics_1_1LocalBranching_1_1Strategy_1a26bdebce21c6bd43cec343ce53621222"></span><span class="sig-name descname"><span class="n"><span class="pre">Strategy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_neighbourhood_size</span></span>, <span class="n"><span class="pre">OptimizerFactory</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">t_optimizer_factory</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol10Heuristics14LocalBranching8Strategy8StrategyEjP16OptimizerFactory" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Heuristics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RENS.html" class="btn btn-neutral float-right" title="Heuristics::RENS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
