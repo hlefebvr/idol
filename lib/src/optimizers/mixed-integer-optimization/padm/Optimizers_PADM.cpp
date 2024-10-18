@@ -22,19 +22,44 @@ idol::Optimizers::PADM::PADM(const Model& t_model,
 
 }
 
-double idol::Optimizers::PADM::get_var_primal(const idol::Var &t_var) const {
+
+double idol::Optimizers::PADM::get_var_result(const idol::Var &t_var,
+                                              const std::function<double(const Var &, unsigned int)> &t_function) const {
+
+
     const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
-    return m_last_solutions[sub_problem_id].get(t_var);
+
+    if (sub_problem_id == -1) {
+        const unsigned int n_sub_problems = m_formulation.n_sub_problems();
+        double max = std::numeric_limits<double>::lowest();
+        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+            max = std::max(max, t_function(t_var, i));
+        }
+        return max;
+    }
+
+    return t_function(t_var, sub_problem_id);
+}
+
+
+double idol::Optimizers::PADM::get_var_primal(const idol::Var &t_var) const {
+
+    return get_var_result(t_var, [this](const Var &t_var, unsigned int t_sub_problem_id) {
+        return m_last_solutions[t_sub_problem_id].get(t_var);
+    });
+
 }
 
 double idol::Optimizers::PADM::get_var_reduced_cost(const idol::Var &t_var) const {
-    const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
-    return m_formulation.sub_problem(sub_problem_id).get_var_reduced_cost(t_var);
+    return get_var_result(t_var, [this](const Var &t_var, unsigned int t_sub_problem_id) {
+        return m_formulation.sub_problem(t_sub_problem_id).get_var_reduced_cost(t_var);
+    });
 }
 
 double idol::Optimizers::PADM::get_var_ray(const idol::Var &t_var) const {
-    const unsigned int sub_problem_id = m_formulation.sub_problem_id(t_var);
-    return m_formulation.sub_problem(sub_problem_id).get_var_ray(t_var);
+    return get_var_result(t_var, [this](const Var &t_var, unsigned int t_sub_problem_id) {
+        return m_formulation.sub_problem(t_sub_problem_id).get_var_ray(t_var);
+    });
 }
 
 double idol::Optimizers::PADM::get_ctr_dual(const idol::Ctr &t_ctr) const {
@@ -174,14 +199,17 @@ void idol::Optimizers::PADM::hook_before_optimize() {
     m_n_restart = 0;
     m_last_iteration_with_no_feasibility_change.reset();
     m_last_objective_value_when_rescaled.reset();
-    m_last_solutions = std::vector<Solution::Primal>(n_sub_problems);
     m_current_initial_penalty_parameter = m_initial_penalty_parameter;
+    m_last_solutions = std::vector<Solution::Primal>(n_sub_problems);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+
         auto& model = m_formulation.sub_problem(i);
         if (!model.has_optimizer()) {
             model.use(m_sub_problem_specs[i].optimizer_factory());
         }
+
+        m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
     }
 }
 
@@ -420,7 +448,7 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         std::cout << std::setw(12) << m_last_solutions[i].status() << '\t';
-        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << infeasibility_l1(i, m_last_solutions[i]) << '\t';
+        std::cout << std::setw(12) << std::fixed << std::setprecision(8) << infeasibility_l1(i, m_last_solutions[i]) << '\t';
     }
 
     std::cout << std::endl;

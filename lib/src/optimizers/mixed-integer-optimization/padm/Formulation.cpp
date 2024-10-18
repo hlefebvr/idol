@@ -32,10 +32,23 @@ idol::ADM::Formulation::Formulation(const Model& t_src_model,
 }
 
 unsigned int idol::ADM::Formulation::compute_n_sub_problems(const idol::Model &t_src_model) const {
+
     unsigned int result = 0;
+
     for (const auto& var : t_src_model.vars()) {
+
+        const unsigned int sub_problem_id = var.get(m_decomposition);
+
+        if (sub_problem_id == (unsigned int) -1) {
+            continue;
+        }
+
         result = std::max(result, var.get(m_decomposition));
+
     }
+
+    std::cout << result + 1 << std::endl;
+
     return result + 1;
 }
 
@@ -66,12 +79,23 @@ void idol::ADM::Formulation::initialize_slacks(const idol::Model &t_src_model,
 
 void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
 
+    const unsigned int n_sub_problems = this->n_sub_problems();
+
     for (const auto& var : t_src_model.vars()) {
 
         const unsigned int sub_problem_id = var.get(m_decomposition);
         const auto lb = t_src_model.get_var_lb(var);
         const auto ub = t_src_model.get_var_ub(var);
         const auto type = t_src_model.get_var_type(var);
+
+        if (sub_problem_id == -1) {
+
+            for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+                m_sub_problems[i].add(var, TempVar(lb, ub, type, Column()));
+            }
+
+            continue;
+        }
 
         m_sub_problems[sub_problem_id].add(var, TempVar(lb, ub, type, Column()));
 
@@ -121,11 +145,6 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
                 auto var_plus = model.add_var(0, Inf, Continuous, var.name() + "_plus");
                 model.add_ctr(var == var_plus + var_minus);
                 pattern.linear() += var_plus - var_minus;
-                /* auto var = add_l1_var(0);
-                auto var_free = model.add_var(-Inf, Inf, Continuous, var.name() + "_free");
-                pattern.linear() += 1 * var_free;
-                model.add_ctr(var >= var_free);
-                model.add_ctr(var >= -var_free); */
                 break;
             }
             case LessOrEqual:
@@ -164,13 +183,16 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
 
     bool is_pure = true; // true if the row only has variables from the same sub-problem
 
+    const auto belongs_to_sub_problem = [&](const Var& t_var) {
+        const unsigned int sub_problem_id = t_var.get(m_decomposition);
+        return sub_problem_id == t_sub_problem_id || sub_problem_id == -1;
+    };
+
     Expr pattern;
 
     for (const auto& [var, coefficient] : t_lin_expr) {
 
-        const unsigned int var_sub_problem_id = var.get(m_decomposition);
-
-        if (var_sub_problem_id != t_sub_problem_id) {
+        if (!belongs_to_sub_problem(var)) {
             is_pure = false;
             pattern.constant() += coefficient.as_numerical() * !var;
             continue;
@@ -184,19 +206,19 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
         const unsigned int var1_sub_problem_id = var1.get(m_decomposition);
         const unsigned int var2_sub_problem_id = var2.get(m_decomposition);
 
-        if (var1_sub_problem_id != t_sub_problem_id && var2_sub_problem_id != t_sub_problem_id) {
+        if (!belongs_to_sub_problem(var1) && !belongs_to_sub_problem(var2)) {
             is_pure = false;
             pattern.constant() += constant.as_numerical() * (!var1 * !var2);
             continue;
         }
 
-        if (var1_sub_problem_id != t_sub_problem_id) {
+        if (!belongs_to_sub_problem(var1)) {
             is_pure = false;
             pattern.linear() += constant.as_numerical() * !var1 * var2;
             continue;
         }
 
-        if (var2_sub_problem_id != t_sub_problem_id) {
+        if (!belongs_to_sub_problem(var2)) {
             is_pure = false;
             pattern.linear() += constant.as_numerical() * !var2 * var1;
             continue;

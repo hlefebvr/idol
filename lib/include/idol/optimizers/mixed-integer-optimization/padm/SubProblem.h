@@ -6,6 +6,7 @@
 #define IDOL_ADM_SUBPROBLEM_H
 
 #include "idol/optimizers/OptimizerFactory.h"
+#include "idol/modeling/solutions/Solution.h"
 #include <memory>
 
 namespace idol::ADM {
@@ -14,6 +15,7 @@ namespace idol::ADM {
 
 class idol::ADM::SubProblem {
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
+    std::optional<Solution::Primal> m_initial_point;
 public:
     SubProblem() = default;
 
@@ -25,7 +27,11 @@ public:
 
     SubProblem& with_optimizer(const OptimizerFactory& t_optimizer_factory);
 
+    SubProblem& with_initial_point(const Solution::Primal& t_initial_point);
+
     const OptimizerFactory& optimizer_factory() const;
+
+    Solution::Primal initial_point() const;
 };
 
 

@@ -105,6 +105,8 @@ protected:
 
     void write_solution(const std::string& t_name);
     void write_iteration_history(const std::string& t_name);
+
+    double get_var_result(const Var &t_var, const std::function<double(const Var&, unsigned int)>& t_function) const;
 private:
     ADM::Formulation m_formulation;
     const std::vector<idol::ADM::SubProblem> m_sub_problem_specs;

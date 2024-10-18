@@ -16,7 +16,8 @@ idol::ADM::SubProblem &idol::ADM::SubProblem::with_optimizer(const idol::Optimiz
 }
 
 idol::ADM::SubProblem::SubProblem(const idol::ADM::SubProblem & t_src)
-        : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {
+        : m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr),
+          m_initial_point(t_src.m_initial_point) {
 
 }
 
@@ -26,4 +27,19 @@ const idol::OptimizerFactory &idol::ADM::SubProblem::optimizer_factory() const {
     }
 
     return *m_optimizer_factory;
+}
+
+idol::ADM::SubProblem &idol::ADM::SubProblem::with_initial_point(const Solution::Primal &t_initial_point) {
+
+    if (m_initial_point) {
+        throw Exception("The initial point has already been set.");
+    }
+
+    m_initial_point = t_initial_point;
+
+    return *this;
+}
+
+idol::Solution::Primal idol::ADM::SubProblem::initial_point() const {
+    return m_initial_point.has_value() ? *m_initial_point : Solution::Primal();
 }
