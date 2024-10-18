@@ -88,13 +88,14 @@ protected:
     void run_inner_loop();
     bool is_feasible() const;
     bool is_feasible(unsigned int t_sub_problem_id) const;
-    bool solve_sub_problem(unsigned int t_sub_problem_id);
+    std::pair<bool, bool> solve_sub_problem(unsigned int t_sub_problem_id); // returns a pair of bools: first is true if the sub-problem has changed its objective value, second is true if the sub-problem has changed its feasibility measure
     void compute_objective_value();
     void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
-    double max_infeasibility(unsigned int t_sub_problem_id) const;
-    double total_infeasibility(unsigned int t_sub_problem_id) const;
+    double infeasibility_linf(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
+    double infeasibility_l1(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
+    void detect_stagnation(bool t_feasibility_has_changed);
 
     void check_feasibility();
     void check_time_limit();
@@ -104,11 +105,14 @@ protected:
     void write_iteration_history(const std::string& t_name);
 private:
     ADM::Formulation m_formulation;
-    std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
-    std::unique_ptr<PenaltyUpdate> m_penalty_update;
-    double m_initial_penalty_parameter;
-    unsigned int m_max_inner_loop_iterations = 1000;
-    SolutionStatus m_feasible_solution_status;
+    const std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
+    const std::unique_ptr<PenaltyUpdate> m_penalty_update;
+    const double m_initial_penalty_parameter;
+    const unsigned int m_max_inner_loop_iterations = 1000;
+    const SolutionStatus m_feasible_solution_status;
+    const unsigned int m_max_iterations_without_feasibility_change = 500;
+
+    std::optional<unsigned int> m_last_iteration_with_no_feasibility_change;
 
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;

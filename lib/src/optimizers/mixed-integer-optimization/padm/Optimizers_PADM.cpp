@@ -171,6 +171,7 @@ void idol::Optimizers::PADM::hook_before_optimize() {
 
     m_outer_loop_iteration = 0;
     m_inner_loop_iterations = 0;
+    m_last_iteration_with_no_feasibility_change.reset();
     m_last_solutions = std::vector<Solution::Primal>(n_sub_problems);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
@@ -295,10 +296,13 @@ void idol::Optimizers::PADM::run_inner_loop() {
 
     for (unsigned int inner_loop_iteration = 0 ; inner_loop_iteration < m_max_inner_loop_iterations ; ++inner_loop_iteration) {
 
-        bool has_changed = false;
+        bool objective_value_has_changed = false;
+        bool feasibility_has_changed = false;
 
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            has_changed |= solve_sub_problem(i);
+            const auto [obj, feas] = solve_sub_problem(i);
+            objective_value_has_changed |= obj;
+            feasibility_has_changed |= feas;
         }
 
         ++m_inner_loop_iterations;
@@ -312,7 +316,9 @@ void idol::Optimizers::PADM::run_inner_loop() {
             break;
         }
 
-        if (!has_changed) {
+        detect_stagnation(feasibility_has_changed);
+
+        if (!objective_value_has_changed) {
             break;
         }
 
@@ -335,7 +341,8 @@ void idol::Optimizers::PADM::update_penalty_parameters() {
 
 }
 
-bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
+std::pair<bool, bool>
+idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     m_formulation.fix_sub_problem(t_sub_problem_id, m_last_solutions);
 
@@ -360,15 +367,16 @@ bool idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
         terminate();
 
-        return true;
+        return { true, false };
     }
 
     auto current_solution = save_primal(model);
-    // bool has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
-    const bool has_changed = m_inner_loop_iterations == 0 || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
+    // bool obj_has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
+    const bool obj_has_changed = m_inner_loop_iterations == 0 || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
+    const bool feas_has_changed = m_inner_loop_iterations == 0 || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
     m_last_solutions[t_sub_problem_id] = std::move(current_solution);
 
-    return has_changed;
+    return { obj_has_changed, feas_has_changed };
 }
 
 void idol::Optimizers::PADM::compute_objective_value() {
@@ -404,30 +412,30 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         std::cout << std::setw(12) << m_last_solutions[i].status() << '\t';
-        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << max_infeasibility(i) << '\t';
+        std::cout << std::setw(12) << std::fixed << std::setprecision(3) << infeasibility_linf(i, m_last_solutions[i]) << '\t';
     }
 
     std::cout << std::endl;
 }
 
-double idol::Optimizers::PADM::max_infeasibility(unsigned int t_sub_problem_id) const {
+double idol::Optimizers::PADM::infeasibility_linf(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const {
 
     double result = 0;
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        const double val = m_last_solutions[t_sub_problem_id].get(var);
+        const double val = t_solution.get(var);
         result = std::max(result, val);
     }
 
     return result;
 }
 
-double idol::Optimizers::PADM::total_infeasibility(unsigned int t_sub_problem_id) const {
+double idol::Optimizers::PADM::infeasibility_l1(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const {
 
     double result = 0;
 
     for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        result += m_last_solutions[t_sub_problem_id].get(var);
+        result += t_solution.get(var);
     }
 
     return result;
@@ -503,7 +511,7 @@ void idol::Optimizers::PADM::make_history() {
         std::vector<double> infeasibility_values;
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
             objective_values.emplace_back(m_formulation.sub_problem(i).get_best_obj());
-            infeasibility_values.emplace_back(total_infeasibility(i));
+            infeasibility_values.emplace_back(infeasibility_l1(i, m_last_solutions[i]));
         }
         m_history.emplace_back(m_outer_loop_iteration,
                                m_inner_loop_iterations,
@@ -512,5 +520,25 @@ void idol::Optimizers::PADM::make_history() {
                                );
 
     }
+
+}
+
+void idol::Optimizers::PADM::detect_stagnation(bool t_feasibility_has_changed) {
+
+    if (t_feasibility_has_changed) {
+        m_last_iteration_with_no_feasibility_change.reset();
+        return;
+    }
+
+    if (!m_last_iteration_with_no_feasibility_change.has_value()) {
+        m_last_iteration_with_no_feasibility_change = m_inner_loop_iterations;
+        return;
+    }
+
+    if (m_inner_loop_iterations - m_last_iteration_with_no_feasibility_change.value() <= m_max_iterations_without_feasibility_change) {
+        return;
+    }
+
+    std::cout << "Stagnation detected." << std::endl;
 
 }
