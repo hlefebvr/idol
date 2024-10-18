@@ -607,7 +607,7 @@ void idol::Optimizers::PADM::restart() {
 
     if (m_n_restart >= 1) {
         set_status(Fail);
-        set_reason(IterLimit);
+        set_reason(Cycling);
         terminate();
         return;
     }

@@ -31,7 +31,8 @@ namespace idol {
         IterLimit,
         ObjLimit,
         Numerical,
-        MemoryLimit
+        MemoryLimit,
+        Cycling
     };
 
     template<class T>
@@ -121,6 +122,8 @@ namespace idol {
                 return t_os << "Numerical";
             case MemoryLimit:
                 return t_os << "MemoryLimit";
+            case Cycling:
+                return t_os << "Cycling";
             default:;
         }
 
