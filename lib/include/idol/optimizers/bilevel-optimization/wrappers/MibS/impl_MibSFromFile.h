@@ -11,12 +11,13 @@
 
 #include "MibSModel.hpp"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
+#include "impl_MibS.h"
 
 namespace idol::impl {
     class MibSFromFile;
 }
 
-class idol::impl::MibSFromFile {
+class idol::impl::MibSFromFile : public idol::impl::MibS {
     const idol::Model& m_model;
     const idol::Bilevel::LowerLevelDescription& m_description;
     const bool m_logs;
@@ -30,19 +31,20 @@ class idol::impl::MibSFromFile {
 public:
     MibSFromFile(const idol::Model& t_model,
          const idol::Bilevel::LowerLevelDescription& t_description,
+         OsiSolverInterface* t_osi_solver,
          bool t_logs);
 
-    void solve();
+    void solve() override;
 
-    [[nodiscard]] double get_best_obj() const;
+    [[nodiscard]] double get_best_obj() const override;
 
-    [[nodiscard]] double get_best_bound() const;
+    [[nodiscard]] double get_best_bound() const override;
 
-    [[nodiscard]] double get_var_primal(const Var& t_var) const;
+    [[nodiscard]] double get_var_primal(const Var& t_var) const override;
 
-    [[nodiscard]] idol::SolutionStatus get_status() const;
+    [[nodiscard]] idol::SolutionStatus get_status() const override;
 
-    [[nodiscard]] idol::SolutionReason get_reason() const;
+    [[nodiscard]] idol::SolutionReason get_reason() const override;
 
 };
 

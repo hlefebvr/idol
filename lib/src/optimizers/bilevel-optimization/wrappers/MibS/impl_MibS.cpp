@@ -4,7 +4,7 @@
 
 #ifdef IDOL_USE_MIBS
 
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/containers/SilentMode.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h"
@@ -26,10 +26,10 @@ namespace idol {
     }
 }
 
-idol::impl::MibS::MibS(const idol::Model &t_model,
-                       const idol::Bilevel::LowerLevelDescription &t_description,
-                       OsiSolverInterface* t_osi_solver,
-                       bool t_logs)
+idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
+                                     const idol::Bilevel::LowerLevelDescription &t_description,
+                                     OsiSolverInterface* t_osi_solver,
+                                     bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),
                          m_osi_solver(t_osi_solver),
@@ -40,7 +40,7 @@ idol::impl::MibS::MibS(const idol::Model &t_model,
 
 }
 
-void idol::impl::MibS::load_auxiliary_data() {
+void idol::impl::MibSFromAPI::load_auxiliary_data() {
 
     auto [upper_level_variables_indices, lower_level_variables_indices] = dispatch_variable_indices();
     auto [upper_level_constraints_indices, lower_level_constraints_indices] = dispatch_constraint_indices();
@@ -68,7 +68,7 @@ void idol::impl::MibS::load_auxiliary_data() {
 
 }
 
-void idol::impl::MibS::load_problem_data() {
+void idol::impl::MibSFromAPI::load_problem_data() {
 
     auto [variable_lower_bounds, variable_upper_bounds, variable_types] = parse_variables();
     auto [constraint_lower_bounds, constraint_upper_bounds, constraint_types] = parse_constraints();
@@ -90,7 +90,7 @@ void idol::impl::MibS::load_problem_data() {
 
 }
 
-void idol::impl::MibS::solve() {
+void idol::impl::MibSFromAPI::solve() {
 
     m_mibs.setSolver(m_osi_solver.get());
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
@@ -105,7 +105,9 @@ void idol::impl::MibS::solve() {
 
     try {
         m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, true);
-        m_broker->search(&m_mibs);
+        if (m_mibs.shouldInvokeSolver()) {
+            m_broker->search(&m_mibs);
+        }
     } catch (const CoinError& t_error) {
         std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
         throw Exception("MibS thrown an exception: " + t_error.message() + ".");
@@ -113,7 +115,7 @@ void idol::impl::MibS::solve() {
 
 }
 
-std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_variable_indices() {
+std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_variable_indices() {
 
     std::vector<int> upper_level;
     std::vector<int> lower_level;
@@ -153,7 +155,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_variabl
     };
 }
 
-std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constraint_indices() {
+std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_constraint_indices() {
 
     std::vector<int> upper_level;
     std::vector<int> lower_level;
@@ -176,7 +178,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibS::dispatch_constra
 }
 
 std::vector<double>
-idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int> &t_lower_level_variables_indices) {
+idol::impl::MibSFromAPI::find_lower_level_objective_coefficients(const std::vector<int> &t_lower_level_variables_indices) {
 
     std::vector<double> result;
     result.reserve(t_lower_level_variables_indices.size());
@@ -197,7 +199,7 @@ idol::impl::MibS::find_lower_level_objective_coefficients(const std::vector<int>
 }
 
 std::pair<std::vector<double>, std::vector<double>>
-idol::impl::MibS::find_lower_level_bounds(const std::vector<int> &t_lower_level_variables_indices) {
+idol::impl::MibSFromAPI::find_lower_level_bounds(const std::vector<int> &t_lower_level_variables_indices) {
 
     std::vector<double> lb, ub;
     lb.reserve(t_lower_level_variables_indices.size());
@@ -223,7 +225,7 @@ idol::impl::MibS::find_lower_level_bounds(const std::vector<int> &t_lower_level_
 
 }
 
-std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::impl::MibS::parse_variables() {
+std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::impl::MibSFromAPI::parse_variables() {
 
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
@@ -256,7 +258,7 @@ std::tuple<std::vector<double>, std::vector<double>, std::vector<char>> idol::im
 }
 
 std::tuple<std::vector<double>, std::vector<double>, std::vector<char>>
-idol::impl::MibS::parse_constraints() {
+idol::impl::MibSFromAPI::parse_constraints() {
 
     const auto n_constraints = m_model.ctrs().size();
 
@@ -308,7 +310,7 @@ idol::impl::MibS::parse_constraints() {
 
 }
 
-CoinPackedMatrix idol::impl::MibS::parse_matrix() {
+CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
 
     const unsigned int n_variables = m_model.vars().size();
 
@@ -342,7 +344,7 @@ CoinPackedMatrix idol::impl::MibS::parse_matrix() {
 }
 
 
-std::vector<double> idol::impl::MibS::parse_objective() {
+std::vector<double> idol::impl::MibSFromAPI::parse_objective() {
 
     const auto n_variables = m_model.vars().size();
 
@@ -359,7 +361,7 @@ std::vector<double> idol::impl::MibS::parse_objective() {
     return result;
 }
 
-char idol::impl::MibS::to_mibs_type(idol::VarType t_type) {
+char idol::impl::MibSFromAPI::to_mibs_type(idol::VarType t_type) {
     switch (t_type) {
         case Continuous: return 'C';
         case Integer: return 'I';
@@ -369,17 +371,17 @@ char idol::impl::MibS::to_mibs_type(idol::VarType t_type) {
     throw Exception("Enum out of bounds.");
 }
 
-double idol::impl::MibS::get_var_primal(const idol::Var &t_var) const {
+double idol::impl::MibSFromAPI::get_var_primal(const idol::Var &t_var) const {
     const unsigned int index = m_model.get_var_index(t_var);
     const auto& solution = dynamic_cast<MibSSolution&>(*m_broker->getBestKnowledge(AlpsKnowledgeTypeSolution).first);
     return solution.getValues()[index];
 }
 
-double idol::impl::MibS::get_best_obj() const {
+double idol::impl::MibSFromAPI::get_best_obj() const {
     return m_broker->getBestQuality();
 }
 
-idol::SolutionStatus idol::impl::MibS::get_status() const {
+idol::SolutionStatus idol::impl::MibSFromAPI::get_status() const {
 
     switch (m_broker->getSolStatus()) {
         case AlpsExitStatusUnknown: return Fail;
@@ -398,7 +400,7 @@ idol::SolutionStatus idol::impl::MibS::get_status() const {
 
 }
 
-idol::SolutionReason idol::impl::MibS::get_reason() const {
+idol::SolutionReason idol::impl::MibSFromAPI::get_reason() const {
 
     switch (m_broker->getSolStatus()) {
         case AlpsExitStatusOptimal:  [[fallthrough]];
@@ -416,7 +418,7 @@ idol::SolutionReason idol::impl::MibS::get_reason() const {
     throw Exception("enum out of bounds.");
 }
 
-double idol::impl::MibS::get_best_bound() const {
+double idol::impl::MibSFromAPI::get_best_bound() const {
     return m_broker->getBestEstimateQuality();
 }
 

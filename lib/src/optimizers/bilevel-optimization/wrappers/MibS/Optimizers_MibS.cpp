@@ -4,16 +4,19 @@
 #ifdef IDOL_USE_MIBS
 
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
 
 #include <utility>
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
                                       idol::Bilevel::LowerLevelDescription t_description,
-                                      OsiSolverInterface* t_osi_solver)
+                                      OsiSolverInterface* t_osi_solver,
+                                      bool t_use_file)
                                       : Optimizer(t_parent),
                                         m_description(std::move(t_description)),
-                                        m_osi_solver(t_osi_solver) {
+                                        m_osi_solver(t_osi_solver),
+                                        m_use_file(t_use_file) {
 
 }
 
@@ -105,10 +108,17 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
         return;
     }
 
-    m_mibs = std::make_unique<impl::MibS>(parent(),
-                                          m_description,
-                                          m_osi_solver->clone(),
-                                          get_param_logs());
+    if (m_use_file) {
+        m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
+                                                     m_description,
+                                                     m_osi_solver->clone(),
+                                                     get_param_logs());
+    } else {
+        m_mibs = std::make_unique<impl::MibSFromAPI>(parent(),
+                                                     m_description,
+                                                     m_osi_solver->clone(),
+                                                     get_param_logs());
+    }
 
     m_mibs->solve();
 }

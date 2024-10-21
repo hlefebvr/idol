@@ -200,7 +200,7 @@ add_library(idol STATIC
         src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.cpp
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.cpp
         include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.cpp
@@ -258,6 +258,9 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h
         src/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
+        include/idol/containers/uuid.h
+        src/containers/uuid.cpp
 )
 
 find_package(OpenMP REQUIRED)

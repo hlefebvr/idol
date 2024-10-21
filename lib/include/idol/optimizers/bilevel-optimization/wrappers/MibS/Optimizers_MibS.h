@@ -7,10 +7,10 @@
 
 #ifdef IDOL_USE_MIBS
 
+#include <OsiSolverInterface.hpp>
 #include "idol/optimizers/Optimizer.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/modeling/constraints/Ctr.h"
-#include "impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "impl_MibS.h"
 
@@ -23,10 +23,12 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
+    const bool m_use_file;
 public:
     MibS(const idol::Model& t_parent,
          idol::Bilevel::LowerLevelDescription  t_description,
-         OsiSolverInterface* t_osi_solver);
+         OsiSolverInterface* t_osi_solver,
+         bool t_use_file);
 
     std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;

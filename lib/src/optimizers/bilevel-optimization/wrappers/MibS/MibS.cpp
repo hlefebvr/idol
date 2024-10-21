@@ -11,6 +11,10 @@
 #include <OsiCpxSolverInterface.hpp>
 #endif
 
+#ifdef IDOL_USE_CLP
+#include <OsiClpSolverInterface.hpp>
+#endif
+
 idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
         : m_description(std::move(t_description)) {
 
@@ -23,17 +27,18 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
     if (m_osi_interface) {
         osi_interface = m_osi_interface->clone();
     } else {
-        if constexpr (IDOL_USE_CPLEX) {
+#ifdef IDOL_USE_CPLEX
             osi_interface = new OsiCpxSolverInterface();
-        } else {
+#else
             osi_interface = new OsiClpSolverInterface();
-        }
+#endif
     }
 
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
                 m_description,
-                osi_interface
+                osi_interface,
+                m_use_file_interface.value_or(false)
             );
 
     this->handle_default_parameters(result);
@@ -70,4 +75,15 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInte
 #else
     throw Exception("idol was not linked with Osi.");
 #endif
+}
+
+idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
+
+    if (m_use_file_interface) {
+        throw Exception("The file interface has already been set.");
+    }
+
+    m_use_file_interface = t_value;
+
+    return *this;
 }

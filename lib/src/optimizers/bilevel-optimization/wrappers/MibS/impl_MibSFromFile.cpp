@@ -9,10 +9,12 @@
 #include <MibSSolution.hpp>
 #include <OsiCpxSolverInterface.hpp>
 #include <fcntl.h>
+#include <filesystem>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/write_to_file.h"
 #include "idol/containers/Finally.h"
 #include "idol/containers/SilentMode.h"
+#include "idol/containers/uuid.h"
 
 #ifdef _WIN32
 #define DEV_NULL "NUL"
@@ -22,26 +24,27 @@
 
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
                                        const idol::Bilevel::LowerLevelDescription &t_description,
+                                       OsiSolverInterface* t_osi_solver,
                                        bool t_logs)
                                        : m_model(t_model),
                                          m_description(t_description),
+                                         m_osi_solver(t_osi_solver),
                                          m_logs(t_logs) {
 
 }
 
 void idol::impl::MibSFromFile::solve() {
 
-    Bilevel::write_to_file(m_model, m_description, "bilevel");
+    const std::string filename = idol::generate_uuid_v4() + "-bilevel";
+    const std::string mps_filename = filename + ".mps";
+    const std::string aux_filename = filename + ".aux";
 
-    // WARNING: This is needed because the order of variables is changed when writing to MPS file.
-    // Indeed, continuous variables are written first, then integer variables.
-    make_variable_index_in_mps();
+    idol::Finally finally([&mps_filename, &aux_filename] {
+        std::filesystem::remove(mps_filename.c_str());
+        std::filesystem::remove(aux_filename.c_str());
+    });
 
-    if (m_osi_solver) {
-        throw Exception("Internal error: MibS::solve was called twice.");
-    }
-
-    m_osi_solver = std::make_unique<OsiClpSolverInterface>();
+    Bilevel::write_to_file(m_model, m_description, filename);
 
     m_mibs.setSolver(m_osi_solver.get());
 
@@ -49,9 +52,9 @@ void idol::impl::MibSFromFile::solve() {
 
     const char* argv[] = {"./mibs",
                      "-Alps_instance",
-                     "bilevel.mps",
+                     mps_filename.c_str(),
                      "-MibS_auxiliaryInfoFile",
-                     "bilevel.aux",
+                     aux_filename.c_str(),
                      "-Alps_timeLimit",
                      time_limit.data()
     };
@@ -62,19 +65,13 @@ void idol::impl::MibSFromFile::solve() {
     try {
         m_broker = std::make_unique<AlpsKnowledgeBrokerSerial>(argc, (char**) argv, m_mibs, false);
 
-        if (!m_logs) {
-            m_osi_solver->messageHandler()->setLogLevel(0);
-            m_mibs.blisMessageHandler()->setLogLevel(0);
-            m_mibs.bcpsMessageHandler()->setLogLevel(0);
-            m_broker->messageHandler()->setLogLevel(0);
-        }
-
         if (m_mibs.shouldInvokeSolver()) {
             m_broker->search(&m_mibs);
         }
 
     } catch (const CoinError& t_error) {
-        throw Exception("MibS: " + t_error.message() + ".");
+        std::cerr << t_error.fileName() << ":" << t_error.lineNumber() << " " << t_error.className() << "::" << t_error.methodName() << " " << t_error.message() << std::endl;
+        throw Exception("MibS thrown an exception: " + t_error.message() + ".");
     }
 
 }
