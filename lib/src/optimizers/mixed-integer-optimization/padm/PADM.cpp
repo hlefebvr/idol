@@ -79,7 +79,15 @@ idol::PADM::create_sub_problem_specs(const idol::Model &t_model,
 
     const unsigned int n_sub_problem = t_formulation.n_sub_problems();
 
-    auto result = std::vector<ADM::SubProblem>(n_sub_problem, *m_default_sub_problem_spec);
+    std::vector<ADM::SubProblem> result;
+    if (m_default_sub_problem_spec.has_value()) {
+        result = std::vector<ADM::SubProblem>(n_sub_problem, *m_default_sub_problem_spec);
+    } else {
+        if (m_sub_problem_specs.size() != n_sub_problem) {
+            throw Exception("Not all sub-problems have been specified and no default sub-problem has been given.");
+        }
+        result = std::vector<ADM::SubProblem>(n_sub_problem, ADM::SubProblem());
+    }
 
     for (const auto& [sub_problem_id, sub_problem_spec] : m_sub_problem_specs) {
         result[sub_problem_id] = ADM::SubProblem(sub_problem_spec);
