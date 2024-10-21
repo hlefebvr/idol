@@ -123,7 +123,7 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
                                                      m_use_cplex_for_feasibility,
                                                      get_param_logs());
     }
-
+    
     m_mibs->solve();
 }
 

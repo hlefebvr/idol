@@ -135,7 +135,7 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
 }
 
 double idol::impl::MibSFromFile::get_best_bound() const {
-    return m_broker->getBestEstimateQuality();
+    return m_broker->getBestNode()->getQuality();
 }
 
 void idol::impl::MibSFromFile::make_variable_index_in_mps() {
