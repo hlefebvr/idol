@@ -54,6 +54,8 @@ void idol::impl::MibSFromFile::solve() {
 
     Bilevel::write_to_file(m_model, m_description, filename);
 
+    m_osi_solver->messageHandler()->setLogLevel(0);
+
     m_mibs.setSolver(m_osi_solver.get());
 
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
