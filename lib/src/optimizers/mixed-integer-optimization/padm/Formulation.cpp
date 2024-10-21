@@ -47,8 +47,6 @@ unsigned int idol::ADM::Formulation::compute_n_sub_problems(const idol::Model &t
 
     }
 
-    std::cout << result + 1 << std::endl;
-
     return result + 1;
 }
 
