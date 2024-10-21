@@ -29,10 +29,12 @@ namespace idol {
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                                      const idol::Bilevel::LowerLevelDescription &t_description,
                                      OsiSolverInterface* t_osi_solver,
+                                     bool t_use_cplex_for_feasibility,
                                      bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),
                          m_osi_solver(t_osi_solver),
+                         m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
                          m_logs(t_logs) {
 
     load_auxiliary_data();
@@ -95,10 +97,12 @@ void idol::impl::MibSFromAPI::solve() {
     m_mibs.setSolver(m_osi_solver.get());
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
 
-    int argc = 3;
+    int argc = 5;
     const char* argv[] = {"./mibs",
                      "-Alps_timeLimit",
-                     time_limit.data()
+                     time_limit.data(),
+                     "-feasCheckSolver",
+                     m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
     };
 
     idol::SilentMode silent_mode(!m_logs);

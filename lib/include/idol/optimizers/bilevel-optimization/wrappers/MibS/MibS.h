@@ -24,6 +24,7 @@ class OsiSolverInterface;
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     Bilevel::LowerLevelDescription m_description;
     std::optional<bool> m_use_file_interface;
+    std::optional<bool> m_use_cplex_for_feasibility;
 #ifdef IDOL_USE_OSI
     std::unique_ptr<OsiSolverInterface> m_osi_interface;
 #endif
@@ -38,7 +39,9 @@ public:
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
+    //MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
+
+    MibS& with_cplex_for_feasibility(bool t_value);
 
     MibS& with_file_interface(bool t_value);
 

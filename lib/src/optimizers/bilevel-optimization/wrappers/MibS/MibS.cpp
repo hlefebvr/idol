@@ -23,7 +23,9 @@ idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
 
-    OsiSolverInterface* osi_interface;
+    OsiSolverInterface* osi_interface = new OsiClpSolverInterface();
+
+    /*
     if (m_osi_interface) {
         osi_interface = m_osi_interface->clone();
     } else {
@@ -33,12 +35,14 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
             osi_interface = new OsiClpSolverInterface();
 #endif
     }
+     */
 
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
                 m_description,
                 osi_interface,
-                m_use_file_interface.value_or(false)
+                m_use_file_interface.value_or(false),
+                m_use_cplex_for_feasibility.value_or(false)
             );
 
     this->handle_default_parameters(result);
@@ -63,6 +67,7 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
 
 }
 
+/*
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInterface &t_osi_optimizer) {
 #ifdef IDOL_USE_OSI
     if (m_osi_interface) {
@@ -76,6 +81,7 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInte
     throw Exception("idol was not linked with Osi.");
 #endif
 }
+ */
 
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
 
@@ -84,6 +90,17 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
     }
 
     m_use_file_interface = t_value;
+
+    return *this;
+}
+
+idol::Bilevel::MibS &idol::Bilevel::MibS::with_cplex_for_feasibility(bool t_value) {
+
+    if (m_use_cplex_for_feasibility) {
+        throw Exception("The use of CPLEX for feasibility has already been set.");
+    }
+
+    m_use_cplex_for_feasibility = t_value;
 
     return *this;
 }

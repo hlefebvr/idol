@@ -25,10 +25,12 @@
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
                                        const idol::Bilevel::LowerLevelDescription &t_description,
                                        OsiSolverInterface* t_osi_solver,
+                                       bool t_use_cplex_for_feasibility,
                                        bool t_logs)
                                        : m_model(t_model),
                                          m_description(t_description),
                                          m_osi_solver(t_osi_solver),
+                                         m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
                                          m_logs(t_logs) {
 
 }
@@ -56,15 +58,17 @@ void idol::impl::MibSFromFile::solve() {
 
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
 
+    const int argc = 9;
     const char* argv[] = {"./mibs",
                      "-Alps_instance",
                      mps_filename.c_str(),
                      "-MibS_auxiliaryInfoFile",
                      aux_filename.c_str(),
                      "-Alps_timeLimit",
-                     time_limit.data()
+                     time_limit.data(),
+                     "-feasCheckSolver",
+                     m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
     };
-    const int argc = 7;
 
     idol::SilentMode silent_mode(!m_logs);
 

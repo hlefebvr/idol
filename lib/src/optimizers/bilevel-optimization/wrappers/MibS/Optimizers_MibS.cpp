@@ -12,11 +12,13 @@
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
                                       idol::Bilevel::LowerLevelDescription t_description,
                                       OsiSolverInterface* t_osi_solver,
-                                      bool t_use_file)
+                                      bool t_use_file,
+                                      bool t_use_cplex_for_feasibility)
                                       : Optimizer(t_parent),
                                         m_description(std::move(t_description)),
                                         m_osi_solver(t_osi_solver),
-                                        m_use_file(t_use_file) {
+                                        m_use_file(t_use_file),
+                                        m_use_cplex_for_feasibility(t_use_cplex_for_feasibility) {
 
 }
 
@@ -112,11 +114,13 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
         m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
                                                      m_description,
                                                      m_osi_solver->clone(),
+                                                     m_use_cplex_for_feasibility,
                                                      get_param_logs());
     } else {
         m_mibs = std::make_unique<impl::MibSFromAPI>(parent(),
                                                      m_description,
                                                      m_osi_solver->clone(),
+                                                     m_use_cplex_for_feasibility,
                                                      get_param_logs());
     }
 

@@ -21,6 +21,7 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     const idol::Model& m_model;
     const idol::Bilevel::LowerLevelDescription& m_description;
     const bool m_logs;
+    const bool m_use_cplex_for_feasibility;
 
     MibSModel m_mibs;
     std::unique_ptr<AlpsKnowledgeBroker> m_broker;
@@ -43,6 +44,7 @@ public:
     MibSFromAPI(const idol::Model& t_model,
                 const idol::Bilevel::LowerLevelDescription& t_description,
                 OsiSolverInterface* t_osi_solver,
+                bool t_use_cplex_for_feasibility,
                 bool t_logs);
 
     void solve() override;

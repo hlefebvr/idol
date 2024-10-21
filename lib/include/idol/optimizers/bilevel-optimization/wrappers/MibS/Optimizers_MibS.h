@@ -24,11 +24,13 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     std::unique_ptr<idol::impl::MibS> m_mibs;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
     const bool m_use_file;
+    const bool m_use_cplex_for_feasibility;
 public:
     MibS(const idol::Model& t_parent,
          idol::Bilevel::LowerLevelDescription  t_description,
          OsiSolverInterface* t_osi_solver,
-         bool t_use_file);
+         bool t_use_file,
+         bool t_use_cplex_for_feasibility);
 
     std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;

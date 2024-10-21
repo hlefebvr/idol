@@ -57,8 +57,6 @@ int main(int t_argc, const char** t_argv) {
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(
                 Bilevel::MibS(description)
-                    .with_osi_interface(OsiClpSolverInterface())
-                    .with_file_interface(true)
                     .with_logs(true)
     );
 
