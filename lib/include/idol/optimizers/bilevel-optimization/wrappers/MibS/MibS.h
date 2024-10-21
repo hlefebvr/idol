@@ -23,9 +23,9 @@ class OsiSolverInterface;
 
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     Bilevel::LowerLevelDescription m_description;
+    std::optional<bool> m_use_file_interface;
 #ifdef IDOL_USE_OSI
     std::unique_ptr<OsiSolverInterface> m_osi_interface;
-    std::optional<bool> m_use_file_interface;
 #endif
 public:
     MibS(Bilevel::LowerLevelDescription t_description);
