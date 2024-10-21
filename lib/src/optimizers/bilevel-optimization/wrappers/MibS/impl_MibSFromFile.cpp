@@ -35,6 +35,12 @@ idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
 
 void idol::impl::MibSFromFile::solve() {
 
+    if (!m_variable_index_in_mps.empty()) {
+        throw Exception("solve() has already been called.");
+    }
+
+    make_variable_index_in_mps();
+
     const std::string filename = idol::generate_uuid_v4() + "-bilevel";
     const std::string mps_filename = filename + ".mps";
     const std::string aux_filename = filename + ".aux";

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
 #include <OsiClpSolverInterface.hpp>
+#include <OsiCpxSolverInterface.hpp>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
@@ -57,6 +58,7 @@ int main(int t_argc, const char** t_argv) {
     high_point_relaxation.use(
                 Bilevel::MibS(description)
                     .with_osi_interface(OsiClpSolverInterface())
+                    .with_file_interface(true)
                     .with_logs(true)
     );
 
