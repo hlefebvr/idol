@@ -620,6 +620,10 @@ void idol::Optimizers::PADM::restart() {
     m_current_initial_penalty_parameter = 1. / m_initial_penalty_parameter;
     m_first_run = true;
 
+    for (unsigned int i = 0 ; i < m_formulation.n_sub_problems() ; ++i) {
+        m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
+    }
+
     m_formulation.initialize_penalty_parameters(m_current_initial_penalty_parameter);
 
     ++m_n_restart;
