@@ -261,6 +261,7 @@ add_library(idol STATIC
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
         include/idol/containers/uuid.h
         src/containers/uuid.cpp
+        include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h
 )
 
 find_package(OpenMP REQUIRED)

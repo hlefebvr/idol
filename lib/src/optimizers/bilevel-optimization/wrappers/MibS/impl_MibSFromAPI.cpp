@@ -7,8 +7,8 @@
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/containers/SilentMode.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h"
 
 #include <utility>
 #include <OsiSymSolverInterface.hpp>
@@ -29,11 +29,13 @@ namespace idol {
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                                      const idol::Bilevel::LowerLevelDescription &t_description,
                                      OsiSolverInterface* t_osi_solver,
+                                     const std::list<std::unique_ptr<Callback>>& t_callbacks,
                                      bool t_use_cplex_for_feasibility,
                                      bool t_logs)
                        : m_model(t_model),
                          m_description(t_description),
                          m_osi_solver(t_osi_solver),
+                         m_callbacks(t_callbacks),
                          m_use_cplex_for_feasibility(t_use_cplex_for_feasibility),
                          m_logs(t_logs) {
 
@@ -94,6 +96,7 @@ void idol::impl::MibSFromAPI::load_problem_data() {
 
 void idol::impl::MibSFromAPI::solve() {
 
+    m_osi_solver->messageHandler()->setLogLevel(0);
     m_mibs.setSolver(m_osi_solver.get());
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
 
@@ -104,6 +107,13 @@ void idol::impl::MibSFromAPI::solve() {
                      "-feasCheckSolver",
                      m_use_cplex_for_feasibility ? "CPLEX" : "SYMPHONY"
     };
+
+    std::unique_ptr<MibSCallbackI> callback_manager;
+    if (!m_callbacks.empty()) {
+        callback_manager = std::make_unique<MibSCallbackI>(*this);
+        m_mibs.addHeuristic(&callback_manager->heuristic());
+        m_mibs.addCutGenerator(&callback_manager->cut_generator());
+    }
 
     idol::SilentMode silent_mode(!m_logs);
 

@@ -45,6 +45,10 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
                 m_use_cplex_for_feasibility.value_or(false)
             );
 
+    for (auto& cb : m_callbacks) {
+        result->add_callback(cb->operator()());
+    }
+
     this->handle_default_parameters(result);
 
     return result;
@@ -64,7 +68,9 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
 #endif
 {
-
+    for (const auto &cb : t_src.m_callbacks) {
+        m_callbacks.emplace_back(cb->clone());
+    }
 }
 
 /*
@@ -102,5 +108,10 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_cplex_for_feasibility(bool t_valu
 
     m_use_cplex_for_feasibility = t_value;
 
+    return *this;
+}
+
+idol::Bilevel::MibS &idol::Bilevel::MibS::add_callback(const idol::CallbackFactory &t_cb) {
+    m_callbacks.emplace_back(t_cb.clone());
     return *this;
 }

@@ -8,18 +8,22 @@
 #define IDOL_IMPL_MIBS_FROM_API_H
 
 #include "idol/modeling/models/Model.h"
-
 #include "MibSModel.hpp"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "impl_MibS.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/Callback.h"
 
-namespace idol::impl {
-    class MibSFromAPI;
+namespace idol {
+    class MibSCallbackI;
+    namespace impl {
+        class MibSFromAPI;
+    }
 }
 
 class idol::impl::MibSFromAPI : public idol::impl::MibS {
     const idol::Model& m_model;
     const idol::Bilevel::LowerLevelDescription& m_description;
+    const std::list<std::unique_ptr<Callback>>& m_callbacks;
     const bool m_logs;
     const bool m_use_cplex_for_feasibility;
 
@@ -44,6 +48,7 @@ public:
     MibSFromAPI(const idol::Model& t_model,
                 const idol::Bilevel::LowerLevelDescription& t_description,
                 OsiSolverInterface* t_osi_solver,
+                const std::list<std::unique_ptr<Callback>>& t_callbacks,
                 bool t_use_cplex_for_feasibility,
                 bool t_logs);
 
@@ -59,6 +64,7 @@ public:
 
     idol::SolutionReason get_reason() const override;
 
+    friend class ::idol::MibSCallbackI;
 };
 
 #endif

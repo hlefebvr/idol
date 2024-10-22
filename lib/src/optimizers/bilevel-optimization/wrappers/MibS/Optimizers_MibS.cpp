@@ -111,6 +111,9 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
     }
 
     if (m_use_file) {
+        if (!m_callbacks.empty()) {
+            throw Exception("Callbacks are not supported when using file interface.");
+        }
         m_mibs = std::make_unique<impl::MibSFromFile>(parent(),
                                                      m_description,
                                                      m_osi_solver->clone(),
@@ -120,6 +123,7 @@ void idol::Optimizers::Bilevel::MibS::hook_optimize() {
         m_mibs = std::make_unique<impl::MibSFromAPI>(parent(),
                                                      m_description,
                                                      m_osi_solver->clone(),
+                                                     m_callbacks,
                                                      m_use_cplex_for_feasibility,
                                                      get_param_logs());
     }
@@ -188,6 +192,10 @@ void idol::Optimizers::Bilevel::MibS::throw_if_no_mibs() const {
 
 double idol::Optimizers::Bilevel::MibS::get_var_reduced_cost(const idol::Var &t_var) const {
     throw Exception("Not implemented get_var_reduced_cost");
+}
+
+void idol::Optimizers::Bilevel::MibS::add_callback(idol::Callback *t_callback) {
+    m_callbacks.emplace_back(std::unique_ptr<Callback>(t_callback));
 }
 
 #endif

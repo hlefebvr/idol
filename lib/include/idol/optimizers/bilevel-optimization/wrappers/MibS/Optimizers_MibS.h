@@ -13,6 +13,7 @@
 #include "idol/modeling/constraints/Ctr.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "impl_MibS.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/Callback.h"
 
 namespace idol::Optimizers::Bilevel {
     class MibS;
@@ -25,6 +26,8 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
     const bool m_use_file;
     const bool m_use_cplex_for_feasibility;
+
+    std::list<std::unique_ptr<Callback>> m_callbacks;
 public:
     MibS(const idol::Model& t_parent,
          idol::Bilevel::LowerLevelDescription  t_description,
@@ -48,6 +51,7 @@ public:
     double get_absolute_gap() const override;
     unsigned int get_n_solutions() const override;
     unsigned int get_solution_index() const override;
+    void add_callback(Callback* t_callback);
 
 protected:
     void build() override;
