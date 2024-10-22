@@ -199,7 +199,7 @@ add_library(idol STATIC
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h
         src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h
-        src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.cpp
+        src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.cpp
         include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h
