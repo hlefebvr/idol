@@ -54,6 +54,8 @@ void idol::impl::MibSFromFile::solve() {
 
     Bilevel::write_to_file(m_model, m_description, filename);
 
+    m_osi_solver->messageHandler()->setLogLevel(0);
+
     m_mibs.setSolver(m_osi_solver.get());
 
     const auto time_limit = std::to_string(m_model.optimizer().get_remaining_time());
@@ -135,7 +137,14 @@ idol::SolutionReason idol::impl::MibSFromFile::get_reason() const {
 }
 
 double idol::impl::MibSFromFile::get_best_bound() const {
-    return m_broker->getBestEstimateQuality();
+    if (get_status() == Optimal) {
+        return get_best_obj();
+    }
+    const auto *node = m_broker->getBestNode();
+    if (node) {
+        return node->getQuality();
+    }
+    return -Inf;
 }
 
 void idol::impl::MibSFromFile::make_variable_index_in_mps() {

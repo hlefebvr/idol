@@ -423,7 +423,14 @@ idol::SolutionReason idol::impl::MibSFromAPI::get_reason() const {
 }
 
 double idol::impl::MibSFromAPI::get_best_bound() const {
-    return m_broker->getBestEstimateQuality();
+    if (get_status() == Optimal) {
+        return get_best_obj();
+    }
+    const auto *node = m_broker->getBestNode();
+    if (node) {
+        return node->getQuality();
+    }
+    return -Inf;
 }
 
 #endif
