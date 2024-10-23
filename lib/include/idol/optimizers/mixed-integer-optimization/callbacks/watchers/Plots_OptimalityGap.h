@@ -1,0 +1,8 @@
+//
+// Created by henri on 23.10.24.
+//
+
+#ifndef IDOL_PLOTS_OPTIMALITYGAP_H
+#define IDOL_PLOTS_OPTIMALITYGAP_H
+
+#endif //IDOL_PLOTS_OPTIMALITYGAP_H

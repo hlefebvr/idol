@@ -61,7 +61,7 @@ public:
             }
 
             double best_obj() const override {
-                return m_parent.best_bound();
+                return m_parent.best_obj();
             }
 
             double best_bound() const override {
