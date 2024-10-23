@@ -120,6 +120,11 @@ std::cout << high_point_relaxation.get_reason() << std::endl;
 std::cout << save_primal(high_point_relaxation) << std::endl;
 ```
 
+Idol can also be interfaced with [ROOT](https://root.cern/) to monitor the progress of your algorithm.
+For instance, here is a screenshot of the monitoring of MibS for a bilevel instance.
+
+![Monitor Any Branch-and-Bound Method](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/monitor-mibs.png)
+
 ## Implemented Features
 
 ### Mixed-Integer Optimization
