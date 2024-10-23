@@ -1,0 +1,4 @@
+DepthFirst
+==========
+
+.. doxygenclass:: idol::DepthFirst

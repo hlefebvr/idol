@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Column &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/api/classes/common/Column.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Constant" href="Constant.html" />
+    <link rel="prev" title="Annotation" href="Annotation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Class List</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Annotation.html">Annotation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Ctr.html">Ctr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Env.html">Env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Expr.html">Expr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LinExpr.html">LinExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Param.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="QuadExpr.html">QuadExpr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Row.html">Row</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionDual.html">Solution::Dual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SolutionPrimal.html">Solution::Primal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempCtr.html">TempCtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TempVar.html">TempVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Var.html">Var</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../external-mip/index.html">External MIP solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../universal-callbacks/index.html">Universal Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../branch-and-bound/index.html">Branch-and-Bound Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-generation/index.html">Column Generation Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../external-bilevel/index.html">External Bilevel Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../column-and-constraint-generation/index.html">Column-and-Constraint Generation Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../types/index.html">Type List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../constants/index.html">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Class List</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Common</a></li>
+      <li class="breadcrumb-item active">Column</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/api/classes/common/Column.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="column">
+<span id="api-column"></span><h1>Column<a class="headerlink" href="#column" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnE">
+<span id="_CPPv3N4idol6ColumnE"></span><span id="_CPPv2N4idol6ColumnE"></span><span id="idol::Column"></span><span class="target" id="classidol_1_1Column"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">impl</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Column</span></span><a class="headerlink" href="#_CPPv4N4idol6ColumnE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classidol_1_1Column"><span class="std std-ref">Column</span></a> modeling-old object.</p>
+<p>This class is used to represent an optimization model’s column. It is made of an objective coefficient and a set of <code class="docutils literal notranslate"><span class="pre">{</span> <a class="reference internal" href="Ctr.html#classidol_1_1Ctr"><span class="std std-ref"><span class="pre">Ctr</span></span></a><span class="pre">,</span> <a class="reference internal" href="Constant.html#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a> <span class="pre">}</span></code> pairs representing the coefficient (<code class="docutils literal notranslate"><a class="reference internal" href="Constant.html#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code>) of the column in each row (<code class="docutils literal notranslate"><a class="reference internal" href="Ctr.html#classidol_1_1Ctr"><span class="std std-ref"><span class="pre">Ctr</span></span></a></code>). Such pairs are called components. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6ColumnEv">
+<span id="_CPPv3N4idol6Column6ColumnEv"></span><span id="_CPPv2N4idol6Column6ColumnEv"></span><span id="idol::Column::Column"></span><span class="target" id="classidol_1_1Column_1a8bde886aa7f4ac6294fc6ae246546601"></span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol6Column6ColumnEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor.</p>
+<p>Creates an empty column. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6ColumnERR8Constant">
+<span id="_CPPv3N4idol6Column6ColumnERR8Constant"></span><span id="_CPPv2N4idol6Column6ColumnERR8Constant"></span><span id="idol::Column::Column__ConstantRR"></span><span class="target" id="classidol_1_1Column_1a2ff5117b7890698164f66a9fb6d93de6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column6ColumnERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new column with no components and on objective coefficient equal to <code class="docutils literal notranslate"><span class="pre">t_obj</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_obj</strong> – The objective coefficient </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6ColumnERK8Constant">
+<span id="_CPPv3N4idol6Column6ColumnERK8Constant"></span><span id="_CPPv2N4idol6Column6ColumnERK8Constant"></span><span id="idol::Column::Column__ConstantCR"></span><span class="target" id="classidol_1_1Column_1a287306a0f3d20ae29996726a50cd6901"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column6ColumnERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor.</p>
+<p>Creates a new column with no components and on objective coefficient equal to <code class="docutils literal notranslate"><span class="pre">t_obj</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_obj</strong> – The objective coefficient </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6ColumnERK6Column">
+<span id="_CPPv3N4idol6Column6ColumnERK6Column"></span><span id="_CPPv2N4idol6Column6ColumnERK6Column"></span><span id="idol::Column::Column__ColumnCR"></span><span class="target" id="classidol_1_1Column_1af236f25b0091bc64393b1dd07d4f242d"></span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6Column6ColumnERK6Column" title="idol::Column::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol6Column6ColumnERK6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to be copied </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6ColumnERR6Column">
+<span id="_CPPv3N4idol6Column6ColumnERR6Column"></span><span id="_CPPv2N4idol6Column6ColumnERR6Column"></span><span id="idol::Column::Column__ColumnRR"></span><span class="target" id="classidol_1_1Column_1a5c11a74443d3742f1c1e8a402d5e8c00"></span><span class="sig-name descname"><span class="n"><span class="pre">Column</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol6Column6ColumnERR6Column" title="idol::Column::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol6Column6ColumnERR6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Move constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to be moved </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnaSERK6Column">
+<span id="_CPPv3N4idol6ColumnaSERK6Column"></span><span id="_CPPv2N4idol6ColumnaSERK6Column"></span><span id="idol::Column::assign-operator__ColumnCR"></span><span class="target" id="classidol_1_1Column_1affc8f687e45e4b5a0ca69e4e2b11a597"></span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol6ColumnaSERK6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Copy-assignment operator </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to copy </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnaSERR6Column">
+<span id="_CPPv3N4idol6ColumnaSERR6Column"></span><span id="_CPPv2N4idol6ColumnaSERR6Column"></span><span id="idol::Column::assign-operator__ColumnRR"></span><span class="target" id="classidol_1_1Column_1af36f32960c94482ba28c99e738b3b366"></span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_src</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4idol6ColumnaSERR6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Move-assignment operator </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_src</strong> – The object to move </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Column3fixERKN8Solution6PrimalE">
+<span id="_CPPv3NK4idol6Column3fixERKN8Solution6PrimalE"></span><span id="_CPPv2NK4idol6Column3fixERKN8Solution6PrimalE"></span><span id="idol::Column::fix__Solution::PrimalCRC"></span><span class="target" id="classidol_1_1Column_1ad517bc009597a29f13509a1c0efcc7c2"></span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Solution</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="SolutionPrimal.html#_CPPv4N4idol8Solution6PrimalE" title="idol::Solution::Primal"><span class="n"><span class="pre">Primal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_primals</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Column3fixERKN8Solution6PrimalE" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates a new column in which all <code class="docutils literal notranslate"><a class="reference internal" href="Param.html#classidol_1_1Param"><span class="std std-ref"><span class="pre">Param</span></span></a></code> in each <code class="docutils literal notranslate"><a class="reference internal" href="Constant.html#classidol_1_1Constant"><span class="std std-ref"><span class="pre">Constant</span></span></a></code> are replaced by their corresponding values in <code class="docutils literal notranslate"><span class="pre">t_primals</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_primals</strong> – the primal values for the parameters. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the new column. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column3objEv">
+<span id="_CPPv3N4idol6Column3objEv"></span><span id="_CPPv2N4idol6Column3objEv"></span><span id="idol::Column::obj"></span><span class="target" id="classidol_1_1impl_1_1Column_1a81a5a35dc2afed8d4f5a96287915603e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">obj</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column3objEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (linear) objective coefficient of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with column whose objective is <code class="docutils literal notranslate"><span class="pre">2</span></code> implies that the model has a term in the objective function which is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (linear) objective coefficient of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Column3objEv">
+<span id="_CPPv3NK4idol6Column3objEv"></span><span id="_CPPv2NK4idol6Column3objEv"></span><span id="idol::Column::objC"></span><span class="target" id="classidol_1_1impl_1_1Column_1a854f421114d40b7704465548269a19d0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">obj</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Column3objEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (linear) objective coefficient of the column. For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with column whose objective is <code class="docutils literal notranslate"><span class="pre">2</span></code> implies that the model has a term in the objective function which is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (linear) objective coefficient of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column13obj_quadraticEv">
+<span id="_CPPv3N4idol6Column13obj_quadraticEv"></span><span id="_CPPv2N4idol6Column13obj_quadraticEv"></span><span id="idol::Column::obj_quadratic"></span><span class="target" id="classidol_1_1impl_1_1Column_1a1884b479705fe7b6ff7ba2b5d2eb603d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">obj_quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column13obj_quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (quadratic) objective coefficient of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with column whose objective is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span></code> implies that the model has a term in the objective function which is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (quadratic) objective coefficient of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Column13obj_quadraticEv">
+<span id="_CPPv3NK4idol6Column13obj_quadraticEv"></span><span id="_CPPv2NK4idol6Column13obj_quadraticEv"></span><span id="idol::Column::obj_quadraticC"></span><span class="target" id="classidol_1_1impl_1_1Column_1af6d2b5f56f4286cfada04dcd97dd0feb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../constants/tolerances.html#_CPPv44idol" title="idol"><span class="n"><span class="pre">idol</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">obj_quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Column13obj_quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (quadratic) objective coefficient of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with column whose objective is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span></code> implies that the model has a term in the objective function which is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (quadratic) objective coefficient of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column6linearEv">
+<span id="_CPPv3N4idol6Column6linearEv"></span><span id="_CPPv2N4idol6Column6linearEv"></span><span id="idol::Column::linear"></span><span class="target" id="classidol_1_1impl_1_1Column_1ab14b3201242a78d26e118dfa9dfcde25"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column6linearEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (linear) components of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with a column having a component <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">constraint,</span> <span class="pre">2</span> <span class="pre">}</span></code> implies that the model has a constraint <code class="docutils literal notranslate"><span class="pre">constraint</span></code> with a term <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (linear) components of the column. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Column6linearEv">
+<span id="_CPPv3NK4idol6Column6linearEv"></span><span id="_CPPv2NK4idol6Column6linearEv"></span><span id="idol::Column::linearC"></span><span class="target" id="classidol_1_1impl_1_1Column_1a3fecc415386bbb2ca8601fc777aac42f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Column6linearEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (linear) components of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with a column having a component <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">constraint,</span> <span class="pre">2</span> <span class="pre">}</span></code> implies that the model has a constraint <code class="docutils literal notranslate"><span class="pre">constraint</span></code> with a term <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (linear) components of the column. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column9quadraticEv">
+<span id="_CPPv3N4idol6Column9quadraticEv"></span><span id="_CPPv2N4idol6Column9quadraticEv"></span><span id="idol::Column::quadratic"></span><span class="target" id="classidol_1_1impl_1_1Column_1a732a24032048896d917eeb08ee37a527"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (quadratic) components of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with a column having a component <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">constraint,</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">}</span></code> implies that the model has a constraint <code class="docutils literal notranslate"><span class="pre">constraint</span></code> with a term <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (quadratic) components of the column. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4idol6Column9quadraticEv">
+<span id="_CPPv3NK4idol6Column9quadraticEv"></span><span id="_CPPv2NK4idol6Column9quadraticEv"></span><span id="idol::Column::quadraticC"></span><span class="target" id="classidol_1_1impl_1_1Column_1a1ed95900238be51ea4eb0c254bef06ec"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4idol6Column9quadraticEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the (quadratic) components of the column.</p>
+<p>For instance, a model’s variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with a column having a component <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">constraint,</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">}</span></code> implies that the model has a constraint <code class="docutils literal notranslate"><span class="pre">constraint</span></code> with a term <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">x</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (quadratic) components of the column. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column10set_linearERR7LinExprI3CtrE">
+<span id="_CPPv3N4idol6Column10set_linearERR7LinExprI3CtrE"></span><span id="_CPPv2N4idol6Column10set_linearERR7LinExprI3CtrE"></span><span id="idol::Column::set_linear__LinExpr:Ctr:RR"></span><span class="target" id="classidol_1_1impl_1_1Column_1a6d4f05c7ea73d2f313fb11e9793c3859"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_linear</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lin_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column10set_linearERR7LinExprI3CtrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (linear) components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_lin_expr</strong> – The (linear) components of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column10set_linearERK7LinExprI3CtrE">
+<span id="_CPPv3N4idol6Column10set_linearERK7LinExprI3CtrE"></span><span id="_CPPv2N4idol6Column10set_linearERK7LinExprI3CtrE"></span><span id="idol::Column::set_linear__LinExpr:Ctr:CR"></span><span class="target" id="classidol_1_1impl_1_1Column_1a0d92589da9dd8d978f8577c0ff02fc6f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_linear</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="LinExpr.html#_CPPv4I0EN4idol7LinExprE" title="idol::LinExpr"><span class="n"><span class="pre">LinExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_lin_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column10set_linearERK7LinExprI3CtrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (linear) components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_lin_expr</strong> – The (linear) components of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column13set_quadraticERR8QuadExprI3Ctr3VarE">
+<span id="_CPPv3N4idol6Column13set_quadraticERR8QuadExprI3Ctr3VarE"></span><span id="_CPPv2N4idol6Column13set_quadraticERR8QuadExprI3Ctr3VarE"></span><span id="idol::Column::set_quadratic__QuadExpr:Ctr.Var:RR"></span><span class="target" id="classidol_1_1impl_1_1Column_1a73063b1045b1b59ed757d8a7f0a58c61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_quadratic</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_quad_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column13set_quadraticERR8QuadExprI3Ctr3VarE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (quadratic) components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_lin_expr</strong> – The (quadratic) components of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column13set_quadraticERK8QuadExprI3Ctr3VarE">
+<span id="_CPPv3N4idol6Column13set_quadraticERK8QuadExprI3Ctr3VarE"></span><span id="_CPPv2N4idol6Column13set_quadraticERK8QuadExprI3Ctr3VarE"></span><span id="idol::Column::set_quadratic__QuadExpr:Ctr.Var:CR"></span><span class="target" id="classidol_1_1impl_1_1Column_1a3b87e5d7b997d5acf7a82879ef5e5c4b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_quadratic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="QuadExpr.html#_CPPv4I0000EN4idol8QuadExprE" title="idol::QuadExpr"><span class="n"><span class="pre">QuadExpr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="Ctr.html#_CPPv4N4idol3CtrE" title="idol::Ctr"><span class="n"><span class="pre">Ctr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Var.html#_CPPv4N4idol3VarE" title="idol::Var"><span class="n"><span class="pre">Var</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_quad_expr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column13set_quadraticERK8QuadExprI3Ctr3VarE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (quadratic) components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_lin_expr</strong> – The (quadratic) components of the column </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column7set_objERR8Constant">
+<span id="_CPPv3N4idol6Column7set_objERR8Constant"></span><span id="_CPPv2N4idol6Column7set_objERR8Constant"></span><span id="idol::Column::set_obj__ConstantRR"></span><span class="target" id="classidol_1_1impl_1_1Column_1ac77965907008ddaedf0b7b12a91058ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_obj</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column7set_objERR8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (linear) objective coefficient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_obj</strong> – The (linear) objective coefficient </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column7set_objERK8Constant">
+<span id="_CPPv3N4idol6Column7set_objERK8Constant"></span><span id="_CPPv2N4idol6Column7set_objERK8Constant"></span><span id="idol::Column::set_obj__ConstantCR"></span><span class="target" id="classidol_1_1impl_1_1Column_1ab88ea15ae2461b9ce622cb319ea02714"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_obj</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Constant.html#_CPPv4N4idol8ConstantE" title="idol::Constant"><span class="n"><span class="pre">Constant</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6Column7set_objERK8Constant" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the (linear) objective coefficient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_obj</strong> – The (linear) objective coefficient </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnpLERK6Column">
+<span id="_CPPv3N4idol6ColumnpLERK6Column"></span><span id="_CPPv2N4idol6ColumnpLERK6Column"></span><span id="idol::Column::add-assign-operator__ColumnCR"></span><span class="target" id="classidol_1_1impl_1_1Column_1a7b45ecf47058e3b1d665ec6a3f448d24"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6ColumnpLERK6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds the objective and components of <code class="docutils literal notranslate"><span class="pre">t_rhs</span></code> to the objective and components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – the right hand-side </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnmIERK6Column">
+<span id="_CPPv3N4idol6ColumnmIERK6Column"></span><span id="_CPPv2N4idol6ColumnmIERK6Column"></span><span id="idol::Column::sub-assign-operator__ColumnCR"></span><span class="target" id="classidol_1_1impl_1_1Column_1ad9b5de4926f806f1d57b0ebf54ab031a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6ColumnmIERK6Column" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtracts the objective and components of <code class="docutils literal notranslate"><span class="pre">t_rhs</span></code> to the objective and components of the column. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – the right hand-side </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6ColumnmLEd">
+<span id="_CPPv3N4idol6ColumnmLEd"></span><span id="_CPPv2N4idol6ColumnmLEd"></span><span id="idol::Column::mul-assign-operator__double"></span><span class="target" id="classidol_1_1impl_1_1Column_1a4d6fd0f85350f3bb74c7d9af2d0181e2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t_rhs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4idol6ColumnmLEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Multiplies the objective and components of the column by a given factor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t_rhs</strong> – the right hand-side </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>*this </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N4idol6Column11EmptyColumnE">
+<span id="_CPPv3N4idol6Column11EmptyColumnE"></span><span id="_CPPv2N4idol6Column11EmptyColumnE"></span><span id="idol::Column::EmptyColumn__ColumnC"></span><span class="target" id="classidol_1_1Column_1a6445e3ed8a12855a415870a551ac7d44"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4idol6ColumnE" title="idol::Column"><span class="n"><span class="pre">Column</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmptyColumn</span></span></span><a class="headerlink" href="#_CPPv4N4idol6Column11EmptyColumnE" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents an empty column </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Annotation.html" class="btn btn-neutral float-left" title="Annotation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Constant.html" class="btn btn-neutral float-right" title="Constant" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
