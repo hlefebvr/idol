@@ -82,19 +82,18 @@ if (@USE_CLP@)
 
 endif()
 
+if (@USE_ROOT@)
+
+    find_dependency(ROOT REQUIRED)
+    add_compile_definitions(IDOL_USE_ROOT)
+
+endif()
+
 if (@USE_ROBINHOOD@)
 
     set(ROBINHOOD_DIR "@ROBINHOOD_DIR@")
     find_dependency(ROBINHOOD REQUIRED)
     add_compile_definitions(IDOL_USE_ROBINHOOD)
-
-endif()
-
-if (@USE_MINKNAP@)
-
-    set(MINKNAP_DIR "@MINKNAP_DIR@")
-    find_dependency(minknap REQUIRED)
-    add_compile_definitions(IDOL_USE_MINKNAP)
 
 endif()
 

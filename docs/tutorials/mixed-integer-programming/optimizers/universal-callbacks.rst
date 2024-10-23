@@ -177,7 +177,7 @@ The Benders reformulation of this problem, by considering :math:`y` as the compl
         & z \ge 0, y\in\mathbb N,
     \end{align}
 
-with :math:`\Lambda` defined as the set of all dual feasible points, i.e., those :math:`\lambda\in\mathbb R^2_+` such that
+with :math:`\Lambda` defined as the set of all dual feasible m_n_points_bound, i.e., those :math:`\lambda\in\mathbb R^2_+` such that
 
 .. math::
 

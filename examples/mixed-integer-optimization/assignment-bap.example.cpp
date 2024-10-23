@@ -13,6 +13,7 @@
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h"
 
 using namespace idol;
 

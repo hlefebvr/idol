@@ -262,10 +262,22 @@ add_library(idol STATIC
         include/idol/containers/uuid.h
         src/containers/uuid.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h
+        include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h
+        src/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.cpp
+        include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h
+        src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
 )
 
 find_package(OpenMP REQUIRED)
 target_link_libraries(idol PUBLIC OpenMP::OpenMP_CXX)
+
+if (${USE_ROOT})
+
+    find_package(ROOT REQUIRED)
+    target_link_libraries(idol PUBLIC ROOT::Core ROOT::Gpad ROOT::Graf)
+    target_compile_definitions(idol PUBLIC IDOL_USE_ROOT)
+
+endif()
 
 if (${USE_ROBINHOOD})
 
@@ -414,6 +426,8 @@ if (${WITH_PROFILING})
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CPP_COMPILER g++)
 endif()
+
+target_compile_definitions(idol PUBLIC IDOL_INCLUDE_PATH="$<INSTALL_INTERFACE:include>$<BUILD_INTERFACE:${idol_SOURCE_DIR}/lib/include>")
 
 target_include_directories(
         idol

@@ -3,46 +3,11 @@
 //
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
-#include <OsiClpSolverInterface.hpp>
-#include <OsiCpxSolverInterface.hpp>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
-#include "idol/optimizers/mixed-integer-optimization/callbacks/Callback.h"
 
 using namespace idol;
-
-class MyCallback : public CallbackFactory {
-public:
-    class Strategy : public Callback {
-    protected:
-        void operator()(CallbackEvent t_event) override {
-            std::cout << t_event << '\t' << best_bound() << '\t' << best_obj() << std::endl;
-            std::cout << primal_solution() << std::endl;
-
-            const auto& model = original_model();
-
-            const auto x = model.get_var_by_index(0);
-            const auto y = model.get_var_by_index(1);
-
-            Solution::Primal solution;
-            solution.set_objective_value(-22);
-            solution.set(x, 2);
-            solution.set(y, 2);
-
-            submit_heuristic_solution(solution);
-
-        }
-    };
-
-    Callback *operator()() override {
-        return new Strategy();
-    }
-
-    [[nodiscard]] CallbackFactory *clone() const override {
-        return new MyCallback(*this);
-    }
-};
 
 int main(int t_argc, const char** t_argv) {
 
@@ -89,7 +54,6 @@ int main(int t_argc, const char** t_argv) {
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(
                 Bilevel::MibS(description)
-                    .add_callback(MyCallback())
                     .with_logs(true)
     );
 

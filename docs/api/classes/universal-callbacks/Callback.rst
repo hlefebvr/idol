@@ -4,7 +4,7 @@ Callback
 ========
 
 Callbacks are user-defined functions which are invoked during the execution of branch-and-bound algorithms at certain
-key steps of the procedure. These key points are called :ref:`events <api_CallbackEvent>` in idol.
+key steps of the procedure. These key m_n_points_bound are called :ref:`events <api_CallbackEvent>` in idol.
 Callback functions can be used to monitor the algorithm's progress, control its behavior, or perform additional processing.
 
 UserCutCallback and LazyCutCallback

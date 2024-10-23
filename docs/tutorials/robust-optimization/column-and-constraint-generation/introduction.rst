@@ -64,7 +64,7 @@ The Algorithm
 Basic Idea
 ^^^^^^^^^^
 
-The idea of the CCG algorithm is to consider a finite subset of points in :math:`\Xi`, say :math:`\{ \xi^1, \dotsc, \xi^k \}`,
+The idea of the CCG algorithm is to consider a finite subset of m_n_points_bound in :math:`\Xi`, say :math:`\{ \xi^1, \dotsc, \xi^k \}`,
 and to solve the following problem instead of :math:numref:`eq:original-problem`:
 
 .. math::
