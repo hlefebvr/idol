@@ -25,7 +25,6 @@ public:
         TCanvas* m_canvas;
         TGraph* m_graph_bound;
         TGraph* m_graph_obj;
-        TLegend* m_legend;
         int m_n_points_bound = 0;
         int m_n_points_obj = 0;
         std::optional<double> m_worst_bound;

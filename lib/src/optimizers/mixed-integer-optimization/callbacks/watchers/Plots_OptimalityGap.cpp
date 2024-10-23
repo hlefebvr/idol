@@ -29,11 +29,6 @@ idol::Plots::OptimalityGap::Strategy::Strategy(idol::Plots::Manager &t_plot_mana
     m_graph_obj->SetMarkerSize(1.05);
     m_graph_obj->SetMarkerColor(kRed);
 
-    m_legend = m_plot_manager.create<TLegend>(0.7, 0.2, 0.9, 0.3);
-    m_legend->AddEntry(m_graph_obj, "Best Obj.", "l");
-    m_legend->AddEntry(m_graph_bound, "Best Bound", "l");
-    m_legend->Draw();
-
     m_canvas->cd();
 
 }
@@ -94,8 +89,6 @@ void idol::Plots::OptimalityGap::Strategy::operator()(CallbackEvent t_event) {
     } else if (m_n_points_obj > 0) {
         m_graph_obj->Draw("ALP");
     }
-
-    m_legend->Draw();
 
     if (m_worst_bound) {
         const double ymin = *m_worst_bound - 0.05 * std::abs(*m_worst_bound);
