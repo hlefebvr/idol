@@ -22,9 +22,9 @@ class idol::Plots::OptimalityGap : public CallbackFactory {
 public:
     class Strategy : public Callback {
         Manager& m_plot_manager;
-        TCanvas* m_canvas;
-        TGraph* m_graph_bound;
-        TGraph* m_graph_obj;
+        TCanvas* m_canvas = nullptr;
+        TGraph* m_graph_bound = nullptr;
+        TGraph* m_graph_obj = nullptr;
         int m_n_points_bound = 0;
         int m_n_points_obj = 0;
         std::optional<double> m_worst_bound;
@@ -32,6 +32,7 @@ public:
         std::optional<double> m_best_obj;
         std::optional<double> m_best_bound;
     protected:
+        void initialize();
         void operator()(CallbackEvent t_event) override;
     public:
         explicit Strategy(Manager& t_plot_manager);

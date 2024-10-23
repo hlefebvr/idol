@@ -639,6 +639,10 @@ void idol::Optimizers::PADM::restart() {
     ++m_n_restart;
 }
 
+idol::ADM::SubProblem &idol::Optimizers::PADM::sub_problem_spec(unsigned int t_sub_problem_id) {
+    return m_sub_problem_specs.at(t_sub_problem_id);
+}
+
 idol::Optimizers::PADM::IterationPlot::IterationPlot(idol::Plots::Manager &t_manager) : m_manager(t_manager) {
 
 }

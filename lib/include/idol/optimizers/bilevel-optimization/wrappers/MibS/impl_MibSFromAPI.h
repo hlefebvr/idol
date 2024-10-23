@@ -54,19 +54,19 @@ public:
 
     void solve() override;
 
-    double get_best_obj() const override;
+    [[nodiscard]] double get_best_obj() const override;
 
-    double get_best_bound() const override;
+    [[nodiscard]] double get_best_bound() const override;
 
-    double get_var_primal(const Var& t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var& t_var) const override;
 
-    idol::SolutionStatus get_status() const override;
+    [[nodiscard]] idol::SolutionStatus get_status() const override;
 
-    idol::SolutionReason get_reason() const override;
+    [[nodiscard]] idol::SolutionReason get_reason() const override;
 
     friend class ::idol::MibSCallbackI;
 };
 
-#endif
-
 #endif //IDOL_IMPL_MIBS_FROM_API_H
+
+#endif

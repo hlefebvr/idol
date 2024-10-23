@@ -51,7 +51,7 @@ public:
             m_parent.m_is_heuristic_call = true;
             m_parent.call(InvalidSolution);
 
-            std::list<Solution::Primal>::iterator solution = m_solutions.end();
+            auto solution = m_solutions.end();
             double current_best = m_parent.best_obj();
             for (auto it = m_solutions.begin(), end = m_solutions.end(); it != end ; ++it) {
                 if (it->objective_value() < current_best) {
@@ -142,11 +142,11 @@ public:
 
     BlisHeuristic& heuristic() { return *m_heuristic; }
 
-    const BlisHeuristic& heuristic() const { return *m_heuristic; }
+    [[nodiscard]] const BlisHeuristic& heuristic() const { return *m_heuristic; }
 
     CglCutGenerator& cut_generator() { return *m_cut_generator; }
 
-    const CglCutGenerator& cut_generator() const { return *m_cut_generator; }
+    [[nodiscard]] const CglCutGenerator& cut_generator() const { return *m_cut_generator; }
 protected:
     [[nodiscard]] const Model &original_model() const override {
         return m_parent.m_model;

@@ -53,6 +53,8 @@ public:
     unsigned int get_solution_index() const override;
     void add_callback(Callback* t_callback);
 
+    const idol::Bilevel::LowerLevelDescription& bilevel_description() const { return m_description; }
+
 protected:
     void build() override;
     void add(const Var &t_var) override;
