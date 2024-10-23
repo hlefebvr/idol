@@ -82,4 +82,6 @@ idol::Plots::Manager::Manager() {
     throw Exception("idol was not compiled with ROOT.");
 }
 
+idol::Plots::Manager::~Manager() {}
+
 #endif
