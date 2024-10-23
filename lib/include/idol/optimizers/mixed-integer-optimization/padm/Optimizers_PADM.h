@@ -142,6 +142,7 @@ private:
     std::list<IterationLog> m_history;
 };
 
+class TCanvas;
 class TPad;
 class TGraph;
 class TLine;
