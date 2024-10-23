@@ -12,13 +12,15 @@ idol::Optimizers::PADM::PADM(const Model& t_model,
                              std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
                              PenaltyUpdate* t_penalty_update,
                              SolutionStatus t_feasible_solution_status,
-                             double t_initial_penalty_parameter)
+                             double t_initial_penalty_parameter,
+                             Plots::Manager* t_plot_manager)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)),
                               m_penalty_update(t_penalty_update),
                               m_feasible_solution_status(t_feasible_solution_status),
-                              m_initial_penalty_parameter(t_initial_penalty_parameter) {
+                              m_initial_penalty_parameter(t_initial_penalty_parameter),
+                              m_history_plotter(t_plot_manager ? new IterationPlot(*t_plot_manager) : nullptr) {
 
 }
 
@@ -549,6 +551,14 @@ void idol::Optimizers::PADM::make_history() {
             objective_values.emplace_back(m_formulation.sub_problem(i).get_best_obj());
             infeasibility_values.emplace_back(infeasibility_l1(i, m_last_solutions[i]));
         }
+
+        if (m_history_plotter) {
+            m_history_plotter->update(m_outer_loop_iteration,
+                                     m_inner_loop_iterations,
+                                     objective_values,
+                                     infeasibility_values);
+        }
+
         m_history.emplace_back(m_outer_loop_iteration,
                                m_inner_loop_iterations,
                                std::move(objective_values),
@@ -627,4 +637,87 @@ void idol::Optimizers::PADM::restart() {
     m_formulation.initialize_penalty_parameters(m_current_initial_penalty_parameter);
 
     ++m_n_restart;
+}
+
+idol::Optimizers::PADM::IterationPlot::IterationPlot(idol::Plots::Manager &t_manager) : m_manager(t_manager) {
+
+}
+
+#ifdef IDOL_USE_ROOT
+#include <TGraph.h>
+#include <TLine.h>
+#include <TAxis.h>
+#endif
+
+void idol::Optimizers::PADM::IterationPlot::initialize(unsigned int t_n_sub_problems) {
+#ifdef IDOL_USE_ROOT
+    // Create the canvas
+    m_canvas = m_manager.create<TCanvas>("canvas", "Sub-problems Objective Progress", 800, 600);
+
+    // Create the pads for each sub-problem and TGraphs
+    m_pads.resize(t_n_sub_problems);
+    m_graphs.resize(t_n_sub_problems);
+    m_lines.resize(t_n_sub_problems);
+
+    for (unsigned int i = 0; i < t_n_sub_problems; ++i) {
+        // Divide the canvas into vertical pads for each graph
+        m_pads[i] = m_manager.create<TPad>(Form("pad%d", i), Form("Sub-problem %d", i), 0.0, 1.0 - (i + 1) * (1.0 / t_n_sub_problems), 1.0, 1.0 - i * (1.0 / t_n_sub_problems));
+        m_pads[i]->Draw();
+        m_pads[i]->cd();
+
+        // Create a TGraph for each sub-problem
+        m_graphs[i] = m_manager.create<TGraph>();
+        m_graphs[i]->SetTitle(Form("Sub-problem %d; Inner Loop Iteration; Objective Value", i));
+
+        m_graphs[i]->Draw("APL");
+
+        m_canvas->cd();
+    }
+#else
+    throw Exception("idol was not compiled with ROOT.");
+#endif
+}
+
+void
+idol::Optimizers::PADM::IterationPlot::update(unsigned int t_outer_loop_iteration,
+                                              unsigned int t_inner_loop_iteration,
+                                              const std::vector<double> &t_objective_values,
+                                              const std::vector<double> &t_infeasibilities) {
+
+    if (!m_canvas) {
+        initialize(t_objective_values.size());
+    }
+
+#ifdef IDOL_USE_ROOT
+    const unsigned int n_sub_problems = t_objective_values.size();
+    const bool outer_loop_changed = m_last_outer_iteration != t_outer_loop_iteration;
+
+    for (unsigned int i = 0; i < n_sub_problems; ++i) {
+        m_graphs[i]->SetPoint(m_graphs[i]->GetN(), t_inner_loop_iteration, t_objective_values[i]);
+
+        m_pads[i]->cd();
+        m_graphs[i]->Draw("AL");
+
+        if (outer_loop_changed) {
+            auto* vertical_line = m_manager.create<TLine>(t_inner_loop_iteration,
+                                                          m_graphs[i]->GetYaxis()->GetXmin(),
+                                                          t_inner_loop_iteration,
+                                                          m_graphs[i]->GetYaxis()->GetXmax());
+            vertical_line->SetLineColor(kRed);
+            vertical_line->SetLineStyle(2);  // Dashed line
+            m_lines[i].emplace_back(vertical_line);
+            m_last_outer_iteration = t_outer_loop_iteration;
+        }
+
+        for (auto* line : m_lines[i]) {
+            line->SetY1(m_graphs[i]->GetYaxis()->GetXmin());
+            line->SetY2(m_graphs[i]->GetYaxis()->GetXmax());
+            line->Draw("SAME");
+        }
+
+    }
+
+    m_canvas->cd();
+    m_canvas->Update();
+#endif
 }

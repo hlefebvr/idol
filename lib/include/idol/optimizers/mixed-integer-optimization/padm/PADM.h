@@ -11,6 +11,7 @@
 #include "SubProblem.h"
 #include "Formulation.h"
 #include "PenaltyUpdates.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h"
 #include <optional>
 
 namespace idol {
@@ -26,7 +27,7 @@ public:
     PADM(const PADM& t_src);
     PADM(PADM&&) = default;
 
-    PADM& operator=(const PADM&) = default;
+    PADM& operator=(const PADM&) = delete;
     PADM& operator=(PADM&&) = default;
 
     PADM& with_default_sub_problem_spec(ADM::SubProblem t_sub_problem);
@@ -43,10 +44,11 @@ public:
 
     PADM& with_initial_penalty_parameter(double t_value);
 
+    PADM& with_iteration_plot(Plots::Manager& t_manager);
+
     Optimizer *operator()(const Model &t_model) const override;
 
     OptimizerFactory *clone() const override;
-
 private:
     Annotation<Var, unsigned int> m_decomposition;
     std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
@@ -57,6 +59,7 @@ private:
     std::optional<bool> m_independent_penalty_update;
     std::optional<SolutionStatus> m_feasible_solution_status;
     std::optional<double> m_initial_penalty_parameter;
+    std::optional<Plots::Manager*> m_plot_manager;
 
     std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
 };

@@ -83,7 +83,8 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
             { ADM::SubProblem().with_optimizer(*m_optimizer) },
             penalty_update,
             m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
-            m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e2
+            m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e2,
+            nullptr
     );
 
     handle_default_parameters(result);

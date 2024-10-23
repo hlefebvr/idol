@@ -61,7 +61,8 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 std::move(sub_problem_specs),
                 penalty_update,
                 m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
-                m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e-1
+                m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e-1,
+                m_plot_manager ? *m_plot_manager : nullptr
             );
 
     handle_default_parameters(result);
@@ -173,4 +174,16 @@ idol::PADM &idol::PADM::with_sub_problem_spec(unsigned int t_id, idol::ADM::SubP
     }
 
     return *this;
+}
+
+idol::PADM &idol::PADM::with_iteration_plot(Plots::Manager &t_manager) {
+
+    if (m_plot_manager) {
+        throw Exception("The plot manager has already been set.");
+    }
+
+    m_plot_manager = &t_manager;
+
+    return *this;
+
 }

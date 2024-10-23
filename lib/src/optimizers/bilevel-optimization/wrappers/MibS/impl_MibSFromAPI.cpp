@@ -351,7 +351,6 @@ CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
         vector.sortIncrIndex();
 
         result.appendCol(vector);
-
     }
 
     return result;

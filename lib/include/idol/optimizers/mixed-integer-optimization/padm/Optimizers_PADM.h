@@ -7,6 +7,7 @@
 
 #include "idol/optimizers/Algorithm.h"
 #include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
+#include "idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h"
 #include "Formulation.h"
 #include "PenaltyUpdates.h"
 
@@ -21,7 +22,8 @@ public:
          std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
          PenaltyUpdate* t_penalty_update,
          SolutionStatus t_feasible_solution_status,
-         double t_initial_penalty_parameter);
+         double t_initial_penalty_parameter,
+         Plots::Manager* t_plot_manager);
 
     std::string name() const override { return "PADM"; }
 
@@ -43,6 +45,7 @@ public:
 
     unsigned int get_inner_loop_iteration_count() const;
 
+    class IterationPlot;
 protected:
     void add(const Var &t_var) override;
 
@@ -115,6 +118,7 @@ private:
     const unsigned int m_max_inner_loop_iterations = std::numeric_limits<unsigned int>::max();
     const SolutionStatus m_feasible_solution_status;
     const unsigned int m_max_iterations_without_feasibility_change = 1000;
+    std::unique_ptr<IterationPlot> m_history_plotter;
 
     std::optional<unsigned int> m_last_iteration_with_no_feasibility_change;
     std::optional<double> m_last_objective_value_when_rescaled;
@@ -138,5 +142,27 @@ private:
     std::list<IterationLog> m_history;
 };
 
+class TPad;
+class TGraph;
+class TLine;
+
+class idol::Optimizers::PADM::IterationPlot {
+    Plots::Manager& m_manager;
+
+    TCanvas* m_canvas = nullptr;
+    std::vector<TPad*> m_pads;
+    std::vector<TGraph*> m_graphs;
+    std::vector<std::list<TLine*>> m_lines;
+    unsigned int m_last_outer_iteration = 0;
+
+    void initialize(unsigned int t_n_sub_problems);
+public:
+    explicit IterationPlot(Plots::Manager& t_manager);
+
+    void update(unsigned int t_outer_loop_iteration,
+                unsigned int t_inner_loop_iteration,
+                const std::vector<double>& t_objective_values,
+                const std::vector<double>& t_infeasibilities);
+};
 
 #endif //IDOL_OPTIMIZERS_PADM_H
