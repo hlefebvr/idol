@@ -51,8 +51,7 @@ class idol::QuadExpr : public AbstractExpr<idol::Pair<Key1, Key2>, QuadTerm<Key1
 public:
     QuadExpr() = default;
     QuadExpr(const Key1& t_a, const Key2& t_b);
-    QuadExpr(Constant&& t_factor, const Key1& t_a, const Key2& t_b);
-    QuadExpr(const Constant& t_factor, const Key1& t_a, const Key2& t_b);
+    QuadExpr(double t_factor, const Key1& t_a, const Key2& t_b);
 
     QuadExpr(const QuadExpr&) = default;
     QuadExpr(QuadExpr&&) noexcept = default;
@@ -73,13 +72,8 @@ idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Key1 &t_a, const Key2 
 }
 
 template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(Constant &&t_factor, const Key1 &t_a, const Key2 &t_b) {
-    set(t_a, t_b, std::move(t_factor));
-}
-
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Constant &t_factor, const Key1 &t_a, const Key2 &t_b) {
-    set(t_a, t_b, Constant(t_factor));
+idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(double t_factor, const Key1 &t_a, const Key2 &t_b) {
+    set(t_a, t_b, t_factor);
 }
 
 template<class Key1, class Key2, class Hash, class EqualTo>
