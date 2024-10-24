@@ -9,13 +9,13 @@
 #include <string>
 #include <functional>
 
-#include "idol/containers/Vector.h"
+#include "idol/utils/Vector.h"
 
 #include "idol/modeling/matrix/Matrix.h"
 #include "idol/modeling/constraints/CtrVersion.h"
 #include "idol/modeling/variables/VarVersion.h"
 #include "idol/modeling/expressions/Expr.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 
 #include "Model.h"
 
@@ -23,7 +23,7 @@
 #include "idol/optimizers/OptimizerFactory.h"
 
 #include "idol/optimizers/Timer.h"
-#include "idol/containers/LimitedWidthStream.h"
+#include "idol/utils/LimitedWidthStream.h"
 
 namespace idol {
     static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();

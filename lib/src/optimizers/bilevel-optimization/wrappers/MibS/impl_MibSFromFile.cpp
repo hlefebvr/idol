@@ -12,9 +12,9 @@
 #include <filesystem>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
 #include "idol/modeling/bilevel-optimization/write_to_file.h"
-#include "idol/containers/Finally.h"
-#include "idol/containers/SilentMode.h"
-#include "idol/containers/uuid.h"
+#include "idol/utils/Finally.h"
+#include "idol/utils/SilentMode.h"
+#include "idol/utils/uuid.h"
 
 #ifdef _WIN32
 #define DEV_NULL "NUL"

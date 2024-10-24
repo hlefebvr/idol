@@ -6,7 +6,7 @@
 #define IDOL_FORMULATION_H
 
 #include "idol/modeling/models/Model.h"
-#include "idol/containers/GeneratorPool.h"
+#include "idol/utils/GeneratorPool.h"
 
 namespace idol::DantzigWolfe {
     class Formulation;

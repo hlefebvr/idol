@@ -5,8 +5,8 @@
 #ifndef IDOL_DANTZIGWOLFEINFEASIBILITYSTRATEGY_H
 #define IDOL_DANTZIGWOLFEINFEASIBILITYSTRATEGY_H
 
-#include "idol/modeling/solutions/types.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/types.h"
+#include "idol/utils/Point.h"
 
 namespace idol::Optimizers {
     class DantzigWolfeDecomposition;

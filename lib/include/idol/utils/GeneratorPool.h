@@ -5,7 +5,7 @@
 #ifndef IDOL_GENERATORPOOL_H
 #define IDOL_GENERATORPOOL_H
 
-#include "idol/modeling/solutions/Point.h"
+#include "Point.h"
 #include <list>
 
 namespace idol {

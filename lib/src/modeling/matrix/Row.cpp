@@ -3,7 +3,7 @@
 //
 #include "idol/modeling/matrix/Row.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 
 #include <memory>
 

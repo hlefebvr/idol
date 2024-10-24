@@ -9,7 +9,7 @@
 #include <list>
 #include <memory>
 #include "idol/optimizers/mixed-integer-optimization/callbacks/CallbackFactory.h"
-#include "idol/containers/Map.h"
+#include "idol/utils/Map.h"
 #include "idol/modeling/objects/Env.h"
 
 #ifdef IDOL_USE_GUROBI

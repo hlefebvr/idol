@@ -10,7 +10,7 @@
 
 #include "Timer.h"
 #include "idol/modeling/numericals.h"
-#include "idol/modeling/solutions/types.h"
+#include "idol/utils/types.h"
 
 namespace idol {
     class Model;

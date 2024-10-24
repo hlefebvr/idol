@@ -5,7 +5,7 @@
 #ifndef IDOL_POINT_H
 #define IDOL_POINT_H
 
-#include "idol/modeling/sparse-matrix/SparseVector.h"
+#include "SparseVector.h"
 #include "types.h"
 #include "idol/modeling/variables/Var.h"
 #include "idol/modeling/numericals.h"

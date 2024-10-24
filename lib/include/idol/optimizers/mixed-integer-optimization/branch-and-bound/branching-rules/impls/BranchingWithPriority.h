@@ -9,7 +9,7 @@
 #include <list>
 #include "BranchingRule.h"
 #include "idol/modeling/variables/Var.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 #include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h"
 
 namespace idol::BranchingRules {

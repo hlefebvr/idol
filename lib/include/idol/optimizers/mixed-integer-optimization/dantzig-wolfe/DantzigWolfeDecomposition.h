@@ -8,7 +8,7 @@
 #include "idol/optimizers/OptimizerFactory.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "SubProblem.h"
-#include "idol/containers/Map.h"
+#include "idol/utils/Map.h"
 #include "Formulation.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 #include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h"

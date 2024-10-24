@@ -5,8 +5,8 @@
 #ifndef OPTIMIZE_EXPR_H
 #define OPTIMIZE_EXPR_H
 
-#include "idol/containers/Map.h"
-#include "idol/containers/IteratorForward.h"
+#include "idol/utils/Map.h"
+#include "idol/utils/IteratorForward.h"
 #include "idol/modeling/matrix/AbstractMatrixCoefficient.h"
 #include "Constant.h"
 #include "idol/modeling/expressions/operations/operators_Constant.h"

@@ -6,7 +6,7 @@
 #define IDOL_LOGS_DANTZIGWOLFE_FACTORY_H
 
 #include "idol/modeling/numericals.h"
-#include "idol/modeling/solutions/types.h"
+#include "idol/utils/types.h"
 
 namespace idol::Logs::DantzigWolfe {
     class Factory;

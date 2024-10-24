@@ -4,7 +4,7 @@
 #include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.h"
 #include "idol/optimizers/Algorithm.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/containers/Finally.h"
+#include "idol/utils/Finally.h"
 
 #ifdef IDOL_USE_GLPK
 

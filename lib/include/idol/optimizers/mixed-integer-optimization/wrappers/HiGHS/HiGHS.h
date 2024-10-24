@@ -6,7 +6,7 @@
 #define IDOL_HIGHS_H
 
 #include "idol/optimizers/OptimizerFactory.h"
-#include "idol/containers/Map.h"
+#include "idol/utils/Map.h"
 
 namespace idol {
     class HiGHS;

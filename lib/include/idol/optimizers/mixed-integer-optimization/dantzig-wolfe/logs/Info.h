@@ -6,7 +6,7 @@
 #define IDOL_LOGS_DANTZIGWOLFE_INFO_H
 
 #include "Factory.h"
-#include "idol/modeling/solutions/types.h"
+#include "idol/utils/types.h"
 #include <optional>
 
 namespace idol::Logs::DantzigWolfe {

@@ -5,7 +5,7 @@
 #ifndef IDOL_DUALPRICESMOOTHINGSTABILIZATION_H
 #define IDOL_DUALPRICESMOOTHINGSTABILIZATION_H
 
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 
 namespace idol::DantzigWolfe {
     class DualPriceSmoothingStabilization;

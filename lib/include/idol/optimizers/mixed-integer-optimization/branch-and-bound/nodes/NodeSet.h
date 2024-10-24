@@ -6,7 +6,7 @@
 #define IDOL_NODESET_H
 
 #include <map>
-#include "idol/containers/IteratorForward.h"
+#include "idol/utils/IteratorForward.h"
 
 namespace idol {
     template<class NodeT>

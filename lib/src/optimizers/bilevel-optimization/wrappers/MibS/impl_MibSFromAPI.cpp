@@ -6,7 +6,7 @@
 
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
 #include "idol/modeling/objects/Versions.h"
-#include "idol/containers/SilentMode.h"
+#include "idol/utils/SilentMode.h"
 #include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h"
 

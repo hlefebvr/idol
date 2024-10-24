@@ -6,7 +6,7 @@
 #define IDOL_QUADEXPR_H
 
 #include "AbstractExpr.h"
-#include "idol/containers/Pair.h"
+#include "idol/utils/Pair.h"
 
 namespace idol {
     template<class Key1, class Key2>

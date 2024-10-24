@@ -2,7 +2,7 @@
 // Created by henri on 08/09/22.
 //
 #include "idol/modeling/constraints/TempCtr.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 #include "idol/modeling/expressions/LinExpr.h"
 
 using namespace idol;

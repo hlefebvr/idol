@@ -1,5 +1,5 @@
 #include <iostream>
-#include "idol/modeling/sparse-matrix/SparseVector.h"
+#include "idol/containers/SparseVector.h"
 #include "idol/modeling/variables/Var.h"
 #include "idol/modeling/models/Model.h"
 #include "idol/modeling/objects/Env.h"

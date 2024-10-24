@@ -6,7 +6,7 @@
 #define IDOL_ADM_SUBPROBLEM_H
 
 #include "idol/optimizers/OptimizerFactory.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 #include <memory>
 
 namespace idol::ADM {

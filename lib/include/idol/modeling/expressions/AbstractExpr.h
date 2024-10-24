@@ -5,15 +5,15 @@
 #ifndef IDOL_ABSTRACTEXPR_H
 #define IDOL_ABSTRACTEXPR_H
 
-#include "idol/containers/Map.h"
-#include "idol/containers/IteratorForward.h"
+#include "idol/utils/Map.h"
+#include "idol/utils/IteratorForward.h"
 #include "idol/modeling/matrix/AbstractMatrixCoefficient.h"
 #include "Constant.h"
 #include "idol/modeling/expressions/operations/operators_Constant.h"
 #include "idol/modeling/matrix/MatrixCoefficient.h"
 #include "idol/modeling/variables/Var.h"
 #include "idol/errors/Exception.h"
-#include "idol/containers/Pair.h"
+#include "idol/utils/Pair.h"
 #include <memory>
 #include <utility>
 #include <functional>

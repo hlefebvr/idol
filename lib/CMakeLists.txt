@@ -1,7 +1,7 @@
 add_library(idol STATIC
         include/idol/modeling/numericals.h
-        include/idol/containers/Optional.h
-        include/idol/containers/Map.h
+        include/idol/utils/Optional.h
+        include/idol/utils/Map.h
         include/idol/modeling.h
         include/idol/modeling/parameters/Param.h
         include/idol/modeling/Types.h
@@ -14,9 +14,9 @@ add_library(idol STATIC
         src/modeling/matrix/MatrixCoefficientReference.cpp
         include/idol/modeling/constraints/TempCtr.h
         src/modeling/constraints/TempCtr.cpp
-        include/idol/containers/IteratorForward.h
+        include/idol/utils/IteratorForward.h
         include/idol/modeling/variables/TempVar.h
-        include/idol/containers/Set.h
+        include/idol/utils/Set.h
         include/idol/errors/NotImplemented.h
         include/idol/modeling/expressions/LinExpr.h
         include/idol/modeling/matrix/Row.h
@@ -73,8 +73,8 @@ add_library(idol STATIC
         src/modeling/annotations/impl_Annotation.cpp
         include/idol/modeling/annotations/impl_Annotation.h
         include/idol/modeling/models/Model.h
-        include/idol/containers/GeneratorPool.h
-        include/idol/modeling/solutions/types.h
+        include/idol/utils/GeneratorPool.h
+        include/idol/utils/types.h
         include/idol/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.h
         include/idol/solvers.h
         src/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.cpp
@@ -186,11 +186,11 @@ add_library(idol STATIC
         src/optimizers/logs.cpp
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/BranchingDecision.h
-        include/idol/containers/Pair.h
+        include/idol/utils/Pair.h
         include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/KnapsackCover.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Factory.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Info.h
-        include/idol/containers/Finally.h
+        include/idol/utils/Finally.h
         src/optimizers/bilevel-optimization/wrappers/MibS/MibS.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h
         src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
@@ -210,10 +210,10 @@ add_library(idol STATIC
         include/idol/modeling/bilevel-optimization/LowerLevelDescription.h
         include/idol/modeling/bilevel-optimization/write_to_file.h
         src/modeling/bilevel-optimization/write_to_file.cpp
-        include/idol/containers/LimitedWidthStream.h
+        include/idol/utils/LimitedWidthStream.h
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
-        include/idol/containers/SilentMode.h
+        include/idol/utils/SilentMode.h
         include/idol/modeling/robust-optimization/StageDescription.h
         include/idol/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
@@ -230,16 +230,16 @@ add_library(idol STATIC
         src/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
         include/idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
-        include/idol/containers/uuid.h
+        include/idol/utils/uuid.h
         src/containers/uuid.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h
         include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h
         src/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.cpp
         include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h
         src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
-        include/idol/modeling/sparse-matrix/SparseVector.h
-        include/idol/containers/sort.h
-        include/idol/modeling/solutions/Point.h
+        include/idol/utils/SparseVector.h
+        include/idol/utils/sort.h
+        include/idol/utils/Point.h
 )
 
 find_package(OpenMP REQUIRED)

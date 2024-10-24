@@ -3,7 +3,7 @@
 //
 #include "idol/modeling/expressions/Constant.h"
 #include "idol/modeling/numericals.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 #include <memory>
 
 idol::Constant idol::Constant::Zero;

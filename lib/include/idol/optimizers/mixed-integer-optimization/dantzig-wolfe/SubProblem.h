@@ -9,7 +9,7 @@
 #include <memory>
 #include <optional>
 #include "idol/optimizers/OptimizerFactory.h"
-#include "idol/containers/IteratorForward.h"
+#include "idol/utils/IteratorForward.h"
 
 namespace idol::DantzigWolfe {
     class SubProblem;

@@ -3,7 +3,7 @@
 //
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
 #include "idol/modeling/models/Model.h"
-#include "idol/containers/Set.h"
+#include "idol/utils/Set.h"
 #include "idol/modeling/objects/Versions.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include <fstream>

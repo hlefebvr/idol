@@ -7,8 +7,8 @@
 
 #include <memory>
 #include "ObjectId.h"
-#include "idol/containers/Vector.h"
-#include "idol/containers/Pair.h"
+#include "idol/utils/Vector.h"
+#include "idol/utils/Pair.h"
 #include "idol/modeling/annotations/Annotation.h"
 #include "idol/errors/Exception.h"
 

@@ -8,7 +8,7 @@
 #include <list>
 #include "BranchingRule.h"
 #include "idol/modeling/variables/Var.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 
 namespace idol::BranchingRules {
     template<class>

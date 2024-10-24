@@ -5,11 +5,11 @@
 #ifndef OPTIMIZE_CONSTANT_H
 #define OPTIMIZE_CONSTANT_H
 
-#include "idol/containers/Map.h"
+#include "idol/utils/Map.h"
 #include "idol/modeling/parameters/Param.h"
 #include "idol/modeling/numericals.h"
-#include "idol/containers/IteratorForward.h"
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/IteratorForward.h"
+#include "idol/utils/Point.h"
 
 namespace idol {
 

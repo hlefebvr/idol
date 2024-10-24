@@ -5,7 +5,7 @@
 #ifndef IDOL_ABSTRACTBRANCHANDBOUNDCALLBACKI_H
 #define IDOL_ABSTRACTBRANCHANDBOUNDCALLBACKI_H
 
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 #include "idol/optimizers/mixed-integer-optimization/callbacks/Callback.h"
 
 namespace idol {

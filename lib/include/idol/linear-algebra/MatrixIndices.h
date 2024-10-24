@@ -6,9 +6,9 @@
 #define IDOL_MATRIXINDICES_H
 
 #include <cassert>
-#include "idol/containers/Map.h"
+#include "idol/utils/Map.h"
 #include "idol/modeling/variables/Var.h"
-#include "idol/containers/IteratorForward.h"
+#include "idol/utils/IteratorForward.h"
 
 namespace idol {
     class MatrixIndices;

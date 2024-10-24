@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <optional>
-#include "idol/containers/sort.h"
+#include "idol/utils/sort.h"
 
 namespace idol {
     template<class, class, class>

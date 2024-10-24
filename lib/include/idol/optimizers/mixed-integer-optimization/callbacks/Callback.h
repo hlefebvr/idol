@@ -5,7 +5,7 @@
 #ifndef IDOL_CALLBACK_H
 #define IDOL_CALLBACK_H
 
-#include "idol/modeling/solutions/Point.h"
+#include "idol/utils/Point.h"
 
 namespace idol {
     class TempCtr;

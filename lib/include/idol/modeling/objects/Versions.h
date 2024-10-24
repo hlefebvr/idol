@@ -9,7 +9,7 @@
 #include <optional>
 #include <any>
 #include "idol/errors/Exception.h"
-#include "idol/containers/Optional.h"
+#include "idol/utils/Optional.h"
 #include "idol/modeling/models/Model.h"
 
 namespace idol {
