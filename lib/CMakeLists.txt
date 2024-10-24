@@ -239,6 +239,8 @@ add_library(idol STATIC
         src/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.cpp
         include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h
         src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
+        include/idol/modeling/sparse-matrix/SparseVector.h
+        include/idol/containers/sort.h
 )
 
 find_package(OpenMP REQUIRED)
