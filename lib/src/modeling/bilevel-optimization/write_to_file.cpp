@@ -144,7 +144,7 @@ void MpsWriter::write() {
 
     const auto add_row_entries = [&](const Var& t_var) {
         const auto& column = m_model.get_var_column(t_var);
-        add_entry(t_var.name(), "OBJ", column.obj().as_numerical());
+        add_entry(t_var.name(), "OBJ", column.obj());
         for (const auto& [ctr, constant] : column.linear()) {
             add_entry(t_var.name(), ctr.name(), constant);
         }
@@ -165,7 +165,7 @@ void MpsWriter::write() {
     file << "RHS\n";
 
     for (const auto& ctr : m_model.ctrs()) {
-        file << "    RHS       " << std::setw(10) << ctr.name() << ' ' << m_model.get_ctr_row(ctr).rhs().as_numerical() << '\n';
+        file << "    RHS       " << std::setw(10) << ctr.name() << ' ' << m_model.get_ctr_row(ctr).rhs() << '\n';
     }
 
     file << "BOUNDS\n";

@@ -149,7 +149,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
         }
     }
 
-    GUROBI_CATCH(return m_model.addVar(lb, ub, objective.as_numerical(), type, col, name);)
+    GUROBI_CATCH(return m_model.addVar(lb, ub, objective, type, col, name);)
 }
 
 std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
@@ -167,7 +167,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
         for (const auto &[var, constant]: row.linear()) {
             expr += constant * lazy(var).impl();
         }
-        GUROBI_CATCH(return m_model.addConstr(expr, type, rhs.as_numerical(), name);)
+        GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
 
     }
 
@@ -179,7 +179,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
         expr.addTerm(constant, lazy(var1).impl(), lazy(var2).impl());
     }
 
-    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs.as_numerical(), name);)
+    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs, name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
@@ -189,12 +189,12 @@ void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
     const double lb = model.get_var_lb(t_var);
     const double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const Constant& obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_column(t_var).obj();
 
     impl.set(GRB_DoubleAttr_LB, gurobi_numeric(lb));
     impl.set(GRB_DoubleAttr_UB, gurobi_numeric(ub));
     impl.set(GRB_CharAttr_VType, gurobi_var_type(type));
-    impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(obj.as_numerical()));
+    impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(obj));
 
 }
 
@@ -209,7 +209,7 @@ void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
         const auto& rhs = model.get_ctr_row(t_ctr).rhs();
         const auto type = model.get_ctr_type(t_ctr);
 
-        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs.as_numerical()));
+        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
         linear_impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
 
     } else {
@@ -224,7 +224,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
-    GRBLinExpr linear_expr = gurobi_numeric(objective.constant().as_numerical());
+    GRBLinExpr linear_expr = gurobi_numeric(objective.constant());
 
     for (const auto& [var, constant] : objective.linear()) {
         linear_expr += gurobi_numeric(constant) * lazy(var).impl();
@@ -254,7 +254,7 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
         auto& impl = lazy(ctr).impl();
         if (std::holds_alternative<GRBConstr>(impl)) {
             const auto& rhs = model.get_ctr_row(ctr).rhs();
-            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs.as_numerical()));
+            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
         } else {
             std::cout << "Warning: Updating RHS on an SOCP constraint was skipped" << std::endl;
         }
@@ -298,12 +298,12 @@ void idol::Optimizers::Gurobi::hook_update_objective_sense() {
     m_model.set(GRB_IntAttr_ModelSense, gurobi_obj_sense(parent().get_obj_sense()));
 }
 
-void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
     const auto& var_impl = lazy(t_var).impl();
     const auto& ctr_impl = std::get<GRBConstr>(lazy(t_ctr).impl());
 
-    m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(t_constant.as_numerical()));
+    m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(t_constant));
 
 }
 
@@ -639,7 +639,7 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 }
 
 void idol::Optimizers::Gurobi::update_objective_constant() {
-    const double constant = parent().get_obj_expr().constant().as_numerical();
+    const double constant = parent().get_obj_expr().constant();
     m_model.set(GRB_DoubleAttr_ObjCon, constant);
 }
 

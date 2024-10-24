@@ -11,7 +11,7 @@ const idol::Row idol::Row::EmptyRow;
 
 double idol::Row::value(const idol::Solution::Primal &t_primals) const {
 
-    double result = -rhs().numerical();
+    double result = -rhs();
 
     for (const auto& [var, constant] : linear()) {
         result += constant * t_primals.get(var);
@@ -43,7 +43,7 @@ idol::impl::Row::Row(::idol::Expr<Var> &&t_lhs, ::idol::Expr<Var> &&t_rhs)
     : m_impl(
             std::move(t_lhs.linear()) - t_rhs.linear(),
             std::move(t_lhs.quadratic()) - t_rhs.quadratic(),
-            std::move(t_rhs.constant()) - t_lhs.constant()
+            t_rhs.constant() - t_lhs.constant()
         ) {
 
 }
@@ -61,7 +61,7 @@ idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, ::idol::Expr<Var> &&t_rhs)
     : m_impl(
         t_lhs.linear() - t_rhs.linear(),
         t_lhs.quadratic() - t_rhs.quadratic(),
-        std::move(t_rhs.constant()) - t_lhs.constant()
+        t_rhs.constant() - t_lhs.constant()
     ) {
 
 }
@@ -73,15 +73,6 @@ idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, const ::idol::Expr<Var> &t_
         t_rhs.constant() - t_lhs.constant()
     ) {
 
-}
-
-double idol::impl::Row::scale_to_integers(unsigned int t_n_significant_digits) {
-    return m_impl.scale_to_integers(t_n_significant_digits);
-}
-
-void
-idol::impl::Row::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_significant_digits) {
-    m_impl.multiply_with_precision_by_power_of_10(t_exponent, t_n_significant_digits);
 }
 
 double idol::impl::Row::gcd() const {

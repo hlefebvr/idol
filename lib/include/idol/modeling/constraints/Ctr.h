@@ -80,20 +80,7 @@ public:
      * @param t_constant The right hand-side of the constraint in its default version.
      * @param t_name The given name for the constraint.
      */
-    Ctr(Env& t_env, CtrType t_type, Constant&& t_constant, std::string t_name = "");
-
-    /**
-     * Constructor.
-     *
-     * Creates a new constraint in the optimization environment.
-     *
-     * If no name is given, a unique name in the environment is given.
-     * @param t_env The optimization environment.
-     * @param t_type The type of the constraint in its default version.
-     * @param t_constant The right hand-side of the constraint in its default version.
-     * @param t_name The given name for the constraint.
-     */
-    Ctr(Env& t_env, CtrType t_type, const Constant& t_constant, std::string t_name = "");
+    Ctr(Env& t_env, CtrType t_type, double t_constant, std::string t_name = "");
 
     /**
      * Creates a (nested) vector of constraints.
@@ -118,7 +105,7 @@ public:
      * @return A (nested) vector of constraints.
      */
     template<unsigned int N = 1, unsigned int I = 0>
-    static Vector<Ctr, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, CtrType t_type, const Constant& t_constant, const std::string& t_name = "") {
+    static Vector<Ctr, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, CtrType t_type, double t_constant, const std::string& t_name = "") {
         return idol::impl::create_many<Ctr, N, I>(t_dim, t_name, [&](const std::string& t_name_i) {
             return Ctr(t_env, t_type, t_constant, t_name_i);
         });

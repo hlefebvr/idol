@@ -288,7 +288,7 @@ idol::impl::MibSFromAPI::parse_constraints() {
 
         const auto& row = m_model.get_ctr_row(ctr);
         const auto type = m_model.get_ctr_type(ctr);
-        const auto rhs = row.rhs().as_numerical();
+        const auto rhs = row.rhs();
 
         if (!row.quadratic().empty()) {
             throw Exception("Only linear constraints are allowed in MibS.");
@@ -366,7 +366,7 @@ std::vector<double> idol::impl::MibSFromAPI::parse_objective() {
 
     for (const auto& var : m_model.vars()) {
 
-        const double coefficient = m_model.get_var_column(var).obj().as_numerical();
+        const double coefficient = m_model.get_var_column(var).obj();
         result.emplace_back(coefficient);
 
     }

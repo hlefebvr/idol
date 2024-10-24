@@ -13,8 +13,7 @@ namespace idol {
 
 class idol::MatrixCoefficient : public MatrixCoefficientReference {
 public:
-    explicit MatrixCoefficient(Constant&& t_coefficient);
-    explicit MatrixCoefficient(const Constant& t_coefficient);
+    explicit MatrixCoefficient(double t_coefficient);
 
     MatrixCoefficient(const MatrixCoefficient&) = delete;
     MatrixCoefficient(MatrixCoefficient&&) noexcept = default;

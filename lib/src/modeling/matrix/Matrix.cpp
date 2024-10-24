@@ -22,7 +22,7 @@ void idol::Matrix::add_row_to_columns(const Ctr &t_ctr) {
         }
     }
 
-    if (!row.rhs().is_zero()) {
+    if (std::abs(row.rhs()) >= Tolerance::Sparsity) {
         auto &rhs = access_rhs();
         rhs.refs().set(t_ctr, row.impl().refs().get_constant());
     }
@@ -43,7 +43,7 @@ void idol::Matrix::add_column_to_rows(const Var &t_var) {
         access_column(pair.second).quadratic().refs().set({ pair.first, t_var }, std::move(ref));
     }
 
-    if (!column.obj().is_zero()) {
+    if (std::abs(column.obj()) >= Tolerance::Sparsity) {
         auto &obj = access_obj();
         obj.linear().refs().set(t_var, column.impl().refs().get_constant());
     }
@@ -107,44 +107,44 @@ void idol::Matrix::replace_right_handside(LinExpr<Ctr> &&t_right_handside) {
     }
 }
 
-void idol::Matrix::add_to_obj(const Var& t_var, Constant&& t_constant) {
+void idol::Matrix::add_to_obj(const Var& t_var, double t_constant) {
 
     auto& column = access_column(t_var);
 
-    if (column.obj().is_zero()) {
-        column.set_obj(std::move(t_constant));
+    if (std::abs(column.obj()) < Tolerance::Sparsity) {
+        column.set_obj(t_constant);
         access_obj().linear().refs().set(t_var, column.impl().refs().get_constant());
         return;
     }
 
-    if (t_constant.is_zero()) {
+    if (std::abs(t_constant) < Tolerance::Sparsity) {
         access_obj().linear().remove(t_var);
     }
-    column.set_obj(std::move(t_constant));
+    column.set_obj(t_constant);
 
 }
 
-void idol::Matrix::add_to_rhs(const Ctr &t_ctr, Constant &&t_constant) {
+void idol::Matrix::add_to_rhs(const Ctr &t_ctr, double t_constant) {
 
     auto& row = access_row(t_ctr);
 
-    if (row.rhs().is_zero() && !t_constant.is_zero()) {
-        row.set_rhs(std::move(t_constant));
+    if (std::abs(row.rhs()) < Tolerance::Sparsity && std::abs(t_constant) >= Tolerance::Sparsity) {
+        row.set_rhs(t_constant);
         access_rhs().refs().set(t_ctr, row.impl().refs().get_constant());
         return;
     }
 
-    if (t_constant.is_zero()) {
+    if (std::abs(t_constant) < Tolerance::Sparsity) {
         access_rhs().remove(t_ctr);
     }
 
-    row.set_rhs(std::move(t_constant));
+    row.set_rhs(t_constant);
 
 }
 
-void idol::Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, Constant &&t_constant) {
+void idol::Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
-    if (t_constant.is_zero()) {
+    if (std::abs(t_constant) < Tolerance::Sparsity) {
         access_column(t_var).impl().linear().remove(t_ctr);
         access_row(t_ctr).linear().remove(t_var);
         return;
@@ -155,10 +155,10 @@ void idol::Matrix::update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var,
     auto it = column.impl().linear().refs().find(t_ctr);
 
     if (it == column.impl().linear().refs().end()) {
-        auto inserted = column.impl().linear().refs().emplace(t_ctr, MatrixCoefficient(std::move(t_constant)));
+        auto inserted = column.impl().linear().refs().emplace(t_ctr, MatrixCoefficient(t_constant));
         access_row(t_ctr).linear().refs().emplace(t_var, (*inserted).second);
     } else {
-        (*it).second.value() = std::move(t_constant);
+        (*it).second.value() = t_constant;
     }
 
 }

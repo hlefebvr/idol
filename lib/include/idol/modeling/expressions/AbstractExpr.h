@@ -203,7 +203,7 @@ template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 long idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::gcd() const {
     long result = 0;
     for (const auto& [key, ptr_to_value] : m_map) {
-        result = std::gcd(result, (long) ptr_to_value->value().as_numerical());
+        result = std::gcd(result, (long) ptr_to_value->value());
     }
     return result;
 }
@@ -250,7 +250,7 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator+=(const 
             m_map.template emplace(key, std::make_unique<MatrixCoefficient>(ptr_to_value->value()));
         } else {
             it->second->value() += ptr_to_value->value();
-            if (it->second->value().is_zero()) {
+            if (std::abs(it->second->value()) < Tolerance::Sparsity) {
                 m_map.erase(it);
             }
         }
@@ -271,7 +271,7 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator-=(
             m_map.template emplace(key, std::make_unique<MatrixCoefficient>(-ptr_to_value->value()));
         } else {
             it->second->value() -= ptr_to_value->value();
-            if (it->second->value().is_zero()) {
+            if (std::abs(it->second->value()) < Tolerance::Sparsity) {
                 m_map.erase(it);
             }
         }
@@ -332,7 +332,7 @@ void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Ke
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
 double idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
-    return it == m_map.end() ? 0 : it->second->value().numerical();
+    return it == m_map.end() ? 0 : it->second->value();
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
@@ -376,7 +376,7 @@ public:
     }
 
     void set(const Key& t_key, MatrixCoefficientReference&& t_coefficient) {
-        if (t_coefficient.value().is_zero()) {
+        if (std::abs(t_coefficient.value()) < Tolerance::Sparsity) {
             m_parent->m_map.erase(t_key);
             return;
         }
@@ -402,7 +402,7 @@ public:
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
-    IteratorOutputT operator*() const { return IteratorOutputT(m_it->first, m_it->second->value().as_numerical()); }
+    IteratorOutputT operator*() const { return IteratorOutputT(m_it->first, m_it->second->value()); }
 };
 
 template<class Key,

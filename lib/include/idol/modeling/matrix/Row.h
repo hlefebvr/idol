@@ -40,13 +40,7 @@ public:
      * Returns the right hand-side of the row.
      * @return The right hand-side of the row.
      */
-    Constant& rhs() { return m_impl.constant(); }
-
-    /**
-     * Returns the right hand-side of the row.
-     * @return The right hand-side of the row.
-     */
-    [[nodiscard]] const Constant& rhs() const { return m_impl.constant(); }
+    [[nodiscard]] double rhs() const { return m_impl.constant(); }
 
     /**
      * Returns the linear part of the left hand-side of the row.
@@ -100,13 +94,7 @@ public:
      * Sets the right hand-side of the row.
      * @param t_rhs The new right hand-side of the row.
      */
-    void set_rhs(Constant&& t_rhs) { m_impl.constant() = std::move(t_rhs); }
-
-    /**
-     * Sets the right hand-side of the row.
-     * @param t_rhs The new right hand-side of the row.
-     */
-    void set_rhs(const Constant& t_rhs) { m_impl.constant() = t_rhs; }
+    void set_rhs(double t_rhs) { m_impl.constant() = t_rhs; }
 
     /**
      * Adds another row to the row (both the left and right hand-sides are added).
@@ -130,10 +118,6 @@ public:
     Row& operator*=(double t_rhs) { m_impl *= t_rhs; return *this; }
 
     Row& operator/=(double t_rhs) { m_impl /= t_rhs; return *this; }
-
-    double scale_to_integers(unsigned int t_n_significant_digits);
-
-    void multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_significant_digits);
 
     double gcd() const;
 };

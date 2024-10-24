@@ -206,7 +206,7 @@ const double *OsiIdolSolverInterface::getRowLower() const {
         m_row_lower = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
             const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_row(ctr).rhs().as_numerical();
+            const auto rhs = m_model.get_ctr_row(ctr).rhs();
             const auto type = m_model.get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
@@ -231,7 +231,7 @@ const double *OsiIdolSolverInterface::getRowUpper() const {
         m_row_upper = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
             const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_row(ctr).rhs().as_numerical();
+            const auto rhs = m_model.get_ctr_row(ctr).rhs();
             const auto type = m_model.get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
@@ -256,7 +256,7 @@ const double *OsiIdolSolverInterface::getObjCoefficients() const {
         m_col_obj = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
             const auto var = m_model.get_var_by_index(i);
-            m_col_obj[i] = m_model.get_var_column(var).obj().as_numerical();
+            m_col_obj[i] = m_model.get_var_column(var).obj();
         }
     }
     return m_col_obj;

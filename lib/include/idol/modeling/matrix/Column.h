@@ -26,8 +26,7 @@ protected:
     ::idol::Expr<Ctr, Var>& impl() { return m_impl; }
 public:
     Column() = default;
-    Column(Constant&& t_obj) : m_impl(std::move(t_obj)) {} // NOLINT(google-explicit-constructor)
-    Column(const Constant& t_obj) : m_impl(t_obj) {} // NOLINT(google-explicit-constructor)
+    Column(double t_obj) : m_impl(t_obj) {} // NOLINT(google-explicit-constructor)
 
     Column(const Column& t_src) = default;
     Column(Column&& t_src) noexcept = default;
@@ -42,7 +41,7 @@ public:
      * objective function which is `2 * x`.
      * @return The (linear) objective coefficient of the column
      */
-    Constant& obj() { return m_impl.constant(); }
+    double& obj() { return m_impl.constant(); }
 
     /**
      * Returns the (linear) objective coefficient of the column.
@@ -50,7 +49,7 @@ public:
      * objective function which is `2 * x`.
      * @return The (linear) objective coefficient of the column
      */
-    [[nodiscard]] const Constant& obj() const { return m_impl.constant(); }
+    [[nodiscard]] double obj() const { return m_impl.constant(); }
 
     /**
      * Returns the (quadratic) objective coefficient of the column.
@@ -134,13 +133,7 @@ public:
      * Sets the (linear) objective coefficient.
      * @param t_obj The (linear) objective coefficient
      */
-    void set_obj(Constant&& t_obj) { m_impl.constant() = std::move(t_obj); }
-
-    /**
-     * Sets the (linear) objective coefficient.
-     * @param t_obj The (linear) objective coefficient
-     */
-    void set_obj(const Constant& t_obj) { m_impl.constant() = t_obj; }
+    void set_obj(double t_obj) { m_impl.constant() = t_obj; }
 
     /**
      * Adds the objective and components of `t_rhs` to the objective and components of the column.
@@ -187,15 +180,7 @@ public:
      * Creates a new column with no components and on objective coefficient equal to `t_obj`
      * @param t_obj The objective coefficient
      */
-    Column(Constant&& t_obj) : impl::Column(std::move(t_obj)) {} // NOLINT(google-explicit-constructor)
-
-    /**
-     * Constructor.
-     *
-     * Creates a new column with no components and on objective coefficient equal to `t_obj`
-     * @param t_obj The objective coefficient
-     */
-    Column(const Constant& t_obj) : impl::Column(t_obj) {} // NOLINT(google-explicit-constructor)
+    Column(double t_obj) : impl::Column(t_obj) {} // NOLINT(google-explicit-constructor)
 
     /**
      * Copy constructor.
@@ -222,13 +207,6 @@ public:
      * @return *this
      */
     Column& operator=(Column&& t_src) noexcept = default;
-
-    /**
-     * Creates a new column in which all `Param` in each `Constant` are replaced by their corresponding values in `t_primals`
-     * @param t_primals the primal values for the parameters.
-     * @return the new column.
-     */
-    [[nodiscard]] Column fix(const Solution::Primal& t_primals) const;
 
     /**
      * Represents an empty column

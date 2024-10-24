@@ -4,8 +4,8 @@
 #include "idol/modeling/matrix/MatrixCoefficientReference.h"
 #include "idol/modeling/expressions/Constant.h"
 
-void idol::MatrixCoefficientReference::set_value(Constant &&t_coefficient) {
-    *m_coefficient = std::move(t_coefficient);
+void idol::MatrixCoefficientReference::set_value(double t_coefficient) {
+    *m_coefficient = t_coefficient;
 }
 
 idol::MatrixCoefficientReference &idol::MatrixCoefficientReference::operator*=(double t_factor) {

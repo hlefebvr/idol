@@ -254,6 +254,8 @@ idol::DantzigWolfe::Formulation::decompose_expression(const LinExpr<Var> &t_line
 
 void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Model &t_original_formulation) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     const unsigned int n_subproblems = m_sub_problems.size();
 
     const auto& objective = t_original_formulation.get_obj_expr();
@@ -267,7 +269,7 @@ void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Mo
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         m_generation_patterns[i].set_obj(std::move(sub_problem_parts[i]));
     }
-
+    */
 }
 
 idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Var &t_var) {
@@ -317,6 +319,8 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
                                                       idol::Solution::Primal t_generator) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     auto alpha = m_master.add_var(0.,
                                 Inf,
                                 Continuous,
@@ -328,7 +332,7 @@ void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem
 
     pool.add(alpha, std::move(t_generator));
     present_generators.emplace_back(alpha, pool.last_inserted());
-
+    */
 }
 
 double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_problem_id,
@@ -550,6 +554,8 @@ void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_proble
 
 void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, idol::Var> &t_expr) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     const unsigned int n_sub_problems = m_sub_problems.size();
 
     auto [master_part, sub_problem_parts] = decompose_expression(t_expr.linear(), t_expr.quadratic());
@@ -567,16 +573,16 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, ido
         m_generation_patterns[i].set_obj(std::move(sub_problem_parts[i]));
 
     }
-
+    */
 }
 
 
-void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, idol::Constant t_obj) {
+void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, double t_obj) {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
     if (sub_problem_id == MasterId) {
-        m_master.set_var_obj(t_var, std::move(t_obj));
+        m_master.set_var_obj(t_var, t_obj);
         return;
     }
 
@@ -680,6 +686,8 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     const auto sub_problem_id = t_var.get(m_decomposition_by_var);
 
     if (sub_problem_id != MasterId) {
@@ -689,7 +697,7 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
     }
 
     m_master.remove(t_var);
-
+    */
 }
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
@@ -719,6 +727,9 @@ unsigned int idol::DantzigWolfe::Formulation::get_n_present_generators() const {
 
 void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
 
+    throw Exception("TODO: Was using Constant");
+
+    /*
     const unsigned int n_sub_problems = m_sub_problems.size();
 
     for (unsigned int sub_problem_id = 0 ; sub_problem_id < n_sub_problems ; ++sub_problem_id) {
@@ -740,6 +751,7 @@ void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
         }
 
     }
+     */
 
 }
 

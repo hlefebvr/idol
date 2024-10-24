@@ -92,7 +92,7 @@ public:
 
     void update_obj(const Expr<Var, Var>& t_expr);
 
-    void update_var_obj(const Var& t_var, Constant t_obj);
+    void update_var_obj(const Var& t_var, double t_obj);
 
     void clean_up(unsigned int t_sub_problem_id, double t_ratio);
 

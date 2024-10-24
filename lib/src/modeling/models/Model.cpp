@@ -328,13 +328,9 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
 }
 
-void idol::Model::set_obj_const(const Constant &t_constant) {
-    set_obj_const(Constant(t_constant));
-}
+void idol::Model::set_obj_const(double t_constant) {
 
-void idol::Model::set_obj_const(Constant &&t_constant) {
-
-    m_objective.constant() = std::move(t_constant);
+    m_objective.constant() = t_constant;
 
     if (has_optimizer()) {
         optimizer().update_obj_constant();
@@ -342,13 +338,9 @@ void idol::Model::set_obj_const(Constant &&t_constant) {
 
 }
 
-void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, const Constant &t_coeff) {
-    set_mat_coeff(t_ctr, t_var, Constant(t_coeff));
-}
+void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, double t_coeff) {
 
-void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, Constant &&t_coeff) {
-
-    update_matrix_coefficient(t_ctr, t_var, std::move(t_coeff));
+    update_matrix_coefficient(t_ctr, t_var, t_coeff);
 
     if (has_optimizer()) {
         optimizer().update();
@@ -357,13 +349,9 @@ void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, Constant &&t
 
 }
 
-void idol::Model::set_ctr_rhs(const Ctr &t_ctr, const Constant &t_rhs) {
-    set_ctr_rhs(t_ctr, Constant(t_rhs));
-}
+void idol::Model::set_ctr_rhs(const Ctr &t_ctr, double t_rhs) {
 
-void idol::Model::set_ctr_rhs(const Ctr &t_ctr, Constant &&t_rhs) {
-
-    add_to_rhs(t_ctr, Constant(t_rhs));
+    add_to_rhs(t_ctr, t_rhs);
 
     if (has_optimizer()) {
         optimizer().update_ctr_rhs(t_ctr);
@@ -455,11 +443,7 @@ void idol::Model::set_var_ub(const Var &t_var, double t_ub) {
 
 }
 
-void idol::Model::set_var_obj(const Var &t_var, const Constant &t_obj) {
-    set_var_obj(t_var, Constant(t_obj));
-}
-
-void idol::Model::set_var_obj(const Var &t_var, Constant &&t_obj) {
+void idol::Model::set_var_obj(const Var &t_var, double t_obj) {
 
     add_to_obj(t_var, std::move(t_obj));
 

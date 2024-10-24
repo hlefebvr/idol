@@ -24,7 +24,7 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
 
 void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
-    // TODO this used Constant
+    throw Exception("TODO: Was using Constant");
 
     /*
 
@@ -71,7 +71,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 std::pair<idol::Expr<idol::Var, idol::Var>, idol::ObjectiveSense>
 idol::impl::CutSeparation::create_separation_objective(const idol::Solution::Primal &t_primal_solution) {
 
-    // TODO this used Constant
+    throw Exception("TODO: Was using Constant");
     /*
     const auto sense = m_cut.type() == LessOrEqual ? Minimize : Maximize;
 

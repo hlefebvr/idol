@@ -233,7 +233,7 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
             expr += constant * var * dual_var;
         }
 
-        expr -= row.rhs().as_numerical() * dual_var;
+        expr -= row.rhs() * dual_var;
 
         m_complementarity_constraints[index] = Ctr(env, expr == 0, "complementarity_" + ctr.name());
 
@@ -290,7 +290,7 @@ void idol::Reformulators::KKT::create_dual_objective() {
             m_dual_objective -= constant * var * dual_var;
         }
 
-        m_dual_objective += row.rhs().as_numerical() * dual_var;
+        m_dual_objective += row.rhs() * dual_var;
 
     }
 

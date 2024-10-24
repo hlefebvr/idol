@@ -421,7 +421,7 @@ void idol::Optimizers::PADM::compute_objective_value() {
 
     const auto& obj = parent().get_obj_expr();
 
-    double result = obj.constant().as_numerical();
+    double result = obj.constant();
 
     for (const auto& [var, constant] : obj.linear()) {
         result += constant * get_var_primal(var);

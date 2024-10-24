@@ -5,15 +5,3 @@
 #include "idol/modeling/expressions/operations/operators_Ctr.h"
 
 const idol::Column idol::Column::EmptyColumn;
-
-idol::Column idol::Column::fix(const Solution::Primal &t_primals) const {
-    Column result;
-
-    for (const auto& [ctr, constant] : linear()) {
-        result.linear() += constant * ctr;
-    }
-
-    result.obj() = obj().fix(t_primals);
-
-    return result;
-}

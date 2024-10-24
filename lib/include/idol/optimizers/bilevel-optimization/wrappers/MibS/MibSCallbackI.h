@@ -97,7 +97,7 @@ public:
             for (const auto& cut : m_cuts) {
 
                 const auto& row = cut.row();
-                const double rhs = row.rhs().as_numerical();
+                const double rhs = row.rhs();
 
                 CoinPackedVector lhs;
                 for (const auto& [var, constant] : row.linear()) {
@@ -199,7 +199,7 @@ protected:
             result.set(var, solution[i]);
         }
 
-        result.set_objective_value(m_parent.m_model.get_obj_expr().constant().as_numerical() + osi_solver.getObjValue());
+        result.set_objective_value(m_parent.m_model.get_obj_expr().constant() + osi_solver.getObjValue());
 
         return result;
     }

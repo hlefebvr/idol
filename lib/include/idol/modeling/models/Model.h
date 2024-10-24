@@ -279,7 +279,7 @@ public:
      * @param t_name the base name for the constraints (constraints are then named by a combination of this name and indices)
      * @return the created constraints
      */
-    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant& t_constant, const std::string& t_name = "");
+    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, CtrType t_type, double t_constant, const std::string& t_name = "");
 
     /**
      * Adds an existing variable to the model.
@@ -757,20 +757,6 @@ public:
     /**
      * Sets the objective constant.
      *
-     * The constant is copied.
-     *
-     * Example:
-     * ```cpp
-     * Constant constant = 10;
-     * model.set_obj_const(constant);
-     * ```
-     * @param t_constant the constant
-     */
-    void set_obj_const(const Constant& t_constant);
-
-    /**
-     * Sets the objective constant.
-     *
      * The constant is moved.
      *
      * Example:
@@ -779,7 +765,7 @@ public:
      * ```
      * @param t_constant the constant
      */
-    void set_obj_const(Constant&& t_constant);
+    void set_obj_const(double t_constant);
 
     /**
      * Sets a specific matrix coefficient.
@@ -795,22 +781,7 @@ public:
      * @param t_var the variable corresponding to the column
      * @param t_coeff the coefficient
      */
-    void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, const Constant& t_coeff);
-
-    /**
-     * Sets a specific matrix coefficient.
-     *
-     * The coefficient is moved.
-     *
-     * Example:
-     * ```cpp
-     * model.set_mat_coeff(c1, x[0], 3); // The coefficient of x_0 in constraint c1 is 3
-     * ```
-     * @param t_ctr the constraint corresponding to the row
-     * @param t_var the variable corresponding to the column
-     * @param t_coeff the coefficient
-     */
-    void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, Constant&& t_coeff);
+    void set_mat_coeff(const Ctr& t_ctr, const Var& t_var, double t_coeff);
 
     [[nodiscard]] Ctr get_ctr_by_index(unsigned int t_index) const;
 
@@ -907,21 +878,7 @@ public:
      * @param t_ctr the constraint
      * @param t_rhs the right hand-side
      */
-    void set_ctr_rhs(const Ctr& t_ctr, const Constant& t_rhs);
-
-    /**
-     * Sets a constraint's right hand-side
-     *
-     * The constant is moved.
-     *
-     * Example:
-     * ```cpp
-     * model.set_ctr_rhs(10);
-     * ```
-     * @param t_ctr the constraint
-     * @param t_rhs the constraint's right hand-side
-     */
-    void set_ctr_rhs(const Ctr& t_ctr, Constant&& t_rhs);
+    void set_ctr_rhs(const Ctr& t_ctr, double t_rhs);
 
     /**
      * Sets a constraint's type.
@@ -1140,21 +1097,7 @@ public:
      * @param t_var the variable
      * @param t_obj the variable's objective coefficient
      */
-    void set_var_obj(const Var& t_var, const Constant& t_obj);
-
-    /**
-     * Sets a variable's objective coefficient in the model.
-     *
-     * The constant is moved.
-     *
-     * Example:
-     * ```cpp
-     * model.set_var_obj(x[0], 10);
-     * ```
-     * @param t_var the variable
-     * @param t_obj the variable's objective coefficient
-     */
-    void set_var_obj(const Var& t_var, Constant&& t_obj);
+    void set_var_obj(const Var& t_var, double t_obj);
 
     /**
      * Sets a variable's column in the model.
@@ -1271,7 +1214,7 @@ idol::Vector<idol::Var, N> idol::Model::add_vars(Dim<N> t_dim, double t_lb, doub
 }
 
 template<unsigned int N>
-idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, const Constant &t_constant, const std::string &t_name) {
+idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, double t_constant, const std::string &t_name) {
     auto result = Ctr::make_vector(m_env, t_dim, t_type, t_constant, t_name);
     add_vector<Ctr, N>(result);
     return result;

@@ -194,7 +194,7 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
 
         if (!belongs_to_sub_problem(var)) {
             is_pure = false;
-            pattern.constant() += coefficient.as_numerical() * !var;
+            pattern.constant() += coefficient * !var;
             continue;
         }
 
@@ -208,19 +208,19 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
 
         if (!belongs_to_sub_problem(var1) && !belongs_to_sub_problem(var2)) {
             is_pure = false;
-            pattern.constant() += constant.as_numerical() * (!var1 * !var2);
+            pattern.constant() += constant * (!var1 * !var2);
             continue;
         }
 
         if (!belongs_to_sub_problem(var1)) {
             is_pure = false;
-            pattern.linear() += constant.as_numerical() * !var1 * var2;
+            pattern.linear() += constant * !var1 * var2;
             continue;
         }
 
         if (!belongs_to_sub_problem(var2)) {
             is_pure = false;
-            pattern.linear() += constant.as_numerical() * !var2 * var1;
+            pattern.linear() += constant * !var2 * var1;
             continue;
         }
 
@@ -348,7 +348,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Pr
             if (const double val = t_primals[i].get(var); val > max) {
                 max = val;
                 argmax = i;
-                penalty = m_sub_problems[i].get_var_column(var).obj().as_numerical();
+                penalty = m_sub_problems[i].get_var_column(var).obj();
             }
 
         }
@@ -426,7 +426,7 @@ void idol::ADM::Formulation::update_penalty_parameters_independently(const std::
 
         for (const auto& var : m_l1_vars_in_sub_problem[i]) {
 
-            const double current_penalty = model.get_var_column(var).obj().as_numerical();
+            const double current_penalty = model.get_var_column(var).obj();
 
             if (t_primals[i].get(var) > 1e-4) {
                 model.set_var_obj(var, t_penalty_update(current_penalty));

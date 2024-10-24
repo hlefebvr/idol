@@ -65,7 +65,7 @@ class idol::OptimizerWithLazyUpdates : public Optimizer {
     void update_ctrs();
 
     void lazy_update_objective_sense();
-    void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, const Constant &t_constant);
+    void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, double t_constant);
     void lazy_update(const Var& t_var);
     void lazy_update(const Ctr& t_ctr);
     void lazy_update_objective();
@@ -86,7 +86,7 @@ protected:
     virtual CtrImplT hook_add(const Ctr& t_ctr) = 0;
 
     virtual void hook_update_objective_sense() = 0;
-    virtual void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) = 0;
+    virtual void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) = 0;
 
     void update() final;
     virtual void hook_update() = 0;
@@ -317,7 +317,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Ctr &
 }
 
 template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
 }
 

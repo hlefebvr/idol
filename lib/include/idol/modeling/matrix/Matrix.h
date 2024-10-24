@@ -25,9 +25,9 @@ protected:
     void remove_column_from_rows(const Var& t_var);
     void replace_objective(Expr<Var>&& t_objective);
     void replace_right_handside(LinExpr<Ctr>&& t_right_handside);
-    void add_to_obj(const Var& t_var, Constant&& t_constant);
-    void add_to_rhs(const Ctr& t_ctr, Constant&& t_constant);
-    void update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, Constant&& t_constant);
+    void add_to_obj(const Var& t_var, double t_constant);
+    void add_to_rhs(const Ctr& t_ctr, double t_constant);
+    void update_matrix_coefficient(const Ctr &t_ctr, const Var &t_var, double t_constant);
 public:
     virtual ~Matrix() = default;
 };

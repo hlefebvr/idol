@@ -89,7 +89,7 @@ double idol::Optimizers::Osi::get_best_obj() const {
     }
 
     const auto& objective = parent().get_obj_expr();
-    return objective.constant().as_numerical() + m_solver_interface->getObjValue();
+    return objective.constant() + m_solver_interface->getObjValue();
 }
 
 double idol::Optimizers::Osi::get_best_bound() const {
@@ -238,7 +238,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
         ub = std::min(1., ub);
     }
 
-    m_solver_interface->addCol(vector, lb, ub, column.obj().as_numerical(), t_var.name());
+    m_solver_interface->addCol(vector, lb, ub, column.obj(), t_var.name());
 
     if (type == Binary || type == Integer) {
         m_solver_interface->setInteger(index);
@@ -252,7 +252,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Ctr &t_ctr) {
     const int index = m_solver_interface->getNumRows();
 
     const auto& row = parent().get_ctr_row(t_ctr);
-    const double rhs = row.rhs().as_numerical();
+    const double rhs = row.rhs();
     const auto type = parent().get_ctr_type(t_ctr);
 
     if (!row.quadratic().empty()) {
@@ -283,8 +283,7 @@ void idol::Optimizers::Osi::hook_update_objective_sense() {
     m_solver_interface->setObjSense(sense == Minimize ? 1. : -1.);
 }
 
-void idol::Optimizers::Osi::hook_update_matrix(const idol::Ctr &t_ctr, const idol::Var &t_var,
-                                               const idol::Constant &t_constant) {
+void idol::Optimizers::Osi::hook_update_matrix(const idol::Ctr &t_ctr, const idol::Var &t_var, double t_constant) {
     throw Exception("Not implemented Osi::hook_update_matrix");
 }
 
@@ -299,7 +298,7 @@ void idol::Optimizers::Osi::hook_update(const idol::Var &t_var) {
     double lb = model.get_var_lb(t_var);
     double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const Constant& obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_column(t_var).obj();
 
     if (type == Binary) {
         lb = std::max(0., lb);
@@ -319,7 +318,7 @@ void idol::Optimizers::Osi::hook_update(const idol::Var &t_var) {
         }
     }
 
-    m_solver_interface->setObjCoeff(impl, obj.as_numerical());
+    m_solver_interface->setObjCoeff(impl, obj);
 
 }
 
@@ -327,7 +326,7 @@ void idol::Optimizers::Osi::hook_update(const idol::Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
-    const auto& rhs = model.get_ctr_row(t_ctr).rhs().as_numerical();
+    const auto& rhs = model.get_ctr_row(t_ctr).rhs();
     const auto type = model.get_ctr_type(t_ctr);
 
     double lb = -Inf, ub = Inf;
@@ -354,7 +353,7 @@ void idol::Optimizers::Osi::hook_update_objective() {
     auto* coefficients = new double[n_variables];
     for (const auto& var : parent.vars()) {
         const unsigned int index = lazy(var).impl();
-        coefficients[index] = parent.get_var_column(var).obj().as_numerical();
+        coefficients[index] = parent.get_var_column(var).obj();
     }
     m_solver_interface->setObjective(coefficients);
 

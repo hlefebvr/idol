@@ -16,8 +16,8 @@ namespace idol {
 
 class idol::MatrixCoefficientReference : public AbstractMatrixCoefficient {
 protected:
-    Constant* m_coefficient = nullptr;
-    explicit MatrixCoefficientReference(Constant* t_src) : m_coefficient(t_src) {}
+    double* m_coefficient = nullptr;
+    explicit MatrixCoefficientReference(double* t_src) : m_coefficient(t_src) {}
 public:
     explicit MatrixCoefficientReference(AbstractMatrixCoefficient& t_src) : m_coefficient(&t_src.value()) {}
 
@@ -31,11 +31,11 @@ public:
 
     [[nodiscard]] bool empty() const { return !m_coefficient; }
 
-    void set_value(Constant &&t_coefficient) override;
+    void set_value(double t_coefficient) override;
 
-    Constant &value() override { return *m_coefficient; }
+    double &value() override { return *m_coefficient; }
 
-    [[nodiscard]] const Constant &value() const override { return *m_coefficient; }
+    [[nodiscard]] double value() const override { return *m_coefficient; }
 
     MatrixCoefficientReference &operator*=(double t_factor) override;
 

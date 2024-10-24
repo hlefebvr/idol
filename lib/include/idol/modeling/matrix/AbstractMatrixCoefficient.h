@@ -16,13 +16,13 @@ class idol::AbstractMatrixCoefficient {
 public:
     virtual ~AbstractMatrixCoefficient() = default;
 
-    virtual void set_value(Constant&& t_coefficient) = 0;
+    virtual void set_value(double t_coefficient) = 0;
 
-    virtual Constant& value() = 0;
+    virtual double& value() = 0;
 
     virtual bool is_ref() const = 0;
 
-    [[nodiscard]] virtual const Constant& value() const = 0;
+    [[nodiscard]] virtual double value() const = 0;
 
     virtual AbstractMatrixCoefficient& operator*=(double t_factor) = 0;
 
