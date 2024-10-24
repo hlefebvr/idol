@@ -6,41 +6,41 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/parameters/Param.h
         include/idol/mixed-integer/modeling/Types.h
         include/idol/mixed-integer/modeling/expressions/Constant.h
-        src/modeling/expressions/Constant.cpp
+        src/mixed-integer/modeling/expressions/Constant.cpp
         include/idol/mixed-integer/modeling/matrix/AbstractMatrixCoefficient.h
         include/idol/mixed-integer/modeling/matrix/MatrixCoefficientReference.h
         include/idol/mixed-integer/modeling/matrix/MatrixCoefficient.h
-        src/modeling/matrix/MatrixCoefficient.cpp
-        src/modeling/matrix/MatrixCoefficientReference.cpp
+        src/mixed-integer/modeling/matrix/MatrixCoefficient.cpp
+        src/mixed-integer/modeling/matrix/MatrixCoefficientReference.cpp
         include/idol/mixed-integer/modeling/constraints/TempCtr.h
-        src/modeling/constraints/TempCtr.cpp
+        src/mixed-integer/modeling/constraints/TempCtr.cpp
         include/idol/general/utils/IteratorForward.h
         include/idol/mixed-integer/modeling/variables/TempVar.h
         include/idol/general/utils/Set.h
         include/idol/general/utils/exceptions/NotImplemented.h
         include/idol/mixed-integer/modeling/expressions/LinExpr.h
         include/idol/mixed-integer/modeling/matrix/Row.h
-        src/modeling/matrix/Row.cpp
-        src/modeling/matrix/Column.cpp
+        src/mixed-integer/modeling/matrix/Row.cpp
+        src/mixed-integer/modeling/matrix/Column.cpp
         include/idol/mixed-integer/modeling/matrix/Column.h
         include/idol/mixed-integer/modeling/matrix/Matrix.h
-        src/modeling/matrix/Matrix.cpp
-        src/problems/generalized-assignment-problem/GAP_Instance.cpp
+        src/mixed-integer/modeling/matrix/Matrix.cpp
+        src/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.cpp
         include/idol/mixed-integer/problems/knapsack-problem/KP_Instance.h
-        src/problems/knapsack-problem/KP_Instance.cpp
+        src/mixed-integer/problems/knapsack-problem/KP_Instance.cpp
         include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
-        src/problems/multiple-knapsack-problem/MKP_Instance.cpp
+        src/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.cpp
         include/idol/mixed-integer/modeling/expressions/Expr.h
         include/idol/mixed-integer/modeling/expressions/operations/operators_Var.h
-        src/modeling/expressions/operations/operators_Var.cpp
-        src/modeling/expressions/operations/operators_Ctr.cpp
-        src/modeling/expressions/operations/operators_Constant.cpp
+        src/mixed-integer/modeling/expressions/operations/operators_Var.cpp
+        src/mixed-integer/modeling/expressions/operations/operators_Ctr.cpp
+        src/mixed-integer/modeling/expressions/operations/operators_Constant.cpp
         include/idol/mixed-integer/modeling/expressions/operations/operators_Constant.h
         include/idol/mixed-integer/modeling/expressions/operations/operators_Ctr.h
         include/idol/mixed-integer/modeling/expressions/operations/operators.h
         include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
-        src/problems/multiple-knapsack-problem/MKP_Instance.cpp
-        src/problems/facility-location-problem/FLP_Instance.cpp
+        src/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.cpp
+        src/mixed-integer/problems/facility-location-problem/FLP_Instance.cpp
         include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h
         include/idol/mixed-integer/problems/helpers/distances.h
         include/idol/mixed-integer/problems/helpers/parse_delimited.h
@@ -50,36 +50,36 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/models/Model.h
         include/idol/mixed-integer/modeling/objects/Env.h
         include/idol/mixed-integer/modeling/variables/Var.h
-        src/modeling/objects/Env.cpp
+        src/mixed-integer/modeling/objects/Env.cpp
         include/idol/mixed-integer/modeling/variables/VarVersion.h
         include/idol/mixed-integer/modeling/objects/Versions.h
         include/idol/mixed-integer/modeling/objects/Object.h
         include/idol/mixed-integer/modeling/objects/ObjectId.h
-        src/modeling/models/Model.cpp
+        src/mixed-integer/modeling/models/Model.cpp
         include/idol/mixed-integer/modeling/constraints/Ctr.h
         include/idol/mixed-integer/modeling/constraints/CtrVersion.h
         include/idol/mixed-integer/modeling/objects/Version.h
-        src/modeling/variables/Var.cpp
-        src/modeling/constraints/Ctr.cpp
+        src/mixed-integer/modeling/variables/Var.cpp
+        src/mixed-integer/modeling/constraints/Ctr.cpp
         include/idol/general/optimizers/Optimizer.h
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h
         include/idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h
-        src/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.cpp
-        src/optimizers/Optimizer.cpp
+        src/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.cpp
+        src/general/optimizers/Optimizer.cpp
         include/idol/general/optimizers/Algorithm.h
-        src/optimizers/Algorithm.cpp
-        src/optimizers/Timer.cpp
+        src/general/optimizers/Algorithm.cpp
+        src/general/optimizers/Timer.cpp
         include/idol/mixed-integer/modeling/annotations/Annotation.h
-        src/modeling/annotations/impl_Annotation.cpp
+        src/mixed-integer/modeling/annotations/impl_Annotation.cpp
         include/idol/mixed-integer/modeling/annotations/impl_Annotation.h
         include/idol/mixed-integer/modeling/models/Model.h
         include/idol/general/utils/GeneratorPool.h
         include/idol/general/utils/types.h
         include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h
         include/idol/solvers.h
-        src/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.cpp
+        src/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.cpp
         include/idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h
-        src/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.cpp
+        src/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.cpp
         include/idol/general/linear-algebra/MatrixIndices.h
         include/idol/general/linear-algebra/SquareMatrix.h
         include/idol/general/linear-algebra/to_rotated_quadratic_cone.h
@@ -103,16 +103,16 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h
         include/idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h
         include/idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h
-        src/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.cpp
-        src/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.cpp
-        src/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.cpp
+        src/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.cpp
+        src/mixed-integer/optimizers/wrappers/GLPK/GLPK.cpp
+        src/mixed-integer/optimizers/wrappers/Mosek/Mosek.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
         include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h
-        src/optimizers/mixed-integer-optimization/wrappers/Gurobi/GurobiCallbackI.cpp
+        src/mixed-integer/optimizers/wrappers/Gurobi/GurobiCallbackI.cpp
         include/idol/mixed-integer/optimizers/callbacks/Callback.h
-        src/optimizers/mixed-integer-optimization/callbacks/Callback.cpp
+        src/mixed-integer/optimizers/callbacks/Callback.cpp
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CutSeparation.h
-        src/optimizers/mixed-integer-optimization/callbacks/CutSeparation.cpp
+        src/mixed-integer/optimizers/callbacks/CutSeparation.cpp
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h
         include/idol/mixed-integer/optimizers/callbacks/cutting-planes/UserCutCallback.h
         include/idol/mixed-integer/optimizers/callbacks/CallbackFactory.h
@@ -120,14 +120,14 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h
         include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h
         include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h
-        src/problems/staff-rostering-problem/SRP_Instance.cpp
+        src/mixed-integer/problems/staff-rostering-problem/SRP_Instance.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.h
-        src/optimizers/mixed-integer-optimization/callbacks/heuristics/SimpleRounding.cpp
-        src/modeling/expressions/operations/operators.cpp
+        src/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.cpp
+        src/mixed-integer/modeling/expressions/operations/operators.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h
-        src/optimizers/mixed-integer-optimization/callbacks/heuristics/RENS.cpp
+        src/mixed-integer/optimizers/callbacks/heuristics/RENS.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h
-        src/optimizers/mixed-integer-optimization/callbacks/heuristics/LocalBranching.cpp
+        src/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h
@@ -141,48 +141,48 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/StrongBranching.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h
-        src/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/StrongBranching.cpp
+        src/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h
-        src/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
+        src/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h
         include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h
         include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h
-        src/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeInfo.cpp
+        src/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.cpp
         include/idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h
-        src/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.cpp
-        src/optimizers/mixed-integer-optimization/wrappers/HiGHS/Optimizers_HiGHS.cpp
+        src/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.cpp
+        src/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h
         include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h
         include/idol/mixed-integer/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/SubProblem.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/SubProblem.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/SubProblem.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/Formulation.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/Formulation.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/ColumnGeneration.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.cpp
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
         include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Factory.h
         include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h
-        src/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.cpp
+        src/mixed-integer/optimizers/dantzig-wolfe/logs/Info.cpp
         include/idol/general/optimizers/logs.h
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h
-        src/optimizers/logs.cpp
+        src/general/optimizers/logs.cpp
         include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
         include/idol/mixed-integer/optimizers/branch-and-bound/nodes/BranchingDecision.h
         include/idol/general/utils/Pair.h
@@ -190,52 +190,52 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h
         include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h
         include/idol/general/utils/Finally.h
-        src/optimizers/bilevel-optimization/wrappers/MibS/MibS.cpp
+        src/bilevel/optimizers/wrappers/MibS/MibS.cpp
         include/idol/bilevel/optimizers/wrappers/MibS/MibS.h
-        src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
+        src/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.cpp
         include/idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h
-        src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.cpp
+        src/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.cpp
         include/idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h
-        src/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.cpp
+        src/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.cpp
         include/idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h
-        src/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.cpp
+        src/mixed-integer/optimizers/wrappers/Osi/Osi.cpp
         include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h
-        src/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.cpp
+        src/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.h
         include/idol/bilevel/modeling/read_from_file.h
-        src/modeling/bilevel-optimization/read_from_file.cpp
+        src/bilevel/modeling/read_from_file.cpp
         include/idol/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.h
-        src/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.cpp
+        src/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.cpp
         include/idol/bilevel/modeling/LowerLevelDescription.h
         include/idol/bilevel/modeling/write_to_file.h
-        src/modeling/bilevel-optimization/write_to_file.cpp
+        src/bilevel/modeling/write_to_file.cpp
         include/idol/general/utils/LimitedWidthStream.h
         include/idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h
-        src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
+        src/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.cpp
         include/idol/general/utils/SilentMode.h
         include/idol/robust/modeling/StageDescription.h
         include/idol/mixed-integer/modeling/models/KKT.h
-        src/modeling/models/KKT.cpp
-        src/optimizers/mixed-integer-optimization/padm/PADM.cpp
+        src/mixed-integer/modeling/models/KKT.cpp
+        src/mixed-integer/optimizers/padm/PADM.cpp
         include/idol/mixed-integer/optimizers/padm/PADM.h
-        src/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.cpp
+        src/mixed-integer/optimizers/padm/Optimizers_PADM.cpp
         include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h
-        src/optimizers/mixed-integer-optimization/padm/Formulation.cpp
+        src/mixed-integer/optimizers/padm/Formulation.cpp
         include/idol/mixed-integer/optimizers/padm/Formulation.h
-        src/optimizers/mixed-integer-optimization/padm/SubProblem.cpp
+        src/mixed-integer/optimizers/padm/SubProblem.cpp
         include/idol/mixed-integer/optimizers/padm/SubProblem.h
-        src/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.cpp
+        src/mixed-integer/optimizers/padm/PenaltyUpdates.cpp
         include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h
-        src/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
+        src/mixed-integer/optimizers/padm/PenaltyMethod.cpp
         include/idol/mixed-integer/optimizers/padm/PenaltyMethod.h
         include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h
         include/idol/general/utils/uuid.h
-        src/containers/uuid.cpp
+        src/general/utils/uuid.cpp
         include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h
         include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h
-        src/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.cpp
+        src/mixed-integer/optimizers/callbacks/watchers/PlotManager.cpp
         include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h
-        src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
+        src/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.cpp
         include/idol/general/utils/SparseVector.h
         include/idol/general/utils/sort.h
         include/idol/general/utils/Point.h
