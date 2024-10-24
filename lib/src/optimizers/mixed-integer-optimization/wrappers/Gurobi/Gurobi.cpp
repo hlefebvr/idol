@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.h"
-#include "idol/errors/Exception.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::Gurobi::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GUROBI

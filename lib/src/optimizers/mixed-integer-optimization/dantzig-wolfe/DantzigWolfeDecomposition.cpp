@@ -4,12 +4,12 @@
 #include <memory>
 #include <utility>
 
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Formulation.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/NoStabilization.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h"
 
 idol::DantzigWolfeDecomposition *idol::DantzigWolfeDecomposition::clone() const {
     return new DantzigWolfeDecomposition(*this);

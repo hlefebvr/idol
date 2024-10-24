@@ -3,17 +3,17 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/WorstBound.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/IntegerMaster.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/MostInfeasible.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
-#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h"
+#include "idol/mixed-integer/optimizers/padm/PenaltyMethod.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
 

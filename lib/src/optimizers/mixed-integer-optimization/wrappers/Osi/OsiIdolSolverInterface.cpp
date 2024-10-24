@@ -8,8 +8,8 @@
 #include <OsiRowCut.hpp>
 #include <OsiColCut.hpp>
 #include <CoinWarmStartBasis.hpp>
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 #define OSI_IDOL_DEBUG std::cout << __FUNCTION__ << std::endl;
 

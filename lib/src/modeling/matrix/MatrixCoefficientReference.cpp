@@ -1,8 +1,8 @@
 //
 // Created by henri on 08/09/22.
 //
-#include "idol/modeling/matrix/MatrixCoefficientReference.h"
-#include "idol/modeling/expressions/Constant.h"
+#include "idol/mixed-integer/modeling/matrix/MatrixCoefficientReference.h"
+#include "idol/mixed-integer/modeling/expressions/Constant.h"
 
 void idol::MatrixCoefficientReference::set_value(double t_coefficient) {
     *m_coefficient = t_coefficient;

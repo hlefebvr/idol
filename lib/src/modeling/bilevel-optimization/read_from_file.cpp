@@ -1,11 +1,11 @@
 //
 // Created by henri on 04.03.24.
 //
-#include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "idol/modeling/models/Model.h"
-#include "idol/utils/Set.h"
-#include "idol/modeling/objects/Versions.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/bilevel/modeling/read_from_file.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/general/utils/Set.h"
+#include "idol/mixed-integer/modeling/objects/Versions.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include <fstream>
 #include <filesystem>
 

@@ -1,8 +1,8 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "idol/modeling/matrix/MatrixCoefficient.h"
-#include "idol/modeling/expressions/Constant.h"
+#include "idol/mixed-integer/modeling/matrix/MatrixCoefficient.h"
+#include "idol/mixed-integer/modeling/expressions/Constant.h"
 
 idol::MatrixCoefficient::~MatrixCoefficient() {
     delete m_coefficient;

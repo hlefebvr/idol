@@ -2,10 +2,10 @@
 // Created by henri on 01.02.24.
 //
 
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 
 #include <utility>
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
 
 #ifdef IDOL_USE_CPLEX
 #include <OsiCpxSolverInterface.hpp>

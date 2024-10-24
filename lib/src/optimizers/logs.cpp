@@ -1,7 +1,7 @@
 //
 // Created by henri on 09.11.23.
 //
-#include "idol/optimizers/logs.h"
+#include "idol/general/optimizers/logs.h"
 #include <sstream>
 
 std::ostream& idol::center(std::ostream& t_os, const std::string& t_string, unsigned int t_width, char t_fill) {

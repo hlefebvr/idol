@@ -5,14 +5,14 @@
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "idol/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h"
 #include "idol/modeling/robust-optimization/StageDescription.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h"
 #include "idol/optimizers/robust-optimization/convexification/Convexification.h"
 
 using namespace idol;

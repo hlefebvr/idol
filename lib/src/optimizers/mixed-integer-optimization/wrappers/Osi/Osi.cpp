@@ -2,8 +2,8 @@
 // Created by henri on 05.02.24.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.h"
 
 idol::Osi::Osi(const OsiSolverInterface &t_solver_interface) : m_solver_interface(t_solver_interface.clone()) {
 

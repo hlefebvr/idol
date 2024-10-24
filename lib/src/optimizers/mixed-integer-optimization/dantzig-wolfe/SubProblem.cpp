@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/SubProblem.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/SubProblem.h"
 
 idol::DantzigWolfe::SubProblem &idol::DantzigWolfe::SubProblem::with_multiplicities(double t_lower, double t_upper) {
 

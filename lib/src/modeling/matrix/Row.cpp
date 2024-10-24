@@ -1,9 +1,9 @@
 //
 // Created by henri on 04/10/22.
 //
-#include "idol/modeling/matrix/Row.h"
-#include "idol/modeling/expressions/operations/operators.h"
-#include "idol/utils/Point.h"
+#include "idol/mixed-integer/modeling/matrix/Row.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/utils/Point.h"
 
 #include <memory>
 

@@ -3,9 +3,9 @@
 //
 #ifdef IDOL_USE_MIBS
 
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
 
 #include <utility>
 

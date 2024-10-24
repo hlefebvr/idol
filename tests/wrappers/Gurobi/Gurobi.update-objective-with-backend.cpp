@@ -2,7 +2,7 @@
 // Created by henri on 01/02/23.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 

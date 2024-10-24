@@ -1,8 +1,8 @@
 //
 // Created by henri on 27/01/23.
 //
-#include "idol/modeling//objects/Env.h"
-#include "idol/modeling//models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
 
 void idol::impl::Env::free_model_id(const Model &t_model) {
     m_model_ids.free(t_model.id());

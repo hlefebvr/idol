@@ -4,7 +4,7 @@
 
 #ifdef IDOL_USE_OSI
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.h"
 #include "CoinPackedVector.hpp"
 
 idol::Optimizers::Osi::Osi(const idol::Model &t_model,

@@ -1,9 +1,9 @@
 //
 // Created by henri on 16.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/callbacks/heuristics/LocalBranching.h"
-#include "idol/modeling//models/Model.h"
-#include "idol/modeling//expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::Heuristics::LocalBranching::LocalBranching(const LocalBranching& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),

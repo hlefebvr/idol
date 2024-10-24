@@ -10,11 +10,11 @@
 #include <OsiCpxSolverInterface.hpp>
 #include <fcntl.h>
 #include <filesystem>
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h"
-#include "idol/modeling/bilevel-optimization/write_to_file.h"
-#include "idol/utils/Finally.h"
-#include "idol/utils/SilentMode.h"
-#include "idol/utils/uuid.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
+#include "idol/bilevel/modeling/write_to_file.h"
+#include "idol/general/utils/Finally.h"
+#include "idol/general/utils/SilentMode.h"
+#include "idol/general/utils/uuid.h"
 
 #ifdef _WIN32
 #define DEV_NULL "NUL"

@@ -1,9 +1,9 @@
 //
 // Created by henri on 18.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeInfo.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/Optimizers_BranchAndBound.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeUpdator.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h"
 
 idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
 idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {

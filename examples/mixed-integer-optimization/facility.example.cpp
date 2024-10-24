@@ -3,14 +3,14 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/problems/facility-location-problem/FLP_Instance.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include "idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/KnapsackCover.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 

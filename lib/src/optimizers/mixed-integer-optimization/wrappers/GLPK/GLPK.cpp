@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.h"
-#include "idol/errors/Exception.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+#include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::GLPK::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_GLPK

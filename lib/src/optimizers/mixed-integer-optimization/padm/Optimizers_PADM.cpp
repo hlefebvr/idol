@@ -2,8 +2,8 @@
 // Created by henri on 18.09.24.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h"
-#include "idol/optimizers/logs.h"
+#include "idol/mixed-integer/optimizers/padm/Optimizers_PADM.h"
+#include "idol/general/optimizers/logs.h"
 
 #include <utility>
 #include <fstream>

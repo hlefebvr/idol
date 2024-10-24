@@ -2,9 +2,9 @@
 // Created by henri on 06/04/23.
 //
 #include <iostream>
-#include "idol/problems/knapsack-problem/KP_Instance.h"
+#include "idol/mixed-integer/problems/knapsack-problem/KP_Instance.h"
 #include "idol/modeling.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 
 using namespace idol;
 
@@ -33,6 +33,7 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << "Objective value = " << model.get_best_obj() << std::endl;
 
+    std::cout << "Solution:\n";
     std::cout << save_primal(model) << std::endl;
 
     return 0;

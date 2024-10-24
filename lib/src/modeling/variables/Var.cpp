@@ -1,8 +1,8 @@
 //
 // Created by henri on 30/01/23.
 //
-#include "idol/modeling//variables/Var.h"
-#include "idol/modeling//objects/Env.h"
+#include "idol/mixed-integer/modeling/variables/Var.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::Var::Var(Env &t_env, double t_lb, double t_ub, VarType t_type, Column &&t_column, std::string t_name)
         : Object<VarVersion, Var>(t_env.create_var(std::move(t_name), TempVar(t_lb, t_ub, t_type, std::move(t_column)))) {

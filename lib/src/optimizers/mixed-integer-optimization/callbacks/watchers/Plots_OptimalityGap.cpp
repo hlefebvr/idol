@@ -1,8 +1,8 @@
 //
 // Created by henri on 23.10.24.
 //
-#include "idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h"
-#include "idol/optimizers/Timer.h"
+#include "idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h"
+#include "idol/general/optimizers/Timer.h"
 
 #ifdef IDOL_USE_ROOT
 #include <TCanvas.h>

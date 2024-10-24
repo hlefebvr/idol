@@ -1,7 +1,7 @@
 //
 // Created by henri on 21.10.24.
 //
-#include "idol/utils/uuid.h"
+#include "idol/general/utils/uuid.h"
 
 std::string idol::generate_uuid_v4() {
     std::random_device rd;

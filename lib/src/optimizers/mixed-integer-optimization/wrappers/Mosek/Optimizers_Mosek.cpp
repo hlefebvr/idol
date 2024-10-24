@@ -1,8 +1,8 @@
 #ifdef IDOL_USE_MOSEK
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.h"
-#include "idol/linear-algebra/to_rotated_quadratic_cone.h"
-#include "idol/modeling//expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h"
+#include "idol/general/linear-algebra/to_rotated_quadratic_cone.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 #ifdef IDOL_USE_EIGEN
 #include <Eigen/Sparse>

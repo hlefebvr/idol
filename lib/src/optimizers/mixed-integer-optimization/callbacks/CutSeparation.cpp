@@ -2,8 +2,8 @@
 // Created by henri on 11/04/23.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/CutSeparation.h"
-#include "idol/modeling//expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/CutSeparation.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
                                    Model *t_separation_problem,

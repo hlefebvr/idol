@@ -1,7 +1,7 @@
 //
 // Created by henri on 26/10/22.
 //
-#include "idol/modeling/expressions/operations/operators_Constant.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators_Constant.h"
 
 using namespace idol;
 

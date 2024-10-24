@@ -4,11 +4,11 @@
 
 #ifdef IDOL_USE_MIBS
 
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h"
-#include "idol/modeling/objects/Versions.h"
-#include "idol/utils/SilentMode.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h"
+#include "idol/mixed-integer/modeling/objects/Versions.h"
+#include "idol/general/utils/SilentMode.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h"
 
 #include <utility>
 #include <OsiSymSolverInterface.hpp>

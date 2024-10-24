@@ -5,7 +5,7 @@
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
 #include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 

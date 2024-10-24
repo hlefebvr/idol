@@ -5,10 +5,10 @@
 #include <idol/modeling.h>
 #include <idol/modeling/bilevel-optimization/LowerLevelDescription.h>
 #include <idol/modeling/models/KKT.h>
-#include <idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h>
-#include "idol/optimizers/mixed-integer-optimization/padm/PADM.h"
-#include "idol/optimizers/mixed-integer-optimization/padm/SubProblem.h"
-#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
+#include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
+#include "idol/mixed-integer/optimizers/padm/PADM.h"
+#include "idol/mixed-integer/optimizers/padm/SubProblem.h"
+#include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 
 int main(int t_argc, const char** t_argv) {
 

@@ -4,9 +4,9 @@
 #include <iostream>
 #include "idol/modeling.h"
 #include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace idol;
 

@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.h"
-#include "idol/errors/Exception.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h"
+#include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::Mosek::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_MOSEK

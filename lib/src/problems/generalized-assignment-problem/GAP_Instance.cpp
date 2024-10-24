@@ -1,7 +1,7 @@
 //
 // Created by henri on 12/10/22.
 //
-#include "idol/problems/generalized-assignment-problem/GAP_Instance.h"
+#include "idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h"
 #include <cassert>
 #include <fstream>
 #include <random>

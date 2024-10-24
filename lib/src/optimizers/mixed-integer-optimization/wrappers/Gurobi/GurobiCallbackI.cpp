@@ -4,8 +4,8 @@
 
 #ifdef IDOL_USE_GUROBI
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/GurobiCallbackI.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/GurobiCallbackI.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 
 idol::GurobiCallbackI::GurobiCallbackI(Optimizers::Gurobi &t_parent) : m_parent(t_parent) {
 

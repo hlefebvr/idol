@@ -3,8 +3,8 @@
 //
 #ifdef IDOL_USE_GUROBI
 
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 #define GUROBI_CATCH(cmd) \
 try { \

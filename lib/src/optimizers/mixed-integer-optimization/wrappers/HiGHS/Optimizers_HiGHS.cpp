@@ -2,8 +2,8 @@
 // Created by henri on 14/02/23.
 //
 #include <csignal>
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/Optimizers_HiGHS.h"
-#include "idol/optimizers/Algorithm.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+#include "idol/general/optimizers/Algorithm.h"
 
 #ifdef IDOL_USE_HIGHS
 

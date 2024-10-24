@@ -1,8 +1,8 @@
 //
 // Created by henri on 19.06.24.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h"
 
 #ifdef IDOL_USE_MOSEK
 

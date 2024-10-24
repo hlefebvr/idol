@@ -1,8 +1,8 @@
 //
 // Created by henri on 01.11.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::DantzigWolfe::ArtificialCosts::Strategy::Strategy(double t_initial_costs,
                                                         double t_update_factor,

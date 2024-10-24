@@ -3,9 +3,9 @@
 //
 #include <utility>
 
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Formulation.h"
-#include "idol/modeling/objects/Env.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formulation,
                                              idol::Annotation<idol::Ctr, unsigned int> t_ctr_decomposition,

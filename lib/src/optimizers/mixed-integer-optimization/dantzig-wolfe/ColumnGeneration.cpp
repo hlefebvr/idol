@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/ColumnGeneration.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::ColumnGeneration(DantzigWolfeDecomposition &t_parent,
                                                                                 bool t_use_farkas_for_infeasibility,

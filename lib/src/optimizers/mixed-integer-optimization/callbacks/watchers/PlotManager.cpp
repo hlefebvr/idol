@@ -1,7 +1,7 @@
 //
 // Created by henri on 22.10.24.
 //
-#include "idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h"
+#include "idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h"
 
 #ifdef IDOL_USE_ROOT
 #include <TSystem.h>

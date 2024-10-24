@@ -1,245 +1,244 @@
 add_library(idol STATIC
-        include/idol/modeling/numericals.h
-        include/idol/utils/Optional.h
-        include/idol/utils/Map.h
+        include/idol/general/numericals.h
+        include/idol/general/utils/Optional.h
+        include/idol/general/utils/Map.h
         include/idol/modeling.h
-        include/idol/modeling/parameters/Param.h
-        include/idol/modeling/Types.h
-        include/idol/modeling/expressions/Constant.h
+        include/idol/mixed-integer/modeling/parameters/Param.h
+        include/idol/mixed-integer/modeling/Types.h
+        include/idol/mixed-integer/modeling/expressions/Constant.h
         src/modeling/expressions/Constant.cpp
-        include/idol/modeling/matrix/AbstractMatrixCoefficient.h
-        include/idol/modeling/matrix/MatrixCoefficientReference.h
-        include/idol/modeling/matrix/MatrixCoefficient.h
+        include/idol/mixed-integer/modeling/matrix/AbstractMatrixCoefficient.h
+        include/idol/mixed-integer/modeling/matrix/MatrixCoefficientReference.h
+        include/idol/mixed-integer/modeling/matrix/MatrixCoefficient.h
         src/modeling/matrix/MatrixCoefficient.cpp
         src/modeling/matrix/MatrixCoefficientReference.cpp
-        include/idol/modeling/constraints/TempCtr.h
+        include/idol/mixed-integer/modeling/constraints/TempCtr.h
         src/modeling/constraints/TempCtr.cpp
-        include/idol/utils/IteratorForward.h
-        include/idol/modeling/variables/TempVar.h
-        include/idol/utils/Set.h
-        include/idol/errors/NotImplemented.h
-        include/idol/modeling/expressions/LinExpr.h
-        include/idol/modeling/matrix/Row.h
+        include/idol/general/utils/IteratorForward.h
+        include/idol/mixed-integer/modeling/variables/TempVar.h
+        include/idol/general/utils/Set.h
+        include/idol/general/utils/exceptions/NotImplemented.h
+        include/idol/mixed-integer/modeling/expressions/LinExpr.h
+        include/idol/mixed-integer/modeling/matrix/Row.h
         src/modeling/matrix/Row.cpp
         src/modeling/matrix/Column.cpp
-        include/idol/modeling/matrix/Column.h
-        include/idol/modeling/matrix/Matrix.h
+        include/idol/mixed-integer/modeling/matrix/Column.h
+        include/idol/mixed-integer/modeling/matrix/Matrix.h
         src/modeling/matrix/Matrix.cpp
         src/problems/generalized-assignment-problem/GAP_Instance.cpp
-        include/idol/problems/knapsack-problem/KP_Instance.h
+        include/idol/mixed-integer/problems/knapsack-problem/KP_Instance.h
         src/problems/knapsack-problem/KP_Instance.cpp
-        include/idol/problems/multiple-knapsack-problem/MKP_Instance.h
+        include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
         src/problems/multiple-knapsack-problem/MKP_Instance.cpp
-        include/idol/modeling/expressions/Expr.h
-        include/idol/modeling/expressions/operations/operators_Var.h
+        include/idol/mixed-integer/modeling/expressions/Expr.h
+        include/idol/mixed-integer/modeling/expressions/operations/operators_Var.h
         src/modeling/expressions/operations/operators_Var.cpp
         src/modeling/expressions/operations/operators_Ctr.cpp
         src/modeling/expressions/operations/operators_Constant.cpp
-        include/idol/modeling/expressions/operations/operators_Constant.h
-        include/idol/modeling/expressions/operations/operators_Ctr.h
-        include/idol/modeling/expressions/operations/operators.h
-        include/idol/problems/multiple-knapsack-problem/MKP_Instance.h
+        include/idol/mixed-integer/modeling/expressions/operations/operators_Constant.h
+        include/idol/mixed-integer/modeling/expressions/operations/operators_Ctr.h
+        include/idol/mixed-integer/modeling/expressions/operations/operators.h
+        include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
         src/problems/multiple-knapsack-problem/MKP_Instance.cpp
         src/problems/facility-location-problem/FLP_Instance.cpp
-        include/idol/problems/facility-location-problem/FLP_Instance.h
-        include/idol/problems/helpers/distances.h
-        include/idol/problems/helpers/parse_delimited.h
-        include/idol/modeling/expressions/operations/operators_utils.h
-        include/idol/modeling/expressions/QuadExpr.h
-        include/idol/modeling/expressions/AbstractExpr.h
-        include/idol/modeling/models/Model.h
-        include/idol/modeling/objects/Env.h
-        include/idol/modeling/variables/Var.h
+        include/idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h
+        include/idol/mixed-integer/problems/helpers/distances.h
+        include/idol/mixed-integer/problems/helpers/parse_delimited.h
+        include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h
+        include/idol/mixed-integer/modeling/expressions/QuadExpr.h
+        include/idol/mixed-integer/modeling/expressions/AbstractExpr.h
+        include/idol/mixed-integer/modeling/models/Model.h
+        include/idol/mixed-integer/modeling/objects/Env.h
+        include/idol/mixed-integer/modeling/variables/Var.h
         src/modeling/objects/Env.cpp
-        include/idol/modeling/variables/VarVersion.h
-        include/idol/modeling/objects/Versions.h
-        include/idol/modeling/objects/Object.h
-        include/idol/modeling/objects/ObjectId.h
+        include/idol/mixed-integer/modeling/variables/VarVersion.h
+        include/idol/mixed-integer/modeling/objects/Versions.h
+        include/idol/mixed-integer/modeling/objects/Object.h
+        include/idol/mixed-integer/modeling/objects/ObjectId.h
         src/modeling/models/Model.cpp
-        include/idol/modeling/constraints/Ctr.h
-        include/idol/modeling/constraints/CtrVersion.h
-        include/idol/modeling/objects/Version.h
+        include/idol/mixed-integer/modeling/constraints/Ctr.h
+        include/idol/mixed-integer/modeling/constraints/CtrVersion.h
+        include/idol/mixed-integer/modeling/objects/Version.h
         src/modeling/variables/Var.cpp
         src/modeling/constraints/Ctr.cpp
-        include/idol/optimizers/Optimizer.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/OptimizerWithLazyUpdates.h
+        include/idol/general/optimizers/Optimizer.h
+        include/idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h
+        include/idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h
         src/optimizers/mixed-integer-optimization/wrappers/Gurobi/Optimizers_Gurobi.cpp
         src/optimizers/Optimizer.cpp
-        include/idol/optimizers/Algorithm.h
+        include/idol/general/optimizers/Algorithm.h
         src/optimizers/Algorithm.cpp
         src/optimizers/Timer.cpp
-        include/idol/modeling/annotations/Annotation.h
+        include/idol/mixed-integer/modeling/annotations/Annotation.h
         src/modeling/annotations/impl_Annotation.cpp
-        include/idol/modeling/annotations/impl_Annotation.h
-        include/idol/modeling/models/Model.h
-        include/idol/utils/GeneratorPool.h
-        include/idol/utils/types.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.h
+        include/idol/mixed-integer/modeling/annotations/impl_Annotation.h
+        include/idol/mixed-integer/modeling/models/Model.h
+        include/idol/general/utils/GeneratorPool.h
+        include/idol/general/utils/types.h
+        include/idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h
         include/idol/solvers.h
         src/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.h
+        include/idol/mixed-integer/optimizers/wrappers/Mosek/Optimizers_Mosek.h
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/Optimizers_Mosek.cpp
-        include/idol/linear-algebra/MatrixIndices.h
-        include/idol/linear-algebra/SquareMatrix.h
-        include/idol/linear-algebra/to_rotated_quadratic_cone.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/Optimizers_BranchAndBound.h
-        include/idol/optimizers/OptimizerFactory.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/BranchAndBound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/DepthFirst.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/BranchingRule.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/Node.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/NodeUpdator.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/DepthFirst.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BreadthFirst.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/WorstBound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BestBound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/WorstBound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/BestBound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/BreadthFirst.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.h
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.h
+        include/idol/general/linear-algebra/MatrixIndices.h
+        include/idol/general/linear-algebra/SquareMatrix.h
+        include/idol/general/linear-algebra/to_rotated_quadratic_cone.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/Optimizers_BranchAndBound.h
+        include/idol/general/optimizers/OptimizerFactory.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingRuleFactory.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/NodeSelectionRuleFactory.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingRule.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/NodeSelectionRule.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/Node.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/NodeUpdator.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/DepthFirst.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/WorstBound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/WorstBound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestBound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BreadthFirst.h
+        include/idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h
+        include/idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h
+        include/idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h
         src/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.cpp
         src/optimizers/mixed-integer-optimization/wrappers/GLPK/GLPK.cpp
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/Mosek.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/heuristics/IntegerMaster.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallbackFactory.h
+        include/idol/mixed-integer/optimizers/callbacks/heuristics/IntegerMaster.h
         src/optimizers/mixed-integer-optimization/wrappers/Gurobi/GurobiCallbackI.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/Callback.h
+        include/idol/mixed-integer/optimizers/callbacks/Callback.h
         src/optimizers/mixed-integer-optimization/callbacks/Callback.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/CutSeparation.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/CutSeparation.h
         src/optimizers/mixed-integer-optimization/callbacks/CutSeparation.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/LazyCutCallback.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/UserCutCallback.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/CallbackFactory.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/callbacks/BranchAndBoundCallback.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h
-        include/idol/problems/staff-rostering-problem/SRP_Instance.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/UserCutCallback.h
+        include/idol/mixed-integer/optimizers/callbacks/CallbackFactory.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/BranchAndBoundCallback.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/AbstractBranchAndBoundCallbackI.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/callbacks/CallbackAsBranchAndBoundCallback.h
+        include/idol/mixed-integer/problems/staff-rostering-problem/SRP_Instance.h
         src/problems/staff-rostering-problem/SRP_Instance.cpp
-        src/modeling/numericals.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/heuristics/SimpleRounding.h
+        include/idol/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.h
         src/optimizers/mixed-integer-optimization/callbacks/heuristics/SimpleRounding.cpp
         src/modeling/expressions/operations/operators.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/heuristics/RENS.h
+        include/idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h
         src/optimizers/mixed-integer-optimization/callbacks/heuristics/RENS.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/heuristics/LocalBranching.h
+        include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h
         src/optimizers/mixed-integer-optimization/callbacks/heuristics/LocalBranching.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/VariableBranching.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/VariableBranching.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/MostInfeasible.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/MostInfeasible.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/LeastInfeasible.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/LeastInfeasible.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/UniformlyRandom.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/UniformlyRandom.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/StrongBranching.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/StrongBranching.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/NodeScoreFunction.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/VariableBranching.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/VariableBranching.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/MostInfeasible.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/LeastInfeasible.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/LeastInfeasible.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/UniformlyRandom.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/FirstInfeasibleFound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/FirstInfeasibleFound.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/StrongBranching.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/NodeScoreFunction.h
         src/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/StrongBranching.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/strong-branching/StrongBranchingPhase.h
         src/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/StrongBranchingPhase.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/PseudoCost.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/PseudoCost.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeInfo.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeUpdator.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/PseudoCost.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeInfo.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h
         src/optimizers/mixed-integer-optimization/branch-and-bound/nodes/DefaultNodeInfo.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h
+        include/idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h
         src/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.cpp
         src/optimizers/mixed-integer-optimization/wrappers/HiGHS/Optimizers_HiGHS.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/factories/BestEstimate.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/node-selection-rules/impls/BestEstimate.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/Diver.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/Diver.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/impls/BestEstimate.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/Diver.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/Diver.h
+        include/idol/mixed-integer/optimizers/callbacks/watchers/ExportBranchAndBoundTreeToCSV.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/DantzigWolfeDecomposition.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/SubProblem.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/SubProblem.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/SubProblem.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Formulation.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/Formulation.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/Formulation.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/ColumnGeneration.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/ColumnGeneration.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.cpp
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Neame.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/Wentges.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/stabilization/NoStabilization.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/DualPriceSmoothingStabilization.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Wentges.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.cpp
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Factory.h
-        include/idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Factory.h
+        include/idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h
         src/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.cpp
-        include/idol/optimizers/logs.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/factories/BranchingWithPriority.h
+        include/idol/general/optimizers/logs.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/BranchingWithPriority.h
         src/optimizers/logs.cpp
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/nodes/BranchingDecision.h
-        include/idol/utils/Pair.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/KnapsackCover.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Factory.h
-        include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Info.h
-        include/idol/utils/Finally.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/branching-rules/impls/BranchingWithPriority.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/nodes/BranchingDecision.h
+        include/idol/general/utils/Pair.h
+        include/idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/logs/Factory.h
+        include/idol/mixed-integer/optimizers/branch-and-bound/logs/Info.h
+        include/idol/general/utils/Finally.h
         src/optimizers/bilevel-optimization/wrappers/MibS/MibS.cpp
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h
+        include/idol/bilevel/optimizers/wrappers/MibS/MibS.h
         src/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.cpp
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/Optimizers_MibS.h
+        include/idol/bilevel/optimizers/wrappers/MibS/Optimizers_MibS.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.cpp
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromAPI.h
+        include/idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromAPI.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/OsiIdolSolverInterface.h
+        include/idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h
+        include/idol/mixed-integer/optimizers/wrappers/Osi/Osi.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.h
-        include/idol/modeling/bilevel-optimization/read_from_file.h
+        include/idol/mixed-integer/optimizers/wrappers/Osi/Optimizers_Osi.h
+        include/idol/bilevel/modeling/read_from_file.h
         src/modeling/bilevel-optimization/read_from_file.cpp
-        include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.h
+        include/idol/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.h
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.cpp
-        include/idol/modeling/bilevel-optimization/LowerLevelDescription.h
-        include/idol/modeling/bilevel-optimization/write_to_file.h
+        include/idol/bilevel/modeling/LowerLevelDescription.h
+        include/idol/bilevel/modeling/write_to_file.h
         src/modeling/bilevel-optimization/write_to_file.cpp
-        include/idol/utils/LimitedWidthStream.h
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.h
+        include/idol/general/utils/LimitedWidthStream.h
+        include/idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
-        include/idol/utils/SilentMode.h
-        include/idol/modeling/robust-optimization/StageDescription.h
-        include/idol/modeling/models/KKT.h
+        include/idol/general/utils/SilentMode.h
+        include/idol/robust/modeling/StageDescription.h
+        include/idol/mixed-integer/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
         src/optimizers/mixed-integer-optimization/padm/PADM.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/PADM.h
+        include/idol/mixed-integer/optimizers/padm/PADM.h
         src/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h
+        include/idol/mixed-integer/optimizers/padm/Optimizers_PADM.h
         src/optimizers/mixed-integer-optimization/padm/Formulation.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/Formulation.h
+        include/idol/mixed-integer/optimizers/padm/Formulation.h
         src/optimizers/mixed-integer-optimization/padm/SubProblem.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/SubProblem.h
+        include/idol/mixed-integer/optimizers/padm/SubProblem.h
         src/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h
+        include/idol/mixed-integer/optimizers/padm/PenaltyUpdates.h
         src/optimizers/mixed-integer-optimization/padm/PenaltyMethod.cpp
-        include/idol/optimizers/mixed-integer-optimization/padm/PenaltyMethod.h
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/impl_MibS.h
-        include/idol/utils/uuid.h
+        include/idol/mixed-integer/optimizers/padm/PenaltyMethod.h
+        include/idol/bilevel/optimizers/wrappers/MibS/impl_MibS.h
+        include/idol/general/utils/uuid.h
         src/containers/uuid.cpp
-        include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibSCallbackI.h
-        include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.h
+        include/idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h
+        include/idol/mixed-integer/optimizers/callbacks/watchers/PlotManager.h
         src/optimizers/mixed-integer-optimization/callbacks/watchers/PlotManager.cpp
-        include/idol/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.h
+        include/idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h
         src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
-        include/idol/utils/SparseVector.h
-        include/idol/utils/sort.h
-        include/idol/utils/Point.h
+        include/idol/general/utils/SparseVector.h
+        include/idol/general/utils/sort.h
+        include/idol/general/utils/Point.h
 )
 
 find_package(OpenMP REQUIRED)

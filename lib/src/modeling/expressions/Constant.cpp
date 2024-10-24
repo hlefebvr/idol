@@ -1,9 +1,9 @@
 //
 // Created by henri on 07/09/22.
 //
-#include "idol/modeling/expressions/Constant.h"
-#include "idol/modeling/numericals.h"
-#include "idol/utils/Point.h"
+#include "idol/mixed-integer/modeling/expressions/Constant.h"
+#include "idol/general/numericals.h"
+#include "idol/general/utils/Point.h"
 #include <memory>
 
 idol::Constant idol::Constant::Zero;

@@ -1,7 +1,7 @@
 //
 // Created by henri on 26/10/22.
 //
-#include "idol/modeling/expressions/operations/operators_Var.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators_Var.h"
 
 using namespace idol;
 

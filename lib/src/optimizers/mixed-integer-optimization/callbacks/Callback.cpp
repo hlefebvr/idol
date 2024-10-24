@@ -1,8 +1,8 @@
 //
 // Created by henri on 12/04/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/callbacks/Callback.h"
-#include "idol/optimizers/Timer.h"
+#include "idol/mixed-integer/optimizers/callbacks/Callback.h"
+#include "idol/general/optimizers/Timer.h"
 
 void idol::Callback::add_user_cut(const TempCtr &t_cut) {
     throw_if_no_interface();

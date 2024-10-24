@@ -1,7 +1,7 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/DantzigWolfeInfeasibilityStrategy.h"
 
 const idol::PrimalPoint &idol::DantzigWolfe::InfeasibilityStrategyFactory::Strategy::primal_solution() const {
 

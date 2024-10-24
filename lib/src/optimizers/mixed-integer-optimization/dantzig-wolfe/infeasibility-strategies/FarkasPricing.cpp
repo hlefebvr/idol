@@ -1,8 +1,8 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/ColumnGeneration.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/ColumnGeneration.h"
 
 void idol::DantzigWolfe::FarkasPricing::Strategy::execute(Optimizers::DantzigWolfeDecomposition &t_parent) {
 

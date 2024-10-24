@@ -1,8 +1,8 @@
 //
 // Created by henri on 06.11.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/logs/Info.h"
-#include "idol/optimizers/logs.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h"
+#include "idol/general/optimizers/logs.h"
 
 #define DOUBLE_PRECISION 5
 

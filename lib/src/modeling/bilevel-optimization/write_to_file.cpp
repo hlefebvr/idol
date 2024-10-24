@@ -2,8 +2,8 @@
 // Created by henri on 20.06.24.
 //
 
-#include "idol/modeling/bilevel-optimization/write_to_file.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/Gurobi/Gurobi.h"
+#include "idol/bilevel/modeling/write_to_file.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 
 using namespace idol;
 

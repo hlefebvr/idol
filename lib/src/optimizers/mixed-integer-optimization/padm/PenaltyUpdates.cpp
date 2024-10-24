@@ -2,7 +2,7 @@
 // Created by henri on 19.09.24.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
+#include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 
 void idol::PenaltyUpdate::operator()(std::list<ADM::Formulation::CurrentPenalty> &t_current_penalties) {
 

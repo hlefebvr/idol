@@ -2,8 +2,8 @@
 // Created by henri on 30.08.24.
 //
 
-#include "idol/modeling/models/KKT.h"
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,
                               const idol::Bilevel::LowerLevelDescription &t_lower_level_description)

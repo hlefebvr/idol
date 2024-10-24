@@ -1,9 +1,9 @@
 //
 // Created by henri on 27/03/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/HiGHS.h"
-#include "idol/optimizers/mixed-integer-optimization/wrappers/HiGHS/Optimizers_HiGHS.h"
-#include "idol/errors/Exception.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/Optimizers_HiGHS.h"
+#include "idol/general/utils/exceptions/Exception.h"
 
 idol::Optimizer *idol::HiGHS::operator()(const Model &t_model) const {
 #ifdef IDOL_USE_HIGHS

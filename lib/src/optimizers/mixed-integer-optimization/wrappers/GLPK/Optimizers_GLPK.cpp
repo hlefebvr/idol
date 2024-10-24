@@ -1,10 +1,10 @@
 //
 // Created by henri on 14/02/23.
 //
-#include "idol/optimizers/mixed-integer-optimization/wrappers/GLPK/Optimizers_GLPK.h"
-#include "idol/optimizers/Algorithm.h"
-#include "idol/modeling/expressions/operations/operators.h"
-#include "idol/utils/Finally.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/Optimizers_GLPK.h"
+#include "idol/general/optimizers/Algorithm.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/utils/Finally.h"
 
 #ifdef IDOL_USE_GLPK
 

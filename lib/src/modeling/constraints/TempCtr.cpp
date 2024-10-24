@@ -1,9 +1,9 @@
 //
 // Created by henri on 08/09/22.
 //
-#include "idol/modeling/constraints/TempCtr.h"
-#include "idol/utils/Point.h"
-#include "idol/modeling/expressions/LinExpr.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/general/utils/Point.h"
+#include "idol/mixed-integer/modeling/expressions/LinExpr.h"
 
 using namespace idol;
 

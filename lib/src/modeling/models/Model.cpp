@@ -1,8 +1,8 @@
 //
 // Created by henri on 27/01/23.
 //
-#include "idol/modeling//models/Model.h"
-#include "idol/modeling//objects/Env.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::Model::Model(Env &t_env) : m_env(t_env), m_id(t_env.create_model_id()) {}
 

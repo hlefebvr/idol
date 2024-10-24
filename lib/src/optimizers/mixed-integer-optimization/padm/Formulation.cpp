@@ -2,10 +2,10 @@
 // Created by henri on 18.09.24.
 //
 
-#include "idol/optimizers/mixed-integer-optimization/padm/Formulation.h"
-#include "idol/modeling/objects/Versions.h"
-#include "idol/modeling/expressions/operations/operators.h"
-#include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
+#include "idol/mixed-integer/optimizers/padm/Formulation.h"
+#include "idol/mixed-integer/modeling/objects/Versions.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 
 #include <utility>
 

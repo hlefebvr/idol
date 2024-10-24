@@ -1,8 +1,8 @@
 //
 // Created by henri on 31/01/23.
 //
-#include "idol/optimizers/Optimizer.h"
-#include "idol/modeling//models/Model.h"
+#include "idol/general/optimizers/Optimizer.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
 
 idol::impl::Optimizer::Optimizer(const Model &t_parent) : m_parent(t_parent) {
 

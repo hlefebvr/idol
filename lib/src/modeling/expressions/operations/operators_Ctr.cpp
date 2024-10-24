@@ -2,7 +2,7 @@
 // Created by henri on 26/10/22.
 //
 
-#include "idol/modeling/expressions/operations/operators_Ctr.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators_Ctr.h"
 
 using namespace idol;
 

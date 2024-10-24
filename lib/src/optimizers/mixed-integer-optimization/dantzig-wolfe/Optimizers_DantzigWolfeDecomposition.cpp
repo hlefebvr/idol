@@ -1,8 +1,8 @@
 //
 // Created by henri on 31.10.23.
 //
-#include "idol/optimizers/mixed-integer-optimization/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
-#include "idol/modeling/objects/Versions.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/Optimizers_DantzigWolfeDecomposition.h"
+#include "idol/mixed-integer/modeling/objects/Versions.h"
 
 idol::Optimizers::DantzigWolfeDecomposition::DantzigWolfeDecomposition(const Model& t_model,
                                                                        idol::DantzigWolfe::Formulation &&t_formulation,

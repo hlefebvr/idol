@@ -1,8 +1,8 @@
 //
 // Created by henri on 30/01/23.
 //
-#include "idol/modeling//constraints/Ctr.h"
-#include "idol/modeling//objects/Env.h"
+#include "idol/mixed-integer/modeling/constraints/Ctr.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::Ctr::Ctr(Env &t_env, TempCtr &&t_temp_ctr, std::string t_name) : Object<CtrVersion, Ctr>(t_env.create_ctr(std::move(t_name), std::move(t_temp_ctr))) {
 
