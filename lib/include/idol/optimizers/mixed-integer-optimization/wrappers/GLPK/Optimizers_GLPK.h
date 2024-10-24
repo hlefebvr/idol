@@ -28,8 +28,8 @@ class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int> {
 
     SolutionStatus m_solution_status = Loaded;
     SolutionReason m_solution_reason = NotSpecified;
-    std::optional<Solution::Primal> m_unbounded_ray;
-    std::optional<Solution::Dual> m_farkas_certificate;
+    std::optional<PrimalPoint> m_unbounded_ray;
+    std::optional<DualPoint> m_farkas_certificate;
 
     std::stack<int> m_deleted_variables;
     std::stack<int> m_deleted_constraints;

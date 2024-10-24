@@ -15,8 +15,6 @@ add_library(idol STATIC
         include/idol/modeling/constraints/TempCtr.h
         src/modeling/constraints/TempCtr.cpp
         include/idol/containers/IteratorForward.h
-        include/idol/modeling/solutions/AbstractSolution.h
-        include/idol/modeling/solutions/Solution.h
         include/idol/modeling/variables/TempVar.h
         include/idol/containers/Set.h
         include/idol/errors/NotImplemented.h
@@ -241,6 +239,7 @@ add_library(idol STATIC
         src/optimizers/mixed-integer-optimization/callbacks/watchers/Plots_OptimalityGap.cpp
         include/idol/modeling/sparse-matrix/SparseVector.h
         include/idol/containers/sort.h
+        include/idol/modeling/solutions/Point.h
 )
 
 find_package(OpenMP REQUIRED)

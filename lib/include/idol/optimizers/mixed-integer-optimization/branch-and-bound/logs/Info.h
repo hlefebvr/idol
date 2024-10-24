@@ -6,6 +6,7 @@
 #define IDOL_BRANCHANDBOUND_INFO_H
 
 #include "Factory.h"
+#include "idol/optimizers/logs.h"
 
 namespace idol::Logs::BranchAndBound {
     template<class NodeInfoT> class Info;

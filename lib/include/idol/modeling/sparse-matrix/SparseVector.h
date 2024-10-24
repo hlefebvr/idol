@@ -96,6 +96,41 @@ public:
     const std::vector<IndexT>& get_indices() const { return m_indices; }
 
     const std::vector<ValueT>& get_values() const { return m_values; }
+
+    class iterator {
+        unsigned int m_index;
+        SparseVector& m_vector;
+    public:
+        iterator(unsigned int t_index, SparseVector& t_vector) : m_index(t_index), m_vector(t_vector) {}
+        iterator& operator++() { ++m_index; return *this; }
+        [[nodiscard]] bool operator==(const iterator& t_other) const { return m_index == t_other.m_index; }
+        [[nodiscard]] bool operator!=(const iterator& t_other) const { return m_index != t_other.m_index; }
+        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector.index_at(m_index), m_vector.value_at(m_index)}; }
+    };
+
+    class const_iterator {
+        unsigned int m_index;
+        const SparseVector &m_vector;
+    public:
+        const_iterator(unsigned int t_index, const SparseVector &t_vector) : m_index(t_index), m_vector(t_vector) {}
+        const_iterator& operator++() { ++m_index; return *this; }
+        [[nodiscard]] bool operator==(const const_iterator& t_other) const { return m_index == t_other.m_index; }
+        [[nodiscard]] bool operator!=(const const_iterator& t_other) const { return m_index != t_other.m_index; }
+        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector.index_at(m_index), m_vector.value_at(m_index)}; }
+    };
+
+    [[nodiscard]] iterator begin() { return iterator(0, *this); }
+
+    [[nodiscard]] iterator end() { return iterator(size(), *this); }
+
+    [[nodiscard]] const_iterator begin() const { return const_iterator(0, *this); }
+
+    [[nodiscard]] const_iterator end() const { return const_iterator(size(), *this); }
+
+    [[nodiscard]] const_iterator cbegin() const { return const_iterator(0, *this); }
+
+    [[nodiscard]] const_iterator cend() const { return const_iterator(size(), *this); }
+
 };
 
 template<class IndexT, class ValueT, class IndexExtractorT>
@@ -202,7 +237,13 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
                     [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
             );
 
-            if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+            if (it == m_indices.end()) {
+                m_indices.emplace_back(t_index);
+                m_values.emplace_back(t_value);
+                return;
+            }
+
+            if (IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
                 m_indices.insert(it, t_index);
                 m_values.insert(m_values.begin() + (it - m_indices.begin()), t_value);
                 return;
@@ -271,7 +312,13 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
             [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
     );
 
-    if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+    if (it == m_indices.end()) {
+        m_indices.emplace_back(t_index);
+        m_values.emplace_back(t_value);
+        return;
+    }
+
+    if (IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
         m_indices.insert(it, t_index);
         m_values.insert(m_values.begin() + (it - m_indices.begin()), t_value);
         return;
@@ -596,17 +643,19 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::remove(const IndexT &t
 
 }
 
-template<class IndexT, class ValueT, class IndexExtractorT>
-std::ostream &operator<<(std::ostream &t_stream, const idol::SparseVector<IndexT, ValueT, IndexExtractorT> &t_vector) {
+namespace idol {
+    template<class IndexT, class ValueT, class IndexExtractorT>
+    static  std::ostream & operator<<(std::ostream &t_stream, const idol::SparseVector<IndexT, ValueT, IndexExtractorT> &t_vector) {
 
-    const auto& indices = t_vector.get_indices();
-    const auto& values = t_vector.get_values();
+        const auto &indices = t_vector.get_indices();
+        const auto &values = t_vector.get_values();
 
-    for (unsigned int i = 0, n = t_vector.size() ; i < n ; ++i) {
-        t_stream << indices[i] << ": " << values[i] << '\n';
+        for (unsigned int i = 0, n = t_vector.size(); i < n; ++i) {
+            t_stream << indices[i] << ": " << values[i] << '\n';
+        }
+
+        return t_stream;
     }
-
-    return t_stream;
 }
 
 #endif //IDOL_SPARSEVECTOR_H

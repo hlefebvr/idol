@@ -5,14 +5,14 @@
 #ifndef IDOL_GENERATORPOOL_H
 #define IDOL_GENERATORPOOL_H
 
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 #include <list>
 
 namespace idol {
     template<class KeyT, class ValueT> class GeneratorPool;
 }
 
-template<class KeyT, class ValueT = idol::Solution::Primal>
+template<class KeyT, class ValueT = idol::PrimalPoint>
 class idol::GeneratorPool {
     std::list<std::pair<KeyT, ValueT>> m_values;
 public:

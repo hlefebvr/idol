@@ -9,6 +9,7 @@
 #include "idol/modeling/parameters/Param.h"
 #include "idol/modeling/numericals.h"
 #include "idol/containers/IteratorForward.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol {
 
@@ -274,14 +275,14 @@ public:
      * @param t_primals Primal values associated to the stored `Param`
      * @return the resulting numerical
      */
-    double fix(const Solution::Primal& t_primals) const;
+    double fix(const PrimalPoint& t_primals) const;
 
     /**
      * Computes the resulting numerical by replacing each `Param`  by their corresponding values in `t_duals`.
      * @param t_primals Dual values associated to the stored `Param`
      * @return the resulting numerical
      */
-    double fix(const Solution::Dual& t_duals) const;
+    double fix(const DualPoint& t_duals) const;
 
     void round();
 

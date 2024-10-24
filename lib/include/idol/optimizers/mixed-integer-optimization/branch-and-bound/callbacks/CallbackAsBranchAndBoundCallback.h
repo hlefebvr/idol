@@ -46,13 +46,13 @@ public:
                 m_parent.add_lazy_cut(t_cut);
             }
 
-            void submit_heuristic_solution(Solution::Primal t_solution) override {
+            void submit_heuristic_solution(PrimalPoint t_solution) override {
                 auto* info = new NodeInfoT();
                 info->set_primal_solution(std::move(t_solution));
                 m_parent.submit_heuristic_solution(info);
             }
 
-            [[nodiscard]] Solution::Primal primal_solution() const override {
+            [[nodiscard]] PrimalPoint primal_solution() const override {
                 return m_parent.node().info().primal_solution();
             }
 

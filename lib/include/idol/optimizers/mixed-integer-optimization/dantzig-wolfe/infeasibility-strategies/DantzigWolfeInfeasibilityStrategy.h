@@ -6,7 +6,7 @@
 #define IDOL_DANTZIGWOLFEINFEASIBILITYSTRATEGY_H
 
 #include "idol/modeling/solutions/types.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol::Optimizers {
     class DantzigWolfeDecomposition;
@@ -25,7 +25,7 @@ public:
         SolutionReason m_reason = NotSpecified;
         std::optional<double> m_best_obj;
         std::optional<double> m_best_bound;
-        std::optional<Solution::Primal> m_primal_solution;
+        std::optional<PrimalPoint> m_primal_solution;
     public:
         virtual ~Strategy() = default;
 
@@ -39,13 +39,13 @@ public:
 
         double best_bound() const { return m_best_bound.value(); }
 
-        const Solution::Primal& primal_solution() const;
+        const PrimalPoint& primal_solution() const;
     protected:
         void set_status(SolutionStatus t_status) { m_status = t_status; }
 
         void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
 
-        void set_primal_solution(Solution::Primal t_solution) { m_primal_solution = std::move(t_solution); }
+        void set_primal_solution(PrimalPoint t_solution) { m_primal_solution = std::move(t_solution); }
 
         void set_best_obj(double t_best_obj) { m_best_obj = t_best_obj; }
 

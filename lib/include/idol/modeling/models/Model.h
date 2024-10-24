@@ -15,7 +15,7 @@
 #include "idol/modeling/constraints/CtrVersion.h"
 #include "idol/modeling/variables/VarVersion.h"
 #include "idol/modeling/expressions/Expr.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 #include "Model.h"
 
@@ -1224,7 +1224,7 @@ namespace idol {
 
     static auto save_primal(const Model &t_original_model, const Model &t_model) {
 
-        Solution::Primal result;
+        PrimalPoint result;
 
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();
@@ -1252,7 +1252,7 @@ namespace idol {
 
     static auto save_ray(const Model &t_original_model, const Model &t_model) {
 
-        Solution::Primal result;
+        PrimalPoint result;
 
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();
@@ -1280,7 +1280,7 @@ namespace idol {
 
     static auto save_dual(const Model &t_original_model, const Model &t_model) {
 
-        Solution::Dual result;
+        DualPoint result;
 
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();
@@ -1308,7 +1308,7 @@ namespace idol {
 
     static auto save_farkas(const Model &t_original_model, const Model &t_model) {
 
-        Solution::Dual result;
+        DualPoint result;
 
         const auto status = t_model.get_status();
         const auto reason = t_model.get_reason();

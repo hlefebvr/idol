@@ -29,7 +29,7 @@ const idol::OptimizerFactory &idol::ADM::SubProblem::optimizer_factory() const {
     return *m_optimizer_factory;
 }
 
-idol::ADM::SubProblem &idol::ADM::SubProblem::with_initial_point(const Solution::Primal &t_initial_point) {
+idol::ADM::SubProblem &idol::ADM::SubProblem::with_initial_point(const PrimalPoint &t_initial_point) {
 
     if (m_initial_point) {
         throw Exception("The initial point has already been set.");
@@ -40,6 +40,6 @@ idol::ADM::SubProblem &idol::ADM::SubProblem::with_initial_point(const Solution:
     return *this;
 }
 
-idol::Solution::Primal idol::ADM::SubProblem::initial_point() const {
-    return m_initial_point.has_value() ? *m_initial_point : Solution::Primal();
+idol::PrimalPoint idol::ADM::SubProblem::initial_point() const {
+    return m_initial_point.has_value() ? *m_initial_point : PrimalPoint();
 }

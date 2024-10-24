@@ -8,7 +8,7 @@
 #include <list>
 #include "BranchingRule.h"
 #include "idol/modeling/variables/Var.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol::BranchingRules {
     template<class>
@@ -80,7 +80,7 @@ public:
     }
 
 protected:
-    std::list<Var> get_invalid_variables(const Solution::Primal& t_primal_solution) {
+    std::list<Var> get_invalid_variables(const PrimalPoint& t_primal_solution) {
 
         std::list<Var> result;
 

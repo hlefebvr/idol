@@ -46,7 +46,7 @@ protected:
     virtual void set(const Key& t_key, double t_coefficient);
     virtual double get(const Key& t_key) const;
     virtual void remove(const Key& t_key);
-    void internal_fix(const Solution::Primal& t_primals);
+    void internal_fix(const PrimalPoint& t_primals);
 
     class References;
     References refs();
@@ -169,7 +169,7 @@ public:
 };
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::internal_fix(const idol::Solution::Primal &t_primals) {
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::internal_fix(const idol::PrimalPoint &t_primals) {
 
     for (auto& [key, ptr_to_value] : m_map) {
         ptr_to_value->value() = ptr_to_value->value().fix(t_primals);

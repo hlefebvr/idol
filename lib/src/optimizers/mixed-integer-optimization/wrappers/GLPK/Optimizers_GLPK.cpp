@@ -418,7 +418,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
     glp_simplex(m_model, &m_simplex_parameters);
 
     // Save dual values as Farkas certificate
-    m_farkas_certificate = Solution::Dual();
+    m_farkas_certificate = DualPoint();
     double objective_value = model.get_obj_expr().constant();
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
@@ -518,7 +518,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
     glp_simplex(m_model, &m_simplex_parameters);
 
     // Save ray
-    m_unbounded_ray = Solution::Primal();
+    m_unbounded_ray = PrimalPoint();
     const double objective_value = model.get_obj_expr().constant() + glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {

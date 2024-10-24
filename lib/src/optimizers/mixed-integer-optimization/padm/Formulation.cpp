@@ -256,7 +256,7 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_su
 }
 
 void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
-                                             const std::vector<Solution::Primal> &t_primals) {
+                                             const std::vector<PrimalPoint> &t_primals) {
 
     // Constraints
     for (const auto& [ctr, pattern] : m_constraint_patterns[t_sub_problem_id]) {
@@ -293,7 +293,7 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
 }
 
 double idol::ADM::Formulation::fix(const idol::Constant &t_constant,
-                                   const std::vector<Solution::Primal> &t_primals) {
+                                   const std::vector<PrimalPoint> &t_primals) {
     double result = t_constant.numerical();
 
     for (const auto& [param, coefficient] : t_constant.linear()) {
@@ -325,7 +325,7 @@ const idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) c
 }
 
 bool
-idol::ADM::Formulation::update_penalty_parameters(const std::vector<Solution::Primal> &t_primals,
+idol::ADM::Formulation::update_penalty_parameters(const std::vector<PrimalPoint> &t_primals,
                                                   PenaltyUpdate& t_penalty_update) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
@@ -417,7 +417,7 @@ void idol::ADM::Formulation::initialize_penalty_parameters(double t_value) {
 
 }
 
-void idol::ADM::Formulation::update_penalty_parameters_independently(const std::vector<Solution::Primal> &t_primals,
+void idol::ADM::Formulation::update_penalty_parameters_independently(const std::vector<PrimalPoint> &t_primals,
                                                                      idol::PenaltyUpdate &t_penalty_update) {
 
     for (unsigned int i = 0, n_sub_problems = m_sub_problems.size() ; i < n_sub_problems ; ++i) {

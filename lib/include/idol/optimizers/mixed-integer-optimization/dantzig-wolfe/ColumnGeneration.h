@@ -13,8 +13,8 @@ class idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration {
 
     SolutionStatus m_status = Loaded;
     SolutionReason m_reason = NotSpecified;
-    std::optional<Solution::Primal> m_master_primal_solution;
-    std::optional<Solution::Dual> m_last_master_solution;
+    std::optional<PrimalPoint> m_master_primal_solution;
+    std::optional<DualPoint> m_last_master_solution;
     std::vector<DantzigWolfe::SubProblem::PhaseId> m_sub_problems_phases;
     double m_best_obj = -Inf;
     double m_best_bound = +Inf;
@@ -55,7 +55,7 @@ public:
 
     double best_bound() const { return m_best_bound; }
 
-    const Solution::Primal& primal_solution() const { return m_master_primal_solution.value(); }
+    const PrimalPoint& primal_solution() const { return m_master_primal_solution.value(); }
 
     void set_best_bound_stop(double t_best_bound_stop) { m_best_bound_stop = t_best_bound_stop; }
 

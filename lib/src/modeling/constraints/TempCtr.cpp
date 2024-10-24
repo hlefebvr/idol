@@ -2,7 +2,7 @@
 // Created by henri on 08/09/22.
 //
 #include "idol/modeling/constraints/TempCtr.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 #include "idol/modeling/expressions/LinExpr.h"
 
 using namespace idol;
@@ -31,7 +31,7 @@ TempCtr operator==(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>
 TempCtr operator==(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) == Expr<Var>(t_rhs); }
 TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) == Expr<Var>(t_rhs); }
 
-bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
+bool TempCtr::is_violated(const PrimalPoint &t_solution) const {
     const double rhs = m_row.rhs();
     double lhs = 0.;
     for (const auto& [var, coeff] : m_row.linear()) {

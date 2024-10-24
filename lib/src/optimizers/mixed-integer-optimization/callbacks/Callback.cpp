@@ -20,7 +20,7 @@ void idol::Callback::throw_if_no_interface() const {
     }
 }
 
-idol::Solution::Primal idol::Callback::primal_solution() const {
+idol::PrimalPoint idol::Callback::primal_solution() const {
     throw_if_no_interface();
     return m_interface->primal_solution();
 }
@@ -35,7 +35,7 @@ const idol::Model &idol::Callback::original_model() const {
     return m_interface->original_model();
 }
 
-void idol::Callback::submit_heuristic_solution(const idol::Solution::Primal &t_solution) {
+void idol::Callback::submit_heuristic_solution(const idol::PrimalPoint &t_solution) {
     throw_if_no_interface();
     m_interface->submit_heuristic_solution(t_solution);
 }

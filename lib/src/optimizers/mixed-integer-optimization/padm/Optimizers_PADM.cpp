@@ -3,6 +3,7 @@
 //
 
 #include "idol/optimizers/mixed-integer-optimization/padm/Optimizers_PADM.h"
+#include "idol/optimizers/logs.h"
 
 #include <utility>
 #include <fstream>
@@ -202,7 +203,7 @@ void idol::Optimizers::PADM::hook_before_optimize() {
     m_last_iteration_with_no_feasibility_change.reset();
     m_last_objective_value_when_rescaled.reset();
     m_current_initial_penalty_parameter = m_initial_penalty_parameter;
-    m_last_solutions = std::vector<Solution::Primal>(n_sub_problems);
+    m_last_solutions = std::vector<PrimalPoint>(n_sub_problems);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
 
@@ -395,7 +396,7 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
         const auto& reason = model.get_reason();
 
-        Solution::Primal sub_problem_solution;
+        PrimalPoint sub_problem_solution;
         sub_problem_solution.set_status(status);
         sub_problem_solution.set_reason(reason);
         m_last_solutions[t_sub_problem_id] = std::move(sub_problem_solution);
@@ -456,7 +457,7 @@ void idol::Optimizers::PADM::log_inner_loop(unsigned int t_inner_loop_iteration)
     std::cout << std::endl;
 }
 
-double idol::Optimizers::PADM::infeasibility_linf(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const {
+double idol::Optimizers::PADM::infeasibility_linf(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const {
 
     double result = 0;
 
@@ -468,7 +469,7 @@ double idol::Optimizers::PADM::infeasibility_linf(unsigned int t_sub_problem_id,
     return result;
 }
 
-double idol::Optimizers::PADM::infeasibility_l1(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const {
+double idol::Optimizers::PADM::infeasibility_l1(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const {
 
     double result = 0;
 

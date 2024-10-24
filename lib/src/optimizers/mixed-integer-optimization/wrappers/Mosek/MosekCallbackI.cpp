@@ -67,11 +67,11 @@ void idol::MosekCallbackI::add_lazy_cut(const idol::TempCtr &t_cut) {
     throw Exception("Mosek does not support lazy cuts.");
 }
 
-void idol::MosekCallbackI::submit_heuristic_solution(idol::Solution::Primal t_solution) {
+void idol::MosekCallbackI::submit_heuristic_solution(idol::PrimalPoint t_solution) {
     throw Exception("Mosek does not support heuristic solutions.");
 }
 
-idol::Solution::Primal idol::MosekCallbackI::primal_solution() const {
+idol::PrimalPoint idol::MosekCallbackI::primal_solution() const {
     throw Exception("Mosek does not support accessing primal solutions in callback.");
 }
 

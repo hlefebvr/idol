@@ -69,7 +69,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 }
 
 std::pair<idol::Expr<idol::Var, idol::Var>, idol::ObjectiveSense>
-idol::impl::CutSeparation::create_separation_objective(const idol::Solution::Primal &t_primal_solution) {
+idol::impl::CutSeparation::create_separation_objective(const idol::PrimalPoint &t_primal_solution) {
 
     throw Exception("TODO: Was using Constant");
     /*

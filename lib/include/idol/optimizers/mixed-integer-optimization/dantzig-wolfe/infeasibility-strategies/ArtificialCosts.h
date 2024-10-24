@@ -30,8 +30,8 @@ public:
         void create_artificial_variables(DantzigWolfe::Formulation& t_formulation);
         void find_initial_columns(idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration &t_column_generation);
         void delete_artificial_variables(DantzigWolfe::Formulation& t_formulation);
-        bool all_artificial_variables_are_non_basic(const Solution::Primal &t_primal_values) const;
-        void update_objective_function(DantzigWolfe::Formulation& t_formulation, const Solution::Primal& t_primal_values, bool t_include_original_objective_function);
+        bool all_artificial_variables_are_non_basic(const PrimalPoint &t_primal_values) const;
+        void update_objective_function(DantzigWolfe::Formulation& t_formulation, const PrimalPoint& t_primal_values, bool t_include_original_objective_function);
         void restore_objective_function(DantzigWolfe::Formulation& t_formulation);
     public:
         Strategy(double t_initial_costs, double t_update_factor, unsigned int t_max_updates_before_phase_I);

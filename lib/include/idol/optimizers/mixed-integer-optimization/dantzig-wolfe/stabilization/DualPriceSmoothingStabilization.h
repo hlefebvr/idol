@@ -5,7 +5,7 @@
 #ifndef IDOL_DUALPRICESMOOTHINGSTABILIZATION_H
 #define IDOL_DUALPRICESMOOTHINGSTABILIZATION_H
 
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol::DantzigWolfe {
     class DualPriceSmoothingStabilization;
@@ -21,9 +21,9 @@ public:
 
         virtual void initialize() = 0;
 
-        virtual void update_stability_center(const Solution::Dual& t_master_dual) = 0;
+        virtual void update_stability_center(const DualPoint& t_master_dual) = 0;
 
-        virtual Solution::Dual compute_smoothed_dual_solution(const Solution::Dual& t_master_dual) = 0;
+        virtual DualPoint compute_smoothed_dual_solution(const DualPoint& t_master_dual) = 0;
     };
 
     virtual Strategy* operator()() const = 0;

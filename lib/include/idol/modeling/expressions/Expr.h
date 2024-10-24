@@ -38,7 +38,7 @@ protected:
 
     References refs() { return References(this); }
 
-    void internal_fix(const Solution::Primal& t_primals);
+    void internal_fix(const PrimalPoint& t_primals);
 public:
     Expr();
     Expr(double t_num); // NOLINT(google-explicit-constructor)
@@ -229,11 +229,11 @@ public:
     Expr& operator=(const Expr& t_rhs) = default;
     Expr& operator=(Expr&&) noexcept = default;
 
-    Expr fix(const Solution::Primal& t_primals) const;
+    Expr fix(const PrimalPoint& t_primals) const;
 };
 
 template<class Key1, class Key2>
-idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::fix(const Solution::Primal& t_primals) const {
+idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::fix(const PrimalPoint& t_primals) const {
     auto result = *this;
     result.internal_fix(t_primals);
     return result;

@@ -11,7 +11,7 @@
 #include "operators_utils.h"
 
 namespace idol {
-    double evaluate(const Expr<Var, Var>& t_expr, const Solution::Primal& t_values);
+    double evaluate(const Expr<Var, Var>& t_expr, const PrimalPoint& t_values);
 }
 
 #endif //IDOL_OPERATORS_H

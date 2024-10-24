@@ -83,7 +83,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::find_initial_columns(idol::O
         current_costs *= m_update_factor;
     }
 
-    update_objective_function(formulation, Solution::Primal(), false);
+    update_objective_function(formulation, PrimalPoint(), false);
 
     t_column_generation.execute();
 
@@ -154,7 +154,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::delete_artificial_variables(
 
 }
 
-bool idol::DantzigWolfe::ArtificialCosts::Strategy::all_artificial_variables_are_non_basic(const Solution::Primal &t_primal_values) const {
+bool idol::DantzigWolfe::ArtificialCosts::Strategy::all_artificial_variables_are_non_basic(const PrimalPoint &t_primal_values) const {
 
     for (const auto& var : m_artificial_variables) {
         if (!equals(t_primal_values.get(var), 0., Tolerance::Feasibility)) {
@@ -171,7 +171,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::restore_objective_function(D
 
 void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
         DantzigWolfe::Formulation& t_formulation,
-        const Solution::Primal& t_primal_values,
+        const PrimalPoint& t_primal_values,
         bool t_include_original_objective_function) {
 
     if (!t_include_original_objective_function) {

@@ -6,7 +6,7 @@
 #define IDOL_ALGORITHM_H
 
 #include "Optimizer.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol {
     class Algorithm;

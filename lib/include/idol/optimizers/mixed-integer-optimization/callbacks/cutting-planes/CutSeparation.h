@@ -19,7 +19,7 @@ class idol::impl::CutSeparation : public Callback {
 
     double m_tolerance = idol::Tolerance::Feasibility;
 protected:
-    std::pair<::idol::Expr<Var, Var>, ObjectiveSense> create_separation_objective(const Solution::Primal& t_primal_solution);
+    std::pair<::idol::Expr<Var, Var>, ObjectiveSense> create_separation_objective(const PrimalPoint& t_primal_solution);
 
     void operator()(CallbackEvent t_event) override;
 

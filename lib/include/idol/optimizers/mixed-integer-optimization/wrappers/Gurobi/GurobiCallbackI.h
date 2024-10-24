@@ -41,9 +41,9 @@ protected:
 
     void add_user_cut(const TempCtr& t_user_cut) override;
 
-    void submit_heuristic_solution(Solution::Primal t_solution) override;
+    void submit_heuristic_solution(PrimalPoint t_solution) override;
 
-    [[nodiscard]] Solution::Primal primal_solution() const override;
+    [[nodiscard]] PrimalPoint primal_solution() const override;
 
     [[nodiscard]] const Timer &time() const override;
 

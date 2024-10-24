@@ -70,11 +70,11 @@ GRBTempConstr idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ct
     throw Exception("Unexpected constraint type.");
 }
 
-idol::Solution::Primal idol::GurobiCallbackI::primal_solution() const {
+idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
 
     auto* me = const_cast<GurobiCallbackI*>(this);
 
-    Solution::Primal result;
+    PrimalPoint result;
 
     if (where == GRB_CB_MIPSOL) {
 
@@ -126,7 +126,7 @@ const idol::Model &idol::GurobiCallbackI::original_model() const {
     return m_parent.parent();
 }
 
-void idol::GurobiCallbackI::submit_heuristic_solution(idol::Solution::Primal t_solution) {
+void idol::GurobiCallbackI::submit_heuristic_solution(idol::PrimalPoint t_solution) {
 
     unsigned int size = t_solution.size();
 

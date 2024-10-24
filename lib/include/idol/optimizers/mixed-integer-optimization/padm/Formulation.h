@@ -44,11 +44,11 @@ public:
 
     bool has_penalized_constraints() const { return m_penalized_constraints.has_value(); }
 
-    void fix_sub_problem(unsigned int t_sub_problem_id, const std::vector<Solution::Primal>& t_primals);
+    void fix_sub_problem(unsigned int t_sub_problem_id, const std::vector<PrimalPoint>& t_primals);
 
     void initialize_penalty_parameters(double t_value);
 
-    bool update_penalty_parameters(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update); // Returns true if penalty parameters have been resacled
+    bool update_penalty_parameters(const std::vector<PrimalPoint>& t_primals, PenaltyUpdate& t_penalty_update); // Returns true if penalty parameters have been resacled
 
     struct CurrentPenalty {
         const Ctr constraint;
@@ -83,10 +83,10 @@ private:
     std::pair<Expr<Var, Var>, bool> dispatch(const Model& t_src_model, const LinExpr<Var>& t_lin_expr, const QuadExpr<Var, Var>& t_quad_expr, unsigned int t_sub_problem_id);
     Var get_or_create_l1_var(const Ctr& t_ctr);
     void set_penalty_in_all_sub_problems(const Var& t_var, double t_value);
-    void update_penalty_parameters_independently(const std::vector<Solution::Primal>& t_primals, PenaltyUpdate& t_penalty_update);
+    void update_penalty_parameters_independently(const std::vector<PrimalPoint>& t_primals, PenaltyUpdate& t_penalty_update);
     bool rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties);
 
-    double fix(const Constant& t_constant, const std::vector<Solution::Primal>& t_primals);
+    double fix(const Constant& t_constant, const std::vector<PrimalPoint>& t_primals);
 };
 
 

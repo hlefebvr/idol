@@ -117,7 +117,7 @@ public:
      * Returns true if the temporary constraint is violated by the given solution, false otherwise.
      * @param t_solution The solution to check.
      */
-    [[nodiscard]] bool is_violated(const Solution::Primal& t_solution) const;
+    [[nodiscard]] bool is_violated(const PrimalPoint& t_solution) const;
 };
 
 idol::TempCtr operator<=(idol::Expr<idol::Var, idol::Var>&& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);

@@ -3,7 +3,7 @@
 //
 #include "idol/modeling/expressions/Constant.h"
 #include "idol/modeling/numericals.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 #include <memory>
 
 idol::Constant idol::Constant::Zero;
@@ -252,7 +252,7 @@ bool idol::Constant::is_numerical() const {
     return (!m_linear_terms || m_linear_terms->empty()) && (!m_quadratic_terms || m_quadratic_terms->empty());
 }
 
-double idol::Constant::fix(const Solution::Primal &t_primals) const {
+double idol::Constant::fix(const PrimalPoint &t_primals) const {
     double result = m_constant;
 
     if (m_linear_terms) {
@@ -275,7 +275,7 @@ double idol::Constant::fix(const Solution::Primal &t_primals) const {
     return result;
 }
 
-double idol::Constant::fix(const Solution::Dual &t_duals) const {
+double idol::Constant::fix(const DualPoint &t_duals) const {
     double result = m_constant;
 
     if (m_linear_terms) {

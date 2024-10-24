@@ -23,11 +23,11 @@ public:
             // intentionally left blank
         }
 
-        void update_stability_center(const Solution::Dual &t_master_dual) override {
+        void update_stability_center(const DualPoint &t_master_dual) override {
             // intentionally left blank
         }
 
-        Solution::Dual compute_smoothed_dual_solution(const Solution::Dual &t_master_dual) override {
+        DualPoint compute_smoothed_dual_solution(const DualPoint &t_master_dual) override {
             return t_master_dual;
         }
 

@@ -18,7 +18,7 @@ public:
 
     class Strategy : public DualPriceSmoothingStabilization::Strategy {
         double m_factor;
-        std::optional<Solution::Dual> m_smoothed_dual;
+        std::optional<DualPoint> m_smoothed_dual;
     public:
         explicit Strategy(double t_initial_factor) : m_factor(t_initial_factor) {}
 
@@ -26,11 +26,11 @@ public:
             m_smoothed_dual.reset();
         }
 
-        void update_stability_center(const Solution::Dual &t_master_dual) override {
+        void update_stability_center(const DualPoint &t_master_dual) override {
             // intentionally left blank
         }
 
-        Solution::Dual compute_smoothed_dual_solution(const Solution::Dual &t_master_dual) override {
+        DualPoint compute_smoothed_dual_solution(const DualPoint &t_master_dual) override {
 
             if (!m_smoothed_dual.has_value() || m_factor <= 1e-4) {
                 m_smoothed_dual = t_master_dual;

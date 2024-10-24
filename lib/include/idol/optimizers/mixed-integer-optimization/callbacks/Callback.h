@@ -5,7 +5,7 @@
 #ifndef IDOL_CALLBACK_H
 #define IDOL_CALLBACK_H
 
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 namespace idol {
     class TempCtr;
@@ -49,9 +49,9 @@ protected:
 
     virtual void add_lazy_cut(const TempCtr& t_cut) = 0;
 
-    virtual void submit_heuristic_solution(Solution::Primal t_solution) = 0;
+    virtual void submit_heuristic_solution(PrimalPoint t_solution) = 0;
 
-    [[nodiscard]] virtual Solution::Primal primal_solution() const = 0;
+    [[nodiscard]] virtual PrimalPoint primal_solution() const = 0;
 
     [[nodiscard]] virtual const Timer& time() const = 0;
 
@@ -79,7 +79,7 @@ protected:
      /**
       * Submits a new heuristic solution
       */
-      virtual void submit_heuristic_solution(const Solution::Primal& t_solution);
+      virtual void submit_heuristic_solution(const PrimalPoint& t_solution);
 
     /**
      * Adds a user cut to the relaxation
@@ -97,7 +97,7 @@ protected:
      * Returns the solution of the node which is currently being explored (when available)
      * @return the solution of the current node
      */
-    [[nodiscard]] virtual Solution::Primal primal_solution() const;
+    [[nodiscard]] virtual PrimalPoint primal_solution() const;
 
     /**
      * Returns the current time

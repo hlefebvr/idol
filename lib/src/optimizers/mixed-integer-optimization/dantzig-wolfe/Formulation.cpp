@@ -317,7 +317,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 }
 
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
-                                                      idol::Solution::Primal t_generator) {
+                                                      idol::PrimalPoint t_generator) {
 
     throw Exception("TODO: Was using Constant");
     /*
@@ -336,8 +336,8 @@ void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem
 }
 
 double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_problem_id,
-                                                             const idol::Solution::Dual &t_master_dual,
-                                                             const idol::Solution::Primal &t_generator) {
+                                                             const idol::DualPoint &t_master_dual,
+                                                             const idol::PrimalPoint &t_generator) {
     throw Exception("TODO: Was using Constant");
     /*
     double result = 0.;
@@ -368,7 +368,7 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
 }
 
 void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int t_sub_problem_id,
-                                                                   const idol::Solution::Dual &t_master_dual,
+                                                                   const idol::DualPoint &t_master_dual,
                                                                    bool t_use_farkas) {
 
     throw Exception("TODO: Was using Constant");
@@ -425,7 +425,7 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
 }
 
 double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol::Var &t_var,
-                                                                      const idol::Solution::Primal &t_master_primal) const {
+                                                                      const idol::PrimalPoint &t_master_primal) const {
 
     const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
 
@@ -455,7 +455,7 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
     }
 
     if (t_remove_infeasible_columns) {
-        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator) {
             return Row(t_var, t_lb).is_violated(t_generator, GreaterOrEqual, Tolerance::Feasibility);
         });
     }
@@ -479,7 +479,7 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
     }
 
     if (t_remove_infeasible_columns) {
-        remove_column_if(sub_problem_id, [&](const Var &t_object, const Solution::Primal &t_generator) {
+        remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator) {
             return Row(t_var, t_ub).is_violated(t_generator, LessOrEqual, Tolerance::Feasibility);
         });
     }
@@ -534,7 +534,7 @@ idol::LinExpr<idol::Var> idol::DantzigWolfe::Formulation::reformulate_sub_proble
 }
 
 void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_problem_id,
-                       const std::function<bool(const Var &, const Solution::Primal &)> &t_indicator_for_removal) {
+                       const std::function<bool(const Var &, const PrimalPoint &)> &t_indicator_for_removal) {
 
     auto& present_generators = m_present_generators[t_sub_problem_id];
     auto it = present_generators.begin();
@@ -661,7 +661,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
 
     if (sub_problem_id != MasterId) {
 
-        remove_column_if(sub_problem_id, [&](const Var& t_alpha, const Solution::Primal& t_generator) {
+        remove_column_if(sub_problem_id, [&](const Var& t_alpha, const PrimalPoint& t_generator) {
             return t_row.is_violated(t_generator, t_type);
         });
 
@@ -756,7 +756,7 @@ void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
 }
 
 bool
-idol::DantzigWolfe::Formulation::is_feasible(const idol::Solution::Primal &t_primal, unsigned int t_sub_problem_id) {
+idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, unsigned int t_sub_problem_id) {
 
     const auto& model = m_sub_problems[t_sub_problem_id];
 

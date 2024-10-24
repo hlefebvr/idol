@@ -38,11 +38,11 @@ private:
 public:
     class Heuristic : public ::BlisHeuristic {
         MibSCallbackI& m_parent;
-        std::list<Solution::Primal> m_solutions;
+        std::list<PrimalPoint> m_solutions;
     public:
         explicit Heuristic(MibSCallbackI& t_parent) : m_parent(t_parent) {}
 
-        void submit_heuristic_solution(Solution::Primal t_solution) {
+        void submit_heuristic_solution(PrimalPoint t_solution) {
             m_solutions.emplace_back(std::move(t_solution));
         }
 
@@ -51,7 +51,7 @@ public:
             m_parent.m_is_heuristic_call = true;
             m_parent.call(InvalidSolution);
 
-            std::list<Solution::Primal>::iterator solution = m_solutions.end();
+            std::list<PrimalPoint>::iterator solution = m_solutions.end();
             double current_best = m_parent.best_obj();
             for (auto it = m_solutions.begin(), end = m_solutions.end(); it != end ; ++it) {
                 if (it->objective_value() < current_best) {
@@ -160,17 +160,17 @@ protected:
         throw Exception("Not implemented.");
     }
 
-    void submit_heuristic_solution(Solution::Primal t_solution) override {
+    void submit_heuristic_solution(PrimalPoint t_solution) override {
         m_heuristic->submit_heuristic_solution(std::move(t_solution));
     }
 
-    [[nodiscard]] Solution::Primal primal_solution() const override {
+    [[nodiscard]] PrimalPoint primal_solution() const override {
 
         auto& osi_solver = *m_parent.m_osi_solver;
         const auto* solution = osi_solver.getColSolution();
         const unsigned int n_vars = osi_solver.getNumCols();
 
-        Solution::Primal result;
+        PrimalPoint result;
         result.set_reason(NotSpecified);
 
         if (osi_solver.isProvenOptimal()) {

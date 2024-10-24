@@ -216,7 +216,7 @@ public:
      * @param t_primals The primal values.
      * @return The value of the row.
      */
-    double value(const Solution::Primal& t_primals) const;
+    double value(const PrimalPoint& t_primals) const;
 
     /**
      * Returns true if the point stored in `t_primals` violates the constraint formed by the row and a constraint type
@@ -226,7 +226,7 @@ public:
      * @param t_tolerance The tolerance for feasibility.
      * @return True if the given point violates the row.
      */
-    bool is_violated(const Solution::Primal& t_primals, CtrType t_type, double t_tolerance = Tolerance::Feasibility) const;
+    bool is_violated(const PrimalPoint& t_primals, CtrType t_type, double t_tolerance = Tolerance::Feasibility) const;
 
     /**
      * Represents an empty row.

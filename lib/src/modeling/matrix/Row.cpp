@@ -3,13 +3,13 @@
 //
 #include "idol/modeling/matrix/Row.h"
 #include "idol/modeling/expressions/operations/operators.h"
-#include "idol/modeling/solutions/Solution.h"
+#include "idol/modeling/solutions/Point.h"
 
 #include <memory>
 
 const idol::Row idol::Row::EmptyRow;
 
-double idol::Row::value(const idol::Solution::Primal &t_primals) const {
+double idol::Row::value(const idol::PrimalPoint &t_primals) const {
 
     double result = -rhs();
 
@@ -24,7 +24,7 @@ double idol::Row::value(const idol::Solution::Primal &t_primals) const {
     return result;
 }
 
-bool idol::Row::is_violated(const idol::Solution::Primal &t_primals, idol::CtrType t_type, double t_tolerance) const {
+bool idol::Row::is_violated(const idol::PrimalPoint &t_primals, idol::CtrType t_type, double t_tolerance) const {
 
     const double value = this->value(t_primals);
 

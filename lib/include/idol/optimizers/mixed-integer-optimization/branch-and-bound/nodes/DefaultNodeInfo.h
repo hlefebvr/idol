@@ -36,7 +36,7 @@ public:
 
     [[nodiscard]] const auto& primal_solution() const { return m_primal_solution; }
 
-    void set_primal_solution(Solution::Primal t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
+    void set_primal_solution(PrimalPoint t_primal_solution) { m_primal_solution = std::move(t_primal_solution); }
 
     virtual void save(const Model& t_original_formulation, const Model& t_model);
 
@@ -52,7 +52,7 @@ public:
 
     static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(Model& t_relaxation);
 private:
-    Solution::Primal m_primal_solution;
+    PrimalPoint m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;
     std::list<VarBranchingDecision> m_variable_branching_decisions;
     std::list<CtrBranchingDecision> m_constraint_branching_decisions;

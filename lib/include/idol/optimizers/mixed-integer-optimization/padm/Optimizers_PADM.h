@@ -96,8 +96,8 @@ protected:
     void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
-    double infeasibility_linf(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
-    double infeasibility_l1(unsigned int t_sub_problem_id, const Solution::Primal& t_solution) const;
+    double infeasibility_linf(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
+    double infeasibility_l1(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
     void detect_stagnation(bool t_feasibility_has_changed);
     void detect_stagnation_due_to_rescaling();
     void restart();
@@ -127,7 +127,7 @@ private:
     unsigned int m_n_restart = 0;
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;
-    std::vector<Solution::Primal> m_last_solutions;
+    std::vector<PrimalPoint> m_last_solutions;
     double m_current_initial_penalty_parameter = m_initial_penalty_parameter;
 
     struct IterationLog {

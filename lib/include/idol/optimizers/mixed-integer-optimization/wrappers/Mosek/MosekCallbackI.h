@@ -42,9 +42,9 @@ protected:
 
     void add_lazy_cut(const TempCtr &t_cut) override;
 
-    void submit_heuristic_solution(Solution::Primal t_solution) override;
+    void submit_heuristic_solution(PrimalPoint t_solution) override;
 
-    Solution::Primal primal_solution() const override;
+    PrimalPoint primal_solution() const override;
 
     const Timer &time() const override;
 
