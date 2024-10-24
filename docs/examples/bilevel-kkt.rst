@@ -31,5 +31,5 @@ KKT Reformulation with idol
 
 In this example, we show how to model this LP-LP bilevel problem and how to derive its KKT reformulation.
 
-.. literalinclude:: ../../examples/bilevel-optimization/kkt.example.cpp
+.. literalinclude:: ../../examples/bilevel/kkt.example.cpp
     :language: cpp
