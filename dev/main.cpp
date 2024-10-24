@@ -1,8 +1,8 @@
 #include <iostream>
-#include "idol/containers/SparseVector.h"
-#include "idol/modeling/variables/Var.h"
-#include "idol/modeling/models/Model.h"
-#include "idol/modeling/objects/Env.h"
+#include "idol/general/utils/SparseVector.h"
+#include "idol/mixed-integer/modeling/variables/Var.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
 
 using namespace idol;
 

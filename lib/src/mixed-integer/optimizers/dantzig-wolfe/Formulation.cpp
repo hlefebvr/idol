@@ -108,9 +108,9 @@ void idol::DantzigWolfe::Formulation::set_decomposition_by_var(const Model& t_or
             set_decomposition_by_var(var, sub_problem_id);
         }
 
-        for (const auto &[var1, var2, constant]: row.quadratic()) {
-            set_decomposition_by_var(var1, sub_problem_id);
-            set_decomposition_by_var(var2, sub_problem_id);
+        for (const auto &[vars, constant]: row.quadratic()) {
+            set_decomposition_by_var(vars.first, sub_problem_id);
+            set_decomposition_by_var(vars.second, sub_problem_id);
         }
 
     }
@@ -227,21 +227,21 @@ idol::DantzigWolfe::Formulation::decompose_expression(const LinExpr<Var> &t_line
 
     }
 
-    for (const auto& [var1, var2, constant] : t_quadratic) {
+    for (const auto& [vars, constant] : t_quadratic) {
 
-        const unsigned int sub_problem_id1 = var1.get(m_decomposition_by_var);
-        const unsigned int sub_problem_id2 = var2.get(m_decomposition_by_var);
+        const unsigned int sub_problem_id1 = vars.first.get(m_decomposition_by_var);
+        const unsigned int sub_problem_id2 = vars.second.get(m_decomposition_by_var);
 
         if (sub_problem_id1 != sub_problem_id2) {
             throw Exception("Impossible decomposition.");
         }
 
         if (sub_problem_id1 == MasterId) {
-            master_part += constant * var1 * var2;
+            master_part += constant * vars.first * vars.second;
             continue;
         }
 
-        sub_problem_parts[sub_problem_id1] += constant * (!var1 * !var2);
+        sub_problem_parts[sub_problem_id1] += constant * (!vars.first * !vars.second);
 
     }
 

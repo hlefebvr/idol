@@ -9,18 +9,24 @@
 #include <numeric>
 #include <functional>
 #include <iostream>
+#include "idol/general/utils/Pair.h"
 
 namespace idol {
     template<class T> struct get_id;
 
     template<class Key1, class Key2>
     struct get_id<std::pair<Key1, Key2>> {
-        auto operator()(const std::pair<Key1, Key2>& t) const { return std::make_pair(get_id<Key1>(t.first), get_id<Key2>(t.second)); }
+        auto operator()(const std::pair<Key1, Key2>& t) const { return std::make_pair(get_id<Key1>()(t.first), get_id<Key2>()(t.second)); }
     };
 
     template<class T>
     struct get_id {
         unsigned int operator()(const T& t) const { return t.id(); }
+    };
+
+    template<class Key1, class Key2>
+    struct get_id<idol::Pair<Key1, Key2>> {
+        auto operator()(const idol::Pair<Key1, Key2>& t) const { return std::make_pair(get_id<Key1>()(t.first), get_id<Key2>()(t.second)); }
     };
 
     template<class T>

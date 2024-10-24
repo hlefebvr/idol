@@ -18,19 +18,19 @@ namespace idol {
         // Create index mapping
         MatrixIndices indices;
 
-        for (const auto &[var1, var2, constant]: t_expr) {
-            indices.add(var1);
-            indices.add(var2);
+        for (const auto &[vars, constant]: t_expr) {
+            indices.add(vars.first);
+            indices.add(vars.second);
         }
 
         // Create quadratic form matrix s.t. quadratic_part = x^TQx
         SquareMatrix Q(indices);
 
-        for (const auto &[var1, var2, constant]: t_expr) {
-            if (var1.id() == var2.id()) {
-                Q.set(var1, var2, constant);
+        for (const auto &[vars, constant]: t_expr) {
+            if (vars.first.id() == vars.second.id()) {
+                Q.set(vars.first, vars.second, constant);
             } else {
-                Q.set(var1, var2, constant / 2.);
+                Q.set(vars.first, vars.second, constant / 2.);
             }
         }
 

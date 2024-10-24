@@ -175,8 +175,8 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
     for (const auto &[var, constant]: row.linear()) {
         expr.addTerm(constant, lazy(var).impl());
     }
-    for (const auto& [var1, var2, constant] : row.quadratic()) {
-        expr.addTerm(constant, lazy(var1).impl(), lazy(var2).impl());
+    for (const auto& [vars, constant] : row.quadratic()) {
+        expr.addTerm(constant, lazy(vars.first).impl(), lazy(vars.second).impl());
     }
 
     GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs, name);)
@@ -237,8 +237,8 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
 
     GRBQuadExpr quadratic_expr;
 
-    for (const auto& [var1, var2, constant] : objective.quadratic()) {
-        quadratic_expr.addTerm(gurobi_numeric(constant), lazy(var1).impl(), lazy(var2).impl());
+    for (const auto& [vars, constant] : objective.quadratic()) {
+        quadratic_expr.addTerm(gurobi_numeric(constant), lazy(vars.first).impl(), lazy(vars.second).impl());
     }
 
     m_model.setObjective(linear_expr + quadratic_expr, sense);
@@ -317,7 +317,7 @@ void idol::Optimizers::Gurobi::set_param_time_limit(double t_time_limit) {
 }
 
 void idol::Optimizers::Gurobi::set_param_threads(unsigned int t_thread_limit) {
-    m_model.set(GRB_IntParam_Threads, t_thread_limit);
+    m_model.set(GRB_IntParam_Threads, (int) t_thread_limit);
     Optimizer::set_param_threads(t_thread_limit);
 }
 

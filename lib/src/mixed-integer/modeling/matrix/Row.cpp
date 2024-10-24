@@ -17,8 +17,8 @@ double idol::Row::value(const idol::PrimalPoint &t_primals) const {
         result += constant * t_primals.get(var);
     }
 
-    for (const auto& [var1, var2, constant] : quadratic()) {
-        result += constant * t_primals.get(var1) * t_primals.get(var2);
+    for (const auto& [vars, constant] : quadratic()) {
+        result += constant * t_primals.get(vars.first) * t_primals.get(vars.second);
     }
 
     return result;
@@ -73,8 +73,4 @@ idol::impl::Row::Row(const ::idol::Expr<Var> &t_lhs, const ::idol::Expr<Var> &t_
         t_rhs.constant() - t_lhs.constant()
     ) {
 
-}
-
-double idol::impl::Row::gcd() const {
-    return m_impl.gcd();
 }

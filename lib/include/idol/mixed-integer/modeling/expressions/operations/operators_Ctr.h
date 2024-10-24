@@ -6,6 +6,7 @@
 #define IDOL_OPERATORS_CTR_H
 
 #include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/mixed-integer/modeling/expressions/Constant.h"
 
 namespace idol {
 

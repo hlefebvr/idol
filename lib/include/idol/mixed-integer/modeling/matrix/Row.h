@@ -6,8 +6,8 @@
 #define OPTIMIZE_ROW_H
 
 #include <memory>
-#include "AbstractMatrixCoefficient.h"
 #include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/general/utils/Point.h"
 
 namespace idol {
 
@@ -119,7 +119,6 @@ public:
 
     Row& operator/=(double t_rhs) { m_impl /= t_rhs; return *this; }
 
-    double gcd() const;
 };
 
 /**
@@ -137,7 +136,6 @@ public:
  * ```
  */
 class idol::Row : public impl::Row {
-    friend class Matrix;
 public:
     /*
      * Default constructor.

@@ -11,13 +11,13 @@
 
 #include "idol/general/utils/Vector.h"
 
-#include "idol/mixed-integer/modeling/matrix/Matrix.h"
 #include "idol/mixed-integer/modeling/constraints/CtrVersion.h"
 #include "idol/mixed-integer/modeling/variables/VarVersion.h"
 #include "idol/mixed-integer/modeling/expressions/Expr.h"
 #include "idol/general/utils/Point.h"
 
-#include "Model.h"
+#include "idol/mixed-integer/modeling/constraints/Ctr.h"
+#include "idol/mixed-integer/modeling/variables/Var.h"
 
 #include "idol/general/optimizers/Optimizer.h"
 #include "idol/general/optimizers/OptimizerFactory.h"
@@ -39,28 +39,22 @@ namespace idol {
 /**
  * This class is used to represent a mathematical optimization model.
  */
-class idol::Model : public Matrix {
+class idol::Model {
     Env& m_env;
     const unsigned int m_id;
     bool m_has_been_moved = false;
 
     ObjectiveSense m_sense = Minimize;
-    Expr<Var> m_objective;
-    LinExpr<Ctr> m_rhs;
-
+    std::unique_ptr<Expr<Var, Var>> m_objective;
+    std::unique_ptr<LinExpr<Ctr>> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
+    bool m_is_row_oriented = true;
 
     std::unique_ptr<Optimizer> m_optimizer;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
 
     void throw_if_no_optimizer() const { if (!m_optimizer) { throw Exception("No optimizer was found."); } }
-
-    // Matrix hooks
-    Expr<Var> &access_obj() override;
-    LinExpr<Ctr> &access_rhs() override;
-    Column &access_column(const Var &t_var) override;
-    Row &access_row(const Ctr &t_ctr) override;
 
     Model(const Model& t_src);
 public:
@@ -83,7 +77,7 @@ public:
     Model& operator=(const Model&) = delete;
     Model& operator=(Model&&) noexcept = delete;
 
-    ~Model() override;
+    ~Model();
 
     /**
      * Creates a new decision variable in the model and returns it.
@@ -1362,11 +1356,11 @@ namespace idol {
             stream << '\t' << ctr << ": ";
 
             if (linear.empty()) {
-                stream << quadratic;
+                stream << "ERROR CANNOT WRITE DOWN QUADRATIC TERMS"; // quadratic;
             } else {
                 stream << linear;
                 if (!quadratic.empty()) {
-                    stream << " + " << quadratic;
+                    stream << " + " << "ERROR CANNOT WRITE DOWN QUADRATIC TERMS"; //quadratic;
                 }
             }
 

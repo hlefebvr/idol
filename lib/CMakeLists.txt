@@ -7,11 +7,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/modeling/Types.h
         include/idol/mixed-integer/modeling/expressions/Constant.h
         src/mixed-integer/modeling/expressions/Constant.cpp
-        include/idol/mixed-integer/modeling/matrix/AbstractMatrixCoefficient.h
-        include/idol/mixed-integer/modeling/matrix/MatrixCoefficientReference.h
-        include/idol/mixed-integer/modeling/matrix/MatrixCoefficient.h
-        src/mixed-integer/modeling/matrix/MatrixCoefficient.cpp
-        src/mixed-integer/modeling/matrix/MatrixCoefficientReference.cpp
         include/idol/mixed-integer/modeling/constraints/TempCtr.h
         src/mixed-integer/modeling/constraints/TempCtr.cpp
         include/idol/general/utils/IteratorForward.h
@@ -23,8 +18,6 @@ add_library(idol STATIC
         src/mixed-integer/modeling/matrix/Row.cpp
         src/mixed-integer/modeling/matrix/Column.cpp
         include/idol/mixed-integer/modeling/matrix/Column.h
-        include/idol/mixed-integer/modeling/matrix/Matrix.h
-        src/mixed-integer/modeling/matrix/Matrix.cpp
         src/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.cpp
         include/idol/mixed-integer/problems/knapsack-problem/KP_Instance.h
         src/mixed-integer/problems/knapsack-problem/KP_Instance.cpp
@@ -46,7 +39,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/problems/helpers/parse_delimited.h
         include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h
         include/idol/mixed-integer/modeling/expressions/QuadExpr.h
-        include/idol/mixed-integer/modeling/expressions/AbstractExpr.h
         include/idol/mixed-integer/modeling/models/Model.h
         include/idol/mixed-integer/modeling/objects/Env.h
         include/idol/mixed-integer/modeling/variables/Var.h

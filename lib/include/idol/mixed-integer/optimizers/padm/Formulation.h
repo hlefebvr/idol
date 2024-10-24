@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "idol/mixed-integer/modeling/models/Model.h"
+#include "idol/general/utils/Map.h"
 
 namespace idol {
     class PenaltyUpdate;

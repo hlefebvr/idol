@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/general/utils/GeneratorPool.h"
+#include "idol/general/utils/Map.h"
 
 namespace idol::DantzigWolfe {
     class Formulation;

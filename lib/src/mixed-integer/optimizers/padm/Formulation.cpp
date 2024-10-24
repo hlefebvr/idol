@@ -267,8 +267,8 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
             lhs += fix(coefficient, t_primals) * var;
         }
 
-        for (const auto& [var1, var2, coefficient] : pattern.quadratic()) {
-            lhs += fix(coefficient, t_primals) * var1 * var2;
+        for (const auto& [vars, coefficient] : pattern.quadratic()) {
+            lhs += fix(coefficient, t_primals) * vars.first * vars.second;
         }
 
         m_sub_problems[t_sub_problem_id].set_ctr_row(ctr, Row(std::move(lhs), 0));
@@ -283,8 +283,8 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
             obj += fix(coefficient, t_primals) * var;
         }
 
-        for (const auto& [var1, var2, coefficient] : obj_pattern.quadratic()) {
-            obj += fix(coefficient, t_primals) * var1 * var2;
+        for (const auto& [vars, coefficient] : obj_pattern.quadratic()) {
+            obj += fix(coefficient, t_primals) * vars.first * vars.second;
         }
 
         m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(obj));

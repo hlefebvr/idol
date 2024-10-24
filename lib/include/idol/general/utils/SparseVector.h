@@ -18,14 +18,15 @@ namespace idol {
 
 template<class IndexT, class ValueT, class IndexExtractorT = std::conditional_t<std::is_arithmetic_v<IndexT>, idol::identity<IndexT>, idol::get_id<IndexT>>>
 class idol::SparseVector {
-    static_assert(std::is_default_constructible_v<ValueT>);
+public:
+    //static_assert(std::is_default_constructible_v<ValueT>);
 
     enum class SortingCriteria {
         Index,
         Value,
         None
     };
-
+private:
     std::vector<IndexT> m_indices;
     std::vector<ValueT> m_values;
     SortingCriteria m_sorting_criteria;
@@ -52,6 +53,8 @@ public:
     virtual SparseVector& operator/=(ValueT t_scalar);
 
     [[nodiscard]] unsigned int size() const { return m_indices.size(); }
+
+    [[nodiscard]] bool empty() const { return m_indices.empty(); }
 
     [[nodiscard]] const IndexT& index_at(unsigned int t_index) const { return m_indices[t_index]; }
 
@@ -381,9 +384,9 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::remove_at(unsigned int
 
 template<class IndexT, class ValueT, class IndexExtractorT>
 idol::SparseVector<IndexT, ValueT, IndexExtractorT>::SparseVector(std::vector<IndexT> t_indices,
-                                                                     std::vector<ValueT> t_values,
-                                                                     SortingCriteria t_sorting_criteria,
-                                                                     bool t_is_reduced)
+                                                                  std::vector<ValueT> t_values,
+                                                                  SortingCriteria t_sorting_criteria,
+                                                                  bool t_is_reduced)
                                                                  : m_indices(std::move(t_indices)),
                                                                    m_values(std::move(t_values)),
                                                                    m_sorting_criteria(t_sorting_criteria),

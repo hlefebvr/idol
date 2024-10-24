@@ -176,7 +176,10 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     }
 
-    for (const auto& [ctr, var, constant] : col.quadratic()) {
+    for (const auto& [pair, constant] : col.quadratic()) {
+
+        const auto& ctr = pair.first;
+        const auto& var = pair.second;
 
         if (m_description.is_leader(ctr)) {
             continue;

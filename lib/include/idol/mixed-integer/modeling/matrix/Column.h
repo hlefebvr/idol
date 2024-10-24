@@ -6,8 +6,8 @@
 #define OPTIMIZE_COLUMN_H
 
 #include <memory>
-#include "AbstractMatrixCoefficient.h"
 #include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/mixed-integer/modeling/constraints/Ctr.h"
 
 namespace idol {
 
@@ -165,7 +165,6 @@ public:
  * pairs representing the coefficient (`Constant`) of the column in each row (`Ctr`). Such pairs are called components.
  */
 class idol::Column : public impl::Column {
-    friend class Matrix;
 public:
     /**
      * Default constructor.

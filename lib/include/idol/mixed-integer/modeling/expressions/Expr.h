@@ -7,6 +7,7 @@
 
 #include "LinExpr.h"
 #include "QuadExpr.h"
+#include "idol/general/numericals.h"
 
 namespace idol {
     namespace impl {
@@ -22,27 +23,10 @@ template<class Key1, class Key2>
 class idol::impl::Expr {
     LinExpr<Key1> m_linear;
     QuadExpr<Key1, Key2> m_quadratic;
-    std::unique_ptr<AbstractMatrixCoefficient> m_constant;
-protected:
-    class References {
-        friend class impl::Expr<Key1, Key2>;
-        using ParentT = impl::Expr<Key1, Key2>;
-
-        ParentT* m_parent;
-        explicit References(ParentT* t_parent) : m_parent(t_parent) {}
-    public:
-        void set_constant(MatrixCoefficientReference&& t_coefficient) { m_parent->m_constant = std::make_unique<MatrixCoefficientReference>(std::move(t_coefficient)); }
-        void reset_constant() { m_parent->m_constant = std::make_unique<MatrixCoefficient>(0.); }
-        [[nodiscard]] MatrixCoefficientReference get_constant() const { return MatrixCoefficientReference(*m_parent->m_constant); }
-    };
-
-    References refs() { return References(this); }
-
-    void internal_fix(const PrimalPoint& t_primals);
+    double m_constant = 0.;
 public:
     Expr();
-    Expr(double t_num); // NOLINT(google-explicit-constructor)
-    Expr(const Param& t_param); // NOLINT(google-explicit-constructor)
+    Expr(double t_constant); // NOLINT(google-explicit-constructor)
     Expr(const Key1& t_var); // NOLINT(google-explicit-constructor)
     Expr(LinExpr<Key1>&& t_expr); // NOLINT(google-explicit-constructor)
     Expr(const LinExpr<Key1>& t_expr); // NOLINT(google-explicit-constructor)
@@ -69,15 +53,17 @@ public:
     QuadExpr<Key1, Key2>& quadratic() { return m_quadratic; }
     const QuadExpr<Key1, Key2>& quadratic() const { return m_quadratic; }
 
-    double& constant() { return m_constant->value(); }
+    double& constant() { return m_constant; }
 
-    double constant() const { return m_constant->value(); }
+    double constant() const { return m_constant; }
 
     [[nodiscard]] bool is_zero() const { return std::abs(constant()) < Tolerance::Sparsity && linear().empty() && quadratic().empty(); }
 
+    /*
     void round();
 
     [[nodiscard]] double gcd() const;
+    */
 
     void clear() {
         constant() = 0;
@@ -86,6 +72,7 @@ public:
     }
 };
 
+/*
 template<class Key1, class Key2>
 double idol::impl::Expr<Key1, Key2>::gcd() const {
     return std::gcd((long) m_constant->value(),std::gcd(m_linear.gcd(), m_quadratic.gcd()));
@@ -98,73 +85,54 @@ void idol::impl::Expr<Key1, Key2>::round() {
     m_linear.round();
     m_quadratic.round();
 }
+*/
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr()
-        : m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+idol::impl::Expr<Key1, Key2>::Expr() {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(double t_num)
-        : m_constant(std::make_unique<MatrixCoefficient>(t_num)) {
+idol::impl::Expr<Key1, Key2>::Expr(double t_constant) : m_constant(t_constant) {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(const Param &t_param)
-        : m_constant(std::make_unique<MatrixCoefficient>(t_param)) {
+idol::impl::Expr<Key1, Key2>::Expr(const Key1 &t_var) : m_linear(t_var) {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(const Key1 &t_var)
-        : m_linear(t_var),
-          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+idol::impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr) : m_linear(std::move(t_expr)) {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr)
-        : m_linear(std::move(t_expr)),
-          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr) : m_linear(t_expr) {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr)
-        : m_linear(t_expr),
-          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+idol::impl::Expr<Key1, Key2>::Expr(QuadExpr<Key1> &&t_expr) : m_quadratic(std::move(t_expr)) {
 
 }
 
 template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(QuadExpr<Key1> &&t_expr)
-        : m_quadratic(std::move(t_expr)),
-          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
-
-}
-
-template<class Key1, class Key2>
-idol::impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr)
-        : m_quadratic(t_expr),
-          m_constant(std::make_unique<MatrixCoefficient>(0.)) {
+idol::impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr) : m_quadratic(t_expr) {
 
 }
 
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key1, Key2> &t_quad_expr, double t_constant)
         : m_linear(t_lin_expr),
-          m_quadratic(t_quad_expr),
-          m_constant(std::make_unique<MatrixCoefficient>(t_constant)) {
+          m_quadratic(t_quad_expr) {
 
 }
 
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
         : m_linear(t_src.m_linear),
-          m_quadratic(t_src.m_quadratic),
-          m_constant(std::make_unique<MatrixCoefficient>(t_src.m_constant->value()))  {
+          m_quadratic(t_src.m_quadratic)  {
 
 }
 
@@ -173,7 +141,7 @@ idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator=(const Expr
     if (this == &t_rhs) { return *this; }
     m_linear = t_rhs.m_linear;
     m_quadratic = t_rhs.m_quadratic;
-    m_constant->value() = t_rhs.m_constant->value();
+    m_constant = t_rhs.m_constant;
     return *this;
 }
 
@@ -181,7 +149,7 @@ template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator+=(const impl::Expr<Key1, Key2> &t_rhs) {
     m_linear += t_rhs.m_linear;
     m_quadratic += t_rhs.m_quadratic;
-    m_constant->value() += t_rhs.m_constant->value();
+    m_constant += t_rhs.m_constant;
     return *this;
 }
 
@@ -189,7 +157,7 @@ template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator-=(const impl::Expr<Key1, Key2> &t_rhs) {
     m_linear -= t_rhs.m_linear;
     m_quadratic -= t_rhs.m_quadratic;
-    m_constant->value() -= t_rhs.m_constant->value();
+    m_constant -= t_rhs.m_constant;
     return *this;
 }
 
@@ -197,7 +165,7 @@ template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator*=(double t_rhs) {
     m_linear *= t_rhs;
     m_quadratic *= t_rhs;
-    m_constant->value() *= t_rhs;
+    m_constant *= t_rhs;
     return *this;
 }
 
@@ -205,17 +173,15 @@ template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2> &idol::impl::Expr<Key1, Key2>::operator/=(double t_rhs) {
     m_linear /= t_rhs;
     m_quadratic /= t_rhs;
-    m_constant->value() /= t_rhs;
+    m_constant /= t_rhs;
     return *this;
 }
 
 template<class Key1 = idol::Var, class Key2 = Key1>
 class idol::Expr : public impl::Expr<Key1, Key2> {
-    friend class Matrix;
 public:
     Expr() = default;
     Expr(double t_num) : impl::Expr<Key1, Key2>(t_num) {} // NOLINT(google-explicit-constructor)
-    Expr(const Param& t_param) : impl::Expr<Key1, Key2>(t_param) {} // NOLINT(google-explicit-constructor)
     Expr(const Key1& t_var) : impl::Expr<Key1, Key2>(t_var) {} // NOLINT(google-explicit-constructor)
     Expr(LinExpr<Key1>&& t_expr) : impl::Expr<Key1, Key2>(std::move(t_expr)) {} // NOLINT(google-explicit-constructor)
     Expr(const LinExpr<Key1>& t_expr) : impl::Expr<Key1, Key2>(t_expr) {} // NOLINT(google-explicit-constructor)
@@ -228,16 +194,7 @@ public:
 
     Expr& operator=(const Expr& t_rhs) = default;
     Expr& operator=(Expr&&) noexcept = default;
-
-    Expr fix(const PrimalPoint& t_primals) const;
 };
-
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::fix(const PrimalPoint& t_primals) const {
-    auto result = *this;
-    result.internal_fix(t_primals);
-    return result;
-}
 
 namespace idol {
 

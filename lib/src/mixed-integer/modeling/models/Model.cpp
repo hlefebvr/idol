@@ -11,13 +11,10 @@ idol::Model::Model(idol::Env &t_env, idol::ObjectiveSense t_sense) : Model(t_env
     set_obj_sense(t_sense);
 }
 
-
 idol::Model::Model(idol::Model && t_src) noexcept
     : m_env(t_src.m_env),
       m_id(t_src.m_id),
       m_sense(t_src.m_sense),
-      m_objective(std::move(t_src.m_objective)),
-      m_rhs(std::move(t_src.m_rhs)),
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
       m_optimizer_factory(std::move(t_src.m_optimizer_factory))
@@ -64,7 +61,8 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
         optimizer().add(t_var);
     }
 
-    add_column_to_rows(t_var);
+    // add_column_to_rows(t_var);
+    throw Exception("Model. Work in progress...");
 }
 
 void idol::Model::add(const Var &t_var) {
@@ -83,7 +81,8 @@ void idol::Model::remove(const Var &t_var) {
         optimizer().remove(t_var);
     }
 
-    remove_column_from_rows(t_var);
+    // remove_column_from_rows(t_var);
+    throw Exception("Model. Work in progress...");
     const auto index = m_env.version(*this, t_var).index();
     m_env.version(*this, m_variables.back()).set_index(index);
     m_variables[index] = m_variables.back();
@@ -97,7 +96,8 @@ void idol::Model::remove(const Ctr &t_ctr) {
         optimizer().remove(t_ctr);
     }
 
-    remove_row_from_columns(t_ctr);
+    //remove_row_from_columns(t_ctr);
+    throw Exception("Model. Work in progress...");
     const auto index = m_env.version(*this, t_ctr).index();
     m_env.version(*this, m_constraints.back()).set_index(index);
     m_constraints[index] = m_constraints.back();
@@ -113,7 +113,8 @@ void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
         optimizer().add(t_ctr);
     }
 
-    add_row_to_columns(t_ctr);
+    //add_row_to_columns(t_ctr);
+    throw Exception("Model. Work in progress...");
 }
 
 void idol::Model::add(const Ctr &t_ctr) {
@@ -124,32 +125,22 @@ void idol::Model::add(const Ctr &t_ctr) {
         );
 }
 
-idol::Expr<idol::Var> &idol::Model::access_obj() {
-    return m_objective;
-}
-
-idol::LinExpr<idol::Ctr> &idol::Model::access_rhs() {
-    return m_rhs;
-}
-
-idol::Column &idol::Model::access_column(const Var &t_var) {
-    return m_env.version(*this, t_var).column();
-}
-
-idol::Row &idol::Model::access_row(const Ctr &t_ctr) {
-    return m_env.version(*this, t_ctr).row();
-}
-
 idol::ObjectiveSense idol::Model::get_obj_sense() const {
     return m_sense;
 }
 
 const idol::Expr<idol::Var, idol::Var> &idol::Model::get_obj_expr() const {
-    return m_objective;
+    if (!m_objective) {
+        throw Exception("Objective expression is not available.");
+    }
+    return *m_objective;
 }
 
 const idol::LinExpr<idol::Ctr> &idol::Model::get_rhs_expr() const {
-    return m_rhs;
+    if (!m_rhs) {
+        throw Exception("Right hand side expression is not available.");
+    }
+    return *m_rhs;
 }
 
 double idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
@@ -306,7 +297,8 @@ void idol::Model::set_obj_expr(const Expr<Var, Var> &t_objective) {
 
 void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
-    replace_objective(Expr<Var, Var>(t_objective));
+    //replace_objective(Expr<Var, Var>(t_objective));
+    throw Exception("Model. Work in progress...");
 
     if (has_optimizer()) {
         optimizer().update_obj();
@@ -320,7 +312,8 @@ void idol::Model::set_rhs_expr(const LinExpr<Ctr> &t_rhs) {
 
 void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
-    replace_right_handside(LinExpr<Ctr>(t_rhs));
+    //replace_right_handside(LinExpr<Ctr>(t_rhs));
+    throw Exception("Model. Work in progress...");
 
     if (has_optimizer()) {
         optimizer().update_rhs();
@@ -330,7 +323,7 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
 void idol::Model::set_obj_const(double t_constant) {
 
-    m_objective.constant() = t_constant;
+    m_objective->constant() = t_constant;
 
     if (has_optimizer()) {
         optimizer().update_obj_constant();
@@ -340,7 +333,8 @@ void idol::Model::set_obj_const(double t_constant) {
 
 void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, double t_coeff) {
 
-    update_matrix_coefficient(t_ctr, t_var, t_coeff);
+    throw Exception("Model. Work in progress...");
+    // update_matrix_coefficient(t_ctr, t_var, t_coeff);
 
     if (has_optimizer()) {
         optimizer().update();
@@ -351,7 +345,8 @@ void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, double t_coe
 
 void idol::Model::set_ctr_rhs(const Ctr &t_ctr, double t_rhs) {
 
-    add_to_rhs(t_ctr, t_rhs);
+    throw Exception("Model. Work in progress...");
+    // add_to_rhs(t_ctr, t_rhs);
 
     if (has_optimizer()) {
         optimizer().update_ctr_rhs(t_ctr);
@@ -389,11 +384,13 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
 
     }
 
-    remove_row_from_columns(t_ctr);
+    throw Exception("Model. Work in progress...");
+    //remove_row_from_columns(t_ctr);
 
     m_env.version(*this, t_ctr).row() = std::move(t_row);
 
-    add_row_to_columns(t_ctr);
+    throw Exception("Model. Work in progress...");
+    //add_row_to_columns(t_ctr);
 
     // TODO: Do this properly
     if (has_optimizer()) {
@@ -445,7 +442,8 @@ void idol::Model::set_var_ub(const Var &t_var, double t_ub) {
 
 void idol::Model::set_var_obj(const Var &t_var, double t_obj) {
 
-    add_to_obj(t_var, std::move(t_obj));
+    throw Exception("Model. Work in progress...");
+    //add_to_obj(t_var, std::move(t_obj));
 
     if (has_optimizer()) {
         optimizer().update_var_obj(t_var);
@@ -459,11 +457,13 @@ void idol::Model::set_var_column(const Var &t_var, const Column &t_column) {
 
 void idol::Model::set_var_column(const Var &t_var, Column &&t_column) {
 
-    remove_column_from_rows(t_var);
+    throw Exception("Model. Work in progress...");
+    //remove_column_from_rows(t_var);
 
     m_env.version(*this, t_var).column() = std::move(t_column);
 
-    add_column_to_rows(t_var);
+    throw Exception("Model. Work in progress...");
+    //add_column_to_rows(t_var);
 
     if (has_optimizer()) {
         throw Exception("Updating column is not implemented.");
@@ -512,7 +512,7 @@ idol::Var idol::Model::get_var_by_index(unsigned int t_index) const {
 }
 
 idol::Model idol::Model::copy() const {
-    return Model(*this);
+    return Model(*this); // NOLINT(*-return-braced-init-list)
 }
 
 void idol::Model::reserve_vars(unsigned int t_size) {
