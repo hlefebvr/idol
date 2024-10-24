@@ -15,7 +15,7 @@ using namespace idol;
 double eval(const LinExpr<Var>& t_expr, const Solution::Primal& t_primal) {
     double result = 0;
     for (const auto& [var, constant] : t_expr) {
-        result += constant.numerical() * t_primal.get(var);
+        result += constant * t_primal.get(var);
     }
     return result;
 }
@@ -23,13 +23,13 @@ double eval(const LinExpr<Var>& t_expr, const Solution::Primal& t_primal) {
 double eval(const QuadExpr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
     double result = 0;
     for (const auto& [var1, var2, constant] : t_expr) {
-        result += constant.numerical() * t_primal.get(var1) * t_primal.get(var2);
+        result += constant * t_primal.get(var1) * t_primal.get(var2);
     }
     return result;
 }
 
 double eval(const Expr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
-    return t_expr.constant().numerical() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
+    return t_expr.constant() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
 }
 
 TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling-old][QuadExpr]") {

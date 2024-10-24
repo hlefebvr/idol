@@ -23,9 +23,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
             model.add(x);
 
             THEN("The variabe's objective coefficient should be zero") {
-                CHECK(model.get_var_column(x).obj().numerical() == 0);
-                CHECK(model.get_var_column(x).obj().is_zero());
-                CHECK(model.get_var_column(x).obj().is_numerical());
+                CHECK(std::abs(model.get_var_column(x).obj()) <= Tolerance::Sparsity);
             }
 
             AND_THEN("The model's objective should not contain a non-zero coefficient x") {
@@ -33,7 +31,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
 
                 CHECK(objective.linear().empty());
                 CHECK(objective.quadratic().empty());
-                CHECK(objective.constant().is_zero());
+                CHECK(objective.constant() == 0_a);
                 CHECK(objective.is_zero());
             }
 
@@ -56,7 +54,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
                 model.set_var_lb(x, 0);
 
                 THEN("The variable's lower bound should be 0") {
-                    CHECK(model.get_var_lb(x) == 0);
+                    CHECK(model.get_var_lb(x) == 0_a);
                 }
 
             }
@@ -66,7 +64,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
                 model.set_var_ub(x, 0);
 
                 THEN("The variable's upper bound should be 0") {
-                    CHECK(model.get_var_ub(x) == 0);
+                    CHECK(model.get_var_ub(x) == 0_a);
                 }
 
             }
@@ -76,15 +74,13 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
                 model.set_var_obj(x, 1);
 
                 THEN("The variable's objective coefficient should be 1") {
-                    CHECK(model.get_var_column(x).obj().numerical() == 1);
-                    CHECK(model.get_var_column(x).obj().is_numerical());
+                    CHECK(model.get_var_column(x).obj() == 1_a);
                 }
 
                 THEN("The model's objective should have a coefficient for x of 1") {
-                    auto objective = model.get_obj_expr();
+                    const auto& objective = model.get_obj_expr();
 
-                    CHECK(objective.linear().get(x).numerical() == 1);
-                    CHECK(objective.linear().get(x).is_numerical());
+                    CHECK(objective.linear().get(x) == 1_a);
                 }
 
             }
