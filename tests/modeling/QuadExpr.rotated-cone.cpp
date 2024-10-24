@@ -12,7 +12,7 @@ using namespace idol;
 
 #include "idol/general/linear-algebra/to_rotated_quadratic_cone.h"
 
-double eval(const LinExpr<Var>& t_expr, const Solution::Primal& t_primal) {
+double eval(const LinExpr<Var>& t_expr, const PrimalPoint& t_primal) {
     double result = 0;
     for (const auto& [var, constant] : t_expr) {
         result += constant * t_primal.get(var);
@@ -20,7 +20,7 @@ double eval(const LinExpr<Var>& t_expr, const Solution::Primal& t_primal) {
     return result;
 }
 
-double eval(const QuadExpr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
+double eval(const QuadExpr<Var, Var>& t_expr, const PrimalPoint& t_primal) {
     double result = 0;
     for (const auto& [var1, var2, constant] : t_expr) {
         result += constant * t_primal.get(var1) * t_primal.get(var2);
@@ -28,7 +28,7 @@ double eval(const QuadExpr<Var, Var>& t_expr, const Solution::Primal& t_primal) 
     return result;
 }
 
-double eval(const Expr<Var, Var>& t_expr, const Solution::Primal& t_primal) {
+double eval(const Expr<Var, Var>& t_expr, const PrimalPoint& t_primal) {
     return t_expr.constant() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
 }
 
@@ -71,7 +71,7 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling-old][QuadExpr]")
 
             for (unsigned int i = 0; i < 30; ++i) {
 
-                Solution::Primal point;
+                PrimalPoint point;
                 point.set_objective_value(0.);
                 point.set(x[0], dist(engine));
                 point.set(x[1], dist(engine));

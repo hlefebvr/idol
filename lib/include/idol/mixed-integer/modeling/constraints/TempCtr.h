@@ -12,10 +12,6 @@ namespace idol {
 
     class TempCtr;
 
-    namespace Solution {
-        class Primal;
-    }
-
     template<class Key1, class Key2> class Expr;
 }
 

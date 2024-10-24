@@ -13,11 +13,6 @@
 
 namespace idol {
 
-    namespace Solution {
-        class Primal;
-        class Dual;
-    }
-
     class Algorithm;
     class Constant;
     class QuadParam;
