@@ -289,7 +289,7 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
             CoinPackedVector row_vector;
             for (const auto &[var, constant]: row.linear()) {
                 const int index = (int) m_model.get_var_index(var);
-                row_vector.insert(index, constant.as_numerical());
+                row_vector.insert(index, constant);
             }
 
             m_matrix_by_row->appendRow(row_vector);
@@ -316,7 +316,7 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
             CoinPackedVector col_vector;
             for (const auto &[ctr, constant]: column.linear()) {
                 const int index = (int) m_model.get_ctr_index(ctr);
-                col_vector.insert(index, constant.as_numerical());
+                col_vector.insert(index, constant);
             }
 
             m_matrix_by_col->appendCol(col_vector);

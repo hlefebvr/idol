@@ -35,7 +35,7 @@ bool TempCtr::is_violated(const Solution::Primal &t_solution) const {
     const double rhs = m_row.rhs().numerical();
     double lhs = 0.;
     for (const auto& [var, coeff] : m_row.linear()) {
-        lhs += coeff.numerical() * t_solution.get(var);
+        lhs += coeff * t_solution.get(var);
     }
     switch (m_type) {
         case LessOrEqual: return lhs > rhs;

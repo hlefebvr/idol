@@ -152,7 +152,7 @@ const idol::LinExpr<idol::Ctr> &idol::Model::get_rhs_expr() const {
     return m_rhs;
 }
 
-const idol::Constant &idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
+double idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
     return m_env.version(*this, t_ctr).row().linear().get(t_var);
 }
 
@@ -527,46 +527,8 @@ idol::Var idol::Model::get_var_by_index(unsigned int t_index) const {
     return m_variables.at(t_index);
 }
 
-void idol::Model::scale_to_integers(unsigned int t_n_digits) {
-
-    for (const auto& ctr : m_constraints) {
-        access_row(ctr).scale_to_integers(t_n_digits);
-    }
-
-}
-
 idol::Model idol::Model::copy() const {
     return Model(*this);
-}
-
-idol::Model idol::Model::fix(const idol::Solution::Primal &t_primals) const {
-
-    Model result(m_env);
-
-    for (const auto& var : vars()) {
-        result.add(var, TempVar(
-                get_var_lb(var),
-                get_var_ub(var),
-                get_var_type(var),
-                Column()
-        ));
-    }
-
-    for (const auto& ctr : ctrs()) {
-        result.add(ctr, TempCtr(
-                std::move(get_ctr_row(ctr).fix(t_primals)),
-                get_ctr_type(ctr)
-        ));
-    }
-
-    result.set_obj_sense(get_obj_sense());
-    result.set_obj_expr(get_obj_expr().fix(t_primals));
-
-    if (m_optimizer_factory) {
-        result.use(*m_optimizer_factory);
-    }
-
-    return result;
 }
 
 void idol::Model::reserve_vars(unsigned int t_size) {

@@ -102,7 +102,7 @@ public:
                 CoinPackedVector lhs;
                 for (const auto& [var, constant] : row.linear()) {
                     const unsigned int index = model.get_var_index(var);
-                    lhs.insert(index, constant.as_numerical());
+                    lhs.insert(index, constant);
                 }
 
                 OsiRowCut osi_cut;

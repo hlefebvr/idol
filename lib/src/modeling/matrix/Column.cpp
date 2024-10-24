@@ -10,7 +10,7 @@ idol::Column idol::Column::fix(const Solution::Primal &t_primals) const {
     Column result;
 
     for (const auto& [ctr, constant] : linear()) {
-        result.linear() += constant.fix(t_primals) * ctr;
+        result.linear() += constant * ctr;
     }
 
     result.obj() = obj().fix(t_primals);

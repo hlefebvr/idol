@@ -23,13 +23,13 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator*(const idol::LinExpr<idol::Var> &t_lin_expr, double t_num);
 
-    idol::LinExpr<idol::Var> operator*(idol::Constant &&t_constant, const idol::Var &t_var);
+    idol::LinExpr<idol::Var> operator*(double t_constant, const idol::Var &t_var);
 
-    idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, idol::Constant &&t_constant);
+    idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, double t_constant);
 
-    idol::LinExpr<idol::Var> operator*(const idol::Constant &t_constant, const idol::Var &t_var);
+    idol::LinExpr<idol::Var> operator*(double t_constant, const idol::Var &t_var);
 
-    idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, const idol::Constant &t_constant);
+    idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, double t_constant);
 
     idol::QuadExpr<idol::Var> operator*(const idol::Var &t_var1, const idol::Var &t_var2);
 

@@ -24,6 +24,10 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
 
 void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
+    // TODO this used Constant
+
+    /*
+
     if (t_event != m_triggering_event) {
         return;
     }
@@ -61,11 +65,14 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
         hook_add_cut(cut);
     }
 
+     */
 }
 
 std::pair<idol::Expr<idol::Var, idol::Var>, idol::ObjectiveSense>
 idol::impl::CutSeparation::create_separation_objective(const idol::Solution::Primal &t_primal_solution) {
 
+    // TODO this used Constant
+    /*
     const auto sense = m_cut.type() == LessOrEqual ? Minimize : Maximize;
 
     const auto& row = m_cut.row();
@@ -85,4 +92,5 @@ idol::impl::CutSeparation::create_separation_objective(const idol::Solution::Pri
     }
 
     return std::make_pair(std::move(result), sense);
+     */
 }

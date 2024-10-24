@@ -225,20 +225,6 @@ public:
     Row& operator=(Row&& t_src) noexcept = default;
 
     /**
-     * Creates a new row in which all `Param` in each `Constant` are replaced by their corresponding values in `t_primals`
-     * @param t_primals the primal values for the parameters.
-     * @return the new row.
-     */
-    [[nodiscard]] Row fix(const Solution::Primal& t_primals) const;
-
-    /**
-     * Creates a new row in which all `Param` in each `Constant` are replaced by their corresponding values in `t_duals`
-     * @param t_primals the dual values for the parameters.
-     * @return the new row.
-     */
-    [[nodiscard]] Row fix(const Solution::Dual& t_duals) const;
-
-    /**
      * Returns the value of the row if the value of each variable is taken in `t_primals`, i.e., the difference between
      * the left and the right hand-side.
      *

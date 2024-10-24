@@ -143,7 +143,7 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
 
         for (const auto& [ctr, constant] : column.linear()) {
             lazy(ctr).impl().constraint->index(0)->update(
-                    mosek::fusion::Expr::mul(constant.as_numerical(), result.variable->index(0)),
+                    mosek::fusion::Expr::mul(constant, result.variable->index(0)),
                     result.variable->index(0)
                 );
         }
@@ -162,7 +162,7 @@ mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const 
         result = mosek::fusion::Expr::add(
                 std::move(result),
                 mosek::fusion::Expr::mul(
-                        constant.as_numerical(),
+                        constant,
                         lazy(var).impl().variable
                 )
         );
@@ -320,7 +320,7 @@ void idol::Optimizers::Mosek::hook_update_objective() {
         expr = mosek::fusion::Expr::add(
                 std::move(expr),
                 mosek::fusion::Expr::mul(
-                        constant.as_numerical(),
+                        constant,
                         lazy(var).impl().variable
                 )
         );

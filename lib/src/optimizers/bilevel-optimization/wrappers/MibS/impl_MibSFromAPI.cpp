@@ -202,7 +202,7 @@ idol::impl::MibSFromAPI::find_lower_level_objective_coefficients(const std::vect
     for (const auto& var_id : t_lower_level_variables_indices) {
 
         const auto& var = m_model.get_var_by_index(var_id);
-        const double coefficient = follower_obj.linear().get(var).as_numerical();
+        const double coefficient = follower_obj.linear().get(var);
 
         result.emplace_back(coefficient);
 
@@ -344,7 +344,7 @@ CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
         vector.reserve((int) lin.size());
         for (const auto& [ctr, constant] : lin) {
             const auto index = m_model.get_ctr_index(ctr);
-            const double coefficient = constant.as_numerical();
+            const double coefficient = constant;
             vector.insert((int) index, coefficient);
         }
 

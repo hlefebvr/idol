@@ -24,8 +24,8 @@ template<class Key1 = idol::Var, class Key2 = Key1>
 struct idol::QuadTerm {
     const Key1& key1;
     const Key2& key2;
-    const Constant& constant;
-    QuadTerm(const Pair<Key1, Key2>& t_vars, const Constant& t_constant)
+    const double constant;
+    QuadTerm(const Pair<Key1, Key2>& t_vars, double t_constant)
         : key1(t_vars.first), key2(t_vars.second), constant(t_constant) {}
 };
 
@@ -62,11 +62,9 @@ public:
 
     virtual ~QuadExpr() = default;
 
-    void set(const Key1& t_a, const Key2& t_b, Constant t_coefficient);
+    void set(const Key1& t_a, const Key2& t_b, double t_coefficient);
 
-    const Constant& get(const Key1& t_a, const Key2& t_b) const;
-
-    QuadExpr fix(const Solution::Primal& t_primals) const;
+    double get(const Key1& t_a, const Key2& t_b) const;
 };
 
 template<class Key1, class Key2, class Hash, class EqualTo>
@@ -85,37 +83,24 @@ idol::QuadExpr<Key1, Key2, Hash, EqualTo>::QuadExpr(const Constant &t_factor, co
 }
 
 template<class Key1, class Key2, class Hash, class EqualTo>
-void idol::QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2& t_b, Constant t_coefficient) {
+void idol::QuadExpr<Key1, Key2, Hash, EqualTo>::set(const Key1 &t_a, const Key2& t_b, double t_coefficient) {
     return set({ t_a, t_b }, std::move(t_coefficient));
 }
 
 template<class Key1, class Key2, class Hash, class EqualTo>
-const idol::Constant &idol::QuadExpr<Key1, Key2, Hash, EqualTo>::get(const Key1 &t_a, const Key2 &t_b) const {
+double idol::QuadExpr<Key1, Key2, Hash, EqualTo>::get(const Key1 &t_a, const Key2 &t_b) const {
     return get({ t_a, t_b });
-}
-
-template<class Key1, class Key2, class Hash, class EqualTo>
-idol::QuadExpr<Key1, Key2, Hash, EqualTo> idol::QuadExpr<Key1, Key2, Hash, EqualTo>::fix(const Solution::Primal& t_primals) const {
-    auto result = *this;
-    result.internal_fix(t_primals);
-    return result;
 }
 
 namespace idol {
 
     template<class Key1, class Key2>
     std::ostream &operator<<(std::ostream &t_os, const QuadTerm<Key1, Key2> &t_term) {
-        if (t_term.constant.is_zero()) {
+        if (std::abs(t_term.constant) < Tolerance::Sparsity) {
             return t_os << "0";
         }
 
-        if (t_term.constant.is_numerical()) {
-            t_os << t_term.constant.numerical();
-        } else {
-            t_os << '(' << t_term.constant << ')';
-        }
-
-        return t_os << ' ' << t_term.key1 << ' ' << t_term.key2;
+        return t_os << t_term.constant << ' ' << t_term.key1 << ' ' << t_term.key2;
     }
 
 }

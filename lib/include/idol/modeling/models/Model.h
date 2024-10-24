@@ -608,7 +608,7 @@ public:
      * @param t_var the column corresponding to the column
      * @return the matrix coefficient
      */
-    [[nodiscard]] const Constant& get_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
+    [[nodiscard]] double get_mat_coeff(const Ctr& t_ctr, const Var& t_var) const;
 
     /**
      * Returns the current status of the optimizer.
@@ -1248,9 +1248,6 @@ public:
      */
     void set_solution_index(unsigned int t_index);
 
-    void scale_to_integers(unsigned int t_n_digits);
-
-    Model fix(const Solution::Primal& t_primals) const;
 };
 
 template<class T, unsigned int N>

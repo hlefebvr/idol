@@ -191,7 +191,8 @@ void idol::DantzigWolfe::Formulation::dispatch_constraints(const idol::Model &t_
 void idol::DantzigWolfe::Formulation::dispatch_linking_constraint(const idol::Ctr &t_original_ctr,
                                                                   const idol::Row &t_row,
                                                                   idol::CtrType t_type) {
-
+    throw Exception("TODO: Was using Constant");
+    /*
     const unsigned int n_sub_problems = m_sub_problems.size();
 
     auto [master_part, sub_problem_parts] = decompose_expression(t_row.linear(), t_row.quadratic());
@@ -201,7 +202,7 @@ void idol::DantzigWolfe::Formulation::dispatch_linking_constraint(const idol::Ct
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
         m_generation_patterns[i].linear().set(t_original_ctr, std::move(sub_problem_parts[i]));
     }
-
+    */
 
 }
 
@@ -222,11 +223,7 @@ idol::DantzigWolfe::Formulation::decompose_expression(const LinExpr<Var> &t_line
             continue;
         }
 
-        if (!constant.is_numerical()) {
-            throw Exception("Cannot have linking expression with parametrized coefficients for sub-problem's variable.");
-        }
-
-        sub_problem_parts[sub_problem_id] += constant.numerical() * !var;
+        sub_problem_parts[sub_problem_id] += constant * !var;
 
     }
 
@@ -244,11 +241,7 @@ idol::DantzigWolfe::Formulation::decompose_expression(const LinExpr<Var> &t_line
             continue;
         }
 
-        if (!constant.is_numerical()) {
-            throw Exception("Cannot have linking expression with parametrized coefficients for sub-problem's variable.");
-        }
-
-        sub_problem_parts[sub_problem_id1] += constant.numerical() * (!var1 * !var2);
+        sub_problem_parts[sub_problem_id1] += constant * (!var1 * !var2);
 
     }
 
@@ -341,13 +334,14 @@ void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem
 double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_problem_id,
                                                              const idol::Solution::Dual &t_master_dual,
                                                              const idol::Solution::Primal &t_generator) {
-
+    throw Exception("TODO: Was using Constant");
+    /*
     double result = 0.;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
     for (const auto &[ctr, constant] : generation_pattern.linear()) {
-        result += constant.numerical() * -t_master_dual.get(ctr);
+        result += constant * -t_master_dual.get(ctr);
         for (const auto &[param, coefficient] : constant.linear()) {
             result += -t_master_dual.get(ctr) * coefficient * t_generator.get(param.as<Var>());
         }
@@ -365,6 +359,7 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
     }
 
     return result;
+     */
 
 }
 
@@ -372,6 +367,8 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
                                                                    const idol::Solution::Dual &t_master_dual,
                                                                    bool t_use_farkas) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     Expr<Var, Var> objective;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
@@ -420,7 +417,7 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
     }
 
     m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
-
+    */
 }
 
 double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol::Var &t_var,
@@ -496,6 +493,8 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
                                                                         const idol::Var &t_var,
                                                                         unsigned int t_sub_problem_id, double t_value) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     auto& applied_bounds = t_is_lb ? m_soft_branching_lower_bound_constraints : m_soft_branching_upper_bound_constraints;
     const auto it = applied_bounds.find(t_var);
 
@@ -515,7 +514,7 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
     }
 
     m_master.set_ctr_rhs(it->second, t_value);
-
+    */
 }
 
 idol::LinExpr<idol::Var> idol::DantzigWolfe::Formulation::reformulate_sub_problem_variable(const idol::Var &t_var,
@@ -650,6 +649,8 @@ void idol::DantzigWolfe::Formulation::add(const idol::Var &t_var,
 
 void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType t_type, const idol::Row &t_row) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
 
     if (sub_problem_id != MasterId) {
@@ -674,7 +675,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
     }
 
     m_master.add(t_ctr, TempCtr(Row(master_part, t_row.rhs()), t_type));
-
+    */
 }
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {

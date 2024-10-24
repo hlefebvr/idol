@@ -192,8 +192,6 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/callbacks/cutting-planes/KnapsackCover.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Factory.h
         include/idol/optimizers/mixed-integer-optimization/branch-and-bound/logs/Info.h
-        include/idol/modeling/models/dualize.h
-        src/modeling/models/dualize.cpp
         include/idol/containers/Finally.h
         src/optimizers/bilevel-optimization/wrappers/MibS/MibS.cpp
         include/idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h
@@ -207,31 +205,8 @@ add_library(idol STATIC
         include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/Osi.h
         src/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.cpp
         include/idol/optimizers/mixed-integer-optimization/wrappers/Osi/Optimizers_Osi.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/CCGSeparator.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Bilevel.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/Dualize.cpp
-        src/optimizers/robust-optimization/column-and-constraint-generation/separators/ColumnAndConstraintGenerationSeparator.cpp
         include/idol/modeling/bilevel-optimization/read_from_file.h
         src/modeling/bilevel-optimization/read_from_file.cpp
-        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.h
-        src/optimizers/bilevel-optimization/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
-        src/optimizers/bilevel-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
-        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.h
-        src/optimizers/bilevel-optimization/column-and-constraint-generation/MinMaxMinFormulation.cpp
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.h
-        include/idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/NoStabilization.cpp
-        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.cpp
-        include/idol/optimizers/bilevel-optimization/column-and-constraint-generation/stabilizers.h
-        src/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/CCGStabilizer.cpp
         include/idol/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.h
         src/optimizers/mixed-integer-optimization/wrappers/Mosek/MosekCallbackI.cpp
         include/idol/modeling/bilevel-optimization/LowerLevelDescription.h
@@ -242,8 +217,6 @@ add_library(idol STATIC
         src/optimizers/bilevel-optimization/wrappers/MibS/impl_MibSFromFile.cpp
         include/idol/containers/SilentMode.h
         include/idol/modeling/robust-optimization/StageDescription.h
-        include/idol/optimizers/robust-optimization/convexification/Convexification.h
-        src/optimizers/robust-optimization/convexification/Convexification.cpp
         include/idol/modeling/models/KKT.h
         src/modeling/models/KKT.cpp
         src/optimizers/mixed-integer-optimization/padm/PADM.cpp

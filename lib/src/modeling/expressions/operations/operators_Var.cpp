@@ -33,22 +33,6 @@ LinExpr<Var> idol::operator*(const LinExpr<Var>& t_lin_expr, double t_num) {
     return t_num * LinExpr<Var>(t_lin_expr);
 }
 
-LinExpr<Var> idol::operator*(Constant&& t_constant, const Var& t_var) {
-    return { std::move(t_constant), t_var };
-}
-
-LinExpr<Var> idol::operator*(const Var& t_var, Constant&& t_constant) {
-    return { std::move(t_constant), t_var };
-}
-
-LinExpr<Var> idol::operator*(const Constant& t_constant, const Var& t_var) {
-    return Constant(t_constant) * t_var;
-}
-
-LinExpr<Var> idol::operator*(const Var& t_var, const Constant& t_constant) {
-    return Constant(t_constant) * t_var;
-}
-
 QuadExpr<Var> idol::operator*(const LinExpr<Var>& t_lin_expr, const Var& t_var) {
     QuadExpr<Var> result;
 

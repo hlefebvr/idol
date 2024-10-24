@@ -97,7 +97,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
         for (const auto& [ctr, constant] : column_linear) {
             int ctr_index = lazy(ctr).impl();
             ctr_indices[i] = ctr_index;
-            ctr_coefficients[i] = constant.as_numerical();
+            ctr_coefficients[i] = constant;
             ++i;
         }
 
@@ -160,7 +160,7 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
     for (const auto& [var, constant] : row.linear()) {
         int ctr_index = lazy(var).impl();
         var_indices[i] = ctr_index;
-        var_coefficients[i] = constant.as_numerical();
+        var_coefficients[i] = constant;
         ++i;
     }
 
@@ -202,7 +202,7 @@ void idol::Optimizers::HiGHS::hook_update_objective_sense() {
 
 void idol::Optimizers::HiGHS::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, const Constant &t_constant) {
     const auto& coeff = parent().get_mat_coeff(t_ctr, t_var);
-    m_model.changeCoeff(lazy(t_ctr).impl(), lazy(t_var).impl(), coeff.as_numerical());
+    m_model.changeCoeff(lazy(t_ctr).impl(), lazy(t_var).impl(), coeff);
 }
 
 void idol::Optimizers::HiGHS::hook_update() {

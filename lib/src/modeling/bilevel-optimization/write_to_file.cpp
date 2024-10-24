@@ -36,7 +36,7 @@ void AuxWriter::write() {
     aux_file << "@NUMCONSTRS\n" << lower_level_ctrs.size() << "\n";
     aux_file << "@VARSBEGIN\n";
     for (const auto& var : lower_level_vars) {
-        aux_file << var.name() << '\t' << lower_level_obj.linear().get(var).as_numerical() << "\n";
+        aux_file << var.name() << '\t' << lower_level_obj.linear().get(var) << "\n";
     }
     aux_file << "@VARSEND\n";
     aux_file << "@CONSTRSBEGIN\n";
@@ -146,7 +146,7 @@ void MpsWriter::write() {
         const auto& column = m_model.get_var_column(t_var);
         add_entry(t_var.name(), "OBJ", column.obj().as_numerical());
         for (const auto& [ctr, constant] : column.linear()) {
-            add_entry(t_var.name(), ctr.name(), constant.as_numerical());
+            add_entry(t_var.name(), ctr.name(), constant);
         }
     };
 

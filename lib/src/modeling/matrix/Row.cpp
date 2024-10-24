@@ -9,44 +9,16 @@
 
 const idol::Row idol::Row::EmptyRow;
 
-idol::Row idol::Row::fix(const Solution::Primal &t_primals) const {
-    Row result;
-
-    for (const auto& [var, constant] : linear()) {
-        result.linear() += constant.fix(t_primals) * var;
-    }
-
-    for (const auto& [var1, var2, constant] : quadratic()) {
-        result.quadratic() += constant.fix(t_primals) * var1 * var2;
-    }
-
-    result.rhs() = rhs().fix(t_primals);
-
-    return result;
-}
-
-idol::Row idol::Row::fix(const Solution::Dual &t_duals) const {
-    Row result;
-
-    for (const auto& [var, constant] : linear()) {
-        result.linear() += constant.fix(t_duals) * var;
-    }
-
-    result.rhs() = rhs().fix(t_duals);
-
-    return result;
-}
-
 double idol::Row::value(const idol::Solution::Primal &t_primals) const {
 
     double result = -rhs().numerical();
 
     for (const auto& [var, constant] : linear()) {
-        result += constant.as_numerical() * t_primals.get(var);
+        result += constant * t_primals.get(var);
     }
 
     for (const auto& [var1, var2, constant] : quadratic()) {
-        result += constant.as_numerical() * t_primals.get(var1) * t_primals.get(var2);
+        result += constant * t_primals.get(var1) * t_primals.get(var2);
     }
 
     return result;

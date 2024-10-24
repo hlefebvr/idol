@@ -108,9 +108,9 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, coeff] : column.linear()) {
+        for (const auto& [ctr, constant] : column.linear()) {
             indices[i] = lazy(ctr).impl();
-            coefficients[i] = coeff.as_numerical();
+            coefficients[i] = constant;
             ++i;
         }
 
@@ -163,9 +163,9 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     auto* indices = new int[n+1];
 
     int i = 1;
-    for (const auto& [var, coeff] : row.linear()) {
+    for (const auto& [var, constant] : row.linear()) {
         indices[i] = lazy(var).impl();
-        coefficients[i] = coeff.as_numerical();
+        coefficients[i] = constant;
         ++i;
     }
 
@@ -432,7 +432,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
 
     // Restore objective function
     for (const auto& [var, constant] : model.get_obj_expr().linear()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), constant.as_numerical());
+        glp_set_obj_coef(m_model, lazy(var).impl(), constant);
     }
 
     // Restore basis

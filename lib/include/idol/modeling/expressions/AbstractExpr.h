@@ -43,8 +43,8 @@ class idol::impl::AbstractExpr {
     using MapType = Map<Key, std::unique_ptr<AbstractMatrixCoefficient>, Hash, EqualTo>;
     MapType m_map;
 protected:
-    virtual void set(const Key& t_key, Constant&& t_coefficient);
-    virtual const Constant& get(const Key& t_key) const;
+    virtual void set(const Key& t_key, double t_coefficient);
+    virtual double get(const Key& t_key) const;
     virtual void remove(const Key& t_key);
     void internal_fix(const Solution::Primal& t_primals);
 
@@ -312,27 +312,27 @@ idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::operator/=(double
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, Constant &&t_coefficient) {
+void idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::set(const Key &t_key, double t_coefficient) {
 
-    if (t_coefficient.is_zero()) {
+    if (std::abs(t_coefficient) < Tolerance::Sparsity) {
         m_map.erase(t_key);
         return;
     }
 
     auto it = m_map.find(t_key);
     if (it == m_map.end()) {
-        m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(std::move(t_coefficient)));
+        m_map.emplace(t_key, std::make_unique<MatrixCoefficient>(t_coefficient));
         return;
     }
 
-    it->second->set_value(std::move(t_coefficient));
+    it->second->set_value(t_coefficient);
 
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
-const idol::Constant &idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
+double idol::impl::AbstractExpr<Key, IteratorOutputT, Hash, EqualTo>::get(const Key &t_key) const {
     auto it = m_map.find(t_key);
-    return it == m_map.end() ? Constant::Zero : it->second->value();
+    return it == m_map.end() ? 0 : it->second->value().numerical();
 }
 
 template<class Key, class IteratorOutputT, class Hash, class EqualTo>
@@ -402,11 +402,11 @@ public:
     bool operator!=(const const_iterator& t_rhs) const { return m_it != t_rhs.m_it; }
     bool operator==(const const_iterator& t_rhs) const { return m_it == t_rhs.m_it; }
     const_iterator operator++() { ++m_it; return *this; }
-    IteratorOutputT operator*() const { return IteratorOutputT(m_it->first, m_it->second->value()); }
+    IteratorOutputT operator*() const { return IteratorOutputT(m_it->first, m_it->second->value().as_numerical()); }
 };
 
 template<class Key,
-        class IteratorOutputT = idol::Pair<const Key&, const idol::Constant&>,
+        class IteratorOutputT = idol::Pair<const Key&, double>,
         class Hash = std::hash<Key>,
         class EqualTo = std::equal_to<Key>
 >

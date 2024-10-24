@@ -225,9 +225,9 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
             throw Exception("Osi cannot handle quadratic expressions.");
         }
 
-        for (const auto& [ctr, coeff] : column.linear()) {
+        for (const auto& [ctr, constant] : column.linear()) {
             const int ctr_index = lazy(ctr).impl();
-            const double coefficient = coeff.as_numerical();
+            const double coefficient = constant;
             vector.insert(ctr_index, coefficient);
         }
 
@@ -262,7 +262,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Ctr &t_ctr) {
     CoinPackedVector vector;
     for (const auto& [var, coeff] : row.linear()) {
         const int var_index = lazy(var).impl();
-        const double coefficient = coeff.as_numerical();
+        const double coefficient = coeff;
         vector.insert(var_index, coefficient);
     }
 

@@ -366,7 +366,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
 
     m_relaxation.reset(original_model.clone());
     if (m_perform_scaling) {
-        m_relaxation->scale_to_integers(Tolerance::Digits);
+        // Perform scaling
     }
     m_relaxation->use(*m_relaxation_optimizer_factory);
 

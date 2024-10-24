@@ -424,11 +424,11 @@ void idol::Optimizers::PADM::compute_objective_value() {
     double result = obj.constant().as_numerical();
 
     for (const auto& [var, constant] : obj.linear()) {
-        result += constant.as_numerical() * get_var_primal(var);
+        result += constant * get_var_primal(var);
     }
 
     for (const auto& [var1, var2, constant] : obj.quadratic()) {
-        result += constant.as_numerical() * get_var_primal(var1) * get_var_primal(var2);
+        result += constant * get_var_primal(var1) * get_var_primal(var2);
     }
 
     set_best_obj(result);

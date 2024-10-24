@@ -28,9 +28,9 @@ namespace idol {
 
         for (const auto &[var1, var2, constant]: t_expr) {
             if (var1.id() == var2.id()) {
-                Q.set(var1, var2, constant.numerical());
+                Q.set(var1, var2, constant);
             } else {
-                Q.set(var1, var2, constant.numerical() / 2.);
+                Q.set(var1, var2, constant / 2.);
             }
         }
 

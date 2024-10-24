@@ -57,7 +57,7 @@ GRBTempConstr idol::GurobiCallbackI::gurobi_temp_constr(const TempCtr &t_temp_ct
     GRBLinExpr lhs;
 
     for (const auto& [var, constant] : row.linear()) {
-        lhs += m_parent.lazy(var).impl() * constant.as_numerical(); // NOLINT(readability-static-accessed-through-instance)
+        lhs += m_parent.lazy(var).impl() * constant; // NOLINT(readability-static-accessed-through-instance)
     }
 
     switch (t_temp_ctr.type()) {
@@ -103,7 +103,7 @@ idol::Solution::Primal idol::GurobiCallbackI::primal_solution() const {
         const auto& obj = m_parent.parent().get_obj_expr();
         double obj_val = 0.;
         for (const auto& [var, constant] : obj.linear()) {
-            obj_val += constant.numerical() * result.get(var);
+            obj_val += constant * result.get(var);
         }
 
         result.set_objective_value(obj_val);

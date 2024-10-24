@@ -125,7 +125,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
     const auto& column = model.get_var_column(t_var);
     const auto lb = model.get_var_lb(t_var);
     const auto ub = model.get_var_ub(t_var);
-    const auto objective = column.obj().as_numerical();
+    const auto objective = column.obj();
     const auto type = gurobi_var_type(model.get_var_type(t_var));
     const auto& name = t_var.name();
 
@@ -140,7 +140,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
                 throw Exception("Cannot add column to quadratic constraints.");
             }
 
-            col.addTerm( constant.as_numerical(), std::get<GRBConstr>(impl) );
+            col.addTerm( constant, std::get<GRBConstr>(impl) );
 
         }
 
@@ -149,7 +149,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
         }
     }
 
-    GUROBI_CATCH(return m_model.addVar(lb, ub, objective, type, col, name);)
+    GUROBI_CATCH(return m_model.addVar(lb, ub, objective.as_numerical(), type, col, name);)
 }
 
 std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
@@ -157,7 +157,7 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
     const auto type = gurobi_ctr_type(model.get_ctr_type(t_ctr));
-    const auto rhs = row.rhs().as_numerical();
+    const auto rhs = row.rhs();
     const auto& name = t_ctr.name();
 
 
@@ -165,21 +165,21 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
 
         GRBLinExpr expr = 0.;
         for (const auto &[var, constant]: row.linear()) {
-            expr += constant.as_numerical() * lazy(var).impl();
+            expr += constant * lazy(var).impl();
         }
-        GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
+        GUROBI_CATCH(return m_model.addConstr(expr, type, rhs.as_numerical(), name);)
 
     }
 
     GRBQuadExpr expr = 0.;
     for (const auto &[var, constant]: row.linear()) {
-        expr.addTerm(constant.as_numerical(), lazy(var).impl());
+        expr.addTerm(constant, lazy(var).impl());
     }
     for (const auto& [var1, var2, constant] : row.quadratic()) {
-        expr.addTerm(constant.as_numerical(), lazy(var1).impl(), lazy(var2).impl());
+        expr.addTerm(constant, lazy(var1).impl(), lazy(var2).impl());
     }
 
-    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs, name);)
+    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs.as_numerical(), name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
@@ -227,7 +227,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     GRBLinExpr linear_expr = gurobi_numeric(objective.constant().as_numerical());
 
     for (const auto& [var, constant] : objective.linear()) {
-        linear_expr += gurobi_numeric(constant.as_numerical()) * lazy(var).impl();
+        linear_expr += gurobi_numeric(constant) * lazy(var).impl();
     }
 
     if (objective.quadratic().empty()) {
@@ -238,7 +238,7 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     GRBQuadExpr quadratic_expr;
 
     for (const auto& [var1, var2, constant] : objective.quadratic()) {
-        quadratic_expr.addTerm(gurobi_numeric(constant.as_numerical()), lazy(var1).impl(), lazy(var2).impl());
+        quadratic_expr.addTerm(gurobi_numeric(constant), lazy(var1).impl(), lazy(var2).impl());
     }
 
     m_model.setObjective(linear_expr + quadratic_expr, sense);

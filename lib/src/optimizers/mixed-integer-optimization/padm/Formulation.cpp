@@ -179,6 +179,8 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
                                                                                    const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
                                                                                    unsigned int t_sub_problem_id) {
 
+    throw Exception("TODO: Was using Constant");
+    /*
     bool is_pure = true; // true if the row only has variables from the same sub-problem
 
     const auto belongs_to_sub_problem = [&](const Var& t_var) {
@@ -230,6 +232,7 @@ std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispat
         std::move(pattern),
         is_pure
     };
+     */
 }
 
 void
