@@ -61,6 +61,10 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator+(const idol::Var &t_a, const idol::Var &t_b);
 
+    idol::Expr<idol::Var> operator+(double t_term, idol::LinExpr<idol::Var> &&t_lin_expr);
+
+    idol::Expr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_lin_expr, double t_term);
+
     idol::LinExpr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_lin_expr, const idol::Var &t_var);
 
     idol::LinExpr<idol::Var> operator+(const idol::Var &t_var, idol::LinExpr<idol::Var> &&t_lin_expr);
@@ -76,6 +80,10 @@ namespace idol {
     idol::LinExpr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_a, idol::LinExpr<idol::Var> &&t_b);
 
     idol::LinExpr<idol::Var> operator+(const idol::LinExpr<idol::Var> &t_a, const idol::LinExpr<idol::Var> &t_b);
+
+    idol::Expr<idol::Var> operator+(double t_term, idol::QuadExpr<idol::Var> &&t_quad_expr);
+
+    idol::Expr<idol::Var> operator+(idol::QuadExpr<idol::Var> &&t_quad_expr, double t_term);
 
     idol::QuadExpr<idol::Var> operator+(idol::QuadExpr<idol::Var> &&t_a, const idol::QuadExpr<idol::Var> &t_b);
 

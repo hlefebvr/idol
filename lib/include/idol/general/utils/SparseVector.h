@@ -10,6 +10,7 @@
 #include <optional>
 #include "sort.h"
 #include "idol/general/utils/exceptions/Exception.h"
+#include "idol/general/numericals.h"
 
 namespace idol {
     template<class, class, class>
@@ -19,8 +20,6 @@ namespace idol {
 template<class IndexT, class ValueT, class IndexExtractorT = std::conditional_t<std::is_arithmetic_v<IndexT>, idol::identity<IndexT>, idol::get_id<IndexT>>>
 class idol::SparseVector {
 public:
-    //static_assert(std::is_default_constructible_v<ValueT>);
-
     enum class SortingCriteria {
         Index,
         Value,
@@ -59,6 +58,8 @@ public:
     [[nodiscard]] const IndexT& index_at(unsigned int t_index) const { return m_indices[t_index]; }
 
     [[nodiscard]] const ValueT& value_at(unsigned int t_index) const { return m_values[t_index]; }
+
+    [[nodiscard]] bool has_index(const IndexT& t_index) const;
 
     [[nodiscard]] ValueT get(const IndexT& t_index1) const;
 
@@ -135,8 +136,31 @@ public:
 
     [[nodiscard]] const_iterator cend() const { return const_iterator(size(), *this); }
 
+    void sparsify();
+
     SparseVector& merge_without_conflict(const SparseVector& t_vec);
 };
+
+template<class IndexT, class ValueT, class IndexExtractorT>
+void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::sparsify() {
+
+    unsigned int i = 0, j = 0;
+    const unsigned int n = m_indices.size();
+    while (i < n) {
+        if (!is_zero(m_values[i], Tolerance::Sparsity)) {
+            m_indices[j] = std::move(m_indices[i]);
+            m_values[j] = std::move(m_values[i]);
+            ++j;
+        }
+        ++i;
+    }
+
+    for (unsigned int k = j; k < n; ++k) {
+        m_indices.pop_back();
+        m_values.pop_back();
+    }
+
+}
 
 template<class IndexT, class ValueT, class IndexExtractorT>
 idol::SparseVector<IndexT, ValueT, IndexExtractorT> &
@@ -176,6 +200,18 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::binary_operation_on_sorted_
         for (auto& val : m_values) {
             val = t_operation(val, val);
         }
+        return *this;
+    }
+
+    if (empty()) {
+        reserve(t_vec2.size());
+        for (unsigned int i = 0, n = t_vec2.size() ; i < n ; ++i) {
+            push_back(t_vec2.index_at(i), t_operation(ValueT{}, t_vec2.value_at(i)));
+        }
+        return *this;
+    }
+
+    if (t_vec2.empty()) {
         return *this;
     }
 
@@ -607,6 +643,41 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::reduce() {
 
     m_is_reduced = true;
 
+}
+
+template<class IndexT, class ValueT, class IndexExtractorT>
+bool idol::SparseVector<IndexT, ValueT, IndexExtractorT>::has_index(const IndexT &t_index) const {
+
+    if (!m_is_reduced) {
+        for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
+            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if (m_sorting_criteria != SortingCriteria::Index) {
+        for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
+            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const auto it = std::lower_bound(
+            m_indices.begin(),
+            m_indices.end(),
+            t_index,
+            [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+    );
+
+    if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+        return false;
+    }
+
+    return true;
 }
 
 template<class IndexT, class ValueT, class IndexExtractorT>

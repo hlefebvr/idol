@@ -125,14 +125,16 @@ idol::impl::Expr<Key1, Key2>::Expr(const QuadExpr<Key1> &t_expr) : m_quadratic(t
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_lin_expr, const QuadExpr<Key1, Key2> &t_quad_expr, double t_constant)
         : m_linear(t_lin_expr),
-          m_quadratic(t_quad_expr) {
+          m_quadratic(t_quad_expr),
+          m_constant(t_constant) {
 
 }
 
 template<class Key1, class Key2>
 idol::impl::Expr<Key1, Key2>::Expr(const Expr &t_src)
         : m_linear(t_src.m_linear),
-          m_quadratic(t_src.m_quadratic)  {
+          m_quadratic(t_src.m_quadratic),
+          m_constant(t_src.m_constant) {
 
 }
 

@@ -325,49 +325,6 @@ void idol::Constant::round() {
 
 }
 
-idol::Constant &idol::Constant::multiply_with_precision(double t_factor, unsigned int t_n_digits) {
-
-    m_constant = ::idol::multiply_with_precision(m_constant, t_factor, t_n_digits);
-
-    if (m_linear_terms) {
-        for (auto &[param, value]: *m_linear_terms) {
-            value = ::idol::multiply_with_precision(value, t_factor, t_n_digits);
-        }
-    }
-
-    if (m_quadratic_terms) {
-
-        for (auto &[params, value]: *m_quadratic_terms) {
-            value = ::idol::multiply_with_precision(value, t_factor, t_n_digits);
-        }
-
-    }
-
-    return *this;
-}
-
-idol::Constant &
-idol::Constant::multiply_with_precision_by_power_of_10(unsigned int t_exponent, unsigned int t_n_digits) {
-
-    m_constant = ::idol::multiply_with_precision_by_power_of_10(m_constant, t_exponent, t_n_digits);
-
-    if (m_linear_terms) {
-        for (auto &[param, value]: *m_linear_terms) {
-            value = ::idol::multiply_with_precision_by_power_of_10(value, t_exponent, t_n_digits);
-        }
-    }
-
-    if (m_quadratic_terms) {
-
-        for (auto& [params, value] : *m_quadratic_terms) {
-            value = ::idol::multiply_with_precision_by_power_of_10(value, t_exponent, t_n_digits);
-        }
-
-    }
-
-    return *this;
-}
-
 idol::Constant &idol::Constant::operator=(const idol::Constant &t_rhs) {
 
     if (this == &t_rhs) {

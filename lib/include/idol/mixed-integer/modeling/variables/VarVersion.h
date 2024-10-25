@@ -18,6 +18,10 @@ public:
     VarVersion(unsigned int t_index, double t_lb, double t_ub, VarType t_type, Column&& t_column) : Version(t_index), TempVar(t_lb, t_ub, t_type, std::move(t_column)) {}
     VarVersion(unsigned int t_index, TempVar&& t_temp_var) : Version(t_index), TempVar(std::move(t_temp_var)) {}
     VarVersion(unsigned int t_index, const TempVar& t_temp_var) : Version(t_index), TempVar(t_temp_var) {}
+
+    using TempVar::has_column;
+    using TempVar::reset_column;
+    using TempVar::set_column;
 };
 
 #endif //IDOL_VARVERSION_H

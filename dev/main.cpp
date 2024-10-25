@@ -3,35 +3,39 @@
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
     Env env;
-    Model model(env);
-    const auto x = model.add_vars(Dim<1>(10), 1., 0., Continuous, "x");
+    Model model(env, Model::Storage::RowOriented);
+    const auto x = model.add_vars(Dim<1>(10), 0., 1., Continuous, "x");
 
-    SparseVector<Var, double> v1;
-    SparseVector<Var, double> v2;
+    Column col;
+    col.set_obj(1.);
+    model.add_var(0, 10, Continuous, col);
 
-    for (unsigned int i = 0 ; i < 10 ; ++i) {
-        v1.push_back(x[i], i);
-        //v1.push_back(x[i], 10 - i);
+    for (unsigned int i = 0; i < 9; ++i) {
+        model.add_ctr(x[i] + x[i+1] >= 0.5);
     }
-    for (unsigned int i = 0 ; i < 10 ; ++i) {
-        v2.push_back(x[i], i);
-        v2.push_back(x[i], 10 - i);
-    }
-    std::cout << v1.is_reduced() << std::endl;
-    std::cout << v2.is_reduced() << std::endl;
-    std::cout << v1.is_sorted_by_index() << std::endl;
-    std::cout << v2.is_sorted_by_index() << std::endl;
 
-    auto sum = v1;
-    sum += v2;
+    //std::cout << model << std::endl;
 
-    std::cout << sum << std::endl;
+    const auto column = model.get_var_column(x[3]);
+
+    model.dump();
+
+    model.set_storage(Model::Storage::ColumnOriented, true);
+
+    const auto& row = model.get_ctr_row(model.get_ctr_by_index(2));
+
+    model.dump();
+
+    model.set_storage(Model::Storage::Both);
+
+    model.dump();
 
     return 0;
 }

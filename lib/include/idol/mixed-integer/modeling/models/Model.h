@@ -40,16 +40,21 @@ namespace idol {
  * This class is used to represent a mathematical optimization model.
  */
 class idol::Model {
+public:
+    enum Storage { ColumnOriented, RowOriented, Both };
+private:
     Env& m_env;
     const unsigned int m_id;
     bool m_has_been_moved = false;
 
     ObjectiveSense m_sense = Minimize;
-    std::unique_ptr<Expr<Var, Var>> m_objective;
-    std::unique_ptr<LinExpr<Ctr>> m_rhs;
+    Expr<Var, Var> m_objective;
+    LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
-    bool m_is_row_oriented = true;
+
+    Storage m_storage = RowOriented;
+    mutable bool m_has_minor_representation = false;
 
     std::unique_ptr<Optimizer> m_optimizer;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
@@ -57,6 +62,15 @@ class idol::Model {
     void throw_if_no_optimizer() const { if (!m_optimizer) { throw Exception("No optimizer was found."); } }
 
     Model(const Model& t_src);
+
+    template<class T> void throw_if_unknown_object(const LinExpr<T>& t_expr);
+    template<class T1, class T2> void throw_if_unknown_object(const QuadExpr<T1, T2>& t_expr);
+    void add_column_to_rows(const Var& t_var);
+    void add_row_to_columns(const Ctr& t_ctr);
+    void build_row(const Ctr& t_ctr);
+    void build_column(const Var& t_var);
+    void build_rows();
+    void build_columns();
 public:
     /**
      * Creates a new model for a mathematical optimization problem.
@@ -68,9 +82,7 @@ public:
      * ```
      * @param t_env the optimization environment which will store the model
      */
-    explicit Model(Env& t_env);
-
-    Model(Env& t_env, ObjectiveSense t_sense);
+    explicit Model(Env& t_env, Storage t_storage = RowOriented);
 
     Model(Model&&) noexcept;
 
@@ -1185,6 +1197,13 @@ public:
      */
     void set_solution_index(unsigned int t_index);
 
+    void dump(std::ostream& t_os = std::cout) const;
+
+    Storage storage() const { return m_storage; }
+
+    void set_storage(Storage t_storage, bool t_reset_minor_representation = false);
+
+    void reset_minor_representation();
 };
 
 template<class T, unsigned int N>
@@ -1336,6 +1355,11 @@ namespace idol {
 
         using namespace idol;
 
+        if (t_model.storage() == Model::Storage::ColumnOriented) {
+            std::cerr << "Warning: print a column-oriented model leads to the generation of a minor representation. "
+                         "This operation can be slow and memory-consuming." << std::endl;
+        }
+
         LimitedWidthStream stream(t_os, 120);
 
         if (t_model.get_obj_sense() == Minimize) {
@@ -1356,11 +1380,11 @@ namespace idol {
             stream << '\t' << ctr << ": ";
 
             if (linear.empty()) {
-                stream << "ERROR CANNOT WRITE DOWN QUADRATIC TERMS"; // quadratic;
+                stream << quadratic;
             } else {
                 stream << linear;
                 if (!quadratic.empty()) {
-                    stream << " + " << "ERROR CANNOT WRITE DOWN QUADRATIC TERMS"; //quadratic;
+                    stream << " + " << quadratic;
                 }
             }
 

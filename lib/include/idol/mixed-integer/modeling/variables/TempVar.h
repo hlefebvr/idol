@@ -30,7 +30,11 @@ class idol::TempVar {
     double m_lb = 0.;
     double m_ub = Inf;
     VarType m_type = Continuous;
-    Column m_column;
+    std::unique_ptr<Column> m_column;
+protected:
+    void set_column(Column&& t_column) { m_column = std::make_unique<Column>(std::move(t_column)); }
+    bool has_column() const { return (bool) m_column; }
+    void reset_column() { m_column.reset(); }
 public:
     /**
      * Default constructor.
@@ -48,7 +52,7 @@ public:
      * @param t_type The desired variable type.
      * @param t_column The desired column.
      */
-    TempVar(double t_lb, double t_ub, VarType t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::move(t_column)) {}
+    TempVar(double t_lb, double t_ub, VarType t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::make_unique<Column>(std::move(t_column))) {}
     
     /**
      * Copy constructor.
@@ -60,7 +64,7 @@ public:
      * Move constructor.
      * @param t_src The object to move.
      */
-    TempVar(const TempVar& t_src) = default;
+    TempVar(const TempVar& t_src) : m_lb(t_src.m_lb), m_ub(t_src.m_ub), m_type(t_src.m_type), m_column(t_src.m_column ? std::make_unique<Column>(*t_src.m_column) : std::unique_ptr<Column>()) {}
 
     /**
      * Copy-assignment operator.
@@ -78,13 +82,13 @@ public:
      * Returns the column of the temporary variable (see `Column`).
      * @return The column of the temporary variable.
      */
-    [[nodiscard]] const Column& column() const { return m_column; }
+    [[nodiscard]] const Column& column() const { return *m_column; }
     
     /**
      * Returns the column of the temporary variable (see `Column`).
      * @return The column of the temporary variable.
      */
-    Column& column() { return m_column; }
+    Column& column() { return *m_column; }
 
     /**
      * Returns the lower bound of the temporary variable.

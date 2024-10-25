@@ -32,9 +32,9 @@ TempCtr operator==(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move
 TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) == Expr<Var>(t_rhs); }
 
 bool TempCtr::is_violated(const PrimalPoint &t_solution) const {
-    const double rhs = m_row.rhs();
+    const double rhs = m_row->rhs();
     double lhs = 0.;
-    for (const auto& [var, coeff] : m_row.linear()) {
+    for (const auto& [var, coeff] : m_row->linear()) {
         lhs += coeff * t_solution.get(var);
     }
     switch (m_type) {

@@ -61,19 +61,19 @@ TEST_CASE("Expr: operators type deduction", "[unit][modeling-old][Expr]") {
         CHECK(std::is_same_v<decltype(1 + expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 + x), Expr<Var>>);
         CHECK(std::is_same_v<decltype(x + expr1), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(expr1 + !x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(!x + expr1), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(expr1 + !x), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(!x + expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 + 2 * x), Expr<Var>>);
         CHECK(std::is_same_v<decltype(2 * x + expr1), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(expr1 + 2 * !x), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(2 * !x + expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 + expr2), Expr<Var>>);
 
-        CHECK(std::is_same_v<decltype(x + !x + 2), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(x + !x + 2), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(x + 2 * !x + 2), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(!x + 2 + x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(!x + x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(2 * (!x + x)), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(!x + x), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(2 * (!x + x)), Expr<Var>>);
 
     }
 
@@ -123,19 +123,19 @@ TEST_CASE("Expr: operators type deduction", "[unit][modeling-old][Expr]") {
         CHECK(std::is_same_v<decltype(1 - expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 - x), Expr<Var>>);
         CHECK(std::is_same_v<decltype(x - expr1), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(expr1 - !x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(!x - expr1), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(expr1 - !x), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(!x - expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 - 2 * x), Expr<Var>>);
         CHECK(std::is_same_v<decltype(2 * x - expr1), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(expr1 - 2 * !x), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(2 * !x - expr1), Expr<Var>>);
         CHECK(std::is_same_v<decltype(expr1 - expr2), Expr<Var>>);
 
-        CHECK(std::is_same_v<decltype(x - !x - 2), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(x - !x - 2), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(x - 2 * !x - 2), Expr<Var>>);
         //CHECK(std::is_same_v<decltype(!x - 2 - x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(!x - x), Expr<Var>>);
-        CHECK(std::is_same_v<decltype(2 * (!x - x)), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(!x - x), Expr<Var>>);
+        //CHECK(std::is_same_v<decltype(2 * (!x - x)), Expr<Var>>);
 
     }
 

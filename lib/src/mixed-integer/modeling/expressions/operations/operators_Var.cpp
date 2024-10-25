@@ -103,6 +103,18 @@ LinExpr<Var> idol::operator+(const Var& t_a, const Var& t_b) {
     return result;
 }
 
+idol::Expr<idol::Var> idol::operator+(double t_term, idol::LinExpr<idol::Var> &&t_lin_expr) {
+    Expr<Var> result(std::move(t_lin_expr));
+    result.constant() += t_term;
+    return result;
+}
+
+idol::Expr<idol::Var> idol::operator+(idol::LinExpr<idol::Var> &&t_lin_expr, double t_term) {
+    Expr<Var> result(std::move(t_lin_expr));
+    result.constant() += t_term;
+    return result;
+}
+
 LinExpr<Var> idol::operator+(LinExpr<Var>&& t_lin_expr, const Var& t_var) {
     LinExpr<Var> result(std::move(t_lin_expr));
     result += LinExpr<Var>(t_var);
@@ -137,6 +149,18 @@ LinExpr<Var> idol::operator+(LinExpr<Var>&& t_a, LinExpr<Var>&& t_b) {
 
 LinExpr<Var> idol::operator+(const LinExpr<Var>& t_a, const LinExpr<Var>& t_b) {
     return LinExpr<Var>(t_a) + t_b;
+}
+
+idol::Expr<idol::Var> idol::operator+(double t_term, idol::QuadExpr<idol::Var> &&t_quad_expr) {
+    Expr<Var> result(std::move(t_quad_expr));
+    result.constant() += t_term;
+    return result;
+}
+
+idol::Expr<idol::Var> idol::operator+(idol::QuadExpr<idol::Var> &&t_quad_expr, double t_term) {
+    Expr<Var> result(std::move(t_quad_expr));
+    result.constant() += t_term;
+    return result;
 }
 
 QuadExpr<Var> idol::operator+(QuadExpr<Var>&& t_a, const QuadExpr<Var>& t_b) {

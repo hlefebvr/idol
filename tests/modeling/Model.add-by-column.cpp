@@ -11,6 +11,8 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
 
     Env env;
 
+    auto storage = GENERATE(Model::Storage::RowOriented, Model::Storage::ColumnOriented, Model::Storage::Both);
+
     Model model(env);
 
     GIVEN("An initial model with some constraints and no variable") {

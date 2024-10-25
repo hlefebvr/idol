@@ -63,4 +63,23 @@ double idol::QuadExpr<Key1, Key2>::get(const Key1 &t_a, const Key2 &t_b) const {
     return SparseVector<idol::Pair<Key1, Key2>, double>::get({ t_a, t_b });
 }
 
+namespace idol {
+    template<class Key1, class Key2>
+    std::ostream& operator<<(std::ostream& t_os, const QuadExpr<Key1, Key2>& t_expr) {
+
+        if (t_expr.empty()) {
+            return t_os << "0";
+        }
+
+        unsigned int i = 0;
+        t_os << t_expr.value_at(i) << " " << t_expr.index_at(i) << " + ";
+        ++i;
+        for (unsigned int n = t_expr.size() ; i < n ; ++i) {
+            t_os << t_expr.value_at(i) << " " << t_expr.index_at(i) << " + ";
+        }
+
+        return t_os;
+    }
+}
+
 #endif //IDOL_QUADEXPR_H

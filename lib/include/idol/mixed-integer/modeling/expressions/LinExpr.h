@@ -40,4 +40,23 @@ template<class Key>
 idol::LinExpr<Key>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>({ t_key }, { t_factor }, SparseVector<Key, double>::SortingCriteria::Index, true) {
 }
 
+namespace idol {
+    template<class Key>
+    std::ostream& operator<<(std::ostream& t_os, const LinExpr<Key>& t_expr) {
+
+        if (t_expr.empty()) {
+            return t_os << "0";
+        }
+
+        unsigned int i = 0;
+        t_os << t_expr.value_at(i) << " " << t_expr.index_at(i);
+        ++i;
+        for (unsigned int n = t_expr.size() ; i < n ; ++i) {
+            t_os << " + " << t_expr.value_at(i) << " " << t_expr.index_at(i);
+        }
+
+        return t_os;
+    }
+}
+
 #endif //OPTIMIZE_EXPR_H

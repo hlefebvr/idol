@@ -22,8 +22,8 @@ double eval(const LinExpr<Var>& t_expr, const PrimalPoint& t_primal) {
 
 double eval(const QuadExpr<Var, Var>& t_expr, const PrimalPoint& t_primal) {
     double result = 0;
-    for (const auto& [var1, var2, constant] : t_expr) {
-        result += constant * t_primal.get(var1) * t_primal.get(var2);
+    for (const auto& [vars, constant] : t_expr) {
+        result += constant * t_primal.get(vars.first) * t_primal.get(vars.second);
     }
     return result;
 }

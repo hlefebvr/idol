@@ -16,6 +16,10 @@ class idol::CtrVersion : public Version, public TempCtr {
 public:
     CtrVersion(unsigned int t_index, TempCtr&& t_temp_ctr) : Version(t_index), TempCtr(std::move(t_temp_ctr)) {}
     CtrVersion(unsigned int t_index, const TempCtr& t_temp_ctr) : Version(t_index), TempCtr(t_temp_ctr) {}
+
+    using TempCtr::has_row;
+    using TempCtr::reset_row;
+    using TempCtr::set_row;
 };
 
 #endif //IDOL_CTRVERSION_H

@@ -96,11 +96,11 @@ protected:
     }
 
     ObjectId<VarVersion> create_var(std::string t_name, TempVar&& t_temp_var) {
-        return create<Var>(std::move(t_name), "Var", m_variables, std::move(t_temp_var));
+        return create<Var>(std::move(t_name), "x", m_variables, std::move(t_temp_var));
     }
 
     ObjectId<CtrVersion> create_ctr(std::string t_name, TempCtr&& t_temp_ctr) {
-        return create<Ctr>(std::move(t_name), "Ctr", m_constraints, std::move(t_temp_ctr));
+        return create<Ctr>(std::move(t_name), "c", m_constraints, std::move(t_temp_ctr));
     }
 
 public:

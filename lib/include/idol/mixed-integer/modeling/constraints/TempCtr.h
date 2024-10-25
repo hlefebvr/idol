@@ -37,8 +37,12 @@ namespace idol {
  * ```
  */
 class idol::TempCtr {
-    Row m_row;
+    std::unique_ptr<Row> m_row;
     CtrType m_type = LessOrEqual;
+protected:
+    void set_row(Row&& t_row) { m_row = std::make_unique<Row>(std::move(t_row)); }
+    bool has_row() const { return (bool) m_row; }
+    void reset_row() { m_row.reset(); }
 public:
     /**
      * Default constructor.
@@ -54,13 +58,13 @@ public:
      * @param t_row The desired row.
      * @param t_type The desired constraint type.
      */
-    TempCtr(Row&& t_row, CtrType t_type) : m_row(std::move(t_row)), m_type(t_type) {}
+    TempCtr(Row&& t_row, CtrType t_type) : m_row(std::make_unique<Row>(std::move(t_row))), m_type(t_type) {}
 
     /**
      * Copy constructor.
      * @param t_src The object to copy.
      */
-    TempCtr(const TempCtr& t_src) = default;
+    TempCtr(const TempCtr& t_src) : m_row(t_src.m_row ? std::make_unique<Row>(*t_src.m_row) : std::unique_ptr<Row>()), m_type(t_src.m_type) {}
 
     /**
      * Move constructor.
@@ -84,13 +88,13 @@ public:
       * Returns the row of the temporary constraint (see Row).
       * @return The row of the temporary constraint.
       */
-    [[nodiscard]] const Row& row() const { return m_row; }
+    [[nodiscard]] const Row& row() const { return *m_row; }
 
     /**
      * Returns the row of the temporary constraint (see Row).
      * @return The row of the temporary constraint.
      */
-    Row& row() { return m_row; }
+    Row& row() { return *m_row; }
 
     /**
      * Returns the temporary constraint type.
