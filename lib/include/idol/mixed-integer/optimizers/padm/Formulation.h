@@ -68,7 +68,7 @@ private:
 
     std::vector<Model> m_sub_problems;
     std::vector<std::optional<Expr<Var, Var>>> m_objective_patterns;
-    std::vector<std::list<std::pair<Ctr, Expr<Var, Var>>>> m_constraint_patterns; // as ctr: lhs <= 0
+    std::vector<std::list<std::pair<Ctr, Expr<Var, Var>>>> m_constraint_patterns; // as ctr: row <= 0
     std::vector<std::list<Var>> m_l1_vars_in_sub_problem;
     Map<Ctr, Var> m_l1_vars;
 

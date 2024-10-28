@@ -562,7 +562,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const auto& name = ctr.get(GRB_StringAttr_QCName);
 
         Expr lhs = parse_quadratic(expr);
-        add_ctr(lhs, rhs, type, name);
+        add_ctr(row, rhs, type, name);
 
     }
      */

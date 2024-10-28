@@ -47,8 +47,8 @@ private:
     bool m_has_been_moved = false;
 
     ObjectiveSense m_sense = Minimize;
-    Expr<Var, Var> m_objective;
-    LinExpr<Ctr> m_rhs;
+
+    double m_objective_constant = 0.;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
@@ -69,6 +69,9 @@ private:
     void build_column(const Var& t_var);
     void build_rows();
     void build_columns();
+
+    bool column_storage_matters() const;
+    bool row_storage_matters() const;
 public:
     /**
      * Creates a new model for a mathematical optimization problem.
@@ -586,7 +589,7 @@ public:
      * ```
      * @return the objective function of the model
      */
-    [[nodiscard]] const Expr<Var, Var>& get_obj_expr() const;
+    [[nodiscard]] Expr<Var, Var> get_obj_expr() const;
 
     /**
      * Returns the right hand-side of the model.
@@ -600,7 +603,7 @@ public:
      *
      * @return the right hand-side of the model
      */
-    [[nodiscard]] const LinExpr<Ctr>& get_rhs_expr() const;
+    [[nodiscard]] LinExpr<Ctr> get_rhs_expr() const;
 
     /**
      * Returns a specific coefficient in the model's matrix.

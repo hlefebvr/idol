@@ -50,7 +50,7 @@ public:
 
     void set_type(CtrType t_type) { m_type = t_type; }
 
-    LinExpr<Var>& lhs() { return *m_lhs; }
+    LinExpr<Var>& row() { return *m_lhs; }
 
     const LinExpr<Var>& lhs() const { return *m_lhs; }
 

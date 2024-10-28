@@ -623,7 +623,7 @@ void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const doubl
     delete m_matrix_by_col; m_matrix_by_col = nullptr;
     delete m_matrix_by_row; m_matrix_by_row = nullptr;
 
-    std::cout << "WARNING: adding lhs relying on potentially wrong indices..." << std::endl;
+    std::cout << "WARNING: adding row relying on potentially wrong indices..." << std::endl;
 }
 
 void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const char rowsen, const double rowrhs,
