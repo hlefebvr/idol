@@ -121,6 +121,8 @@ public:
             return Var(t_env, t_lb, t_ub, t_type, t_obj, t_name_i);
         });
     }
+
+    unsigned int index(const Model& t_model) const;
 };
 
 IDOL_MAKE_HASHABLE(Var)

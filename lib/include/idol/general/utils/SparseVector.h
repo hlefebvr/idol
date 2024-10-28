@@ -25,6 +25,10 @@ public:
         Value,
         None
     };
+
+protected:
+    using IndexRawT = typename std::invoke_result<idol::get_id<IndexT>, const IndexT&>::type;
+    virtual IndexRawT get_raw_index(const IndexT& t_index) const { return IndexExtractorT()(t_index); }
 private:
     std::vector<IndexT> m_indices;
     std::vector<ValueT> m_values;
@@ -217,7 +221,7 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::binary_operation_on_sorted_
 
     SparseVector result;
 
-    if (IndexExtractorT()(m_indices.back()) < IndexExtractorT()(t_vec2.m_indices.front())) {
+    if (get_raw_index(m_indices.back()) < get_raw_index(t_vec2.m_indices.front())) {
         /**
          * The last index of the first vector is less than the first index of the second vector.
          * We can simply concatenate the vectors.
@@ -233,7 +237,7 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::binary_operation_on_sorted_
         return *this;
     }
 
-    if (IndexExtractorT()(t_vec2.m_indices.back()) < IndexExtractorT()(m_indices.front())) {
+    if (get_raw_index(t_vec2.m_indices.back()) < get_raw_index(m_indices.front())) {
         /**
          * The last index of the second vector is less than the first index of the first vector.
          * We can simply concatenate the vectors.
@@ -264,13 +268,13 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::binary_operation_on_sorted_
         const auto& index1 = index_at(i);
         const auto& index2 = t_vec2.index_at(j);
 
-        if (IndexExtractorT()(index1) < IndexExtractorT()(index2)) {
+        if (get_raw_index(index1) < get_raw_index(index2)) {
             result.push_back(index1, t_operation(value_at(i), ValueT{}));
             ++i;
             continue;
         }
 
-        if (IndexExtractorT()(index2) < IndexExtractorT()(index1)) {
+        if (get_raw_index(index2) < get_raw_index(index1)) {
             result.push_back(index2, t_operation(ValueT{}, t_vec2.value_at(j)));
             ++j;
             continue;
@@ -312,7 +316,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
                     m_indices.begin(),
                     m_indices.end(),
                     t_index,
-                    [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+                    [this](const IndexT& t_index1, const IndexT& t_index2) { return get_raw_index(t_index1) < get_raw_index(t_index2); }
             );
 
             if (it == m_indices.end()) {
@@ -321,7 +325,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
                 return;
             }
 
-            if (IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+            if (get_raw_index(*it) != get_raw_index(t_index)) {
                 m_indices.insert(it, t_index);
                 m_values.insert(m_values.begin() + (it - m_indices.begin()), t_value);
                 return;
@@ -330,7 +334,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
             m_values[it - m_indices.begin()] = t_value;
 
             for (unsigned int i = it - m_indices.begin() + 1, n = m_indices.size() ; i < n ; ++i) {
-                if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+                if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                     m_values[i] = 0;
                 }
             }
@@ -347,7 +351,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
 
         bool found = false;
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 m_values[i] = found ? 0 : t_value;
                 found = true;
             }
@@ -367,7 +371,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
          */
 
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 m_values[i] = t_value;
                 return;
             }
@@ -387,7 +391,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
             m_indices.begin(),
             m_indices.end(),
             t_index,
-            [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+            [this](const IndexT& t_index1, const IndexT& t_index2) { return get_raw_index(t_index1) < get_raw_index(t_index2); }
     );
 
     if (it == m_indices.end()) {
@@ -396,7 +400,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
         return;
     }
 
-    if (IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+    if (get_raw_index(*it) != get_raw_index(t_index)) {
         m_indices.insert(it, t_index);
         m_values.insert(m_values.begin() + (it - m_indices.begin()), t_value);
         return;
@@ -457,10 +461,10 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::push_back(const IndexT
 
                 const auto &last_index = m_indices.back();
 
-                if (IndexExtractorT()(last_index) > IndexExtractorT()(t_index)) {
+                if (get_raw_index(last_index) > get_raw_index(t_index)) {
                     m_sorting_criteria = SortingCriteria::None;
                     m_is_reduced = false;
-                } else if (IndexExtractorT()(last_index) == IndexExtractorT()(t_index)) {
+                } else if (get_raw_index(last_index) == get_raw_index(t_index)) {
                     m_is_reduced = false;
                 }
 
@@ -471,7 +475,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::push_back(const IndexT
 
         } else {
             if (m_sorting_criteria == SortingCriteria::Index) {
-                if (IndexExtractorT()(m_indices.back()) > IndexExtractorT()(t_index)) {
+                if (get_raw_index(m_indices.back()) > get_raw_index(t_index)) {
                     m_sorting_criteria = SortingCriteria::None;
                 }
             } else {
@@ -625,7 +629,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::reduce() {
 
         const auto& next_index = m_indices[i];
 
-        if (current_index.has_value() && IndexExtractorT()(*current_index) == IndexExtractorT()(next_index)) {
+        if (current_index.has_value() && get_raw_index(*current_index) == get_raw_index(next_index)) {
             new_values[current] += m_values[i];
             continue;
         }
@@ -650,7 +654,7 @@ bool idol::SparseVector<IndexT, ValueT, IndexExtractorT>::has_index(const IndexT
 
     if (!m_is_reduced) {
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 return true;
             }
         }
@@ -659,7 +663,7 @@ bool idol::SparseVector<IndexT, ValueT, IndexExtractorT>::has_index(const IndexT
 
     if (m_sorting_criteria != SortingCriteria::Index) {
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 return true;
             }
         }
@@ -670,10 +674,10 @@ bool idol::SparseVector<IndexT, ValueT, IndexExtractorT>::has_index(const IndexT
             m_indices.begin(),
             m_indices.end(),
             t_index,
-            [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+            [this](const IndexT& t_index1, const IndexT& t_index2) { return get_raw_index(t_index1) < get_raw_index(t_index2); }
     );
 
-    if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+    if (it == m_indices.end() || get_raw_index(*it) != get_raw_index(t_index)) {
         return false;
     }
 
@@ -686,7 +690,7 @@ ValueT idol::SparseVector<IndexT, ValueT, IndexExtractorT>::get(const IndexT &t_
     if (!m_is_reduced) {
         double result = 0.;
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 result += m_values[i];
             }
         }
@@ -695,7 +699,7 @@ ValueT idol::SparseVector<IndexT, ValueT, IndexExtractorT>::get(const IndexT &t_
 
     if (m_sorting_criteria != SortingCriteria::Index) {
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
-            if (IndexExtractorT()(m_indices[i]) == IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) == get_raw_index(t_index)) {
                 return m_values[i];
             }
         }
@@ -706,10 +710,10 @@ ValueT idol::SparseVector<IndexT, ValueT, IndexExtractorT>::get(const IndexT &t_
             m_indices.begin(),
             m_indices.end(),
             t_index,
-            [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+            [this](const IndexT& t_index1, const IndexT& t_index2) { return get_raw_index(t_index1) < get_raw_index(t_index2); }
     );
 
-    if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+    if (it == m_indices.end() || get_raw_index(*it) != get_raw_index(t_index)) {
         return ValueT{};
     }
 
@@ -723,7 +727,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::remove(const IndexT &t
 
         for (unsigned int i = 0, n = m_indices.size() ; i < n ; ++i) {
 
-            if (IndexExtractorT()(m_indices[i]) != IndexExtractorT()(t_index)) {
+            if (get_raw_index(m_indices[i]) != get_raw_index(t_index)) {
                 continue;
             }
 
@@ -744,10 +748,10 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::remove(const IndexT &t
             m_indices.begin(),
             m_indices.end(),
             t_index,
-            [](const IndexT& t_index1, const IndexT& t_index2) { return IndexExtractorT()(t_index1) < IndexExtractorT()(t_index2); }
+            [this](const IndexT& t_index1, const IndexT& t_index2) { return get_raw_index(t_index1) < get_raw_index(t_index2); }
     );
 
-    if (it == m_indices.end() || IndexExtractorT()(*it) != IndexExtractorT()(t_index)) {
+    if (it == m_indices.end() || get_raw_index(*it) != get_raw_index(t_index)) {
         return;
     }
 

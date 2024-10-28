@@ -6,7 +6,7 @@
 #define IDOL_VARVERSION_H
 
 #include "idol/mixed-integer/modeling/objects/Version.h"
-#include "idol/mixed-integer/modeling/expressions/LinExpr.h"
+#include "idol/mixed-integer/modeling/expressions/InternalLinExpr.h"
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
 
 namespace idol {
@@ -19,9 +19,9 @@ class idol::VarVersion : public Version {
     double m_ub;
     VarType m_type;
     double m_obj;
-    std::unique_ptr<LinExpr<Ctr>> m_column;
+    std::unique_ptr<InternalLinExpr<Ctr>> m_column;
 public:
-    VarVersion(unsigned int t_index, double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr>&& t_column);
+    VarVersion(unsigned int t_index, double t_lb, double t_ub, VarType t_type, double t_obj, InternalLinExpr<Ctr>&& t_column);
     VarVersion(unsigned int t_index, TempVar&& t_temp_var);
     VarVersion(unsigned int t_index, const TempVar& t_temp_var);
 
@@ -48,11 +48,11 @@ public:
 
     const LinExpr<Ctr>& column() const { return *m_column; }
 
-    void set_column(LinExpr<Ctr>&& t_column) { m_column = std::make_unique<LinExpr<Ctr>>(std::move(t_column)); }
+    void set_column(InternalLinExpr<Ctr>&& t_column) { m_column = std::make_unique<InternalLinExpr<Ctr>>(std::move(t_column)); }
 
     bool has_column() const { return m_column != nullptr; }
 
-    void set_column(const LinExpr<Ctr>& t_column) { m_column = std::make_unique<LinExpr<Ctr>>(t_column); }
+    void set_column(const InternalLinExpr<Ctr>& t_column) { m_column = std::make_unique<InternalLinExpr<Ctr>>(t_column); }
 
     void reset_column() { m_column.reset(); }
 

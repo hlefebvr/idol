@@ -56,7 +56,7 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
                          t_temp_var.ub(),
                          t_temp_var.type(),
                          t_temp_var.obj(),
-                         std::move(t_temp_var.column())
+                         InternalLinExpr<Ctr>(this, std::move(t_temp_var.column()))
     );
 
     m_variables.emplace_back(t_var);
@@ -662,7 +662,7 @@ void idol::Model::build_row(const idol::Ctr &t_ctr) {
 
 void idol::Model::build_column(const idol::Var &t_var) {
 
-    LinExpr<Ctr> column;
+    InternalLinExpr<Ctr> column(this);
     for (const auto& ctr : ctrs()) {
         const auto& lhs = get_ctr_row(ctr);
         column.push_back(ctr, lhs.get(t_var));

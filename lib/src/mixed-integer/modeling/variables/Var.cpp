@@ -18,3 +18,7 @@ idol::Var::Var(Env &t_env, double t_lb, double t_ub, VarType t_type, double t_ob
     : Var(t_env, t_lb, t_ub, t_type, t_obj, LinExpr<Ctr>(t_column), std::move(t_name)) {
 
 }
+
+unsigned int idol::Var::index(const idol::Model &t_model) const {
+    return t_model.get_var_index(*this);
+}

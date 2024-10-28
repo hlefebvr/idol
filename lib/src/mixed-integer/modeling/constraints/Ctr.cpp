@@ -18,3 +18,7 @@ idol::Ctr::Ctr(idol::Env &t_env, idol::CtrType t_type, double t_constant, std::s
     : Ctr(t_env, TempCtr(LinExpr<Var>(), t_type, t_constant), std::move(t_name)) {
 
 }
+
+unsigned int idol::Ctr::index(const idol::Model &t_index) const {
+    return t_index.get_ctr_index(*this);
+}

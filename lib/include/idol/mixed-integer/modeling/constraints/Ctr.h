@@ -110,6 +110,8 @@ public:
             return Ctr(t_env, t_type, t_constant, t_name_i);
         });
     }
+
+    unsigned int index(const Model& t_index) const;
 };
 
 IDOL_MAKE_HASHABLE(Ctr)

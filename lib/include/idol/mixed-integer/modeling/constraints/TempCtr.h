@@ -8,6 +8,7 @@
 #include <ostream>
 #include <idol/mixed-integer/modeling/expressions/LinExpr.h>
 #include <idol/mixed-integer/modeling/Types.h>
+#include <idol/mixed-integer/modeling/variables/Var.h>
 
 namespace idol {
 
