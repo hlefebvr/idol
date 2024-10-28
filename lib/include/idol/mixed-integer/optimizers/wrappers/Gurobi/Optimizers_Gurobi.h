@@ -10,7 +10,7 @@
 #include <memory>
 #include <variant>
 
-#include "idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h"
+#include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
 #include "GurobiCallbackI.h"
 

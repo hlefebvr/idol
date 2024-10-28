@@ -50,7 +50,7 @@ add_library(idol STATIC
         src/mixed-integer/modeling/constraints/Ctr.cpp
         include/idol/general/optimizers/Optimizer.h
         include/idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h
-        include/idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h
+        include/idol/general/optimizers/OptimizerWithLazyUpdates.h
         src/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.cpp
         src/general/optimizers/Optimizer.cpp
         include/idol/general/optimizers/Algorithm.h

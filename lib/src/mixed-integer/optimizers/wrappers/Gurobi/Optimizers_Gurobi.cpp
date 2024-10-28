@@ -95,6 +95,7 @@ idol::Optimizers::Gurobi::Gurobi(const Model &t_model, bool t_continuous_relaxat
     m_model.set(GRB_DoubleParam_TimeLimit, get_param_time_limit());
     m_model.set(GRB_IntParam_Presolve, get_param_presolve());
     m_model.set(GRB_IntParam_Threads, (int) get_param_thread_limit());
+    m_model.set(GRB_IntParam_InfUnbdInfo, get_param_infeasible_or_unbounded_info());
 
     // Tolerances
     m_model.set(GRB_DoubleParam_MIPGap, get_tol_mip_relative_gap());
@@ -155,12 +156,12 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
     const auto rhs = model.get_ctr_rhs(t_ctr);
     const auto& name = t_ctr.name();
 
-    GRBQuadExpr expr = 0.;
+    GRBLinExpr expr = 0.;
     for (const auto &[var, constant]: row) {
-        expr.addTerm(constant, lazy(var).impl());
+        expr += constant * lazy(var).impl();
     }
 
-    GUROBI_CATCH(return m_model.addQConstr(expr, type, rhs, name);)
+    GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
@@ -364,10 +365,10 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
     }
 
     if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
-        return m_model.get(GRB_DoubleAttr_ObjBound);
+        GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_ObjBound);)
     }
 
-    return m_model.get(GRB_DoubleAttr_PoolObjBound);
+    GUROBI_CATCH(return m_model.get(GRB_DoubleAttr_PoolObjBound);)
 
 }
 

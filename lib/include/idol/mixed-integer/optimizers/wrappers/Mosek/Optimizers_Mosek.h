@@ -7,7 +7,7 @@
 
 #ifdef IDOL_USE_MOSEK
 
-#include "idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h"
+#include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include "MosekCallbackI.h"
 #include <fusion.h>
 

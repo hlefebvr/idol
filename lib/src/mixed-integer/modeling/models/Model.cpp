@@ -472,6 +472,7 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
             version.set_obj(0.);
         } else {
             version.set_obj((*it).second);
+            ++it;
         }
     }
 
@@ -501,6 +502,7 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
             version.set_rhs(0.);
         } else {
             version.set_rhs((*it).second);
+            ++it;
         }
     }
 

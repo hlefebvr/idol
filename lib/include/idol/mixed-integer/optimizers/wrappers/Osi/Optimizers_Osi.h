@@ -9,7 +9,7 @@
 
 #include <OsiSolverInterface.hpp>
 #include <stack>
-#include "idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h"
+#include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 
 namespace idol::Optimizers {
     class Osi;

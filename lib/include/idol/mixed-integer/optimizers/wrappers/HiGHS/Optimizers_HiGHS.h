@@ -7,7 +7,7 @@
 
 #ifdef IDOL_USE_HIGHS
 
-#include "idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h"
+#include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include <Highs.h>
 #include <stack>
 

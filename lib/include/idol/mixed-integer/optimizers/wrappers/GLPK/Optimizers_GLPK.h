@@ -9,7 +9,7 @@
 
 #ifdef IDOL_USE_GLPK
 
-#include "idol/mixed-integer/optimizers/wrappers/OptimizerWithLazyUpdates.h"
+#include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include <glpk.h>
 
 namespace idol::Optimizers {

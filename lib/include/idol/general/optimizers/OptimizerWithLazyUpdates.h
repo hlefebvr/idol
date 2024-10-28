@@ -360,8 +360,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var
         hook_remove(m_variables[index].object());
     }
 
-    m_variables[index] = std::move(m_variables.back());
-    m_variables.pop_back();
+    m_variables.erase(m_variables.begin() + index);
 }
 
 template<class VarImplT, class CtrImplT>
@@ -381,8 +380,7 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr
         hook_remove(m_constraints[index].object());
     }
 
-    m_constraints[index] = std::move(m_constraints.back());
-    m_constraints.pop_back();
+    m_constraints.erase(m_constraints.begin() + index);
 }
 
 #endif //IDOL_OPTIMIZERWITHLAZYUPDATES_H
