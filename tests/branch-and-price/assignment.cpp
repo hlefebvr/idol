@@ -13,7 +13,7 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 #include <idol/modeling.h>
-#include <idol/problems/generalized-assignment-problem/GAP_Instance.h>
+#include <idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h>
 #include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
 #include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
 #include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
