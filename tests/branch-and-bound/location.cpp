@@ -15,7 +15,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include <idol/modeling.h>
-#include <idol/problems/facility-location-problem/FLP_Instance.h>
+#include <idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h>
 #include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
 #include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
 #include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
@@ -69,8 +69,8 @@ TEMPLATE_LIST_TEST_CASE("Solve Facility Location Problem instances with differen
     const unsigned int n_facilities = instance.n_facilities();
 
     // Make model
-    auto x = Var::make_vector(env, Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = Var::make_vector(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, "y");
+    auto x = Var::make_vector(env, Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
+    auto y = Var::make_vector(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
 
     Model model(env);
 
