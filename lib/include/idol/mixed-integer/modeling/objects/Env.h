@@ -100,8 +100,8 @@ protected:
         return create<Var>(std::move(t_name), "x", m_variables, std::move(t_temp_var));
     }
 
-    ObjectId<CtrVersion> create_ctr(std::string t_name, LinExpr<Var>&& t_lhs, CtrType t_type, double t_rhs) {
-        return create<Ctr>(std::move(t_name), "c", m_constraints, std::move(t_lhs), t_type, t_rhs);
+    ObjectId<CtrVersion> create_ctr(std::string t_name, TempCtr&& t_temp_ctr) {
+        return create<Ctr>(std::move(t_name), "c", m_constraints, std::move(t_temp_ctr));
     }
 
 public:

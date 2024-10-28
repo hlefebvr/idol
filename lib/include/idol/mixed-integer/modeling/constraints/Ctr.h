@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/objects/Object.h"
 #include "idol/mixed-integer/modeling/Types.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 namespace idol {
     class CtrVersion;

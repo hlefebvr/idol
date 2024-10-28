@@ -229,6 +229,7 @@ add_library(idol STATIC
         src/mixed-integer/modeling/variables/VarVersion.cpp
         include/idol/mixed-integer/modeling/expressions/InternalLinExpr.h
         src/mixed-integer/modeling/expressions/InternalLinExpr.cpp
+        src/mixed-integer/modeling/constraints/CtrVersion.cpp
 )
 
 find_package(OpenMP REQUIRED)

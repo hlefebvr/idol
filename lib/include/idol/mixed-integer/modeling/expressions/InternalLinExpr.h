@@ -16,7 +16,7 @@ namespace idol {
 
 template<class Key>
 class idol::InternalLinExpr : public LinExpr<Key> {
-    const Model* m_model;
+    const Model* m_model = nullptr;
 protected:
     unsigned int get_raw_index(const Key &t_index) const override {
         return t_index.index(*m_model);

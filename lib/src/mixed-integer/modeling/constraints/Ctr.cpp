@@ -6,7 +6,7 @@
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::Ctr::Ctr(Env &t_env, TempCtr &&t_temp_ctr, std::string t_name)
-    : Object<CtrVersion, Ctr>(t_env.create_ctr(std::move(t_name), std::move(t_temp_ctr.lhs()), t_temp_ctr.type(), t_temp_ctr.rhs())) {
+    : Object<CtrVersion, Ctr>(t_env.create_ctr(std::move(t_name), std::move(t_temp_ctr))) {
 
 }
 

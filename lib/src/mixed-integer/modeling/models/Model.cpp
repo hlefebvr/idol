@@ -1,6 +1,7 @@
 //
 // Created by henri on 27/01/23.
 //
+#include <cassert>
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
@@ -45,36 +46,37 @@ idol::Model::~Model() {
 
 void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
 
-    // TODO sort and reduce by index in the model
-
     throw_if_unknown_object(t_temp_var.column());
 
-    m_env.create_version(*this,
-                         t_var,
-                         m_variables.size(),
-                         t_temp_var.lb(),
-                         t_temp_var.ub(),
-                         t_temp_var.type(),
-                         t_temp_var.obj(),
-                         InternalLinExpr<Ctr>(this, std::move(t_temp_var.column()))
-    );
+    const unsigned int index = m_variables.size();
+    const double lb = t_temp_var.lb();
+    const double ub = t_temp_var.ub();
+    const auto type = t_temp_var.type();
+    const double obj = t_temp_var.obj();
 
+    InternalLinExpr<Ctr> internal_column(this, std::move(t_temp_var.column()));
+    internal_column.sort_by_index();
+
+    // Create variable version
+    m_env.create_version(*this,t_var,index,lb,ub,type,obj,std::move(internal_column));
     m_variables.emplace_back(t_var);
 
+    // Add term to objective function
+    m_objective.linear().push_back(t_var, t_temp_var.obj());
+    assert(m_objective.linear().is_sorted_by_index());
+
+    // Update rows if necessary
+    if (m_storage != ColumnOriented || m_has_minor_representation) {
+        add_column_to_rows(t_var);
+    }
+
+    // If there is an optimizer, we notify it
     if (has_optimizer()) {
         optimizer().add(t_var);
     }
 
-    const auto& column = get_var_column(t_var);
-    m_objective += t_temp_var.obj() * t_var;
-
-    if (m_storage == ColumnOriented && !m_has_minor_representation) {
-        return;
-    }
-
-    add_column_to_rows(t_var);
-
-    if (m_storage == RowOriented) {
+    // Do not track the column if not necessary
+    if (m_storage == RowOriented && !m_has_minor_representation) {
         m_env.version(*this, t_var).reset_column();
     }
 
@@ -88,6 +90,7 @@ void idol::Model::add_column_to_rows(const idol::Var &t_var) {
         auto& version = m_env.version(*this, ctr);
         if (version.has_row()) {
             version.lhs().push_back(t_var, constant);
+            assert(version.lhs().is_sorted_by_index());
         }
     }
 
@@ -138,27 +141,32 @@ void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
 
     throw_if_unknown_object(t_temp_ctr.lhs());
 
-    m_env.create_version(*this,
-                         t_ctr,
-                         m_constraints.size(),
-                         std::move(t_temp_ctr.lhs()),
-                         t_temp_ctr.type(),
-                         t_temp_ctr.rhs());
+    const unsigned int index = m_constraints.size();
+    const auto type = t_temp_ctr.type();
+    const double rhs = t_temp_ctr.rhs();
+
+    InternalLinExpr<Var> internal_row(this, std::move(t_temp_ctr.lhs()));
+    internal_row.sort_by_index();
+
+    // Create constraint version
+    m_env.create_version(*this, t_ctr, index, std::move(internal_row), type, rhs);
     m_constraints.emplace_back(t_ctr);
+
+    // Add term to the rhs
+    m_rhs += rhs * t_ctr;
+    assert(m_rhs.is_sorted_by_index());
+
+    // Update columns if necessary
+    if (m_storage != RowOriented || m_has_minor_representation) {
+        add_row_to_columns(t_ctr);
+    }
 
     if (has_optimizer()) {
         optimizer().add(t_ctr);
     }
 
-    const auto& lhs = get_ctr_row(t_ctr);
-
-    if (m_storage == RowOriented && !m_has_minor_representation) {
-        return;
-    }
-
-    add_row_to_columns(t_ctr);
-
-    if (m_storage == ColumnOriented) {
+    // Do not track the row if not necessary
+    if (m_storage == ColumnOriented && !m_has_minor_representation) {
         m_env.version(*this, t_ctr).reset_row();
     }
 
@@ -172,6 +180,7 @@ void idol::Model::add_row_to_columns(const idol::Ctr &t_ctr) {
         auto& version = m_env.version(*this, var);
         if (version.has_column()) {
             version.column().push_back(t_ctr, constant);
+            assert(version.column().is_sorted_by_index());
         }
     }
 
@@ -214,6 +223,8 @@ idol::LinExpr<idol::Var> idol::Model::get_ctr_row(const Ctr &t_ctr) const {
         const_cast<Model*>(this)->build_row(t_ctr);
         m_has_minor_representation = true;
     }
+
+    assert(version.lhs().is_sorted_by_index());
 
     return version.lhs();
 }
@@ -647,30 +658,35 @@ double idol::Model::get_var_reduced_cost(const idol::Var &t_var) const {
 
 void idol::Model::build_row(const idol::Ctr &t_ctr) {
 
-    LinExpr<Var> lhs;
-    for (const auto& var : vars()) {
+    InternalLinExpr<Var> internal_row(this);
+    for (const auto& var : m_variables) {
         const auto& column = get_var_column(var);
         const double value = column.get(t_ctr);
-        lhs.push_back(var, value);
+        internal_row.push_back(var, value);
     }
 
-    lhs.sparsify();
+    internal_row.sparsify();
 
-    m_env.version(*this, t_ctr).set_row(std::move(lhs));
+    assert(internal_row.is_sorted_by_index());
+
+    m_env.version(*this, t_ctr).set_row(std::move(internal_row));
 
 }
 
 void idol::Model::build_column(const idol::Var &t_var) {
 
-    InternalLinExpr<Ctr> column(this);
-    for (const auto& ctr : ctrs()) {
+    InternalLinExpr<Ctr> internal_column(this);
+    for (const auto& ctr : m_constraints) {
         const auto& lhs = get_ctr_row(ctr);
-        column.push_back(ctr, lhs.get(t_var));
+        const double value = lhs.get(t_var);
+        internal_column.push_back(ctr, value);
     }
 
-    column.sparsify();
+    internal_column.sparsify();
 
-    m_env.version(*this, t_var).set_column(std::move(column));
+    assert(internal_column.is_sorted_by_index());
+
+    m_env.version(*this, t_var).set_column(std::move(internal_column));
 
 }
 
@@ -800,14 +816,14 @@ void idol::Model::reset_minor_representation() {
     m_has_minor_representation = false;
 
     if (m_storage == ColumnOriented) {
-        for (const auto& ctr : ctrs()) {
+        for (const auto& ctr : m_constraints) {
             m_env.version(*this, ctr).reset_row();
         }
         return;
     }
 
     if (m_storage == RowOriented) {
-        for (const auto& var : vars()) {
+        for (const auto& var : m_variables) {
             m_env.version(*this, var).reset_column();
         }
         return;
@@ -816,7 +832,7 @@ void idol::Model::reset_minor_representation() {
 }
 
 void idol::Model::build_rows() {
-    for (const auto& ctr : ctrs()) {
+    for (const auto& ctr : m_constraints) {
         if (!m_env.version(*this, ctr).has_row()) {
             build_row(ctr);
         }
@@ -824,7 +840,7 @@ void idol::Model::build_rows() {
 }
 
 void idol::Model::build_columns() {
-    for (const auto& var : vars()) {
+    for (const auto& var : m_variables) {
         if (!m_env.version(*this, var).has_column()) {
             build_column(var);
         }
@@ -832,9 +848,9 @@ void idol::Model::build_columns() {
 }
 
 double idol::Model::get_var_obj(const idol::Var &t_var) const {
-    return get_obj_expr().linear().get(t_var);
+    return m_env.version(*this, t_var).obj();
 }
 
 double idol::Model::get_ctr_rhs(const idol::Ctr &t_ctr) const {
-    return get_rhs_expr().get(t_ctr);
+    return m_env.version(*this, t_ctr).rhs();
 }

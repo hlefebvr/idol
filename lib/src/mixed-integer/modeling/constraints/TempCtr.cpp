@@ -10,7 +10,7 @@ using namespace idol;
 TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
-    return { std::move(diff.linear()), LessOrEqual, diff.constant() };
+    return { std::move(diff.linear()), LessOrEqual, -diff.constant() };
 }
 
 TempCtr operator<=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) <= std::move(t_rhs); }
@@ -20,7 +20,7 @@ TempCtr operator<=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr
 TempCtr operator>=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
-    return { std::move(diff.linear()), GreaterOrEqual, diff.constant() };
+    return { std::move(diff.linear()), GreaterOrEqual, -diff.constant() };
 }
 
 TempCtr operator>=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) >= std::move(t_rhs); }
@@ -30,7 +30,7 @@ TempCtr operator>=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr
 TempCtr operator==(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
-    return { std::move(diff.linear()), Equal, diff.constant() };
+    return { std::move(diff.linear()), Equal, -diff.constant() };
 }
 
 TempCtr operator==(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) == std::move(t_rhs); }
