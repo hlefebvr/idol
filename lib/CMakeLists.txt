@@ -14,10 +14,6 @@ add_library(idol STATIC
         include/idol/general/utils/Set.h
         include/idol/general/utils/exceptions/NotImplemented.h
         include/idol/mixed-integer/modeling/expressions/LinExpr.h
-        include/idol/mixed-integer/modeling/matrix/Row.h
-        src/mixed-integer/modeling/matrix/Row.cpp
-        src/mixed-integer/modeling/matrix/Column.cpp
-        include/idol/mixed-integer/modeling/matrix/Column.h
         src/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.cpp
         include/idol/mixed-integer/problems/knapsack-problem/KP_Instance.h
         src/mixed-integer/problems/knapsack-problem/KP_Instance.cpp
@@ -38,7 +34,6 @@ add_library(idol STATIC
         include/idol/mixed-integer/problems/helpers/distances.h
         include/idol/mixed-integer/problems/helpers/parse_delimited.h
         include/idol/mixed-integer/modeling/expressions/operations/operators_utils.h
-        include/idol/mixed-integer/modeling/expressions/QuadExpr.h
         include/idol/mixed-integer/modeling/models/Model.h
         include/idol/mixed-integer/modeling/objects/Env.h
         include/idol/mixed-integer/modeling/variables/Var.h
@@ -231,6 +226,7 @@ add_library(idol STATIC
         include/idol/general/utils/SparseVector.h
         include/idol/general/utils/sort.h
         include/idol/general/utils/Point.h
+        src/mixed-integer/modeling/variables/VarVersion.cpp
 )
 
 find_package(OpenMP REQUIRED)

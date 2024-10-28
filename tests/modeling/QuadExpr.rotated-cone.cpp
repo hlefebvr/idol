@@ -12,6 +12,7 @@ using namespace idol;
 
 #include "idol/general/linear-algebra/to_rotated_quadratic_cone.h"
 
+/*
 double eval(const LinExpr<Var>& t_expr, const PrimalPoint& t_primal) {
     double result = 0;
     for (const auto& [var, constant] : t_expr) {
@@ -31,12 +32,13 @@ double eval(const QuadExpr<Var, Var>& t_expr, const PrimalPoint& t_primal) {
 double eval(const Expr<Var, Var>& t_expr, const PrimalPoint& t_primal) {
     return t_expr.constant() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
 }
+*/
 
 TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling-old][QuadExpr]") {
-
+    /*
     Env env;
 
-    auto x = Var::make_vector<1>(env, Dim<1>(4), 0., Inf, Continuous, "x");
+    auto x = Var::make_vector<1>(env, Dim<1>(4), 0., Inf, Continuous, 0., "x");
 
     std::vector<QuadExpr<Var, Var>> quadratic_expressions = {
             x[0] * x[0] + x[1] * x[1],
@@ -95,7 +97,7 @@ TEST_CASE("QuadExpr: rotated cone expression", "[unit][modeling-old][QuadExpr]")
         }
 
     }
-
+    */
 }
 
 #endif

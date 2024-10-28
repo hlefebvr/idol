@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 
@@ -17,8 +18,8 @@ SCENARIO("Gurobi: Update objective with backend", "[unit][backend][Gurobi]") {
 
         Env env;
 
-        Var x(env, 0., 1., Continuous, "x");
-        Var y(env, 0., 1., Continuous, "y");
+        Var x(env, 0., 1., Continuous, 0., "x");
+        Var y(env, 0., 1., Continuous, 0., "y");
 
         Model model(env);
         model.add(x);

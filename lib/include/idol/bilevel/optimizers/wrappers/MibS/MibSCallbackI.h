@@ -8,6 +8,7 @@
 #include <BlisHeuristic.h>
 #include <CglCutGenerator.hpp>
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "impl_MibSFromAPI.h"
 
 namespace idol {
@@ -96,11 +97,11 @@ public:
 
             for (const auto& cut : m_cuts) {
 
-                const auto& row = cut.row();
-                const double rhs = row.rhs();
+                const auto& row = cut.lhs();
+                const double rhs = cut.rhs();
 
                 CoinPackedVector lhs;
-                for (const auto& [var, constant] : row.linear()) {
+                for (const auto& [var, constant] : row) {
                     const unsigned int index = model.get_var_index(var);
                     lhs.insert(index, constant);
                 }

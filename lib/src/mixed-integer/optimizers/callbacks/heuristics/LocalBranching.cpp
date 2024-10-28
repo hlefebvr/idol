@@ -4,6 +4,7 @@
 #include "idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 idol::Heuristics::LocalBranching::LocalBranching(const LocalBranching& t_src)
     : m_optimizer_factory(t_src.m_optimizer_factory->clone()),

@@ -3,6 +3,8 @@
 //
 
 #include "idol/mixed-integer/modeling/annotations/impl_Annotation.h"
+#include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 
 idol::impl::Annotation::Annotation(::idol::Env &t_env, bool t_is_var_annotation, std::string &&t_name)

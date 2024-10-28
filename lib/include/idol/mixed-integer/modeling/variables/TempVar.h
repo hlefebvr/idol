@@ -5,7 +5,9 @@
 #ifndef OPTIMIZE_TEMPVAR_H
 #define OPTIMIZE_TEMPVAR_H
 
-#include "idol/mixed-integer/modeling/matrix/Column.h"
+#include "idol/mixed-integer/modeling/expressions/LinExpr.h"
+#include "idol/mixed-integer/modeling/constraints/Ctr.h"
+#include "idol/mixed-integer/modeling/Types.h"
 
 namespace idol {
     class TempVar;
@@ -30,11 +32,8 @@ class idol::TempVar {
     double m_lb = 0.;
     double m_ub = Inf;
     VarType m_type = Continuous;
-    std::unique_ptr<Column> m_column;
-protected:
-    void set_column(Column&& t_column) { m_column = std::make_unique<Column>(std::move(t_column)); }
-    bool has_column() const { return (bool) m_column; }
-    void reset_column() { m_column.reset(); }
+    double m_obj = 0.;
+    LinExpr<Ctr> m_column;
 public:
     /**
      * Default constructor.
@@ -52,7 +51,7 @@ public:
      * @param t_type The desired variable type.
      * @param t_column The desired column.
      */
-    TempVar(double t_lb, double t_ub, VarType t_type, Column&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_column(std::make_unique<Column>(std::move(t_column))) {}
+    TempVar(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr>&& t_column) : m_lb(t_lb), m_ub(t_ub), m_type(t_type), m_obj(t_obj), m_column(std::move(t_column)) {}
     
     /**
      * Copy constructor.
@@ -64,7 +63,7 @@ public:
      * Move constructor.
      * @param t_src The object to move.
      */
-    TempVar(const TempVar& t_src) : m_lb(t_src.m_lb), m_ub(t_src.m_ub), m_type(t_src.m_type), m_column(t_src.m_column ? std::make_unique<Column>(*t_src.m_column) : std::unique_ptr<Column>()) {}
+    TempVar(const TempVar& t_src) : m_lb(t_src.m_lb), m_ub(t_src.m_ub), m_type(t_src.m_type), m_obj(t_src.m_obj), m_column(t_src.m_column) {}
 
     /**
      * Copy-assignment operator.
@@ -82,13 +81,13 @@ public:
      * Returns the column of the temporary variable (see `Column`).
      * @return The column of the temporary variable.
      */
-    [[nodiscard]] const Column& column() const { return *m_column; }
+    [[nodiscard]] const LinExpr<Ctr>& column() const { return m_column; }
     
     /**
      * Returns the column of the temporary variable (see `Column`).
      * @return The column of the temporary variable.
      */
-    Column& column() { return *m_column; }
+    LinExpr<Ctr>& column() { return m_column; }
 
     /**
      * Returns the lower bound of the temporary variable.
@@ -130,6 +129,10 @@ public:
         }
         m_type = t_type;
     }
+
+    double obj() const { return m_obj; }
+
+    void set_obj(double t_obj) { m_obj = t_obj; }
 };
 
 #endif //OPTIMIZE_TEMPVAR_H

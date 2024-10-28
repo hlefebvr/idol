@@ -24,12 +24,8 @@ void idol::Heuristics::SimpleRounding::Strategy::operator()(CallbackEvent t_even
 
         const auto& column = model.get_var_column(var);
 
-        if (!column.quadratic().empty()) {
-            throw Exception("SimpleRounding for quadratic problems is not implemented.");
-        }
-
         std::optional<bool> is_trivially_up_roundable; // The name assumes <= constraints
-        for (const auto& [ctr, coefficient] : column.linear()) {
+        for (const auto& [ctr, coefficient] : column) {
 
             const auto type = model.get_ctr_type(ctr);
 

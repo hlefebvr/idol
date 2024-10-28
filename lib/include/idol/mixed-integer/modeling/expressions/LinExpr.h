@@ -7,7 +7,6 @@
 
 #include "idol/general/utils/SparseVector.h"
 #include "idol/general/utils/IteratorForward.h"
-#include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/general/utils/exceptions/Exception.h"
 #include <memory>
 #include <utility>
@@ -16,6 +15,8 @@
 #include <list>
 
 namespace idol {
+    class Var;
+
     template<class Key>
     class LinExpr;
 }

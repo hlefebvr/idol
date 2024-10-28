@@ -4,6 +4,7 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 idol::Model::Model(Env &t_env, Storage t_storage) : m_env(t_env), m_id(t_env.create_model_id()), m_storage(t_storage) {}
 
@@ -46,9 +47,7 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
 
     // TODO sort and reduce by index in the model
 
-    throw_if_unknown_object(t_temp_var.column().obj_quadratic());
-    throw_if_unknown_object(t_temp_var.column().linear());
-    throw_if_unknown_object(t_temp_var.column().quadratic());
+    throw_if_unknown_object(t_temp_var.column());
 
     m_env.create_version(*this,
                          t_var,
@@ -56,6 +55,7 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
                          t_temp_var.lb(),
                          t_temp_var.ub(),
                          t_temp_var.type(),
+                         t_temp_var.obj(),
                          std::move(t_temp_var.column())
     );
 
@@ -66,7 +66,7 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
     }
 
     const auto& column = get_var_column(t_var);
-    m_objective += column.obj() * t_var + t_var * column.obj_quadratic();
+    m_objective += t_temp_var.obj() * t_var;
 
     if (m_storage == ColumnOriented && !m_has_minor_representation) {
         return;
@@ -84,20 +84,11 @@ void idol::Model::add_column_to_rows(const idol::Var &t_var) {
 
     const auto& column = get_var_column(t_var);
 
-    for (const auto& [ctr, constant] : column.linear()) {
+    for (const auto& [ctr, constant] : column) {
         auto& version = m_env.version(*this, ctr);
         if (version.has_row()) {
-            version.row().linear().push_back(t_var, constant);
+            version.lhs().push_back(t_var, constant);
         }
-    }
-
-    for (const auto& [pair, constant] : column.quadratic()) {
-
-        auto& version = m_env.version(*this, pair.first);
-        if (version.has_row()) {
-            version.row().quadratic().push_back({ pair.second, t_var }, constant);
-        }
-
     }
 
 }
@@ -108,7 +99,8 @@ void idol::Model::add(const Var &t_var) {
              default_version.lb(),
              default_version.ub(),
              default_version.type(),
-             Column(default_version.column())
+             default_version.obj(),
+             LinExpr<Ctr>(default_version.column())
     ));
 }
 
@@ -144,18 +136,21 @@ void idol::Model::remove(const Ctr &t_ctr) {
 
 void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
 
-    throw_if_unknown_object(t_temp_ctr.row().linear());
-    throw_if_unknown_object(t_temp_ctr.row().quadratic());
+    throw_if_unknown_object(t_temp_ctr.lhs());
 
-    m_env.create_version(*this, t_ctr, m_constraints.size(), std::move(t_temp_ctr));
+    m_env.create_version(*this,
+                         t_ctr,
+                         m_constraints.size(),
+                         std::move(t_temp_ctr.lhs()),
+                         t_temp_ctr.type(),
+                         t_temp_ctr.rhs());
     m_constraints.emplace_back(t_ctr);
 
     if (has_optimizer()) {
         optimizer().add(t_ctr);
     }
 
-    const auto& row = get_ctr_row(t_ctr);
-    m_rhs += row.rhs() * t_ctr;
+    const auto& lhs = get_ctr_row(t_ctr);
 
     if (m_storage == RowOriented && !m_has_minor_representation) {
         return;
@@ -171,36 +166,25 @@ void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
 
 void idol::Model::add_row_to_columns(const idol::Ctr &t_ctr) {
 
-    const auto& row = get_ctr_row(t_ctr);
+    const auto& lhs = get_ctr_row(t_ctr);
 
-    for (const auto& [var, constant] : row.linear()) {
+    for (const auto& [var, constant] : lhs) {
         auto& version = m_env.version(*this, var);
         if (version.has_column()) {
-            version.column().linear().push_back(t_ctr, constant);
+            version.column().push_back(t_ctr, constant);
         }
-    }
-
-    for (const auto& [pair, constant] : row.quadratic()) {
-
-        auto& version1 = m_env.version(*this, pair.first);
-        if (version1.has_column()) {
-            version1.column().quadratic().push_back({ t_ctr, pair.second }, constant);
-        }
-
-        auto& version2 = m_env.version(*this, pair.second);
-        if (version2.has_column()) {
-            version2.column().quadratic().push_back({ t_ctr, pair.first }, constant);
-        }
-
     }
 
 }
 
 void idol::Model::add(const Ctr &t_ctr) {
     const auto& default_version = m_env[t_ctr];
-    add(t_ctr, TempCtr(
-            Row(default_version.row()),
-            default_version.type())
+    add(t_ctr,
+            TempCtr(
+                LinExpr<Var>(default_version.lhs()),
+                default_version.type(),
+                default_version.rhs()
+            )
         );
 }
 
@@ -217,10 +201,13 @@ const idol::LinExpr<idol::Ctr> &idol::Model::get_rhs_expr() const {
 }
 
 double idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
-    return m_env.version(*this, t_ctr).row().linear().get(t_var);
+    if (m_storage == Storage::ColumnOriented) {
+        return m_env.version(*this, t_var).column().get(t_ctr);
+    }
+    return m_env.version(*this, t_ctr).lhs().get(t_var);
 }
 
-const idol::Row &idol::Model::get_ctr_row(const Ctr &t_ctr) const {
+idol::LinExpr<idol::Var> idol::Model::get_ctr_row(const Ctr &t_ctr) const {
     auto& version = m_env.version(*this, t_ctr);
 
     if (!version.has_row()) {
@@ -228,7 +215,7 @@ const idol::Row &idol::Model::get_ctr_row(const Ctr &t_ctr) const {
         m_has_minor_representation = true;
     }
 
-    return version.row();
+    return version.lhs();
 }
 
 idol::CtrType idol::Model::get_ctr_type(const Ctr &t_ctr) const {
@@ -247,7 +234,7 @@ double idol::Model::get_var_ub(const Var &t_var) const {
     return m_env.version(*this, t_var).ub();
 }
 
-const idol::Column &idol::Model::get_var_column(const Var &t_var) const {
+const idol::LinExpr<idol::Ctr> &idol::Model::get_var_column(const Var &t_var) const {
     auto& version = m_env.version(*this, t_var);
 
     if (!version.has_column()) {
@@ -280,30 +267,63 @@ idol::Model* idol::Model::clone() const {
 
 idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
 
+    /**
+     * TODO: here, it would be more efficient to directly copy the data from the source model
+     * To do this, we need to add a method to the Env
+     */
+
     reserve_vars(t_src.vars().size());
     reserve_ctrs(t_src.ctrs().size());
 
-    for (const auto& var : t_src.vars()) {
-        add(var, TempVar(
-                t_src.get_var_lb(var),
-                t_src.get_var_ub(var),
-                t_src.get_var_type(var),
-                Column()
-        ));
+    m_storage = t_src.m_storage;
+
+    if (t_src.m_storage == Both || t_src.m_storage == RowOriented) {
+
+        for (const auto& var : t_src.vars()) {
+            add(var, TempVar(
+                    t_src.get_var_lb(var),
+                    t_src.get_var_ub(var),
+                    t_src.get_var_type(var),
+                    t_src.get_var_obj(var),
+                    LinExpr<Ctr>()
+            ));
+        }
+
+        for (const auto& ctr : t_src.ctrs()) {
+            add(ctr, TempCtr(
+                    t_src.get_ctr_row(ctr),
+                    t_src.get_ctr_type(ctr),
+                    t_src.get_ctr_rhs(ctr)
+            ));
+        }
+
+        set_obj_sense(t_src.get_obj_sense());
+        set_obj_expr(t_src.get_obj_expr());
+
+    } else {
+
+        for (const auto& ctr : t_src.ctrs()) {
+            add(ctr, TempCtr(
+                    LinExpr<Var>(),
+                    t_src.get_ctr_type(ctr),
+                    t_src.get_ctr_rhs(ctr)
+            ));
+        }
+
+        for (const auto& var : t_src.vars()) {
+            add(var, TempVar(
+                    t_src.get_var_lb(var),
+                    t_src.get_var_ub(var),
+                    t_src.get_var_type(var),
+                    t_src.get_var_obj(var),
+                    LinExpr<Ctr>(t_src.get_var_column(var))
+            ));
+        }
+
+        set_obj_sense(t_src.get_obj_sense());
+        set_obj_expr(t_src.get_obj_expr());
+
     }
-
-    for (const auto& ctr : t_src.ctrs()) {
-        add(ctr, TempCtr(
-                Row(t_src.get_ctr_row(ctr)),
-                t_src.get_ctr_type(ctr)
-        ));
-    }
-
-    set_obj_sense(t_src.get_obj_sense());
-    set_obj_expr(t_src.get_obj_expr());
-
-    // TODO set storage to initial value
-    throw Exception("Model. Work in progress...");
 
     if (t_src.m_optimizer_factory) {
         use(*t_src.m_optimizer_factory);
@@ -390,8 +410,9 @@ void idol::Model::set_obj_expr(const Expr<Var, Var> &t_objective) {
 
 void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
-    //replace_objective(Expr<Var, Var>(t_objective));
-    throw Exception("Model. Work in progress...");
+    throw_if_unknown_object(t_objective.linear());
+
+    m_objective = std::move(t_objective);
 
     if (has_optimizer()) {
         optimizer().update_obj();
@@ -404,6 +425,8 @@ void idol::Model::set_rhs_expr(const LinExpr<Ctr> &t_rhs) {
 }
 
 void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
+
+    throw_if_unknown_object(t_rhs);
 
     //replace_right_handside(LinExpr<Ctr>(t_rhs));
     throw Exception("Model. Work in progress...");
@@ -459,12 +482,13 @@ void idol::Model::set_ctr_type(const Ctr &t_ctr, CtrType t_type) {
 
 }
 
-void idol::Model::set_ctr_row(const Ctr &t_ctr, const Row &t_row) {
-    set_ctr_row(t_ctr, Row(t_row));
+void idol::Model::set_ctr_row(const Ctr &t_ctr, const LinExpr<Var> &t_row) {
+    set_ctr_row(t_ctr, LinExpr<Var>(t_row));
 }
 
-void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
+void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
 
+    /*
     Row old_row;
 
     // TODO: Do this properly
@@ -476,16 +500,17 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
         }
 
     }
-
+    */
     throw Exception("Model. Work in progress...");
     //remove_row_from_columns(t_ctr);
 
-    m_env.version(*this, t_ctr).row() = std::move(t_row);
+    //m_env.version(*this, t_ctr).row() = std::move(t_row);
 
     throw Exception("Model. Work in progress...");
     //add_row_to_columns(t_ctr);
 
     // TODO: Do this properly
+    /*
     if (has_optimizer()) {
 
         optimizer().update();
@@ -494,13 +519,13 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, Row &&t_row) {
             optimizer().update_mat_coeff(t_ctr, var);
         }
 
-        for (const auto& [var, constant] : get_ctr_row(t_ctr).linear()) {
+        for (const auto& [var, constant] : get_ctr_row(t_ctr)) {
             optimizer().update_mat_coeff(t_ctr, var);
         }
 
         optimizer().update_ctr_rhs(t_ctr);
     }
-
+    */
 }
 
 void idol::Model::set_var_type(const Var &t_var, VarType t_type) {
@@ -544,11 +569,11 @@ void idol::Model::set_var_obj(const Var &t_var, double t_obj) {
 
 }
 
-void idol::Model::set_var_column(const Var &t_var, const Column &t_column) {
-    set_var_column(t_var, Column(t_column));
+void idol::Model::set_var_column(const Var &t_var, const LinExpr<Ctr> &t_column) {
+    set_var_column(t_var, LinExpr<Ctr>(t_column));
 }
 
-void idol::Model::set_var_column(const Var &t_var, Column &&t_column) {
+void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
 
     throw Exception("Model. Work in progress...");
     //remove_column_from_rows(t_var);
@@ -564,18 +589,18 @@ void idol::Model::set_var_column(const Var &t_var, Column &&t_column) {
 
 }
 
-idol::Var idol::Model::add_var(double t_lb, double t_ub, VarType t_type, std::string t_name) {
-    return add_var(t_lb, t_ub, t_type, Column(), std::move(t_name));
+idol::Var idol::Model::add_var(double t_lb, double t_ub, VarType t_type, double t_obj, std::string t_name) {
+    return add_var(t_lb, t_ub, t_type, t_obj, LinExpr<Ctr>(), std::move(t_name));
 }
 
-idol::Var idol::Model::add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name) {
-    Var result(m_env, t_lb, t_ub, t_type, std::move(t_column), std::move(t_name));
+idol::Var idol::Model::add_var(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr> t_column, std::string t_name) {
+    Var result(m_env, t_lb, t_ub, t_type, t_obj, std::move(t_column), std::move(t_name));
     add(result);
     return result;
 }
 
-idol::Ctr idol::Model::add_ctr(Row &&t_row, CtrType t_type, std::string t_name) {
-    return add_ctr(TempCtr(std::move(t_row), t_type), std::move(t_name));
+idol::Ctr idol::Model::add_ctr(LinExpr<Var> &&t_row, CtrType t_type, double t_rhs, std::string t_name) {
+    return add_ctr(TempCtr(std::move(t_row), t_type, t_rhs), std::move(t_name));
 }
 
 idol::Ctr idol::Model::add_ctr(TempCtr t_temp_ctr, std::string t_name) {
@@ -622,56 +647,31 @@ double idol::Model::get_var_reduced_cost(const idol::Var &t_var) const {
 
 void idol::Model::build_row(const idol::Ctr &t_ctr) {
 
-    Row row;
+    LinExpr<Var> lhs;
     for (const auto& var : vars()) {
         const auto& column = get_var_column(var);
-        const double value = column.linear().get(t_ctr);
-        row.linear().push_back(var, value);
-        if (!row.quadratic().empty()) {
-            throw Exception("Building a row with quadratic terms is not implemented.");
-        }
+        const double value = column.get(t_ctr);
+        lhs.push_back(var, value);
     }
-    row.set_rhs(m_rhs.get(t_ctr));
 
-    row.linear().sparsify();
-    row.quadratic().sparsify();
+    lhs.sparsify();
 
-    m_env.version(*this, t_ctr).set_row(std::move(row));
+    m_env.version(*this, t_ctr).set_row(std::move(lhs));
 
 }
 
 void idol::Model::build_column(const idol::Var &t_var) {
 
-    Column column;
+    LinExpr<Ctr> column;
     for (const auto& ctr : ctrs()) {
-        const auto& row = get_ctr_row(ctr);
-        column.linear().push_back(ctr, row.linear().get(t_var));
-        if (!column.quadratic().empty()) {
-            throw Exception("Building a column with quadratic terms is not implemented.");
-        }
-    }
-    column.set_obj(m_objective.linear().get(t_var));
-    if (!column.obj_quadratic().empty()) {
-        throw Exception("Building a column with quadratic terms is not implemented.");
+        const auto& lhs = get_ctr_row(ctr);
+        column.push_back(ctr, lhs.get(t_var));
     }
 
-    column.linear().sparsify();
-    column.quadratic().sparsify();
+    column.sparsify();
 
     m_env.version(*this, t_var).set_column(std::move(column));
 
-}
-
-template<class T1, class T2>
-void idol::Model::throw_if_unknown_object(const idol::QuadExpr<T1, T2> &t_expr) {
-    for (const auto& [pair, constant] : t_expr) {
-        if (!has(pair.first)) {
-            throw Exception("Object " + pair.first.name() + " is not part of the model.");
-        }
-        if (!has(pair.second)) {
-            throw Exception("Object " + pair.second.name() + " is not part of the model.");
-        }
-    }
 }
 
 template<class T>
@@ -713,7 +713,7 @@ void idol::Model::dump(std::ostream &t_os) const {
         for (const auto& var : vars()) {
             auto& version = m_env.version(*this, var);
             if (version.has_column()) {
-                const auto& linear = version.column().linear();
+                const auto& linear = version.column();
                 if (linear.has_index(ctr)) {
                     t_os << std::setw(cell_width) << linear.get(ctr);
                 } else {
@@ -741,7 +741,7 @@ void idol::Model::dump(std::ostream &t_os) const {
         for (const auto& var : vars()) {
             auto& version = m_env.version(*this, ctr);
             if (version.has_row()) {
-                const auto& linear = version.row().linear();
+                const auto& linear = version.lhs();
                 if (linear.has_index(var)) {
                     t_os << std::setw(cell_width) << linear.get(var);
                 } else {
@@ -829,4 +829,12 @@ void idol::Model::build_columns() {
             build_column(var);
         }
     }
+}
+
+double idol::Model::get_var_obj(const idol::Var &t_var) const {
+    return get_obj_expr().linear().get(t_var);
+}
+
+double idol::Model::get_ctr_rhs(const idol::Ctr &t_ctr) const {
+    return get_rhs_expr().get(t_ctr);
 }

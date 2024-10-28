@@ -21,7 +21,7 @@ class idol::DantzigWolfe::Formulation {
 
     Model m_master;
     std::vector<Model> m_sub_problems;
-    std::vector<Column> m_generation_patterns;
+    std::vector<LinExpr<Ctr>> m_generation_patterns;
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
 
@@ -36,8 +36,8 @@ class idol::DantzigWolfe::Formulation {
     void initialize_present_generators(unsigned int t_n_sub_problems);
     void dispatch_variables(const Model& t_original_formulation);
     void dispatch_constraints(const Model& t_original_formulation);
-    void dispatch_linking_constraint(const Ctr& t_original_ctr, const Row& t_row, CtrType t_type);
-    std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear, const QuadExpr<Var, Var>& t_quadratic);
+    void dispatch_linking_constraint(const Ctr& t_original_ctr, const LinExpr<Var>& t_row, CtrType t_type);
+    std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear /*, const QuadExpr<Var, Var>& t_quadratic */);
     void dispatch_objective_function(const Model& t_original_formulation);
     bool is_feasible(const PrimalPoint& t_primal, unsigned int t_sub_problem_id);
 
@@ -97,9 +97,9 @@ public:
 
     void clean_up(unsigned int t_sub_problem_id, double t_ratio);
 
-    void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const Column& t_column);
+    void add(const Var& t_var, double t_lb, double t_ub, VarType t_type, const LinExpr<Ctr>& t_column);
 
-    void add(const Ctr& t_ctr, CtrType t_type, const Row& t_row);
+    void add(const Ctr& t_ctr, CtrType t_type, const LinExpr<Var>& t_row);
 
     void remove(const Var& t_var);
 

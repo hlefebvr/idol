@@ -7,12 +7,12 @@
 
 #include "idol/mixed-integer/modeling/objects/Object.h"
 #include "idol/mixed-integer/modeling/Types.h"
+#include "idol/mixed-integer/modeling/expressions/LinExpr.h"
 
 namespace idol {
 
     class Env;
     class VarVersion;
-    class Column;
 
     template<class T>
     class Versions;
@@ -54,7 +54,7 @@ public:
      * @param t_type The type for the default version of the variable.
      * @param t_name The given name of the variable.
      */
-    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, std::string t_name = "");
+    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj = 0., std::string t_name = "");
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public:
      * @param t_column The column for the default version of the variable.
      * @param t_name The given name of the variable.
      */
-    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, Column&& t_column, std::string t_name = "");
+    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr>&& t_column, std::string t_name = "");
 
     /**
      * Constructor.
@@ -84,7 +84,7 @@ public:
      * @param t_column The column for the default version of the variable.
      * @param t_name The given name of the variable.
      */
-    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, const Column& t_column, std::string t_name = "");
+    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, const LinExpr<Ctr>& t_column, std::string t_name = "");
 
     Var(const Var&) = default;
     Var(Var&&) = default;
@@ -116,9 +116,9 @@ public:
      * @return A (nested) vector of variables.
      */
     template<unsigned int N = 1, unsigned int I = 0>
-    static Vector<Var, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name = "") {
+    static Vector<Var, N - I> make_vector(Env& t_env, const Dim<N>& t_dim, double t_lb, double t_ub, VarType t_type, double t_obj, const std::string& t_name = "") {
         return impl::create_many<Var, N, I>(t_dim, t_name.empty() ? "Var" : t_name, [&](const std::string& t_name_i) {
-            return Var(t_env, t_lb, t_ub, t_type, t_name_i);
+            return Var(t_env, t_lb, t_ub, t_type, t_obj, t_name_i);
         });
     }
 };

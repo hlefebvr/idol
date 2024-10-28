@@ -19,18 +19,18 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
 
         WHEN("Adding a continuous variable with infinite lower and upper bound and no objective function") {
 
-            Var x(env, -Inf, Inf, Continuous, "x");
+            Var x(env, -Inf, Inf, Continuous,  0.,"x");
             model.add(x);
 
             THEN("The variabe's objective coefficient should be zero") {
-                CHECK(std::abs(model.get_var_column(x).obj()) <= Tolerance::Sparsity);
+                CHECK(std::abs(model.get_var_obj(x)) <= Tolerance::Sparsity);
             }
 
             AND_THEN("The model's objective should not contain a non-zero coefficient x") {
                 auto objective = model.get_obj_expr();
 
                 CHECK(objective.linear().empty());
-                CHECK(objective.quadratic().empty());
+                //CHECK(objective.quadratic().empty());
                 CHECK(objective.constant() == 0_a);
                 CHECK(objective.is_zero());
             }
@@ -74,7 +74,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
                 model.set_var_obj(x, 1);
 
                 THEN("The variable's objective coefficient should be 1") {
-                    CHECK(model.get_var_column(x).obj() == 1_a);
+                    CHECK(model.get_var_obj(x) == 1_a);
                 }
 
                 THEN("The model's objective should have a coefficient for x of 1") {

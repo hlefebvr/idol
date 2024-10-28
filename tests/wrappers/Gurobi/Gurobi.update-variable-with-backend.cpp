@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 
@@ -24,7 +25,7 @@ SCENARIO("Gurobi: Update a variable with backend", "[unit][backend][Gurobi]") {
 
         WHEN("A continuous variable (lb=0,ub=1) is added") {
 
-            Var x(env, 0., 1., Continuous, "x");
+            Var x(env, 0., 1., Continuous, 0., "x");
             model.add(x);
 
             WHEN("The variable is removed before Model::update_objective() is called") {

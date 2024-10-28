@@ -18,8 +18,8 @@ TEST_CASE("Solving small LPs") {
 
     WHEN("A bounded and feasible LP is solved") { // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
-        Var x(env, 0, Inf, Continuous, "x");
-        Var y(env, 0, Inf, Continuous, "y");
+        Var x(env, 0, Inf, Continuous, 0., "x");
+        Var y(env, 0, Inf, Continuous, 0., "y");
 
         Ctr c1(env, 120 * x + 210 * y <= 15000);
         Ctr c2(env, 110 * x +  30 * y <=  4000);
@@ -74,8 +74,8 @@ TEST_CASE("Solving small LPs") {
 
     WHEN("An unbounded LP is solved") {
 
-        Var x(env, 0, Inf, Continuous, "x");
-        Var y(env, 0, Inf, Continuous, "y");
+        Var x(env, 0, Inf, Continuous, 0., "x");
+        Var y(env, 0, Inf, Continuous, 0., "y");
 
         Ctr c1(env, x - 2 * y <= 1);
         Ctr c2(env, -2 * x + y <= 1);
@@ -122,9 +122,9 @@ TEST_CASE("Solving small LPs") {
 
     WHEN("An infeasible LP is solved") {
 
-        Var u(env, 0., Inf, Continuous, "u");
-        Var v(env, 0., Inf, Continuous, "v");
-        Var w(env, 0., Inf, Continuous, "w");
+        Var u(env, 0., Inf, Continuous, 0., "u");
+        Var v(env, 0., Inf, Continuous, 0., "v");
+        Var w(env, 0., Inf, Continuous, 0., "w");
         Ctr c1(env, u + -2 * v + -1 * w >= 3);
         Ctr c2(env, -2 * u + v + -1 * w >= 2);
         auto objective = u + v - 2 * w;

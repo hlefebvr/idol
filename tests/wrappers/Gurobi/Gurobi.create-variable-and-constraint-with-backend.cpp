@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 
@@ -22,7 +23,7 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
 
         const auto& backend = ((const Model &) model).optimizer().as<Optimizers::Gurobi>();
 
-        Var y(env, 0., 1., Continuous, "y");
+        Var y(env, 0., 1., Continuous, 0., "y");
         model.add(y);
 
         Ctr c1(env, y >= 2, "c1");
@@ -32,7 +33,7 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
 
         WHEN("A variable x and constraint c2 (2y + x <= 10) are added to the model and the variable appears in the constraint") {
 
-            Var x(env, 0., 1., Continuous, "x");
+            Var x(env, 0., 1., Continuous, 0., "x");
             model.add(x);
 
             Ctr c2(env, 2 * y + x <= 10, "c2");
@@ -77,10 +78,10 @@ SCENARIO("Gurobi: Create variables and constraints intertwined with backend", "[
             Ctr c2(env, LessOrEqual, 10, "c");
             model.add(c2);
 
-            Column column;
-            column.linear().set(c2, 1);
+            LinExpr<Ctr> column;
+            column.set(c2, 1);
 
-            Var x(env, 0., 1., Continuous, std::move(column), "x");
+            Var x(env, 0., 1., Continuous, 0., std::move(column), "x");
             model.add(x);
 
             WHEN("Model::update_objective() is called") {

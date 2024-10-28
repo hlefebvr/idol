@@ -29,10 +29,6 @@ void idol::Optimizers::Mosek::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
-    if (!objective.quadratic().empty()) {
-        throw Exception("Handling quadratic objective is not implemented.");
-    }
-
     set_rhs_as_updated();
 }
 
@@ -134,14 +130,15 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
 
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
+    const double obj = parent().get_var_obj(t_var);
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    set_var_attr(result, type, lb, ub, column.obj());
+    set_var_attr(result, type, lb, ub, obj);
 
     if (t_add_column) {
 
-        for (const auto& [ctr, constant] : column.linear()) {
+        for (const auto& [ctr, constant] : column) {
             lazy(ctr).impl().constraint->index(0)->update(
                     mosek::fusion::Expr::mul(constant, result.variable->index(0)),
                     result.variable->index(0)
@@ -172,7 +169,6 @@ mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const 
 }
 
 mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
-    assert(t_expr.quadratic().empty());
     return mosek::fusion::Expr::add(
                 t_expr.constant(),
                 to_mosek_expression(t_expr.linear())
@@ -187,7 +183,9 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     const int type = model.get_ctr_type(t_ctr);
     const auto& row = model.get_ctr_row(t_ctr);
+    const double rhs = model.get_ctr_rhs(t_ctr);
 
+    /*
     if (!row.quadratic().empty()) {
 
 #ifdef IDOL_USE_EIGEN
@@ -200,7 +198,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
         auto it = rq_cone_expr.begin();
 
-        if (!row.linear().empty() || std::abs(row.rhs()) >= Tolerance::Sparsity) {
+        if (!row.linear().empty() || std::abs(rhs) >= Tolerance::Sparsity) {
 
             const auto& head1 = *it;
             ++it;
@@ -213,22 +211,22 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
                 expression = mosek::fusion::Expr::vstack(
                         std::move(expression),
                         mosek::fusion::Expr::constTerm(.5),
-                        to_mosek_expression(sign * row.rhs() - sign * row.linear())
+                        to_mosek_expression(sign * rhs - sign * row.linear())
                 );
 
             } else if (row.linear().empty()) { // Here, we have a constraint of the form x^T Q x - 2yz <= b \iff 2 * .5 * y * z >= xQx + sqrt(b)^2
 
-                std::cout << "Warning: Assuming \"" << head1 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
-                std::cout << "Warning: Assuming \"" << head2 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
+                std::cerr << "Warning: Assuming \"" << head1 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
+                std::cerr << "Warning: Assuming \"" << head2 << " >= 0\" when converting quadratic constraint to Mosek expression." << std::endl;
 
-                if (sign * row.rhs() >= 0) {
+                if (sign * rhs >= 0) {
                     throw Exception("Non-convex constraint was found.");
                 }
 
                 expression = mosek::fusion::Expr::vstack(
                         to_mosek_expression(head1),
                         to_mosek_expression(head2),
-                        std::sqrt(-sign * row.rhs())
+                        std::sqrt(-sign * rhs)
                 );
 
             } else {
@@ -244,7 +242,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
                     );
         }
 
-        result.constraint = m_model->constraint(/* t_ctr.name(), */ std::move(expression), mosek::fusion::Domain::inRotatedQCone());
+        result.constraint = m_model->constraint(std::move(expression), mosek::fusion::Domain::inRotatedQCone());
 
         return result;
 #else
@@ -253,9 +251,11 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
     }
 
+     */
+
     // Build expression
-    auto expr = to_mosek_expression(row.linear());
-    expr = mosek::fusion::Expr::add(std::move(expr), -row.rhs());
+    auto expr = to_mosek_expression(row);
+    expr = mosek::fusion::Expr::add(std::move(expr), -rhs);
 
     // Set constraint type
     switch (type) {
@@ -293,7 +293,7 @@ void idol::Optimizers::Mosek::hook_update(const Var &t_var) {
     const double lb = model.get_var_lb(t_var);
     const double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const double obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_obj(t_var);
 
     set_var_attr(impl, type, lb, ub, obj);
 
@@ -301,10 +301,10 @@ void idol::Optimizers::Mosek::hook_update(const Var &t_var) {
 
 void idol::Optimizers::Mosek::hook_update(const Ctr &t_ctr) {
 
-    const auto& row = parent().get_ctr_row(t_ctr);
+    const double rhs = parent().get_ctr_rhs(t_ctr);
 
-    auto rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -row.rhs());
-    lazy(t_ctr).impl().constraint->index(0)->update(rhs);
+    auto msk_rhs = std::make_shared<monty::ndarray< double >>(monty::shape(1), -rhs);
+    lazy(t_ctr).impl().constraint->index(0)->update(msk_rhs);
 
 }
 

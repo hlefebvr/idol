@@ -20,9 +20,9 @@ TEST_CASE("Solving small MIPs") {
 
         AND_WHEN("The root node is integer feasible") { // Taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp
 
-            Var x(env, 0., 1., Binary, "x");
-            Var y(env, 0., 1., Binary, "y");
-            Var z(env, 0., 1., Binary, "z");
+            Var x(env, 0., 1., Binary, 0., "x");
+            Var y(env, 0., 1., Binary, 0., "y");
+            Var z(env, 0., 1., Binary, 0., "z");
             Ctr c1(env, x + 2 * y + 3 * z <= 4);
             Ctr c2(env, x + y >= 1);
             auto objective = -x - y - 2 * z;
@@ -62,9 +62,9 @@ TEST_CASE("Solving small MIPs") {
         AND_WHEN("The root not is not integer feasible") {
 
 
-            Var x(env, 0., 1., Binary, "x");
-            Var y(env, 0., 1., Binary, "y");
-            Var z(env, 0., 1., Binary, "z");
+            Var x(env, 0., 1., Binary, 0., "x");
+            Var y(env, 0., 1., Binary, 0., "y");
+            Var z(env, 0., 1., Binary, 0., "z");
             Ctr c1(env, x + 2 * y + 2.5 * z <= 4);
             Ctr c2(env, x + y >= 1);
             auto objective = -x - y - 2 * z;
@@ -109,7 +109,7 @@ TEST_CASE("Solving small MIPs") {
         WHEN("The root node is infeasible") {
 
 
-            Var x(env, 0., 1., Binary, "x");
+            Var x(env, 0., 1., Binary, 0., "x");
             Ctr c1(env, x >= 1);
             Ctr c2(env, x <= 0);
 
@@ -138,7 +138,7 @@ TEST_CASE("Solving small MIPs") {
 
         AND_WHEN("The root node is feasible") {
 
-            Var x(env, 0., 1., Binary, "x");
+            Var x(env, 0., 1., Binary, 0., "x");
             Ctr c1(env, x >= .1);
             Ctr c2(env, x <= .9);
 
@@ -174,7 +174,7 @@ TEST_CASE("Solving small MIPs") {
 
     AND_WHEN("An unbounded MILP is solved") {
 
-        Var x(env, -Inf, Inf, Integer, "x");
+        Var x(env, -Inf, Inf, Integer, 0., "x");
         Model model(env);
         model.add(x);
         model.set_obj_expr(-x);

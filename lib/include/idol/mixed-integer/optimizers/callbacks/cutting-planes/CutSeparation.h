@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 namespace idol::impl {
     class CutSeparation;

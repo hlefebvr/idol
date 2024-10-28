@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 

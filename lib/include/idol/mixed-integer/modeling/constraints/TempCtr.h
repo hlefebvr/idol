@@ -5,8 +5,9 @@
 #ifndef OPTIMIZE_TEMPCTR_H
 #define OPTIMIZE_TEMPCTR_H
 
-#include "idol/mixed-integer/modeling/matrix/Row.h"
 #include <ostream>
+#include <idol/mixed-integer/modeling/expressions/LinExpr.h>
+#include <idol/mixed-integer/modeling/Types.h>
 
 namespace idol {
 
@@ -37,12 +38,9 @@ namespace idol {
  * ```
  */
 class idol::TempCtr {
-    std::unique_ptr<Row> m_row;
+    LinExpr<Var> m_lhs;
     CtrType m_type = LessOrEqual;
-protected:
-    void set_row(Row&& t_row) { m_row = std::make_unique<Row>(std::move(t_row)); }
-    bool has_row() const { return (bool) m_row; }
-    void reset_row() { m_row.reset(); }
+    double m_rhs = 0.;
 public:
     /**
      * Default constructor.
@@ -58,13 +56,13 @@ public:
      * @param t_row The desired row.
      * @param t_type The desired constraint type.
      */
-    TempCtr(Row&& t_row, CtrType t_type) : m_row(std::make_unique<Row>(std::move(t_row))), m_type(t_type) {}
+    TempCtr(LinExpr<Var>&& t_lhs, CtrType t_type, double t_rhs) : m_lhs(std::move(t_lhs)), m_rhs(t_rhs), m_type(t_type) {}
 
     /**
      * Copy constructor.
      * @param t_src The object to copy.
      */
-    TempCtr(const TempCtr& t_src) : m_row(t_src.m_row ? std::make_unique<Row>(*t_src.m_row) : std::unique_ptr<Row>()), m_type(t_src.m_type) {}
+    TempCtr(const TempCtr& t_src) = default;
 
     /**
      * Move constructor.
@@ -84,23 +82,23 @@ public:
      */
     TempCtr& operator=(TempCtr&& t_src) noexcept = default;
 
-     /**
-      * Returns the row of the temporary constraint (see Row).
-      * @return The row of the temporary constraint.
-      */
-    [[nodiscard]] const Row& row() const { return *m_row; }
+    LinExpr<Var>& lhs() { return m_lhs; }
 
-    /**
-     * Returns the row of the temporary constraint (see Row).
-     * @return The row of the temporary constraint.
-     */
-    Row& row() { return *m_row; }
+    const LinExpr<Var>& lhs() const { return m_lhs; }
+
+    void set_lhs(LinExpr<Var>&& t_lhs) { m_lhs = std::move(t_lhs); }
 
     /**
      * Returns the temporary constraint type.
      * @return The temporary constraint type.
      */
     [[nodiscard]] CtrType type() const { return m_type; }
+
+    double rhs() const { return m_rhs; }
+
+    double& rhs() { return m_rhs; }
+
+    void set_rhs(double t_rhs) { m_rhs = t_rhs; }
 
     /**
      * Sets the type of the temporary constraint.
@@ -113,11 +111,6 @@ public:
         m_type = t_type;
     }
 
-    /**
-     * Returns true if the temporary constraint is violated by the given solution, false otherwise.
-     * @param t_solution The solution to check.
-     */
-    [[nodiscard]] bool is_violated(const PrimalPoint& t_solution) const;
 };
 
 idol::TempCtr operator<=(idol::Expr<idol::Var, idol::Var>&& t_lhs, idol::Expr<idol::Var, idol::Var>&& t_rhs);

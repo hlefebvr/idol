@@ -63,7 +63,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Knapsack Problem instances with different node se
     const auto instance = read_instance("../data/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();
 
-    auto x = Var::make_vector(env, Dim<1>(n_items), 0., 1., Binary, "x");
+    auto x = Var::make_vector(env, Dim<1>(n_items), 0., 1., Binary, 0., "x");
     Ctr c(env, idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 
     Model model(env);

@@ -7,12 +7,12 @@
 
 #ifdef IDOL_USE_EIGEN
 
-#include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
 #include "idol/mixed-integer/modeling/expressions/LinExpr.h"
 #include "SquareMatrix.h"
 
 namespace idol {
 
+    /*
     static std::list<Expr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var> &t_expr) {
 
         // Create index mapping
@@ -113,7 +113,7 @@ namespace idol {
 
         return result;
     }
-
+    */
 }
 
 #endif

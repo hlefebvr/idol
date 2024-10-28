@@ -2,6 +2,7 @@
 // Created by henri on 31/01/23.
 //
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 
@@ -127,7 +128,7 @@ SCENARIO("Gurobi: Create a constraint without backend", "[unit][backend][Gurobi]
         Env env;
         Model model(env);
 
-        auto x = Var::make_vector(env, Dim<1>(3), 0., 1., Continuous);
+        auto x = Var::make_vector(env, Dim<1>(3), 0., 1., Continuous, 0.);
         model.add_vector<Var, 1>(x);
 
         WHEN("A <=-constraint (rhs=1) is added with a Row") {

@@ -10,6 +10,7 @@
 #include <CoinWarmStartBasis.hpp>
 #include "idol/mixed-integer/optimizers/wrappers/Osi/OsiIdolSolverInterface.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 #define OSI_IDOL_DEBUG std::cout << __FUNCTION__ << std::endl;
 
@@ -206,7 +207,7 @@ const double *OsiIdolSolverInterface::getRowLower() const {
         m_row_lower = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
             const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_row(ctr).rhs();
+            const auto rhs = m_model.get_ctr_rhs(ctr);
             const auto type = m_model.get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
@@ -231,7 +232,7 @@ const double *OsiIdolSolverInterface::getRowUpper() const {
         m_row_upper = new double[n_rows];
         for (int i = 0 ; i < n_rows ; ++i) {
             const auto ctr = m_model.get_ctr_by_index(i);
-            const auto rhs = m_model.get_ctr_row(ctr).rhs();
+            const auto rhs = m_model.get_ctr_rhs(ctr);
             const auto type = m_model.get_ctr_type(ctr);
             switch (type) {
                 case idol::LessOrEqual:
@@ -256,7 +257,7 @@ const double *OsiIdolSolverInterface::getObjCoefficients() const {
         m_col_obj = new double[n_cols];
         for (int i = 0 ; i < n_cols ; ++i) {
             const auto var = m_model.get_var_by_index(i);
-            m_col_obj[i] = m_model.get_var_column(var).obj();
+            m_col_obj[i] = m_model.get_var_obj(var);
         }
     }
     return m_col_obj;
@@ -287,7 +288,7 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByRow() const {
             const auto &row = m_model.get_ctr_row(ctr);
 
             CoinPackedVector row_vector;
-            for (const auto &[var, constant]: row.linear()) {
+            for (const auto &[var, constant]: row) {
                 const int index = (int) m_model.get_var_index(var);
                 row_vector.insert(index, constant);
             }
@@ -314,7 +315,7 @@ const CoinPackedMatrix *OsiIdolSolverInterface::getMatrixByCol() const {
             const auto &column = m_model.get_var_column(var);
 
             CoinPackedVector col_vector;
-            for (const auto &[ctr, constant]: column.linear()) {
+            for (const auto &[ctr, constant]: column) {
                 const int index = (int) m_model.get_ctr_index(ctr);
                 col_vector.insert(index, constant);
             }
@@ -556,15 +557,15 @@ void OsiIdolSolverInterface::addCol(const CoinPackedVectorBase &vec, const doubl
     const auto* indices = vec.getIndices();
     const auto* values = vec.getElements();
 
-    idol::Column column(obj);
+    idol::LinExpr<idol::Ctr> column;
     for (unsigned int i = 0, n = vec.getNumElements() ; i < n ; ++i) {
         const int index = indices[i];
         const double value = values[i];
         const auto& ctr = m_model.get_ctr_by_index(index);
-        column.linear().set(ctr, value);
+        column.set(ctr, value);
     }
 
-    m_model.add_var(collb, colub, idol::Continuous, std::move(column));
+    m_model.add_var(collb, colub, idol::Continuous, obj, std::move(column));
 
     std::cout << "WARNING: adding column relying on potentially wrong indices..." << std::endl;
 }
@@ -601,15 +602,15 @@ void OsiIdolSolverInterface::addRow(const CoinPackedVectorBase &vec, const doubl
         throw idol::Exception("Range constraints are not implemented.");
     }
 
-    idol::Expr lhs;
+    idol::LinExpr<idol::Var> lhs;
     for (unsigned int i = 0, n = vec.getNumElements() ; i < n ; ++i) {
         const int index = indices[i];
         const double value = values[i];
         const auto& var = m_model.get_var_by_index(index);
-        lhs.linear().set(var, value);
+        lhs += value * var;
     }
 
-    m_model.add_ctr(idol::TempCtr(idol::Row(std::move(lhs), rhs), type));
+    m_model.add_ctr(idol::TempCtr(std::move(lhs), type, rhs));
 
     // TODO: this can be handled more efficiently for the matrix (i.e., just add the row)
     delete[] m_row_sense; m_row_sense = nullptr;
@@ -722,19 +723,19 @@ void OsiIdolSolverInterface::loadProblem(const CoinPackedMatrix &matrix,
         } else {
             throw idol::Exception("OsiIdolSolverInterface: Unknown sense.");
         }
-        m_model.add_ctr(idol::Row(0, rowrhs[i]), type);
+        m_model.add_ctr(idol::LinExpr<idol::Var>(), type, rowrhs[i]);
     }
 
     for (int i = 0 ; i < n_cols ; ++i) {
-        idol::Column column(obj[i]);
+        idol::LinExpr<idol::Ctr> column;
         const CoinShallowPackedVector& col = matrix.getVector(i);
         for (int j = 0 ; j < col.getNumElements() ; ++j) {
             const int row = col.getIndices()[j];
             const double value = col.getElements()[j];
             const auto& ctr = m_model.get_ctr_by_index(row);
-            column.linear().set(ctr, value);
+            column.set(ctr, value);
         }
-        m_model.add_var(collb[i], colub[i], idol::Continuous, std::move(column));
+        m_model.add_var(collb[i], colub[i], idol::Continuous, obj[i], std::move(column));
     }
 
 }

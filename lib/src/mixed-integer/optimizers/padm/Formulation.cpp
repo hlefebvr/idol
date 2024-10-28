@@ -6,6 +6,8 @@
 #include "idol/mixed-integer/modeling/objects/Versions.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
+#include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 #include <utility>
 
@@ -89,13 +91,13 @@ void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
         if (sub_problem_id == -1) {
 
             for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-                m_sub_problems[i].add(var, TempVar(lb, ub, type, Column()));
+                m_sub_problems[i].add(var, TempVar(lb, ub, type, 0.,LinExpr<Ctr>()));
             }
 
             continue;
         }
 
-        m_sub_problems[sub_problem_id].add(var, TempVar(lb, ub, type, Column()));
+        m_sub_problems[sub_problem_id].add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
 
     }
 
@@ -116,12 +118,13 @@ void idol::ADM::Formulation::dispatch_ctrs(const idol::Model &t_src_model) {
 void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const idol::Ctr &t_ctr, unsigned int t_sub_problem_id) {
 
     const auto& row = t_src_model.get_ctr_row(t_ctr);
+    const double rhs = t_src_model.get_ctr_rhs(t_ctr);
     const auto type = t_src_model.get_ctr_type(t_ctr);
 
-    auto [pattern, is_pure] = dispatch(t_src_model, row.linear(), row.quadratic(),  t_sub_problem_id);
-    pattern.constant() -= row.rhs();
+    auto [pattern, is_pure] = dispatch(t_src_model, row, /* row.quadratic(),  */ t_sub_problem_id);
+    pattern.constant() -= rhs;
 
-    if (pattern.linear().empty() && pattern.quadratic().empty()) {
+    if (pattern.linear().empty()) {
         return;
     }
 
@@ -139,8 +142,8 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
         switch (type) {
             case Equal: {
                 auto var = add_l1_var(0);
-                auto var_minus = model.add_var(0, Inf, Continuous, var.name() + "_minus");
-                auto var_plus = model.add_var(0, Inf, Continuous, var.name() + "_plus");
+                auto var_minus = model.add_var(0, Inf, Continuous, 0., var.name() + "_minus");
+                auto var_plus = model.add_var(0, Inf, Continuous, 0., var.name() + "_plus");
                 model.add_ctr(var == var_plus + var_minus);
                 pattern.linear() += var_plus - var_minus;
                 break;
@@ -155,9 +158,9 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
     }
 
     if (is_pure) {
-        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(Row(std::move(pattern), 0), type));
+        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(std::move(pattern.linear()), type, 0));
     } else {
-        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(Row(), type));
+        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(LinExpr<Var>(), type, 0));
         m_constraint_patterns[t_sub_problem_id].emplace_back(t_ctr, std::move(pattern));
     }
 
@@ -176,7 +179,7 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
 
 std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
                                                                                    const idol::LinExpr<idol::Var> &t_lin_expr,
-                                                                                   const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
+                                                                                   // const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
                                                                                    unsigned int t_sub_problem_id) {
 
     throw Exception("TODO: Was using Constant");
@@ -239,10 +242,10 @@ void
 idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_sub_problem_id) {
 
     const auto& obj = t_src_model.get_obj_expr();
-    auto [pattern, is_pure] = dispatch(t_src_model, obj.linear(), obj.quadratic(), t_sub_problem_id);
+    auto [pattern, is_pure] = dispatch(t_src_model, obj.linear() /*, obj.quadratic() */, t_sub_problem_id);
     pattern += obj.constant();
 
-    if (pattern.linear().empty() && pattern.quadratic().empty()) {
+    if (pattern.linear().empty()) {
         return;
     }
 
@@ -267,11 +270,8 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
             lhs += fix(coefficient, t_primals) * var;
         }
 
-        for (const auto& [vars, coefficient] : pattern.quadratic()) {
-            lhs += fix(coefficient, t_primals) * vars.first * vars.second;
-        }
-
-        m_sub_problems[t_sub_problem_id].set_ctr_row(ctr, Row(std::move(lhs), 0));
+        m_sub_problems[t_sub_problem_id].set_ctr_row(ctr, LinExpr<Var>(std::move(lhs.linear())));
+        m_sub_problems[t_sub_problem_id].set_ctr_rhs(ctr, -lhs.constant());
     }
 
     // Objective
@@ -283,9 +283,6 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
             obj += fix(coefficient, t_primals) * var;
         }
 
-        for (const auto& [vars, coefficient] : obj_pattern.quadratic()) {
-            obj += fix(coefficient, t_primals) * vars.first * vars.second;
-        }
 
         m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(obj));
     }
@@ -348,7 +345,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<PrimalPoint>
             if (const double val = t_primals[i].get(var); val > max) {
                 max = val;
                 argmax = i;
-                penalty = m_sub_problems[i].get_var_column(var).obj();
+                penalty = m_sub_problems[i].get_var_obj(var);
             }
 
         }
@@ -386,7 +383,7 @@ idol::Var idol::ADM::Formulation::get_or_create_l1_var(const idol::Ctr &t_ctr) {
     }
 
     auto& env = m_sub_problems.front().env();
-    Var var (env, 0, Inf, Continuous, Column(), "l1_norm_" + t_ctr.name());
+    Var var (env, 0, Inf, Continuous, 0., LinExpr<Ctr>(), "l1_norm_" + t_ctr.name());
     m_l1_vars.emplace_hint(it, t_ctr, var);
 
     return var;
@@ -426,7 +423,7 @@ void idol::ADM::Formulation::update_penalty_parameters_independently(const std::
 
         for (const auto& var : m_l1_vars_in_sub_problem[i]) {
 
-            const double current_penalty = model.get_var_column(var).obj();
+            const double current_penalty = model.get_var_obj(var);
 
             if (t_primals[i].get(var) > 1e-4) {
                 model.set_var_obj(var, t_penalty_update(current_penalty));

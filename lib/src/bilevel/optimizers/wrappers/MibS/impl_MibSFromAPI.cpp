@@ -288,11 +288,7 @@ idol::impl::MibSFromAPI::parse_constraints() {
 
         const auto& row = m_model.get_ctr_row(ctr);
         const auto type = m_model.get_ctr_type(ctr);
-        const auto rhs = row.rhs();
-
-        if (!row.quadratic().empty()) {
-            throw Exception("Only linear constraints are allowed in MibS.");
-        }
+        const auto rhs = m_model.get_ctr_rhs(ctr);
 
         switch (type) {
             case LessOrEqual:
@@ -334,11 +330,7 @@ CoinPackedMatrix idol::impl::MibSFromAPI::parse_matrix() {
 
         const auto& col = m_model.get_var_column(var);
 
-        if (!col.quadratic().empty()) {
-            throw Exception("Only linear constraints are allowed in MibS.");
-        }
-
-        const auto& lin = col.linear();
+        const auto& lin = col;
 
         CoinPackedVector vector;
         vector.reserve((int) lin.size());
@@ -366,7 +358,7 @@ std::vector<double> idol::impl::MibSFromAPI::parse_objective() {
 
     for (const auto& var : m_model.vars()) {
 
-        const double coefficient = m_model.get_var_column(var).obj();
+        const double coefficient = m_model.get_var_obj(var);
         result.emplace_back(coefficient);
 
     }

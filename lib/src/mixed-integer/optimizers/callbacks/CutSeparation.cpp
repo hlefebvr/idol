@@ -12,10 +12,6 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
       m_separation_problem(t_separation_problem),
       m_cut(std::move(t_cut)) {
 
-    if (!m_cut.row().quadratic().empty()) {
-        throw Exception("Adding non-linear cut is not available.");
-    }
-
     if (m_cut.type() == Equal) {
         throw Exception("Separating equality constraints is not available.");
     }

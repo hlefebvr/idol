@@ -222,7 +222,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_ctr_type(const Ctr &t_c
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_ctr_rhs(const Ctr &t_ctr) {
-    m_relaxation->set_ctr_rhs(t_ctr, parent().get_ctr_row(t_ctr).rhs());
+    m_relaxation->set_ctr_rhs(t_ctr, parent().get_ctr_rhs(t_ctr));
 }
 
 template<class NodeInfoT>
@@ -242,7 +242,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_ub(const Var &t_var
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_var_obj(const Var &t_var) {
-    m_relaxation->set_var_obj(t_var, parent().get_var_column(t_var).obj());
+    m_relaxation->set_var_obj(t_var, parent().get_var_obj(t_var));
 }
 
 template<class NodeInfoT>

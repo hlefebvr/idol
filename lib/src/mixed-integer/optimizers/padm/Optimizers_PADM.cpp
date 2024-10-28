@@ -428,9 +428,11 @@ void idol::Optimizers::PADM::compute_objective_value() {
         result += constant * get_var_primal(var);
     }
 
+    /*
     for (const auto& [vars, constant] : obj.quadratic()) {
         result += constant * get_var_primal(vars.first) * get_var_primal(vars.second);
     }
+     */
 
     set_best_obj(result);
 

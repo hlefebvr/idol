@@ -19,10 +19,6 @@ void idol::Optimizers::HiGHS::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
-    if (!objective.quadratic().empty()) {
-        throw Exception("HiGHS is not available as an SOCP solver.");
-    }
-
     hook_update_objective_sense();
     update_objective_constant();
     set_objective_as_updated();
@@ -79,6 +75,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
     double lb = parent().get_var_lb(t_var);
     double ub = parent().get_var_ub(t_var);
+    double obj = parent().get_var_obj(t_var);
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
@@ -87,7 +84,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
 
     if (t_add_column) {
 
-        const auto& column_linear = column.linear();
+        const auto& column_linear = column;
 
         unsigned int n_coefficients = column_linear.size();
         auto* ctr_indices = new int[n_coefficients];
@@ -101,7 +98,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
             ++i;
         }
 
-        m_model.addCol(column.obj(),
+        m_model.addCol(obj,
                        lb,
                        ub,
                        (int) n_coefficients,
@@ -112,7 +109,7 @@ int idol::Optimizers::HiGHS::hook_add(const Var &t_var, bool t_add_column) {
         delete[] ctr_coefficients;
 
     } else {
-        m_model.addCol(column.obj(),
+        m_model.addCol(obj,
                        lb,
                        ub,
                        0,
@@ -148,16 +145,15 @@ int idol::Optimizers::HiGHS::hook_add(const Ctr &t_ctr) {
     const int index = (int) m_model.getNumRow();
 
     const auto& row = parent().get_ctr_row(t_ctr);
-    const auto& row_linear = row.linear();
-    const double rhs = row.rhs();
+    const double rhs = parent().get_ctr_rhs(t_ctr);
     const auto type = parent().get_ctr_type(t_ctr);
 
-    unsigned int n_coefficients = row_linear.size();
+    unsigned int n_coefficients = row.size();
     auto* var_indices = new int[n_coefficients];
     auto* var_coefficients = new double[n_coefficients];
 
     unsigned int i = 0;
-    for (const auto& [var, constant] : row.linear()) {
+    for (const auto& [var, constant] : row) {
         int ctr_index = lazy(var).impl();
         var_indices[i] = ctr_index;
         var_coefficients[i] = constant;
@@ -216,7 +212,7 @@ void idol::Optimizers::HiGHS::hook_update(const Var &t_var) {
     const double lb = model.get_var_lb(t_var);
     const double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const double obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_obj(t_var);
 
     set_var_attr(impl, type, lb, ub, obj);
 
@@ -226,7 +222,7 @@ void idol::Optimizers::HiGHS::hook_update(const Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
-    const auto& rhs = model.get_ctr_row(t_ctr).rhs();
+    const auto& rhs = model.get_ctr_rhs(t_ctr);
     const auto type = model.get_ctr_type(t_ctr);
 
     set_ctr_attr(impl, type, rhs);
@@ -237,7 +233,7 @@ void idol::Optimizers::HiGHS::hook_update_objective() {
     const auto& model = parent();
 
     for (const auto& var : model.vars()) {
-        const auto& obj = model.get_var_column(var).obj();
+        const auto& obj = model.get_var_obj(var);
         m_model.changeColCost(lazy(var).impl(), obj);
     }
 

@@ -4,6 +4,8 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include <gurobi_c++.h>
 
 using namespace idol;
 
@@ -11,11 +13,10 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
     Model model(env, Model::Storage::RowOriented);
-    const auto x = model.add_vars(Dim<1>(10), 0., 1., Continuous, "x");
+    const auto x = model.add_vars(Dim<1>(10), 0., 1., Continuous, 1, "x");
 
-    Column col;
-    col.set_obj(1.);
-    model.add_var(0, 10, Continuous, col);
+    LinExpr<Ctr> col;
+    model.add_var(0, 10, Continuous, 1, col);
 
     for (unsigned int i = 0; i < 9; ++i) {
         model.add_ctr(x[i] + x[i+1] >= 0.5);

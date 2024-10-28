@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Optimizers_Gurobi.h"
 #include <catch2/catch_all.hpp>
 #include <idol/modeling.h>
 
@@ -20,7 +21,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
         WHEN("A continuous variable (lb=-15,ub=15) is added to the model") {
 
-            Var x(env, -15, 30, Continuous, "x");
+            Var x(env, -15, 30, Continuous, 0., "x");
             model.add(x);
 
             model.use(Gurobi());
@@ -58,7 +59,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
         WHEN("An integer variable (lb=-inf,ub=inf) is added to the model") {
 
-            Var x(env, -Inf, Inf, Integer, "x");
+            Var x(env, -Inf, Inf, Integer, 0., "x");
             model.add(x);
 
             model.use(Gurobi());
@@ -96,7 +97,7 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
         WHEN("A binary variable (lb=1,ub=1) is added to the model") {
 
-            Var x(env, 1, 1, Binary, "x");
+            Var x(env, 1, 1, Binary, 0., "x");
             model.add(x);
 
             model.use(Gurobi());
@@ -144,12 +145,12 @@ SCENARIO("Gurobi: Create a variable without backend", "[unit][backend][Gurobi]")
 
         WHEN("A continuous variable (lb=0,ub=inf) is added with a Column") {
 
-            Column column(1);
-            column.linear().set(c[0], 0);
-            column.linear().set(c[1], 1);
-            column.linear().set(c[2], 2);
+            LinExpr<Ctr> column;
+            column.set(c[0], 0);
+            column.set(c[1], 1);
+            column.set(c[2], 2);
 
-            Var x(env, 0, Inf, Continuous, std::move(column), "x");
+            Var x(env, 0, Inf, Continuous, 1., std::move(column), "x");
             model.add(x);
 
             model.use(Gurobi());

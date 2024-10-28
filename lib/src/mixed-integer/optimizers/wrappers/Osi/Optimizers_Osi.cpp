@@ -177,10 +177,6 @@ void idol::Optimizers::Osi::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
-    if (!objective.quadratic().empty()) {
-        throw Exception("Osi is not available as an SOCP solver.");
-    }
-
     hook_update_objective_sense();
     set_objective_as_updated();
     set_rhs_as_updated();
@@ -214,6 +210,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
 
     double lb = parent().get_var_lb(t_var);
     double ub = parent().get_var_ub(t_var);
+    const double obj = parent().get_var_obj(t_var);
     const auto& column = parent().get_var_column(t_var);
     const auto type = parent().get_var_type(t_var);
 
@@ -221,11 +218,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
 
     if (t_add_column) {
 
-        if (!column.quadratic().empty()) {
-            throw Exception("Osi cannot handle quadratic expressions.");
-        }
-
-        for (const auto& [ctr, constant] : column.linear()) {
+        for (const auto& [ctr, constant] : column) {
             const int ctr_index = lazy(ctr).impl();
             const double coefficient = constant;
             vector.insert(ctr_index, coefficient);
@@ -238,7 +231,7 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
         ub = std::min(1., ub);
     }
 
-    m_solver_interface->addCol(vector, lb, ub, column.obj(), t_var.name());
+    m_solver_interface->addCol(vector, lb, ub, obj, t_var.name());
 
     if (type == Binary || type == Integer) {
         m_solver_interface->setInteger(index);
@@ -252,15 +245,11 @@ int idol::Optimizers::Osi::hook_add(const idol::Ctr &t_ctr) {
     const int index = m_solver_interface->getNumRows();
 
     const auto& row = parent().get_ctr_row(t_ctr);
-    const double rhs = row.rhs();
+    const double rhs = parent().get_ctr_rhs(t_ctr);
     const auto type = parent().get_ctr_type(t_ctr);
 
-    if (!row.quadratic().empty()) {
-        throw Exception("Osi cannot handle quadratic expressions.");
-    }
-
     CoinPackedVector vector;
-    for (const auto& [var, coeff] : row.linear()) {
+    for (const auto& [var, coeff] : row) {
         const int var_index = lazy(var).impl();
         const double coefficient = coeff;
         vector.insert(var_index, coefficient);
@@ -298,7 +287,7 @@ void idol::Optimizers::Osi::hook_update(const idol::Var &t_var) {
     double lb = model.get_var_lb(t_var);
     double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const double obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_obj(t_var);
 
     if (type == Binary) {
         lb = std::max(0., lb);
@@ -326,7 +315,7 @@ void idol::Optimizers::Osi::hook_update(const idol::Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
-    const auto& rhs = model.get_ctr_row(t_ctr).rhs();
+    const auto& rhs = model.get_ctr_rhs(t_ctr);
     const auto type = model.get_ctr_type(t_ctr);
 
     double lb = -Inf, ub = Inf;
@@ -344,16 +333,12 @@ void idol::Optimizers::Osi::hook_update_objective() {
 
     const auto& parent = this->parent();
 
-    if (!parent.get_obj_expr().quadratic().empty()) {
-        throw Exception("Osi is not available as an SOCP solver.");
-    }
-
     const unsigned int n_variables = parent.vars().size();
 
     auto* coefficients = new double[n_variables];
     for (const auto& var : parent.vars()) {
         const unsigned int index = lazy(var).impl();
-        coefficients[index] = parent.get_var_column(var).obj();
+        coefficients[index] = parent.get_var_obj(var);
     }
     m_solver_interface->setObjective(coefficients);
 

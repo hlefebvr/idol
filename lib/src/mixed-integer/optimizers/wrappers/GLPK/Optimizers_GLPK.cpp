@@ -27,10 +27,6 @@ void idol::Optimizers::GLPK::hook_build() {
 
     const auto& objective = parent().get_obj_expr();
 
-    if (!objective.quadratic().empty()) {
-        throw Exception("GLPK is not available as an SOCP solver.");
-    }
-
     hook_update_objective_sense();
     set_objective_as_updated();
     set_rhs_as_updated();
@@ -91,24 +87,21 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
     const double lb = parent().get_var_lb(t_var);
     const double ub = parent().get_var_ub(t_var);
     const auto& column = parent().get_var_column(t_var);
+    const double obj = parent().get_var_obj(t_var);
     const auto type = parent().get_var_type(t_var);
 
-    set_var_attr(index, type, lb, ub, column.obj());
+    set_var_attr(index, type, lb, ub, obj);
 
     glp_set_col_name(m_model, index, t_var.name().c_str());
 
     if (t_add_column) {
 
-        if (!column.quadratic().empty()) {
-            throw Exception("GLPK cannot handle quadratic expressions.");
-        }
-
-        const auto n = (int) column.linear().size();
+        const auto n = (int) column.size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
-        for (const auto& [ctr, constant] : column.linear()) {
+        for (const auto& [ctr, constant] : column) {
             indices[i] = lazy(ctr).impl();
             coefficients[i] = constant;
             ++i;
@@ -147,23 +140,19 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
     }
 
     const auto& row = parent().get_ctr_row(t_ctr);
-    const double rhs = row.rhs();
+    const double rhs = parent().get_ctr_rhs(t_ctr);
     const auto type = parent().get_ctr_type(t_ctr);
-
-    if (!row.quadratic().empty()) {
-        throw Exception("GLPK cannot handle quadratic expressions.");
-    }
 
     set_ctr_attr(index, type, rhs);
 
     glp_set_row_name(m_model, index, t_ctr.name().c_str());
 
-    const auto n = (int) row.linear().size();
+    const auto n = (int) row.size();
     auto* coefficients = new double[n+1];
     auto* indices = new int[n+1];
 
     int i = 1;
-    for (const auto& [var, constant] : row.linear()) {
+    for (const auto& [var, constant] : row) {
         indices[i] = lazy(var).impl();
         coefficients[i] = constant;
         ++i;
@@ -196,7 +185,7 @@ void idol::Optimizers::GLPK::hook_update(const Var &t_var) {
     const double lb = model.get_var_lb(t_var);
     const double ub = model.get_var_ub(t_var);
     const int type = model.get_var_type(t_var);
-    const double obj = model.get_var_column(t_var).obj();
+    const double obj = model.get_var_obj(t_var);
 
     set_var_attr(impl, type, lb, ub, obj);
 
@@ -206,7 +195,7 @@ void idol::Optimizers::GLPK::hook_update(const Ctr &t_ctr) {
 
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
-    const auto& rhs = model.get_ctr_row(t_ctr).rhs();
+    const auto& rhs = model.get_ctr_rhs(t_ctr);
     const auto type = model.get_ctr_type(t_ctr);
 
     set_ctr_attr(impl, type, rhs);
@@ -217,12 +206,8 @@ void idol::Optimizers::GLPK::hook_update_objective() {
 
     const auto& model = parent();
 
-    if (!model.get_obj_expr().quadratic().empty()) {
-        throw Exception("GLPK cannot handle quadratic expressions.");
-    }
-
     for (const auto& var : model.vars()) {
-        const auto& obj = model.get_var_column(var).obj();
+        const double obj = model.get_var_obj(var);
         glp_set_obj_coef(m_model, lazy(var).impl(), obj);
     }
 
@@ -423,7 +408,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
-        objective_value += dual * model.get_ctr_row(ctr).rhs();
+        objective_value += dual * model.get_ctr_rhs(ctr);
     }
     m_farkas_certificate->set_objective_value(objective_value);
 
@@ -547,8 +532,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         const int type = model.get_var_type(var);
         const double lb = model.get_var_lb(var);
         const double ub = model.get_var_ub(var);
-        const auto& column = model.get_var_column(var);
-        const double obj = column.obj();
+        const double obj = model.get_var_obj(var);
         set_var_attr(index, type, lb, ub, obj);
     }
 
@@ -557,7 +541,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
         const int index = lazy(ctr).impl();
         const int type = model.get_ctr_type(ctr);
         const auto& row = model.get_ctr_row(ctr);
-        const double rhs = row.rhs();
+        const double rhs = model.get_ctr_rhs(ctr);
         set_ctr_attr(index, type, rhs);
     }
 
@@ -727,7 +711,7 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
         }
 
         const std::string name = glp_get_col_name(t_model, j);
-        result.add_var(lb, ub, type, Column(obj),name);
+        result.add_var(lb, ub, type, obj, LinExpr<Ctr>(),name);
     }
 
     for (int i = 1 ; i <= n_constraints ; ++i) {
@@ -757,7 +741,7 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
         auto* coefficients = new double[nz+1];
         glp_get_mat_row(t_model, i, indices, coefficients);
 
-        Expr<Var> lhs;
+        LinExpr<Var> lhs;
         for (int k = 1 ; k <= nz ; ++k) {
             const unsigned int var_index = indices[k] - 1;
             const double coefficient = coefficients[k];
@@ -767,7 +751,7 @@ idol::Model idol::Optimizers::GLPK::read_from_glpk(idol::Env &t_env, glp_prob *t
         delete[] indices;
         delete[] coefficients;
 
-        result.add_ctr(TempCtr(Row(std::move(lhs), rhs), type), name);
+        result.add_ctr(std::move(lhs), type, rhs, name);
     }
 
     if (glp_get_obj_dir(t_model) == GLP_MAX) {

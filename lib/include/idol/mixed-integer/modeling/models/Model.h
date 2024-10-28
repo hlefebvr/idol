@@ -29,7 +29,6 @@ namespace idol {
     static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
 
     class Env;
-    class Column;
     class TempCtr;
 
     class Model;
@@ -64,7 +63,6 @@ private:
     Model(const Model& t_src);
 
     template<class T> void throw_if_unknown_object(const LinExpr<T>& t_expr);
-    template<class T1, class T2> void throw_if_unknown_object(const QuadExpr<T1, T2>& t_expr);
     void add_column_to_rows(const Var& t_var);
     void add_row_to_columns(const Ctr& t_ctr);
     void build_row(const Ctr& t_ctr);
@@ -101,10 +99,11 @@ public:
      * @param t_lb the lower bound in the model
      * @param t_ub the upper bound in the model
      * @param t_type the type in the model
+     * @param t_obj the objective coefficient in the model
      * @param t_name the name of the variable
      * @return the created variable
      */
-    Var add_var(double t_lb, double t_ub, VarType t_type, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, double t_obj = 0., std::string t_name = "");
 
     /**
      * Creates a new decision variable in the model and returns it.
@@ -118,11 +117,12 @@ public:
      * @param t_lb the lower bound in the model
      * @param t_ub the upper bound in the model
      * @param t_type the type in the model
+     * @param t_obj the objective coefficient in the model
      * @param t_column the column in the model
      * @param t_name the name of the variable
      * @return the created variable
      */
-    Var add_var(double t_lb, double t_ub, VarType t_type, Column t_column, std::string t_name = "");
+    Var add_var(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr> t_column, std::string t_name = "");
 
     /**
      * Creates multiple decision variables in the model and returns them.
@@ -146,7 +146,7 @@ public:
      * @param t_name the base name for the variables (variables are then named by a combination of this name and indices)
      * @return the create variables
      */
-    template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name = "");
+    template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, double t_obj = 0., const std::string& t_name = "");
 
     /**
      * Adds an existing variable to the model.
@@ -258,12 +258,13 @@ public:
      * ```cpp
      * auto constraint = model.add_ctr(Row(x[0] + 2 * x[1], 1.5), LessOrEqual);
      * ```
-     * @param t_row the row of the constraint in the model
+     * @param t_lhs the left-hand side of the constraint in the model
      * @param t_type the type of the constraint in the model
+     * @param t_rhs the right-hand side of the constraint in the model
      * @param t_name the name of the constraint
      * @return the created constraint
      */
-    Ctr add_ctr(Row&& t_row, CtrType t_type, std::string t_name = "");
+    Ctr add_ctr(LinExpr<Var>&& t_lhs, CtrType t_type, double t_rhs, std::string t_name = "");
 
     /**
      * Creates multiple constraints in the model and returns them.
@@ -281,11 +282,11 @@ public:
      * @tparam N the number of dimensions for the indices
      * @param t_dim the dimensions for the indices
      * @param t_type the type of the constraints in the model
-     * @param t_constant the right hand-side of the constraints in the model
+     * @param t_rhs the right hand-side of the constraints in the model
      * @param t_name the base name for the constraints (constraints are then named by a combination of this name and indices)
      * @return the created constraints
      */
-    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, CtrType t_type, double t_constant, const std::string& t_name = "");
+    template<unsigned int N> Vector<Ctr, N> add_ctrs(Dim<N> t_dim, CtrType t_type, double t_rhs, const std::string& t_name = "");
 
     /**
      * Adds an existing variable to the model.
@@ -825,6 +826,8 @@ public:
      */
     [[nodiscard]] CtrType get_ctr_type(const Ctr& t_ctr) const;
 
+    double get_ctr_rhs(const Ctr& t_ctr) const;
+
     /**
      * Returns the row of the constraint in the model.
      *
@@ -839,7 +842,7 @@ public:
      * @param t_ctr the constraint
      * @return the constraint's row
      */
-    [[nodiscard]] const Row& get_ctr_row(const Ctr& t_ctr) const;
+    [[nodiscard]] LinExpr<Var> get_ctr_row(const Ctr& t_ctr) const;
 
     /**
      * Returns the dual value of a constraint
@@ -913,7 +916,7 @@ public:
      * @param t_ctr the constraint
      * @param t_row the constraint's row
      */
-    void set_ctr_row(const Ctr& t_ctr, const Row& t_row);
+    void set_ctr_row(const Ctr& t_ctr, const LinExpr<Var>& t_row);
 
     /**
      * Sets a constraint's row.
@@ -930,7 +933,7 @@ public:
      * @param t_ctr the constraint
      * @param t_row the constraint's row
      */
-    void set_ctr_row(const Ctr& t_ctr, Row&& t_row);
+    void set_ctr_row(const Ctr& t_ctr, LinExpr<Var>&& t_row);
 
     /**
      * Returns the current index of the variable in the model.
@@ -1052,7 +1055,9 @@ public:
      * @param t_var the variable
      * @return the variable's column
      */
-    [[nodiscard]] const Column& get_var_column(const Var& t_var) const;
+    [[nodiscard]] const LinExpr<Ctr>& get_var_column(const Var& t_var) const;
+
+    [[nodiscard]] double get_var_obj(const Var& t_var) const;
 
     /**
      * Sets a variable's type in the model.
@@ -1120,7 +1125,7 @@ public:
      * @param t_var the variable
      * @param t_column the variable's column
      */
-    void set_var_column(const Var& t_var, const Column& t_column);
+    void set_var_column(const Var& t_var, const LinExpr<Ctr>& t_column);
 
     /**
      * Sets a variable's column in the model.
@@ -1137,7 +1142,7 @@ public:
      * @param t_var the variable
      * @param t_column the variable's column
      */
-    void set_var_column(const Var& t_var, Column&& t_column);
+    void set_var_column(const Var& t_var, LinExpr<Ctr>&& t_column);
 
     /**
      * Returns the number of available primal solutions.
@@ -1220,15 +1225,15 @@ void idol::Model::add_vector(const Vector<T, N> &t_vector) {
 }
 
 template<unsigned int N>
-idol::Vector<idol::Var, N> idol::Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, const std::string& t_name) {
-    auto result = Var::make_vector(m_env, t_dim, t_lb, t_ub, t_type, t_name);
+idol::Vector<idol::Var, N> idol::Model::add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, double t_obj, const std::string& t_name) {
+    auto result = Var::make_vector(m_env, t_dim, t_lb, t_ub, t_type, t_obj, t_name);
     add_vector<Var, N>(result);
     return result;
 }
 
 template<unsigned int N>
-idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, double t_constant, const std::string &t_name) {
-    auto result = Ctr::make_vector(m_env, t_dim, t_type, t_constant, t_name);
+idol::Vector<idol::Ctr, N> idol::Model::add_ctrs(Dim<N> t_dim, CtrType t_type, double t_rhs, const std::string &t_name) {
+    auto result = Ctr::make_vector(m_env, t_dim, t_type, t_rhs, t_name);
     add_vector<Ctr, N>(result);
     return result;
 }
@@ -1372,21 +1377,13 @@ namespace idol {
 
         for (const auto &ctr: t_model.ctrs()) {
 
-            const auto &row = t_model.get_ctr_row(ctr);
-            const auto &linear = row.linear();
-            const auto &quadratic = row.quadratic();
+            const auto linear = t_model.get_ctr_row(ctr);
+            const double rhs = t_model.get_ctr_rhs(ctr);
             const auto type = t_model.get_ctr_type(ctr);
 
             stream << '\t' << ctr << ": ";
 
-            if (linear.empty()) {
-                stream << quadratic;
-            } else {
-                stream << linear;
-                if (!quadratic.empty()) {
-                    stream << " + " << quadratic;
-                }
-            }
+            stream << linear;
 
             switch (type) {
                 case LessOrEqual:
@@ -1402,7 +1399,7 @@ namespace idol {
                     stream << " ?undefined? ";
             }
 
-            stream << row.rhs() << std::endl;
+            stream << rhs << std::endl;
         }
 
         std::list<Var> generals, binaries;

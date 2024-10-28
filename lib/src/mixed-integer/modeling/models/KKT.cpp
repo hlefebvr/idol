@@ -4,6 +4,8 @@
 
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/modeling/variables/TempVar.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,
                               const idol::Bilevel::LowerLevelDescription &t_lower_level_description)
@@ -22,14 +24,14 @@ void idol::Reformulators::KKT::add_primal_variables(idol::Model &t_destination) 
     for (const auto& var : m_src_model.vars()) {
 
         if (m_description.is_follower(var)) {
-            t_destination.add(var, TempVar(-Inf, Inf, Continuous, Column()));
+            t_destination.add(var, TempVar(-Inf, Inf, Continuous, 0., LinExpr<Ctr>()));
             continue;
         }
 
         const auto lb = m_src_model.get_var_lb(var);
         const auto ub = m_src_model.get_var_ub(var);
         const auto type = m_src_model.get_var_type(var);
-        t_destination.add(var, TempVar(lb, ub, type, Column()));
+        t_destination.add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
     }
 
 }
@@ -39,7 +41,7 @@ void idol::Reformulators::KKT::add_primal_constraints(Model &t_destination) cons
     for (const auto& ctr : m_src_model.ctrs()) {
         const auto& row = m_src_model.get_ctr_row(ctr);
         const auto type = m_src_model.get_ctr_type(ctr);
-        t_destination.add(ctr, TempCtr(Row(row), type));
+        t_destination.add(ctr, TempCtr(LinExpr<Var>(row), type, 0.));
     }
 
     for (const auto& var : m_src_model.vars()) {
@@ -84,7 +86,7 @@ void idol::Reformulators::KKT::create_dual_variables_for_constraints() {
             case GreaterOrEqual: lb = 0; ub = Inf; break;
         }
 
-        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, "dual_" + ctr.name());
+        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, 0., "dual_" + ctr.name());
 
     }
 
@@ -107,11 +109,11 @@ void idol::Reformulators::KKT::create_dual_variables_for_bounds() {
         const auto index = m_src_model.get_var_index(var);
 
         if (!is_pos_inf(ub)) {
-            m_dual_variables_for_upper_bounds[index] = Var(env, -Inf, 0, Continuous, "dual_ub_" + var.name());
+            m_dual_variables_for_upper_bounds[index] = Var(env, -Inf, 0, Continuous, 0., "dual_ub_" + var.name());
         }
 
         if (!is_neg_inf(lb)) {
-            m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, "dual_lb_" + var.name());
+            m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, 0., "dual_lb_" + var.name());
         }
 
     }
@@ -164,7 +166,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     Expr expr;
 
-    for (const auto& [ctr, constant] : col.linear()) {
+    for (const auto& [ctr, constant] : col) {
 
         if (m_description.is_leader(ctr)) {
             continue;
@@ -176,6 +178,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     }
 
+    /*
     for (const auto& [pair, constant] : col.quadratic()) {
 
         const auto& ctr = pair.first;
@@ -190,6 +193,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
         expr += constant * dual_var * var;
 
     }
+     */
 
     if (const auto dual_var = m_dual_variables_for_lower_bounds[index]; dual_var.has_value()) {
         expr += dual_var.value();
@@ -207,6 +211,9 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
 void idol::Reformulators::KKT::create_complementarity_constraints() {
 
+    throw Exception("Complementarity constraints lead to quadratic constraints, which are not supported by the current implementation.");
+
+    /*
     m_complementarity_constraints.resize(m_src_model.ctrs().size());
     auto& env = m_src_model.env();
 
@@ -225,22 +232,20 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
         const auto index = m_src_model.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index];
         const auto& row = m_src_model.get_ctr_row(ctr);
-
-        if (!row.quadratic().empty()) {
-            //throw Exception("Cannot write complementarity constraints for quadratic constraints.");
-        }
+        const double rhs = m_src_model.get_ctr_rhs(ctr);
 
         Expr expr;
 
-        for (const auto& [var, constant] : row.linear()) {
+        for (const auto& [var, constant] : row) {
             expr += constant * var * dual_var;
         }
 
-        expr -= row.rhs() * dual_var;
+        expr -= rhs * dual_var;
 
         m_complementarity_constraints[index] = Ctr(env, expr == 0, "complementarity_" + ctr.name());
 
     }
+     */
 
 }
 
@@ -276,6 +281,9 @@ void idol::Reformulators::KKT::add_strong_duality_constraint(idol::Model &t_dest
 
 void idol::Reformulators::KKT::create_dual_objective() {
 
+    throw Exception("The dual objective leads to quadratic constraints, which are not supported by the current implementation.");
+
+    /*
     for (const auto& ctr : m_src_model.ctrs()) {
 
         if (m_description.is_leader(ctr)) {
@@ -285,15 +293,16 @@ void idol::Reformulators::KKT::create_dual_objective() {
         const auto index = m_src_model.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index];
         const auto& row = m_src_model.get_ctr_row(ctr);
+        const double rhs = m_src_model.get_ctr_rhs(ctr);
 
-        for (const auto& [var, constant] : row.linear()) {
+        for (const auto& [var, constant] : row) {
             if (m_description.is_follower(var)) {
                 continue;
             }
             m_dual_objective -= constant * var * dual_var;
         }
 
-        m_dual_objective += row.rhs() * dual_var;
+        m_dual_objective += rhs * dual_var;
 
     }
 
@@ -318,7 +327,7 @@ void idol::Reformulators::KKT::create_dual_objective() {
         }
 
     }
-
+    */
 }
 
 void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination) const {

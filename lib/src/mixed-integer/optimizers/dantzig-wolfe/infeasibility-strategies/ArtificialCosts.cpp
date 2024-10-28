@@ -118,9 +118,9 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::create_artificial_variables(
 
     auto& master = t_formulation.master();
     const auto add_artificial_variable = [&](const Ctr& t_ctr, double t_coeff) {
-        Column column(m_initial_costs);
-        column.linear().set(t_ctr, t_coeff);
-        auto var = master.add_var(0., Inf, Continuous, std::move(column));
+        LinExpr<Ctr> column;
+        column.set(t_ctr, t_coeff);
+        auto var = master.add_var(0., Inf, Continuous, m_initial_costs, std::move(column));
         m_artificial_variables.emplace_back(var);
         return var;
     };
@@ -184,7 +184,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
 
     for (const auto& var : m_artificial_variables) {
         if (!equals(t_primal_values.get(var), 0., Tolerance::Feasibility)) {
-            const double current_cost = master.get_var_column(var).obj();
+            const double current_cost = master.get_var_obj(var);
             master.set_var_obj(var, m_update_factor * current_cost);
         }
     }

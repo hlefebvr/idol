@@ -31,20 +31,6 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, double t_constant);
 
-    idol::QuadExpr<idol::Var> operator*(const idol::Var &t_var1, const idol::Var &t_var2);
-
-    idol::QuadExpr<idol::Var> operator*(const idol::LinExpr<idol::Var> &t_lin_expr, const idol::Var &t_var);
-
-    idol::QuadExpr<idol::Var> operator*(const idol::Var &t_var, const idol::LinExpr<idol::Var> &t_lin_expr);
-
-    idol::QuadExpr<idol::Var> operator*(double t_num, idol::QuadExpr<idol::Var> &&t_quad_expr);
-
-    idol::QuadExpr<idol::Var> operator*(double t_num, const idol::QuadExpr<idol::Var> &t_quad_expr);
-
-    idol::QuadExpr<idol::Var> operator*(idol::QuadExpr<idol::Var> &&t_quad_expr, double t_num);
-
-    idol::QuadExpr<idol::Var> operator*(const idol::QuadExpr<idol::Var> &t_quad_expr, double t_num);
-
     idol::Expr<idol::Var> operator*(double t_num, idol::Expr<idol::Var> &&t_expr);
 
     idol::Expr<idol::Var> operator*(double t_num, const idol::Expr<idol::Var> &t_expr);
@@ -81,18 +67,6 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator+(const idol::LinExpr<idol::Var> &t_a, const idol::LinExpr<idol::Var> &t_b);
 
-    idol::Expr<idol::Var> operator+(double t_term, idol::QuadExpr<idol::Var> &&t_quad_expr);
-
-    idol::Expr<idol::Var> operator+(idol::QuadExpr<idol::Var> &&t_quad_expr, double t_term);
-
-    idol::QuadExpr<idol::Var> operator+(idol::QuadExpr<idol::Var> &&t_a, const idol::QuadExpr<idol::Var> &t_b);
-
-    idol::QuadExpr<idol::Var> operator+(const idol::QuadExpr<idol::Var> &t_a, idol::QuadExpr<idol::Var> &&t_b);
-
-    idol::QuadExpr<idol::Var> operator+(idol::QuadExpr<idol::Var> &&t_a, idol::QuadExpr<idol::Var> &&t_b);
-
-    idol::QuadExpr<idol::Var> operator+(const idol::QuadExpr<idol::Var> &t_a, const idol::QuadExpr<idol::Var> &t_b);
-
     idol::Expr<idol::Var> operator+(const idol::Expr<idol::Var> &t_a, idol::Expr<idol::Var> &&t_b);
 
     idol::Expr<idol::Var> operator+(idol::Expr<idol::Var> &&t_a, const idol::Expr<idol::Var> &t_b);
@@ -114,10 +88,6 @@ namespace idol {
     idol::LinExpr<idol::Var> operator-(idol::LinExpr<idol::Var> &&t_a, const idol::LinExpr<idol::Var> &t_b);
 
     idol::LinExpr<idol::Var> operator-(const idol::LinExpr<idol::Var> &t_a, const idol::LinExpr<idol::Var> &t_b);
-
-    idol::QuadExpr<idol::Var> operator-(idol::QuadExpr<idol::Var> &&t_a, const idol::QuadExpr<idol::Var> &t_b);
-
-    idol::QuadExpr<idol::Var> operator-(const idol::QuadExpr<idol::Var> &t_a, const idol::QuadExpr<idol::Var> &t_b);
 
     idol::Expr<idol::Var> operator-(idol::Expr<idol::Var> &&t_a, const idol::Expr<idol::Var> &t_b);
 
