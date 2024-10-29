@@ -1260,7 +1260,10 @@ namespace idol {
         result.set_objective_value(t_model.get_best_obj());
 
         for (const auto &var: t_original_model.vars()) {
-            result.set(var, t_model.get_var_primal(var));
+            const double value = t_model.get_var_primal(var);
+            if (!is_zero(value, Tolerance::Sparsity)) {
+                result.push_back(var, value);
+            }
         }
 
         return result;
@@ -1288,7 +1291,10 @@ namespace idol {
         result.set_objective_value(-Inf);
 
         for (const auto &var: t_original_model.vars()) {
-            result.set(var, t_model.get_var_ray(var));
+            const double value = t_model.get_var_ray(var);
+            if (!is_zero(value, Tolerance::Sparsity)) {
+                result.push_back(var, value);
+            }
         }
 
         return result;
@@ -1316,7 +1322,10 @@ namespace idol {
         result.set_objective_value(t_model.get_best_bound());
 
         for (const auto &ctr: t_original_model.ctrs()) {
-            result.set(ctr, t_model.get_ctr_dual(ctr));
+            const double value = t_model.get_ctr_dual(ctr);
+            if (!is_zero(value, Tolerance::Sparsity)) {
+                result.set(ctr, value);
+            }
         }
 
         return result;
@@ -1344,7 +1353,10 @@ namespace idol {
         result.set_objective_value(+Inf);
 
         for (const auto &ctr: t_original_model.ctrs()) {
-            result.set(ctr, t_model.get_ctr_farkas(ctr));
+            const double value = t_model.get_ctr_farkas(ctr);
+            if (!is_zero(value, Tolerance::Sparsity)) {
+                result.set(ctr, value);
+            }
         }
 
         return result;
