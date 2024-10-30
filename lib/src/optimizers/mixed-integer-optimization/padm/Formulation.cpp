@@ -8,6 +8,7 @@
 #include "idol/optimizers/mixed-integer-optimization/padm/PenaltyUpdates.h"
 
 #include <utility>
+#include <algorithm>
 
 idol::ADM::Formulation::Formulation(const Model& t_src_model,
                                     Annotation<Var, unsigned int> t_decomposition,
