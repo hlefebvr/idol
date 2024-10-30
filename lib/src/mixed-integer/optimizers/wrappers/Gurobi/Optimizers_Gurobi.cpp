@@ -486,6 +486,8 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     std::unique_ptr<GRBModel> model;
     GUROBI_CATCH(model = std::make_unique<GRBModel>(get_global_env(), t_filename);)
 
+    model->update();
+
     const unsigned int n_vars = model->get(GRB_IntAttr_NumVars);
     const unsigned int n_ctrs = model->get(GRB_IntAttr_NumConstrs);
     const unsigned int n_quad_ctrs = model->get(GRB_IntAttr_NumQConstrs);
@@ -572,7 +574,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     result.set_obj_sense(idol_obj_sense(sense));
 
     const auto& objective = model->getObjective();
-    result.set_obj_expr(parse_linear((GRBLinExpr&) objective));
+    result.set_obj_expr(parse_linear(objective.getLinExpr()));
 
     return std::move(result);
 }
