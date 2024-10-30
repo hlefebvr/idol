@@ -5,6 +5,7 @@
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/stabilizers/TrustRegion.h"
 #include "idol/modeling/expressions/operations/operators.h"
 #include "idol/optimizers/robust-optimization/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include <algorithm>
 
 idol::Robust::CCGStabilizers::TrustRegion::Strategy *idol::Robust::CCGStabilizers::TrustRegion::operator()() const {
     return new Strategy(m_trust_factors.has_value() ? *m_trust_factors : std::vector<double>{ .01, .02, .5 });
