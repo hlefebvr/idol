@@ -45,6 +45,8 @@ public:
 
     unsigned int get_inner_loop_iteration_count() const;
 
+    ADM::SubProblem& sub_problem_spec(unsigned int t_sub_problem_id);
+
     class IterationPlot;
 protected:
     void add(const Var &t_var) override;
@@ -112,7 +114,7 @@ protected:
     double get_var_result(const Var &t_var, const std::function<double(const Var&, unsigned int)>& t_function) const;
 private:
     ADM::Formulation m_formulation;
-    const std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
+    std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
     const std::unique_ptr<PenaltyUpdate> m_penalty_update;
     const double m_initial_penalty_parameter;
     const unsigned int m_max_inner_loop_iterations = std::numeric_limits<unsigned int>::max();
