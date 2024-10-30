@@ -929,7 +929,7 @@ void idol::Model::set_storage(idol::Model::Storage t_storage, bool t_reset_minor
         build_columns();
     } else if (t_storage == RowOriented) {
         build_rows();
-    } else { [[unlikely]]
+    } else { [[unlikely]];
         throw Exception("Unsupported storage type.");
     }
 

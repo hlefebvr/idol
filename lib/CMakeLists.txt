@@ -391,8 +391,6 @@ if (${WITH_PROFILING})
     set(CMAKE_CPP_COMPILER g++)
 endif()
 
-target_compile_definitions(idol PUBLIC IDOL_INCLUDE_PATH="$<INSTALL_INTERFACE:include>$<BUILD_INTERFACE:${idol_SOURCE_DIR}/lib/include>")
-
 target_include_directories(
         idol
         PUBLIC
