@@ -8,6 +8,7 @@
 #include "idol/modeling/expressions/operations/operators.h"
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
 
 using namespace idol;
 
