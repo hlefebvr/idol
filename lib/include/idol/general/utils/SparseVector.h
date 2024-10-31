@@ -496,11 +496,11 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>
     if (this == &t_vector) {
         return *this *= 2;
     }
-
+/*
     if (m_sorting_criteria == SortingCriteria::Index && t_vector.m_sorting_criteria == SortingCriteria::Index) {
         return binary_operation_on_sorted_vectors(t_vector, [](const ValueT& t_value1, const ValueT& t_value2) { return t_value1 + t_value2; });;
     }
-
+*/
     push_back(t_vector.m_indices, t_vector.m_values);
 
     return *this;

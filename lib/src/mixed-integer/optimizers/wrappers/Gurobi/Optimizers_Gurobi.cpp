@@ -486,12 +486,11 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     std::unique_ptr<GRBModel> model;
     GUROBI_CATCH(model = std::make_unique<GRBModel>(get_global_env(), t_filename);)
 
-    model->update();
-
     const unsigned int n_vars = model->get(GRB_IntAttr_NumVars);
     const unsigned int n_ctrs = model->get(GRB_IntAttr_NumConstrs);
     const unsigned int n_quad_ctrs = model->get(GRB_IntAttr_NumQConstrs);
 
+    result.reserve_vars(n_vars);
     for (unsigned int j = 0 ; j < n_vars ; ++j) {
 
         const auto& var = model->getVar(j);
@@ -499,16 +498,21 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const double ub = var.get(GRB_DoubleAttr_UB);
         const double obj = var.get(GRB_DoubleAttr_Obj);
         VarType type = idol_var_type(var.get(GRB_CharAttr_VType));
+        const auto name = var.get(GRB_StringAttr_VarName);
 
-        result.add_var(lb, ub, type, obj, var.get(GRB_StringAttr_VarName));
+        result.add_var(lb, ub, type, obj, name);
     }
 
     const auto parse_linear = [&](const GRBLinExpr& t_lin_expr) {
-        Expr result_ = t_lin_expr.getConstant();
 
-        for (unsigned int j = 0, n = t_lin_expr.size() ; j < n ; ++j) {
+        Expr result_ = t_lin_expr.getConstant();
+        auto& linear_ = result_.linear();
+        const auto n_terms = t_lin_expr.size();
+        linear_.reserve(n_terms);
+
+        for (unsigned int j = 0 ; j < n_terms ; ++j) {
             auto var = t_lin_expr.getVar(j);
-            result_ += t_lin_expr.getCoeff(j) * result.get_var_by_index(var.index());
+            linear_.push_back(result.get_var_by_index(var.index()), t_lin_expr.getCoeff(j));
         }
 
         return result_;
@@ -543,6 +547,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
     };
 
+    result.reserve_ctrs(n_ctrs);
     for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
 
         const auto& ctr = model->getConstr(i);
