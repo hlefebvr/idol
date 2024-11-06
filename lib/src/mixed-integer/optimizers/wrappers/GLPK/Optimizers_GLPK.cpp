@@ -14,11 +14,11 @@ idol::Optimizers::GLPK::GLPK(const Model &t_model, bool t_continuous_relaxation)
       m_continuous_relaxation(t_continuous_relaxation) {
 
     glp_init_smcp(&m_simplex_parameters);
-    m_simplex_parameters.msg_lev = GLP_MSG_ALL;
+    m_simplex_parameters.msg_lev = GLP_MSG_OFF;
     //m_simplex_parameters.presolve = GLP_ON;
 
     glp_init_iocp(&m_mip_parameters);
-    m_mip_parameters.msg_lev = GLP_MSG_ALL;
+    m_mip_parameters.msg_lev = GLP_MSG_OFF;
     //m_mip_parameters.presolve = GLP_ON;
 
 }
