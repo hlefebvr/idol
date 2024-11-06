@@ -1,7 +1,6 @@
 //
 // Created by henri on 27/01/23.
 //
-#include <cassert>
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
@@ -85,7 +84,6 @@ void idol::Model::add_column_to_rows(const idol::Var &t_var) {
         auto& version = m_env.version(*this, ctr);
         if (version.has_row()) {
             version.row().push_back(t_var, constant);
-            assert(version.row().is_sorted_by_index());
         }
     }
 
@@ -119,7 +117,6 @@ void idol::Model::remove(const Var &t_var) {
         if (ctr_version.has_row()) {
             auto& row = ctr_version.row();
             row.remove(t_var);
-            assert(row.is_sorted_by_index());
         }
     }
 
@@ -151,7 +148,6 @@ void idol::Model::remove(const Ctr &t_ctr) {
         if (var_version.has_column()) {
             auto& column = var_version.column();
             column.remove(t_ctr);
-            assert(column.is_sorted_by_index());
         }
     }
 
@@ -205,7 +201,6 @@ void idol::Model::add_row_to_columns(const idol::Ctr &t_ctr) {
         auto& version = m_env.version(*this, var);
         if (version.has_column()) {
             version.column().push_back(t_ctr, constant);
-            assert(version.column().is_sorted_by_index());
         }
     }
 
@@ -258,8 +253,6 @@ idol::LinExpr<idol::Var> idol::Model::get_ctr_row(const Ctr &t_ctr) const {
         const_cast<Model*>(this)->build_row(t_ctr);
         m_has_minor_representation = true;
     }
-
-    assert(version.row().is_sorted_by_index());
 
     return version.row();
 }
@@ -527,13 +520,11 @@ void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, double t_coe
     if (column_storage_matters()) {
         auto& column = m_env.version(*this, t_var).column();
         column.set(t_ctr, t_coeff);
-        assert(column.is_sorted_by_index());
     }
 
     if (row_storage_matters()) {
         auto& row = m_env.version(*this, t_ctr).row();
         row.set(t_var, t_coeff);
-        assert(row.is_sorted_by_index());
     }
 
     if (has_optimizer()) {
@@ -592,7 +583,6 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
         if (var_version.has_column()) {
             auto& column = var_version.column();
             column.set(t_ctr, 0.);
-            assert(column.is_sorted_by_index());
         }
         variables_to_update.emplace_back(var);
     }
@@ -608,7 +598,6 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
         if (var_version.has_column()) {
             auto& column = var_version.column();
             column.set(t_ctr, 0.);
-            assert(column.is_sorted_by_index());
         }
         variables_to_update.emplace_back(var);
     }
@@ -695,7 +684,6 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
         if (ctr_version.has_row()) {
             auto& row = ctr_version.row();
             row.set(t_var, 0.);
-            assert(row.is_sorted_by_index());
         }
         constraints_to_update.emplace_back(ctr);
     }
@@ -711,7 +699,6 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
         if (ctr_version.has_row()) {
             auto& row = ctr_version.row();
             row.set(t_var, 0.);
-            assert(row.is_sorted_by_index());
         }
         constraints_to_update.emplace_back(ctr);
     }
@@ -797,8 +784,6 @@ void idol::Model::build_row(const idol::Ctr &t_ctr) {
 
     internal_row.sparsify();
 
-    assert(internal_row.is_sorted_by_index());
-
     m_env.version(*this, t_ctr).set_row(std::move(internal_row));
 
 }
@@ -813,8 +798,6 @@ void idol::Model::build_column(const idol::Var &t_var) {
     }
 
     internal_column.sparsify();
-
-    assert(internal_column.is_sorted_by_index());
 
     m_env.version(*this, t_var).set_column(std::move(internal_column));
 

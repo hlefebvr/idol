@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iomanip>
 #include <numeric>
+#include <idol/mixed-integer/modeling/Types.h>
 
 namespace idol {
 
@@ -107,15 +108,25 @@ namespace idol {
         return std::abs(t_a - t_b) <= t_tolerance;
     }
 
+    static bool is(double t_a, CtrType t_type, double t_b, double t_tolerance) {
+
+        switch (t_type) {
+            case LessOrEqual:
+                return t_a <= t_b + t_tolerance;
+            case GreaterOrEqual:
+                return t_a >= t_b - t_tolerance;
+            case Equal:
+                return equals(t_a, t_b, t_tolerance);
+            default:;
+        }
+
+        throw Exception("Enum out of bounds.");
+    }
+
     static double relative_gap(double t_lb, double t_ub) {
 
         if (is_neg_inf(t_lb) || is_pos_inf(t_ub)) {
             return Inf;
-        }
-
-        if (equals(t_lb, 0.0, 1e-3) && equals(t_ub, 0.0, 1e-3)) {
-            //std::cout << "REL: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << (std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub))) << std::endl;
-            //return relative_gap(1 + t_lb, 1 + t_ub);
         }
 
         return std::abs(t_lb - t_ub) / (1e-10 + std::abs(t_ub));
@@ -125,12 +136,16 @@ namespace idol {
         if (is_pos_inf(t_ub) || is_neg_inf(t_lb)) {
             return Inf;
         }
-        //std::cout << "ABS: " << std::setprecision(12) << t_lb << "; " << t_ub << " -> " << std::abs(t_ub - t_lb) << std::endl;
         return std::abs(t_ub - t_lb);
     }
 
     static bool is_zero(double t_value, double t_tolerance) {
         return std::abs(t_value) <= t_tolerance;
+    }
+
+    template<class T>
+    decltype(std::declval<T>().is_zero(.1)) is_zero(const T& t_expr, double t_tolerance) {
+        return t_expr.is_zero(t_tolerance);
     }
 
     static bool is_integer(double t_value, double t_tolerance) {

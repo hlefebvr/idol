@@ -10,6 +10,7 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/NoStabilization.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
 idol::DantzigWolfeDecomposition *idol::DantzigWolfeDecomposition::clone() const {
     return new DantzigWolfeDecomposition(*this);

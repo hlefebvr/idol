@@ -395,7 +395,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
     delete[] plus_one;
 
     // Set original variables' objective coefficient to zero
-    for (const auto& [var, constant] : model.get_obj_expr().linear()) {
+    for (const auto& var : model.vars()) {
         glp_set_obj_coef(m_model, lazy(var).impl(), 0.);
     }
 
@@ -416,8 +416,8 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
     glp_del_cols(m_model, (int) artificial_variables.size() - 1, artificial_variables.data());
 
     // Restore objective function
-    for (const auto& [var, constant] : model.get_obj_expr().linear()) {
-        glp_set_obj_coef(m_model, lazy(var).impl(), constant);
+    for (const auto& var : model.vars()) {
+        glp_set_obj_coef(m_model, lazy(var).impl(), model.get_var_obj(var));
     }
 
     // Restore basis

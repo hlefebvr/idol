@@ -38,6 +38,7 @@ public:
     Expr<Key1, Key2>& operator-=(const Expr<Key1, Key2>& t_rhs);
     Expr<Key1, Key2>& operator*=(double t_rhs);
     Expr<Key1, Key2>& operator/=(double t_rhs);
+    Expr<Key1, Key2> operator-() const;
 
     LinExpr<Key1>& linear() { return m_linear; }
     [[nodiscard]] const LinExpr<Key1>& linear() const { return m_linear; }
@@ -46,13 +47,21 @@ public:
 
     [[nodiscard]] double constant() const { return m_constant; }
 
-    [[nodiscard]] bool is_zero() const { return std::abs(constant()) < Tolerance::Sparsity && linear().empty(); }
+    [[nodiscard]] bool is_zero(double t_tolerance) const { return std::abs(constant()) < t_tolerance && linear().is_zero(t_tolerance); }
 
     void clear() {
         constant() = 0;
         m_linear.clear();
     }
 };
+
+template<class Key1, class Key2>
+idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::operator-() const {
+    auto result = *this;
+    result.constant() = -result.constant();
+    result.linear() = -result.linear();
+    return result;
+}
 
 template<class Key1, class Key2>
 idol::Expr<Key1, Key2>::Expr() {

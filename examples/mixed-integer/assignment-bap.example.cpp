@@ -13,6 +13,9 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/logs/Info.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
 
 using namespace idol;
 
@@ -33,7 +36,7 @@ int main(int t_argc, const char** t_argv) {
     Annotation<Ctr> decomposition(env, "decomposition", MasterId);
 
     // Create assignment variables (x_ij binaries)
-    auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, "x");
+    auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, 0., "x");
 
     // Create knapsack constraints (i.e., capacity constraints)
     for (unsigned int i = 0 ; i < n_agents ; ++i) {

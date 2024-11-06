@@ -28,6 +28,7 @@ template<class Key = idol::Var>
 class idol::LinExpr : public SparseVector<Key, double> {
 public:
     LinExpr() = default;
+    LinExpr(SparseVector<Key, double>&& t_vector) : SparseVector<Key, double>(std::move(t_vector)) {}
     LinExpr(const Key& t_key); // NOLINT(google-explicit-constructor)
     LinExpr(double t_factor, const Key& t_key);
 };

@@ -52,8 +52,9 @@ public:
 
     virtual SparseVector& operator+=(const SparseVector& t_vector);
     virtual SparseVector& operator-=(const SparseVector& t_vector);
-    virtual SparseVector& operator*=(ValueT t_scalar);
-    virtual SparseVector& operator/=(ValueT t_scalar);
+    virtual SparseVector& operator*=(std::conditional_t<std::is_arithmetic_v<ValueT>, ValueT, double> t_scalar);
+    virtual SparseVector& operator/=(std::conditional_t<std::is_arithmetic_v<ValueT>, ValueT, double> t_scalar);
+    SparseVector operator-() const;
 
     [[nodiscard]] unsigned int size() const { return m_indices.size(); }
 
@@ -144,6 +145,12 @@ public:
 
     SparseVector& merge_without_conflict(const SparseVector& t_vec);
 };
+
+template<class IndexT, class ValueT, class IndexExtractorT>
+idol::SparseVector<IndexT, ValueT, IndexExtractorT> idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator-() const {
+    std::for_each(m_values.begin(), m_values.end(), [](ValueT& t_value) { t_value = -t_value; });
+    return *this;
+}
 
 template<class IndexT, class ValueT, class IndexExtractorT>
 void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::sparsify() {
@@ -521,7 +528,9 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator-=(const SparseVect
 
     m_indices.insert(m_indices.end(), t_vector.m_indices.begin(), t_vector.m_indices.end());
     std::for_each(t_vector.m_values.begin(), t_vector.m_values.end(), [this](const ValueT& t_value) {
-        m_values.emplace_back(-t_value);
+        ValueT value = t_value;
+        value *= -1.;
+        m_values.emplace_back(value);
     });
 
     m_sorting_criteria = SortingCriteria::None;
@@ -531,9 +540,9 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator-=(const SparseVect
 }
 
 template<class IndexT, class ValueT, class IndexExtractorT>
-idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator*=(ValueT t_scalar) {
+idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator*=(std::conditional_t<std::is_arithmetic_v<ValueT>, ValueT, double> t_scalar) {
 
-    if (t_scalar == ValueT{}) {
+    if (is_zero(t_scalar, Tolerance::Sparsity)) {
         clear();
         return *this;
     }
@@ -546,7 +555,7 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, 
 }
 
 template<class IndexT, class ValueT, class IndexExtractorT>
-idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator/=(ValueT t_scalar) {
+idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator/=(std::conditional_t<std::is_arithmetic_v<ValueT>, ValueT, double> t_scalar) {
 
     std::for_each(m_values.begin(), m_values.end(), [t_scalar](ValueT& t_value) { t_value /= t_scalar; });
 

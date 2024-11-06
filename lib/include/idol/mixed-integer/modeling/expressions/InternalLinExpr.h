@@ -18,9 +18,9 @@ template<class Key>
 class idol::InternalLinExpr : public LinExpr<Key> {
     const Model* m_model = nullptr;
 protected:
-    unsigned int get_raw_index(const Key &t_index) const override {
+    /*unsigned int get_raw_index(const Key &t_index) const override {
         return t_index.index(*m_model);
-    }
+    }*/
 public:
     InternalLinExpr() = default;
     InternalLinExpr(const Key& t_key) : LinExpr<Key>(t_key)  {} // NOLINT(google-explicit-constructor)

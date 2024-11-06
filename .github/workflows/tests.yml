@@ -51,7 +51,7 @@ jobs:
         test:
           - "branch-and-bound/test_bab_knapsack_Mosek"
           - "branch-and-bound/test_bab_location_Mosek"
-          #- "branch-and-price/test_bap_assignment_Mosek"
+          - "branch-and-price/test_bap_assignment_Mosek"
     steps:
       - uses: actions/checkout@v4
 
@@ -103,7 +103,7 @@ jobs:
         test:
           - "branch-and-bound/test_bab_knapsack_GLPK"
           - "branch-and-bound/test_bab_location_GLPK"
-          #- "branch-and-price/test_bap_assignment_GLPK"
+          - "branch-and-price/test_bap_assignment_GLPK"
     steps:
       - uses: actions/checkout@v4
 
@@ -142,7 +142,7 @@ jobs:
         test:
           - "branch-and-bound/test_bab_knapsack_HiGHS"
           - "branch-and-bound/test_bab_location_HiGHS"
-          #- "branch-and-price/test_bap_assignment_HiGHS"
+          - "branch-and-price/test_bap_assignment_HiGHS"
     steps:
       - uses: actions/checkout@v3
 

@@ -19,9 +19,14 @@ class idol::DantzigWolfe::Formulation {
     Annotation<Ctr, unsigned int> m_decomposition_by_ctr;
     Annotation<Var, unsigned int> m_decomposition_by_var;
 
+    struct GenerationPattern {
+        Expr<Var> objective;
+        SparseVector<Ctr, Expr<Var>> column;
+    };
+
     Model m_master;
     std::vector<Model> m_sub_problems;
-    std::vector<LinExpr<Ctr>> m_generation_patterns;
+    std::vector<GenerationPattern> m_generation_patterns;
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
 
@@ -36,8 +41,8 @@ class idol::DantzigWolfe::Formulation {
     void initialize_present_generators(unsigned int t_n_sub_problems);
     void dispatch_variables(const Model& t_original_formulation);
     void dispatch_constraints(const Model& t_original_formulation);
-    void dispatch_linking_constraint(const Ctr& t_original_ctr, const LinExpr<Var>& t_row, CtrType t_type);
-    std::pair<Expr<Var, Var>, std::vector<Constant>> decompose_expression(const LinExpr<Var> &t_linear /*, const QuadExpr<Var, Var>& t_quadratic */);
+    void dispatch_linking_constraint(const Ctr& t_original_ctr, const LinExpr<Var>& t_row, CtrType t_type, double t_rhs);
+    std::pair<LinExpr<Var>, std::vector<LinExpr<Var>>> decompose_expression(const LinExpr<Var> &t_linear);
     void dispatch_objective_function(const Model& t_original_formulation);
     bool is_feasible(const PrimalPoint& t_primal, unsigned int t_sub_problem_id);
 
