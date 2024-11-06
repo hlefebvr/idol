@@ -415,8 +415,8 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::set(const IndexT &t_in
     }
 
     if (get_raw_index(*it) != get_raw_index(t_index)) {
-        m_indices.insert(it, t_index);
         m_values.insert(m_values.begin() + (it - m_indices.begin()), t_value);
+        m_indices.insert(it, t_index);
         return;
     }
 
