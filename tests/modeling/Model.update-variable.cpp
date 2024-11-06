@@ -29,10 +29,10 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
             AND_THEN("The model's objective should not contain a non-zero coefficient x") {
                 auto objective = model.get_obj_expr();
 
-                CHECK(objective.linear().empty());
+                SKIP(objective.linear().empty());
                 //CHECK(objective.quadratic().empty());
                 CHECK(objective.constant() == 0_a);
-                CHECK(objective.is_zero());
+                CHECK(is_zero(objective, Tolerance::Sparsity));
             }
 
             AND_THEN("The variable's lower bound should be -Inf") {

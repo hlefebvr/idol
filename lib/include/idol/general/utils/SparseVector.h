@@ -68,6 +68,8 @@ public:
 
     [[nodiscard]] ValueT get(const IndexT& t_index1) const;
 
+    [[nodiscard]] bool is_zero(double t_tolerance) const;
+
     /**
      * Sets the value of a given index.
      * This method preserve the sorting order of the vector.
@@ -147,6 +149,11 @@ public:
 };
 
 template<class IndexT, class ValueT, class IndexExtractorT>
+bool idol::SparseVector<IndexT, ValueT, IndexExtractorT>::is_zero(double t_tolerance) const {
+    return std::all_of(m_values.begin(), m_values.end(), [t_tolerance](const ValueT& t_value) { return ::idol::is_zero(t_value, t_tolerance); });
+}
+
+template<class IndexT, class ValueT, class IndexExtractorT>
 idol::SparseVector<IndexT, ValueT, IndexExtractorT> idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator-() const {
     std::for_each(m_values.begin(), m_values.end(), [](ValueT& t_value) { t_value = -t_value; });
     return *this;
@@ -158,7 +165,7 @@ void idol::SparseVector<IndexT, ValueT, IndexExtractorT>::sparsify() {
     unsigned int i = 0, j = 0;
     const unsigned int n = m_indices.size();
     while (i < n) {
-        if (!is_zero(m_values[i], Tolerance::Sparsity)) {
+        if (!::idol::is_zero(m_values[i], Tolerance::Sparsity)) {
             m_indices[j] = std::move(m_indices[i]);
             m_values[j] = std::move(m_values[i]);
             ++j;
@@ -542,7 +549,7 @@ idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator-=(const SparseVect
 template<class IndexT, class ValueT, class IndexExtractorT>
 idol::SparseVector<IndexT, ValueT, IndexExtractorT> &idol::SparseVector<IndexT, ValueT, IndexExtractorT>::operator*=(std::conditional_t<std::is_arithmetic_v<ValueT>, ValueT, double> t_scalar) {
 
-    if (is_zero(t_scalar, Tolerance::Sparsity)) {
+    if (::idol::is_zero(t_scalar, Tolerance::Sparsity)) {
         clear();
         return *this;
     }

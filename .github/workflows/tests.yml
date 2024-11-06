@@ -33,10 +33,10 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: echo "SKIP" # ./modeling/test_modeling_interface
+        run: ./modeling/test_modeling_interface
 
       - name: Build coverage report
-        run: echo "SKIP" # lcov --directory . --capture --output-file coverage__$(uuidgen).info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
       - uses: actions/upload-artifact@v3
         with:
