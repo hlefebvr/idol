@@ -1453,6 +1453,7 @@ namespace idol {
     template<class T>
     double evaluate_sorted(const Model& t_model, const LinExpr<T>& t_expr, const Point<T>& t_values) {
 
+        /*
         const bool is_sorted_expr = std::is_sorted(t_expr.begin(), t_expr.end(), [&](const auto& a, const auto& b) {
             const unsigned int index_a = t_model.get_var_index(a.first);
             const unsigned int index_b = t_model.get_var_index(b.first);
@@ -1468,6 +1469,7 @@ namespace idol {
         if (!is_sorted_expr || !is_sorted_values) {
             throw Exception("The expression and the values must be sorted.");
         }
+         */
 
         // Compute dot product
         double result = 0.;
