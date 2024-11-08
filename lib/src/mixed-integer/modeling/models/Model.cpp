@@ -108,15 +108,25 @@ void idol::Model::remove(const Var &t_var) {
     auto& version = m_env.version(*this, t_var);
 
     if (!version.has_column()) {
-        build_column(t_var);
-    }
 
-    for (const auto& [ctr, constant] : version.column()) {
-        auto& ctr_version = m_env.version(*this, ctr);
-        if (ctr_version.has_row()) {
-            auto& row = ctr_version.row();
-            row.remove(t_var);
+        for (const auto& ctr : m_constraints) {
+            auto& ctr_version = m_env.version(*this, ctr);
+            if (ctr_version.has_row()) {
+                auto& row = ctr_version.row();
+                row.remove(t_var);
+            }
         }
+
+    } else {
+
+        for (const auto& [ctr, constant] : version.column()) {
+            auto& ctr_version = m_env.version(*this, ctr);
+            if (ctr_version.has_row()) {
+                auto& row = ctr_version.row();
+                row.remove(t_var);
+            }
+        }
+
     }
 
     unsigned int index = version.index();
@@ -139,15 +149,25 @@ void idol::Model::remove(const Ctr &t_ctr) {
     auto& version = m_env.version(*this, t_ctr);
 
     if (!version.has_row()) {
-        build_row(t_ctr);
-    }
 
-    for (const auto& [var, constant] : version.row()) {
-        auto& var_version = m_env.version(*this, var);
-        if (var_version.has_column()) {
-            auto& column = var_version.column();
-            column.remove(t_ctr);
+        for (const auto& var : m_variables) {
+            auto& var_version = m_env.version(*this, var);
+            if (var_version.has_column()) {
+                auto& column = var_version.column();
+                column.remove(t_ctr);
+            }
         }
+
+    } else {
+
+        for (const auto& [var, constant] : version.row()) {
+            auto& var_version = m_env.version(*this, var);
+            if (var_version.has_column()) {
+                auto& column = var_version.column();
+                column.remove(t_ctr);
+            }
+        }
+
     }
 
     unsigned int index = version.index();
