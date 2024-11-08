@@ -9,6 +9,7 @@
 #include "operators_Var.h"
 #include "operators_Ctr.h"
 #include "operators_utils.h"
+#include <cassert>
 
 namespace idol {
     template<class T>

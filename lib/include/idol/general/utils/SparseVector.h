@@ -111,24 +111,24 @@ public:
 
     class iterator {
         unsigned int m_index;
-        SparseVector& m_vector;
+        SparseVector* m_vector;
     public:
-        iterator(unsigned int t_index, SparseVector& t_vector) : m_index(t_index), m_vector(t_vector) {}
+        iterator(unsigned int t_index, SparseVector& t_vector) : m_index(t_index), m_vector(&t_vector) {}
         iterator& operator++() { ++m_index; return *this; }
         [[nodiscard]] bool operator==(const iterator& t_other) const { return m_index == t_other.m_index; }
         [[nodiscard]] bool operator!=(const iterator& t_other) const { return m_index != t_other.m_index; }
-        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector.index_at(m_index), m_vector.value_at(m_index)}; }
+        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector->index_at(m_index), m_vector->value_at(m_index)}; }
     };
 
     class const_iterator {
         unsigned int m_index;
-        const SparseVector &m_vector;
+        const SparseVector *m_vector;
     public:
-        const_iterator(unsigned int t_index, const SparseVector &t_vector) : m_index(t_index), m_vector(t_vector) {}
+        const_iterator(unsigned int t_index, const SparseVector &t_vector) : m_index(t_index), m_vector(&t_vector) {}
         const_iterator& operator++() { ++m_index; return *this; }
         [[nodiscard]] bool operator==(const const_iterator& t_other) const { return m_index == t_other.m_index; }
         [[nodiscard]] bool operator!=(const const_iterator& t_other) const { return m_index != t_other.m_index; }
-        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector.index_at(m_index), m_vector.value_at(m_index)}; }
+        [[nodiscard]] std::pair<const IndexT&, const ValueT&> operator*() const { return {m_vector->index_at(m_index), m_vector->value_at(m_index)}; }
     };
 
     [[nodiscard]] iterator begin() { return iterator(0, *this); }

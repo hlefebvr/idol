@@ -293,11 +293,13 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
                                                       idol::PrimalPoint t_generator) {
 
+    const auto& sub_problem = m_sub_problems[t_sub_problem_id];
+
     auto alpha = m_master.add_var(0.,
                                 Inf,
                                 Continuous,
-                                evaluate(m_generation_patterns[t_sub_problem_id].objective, t_generator),
-                                evaluate(m_generation_patterns[t_sub_problem_id].column, t_generator)
+                                evaluate_sorted(sub_problem, m_generation_patterns[t_sub_problem_id].objective, t_generator),
+                                evaluate_sorted(sub_problem, m_generation_patterns[t_sub_problem_id].column, t_generator)
                                 );
 
     auto& pool = m_pools[t_sub_problem_id];
@@ -312,12 +314,14 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
                                                              const idol::DualPoint &t_master_dual,
                                                              const idol::PrimalPoint &t_generator) {
 
+    const auto& sub_problem = m_sub_problems[t_sub_problem_id];
+
     double result = 0.;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
     for (const auto &[ctr, constant] : generation_pattern.column) {
-        result += evaluate(constant, t_generator) * -t_master_dual.get(ctr);
+        result += evaluate_sorted(sub_problem, constant, t_generator) * -t_master_dual.get(ctr);
     }
 
     result += evaluate(generation_pattern.objective, t_generator);
