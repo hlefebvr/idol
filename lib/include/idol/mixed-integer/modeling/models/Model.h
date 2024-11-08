@@ -745,6 +745,7 @@ public:
      * Attention: every constraint involved in t_rhs must already be part of the model.
      * @param t_rhs the right hand-side
      */
+    void set_rhs_expr(LinExpr<Ctr>&& t_rhs);
     void set_rhs_expr(const LinExpr<Ctr>& t_rhs);
 
     /**

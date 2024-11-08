@@ -483,18 +483,20 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
     throw_if_unknown_object(t_objective.linear());
 
+    auto copy = std::move(t_objective);
+    copy.linear().sort_by_index();
+    copy.linear().reduce();
+
     m_objective_constant = t_objective.constant();
 
-    auto it = t_objective.linear().begin();
-    const auto end = t_objective.linear().end();
     for (const auto& var : m_variables) {
         auto& version = m_env.version(*this, var);
-        if (it == end || (*it).first.id() != var.id()) {
-            version.set_obj(0.);
-        } else {
-            version.set_obj((*it).second);
-            ++it;
-        }
+        version.set_obj(0.);
+    }
+
+    for (const auto& [var, val] : copy.linear()) {
+        auto& version = m_env.version(*this, var);
+        version.set_obj(val);
     }
 
     if (has_optimizer()) {
@@ -503,20 +505,26 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
 }
 
-void idol::Model::set_rhs_expr(const LinExpr<Ctr> &t_rhs) {
+void idol::Model::set_rhs_expr(const idol::LinExpr<idol::Ctr> &t_rhs) {
+    set_rhs_expr(LinExpr<Ctr>(t_rhs));
+}
+
+void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
     throw_if_unknown_object(t_rhs);
 
-    auto it = t_rhs.begin();
-    const auto end = t_rhs.end();
+    auto copy = t_rhs;
+    copy.sort_by_index();
+    copy.reduce();
+
     for (const auto& ctr : m_constraints) {
         auto& version = m_env.version(*this, ctr);
-        if (it == end || (*it).first.id() != ctr.id()) {
-            version.set_rhs(0.);
-        } else {
-            version.set_rhs((*it).second);
-            ++it;
-        }
+        version.set_rhs(0.);
+    }
+
+    for (const auto& [ctr, val] : copy) {
+        auto& version = m_env.version(*this, ctr);
+        version.set_rhs(val);
     }
 
     if (has_optimizer()) {
