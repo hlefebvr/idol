@@ -52,11 +52,10 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
     const auto type = t_temp_var.type();
     const double obj = t_temp_var.obj();
 
-    InternalLinExpr<Ctr> internal_column(this, std::move(t_temp_var.column()));
-    internal_column.sort_by_index();
+    //t_temp_var.column().sort_by_index();
 
     // Create variable version
-    m_env.create_version(*this,t_var,index,lb,ub,type,obj,std::move(internal_column));
+    m_env.create_version(*this,t_var,index, lb, ub, type, obj, std::move(t_temp_var.column()));
     m_variables.emplace_back(t_var);
 
     // Update rows if necessary
@@ -170,11 +169,10 @@ void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
     const auto type = t_temp_ctr.type();
     const double rhs = t_temp_ctr.rhs();
 
-    InternalLinExpr<Var> internal_row(this, std::move(t_temp_ctr.lhs()));
-    internal_row.sort_by_index();
+    //t_temp_ctr.lhs().sort_by_index();
 
     // Create constraint version
-    m_env.create_version(*this, t_ctr, index, std::move(internal_row), type, rhs);
+    m_env.create_version(*this, t_ctr, index, std::move(t_temp_ctr.lhs()), type, rhs);
     m_constraints.emplace_back(t_ctr);
 
     // Update columns if necessary
@@ -453,12 +451,8 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
     m_objective_constant = t_objective.constant();
 
-    InternalLinExpr objective(this, std::move(t_objective.linear()));
-    objective.sort_by_index();
-    objective.reduce();
-
-    auto it = objective.begin();
-    const auto end = objective.end();
+    auto it = t_objective.linear().begin();
+    const auto end = t_objective.linear().end();
     for (const auto& var : m_variables) {
         auto& version = m_env.version(*this, var);
         if (it == end || (*it).first.id() != var.id()) {
@@ -476,19 +470,11 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 }
 
 void idol::Model::set_rhs_expr(const LinExpr<Ctr> &t_rhs) {
-    set_rhs_expr(LinExpr<Ctr>(t_rhs));
-}
-
-void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
     throw_if_unknown_object(t_rhs);
 
-    InternalLinExpr rhs(this, std::move(t_rhs));
-    rhs.sort_by_index();
-    rhs.reduce();
-
-    auto it = rhs.begin();
-    const auto end = rhs.end();
+    auto it = t_rhs.begin();
+    const auto end = t_rhs.end();
     for (const auto& ctr : m_constraints) {
         auto& version = m_env.version(*this, ctr);
         if (it == end || (*it).first.id() != ctr.id()) {
@@ -564,9 +550,8 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
 
     auto& version = m_env.version(*this, t_ctr);
 
-    InternalLinExpr internal_row(this, std::move(t_row));
-    internal_row.sort_by_index();
-    internal_row.reduce();
+    //t_row.sort_by_index();
+    //t_row.reduce();
 
     bool row_has_been_created = false;
 
@@ -593,7 +578,7 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
     }
 
     // 4. we now update each column with the appropriate values
-    for (const auto& [var, constant] : internal_row) {
+    for (const auto& [var, constant] : t_row) {
         auto& var_version = m_env.version(*this, var);
         if (var_version.has_column()) {
             auto& column = var_version.column();
@@ -604,7 +589,7 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
 
     // 5. finally, we set the row to the new value
     if (row_storage_matters()) {
-        version.set_row(std::move(internal_row));
+        version.set_row(std::move(t_row));
     }
 
     if (has_optimizer()) {
@@ -665,9 +650,8 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
 
     auto& version = m_env.version(*this, t_var);
 
-    InternalLinExpr internal_column(this, std::move(t_column));
-    internal_column.sort_by_index();
-    internal_column.reduce();
+    //t_column.sort_by_index();
+    //t_column.reduce();
 
     bool column_has_been_created = false;
 
@@ -694,7 +678,7 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
     }
 
     // 4. we now update each row with the appropriate values
-    for (const auto& [ctr, constant] : internal_column) {
+    for (const auto& [ctr, constant] : t_column) {
         auto& ctr_version = m_env.version(*this, ctr);
         if (ctr_version.has_row()) {
             auto& row = ctr_version.row();
@@ -705,7 +689,7 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
 
     // 5. finally, we set the column to the new value
     if (row_storage_matters()) {
-        version.set_column(std::move(internal_column));
+        version.set_column(std::move(t_column));
     }
 
     if (has_optimizer()) {
@@ -775,31 +759,31 @@ double idol::Model::get_var_reduced_cost(const idol::Var &t_var) const {
 
 void idol::Model::build_row(const idol::Ctr &t_ctr) {
 
-    InternalLinExpr<Var> internal_row(this);
+    LinExpr<Var> row;
     for (const auto& var : m_variables) {
         const auto& column = get_var_column(var);
         const double value = column.get(t_ctr);
-        internal_row.push_back(var, value);
+        row.push_back(var, value);
     }
 
-    internal_row.sparsify();
+    row.sparsify();
 
-    m_env.version(*this, t_ctr).set_row(std::move(internal_row));
+    m_env.version(*this, t_ctr).set_row(std::move(row));
 
 }
 
 void idol::Model::build_column(const idol::Var &t_var) {
 
-    InternalLinExpr<Ctr> internal_column(this);
+    LinExpr<Ctr> column;
     for (const auto& ctr : m_constraints) {
         const auto& lhs = get_ctr_row(ctr);
         const double value = lhs.get(t_var);
-        internal_column.push_back(ctr, value);
+        column.push_back(ctr, value);
     }
 
-    internal_column.sparsify();
+    column.sparsify();
 
-    m_env.version(*this, t_var).set_column(std::move(internal_column));
+    m_env.version(*this, t_var).set_column(std::move(column));
 
 }
 

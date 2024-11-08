@@ -748,23 +748,6 @@ public:
     void set_rhs_expr(const LinExpr<Ctr>& t_rhs);
 
     /**
-     * Sets the right hand-side of the model
-     *
-     * The expression is moved.
-     *
-     * Example:
-     * ```cpp
-     * Lin<Ctr> rhs = 2 * c1 + 3 * c2;
-     *
-     * model.set_rhs_expr(std::move(rhs)); // RHS is then 2 for constraint c1, 2 for constraint c2, 0 for others
-     * ```
-     *
-     * Attention: every constraint involved in t_rhs must already be part of the model.
-     * @param t_rhs the right hand-side
-     */
-    void set_rhs_expr(LinExpr<Ctr>&& t_rhs);
-
-    /**
      * Sets the objective constant.
      *
      * The constant is moved.

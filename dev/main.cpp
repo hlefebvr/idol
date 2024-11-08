@@ -174,7 +174,6 @@ int main(int t_argc, const char** t_argv) {
                     .with_logs(true)
     );
 
-
     model.optimize();
 
     /*

@@ -227,8 +227,6 @@ add_library(idol STATIC
         include/idol/general/utils/sort.h
         include/idol/general/utils/Point.h
         src/mixed-integer/modeling/variables/VarVersion.cpp
-        include/idol/mixed-integer/modeling/expressions/InternalLinExpr.h
-        src/mixed-integer/modeling/expressions/InternalLinExpr.cpp
         src/mixed-integer/modeling/constraints/CtrVersion.cpp
 )
 

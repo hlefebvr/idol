@@ -8,7 +8,7 @@ idol::CtrVersion::CtrVersion(unsigned int t_index, TempCtr&& t_temp_ctr)
     : Version(t_index),
       m_type(t_temp_ctr.type()),
       m_rhs(t_temp_ctr.rhs()),
-      m_lhs(std::make_unique<InternalLinExpr<Var>>(nullptr, std::move(t_temp_ctr.lhs()))) {
+      m_lhs(std::make_unique<LinExpr<Var>>(std::move(t_temp_ctr.lhs()))) {
 
 }
 
