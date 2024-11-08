@@ -129,6 +129,7 @@ void idol::Model::remove(const Var &t_var) {
 
     }
 
+    /*
     unsigned int index = version.index();
     m_variables.erase(m_variables.begin() + index);
 
@@ -136,7 +137,13 @@ void idol::Model::remove(const Var &t_var) {
     for (const unsigned int n_vars = m_variables.size(); index < n_vars ; ++index) {
         m_env.version(*this, m_variables.at(index)).set_index(index);
     }
+    m_env.remove_version(*this, t_var);
+     */
 
+    const auto index = m_env.version(*this, t_var).index();
+    m_env.version(*this, m_variables.back()).set_index(index);
+    m_variables[index] = m_variables.back();
+    m_variables.pop_back();
     m_env.remove_version(*this, t_var);
 }
 
@@ -170,6 +177,7 @@ void idol::Model::remove(const Ctr &t_ctr) {
 
     }
 
+    /*
     unsigned int index = version.index();
     m_constraints.erase(m_constraints.begin() + index);
 
@@ -177,7 +185,13 @@ void idol::Model::remove(const Ctr &t_ctr) {
     for (const unsigned int n_ctrs = m_constraints.size(); index < n_ctrs ; ++index) {
         m_env.version(*this, m_constraints.at(index)).set_index(index);
     }
+    m_env.remove_version(*this, t_ctr);
+     */
 
+    const auto index = m_env.version(*this, t_ctr).index();
+    m_env.version(*this, m_constraints.back()).set_index(index);
+    m_constraints[index] = m_constraints.back();
+    m_constraints.pop_back();
     m_env.remove_version(*this, t_ctr);
 }
 
