@@ -342,6 +342,8 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
     reserve_ctrs(t_src.ctrs().size());
 
     m_storage = t_src.m_storage;
+    m_objective = t_src.m_objective;
+    m_rhs = t_src.m_rhs;
 
     if (t_src.m_storage == Both || t_src.m_storage == RowOriented) {
 
