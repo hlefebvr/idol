@@ -52,11 +52,12 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
     const auto type = t_temp_var.type();
     const double obj = t_temp_var.obj();
 
-    //t_temp_var.column().sort_by_index();
-
     // Create variable version
     m_env.create_version(*this,t_var,index, lb, ub, type, obj, std::move(t_temp_var.column()));
     m_variables.emplace_back(t_var);
+
+    // Add to objective
+    m_objective.linear().set(t_var, obj);
 
     // Update rows if necessary
     if (m_storage != ColumnOriented || m_has_minor_representation) {
@@ -104,6 +105,8 @@ void idol::Model::remove(const Var &t_var) {
     if (has_optimizer()) {
         optimizer().remove(t_var);
     }
+
+    m_objective.linear().remove(t_var);
 
     auto& version = m_env.version(*this, t_var);
 
@@ -154,6 +157,7 @@ void idol::Model::remove(const Ctr &t_ctr) {
     }
 
     auto& version = m_env.version(*this, t_ctr);
+    m_rhs.remove(t_ctr);
 
     if (!version.has_row()) {
 
@@ -203,11 +207,12 @@ void idol::Model::add(const Ctr &t_ctr, TempCtr t_temp_ctr) {
     const auto type = t_temp_ctr.type();
     const double rhs = t_temp_ctr.rhs();
 
-    //t_temp_ctr.lhs().sort_by_index();
-
     // Create constraint version
     m_env.create_version(*this, t_ctr, index, std::move(t_temp_ctr.lhs()), type, rhs);
     m_constraints.emplace_back(t_ctr);
+
+    // Update rhs
+    m_rhs.set(t_ctr, rhs);
 
     // Update columns if necessary
     if (m_storage != RowOriented || m_has_minor_representation) {
@@ -253,22 +258,12 @@ idol::ObjectiveSense idol::Model::get_obj_sense() const {
     return m_sense;
 }
 
-idol::Expr<idol::Var, idol::Var> idol::Model::get_obj_expr() const {
-    Expr result = m_objective_constant;
-    result.linear().reserve(m_variables.size());
-    for (const auto& var : m_variables) {
-        result.linear().set(var, get_var_obj(var));
-    }
-    return result;
+const idol::Expr<idol::Var, idol::Var>& idol::Model::get_obj_expr() const {
+    return m_objective;
 }
 
-idol::LinExpr<idol::Ctr> idol::Model::get_rhs_expr() const {
-    LinExpr<Ctr> result;
-    result.reserve(m_constraints.size());
-    for (const auto& ctr : m_constraints) {
-        result.set(ctr, get_ctr_rhs(ctr));
-    }
-    return result;
+const idol::LinExpr<idol::Ctr>& idol::Model::get_rhs_expr() const {
+    return m_rhs;
 }
 
 double idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
@@ -483,16 +478,14 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
     throw_if_unknown_object(t_objective.linear());
 
-    auto copy = std::move(t_objective); // TODO avoid copy
-
-    m_objective_constant = t_objective.constant();
-
-    for (const auto& var : m_variables) {
+    for (const auto& [var, val] : m_objective.linear()) {
         auto& version = m_env.version(*this, var);
         version.set_obj(0.);
     }
 
-    for (const auto& [var, val] : copy.linear()) {
+    m_objective = std::move(t_objective);
+
+    for (const auto& [var, val] : m_objective.linear()) {
         auto& version = m_env.version(*this, var);
         version.set_obj(val);
     }
@@ -511,14 +504,14 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
     throw_if_unknown_object(t_rhs);
 
-    auto copy = t_rhs; // TODO avoid copy
-
-    for (const auto& ctr : m_constraints) {
+    for (const auto& [ctr, val] : m_rhs) {
         auto& version = m_env.version(*this, ctr);
         version.set_rhs(0.);
     }
 
-    for (const auto& [ctr, val] : copy) {
+    m_rhs = std::move(t_rhs);
+
+    for (const auto& [ctr, val] : m_rhs) {
         auto& version = m_env.version(*this, ctr);
         version.set_rhs(val);
     }
@@ -531,7 +524,7 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
 void idol::Model::set_obj_const(double t_constant) {
 
-    m_objective_constant = t_constant;
+    m_objective.constant() = t_constant;
 
     if (has_optimizer()) {
         optimizer().update_obj_constant();
@@ -561,6 +554,7 @@ void idol::Model::set_mat_coeff(const Ctr &t_ctr, const Var &t_var, double t_coe
 void idol::Model::set_ctr_rhs(const Ctr &t_ctr, double t_rhs) {
 
     m_env.version(*this, t_ctr).set_rhs(t_rhs);
+    m_rhs.set(t_ctr, t_rhs);
 
     if (has_optimizer()) {
         optimizer().update_ctr_rhs(t_ctr);
@@ -587,9 +581,6 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
     std::list<Var> variables_to_update;
 
     auto& version = m_env.version(*this, t_ctr);
-
-    //t_row.sort_by_index();
-    //t_row.reduce();
 
     bool row_has_been_created = false;
 
@@ -671,6 +662,7 @@ void idol::Model::set_var_ub(const Var &t_var, double t_ub) {
 void idol::Model::set_var_obj(const Var &t_var, double t_obj) {
 
     m_env.version(*this, t_var).set_obj(t_obj);
+    m_objective.linear().set(t_var, t_obj);
 
     if (has_optimizer()) {
         optimizer().update_var_obj(t_var);

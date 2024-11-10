@@ -48,7 +48,8 @@ private:
 
     ObjectiveSense m_sense = Minimize;
 
-    double m_objective_constant = 0.;
+    Expr<Var, Var> m_objective;
+    LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
@@ -589,7 +590,7 @@ public:
      * ```
      * @return the objective function of the model
      */
-    [[nodiscard]] Expr<Var, Var> get_obj_expr() const;
+    [[nodiscard]] const Expr<Var, Var>& get_obj_expr() const;
 
     /**
      * Returns the right hand-side of the model.
@@ -603,7 +604,7 @@ public:
      *
      * @return the right hand-side of the model
      */
-    [[nodiscard]] LinExpr<Ctr> get_rhs_expr() const;
+    [[nodiscard]] const LinExpr<Ctr>& get_rhs_expr() const;
 
     /**
      * Returns a specific coefficient in the model's matrix.
