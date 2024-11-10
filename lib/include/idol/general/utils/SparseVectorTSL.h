@@ -5,13 +5,8 @@
 #ifndef IDOL_SPARSEVECTORTSL_H
 #define IDOL_SPARSEVECTORTSL_H
 
-#include <type_traits>
-#include "idol/general/utils/sort.h"
 #include "idol/general/utils/exceptions/Exception.h"
 #include "idol/general/numericals.h"
-#include <tsl/sparse_map.h>
-#include <list>
-#include <map>
 
 namespace idol {
     template<class, class>
@@ -19,8 +14,10 @@ namespace idol {
 }
 
 #ifdef IDOL_USE_TSL
+#include <tsl/sparse_map.h>
 #define IDOL_REF_VALUE(t_iterator) t_iterator.value()
 #else
+#include <map>
 #define IDOL_REF_VALUE(t_iterator) t_iterator->second
 #endif
 
