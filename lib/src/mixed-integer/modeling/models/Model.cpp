@@ -13,7 +13,9 @@ idol::Model::Model(idol::Model && t_src) noexcept
       m_sense(t_src.m_sense),
       m_variables(std::move(t_src.m_variables)),
       m_constraints(std::move(t_src.m_constraints)),
-      m_optimizer_factory(std::move(t_src.m_optimizer_factory))
+      m_optimizer_factory(std::move(t_src.m_optimizer_factory)),
+      m_objective(std::move(t_src.m_objective)),
+      m_rhs(std::move(t_src.m_rhs))
 {
 
     t_src.m_has_been_moved = true;
