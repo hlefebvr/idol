@@ -53,7 +53,7 @@ private:
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
 
-    Storage m_storage = RowOriented;
+    Storage m_storage = Both;
     mutable bool m_has_minor_representation = false;
 
     std::unique_ptr<Optimizer> m_optimizer;
