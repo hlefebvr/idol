@@ -15,7 +15,9 @@ idol::Model::Model(idol::Model && t_src) noexcept
       m_constraints(std::move(t_src.m_constraints)),
       m_optimizer_factory(std::move(t_src.m_optimizer_factory)),
       m_objective(std::move(t_src.m_objective)),
-      m_rhs(std::move(t_src.m_rhs))
+      m_rhs(std::move(t_src.m_rhs)),
+      m_storage(t_src.m_storage),
+      m_has_minor_representation(t_src.m_has_minor_representation)
 {
 
     t_src.m_has_been_moved = true;
@@ -344,6 +346,7 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
     reserve_ctrs(t_src.ctrs().size());
 
     m_storage = t_src.m_storage;
+    m_has_minor_representation = t_src.m_has_minor_representation;
     m_objective = t_src.m_objective;
     m_rhs = t_src.m_rhs;
 
