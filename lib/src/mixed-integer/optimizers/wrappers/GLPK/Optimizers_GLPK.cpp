@@ -508,7 +508,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
         const double value = glp_get_col_prim(m_model, lazy(var).impl());
-        m_unbounded_ray->push_back(var, value);
+        m_unbounded_ray->set(var, value);
     }
 
     // Restore model

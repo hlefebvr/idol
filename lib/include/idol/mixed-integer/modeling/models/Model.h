@@ -1245,9 +1245,7 @@ namespace idol {
 
         for (const auto &var: t_original_model.vars()) {
             const double value = t_model.get_var_primal(var);
-            if (!is_zero(value, Tolerance::Sparsity)) {
-                result.push_back(var, value);
-            }
+            result.set(var, value);
         }
 
         return result;
@@ -1276,9 +1274,7 @@ namespace idol {
 
         for (const auto &var: t_original_model.vars()) {
             const double value = t_model.get_var_ray(var);
-            if (!is_zero(value, Tolerance::Sparsity)) {
-                result.push_back(var, value);
-            }
+            result.set(var, value);
         }
 
         return result;
@@ -1307,9 +1303,7 @@ namespace idol {
 
         for (const auto &ctr: t_original_model.ctrs()) {
             const double value = t_model.get_ctr_dual(ctr);
-            if (!is_zero(value, Tolerance::Sparsity)) {
-                result.set(ctr, value);
-            }
+            result.set(ctr, value);
         }
 
         return result;
@@ -1338,9 +1332,7 @@ namespace idol {
 
         for (const auto &ctr: t_original_model.ctrs()) {
             const double value = t_model.get_ctr_farkas(ctr);
-            if (!is_zero(value, Tolerance::Sparsity)) {
-                result.set(ctr, value);
-            }
+            result.set(ctr, value);
         }
 
         return result;
@@ -1446,68 +1438,6 @@ namespace idol {
         }
 
         return t_os;
-    }
-
-
-    // Sorted version
-    template<class T>
-    double evaluate_sorted(const Model& t_model, const LinExpr<T>& t_expr, const Point<T>& t_values) {
-
-        /*
-        const bool is_sorted_expr = std::is_sorted(t_expr.begin(), t_expr.end(), [&](const auto& a, const auto& b) {
-            const unsigned int index_a = t_model.get_var_index(a.first);
-            const unsigned int index_b = t_model.get_var_index(b.first);
-            return index_a < index_b;
-        });
-
-        const bool is_sorted_values = std::is_sorted(t_values.begin(), t_values.end(), [&](const auto& a, const auto& b) {
-            const unsigned int index_a = t_model.get_var_index(a.first);
-            const unsigned int index_b = t_model.get_var_index(b.first);
-            return index_a < index_b;
-        });
-
-        if (!is_sorted_expr || !is_sorted_values) {
-            throw Exception("The expression and the values must be sorted.");
-        }
-         */
-
-        // Compute dot product
-        double result = 0.;
-
-        auto it_expr = t_expr.begin();
-        auto it_values = t_values.begin();
-
-        while (it_expr != t_expr.end() && it_values != t_values.end()) {
-            const unsigned int index_expr = t_model.get_var_index((*it_expr).first);
-            const unsigned int index_values = t_model.get_var_index((*it_values).first);
-
-            if (index_expr == index_values) {
-                result += (*it_expr).second * (*it_values).second;
-                ++it_expr;
-                ++it_values;
-            } else if (index_expr < index_values) {
-                ++it_expr;
-            } else {
-                ++it_values;
-            }
-        }
-
-        return result;
-    }
-
-    template<class T>
-    double evaluate_sorted(const Model& t_model, const Expr<T>& t_expr, const Point<T>& t_values) {
-        return t_expr.constant() + evaluate_sorted(t_model, t_expr.linear(), t_values);
-    }
-
-    template<class KeyT, class ValueT, class IndexExtractorT, class PointT>
-    LinExpr<KeyT> evaluate_sorted(const Model& t_model, const SparseVector<KeyT, ValueT, IndexExtractorT>& t_pattern, const PointT& t_values) {
-        LinExpr<KeyT> result;
-        result.reserve_at_least(t_pattern.size());
-        for (const auto& [key, value] : t_pattern) {
-            result.push_back(key, evaluate_sorted(t_model, value, t_values));
-        }
-        return result;
     }
 
 }

@@ -125,6 +125,4 @@ public:
     unsigned int index(const Model& t_model) const;
 };
 
-IDOL_MAKE_HASHABLE(Var)
-
 #endif //IDOL_VAR_H

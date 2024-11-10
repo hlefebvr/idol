@@ -82,7 +82,7 @@ void idol::Model::add_column_to_rows(const idol::Var &t_var) {
     for (const auto& [ctr, constant] : column) {
         auto& version = m_env.version(*this, ctr);
         if (version.has_row()) {
-            version.row().push_back(t_var, constant);
+            version.row().set(t_var, constant);
         }
     }
 
@@ -232,7 +232,7 @@ void idol::Model::add_row_to_columns(const idol::Ctr &t_ctr) {
     for (const auto& [var, constant] : lhs) {
         auto& version = m_env.version(*this, var);
         if (version.has_column()) {
-            version.column().push_back(t_ctr, constant);
+            version.column().set(t_ctr, constant);
         }
     }
 
@@ -257,7 +257,7 @@ idol::Expr<idol::Var, idol::Var> idol::Model::get_obj_expr() const {
     Expr result = m_objective_constant;
     result.linear().reserve(m_variables.size());
     for (const auto& var : m_variables) {
-        result.linear().push_back(var, get_var_obj(var));
+        result.linear().set(var, get_var_obj(var));
     }
     return result;
 }
@@ -266,7 +266,7 @@ idol::LinExpr<idol::Ctr> idol::Model::get_rhs_expr() const {
     LinExpr<Ctr> result;
     result.reserve(m_constraints.size());
     for (const auto& ctr : m_constraints) {
-        result.push_back(ctr, get_ctr_rhs(ctr));
+        result.set(ctr, get_ctr_rhs(ctr));
     }
     return result;
 }
@@ -483,9 +483,7 @@ void idol::Model::set_obj_expr(Expr<Var, Var> &&t_objective) {
 
     throw_if_unknown_object(t_objective.linear());
 
-    auto copy = std::move(t_objective);
-    copy.linear().sort_by_index();
-    copy.linear().reduce();
+    auto copy = std::move(t_objective); // TODO avoid copy
 
     m_objective_constant = t_objective.constant();
 
@@ -513,9 +511,7 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
     throw_if_unknown_object(t_rhs);
 
-    auto copy = t_rhs;
-    copy.sort_by_index();
-    copy.reduce();
+    auto copy = t_rhs; // TODO avoid copy
 
     for (const auto& ctr : m_constraints) {
         auto& version = m_env.version(*this, ctr);
@@ -805,10 +801,8 @@ void idol::Model::build_row(const idol::Ctr &t_ctr) {
     for (const auto& var : m_variables) {
         const auto& column = get_var_column(var);
         const double value = column.get(t_ctr);
-        row.push_back(var, value);
+        row.set(var, value);
     }
-
-    row.sparsify();
 
     m_env.version(*this, t_ctr).set_row(std::move(row));
 
@@ -820,10 +814,8 @@ void idol::Model::build_column(const idol::Var &t_var) {
     for (const auto& ctr : m_constraints) {
         const auto& lhs = get_ctr_row(ctr);
         const double value = lhs.get(t_var);
-        column.push_back(ctr, value);
+        column.set(ctr, value);
     }
-
-    column.sparsify();
 
     m_env.version(*this, t_var).set_column(std::move(column));
 

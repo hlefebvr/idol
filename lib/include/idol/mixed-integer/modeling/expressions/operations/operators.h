@@ -28,12 +28,12 @@ namespace idol {
         return t_expr.constant() + evaluate(t_expr.linear(), t_values);
     }
 
-    template<class KeyT, class ValueT, class IndexExtractorT, class PointT>
-    LinExpr<KeyT> evaluate(const SparseVector<KeyT, ValueT, IndexExtractorT>& t_pattern, const PointT& t_values) {
+    template<class KeyT, class ValueT, class PointT>
+    LinExpr<KeyT> evaluate(const SparseVector<KeyT, ValueT>& t_pattern, const PointT& t_values) {
         LinExpr<KeyT> result;
-        result.reserve_at_least(t_pattern.size());
+        result.reserve(t_pattern.size());
         for (const auto& [key, value] : t_pattern) {
-            result.push_back(key, evaluate(value, t_values));
+            result.set(key, evaluate(value, t_values));
         }
         return result;
     }

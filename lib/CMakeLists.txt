@@ -228,6 +228,7 @@ add_library(idol STATIC
         include/idol/general/utils/Point.h
         src/mixed-integer/modeling/variables/VarVersion.cpp
         src/mixed-integer/modeling/constraints/CtrVersion.cpp
+        include/idol/general/utils/SparseVectorTSL.h
 )
 
 find_package(OpenMP REQUIRED)
@@ -240,6 +241,14 @@ if (${USE_ROOT})
     target_compile_definitions(idol PUBLIC IDOL_USE_ROOT)
 
 endif()
+
+if (${USE_TSL})
+
+    find_package(TSL REQUIRED)
+    target_link_libraries(idol PUBLIC tsl)
+    target_compile_definitions(idol PUBLIC IDOL_USE_TSL)
+
+endif ()
 
 if (${USE_ROBINHOOD})
 

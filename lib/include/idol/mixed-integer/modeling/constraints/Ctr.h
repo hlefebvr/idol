@@ -115,6 +115,6 @@ public:
     unsigned int index(const Model& t_index) const;
 };
 
-IDOL_MAKE_HASHABLE(Ctr)
+//IDOL_MAKE_HASHABLE(Ctr)
 
 #endif //IDOL_CTR_H

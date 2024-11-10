@@ -34,12 +34,12 @@ public:
 };
 
 template<class Key>
-idol::LinExpr<Key>::LinExpr(const Key &t_key) : SparseVector<Key, double>({ t_key }, { 1. }, SparseVector<Key, double>::SortingCriteria::Index, true) {
+idol::LinExpr<Key>::LinExpr(const Key &t_key) : SparseVector<Key, double>(t_key, 1.) {
 
 }
 
 template<class Key>
-idol::LinExpr<Key>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>({ t_key }, { t_factor }, SparseVector<Key, double>::SortingCriteria::Index, true) {
+idol::LinExpr<Key>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>(t_key, t_factor) {
 }
 
 namespace idol {
@@ -50,11 +50,11 @@ namespace idol {
             return t_os << "0";
         }
 
-        unsigned int i = 0;
-        t_os << t_expr.value_at(i) << " " << t_expr.index_at(i);
-        ++i;
-        for (unsigned int n = t_expr.size() ; i < n ; ++i) {
-            t_os << " + " << t_expr.value_at(i) << " " << t_expr.index_at(i);
+        auto it = t_expr.begin();
+        t_os << it->second << " " << it->first;
+        ++it;
+        for (const auto end = t_expr.end() ; it != end ; ++it) {
+            t_os << " + " << it->second << " " << it->first;
         }
 
         return t_os;

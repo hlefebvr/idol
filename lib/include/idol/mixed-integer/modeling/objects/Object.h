@@ -17,6 +17,9 @@ namespace idol {
 
     template<class T, class CRTP>
     class Object;
+
+    class Var;
+    class Ctr;
 }
 
 template<class T, class CRTP>

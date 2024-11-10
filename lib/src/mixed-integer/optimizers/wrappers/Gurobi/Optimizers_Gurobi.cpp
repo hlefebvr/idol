@@ -512,7 +512,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
         for (unsigned int j = 0 ; j < n_terms ; ++j) {
             auto var = t_lin_expr.getVar(j);
-            linear_.push_back(result.get_var_by_index(var.index()), t_lin_expr.getCoeff(j));
+            linear_.set(result.get_var_by_index(var.index()), t_lin_expr.getCoeff(j));
         }
 
         return result_;
