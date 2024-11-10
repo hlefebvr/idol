@@ -13,6 +13,10 @@ namespace idol {
     class SparseVectorTSL;
 }
 
+#ifdef IDOL_USE_ROBINHOOD
+#include <robin_hood.h>
+#define IDOL_REF_VALUE(t_iterator) t_iterator->second
+#else
 #ifdef IDOL_USE_TSL
 #include <tsl/sparse_map.h>
 #define IDOL_REF_VALUE(t_iterator) t_iterator.value()
@@ -20,14 +24,19 @@ namespace idol {
 #include <map>
 #define IDOL_REF_VALUE(t_iterator) t_iterator->second
 #endif
+#endif
 
 template<class IndexT, class ValueT>
 class idol::SparseVectorTSL {
 private:
+#ifdef IDOL_USE_ROBINHOOD
+    using map_t = robin_hood::unordered_map<IndexT, ValueT>;
+#else
 #ifdef IDOL_USE_TSL
     using map_t = tsl::sparse_map<IndexT, ValueT>;
 #else
     using map_t = std::map<IndexT, ValueT>;
+#endif
 #endif
     map_t m_map;
 public:

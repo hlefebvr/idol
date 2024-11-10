@@ -7,7 +7,6 @@
 
 #include "idol/mixed-integer/modeling/objects/Object.h"
 #include "idol/mixed-integer/modeling/Types.h"
-#include "idol/mixed-integer/modeling/expressions/LinExpr.h"
 
 namespace idol {
 
@@ -22,6 +21,7 @@ namespace idol {
     }
 
     class Var;
+    template<class> class LinExpr;
 }
 
 
