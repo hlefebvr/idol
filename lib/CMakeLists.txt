@@ -228,7 +228,6 @@ add_library(idol STATIC
         include/idol/general/utils/Point.h
         src/mixed-integer/modeling/variables/VarVersion.cpp
         src/mixed-integer/modeling/constraints/CtrVersion.cpp
-        include/idol/general/utils/SparseVectorTSL.h
 )
 
 find_package(OpenMP REQUIRED)

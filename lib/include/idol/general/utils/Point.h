@@ -9,6 +9,7 @@
 #include "types.h"
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/general/numericals.h"
+#include <optional>
 
 namespace idol {
     template<class T> class Point;

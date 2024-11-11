@@ -28,9 +28,9 @@ void idol::Optimizers::DantzigWolfeDecomposition::ColumnGeneration::execute() {
     initialize_sub_problem_phases();
     m_parent.m_stabilization->initialize();
 
-    //if (m_use_farkas_for_infeasibility) {
+    if (m_use_farkas_for_infeasibility) {
         m_parent.m_formulation.master().optimizer().set_param_infeasible_or_unbounded_info(true);
-    //}
+    }
 
     log_init();
 
