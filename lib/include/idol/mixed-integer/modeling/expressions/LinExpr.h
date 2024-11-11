@@ -17,15 +17,15 @@
 namespace idol {
     class Var;
 
-    template<class Key>
+    template<class KeyT, class ValueT>
     class LinExpr;
 }
 
 /**
  * @tparam Key the class representing keys
  */
-template<class Key = idol::Var>
-class idol::LinExpr : public SparseVector<Key, double> {
+template<class Key = idol::Var, class ValueT = double>
+class idol::LinExpr : public SparseVector<Key, ValueT> {
 public:
     LinExpr() = default;
     LinExpr(SparseVector<Key, double>&& t_vector) : SparseVector<Key, double>(std::move(t_vector)) {}
@@ -33,28 +33,36 @@ public:
     LinExpr(double t_factor, const Key& t_key);
 };
 
-template<class Key>
-idol::LinExpr<Key>::LinExpr(const Key &t_key) : SparseVector<Key, double>(t_key, 1.) {
+template<class Key, class ValueT>
+idol::LinExpr<Key, ValueT>::LinExpr(const Key &t_key) : SparseVector<Key, double>(t_key, 1.) {
 
 }
 
-template<class Key>
-idol::LinExpr<Key>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>(t_key, t_factor) {
+template<class Key, class ValueT>
+idol::LinExpr<Key, ValueT>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>(t_key, t_factor) {
 }
 
 namespace idol {
-    template<class Key>
-    std::ostream& operator<<(std::ostream& t_os, const LinExpr<Key>& t_expr) {
+    template<class KeyT, class ValueT>
+    std::ostream& operator<<(std::ostream& t_os, const LinExpr<KeyT, ValueT>& t_expr) {
 
         if (t_expr.empty()) {
             return t_os << "0";
         }
 
         auto it = t_expr.begin();
-        t_os << it->second << " " << it->first;
+        if constexpr (std::is_same_v<ValueT, double>) {
+            t_os << it->second << " " << it->first;
+        } else {
+            t_os << "[ " << it->second << " ] " << it->first;
+        }
         ++it;
         for (const auto end = t_expr.end() ; it != end ; ++it) {
-            t_os << " + " << it->second << " " << it->first;
+            if constexpr (std::is_same_v<ValueT, double>) {
+                t_os << it->second << " " << it->first;
+            } else {
+                t_os << "[ " << it->second << " ] " << it->first;
+            }
         }
 
         return t_os;

@@ -21,7 +21,7 @@ namespace idol {
     }
 
     class Var;
-    template<class> class LinExpr;
+    template<class, class> class LinExpr;
 }
 
 
@@ -69,7 +69,7 @@ public:
      * @param t_column The column for the default version of the variable.
      * @param t_name The given name of the variable.
      */
-    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr>&& t_column, std::string t_name = "");
+    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr, double>&& t_column, std::string t_name = "");
 
     /**
      * Constructor.
@@ -84,7 +84,7 @@ public:
      * @param t_column The column for the default version of the variable.
      * @param t_name The given name of the variable.
      */
-    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, const LinExpr<Ctr>& t_column, std::string t_name = "");
+    Var(Env& t_env, double t_lb, double t_ub, VarType t_type, double t_obj, const LinExpr<Ctr, double>& t_column, std::string t_name = "");
 
     Var(const Var&) = default;
     Var(Var&&) = default;

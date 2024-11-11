@@ -11,13 +11,13 @@
 namespace idol {
     class Var;
 
-    template<class Key1, class Key2>
+    template<class Key1, class Key2, class ValueT>
     class Expr;
 }
 
-template<class Key1 = idol::Var, class Key2 = Key1>
+template<class Key1 = idol::Var, class Key2 = Key1, class ValueT = double>
 class idol::Expr {
-    LinExpr<Key1> m_linear;
+    LinExpr<Key1, ValueT> m_linear;
     double m_constant = 0.;
 public:
     Expr();
@@ -34,14 +34,14 @@ public:
     Expr& operator=(const Expr& t_rhs);
     Expr& operator=(Expr&&) noexcept = default;
 
-    Expr<Key1, Key2>& operator+=(const Expr<Key1, Key2>& t_rhs);
-    Expr<Key1, Key2>& operator-=(const Expr<Key1, Key2>& t_rhs);
-    Expr<Key1, Key2>& operator*=(double t_rhs);
-    Expr<Key1, Key2>& operator/=(double t_rhs);
-    Expr<Key1, Key2> operator-() const;
+    Expr& operator+=(const Expr& t_rhs);
+    Expr& operator-=(const Expr& t_rhs);
+    Expr& operator*=(double t_rhs);
+    Expr& operator/=(double t_rhs);
+    Expr operator-() const;
 
-    LinExpr<Key1>& linear() { return m_linear; }
-    [[nodiscard]] const LinExpr<Key1>& linear() const { return m_linear; }
+    LinExpr<Key1, ValueT>& linear() { return m_linear; }
+    [[nodiscard]] const LinExpr<Key1, ValueT>& linear() const { return m_linear; }
 
     double& constant() { return m_constant; }
 
@@ -55,77 +55,77 @@ public:
     }
 };
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> idol::Expr<Key1, Key2>::operator-() const {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> idol::Expr<Key1, Key2, ValueT>::operator-() const {
     auto result = *this;
     result.constant() = -result.constant();
     result.linear() = -result.linear();
     return result;
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr() {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr() {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr(double t_constant) : m_constant(t_constant) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr(double t_constant) : m_constant(t_constant) {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr(const Key1 &t_var) : m_linear(t_var) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr(const Key1 &t_var) : m_linear(t_var) {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr(LinExpr<Key1> &&t_expr) : m_linear(std::move(t_expr)) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr(LinExpr<Key1> &&t_expr) : m_linear(std::move(t_expr)) {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr(const LinExpr<Key1> &t_expr) : m_linear(t_expr) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr(const LinExpr<Key1> &t_expr) : m_linear(t_expr) {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2>::Expr(const Expr &t_src)
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT>::Expr(const Expr &t_src)
         : m_linear(t_src.m_linear),
           m_constant(t_src.m_constant) {
 
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator=(const Expr &t_rhs) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> &idol::Expr<Key1, Key2, ValueT>::operator=(const Expr &t_rhs) {
     if (this == &t_rhs) { return *this; }
     m_linear = t_rhs.m_linear;
     m_constant = t_rhs.m_constant;
     return *this;
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator+=(const Expr<Key1, Key2> &t_rhs) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> &idol::Expr<Key1, Key2, ValueT>::operator+=(const Expr &t_rhs) {
     m_linear += t_rhs.m_linear;
     m_constant += t_rhs.m_constant;
     return *this;
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator-=(const Expr<Key1, Key2> &t_rhs) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> &idol::Expr<Key1, Key2, ValueT>::operator-=(const Expr &t_rhs) {
     m_linear -= t_rhs.m_linear;
     m_constant -= t_rhs.m_constant;
     return *this;
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator*=(double t_rhs) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> &idol::Expr<Key1, Key2, ValueT>::operator*=(double t_rhs) {
     m_linear *= t_rhs;
     m_constant *= t_rhs;
     return *this;
 }
 
-template<class Key1, class Key2>
-idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator/=(double t_rhs) {
+template<class Key1, class Key2, class ValueT>
+idol::Expr<Key1, Key2, ValueT> &idol::Expr<Key1, Key2, ValueT>::operator/=(double t_rhs) {
     m_linear /= t_rhs;
     m_constant /= t_rhs;
     return *this;
@@ -133,8 +133,8 @@ idol::Expr<Key1, Key2> &idol::Expr<Key1, Key2>::operator/=(double t_rhs) {
 
 namespace idol {
 
-    template<class Key1, class Key2>
-    std::ostream &operator<<(std::ostream &t_os, const idol::Expr<Key1, Key2> &t_expr) {
+    template<class Key1, class Key2, class ValueT>
+    std::ostream &operator<<(std::ostream &t_os, const idol::Expr<Key1, Key2, ValueT> &t_expr) {
 
         if (std::abs(t_expr.constant()) < Tolerance::Sparsity) {
 
