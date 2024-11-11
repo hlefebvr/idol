@@ -108,7 +108,6 @@ add_library(idol STATIC
         src/mixed-integer/problems/staff-rostering-problem/SRP_Instance.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.h
         src/mixed-integer/optimizers/callbacks/heuristics/SimpleRounding.cpp
-        src/mixed-integer/modeling/expressions/operations/operators.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/RENS.h
         src/mixed-integer/optimizers/callbacks/heuristics/RENS.cpp
         include/idol/mixed-integer/optimizers/callbacks/heuristics/LocalBranching.h
