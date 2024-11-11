@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing a Column-and-Constraint-Generation Algorithm &mdash; idol</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=82a976d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/design.css?v=e99cbc91" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pseudocode-js/pseudocode.min.css?v=308596b1" />
+
+  
+    <link rel="canonical" href="https://hlefebvr.github.io/idol/tutorials/robust-optimization/column-and-constraint-generation/write-ccg.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({"startOnLoad": true})</script>
+      <script src="../../../_static/pseudocode-js/pseudocode.min.js?v=5dbac844"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Using Trust Region Stabilization" href="trust-region-stabilization.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            idol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../mixed-integer-programming/index.html">Mixed-Integer Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bilevel-optimization/index.html">Bilevel Optimization</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Robust Optimization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modeling/index.html">Modeling</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Column-and-Constraint-Generation Algorithm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Writing a Column-and-Constraint-Generation Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trust-region-stabilization.html">Using Trust Region Stabilization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="writing-separator.html">Writing Your Own Separator (Advanced) [TODO]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmark/index.html">Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide/index.html">Developer guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">idol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Robust Optimization</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Column-and-Constraint-Generation Algorithm</a></li>
+      <li class="breadcrumb-item active">Writing a Column-and-Constraint-Generation Algorithm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/tutorials/robust-optimization/column-and-constraint-generation/write-ccg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-a-column-and-constraint-generation-algorithm">
+<span id="tutorial-ccg"></span><h1>Writing a Column-and-Constraint-Generation Algorithm<a class="headerlink" href="#writing-a-column-and-constraint-generation-algorithm" title="Link to this heading"></a></h1>
+<p>In this tutorial, we will see how to write a column-and-constraint-generation to solve a two-stage robust problem.</p>
+<p>To this end, we will assume that you have your two-stage robust problem modeled already in idol. In particular,
+we consider that you have</p>
+<ol class="arabic simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">(idol::Model)</span> <span class="pre">model</span></code> which is the deterministic model of the problem in which the uncertain data are seen as parameters.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">(idol::Model)</span> <span class="pre">uncertainty_set</span></code> which is the uncertainty set of the robust problem.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">(idol::Robust::StageDescription)</span> <span class="pre">stages</span></code> which stores the assignments of variables and constraints to each stage.</p></li>
+</ol>
+<p>If you do not know what these are, please refer to the tutorial on <a class="reference internal" href="../modeling/two-stage-robust.html#modeling-two-stage-robust-problem"><span class="std std-ref">how to model a two-stage robust problem</span></a>.</p>
+<p>Then, you can solve this two-stage robust problem using a column-and-constraint-generation algorithm as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">use</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Robust</span><span class="o">::</span><span class="n">ColumnAndConstraintGeneration</span><span class="p">(</span><span class="n">stages</span><span class="p">,</span><span class="w"> </span><span class="n">uncertainty_set</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">with_master_optimizer</span><span class="p">(</span><span class="n">Gurobi</span><span class="p">())</span>
+<span class="w">                </span><span class="p">.</span><span class="n">with_separator</span><span class="p">(</span><span class="n">Robust</span><span class="o">::</span><span class="n">CCGSeparators</span><span class="o">::</span><span class="n">Bilevel</span><span class="p">())</span>
+<span class="w">                </span><span class="p">.</span><span class="n">with_logs</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="n">model</span><span class="p">.</span><span class="n">optimize</span><span class="p">();</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">save_primal</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Notice that the optimizer is attached to the deterministic model and that both the uncertainty set and the stages are passed as arguments.
+An optimizer to solve the master problem is necessary and will be called when needed. Here, we use the Gurobi optimizer.</p>
+<p>Most importantly, it is also necessary to specify a separator. The separator is a sub-routine of the CCG algorithm
+which solves the separation problem, i.e., it finds the worst-case scenario for a given solution to the master problem.
+In this example, we use the Bilevel separator which calls the MibS bilevel optimization solver at each iteration.</p>
+<p>Finally, the method <code class="code docutils literal notranslate"><span class="pre">optimize</span></code> is called to solve the problem and the solution is printed.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="trust-region-stabilization.html" class="btn btn-neutral float-right" title="Using Trust Region Stabilization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Henri Lefebvre.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
