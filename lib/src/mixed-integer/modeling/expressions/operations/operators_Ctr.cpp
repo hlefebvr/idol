@@ -3,6 +3,7 @@
 //
 
 #include "idol/mixed-integer/modeling/expressions/operations/operators_Ctr.h"
+#include "idol/mixed-integer/modeling/constraints/Ctr.h"
 
 using namespace idol;
 

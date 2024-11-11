@@ -261,6 +261,9 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_su
 void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
                                              const std::vector<PrimalPoint> &t_primals) {
 
+    throw Exception("TODO: Was using Constant");
+
+    /*
     // Constraints
     for (const auto& [ctr, pattern] : m_constraint_patterns[t_sub_problem_id]) {
 
@@ -286,11 +289,13 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
 
         m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(obj));
     }
-
+    */
 }
 
 double idol::ADM::Formulation::fix(const idol::Constant &t_constant,
                                    const std::vector<PrimalPoint> &t_primals) {
+    throw Exception("TODO: Was using Constant");
+    /*
     double result = t_constant.numerical();
 
     for (const auto& [param, coefficient] : t_constant.linear()) {
@@ -311,6 +316,7 @@ double idol::ADM::Formulation::fix(const idol::Constant &t_constant,
     }
 
     return result;
+     */
 }
 
 idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) {

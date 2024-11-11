@@ -6,7 +6,7 @@
 using namespace idol;
 
 /* PRODUCT */
-
+/*
 Constant idol::operator*(const Constant& t_coefficient, double t_factor) {
     return t_factor * Constant(t_coefficient);
 }
@@ -36,9 +36,9 @@ Constant idol::operator*(Constant&& t_coefficient, double t_factor) {
 Constant idol::operator*(double t_factor, const Constant& t_coefficient) {
     return t_factor * Constant(t_coefficient);
 }
-
+*/
 /* ADDITION */
-
+/*
 Constant idol::operator+(Constant&& t_coefficient) {
     return std::move(t_coefficient);
 }
@@ -86,9 +86,9 @@ Constant idol::operator+(Constant&& t_a, Constant&& t_b) {
 Constant idol::operator+(const Constant& t_a, const Constant& t_b) {
     return Constant(t_a) + t_b;
 }
-
+*/
 /* DIFFERENCE */
-
+/*
 Constant idol::operator-(const Constant& t_coefficient) {
     return -1. * t_coefficient;
 }
@@ -126,3 +126,4 @@ Constant idol::operator-(Constant&& t_a, const Constant& t_b) {
 Constant idol::operator-(const Constant& t_a, const Constant& t_b) {
     return Constant(t_a) - t_b;
 }
+ */

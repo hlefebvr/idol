@@ -9,6 +9,7 @@
 #include "idol/general/utils/exceptions/Exception.h"
 #include "idol/general/numericals.h"
 #include <idol/mixed-integer/modeling/variables/Var.h>
+#include <idol/general/utils/Map.h>
 
 namespace idol {
     class Var;
@@ -17,30 +18,30 @@ namespace idol {
     namespace impl {
 
         template<class T>
-        struct hash_ {
+        struct hash_object {
             auto operator()(const T& t_obj) const { return std::hash<unsigned int>()(t_obj.id()); }
         };
 
         template<class T>
-        struct equal_to_ {
+        struct equal_to_object {
             auto operator()(const T& t_a, const T& t_b) const { return t_a.id() == t_b.id(); }
         };
 
         template<class T>
-        struct less_ {
+        struct less_object {
             auto operator()(const T& t_a, const T& t_b) const { return t_a.id() < t_b.id(); }
         };
 
     }
 }
 
-template<> struct std::hash<idol::Var> : public idol::impl::hash_<idol::Var> {};
-template<> struct std::equal_to<idol::Var> : public idol::impl::equal_to_<idol::Var> {};
-template<> struct std::less<idol::Var> : public idol::impl::less_<idol::Var> {};
+template<> struct std::hash<idol::Var> : public idol::impl::hash_object<idol::Var> {};
+template<> struct std::equal_to<idol::Var> : public idol::impl::equal_to_object<idol::Var> {};
+template<> struct std::less<idol::Var> : public idol::impl::less_object<idol::Var> {};
 
-template<> struct std::hash<idol::Ctr> : public idol::impl::hash_<idol::Ctr> {};
-template<> struct std::equal_to<idol::Ctr> : public idol::impl::equal_to_<idol::Ctr> {};
-template<> struct std::less<idol::Ctr> : public idol::impl::less_<idol::Ctr> {};
+template<> struct std::hash<idol::Ctr> : public idol::impl::hash_object<idol::Ctr> {};
+template<> struct std::equal_to<idol::Ctr> : public idol::impl::equal_to_object<idol::Ctr> {};
+template<> struct std::less<idol::Ctr> : public idol::impl::less_object<idol::Ctr> {};
 
 namespace idol {
     template<class, class>
@@ -65,7 +66,11 @@ template<class IndexT, class ValueT>
 class idol::SparseVector {
 private:
 #ifdef IDOL_USE_TSL
-    using map_t = std::conditional_t<sizeof(ValueT) < 32, tsl::sparse_map<IndexT, ValueT>, tsl::ordered_map<IndexT, ValueT>>;
+    using map_t = std::conditional_t<
+            sizeof(ValueT) < 32,
+            tsl::sparse_map<IndexT, ValueT>,
+            tsl::ordered_map<IndexT, ValueT>
+    >;
 #else
     #ifdef IDOL_USE_ROBINHOOD
     using map_t = robin_hood::unordered_map<IndexT, ValueT>;

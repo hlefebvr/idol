@@ -5,12 +5,11 @@
 #ifndef IDOL_OPERATORS_CONSTANT_H
 #define IDOL_OPERATORS_CONSTANT_H
 
-#include "idol/mixed-integer/modeling/expressions/Constant.h"
-
 namespace idol {
 
     /* PRODUCT */
 
+    /*
     idol::Constant operator*(double t_factor, const idol::Param &t_param);
 
     idol::Constant operator*(const idol::Param &t_param, double t_factor);
@@ -24,9 +23,11 @@ namespace idol {
     idol::Constant operator*(double t_factor, const idol::Constant &t_coefficient);
 
     idol::Constant operator*(const idol::Constant &t_coefficient, double t_factor);
+    */
 
     /* ADDITION */
 
+    /*
     idol::Constant operator+(idol::Constant &&t_coefficient);
 
     idol::Constant operator+(const idol::Constant &t_coefficient);
@@ -48,9 +49,11 @@ namespace idol {
     idol::Constant operator+(idol::Constant &&t_a, idol::Constant &&t_b);
 
     idol::Constant operator+(const idol::Constant &t_a, const idol::Constant &t_b);
+     */
 
     /* DIFFERENCE */
 
+    /*
     idol::Constant operator-(const idol::Constant &t_coefficient);
 
     idol::Constant operator-(double t_a, const idol::Constant &t_b);
@@ -64,6 +67,7 @@ namespace idol {
     idol::Constant operator-(idol::Constant &&t_a, const idol::Constant &t_b);
 
     idol::Constant operator-(const idol::Constant &t_a, const idol::Constant &t_b);
+     */
 }
 
 #endif //IDOL_OPERATORS_CONSTANT_H

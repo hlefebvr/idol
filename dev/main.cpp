@@ -23,5 +23,20 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
+    Env env;
+    Model model(env);
+
+    const auto x = model.add_vars(Dim<1>(10), 0, 1, Binary, 1, "x");
+
+    LinExpr<CommutativePair<Var>> expr; // Try to replace double
+    LinExpr<CommutativePair<Var>> expr2;
+
+    expr.set({x[0], x[1]}, 1);
+    expr2.set({x[1], x[0]}, 1);
+
+    expr += expr2;
+
+    std::cout << expr << std::endl;
+
     return 0;
 }

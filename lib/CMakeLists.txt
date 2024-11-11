@@ -5,8 +5,6 @@ add_library(idol STATIC
         include/idol/modeling.h
         include/idol/mixed-integer/modeling/parameters/Param.h
         include/idol/mixed-integer/modeling/Types.h
-        include/idol/mixed-integer/modeling/expressions/Constant.h
-        src/mixed-integer/modeling/expressions/Constant.cpp
         include/idol/mixed-integer/modeling/constraints/TempCtr.h
         src/mixed-integer/modeling/constraints/TempCtr.cpp
         include/idol/general/utils/IteratorForward.h

@@ -6,7 +6,6 @@
 #define IDOL_OPERATORS_CTR_H
 
 #include "idol/mixed-integer/modeling/expressions/Expr.h"
-#include "idol/mixed-integer/modeling/expressions/Constant.h"
 
 namespace idol {
 
@@ -24,13 +23,13 @@ namespace idol {
 
     idol::LinExpr<idol::Ctr> operator*(const idol::LinExpr<idol::Ctr> &t_lin_expr, double t_num);
 
-    idol::LinExpr<idol::Ctr> operator*(idol::Constant &&t_constant, const idol::Ctr &t_ctr);
+    //idol::LinExpr<idol::Ctr> operator*(idol::Constant &&t_constant, const idol::Ctr &t_ctr);
 
-    idol::LinExpr<idol::Ctr> operator*(const idol::Ctr &t_ctr, idol::Constant &&t_constant);
+    //idol::LinExpr<idol::Ctr> operator*(const idol::Ctr &t_ctr, idol::Constant &&t_constant);
 
-    idol::LinExpr<idol::Ctr> operator*(const idol::Constant &t_constant, const idol::Ctr &t_ctr);
+   // idol::LinExpr<idol::Ctr> operator*(const idol::Constant &t_constant, const idol::Ctr &t_ctr);
 
-    idol::LinExpr<idol::Ctr> operator*(const idol::Ctr &t_ctr, const idol::Constant &t_constant);
+    //idol::LinExpr<idol::Ctr> operator*(const idol::Ctr &t_ctr, const idol::Constant &t_constant);
 
     idol::Expr<idol::Ctr> operator*(double t_num, idol::Expr<idol::Ctr> &&t_expr);
 
