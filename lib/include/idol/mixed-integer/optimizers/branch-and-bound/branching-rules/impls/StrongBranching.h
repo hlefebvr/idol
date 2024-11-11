@@ -133,7 +133,7 @@ void idol::BranchingRules::StrongBranching<NodeInfoT>::solve_nodes(StrongBranchi
 
         t_phase.type().build(optimizer);
 
-        branch_and_bound.solve(node);
+        branch_and_bound.solve(node, 0);
 
         t_phase.type().clean(optimizer);
     }
