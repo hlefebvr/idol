@@ -42,6 +42,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
     std::unique_ptr<AbstractBranchAndBoundCallbackI<NodeInfoT>> m_callback;
 
     bool m_perform_scaling = false;
+    bool m_has_integer_objective = false;
     std::vector<unsigned int> m_steps = { std::numeric_limits<unsigned int>::max(), 0, 0 };
     unsigned int m_n_created_nodes = 0;
     unsigned int m_n_solved_nodes = 0;
@@ -62,6 +63,7 @@ protected:
     void update() override;
     void write(const std::string &t_name) override;
 
+    void detect_integer_objective();
     void create_relaxations();
     Node<NodeInfoT> create_root_node();
     void explore(TreeNode& t_node, SetOfActiveNodes& t_active_nodes, unsigned int t_step);
@@ -152,6 +154,26 @@ public:
 
     void set_solution_index(unsigned int t_index) override;
 };
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
+    const auto& src_model = parent();
+    const auto& objective = src_model.get_obj_expr();
+
+    if (!is_integer(objective.constant(), Tolerance::Integer)) {
+        m_has_integer_objective = false;
+        return;
+    }
+
+    for (const auto& [var, val] : objective.linear()) {
+        if (src_model.get_var_type(var) == Continuous || !is_integer(val, Tolerance::Integer)) {
+            m_has_integer_objective = false;
+            return;
+        }
+    }
+
+    m_has_integer_objective = true;
+}
 
 template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_reduced_cost(const idol::Var &t_var) const {
@@ -392,6 +414,8 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::hook_before_optimize() {
     set_best_bound(std::max(-Inf, get_param_best_obj_stop()));
     set_best_obj(std::min(+Inf, get_param_best_bound_stop()));
     m_incumbent.reset();
+
+    detect_integer_objective();
 
     m_n_created_nodes = 0;
     m_n_solved_nodes = 0;
@@ -653,7 +677,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_lower_bound(const Branc
     if (t_active_nodes.empty()) { return; }
 
     auto& lowest_node = *t_active_nodes.by_objective_value().begin();
-    const double lower_bound = lowest_node.info().objective_value();
+    const double lower_bound = m_has_integer_objective ? std::ceil(lowest_node.info().objective_value()) : lowest_node.info().objective_value();
     if (lower_bound > get_best_bound()) {
         set_best_bound(lower_bound);
     }
