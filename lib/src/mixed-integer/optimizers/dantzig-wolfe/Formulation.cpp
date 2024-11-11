@@ -378,7 +378,7 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
-            return !is(value, GreaterOrEqual, t_lb, 0);//Tolerance::Feasibility);
+            return !is(value, GreaterOrEqual, t_lb, Tolerance::Feasibility);
         });
     }
 
@@ -402,7 +402,7 @@ void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, doub
     if (t_remove_infeasible_columns) {
         remove_column_if(sub_problem_id, [&](const Var &t_object, const PrimalPoint &t_generator)-> bool {
             const double value = t_generator.get(t_var);
-            return !is(value, LessOrEqual, t_ub, 0.);//, Tolerance::Feasibility);
+            return !is(value, LessOrEqual, t_ub, Tolerance::Feasibility);
         });
     }
 
@@ -678,9 +678,9 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, 
         const double value = t_primal.get(var);
 
         if (
-                !is(value, GreaterOrEqual, lb, 0)//Tolerance::Feasibility)
+                !is(value, GreaterOrEqual, lb, Tolerance::Feasibility)
                 ||
-                !is(value, LessOrEqual, ub, 0)//Tolerance::Feasibility)
+                !is(value, LessOrEqual, ub, Tolerance::Feasibility)
             ) {
             return false;
         }
@@ -695,7 +695,7 @@ idol::DantzigWolfe::Formulation::is_feasible(const idol::PrimalPoint &t_primal, 
         const double rhs = model.get_ctr_rhs(ctr);
         const auto& type = model.get_ctr_type(ctr);
 
-        if (!is(lhs, type, rhs, 0 /*, Tolerance::Feasibility */)) {
+        if (!is(lhs, type, rhs, Tolerance::Feasibility)) {
             return false;
         }
 
