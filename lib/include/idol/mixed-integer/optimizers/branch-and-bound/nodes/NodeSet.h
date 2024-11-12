@@ -45,11 +45,11 @@ template<class NodeT>
 void idol::NodeSet<NodeT>::merge(NodeSet<NodeT> &&t_node_set) {
 
     for (auto pair : t_node_set.m_by_objective_value) {
-        m_by_objective_value.emplace(pair);
+        m_by_objective_value.emplace(std::move(pair));
     }
 
     for (auto pair : t_node_set.m_by_level) {
-        m_by_level.emplace(pair);
+        m_by_level.emplace(std::move(pair));
     }
 
     t_node_set.clear();

@@ -17,12 +17,11 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
-#include <gurobi_c++.h>
-
-using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
+
+    /*
     Env env;
     Model model(env);
 
@@ -37,6 +36,7 @@ int main(int t_argc, const char** t_argv) {
     expr += expr2;
 
     std::cout << expr << std::endl;
+    */
 
     return 0;
 }

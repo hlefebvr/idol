@@ -20,7 +20,7 @@
 
 #include <memory>
 #include <cassert>
-#include <mutex>
+#include <fstream>
 
 namespace idol::Optimizers {
     template<class NodeInfoT> class BranchAndBound;
@@ -33,9 +33,7 @@ class idol::Optimizers::BranchAndBound : public Algorithm {
 
     std::unique_ptr<OptimizerFactory> m_relaxation_optimizer_factory;
 
-    std::mutex m_mutex;
-    unsigned int m_n_relaxation = 1;
-    std::vector<bool> m_is_relaxation_currently_being_solved;
+    unsigned int m_n_threads = 1;
     std::vector<std::unique_ptr<Model>> m_relaxations;
     std::vector<std::unique_ptr<NodeUpdator<NodeInfoT>>> m_node_updators;
 
@@ -78,12 +76,12 @@ protected:
     [[nodiscard]] bool gap_is_closed() const;
     void prune_nodes_by_bound(SetOfActiveNodes& t_active_nodes);
     void update_lower_bound(const SetOfActiveNodes& t_active_nodes);
+    bool is_valid(const TreeNode& t_node) const;
 
     void log_node_after_solve(const Node<NodeInfoT>& t_node);
     void log_after_termination();
 
     SideEffectRegistry call_callbacks(CallbackEvent t_event, const TreeNode& t_node, unsigned int t_relaxation_id);
-
     void update_obj_sense() override;
     void update_obj() override;
     void update_rhs() override;
@@ -94,8 +92,13 @@ protected:
     void update_var_type(const Var &t_var) override;
     void update_var_lb(const Var &t_var) override;
     void update_var_ub(const Var &t_var) override;
-    void update_var_obj(const Var &t_var) override;
 
+    void update_var_obj(const Var &t_var) override;
+    void set_status(SolutionStatus t_status) override;
+    void set_reason(SolutionReason t_reason) override;
+    void set_best_bound(double t_value) override;
+    void set_best_obj(double t_value) override;
+    void terminate() override;
 public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
@@ -157,6 +160,20 @@ public:
 
     void set_solution_index(unsigned int t_index) override;
 };
+
+template<class NodeInfoT>
+bool idol::Optimizers::BranchAndBound<NodeInfoT>::is_valid(const TreeNode &t_node) const {
+    bool result;
+#pragma omp critical
+    result = m_branching_rule->is_valid(t_node);
+    return result;
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::terminate() {
+#pragma omp critical
+    Optimizer::terminate();
+}
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
@@ -409,12 +426,12 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
     const auto &original_model = parent();
 
     m_relaxations.clear();
-    m_relaxations.reserve(m_n_relaxation);
+    m_relaxations.reserve(m_n_threads);
 
     m_node_updators.clear();
-    m_node_updators.reserve(m_n_relaxation);
+    m_node_updators.reserve(m_n_threads);
 
-    for (unsigned int i = 0 ; i < m_n_relaxation ; ++i) {
+    for (unsigned int i = 0 ; i < m_n_threads ; ++i) {
         auto* relaxation = original_model.clone();
         relaxation->use(*m_relaxation_optimizer_factory);
         m_relaxations.emplace_back(relaxation);
@@ -534,6 +551,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(
 
     } while (reoptimize_flag);
 
+#pragma omp atomic
     ++m_n_solved_nodes;
 
     if (is_terminated() || gap_is_closed()) { return; }
@@ -565,11 +583,30 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::explore(
 
         std::vector<SetOfActiveNodes> active_nodes(n_children);
 
-        // TODO: This should be parallelized
-        for (unsigned int q = 0 ; q < n_children ; ++q) {
-            explore(children[q], (t_relaxation_id + q * t_step) % m_n_relaxation, active_nodes[q], t_step + 1);
+        if (m_n_threads > 1 && t_step == 0) {
+
+            std::vector<std::vector<unsigned int>> to_explore(m_n_threads);
+
+            for (unsigned int q = 0 ; q < n_children ; ++q) {
+                const unsigned int relaxation_id = q % m_n_threads;
+                to_explore[relaxation_id].emplace_back(q);
+            }
+
+#pragma omp parallel for num_threads(m_n_threads)
+            for (unsigned int k = 0 ; k < m_n_threads ; ++k) {
+                for (unsigned int j = 0, n_tasks = to_explore[k].size() ; j < n_tasks ; ++j) {
+                    const unsigned int q = to_explore[k][j];
+                    explore(children[q], k, active_nodes[q], t_step + 1);
+                }
+            }
+
+        } else {
+
+            for (unsigned int q = 0 ; q < n_children ; ++q) {
+                explore(children[q], t_relaxation_id, active_nodes[q], t_step + 1);
+            }
+
         }
-        // TODO: wait for all children to be solved before backtracking
 
         for (unsigned int q = 0 ; q < n_children ; ++q) {
             backtrack(t_active_nodes, active_nodes[q]);
@@ -665,7 +702,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
     if (t_node.info().objective_value() < get_best_obj()) {
 
-        if (m_branching_rule->is_valid(t_node)) {
+        if (is_valid(t_node)) {
 
             auto side_effects = call_callbacks(IncumbentSolution, t_node, t_relaxation_id);
 
@@ -703,6 +740,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::set_as_incumbent(const BranchAndBound::TreeNode &t_node) {
+#pragma omp critical
     m_incumbent = t_node;
     set_best_obj(t_node.info().objective_value());
     set_status(Feasible);
@@ -732,7 +770,11 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAnd
 
     while (it != end) {
 
-        if (const auto& node = *it ; node.info().objective_value() >= upper_bound) {
+        const auto& node = *it;
+        const double raw_lower_bound = node.info().objective_value();
+        const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, Tolerance::Integer) ? std::ceil(raw_lower_bound) : raw_lower_bound;
+
+        if (lower_bound >= upper_bound) { // TODO use tolerance in terms of gap
             it = t_active_nodes.erase(it);
             end = t_active_nodes.by_objective_value().end();
         } else {
@@ -821,6 +863,30 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::add(const Var &t_var) {
     for (auto& relaxation : m_relaxations) {
         relaxation->add(t_var);
     }
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_obj(double t_value) {
+#pragma omp critical
+    Algorithm::set_best_obj(t_value);
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::set_best_bound(double t_value) {
+#pragma omp critical
+    Algorithm::set_best_bound(t_value);
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::set_reason(idol::SolutionReason t_reason) {
+#pragma omp critical
+    Algorithm::set_reason(t_reason);
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::set_status(idol::SolutionStatus t_status) {
+#pragma omp critical
+    Algorithm::set_status(t_status);
 }
 
 #endif //IDOL_OPTIMIZERS_BRANCHANDBOUND_H

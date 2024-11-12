@@ -8,9 +8,9 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestEstimate.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/KnapsackCover.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 
 using namespace idol;
 
@@ -19,7 +19,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("robust_ccg.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/tests/data/facility-location-problem/instance_F10_C20__4.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -27,8 +27,8 @@ int main(int t_argc, const char** t_argv) {
 
     Model model(env);
 
-    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, "y");
+    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
+    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
@@ -57,10 +57,11 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
-                    .add_callback(Cuts::KnapsackCover())
+                    .with_node_optimizer(GLPK::ContinuousRelaxation())
+                    //.add_callback(Cuts::KnapsackCover())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
+                    .with_logs(true)
     );
 
     model.optimize();

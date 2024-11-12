@@ -20,10 +20,10 @@ class idol::Algorithm : public Optimizer {
 protected:
     void build() override {}
 
-    void set_status(SolutionStatus t_status) { m_status = t_status; }
-    void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
-    void set_best_bound(double t_value) { m_best_bound = t_value; }
-    void set_best_obj(double t_value) { m_best_obj = t_value; }
+    virtual void set_status(SolutionStatus t_status) { m_status = t_status; }
+    virtual void set_reason(SolutionReason t_reason) { m_reason = t_reason; }
+    virtual void set_best_bound(double t_value) { m_best_bound = t_value; }
+    virtual void set_best_obj(double t_value) { m_best_obj = t_value; }
 public:
     explicit Algorithm(const Model& t_model);
 

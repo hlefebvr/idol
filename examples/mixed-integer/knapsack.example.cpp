@@ -19,7 +19,7 @@ int main(int t_argc, const char** t_argv) {
     // Create model
     Model model(env);
 
-    auto x = model.add_vars(Dim<1>(n_items), 0, 1, Binary, "x");
+    auto x = model.add_vars(Dim<1>(n_items), 0, 1, Binary, 0., "x");
 
     model.add_ctr(idol_Sum(j, Range(n_items), instance.weight(j) * x[j]) <= instance.capacity());
 

@@ -78,6 +78,8 @@ TEMPLATE_LIST_TEST_CASE("Solve Knapsack Problem instances with different node se
                       .with_subtree_depth(subtree_depth)
     );
 
+    std::cout << typeid(NodeSelectionRuleT).name() << " " << typeid(BranchingRuleT).name() << std::endl;
+
     WHEN("The instance \"" + filename + "\" is solved with subtree depth of " + std::to_string(subtree_depth)) {
 
         model.optimize();
