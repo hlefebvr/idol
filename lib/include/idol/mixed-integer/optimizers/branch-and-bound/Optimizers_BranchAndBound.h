@@ -98,7 +98,6 @@ protected:
     void set_reason(SolutionReason t_reason) override;
     void set_best_bound(double t_value) override;
     void set_best_obj(double t_value) override;
-    void terminate() override;
 public:
     explicit BranchAndBound(const Model& t_model,
                               const OptimizerFactory& t_node_optimizer,
@@ -159,6 +158,8 @@ public:
     [[nodiscard]] unsigned int get_solution_index() const override;
 
     void set_solution_index(unsigned int t_index) override;
+
+    void terminate() override;
 };
 
 template<class NodeInfoT>
