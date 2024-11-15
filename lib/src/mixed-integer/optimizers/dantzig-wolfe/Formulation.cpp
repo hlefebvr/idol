@@ -330,7 +330,7 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
                                                                    const idol::DualPoint &t_master_dual,
                                                                    bool t_use_farkas) {
 
-    Expr<Var, Var> objective;
+    Expr<Var> objective;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
@@ -470,7 +470,7 @@ void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_proble
 
 }
 
-void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var, idol::Var> &t_expr) {
+void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var> &t_expr) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 

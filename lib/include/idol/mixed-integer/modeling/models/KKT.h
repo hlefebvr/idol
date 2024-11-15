@@ -22,7 +22,7 @@ class idol::Reformulators::KKT {
     std::vector<std::optional<Var>> m_dual_variables_for_upper_bounds;
     std::vector<std::optional<Ctr>> m_dual_constraints;
     std::vector<std::optional<Ctr>> m_complementarity_constraints;
-    Expr<Var, Var> m_dual_objective;
+    Expr<Var> m_dual_objective;
 
     void create_dual_variables_for_constraints();
     void create_dual_variables_for_bounds();

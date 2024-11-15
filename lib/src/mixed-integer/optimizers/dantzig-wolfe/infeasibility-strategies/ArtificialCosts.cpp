@@ -180,7 +180,7 @@ void idol::DantzigWolfe::ArtificialCosts::Strategy::update_objective_function(
     }
 
     auto& master = t_formulation.master();
-    Expr<Var, Var> objective = m_objective_function;
+    Expr<Var> objective = m_objective_function;
 
     for (const auto& var : m_artificial_variables) {
         if (!equals(t_primal_values.get(var), 0., Tolerance::Feasibility)) {

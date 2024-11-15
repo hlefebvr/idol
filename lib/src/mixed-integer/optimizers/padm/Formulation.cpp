@@ -177,9 +177,9 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
 
 }
 
-std::pair<idol::Expr<idol::Var, idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
+std::pair<idol::Expr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
                                                                                    const idol::LinExpr<idol::Var> &t_lin_expr,
-                                                                                   // const idol::QuadExpr<idol::Var, idol::Var> &t_quad_expr,
+                                                                                   // const idol::QuadExpr<idol::Var> &t_quad_expr,
                                                                                    unsigned int t_sub_problem_id) {
 
     throw Exception("TODO: Was using Constant");

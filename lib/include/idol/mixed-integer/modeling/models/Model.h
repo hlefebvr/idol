@@ -48,7 +48,7 @@ private:
 
     ObjectiveSense m_sense = Minimize;
 
-    Expr<Var, Var> m_objective;
+    Expr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
@@ -590,7 +590,7 @@ public:
      * ```
      * @return the objective function of the model
      */
-    [[nodiscard]] const Expr<Var, Var>& get_obj_expr() const;
+    [[nodiscard]] const Expr<Var>& get_obj_expr() const;
 
     /**
      * Returns the right hand-side of the model.
@@ -714,7 +714,7 @@ public:
      * Attention: every variable involved in t_objective must already be part of the model.
      * @param t_objective
      */
-    void set_obj_expr(const Expr<Var, Var>& t_objective);
+    void set_obj_expr(const Expr<Var>& t_objective);
 
     /**
      * Sets the objective expression of the model.
@@ -729,7 +729,7 @@ public:
      * Attention: every variable involved in t_objective must already be part of the model.
      * @param t_objective
      */
-    void set_obj_expr(Expr<Var, Var>&& t_objective);
+    void set_obj_expr(Expr<Var>&& t_objective);
 
     /**
      * Sets the right hand-side of the model

@@ -28,10 +28,16 @@ template<class Key = idol::Var, class ValueT = double>
 class idol::LinExpr : public SparseVector<Key, ValueT> {
 public:
     LinExpr() = default;
-    LinExpr(SparseVector<Key, double>&& t_vector) : SparseVector<Key, double>(std::move(t_vector)) {}
+    LinExpr(SparseVector<Key, ValueT>&& t_vector) : SparseVector<Key, ValueT>(std::move(t_vector)) {}
     LinExpr(const Key& t_key); // NOLINT(google-explicit-constructor)
-    LinExpr(double t_factor, const Key& t_key);
+    LinExpr(const ValueT& t_factor, const Key& t_key);
+    LinExpr(ValueT&& t_factor, const Key& t_key);
 };
+
+template<class Key, class ValueT>
+idol::LinExpr<Key, ValueT>::LinExpr(ValueT &&t_factor, const Key &t_key) : SparseVector<Key, ValueT>(t_key, std::move(t_factor)) {
+
+}
 
 template<class Key, class ValueT>
 idol::LinExpr<Key, ValueT>::LinExpr(const Key &t_key) : SparseVector<Key, double>(t_key, 1.) {
@@ -39,7 +45,7 @@ idol::LinExpr<Key, ValueT>::LinExpr(const Key &t_key) : SparseVector<Key, double
 }
 
 template<class Key, class ValueT>
-idol::LinExpr<Key, ValueT>::LinExpr(double t_factor, const Key &t_key) : SparseVector<Key, double>(t_key, t_factor) {
+idol::LinExpr<Key, ValueT>::LinExpr(const ValueT& t_factor, const Key &t_key) : SparseVector<Key, ValueT>(t_key, t_factor) {
 }
 
 namespace idol {

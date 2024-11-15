@@ -67,8 +67,8 @@ private:
     std::pair<bool, double> m_rescaling;
 
     std::vector<Model> m_sub_problems;
-    std::vector<std::optional<Expr<Var, Var>>> m_objective_patterns;
-    std::vector<std::list<std::pair<Ctr, Expr<Var, Var>>>> m_constraint_patterns; // as ctr: row <= 0
+    std::vector<std::optional<Expr<Var>>> m_objective_patterns;
+    std::vector<std::list<std::pair<Ctr, Expr<Var>>>> m_constraint_patterns; // as ctr: row <= 0
     std::vector<std::list<Var>> m_l1_vars_in_sub_problem;
     Map<Ctr, Var> m_l1_vars;
 
@@ -81,7 +81,7 @@ private:
     void dispatch_ctr(const Model& t_src_model, const Ctr& t_ctr, unsigned int t_sub_problem_id);
     void dispatch_obj(const Model& t_src_model);
     void dispatch_obj(const Model& t_src_model, unsigned int t_sub_problem_id);
-    std::pair<Expr<Var, Var>, bool> dispatch(const Model& t_src_model, const LinExpr<Var>& t_lin_expr, /* const QuadExpr<Var, Var>& t_quad_expr, */ unsigned int t_sub_problem_id);
+    std::pair<Expr<Var>, bool> dispatch(const Model& t_src_model, const LinExpr<Var>& t_lin_expr, /* const QuadExpr<Var>& t_quad_expr, */ unsigned int t_sub_problem_id);
     Var get_or_create_l1_var(const Ctr& t_ctr);
     void set_penalty_in_all_sub_problems(const Var& t_var, double t_value);
     void update_penalty_parameters_independently(const std::vector<PrimalPoint>& t_primals, PenaltyUpdate& t_penalty_update);
