@@ -3,9 +3,8 @@
 //
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
-#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/bilevel/modeling/LowerLevelDescription.h"
 
 using namespace idol;
 
@@ -33,10 +32,9 @@ int main(int t_argc, const char** t_argv) {
     // Define High Point Relaxation
     Model high_point_relaxation(env);
 
-    auto x = high_point_relaxation.add_var(0, Inf, Integer, "x");
-    auto y = high_point_relaxation.add_var(0, Inf, Integer, "y");
+    auto x = high_point_relaxation.add_var(0, Inf, Integer, -1, "x");
+    auto y = high_point_relaxation.add_var(0, Inf, Integer, -10, "y");
 
-    high_point_relaxation.set_obj_expr(-x - 10 * y);
     auto follower_c1 = high_point_relaxation.add_ctr(-25 * x + 20 * y <= 30);
     auto follower_c2 = high_point_relaxation.add_ctr(x + 2 * y <= 10);
     auto follower_c3 = high_point_relaxation.add_ctr(2 * x - y <= 15);

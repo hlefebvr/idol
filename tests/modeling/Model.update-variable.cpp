@@ -29,9 +29,9 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
             AND_THEN("The model's objective should not contain a non-zero coefficient x") {
                 auto objective = model.get_obj_expr();
 
-                SKIP(objective.linear().empty());
+                SKIP(objective.affine().linear().empty());
                 //CHECK(objective.quadratic().empty());
-                CHECK(objective.constant() == 0_a);
+                CHECK(objective.affine().constant() == 0_a);
                 CHECK(is_zero(objective, Tolerance::Sparsity));
             }
 
@@ -80,7 +80,7 @@ SCENARIO("Model: Update a variable", "[unit][modeling-old][Model]") {
                 THEN("The model's objective should have a coefficient for x of 1") {
                     const auto& objective = model.get_obj_expr();
 
-                    CHECK(objective.linear().get(x) == 1_a);
+                    CHECK(objective.affine().linear().get(x) == 1_a);
                 }
 
             }

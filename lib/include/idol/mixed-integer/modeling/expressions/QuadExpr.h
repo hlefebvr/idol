@@ -17,6 +17,10 @@ class idol::QuadExpr : public LinExpr<CommutativePair<KeyT>, ValueT> {
     AffExpr<KeyT, ValueT> m_affine;
 public:
     QuadExpr() = default;
+    QuadExpr(const KeyT& t_key) : m_affine(t_key) {}
+    QuadExpr(KeyT&& t_key) : m_affine(std::move(t_key)) {}
+    QuadExpr(const ValueT& t_value) : m_affine(t_value) {}
+    QuadExpr(ValueT&& t_value) : m_affine(std::move(t_value)) {}
     QuadExpr(const LinExpr<KeyT, ValueT>& t_expr) : m_affine(t_expr) {} // NOLINT(*-explicit-constructor)
     QuadExpr(LinExpr<KeyT, ValueT>&& t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
     QuadExpr(const AffExpr<KeyT, ValueT>& t_expr) : m_affine(t_expr) {} // NOLINT(*-explicit-constructor)

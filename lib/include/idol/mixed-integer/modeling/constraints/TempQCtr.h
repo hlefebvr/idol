@@ -39,21 +39,6 @@ public:
     
 };
 
-idol::TempQCtr operator<=(idol::QuadExpr<idol::Var, double>&& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator<=(const idol::QuadExpr<idol::Var, double>& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator<=(idol::QuadExpr<idol::Var, double>&& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-idol::TempQCtr operator<=(const idol::QuadExpr<idol::Var, double>& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-
-idol::TempQCtr operator>=(idol::QuadExpr<idol::Var, double>&& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator>=(const idol::QuadExpr<idol::Var, double>& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator>=(idol::QuadExpr<idol::Var, double>&& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-idol::TempQCtr operator>=(const idol::QuadExpr<idol::Var, double>& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-
-idol::TempQCtr operator==(idol::QuadExpr<idol::Var, double>&& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator==(const idol::QuadExpr<idol::Var, double>& t_lhs, idol::QuadExpr<idol::Var, double>&& t_rhs);
-idol::TempQCtr operator==(idol::QuadExpr<idol::Var, double>&& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-idol::TempQCtr operator==(const idol::QuadExpr<idol::Var, double>& t_lhs, const idol::QuadExpr<idol::Var, double>& t_rhs);
-
 namespace idol {
     std::ostream &operator<<(std::ostream &t_os, const TempQCtr &t_temp_ctr);
 }

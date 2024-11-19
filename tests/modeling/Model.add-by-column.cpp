@@ -43,7 +43,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
             }
 
             AND_THEN("The column objective should have been added to the model's objective") {
-                CHECK(model.get_obj_expr().linear().get(var) == 100_a);
+                CHECK(model.get_obj_expr().affine().linear().get(var) == 100_a);
             }
 
             AND_THEN("The column coefficients should have been added to the model's variable column") {
@@ -63,7 +63,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
                 model.set_var_obj(var, 1);
 
                 THEN("The model's objective should be updated") {
-                    CHECK(model.get_obj_expr().linear().get(var) == 1_a);
+                    CHECK(model.get_obj_expr().affine().linear().get(var) == 1_a);
                 }
 
                 AND_THEN("The variable's objective coefficient should be updated") {
@@ -90,7 +90,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
                 model.set_var_obj(var, 0);
 
                 THEN("The model's objective should be empty") {
-                    SKIP(model.get_obj_expr().linear().empty());
+                    SKIP(model.get_obj_expr().affine().linear().empty());
                 }
 
                 AND_THEN("The model's variable's column's objective coefficient should be zero") {
@@ -130,7 +130,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
                 }
 
                 AND_THEN("The model's objective should be empty") {
-                    CHECK(model.get_obj_expr().linear().empty());
+                    CHECK(model.get_obj_expr().affine().linear().empty());
                 }
 
                 AND_THEN("The model's constraints should be empty") {
@@ -238,7 +238,7 @@ SCENARIO("Model: Add a variable by column", "[unit][modeling-old][Model]") {
                 }
 
                 AND_THEN("The model's objective should be empty") {
-                    SKIP(model.get_obj_expr().linear().empty());
+                    SKIP(model.get_obj_expr().affine().linear().empty());
                     //CHECK(model.get_obj_expr().quadratic().empty());
                 }
 

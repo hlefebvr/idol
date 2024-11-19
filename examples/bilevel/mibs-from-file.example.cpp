@@ -3,26 +3,20 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/modeling/bilevel-optimization/read_from_file.h"
+#include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-    // const std::string aux_filename = "/home/henri/Research/counterfactual/code/bobilib/data/miblp_20_20_50_0110_15_5.aux";
     const std::string aux_filename = "mibs-from-file.data.aux";
 
     Env env;
     auto [model, description] = Bilevel::read_from_file<Gurobi>(env, aux_filename);
 
-    model.use(
-            Bilevel::MibS(description)
-                    .with_logs(true)
-                    .with_osi_interface(OsiClpSolverInterface())
-            );
+    model.use(Bilevel::MibS(description).with_logs(true));
 
     model.optimize();
 

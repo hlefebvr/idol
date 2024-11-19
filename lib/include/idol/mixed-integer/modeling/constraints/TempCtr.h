@@ -114,20 +114,9 @@ public:
 
 };
 
-idol::TempCtr operator<=(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator<=(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator<=(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
-idol::TempCtr operator<=(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
-
-idol::TempCtr operator>=(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator>=(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator>=(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
-idol::TempCtr operator>=(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
-
-idol::TempCtr operator==(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator==(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator==(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
-idol::TempCtr operator==(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
+idol::TempCtr operator<=(idol::AffExpr<idol::Var, double> t_lhs, idol::AffExpr<idol::Var, double> t_rhs);
+idol::TempCtr operator>=(idol::AffExpr<idol::Var, double> t_lhs, idol::AffExpr<idol::Var, double> t_rhs);
+idol::TempCtr operator==(idol::AffExpr<idol::Var, double> t_lhs, idol::AffExpr<idol::Var, double> t_rhs);
 
 namespace idol {
     std::ostream &operator<<(std::ostream &t_os, const TempCtr &t_temp_ctr);

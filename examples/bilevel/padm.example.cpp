@@ -3,8 +3,8 @@
 //
 #include <iostream>
 #include <idol/modeling.h>
-#include <idol/modeling/bilevel-optimization/LowerLevelDescription.h>
-#include <idol/modeling/models/KKT.h>
+#include <idol/bilevel/modeling/LowerLevelDescription.h>
+#include <idol/mixed-integer/modeling/models/KKT.h>
 #include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/padm/SubProblem.h"
@@ -12,24 +12,23 @@
 
 int main(int t_argc, const char** t_argv) {
 
-
     using namespace idol;
 
     Env env;
     Model model(env);
-    const auto x = model.add_var(0, Inf, Continuous, "x");
-    const auto y = model.add_var(0, Inf, Continuous, "y");
-    const auto delta = model.add_var(-Inf, Inf, Continuous, "delta");
+    const auto x = model.add_var(0, Inf, Continuous, 0., "x");
+    const auto y = model.add_var(0, Inf, Continuous, 0., "y");
+    const auto delta = model.add_var(-Inf, Inf, Continuous, 0., "delta");
 
     model.set_obj_expr(delta * delta);
 
-    auto c = model.add_ctr(x + delta * x + y <= 1);
+    auto c = model.add_qctr(x + delta * x + y - 1, LessOrEqual);
     model.add_ctr(y == 1);
 
     Bilevel::LowerLevelDescription description(env);
     description.make_follower_var(x);
     description.make_follower_var(y);
-    description.make_follower_ctr(c);
+    //description.make_follower_ctr(c);
     description.set_follower_obj_expr(-2 * x - y);
 
     Reformulators::KKT reformulator(model, description);

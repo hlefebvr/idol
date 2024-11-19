@@ -224,7 +224,7 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
 
         expr -= rhs * dual_var;
 
-        m_complementarity_constraints[index] = QCtr(env, expr == QuadExpr<Var>(0), "complementarity_" + ctr.name());
+        m_complementarity_constraints[index] = QCtr(env, TempQCtr(std::move(expr), Equal), "complementarity_" + ctr.name());
 
     }
 
@@ -256,7 +256,7 @@ void idol::Reformulators::KKT::add_leader_objective(idol::Model &t_destination) 
 
 void idol::Reformulators::KKT::add_strong_duality_constraint(idol::Model &t_destination) const {
 
-    t_destination.add_qctr(m_description.follower_obj() <= m_dual_objective, "strong_duality");
+    t_destination.add_qctr(m_description.follower_obj() - m_dual_objective, LessOrEqual, "strong_duality");
 
 }
 
