@@ -25,6 +25,7 @@ using namespace idol;
 
 template<class T>
 bool is_HiGHS() {
+    std::string name = typeid(T).name();
     return name.find("HiGHS") != std::string::npos;
 }
 
