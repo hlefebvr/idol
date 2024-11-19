@@ -57,7 +57,7 @@ class idol::OptimizerWithLazyUpdates : public Optimizer {
     std::vector<Lazy<Ctr, CtrImplT>> m_constraints;
     std::list<unsigned int> m_constraints_to_update;
 
-    std::vector<Lazy<QCtr, CtrImplT>> m_qconstraints;
+    std::vector<Lazy<QCtr, QCtrImplT>> m_qconstraints;
     std::list<unsigned int> m_qconstraints_to_update;
 
     bool m_is_initialized = false;
@@ -253,6 +253,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update() {
 
     update_ctrs();
 
+    update_qctrs();
+
     if (is_objective_to_be_updated()) {
         hook_update_objective();
         set_objective_as_updated();
@@ -313,7 +315,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_qctrs
     for (const unsigned int index : m_qconstraints_to_update) {
 
         if (m_qconstraints[index].has_impl()) {
-            hook_update(m_qconstraints[index].object());
+            throw Exception("Updating quadratic constraints is not supported.");
+            //hook_update(m_qconstraints[index].object());
         } else {
             auto impl = hook_add(m_qconstraints[index].object());
             m_qconstraints[index].set_impl(std::move(impl));

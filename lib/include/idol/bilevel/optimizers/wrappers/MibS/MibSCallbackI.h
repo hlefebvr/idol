@@ -200,7 +200,7 @@ protected:
             result.set(var, solution[i]);
         }
 
-        result.set_objective_value(m_parent.m_model.get_obj_expr().constant() + osi_solver.getObjValue());
+        result.set_objective_value(m_parent.m_model.get_obj_expr().affine().constant() + osi_solver.getObjValue());
 
         return result;
     }

@@ -422,9 +422,9 @@ void idol::Optimizers::PADM::compute_objective_value() {
 
     const auto& obj = parent().get_obj_expr();
 
-    double result = obj.constant();
+    double result = obj.affine().constant();
 
-    for (const auto& [var, constant] : obj.linear()) {
+    for (const auto& [var, constant] : obj.affine().linear()) {
         result += constant * get_var_primal(var);
     }
 

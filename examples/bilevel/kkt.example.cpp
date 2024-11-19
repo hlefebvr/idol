@@ -3,11 +3,12 @@
 //
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
-#include "idol/optimizers/bilevel-optimization/wrappers/MibS/MibS.h"
-#include "idol/modeling/bilevel-optimization/LowerLevelDescription.h"
+#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/bilevel/modeling/LowerLevelDescription.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
-#include "idol/modeling/bilevel-optimization/read_from_file.h"
-#include "idol/modeling/models/KKT.h"
+#include "idol/bilevel/modeling/read_from_file.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 
 using namespace idol;
 
@@ -36,8 +37,8 @@ int main(int t_argc, const char** t_argv) {
     // Define High Point Relaxation
     Model high_point_relaxation(env);
 
-    auto x = high_point_relaxation.add_var(0, Inf, Continuous, "x");
-    auto y = high_point_relaxation.add_var(-Inf, Inf, Continuous, "y");
+    auto x = high_point_relaxation.add_var(0, Inf, Continuous, 0., "x");
+    auto y = high_point_relaxation.add_var(-Inf, Inf, Continuous, 0., "y");
 
     high_point_relaxation.set_obj_expr(x + 6 * y);
     auto follower_c1 = high_point_relaxation.add_ctr(2 * x - y >= 0, "f1");
@@ -66,6 +67,8 @@ int main(int t_argc, const char** t_argv) {
     single_level.use(Gurobi());
 
     single_level.optimize();
+
+    single_level.write("kkt.lp");
 
     std::cout << save_primal(single_level) << std::endl;
 

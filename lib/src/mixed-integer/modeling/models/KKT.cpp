@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,
                               const idol::Bilevel::LowerLevelDescription &t_lower_level_description)
@@ -41,7 +42,8 @@ void idol::Reformulators::KKT::add_primal_constraints(Model &t_destination) cons
     for (const auto& ctr : m_src_model.ctrs()) {
         const auto& row = m_src_model.get_ctr_row(ctr);
         const auto type = m_src_model.get_ctr_type(ctr);
-        t_destination.add(ctr, TempCtr(LinExpr<Var>(row), type, 0.));
+        const double rhs = m_src_model.get_ctr_rhs(ctr);
+        t_destination.add(ctr, TempCtr(LinExpr<Var>(row), type, rhs));
     }
 
     for (const auto& var : m_src_model.vars()) {
@@ -178,23 +180,6 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
     }
 
-    /*
-    for (const auto& [pair, constant] : col.quadratic()) {
-
-        const auto& ctr = pair.first;
-        const auto& var = pair.second;
-
-        if (m_description.is_leader(ctr)) {
-            continue;
-        }
-
-        const auto index_ctr = m_src_model.get_ctr_index(ctr);
-        const auto& dual_var = *m_dual_variables_for_constraints[index_ctr];
-        expr += constant * dual_var * var;
-
-    }
-     */
-
     if (const auto dual_var = m_dual_variables_for_lower_bounds[index]; dual_var.has_value()) {
         expr += dual_var.value();
     }
@@ -211,9 +196,6 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
 
 void idol::Reformulators::KKT::create_complementarity_constraints() {
 
-    throw Exception("Complementarity constraints lead to quadratic constraints, which are not supported by the current implementation.");
-
-    /*
     m_complementarity_constraints.resize(m_src_model.ctrs().size());
     auto& env = m_src_model.env();
 
@@ -234,18 +216,17 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
         const auto& row = m_src_model.get_ctr_row(ctr);
         const double rhs = m_src_model.get_ctr_rhs(ctr);
 
-        AffExpr expr;
+        QuadExpr expr;
 
         for (const auto& [var, constant] : row) {
-            expr += constant * var * dual_var;
+            expr += constant * (var * dual_var);
         }
 
         expr -= rhs * dual_var;
 
-        m_complementarity_constraints[index] = Ctr(env, expr == 0, "complementarity_" + ctr.name());
+        m_complementarity_constraints[index] = QCtr(env, expr == QuadExpr<Var>(0), "complementarity_" + ctr.name());
 
     }
-     */
 
 }
 
@@ -275,15 +256,12 @@ void idol::Reformulators::KKT::add_leader_objective(idol::Model &t_destination) 
 
 void idol::Reformulators::KKT::add_strong_duality_constraint(idol::Model &t_destination) const {
 
-    t_destination.add_ctr(m_description.follower_obj() <= m_dual_objective, "strong_duality");
+    t_destination.add_qctr(m_description.follower_obj() <= m_dual_objective, "strong_duality");
 
 }
 
 void idol::Reformulators::KKT::create_dual_objective() {
 
-    throw Exception("The dual objective leads to quadratic constraints, which are not supported by the current implementation.");
-
-    /*
     for (const auto& ctr : m_src_model.ctrs()) {
 
         if (m_description.is_leader(ctr)) {
@@ -299,7 +277,7 @@ void idol::Reformulators::KKT::create_dual_objective() {
             if (m_description.is_follower(var)) {
                 continue;
             }
-            m_dual_objective -= constant * var * dual_var;
+            m_dual_objective -= constant * (var * dual_var);
         }
 
         m_dual_objective += rhs * dual_var;
@@ -327,7 +305,7 @@ void idol::Reformulators::KKT::create_dual_objective() {
         }
 
     }
-    */
+
 }
 
 void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination) const {
@@ -351,5 +329,5 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
 void idol::Reformulators::KKT::add_dual(idol::Model &t_destination) const {
     add_dual_variables(t_destination);
     add_dual_constraints(t_destination);
-    t_destination.set_obj_expr(-1. * m_dual_objective);
+    t_destination.set_obj_expr(-m_dual_objective);
 }

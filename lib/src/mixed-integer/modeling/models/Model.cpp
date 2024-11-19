@@ -41,6 +41,11 @@ idol::Model::~Model() {
     }
     m_constraints.clear();
 
+    for (const auto& qctr : m_qconstraints) {
+        m_env.remove_version(*this, qctr);
+    }
+    m_qconstraints.clear();
+
     m_env.free_model_id(*this);
 
 }
@@ -61,7 +66,7 @@ void idol::Model::add(const Var &t_var, TempVar t_temp_var) {
     m_variables.emplace_back(t_var);
 
     // Add to objective
-    m_objective.linear().set(t_var, obj);
+    m_objective.affine().linear().set(t_var, obj);
 
     // Update rows if necessary
     if (m_storage != ColumnOriented || m_has_minor_representation) {
@@ -110,7 +115,7 @@ void idol::Model::remove(const Var &t_var) {
         optimizer().remove(t_var);
     }
 
-    m_objective.linear().remove(t_var);
+    m_objective.affine().linear().remove(t_var);
 
     auto& version = m_env.version(*this, t_var);
 
@@ -141,6 +146,10 @@ void idol::Model::remove(const Var &t_var) {
         auto& qexpr = qctr_version.expr();
         qexpr.affine().linear().remove(t_var);
         std::cerr << "Warning: Removing a variable from a model with quadratic constraints is not removing variable in quadratic expression." << std::endl;
+    }
+
+    if (m_objective.has_quadratic()) {
+        std::cerr << "Warning: Removing a variable from a model with a quadratic objective is not removing variable in quadratic expression." << std::endl;
     }
 
     const auto index = m_env.version(*this, t_var).index();
@@ -258,7 +267,7 @@ idol::ObjectiveSense idol::Model::get_obj_sense() const {
     return m_sense;
 }
 
-const idol::AffExpr<idol::Var>& idol::Model::get_obj_expr() const {
+const idol::QuadExpr<idol::Var>& idol::Model::get_obj_expr() const {
     return m_objective;
 }
 
@@ -273,7 +282,7 @@ double idol::Model::get_mat_coeff(const Ctr &t_ctr, const Var &t_var) const {
     return m_env.version(*this, t_ctr).row().get(t_var);
 }
 
-idol::LinExpr<idol::Var> idol::Model::get_ctr_row(const Ctr &t_ctr) const {
+const idol::LinExpr<idol::Var>& idol::Model::get_ctr_row(const Ctr &t_ctr) const {
     auto& version = m_env.version(*this, t_ctr);
 
     if (!version.has_row()) {
@@ -360,7 +369,7 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
 
         for (const auto& ctr : t_src.ctrs()) {
             add(ctr, TempCtr(
-                    t_src.get_ctr_row(ctr),
+                    LinExpr(t_src.get_ctr_row(ctr)),
                     t_src.get_ctr_type(ctr),
                     t_src.get_ctr_rhs(ctr)
             ));
@@ -392,6 +401,13 @@ idol::Model::Model(const Model& t_src) : Model(t_src.m_env) {
         set_obj_sense(t_src.get_obj_sense());
         set_obj_expr(t_src.get_obj_expr());
 
+    }
+
+    for (const auto& qctr : t_src.qctrs()) {
+        add(qctr, TempQCtr(
+                QuadExpr(t_src.get_qctr_expr(qctr)),
+                t_src.get_qctr_type(qctr)
+        ));
     }
 
     if (t_src.m_optimizer_factory) {
@@ -473,22 +489,22 @@ void idol::Model::set_obj_sense(ObjectiveSense t_value) {
 
 }
 
-void idol::Model::set_obj_expr(const AffExpr<Var> &t_objective) {
-    set_obj_expr(AffExpr<Var>(t_objective));
+void idol::Model::set_obj_expr(const QuadExpr<Var> &t_objective) {
+    set_obj_expr(QuadExpr<Var>(t_objective));
 }
 
-void idol::Model::set_obj_expr(AffExpr<Var> &&t_objective) {
+void idol::Model::set_obj_expr(QuadExpr<Var> &&t_objective) {
 
-    throw_if_unknown_object(t_objective.linear());
+    throw_if_unknown_object(t_objective.affine().linear());
 
-    for (const auto& [var, val] : m_objective.linear()) {
+    for (const auto& [var, val] : m_objective.affine().linear()) {
         auto& version = m_env.version(*this, var);
         version.set_obj(0.);
     }
 
     m_objective = std::move(t_objective);
 
-    for (const auto& [var, val] : m_objective.linear()) {
+    for (const auto& [var, val] : m_objective.affine().linear()) {
         auto& version = m_env.version(*this, var);
         version.set_obj(val);
     }
@@ -527,7 +543,7 @@ void idol::Model::set_rhs_expr(LinExpr<Ctr> &&t_rhs) {
 
 void idol::Model::set_obj_const(double t_constant) {
 
-    m_objective.constant() = t_constant;
+    m_objective.affine().constant() = t_constant;
 
     if (has_optimizer()) {
         optimizer().update_obj_constant();
@@ -665,7 +681,7 @@ void idol::Model::set_var_ub(const Var &t_var, double t_ub) {
 void idol::Model::set_var_obj(const Var &t_var, double t_obj) {
 
     m_env.version(*this, t_var).set_obj(t_obj);
-    m_objective.linear().set(t_var, t_obj);
+    m_objective.affine().linear().set(t_var, t_obj);
 
     if (has_optimizer()) {
         optimizer().update_var_obj(t_var);
@@ -1026,7 +1042,7 @@ void idol::Model::add(const idol::QCtr &t_ctr, idol::TempQCtr t_temp_ctr) {
 
     throw_if_unknown_object(t_temp_ctr.expr());
 
-    const unsigned int index = m_constraints.size();
+    const unsigned int index = m_qconstraints.size();
     const auto type = t_temp_ctr.type();
 
     // Create constraint version
@@ -1062,4 +1078,12 @@ unsigned int idol::Model::get_qctr_index(const idol::QCtr &tctr) const {
 
 idol::QCtr idol::Model::get_qctr_by_index(unsigned int t_index) const {
     return m_qconstraints.at(t_index);
+}
+
+const idol::QuadExpr<idol::Var> &idol::Model::get_qctr_expr(const idol::QCtr &t_ctr) const {
+    return m_env.version(*this, t_ctr).expr();
+}
+
+idol::CtrType idol::Model::get_qctr_type(const idol::QCtr &t_ctr) const {
+    return m_env.version(*this, t_ctr).type();
 }

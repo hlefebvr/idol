@@ -161,7 +161,23 @@ GRBConstr idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 }
 
 GRBQConstr idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
-    throw Exception("Adding quadratic constraints is not implemented.");
+
+    const auto& model = parent();
+    const auto& expr = model.get_qctr_expr(t_ctr);
+    const auto type = gurobi_ctr_type(model.get_qctr_type(t_ctr));
+    const auto& name = t_ctr.name();
+
+    GRBQuadExpr quad_expr = expr.affine().constant();
+
+    for (const auto& [var, constant]: expr.affine().linear()) {
+        quad_expr += constant * lazy(var).impl();
+    }
+
+    for (const auto& [pair, constant]: expr) {
+        quad_expr += constant * lazy(pair.first).impl() * lazy(pair.second).impl();
+    }
+
+    GUROBI_CATCH(return m_model.addQConstr(quad_expr, type, 0., name);)
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
@@ -199,9 +215,9 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const auto sense = gurobi_obj_sense(model.get_obj_sense());
 
-    GRBLinExpr linear_expr = gurobi_numeric(objective.constant());
+    GRBLinExpr linear_expr = gurobi_numeric(objective.affine().constant());
 
-    for (const auto& [var, constant] : objective.linear()) {
+    for (const auto& [var, constant] : objective.affine().linear()) {
         linear_expr += gurobi_numeric(constant) * lazy(var).impl();
     }
 
@@ -590,7 +606,7 @@ idol::ObjectiveSense idol::Optimizers::Gurobi::idol_obj_sense(int t_sense) {
 }
 
 void idol::Optimizers::Gurobi::update_objective_constant() {
-    const double constant = parent().get_obj_expr().constant();
+    const double constant = parent().get_obj_expr().affine().constant();
     m_model.set(GRB_DoubleAttr_ObjCon, constant);
 }
 

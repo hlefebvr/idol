@@ -96,7 +96,7 @@ public:
 
     void remove_column_if(unsigned int t_sub_problem_id, const std::function<bool(const Var &, const PrimalPoint &)> &t_indicator_for_removal);
 
-    void update_obj(const AffExpr<Var>& t_expr);
+    void update_obj(const QuadExpr<Var>& t_expr);
 
     void update_var_obj(const Var& t_var, double t_obj);
 

@@ -42,19 +42,23 @@ public:
     AffExpr<KeyT, ValueT>& affine() { return m_affine; }
     const AffExpr<KeyT, ValueT>& affine() const { return m_affine; }
 
-    bool is_zero(double t_tolerance);
+    bool has_quadratic() const { return !LinExpr<CommutativePair<KeyT>, ValueT>::empty(); }
 
-    void clear();
+    bool empty_all() const { return LinExpr<CommutativePair<KeyT>, ValueT>::empty() && m_affine.linear().empty(); }
+
+    bool is_zero(double t_tolerance) const override;
+
+    void clear_all();
 };
 
 template<class KeyT, class ValueT>
-void idol::QuadExpr<KeyT, ValueT>::clear() {
+void idol::QuadExpr<KeyT, ValueT>::clear_all() {
     LinExpr<CommutativePair<KeyT>, ValueT>::clear();
     m_affine.clear();
 }
 
 template<class KeyT, class ValueT>
-bool idol::QuadExpr<KeyT, ValueT>::is_zero(double t_tolerance) {
+bool idol::QuadExpr<KeyT, ValueT>::is_zero(double t_tolerance) const {
     return m_affine.is_zero(t_tolerance) && LinExpr<CommutativePair<KeyT>, ValueT>::is_zero(t_tolerance);
 }
 
@@ -94,5 +98,17 @@ idol::QuadExpr<KeyT, ValueT>::operator+=(const QuadExpr &t_rhs) {
     m_affine += t_rhs.m_affine;
     return *this;
 }
+
+
+namespace idol {
+
+    template<class KeyT, class ValueT>
+    std::ostream& operator<<(std::ostream& t_os, const QuadExpr<KeyT, ValueT>& t_expr) {
+        t_os << t_expr.affine() << " + " << (const LinExpr<CommutativePair<KeyT>, ValueT>&) t_expr;
+        return t_os;
+    }
+
+}
+
 
 #endif //IDOL_QUADEXPR_H

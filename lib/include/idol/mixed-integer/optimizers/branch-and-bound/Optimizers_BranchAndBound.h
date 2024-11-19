@@ -197,12 +197,12 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
     const auto& src_model = parent();
     const auto& objective = src_model.get_obj_expr();
 
-    if (!is_integer(objective.constant(), Tolerance::Integer)) {
+    if (!is_integer(objective.affine().constant(), Tolerance::Integer)) {
         m_has_integer_objective = false;
         return;
     }
 
-    for (const auto& [var, val] : objective.linear()) {
+    for (const auto& [var, val] : objective.affine().linear()) {
         if (src_model.get_var_type(var) == Continuous || !is_integer(val, Tolerance::Integer)) {
             m_has_integer_objective = false;
             return;
@@ -271,7 +271,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::update_rhs() {
 template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::update_obj_constant() {
     for (auto& relaxation : m_relaxations) {
-        relaxation->set_obj_const(parent().get_obj_expr().constant());
+        relaxation->set_obj_const(parent().get_obj_expr().affine().constant());
     }
 }
 

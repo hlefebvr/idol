@@ -506,7 +506,7 @@ idol::Optimizers::HiGHS::~HiGHS() {
 }
 
 void idol::Optimizers::HiGHS::update_objective_constant() {
-    const double constant = parent().get_obj_expr().constant();
+    const double constant = parent().get_obj_expr().affine().constant();
     m_model.changeObjectiveOffset(constant);
 }
 

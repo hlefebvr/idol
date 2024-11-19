@@ -242,8 +242,8 @@ void
 idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_sub_problem_id) {
 
     const auto& obj = t_src_model.get_obj_expr();
-    auto [pattern, is_pure] = dispatch(t_src_model, obj.linear() /*, obj.quadratic() */, t_sub_problem_id);
-    pattern += obj.constant();
+    auto [pattern, is_pure] = dispatch(t_src_model, obj.affine().linear() /*, obj.quadratic() */, t_sub_problem_id);
+    pattern += obj.affine().constant();
 
     if (pattern.linear().empty()) {
         return;

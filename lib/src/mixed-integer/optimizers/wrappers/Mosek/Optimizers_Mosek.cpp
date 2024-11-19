@@ -314,9 +314,9 @@ void idol::Optimizers::Mosek::hook_update_objective() {
     const auto& objective = model.get_obj_expr();
     const int sense = model.get_obj_sense();
 
-    auto expr = mosek::fusion::Expr::constTerm(objective.constant());
+    auto expr = mosek::fusion::Expr::constTerm(objective.affine().constant());
 
-    for (const auto& [var, constant] : objective.linear()) {
+    for (const auto& [var, constant] : objective.affine().linear()) {
         expr = mosek::fusion::Expr::add(
                 std::move(expr),
                 mosek::fusion::Expr::mul(

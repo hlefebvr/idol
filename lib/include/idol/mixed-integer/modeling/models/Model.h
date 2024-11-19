@@ -49,7 +49,7 @@ private:
 
     ObjectiveSense m_sense = Minimize;
 
-    AffExpr<Var> m_objective;
+    QuadExpr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
@@ -77,16 +77,6 @@ private:
     bool column_storage_matters() const;
     bool row_storage_matters() const;
 public:
-    /**
-     * Creates a new model for a mathematical optimization problem.
-     *
-     * Example:
-     * ```cpp
-     * Env env;
-     * Model model(env);
-     * ```
-     * @param t_env the optimization environment which will store the model
-     */
     explicit Model(Env& t_env, Storage t_storage = RowOriented);
 
     Model(Model&&) noexcept;
@@ -96,151 +86,20 @@ public:
 
     ~Model();
 
-    /**
-     * Creates a new decision variable in the model and returns it.
-     *
-     * Example:
-     * ```cpp
-     * model.add_var(0, 1, Binary, "x");
-     * ```
-     * @param t_lb the lower bound in the model
-     * @param t_ub the upper bound in the model
-     * @param t_type the type in the model
-     * @param t_obj the objective coefficient in the model
-     * @param t_name the name of the variable
-     * @return the created variable
-     */
     Var add_var(double t_lb, double t_ub, VarType t_type, double t_obj = 0., std::string t_name = "");
 
-    /**
-     * Creates a new decision variable in the model and returns it.
-     *
-     * Example:
-     * ```cpp
-     * model.add_var(0, 1, Binary, Column(-2), "x"); // Adds an objective coefficient of -2
-     * ```
-     *
-     * Attention: every constraint involved in t_column must already be part of the model.
-     * @param t_lb the lower bound in the model
-     * @param t_ub the upper bound in the model
-     * @param t_type the type in the model
-     * @param t_obj the objective coefficient in the model
-     * @param t_column the column in the model
-     * @param t_name the name of the variable
-     * @return the created variable
-     */
     Var add_var(double t_lb, double t_ub, VarType t_type, double t_obj, LinExpr<Ctr> t_column, std::string t_name = "");
 
-    /**
-     * Creates multiple decision variables in the model and returns them.
-     *
-     * Example:
-     * ```cpp
-     * auto x = model.add_vars(Dim<2>(n, m), 0, 1, Binary, "x");
-     *
-     * for (unsigned int i = 0 ; i < n ; ++i) {
-     *      for (unsigned int j = 0 ; j < m ; ++j) {
-     *          std::cout << x[i][j].name() << std::endl;
-     *      }
-     * }
-     * ```
-     *
-     * @tparam N the number of dimensions for the indices (e.g., N = 2 will create variables with 2 indices, \f$ x_{ij} \f$)
-     * @param t_dim the dimensions for the indices
-     * @param t_lb the lower bound for the variables in the model
-     * @param t_ub the upper bound for the variables in the model
-     * @param t_type the type for the variables in the model
-     * @param t_name the base name for the variables (variables are then named by a combination of this name and indices)
-     * @return the create variables
-     */
     template<unsigned int N> Vector<Var, N> add_vars(Dim<N> t_dim, double t_lb, double t_ub, VarType t_type, double t_obj = 0., const std::string& t_name = "");
 
-    /**
-     * Adds an existing variable to the model.
-     *
-     * Example:
-     * ``` cpp
-     * Env env;
-     *
-     * Model model1(env);
-     * auto x = model1.add_var(0, Inf, Continuous, "x");
-     *
-     * Model model2(env);
-     * model2.add(x);
-     * ```
-     *
-     * Note that the default version of the variable is added to the model (i.e., the variable is added identical to its
-     * first version as defined at creation time).
-     * @param t_var the variable to add
-     */
     void add(const Var& t_var);
 
-    /**
-     * Adds an existing variable to the model with different attributes than the default version (i.e., the variable is
-     * added to the model and has the attributes defined in t_temp_var).
-     *
-     * Example:
-     * ``` cpp
-     * Env env;
-     *
-     * Model model1(env);
-     * auto x = model1.add_var(0, Inf, Continuous, Column(-2), "x"); // x has an objective cost of -2 in model1
-     *
-     * Model model2(env);
-     * model2.add(x, TempVar(0, Inf, Continuous, Column(0))); // x has an objective cost of 0 in model2
-     * ```
-     *
-     * Attention: every constraint involved in t_temp_var must already be part of the model.
-     * @param t_var the variable to add
-     * @param t_temp_var the attributes of the variable in the model
-     */
     void add(const Var& t_var, TempVar t_temp_var);
 
-    /**
-     * Returns true if and only if the variable is part of the model
-     *
-     * Example:
-     * ```cpp
-     * auto x = model.add_var(-Inf, Inf, Continuous, "x");
-     *
-     * std::cout << model.has(x) << std::endl; // output: 1
-     * ```
-     * @param t_var the variable
-     * @return true if and only if the variable is part of the model
-     */
     [[nodiscard]] bool has(const Var& t_var) const;
 
-    /**
-     * Removes a variable from the model.
-     *
-     * Example:
-     * ```cpp
-     * auto x = model.add_var(0, 1, Binary, "x");
-     *
-     * std::cout << model.has(x) << std::endl; // output: 1
-     *
-     * model.remove(x);
-     *
-     * std::cout << model.has(x) << std::endl; // output: 0
-     * ```
-     *
-     * This also removes every reference to the variable in the objective and within the constraints.
-     * @param t_var
-     */
     void remove(const Var& t_var);
 
-    /**
-     * Returns an object able to construct iterators over the set of variables of the model.
-     *
-     * Example:
-     *
-     * ```cpp
-     * for (const Var& var : model.vars()) {
-     *      std::cout << var.name() << std::endl;
-     * }
-     * ```
-     * @return an object able to construct iterators over the set of variables of the model.
-     */
     [[nodiscard]] ConstIteratorForward<std::vector<Var>> vars() const { return m_variables; }
 
     Ctr add_ctr(TempCtr t_temp_ctr, std::string t_name = "");
@@ -313,7 +172,7 @@ public:
 
     [[nodiscard]] ObjectiveSense get_obj_sense() const;
 
-    [[nodiscard]] const AffExpr<Var>& get_obj_expr() const;
+    [[nodiscard]] const QuadExpr<Var>& get_obj_expr() const;
 
     [[nodiscard]] const LinExpr<Ctr>& get_rhs_expr() const;
 
@@ -329,9 +188,9 @@ public:
 
     void set_obj_sense(ObjectiveSense t_value);
 
-    void set_obj_expr(const AffExpr<Var>& t_objective);
+    void set_obj_expr(const QuadExpr<Var>& t_objective);
 
-    void set_obj_expr(AffExpr<Var>&& t_objective);
+    void set_obj_expr(QuadExpr<Var>&& t_objective);
 
     void set_rhs_expr(LinExpr<Ctr>&& t_rhs);
 
@@ -355,7 +214,11 @@ public:
 
     double get_ctr_rhs(const Ctr& t_ctr) const;
 
-    [[nodiscard]] LinExpr<Var> get_ctr_row(const Ctr& t_ctr) const;
+    [[nodiscard]] const LinExpr<Var>& get_ctr_row(const Ctr& t_ctr) const;
+
+    const QuadExpr<Var>& get_qctr_expr(const QCtr& t_ctr) const;
+
+    CtrType get_qctr_type(const QCtr& t_ctr) const;
 
     [[nodiscard]] double get_ctr_dual(const Ctr& t_ctr) const;
 
@@ -607,6 +470,31 @@ namespace idol {
             }
 
             stream << rhs << std::endl;
+        }
+
+        for (const auto& qctr : t_model.qctrs()) {
+            const auto& expr = t_model.get_qctr_expr(qctr);
+            const auto type = t_model.get_qctr_type(qctr);
+
+            stream << '\t' << qctr << ": ";
+
+            stream << expr;
+
+            switch (type) {
+                case LessOrEqual:
+                    stream << " <= 0";
+                    break;
+                case Equal:
+                    stream << " = 0";
+                    break;
+                case GreaterOrEqual:
+                    stream << " >= 0";
+                    break;
+                default:
+                    stream << " ?undefined? ";
+            }
+
+            stream << std::endl;
         }
 
         std::list<Var> generals, binaries;

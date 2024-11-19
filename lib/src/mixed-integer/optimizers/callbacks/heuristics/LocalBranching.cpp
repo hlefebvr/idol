@@ -65,7 +65,7 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
     }
 
     auto neighbourhood_ctr = model->add_ctr(distance_to_incumbent <= m_neighbourhood_size);
-    auto objective_ctr = model->add_ctr(model->get_obj_expr() <= .9 * primal_solution.objective_value());
+    auto objective_ctr = model->add_ctr(model->get_obj_expr().affine() <= .9 * primal_solution.objective_value());
 
     model->use(*m_optimizer_factory);
 

@@ -184,7 +184,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::update_rhs() {
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_obj_constant() {
-    m_formulation.master().set_obj_const(parent().get_obj_expr().constant());
+    m_formulation.master().set_obj_const(parent().get_obj_expr().affine().constant());
 }
 
 void idol::Optimizers::DantzigWolfeDecomposition::update_mat_coeff(const idol::Ctr &t_ctr, const idol::Var &t_var) {

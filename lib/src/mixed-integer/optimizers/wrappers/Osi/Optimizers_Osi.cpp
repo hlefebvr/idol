@@ -89,7 +89,7 @@ double idol::Optimizers::Osi::get_best_obj() const {
     }
 
     const auto& objective = parent().get_obj_expr();
-    return objective.constant() + m_solver_interface->getObjValue();
+    return objective.affine().constant() + m_solver_interface->getObjValue();
 }
 
 double idol::Optimizers::Osi::get_best_bound() const {

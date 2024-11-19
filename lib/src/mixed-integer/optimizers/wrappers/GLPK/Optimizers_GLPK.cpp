@@ -404,7 +404,7 @@ void idol::Optimizers::GLPK::compute_farkas_certificate() {
 
     // Save dual values as Farkas certificate
     m_farkas_certificate = DualPoint();
-    double objective_value = model.get_obj_expr().constant();
+    double objective_value = model.get_obj_expr().affine().constant();
     for (const auto& ctr : model.ctrs()) {
         const double dual = glp_get_row_dual(m_model, lazy(ctr).impl());
         m_farkas_certificate->set(ctr, dual);
@@ -504,7 +504,7 @@ void idol::Optimizers::GLPK::compute_unbounded_ray() {
 
     // Save ray
     m_unbounded_ray = PrimalPoint();
-    const double objective_value = model.get_obj_expr().constant() + glp_get_obj_val(m_model);
+    const double objective_value = model.get_obj_expr().affine().constant() + glp_get_obj_val(m_model);
     m_unbounded_ray->set_objective_value(objective_value);
     for (const auto& var : model.vars()) {
         const double value = glp_get_col_prim(m_model, lazy(var).impl());
@@ -615,7 +615,7 @@ idol::SolutionReason idol::Optimizers::GLPK::get_reason() const {
 double idol::Optimizers::GLPK::get_best_obj() const {
     if (m_solution_status == Unbounded) { return -Inf; }
     if (m_solution_status == Infeasible) { return +Inf; }
-    const double constant_term = parent().get_obj_expr().constant();
+    const double constant_term = parent().get_obj_expr().affine().constant();
     return constant_term + (m_solved_as_mip ? glp_mip_obj_val(m_model) : glp_get_obj_val(m_model));
 }
 

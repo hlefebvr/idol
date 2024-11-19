@@ -64,6 +64,7 @@ namespace idol {
         }
         ++it;
         for (const auto end = t_expr.end() ; it != end ; ++it) {
+            t_os << " + ";
             if constexpr (std::is_same_v<ValueT, double>) {
                 t_os << it->second << " " << it->first;
             } else {

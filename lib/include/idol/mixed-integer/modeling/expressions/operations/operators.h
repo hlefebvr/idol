@@ -153,6 +153,15 @@ namespace idol {
         return result;
     }
 
+    template<class KeyT, class ValueT>
+    QuadExpr<KeyT, ValueT> operator*(const LinExpr<KeyT, ValueT>& t_lin_expr, const LinExpr<KeyT, ValueT>& t_lin_expr2) {
+        QuadExpr<KeyT, ValueT> result;
+        for (const auto& [key, value] : t_lin_expr) {
+            result += value * t_lin_expr2 * key;
+        }
+        return result;
+    }
+
     // Addition
 
     // LinExpr
@@ -424,6 +433,13 @@ namespace idol {
     QuadExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
         QuadExpr<KeyT, ValueT> result(std::move(t_b));
         result += t_a;
+        return result;
+    }
+
+    template<class KeyT, class ValueT>
+    QuadExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
+        QuadExpr<KeyT, ValueT> result(std::move(t_b));
+        result += std::move(t_a);
         return result;
     }
 

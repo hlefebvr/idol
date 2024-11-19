@@ -106,7 +106,7 @@ public:
 
     void set(const IndexT& t_index, const ValueT& t_value);
 
-    [[nodiscard]] bool is_zero(double t_tolerance) const;
+    [[nodiscard]] virtual bool is_zero(double t_tolerance) const;
 
     void remove(const IndexT& t_index) { m_map.erase(t_index); }
 

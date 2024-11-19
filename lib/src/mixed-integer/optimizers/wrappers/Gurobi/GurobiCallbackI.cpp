@@ -98,7 +98,7 @@ idol::PrimalPoint idol::GurobiCallbackI::primal_solution() const {
 
         const auto& obj = m_parent.parent().get_obj_expr();
         double obj_val = 0.;
-        for (const auto& [var, constant] : obj.linear()) {
+        for (const auto& [var, constant] : obj.affine().linear()) {
             obj_val += constant * result.get(var);
         }
 
