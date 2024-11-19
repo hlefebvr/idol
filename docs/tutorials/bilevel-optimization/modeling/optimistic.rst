@@ -127,7 +127,7 @@ Defining the Lower-Level Objective Function
 
 Finally, we need to define the lower-level objective function.
 This is done by calling the method :code:`set_follower_obj_expr` on the object of type :code:`Bilevel::LowerLevelDescription`.
-An :code:`Expr` object is passed as argument to this method.
+An :code:`AffExpr` object is passed as argument to this method.
 
 .. code::
 

@@ -13,7 +13,7 @@
 namespace idol {
 
     /*
-    static std::list<Expr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var> &t_expr) {
+    static std::list<AffExpr<Var>> to_rotated_quadratic_cone(const QuadExpr<Var> &t_expr) {
 
         // Create index mapping
         MatrixIndices indices;
@@ -69,7 +69,7 @@ namespace idol {
         N = L * N * L.transpose();
 
         // Build result
-        std::list<Expr<Var>> result;
+        std::list<AffExpr<Var>> result;
 
         // Create head
         for (const auto &[var1, i]: indices.indices()) {

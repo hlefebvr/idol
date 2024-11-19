@@ -19,7 +19,7 @@ namespace idol::Bilevel {
 class idol::Bilevel::LowerLevelDescription {
     Annotation<Var> m_follower_variables;
     Annotation<Ctr> m_follower_constraints;
-    Expr<Var> m_follower_objective;
+    AffExpr<Var> m_follower_objective;
 public:
     LowerLevelDescription(Env& t_env, const std::string& t_name)
         : m_follower_variables(t_env, t_name + "_follower_variables", MasterId),
@@ -34,7 +34,7 @@ public:
 
     LowerLevelDescription(const Annotation<Var>& t_follower_variables,
                 const Annotation<Ctr>& t_follower_constraints,
-                Expr<Var> t_follower_objective)
+                AffExpr<Var> t_follower_objective)
         : m_follower_variables(t_follower_variables),
           m_follower_constraints(t_follower_constraints),
           m_follower_objective(std::move(t_follower_objective)) {}
@@ -43,7 +43,7 @@ public:
 
     [[nodiscard]] const Annotation<Ctr>& follower_ctrs() const { return m_follower_constraints; }
 
-    [[nodiscard]] const Expr<Var>& follower_obj() const { return m_follower_objective; }
+    [[nodiscard]] const AffExpr<Var>& follower_obj() const { return m_follower_objective; }
 
     void make_leader_var(const Var& t_var) { t_var.set(m_follower_variables, MasterId); }
 
@@ -53,7 +53,7 @@ public:
 
     void make_follower_ctr(const Ctr& t_ctr) { t_ctr.set(m_follower_constraints, 0); }
 
-    void set_follower_obj_expr(Expr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
+    void set_follower_obj_expr(AffExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
 
     bool is_leader(const Var& t_var) const { return t_var.get(m_follower_variables) == MasterId; }
 

@@ -5,7 +5,7 @@
 #ifndef IDOL_OPERATORS_VAR_H
 #define IDOL_OPERATORS_VAR_H
 
-#include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/mixed-integer/modeling/expressions/AffExpr.h"
 
 namespace idol {
 
@@ -31,13 +31,13 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator*(const idol::Var &t_var, double t_constant);
 
-    idol::Expr<idol::Var> operator*(double t_num, idol::Expr<idol::Var> &&t_expr);
+    idol::AffExpr<idol::Var> operator*(double t_num, idol::AffExpr<idol::Var> &&t_expr);
 
-    idol::Expr<idol::Var> operator*(double t_num, const idol::Expr<idol::Var> &t_expr);
+    idol::AffExpr<idol::Var> operator*(double t_num, const idol::AffExpr<idol::Var> &t_expr);
 
-    idol::Expr<idol::Var> operator*(idol::Expr<idol::Var> &&t_expr, double t_num);
+    idol::AffExpr<idol::Var> operator*(idol::AffExpr<idol::Var> &&t_expr, double t_num);
 
-    idol::Expr<idol::Var> operator*(const idol::Expr<idol::Var> &t_expr, double t_num);
+    idol::AffExpr<idol::Var> operator*(const idol::AffExpr<idol::Var> &t_expr, double t_num);
 
     /* ADDITION */
 
@@ -47,9 +47,9 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator+(const idol::Var &t_a, const idol::Var &t_b);
 
-    idol::Expr<idol::Var> operator+(double t_term, idol::LinExpr<idol::Var> &&t_lin_expr);
+    idol::AffExpr<idol::Var> operator+(double t_term, idol::LinExpr<idol::Var> &&t_lin_expr);
 
-    idol::Expr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_lin_expr, double t_term);
+    idol::AffExpr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_lin_expr, double t_term);
 
     idol::LinExpr<idol::Var> operator+(idol::LinExpr<idol::Var> &&t_lin_expr, const idol::Var &t_var);
 
@@ -67,13 +67,13 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator+(const idol::LinExpr<idol::Var> &t_a, const idol::LinExpr<idol::Var> &t_b);
 
-    idol::Expr<idol::Var> operator+(const idol::Expr<idol::Var> &t_a, idol::Expr<idol::Var> &&t_b);
+    idol::AffExpr<idol::Var> operator+(const idol::AffExpr<idol::Var> &t_a, idol::AffExpr<idol::Var> &&t_b);
 
-    idol::Expr<idol::Var> operator+(idol::Expr<idol::Var> &&t_a, const idol::Expr<idol::Var> &t_b);
+    idol::AffExpr<idol::Var> operator+(idol::AffExpr<idol::Var> &&t_a, const idol::AffExpr<idol::Var> &t_b);
 
-    idol::Expr<idol::Var> operator+(idol::Expr<idol::Var> &&t_a, idol::Expr<idol::Var> &&t_b);
+    idol::AffExpr<idol::Var> operator+(idol::AffExpr<idol::Var> &&t_a, idol::AffExpr<idol::Var> &&t_b);
 
-    idol::Expr<idol::Var> operator+(const idol::Expr<idol::Var> &t_a, const idol::Expr<idol::Var> &t_b);
+    idol::AffExpr<idol::Var> operator+(const idol::AffExpr<idol::Var> &t_a, const idol::AffExpr<idol::Var> &t_b);
 
     /* DIFFERENCE */
 
@@ -89,9 +89,9 @@ namespace idol {
 
     idol::LinExpr<idol::Var> operator-(const idol::LinExpr<idol::Var> &t_a, const idol::LinExpr<idol::Var> &t_b);
 
-    idol::Expr<idol::Var> operator-(idol::Expr<idol::Var> &&t_a, const idol::Expr<idol::Var> &t_b);
+    idol::AffExpr<idol::Var> operator-(idol::AffExpr<idol::Var> &&t_a, const idol::AffExpr<idol::Var> &t_b);
 
-    idol::Expr<idol::Var> operator-(const idol::Expr<idol::Var> &t_a, const idol::Expr<idol::Var> &t_b);
+    idol::AffExpr<idol::Var> operator-(const idol::AffExpr<idol::Var> &t_a, const idol::AffExpr<idol::Var> &t_b);
 
 }
 

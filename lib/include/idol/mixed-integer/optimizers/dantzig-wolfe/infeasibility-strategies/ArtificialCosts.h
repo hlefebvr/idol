@@ -23,7 +23,7 @@ public:
         double m_update_factor;
         unsigned int m_max_updates_before_phase_I;
 
-        Expr<Var> m_objective_function;
+        AffExpr<Var> m_objective_function;
         std::list<Var> m_artificial_variables;
 
         void save_objective_function(const Model& t_original_formulation);

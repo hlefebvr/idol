@@ -177,7 +177,7 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
 
 }
 
-std::pair<idol::Expr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
+std::pair<idol::AffExpr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
                                                                                    const idol::LinExpr<idol::Var> &t_lin_expr,
                                                                                    // const idol::QuadExpr<idol::Var> &t_quad_expr,
                                                                                    unsigned int t_sub_problem_id) {
@@ -191,7 +191,7 @@ std::pair<idol::Expr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const id
         return sub_problem_id == t_sub_problem_id || sub_problem_id == -1;
     };
 
-    Expr pattern;
+    AffExpr pattern;
 
     for (const auto& [var, coefficient] : t_lin_expr) {
 
@@ -267,7 +267,7 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
     // Constraints
     for (const auto& [ctr, pattern] : m_constraint_patterns[t_sub_problem_id]) {
 
-        Expr lhs = fix(pattern.constant(), t_primals);
+        AffExpr lhs = fix(pattern.constant(), t_primals);
 
         for (const auto& [var, coefficient] : pattern.linear()) {
             lhs += fix(coefficient, t_primals) * var;
@@ -280,7 +280,7 @@ void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
     // Objective
     if (m_objective_patterns[t_sub_problem_id]) {
         const auto& obj_pattern = *m_objective_patterns[t_sub_problem_id];
-        Expr obj = fix(obj_pattern.constant(), t_primals);
+        AffExpr obj = fix(obj_pattern.constant(), t_primals);
 
         for (const auto& [var, coefficient] : obj_pattern.linear()) {
             obj += fix(coefficient, t_primals) * var;

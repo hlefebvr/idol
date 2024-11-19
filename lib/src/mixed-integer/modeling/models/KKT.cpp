@@ -164,7 +164,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
     const auto index = m_src_model.get_var_index(t_var);
     const auto& col = m_src_model.get_var_column(t_var);
 
-    Expr expr;
+    AffExpr expr;
 
     for (const auto& [ctr, constant] : col) {
 
@@ -203,7 +203,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
         expr += dual_var.value();
     }
 
-    Expr obj = m_description.follower_obj().linear().get(t_var);
+    AffExpr obj = m_description.follower_obj().linear().get(t_var);
 
     m_dual_constraints[index] = Ctr(env, expr == obj, "dual_" + t_var.name());
 
@@ -234,7 +234,7 @@ void idol::Reformulators::KKT::create_complementarity_constraints() {
         const auto& row = m_src_model.get_ctr_row(ctr);
         const double rhs = m_src_model.get_ctr_rhs(ctr);
 
-        Expr expr;
+        AffExpr expr;
 
         for (const auto& [var, constant] : row) {
             expr += constant * var * dual_var;

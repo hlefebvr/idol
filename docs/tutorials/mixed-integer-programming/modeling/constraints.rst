@@ -41,7 +41,7 @@ A more compact version of this code is obtained by making use of the ``Model::ad
 As you can see, a constraint is created using the pattern :code:`{expression} {sign} {expression}` where
 
 * :code:`{sign}` is one of :code:`<=`, :code:`>=` and :code:`==`;
-* :code:`{expression}` is an expression, i.e., an instance of :code:`Expr`.
+* :code:`{expression}` is an expression, i.e., an instance of :code:`AffExpr`.
 
 Actually, the pattern :code:`{expression} {sign} {expression}` only creates a "temporary" constraint, i.e., a constraint
 which is not associated to any model. This is why we need to add it to a model by calling the :code:`Model::add_ctr` method.

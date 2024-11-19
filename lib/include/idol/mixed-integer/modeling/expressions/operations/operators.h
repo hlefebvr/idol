@@ -11,10 +11,11 @@
 #include "operators_utils.h"
 #include "idol/general/utils/Point.h"
 #include <cassert>
+#include <idol/mixed-integer/modeling/expressions/QuadExpr.h>
 
 namespace idol {
     template<class T>
-    double evaluate(const LinExpr<T>& t_expr, const Point<T>& t_values) {
+    double evaluate(const LinExpr<T, double>& t_expr, const Point<T>& t_values) {
         double result = 0.;
 
         for (const auto& [var, constant] : t_expr) {
@@ -25,8 +26,19 @@ namespace idol {
     }
 
     template<class T>
-    double evaluate(const Expr<T>& t_expr, const Point<T>& t_values) {
+    double evaluate(const AffExpr<T, double>& t_expr, const Point<T>& t_values) {
         return t_expr.constant() + evaluate(t_expr.linear(), t_values);
+    }
+
+    template<class T>
+    double evaluate(const QuadExpr<T, double>& t_expr, const Point<T>& t_values) {
+        double result = evaluate(t_expr.affine(), t_values);
+
+        for (const auto& [pair, constant] : t_expr) {
+            result += constant * t_values.get(pair.first) * t_values.get(pair.second);
+        }
+
+        return result;
     }
 
     template<class KeyT, class ValueT, class PointT>

@@ -17,26 +17,24 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
+#include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
+
+using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-
-    /*
     Env env;
     Model model(env);
 
     const auto x = model.add_vars(Dim<1>(10), 0, 1, Binary, 1, "x");
 
-    LinExpr<CommutativePair<Var>, Expr<Var>> expr;
-    LinExpr<CommutativePair<Var>, Expr<Var>> expr2;
+    QuadExpr expr(2 * x[0] + 2);
 
-    expr.set({x[0], x[1]}, 1 + x[0]);
-    expr2.set({x[1], x[0]}, 1);
-
-    expr += expr2;
+    //expr += x[0] * x[0];
 
     std::cout << expr << std::endl;
-    */
+
+    std::cout << evaluate(expr, Point<Var>()) << std::endl;
 
     return 0;
 }

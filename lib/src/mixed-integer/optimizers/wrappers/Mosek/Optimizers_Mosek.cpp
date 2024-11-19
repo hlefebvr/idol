@@ -168,7 +168,7 @@ mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const 
     return result;
 }
 
-mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const Expr<Var> &t_expr) const {
+mosek::fusion::Expression::t idol::Optimizers::Mosek::to_mosek_expression(const AffExpr<Var> &t_expr) const {
     return mosek::fusion::Expr::add(
                 t_expr.constant(),
                 to_mosek_expression(t_expr.linear())
@@ -194,7 +194,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
 
         auto rq_cone_expr = to_rotated_quadratic_cone(sign == 1. ? row.quadratic() : sign * row.quadratic());
 
-        auto expression = mosek::fusion::Expr::zeros(0);
+        auto expression = mosek::fusion::AffExpr::zeros(0);
 
         auto it = rq_cone_expr.begin();
 
@@ -208,9 +208,9 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
             // Here, we have a constraint of the form c^T x + x^T Q x <= b \iff 2 * (1/2) * (b - c^Tx) >= (x^T Q x) = [Q^{1/2} x]^2
             if (head1.is_zero() && head2.is_zero()) {
 
-                expression = mosek::fusion::Expr::vstack(
+                expression = mosek::fusion::AffExpr::vstack(
                         std::move(expression),
-                        mosek::fusion::Expr::constTerm(.5),
+                        mosek::fusion::AffExpr::constTerm(.5),
                         to_mosek_expression(sign * rhs - sign * row.linear())
                 );
 
@@ -223,7 +223,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
                     throw Exception("Non-convex constraint was found.");
                 }
 
-                expression = mosek::fusion::Expr::vstack(
+                expression = mosek::fusion::AffExpr::vstack(
                         to_mosek_expression(head1),
                         to_mosek_expression(head2),
                         std::sqrt(-sign * rhs)
@@ -236,7 +236,7 @@ idol::MosekCtr idol::Optimizers::Mosek::hook_add(const Ctr &t_ctr) {
         }
 
         for (const auto end = rq_cone_expr.end() ; it != end ; ++it) {
-            expression = mosek::fusion::Expr::vstack(
+            expression = mosek::fusion::AffExpr::vstack(
                         std::move(expression),
                         to_mosek_expression(*it)
                     );

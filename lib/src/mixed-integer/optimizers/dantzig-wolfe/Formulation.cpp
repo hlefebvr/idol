@@ -238,7 +238,7 @@ void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Mo
 
     auto [master_part, sub_problem_parts] = decompose_expression(objective.linear());
 
-    m_master.set_obj_expr(Expr(std::move(master_part)) += objective.constant());
+    m_master.set_obj_expr(AffExpr(std::move(master_part)) += objective.constant());
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
         m_generation_patterns[i].objective += std::move(sub_problem_parts[i]);
@@ -330,7 +330,7 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
                                                                    const idol::DualPoint &t_master_dual,
                                                                    bool t_use_farkas) {
 
-    Expr<Var> objective;
+    AffExpr<Var> objective;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
@@ -470,13 +470,13 @@ void idol::DantzigWolfe::Formulation::remove_column_if(unsigned int t_sub_proble
 
 }
 
-void idol::DantzigWolfe::Formulation::update_obj(const idol::Expr<idol::Var> &t_expr) {
+void idol::DantzigWolfe::Formulation::update_obj(const idol::AffExpr<idol::Var> &t_expr) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
     auto [master_part, sub_problem_parts] = decompose_expression(t_expr.linear());
 
-    m_master.set_obj_expr(Expr(std::move(master_part)) + t_expr.constant());
+    m_master.set_obj_expr(AffExpr(std::move(master_part)) + t_expr.constant());
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
 

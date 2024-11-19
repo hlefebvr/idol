@@ -505,7 +505,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
     const auto parse_linear = [&](const GRBLinExpr& t_lin_expr) {
 
-        Expr result_ = t_lin_expr.getConstant();
+        AffExpr result_ = t_lin_expr.getConstant();
         auto& linear_ = result_.linear();
         const auto n_terms = t_lin_expr.size();
         linear_.reserve(n_terms);
@@ -520,7 +520,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
     /*
     const auto parse_quadratic = [&](const GRBQuadExpr& t_quad_expr) {
-        Expr result_ = parse_linear(t_quad_expr.getLinExpr());
+        AffExpr result_ = parse_linear(t_quad_expr.getLinExpr());
 
         for (unsigned int j = 0, n = t_quad_expr.size() ; j < n ; ++j) {
             auto var1 = t_quad_expr.getVar1(j);
@@ -556,7 +556,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_Sense));
         const auto& name = ctr.get(GRB_StringAttr_ConstrName);
 
-        Expr lhs = parse_linear(expr);
+        AffExpr lhs = parse_linear(expr);
         add_ctr(lhs, rhs, type, name);
     }
 
@@ -569,7 +569,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
         const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_QCSense));
         const auto& name = ctr.get(GRB_StringAttr_QCName);
 
-        Expr lhs = parse_quadratic(expr);
+        AffExpr lhs = parse_quadratic(expr);
         add_ctr(row, rhs, type, name);
 
     }

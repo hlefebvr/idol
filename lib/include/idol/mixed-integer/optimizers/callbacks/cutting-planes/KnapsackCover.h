@@ -449,7 +449,7 @@ void idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::separate_cut(const idol::Cu
 template<class NodeInfoT>
 idol::TempCtr idol::Cuts::KnapsackCover<NodeInfoT>::Strategy::create_cut(const SetOfItems &t_set_of_items, int t_right_hand_side) {
 
-    Expr result;
+    AffExpr result;
 
     for (const auto& item : t_set_of_items) {
 

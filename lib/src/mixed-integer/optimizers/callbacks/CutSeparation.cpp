@@ -64,7 +64,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
      */
 }
 
-std::pair<idol::Expr<idol::Var>, idol::ObjectiveSense>
+std::pair<idol::AffExpr<idol::Var>, idol::ObjectiveSense>
 idol::impl::CutSeparation::create_separation_objective(const idol::PrimalPoint &t_primal_solution) {
 
     throw Exception("TODO: Was using Constant");
@@ -73,14 +73,14 @@ idol::impl::CutSeparation::create_separation_objective(const idol::PrimalPoint &
 
     const auto& row = m_cut.row();
 
-    ::idol::Expr result = row.rhs().numerical();
+    ::idol::AffExpr result = row.rhs().numerical();
 
     for (const auto& [param, coeff] : row.rhs().linear()) {
         result += coeff * param.as<Var>();
     }
 
     for (const auto& [var, constant] : row.linear()) {
-        ::idol::Expr term = -constant.numerical();
+        ::idol::AffExpr term = -constant.numerical();
         for (const auto& [param, coeff] : constant.linear()) {
             term += -coeff * param.as<Var>();
         }

@@ -2,14 +2,14 @@ Expressions
 -----------
 
 An expression generically refers to any mathematical expression involving variables or constraints. In idol, expressions
-are represented by the :ref:`Expr <api_Expr>` class.
+are represented by the :ref:`AffExpr <api_Expr>` class.
 
 An expression can be created by adding, subtracting or multiplying variables with constants or other expressions. For instance,
 the following code creates the mathematical expression :math:`1 + 3 x_0 + x_1 + x_0 + 2 x_0 x_1`.
 
 .. code:: cpp
 
-    const Expr expr = 1 + 3 * x[0] + x[1] + x[0] + 2 * x[0] * x[1];
+    const AffExpr expr = 1 + 3 * x[0] + x[1] + x[0] + 2 * x[0] * x[1];
 
     std::cout << expr << std::endl; // "1 + 4 * x[0] + 1 * x[1] + 2 * x[0] * x[1]"
 
@@ -19,7 +19,7 @@ Expressions are composed of three parts:
 * A linear part which is an instance of the :ref:`LinExpr <api_LinExpr>` class;
 * A quadratic part which is an instance of the :ref:`QuadExpr <api_QuadExpr>` class.
 
-Each of these parts can be accessed using the methods :cpp:`Expr::constant`, :cpp:`Expr::linear` and :cpp:`Expr::quadratic`, respectively.
+Each of these parts can be accessed using the methods :cpp:`AffExpr::constant`, :cpp:`AffExpr::linear` and :cpp:`AffExpr::quadratic`, respectively.
 For instance, consider the following code.
 
 .. code-block:: cpp
@@ -33,7 +33,7 @@ This code iterates over the linear part of the expression and prints the variabl
 
 .. admonition:: About constants in expressions
 
-    Without going into too much detail, we should here precise that each constant multiplying a variable in an :cpp:`Expr`,
+    Without going into too much detail, we should here precise that each constant multiplying a variable in an :cpp:`AffExpr`,
     as well as the offset constant, can actually be composite. For instance, this is the case when a variable is multiplied by
     a parameter which is considered fixed in the current model but cannot be evaluated at the time the expression is created.
 
@@ -51,7 +51,7 @@ This code iterates over the linear part of the expression and prints the variabl
         const Model model2(env);
         const auto xi = model2.add_vars(Dim<1>(2), 0., 1., Continuous, "xi");
 
-        const Expr expr = (1 + 2 * !xi[0]) * x[0] + 3 * !xi[1] * x[1];
+        const AffExpr expr = (1 + 2 * !xi[0]) * x[0] + 3 * !xi[1] * x[1];
 
     Here, ``1 + 2 * !xi_0`` is an instance of the ``Constant`` object and can be used as follows.
 

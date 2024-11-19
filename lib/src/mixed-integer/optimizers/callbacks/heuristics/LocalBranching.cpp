@@ -46,7 +46,7 @@ void idol::Heuristics::LocalBranching::Strategy::operator()(idol::CallbackEvent 
 
     model->unuse();
 
-    Expr<Var> distance_to_incumbent;
+    AffExpr<Var> distance_to_incumbent;
 
     for (const auto& var : model->vars()) {
 

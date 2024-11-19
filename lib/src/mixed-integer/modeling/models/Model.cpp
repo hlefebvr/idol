@@ -262,7 +262,7 @@ idol::ObjectiveSense idol::Model::get_obj_sense() const {
     return m_sense;
 }
 
-const idol::Expr<idol::Var>& idol::Model::get_obj_expr() const {
+const idol::AffExpr<idol::Var>& idol::Model::get_obj_expr() const {
     return m_objective;
 }
 
@@ -477,11 +477,11 @@ void idol::Model::set_obj_sense(ObjectiveSense t_value) {
 
 }
 
-void idol::Model::set_obj_expr(const Expr<Var> &t_objective) {
-    set_obj_expr(Expr<Var>(t_objective));
+void idol::Model::set_obj_expr(const AffExpr<Var> &t_objective) {
+    set_obj_expr(AffExpr<Var>(t_objective));
 }
 
-void idol::Model::set_obj_expr(Expr<Var> &&t_objective) {
+void idol::Model::set_obj_expr(AffExpr<Var> &&t_objective) {
 
     throw_if_unknown_object(t_objective.linear());
 

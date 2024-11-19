@@ -17,7 +17,7 @@ add_library(idol STATIC
         src/mixed-integer/problems/knapsack-problem/KP_Instance.cpp
         include/idol/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.h
         src/mixed-integer/problems/multiple-knapsack-problem/MKP_Instance.cpp
-        include/idol/mixed-integer/modeling/expressions/Expr.h
+        include/idol/mixed-integer/modeling/expressions/AffExpr.h
         include/idol/mixed-integer/modeling/expressions/operations/operators_Var.h
         src/mixed-integer/modeling/expressions/operations/operators_Var.cpp
         src/mixed-integer/modeling/expressions/operations/operators_Ctr.cpp

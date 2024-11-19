@@ -233,7 +233,7 @@ void AuxParser::set_ctr_annotations() {
 
 void AuxParser::create_lower_level_objective() {
 
-    Expr obj;
+    AffExpr obj;
 
     for (const auto& var : m_high_point_relaxation->vars()) {
 

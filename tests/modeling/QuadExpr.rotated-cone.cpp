@@ -29,7 +29,7 @@ double eval(const QuadExpr<Var>& t_expr, const PrimalPoint& t_primal) {
     return result;
 }
 
-double eval(const Expr<Var>& t_expr, const PrimalPoint& t_primal) {
+double eval(const AffExpr<Var>& t_expr, const PrimalPoint& t_primal) {
     return t_expr.constant() + eval(t_expr.linear(), t_primal) + eval(t_expr.quadratic(), t_primal);
 }
 */

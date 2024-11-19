@@ -13,7 +13,7 @@
 
 #include "idol/mixed-integer/modeling/constraints/CtrVersion.h"
 #include "idol/mixed-integer/modeling/variables/VarVersion.h"
-#include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/mixed-integer/modeling/expressions/AffExpr.h"
 #include "idol/general/utils/Point.h"
 
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
@@ -48,7 +48,7 @@ private:
 
     ObjectiveSense m_sense = Minimize;
 
-    Expr<Var> m_objective;
+    AffExpr<Var> m_objective;
     LinExpr<Ctr> m_rhs;
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
@@ -584,13 +584,13 @@ public:
      *
      * Example:
      * ```cpp
-     * const Expr& objective = model.get_obj_expr();
+     * const AffExpr& objective = model.get_obj_expr();
      *
      * std::cout << "The objective function is " << objective << std::endl;
      * ```
      * @return the objective function of the model
      */
-    [[nodiscard]] const Expr<Var>& get_obj_expr() const;
+    [[nodiscard]] const AffExpr<Var>& get_obj_expr() const;
 
     /**
      * Returns the right hand-side of the model.
@@ -707,14 +707,14 @@ public:
      *
      * Example:
      * ```cpp
-     * Expr objective = - x[0] - 2 * x[2];
+     * AffExpr objective = - x[0] - 2 * x[2];
      * model.set_obj_expr(objective);
      * ```
      *
      * Attention: every variable involved in t_objective must already be part of the model.
      * @param t_objective
      */
-    void set_obj_expr(const Expr<Var>& t_objective);
+    void set_obj_expr(const AffExpr<Var>& t_objective);
 
     /**
      * Sets the objective expression of the model.
@@ -729,7 +729,7 @@ public:
      * Attention: every variable involved in t_objective must already be part of the model.
      * @param t_objective
      */
-    void set_obj_expr(Expr<Var>&& t_objective);
+    void set_obj_expr(AffExpr<Var>&& t_objective);
 
     /**
      * Sets the right hand-side of the model

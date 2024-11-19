@@ -87,23 +87,23 @@ LinExpr<Ctr> idol::operator+(const LinExpr<Ctr>& t_a, const LinExpr<Ctr>& t_b) {
     return LinExpr<Ctr>(t_a) + t_b;
 }
 
-Expr<Ctr> idol::operator+(const Expr<Ctr>& t_a, Expr<Ctr>&& t_b) {
-    Expr<Ctr> result(std::move(t_b));
+AffExpr<Ctr> idol::operator+(const AffExpr<Ctr>& t_a, AffExpr<Ctr>&& t_b) {
+    AffExpr<Ctr> result(std::move(t_b));
     result.linear() += t_a.linear();
     result.constant() += t_a.constant();
     return result;
 }
 
-Expr<Ctr> idol::operator+(Expr<Ctr>&& t_a, const Expr<Ctr>& t_b) {
+AffExpr<Ctr> idol::operator+(AffExpr<Ctr>&& t_a, const AffExpr<Ctr>& t_b) {
     return t_b + std::move(t_a);
 }
 
-Expr<Ctr> idol::operator+(Expr<Ctr>&& t_a, Expr<Ctr>&& t_b) {
+AffExpr<Ctr> idol::operator+(AffExpr<Ctr>&& t_a, AffExpr<Ctr>&& t_b) {
     return t_b + std::move(t_b);
 }
 
-Expr<Ctr> idol::operator+(const Expr<Ctr>& t_a, const Expr<Ctr>& t_b) {
-    return t_a + Expr<Ctr>(t_b);
+AffExpr<Ctr> idol::operator+(const AffExpr<Ctr>& t_a, const AffExpr<Ctr>& t_b) {
+    return t_a + AffExpr<Ctr>(t_b);
 }
 
 /* DIFFERENCE */
@@ -141,14 +141,14 @@ LinExpr<Ctr> idol::operator-(const LinExpr<Ctr>& t_a, const LinExpr<Ctr>& t_b) {
 }
 
 
-Expr<Ctr> idol::operator-(Expr<Ctr>&& t_a, const Expr<Ctr>& t_b) {
-    Expr<Ctr> result(std::move(t_a));
+AffExpr<Ctr> idol::operator-(AffExpr<Ctr>&& t_a, const AffExpr<Ctr>& t_b) {
+    AffExpr<Ctr> result(std::move(t_a));
     result -= t_b;
     return result;
 }
 
-Expr<Ctr> idol::operator-(const Expr<Ctr>& t_a, const Expr<Ctr>& t_b) {
-    Expr<Ctr> result(t_a);
+AffExpr<Ctr> idol::operator-(const AffExpr<Ctr>& t_a, const AffExpr<Ctr>& t_b) {
+    AffExpr<Ctr> result(t_a);
     result -= t_b;
     return result;
 }

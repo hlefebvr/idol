@@ -3,39 +3,39 @@
 //
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 #include "idol/general/utils/Point.h"
-#include "idol/mixed-integer/modeling/expressions/Expr.h"
+#include "idol/mixed-integer/modeling/expressions/AffExpr.h"
 
 using namespace idol;
 
-TempCtr operator<=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+TempCtr operator<=(AffExpr<Var>&& t_lhs, AffExpr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
     return { std::move(diff.linear()), LessOrEqual, -diff.constant() };
 }
 
-TempCtr operator<=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) <= std::move(t_rhs); }
-TempCtr operator<=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) <= Expr<Var>(t_rhs); }
-TempCtr operator<=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) <= Expr<Var>(t_rhs); }
+TempCtr operator<=(const AffExpr<Var>& t_lhs, AffExpr<Var>&& t_rhs) { return AffExpr<Var>(t_lhs) <= std::move(t_rhs); }
+TempCtr operator<=(AffExpr<Var>&& t_lhs, const AffExpr<Var>& t_rhs) { return std::move(t_lhs) <= AffExpr<Var>(t_rhs); }
+TempCtr operator<=(const AffExpr<Var>& t_lhs, const AffExpr<Var>& t_rhs) { return AffExpr<Var>(t_lhs) <= AffExpr<Var>(t_rhs); }
 
-TempCtr operator>=(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+TempCtr operator>=(AffExpr<Var>&& t_lhs, AffExpr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
     return { std::move(diff.linear()), GreaterOrEqual, -diff.constant() };
 }
 
-TempCtr operator>=(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) >= std::move(t_rhs); }
-TempCtr operator>=(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) >= Expr<Var>(t_rhs); }
-TempCtr operator>=(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) >= Expr<Var>(t_rhs); }
+TempCtr operator>=(const AffExpr<Var>& t_lhs, AffExpr<Var>&& t_rhs) { return AffExpr<Var>(t_lhs) >= std::move(t_rhs); }
+TempCtr operator>=(AffExpr<Var>&& t_lhs, const AffExpr<Var>& t_rhs) { return std::move(t_lhs) >= AffExpr<Var>(t_rhs); }
+TempCtr operator>=(const AffExpr<Var>& t_lhs, const AffExpr<Var>& t_rhs) { return AffExpr<Var>(t_lhs) >= AffExpr<Var>(t_rhs); }
 
-TempCtr operator==(Expr<Var>&& t_lhs, Expr<Var>&& t_rhs) {
+TempCtr operator==(AffExpr<Var>&& t_lhs, AffExpr<Var>&& t_rhs) {
     auto diff = std::move(t_lhs);
     diff -= t_rhs;
     return { std::move(diff.linear()), Equal, -diff.constant() };
 }
 
-TempCtr operator==(const Expr<Var>& t_lhs, Expr<Var>&& t_rhs) { return Expr<Var>(t_lhs) == std::move(t_rhs); }
-TempCtr operator==(Expr<Var>&& t_lhs, const Expr<Var>& t_rhs) { return std::move(t_lhs) == Expr<Var>(t_rhs); }
-TempCtr operator==(const Expr<Var>& t_lhs, const Expr<Var>& t_rhs) { return Expr<Var>(t_lhs) == Expr<Var>(t_rhs); }
+TempCtr operator==(const AffExpr<Var>& t_lhs, AffExpr<Var>&& t_rhs) { return AffExpr<Var>(t_lhs) == std::move(t_rhs); }
+TempCtr operator==(AffExpr<Var>&& t_lhs, const AffExpr<Var>& t_rhs) { return std::move(t_lhs) == AffExpr<Var>(t_rhs); }
+TempCtr operator==(const AffExpr<Var>& t_lhs, const AffExpr<Var>& t_rhs) { return AffExpr<Var>(t_lhs) == AffExpr<Var>(t_rhs); }
 
 std::ostream &idol::operator<<(std::ostream& t_os, const TempCtr& t_temp_ctr) {
     t_os << t_temp_ctr.lhs();

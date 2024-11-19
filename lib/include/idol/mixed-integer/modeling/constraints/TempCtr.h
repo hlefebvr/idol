@@ -14,7 +14,7 @@ namespace idol {
 
     class TempCtr;
 
-    template<class, class> class Expr;
+    template<class, class> class AffExpr;
 }
 
 /**
@@ -24,7 +24,7 @@ namespace idol {
  * It contains all the arguments needed to create a real constraint
  * as instantiated by the `Ctr` class. It is made of a row (see `Row`) and a type (see `CtrType.rst.rst`).
  *
- * Typically, one creates a `TempCtr` by using the overloaded operators `<=`, `>=` and `==` between variable expressions (i.e., `Expr`) and
+ * Typically, one creates a `TempCtr` by using the overloaded operators `<=`, `>=` and `==` between variable expressions (i.e., `AffExpr`) and
  * constant terms (i.e., `Constant`).
  *
  * **Example 1**:
@@ -114,20 +114,20 @@ public:
 
 };
 
-idol::TempCtr operator<=(idol::Expr<idol::Var, double>&& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator<=(const idol::Expr<idol::Var, double>& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator<=(idol::Expr<idol::Var, double>&& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
-idol::TempCtr operator<=(const idol::Expr<idol::Var, double>& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
+idol::TempCtr operator<=(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator<=(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator<=(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
+idol::TempCtr operator<=(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
 
-idol::TempCtr operator>=(idol::Expr<idol::Var, double>&& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator>=(const idol::Expr<idol::Var, double>& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator>=(idol::Expr<idol::Var, double>&& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
-idol::TempCtr operator>=(const idol::Expr<idol::Var, double>& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
+idol::TempCtr operator>=(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator>=(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator>=(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
+idol::TempCtr operator>=(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
 
-idol::TempCtr operator==(idol::Expr<idol::Var, double>&& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator==(const idol::Expr<idol::Var, double>& t_lhs, idol::Expr<idol::Var, double>&& t_rhs);
-idol::TempCtr operator==(idol::Expr<idol::Var, double>&& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
-idol::TempCtr operator==(const idol::Expr<idol::Var, double>& t_lhs, const idol::Expr<idol::Var, double>& t_rhs);
+idol::TempCtr operator==(idol::AffExpr<idol::Var, double>&& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator==(const idol::AffExpr<idol::Var, double>& t_lhs, idol::AffExpr<idol::Var, double>&& t_rhs);
+idol::TempCtr operator==(idol::AffExpr<idol::Var, double>&& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
+idol::TempCtr operator==(const idol::AffExpr<idol::Var, double>& t_lhs, const idol::AffExpr<idol::Var, double>& t_rhs);
 
 namespace idol {
     std::ostream &operator<<(std::ostream &t_os, const TempCtr &t_temp_ctr);
