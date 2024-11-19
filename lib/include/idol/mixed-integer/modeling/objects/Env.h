@@ -13,6 +13,9 @@
 #include "Versions.h"
 #include "ObjectId.h"
 #include "idol/mixed-integer/modeling/annotations/impl_Annotation.h"
+#include "idol/mixed-integer/modeling/constraints/QCtrVersion.h"
+#include "idol/mixed-integer/modeling/constraints/QCtr.h"
+#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 namespace idol {
 
@@ -54,6 +57,7 @@ class idol::impl::Env {
 
     std::list<Versions<VarVersion>> m_variables; /// Every version of each variable in the environment is stored here
     std::list<Versions<CtrVersion>> m_constraints; /// Every version of each constraint in the environment is stored here
+    std::list<Versions<QCtrVersion>> m_qconstraints; /// Every version of each quadratic constraint in the environment is stored here
 
     template<class T, class VersionT, class ...ArgsT>
     ObjectId<VersionT> create(std::string t_name, const std::string& t_default_name, std::list<Versions<VersionT>>& t_container, ArgsT&& ...t_args) {
@@ -102,6 +106,10 @@ protected:
 
     ObjectId<CtrVersion> create_ctr(std::string t_name, TempCtr&& t_temp_ctr) {
         return create<Ctr>(std::move(t_name), "c", m_constraints, std::move(t_temp_ctr));
+    }
+
+    ObjectId<QCtrVersion> create_qctr(std::string t_name, TempQCtr&& t_temp_ctr) {
+        return create<QCtr>(std::move(t_name), "c", m_qconstraints, std::move(t_temp_ctr));
     }
 
 public:
@@ -159,6 +167,7 @@ public:
     friend class Model;
     friend class Var;
     friend class Ctr;
+    friend class QCtr;
     friend class impl::Annotation;
 };
 

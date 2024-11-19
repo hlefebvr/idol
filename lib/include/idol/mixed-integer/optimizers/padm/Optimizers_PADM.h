@@ -51,9 +51,13 @@ protected:
 
     void add(const Ctr &t_ctr) override;
 
+    void add(const QCtr &t_ctr) override;
+
     void remove(const Var &t_var) override;
 
     void remove(const Ctr &t_ctr) override;
+
+    void remove(const QCtr &t_ctr) override;
 
     void update() override;
 

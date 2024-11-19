@@ -801,4 +801,12 @@ void idol::Optimizers::GLPK::set_param_logs(bool t_value) {
 
 }
 
+int idol::Optimizers::GLPK::hook_add(const idol::QCtr &t_ctr) {
+    throw Exception("Adding quadratic constraints is not implemeted.");
+}
+
+void idol::Optimizers::GLPK::hook_remove(const idol::QCtr &t_ctr) {
+    throw Exception("Removing quadratic constraints is not implemeted.");
+}
+
 #endif

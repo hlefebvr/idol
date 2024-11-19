@@ -16,6 +16,7 @@ namespace idol {
     class Model;
     class Var;
     class Ctr;
+    class QCtr;
     class Constant;
 
     namespace impl {
@@ -52,9 +53,11 @@ protected:
 
     virtual void add(const Var& t_var) = 0;
     virtual void add(const Ctr& t_ctr) = 0;
+    virtual void add(const QCtr& t_ctr) = 0;
 
     virtual void remove(const Var& t_var) = 0;
     virtual void remove(const Ctr& t_ctr) = 0;
+    virtual void remove(const QCtr& t_ctr) = 0;
 
     virtual void update() = 0;
 

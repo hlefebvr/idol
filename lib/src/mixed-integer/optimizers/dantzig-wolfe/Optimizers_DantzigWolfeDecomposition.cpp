@@ -230,3 +230,11 @@ void idol::Optimizers::DantzigWolfeDecomposition::add_sub_problem() {
     m_formulation.add_sub_problem();
     m_formulation.add_aggregation_constraint(sub_problem_id, m_default_sub_problem_spec->lower_multiplicity(), m_default_sub_problem_spec->upper_multiplicity());
 }
+
+void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::QCtr &t_ctr) {
+    throw Exception("Not implemented add(QCtr)");
+}
+
+void idol::Optimizers::DantzigWolfeDecomposition::remove(const idol::QCtr &t_ctr) {
+    throw Exception("Not implemented remove(QCtr)");
+}

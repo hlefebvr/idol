@@ -514,4 +514,12 @@ double idol::Optimizers::HiGHS::get_var_reduced_cost(const idol::Var &t_var) con
     throw Exception("Not implemented get_var_reduced_cost");
 }
 
+int idol::Optimizers::HiGHS::hook_add(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic expressions are not implemented.");
+}
+
+void idol::Optimizers::HiGHS::hook_remove(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic expressions are not implemented.");
+}
+
 #endif

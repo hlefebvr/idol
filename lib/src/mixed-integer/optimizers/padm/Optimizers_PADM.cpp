@@ -642,6 +642,14 @@ void idol::Optimizers::PADM::restart() {
     ++m_n_restart;
 }
 
+void idol::Optimizers::PADM::add(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic constraints are not implemented");
+}
+
+void idol::Optimizers::PADM::remove(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic constraints are not implemented");
+}
+
 idol::Optimizers::PADM::IterationPlot::IterationPlot(idol::Plots::Manager &t_manager) : m_manager(t_manager) {
 
 }

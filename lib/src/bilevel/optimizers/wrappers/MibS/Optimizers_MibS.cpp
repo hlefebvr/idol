@@ -198,4 +198,12 @@ void idol::Optimizers::Bilevel::MibS::add_callback(idol::Callback *t_callback) {
     m_callbacks.emplace_back(std::unique_ptr<Callback>(t_callback));
 }
 
+void idol::Optimizers::Bilevel::MibS::add(const idol::QCtr &t_ctr) {
+    throw Exception("MibS does not support quadratic constraints.");
+}
+
+void idol::Optimizers::Bilevel::MibS::remove(const idol::QCtr &t_ctr) {
+    throw Exception("MibS does not support quadratic constraints.");
+}
+
 #endif

@@ -16,7 +16,7 @@ namespace idol::Optimizers {
     class GLPK;
 }
 
-class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int> {
+class idol::Optimizers::GLPK  : public OptimizerWithLazyUpdates<int, int, int> {
 
     bool m_continuous_relaxation;
 
@@ -44,6 +44,8 @@ protected:
 
     int hook_add(const Ctr &t_ctr) override;
 
+    int hook_add(const QCtr &t_ctr) override;
+
     void hook_update_objective_sense() override;
 
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
@@ -61,6 +63,8 @@ protected:
     void hook_remove(const Var &t_var) override;
 
     void hook_remove(const Ctr &t_ctr) override;
+
+    void hook_remove(const QCtr &t_ctr) override;
 
     void set_var_attr(int t_index, int t_type, double t_lb, double t_ub, double t_obj);
 

@@ -565,6 +565,14 @@ void idol::Optimizers::Mosek::add_callback(idol::Callback *t_ptr_to_callback) {
     m_mosek_callback->add_callback(t_ptr_to_callback);
 }
 
+idol::MosekCtr idol::Optimizers::Mosek::hook_add(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic constraints are not implemented");
+}
+
+void idol::Optimizers::Mosek::hook_remove(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic constraints are not implemented");
+}
+
 idol::MosekKiller::~MosekKiller() {
     mosek::releaseGlobalEnv();
 }

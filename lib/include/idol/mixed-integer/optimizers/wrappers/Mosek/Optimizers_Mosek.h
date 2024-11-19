@@ -34,7 +34,7 @@ namespace idol {
     }
 }
 
-class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr> {
+class idol::Optimizers::Mosek : public OptimizerWithLazyUpdates<MosekVar, MosekCtr, MosekCtr> {
     bool m_continuous_relaxation;
 
     mosek::fusion::Model::t m_model;
@@ -59,6 +59,8 @@ protected:
 
     MosekCtr hook_add(const Ctr &t_ctr) override;
 
+    MosekCtr hook_add(const QCtr &t_ctr) override;
+
     void hook_update_objective_sense() override;
 
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
@@ -76,6 +78,8 @@ protected:
     void hook_remove(const Var &t_var) override;
 
     void hook_remove(const Ctr &t_ctr) override;
+
+    void hook_remove(const QCtr &t_ctr) override;
 
     [[nodiscard]] SolutionStatus get_status() const override;
     [[nodiscard]] SolutionReason get_reason() const override;

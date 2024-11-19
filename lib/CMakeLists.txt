@@ -220,6 +220,12 @@ add_library(idol STATIC
         src/mixed-integer/modeling/variables/VarVersion.cpp
         src/mixed-integer/modeling/constraints/CtrVersion.cpp
         include/idol/mixed-integer/modeling/expressions/QuadExpr.h
+        include/idol/mixed-integer/modeling/constraints/QCtr.h
+        include/idol/mixed-integer/modeling/constraints/QCtrVersion.h
+        include/idol/mixed-integer/modeling/constraints/TempQCtr.h
+        src/mixed-integer/modeling/constraints/TempQCtr.cpp
+        src/mixed-integer/modeling/constraints/QCtrVersion.cpp
+        src/mixed-integer/modeling/constraints/QCtr.cpp
 )
 
 find_package(OpenMP REQUIRED)

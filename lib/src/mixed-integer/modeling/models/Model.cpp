@@ -136,16 +136,12 @@ void idol::Model::remove(const Var &t_var) {
 
     }
 
-    /*
-    unsigned int index = version.index();
-    m_variables.erase(m_variables.begin() + index);
-
-    // Shifting all indices left after the deleted constraint
-    for (const unsigned int n_vars = m_variables.size(); index < n_vars ; ++index) {
-        m_env.version(*this, m_variables.at(index)).set_index(index);
+    for (const auto& qctr : m_qconstraints) {
+        auto& qctr_version = m_env.version(*this, qctr);
+        auto& qexpr = qctr_version.expr();
+        qexpr.affine().linear().remove(t_var);
+        std::cerr << "Warning: Removing a variable from a model with quadratic constraints is not removing variable in quadratic expression." << std::endl;
     }
-    m_env.remove_version(*this, t_var);
-     */
 
     const auto index = m_env.version(*this, t_var).index();
     m_env.version(*this, m_variables.back()).set_index(index);
@@ -829,6 +825,19 @@ void idol::Model::throw_if_unknown_object(const idol::LinExpr<T> &t_expr) {
     }
 }
 
+template<class T>
+void idol::Model::throw_if_unknown_object(const idol::QuadExpr<T> &t_expr) {
+    throw_if_unknown_object(t_expr.affine().linear());
+    for (const auto& [pair, constant] : t_expr) {
+        if (!has(pair.first)) {
+            throw Exception("Object " + pair.first.name() + " is not part of the model.");
+        }
+        if (!has(pair.second)) {
+            throw Exception("Object " + pair.second.name() + " is not part of the model.");
+        }
+    }
+}
+
 void idol::Model::dump(std::ostream &t_os) const {
 
     t_os << "Objective Function:\n";
@@ -991,4 +1000,66 @@ bool idol::Model::column_storage_matters() const {
 
 bool idol::Model::row_storage_matters() const {
     return m_has_minor_representation || m_storage != ColumnOriented;
+}
+
+idol::QCtr idol::Model::add_qctr(idol::TempQCtr t_temp_ctr, std::string t_name) {
+    QCtr result(m_env, std::move(t_temp_ctr), std::move(t_name));
+    add(result);
+    return result;
+}
+
+idol::QCtr idol::Model::add_qctr(idol::QuadExpr<idol::Var> &&t_expr, idol::CtrType t_type, std::string t_name) {
+    return add_qctr(TempQCtr(std::move(t_expr), t_type), std::move(t_name));
+}
+
+void idol::Model::add(const idol::QCtr &t_ctr) {
+    const auto& default_version = m_env[t_ctr];
+    add(t_ctr,
+        TempQCtr(
+                QuadExpr<Var>(default_version.expr()),
+                default_version.type()
+        )
+    );
+}
+
+void idol::Model::add(const idol::QCtr &t_ctr, idol::TempQCtr t_temp_ctr) {
+
+    throw_if_unknown_object(t_temp_ctr.expr());
+
+    const unsigned int index = m_constraints.size();
+    const auto type = t_temp_ctr.type();
+
+    // Create constraint version
+    m_env.create_version(*this, t_ctr, index, std::move(t_temp_ctr.expr()), type);
+    m_qconstraints.emplace_back(t_ctr);
+
+    if (has_optimizer()) {
+        optimizer().add(t_ctr);
+    }
+
+}
+
+bool idol::Model::has(const idol::QCtr &t_ctr) const {
+    return m_env.has_version(*this, t_ctr);
+}
+
+void idol::Model::remove(const idol::QCtr &t_ctr) {
+
+    if (has_optimizer()) {
+        optimizer().remove(t_ctr);
+    }
+
+    const auto index = m_env.version(*this, t_ctr).index();
+    m_env.version(*this, m_qconstraints.back()).set_index(index);
+    m_qconstraints[index] = m_qconstraints.back();
+    m_qconstraints.pop_back();
+    m_env.remove_version(*this, t_ctr);
+}
+
+unsigned int idol::Model::get_qctr_index(const idol::QCtr &tctr) const {
+    return m_env.version(*this, tctr).index();
+}
+
+idol::QCtr idol::Model::get_qctr_by_index(unsigned int t_index) const {
+    return m_qconstraints.at(t_index);
 }

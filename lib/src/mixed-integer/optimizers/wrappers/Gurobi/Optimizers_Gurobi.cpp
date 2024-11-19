@@ -135,11 +135,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
             auto& impl = lazy(ctr).impl();
 
-            if (std::holds_alternative<GRBQConstr>(impl)) {
-                throw Exception("Cannot add column to quadratic constraints.");
-            }
-
-            col.addTerm( constant, std::get<GRBConstr>(impl) );
+            col.addTerm( constant, impl);
 
         }
 
@@ -148,7 +144,7 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
     GUROBI_CATCH(return m_model.addVar(lb, ub, objective, type, col, name);)
 }
 
-std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
+GRBConstr idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
 
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
@@ -162,6 +158,10 @@ std::variant<GRBConstr, GRBQConstr> idol::Optimizers::Gurobi::hook_add(const Ctr
     }
 
     GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
+}
+
+GRBQConstr idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
+    throw Exception("Adding quadratic constraints is not implemented.");
 }
 
 void idol::Optimizers::Gurobi::hook_update(const Var& t_var) {
@@ -185,18 +185,11 @@ void idol::Optimizers::Gurobi::hook_update(const Ctr& t_ctr) {
     const auto& model = parent();
     auto& impl = lazy(t_ctr).impl();
 
-    if (std::holds_alternative<GRBConstr>(impl)) {
+    const auto& rhs = model.get_ctr_rhs(t_ctr);
+    const auto type = model.get_ctr_type(t_ctr);
 
-        auto& linear_impl = std::get<GRBConstr>(impl);
-        const auto& rhs = model.get_ctr_rhs(t_ctr);
-        const auto type = model.get_ctr_type(t_ctr);
-
-        linear_impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
-        linear_impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
-
-    } else {
-        throw Exception("Updating an SOCP constraint is not implemented.");
-    }
+    impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
+    impl.set(GRB_CharAttr_Sense, gurobi_ctr_type(type));
 
 }
 
@@ -221,12 +214,8 @@ void idol::Optimizers::Gurobi::hook_update_rhs() {
 
     for (const auto& ctr : model.ctrs()) {
         auto& impl = lazy(ctr).impl();
-        if (std::holds_alternative<GRBConstr>(impl)) {
-            const auto& rhs = model.get_ctr_rhs(ctr);
-            std::get<GRBConstr>(impl).set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
-        } else {
-            std::cout << "Warning: Updating RHS on an SOCP constraint was skipped" << std::endl;
-        }
+        const auto& rhs = model.get_ctr_rhs(ctr);
+        impl.set(GRB_DoubleAttr_RHS, gurobi_numeric(rhs));
     }
 
 }
@@ -241,12 +230,7 @@ void idol::Optimizers::Gurobi::hook_remove(const Var& t_var) {
 void idol::Optimizers::Gurobi::hook_remove(const Ctr& t_ctr) {
 
     const auto& impl = lazy(t_ctr).impl();
-
-    if (std::holds_alternative<GRBConstr>(impl)) {
-        m_model.remove(std::get<GRBConstr>(impl));
-    } else {
-        m_model.remove(std::get<GRBQConstr>(impl));
-    }
+    m_model.remove(impl);
 
 }
 
@@ -270,7 +254,7 @@ void idol::Optimizers::Gurobi::hook_update_objective_sense() {
 void idol::Optimizers::Gurobi::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
 
     const auto& var_impl = lazy(t_var).impl();
-    const auto& ctr_impl = std::get<GRBConstr>(lazy(t_ctr).impl());
+    const auto& ctr_impl = lazy(t_ctr).impl();
 
     m_model.chgCoeff(ctr_impl, var_impl, gurobi_numeric(t_constant));
 
@@ -392,28 +376,14 @@ double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
 }
 
 double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
-    const auto& impl = lazy(t_ctr).impl();
-
-    if (std::holds_alternative<GRBConstr>(impl)) {
-        GUROBI_CATCH(
-            return std::get<GRBConstr>(impl).get(GRB_DoubleAttr_Pi);
-        )
-    }
-
     GUROBI_CATCH(
-        return std::get<GRBQConstr>(impl).get(GRB_DoubleAttr_QCPi);
+        return lazy(t_ctr).impl().get(GRB_DoubleAttr_Pi);
     )
 }
 
 double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
-    const auto& impl = lazy(t_ctr).impl();
-
-    if (!std::holds_alternative<GRBConstr>(impl)) {
-        throw Exception("Gurobi does not handle Farkas certificates with quadratic constraints.");
-    }
-
     GUROBI_CATCH(
-        return -std::get<GRBConstr>(impl).get(GRB_DoubleAttr_FarkasDual);
+        return -lazy(t_ctr).impl().get(GRB_DoubleAttr_FarkasDual);
     )
 }
 
@@ -628,6 +598,10 @@ double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) co
     GUROBI_CATCH(
         return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
     )
+}
+
+void idol::Optimizers::Gurobi::hook_remove(const idol::QCtr &t_ctr) {
+    m_model.remove(lazy(t_ctr).impl());
 }
 
 #endif

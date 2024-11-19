@@ -17,7 +17,7 @@ namespace idol {
     template<class T, class ImplT>
     class Lazy;
 
-    template<class VarImplT, class CtrImplT>
+    template<class VarImplT, class CtrImplT, class QCtrImplT>
     class OptimizerWithLazyUpdates;
 }
 
@@ -49,7 +49,7 @@ public:
     const T& object() const { return m_object; }
 };
 
-template<class VarImplT, class CtrImplT>
+template<class VarImplT, class CtrImplT, class QCtrImplT>
 class idol::OptimizerWithLazyUpdates : public Optimizer {
     std::vector<Lazy<Var, VarImplT>> m_variables;
     std::list<unsigned int> m_variables_to_update;
@@ -57,12 +57,16 @@ class idol::OptimizerWithLazyUpdates : public Optimizer {
     std::vector<Lazy<Ctr, CtrImplT>> m_constraints;
     std::list<unsigned int> m_constraints_to_update;
 
+    std::vector<Lazy<QCtr, CtrImplT>> m_qconstraints;
+    std::list<unsigned int> m_qconstraints_to_update;
+
     bool m_is_initialized = false;
     bool m_is_objective_to_be_updated = true;
     bool m_is_rhs_to_be_updated = true;
 
     void update_vars();
     void update_ctrs();
+    void update_qctrs();
 
     void lazy_update_objective_sense();
     void lazy_update_matrix(const Ctr& t_ctr, const Var &t_var, double t_constant);
@@ -85,6 +89,9 @@ protected:
     void add(const Ctr &t_ctr) final;
     virtual CtrImplT hook_add(const Ctr& t_ctr) = 0;
 
+    void add(const QCtr& t_ctr) final;
+    virtual QCtrImplT hook_add(const QCtr& t_ctr) = 0;
+
     virtual void hook_update_objective_sense() = 0;
     virtual void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) = 0;
 
@@ -103,17 +110,26 @@ protected:
     void remove(const Ctr& t_ctr) final;
     virtual void hook_remove(const Ctr& t_ctr) = 0;
 
+    void remove(const QCtr& t_ctr) final;
+    virtual void hook_remove(const QCtr& t_ctr) = 0;
+
     auto& lazy(const Var& t_var) { return m_variables[parent().get_var_index(t_var)]; }
     const auto& lazy(const Var& t_var) const { return m_variables[parent().get_var_index(t_var)]; }
 
     auto& lazy(const Ctr& t_ctr) { return m_constraints[parent().get_ctr_index(t_ctr)]; }
     const auto& lazy(const Ctr& t_ctr) const { return m_constraints[parent().get_ctr_index(t_ctr)]; }
 
+    auto& lazy(const QCtr& t_ctr) { return m_qconstraints[parent().get_qctr_index(t_ctr)]; }
+    const auto& lazy(const QCtr& t_ctr) const { return m_qconstraints[parent().get_qctr_index(t_ctr)]; }
+
     auto& lazy_vars() { return m_variables; }
     const auto& lazy_vars() const { return m_variables; }
 
     auto& lazy_ctrs() { return m_constraints; }
     const auto& lazy_ctrs() const { return m_constraints; }
+
+    auto& lazy_qctrs() { return m_qconstraints; }
+    const auto& lazy_qctrs() const { return m_qconstraints; }
 
     void set_objective_to_be_updated() { m_is_objective_to_be_updated = true; }
     [[nodiscard]] bool is_objective_to_be_updated() const { return m_is_objective_to_be_updated; }
@@ -142,69 +158,69 @@ public:
     const CtrImplT& operator[](const Ctr& t_ctr) const { return lazy(t_ctr).impl(); }
 };
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_ub(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_var_ub(const Var &t_var) {
     lazy_update(t_var);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_obj(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_var_obj(const Var &t_var) {
     lazy_update(t_var);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_lb(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_var_lb(const Var &t_var) {
     lazy_update(t_var);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_var_type(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_var_type(const Var &t_var) {
     lazy_update(t_var);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_rhs(const Ctr &t_ctr) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_ctr_rhs(const Ctr &t_ctr) {
     lazy_update(t_ctr);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctr_type(const Ctr &t_ctr) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_ctr_type(const Ctr &t_ctr) {
     lazy_update(t_ctr);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_mat_coeff(const Ctr &t_ctr, const Var &t_var) {
     lazy_update_matrix(t_ctr, t_var, parent().get_mat_coeff(t_ctr, t_var));
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_constant() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_obj_constant() {
     lazy_update_objective();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_obj() {
     lazy_update_objective();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_obj_sense() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_obj_sense() {
     lazy_update_objective_sense();
 }
 
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_rhs() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_rhs() {
     lazy_update_rhs();
 }
 
-template<class VarImplT, class CtrImplT>
-idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::OptimizerWithLazyUpdates(const Model &t_parent) : Optimizer(t_parent) {
 
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::build() {
 
     for (const auto& var : parent().vars()) {
         add(var);
@@ -214,20 +230,24 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::build() {
         add(ctr);
     }
 
+    for (const auto& qctr : parent().qctrs()) {
+        add(qctr);
+    }
+
     set_objective_to_be_updated();
     set_rhs_to_be_updated();
 
     hook_build();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::write(const std::string &t_name) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::write(const std::string &t_name) {
     update();
     hook_write(t_name);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update() {
 
     update_vars();
 
@@ -248,8 +268,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update() {
     m_is_initialized = true;
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_vars() {
 
     for (const unsigned int index : m_variables_to_update) {
 
@@ -267,8 +287,8 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_vars() {
 
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_ctrs() {
 
     for (const unsigned int index : m_constraints_to_update) {
 
@@ -287,106 +307,140 @@ void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::update_ctrs() {
 
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_rhs() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::update_qctrs() {
+
+    for (const unsigned int index : m_qconstraints_to_update) {
+
+        if (m_qconstraints[index].has_impl()) {
+            hook_update(m_qconstraints[index].object());
+        } else {
+            auto impl = hook_add(m_qconstraints[index].object());
+            m_qconstraints[index].set_impl(std::move(impl));
+        }
+
+        m_qconstraints[index].set_as_updated();
+
+    }
+
+    m_qconstraints_to_update.clear();
+
+}
+
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update_rhs() {
     set_rhs_to_be_updated();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update_objective() {
     set_objective_to_be_updated();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_objective_sense() {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update_objective_sense() {
     hook_update_objective_sense();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update(const Var &t_var) {
     const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables[index].set_as_to_be_updated(m_variables_to_update.begin());
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update(const Ctr &t_ctr) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update(const Ctr &t_ctr) {
     const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints[index].set_as_to_be_updated(m_constraints_to_update.begin());
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::lazy_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
     hook_update_matrix(t_ctr, t_var, t_constant);
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Ctr &t_ctr) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::add(const Ctr &t_ctr) {
+
     if (m_is_initialized) {
         update_vars();
     }
-    //const unsigned int index = m_constraints.size();
+
     const unsigned int index = parent().get_ctr_index(t_ctr);
     m_constraints_to_update.emplace_front(index);
     m_constraints.emplace_back(t_ctr, m_constraints_to_update.begin());
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::add(const Var &t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::add(const idol::QCtr &t_ctr) {
+
+    if (m_is_initialized) {
+        update_vars();
+    }
+
+    const unsigned int index = parent().get_qctr_index(t_ctr);
+    m_qconstraints_to_update.emplace_front(index);
+    m_qconstraints.emplace_back(t_ctr, m_qconstraints_to_update.begin());
+
+}
+
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::add(const Var &t_var) {
+
     if (m_is_initialized) {
         update_ctrs();
     }
-    // const unsigned int index = m_variables.size();
+
     const unsigned int index = parent().get_var_index(t_var);
     m_variables_to_update.emplace_front(index);
     m_variables.emplace_back(t_var, m_variables_to_update.begin());
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Var& t_var) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::remove(const Var& t_var) {
 
     update();
 
     const unsigned index = parent().get_var_index(t_var);
 
-    /*
-    if (m_variables[index].is_to_be_updated()) {
-        m_variables_to_update.erase(m_variables[index].to_be_updated_flag());
-    }
-     */
-
     if (m_variables[index].has_impl()) {
         hook_remove(m_variables[index].object());
     }
-
-    // m_variables.erase(m_variables.begin() + index);
 
     m_variables[index] = std::move(m_variables.back());
     m_variables.pop_back();
 }
 
-template<class VarImplT, class CtrImplT>
-void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT>::remove(const Ctr& t_ctr) {
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::remove(const Ctr& t_ctr) {
 
     update();
 
     const unsigned index = parent().get_ctr_index(t_ctr);
 
-    /*
-    if (m_constraints[index].is_to_be_updated()) {
-        m_constraints_to_update.erase(m_constraints[index].to_be_updated_flag());
-    }
-     */
-
     if (m_constraints[index].has_impl()) {
         hook_remove(m_constraints[index].object());
     }
 
-    // m_constraints.erase(m_constraints.begin() + index);
-
     m_constraints[index] = std::move(m_constraints.back());
     m_constraints.pop_back();
+}
+
+template<class VarImplT, class CtrImplT, class QCtrImplT>
+void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::remove(const idol::QCtr &t_ctr) {
+
+    update();
+
+    const unsigned index = parent().get_qctr_index(t_ctr);
+
+    if (m_qconstraints[index].has_impl()) {
+        hook_remove(m_qconstraints[index].object());
+    }
+
+    m_qconstraints[index] = std::move(m_qconstraints.back());
+    m_qconstraints.pop_back();
 }
 
 #endif //IDOL_OPTIMIZERWITHLAZYUPDATES_H

@@ -59,8 +59,10 @@ protected:
     void hook_after_optimize() override;
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;
+    void add(const QCtr &t_ctr) override;
     void remove(const Var &t_var) override;
     void remove(const Ctr &t_ctr) override;
+    void remove(const QCtr &t_ctr) override;
     void update() override;
     void write(const std::string &t_name) override;
 
@@ -161,6 +163,20 @@ public:
 
     void terminate() override;
 };
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::remove(const idol::QCtr &t_ctr) {
+    for (auto& relaxation : m_relaxations) {
+        relaxation->remove(t_ctr);
+    }
+}
+
+template<class NodeInfoT>
+void idol::Optimizers::BranchAndBound<NodeInfoT>::add(const idol::QCtr &t_ctr) {
+    for (auto& relaxation : m_relaxations) {
+        relaxation->add(t_ctr);
+    }
+}
 
 template<class NodeInfoT>
 bool idol::Optimizers::BranchAndBound<NodeInfoT>::is_valid(const TreeNode &t_node) const {

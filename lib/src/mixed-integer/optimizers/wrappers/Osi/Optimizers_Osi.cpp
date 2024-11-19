@@ -10,7 +10,7 @@
 idol::Optimizers::Osi::Osi(const idol::Model &t_model,
                            const OsiSolverInterface &t_solver_interface,
                            bool t_continuous_relaxation)
-                           : OptimizerWithLazyUpdates<int, int>(t_model),
+                           : OptimizerWithLazyUpdates<int, int, int>(t_model),
                              m_solver_interface(t_solver_interface.clone()),
                              m_continuous_relaxation(t_continuous_relaxation) {
 
@@ -391,6 +391,14 @@ void idol::Optimizers::Osi::set_param_presolve(bool t_value) {
 
 double idol::Optimizers::Osi::get_var_reduced_cost(const idol::Var &t_var) const {
     throw Exception("Not implemented get_var_reduced_cost");
+}
+
+int idol::Optimizers::Osi::hook_add(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic expressions are not supported by Osi.");
+}
+
+void idol::Optimizers::Osi::hook_remove(const idol::QCtr &t_ctr) {
+    throw Exception("Quadratic expressions are not supported by Osi.");
 }
 
 #endif

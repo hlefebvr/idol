@@ -15,7 +15,7 @@ namespace idol::Optimizers {
     class Osi;
 }
 
-class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int> {
+class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int, int> {
     bool m_continuous_relaxation;
 
     std::unique_ptr<OsiSolverInterface> m_solver_interface;
@@ -61,6 +61,8 @@ protected:
 
     int hook_add(const Ctr &t_ctr) override;
 
+    int hook_add(const QCtr &t_ctr) override;
+
     void hook_update_objective_sense() override;
 
     void hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) override;
@@ -78,6 +80,8 @@ protected:
     void hook_remove(const Var &t_var) override;
 
     void hook_remove(const Ctr &t_ctr) override;
+
+    void hook_remove(const QCtr &t_ctr) override;
 public:
     Osi(const Model& t_model, const OsiSolverInterface& t_solver_interface, bool t_continuous_relaxation);
 

@@ -18,7 +18,7 @@ namespace idol::Optimizers {
     class Gurobi;
 }
 
-class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, std::variant<GRBConstr, GRBQConstr>> {
+class idol::Optimizers::Gurobi : public OptimizerWithLazyUpdates<GRBVar, GRBConstr, GRBQConstr> {
     friend class ::idol::GurobiCallbackI;
     static std::unique_ptr<GRBEnv> s_global_env;
 
@@ -43,7 +43,8 @@ protected:
     void hook_optimize() override;
     void hook_write(const std::string &t_name) override;
     GRBVar hook_add(const Var& t_var, bool t_add_column) override;
-    std::variant<GRBConstr, GRBQConstr> hook_add(const Ctr& t_ctr) override;
+    GRBConstr hook_add(const Ctr& t_ctr) override;
+    GRBQConstr hook_add(const QCtr& t_ctr) override;
     void hook_update(const Var& t_var) override;
     void hook_update(const Ctr& t_ctr) override;
     void hook_update_objective_sense() override;
@@ -53,6 +54,7 @@ protected:
     void hook_update() override;
     void hook_remove(const Var& t_var) override;
     void hook_remove(const Ctr& t_ctr) override;
+    void hook_remove(const QCtr& t_ctr) override;
     void update_objective_constant();
 
     [[nodiscard]] SolutionStatus get_status() const override;

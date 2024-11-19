@@ -57,8 +57,10 @@ protected:
     void build() override;
     void add(const Var &t_var) override;
     void add(const Ctr &t_ctr) override;
+    void add(const QCtr &t_ctr) override;
     void remove(const Var &t_var) override;
     void remove(const Ctr &t_ctr) override;
+    void remove(const QCtr &t_ctr) override;
     void update() override;
     void write(const std::string &t_name) override;
     void hook_optimize() override;
