@@ -229,6 +229,12 @@ namespace idol {
     AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, const LinExpr<KeyT, ValueT>& t_b) { return std::move(t_a) + t_b; }
 
     template<class KeyT, class ValueT>
+    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, LinExpr<KeyT, ValueT>&& t_b) { return std::move(t_a) + std::move(t_b); }
+
+    template<class KeyT, class ValueT>
+    AffExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_a, AffExpr<KeyT, ValueT>&& t_b) { return std::move(t_a) + std::move(t_b); }
+
+    template<class KeyT, class ValueT>
     AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, const LinExpr<KeyT, ValueT>& t_b) { return AffExpr<KeyT, ValueT>(t_a) + t_b; }
 
     template<class KeyT, class ValueT>
