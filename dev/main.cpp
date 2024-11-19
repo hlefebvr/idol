@@ -30,7 +30,7 @@ int main(int t_argc, const char** t_argv) {
 
     QuadExpr expr(2 * x[0] + 2);
 
-    //expr += x[0] * x[0];
+    expr += x[0] * x[0];
 
     std::cout << expr << std::endl;
 

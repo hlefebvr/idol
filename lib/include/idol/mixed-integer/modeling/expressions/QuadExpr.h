@@ -21,6 +21,7 @@ public:
     QuadExpr(LinExpr<KeyT, ValueT>&& t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
     QuadExpr(const AffExpr<KeyT, ValueT>& t_expr) : m_affine(t_expr) {} // NOLINT(*-explicit-constructor)
     QuadExpr(AffExpr<KeyT, ValueT>&& t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
+    QuadExpr(const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2)) {}
     QuadExpr(const ValueT& t_factor, const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2), t_factor) {}
     QuadExpr(ValueT&& t_factor, const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2), std::move(t_factor)) {}
     QuadExpr(const ValueT& t_factor, const KeyT& t_key) : m_affine(t_factor, t_key) {}
