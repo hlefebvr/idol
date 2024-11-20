@@ -121,7 +121,7 @@ void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const 
     const double rhs = t_src_model.get_ctr_rhs(t_ctr);
     const auto type = t_src_model.get_ctr_type(t_ctr);
 
-    auto [pattern, is_pure] = dispatch(t_src_model, row, /* row.quadratic(),  */ t_sub_problem_id);
+    auto [pattern, is_pure] = dispatch(t_src_model, row, t_sub_problem_id);
     pattern.constant() -= rhs;
 
     if (pattern.linear().empty()) {
@@ -179,11 +179,8 @@ idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
 
 std::pair<idol::AffExpr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
                                                                                    const idol::LinExpr<idol::Var> &t_lin_expr,
-                                                                                   // const idol::QuadExpr<idol::Var> &t_quad_expr,
                                                                                    unsigned int t_sub_problem_id) {
 
-    throw Exception("TODO: Was using Constant");
-    /*
     bool is_pure = true; // true if the row only has variables from the same sub-problem
 
     const auto belongs_to_sub_problem = [&](const Var& t_var) {
@@ -197,13 +194,14 @@ std::pair<idol::AffExpr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const
 
         if (!belongs_to_sub_problem(var)) {
             is_pure = false;
-            pattern.constant() += coefficient * !var;
+            pattern += coefficient * var;
             continue;
         }
 
         pattern.linear() += coefficient * var;
     }
 
+    /*
     for (const auto& [var1, var2, constant] : t_quad_expr) {
 
         const unsigned int var1_sub_problem_id = var1.get(m_decomposition);
@@ -230,12 +228,12 @@ std::pair<idol::AffExpr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const
         pattern.quadratic() += constant * var1 * var2;
 
     }
+     */
 
     return {
         std::move(pattern),
         is_pure
     };
-     */
 }
 
 void

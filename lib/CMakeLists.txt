@@ -226,6 +226,7 @@ add_library(idol STATIC
         src/mixed-integer/modeling/constraints/TempQCtr.cpp
         src/mixed-integer/modeling/constraints/QCtrVersion.cpp
         src/mixed-integer/modeling/constraints/QCtr.cpp
+        include/idol/general/utils/GenerationPattern.h
 )
 
 find_package(OpenMP REQUIRED)

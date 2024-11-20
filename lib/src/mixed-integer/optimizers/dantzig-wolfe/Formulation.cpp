@@ -116,7 +116,7 @@ void idol::DantzigWolfe::Formulation::initialize_sub_problems(unsigned int t_n_s
 
 void idol::DantzigWolfe::Formulation::initialize_generation_patterns(unsigned int t_n_sub_problems) {
 
-    m_generation_patterns = std::vector<GenerationPattern>(t_n_sub_problems);
+    m_generation_patterns = std::vector<GenerationPattern<Var>>(t_n_sub_problems);
 
 }
 
@@ -187,7 +187,7 @@ void idol::DantzigWolfe::Formulation::dispatch_linking_constraint(const idol::Ct
     m_master.add(t_original_ctr, TempCtr(std::move(master_part), t_type, t_rhs));
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-        m_generation_patterns[i].column.set(t_original_ctr, std::move(sub_problem_parts[i]));
+        m_generation_patterns[i].linear().set(t_original_ctr, std::move(sub_problem_parts[i]));
     }
 
 }
@@ -231,7 +231,7 @@ void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Mo
     m_master.set_obj_expr(AffExpr(std::move(master_part)) += objective.affine().constant());
 
     for (unsigned int i = 0 ; i < n_subproblems ; ++i) {
-        m_generation_patterns[i].objective += std::move(sub_problem_parts[i]);
+        m_generation_patterns[i].constant() += std::move(sub_problem_parts[i]);
     }
 
 }
@@ -266,7 +266,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 
         Ctr lower(env, GreaterOrEqual, t_lower_multiplicity);
         m_master.add(lower);
-        m_generation_patterns[t_sub_problem_id].column.set(lower, 1);
+        m_generation_patterns[t_sub_problem_id].linear().set(lower, 1);
 
     }
 
@@ -274,7 +274,7 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 
         Ctr upper(env, LessOrEqual, t_upper_multiplicity);
         m_master.add(upper);
-        m_generation_patterns[t_sub_problem_id].column.set(upper, 1);
+        m_generation_patterns[t_sub_problem_id].linear().set(upper, 1);
 
     }
 
@@ -283,11 +283,13 @@ void idol::DantzigWolfe::Formulation::add_aggregation_constraint(unsigned int t_
 void idol::DantzigWolfe::Formulation::generate_column(unsigned int t_sub_problem_id,
                                                       idol::PrimalPoint t_generator) {
 
+    auto generated = m_generation_patterns[t_sub_problem_id](t_generator);
+
     auto alpha = m_master.add_var(0.,
                                 Inf,
                                 Continuous,
-                                evaluate(m_generation_patterns[t_sub_problem_id].objective, t_generator),
-                                evaluate(m_generation_patterns[t_sub_problem_id].column, t_generator)
+                                std::move(generated.constant()),
+                                std::move(generated.linear())
                                 );
 
     auto& pool = m_pools[t_sub_problem_id];
@@ -306,11 +308,11 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
-    for (const auto &[ctr, constant] : generation_pattern.column) {
+    for (const auto &[ctr, constant] : generation_pattern.linear()) {
         result += evaluate(constant, t_generator) * -t_master_dual.get(ctr);
     }
 
-    result += evaluate(generation_pattern.objective, t_generator);
+    result += evaluate(generation_pattern.constant(), t_generator);
 
     return result;
 
@@ -324,12 +326,12 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
 
-    for (const auto &[ctr, constant] : generation_pattern.column) {
+    for (const auto &[ctr, constant] : generation_pattern.linear()) {
         objective += constant * -t_master_dual.get(ctr);
     }
 
     if (!t_use_farkas) {
-        objective += generation_pattern.objective;
+        objective += generation_pattern.constant();
     }
 
     m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
@@ -419,7 +421,7 @@ void idol::DantzigWolfe::Formulation::apply_sub_problem_bound_on_master(bool t_i
         Ctr bound_constraint(m_master.env(), Equal, 0);
 
         m_master.add(bound_constraint, TempCtr(LinExpr(expanded), type, t_value));
-        m_generation_patterns[t_sub_problem_id].column.set(bound_constraint, t_var);
+        m_generation_patterns[t_sub_problem_id].linear().set(bound_constraint, t_var);
 
         applied_bounds.emplace(t_var, bound_constraint);
 
@@ -474,7 +476,7 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::QuadExpr<idol::Var>
             m_master.set_var_obj(var, evaluate(sub_problem_parts[i], generator));
         }
 
-        m_generation_patterns[i].objective = std::move(sub_problem_parts[i]);
+        m_generation_patterns[i].constant() = std::move(sub_problem_parts[i]);
 
     }
 }
@@ -594,7 +596,7 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
     const auto sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id != MasterId) {
-        m_generation_patterns[sub_problem_id].objective.linear().remove(t_var);
+        m_generation_patterns[sub_problem_id].constant().linear().remove(t_var);
         m_sub_problems[sub_problem_id].remove(t_var);
         return;
     }
@@ -613,7 +615,7 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
     }
 
     m_sub_problems[sub_problem_id].remove(t_ctr);
-    m_generation_patterns[sub_problem_id].column.remove(t_ctr);
+    m_generation_patterns[sub_problem_id].linear().remove(t_ctr);
 
 }
 
@@ -642,8 +644,8 @@ void idol::DantzigWolfe::Formulation::load_columns_from_pool() {
                     0,
                     Inf,
                     Continuous,
-                    evaluate(m_generation_patterns[sub_problem_id].objective, generator),
-                    evaluate(m_generation_patterns[sub_problem_id].column, generator)
+                    evaluate(m_generation_patterns[sub_problem_id].constant(), generator),
+                    evaluate(m_generation_patterns[sub_problem_id].linear(), generator)
                 ));
                 m_present_generators[sub_problem_id].emplace_back(var, generator);
 

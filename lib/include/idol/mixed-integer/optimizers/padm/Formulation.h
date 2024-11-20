@@ -67,8 +67,9 @@ private:
     std::pair<bool, double> m_rescaling;
 
     std::vector<Model> m_sub_problems;
-    std::vector<std::optional<AffExpr<Var>>> m_objective_patterns;
+    std::vector<std::optional<QuadExpr<Var>>> m_objective_patterns;
     std::vector<std::list<std::pair<Ctr, AffExpr<Var>>>> m_constraint_patterns; // as ctr: row <= 0
+    std::vector<std::list<std::pair<QCtr, AffExpr<Var>>>> m_qconstraint_patterns; // as ctr: row <= 0
     std::vector<std::list<Var>> m_l1_vars_in_sub_problem;
     Map<Ctr, Var> m_l1_vars;
 

@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/general/utils/GeneratorPool.h"
+#include "idol/general/utils/GenerationPattern.h"
 #include "idol/general/utils/Map.h"
 
 namespace idol::DantzigWolfe {
@@ -18,14 +19,9 @@ class idol::DantzigWolfe::Formulation {
 
     Annotation<unsigned int> m_decomposition;
 
-    struct GenerationPattern {
-        AffExpr<Var> objective;
-        SparseVector<Ctr, AffExpr<Var>> column;
-    };
-
     Model m_master;
     std::vector<Model> m_sub_problems;
-    std::vector<GenerationPattern> m_generation_patterns;
+    std::vector<GenerationPattern<Var>> m_generation_patterns;
     std::vector<GeneratorPool<Var>> m_pools;
     std::vector<PresentGeneratorsList> m_present_generators;
 

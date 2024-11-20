@@ -18,6 +18,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
+#include "idol/general/utils/GenerationPattern.h"
 
 using namespace idol;
 
@@ -28,13 +29,16 @@ int main(int t_argc, const char** t_argv) {
 
     const auto x = model.add_vars(Dim<1>(10), 0, 1, Binary, 1, "x");
 
-    QuadExpr expr(2 * x[0] + 2);
+    Point<Var> point;
+    point.set(x[0], 5);
 
-    expr += x[0] * x[0];
+    GenerationPattern<Ctr> pattern;
+    pattern.constant() += 2 + 2 * x[0];
 
-    std::cout << expr << std::endl;
+    pattern.linear().set(x[1], x[0]);
+    pattern.linear().set(x[2], 10 * x[0] + 4);
 
-    std::cout << evaluate(expr, Point<Var>()) << std::endl;
+    std::cout << pattern(point) << std::endl;
 
     return 0;
 }
