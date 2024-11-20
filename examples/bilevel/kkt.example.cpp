@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
@@ -48,13 +48,13 @@ int main(int t_argc, const char** t_argv) {
     high_point_relaxation.add_ctr(-x + 5 * y <= 12.5);
 
     // Prepare bilevel description
-    Bilevel::LowerLevelDescription description(env);
-    description.set_follower_obj_expr(- y);
-    description.make_follower_var(y);
-    description.make_follower_ctr(follower_c1);
-    description.make_follower_ctr(follower_c2);
-    description.make_follower_ctr(follower_c3);
-    description.make_follower_ctr(follower_c4);
+    Bilevel::Description description(env);
+    description.set_lower_objective(-y);
+    description.make_lower_level(y);
+    description.make_follower(follower_c1);
+    description.make_follower(follower_c2);
+    description.make_follower(follower_c3);
+    description.make_follower(follower_c4);
 
     Reformulators::KKT reformulator(high_point_relaxation, description);
 

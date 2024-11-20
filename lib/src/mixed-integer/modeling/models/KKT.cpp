@@ -9,7 +9,7 @@
 #include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 idol::Reformulators::KKT::KKT(const idol::Model &t_src_model,
-                              const idol::Bilevel::LowerLevelDescription &t_lower_level_description)
+                              const idol::Bilevel::Description &t_lower_level_description)
     : m_src_model(t_src_model), m_description(t_lower_level_description) {
 
     create_dual_variables_for_constraints();

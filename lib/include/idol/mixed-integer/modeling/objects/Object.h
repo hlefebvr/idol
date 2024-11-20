@@ -75,7 +75,7 @@ public:
      * @param t_annotation The annotation.
      * @return The value of the annotation.
      */
-    template<class ValueT> const ValueT& get(const Annotation<CRTP, ValueT>& t_annotation) const {
+    template<class ValueT> const ValueT& get(const Annotation<ValueT>& t_annotation) const {
         const auto& result = m_object_id->versions().template get_annotation<ValueT>(t_annotation.id());
         if (result) {
             return *result;
@@ -93,7 +93,7 @@ public:
      * @param t_annotation The annotation.
      * @param t_args The parameter pack arguments used to construct "in place" the value of the annotation.
      */
-    template<class ValueT, class ...ArgsT> void set(const Annotation<CRTP, ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
+    template<class ValueT, class ...ArgsT> void set(const Annotation<ValueT>& t_annotation, ArgsT&& ...t_args) const { m_object_id->versions().template set_annotation<ValueT, ArgsT...>(t_annotation.id(), std::forward<ArgsT>(t_args)...); }
 };
 
 namespace idol {

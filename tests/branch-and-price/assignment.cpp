@@ -51,10 +51,10 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 
-    Annotation<Ctr> std_decomposition(env, "by_machines", MasterId);
+    Annotation std_decomposition(env, "by_machines", MasterId);
 
-    Annotation<Ctr> nested_decomposition1(env, "nested_decomposition1", MasterId);
-    Annotation<Ctr> nested_decomposition2(env, "nested_decomposition2", MasterId);
+    Annotation nested_decomposition1(env, "nested_decomposition1", MasterId);
+    Annotation nested_decomposition2(env, "nested_decomposition2", MasterId);
 
     const auto farkas_pricing = is_HiGHS<OPTIMIZER>() ? GENERATE(false) : GENERATE(true, false);
 

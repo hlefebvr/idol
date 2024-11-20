@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Research/idol/lib/include/idol/modeling.h>
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 
 using namespace idol;
 
@@ -41,13 +41,13 @@ int main(int t_argc, const char** t_argv) {
     auto follower_c4 = high_point_relaxation.add_ctr(2 * x + 10 * y >= 15);
 
     // Prepare bilevel description
-    Bilevel::LowerLevelDescription description(env);
-    description.set_follower_obj_expr(y);
-    description.make_follower_var(y);
-    description.make_follower_ctr(follower_c1);
-    description.make_follower_ctr(follower_c2);
-    description.make_follower_ctr(follower_c3);
-    description.make_follower_ctr(follower_c4);
+    Bilevel::Description description(env);
+    description.set_lower_objective(y);
+    description.make_lower_level(y);
+    description.make_follower(follower_c1);
+    description.make_follower(follower_c2);
+    description.make_follower(follower_c3);
+    description.make_follower(follower_c4);
 
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(

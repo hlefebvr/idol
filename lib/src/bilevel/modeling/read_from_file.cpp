@@ -20,7 +20,7 @@ class AuxParser {
     unsigned int m_n_variables = 0;
     unsigned int m_n_constraints = 0;
     std::unique_ptr<Model> m_high_point_relaxation;
-    Bilevel::LowerLevelDescription& m_lower_level_description;
+    Bilevel::Description& m_lower_level_description;
 
     void read_aux_file(const std::string& t_path_to_aux, const std::function<Model(Env&, const std::string&)>& t_read_model_from_file);
     bool read_tag(std::ifstream& t_file, const std::string& t_tag, bool t_mandatory = true);
@@ -38,7 +38,7 @@ class AuxParser {
     void create_lower_level_objective();
 public:
     explicit AuxParser(Env& t_env,
-                       Bilevel::LowerLevelDescription& t_lower_level_description,
+                       Bilevel::Description& t_lower_level_description,
                        const std::string& t_path_to_aux,
                        const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps);
 
@@ -46,7 +46,7 @@ public:
 };
 
 AuxParser::AuxParser(Env &t_env,
-                     Bilevel::LowerLevelDescription &t_lower_level_description,
+                     Bilevel::Description &t_lower_level_description,
                      const std::string& t_path_to_aux,
                      const std::function<Model(Env&, const std::string&)>& t_create_model_from_mps
                      )
@@ -206,11 +206,11 @@ void AuxParser::set_var_annotations() {
     for (const auto& var : m_high_point_relaxation->vars()) {
 
         if (m_lower_level_variables.find(var.name()) == m_lower_level_variables.end()) {
-            m_lower_level_description.make_leader_var(var);
+            m_lower_level_description.make_leader(var);
             continue;
         }
 
-        m_lower_level_description.make_follower_var(var);
+        m_lower_level_description.make_lower_level(var);
 
     }
 
@@ -221,11 +221,11 @@ void AuxParser::set_ctr_annotations() {
     for (const auto& ctr : m_high_point_relaxation->ctrs()) {
 
         if (m_lower_level_constraints.find(ctr.name()) == m_lower_level_constraints.end()) {
-            m_lower_level_description.make_leader_ctr(ctr);
+            m_lower_level_description.make_leader(ctr);
             continue;
         }
 
-        m_lower_level_description.make_follower_ctr(ctr);
+        m_lower_level_description.make_follower(ctr);
 
     }
 
@@ -243,13 +243,13 @@ void AuxParser::create_lower_level_objective() {
 
     }
 
-    m_lower_level_description.set_follower_obj_expr(std::move(obj));
+    m_lower_level_description.set_lower_objective(std::move(obj));
 }
 
 idol::Model
 idol::Bilevel::impl::read_from_file(Env& t_env,
                               const std::string& t_path_to_aux,
-                              Bilevel::LowerLevelDescription& t_lower_level_description,
+                              Bilevel::Description& t_lower_level_description,
                               const std::function<Model(Env&, const std::string&)>& t_mps_reader) {
 
     AuxParser parser(t_env, t_lower_level_description, t_path_to_aux, t_mps_reader);

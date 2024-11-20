@@ -23,7 +23,7 @@
 #endif
 
 idol::impl::MibSFromFile::MibSFromFile(const idol::Model &t_model,
-                                       const idol::Bilevel::LowerLevelDescription &t_description,
+                                       const idol::Bilevel::Description &t_description,
                                        OsiSolverInterface* t_osi_solver,
                                        bool t_use_cplex_for_feasibility,
                                        bool t_logs)

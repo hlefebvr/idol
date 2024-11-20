@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <idol/modeling.h>
-#include <idol/bilevel/modeling/LowerLevelDescription.h>
+#include <idol/bilevel/modeling/Description.h>
 #include <idol/mixed-integer/modeling/models/KKT.h>
 #include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
@@ -25,23 +25,23 @@ int main(int t_argc, const char** t_argv) {
     auto c = model.add_qctr(x + delta * x + y - 1, LessOrEqual);
     model.add_ctr(y == 1);
 
-    Bilevel::LowerLevelDescription description(env);
-    description.make_follower_var(x);
-    description.make_follower_var(y);
-    //description.make_follower_ctr(c);
-    description.set_follower_obj_expr(-2 * x - y);
+    Bilevel::Description description(env);
+    description.make_lower_level(x);
+    description.make_lower_level(y);
+    description.make_lower_level(c);
+    description.set_lower_objective(-2 * x - y);
 
     Reformulators::KKT reformulator(model, description);
 
     Model single_level(env);
     reformulator.add_strong_duality_reformulation(single_level);
 
-    Annotation<Var, unsigned int> decomposition(env, "sub_problem");
+    Annotation<unsigned int> decomposition(env, "sub_problem");
     for (const auto& var : single_level.vars()) {
         var.set(decomposition, var.id() == delta.id());
     }
 
-    Annotation<Ctr, bool> penalized_constraints(env, "penalized_constraints");
+    Annotation<bool> penalized_constraints(env, "penalized_constraints");
     for (const auto& ctr : single_level.ctrs()) {
         ctr.set(penalized_constraints, true);
     }

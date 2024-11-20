@@ -9,10 +9,8 @@
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formulation,
-                                             idol::Annotation<idol::Ctr, unsigned int> t_ctr_decomposition,
-                                             idol::Annotation<idol::Var, unsigned int> t_var_decomposition)
-    : m_decomposition_by_ctr(std::move(t_ctr_decomposition)),
-      m_decomposition_by_var(std::move(t_var_decomposition)),
+                                             const idol::Annotation<unsigned int>& t_decomposition)
+    : m_decomposition(t_decomposition),
       m_master(t_original_formulation.env())
 {
 
@@ -31,21 +29,13 @@ idol::DantzigWolfe::Formulation::Formulation(const idol::Model &t_original_formu
 
 }
 
-idol::DantzigWolfe::Formulation::Formulation(const Model &t_original_formulation,
-                                             const Annotation<Ctr, unsigned int>& t_decomposition)
-    : Formulation(t_original_formulation,
-                  t_decomposition,
-                  Annotation<Var, unsigned int>(t_original_formulation.env(), t_decomposition.name(), MasterId)) {
-
-}
-
 unsigned int idol::DantzigWolfe::Formulation::compute_n_sub_problems(const Model& t_original_formulation) {
 
     std::optional<unsigned int> n_sub_problems;
 
     for (const auto& ctr : t_original_formulation.ctrs()) {
 
-        const unsigned int sub_problem_id = ctr.get(m_decomposition_by_ctr);
+        const unsigned int sub_problem_id = ctr.get(m_decomposition);
 
         if (sub_problem_id == MasterId) {
             continue;
@@ -64,7 +54,7 @@ unsigned int idol::DantzigWolfe::Formulation::compute_n_sub_problems(const Model
 
     for (const auto& var : t_original_formulation.vars()) {
 
-        const unsigned int sub_problem_id = var.get(m_decomposition_by_var);
+        const unsigned int sub_problem_id = var.get(m_decomposition);
 
         if (sub_problem_id == MasterId) {
             continue;
@@ -90,18 +80,18 @@ void idol::DantzigWolfe::Formulation::set_decomposition_by_var(const Model& t_or
 
         if (t_sub_problem_id == MasterId) { return; }
 
-        const unsigned int current_sub_problem_id = t_var.get(m_decomposition_by_var);
+        const unsigned int current_sub_problem_id = t_var.get(m_decomposition);
 
         if (current_sub_problem_id != MasterId && current_sub_problem_id != t_sub_problem_id) {
             throw Exception("Impossible decomposition.");
         }
 
-        t_var.set(m_decomposition_by_var, t_sub_problem_id);
+        t_var.set(m_decomposition, t_sub_problem_id);
     };
 
     for (const auto &ctr: t_original_formulation.ctrs()) {
 
-        const unsigned int sub_problem_id = ctr.get(m_decomposition_by_ctr);
+        const unsigned int sub_problem_id = ctr.get(m_decomposition);
 
         const auto &row = t_original_formulation.get_ctr_row(ctr);
 
@@ -170,7 +160,7 @@ void idol::DantzigWolfe::Formulation::dispatch_constraints(const idol::Model &t_
 
     for (const auto& ctr : t_original_formulation.ctrs()) {
 
-        const unsigned int sub_problem_id = ctr.get(m_decomposition_by_ctr);
+        const unsigned int sub_problem_id = ctr.get(m_decomposition);
         const auto& row = t_original_formulation.get_ctr_row(ctr);
         const double rhs = t_original_formulation.get_ctr_rhs(ctr);
         const auto type = t_original_formulation.get_ctr_type(ctr);
@@ -212,7 +202,7 @@ idol::DantzigWolfe::Formulation::decompose_expression(const LinExpr<Var> &t_line
 
     for (const auto& [var, constant] : t_linear) {
 
-        const unsigned int sub_problem_id = var.get(m_decomposition_by_var);
+        const unsigned int sub_problem_id = var.get(m_decomposition);
 
         if (sub_problem_id == MasterId) {
             master_part += constant * var;
@@ -247,22 +237,22 @@ void idol::DantzigWolfe::Formulation::dispatch_objective_function(const idol::Mo
 }
 
 idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Var &t_var) {
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
     return sub_problem_id == MasterId ? m_master : m_sub_problems[sub_problem_id];
 }
 
 const idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Var &t_var) const {
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
     return sub_problem_id == MasterId ? m_master : m_sub_problems[sub_problem_id];
 }
 
 idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Ctr &t_ctr) {
-    const unsigned int sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
+    const unsigned int sub_problem_id = t_ctr.get(m_decomposition);
     return sub_problem_id == MasterId ? m_master : m_sub_problems[sub_problem_id];
 }
 
 const idol::Model &idol::DantzigWolfe::Formulation::get_model(const idol::Ctr &t_ctr) const {
-    const unsigned int sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
+    const unsigned int sub_problem_id = t_ctr.get(m_decomposition);
     return sub_problem_id == MasterId ? m_master : m_sub_problems[sub_problem_id];
 }
 
@@ -348,7 +338,7 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
 double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol::Var &t_var,
                                                                       const idol::PrimalPoint &t_master_primal) const {
 
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         return t_master_primal.get(t_var);
@@ -368,7 +358,7 @@ double idol::DantzigWolfe::Formulation::get_original_space_var_primal(const idol
 
 void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, double t_lb, bool t_hard, bool t_remove_infeasible_columns) {
 
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         m_master.set_var_lb(t_var, t_lb);
@@ -392,7 +382,7 @@ void idol::DantzigWolfe::Formulation::update_var_lb(const idol::Var &t_var, doub
 
 void idol::DantzigWolfe::Formulation::update_var_ub(const idol::Var &t_var, double t_ub, bool t_hard, bool t_remove_infeasible_columns) {
 
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         m_master.set_var_ub(t_var, t_ub);
@@ -492,7 +482,7 @@ void idol::DantzigWolfe::Formulation::update_obj(const idol::QuadExpr<idol::Var>
 
 void idol::DantzigWolfe::Formulation::update_var_obj(const idol::Var &t_var, double t_obj) {
 
-    const unsigned int sub_problem_id = t_var.get(m_decomposition_by_var);
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         m_master.set_var_obj(t_var, t_obj);
@@ -557,7 +547,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Var &t_var,
 
     throw Exception("TODO Was using Column::obj");
     /*
-    const auto sub_problem_id = t_var.get(m_decomposition_by_var);
+    const auto sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         m_master.add(t_var, TempVar(t_lb, t_ub, t_type, Column(t_column)));
@@ -572,7 +562,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
 
     throw Exception("TODO: Was using Constant in add(const Ctr& ...)");
     /*
-    const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
+    const auto sub_problem_id = t_ctr.get(m_decomposition);
 
     if (sub_problem_id != MasterId) {
 
@@ -601,7 +591,7 @@ void idol::DantzigWolfe::Formulation::add(const idol::Ctr &t_ctr, idol::CtrType 
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
 
-    const auto sub_problem_id = t_var.get(m_decomposition_by_var);
+    const auto sub_problem_id = t_var.get(m_decomposition);
 
     if (sub_problem_id != MasterId) {
         m_generation_patterns[sub_problem_id].objective.linear().remove(t_var);
@@ -615,7 +605,7 @@ void idol::DantzigWolfe::Formulation::remove(const idol::Var &t_var) {
 
 void idol::DantzigWolfe::Formulation::remove(const idol::Ctr &t_ctr) {
 
-    const auto sub_problem_id = t_ctr.get(m_decomposition_by_ctr);
+    const auto sub_problem_id = t_ctr.get(m_decomposition);
 
     if (sub_problem_id == MasterId) {
         m_master.remove(t_ctr);

@@ -12,8 +12,8 @@
 #include <utility>
 
 idol::ADM::Formulation::Formulation(const Model& t_src_model,
-                                    Annotation<Var, unsigned int> t_decomposition,
-                                    std::optional<Annotation<Ctr, bool>> t_penalized_constraints,
+                                    Annotation<unsigned int> t_decomposition,
+                                    std::optional<Annotation<bool>> t_penalized_constraints,
                                     bool t_independent_penalty_update,
                                     std::pair<bool, double> t_rescaling)
                                  : m_decomposition(std::move(t_decomposition)),

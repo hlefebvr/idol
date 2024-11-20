@@ -10,7 +10,7 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 
 #include "MibSModel.hpp"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 #include "impl_MibS.h"
 
 namespace idol::impl {
@@ -19,7 +19,7 @@ namespace idol::impl {
 
 class idol::impl::MibSFromFile : public idol::impl::MibS {
     const idol::Model& m_model;
-    const idol::Bilevel::LowerLevelDescription& m_description;
+    const idol::Bilevel::Description& m_description;
     const bool m_logs;
     const bool m_use_cplex_for_feasibility;
 
@@ -31,7 +31,7 @@ class idol::impl::MibSFromFile : public idol::impl::MibS {
     void make_variable_index_in_mps();
 public:
     MibSFromFile(const idol::Model& t_model,
-         const idol::Bilevel::LowerLevelDescription& t_description,
+         const idol::Bilevel::Description& t_description,
          OsiSolverInterface* t_osi_solver,
          bool t_use_cplex_for_feasibility,
          bool t_logs);

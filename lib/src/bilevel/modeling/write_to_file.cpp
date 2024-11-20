@@ -9,13 +9,13 @@ using namespace idol;
 
 class AuxWriter {
     const Model& m_model;
-    const Bilevel::LowerLevelDescription& m_description;
+    const Bilevel::Description& m_description;
     const std::string& m_filename;
 protected:
     std::list<Var> make_lower_level_vars_list();
     std::list<Ctr> make_lower_level_ctrs_list();
 public:
-    AuxWriter(const Model& t_model, const Bilevel::LowerLevelDescription& t_description, const std::string& t_filename)
+    AuxWriter(const Model& t_model, const Bilevel::Description& t_description, const std::string& t_filename)
             : m_model(t_model), m_description(t_description), m_filename(t_filename) {}
     void write();
 };
@@ -54,7 +54,7 @@ std::list<Var> AuxWriter::make_lower_level_vars_list() {
 
     std::list<Var> result;
 
-    const auto& follower_vars = m_description.follower_vars();
+    const auto& follower_vars = m_description.lower_level();
 
     for (const auto& var : m_model.vars()) {
         if (var.get(follower_vars) != MasterId) {
@@ -69,10 +69,10 @@ std::list<Ctr> AuxWriter::make_lower_level_ctrs_list() {
 
     std::list<Ctr> result;
 
-    const auto& follower_ctrs = m_description.follower_ctrs();
+    const auto& lower_level = m_description.lower_level();
 
     for (const auto& ctr : m_model.ctrs()) {
-        if (ctr.get(follower_ctrs) != MasterId) {
+        if (ctr.get(lower_level) != MasterId) {
             result.emplace_back(ctr);
         }
     }
@@ -82,12 +82,12 @@ std::list<Ctr> AuxWriter::make_lower_level_ctrs_list() {
 
 class MpsWriter {
     const Model &m_model;
-    const Bilevel::LowerLevelDescription &m_description;
+    const Bilevel::Description &m_description;
     const std::string &m_filename;
 protected:
     std::list<Var> make_vars_list(const std::function<bool(const Var&)>& t_filter);
 public:
-    MpsWriter(const Model &t_model, const Bilevel::LowerLevelDescription &t_description, const std::string &t_filename)
+    MpsWriter(const Model &t_model, const Bilevel::Description &t_description, const std::string &t_filename)
             : m_model(t_model), m_description(t_description), m_filename(t_filename) {}
     void write();
 };
@@ -197,7 +197,7 @@ std::list<Var> MpsWriter::make_vars_list(const std::function<bool(const Var &)> 
     return result;
 }
 
-void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::LowerLevelDescription& t_description, const std::string& t_filename) {
+void idol::Bilevel::write_to_file(const Model& t_model, const Bilevel::Description& t_description, const std::string& t_filename) {
 
     // LP file
     MpsWriter(t_model, t_description, t_filename).write();

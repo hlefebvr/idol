@@ -10,7 +10,7 @@
 #include <utility>
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
-                                      idol::Bilevel::LowerLevelDescription t_description,
+                                      idol::Bilevel::Description t_description,
                                       OsiSolverInterface* t_osi_solver,
                                       bool t_use_file,
                                       bool t_use_cplex_for_feasibility)

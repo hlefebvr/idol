@@ -6,7 +6,7 @@
 
 #include <utility>
 
-idol::PenaltyMethod::PenaltyMethod(idol::Annotation<idol::Ctr, bool> t_penalized_constraints)
+idol::PenaltyMethod::PenaltyMethod(idol::Annotation<bool> t_penalized_constraints)
     : m_decomposition(t_penalized_constraints.env(), "decomposition", 0),
       m_penalized_constraints(std::move(t_penalized_constraints)) {
 

@@ -27,7 +27,7 @@ namespace idol {
 }
 
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
-                                     const idol::Bilevel::LowerLevelDescription &t_description,
+                                     const idol::Bilevel::Description &t_description,
                                      OsiSolverInterface* t_osi_solver,
                                      const std::list<std::unique_ptr<Callback>>& t_callbacks,
                                      bool t_use_cplex_for_feasibility,

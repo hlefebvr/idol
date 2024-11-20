@@ -15,7 +15,7 @@
 #include <OsiClpSolverInterface.hpp>
 #endif
 
-idol::Bilevel::MibS::MibS(Bilevel::LowerLevelDescription  t_description)
+idol::Bilevel::MibS::MibS(Bilevel::Description  t_description)
         : m_description(std::move(t_description)) {
 
 }

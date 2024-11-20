@@ -101,8 +101,8 @@ auto follower_c3 = high_point_relaxation.add_ctr(2 * x - y <= 15);
 auto follower_c4 = high_point_relaxation.add_ctr(2 * x + 10 * y >= 15);
 
 // Prepare bilevel description
-Bilevel::LowerLevelDescription description(env);
-description.set_follower_obj_expr(y);
+Bilevel::Description description(env);
+description.set_lower_objective(y);
 description.set_follower_var(y);
 description.set_follower_ctr(follower_c1);
 description.set_follower_ctr(follower_c2);

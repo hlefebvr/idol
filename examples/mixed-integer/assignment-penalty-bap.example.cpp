@@ -31,7 +31,7 @@ int main(int t_argc, const char** t_argv) {
     Model model(env);
 
     // Create decomposition annotation
-    Annotation<Ctr> decomposition(env, "decomposition", MasterId);
+    Annotation decomposition(env, "decomposition", MasterId);
 
     // Create penalized constraints annotation
     Annotation<Ctr, bool> penalized_constraints(env, "penalized_constraints", false);

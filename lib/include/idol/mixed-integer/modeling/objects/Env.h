@@ -52,8 +52,7 @@ class idol::impl::Env {
     unsigned int m_max_object_id = 0;
 
     IdProvider<1> m_model_ids;
-    IdProvider<0> m_var_annotation_ids;
-    IdProvider<0> m_ctr_annotation_ids;
+    IdProvider<0> m_annotation_ids;
 
     std::list<Versions<VarVersion>> m_variables; /// Every version of each variable in the environment is stored here
     std::list<Versions<CtrVersion>> m_constraints; /// Every version of each constraint in the environment is stored here
@@ -71,7 +70,7 @@ protected:
 
     void free_model_id(const ::idol::Model& t_model);
 
-    unsigned int create_annotation_id(bool t_is_variable) { return t_is_variable ? m_var_annotation_ids.create() : m_ctr_annotation_ids.create(); }
+    unsigned int create_annotation_id() { return m_annotation_ids.create(); }
 
     void free_annotation_id(const impl::Annotation& t_annotation);
 

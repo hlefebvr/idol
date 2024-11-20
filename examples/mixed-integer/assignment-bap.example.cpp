@@ -33,7 +33,7 @@ int main(int t_argc, const char** t_argv) {
     Model model(env);
 
     // Create decomposition annotation
-    Annotation<Ctr> decomposition(env, "decomposition", MasterId);
+    Annotation decomposition(env, "decomposition", MasterId);
 
     // Create assignment variables (x_ij binaries)
     auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, 0., "x");

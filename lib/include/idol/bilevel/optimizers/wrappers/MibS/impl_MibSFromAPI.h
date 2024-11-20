@@ -9,7 +9,7 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "MibSModel.hpp"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 #include "impl_MibS.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
 
@@ -22,7 +22,7 @@ namespace idol {
 
 class idol::impl::MibSFromAPI : public idol::impl::MibS {
     const idol::Model& m_model;
-    const idol::Bilevel::LowerLevelDescription& m_description;
+    const idol::Bilevel::Description& m_description;
     const std::list<std::unique_ptr<Callback>>& m_callbacks;
     const bool m_logs;
     const bool m_use_cplex_for_feasibility;
@@ -46,7 +46,7 @@ class idol::impl::MibSFromAPI : public idol::impl::MibS {
     std::vector<double> parse_objective();
 public:
     MibSFromAPI(const idol::Model& t_model,
-                const idol::Bilevel::LowerLevelDescription& t_description,
+                const idol::Bilevel::Description& t_description,
                 OsiSolverInterface* t_osi_solver,
                 const std::list<std::unique_ptr<Callback>>& t_callbacks,
                 bool t_use_cplex_for_feasibility,

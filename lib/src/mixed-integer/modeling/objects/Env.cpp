@@ -9,9 +9,5 @@ void idol::impl::Env::free_model_id(const Model &t_model) {
 }
 
 void idol::impl::Env::free_annotation_id(const impl::Annotation &t_annotation) {
-    if (t_annotation.is_var_annotation()) {
-        m_var_annotation_ids.free(t_annotation.id());
-    } else {
-        m_ctr_annotation_ids.free(t_annotation.id());
-    }
+    m_annotation_ids.free(t_annotation.id());
 }

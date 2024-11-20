@@ -20,9 +20,9 @@ namespace idol {
 
 class idol::PADM : public OptimizerFactoryWithDefaultParameters<PADM> {
 public:
-    explicit PADM(Annotation<Var, unsigned int> t_decomposition);
+    explicit PADM(Annotation<unsigned int> t_decomposition);
 
-    PADM(Annotation<Var, unsigned int> t_decomposition, Annotation<Ctr, bool> t_penalized_constraints);
+    PADM(Annotation<unsigned int> t_decomposition, Annotation<bool> t_penalized_constraints);
 
     PADM(const PADM& t_src);
     PADM(PADM&&) = default;
@@ -50,8 +50,8 @@ public:
 
     OptimizerFactory *clone() const override;
 private:
-    Annotation<Var, unsigned int> m_decomposition;
-    std::optional<Annotation<Ctr, bool>> m_penalized_constraints;
+    Annotation<unsigned int> m_decomposition;
+    std::optional<Annotation<bool>> m_penalized_constraints;
     std::optional<ADM::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, ADM::SubProblem> m_sub_problem_specs;
     std::optional<std::pair<bool, double>> m_rescaling;

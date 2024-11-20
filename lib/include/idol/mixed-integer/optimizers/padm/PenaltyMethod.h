@@ -20,12 +20,12 @@ namespace idol {
 
 class idol::PenaltyMethod : public OptimizerFactoryWithDefaultParameters<PenaltyMethod> {
 public:
-    explicit PenaltyMethod(Annotation<Ctr, bool> t_penalized_constraints);
+    explicit PenaltyMethod(Annotation<bool> t_penalized_constraints);
 
     PenaltyMethod(const PenaltyMethod& t_src);
     PenaltyMethod(PenaltyMethod&&) = default;
 
-    PenaltyMethod& operator=(const PenaltyMethod&) = default;
+    PenaltyMethod& operator=(const PenaltyMethod&) = delete;
     PenaltyMethod& operator=(PenaltyMethod&&) = default;
 
     PenaltyMethod& with_optimizer(const OptimizerFactory& t_optimizer_factory);
@@ -42,10 +42,10 @@ public:
 
     PenaltyMethod& operator+=(const OptimizerFactory& t_optimizer_factory);
 
-    PenaltyMethod *clone() const override;
+    [[nodiscard]] PenaltyMethod *clone() const override;
 private:
-    Annotation<Var, unsigned int> m_decomposition;
-    Annotation<Ctr, bool> m_penalized_constraints;
+    Annotation<unsigned int> m_decomposition;
+    Annotation<bool> m_penalized_constraints;
     std::unique_ptr<OptimizerFactory> m_optimizer;
     std::optional<std::pair<bool, double>> m_rescaling;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;

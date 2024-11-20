@@ -19,8 +19,7 @@ namespace idol {
 }
 
 class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParameters<DantzigWolfeDecomposition> {
-    std::optional<Annotation<Ctr, unsigned int>> m_ctr_decomposition;
-    std::optional<Annotation<Var, unsigned int>> m_var_decomposition;
+    std::optional<Annotation<unsigned int>> m_decomposition;
     std::unique_ptr<OptimizerFactory> m_master_optimizer_factory;
     std::unique_ptr<DantzigWolfe::InfeasibilityStrategyFactory> m_infeasibility_strategy;
     std::unique_ptr<DantzigWolfe::DualPriceSmoothingStabilization> m_dual_price_smoothing_stabilization;
@@ -31,21 +30,18 @@ class idol::DantzigWolfeDecomposition : public OptimizerFactoryWithDefaultParame
     std::optional<DantzigWolfe::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, DantzigWolfe::SubProblem> m_sub_problem_specs;
 
-    std::vector<DantzigWolfe::SubProblem> create_sub_problems_specifications(const DantzigWolfe::Formulation &t_dantzig_wolfe_formulation) const;
+    [[nodiscard]] std::vector<DantzigWolfe::SubProblem> create_sub_problems_specifications(const DantzigWolfe::Formulation &t_dantzig_wolfe_formulation) const;
     static void add_aggregation_constraints(DantzigWolfe::Formulation& t_dantzig_wolfe_formulation, const std::vector<DantzigWolfe::SubProblem>& t_sub_problem_specifications) ;
 public:
     DantzigWolfeDecomposition() = default;
 
-    explicit DantzigWolfeDecomposition(Annotation<Ctr, unsigned int> t_decomposition);
-
-    DantzigWolfeDecomposition(Annotation<Ctr, unsigned int> t_ctr_decomposition,
-                              Annotation<Var, unsigned int> t_var_decomposition);
+    explicit DantzigWolfeDecomposition(Annotation<unsigned int> t_decomposition);
 
     DantzigWolfeDecomposition(const DantzigWolfeDecomposition& t_src);
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    DantzigWolfeDecomposition *clone() const override;
+    [[nodiscard]] DantzigWolfeDecomposition *clone() const override;
 
     DantzigWolfeDecomposition& with_master_optimizer(const OptimizerFactory& t_optimizer_factory);
 
@@ -65,7 +61,7 @@ public:
 
     DantzigWolfeDecomposition& with_dual_price_smoothing_stabilization(const DantzigWolfe::DualPriceSmoothingStabilization& t_stabilization);
 
-    const DantzigWolfe::SubProblem& get_sub_problem_spec(unsigned int t_id) const;
+    [[nodiscard]] const DantzigWolfe::SubProblem& get_sub_problem_spec(unsigned int t_id) const;
 };
 
 #endif //IDOL_DANTZIGWOLFEDECOMPOSITION_H

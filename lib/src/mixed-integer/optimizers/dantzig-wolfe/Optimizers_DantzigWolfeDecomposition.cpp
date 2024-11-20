@@ -74,7 +74,7 @@ void idol::Optimizers::DantzigWolfeDecomposition::add(const idol::Var &t_var) {
     const auto ub = parent.get_var_ub(t_var);
     const auto type = parent.get_var_type(t_var);
     const auto& column = parent.get_var_column(t_var);
-    const auto& sub_problem_id = t_var.get(m_formulation.decomposition_by_variable());
+    const auto& sub_problem_id = t_var.get(m_formulation.decomposition());
 
     if (sub_problem_id != MasterId) {
         const unsigned int n_sub_problems = m_formulation.n_sub_problems();

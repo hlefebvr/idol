@@ -184,7 +184,7 @@ add_library(idol STATIC
         src/bilevel/modeling/read_from_file.cpp
         include/idol/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.h
         src/mixed-integer/optimizers/wrappers/Mosek/MosekCallbackI.cpp
-        include/idol/bilevel/modeling/LowerLevelDescription.h
+        include/idol/bilevel/modeling/Description.h
         include/idol/bilevel/modeling/write_to_file.h
         src/bilevel/modeling/write_to_file.cpp
         include/idol/general/utils/LimitedWidthStream.h

@@ -31,13 +31,9 @@ protected:
     template<class T, class ...ArgsT> void set_default_value(ArgsT&& ...t_args);
     template<class T> [[nodiscard]] const T& cast_default_value() const { return std::any_cast<const T&>(m_id->default_value); }
 public:
-    Annotation(::idol::Env& t_env, bool t_is_var_annotation, std::string&& t_name);
+    Annotation(::idol::Env& t_env, std::string&& t_name);
 
     virtual ~Annotation() = default;
-
-    [[nodiscard]] virtual bool is_var_annotation() const = 0;
-
-    [[nodiscard]] virtual bool is_ctr_annotation() const = 0;
 
     /**
      * Returns the id of the annotation.

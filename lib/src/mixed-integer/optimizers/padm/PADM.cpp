@@ -7,13 +7,13 @@
 #include <utility>
 #include "idol/mixed-integer/optimizers/padm/Optimizers_PADM.h"
 
-idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition)
+idol::PADM::PADM(idol::Annotation<unsigned int> t_decomposition)
         : m_decomposition(std::move(t_decomposition)) {
 
 }
 
-idol::PADM::PADM(idol::Annotation<idol::Var, unsigned int> t_decomposition,
-                 idol::Annotation<idol::Ctr, bool> t_penalized_constraints)
+idol::PADM::PADM(idol::Annotation<unsigned int> t_decomposition,
+                 idol::Annotation<bool> t_penalized_constraints)
         : m_decomposition(std::move(t_decomposition)),
           m_penalized_constraints(t_penalized_constraints)
 {

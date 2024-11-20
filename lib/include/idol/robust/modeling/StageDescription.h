@@ -15,7 +15,7 @@ namespace idol::Robust {
 
 class idol::Robust::StageDescription {
     Annotation<Var> m_stage_variables;
-    Annotation<Ctr> m_stage_constraints;
+    Annotation m_stage_constraints;
 public:
     StageDescription(Env& t_env, const std::string& t_name)
         : m_stage_variables(t_env, t_name + "_stage_variables", MasterId),
@@ -24,13 +24,13 @@ public:
     explicit StageDescription(Env& t_env) : StageDescription(t_env, "robust") {}
 
     StageDescription(const Annotation<Var>& t_stage_variables,
-                     const Annotation<Ctr>& t_stage_constraints)
+                     const Annotation& t_stage_constraints)
         : m_stage_variables(t_stage_variables),
           m_stage_constraints(t_stage_constraints) {}
 
     [[nodiscard]] const Annotation<Var>& stage_vars() const { return m_stage_variables; }
 
-    [[nodiscard]] const Annotation<Ctr>& stage_ctrs() const { return m_stage_constraints; }
+    [[nodiscard]] const Annotation& stage_ctrs() const { return m_stage_constraints; }
 
     void set_stage(const Var& t_var, unsigned int t_stage) {
         if (t_stage == 0) {

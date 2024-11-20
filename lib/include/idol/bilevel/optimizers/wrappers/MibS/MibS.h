@@ -9,7 +9,7 @@
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/mixed-integer/modeling/annotations/Annotation.h"
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 #include "idol/mixed-integer/optimizers/callbacks/CallbackFactory.h"
 
 #ifdef IDOL_USE_OSI
@@ -23,7 +23,7 @@ namespace idol::Bilevel {
 class OsiSolverInterface;
 
 class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
-    Bilevel::LowerLevelDescription m_description;
+    Bilevel::Description m_description;
     std::optional<bool> m_use_file_interface;
     std::optional<bool> m_use_cplex_for_feasibility;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
@@ -31,7 +31,7 @@ class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     std::unique_ptr<OsiSolverInterface> m_osi_interface;
 #endif
 public:
-    MibS(Bilevel::LowerLevelDescription t_description);
+    MibS(Bilevel::Description t_description);
 
     MibS(const MibS& t_src);
     MibS(MibS&&) noexcept = delete;

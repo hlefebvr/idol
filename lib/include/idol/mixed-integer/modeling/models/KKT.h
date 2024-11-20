@@ -6,7 +6,7 @@
 #define IDOL_KKT_H
 
 #include "Model.h"
-#include "idol/bilevel/modeling/LowerLevelDescription.h"
+#include "idol/bilevel/modeling/Description.h"
 
 namespace idol::Reformulators {
     class KKT;
@@ -15,7 +15,7 @@ namespace idol::Reformulators {
 class idol::Reformulators::KKT {
 
     const Model& m_src_model;
-    const Bilevel::LowerLevelDescription& m_description;
+    const Bilevel::Description& m_description;
 
     std::vector<std::optional<Var>> m_dual_variables_for_constraints;
     std::vector<std::optional<Var>> m_dual_variables_for_lower_bounds;
@@ -32,7 +32,7 @@ class idol::Reformulators::KKT {
     void create_dual_objective();
 public:
     KKT(const Model& t_src_model,
-        const Bilevel::LowerLevelDescription& t_lower_level_description);
+        const Bilevel::Description& t_lower_level_description);
 
     void add_primal_variables(idol::Model &t_destination) const;
     void add_primal_constraints(Model &t_destination) const;
