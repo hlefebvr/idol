@@ -32,11 +32,5 @@ int main(int t_argc, const char** t_argv) {
 
     Dualizer dualizer(model);
 
-    auto s = idol_Sum(i, Range(2), i);
-
-    auto sum = idol_Sum(i, Range(0), x[i]);
-
-    std::cout << sum << std::endl;
-
     return 0;
 }
