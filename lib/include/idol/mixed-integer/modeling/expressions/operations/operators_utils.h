@@ -34,18 +34,30 @@ public:
     [[nodiscard]] iterator end() const { return iterator(m_end); }
 };
 
-#define idol_Sum(iterator_name, iterator, expr) \
-[&]() {                                         \
-    using namespace ::idol;                                           \
-    AffExpr _idol_result;                                \
-    auto _idol_iterator = iterator;                                            \
-    for (auto _idol_iterator_begin = _idol_iterator.begin(), _idol_iterator_end = _idol_iterator.end() ; \
-         _idol_iterator_begin != _idol_iterator_end ;  \
-         ++_idol_iterator_begin) {                         \
-        decltype(*_idol_iterator_begin) iterator_name = *_idol_iterator_begin;                                        \
-        _idol_result += expr;                                            \
-    }                                           \
-    return _idol_result;                                            \
+
+#define idol_Sum(INDEX, ITERABLE, EXPR) \
+[&]() {                              \
+    const auto compute_sum = [&]() { \
+        const auto& __idol_iterable = ITERABLE;                                 \
+        auto __idol_it = __idol_iterable.begin();      \
+        auto __idol_end = __idol_iterable.end(); \
+        auto INDEX = *__idol_it; \
+        decltype(EXPR + EXPR) result = EXPR;          \
+        for (++__idol_it ; __idol_it != __idol_end ; ++__idol_it) {                                     \
+            INDEX = *__idol_it; \
+            result += EXPR; \
+        }                             \
+        return result; \
+    };                                 \
+                                     \
+    const auto& __idol_iterable = ITERABLE;                                 \
+    auto __idol_it = __idol_iterable.begin();      \
+    auto __idol_end = __idol_iterable.end();                                    \
+    if (__idol_it != __idol_end) {                          \
+        return compute_sum();                                 \
+    }                                \
+    return decltype(compute_sum()){}; \
 }()
+
 
 #endif //IDOL_OPERATORS_UTILS_H

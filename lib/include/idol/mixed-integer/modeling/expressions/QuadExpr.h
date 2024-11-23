@@ -17,14 +17,11 @@ class idol::QuadExpr : public LinExpr<CommutativePair<KeyT>, ValueT> {
     AffExpr<KeyT, ValueT> m_affine;
 public:
     QuadExpr() = default;
-    QuadExpr(const KeyT& t_key) : m_affine(t_key) {}
-    QuadExpr(KeyT&& t_key) : m_affine(std::move(t_key)) {}
-    QuadExpr(const ValueT& t_value) : m_affine(t_value) {}
-    QuadExpr(ValueT&& t_value) : m_affine(std::move(t_value)) {}
-    QuadExpr(const LinExpr<KeyT, ValueT>& t_expr) : m_affine(t_expr) {} // NOLINT(*-explicit-constructor)
-    QuadExpr(LinExpr<KeyT, ValueT>&& t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
-    QuadExpr(const AffExpr<KeyT, ValueT>& t_expr) : m_affine(t_expr) {} // NOLINT(*-explicit-constructor)
-    QuadExpr(AffExpr<KeyT, ValueT>&& t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
+    QuadExpr(ValueT t_constant) : m_affine(std::move(t_constant)) {} // NOLINT(*-explicit-constructor)
+    QuadExpr(const KeyT& t_key) : m_affine(std::move(t_key)) {} // NOLINT(*-explicit-constructor)
+    QuadExpr(LinExpr<KeyT, ValueT> t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
+    QuadExpr(AffExpr<KeyT, ValueT> t_expr) : m_affine(std::move(t_expr)) {} // NOLINT(*-explicit-constructor)
+
     QuadExpr(const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2)) {}
     QuadExpr(const ValueT& t_factor, const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2), t_factor) {}
     QuadExpr(ValueT&& t_factor, const KeyT& t_key1, const KeyT& t_key2) : LinExpr<CommutativePair<KeyT>, ValueT>(CommutativePair<KeyT>(t_key1, t_key2), std::move(t_factor)) {}
@@ -46,11 +43,11 @@ public:
     AffExpr<KeyT, ValueT>& affine() { return m_affine; }
     const AffExpr<KeyT, ValueT>& affine() const { return m_affine; }
 
-    bool has_quadratic() const { return !LinExpr<CommutativePair<KeyT>, ValueT>::empty(); }
+    [[nodiscard]] bool has_quadratic() const { return !LinExpr<CommutativePair<KeyT>, ValueT>::empty(); }
 
-    bool empty_all() const { return LinExpr<CommutativePair<KeyT>, ValueT>::empty() && m_affine.linear().empty(); }
+    [[nodiscard]] bool empty_all() const { return LinExpr<CommutativePair<KeyT>, ValueT>::empty() && m_affine.linear().empty(); }
 
-    bool is_zero(double t_tolerance) const override;
+    [[nodiscard]] bool is_zero(double t_tolerance) const override;
 
     void clear_all();
 };

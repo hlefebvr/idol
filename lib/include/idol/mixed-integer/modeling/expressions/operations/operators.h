@@ -8,6 +8,8 @@
 #include "operators_utils.h"
 #include "idol/general/utils/Point.h"
 #include <idol/mixed-integer/modeling/expressions/QuadExpr.h>
+#include <idol/mixed-integer/modeling/variables/Var.h>
+#include <idol/mixed-integer/modeling/constraints/Ctr.h>
 
 namespace idol {
     template<class T>
@@ -47,821 +49,89 @@ namespace idol {
         return result;
     }
 
-    // Products
-
-    // LinExpr
-    template<class KeyT>
-    LinExpr<KeyT> operator*(double t_num, const KeyT& t_obj) {
-        return { t_num, t_obj };
-    }
-
-    template<class KeyT>
-    LinExpr<KeyT> operator*(const KeyT& t_obj, double t_num) {
-        return { t_num, t_obj };
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator*(double t_num, LinExpr<KeyT, ValueT>&& t_lin_expr) {
-        LinExpr<KeyT, ValueT> result(std::move(t_lin_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator*(LinExpr<KeyT, ValueT>&& t_lin_expr, double t_num) {
-        LinExpr<KeyT, ValueT> result(std::move(t_lin_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator*(double t_num, const LinExpr<KeyT, ValueT>& t_lin_expr) {
-        LinExpr<KeyT, ValueT> result(t_lin_expr);
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator*(const LinExpr<KeyT, ValueT>& t_lin_expr, double t_num) {
-        LinExpr<KeyT, ValueT> result(t_lin_expr);
-        result *= t_num;
-        return result;
-    }
-
-    // AffExpr
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator*(double t_num, AffExpr<KeyT, ValueT>&& t_expr) {
-        AffExpr<KeyT, ValueT> result(std::move(t_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator*(double t_num, const AffExpr<KeyT, ValueT>& t_expr) {
-        AffExpr<KeyT, ValueT> result(t_expr);
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator*(AffExpr<KeyT, ValueT>&& t_expr, double t_num) {
-        AffExpr<KeyT, ValueT> result(std::move(t_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator*(const AffExpr<KeyT, ValueT>& t_expr, double t_num) {
-        AffExpr<KeyT, ValueT> result(t_expr);
-        result *= t_num;
-        return result;
-    }
-
-    // QuadExpr
-
-    template<class T>
-    QuadExpr<T> operator*(const T& t_obj1, const T& t_obj2) {
-        return { t_obj1, t_obj2 };
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator*(double t_num, QuadExpr<KeyT, ValueT>&& t_expr) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator*(double t_num, const QuadExpr<KeyT, ValueT>& t_expr) {
-        QuadExpr<KeyT, ValueT> result(t_expr);
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator*(QuadExpr<KeyT, ValueT>&& t_expr, double t_num) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_expr));
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator*(const QuadExpr<KeyT, ValueT>& t_expr, double t_num) {
-        QuadExpr<KeyT, ValueT> result(t_expr);
-        result *= t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator*(const LinExpr<KeyT, ValueT>& t_lin_expr, const LinExpr<KeyT, ValueT>& t_lin_expr2) {
-        QuadExpr<KeyT, ValueT> result;
-        for (const auto& [key, value] : t_lin_expr) {
-            result += value * t_lin_expr2 * key;
-        }
-        return result;
-    }
-
-    // Addition
-
-    // LinExpr
-
-    template<class KeyT>
-    LinExpr<KeyT> operator+(const KeyT& t_obj) {
-        return { t_obj };
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_lin_expr) {
-        return std::move(t_lin_expr);
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_lin_expr) {
-        return t_lin_expr;
-    }
-
-    template<class KeyT>
-    LinExpr<KeyT> operator+(const KeyT& t_a, const KeyT& t_b) {
-        LinExpr<KeyT> result(t_a);
-        result += LinExpr<KeyT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-   }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_a, const KeyT& t_b) {
-        LinExpr<KeyT, ValueT> result(std::move(t_a));
-        result += LinExpr<KeyT, ValueT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(const KeyT& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result += std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(const KeyT& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_a, const KeyT& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result += LinExpr<KeyT, ValueT>(t_b);
-        return result;
-    }
-
-    // AffExpr
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>&& t_expr) {
-        return std::move(t_expr);
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_expr) {
-        return t_expr;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(double t_term, LinExpr<KeyT, ValueT>&& t_lin_expr) {
-        AffExpr<KeyT, ValueT> result(std::move(t_lin_expr));
-        result.constant() += t_term;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_lin_expr, double t_term) {
-        AffExpr<KeyT, ValueT> result(std::move(t_lin_expr));
-        result.constant() += t_term;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_lin_expr, double t_term) {
-        AffExpr<KeyT, ValueT> result(t_lin_expr);
-        result.constant() += t_term;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(double t_term, const LinExpr<KeyT, ValueT>& t_lin_expr) {
-        AffExpr<KeyT, ValueT> result(t_lin_expr);
-        result.constant() += t_term;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_b));
-        result.linear() += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(double t_num, AffExpr<KeyT, ValueT>&& t_expr) {
-        AffExpr<KeyT, ValueT> result(std::move(t_expr));
-        result.constant() += t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_expr, double t_num) {
-        AffExpr<KeyT, ValueT> result(std::move(t_expr));
-        result.constant() += t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_expr, double t_num) {
-        AffExpr<KeyT, ValueT> result(t_expr);
-        result.constant() += t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(double t_num, const AffExpr<KeyT, ValueT>& t_expr) {
-        AffExpr<KeyT, ValueT> result(t_expr);
-        result.constant() += t_num;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, const KeyT& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result.linear() += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const KeyT& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_b));
-        result.linear() += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const KeyT& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_b);
-        result.linear() += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, const KeyT& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result.linear() += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result += std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_b));
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result += std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(LinExpr<KeyT, ValueT>&& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result += std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const LinExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_b);
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result += std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    // QuadExpr
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(QuadExpr<KeyT, ValueT>&& t_expr) {
-        return std::move(t_expr);
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_expr) {
-        return t_expr;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(AffExpr<KeyT, ValueT>&& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += std::move(t_a);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(QuadExpr<KeyT, ValueT>&& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const AffExpr<KeyT, ValueT>& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_b);
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(QuadExpr<KeyT, ValueT>&& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result += t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const KeyT& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += LinExpr<KeyT, ValueT>(t_a);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(QuadExpr<KeyT, ValueT>&& t_b, const KeyT& t_a) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_b));
-        result += LinExpr<KeyT, ValueT>(t_a);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const KeyT& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_b);
-        result += LinExpr<KeyT, ValueT>(t_a);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator+(const QuadExpr<KeyT, ValueT>& t_b, const KeyT& t_a) {
-        QuadExpr<KeyT, ValueT> result(t_b);
-        result += LinExpr<KeyT, ValueT>(t_a);
-        return result;
-    }
-
-    // Subtraction
-
-    // LinExpr
-
-    template<class KeyT>
-    LinExpr<KeyT> operator-(const KeyT& t_key) {
-        return { -1, t_key};
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_lin_expr) {
-        LinExpr<KeyT, ValueT> result;
-        result -= t_lin_expr;
-        return result;
-    }
-
-    template<class KeyT>
-    LinExpr<KeyT> operator-(const KeyT& t_a, const KeyT& t_b) {
-        LinExpr<KeyT> result(t_a);
-        result -= LinExpr<KeyT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, const KeyT& t_b) {
-        LinExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= LinExpr<KeyT, ValueT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const KeyT& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_a, const KeyT& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result -= LinExpr<KeyT, ValueT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const KeyT& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= LinExpr<KeyT, ValueT>(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        LinExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    LinExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        LinExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    // AffExpr
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(AffExpr<KeyT, ValueT>&& t_a, double t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result.constant() -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(double t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_b));
-        result.constant() = t_a - result.constant();
-        return result;
-    }
-
-    template<class KeyT>
-    AffExpr<KeyT> operator-(double t_a, const KeyT& t_b) {
-        AffExpr<KeyT> result(t_b);
-        result.constant() = t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, double t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result.constant() -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(double t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_b);
-        result.constant() = t_a;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const KeyT& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(AffExpr<KeyT, ValueT>&& t_a, const KeyT& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, const KeyT& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const KeyT& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, const LinExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const LinExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(AffExpr<KeyT, ValueT>&& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(AffExpr<KeyT, ValueT>&& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    AffExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        AffExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    // QuadExpr
-
-    template<class KeyT, class ValutT>
-    QuadExpr<KeyT, ValutT> operator-(const QuadExpr<KeyT, ValutT>& t_expr) {
-        QuadExpr<KeyT, ValutT> result;
-        result -= t_expr;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(QuadExpr<KeyT, ValueT>&& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(QuadExpr<KeyT, ValueT>&& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, AffExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(AffExpr<KeyT, ValueT>&& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(QuadExpr<KeyT, ValueT>&& t_a, const AffExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const AffExpr<KeyT, ValueT>& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(QuadExpr<KeyT, ValueT>&& t_a, LinExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(LinExpr<KeyT, ValueT>&& t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= std::move(t_b);
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const QuadExpr<KeyT, ValueT>& t_a, double t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(const ValueT& t_a, const QuadExpr<KeyT, ValueT>& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(QuadExpr<KeyT, ValueT>&& t_a, double t_b) {
-        QuadExpr<KeyT, ValueT> result(std::move(t_a));
-        result -= t_b;
-        return result;
-    }
-
-    template<class KeyT, class ValueT>
-    QuadExpr<KeyT, ValueT> operator-(double t_a, QuadExpr<KeyT, ValueT>&& t_b) {
-        QuadExpr<KeyT, ValueT> result(t_a);
-        result -= std::move(t_b);
-        return result;
-    }
-
+}
+
+#define DEFINE_OPERATOR_SINGLE(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+static ResultT operator OPERATOR(T t_a, U t_b) { \
+    ResultT result(std::move(t_a));                                   \
+    result OPERATOR_EQ std::move(t_b);                                \
+    return result; \
+}
+
+#define DEFINE_OPERATOR(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+DEFINE_OPERATOR_SINGLE(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+static ResultT operator OPERATOR(U t_a, T t_b) {             \
+    ResultT result(std::move(t_a));          \
+    result OPERATOR_EQ std::move(t_b);                 \
+    return result;                            \
+}
+
+#define DEFINE_COMMUTATIVE_OPERATOR_SINGLE(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+static ResultT operator OPERATOR(T t_a, U t_b) { \
+    ResultT result(std::move(t_b));                                   \
+    result OPERATOR_EQ std::move(t_a);                                \
+    return result; \
+}
+
+#define DEFINE_COMMUTATIVE_OPERATOR(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+DEFINE_COMMUTATIVE_OPERATOR_SINGLE(OPERATOR, OPERATOR_EQ, T, U, ResultT) \
+static ResultT operator OPERATOR(U t_a, T t_b) {             \
+    ResultT result(std::move(t_a));          \
+    result OPERATOR_EQ std::move(t_b);                 \
+    return result;                            \
+}
+
+#define DEFINE_OPERATIONS(T) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, double, LinExpr<T>, AffExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, double, AffExpr<T>, AffExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, double, QuadExpr<T>, QuadExpr<T>) \
+ \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, T, double, AffExpr<T>)          \
+DEFINE_COMMUTATIVE_OPERATOR_SINGLE(+, +=, T, T, LinExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, T, LinExpr<T>, LinExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, T, AffExpr<T>, AffExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, T, QuadExpr<T>, QuadExpr<T>) \
+ \
+DEFINE_COMMUTATIVE_OPERATOR_SINGLE(+, +=, LinExpr<T>, LinExpr<T>, LinExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, LinExpr<T>, AffExpr<T>, AffExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, LinExpr<T>, QuadExpr<T>, QuadExpr<T>) \
+ \
+DEFINE_COMMUTATIVE_OPERATOR(+, +=, AffExpr<T>, QuadExpr<T>, QuadExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR_SINGLE(+, +=, AffExpr<T>, AffExpr<T>, AffExpr<T>) \
+ \
+DEFINE_COMMUTATIVE_OPERATOR_SINGLE(+, +=, QuadExpr<T>, QuadExpr<T>, QuadExpr<T>)    \
+                             \
+DEFINE_OPERATOR(-, -=, double, T, AffExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, double, LinExpr<T>, AffExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, double, AffExpr<T>, AffExpr<T>)             \
+                             \
+DEFINE_OPERATOR_SINGLE(-, -=, T, T, LinExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, T, LinExpr<T>, LinExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, T, AffExpr<T>, AffExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, T, QuadExpr<T>, QuadExpr<T>)                             \
+                             \
+DEFINE_OPERATOR_SINGLE(-, -=, LinExpr<T>, LinExpr<T>, LinExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, LinExpr<T>, AffExpr<T>, AffExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, LinExpr<T>, QuadExpr<T>, QuadExpr<T>)                             \
+                             \
+DEFINE_OPERATOR_SINGLE(-, -=, AffExpr<T>, AffExpr<T>, AffExpr<T>)                             \
+DEFINE_OPERATOR(-, -=, AffExpr<T>, QuadExpr<T>, QuadExpr<T>)       \
+                             \
+DEFINE_OPERATOR_SINGLE(-, -=, QuadExpr<T>, QuadExpr<T>, QuadExpr<T>)                             \
+                             \
+DEFINE_COMMUTATIVE_OPERATOR(*, *=, double, T, LinExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(*, *=, double, LinExpr<T>, LinExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(*, *=, double, AffExpr<T>, AffExpr<T>) \
+DEFINE_COMMUTATIVE_OPERATOR(*, *=, double, QuadExpr<T>, QuadExpr<T>) \
+\
+static QuadExpr<T> operator*(T t_a, T t_b) { return { t_a, t_b }; }   \
+\
+static LinExpr<T, double> operator+(const T& t_a) { return t_a; } \
+static LinExpr<T, double> operator-(const T& t_a) { return { -1., t_a }; }
+
+namespace idol {
+    DEFINE_OPERATIONS(Var)
+    DEFINE_OPERATIONS(Ctr)
 }
 
 #endif //IDOL_OPERATORS_H

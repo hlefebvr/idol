@@ -83,13 +83,13 @@ namespace idol {
 namespace idol {
 
     template<
-            class Key,
+            class KeyT,
             class T,
-            class Hash = impl::hash<Key>,
-            class KeyEqual = std::equal_to<Key>,
-            class Allocator = std::allocator<std::pair<const Key, T> >
+            class Hash = impl::hash<KeyT>,
+            class KeyEqual = std::equal_to<KeyT>,
+            class Allocator = std::allocator<std::pair<const KeyT, T> >
     >
-    using Map = std::unordered_map<Key, T, Hash, KeyEqual, Allocator>;
+    using Map = std::unordered_map<KeyT, T, Hash, KeyEqual, Allocator>;
 
 }
 

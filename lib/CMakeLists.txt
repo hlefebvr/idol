@@ -227,6 +227,8 @@ add_library(idol STATIC
         src/mixed-integer/modeling/constraints/QCtrVersion.cpp
         src/mixed-integer/modeling/constraints/QCtr.cpp
         include/idol/general/utils/GenerationPattern.h
+        include/idol/mixed-integer/modeling/models/Dualizer.h
+        src/mixed-integer/modeling/models/Dualizer.cpp
 )
 
 find_package(OpenMP REQUIRED)

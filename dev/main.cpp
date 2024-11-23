@@ -19,6 +19,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
 #include "idol/general/utils/GenerationPattern.h"
+#include "idol/mixed-integer/modeling/models/Dualizer.h"
 
 using namespace idol;
 
@@ -29,16 +30,13 @@ int main(int t_argc, const char** t_argv) {
 
     const auto x = model.add_vars(Dim<1>(10), 0, 1, Binary, 1, "x");
 
-    Point<Var> point;
-    point.set(x[0], 5);
+    Dualizer dualizer(model);
 
-    GenerationPattern<Ctr> pattern;
-    pattern.constant() += 2 + 2 * x[0];
+    auto s = idol_Sum(i, Range(2), i);
 
-    pattern.linear().set(x[1], x[0]);
-    pattern.linear().set(x[2], 10 * x[0] + 4);
+    auto sum = idol_Sum(i, Range(0), x[i]);
 
-    std::cout << pattern(point) << std::endl;
+    std::cout << sum << std::endl;
 
     return 0;
 }

@@ -11,21 +11,19 @@
 namespace idol {
     class Var;
 
-    template<class Key1, class ValueT>
+    template<class KeyT, class ValueT>
     class AffExpr;
 }
 
-template<class Key1 = idol::Var, class ValueT = double>
+template<class KeyT = idol::Var, class ValueT = double>
 class idol::AffExpr {
-    LinExpr<Key1, ValueT> m_linear;
+    LinExpr<KeyT, ValueT> m_linear;
     double m_constant = 0.;
 public:
     AffExpr();
-    AffExpr(const ValueT& t_constant); // NOLINT(google-explicit-constructor)
-    AffExpr(ValueT&& t_constant); // NOLINT(google-explicit-constructor)
-    AffExpr(const Key1& t_var); // NOLINT(google-explicit-constructor)
-    AffExpr(LinExpr<Key1>&& t_expr); // NOLINT(google-explicit-constructor)
-    AffExpr(const LinExpr<Key1>& t_expr); // NOLINT(google-explicit-constructor)
+    AffExpr(ValueT t_constant); // NOLINT(google-explicit-constructor)
+    AffExpr(const KeyT& t_key); // NOLINT(google-explicit-constructor)
+    AffExpr(LinExpr<KeyT> t_expr); // NOLINT(google-explicit-constructor)
 
     virtual ~AffExpr() = default;
 
@@ -36,13 +34,14 @@ public:
     AffExpr& operator=(AffExpr&&) noexcept = default;
 
     AffExpr& operator+=(const AffExpr& t_rhs);
+
     AffExpr& operator-=(const AffExpr& t_rhs);
     AffExpr& operator*=(double t_rhs);
     AffExpr& operator/=(double t_rhs);
     AffExpr operator-() const;
 
-    LinExpr<Key1, ValueT>& linear() { return m_linear; }
-    [[nodiscard]] const LinExpr<Key1, ValueT>& linear() const { return m_linear; }
+    LinExpr<KeyT, ValueT>& linear() { return m_linear; }
+    [[nodiscard]] const LinExpr<KeyT, ValueT>& linear() const { return m_linear; }
 
     double& constant() { return m_constant; }
 
@@ -55,6 +54,11 @@ public:
         m_linear.clear();
     }
 };
+
+template<class KeyT, class ValueT>
+idol::AffExpr<KeyT, ValueT>::AffExpr(const KeyT &t_key) : m_linear(t_key) {
+
+}
 
 template<class Key1, class ValueT>
 idol::AffExpr<Key1, ValueT> idol::AffExpr<Key1, ValueT>::operator-() const {
@@ -70,27 +74,12 @@ idol::AffExpr<Key1, ValueT>::AffExpr() {
 }
 
 template<class Key1, class ValueT>
-idol::AffExpr<Key1, ValueT>::AffExpr(const ValueT& t_constant) : m_constant(t_constant) {
+idol::AffExpr<Key1, ValueT>::AffExpr(ValueT t_constant) : m_constant(std::move(t_constant)) {
 
 }
 
 template<class Key1, class ValueT>
-idol::AffExpr<Key1, ValueT>::AffExpr(ValueT&& t_constant) : m_constant(t_constant) {
-
-}
-
-template<class Key1, class ValueT>
-idol::AffExpr<Key1, ValueT>::AffExpr(const Key1 &t_var) : m_linear(t_var) {
-
-}
-
-template<class Key1, class ValueT>
-idol::AffExpr<Key1, ValueT>::AffExpr(LinExpr<Key1> &&t_expr) : m_linear(std::move(t_expr)) {
-
-}
-
-template<class Key1, class ValueT>
-idol::AffExpr<Key1, ValueT>::AffExpr(const LinExpr<Key1> &t_expr) : m_linear(t_expr) {
+idol::AffExpr<Key1, ValueT>::AffExpr(LinExpr<Key1> t_expr) : m_linear(std::move(t_expr)) {
 
 }
 

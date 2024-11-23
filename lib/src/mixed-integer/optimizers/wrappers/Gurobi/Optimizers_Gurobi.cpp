@@ -491,7 +491,7 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
 
     const auto parse_linear = [&](const GRBLinExpr& t_lin_expr) {
 
-        AffExpr result_ = t_lin_expr.getConstant();
+        AffExpr<Var> result_ = t_lin_expr.getConstant();
         auto& linear_ = result_.linear();
         const auto n_terms = t_lin_expr.size();
         linear_.reserve(n_terms);

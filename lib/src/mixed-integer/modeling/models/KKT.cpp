@@ -188,7 +188,7 @@ void idol::Reformulators::KKT::create_dual_constraint(const idol::Var &t_var) {
         expr += dual_var.value();
     }
 
-    AffExpr obj = m_description.follower_obj().linear().get(t_var);
+    AffExpr<Var> obj = m_description.follower_obj().linear().get(t_var);
 
     m_dual_constraints[index] = Ctr(env, expr == obj, "dual_" + t_var.name());
 
