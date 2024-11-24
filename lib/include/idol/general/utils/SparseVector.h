@@ -82,7 +82,11 @@ private:
 public:
     SparseVector() = default;
 
-    SparseVector(const IndexT& t_index, const ValueT& t_value) : m_map({ { t_index, t_value} }) {}
+    SparseVector(const IndexT& t_index, const ValueT& t_value) : m_map({ { t_index, t_value} }) {
+        if (::idol::is_zero(t_value, Tolerance::Sparsity)) {
+            m_map.clear();
+        }
+    }
 
     SparseVector(const SparseVector&) = default;
     SparseVector(SparseVector&&) = default;

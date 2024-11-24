@@ -76,17 +76,17 @@ TEST_CASE("Reformulate Facility Location Problem instances using optimality cond
 
     Model reformulated(env);
 
-    KKT dualizer(model, model.get_obj_expr());
+    Reformulators::KKT reformulator(model, model.get_obj_expr());
 
     switch (reformulation) {
         case Dual:
-            dualizer.add_dual(reformulated);
+            reformulator.add_dual(reformulated);
             break;
         case StrongDuality:
-            dualizer.add_strong_duality_reformulation(reformulated);
+            reformulator.add_strong_duality_reformulation(reformulated);
             break;
         case KKT:
-            dualizer.add_kkt_reformulation(reformulated);
+            reformulator.add_kkt_reformulation(reformulated);
             break;
         default: throw std::runtime_error("Invalid reformulation.");
     }
@@ -106,7 +106,7 @@ TEST_CASE("Reformulate Facility Location Problem instances using optimality cond
         AND_THEN("The objective value is " + std::to_string(objective_value)) {
 
             const auto primal_solution = save_primal(reformulated);
-            double value = evaluate(dualizer.get_dual_obj_expr(), primal_solution);
+            double value = evaluate(reformulator.get_dual_obj_expr(), primal_solution);
 
             CHECK(value == Catch::Approx(objective_value));
 

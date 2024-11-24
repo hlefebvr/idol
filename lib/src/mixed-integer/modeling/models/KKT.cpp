@@ -530,7 +530,13 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
     add_primal_constraints(t_destination);
     add_dual_constraints(t_destination);
 
-    t_destination.add_qctr(m_primal_objective - m_dual_objective, LessOrEqual);
+    auto duality_gap = m_primal_objective - m_dual_objective;
+
+    if (duality_gap.has_quadratic()) {
+        t_destination.add_qctr(std::move(duality_gap), LessOrEqual);
+    } else {
+        t_destination.add_ctr(std::move(duality_gap.affine()) <= 0);
+    }
 }
 
 void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination) {

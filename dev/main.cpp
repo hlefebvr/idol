@@ -20,45 +20,52 @@
 #include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
 #include "idol/general/utils/GenerationPattern.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
+#include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
     Env env;
-    Model primal(env);
 
-    const auto x = primal.add_vars(Dim<1>(10), 0, 1, Continuous, -1, "x");
-    primal.add_ctr(idol_Sum(i, Range(10), i * x[i]) <= 5);
+    // Generate parameters
+    const auto filename = "/home/henri/Research/idol/tests/data/facility-location-problem/instance_F10_C20__0.txt";
 
-    Model dual(env);
-    Model strong_duality(env);
-    Model kkt(env);
+    // Read instance
+    const auto instance = idol::Problems::FLP::read_instance_1991_Cornuejols_et_al(filename);
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
 
-    KKT dualizer(primal, primal.get_obj_expr());
-    dualizer.add_dual(dual);
-    dualizer.add_strong_duality_reformulation(strong_duality);
-    dualizer.add_kkt_reformulation(kkt);
+    // Make model
+    auto x = Var::make_vector(env, Dim<1>(n_facilities), 0., 1., Continuous, 0., "x");
+    auto y = Var::make_vector(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
 
-    std::cout << primal << std::endl;
-    std::cout << dual << std::endl;
-    std::cout << strong_duality << std::endl;
-    std::cout << kkt << std::endl;
+    Model model(env);
 
-    primal.use(Gurobi());
-    dual.use(Gurobi());
-    strong_duality.use(Gurobi());
-    kkt.use(Gurobi());
+    model.add_vector<Var, 1>(x);
+    model.add_vector<Var, 2>(y);
 
-    primal.optimize();
-    dual.optimize();
-    strong_duality.optimize();
-    kkt.optimize();
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        model.add(Ctr(env, idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i) * x[i]));
+    }
 
-    std::cout << "Primal solution: " << primal.get_best_obj() << std::endl;
-    std::cout << "Dual solution: " << dual.get_best_obj() << std::endl;
-    std::cout << "Strong duality solution: " << evaluate(dualizer.get_dual_obj_expr(), save_primal(strong_duality)) << std::endl;
-    std::cout << "KKT solution: " << evaluate(dualizer.get_dual_obj_expr(), save_primal(kkt)) << std::endl;
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
+    }
+
+    model.set_obj_expr(idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers),
+                                                                                                 instance.per_unit_transportation_cost(
+                                                                                                         i, j) *
+                                                                                                 instance.demand(j) *
+                                                                                                 y[i][j])));
+
+    Model reformulated(env);
+
+    Reformulators::KKT reformulator(model, model.get_obj_expr());
+
+    reformulator.add_strong_duality_reformulation(reformulated);
+
+    std::cout << reformulated << std::endl;
 
     return 0;
 }
