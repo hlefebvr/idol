@@ -24,6 +24,7 @@ public:
         explicit iterator(NumT t_index) : m_index(t_index) {}
     public:
         bool operator!=(const iterator& t_it) const { return t_it.m_index != m_index; }
+        bool operator==(const iterator& t_it) const { return t_it.m_index == m_index; }
         iterator& operator++() { ++m_index; return *this; }
         iterator operator++(int) & { auto result = *this; ++m_index; return *this; }
         NumT operator*() const { return m_index; }
@@ -33,7 +34,6 @@ public:
     [[nodiscard]] iterator begin() const { return iterator(m_begin); }
     [[nodiscard]] iterator end() const { return iterator(m_end); }
 };
-
 
 #define idol_Sum(INDEX, ITERABLE, EXPR) \
 [&]() {                              \

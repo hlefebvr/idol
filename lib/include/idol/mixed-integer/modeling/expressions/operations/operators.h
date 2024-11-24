@@ -127,7 +127,17 @@ DEFINE_COMMUTATIVE_OPERATOR(*, *=, double, QuadExpr<T>, QuadExpr<T>) \
 static QuadExpr<T> operator*(T t_a, T t_b) { return { t_a, t_b }; }   \
 \
 static LinExpr<T, double> operator+(const T& t_a) { return t_a; } \
-static LinExpr<T, double> operator-(const T& t_a) { return { -1., t_a }; }
+static LinExpr<T, double> operator-(const T& t_a) { return { -1., t_a }; }    \
+static QuadExpr<T> operator*(const T& t_a, const LinExpr<T>& t_b) {           \
+    QuadExpr<T> result;      \
+    for (const auto& [var, constant] : t_b) {                      \
+        result += constant * (var * t_a);\
+    }                        \
+    return result;           \
+}                            \
+static QuadExpr<T> operator*(const LinExpr<T>& t_a, const T& t_b) { return t_b * t_a; }       \
+static QuadExpr<T> operator*(const T& t_a, const AffExpr<T>& t_b) { return t_a * t_b.constant() + t_a * t_b.linear(); } \
+static QuadExpr<T> operator*(const AffExpr<T>& t_a, const T& t_b) { return t_b * t_a; }
 
 namespace idol {
     DEFINE_OPERATIONS(Var)

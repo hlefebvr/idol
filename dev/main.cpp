@@ -26,11 +26,39 @@ using namespace idol;
 int main(int t_argc, const char** t_argv) {
 
     Env env;
-    Model model(env);
+    Model primal(env);
 
-    const auto x = model.add_vars(Dim<1>(10), 0, 1, Binary, 1, "x");
+    const auto x = primal.add_vars(Dim<1>(10), 0, 1, Continuous, -1, "x");
+    primal.add_ctr(idol_Sum(i, Range(10), i * x[i]) <= 5);
 
-    Dualizer dualizer(model);
+    Model dual(env);
+    Model strong_duality(env);
+    Model kkt(env);
+
+    Dualizer dualizer(primal, primal.get_obj_expr());
+    dualizer.add_dual(dual);
+    dualizer.add_strong_duality_reformulation(strong_duality);
+    dualizer.add_kkt_reformulation(kkt);
+
+    std::cout << primal << std::endl;
+    std::cout << dual << std::endl;
+    std::cout << strong_duality << std::endl;
+    std::cout << kkt << std::endl;
+
+    primal.use(Gurobi());
+    dual.use(Gurobi());
+    strong_duality.use(Gurobi());
+    kkt.use(Gurobi());
+
+    primal.optimize();
+    dual.optimize();
+    strong_duality.optimize();
+    kkt.optimize();
+
+    std::cout << "Primal solution: " << primal.get_best_obj() << std::endl;
+    std::cout << "Dual solution: " << dual.get_best_obj() << std::endl;
+    std::cout << "Strong duality solution: " << evaluate(dualizer.get_dual_obj_expr(), save_primal(strong_duality)) << std::endl;
+    std::cout << "KKT solution: " << evaluate(dualizer.get_dual_obj_expr(), save_primal(kkt)) << std::endl;
 
     return 0;
 }
