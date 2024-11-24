@@ -32,6 +32,7 @@ jobs:
         run: cmake --build ${{github.workspace}}/build
 
       - name: Test
+        working-directory: ${{github.workspace}}/build/tests
         run: (cd ./mixed-integer/modeling && ./test_modeling_interface)
 
       - name: Build coverage report

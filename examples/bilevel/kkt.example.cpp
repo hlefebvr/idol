@@ -8,6 +8,7 @@
 #include "idol/bilevel/modeling/read_from_file.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/modeling/models/Dualizer.h"
 
 using namespace idol;
 
@@ -57,19 +58,34 @@ int main(int t_argc, const char** t_argv) {
 
     Reformulators::KKT reformulator(high_point_relaxation, description);
 
+    Dualizer dualizer(high_point_relaxation,
+                      description.follower_obj(),
+                      [&](const Var& t_var) { return description.is_follower(t_var); },
+                      [&](const Ctr& t_ctr) { return description.is_follower(t_ctr); },
+                      [&](const QCtr& t_qctr) { return description.is_follower(t_qctr); }
+                      );
+
+    Model new_single_level(env);
+    dualizer.add_kkt_reformulation(new_single_level);
+
     Model single_level(env);
     reformulator.add_kkt_reformulation(single_level);
 
     std::cout << high_point_relaxation << std::endl;
     std::cout << single_level << std::endl;
+    std::cout << new_single_level << std::endl;
 
     single_level.use(Gurobi());
+    new_single_level.use(Gurobi());
 
     single_level.optimize();
+    new_single_level.optimize();
 
     single_level.write("kkt.lp");
+    new_single_level.write("new_kkt.lp");
 
     std::cout << save_primal(single_level) << std::endl;
+    std::cout << save_primal(new_single_level) << std::endl;
 
     return 0;
 }
