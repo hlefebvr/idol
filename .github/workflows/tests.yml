@@ -32,8 +32,7 @@ jobs:
         run: cmake --build ${{github.workspace}}/build
 
       - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ./mixed-integer/modeling/test_modeling_interface
+        run: (cd ./mixed-integer/modeling && ./test_modeling_interface)
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
@@ -49,10 +48,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "mixed-integer/branch-and-bound/test_bab_knapsack_Mosek"
-          - "mixed-integer/branch-and-bound/test_bab_location_Mosek"
-          - "mixed-integer/branch-and-price/test_bap_assignment_Mosek"
-          - "mixed-integer/dualizer/test_dualizer_location_Mosek"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_Mosek)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_Mosek)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_Mosek)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_Mosek)"
     steps:
       - uses: actions/checkout@v4
 
@@ -84,7 +83,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
         env:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
@@ -102,10 +101,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "mixed-integer/branch-and-bound/test_bab_knapsack_GLPK"
-          - "mixed-integer/branch-and-bound/test_bab_location_GLPK"
-          - "mixed-integer/branch-and-price/test_bap_assignment_GLPK"
-          - "mixed-integer/dualizer/test_dualizer_location_GLPK"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_GLPK)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_GLPK)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_GLPK)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_GLPK)"
     steps:
       - uses: actions/checkout@v4
 
@@ -126,7 +125,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
@@ -142,10 +141,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "mixed-integer/branch-and-bound/test_bab_knapsack_HiGHS"
-          - "mixed-integer/branch-and-bound/test_bab_location_HiGHS"
-          - "mixed-integer/branch-and-price/test_bap_assignment_HiGHS"
-          - "mixed-integer/dualizer/test_dualizer_location_HiGHS"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_HiGHS)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_HiGHS)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_HiGHS)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_HiGHS)"
     steps:
       - uses: actions/checkout@v3
 
@@ -166,7 +165,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
