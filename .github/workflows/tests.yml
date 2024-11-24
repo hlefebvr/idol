@@ -49,9 +49,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_Mosek"
-          - "branch-and-bound/test_bab_location_Mosek"
-          - "branch-and-price/test_bap_assignment_Mosek"
+          - "mixed-integer/branch-and-bound/test_bab_knapsack_Mosek"
+          - "mixed-integer/branch-and-bound/test_bab_location_Mosek"
+          - "mixed-integer/branch-and-price/test_bap_assignment_Mosek"
+          - "mixed-integer/dualizer/test_dualizer_location_Mosek"
     steps:
       - uses: actions/checkout@v4
 
@@ -101,9 +102,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_GLPK"
-          - "branch-and-bound/test_bab_location_GLPK"
-          - "branch-and-price/test_bap_assignment_GLPK"
+          - "mixed-integer/branch-and-bound/test_bab_knapsack_GLPK"
+          - "mixed-integer/branch-and-bound/test_bab_location_GLPK"
+          - "mixed-integer/branch-and-price/test_bap_assignment_GLPK"
+          - "mixed-integer/dualizer/test_dualizer_location_GLPK"
     steps:
       - uses: actions/checkout@v4
 
@@ -140,9 +142,10 @@ jobs:
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_HiGHS"
-          - "branch-and-bound/test_bab_location_HiGHS"
-          - "branch-and-price/test_bap_assignment_HiGHS"
+          - "mixed-integer/branch-and-bound/test_bab_knapsack_HiGHS"
+          - "mixed-integer/branch-and-bound/test_bab_location_HiGHS"
+          - "mixed-integer/branch-and-price/test_bap_assignment_HiGHS"
+          - "mixed-integer/dualizer/test_dualizer_location_HiGHS"
     steps:
       - uses: actions/checkout@v3
 
