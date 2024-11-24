@@ -3,7 +3,7 @@
 //
 
 #include <catch2/catch_all.hpp>
-#include "../cartesian_product.h"
+#include "../../cartesian_product.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
@@ -14,13 +14,13 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include <idol/modeling.h>
-#include <idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h>
-#include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
-#include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
-#include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
-#include <idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h>
-#include <idol/mixed-integer/optimizers/wrappers/Osi/Osi.h>
+#include "idol/modeling.h"
+#include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace Catch::literals;
 using namespace idol;
@@ -64,7 +64,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Facility Location Problem instances with differen
     const auto subtree_depth = GENERATE(0, 1);
 
     // Read instance
-    const auto instance = read_instance_1991_Cornuejols_et_al("../data/facility-location-problem/" + filename);
+    const auto instance = read_instance_1991_Cornuejols_et_al("../../data/facility-location-problem/" + filename);
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 

@@ -3,7 +3,7 @@
 //
 
 #include <catch2/catch_all.hpp>
-#include "../cartesian_product.h"
+#include "../../cartesian_product.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
@@ -12,13 +12,13 @@
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/FarkasPricing.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/stabilization/Neame.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
-#include <idol/modeling.h>
-#include <idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h>
-#include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
-#include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
-#include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
-#include <idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h>
-#include <idol/mixed-integer/optimizers/wrappers/Osi/Osi.h>
+#include "idol/modeling.h"
+#include "idol/mixed-integer/problems/generalized-assignment-problem/GAP_Instance.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace Catch::literals;
 using namespace idol;
@@ -47,7 +47,7 @@ TEST_CASE("Solve Generalized Assignment Problem instances with different branch-
     const auto subtree_depth = GENERATE(0, 1);
     const auto solver_index = GENERATE(0, 1, 2);
 
-    const auto instance = read_instance("../data/generalized-assignment-problem/" + filename);
+    const auto instance = read_instance("../../data/generalized-assignment-problem/" + filename);
     const unsigned int n_agents = instance.n_agents();
     const unsigned int n_jobs = instance.n_jobs();
 

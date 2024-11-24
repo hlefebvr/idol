@@ -2,12 +2,12 @@
 // Created by henri on 22.10.23.
 //
 #include <catch2/catch_all.hpp>
-#include <idol/modeling.h>
-#include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
-#include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
-#include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
-#include <idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h>
-#include <idol/mixed-integer/optimizers/wrappers/Osi/Osi.h>
+#include "idol/modeling.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace Catch::literals;
 using namespace idol;

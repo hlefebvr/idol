@@ -7,6 +7,7 @@
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include <cassert>
 
 idol::Dualizer::Dualizer(const idol::Model &t_parent,
                          const QuadExpr<Var, double> &t_primal_objective,

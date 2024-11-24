@@ -2,7 +2,7 @@
 // Created by henri on 30/11/22.
 //
 #include <catch2/catch_all.hpp>
-#include <idol/modeling.h>
+#include "idol/modeling.h"
 
 using namespace Catch::literals;
 using namespace idol;

@@ -5,7 +5,7 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
     add_executable(${target_name}
             assignment.cpp
-            ../cartesian_product.h
+            ../../cartesian_product.h
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})

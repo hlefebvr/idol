@@ -5,7 +5,7 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
     add_executable(${target_name}
             knapsack.cpp
-            ../cartesian_product.h
+            ../../cartesian_product.h
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})
@@ -20,7 +20,7 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
     add_executable(${target_name}
             location.cpp
-            ../cartesian_product.h
+            ../../cartesian_product.h
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})

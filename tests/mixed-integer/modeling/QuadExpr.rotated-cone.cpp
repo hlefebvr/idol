@@ -5,7 +5,7 @@
 #ifdef IDOL_USE_EIGEN
 
 #include <catch2/catch_all.hpp>
-#include <idol/modeling.h>
+#include "idol/modeling.h"
 
 using namespace Catch::literals;
 using namespace idol;

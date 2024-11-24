@@ -3,7 +3,7 @@
 //
 
 #include <catch2/catch_all.hpp>
-#include "../cartesian_product.h"
+#include "../../cartesian_product.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/DepthFirst.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BreadthFirst.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
@@ -14,13 +14,13 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/UniformlyRandom.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/StrongBranching.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/PseudoCost.h"
-#include <idol/modeling.h>
-#include <idol/mixed-integer/problems/knapsack-problem/KP_Instance.h>
-#include <idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h>
-#include <idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h>
-#include <idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h>
-#include <idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h>
-#include <idol/mixed-integer/optimizers/wrappers/Osi/Osi.h>
+#include "idol/modeling.h"
+#include "idol/mixed-integer/problems/knapsack-problem/KP_Instance.h"
+#include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
+#include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace Catch::literals;
 using namespace idol;
@@ -60,7 +60,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Knapsack Problem instances with different node se
     );
     const auto subtree_depth = GENERATE(0, 1);
 
-    const auto instance = read_instance("../data/knapsack-problem/" + filename);
+    const auto instance = read_instance("../../data/knapsack-problem/" + filename);
     const unsigned int n_items = instance.n_items();
 
     auto x = Var::make_vector(env, Dim<1>(n_items), 0., 1., Binary, 0., "x");
