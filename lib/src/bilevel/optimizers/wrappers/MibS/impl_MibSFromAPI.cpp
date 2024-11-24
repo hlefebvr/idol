@@ -202,7 +202,7 @@ idol::impl::MibSFromAPI::find_lower_level_objective_coefficients(const std::vect
     for (const auto& var_id : t_lower_level_variables_indices) {
 
         const auto& var = m_model.get_var_by_index(var_id);
-        const double coefficient = follower_obj.linear().get(var);
+        const double coefficient = follower_obj.affine().linear().get(var);
 
         result.emplace_back(coefficient);
 

@@ -104,6 +104,7 @@ DEFINE_COMMUTATIVE_OPERATOR_SINGLE(+, +=, QuadExpr<T>, QuadExpr<T>, QuadExpr<T>)
 DEFINE_OPERATOR(-, -=, double, T, AffExpr<T>)                             \
 DEFINE_OPERATOR(-, -=, double, LinExpr<T>, AffExpr<T>)                             \
 DEFINE_OPERATOR(-, -=, double, AffExpr<T>, AffExpr<T>)             \
+DEFINE_OPERATOR(-, -=, double, QuadExpr<T>, QuadExpr<T>)             \
                              \
 DEFINE_OPERATOR_SINGLE(-, -=, T, T, LinExpr<T>)                             \
 DEFINE_OPERATOR(-, -=, T, LinExpr<T>, LinExpr<T>)                             \

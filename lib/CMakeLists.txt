@@ -192,8 +192,6 @@ add_library(idol STATIC
         src/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.cpp
         include/idol/general/utils/SilentMode.h
         include/idol/robust/modeling/StageDescription.h
-        include/idol/mixed-integer/modeling/models/KKT.h
-        src/mixed-integer/modeling/models/KKT.cpp
         src/mixed-integer/optimizers/padm/PADM.cpp
         include/idol/mixed-integer/optimizers/padm/PADM.h
         src/mixed-integer/optimizers/padm/Optimizers_PADM.cpp
@@ -227,8 +225,8 @@ add_library(idol STATIC
         src/mixed-integer/modeling/constraints/QCtrVersion.cpp
         src/mixed-integer/modeling/constraints/QCtr.cpp
         include/idol/general/utils/GenerationPattern.h
-        include/idol/mixed-integer/modeling/models/Dualizer.h
-        src/mixed-integer/modeling/models/Dualizer.cpp
+        include/idol/mixed-integer/modeling/models/KKT.h
+        src/mixed-integer/modeling/models/KKT.cpp
 )
 
 find_package(OpenMP REQUIRED)

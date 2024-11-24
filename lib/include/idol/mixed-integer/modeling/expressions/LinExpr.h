@@ -94,7 +94,9 @@ namespace idol {
 
         auto it = t_expr.begin();
         if constexpr (std::is_same_v<ValueT, double>) {
-            t_os << it->second << " " << it->first;
+            t_os << it->second;
+            t_os << " ";
+            t_os << it->first;
         } else {
             t_os << "[ " << it->second << " ] " << it->first;
         }

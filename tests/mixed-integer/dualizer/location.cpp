@@ -10,7 +10,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
-#include "idol/mixed-integer/modeling/models/Dualizer.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 using namespace Catch::literals;
 using namespace idol;
@@ -76,7 +76,7 @@ TEST_CASE("Reformulate Facility Location Problem instances using optimality cond
 
     Model reformulated(env);
 
-    Dualizer dualizer(model, model.get_obj_expr());
+    KKT dualizer(model, model.get_obj_expr());
 
     switch (reformulation) {
         case Dual:

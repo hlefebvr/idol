@@ -18,7 +18,7 @@ namespace idol::Bilevel {
 
 class idol::Bilevel::Description {
     Annotation<unsigned int> m_lower_level;
-    AffExpr<Var> m_follower_objective;
+    QuadExpr<Var> m_follower_objective;
 public:
     Description(Env& t_env, const std::string& t_name) : m_lower_level(t_env, t_name + "_lower_level", MasterId)  {}
 
@@ -33,7 +33,7 @@ public:
 
     [[nodiscard]] const Annotation<unsigned int>& lower_level() const { return m_lower_level; }
 
-    [[nodiscard]] const AffExpr<Var>& follower_obj() const { return m_follower_objective; }
+    [[nodiscard]] const QuadExpr<Var>& follower_obj() const { return m_follower_objective; }
 
     void make_leader(const Var& t_var) { t_var.set(m_lower_level, MasterId); }
 
@@ -47,7 +47,7 @@ public:
 
     void make_lower_level(const QCtr& t_ctr) { t_ctr.set(m_lower_level, 0); }
 
-    void set_lower_objective(AffExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
+    void set_lower_objective(QuadExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
 
     [[nodiscard]] bool is_leader(const Var& t_var) const { return t_var.get(m_lower_level) == MasterId; }
 

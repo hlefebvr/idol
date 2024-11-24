@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/padm/SubProblem.h"
 #include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -34,7 +35,17 @@ int main(int t_argc, const char** t_argv) {
     Reformulators::KKT reformulator(model, description);
 
     Model single_level(env);
+    reformulator.add_coupling_variables(single_level);
     reformulator.add_strong_duality_reformulation(single_level);
+    reformulator.add_coupling_constraints(single_level);
+
+    std::cout << model << std::endl;
+    std::cout << single_level << std::endl;
+
+    single_level.use(Gurobi());
+    single_level.optimize();
+
+    std::cout << save_primal(single_level) << std::endl;
 
     Annotation<unsigned int> decomposition(env, "sub_problem");
     for (const auto& var : single_level.vars()) {

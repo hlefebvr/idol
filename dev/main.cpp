@@ -19,7 +19,7 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
 #include "idol/mixed-integer/modeling/expressions/QuadExpr.h"
 #include "idol/general/utils/GenerationPattern.h"
-#include "idol/mixed-integer/modeling/models/Dualizer.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 using namespace idol;
 
@@ -35,7 +35,7 @@ int main(int t_argc, const char** t_argv) {
     Model strong_duality(env);
     Model kkt(env);
 
-    Dualizer dualizer(primal, primal.get_obj_expr());
+    KKT dualizer(primal, primal.get_obj_expr());
     dualizer.add_dual(dual);
     dualizer.add_strong_duality_reformulation(strong_duality);
     dualizer.add_kkt_reformulation(kkt);
