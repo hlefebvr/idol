@@ -785,7 +785,7 @@ idol::Model idol::Optimizers::GLPK::read_from_mps_file(idol::Env &t_env, const s
 }
 
 double idol::Optimizers::GLPK::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    return glp_get_col_dual(m_model, lazy(t_var).impl());
 }
 
 void idol::Optimizers::GLPK::set_param_logs(bool t_value) {

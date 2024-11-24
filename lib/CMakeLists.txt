@@ -227,6 +227,7 @@ add_library(idol STATIC
         include/idol/general/utils/GenerationPattern.h
         include/idol/mixed-integer/modeling/models/KKT.h
         src/mixed-integer/modeling/models/KKT.cpp
+        include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h
 )
 
 find_package(OpenMP REQUIRED)

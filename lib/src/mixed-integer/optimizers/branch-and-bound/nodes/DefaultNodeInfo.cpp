@@ -6,8 +6,8 @@
 #include "idol/mixed-integer/optimizers/branch-and-bound/nodes/DefaultNodeUpdator.h"
 
 idol::DefaultNodeUpdator<idol::DefaultNodeInfo> *
-idol::DefaultNodeInfo::create_updator(idol::Model &t_relaxation) {
-    return new DefaultNodeUpdator<DefaultNodeInfo>(t_relaxation);
+idol::DefaultNodeInfo::create_updator(const Model& t_src_model, idol::Model &t_relaxation) {
+    return new DefaultNodeUpdator<DefaultNodeInfo>(t_src_model, t_relaxation);
 }
 
 void idol::DefaultNodeInfo::add_branching_constraint(const Ctr &t_ctr, TempCtr t_temporary_constraint) {

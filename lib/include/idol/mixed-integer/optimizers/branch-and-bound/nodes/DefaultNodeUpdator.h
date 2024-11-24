@@ -20,6 +20,7 @@ namespace idol {
 template<class NodeInfoT>
 class idol::DefaultNodeUpdator : public NodeUpdator<NodeInfoT> {
 
+    const Model& m_parent;
     Model& m_relaxation;
 
     Map<Var, double> m_changed_lower_bounds; // variable -> old_bound
@@ -37,7 +38,7 @@ class idol::DefaultNodeUpdator : public NodeUpdator<NodeInfoT> {
 
     void apply_constraint_branching_decisions(const Node<NodeInfoT> &t_node);
 public:
-    explicit DefaultNodeUpdator(Model& t_relaxation);
+    explicit DefaultNodeUpdator(const Model& t_parent, Model& t_relaxation);
 
     DefaultNodeUpdator(const DefaultNodeUpdator&) = delete;
 
@@ -71,7 +72,8 @@ idol::DefaultNodeUpdator<NodeInfoT>::apply_constraint_branching_decisions(const 
 }
 
 template<class NodeT>
-idol::DefaultNodeUpdator<NodeT>::DefaultNodeUpdator(idol::Model &t_relaxation) : m_relaxation(t_relaxation) {
+idol::DefaultNodeUpdator<NodeT>::DefaultNodeUpdator(const Model& t_parent, idol::Model &t_relaxation)
+    : m_parent(t_parent), m_relaxation(t_relaxation) {
 
 }
 
@@ -117,11 +119,9 @@ void idol::DefaultNodeUpdator<NodeInfoT>::apply_variable_branching_decisions(con
                                                                                 Map<Var, double> &t_changed_upper_bounds
                                                                                 ) {
 
-    if (t_node.level() == 0) {
-        return;
-    }
-
     for (const auto& branching_decision : t_node.info().variable_branching_decisions()) {
+
+        std::cout << branching_decision.variable << " " << branching_decision.type << " " << branching_decision.bound << std::endl;
 
         switch (branching_decision.type) {
             case LessOrEqual:
@@ -134,6 +134,10 @@ void idol::DefaultNodeUpdator<NodeInfoT>::apply_variable_branching_decisions(con
                 throw Exception("Branching on equality constraints is not implemented.");
         }
 
+    }
+
+    if (t_node.level() == 0) {
+        return;
     }
 
     apply_variable_branching_decisions(t_node.parent(), t_changed_lower_bounds, t_changed_upper_bounds);

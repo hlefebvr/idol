@@ -41,6 +41,8 @@ protected:
 
     void add_lazy_cut(const TempCtr &t_cut);
 
+    void add_local_variable_branching(const idol::Var &t_var, CtrType t_type, double t_rhs);
+
     [[nodiscard]] const Node<NodeInfoT>& node() const;
 
     [[nodiscard]] const Model& relaxation() const;
@@ -73,6 +75,12 @@ protected:
 
     void log_after_termination() override;
 };
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallbackI<NodeInfoT>::add_local_variable_branching(const idol::Var &t_var, CtrType t_type, double t_rhs) {
+    m_node->info().add_branching_variable(t_var, t_type, t_rhs);
+    m_registry->n_added_local_variable_branching++;
+}
 
 template<class NodeInfoT>
 void idol::BranchAndBoundCallbackI<NodeInfoT>::terminate() {
@@ -150,6 +158,8 @@ protected:
      */
     void add_lazy_cut(const TempCtr& t_cut);
 
+    void add_local_variable_branching(const Var &t_var, CtrType t_type, double t_rhs);
+
     /**
      * Returns the node which is currently explored
      * @return the node which is currently explored
@@ -205,6 +215,12 @@ private:
 
     friend class BranchAndBoundCallbackI<NodeInfoT>;
 };
+
+template<class NodeInfoT>
+void idol::BranchAndBoundCallback<NodeInfoT>::add_local_variable_branching(const Var &t_var, CtrType t_type, double t_rhs) {
+    throw_if_no_interface();
+    m_interface->add_local_variable_branching(t_var, t_type, t_rhs);
+}
 
 template<class NodeInfoT>
 double idol::BranchAndBoundCallback<NodeInfoT>::best_obj() const {

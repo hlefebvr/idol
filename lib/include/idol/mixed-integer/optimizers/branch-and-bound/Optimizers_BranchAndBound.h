@@ -106,7 +106,6 @@ public:
                               const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                               const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                               AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
-                              bool t_scaling,
                               const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory);
 
     [[nodiscard]] std::string name() const override { return "Branch-and-Bound"; }
@@ -424,7 +423,6 @@ idol::Optimizers::BranchAndBound<NodeInfoT>::BranchAndBound(const Model &t_model
                                                       const BranchingRuleFactory<NodeInfoT>& t_branching_rule_factory,
                                                       const NodeSelectionRuleFactory<NodeInfoT>& t_node_selection_rule_factory,
                                                       AbstractBranchAndBoundCallbackI<NodeInfoT>* t_callback,
-                                                      bool t_scaling,
                                                       const Logs::BranchAndBound::Factory<NodeInfoT>& t_logger_factory)
     : Algorithm(t_model),
       m_relaxation_optimizer_factory(t_node_optimizer.clone()),
@@ -452,7 +450,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::create_relaxations() {
         auto* relaxation = original_model.clone();
         relaxation->use(*m_relaxation_optimizer_factory);
         m_relaxations.emplace_back(relaxation);
-        m_node_updators.emplace_back(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(*relaxation)));
+        m_node_updators.emplace_back(dynamic_cast<NodeUpdator<NodeInfoT>*>(NodeInfoT::create_updator(parent(), *relaxation)));
     }
 
 }
@@ -463,6 +461,7 @@ idol::Node<NodeInfoT> idol::Optimizers::BranchAndBound<NodeInfoT>::create_root_n
     auto root_node = Node<NodeInfoT>::create_root_node();
     assert(root_node.id() == 0);
     ++m_n_created_nodes;
+
     return root_node;
 
 }
@@ -637,14 +636,27 @@ template<class NodeInfoT>
 void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
                                                         unsigned int t_relaxation_id) const {
 
-    m_node_updators[t_relaxation_id]->prepare(t_node);
+    auto& node_updator = *m_node_updators[t_relaxation_id];
+    auto& relaxation = *m_relaxations[t_relaxation_id];
 
-    m_relaxations[t_relaxation_id]->optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
-    m_relaxations[t_relaxation_id]->optimizer().set_param_time_limit(get_remaining_time());
+    relaxation.optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
+    relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
-    m_relaxations[t_relaxation_id]->optimize();
+    std::cout << "Preparing node " << t_node.id() << std::endl;
+    node_updator.prepare(t_node);
+    std::cout << "END" << std::endl;
 
-    t_node.info().save(parent(), *m_relaxations[t_relaxation_id]);
+    for (const auto& var : parent().vars()) {
+        const double lb = relaxation.get_var_lb(var);
+        const double ub = relaxation.get_var_ub(var);
+        if (lb > ub + Tolerance::Integer) {
+            std::cout << "Inconsistent bounds for variable " << var << ": " << lb << " > " << ub << std::endl;
+        }
+    }
+
+    relaxation.optimize();
+
+    t_node.info().save(parent(), relaxation);
 
     m_branching_rule->on_node_solved(t_node);
 
@@ -696,15 +708,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
     if (status == Fail || status == Loaded) {
 
-        /*
-        if (m_n_postponed_nodes < m_max_postponed_nodes) {
-            *t_explore_children_flag = true;
-            std::cout << "Postponing Node " << t_node.id() << " since returned status is " << status << "." << std::endl;
-            idol_Log(Trace, "Postponing Node " << t_node.id() << " since returned status is " << status << ".");
-            ++m_n_postponed_nodes;
-            return;
-        }
-         */
+        std::cout << "HERE?" << std::endl;
 
         set_status(Fail);
         set_reason(NotSpecified);
@@ -746,7 +750,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
         m_root_node_best_obj = get_best_obj();
     }
 
-    if (side_effects.n_added_lazy_cuts > 0 || side_effects.n_added_user_cuts > 0) {
+    if (side_effects.n_added_lazy_cuts > 0 || side_effects.n_added_user_cuts > 0 || side_effects.n_added_local_variable_branching > 0) {
         *t_reoptimize_flag = true;
         return;
     }

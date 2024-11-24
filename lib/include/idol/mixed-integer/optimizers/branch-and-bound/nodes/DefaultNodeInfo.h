@@ -15,7 +15,6 @@ namespace idol {
     namespace Optimizers {
         template<class NodeInfoT> class BranchAndBound;
     }
-
 }
 
 class idol::DefaultNodeInfo {
@@ -50,7 +49,8 @@ public:
 
     [[nodiscard]] auto constraint_branching_decisions() const { return ConstIteratorForward(m_constraint_branching_decisions); }
 
-    static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(Model& t_relaxation);
+    static DefaultNodeUpdator<DefaultNodeInfo>* create_updator(const Model& t_src_model, Model& t_relaxation);
+
 private:
     PrimalPoint m_primal_solution;
     std::optional<double> m_sum_of_infeasibilities;

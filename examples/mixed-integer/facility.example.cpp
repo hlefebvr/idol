@@ -11,6 +11,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/node-selection-rules/factories/BestBound.h"
+#include "idol/mixed-integer/optimizers/branch-and-bound/branching-rules/factories/MostInfeasible.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 
 using namespace idol;
 
@@ -57,10 +59,10 @@ int main(int t_argc, const char** t_argv) {
     // Set backend options
     model.use(
             BranchAndBound()
-                    .with_node_optimizer(GLPK::ContinuousRelaxation())
-                    //.add_callback(Cuts::KnapsackCover())
+                    .with_node_optimizer(Gurobi::ContinuousRelaxation())
                     .with_branching_rule(PseudoCost())
                     .with_node_selection_rule(BestEstimate())
+                    .add_callback(ReducedCostFixing())
                     .with_logs(true)
     );
 

@@ -28,6 +28,7 @@ namespace idol {
 struct idol::SideEffectRegistry {
     unsigned int n_added_lazy_cuts = 0;
     unsigned int n_added_user_cuts = 0;
+    unsigned int n_added_local_variable_branching = 0;
 };
 
 template<class NodeInfoT>

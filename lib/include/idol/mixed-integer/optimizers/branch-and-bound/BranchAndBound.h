@@ -36,7 +36,6 @@ class idol::BranchAndBound : public OptimizerFactoryWithDefaultParameters<Branch
 
     std::optional<unsigned int> m_subtree_depth;
     std::optional<unsigned int> m_log_frequency;
-    std::optional<bool> m_scaling;
 public:
     /**
      * This type is used to exploit [SFINAE](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
@@ -175,8 +174,6 @@ public:
 
     BranchAndBound<NodeT>& with_logger(const Logs::BranchAndBound::Factory<NodeT>& t_log_factory);
 
-    BranchAndBound<NodeT>& with_scaling(bool t_value);
-
     /**
      * Adds a callback which will be called by the optimizer.
      *
@@ -206,6 +203,7 @@ public:
      * @return the optimizer factory itself
      */
     BranchAndBound<NodeT>& add_callback(const CallbackFactory& t_callback);
+
 };
 
 template<class NodeT>
@@ -222,18 +220,6 @@ idol::BranchAndBound<NodeT>::with_logger(const typename idol::Logs::BranchAndBou
     }
 
     m_logger_factory.reset(t_log_factory.clone());
-
-    return *this;
-}
-
-template<class NodeT>
-idol::BranchAndBound<NodeT> &idol::BranchAndBound<NodeT>::with_scaling(bool t_value) {
-
-    if (m_scaling.has_value()) {
-        throw Exception("Scaling has already been configured.");
-    }
-
-    m_scaling = t_value;
 
     return *this;
 }
@@ -328,7 +314,6 @@ idol::BranchAndBound<NodeT>::BranchAndBound(const BranchAndBound &t_rhs)
           m_branching_rule_factory(t_rhs.m_branching_rule_factory ? t_rhs.m_branching_rule_factory->clone() : nullptr),
           m_node_selection_rule_factory(t_rhs.m_node_selection_rule_factory ? t_rhs.m_node_selection_rule_factory->clone() : nullptr),
           m_subtree_depth(t_rhs.m_subtree_depth),
-          m_scaling(t_rhs.m_scaling),
           m_logger_factory(t_rhs.m_logger_factory ? t_rhs.m_logger_factory->clone() : nullptr) {
 
     for (auto& cb : t_rhs.m_callbacks) {
@@ -352,20 +337,17 @@ idol::Optimizer *idol::BranchAndBound<NodeT>::operator()(const Model &t_model) c
         throw Exception("No node selection rule has been given, please call BranchAndBound::with_node_selection_rule to configure.");
     }
 
-    auto* callback_interface = new BranchAndBoundCallbackI<NodeT>();
-
     std::unique_ptr<Logs::BranchAndBound::Factory<NodeT>> default_logger_factory;
     if (!m_logger_factory) {
         default_logger_factory = std::make_unique<Logs::BranchAndBound::Info<NodeT>>();
     }
 
     auto* result = new Optimizers::BranchAndBound<NodeT>(t_model,
-                                     *m_relaxation_optimizer_factory,
-                                     *m_branching_rule_factory,
-                                     *m_node_selection_rule_factory,
-                                     callback_interface,
-                                     m_scaling.has_value() && m_scaling.value(),
-                                     m_logger_factory ? *m_logger_factory : *default_logger_factory);
+                                                         *m_relaxation_optimizer_factory,
+                                                         *m_branching_rule_factory,
+                                                         *m_node_selection_rule_factory,
+                                                         new BranchAndBoundCallbackI<NodeT>(),
+                                                         m_logger_factory ? *m_logger_factory : *default_logger_factory);
 
     this->handle_default_parameters(result);
 
