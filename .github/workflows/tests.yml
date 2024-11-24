@@ -11,7 +11,7 @@ env:
 
 jobs:
   modeling:
-    name: "Modeling Interface"
+    name: "Modeling"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./modeling/test_modeling_interface
+        run: ./mixed-integer/modeling/test_modeling_interface
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
@@ -44,7 +44,7 @@ jobs:
           path: coverage__*.info
 
   Mosek:
-    name: "Mosek Wrapper"
+    name: "Mosek"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -97,7 +97,7 @@ jobs:
           path: coverage_*.info
 
   GLPK:
-    name: "GLPK Wrapper"
+    name: "GLPK"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -137,7 +137,7 @@ jobs:
           path: coverage_*.info
 
   HiGHS:
-    name: "HiGHS Wrapper"
+    name: "HiGHS"
     runs-on: ubuntu-latest
     strategy:
       matrix:

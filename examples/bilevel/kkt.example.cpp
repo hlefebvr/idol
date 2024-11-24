@@ -2,8 +2,7 @@
 // Created by henri on 30.08.24.
 //
 #include <iostream>
-#include <Research/idol/lib/include/idol/modeling.h>
-#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/modeling.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/bilevel/modeling/read_from_file.h"

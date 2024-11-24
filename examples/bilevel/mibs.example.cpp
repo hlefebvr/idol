@@ -2,7 +2,7 @@
 // Created by henri on 07.02.24.
 //
 #include <iostream>
-#include <Research/idol/lib/include/idol/modeling.h>
+#include "idol/modeling.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/bilevel/modeling/Description.h"
 
