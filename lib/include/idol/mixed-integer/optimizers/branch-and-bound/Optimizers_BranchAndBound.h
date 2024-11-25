@@ -642,9 +642,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
     relaxation.optimizer().set_param_best_bound_stop(std::min(get_best_obj(), get_param_best_bound_stop()));
     relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
-    std::cout << "Preparing node " << t_node.id() << std::endl;
     node_updator.prepare(t_node);
-    std::cout << "END" << std::endl;
 
     for (const auto& var : parent().vars()) {
         const double lb = relaxation.get_var_lb(var);

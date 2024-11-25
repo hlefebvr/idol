@@ -27,7 +27,6 @@ class idol::DefaultNodeUpdator : public NodeUpdator<NodeInfoT> {
     Map<Var, double> m_changed_upper_bounds;
     std::list<Ctr> m_added_constraints;
 
-
     void apply_variable_branching_decisions(const Node<NodeInfoT> &t_node,
                                             Map<Var, double> &t_changed_lower_bounds,
                                             Map<Var, double> &t_changed_upper_bounds);
@@ -51,7 +50,7 @@ public:
 protected:
     Model& relaxation() { return m_relaxation; }
 
-    const Model& relaxation() const { return m_relaxation; }
+    [[nodiscard]] const Model& relaxation() const { return m_relaxation; }
 };
 
 template<class NodeInfoT>
@@ -120,8 +119,6 @@ void idol::DefaultNodeUpdator<NodeInfoT>::apply_variable_branching_decisions(con
                                                                                 ) {
 
     for (const auto& branching_decision : t_node.info().variable_branching_decisions()) {
-
-        std::cout << branching_decision.variable << " " << branching_decision.type << " " << branching_decision.bound << std::endl;
 
         switch (branching_decision.type) {
             case LessOrEqual:

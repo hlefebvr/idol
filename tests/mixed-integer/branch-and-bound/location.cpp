@@ -21,6 +21,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 
 using namespace Catch::literals;
 using namespace idol;
@@ -97,6 +98,7 @@ TEMPLATE_LIST_TEST_CASE("Solve Facility Location Problem instances with differen
                     .with_node_optimizer(OPTIMIZER::ContinuousRelaxation())
                     .with_branching_rule(BranchingRuleT())
                     .with_node_selection_rule(NodeSelectionRuleT())
+                    .add_callback(ReducedCostFixing())
                     .with_subtree_depth(subtree_depth)
     );
 

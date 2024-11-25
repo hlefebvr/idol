@@ -82,8 +82,11 @@ void idol::BranchingRules::PseudoCost<NodeInfoT>::on_node_solved(const idol::Nod
 
         const double parent_var_primal_value = parent_solution.get(var);
 
-        const double objective_gain_per_unit_change =
-                (node_objective_value - parent_objective_value) / std::abs(bound - parent_var_primal_value);
+        double objective_gain_per_unit_change = 0;
+        if (!equals(bound, parent_var_primal_value, 1e-5)) {
+            objective_gain_per_unit_change =
+                    (node_objective_value - parent_objective_value) / std::abs(bound - parent_var_primal_value);
+        }
 
         PseudoCostData data;
 
@@ -202,6 +205,10 @@ double idol::BranchingRules::PseudoCost<NodeInfoT>::compute_average_lower_boundi
 
         sum += compute_lower_bounding_score(var, data, t_node);
         n += 1;
+    }
+
+    if (n == 0) {
+        return 0.;
     }
 
     return sum / (double) n;

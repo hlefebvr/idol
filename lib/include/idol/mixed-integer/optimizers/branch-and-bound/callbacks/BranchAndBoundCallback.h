@@ -57,9 +57,9 @@ protected:
 
     void submit_bound(double t_bound);
 
-    double best_bound() const;
+    [[nodiscard]] double best_bound() const;
 
-    double best_obj() const;
+    [[nodiscard]] double best_obj() const;
 
     void terminate();
 

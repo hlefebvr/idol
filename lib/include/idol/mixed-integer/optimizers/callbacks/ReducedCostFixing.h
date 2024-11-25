@@ -33,13 +33,19 @@ public:
                 double reduced_cost = relaxation.get_var_reduced_cost(var);
 
                 if (current_obj + reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
-                    const double relaxation_lb = original_model.get_var_lb(var);
-                    this->add_local_variable_branching(var, LessOrEqual, relaxation_lb);
+                    const double relaxation_lb = relaxation.get_var_lb(var);
+                    const double current_ub = relaxation.get_var_ub(var);
+                    if (!equals(relaxation_lb, current_ub, Tolerance::Integer)) {
+                        this->add_local_variable_branching(var, LessOrEqual, relaxation_lb);
+                    }
                 }
 
                 if (current_obj - reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
-                    const double relaxation_ub = original_model.get_var_ub(var);
-                    this->add_local_variable_branching(var, GreaterOrEqual, relaxation_ub);
+                    const double relaxation_ub = relaxation.get_var_ub(var);
+                    const double current_lb = relaxation.get_var_lb(var);
+                    if (!equals(relaxation_ub, current_lb, Tolerance::Integer)) {
+                        this->add_local_variable_branching(var, GreaterOrEqual, relaxation_ub);
+                    }
                 }
 
             }

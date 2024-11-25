@@ -511,7 +511,7 @@ void idol::Optimizers::HiGHS::update_objective_constant() {
 }
 
 double idol::Optimizers::HiGHS::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    return m_model.getSolution().col_dual[lazy(t_var).impl()];
 }
 
 int idol::Optimizers::HiGHS::hook_add(const idol::QCtr &t_ctr) {

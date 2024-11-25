@@ -544,7 +544,7 @@ void idol::Optimizers::Mosek::set_param_logs(bool t_value) {
 }
 
 double idol::Optimizers::Mosek::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    return lazy(t_var).impl().variable->dual()->operator[](0);
 }
 
 void idol::Optimizers::Mosek::add_callback(idol::Callback *t_ptr_to_callback) {
