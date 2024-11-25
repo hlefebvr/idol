@@ -648,7 +648,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
         const double lb = relaxation.get_var_lb(var);
         const double ub = relaxation.get_var_ub(var);
         if (lb > ub + Tolerance::Integer) {
-            std::cout << "Inconsistent bounds for variable " << var << ": " << lb << " > " << ub << std::endl;
+            std::cerr << "Inconsistent bounds for variable " << var << ": " << lb << " > " << ub << std::endl;
         }
     }
 
