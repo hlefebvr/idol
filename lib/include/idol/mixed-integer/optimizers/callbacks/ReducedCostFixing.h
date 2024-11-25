@@ -15,13 +15,18 @@ template<class NodeInfoT = idol::DefaultNodeInfo>
 class idol::ReducedCostFixing : public BranchAndBoundCallbackFactory<NodeInfoT> {
 public:
     class Strategy : public BranchAndBoundCallback<NodeInfoT> {
-    public:
+        unsigned int m_last_node_id = -1;
     protected:
         void operator()(CallbackEvent t_event) override {
 
             if (t_event != InvalidSolution) {
                 return;
             }
+
+            if (m_last_node_id == this->node().id()) {
+                return;
+            }
+            m_last_node_id = this->node().id();
 
             const auto& original_model = this->original_model();
             const auto& relaxation = this->relaxation();
@@ -35,17 +40,17 @@ public:
                 if (current_obj + reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
                     const double relaxation_lb = relaxation.get_var_lb(var);
                     const double current_ub = relaxation.get_var_ub(var);
-                    if (!equals(relaxation_lb, current_ub, Tolerance::Integer)) {
+                    //if (!equals(relaxation_lb, current_ub, Tolerance::Integer)) {
                         this->add_local_variable_branching(var, LessOrEqual, relaxation_lb);
-                    }
+                    //}
                 }
 
                 if (current_obj - reduced_cost > best_obj + Tolerance::MIPAbsoluteGap) {
                     const double relaxation_ub = relaxation.get_var_ub(var);
                     const double current_lb = relaxation.get_var_lb(var);
-                    if (!equals(relaxation_ub, current_lb, Tolerance::Integer)) {
+                    //if (!equals(relaxation_ub, current_lb, Tolerance::Integer)) {
                         this->add_local_variable_branching(var, GreaterOrEqual, relaxation_ub);
-                    }
+                    //}
                 }
 
             }

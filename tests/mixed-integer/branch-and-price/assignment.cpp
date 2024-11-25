@@ -19,6 +19,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 
 using namespace Catch::literals;
 using namespace idol;

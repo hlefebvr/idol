@@ -318,10 +318,10 @@ double idol::DantzigWolfe::Formulation::compute_reduced_cost(unsigned int t_sub_
 
 }
 
-void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int t_sub_problem_id,
-                                                                   const idol::DualPoint &t_master_dual,
-                                                                   bool t_use_farkas) {
-
+idol::AffExpr<idol::Var>
+idol::DantzigWolfe::Formulation::compute_sub_problem_objective(unsigned int t_sub_problem_id,
+                                                               const idol::DualPoint &t_master_dual,
+                                                               bool t_use_farkas) const {
     AffExpr<Var> objective;
 
     const auto generation_pattern = m_generation_patterns[t_sub_problem_id];
@@ -333,6 +333,15 @@ void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int 
     if (!t_use_farkas) {
         objective += generation_pattern.constant();
     }
+
+    return objective;
+}
+
+void idol::DantzigWolfe::Formulation::update_sub_problem_objective(unsigned int t_sub_problem_id,
+                                                                   const idol::DualPoint &t_master_dual,
+                                                                   bool t_use_farkas) {
+
+    auto objective = compute_sub_problem_objective(t_sub_problem_id, t_master_dual, t_use_farkas);
 
     m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(objective));
 }
@@ -701,4 +710,13 @@ void idol::DantzigWolfe::Formulation::add_sub_problem() {
     m_generation_patterns.emplace_back();
     m_pools.emplace_back();
     m_present_generators.emplace_back();
+}
+
+const idol::GenerationPattern<idol::Var> &
+idol::DantzigWolfe::Formulation::generation_pattern(const idol::Var &t_var) const {
+    const unsigned int sub_problem_id = t_var.get(m_decomposition);
+    if (sub_problem_id == MasterId) {
+        throw Exception("Master variable does not have a generation pattern.");
+    }
+    return m_generation_patterns[sub_problem_id];
 }

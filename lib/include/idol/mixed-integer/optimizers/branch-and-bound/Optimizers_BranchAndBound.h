@@ -644,6 +644,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
 
     node_updator.prepare(t_node);
 
+    /*
     for (const auto& var : parent().vars()) {
         const double lb = relaxation.get_var_lb(var);
         const double ub = relaxation.get_var_ub(var);
@@ -651,6 +652,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::solve(TreeNode& t_node,
             std::cerr << "Inconsistent bounds for variable " << var << ": " << lb << " > " << ub << std::endl;
         }
     }
+     */
 
     relaxation.optimize();
 

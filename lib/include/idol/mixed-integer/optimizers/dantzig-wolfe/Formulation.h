@@ -71,11 +71,15 @@ public:
 
     void add_aggregation_constraint(unsigned int t_sub_problem_id, double t_lower_multiplicity, double t_upper_multiplicity);
 
+    AffExpr<Var> compute_sub_problem_objective(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, bool t_use_farkas = false) const;
+
     void update_sub_problem_objective(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, bool t_use_farkas = false);
 
     void generate_column(unsigned int t_sub_problem_id, PrimalPoint t_generator);
 
     double compute_reduced_cost(unsigned int t_sub_problem_id, const DualPoint& t_master_dual, const PrimalPoint& t_generator);
+
+    const GenerationPattern<Var>& generation_pattern(const Var& t_var) const;
 
     double get_original_space_var_primal(const Var& t_var, const PrimalPoint& t_master_primal) const;
 

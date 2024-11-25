@@ -16,6 +16,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/dantzig-wolfe/infeasibility-strategies/ArtificialCosts.h"
+#include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 
 using namespace idol;
 
@@ -55,10 +56,10 @@ int main(int t_argc, const char** t_argv) {
 
     // Build algorithms
     const auto column_generation = DantzigWolfeDecomposition(decomposition)
-            .with_master_optimizer(GLPK::ContinuousRelaxation().with_logs(false))
+            .with_master_optimizer(Gurobi::ContinuousRelaxation().with_logs(false))
             .with_default_sub_problem_spec(
                     DantzigWolfe::SubProblem()
-                            .add_optimizer(GLPK().with_logs(false))
+                            .add_optimizer(Gurobi().with_logs(false))
                             .with_column_pool_clean_up(1500, .75)
             )
             .with_logger(Logs::DantzigWolfe::Info().with_frequency_in_seconds(.00000001))
@@ -71,10 +72,18 @@ int main(int t_argc, const char** t_argv) {
             .with_subtree_depth(0)
             .with_branching_rule(MostInfeasible())
             .with_node_selection_rule(WorstBound())
-            .add_callback(Heuristics::IntegerMaster().with_optimizer(GLPK().with_logs(false)))
+            .add_callback(Heuristics::IntegerMaster().with_optimizer(Gurobi().with_logs(false)))
+            .with_logger(Logs::BranchAndBound::Info<DefaultNodeInfo>().with_node_logs(true).with_frequency_in_seconds(.00000001))
             .with_logs(true);
 
     const auto branch_and_price = branch_and_bound + column_generation;
+
+    model.use(Gurobi::ContinuousRelaxation());
+    model.optimize();
+
+    for (const auto& var : model.vars()) {
+        std::cout << var << " -> " << model.get_var_reduced_cost(var) << std::endl;
+    }
 
     // Set optimizer
     model.use(branch_and_price);
