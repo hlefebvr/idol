@@ -78,23 +78,20 @@ int main(int t_argc, const char** t_argv) {
      * std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
      */
 
-    const auto adr_result = Robust::AffineDecisionRule::make_model(model, description);
-    std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
-
     model.use(Gurobi());
     model.optimize();
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
     model.use(
             Robust::AffineDecisionRule(description)
-                    .with_deterministic_optimizer(Gurobi())
+                    .with_deterministic_optimizer(Gurobi().with_logs(true))
     );
     model.optimize();
     std::cout << "Affine Decision Rule Problem has value: " << model.get_best_obj() << std::endl;
 
     model.use(
             Robust::Deterministic(description)
-                    .with_deterministic_optimizer(GLPK())
+                    .with_deterministic_optimizer(Gurobi())
     );
     model.optimize();
     std::cout << "Robust Problem has value: " << model.get_best_obj() << std::endl;
