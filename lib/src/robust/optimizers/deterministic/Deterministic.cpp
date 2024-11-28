@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/robust/optimizers/deterministic/Optimizers_Deterministic.h"
+#include <cassert>
 
 idol::Robust::Deterministic::Deterministic(const Robust::Description &t_description) : m_description(t_description) {
 
