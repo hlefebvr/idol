@@ -18,6 +18,7 @@ class idol::Robust::Description {
     mutable std::optional<Annotation<unsigned int>> m_stages;
     Map<Ctr, LinExpr<Var, LinExpr<Var>>> m_uncertain_mat_coeff;
     Map<Ctr, LinExpr<Var>> m_uncertain_rhs;
+    Map<Var, LinExpr<Var>> m_uncertain_obj;
     const Model& m_uncertainty_set;
 public:
     explicit Description(const Model& t_uncertainty_set) : m_uncertainty_set(t_uncertainty_set) {}
@@ -42,12 +43,18 @@ public:
 
     const LinExpr<Var>& uncertain_rhs(const Ctr& t_ctr) const;
 
+    const LinExpr<Var>& uncertain_obj(const Var& t_var) const;
+
     void set_uncertain_mat_coeff(const Ctr& t_ctr, const Var& t_var, const LinExpr<Var>& t_coeff) {
         m_uncertain_mat_coeff[t_ctr].set(t_var, t_coeff);
     }
 
     void set_uncertain_rhs(const Ctr& t_ctr, const LinExpr<Var>& t_rhs) {
         m_uncertain_rhs[t_ctr] = t_rhs;
+    }
+
+    void set_uncertain_obj(const Var& t_var, const LinExpr<Var>& t_obj) {
+        m_uncertain_obj[t_var] = t_obj;
     }
 
     class View {

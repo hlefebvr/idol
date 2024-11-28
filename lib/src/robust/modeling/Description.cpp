@@ -61,6 +61,14 @@ idol::Robust::Description::uncertain_mat_coeffs(const idol::Ctr &t_ctr) const {
     return it_ctr->second;
 }
 
+const idol::LinExpr<idol::Var> &idol::Robust::Description::uncertain_obj(const idol::Var &t_var) const {
+    auto it_var = m_uncertain_obj.find(t_var);
+    if (it_var == m_uncertain_obj.end()) {
+        return LinExpr<Var>::Zero;
+    }
+    return it_var->second;
+}
+
 std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {
 
     LimitedWidthStream stream(t_os, 120);
@@ -68,15 +76,36 @@ std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Descripti
     const auto& model = t_view.deterministic_model();
     const auto& description = t_view.description();
 
-    stream << "Minimize\n" << model.get_obj_expr();
+    const auto& print_linear = [&stream](const LinExpr<Var>& t_linear, const LinExpr<Var, LinExpr<Var>>& uncertain_mat_coeff) {
+
+    };
+
+    const auto& obj = model.get_obj_expr();
+
+    stream << "Minimize\n" << obj.affine().constant() << " + ";
+    for (const auto& [var, constant] : obj.affine().linear()) {
+
+        const auto& uncertainty = description.uncertain_obj(var);
+        if (uncertainty.is_zero(Tolerance::Sparsity)) {
+            stream << constant;
+        } else {
+            stream << "[ " << constant << " + " << uncertainty << "]";
+        }
+        stream << " " << var;
+
+    }
+    for (const auto& [pair, constant] : obj) {
+        stream << " + " << constant << " " << pair.first << " " << pair.second;
+    }
 
     stream << "\nSubject To" << std::endl;
     for (const auto &ctr : model.ctrs()) {
 
         stream << '\t' << ctr.name() << ": ";
         const auto& linear = model.get_ctr_row(ctr);
-
         const auto& uncertain_mat_coeff = description.uncertain_mat_coeffs(ctr);
+
+
         if (uncertain_mat_coeff.is_zero(Tolerance::Sparsity)) {
             stream << linear;
         } else {
