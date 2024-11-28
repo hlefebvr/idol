@@ -44,7 +44,11 @@ public:
 
     LinExpr& operator-=(const LinExpr<KeyT, ValueT>& t_rhs);
     LinExpr& operator-=(const KeyT& t_rhs);
+
+    static LinExpr<KeyT, ValueT> Zero;
 };
+
+template<class KeyT, class ValueT> idol::LinExpr<KeyT, ValueT> idol::LinExpr<KeyT, ValueT>::Zero {};
 
 template<class KeyT, class ValueT>
 idol::LinExpr<KeyT, ValueT> &idol::LinExpr<KeyT, ValueT>::operator-=(const KeyT &t_rhs) {

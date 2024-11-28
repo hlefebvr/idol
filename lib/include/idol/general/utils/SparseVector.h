@@ -79,6 +79,8 @@ private:
 #endif
 #endif
     map_t m_map;
+
+    static ValueT s_zero_value;
 public:
     SparseVector() = default;
 
@@ -106,7 +108,7 @@ public:
 
     [[nodiscard]] bool has_index(const IndexT& t_index) const { return m_map.find(t_index) != m_map.end(); }
 
-    [[nodiscard]] ValueT get(const IndexT& t_index1) const;
+    [[nodiscard]] const ValueT& get(const IndexT& t_index1) const;
 
     void set(const IndexT& t_index, const ValueT& t_value);
 
@@ -139,6 +141,8 @@ public:
 
     SparseVector& merge_without_conflict(const SparseVector& t_vec);
 };
+
+template<class IndexT, class ValueT> ValueT idol::SparseVector<IndexT, ValueT>::s_zero_value {};
 
 template<class IndexT, class ValueT>
 idol::SparseVector<IndexT, ValueT>
@@ -264,12 +268,12 @@ idol::SparseVector<IndexT, ValueT>::merge_without_conflict(const SparseVector &t
 }
 
 template<class IndexT, class ValueT>
-ValueT idol::SparseVector<IndexT, ValueT>::get(const IndexT &t_index1) const {
+const ValueT& idol::SparseVector<IndexT, ValueT>::get(const IndexT &t_index1) const {
 
     const auto it = m_map.find(t_index1);
 
     if (it == m_map.end()) {
-        return ValueT{};
+        return s_zero_value;
     }
 
     return it->second;

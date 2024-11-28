@@ -21,12 +21,15 @@
 #include "idol/general/utils/GenerationPattern.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
+#include "idol/robust/modeling/Description.h"
 
 using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
     Env env;
+
+    const double Gamma = 3;
 
     // Generate parameters
     const auto filename = "/home/henri/Research/idol/tests/data/facility-location-problem/instance_F10_C20__0.txt";
@@ -39,6 +42,10 @@ int main(int t_argc, const char** t_argv) {
     // Make model
     auto x = Var::make_vector(env, Dim<1>(n_facilities), 0., 1., Continuous, 0., "x");
     auto y = Var::make_vector(env, Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
+
+    Model uncertainty_set(env);
+    const auto xi = uncertainty_set.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "xi");
+    uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), xi[i]) <= Gamma);
 
     Model model(env);
 
@@ -53,19 +60,22 @@ int main(int t_argc, const char** t_argv) {
         model.add(Ctr(env, idol_Sum(i, Range(n_facilities), y[i][j]) == 1));
     }
 
+    Robust::Description description(uncertainty_set);
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        for (unsigned int j = 0 ; j < n_customers ; ++j) {
+            description.make_stage_var(y[i][j], 1);
+            auto activation = model.add_ctr(y[i][j] <= 1);
+            description.set_uncertain_rhs(activation, -xi[i]);
+        }
+    }
+
     model.set_obj_expr(idol_Sum(i, Range(n_facilities), instance.fixed_cost(i) * x[i] + idol_Sum(j, Range(n_customers),
                                                                                                  instance.per_unit_transportation_cost(
                                                                                                          i, j) *
                                                                                                  instance.demand(j) *
                                                                                                  y[i][j])));
 
-    Model reformulated(env);
-
-    Reformulators::KKT reformulator(model, model.get_obj_expr());
-
-    reformulator.add_strong_duality_reformulation(reformulated);
-
-    std::cout << reformulated << std::endl;
+    std::cout << Robust::Description::View(model, description) << std::endl;
 
     return 0;
 }

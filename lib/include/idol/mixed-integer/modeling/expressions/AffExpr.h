@@ -53,7 +53,11 @@ public:
         constant() = 0;
         m_linear.clear();
     }
+
+    static const AffExpr<KeyT, ValueT> Zero;
 };
+
+template<class KeyT, class ValueT> const idol::AffExpr<KeyT, ValueT> idol::AffExpr<KeyT, ValueT>::Zero {};
 
 template<class KeyT, class ValueT>
 idol::AffExpr<KeyT, ValueT>::AffExpr(const KeyT &t_key) : m_linear(t_key) {
