@@ -2,8 +2,8 @@
 // Created by henri on 20.06.24.
 //
 
-#ifndef IDOL_DESCRIPTION_H
-#define IDOL_DESCRIPTION_H
+#ifndef IDOL_BILEVEL_DESCRIPTION_H
+#define IDOL_BILEVEL_DESCRIPTION_H
 
 #include <utility>
 
@@ -62,4 +62,4 @@ public:
     [[nodiscard]] bool is_follower(const QCtr& t_ctr) const { return t_ctr.get(m_lower_level) != MasterId; }
 };
 
-#endif //IDOL_DESCRIPTION_H
+#endif //IDOL_BILEVEL_DESCRIPTION_H

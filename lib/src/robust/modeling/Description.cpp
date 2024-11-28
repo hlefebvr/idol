@@ -45,11 +45,7 @@ idol::Robust::Description::uncertain_mat_coeff(const Ctr &t_ctr, const Var &t_va
 }
 
 const idol::LinExpr<idol::Var> &idol::Robust::Description::uncertain_rhs(const idol::Ctr &t_ctr) const {
-    auto it_ctr = m_uncertain_rhs.find(t_ctr);
-    if (it_ctr == m_uncertain_rhs.end()) {
-        return LinExpr<Var>::Zero;
-    }
-    return it_ctr->second;
+    return m_uncertain_rhs.get(t_ctr);
 }
 
 const idol::LinExpr<idol::Var, idol::LinExpr<idol::Var>> &
@@ -62,11 +58,7 @@ idol::Robust::Description::uncertain_mat_coeffs(const idol::Ctr &t_ctr) const {
 }
 
 const idol::LinExpr<idol::Var> &idol::Robust::Description::uncertain_obj(const idol::Var &t_var) const {
-    auto it_var = m_uncertain_obj.find(t_var);
-    if (it_var == m_uncertain_obj.end()) {
-        return LinExpr<Var>::Zero;
-    }
-    return it_var->second;
+    return m_uncertain_obj.get(t_var);
 }
 
 std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Description::View &t_view) {

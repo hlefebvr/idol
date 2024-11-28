@@ -79,7 +79,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
 
         const auto [lb, ub] = bounds_for_dual_variable(type);
 
-        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, 0, "dual_" + ctr.name());
+        m_dual_variables_for_constraints[index] = Var(env,  lb, ub, Continuous, 0, m_prefix + "dual_" + ctr.name());
 
     }
 
@@ -97,7 +97,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
 
         const auto [lb, ub] = bounds_for_dual_variable(type);
 
-        m_dual_variables_for_qconstraints[index] = Var(env, lb, ub, Continuous, 0, "dual_" + qctr.name());
+        m_dual_variables_for_qconstraints[index] = Var(env, lb, ub, Continuous, 0, m_prefix + "dual_" + qctr.name());
 
     }
 
@@ -117,7 +117,7 @@ void idol::Reformulators::KKT::create_dual_variables() {
             continue;
         }
 
-        m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, 0, "dual_lb_" + var.name());
+        m_dual_variables_for_lower_bounds[index] = Var(env, 0, Inf, Continuous, 0, m_prefix + "dual_lb_" + var.name());
 
     }
 

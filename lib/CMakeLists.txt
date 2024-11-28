@@ -229,6 +229,10 @@ add_library(idol STATIC
         include/idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h
         include/idol/robust/modeling/Description.h
         src/robust/modeling/Description.cpp
+        include/idol/robust/optimizers/deterministic/Deterministic.h
+        src/robust/optimizers/deterministic/Deterministic.cpp
+        include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h
+        src/robust/optimizers/deterministic/Optimizers_Deterministic.cpp
 )
 
 find_package(OpenMP REQUIRED)

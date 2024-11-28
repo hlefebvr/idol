@@ -26,6 +26,7 @@ namespace idol {
 class idol::Reformulators::KKT {
     const Model& m_primal;
     const QuadExpr<Var, double>& m_primal_objective;
+    std::string m_prefix;
 
     std::function<bool(const Var&)> m_primal_variable_indicator;
     std::function<bool(const Ctr&)> m_primal_constraint_indicator;
@@ -57,8 +58,9 @@ public:
 
     KKT(const Model& t_high_point_relaxation, const Bilevel::Description& t_bilevel_description);
 
+    void set_prefix(std::string t_prefix) { m_prefix = std::move(t_prefix); }
 
-    const QuadExpr<Var, double>& get_dual_obj_expr() const { return m_dual_objective; }
+    [[nodiscard]] const QuadExpr<Var, double>& get_dual_obj_expr() const { return m_dual_objective; }
 
     /**
      * Adds the coupling variables and constraints to the destination model.
