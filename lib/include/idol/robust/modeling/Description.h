@@ -25,9 +25,7 @@ public:
 
     [[nodiscard]] const Annotation<unsigned int>& stage_annotation() const;
 
-    void make_stage_var(const Var& t_var, unsigned int t_stage);
-
-    void make_stage_ctr(const Ctr& t_ctr, unsigned int t_stage);
+    void set_stage(const Var& t_var, unsigned int t_stage);
 
     unsigned int stage(const Var& t_var) const;
 
@@ -59,6 +57,14 @@ public:
 
     void set_uncertain_obj(const Var& t_var, const LinExpr<Var>& t_obj) {
         m_uncertain_obj.set(t_var, t_obj);
+    }
+
+    void set_uncertain_obj(LinExpr<Var, LinExpr<Var>> t_obj) {
+        m_uncertain_obj = std::move(t_obj);
+    }
+
+    void set_uncertain_rhs(LinExpr<Ctr, LinExpr<Var>> t_rhs) {
+        m_uncertain_rhs = std::move(t_rhs);
     }
 
     class View {

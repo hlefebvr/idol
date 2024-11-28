@@ -13,12 +13,8 @@ const idol::Annotation<unsigned int> &idol::Robust::Description::stage_annotatio
     return *m_stages;
 }
 
-void idol::Robust::Description::make_stage_var(const Var &t_var, unsigned int t_stage) {
+void idol::Robust::Description::set_stage(const Var &t_var, unsigned int t_stage) {
     t_var.set(stage_annotation(), t_stage);
-}
-
-void idol::Robust::Description::make_stage_ctr(const idol::Ctr &t_ctr, unsigned int t_stage) {
-    t_ctr.set(stage_annotation(), t_stage);
 }
 
 unsigned int idol::Robust::Description::stage(const idol::Var &t_var) const {
@@ -74,8 +70,10 @@ std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Descripti
 
     const auto& obj = model.get_obj_expr();
 
-    stream << "Minimize\n" << obj.affine().constant() << " + ";
+    stream << "Minimize\n" << obj.affine().constant();
     for (const auto& [var, constant] : obj.affine().linear()) {
+
+        stream << " + ";
 
         const auto& uncertainty = description.uncertain_obj(var);
         if (uncertainty.is_zero(Tolerance::Sparsity)) {
@@ -101,7 +99,14 @@ std::ostream &idol::operator<<(std::ostream &t_os, const idol::Robust::Descripti
         if (uncertain_mat_coeff.is_zero(Tolerance::Sparsity)) {
             stream << linear;
         } else {
+            bool first = true;
             for (const auto& [var, constant] : linear) {
+
+                if (first) {
+                    first = false;
+                } else {
+                    stream << " + ";
+                }
 
                 const auto& uncertainty = uncertain_mat_coeff.get(var);
                 if (uncertainty.is_zero(Tolerance::Sparsity)) {

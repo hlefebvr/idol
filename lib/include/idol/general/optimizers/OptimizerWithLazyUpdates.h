@@ -222,15 +222,20 @@ idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::OptimizerWithLazy
 template<class VarImplT, class CtrImplT, class QCtrImplT>
 void idol::OptimizerWithLazyUpdates<VarImplT, CtrImplT, QCtrImplT>::build() {
 
-    for (const auto& var : parent().vars()) {
+    const auto& parent = this->parent();
+
+    m_variables.reserve(parent.vars().size());
+    for (const auto& var : parent.vars()) {
         add(var);
     }
 
-    for (const auto& ctr : parent().ctrs()) {
+    m_constraints.reserve(parent.ctrs().size());
+    for (const auto& ctr : parent.ctrs()) {
         add(ctr);
     }
 
-    for (const auto& qctr : parent().qctrs()) {
+    m_qconstraints.reserve(parent.qctrs().size());
+    for (const auto& qctr : parent.qctrs()) {
         add(qctr);
     }
 

@@ -38,7 +38,8 @@ idol::Robust::Deterministic::with_deterministic_optimizer(const idol::OptimizerF
 }
 
 idol::Robust::Deterministic::Deterministic(const idol::Robust::Deterministic &t_src)
-    : m_description(t_src.m_description),
+    : OptimizerFactoryWithDefaultParameters<Deterministic>(t_src),
+      m_description(t_src.m_description),
       m_deterministic_optimizer(t_src.m_deterministic_optimizer->clone()) {
 
 }

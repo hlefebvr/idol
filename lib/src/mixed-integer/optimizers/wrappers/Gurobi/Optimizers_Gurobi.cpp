@@ -153,9 +153,18 @@ GRBConstr idol::Optimizers::Gurobi::hook_add(const Ctr& t_ctr) {
     const auto& name = t_ctr.name();
 
     GRBLinExpr expr = 0.;
+    const unsigned int n = row.size();
+    auto* vars = new GRBVar[n];
+    auto* vals = new double[n];
+    unsigned int i = 0;
     for (const auto &[var, constant]: row) {
-        expr += constant * lazy(var).impl();
+        vars[i] = lazy(var).impl();
+        vals[i] = gurobi_numeric(constant);
+        ++i;
     }
+    expr.addTerms(vals, vars, (int) n);
+    delete[] vars;
+    delete[] vals;
 
     GUROBI_CATCH(return m_model.addConstr(expr, type, rhs, name);)
 }
@@ -169,9 +178,18 @@ GRBQConstr idol::Optimizers::Gurobi::hook_add(const idol::QCtr &t_ctr) {
 
     GRBQuadExpr quad_expr = expr.affine().constant();
 
+    const unsigned int n = expr.affine().linear().size();
+    auto* vars = new GRBVar[n];
+    auto* vals = new double[n];
+    unsigned int i = 0;
     for (const auto& [var, constant]: expr.affine().linear()) {
-        quad_expr += constant * lazy(var).impl();
+        vars[i] = lazy(var).impl();
+        vals[i] = gurobi_numeric(constant);
+        ++i;
     }
+    quad_expr.addTerms(vals, vars, (int) n);
+    delete[] vars;
+    delete[] vals;
 
     for (const auto& [pair, constant]: expr) {
         quad_expr += constant * lazy(pair.first).impl() * lazy(pair.second).impl();
@@ -217,11 +235,31 @@ void idol::Optimizers::Gurobi::hook_update_objective() {
 
     GRBLinExpr linear_expr = gurobi_numeric(objective.affine().constant());
 
+    const unsigned int n = objective.affine().linear().size();
+    auto* vars = new GRBVar[n];
+    auto* vals = new double[n];
+    unsigned int i = 0;
     for (const auto& [var, constant] : objective.affine().linear()) {
-        linear_expr += gurobi_numeric(constant) * lazy(var).impl();
+        vars[i] = lazy(var).impl();
+        vals[i] = gurobi_numeric(constant);
+        ++i;
+    }
+    linear_expr.addTerms(vals, vars, (int) n);
+    delete[] vars;
+    delete[] vals;
+
+    if (!objective.has_quadratic()) {
+        m_model.setObjective(linear_expr, sense);
+        return;
     }
 
-    m_model.setObjective(linear_expr, sense);
+    GRBQuadExpr quad_expr(linear_expr);
+    for (const auto& [pair, constant] : objective) {
+        quad_expr += gurobi_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
+    }
+
+    m_model.setObjective(quad_expr, sense);
+
 }
 
 void idol::Optimizers::Gurobi::hook_update_rhs() {

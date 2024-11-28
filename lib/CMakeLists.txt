@@ -233,6 +233,10 @@ add_library(idol STATIC
         src/robust/optimizers/deterministic/Deterministic.cpp
         include/idol/robust/optimizers/deterministic/Optimizers_Deterministic.h
         src/robust/optimizers/deterministic/Optimizers_Deterministic.cpp
+        include/idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h
+        include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h
+        src/robust/optimizers/affine-decision-rule/AffineDecisionRule.cpp
+        src/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.cpp
 )
 
 find_package(OpenMP REQUIRED)
