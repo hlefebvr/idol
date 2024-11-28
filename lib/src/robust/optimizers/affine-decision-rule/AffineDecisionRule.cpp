@@ -72,6 +72,7 @@ idol::Robust::AffineDecisionRule::Result idol::Robust::AffineDecisionRule::make_
         result.affine_decision_rules.emplace_back(std::move(adr));
     }
 
+    // Add Uncertain constraints
     for (const auto& ctr : t_model.ctrs()) {
 
         const auto& row = t_model.get_ctr_row(ctr);

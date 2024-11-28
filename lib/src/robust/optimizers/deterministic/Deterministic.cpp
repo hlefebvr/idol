@@ -89,7 +89,7 @@ idol::Robust::Deterministic::make_model(const idol::Model &t_model, const idol::
         }
 
         QuadExpr<Var> objective = row;
-        for (const auto& [var, uncertain_coeff] : row) {
+        for (const auto& [var, uncertain_coeff] : t_description.uncertain_mat_coeffs(ctr)) {
             const auto& uncertain_mat_coeff = uncertain_mat_coeffs.get(var);
             objective +=  uncertain_mat_coeff * var;
         }

@@ -30,9 +30,9 @@ int main(int t_argc, const char** t_argv) {
 
     // Uncertainty set
     Model uncertainty_set(env);
-    const double Gamma = 1;
-    const auto xi = uncertainty_set.add_vars(Dim<1>(n_customers), 0., 1., Continuous, 0., "xi");
-    uncertainty_set.add_ctr(idol_Sum(i, Range(n_customers), xi[i]) <= Gamma);
+    const double Gamma = .2;
+    const auto xi = uncertainty_set.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "xi");
+    uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), idol_Sum(j, Range(n_customers), xi[i][j])) <= Gamma);
 
     // Make model
     Model model(env);
@@ -68,15 +68,18 @@ int main(int t_argc, const char** t_argv) {
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0; j < n_customers; ++j) {
             const auto c = model.add_ctr(y[i][j] <= 1);
-            description.set_uncertain_rhs(c, -xi[j]); // models y_ij <= 1 - xi_j
+            description.set_uncertain_rhs(c, -xi[i][j]); // models y_ij <= 1 - xi_j
             description.set_stage(y[i][j], 1); // models y_ij as a second-stage variable
         }
     }
 
     /*
-     * const auto deterministic_model = Robust::AffineDecisionRule::make_model(model, description);
-     * std::cout << Robust::Description::View(model, description) << std::endl;
+     * const auto adr_result = Robust::AffineDecisionRule::make_model(model, description);
+     * std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
      */
+
+    const auto adr_result = Robust::AffineDecisionRule::make_model(model, description);
+    std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
 
     model.use(Gurobi());
     model.optimize();
