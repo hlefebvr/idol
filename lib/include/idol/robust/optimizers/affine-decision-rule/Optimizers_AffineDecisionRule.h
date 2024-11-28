@@ -18,7 +18,7 @@ namespace idol::Optimizers::Robust {
 class idol::Optimizers::Robust::AffineDecisionRule : public Algorithm {
     const idol::Robust::Description& m_description;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer;
-    std::unique_ptr<idol::Robust::AffineDecisionRule::Result> m_deterministic_model;
+    std::unique_ptr<idol::Robust::AffineDecisionRule::Result> m_adr_result;
 
     void throw_if_no_deterministic_model() const;
 public:

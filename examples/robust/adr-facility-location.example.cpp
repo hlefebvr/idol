@@ -1,5 +1,5 @@
 //
-// Created by henri on 06/04/23.
+// Created by henri on 28.11.24.
 //
 #include <iostream>
 #include "idol/modeling.h"
@@ -15,6 +15,7 @@
 #include "idol/mixed-integer/optimizers/callbacks/ReducedCostFixing.h"
 #include "idol/robust/modeling/Description.h"
 #include "idol/robust/optimizers/deterministic/Deterministic.h"
+#include "idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h"
 
 using namespace idol;
 
@@ -23,7 +24,7 @@ int main(int t_argc, const char** t_argv) {
     Env env;
 
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("robust-facility-location.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("adr-facility-location.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -41,17 +42,11 @@ int main(int t_argc, const char** t_argv) {
     auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-
-        const auto c = model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
-
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            description.set_uncertain_mat_coeff(c, y[i][j], 0.2 * instance.demand(j) * xi[j]);
-        }
-
+        model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) == 1);
+        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= 1);
     }
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -72,12 +67,14 @@ int main(int t_argc, const char** t_argv) {
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0; j < n_customers; ++j) {
-            description.set_uncertain_obj(y[i][j], 0.2 * instance.per_unit_transportation_cost(i, j) * instance.demand(j) * xi[j]);
+            const auto c = model.add_ctr(y[i][j] <= 1);
+            description.set_uncertain_rhs(c, -xi[j]); // models y_ij <= 1 - xi_j
+            description.set_stage(y[i][j], 1); // models y_ij as a second-stage variable
         }
     }
 
     /*
-     * const auto deterministic_model = Robust::Deterministic::make_model(model, description);
+     * const auto deterministic_model = Robust::AffineDecisionRule::make_model(model, description);
      * std::cout << Robust::Description::View(model, description) << std::endl;
      */
 
@@ -86,9 +83,16 @@ int main(int t_argc, const char** t_argv) {
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
     model.use(
-                Robust::Deterministic(description)
-                    .with_deterministic_optimizer(Gurobi().with_logs(false))
-            );
+            Robust::AffineDecisionRule(description)
+                    .with_deterministic_optimizer(Gurobi())
+    );
+    model.optimize();
+    std::cout << "Affine Decision Rule Problem has value: " << model.get_best_obj() << std::endl;
+
+    model.use(
+            Robust::Deterministic(description)
+                    .with_deterministic_optimizer(GLPK())
+    );
     model.optimize();
     std::cout << "Robust Problem has value: " << model.get_best_obj() << std::endl;
 
