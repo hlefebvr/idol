@@ -50,8 +50,7 @@ int main(int t_argc, const char** t_argv) {
 
     const auto padm = PADM(decomposition, initial_penalties)
             .with_default_sub_problem_spec(
-                    ADM::SubProblem()
-                            .with_optimizer(Gurobi().with_external_param(GRB_IntParam_NonConvex, 0))
+                    ADM::SubProblem().with_optimizer(Gurobi())
             )
             .with_penalty_update(PenaltyUpdates::Multiplicative(2))
             .with_rescaling_threshold(1e4)
