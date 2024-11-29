@@ -34,7 +34,7 @@ int main(int t_argc, const char** t_argv) {
     Annotation decomposition(env, "decomposition", MasterId);
 
     // Create penalized constraints annotation
-    Annotation<bool> penalized_constraints(env, "penalized_constraints", false);
+    Annotation<double> initial_penalty_parameters(env, "initial_penalty_parameters", -1); // By default, constraints are not penalized
 
     // Create assignment variables (x_ij binaries)
     auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, 0., "x");
@@ -50,7 +50,7 @@ int main(int t_argc, const char** t_argv) {
     for (unsigned int j = 0 ; j < n_jobs ; ++j) {
         auto assignment = model.add_ctr(idol_Sum(i, Range(n_agents), x[i][j]) == 1, "assignment_" + std::to_string(j));
 
-        assignment.set(penalized_constraints, true); // Penalize this constraint
+        assignment.set(initial_penalty_parameters, 1e2); // With an initial penalty value of 1e2
     }
 
     // Set the objective function
@@ -70,7 +70,7 @@ int main(int t_argc, const char** t_argv) {
             .with_logs(true);
 
 
-    const auto penalty_method = PenaltyMethod(penalized_constraints)
+    const auto penalty_method = PenaltyMethod(initial_penalty_parameters)
             .with_penalty_update(PenaltyUpdates::Multiplicative(2))
             .with_rescaling_threshold(1e3)
             .with_feasible_solution_status(Optimal);
