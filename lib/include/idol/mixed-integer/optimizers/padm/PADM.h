@@ -22,7 +22,7 @@ class idol::PADM : public OptimizerFactoryWithDefaultParameters<PADM> {
 public:
     explicit PADM(Annotation<unsigned int> t_decomposition);
 
-    PADM(Annotation<unsigned int> t_decomposition, Annotation<bool> t_penalized_constraints);
+    PADM(Annotation<unsigned int> t_decomposition, Annotation<double> t_penalized_constraints);
 
     PADM(const PADM& t_src);
     PADM(PADM&&) = default;
@@ -34,34 +34,28 @@ public:
 
     PADM& with_sub_problem_spec(unsigned int t_id, ADM::SubProblem t_sub_problem);
 
-    PADM& with_rescaling(bool t_rescaling, double t_threshold);
+    PADM& with_rescaling_threshold(double t_threshold);
 
     PADM& with_penalty_update(const PenaltyUpdate& t_penalty_update);
 
-    PADM& with_independent_penalty_update(bool t_value);
-
     PADM& with_feasible_solution_status(SolutionStatus t_status);
-
-    PADM& with_initial_penalty_parameter(double t_value);
 
     PADM& with_iteration_plot(Plots::Manager& t_manager);
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    OptimizerFactory *clone() const override;
+    [[nodiscard]] OptimizerFactory *clone() const override;
 private:
     Annotation<unsigned int> m_decomposition;
-    std::optional<Annotation<bool>> m_penalized_constraints;
+    std::optional<Annotation<double>> m_penalized_constraints;
     std::optional<ADM::SubProblem> m_default_sub_problem_spec;
     Map<unsigned int, ADM::SubProblem> m_sub_problem_specs;
-    std::optional<std::pair<bool, double>> m_rescaling;
+    std::optional<double> m_rescaling;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
-    std::optional<bool> m_independent_penalty_update;
     std::optional<SolutionStatus> m_feasible_solution_status;
-    std::optional<double> m_initial_penalty_parameter;
     std::optional<Plots::Manager*> m_plot_manager;
 
-    std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
+    [[nodiscard]] std::vector<ADM::SubProblem> create_sub_problem_specs(const Model& t_model, const ADM::Formulation& t_formulation) const;
 };
 
 

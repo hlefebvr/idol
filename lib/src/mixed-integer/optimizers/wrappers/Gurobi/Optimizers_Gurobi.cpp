@@ -110,9 +110,11 @@ void idol::Optimizers::Gurobi::hook_build() {
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
 
-    hook_update_objective_sense();
-    update_objective_constant();
-    set_objective_as_updated();
+    if (!objective.has_quadratic()) {
+        hook_update_objective_sense();
+        update_objective_constant();
+        set_objective_as_updated();
+    }
 
     set_rhs_as_updated();
 
@@ -587,11 +589,11 @@ idol::Model idol::Optimizers::Gurobi::read_from_file(idol::Env &t_env, const std
     /*
     for (unsigned int i = 0 ; i < n_quad_ctrs ; ++i) {
 
-        const auto& ctr = model->getQConstrs()[i];
-        const auto& expr = model->getQCRow(ctr);
-        const double rhs = ctr.get(GRB_DoubleAttr_QCRHS);
-        const auto type = idol_ctr_type(ctr.get(GRB_CharAttr_QCSense));
-        const auto& name = ctr.get(GRB_StringAttr_QCName);
+        const auto& original_ctr = model->getQConstrs()[i];
+        const auto& expr = model->getQCRow(original_ctr);
+        const double rhs = original_ctr.get(GRB_DoubleAttr_QCRHS);
+        const auto type = idol_ctr_type(original_ctr.get(GRB_CharAttr_QCSense));
+        const auto& name = original_ctr.get(GRB_StringAttr_QCName);
 
         AffExpr lhs = parse_quadratic(expr);
         add_ctr(row, rhs, type, name);

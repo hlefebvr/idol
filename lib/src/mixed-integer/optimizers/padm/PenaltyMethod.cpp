@@ -6,17 +6,17 @@
 
 #include <utility>
 
-idol::PenaltyMethod::PenaltyMethod(idol::Annotation<bool> t_penalized_constraints)
+idol::PenaltyMethod::PenaltyMethod(idol::Annotation<double> t_penalized_constraints)
     : m_decomposition(t_penalized_constraints.env(), "decomposition", 0),
-      m_penalized_constraints(std::move(t_penalized_constraints)) {
+      m_initial_penalty_parameters(std::move(t_penalized_constraints)) {
 
 }
 
 idol::PenaltyMethod::PenaltyMethod(const idol::PenaltyMethod &t_src)
     : OptimizerFactoryWithDefaultParameters<PenaltyMethod>(t_src),
       m_decomposition(t_src.m_decomposition),
-      m_penalized_constraints(t_src.m_penalized_constraints),
-      m_rescaling(t_src.m_rescaling),
+      m_initial_penalty_parameters(t_src.m_initial_penalty_parameters),
+      m_rescaling_threshold(t_src.m_rescaling_threshold),
       m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr),
       m_optimizer(t_src.m_optimizer ? t_src.m_optimizer->clone() : nullptr),
       m_feasible_solution_status(t_src.m_feasible_solution_status) {
@@ -34,13 +34,13 @@ idol::PenaltyMethod &idol::PenaltyMethod::with_optimizer(const idol::OptimizerFa
     return *this;
 }
 
-idol::PenaltyMethod &idol::PenaltyMethod::with_rescaling(bool t_rescaling, double t_threshold) {
+idol::PenaltyMethod &idol::PenaltyMethod::with_rescaling_threshold(double t_threshold) {
 
-    if (m_rescaling) {
+    if (m_rescaling_threshold) {
         throw Exception("The rescaling has already been set.");
     }
 
-    m_rescaling = std::make_pair(t_rescaling, t_threshold);
+    m_rescaling_threshold = t_threshold;
 
     return *this;
 }
@@ -68,9 +68,8 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
 
     ADM::Formulation formulation(t_model,
                                  m_decomposition,
-                                 m_penalized_constraints,
-                                 false,
-                                 m_rescaling ? *m_rescaling : std::make_pair(true, 1e4));
+                                 m_initial_penalty_parameters,
+                                 m_rescaling_threshold ? *m_rescaling_threshold : -1);
 
     auto* penalty_update = m_penalty_update ? m_penalty_update->clone() : nullptr;
     if (!penalty_update) {
@@ -83,7 +82,6 @@ idol::Optimizers::PADM *idol::PenaltyMethod::operator()(const idol::Model &t_mod
             { ADM::SubProblem().with_optimizer(*m_optimizer) },
             penalty_update,
             m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
-            m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e2,
             nullptr
     );
 
@@ -105,17 +103,6 @@ idol::PenaltyMethod &idol::PenaltyMethod::with_feasible_solution_status(idol::So
 
 idol::PenaltyMethod &idol::PenaltyMethod::operator+=(const idol::OptimizerFactory &t_optimizer_factory) {
     return with_optimizer(t_optimizer_factory);
-}
-
-idol::PenaltyMethod &idol::PenaltyMethod::with_initial_penalty_parameter(double t_value) {
-
-    if (m_initial_penalty_parameter) {
-        throw Exception("The initial penalty parameter has already been set.");
-    }
-
-    m_initial_penalty_parameter = t_value;
-
-    return *this;
 }
 
 idol::PenaltyMethod operator+(const idol::PenaltyMethod& t_penalty_method, const idol::OptimizerFactory& t_optimizer_factory) {

@@ -9,6 +9,8 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/general/utils/Map.h"
+#include "idol/general/utils/GenerationPattern.h"
+#include <variant>
 
 namespace idol {
     class PenaltyUpdate;
@@ -21,19 +23,44 @@ class idol::ADM::Formulation {
 public:
     Formulation(const Model& t_src_model,
                 Annotation<unsigned int> t_decomposition,
-                std::optional<Annotation<bool>> t_penalized_constraints,
-                bool t_independent_penalty_update,
-                std::pair<bool, double> t_rescaling);
+                std::optional<Annotation<double>> t_penalized_constraints,
+                double t_rescaling_threshold);
 
-    Model& sub_problem(const Var& t_var);
+    struct SubProblem {
 
-    [[nodiscard]] const Model& sub_problem(const Var& t_var) const;
+        struct RhsFixation {
+            Ctr ctr;
+            QuadExpr<Var> rhs_pattern;
+
+            RhsFixation(Ctr  t_sub_problem_ctr, QuadExpr<Var> t_pattern)
+                : ctr(std::move(t_sub_problem_ctr)), rhs_pattern(std::move(t_pattern)) {}
+        };
+
+        struct RowFixation {
+            std::variant<Ctr, QCtr> ctr;
+            QuadExpr<Var, QuadExpr<Var>> row;
+
+            RowFixation(const Ctr& t_sub_problem_ctr, QuadExpr<Var, QuadExpr<Var>> t_row) : ctr(t_sub_problem_ctr), row(std::move(t_row)) {}
+        };
+
+        Model model;
+        std::list<Var> l1_epigraph_vars;
+        std::list<RhsFixation> rhs_fixations;
+        std::list<RowFixation> row_fixations;
+        QuadExpr<Var, QuadExpr<Var>> obj_fixation;
+
+        explicit SubProblem(Env& t_env);
+    };
+
+    SubProblem& sub_problem(const Var& t_var);
+
+    [[nodiscard]] const SubProblem& sub_problem(const Var& t_var) const;
 
     [[nodiscard]] unsigned int sub_problem_id(const Var& t_var) const;
 
-    Model& sub_problem(unsigned int t_sub_problem_id) { return m_sub_problems[t_sub_problem_id]; }
+    SubProblem& sub_problem(unsigned int t_sub_problem_id) { return m_sub_problems[t_sub_problem_id]; }
 
-    [[nodiscard]] const Model& sub_problem(unsigned int t_sub_problem_id) const { return m_sub_problems[t_sub_problem_id]; }
+    [[nodiscard]] const SubProblem& sub_problem(unsigned int t_sub_problem_id) const { return m_sub_problems[t_sub_problem_id]; }
 
     [[nodiscard]] unsigned int n_sub_problems() const { return m_sub_problems.size(); }
 
@@ -41,54 +68,49 @@ public:
 
     [[nodiscard]] auto sub_problems() const { return ConstIteratorForward(m_sub_problems); }
 
-    [[nodiscard]] auto l1_vars(unsigned int t_sub_problem_id) const { return ConstIteratorForward(m_l1_vars_in_sub_problem[t_sub_problem_id]); }
+    [[nodiscard]] auto l1_epigraph_vars() const { return ConstIteratorForward(m_l1_epigraph_vars); }
 
-    [[nodiscard]] bool has_penalized_constraints() const { return m_penalized_constraints.has_value(); }
+    [[nodiscard]] bool has_penalized_constraints() const { return m_initial_penalty_parameters.has_value(); }
 
-    void fix_sub_problem(unsigned int t_sub_problem_id, const std::vector<PrimalPoint>& t_primals);
-
-    void initialize_penalty_parameters(double t_value);
+    void initialize_penalty_parameters(bool t_use_inverse_penalties);
 
     bool update_penalty_parameters(const std::vector<PrimalPoint>& t_primals, PenaltyUpdate& t_penalty_update); // Returns true if penalty parameters have been resacled
 
+    void update(unsigned int t_sub_problem_id, const std::vector<PrimalPoint>& t_primals);
+
     struct CurrentPenalty {
-        const Ctr constraint;
         const Var variable;
         const double max_violation;
         double penalty;
-        CurrentPenalty(Ctr t_constraint, Var t_variable, double t_max_violation, double t_penalty)
-            : constraint(std::move(t_constraint)), variable(std::move(t_variable)), max_violation(t_max_violation), penalty(t_penalty) {}
+        CurrentPenalty(Var t_variable, double t_max_violation, double t_penalty)
+            : variable(std::move(t_variable)), max_violation(t_max_violation), penalty(t_penalty) {}
     };
 
 private:
     Annotation<unsigned int> m_decomposition;
-    std::optional<Annotation<bool>> m_penalized_constraints;
-    bool m_independent_penalty_update;
-    std::pair<bool, double> m_rescaling;
+    std::optional<Annotation<double>> m_initial_penalty_parameters;
+    double m_rescaling_threshold;
 
-    std::vector<Model> m_sub_problems;
-    std::vector<std::optional<QuadExpr<Var>>> m_objective_patterns;
-    std::vector<std::list<std::pair<Ctr, AffExpr<Var>>>> m_constraint_patterns; // as ctr: row <= 0
-    std::vector<std::list<std::pair<QCtr, AffExpr<Var>>>> m_qconstraint_patterns; // as ctr: row <= 0
-    std::vector<std::list<Var>> m_l1_vars_in_sub_problem;
-    Map<Ctr, Var> m_l1_vars;
+    std::vector<SubProblem> m_sub_problems;
+    Map<unsigned int, Var> m_l1_epigraph_vars; // object id -> l1 epigraph variable
 
     [[nodiscard]] unsigned int compute_n_sub_problems(const Model& t_src_model) const;
     void initialize_sub_problems(const Model& t_src_model, unsigned int n_sub_problems);
-    void initialize_patterns(const Model& t_src_model, unsigned int n_sub_problems);
-    void initialize_slacks(const Model& t_src_model, unsigned int n_sub_problems);
     void dispatch_vars(const Model& t_src_model);
     void dispatch_ctrs(const Model& t_src_model);
     void dispatch_ctr(const Model& t_src_model, const Ctr& t_ctr, unsigned int t_sub_problem_id);
+    void dispatch_qctrs(const Model& t_src_model);
+    void dispatch_qctr(const Model& t_src_model, const QCtr& t_ctr, unsigned int t_sub_problem_id);
     void dispatch_obj(const Model& t_src_model);
     void dispatch_obj(const Model& t_src_model, unsigned int t_sub_problem_id);
-    std::pair<AffExpr<Var>, bool> dispatch(const Model& t_src_model, const LinExpr<Var>& t_lin_expr, /* const QuadExpr<Var>& t_quad_expr, */ unsigned int t_sub_problem_id);
-    Var get_or_create_l1_var(const Ctr& t_ctr);
+    double evaluate(const QuadExpr<Var>& t_expr, const std::vector<Point<Var>>& t_primals);
+    QuadExpr<Var> evaluate(const QuadExpr<Var, QuadExpr<Var>>& t_expr, const std::vector<Point<Var>>& t_primals);
+    std::pair<LinExpr<Var>, AffExpr<Var>> dispatch(const LinExpr<Var>& t_expr, unsigned int t_sub_problem_id);
     void set_penalty_in_all_sub_problems(const Var& t_var, double t_value);
-    void update_penalty_parameters_independently(const std::vector<PrimalPoint>& t_primals, PenaltyUpdate& t_penalty_update);
     bool rescale_penalty_parameters(std::list<CurrentPenalty>& t_penalties);
-
-    double fix(const Constant& t_constant, const std::vector<PrimalPoint>& t_primals);
+    LinExpr<Var> add_l1_vars(const Ctr& t_ctr, CtrType t_type, unsigned int t_sub_problem_id);
+    LinExpr<Var> add_l1_vars(const QCtr& t_ctr, CtrType t_type, unsigned int t_sub_problem_id);
+    LinExpr<Var> add_l1_vars(unsigned int t_ctr_id, double t_initial_penalty_parameter, CtrType t_type, unsigned int t_sub_problem_id);
 };
 
 

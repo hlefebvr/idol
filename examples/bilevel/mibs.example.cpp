@@ -42,12 +42,12 @@ int main(int t_argc, const char** t_argv) {
 
     // Prepare bilevel description
     Bilevel::Description description(env);
-    description.set_lower_objective(y);
+    description.set_lower_level_obj(y);
     description.make_lower_level(y);
-    description.make_follower(follower_c1);
-    description.make_follower(follower_c2);
-    description.make_follower(follower_c3);
-    description.make_follower(follower_c4);
+    description.make_lower_level(follower_c1);
+    description.make_lower_level(follower_c2);
+    description.make_lower_level(follower_c3);
+    description.make_lower_level(follower_c4);
 
     // Use coin-or/MibS as external solver
     high_point_relaxation.use(

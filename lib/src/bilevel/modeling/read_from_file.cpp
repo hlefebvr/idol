@@ -206,7 +206,7 @@ void AuxParser::set_var_annotations() {
     for (const auto& var : m_high_point_relaxation->vars()) {
 
         if (m_lower_level_variables.find(var.name()) == m_lower_level_variables.end()) {
-            m_lower_level_description.make_leader(var);
+            m_lower_level_description.make_upper_level(var);
             continue;
         }
 
@@ -221,11 +221,11 @@ void AuxParser::set_ctr_annotations() {
     for (const auto& ctr : m_high_point_relaxation->ctrs()) {
 
         if (m_lower_level_constraints.find(ctr.name()) == m_lower_level_constraints.end()) {
-            m_lower_level_description.make_leader(ctr);
+            m_lower_level_description.make_upper_level(ctr);
             continue;
         }
 
-        m_lower_level_description.make_follower(ctr);
+        m_lower_level_description.make_lower_level(ctr);
 
     }
 
@@ -243,7 +243,7 @@ void AuxParser::create_lower_level_objective() {
 
     }
 
-    m_lower_level_description.set_lower_objective(std::move(obj));
+    m_lower_level_description.set_lower_level_obj(std::move(obj));
 }
 
 idol::Model

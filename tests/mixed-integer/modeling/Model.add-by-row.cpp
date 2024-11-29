@@ -61,30 +61,30 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling-old][Model]") {
                 CHECK(model.get_ctr_row(ctr).get(x[2]) == 103_a);
 
                 /*
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[0], x[0]) == 104_a);
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[0], x[1]) == 105_a);
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[0], x[2]) == 106_a);
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[1], x[1]) == 107_a);
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[1], x[2]) == 108_a);
-                CHECK(model.get_ctr_row(ctr).quadratic().get(x[2], x[2]) == 109_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[0], x[0]) == 104_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[0], x[1]) == 105_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[0], x[2]) == 106_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[1], x[1]) == 107_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[1], x[2]) == 108_a);
+                CHECK(model.get_ctr_row(original_ctr).quadratic().get(x[2], x[2]) == 109_a);
                  */
             }
 
             AND_THEN("The row coefficients should have been added to the model's variables' coefficients") {
                 CHECK(model.get_var_column(x[0]).get(ctr) == 101_a);
-                //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[0]) == 104_a);
-                //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[1]) == 105_a);
-                //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[2]) == 106_a);
+                //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[0]) == 104_a);
+                //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[1]) == 105_a);
+                //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[2]) == 106_a);
 
                 CHECK(model.get_var_column(x[1]).get(ctr) == 102_a);
-                //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[0]) == 105_a);
-                //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[1]) == 107_a);
-                //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[2]) == 108_a);
+                //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[0]) == 105_a);
+                //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[1]) == 107_a);
+                //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[2]) == 108_a);
 
                 CHECK(model.get_var_column(x[2]).get(ctr) == 103_a);
-                //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[0]) == 106_a);
-                //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[1]) == 108_a);
-                //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[2]) == 109_a);
+                //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[0]) == 106_a);
+                //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[1]) == 108_a);
+                //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[2]) == 109_a);
             }
 
             AND_WHEN("The rhs of that constraint in changed int the model (nonzero)") {
@@ -177,19 +177,19 @@ SCENARIO("Model: Add a constraint by row", "[unit][modeling-old][Model]") {
 
                 AND_THEN("The constraint's coefficients in the model's variables should be zero") {
                     CHECK(model.get_var_column(x[0]).get(ctr) == 0_a);
-                    //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[0]) == 0_a);
-                    //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[1]) == 0_a);
-                    //CHECK(model.get_var_column(x[0]).quadratic().get(ctr, x[2]) == 0_a);
+                    //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[0]) == 0_a);
+                    //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[1]) == 0_a);
+                    //CHECK(model.get_var_column(x[0]).quadratic().get(original_ctr, x[2]) == 0_a);
 
                     CHECK(model.get_var_column(x[1]).get(ctr) == 0_a);
-                    //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[0]) == 0_a);
-                    //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[1]) == 0_a);
-                    //CHECK(model.get_var_column(x[1]).quadratic().get(ctr, x[2]) == 0_a);
+                    //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[0]) == 0_a);
+                    //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[1]) == 0_a);
+                    //CHECK(model.get_var_column(x[1]).quadratic().get(original_ctr, x[2]) == 0_a);
 
                     CHECK(model.get_var_column(x[2]).get(ctr) == 0_a);
-                    //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[0]) == 0_a);
-                    //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[1]) == 0_a);
-                    //CHECK(model.get_var_column(x[2]).quadratic().get(ctr, x[2]) == 0_a);
+                    //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[0]) == 0_a);
+                    //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[1]) == 0_a);
+                    //CHECK(model.get_var_column(x[2]).quadratic().get(original_ctr, x[2]) == 0_a);
                 }
 
             }

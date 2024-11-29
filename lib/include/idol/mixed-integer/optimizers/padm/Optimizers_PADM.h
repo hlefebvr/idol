@@ -22,28 +22,27 @@ public:
          std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
          PenaltyUpdate* t_penalty_update,
          SolutionStatus t_feasible_solution_status,
-         double t_initial_penalty_parameter,
          Plots::Manager* t_plot_manager);
 
-    std::string name() const override { return "PADM"; }
+    [[nodiscard]] std::string name() const override { return "PADM"; }
 
-    double get_var_primal(const Var &t_var) const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
-    double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
 
-    double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
 
-    double get_ctr_dual(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
 
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
 
-    unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
 
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
 
-    unsigned int get_outer_loop_iteration_count() const;
+    [[nodiscard]] unsigned int get_outer_loop_iteration_count() const;
 
-    unsigned int get_inner_loop_iteration_count() const;
+    [[nodiscard]] unsigned int get_inner_loop_iteration_count() const;
 
     class IterationPlot;
 protected:
@@ -93,15 +92,14 @@ protected:
 
     void update_penalty_parameters();
     void run_inner_loop();
-    bool is_feasible() const;
-    bool is_feasible(unsigned int t_sub_problem_id) const;
+    [[nodiscard]] bool is_feasible() const;
     std::pair<bool, bool> solve_sub_problem(unsigned int t_sub_problem_id); // returns a pair of bools: first is true if the sub-problem has changed its objective value, second is true if the sub-problem has changed its feasibility measure
     void compute_objective_value();
     void make_history();
     void log_inner_loop(unsigned int t_inner_loop_iteration);
     void log_outer_loop();
-    double infeasibility_linf(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
-    double infeasibility_l1(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
+    [[nodiscard]] double infeasibility_linf(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
+    [[nodiscard]] double infeasibility_l1(unsigned int t_sub_problem_id, const PrimalPoint& t_solution) const;
     void detect_stagnation(bool t_feasibility_has_changed);
     void detect_stagnation_due_to_rescaling();
     void restart();
@@ -118,7 +116,6 @@ private:
     ADM::Formulation m_formulation;
     const std::vector<idol::ADM::SubProblem> m_sub_problem_specs;
     const std::unique_ptr<PenaltyUpdate> m_penalty_update;
-    const double m_initial_penalty_parameter;
     const unsigned int m_max_inner_loop_iterations = std::numeric_limits<unsigned int>::max();
     const SolutionStatus m_feasible_solution_status;
     const unsigned int m_max_iterations_without_feasibility_change = 1000;
@@ -132,7 +129,7 @@ private:
     unsigned int m_outer_loop_iteration = 0;
     unsigned int m_inner_loop_iterations = 0;
     std::vector<PrimalPoint> m_last_solutions;
-    double m_current_initial_penalty_parameter = m_initial_penalty_parameter;
+    bool m_use_inverse_initial_penalties = false;
 
     struct IterationLog {
         unsigned int outer_iteration;

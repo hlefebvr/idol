@@ -18,7 +18,7 @@ namespace idol {
 template<class KeyT = idol::Var, class ValueT = double>
 class idol::AffExpr {
     LinExpr<KeyT, ValueT> m_linear;
-    double m_constant = 0.;
+    ValueT m_constant = 0.;
 public:
     AffExpr();
     AffExpr(ValueT t_constant); // NOLINT(google-explicit-constructor)
@@ -43,11 +43,11 @@ public:
     LinExpr<KeyT, ValueT>& linear() { return m_linear; }
     [[nodiscard]] const LinExpr<KeyT, ValueT>& linear() const { return m_linear; }
 
-    double& constant() { return m_constant; }
+    ValueT& constant() { return m_constant; }
 
-    [[nodiscard]] double constant() const { return m_constant; }
+    [[nodiscard]] const ValueT& constant() const { return m_constant; }
 
-    [[nodiscard]] bool is_zero(double t_tolerance) const { return std::abs(constant()) < t_tolerance && linear().is_zero(t_tolerance); }
+    [[nodiscard]] bool is_zero(double t_tolerance) const { return ::idol::is_zero(constant(), t_tolerance) && linear().is_zero(t_tolerance); }
 
     void clear() {
         constant() = 0;

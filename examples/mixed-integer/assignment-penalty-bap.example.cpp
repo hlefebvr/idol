@@ -34,7 +34,7 @@ int main(int t_argc, const char** t_argv) {
     Annotation decomposition(env, "decomposition", MasterId);
 
     // Create penalized constraints annotation
-    Annotation<Ctr, bool> penalized_constraints(env, "penalized_constraints", false);
+    Annotation<bool> penalized_constraints(env, "penalized_constraints", false);
 
     // Create assignment variables (x_ij binaries)
     auto x = model.add_vars(Dim<2>(n_agents, n_jobs), 0., 1., Binary, 0., "x");
@@ -72,7 +72,7 @@ int main(int t_argc, const char** t_argv) {
 
     const auto penalty_method = PenaltyMethod(penalized_constraints)
             .with_penalty_update(PenaltyUpdates::Multiplicative(2))
-            .with_rescaling(true, 1e3)
+            .with_rescaling_threshold(1e3)
             .with_feasible_solution_status(Optimal);
 
     const auto branch_and_bound = BranchAndBound()

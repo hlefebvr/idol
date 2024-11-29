@@ -13,14 +13,12 @@ idol::Optimizers::PADM::PADM(const Model& t_model,
                              std::vector<idol::ADM::SubProblem>&& t_sub_problem_specs,
                              PenaltyUpdate* t_penalty_update,
                              SolutionStatus t_feasible_solution_status,
-                             double t_initial_penalty_parameter,
                              Plots::Manager* t_plot_manager)
                             : Algorithm(t_model),
                               m_formulation(std::move(t_formulation)),
                               m_sub_problem_specs(std::move(t_sub_problem_specs)),
                               m_penalty_update(t_penalty_update),
                               m_feasible_solution_status(t_feasible_solution_status),
-                              m_initial_penalty_parameter(t_initial_penalty_parameter),
                               m_history_plotter(t_plot_manager ? new IterationPlot(*t_plot_manager) : nullptr) {
 
 }
@@ -55,13 +53,13 @@ double idol::Optimizers::PADM::get_var_primal(const idol::Var &t_var) const {
 
 double idol::Optimizers::PADM::get_var_reduced_cost(const idol::Var &t_var) const {
     return get_var_result(t_var, [this](const Var &t_var, unsigned int t_sub_problem_id) {
-        return m_formulation.sub_problem(t_sub_problem_id).get_var_reduced_cost(t_var);
+        return m_formulation.sub_problem(t_sub_problem_id).model.get_var_reduced_cost(t_var);
     });
 }
 
 double idol::Optimizers::PADM::get_var_ray(const idol::Var &t_var) const {
     return get_var_result(t_var, [this](const Var &t_var, unsigned int t_sub_problem_id) {
-        return m_formulation.sub_problem(t_sub_problem_id).get_var_ray(t_var);
+        return m_formulation.sub_problem(t_sub_problem_id).model.get_var_ray(t_var);
     });
 }
 
@@ -202,14 +200,14 @@ void idol::Optimizers::PADM::hook_before_optimize() {
     m_n_restart = 0;
     m_last_iteration_with_no_feasibility_change.reset();
     m_last_objective_value_when_rescaled.reset();
-    m_current_initial_penalty_parameter = m_initial_penalty_parameter;
+    m_use_inverse_initial_penalties = false;
     m_last_solutions = std::vector<PrimalPoint>(n_sub_problems);
 
     for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
 
-        auto& model = m_formulation.sub_problem(i);
-        if (!model.has_optimizer()) {
-            model.use(m_sub_problem_specs[i].optimizer_factory());
+        auto& sub_problem = m_formulation.sub_problem(i);
+        if (!sub_problem.model.has_optimizer()) {
+            sub_problem.model.use(m_sub_problem_specs[i].optimizer_factory());
         }
 
         m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
@@ -230,6 +228,10 @@ void idol::Optimizers::PADM::hook_optimize() {
         update_penalty_parameters();
 
         run_inner_loop();
+
+        if (m_outer_loop_iteration > 4) {
+            //throw Exception("STOP");
+        }
 
         ++m_outer_loop_iteration;
 
@@ -281,17 +283,17 @@ void idol::Optimizers::PADM::update_ctr_rhs(const idol::Ctr &t_ctr) {
 
 void idol::Optimizers::PADM::update_var_type(const idol::Var &t_var) {
     const auto type = parent().get_var_type(t_var);
-    m_formulation.sub_problem(t_var).set_var_type(t_var, type);
+    m_formulation.sub_problem(t_var).model.set_var_type(t_var, type);
 }
 
 void idol::Optimizers::PADM::update_var_lb(const idol::Var &t_var) {
     const auto lb = parent().get_var_lb(t_var);
-    m_formulation.sub_problem(t_var).set_var_lb(t_var, lb);
+    m_formulation.sub_problem(t_var).model.set_var_lb(t_var, lb);
 }
 
 void idol::Optimizers::PADM::update_var_ub(const idol::Var &t_var) {
     const auto ub = parent().get_var_ub(t_var);
-    m_formulation.sub_problem(t_var).set_var_ub(t_var, ub);
+    m_formulation.sub_problem(t_var).model.set_var_ub(t_var, ub);
 }
 
 void idol::Optimizers::PADM::update_var_obj(const idol::Var &t_var) {
@@ -299,22 +301,13 @@ void idol::Optimizers::PADM::update_var_obj(const idol::Var &t_var) {
 }
 
 bool idol::Optimizers::PADM::is_feasible() const {
-    for (unsigned int i = 0, n = m_formulation.n_sub_problems() ; i < n ; ++i) {
-        if (!is_feasible(i)) {
-            return false;
+    for (unsigned int i = 0, n = m_formulation.n_sub_problems(); i < n; ++i) {
+        for (const auto& var : m_formulation.sub_problem(i).l1_epigraph_vars) {
+            if (m_last_solutions[i].get(var) > 1e-4) {
+                return false;
+            }
         }
     }
-    return true;
-}
-
-bool idol::Optimizers::PADM::is_feasible(unsigned int t_sub_problem_id) const {
-
-    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
-        if (m_last_solutions[t_sub_problem_id].get(var) > 1e-4) {
-            return false;
-        }
-    }
-
     return true;
 }
 
@@ -368,7 +361,7 @@ void idol::Optimizers::PADM::update_penalty_parameters() {
     }
 
     if (m_inner_loop_iterations == 0) {
-        m_formulation.initialize_penalty_parameters(m_initial_penalty_parameter);
+        m_formulation.initialize_penalty_parameters(m_use_inverse_initial_penalties);
         return;
     }
 
@@ -383,18 +376,20 @@ void idol::Optimizers::PADM::update_penalty_parameters() {
 std::pair<bool, bool>
 idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
-    m_formulation.fix_sub_problem(t_sub_problem_id, m_last_solutions);
+    m_formulation.update(t_sub_problem_id, m_last_solutions);
 
-    auto& model = m_formulation.sub_problem(t_sub_problem_id);
+    auto& sub_problem = m_formulation.sub_problem(t_sub_problem_id);
 
-    model.optimizer().set_param_time_limit(get_remaining_time());
-    model.optimize();
+    sub_problem.model.optimizer().set_param_time_limit(get_remaining_time());
+    sub_problem.model.optimize();
 
-    const auto status = model.get_status();
+    //sub_problem.model.write("iter_" + std::to_string(m_outer_loop_iteration) + "_" + std::to_string(m_inner_loop_iterations) + ".sub_problem_" + std::to_string(t_sub_problem_id) + ".lp");
+
+    const auto status = sub_problem.model.get_status();
 
     if (status != Optimal && status != Feasible) {
 
-        const auto& reason = model.get_reason();
+        const auto& reason = sub_problem.model.get_reason();
 
         PrimalPoint sub_problem_solution;
         sub_problem_solution.set_status(status);
@@ -409,7 +404,7 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
         return { true, false };
     }
 
-    auto current_solution = save_primal(model);
+    auto current_solution = save_primal(sub_problem.model);
     // bool obj_has_changed = m_inner_loop_iterations == 0 || (m_last_solutions[t_sub_problem_id] + -1. * current_solution).norm(2) > 1e-4;
     const bool obj_has_changed = m_first_run || std::abs(m_last_solutions[t_sub_problem_id].objective_value() - current_solution.objective_value()) > 1e-4;
     const bool feas_has_changed = m_first_run || std::abs(infeasibility_l1(t_sub_problem_id, m_last_solutions[t_sub_problem_id]) - infeasibility_l1(t_sub_problem_id, current_solution)) > 1e-5;
@@ -428,11 +423,9 @@ void idol::Optimizers::PADM::compute_objective_value() {
         result += constant * get_var_primal(var);
     }
 
-    /*
-    for (const auto& [vars, constant] : obj.quadratic()) {
-        result += constant * get_var_primal(vars.first) * get_var_primal(vars.second);
+    for (const auto& [pair, constant] : obj) {
+        result += constant * get_var_primal(pair.first) * get_var_primal(pair.second);
     }
-     */
 
     set_best_obj(result);
 
@@ -463,7 +456,7 @@ double idol::Optimizers::PADM::infeasibility_linf(unsigned int t_sub_problem_id,
 
     double result = 0;
 
-    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
+    for (const auto& var : m_formulation.sub_problem(t_sub_problem_id).l1_epigraph_vars) {
         const double val = t_solution.get(var);
         result = std::max(result, val);
     }
@@ -475,7 +468,7 @@ double idol::Optimizers::PADM::infeasibility_l1(unsigned int t_sub_problem_id, c
 
     double result = 0;
 
-    for (const auto& var : m_formulation.l1_vars(t_sub_problem_id)) {
+    for (const auto& var : m_formulation.sub_problem(t_sub_problem_id).l1_epigraph_vars) {
         result += t_solution.get(var);
     }
 
@@ -551,7 +544,7 @@ void idol::Optimizers::PADM::make_history() {
         std::vector<double> objective_values;
         std::vector<double> infeasibility_values;
         for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-            objective_values.emplace_back(m_formulation.sub_problem(i).get_best_obj());
+            objective_values.emplace_back(m_formulation.sub_problem(i).model.get_best_obj());
             infeasibility_values.emplace_back(infeasibility_l1(i, m_last_solutions[i]));
         }
 
@@ -594,9 +587,11 @@ void idol::Optimizers::PADM::detect_stagnation(bool t_feasibility_has_changed) {
 
 void idol::Optimizers::PADM::detect_stagnation_due_to_rescaling() {
 
-    const auto sum_sub_problems = std::accumulate(m_formulation.sub_problems().begin(), m_formulation.sub_problems().end(), 0., [](double t_acc, const Model& t_model) {
-        return t_acc + t_model.get_best_obj();
-    });
+    const auto sum_sub_problems = std::accumulate(
+            m_formulation.sub_problems().begin(),
+            m_formulation.sub_problems().end(),
+            0.,
+            [](double t_acc, const auto& t_sub_problem) { return t_acc + t_sub_problem.model.get_best_obj(); });
 
     if (!m_last_objective_value_when_rescaled.has_value()) {
         m_last_objective_value_when_rescaled = sum_sub_problems;
@@ -630,14 +625,14 @@ void idol::Optimizers::PADM::restart() {
     m_last_objective_value_when_rescaled.reset();
     m_last_iteration_with_no_feasibility_change.reset();
     while(m_penalty_update->diversify());
-    m_current_initial_penalty_parameter = 1. / m_initial_penalty_parameter;
+    m_use_inverse_initial_penalties = true;
     m_first_run = true;
 
     for (unsigned int i = 0 ; i < m_formulation.n_sub_problems() ; ++i) {
         m_last_solutions[i] = m_sub_problem_specs[i].initial_point();
     }
 
-    m_formulation.initialize_penalty_parameters(m_current_initial_penalty_parameter);
+    m_formulation.initialize_penalty_parameters(m_use_inverse_initial_penalties);
 
     ++m_n_restart;
 }

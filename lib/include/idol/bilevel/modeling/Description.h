@@ -17,49 +17,49 @@ namespace idol::Bilevel {
 }
 
 class idol::Bilevel::Description {
-    Annotation<unsigned int> m_lower_level;
+    Annotation<unsigned int> m_level;
     QuadExpr<Var> m_follower_objective;
 public:
-    Description(Env& t_env, const std::string& t_name) : m_lower_level(t_env, t_name + "_lower_level", MasterId)  {}
+    Description(Env& t_env, const std::string& t_name) : m_level(t_env, t_name + "_lower_level", MasterId)  {}
 
     explicit Description(Env& t_env) : Description(t_env, "bilevel") {}
 
-    explicit Description(const Annotation<unsigned int>& t_lower_level) : m_lower_level(t_lower_level) {}
+    explicit Description(const Annotation<unsigned int>& t_lower_level) : m_level(t_lower_level) {}
 
     Description(const Annotation<unsigned int>& t_lower_level,
                 AffExpr<Var> t_follower_objective)
-        : m_lower_level(t_lower_level),
+        : m_level(t_lower_level),
           m_follower_objective(std::move(t_follower_objective)) {}
 
-    [[nodiscard]] const Annotation<unsigned int>& lower_level() const { return m_lower_level; }
+    [[nodiscard]] const Annotation<unsigned int>& lower_level() const { return m_level; }
 
     [[nodiscard]] const QuadExpr<Var>& follower_obj() const { return m_follower_objective; }
 
-    void make_leader(const Var& t_var) { t_var.set(m_lower_level, MasterId); }
+    void make_upper_level(const Var& t_var) { t_var.set(m_level, MasterId); }
 
-    void make_leader(const Ctr& t_ctr) { t_ctr.set(m_lower_level, MasterId); }
+    void make_upper_level(const Ctr& t_ctr) { t_ctr.set(m_level, MasterId); }
 
-    void make_leader(const QCtr& t_ctr) { t_ctr.set(m_lower_level, MasterId); }
+    void make_upper_level(const QCtr& t_ctr) { t_ctr.set(m_level, MasterId); }
 
-    void make_lower_level(const Var& t_var) { t_var.set(m_lower_level, 0); }
+    void make_lower_level(const Var& t_var) { t_var.set(m_level, 0); }
 
-    void make_follower(const Ctr& t_ctr) { t_ctr.set(m_lower_level, 0); }
+    void make_lower_level(const Ctr& t_ctr) { t_ctr.set(m_level, 0); }
 
-    void make_lower_level(const QCtr& t_ctr) { t_ctr.set(m_lower_level, 0); }
+    void make_lower_level(const QCtr& t_ctr) { t_ctr.set(m_level, 0); }
 
-    void set_lower_objective(QuadExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
+    void set_lower_level_obj(QuadExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
 
-    [[nodiscard]] bool is_leader(const Var& t_var) const { return t_var.get(m_lower_level) == MasterId; }
+    [[nodiscard]] bool is_leader(const Var& t_var) const { return t_var.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_leader(const Ctr& t_ctr) const { return t_ctr.get(m_lower_level) == MasterId; }
+    [[nodiscard]] bool is_leader(const Ctr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_leader(const QCtr& t_ctr) const { return t_ctr.get(m_lower_level) == MasterId; }
+    [[nodiscard]] bool is_leader(const QCtr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_follower(const Var& t_var) const { return t_var.get(m_lower_level) != MasterId; }
+    [[nodiscard]] bool is_follower(const Var& t_var) const { return t_var.get(m_level) != MasterId; }
 
-    [[nodiscard]] bool is_follower(const Ctr& t_ctr) const { return t_ctr.get(m_lower_level) != MasterId; }
+    [[nodiscard]] bool is_follower(const Ctr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
 
-    [[nodiscard]] bool is_follower(const QCtr& t_ctr) const { return t_ctr.get(m_lower_level) != MasterId; }
+    [[nodiscard]] bool is_follower(const QCtr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
 };
 
 #endif //IDOL_BILEVEL_DESCRIPTION_H

@@ -20,7 +20,7 @@ namespace idol {
 
 class idol::PenaltyMethod : public OptimizerFactoryWithDefaultParameters<PenaltyMethod> {
 public:
-    explicit PenaltyMethod(Annotation<bool> t_penalized_constraints);
+    explicit PenaltyMethod(Annotation<double> t_penalized_constraints);
 
     PenaltyMethod(const PenaltyMethod& t_src);
     PenaltyMethod(PenaltyMethod&&) = default;
@@ -30,13 +30,11 @@ public:
 
     PenaltyMethod& with_optimizer(const OptimizerFactory& t_optimizer_factory);
 
-    PenaltyMethod& with_rescaling(bool t_rescaling, double t_threshold);
+    PenaltyMethod& with_rescaling_threshold(double t_threshold);
 
     PenaltyMethod& with_penalty_update(const PenaltyUpdate& t_penalty_update);
 
     PenaltyMethod& with_feasible_solution_status(SolutionStatus t_status);
-
-    PenaltyMethod& with_initial_penalty_parameter(double t_value);
 
     Optimizers::PADM *operator()(const Model &t_model) const override;
 
@@ -45,9 +43,9 @@ public:
     [[nodiscard]] PenaltyMethod *clone() const override;
 private:
     Annotation<unsigned int> m_decomposition;
-    Annotation<bool> m_penalized_constraints;
+    Annotation<double> m_initial_penalty_parameters;
     std::unique_ptr<OptimizerFactory> m_optimizer;
-    std::optional<std::pair<bool, double>> m_rescaling;
+    std::optional<double> m_rescaling_threshold;
     std::unique_ptr<PenaltyUpdate> m_penalty_update;
     std::optional<SolutionStatus> m_feasible_solution_status;
     std::optional<double> m_initial_penalty_parameter;

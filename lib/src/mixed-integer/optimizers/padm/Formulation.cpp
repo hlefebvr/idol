@@ -13,22 +13,19 @@
 
 idol::ADM::Formulation::Formulation(const Model& t_src_model,
                                     Annotation<unsigned int> t_decomposition,
-                                    std::optional<Annotation<bool>> t_penalized_constraints,
-                                    bool t_independent_penalty_update,
-                                    std::pair<bool, double> t_rescaling)
+                                    std::optional<Annotation<double>> t_penalized_constraints,
+                                    double t_rescaling)
                                  : m_decomposition(std::move(t_decomposition)),
-                                   m_penalized_constraints(std::move(t_penalized_constraints)),
-                                   m_independent_penalty_update(t_independent_penalty_update),
-                                   m_rescaling(std::move(t_rescaling)) {
+                                   m_initial_penalty_parameters(std::move(t_penalized_constraints)),
+                                   m_rescaling_threshold(t_rescaling) {
 
     const auto n_sub_problems = compute_n_sub_problems(t_src_model);
 
     initialize_sub_problems(t_src_model, n_sub_problems);
-    initialize_patterns(t_src_model, n_sub_problems);
-    initialize_slacks(t_src_model, n_sub_problems);
 
     dispatch_vars(t_src_model);
     dispatch_ctrs(t_src_model);
+    dispatch_qctrs(t_src_model);
     dispatch_obj(t_src_model);
 
 }
@@ -64,22 +61,9 @@ void idol::ADM::Formulation::initialize_sub_problems(const idol::Model &t_src_mo
 
 }
 
-void idol::ADM::Formulation::initialize_patterns(const idol::Model &t_src_model,
-                                                 unsigned int n_sub_problems) {
-
-    m_objective_patterns.resize(n_sub_problems);
-    m_constraint_patterns.resize(n_sub_problems);
-
-}
-
-void idol::ADM::Formulation::initialize_slacks(const idol::Model &t_src_model,
-                                               unsigned int n_sub_problems) {
-    m_l1_vars_in_sub_problem.resize(n_sub_problems);
-}
-
 void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
 
-    const unsigned int n_sub_problems = this->n_sub_problems();
+    const unsigned int n_sub_problems = m_sub_problems.size();
 
     for (const auto& var : t_src_model.vars()) {
 
@@ -91,13 +75,13 @@ void idol::ADM::Formulation::dispatch_vars(const idol::Model &t_src_model) {
         if (sub_problem_id == -1) {
 
             for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
-                m_sub_problems[i].add(var, TempVar(lb, ub, type, 0.,LinExpr<Ctr>()));
+                m_sub_problems[i].model.add(var, TempVar(lb, ub, type, 0.,LinExpr<Ctr>()));
             }
 
             continue;
         }
 
-        m_sub_problems[sub_problem_id].add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
+        m_sub_problems[sub_problem_id].model.add(var, TempVar(lb, ub, type, 0., LinExpr<Ctr>()));
 
     }
 
@@ -118,211 +102,95 @@ void idol::ADM::Formulation::dispatch_ctrs(const idol::Model &t_src_model) {
 void idol::ADM::Formulation::dispatch_ctr(const idol::Model &t_src_model, const idol::Ctr &t_ctr, unsigned int t_sub_problem_id) {
 
     const auto& row = t_src_model.get_ctr_row(t_ctr);
-    const double rhs = t_src_model.get_ctr_rhs(t_ctr);
     const auto type = t_src_model.get_ctr_type(t_ctr);
 
-    auto [pattern, is_pure] = dispatch(t_src_model, row, t_sub_problem_id);
-    pattern.constant() -= rhs;
+    auto [lhs, rhs] = dispatch(row, t_sub_problem_id);
+    rhs += t_src_model.get_ctr_rhs(t_ctr);
 
-    if (pattern.linear().empty()) {
+    if (lhs.empty() && !row.empty()) {
         return;
     }
 
-    if (m_penalized_constraints && t_ctr.get(*m_penalized_constraints)) {
-        auto& model = m_sub_problems[t_sub_problem_id];
-
-        const auto add_l1_var = [&](double t_coefficient) {
-            auto var = get_or_create_l1_var(t_ctr);
-            model.add(var);
-            pattern.linear() += t_coefficient * var;
-            m_l1_vars_in_sub_problem[t_sub_problem_id].emplace_back(var);
-            return var;
-        };
-
-        switch (type) {
-            case Equal: {
-                auto var = add_l1_var(0);
-                auto var_minus = model.add_var(0, Inf, Continuous, 0., var.name() + "_minus");
-                auto var_plus = model.add_var(0, Inf, Continuous, 0., var.name() + "_plus");
-                model.add_ctr(var == var_plus + var_minus);
-                pattern.linear() += var_plus - var_minus;
-                break;
-            }
-            case LessOrEqual:
-                add_l1_var(-1);
-                break;
-            case GreaterOrEqual:
-                add_l1_var(+1);
-                break;
-        }
+    if (m_initial_penalty_parameters && t_ctr.get(*m_initial_penalty_parameters) > 1e-4) {
+        lhs += add_l1_vars(t_ctr, type, t_sub_problem_id);
     }
 
-    if (is_pure) {
-        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(std::move(pattern.linear()), type, 0));
+    auto& sub_problem = m_sub_problems[t_sub_problem_id];
+    if (rhs.linear().empty()) {
+        sub_problem.model.add(t_ctr, TempCtr(std::move(lhs), type, rhs.constant()));
     } else {
-        m_sub_problems[t_sub_problem_id].add(t_ctr, TempCtr(LinExpr<Var>(), type, 0));
-        m_constraint_patterns[t_sub_problem_id].emplace_back(t_ctr, std::move(pattern));
+        sub_problem.model.add(t_ctr, TempCtr(std::move(lhs), type, 0));
+        sub_problem.rhs_fixations.emplace_back(t_ctr, std::move(rhs));
     }
 
 }
 
 void
 idol::ADM::Formulation::dispatch_obj(const Model &t_src_model) {
-
-    const unsigned int n_sub_problems = m_sub_problems.size();
-
-    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+    for (unsigned int i = 0 ; i < m_sub_problems.size() ; ++i) {
         dispatch_obj(t_src_model, i);
     }
-
-}
-
-std::pair<idol::AffExpr<idol::Var>, bool> idol::ADM::Formulation::dispatch(const idol::Model &t_src_model,
-                                                                                   const idol::LinExpr<idol::Var> &t_lin_expr,
-                                                                                   unsigned int t_sub_problem_id) {
-
-    bool is_pure = true; // true if the row only has variables from the same sub-problem
-
-    const auto belongs_to_sub_problem = [&](const Var& t_var) {
-        const unsigned int sub_problem_id = t_var.get(m_decomposition);
-        return sub_problem_id == t_sub_problem_id || sub_problem_id == -1;
-    };
-
-    AffExpr pattern;
-
-    for (const auto& [var, coefficient] : t_lin_expr) {
-
-        if (!belongs_to_sub_problem(var)) {
-            is_pure = false;
-            pattern += coefficient * var;
-            continue;
-        }
-
-        pattern.linear() += coefficient * var;
-    }
-
-    /*
-    for (const auto& [var1, var2, constant] : t_quad_expr) {
-
-        const unsigned int var1_sub_problem_id = var1.get(m_decomposition);
-        const unsigned int var2_sub_problem_id = var2.get(m_decomposition);
-
-        if (!belongs_to_sub_problem(var1) && !belongs_to_sub_problem(var2)) {
-            is_pure = false;
-            pattern.constant() += constant * (!var1 * !var2);
-            continue;
-        }
-
-        if (!belongs_to_sub_problem(var1)) {
-            is_pure = false;
-            pattern.linear() += constant * !var1 * var2;
-            continue;
-        }
-
-        if (!belongs_to_sub_problem(var2)) {
-            is_pure = false;
-            pattern.linear() += constant * !var2 * var1;
-            continue;
-        }
-
-        pattern.quadratic() += constant * var1 * var2;
-
-    }
-     */
-
-    return {
-        std::move(pattern),
-        is_pure
-    };
 }
 
 void
 idol::ADM::Formulation::dispatch_obj(const Model &t_src_model, unsigned int t_sub_problem_id) {
+    const auto& objective = t_src_model.get_obj_expr();
+    auto& obj_fixation = m_sub_problems[t_sub_problem_id].obj_fixation;
 
-    const auto& obj = t_src_model.get_obj_expr();
-    auto [pattern, is_pure] = dispatch(t_src_model, obj.affine().linear() /*, obj.quadratic() */, t_sub_problem_id);
-    pattern += obj.affine().constant();
-
-    if (pattern.linear().empty()) {
-        return;
+    // Linear part
+    for (const auto& [var, coeff] : objective.affine().linear()) {
+        if (var.get(m_decomposition) == t_sub_problem_id || var.get(m_decomposition) == -1) {
+            obj_fixation.affine().linear().set(var, coeff);
+        } else {
+            obj_fixation.affine().constant() += coeff * var;
+        }
     }
 
-    if (is_pure) {
-        m_sub_problems[t_sub_problem_id].set_obj_expr(pattern);
-        return;
-    }
+    // Quadratic part
+    for (const auto& [pair, coeff] : objective) {
 
-    m_objective_patterns[t_sub_problem_id] = std::move(pattern);
+        const bool first_in_sub_problem = pair.first.get(m_decomposition) == t_sub_problem_id || pair.first.get(m_decomposition) == -1;
+        const bool second_in_sub_problem = pair.second.get(m_decomposition) == t_sub_problem_id || pair.second.get(m_decomposition) == -1;
 
-}
-
-void idol::ADM::Formulation::fix_sub_problem(unsigned int t_sub_problem_id,
-                                             const std::vector<PrimalPoint> &t_primals) {
-
-    throw Exception("TODO: Was using Constant");
-
-    /*
-    // Constraints
-    for (const auto& [ctr, pattern] : m_constraint_patterns[t_sub_problem_id]) {
-
-        AffExpr lhs = fix(pattern.constant(), t_primals);
-
-        for (const auto& [var, coefficient] : pattern.linear()) {
-            lhs += fix(coefficient, t_primals) * var;
+        if (first_in_sub_problem && second_in_sub_problem) {
+            obj_fixation.set(pair, coeff);
+            continue;
         }
 
-        m_sub_problems[t_sub_problem_id].set_ctr_row(ctr, LinExpr<Var>(std::move(lhs.linear())));
-        m_sub_problems[t_sub_problem_id].set_ctr_rhs(ctr, -lhs.constant());
-    }
-
-    // Objective
-    if (m_objective_patterns[t_sub_problem_id]) {
-        const auto& obj_pattern = *m_objective_patterns[t_sub_problem_id];
-        AffExpr obj = fix(obj_pattern.constant(), t_primals);
-
-        for (const auto& [var, coefficient] : obj_pattern.linear()) {
-            obj += fix(coefficient, t_primals) * var;
+        if (first_in_sub_problem) {
+            auto current_coeff = obj_fixation.affine().linear().get(pair.first);
+            obj_fixation.affine().linear().set(pair.first, std::move(current_coeff) + coeff * pair.second);
+            continue;
         }
 
+        if (second_in_sub_problem) {
+            auto current_coeff = obj_fixation.affine().linear().get(pair.second);
+            obj_fixation.affine().linear().set(pair.second, std::move(current_coeff) + coeff * pair.first);
+            continue;
+        }
 
-        m_sub_problems[t_sub_problem_id].set_obj_expr(std::move(obj));
-    }
-    */
-}
+        // extra term would be fixed in objective function anyway
 
-double idol::ADM::Formulation::fix(const idol::Constant &t_constant,
-                                   const std::vector<PrimalPoint> &t_primals) {
-    throw Exception("TODO: Was using Constant");
-    /*
-    double result = t_constant.numerical();
-
-    for (const auto& [param, coefficient] : t_constant.linear()) {
-        const auto& var = param.as<Var>();
-        const auto var_sub_problem_id = var.get(m_decomposition);
-        const auto& solution = t_primals[var_sub_problem_id];
-        result += coefficient * solution.get(var);
     }
 
-    for (const auto& [params, coefficient] : t_constant.quadratic()) {
-        const auto& var1 = params.first.as<Var>();
-        const auto& var2 = params.second.as<Var>();
-        const auto var1_sub_problem_id = var1.get(m_decomposition);
-        const auto var2_sub_problem_id = var2.get(m_decomposition);
-        const auto& solution1 = t_primals[var1_sub_problem_id];
-        const auto& solution2 = t_primals[var2_sub_problem_id];
-        result += coefficient * solution1.get(var1) * solution2.get(var2);
+}
+
+std::pair<idol::LinExpr<idol::Var>, idol::AffExpr<idol::Var>>
+idol::ADM::Formulation::dispatch(const idol::LinExpr<idol::Var> &t_expr, unsigned int t_sub_problem_id) {
+
+    LinExpr<Var> lhs;
+    AffExpr<Var> rhs;
+
+    for (const auto& [var, coeff] : t_expr) {
+        const unsigned int var_sub_problem_id = var.get(m_decomposition);
+        if (var_sub_problem_id == t_sub_problem_id || var_sub_problem_id == -1) {
+            lhs += coeff * var;
+        } else {
+            rhs -= coeff * var;
+        }
     }
 
-    return result;
-     */
-}
-
-idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) {
-    return m_sub_problems[t_var.get(m_decomposition)];
-}
-
-const idol::Model &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) const {
-    return m_sub_problems[t_var.get(m_decomposition)];
+    return std::make_pair(std::move(lhs), std::move(rhs));
 }
 
 bool
@@ -331,14 +199,9 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<PrimalPoint>
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
-    if (m_independent_penalty_update) {
-        update_penalty_parameters_independently(t_primals, t_penalty_update);
-        return false;
-    }
-
     std::list<CurrentPenalty> current_penalties;
 
-    for (auto &[ctr, var]: m_l1_vars) {
+    for (auto &[ctr_id, var] : m_l1_epigraph_vars) {
 
         unsigned int argmax = -1;
         double max = 0.;
@@ -349,7 +212,7 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<PrimalPoint>
             if (const double val = t_primals[i].get(var); val > max) {
                 max = val;
                 argmax = i;
-                penalty = m_sub_problems[i].get_var_obj(var);
+                penalty = m_sub_problems[i].model.get_var_obj(var);
             }
 
         }
@@ -358,82 +221,45 @@ idol::ADM::Formulation::update_penalty_parameters(const std::vector<PrimalPoint>
             continue;
         }
 
-        current_penalties.emplace_back(ctr, var, max, penalty);
+        current_penalties.emplace_back(var, max, penalty);
 
     }
 
     t_penalty_update(current_penalties);
 
     bool has_rescaled = false;
-    if (m_rescaling.first) {
+    if (m_rescaling_threshold > 0) {
         has_rescaled = rescale_penalty_parameters(current_penalties);
     }
 
-    for (const auto& [ctr, var, violation, penalty] : current_penalties) {
+    for (const auto& [var, violation, penalty] : current_penalties) {
         set_penalty_in_all_sub_problems(var, penalty);
     }
 
     return has_rescaled;
 }
 
-idol::Var idol::ADM::Formulation::get_or_create_l1_var(const idol::Ctr &t_ctr) {
-
-    auto it = std::lower_bound(m_l1_vars.begin(), m_l1_vars.end(), t_ctr, [](const auto& t_lhs, const auto& t_rhs) {
-        return t_lhs.first.id() < t_rhs.id();
-    });
-
-    if (it != m_l1_vars.end() && it->first.id() == t_ctr.id()) {
-        return it->second;
-    }
-
-    auto& env = m_sub_problems.front().env();
-    Var var (env, 0, Inf, Continuous, 0., LinExpr<Ctr>(), "l1_norm_" + t_ctr.name());
-    m_l1_vars.emplace_hint(it, t_ctr, var);
-
-    return var;
-}
-
 void idol::ADM::Formulation::set_penalty_in_all_sub_problems(const Var &t_var, double t_value) {
 
-    for (auto& model : m_sub_problems) {
-        if (model.has(t_var)) {
-            model.set_var_obj(t_var, t_value);
+    for (auto& sub_problem : m_sub_problems) {
+        if (sub_problem.model.has(t_var)) {
+            sub_problem.model.set_var_obj(t_var, t_value);
         }
     }
 
 }
 
-void idol::ADM::Formulation::initialize_penalty_parameters(double t_value) {
+void idol::ADM::Formulation::initialize_penalty_parameters(bool t_use_inverse_penalties) {
 
     const unsigned int n_sub_problems = m_sub_problems.size();
 
-    for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+    for (auto& sub_problem : m_sub_problems) {
 
-        for (const auto& var : m_l1_vars_in_sub_problem[i]) {
-            m_sub_problems[i].set_var_obj(var, t_value);
+        for (const auto& var : sub_problem.l1_epigraph_vars) {
+            const double value = t_use_inverse_penalties ? 1. / var.get(*m_initial_penalty_parameters) : var.get(*m_initial_penalty_parameters);
+            sub_problem.model.set_var_obj(var, value);
         }
 
-    }
-
-
-}
-
-void idol::ADM::Formulation::update_penalty_parameters_independently(const std::vector<PrimalPoint> &t_primals,
-                                                                     idol::PenaltyUpdate &t_penalty_update) {
-
-    for (unsigned int i = 0, n_sub_problems = m_sub_problems.size() ; i < n_sub_problems ; ++i) {
-
-        auto& model = m_sub_problems[i];
-
-        for (const auto& var : m_l1_vars_in_sub_problem[i]) {
-
-            const double current_penalty = model.get_var_obj(var);
-
-            if (t_primals[i].get(var) > 1e-4) {
-                model.set_var_obj(var, t_penalty_update(current_penalty));
-            }
-
-        }
     }
 
 }
@@ -445,7 +271,7 @@ bool idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty
         max = std::max(max, penalty.penalty);
     }
 
-    if (max < m_rescaling.second) {
+    if (max < m_rescaling_threshold) {
         return false;
     }
 
@@ -468,4 +294,231 @@ bool idol::ADM::Formulation::rescale_penalty_parameters(std::list<CurrentPenalty
 
 unsigned int idol::ADM::Formulation::sub_problem_id(const idol::Var &t_var) const {
     return t_var.get(m_decomposition);
+}
+
+void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::vector<PrimalPoint> &t_primals) {
+
+    auto& sub_problem = m_sub_problems[t_sub_problem_id];
+
+    for (const auto& rhs_fixation : sub_problem.rhs_fixations) {
+        sub_problem.model.set_ctr_rhs(rhs_fixation.ctr, evaluate(rhs_fixation.rhs_pattern, t_primals));
+    }
+
+    for (const auto& row_fixation : sub_problem.row_fixations) {
+
+        if (std::holds_alternative<QCtr>(row_fixation.ctr)) {
+            throw Exception("Updating expression of quadratic constraints is not supported.");
+        }
+
+        auto ctr = std::get<Ctr>(row_fixation.ctr);
+        auto eval = evaluate(row_fixation.row, t_primals);
+        sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
+        sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
+
+    }
+
+    std::cerr << "The objective function is systematically updated" << std::endl;
+
+    std::list<std::pair<Var, double>> penalties;
+    for (const auto& var : sub_problem.l1_epigraph_vars) {
+        penalties.emplace_back(var, sub_problem.model.get_var_obj(var));
+    }
+    sub_problem.model.set_obj_expr(evaluate(sub_problem.obj_fixation, t_primals));
+    for (const auto& [var, penalty] : penalties) {
+        sub_problem.model.set_var_obj(var, penalty);
+    }
+
+}
+
+idol::ADM::Formulation::SubProblem &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) {
+    return m_sub_problems[t_var.get(m_decomposition)];
+}
+
+const idol::ADM::Formulation::SubProblem &idol::ADM::Formulation::sub_problem(const idol::Var &t_var) const {
+    return m_sub_problems[t_var.get(m_decomposition)];
+}
+
+void idol::ADM::Formulation::dispatch_qctrs(const idol::Model &t_src_model) {
+    for (const auto& ctr : t_src_model.qctrs()) {
+        for (unsigned int i = 0 ; i < m_sub_problems.size() ; ++i) {
+            dispatch_qctr(t_src_model, ctr, i);
+        }
+    }
+}
+
+void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
+                                           const idol::QCtr &t_ctr,
+                                           unsigned int t_sub_problem_id) {
+
+    const auto& expr = t_src_model.get_qctr_expr(t_ctr);
+    const auto type = t_src_model.get_qctr_type(t_ctr);
+
+    // Linear part
+    auto [lhs, rhs] = dispatch(expr.affine().linear(), t_sub_problem_id);
+    rhs.constant() -= expr.affine().constant();
+
+    if (m_initial_penalty_parameters && t_ctr.get(*m_initial_penalty_parameters) > 1e-4) {
+        lhs += add_l1_vars(t_ctr, type, t_sub_problem_id);
+    }
+
+    QuadExpr<Var> rhs_quad(std::move(rhs));
+
+    std::optional<QuadExpr<Var, QuadExpr<Var>>> full_row;
+
+    // Quadratic part
+    for (const auto& [pair, coeff] : expr) {
+
+        const auto first_is_in_sub_problem = pair.first.get(m_decomposition) == t_sub_problem_id || pair.first.get(m_decomposition) == -1;
+        const auto second_is_in_sub_problem = pair.second.get(m_decomposition) == t_sub_problem_id || pair.second.get(m_decomposition) == -1;
+
+        if (!full_row) {
+
+            if (!first_is_in_sub_problem && !second_is_in_sub_problem) { // here, we are still on RHS fixation
+                rhs_quad -= coeff * pair.first * pair.second;
+                continue;
+            }
+
+            // here, we have to switch to LHS fixation, hence, we put everything in the LHS
+            // copy the lhs
+            full_row = std::make_optional<QuadExpr<Var, QuadExpr<Var>>>();
+            for (const auto& [var_, coeff_] : lhs) {
+                full_row->affine().linear().set(var_, coeff_);
+            }
+            // copy the rhs
+            full_row->affine().constant() -= rhs_quad.affine().constant();
+            for (const auto& [var_, coeff_] : rhs_quad.affine().linear()) {
+                full_row->affine().constant() += -coeff_ * var_;
+            }
+            for (const auto& [pair_, coeff_] : rhs_quad) {
+                full_row->affine().constant() += -coeff_ * pair_.first * pair_.second;
+            }
+
+        }
+
+        if (first_is_in_sub_problem && second_is_in_sub_problem) {
+            full_row->set({pair.first, pair.second}, coeff);
+            continue;
+        }
+
+        if (first_is_in_sub_problem) {
+            auto current_coeff = full_row->affine().linear().get(pair.first);
+            full_row->affine().linear().set(pair.first, std::move(current_coeff) + coeff * pair.second);
+            continue;
+        }
+
+        if (second_is_in_sub_problem) {
+            auto current_coeff = full_row->affine().linear().get(pair.second);
+            full_row->affine().linear().set(pair.second, std::move(current_coeff) + coeff * pair.first);
+            continue;
+        }
+
+        full_row->affine().constant() += coeff * pair.first * pair.second;
+
+    }
+
+    auto& sub_problem = m_sub_problems[t_sub_problem_id];
+
+    if (!full_row) {
+
+        // here, we are still on RHS fixation
+
+        if (rhs_quad.empty_all()) {
+            sub_problem.model.add_ctr(TempCtr(LinExpr(lhs), type, rhs_quad.affine().constant()), t_ctr.name());
+        } else {
+            const auto c = sub_problem.model.add_ctr(TempCtr(std::move(lhs), type, 0), t_ctr.name());
+            sub_problem.rhs_fixations.emplace_back(c, std::move(rhs_quad));
+        }
+
+        return;
+    }
+
+    // here, we are on LHS fixation
+
+    if (full_row->has_quadratic()) {
+        // we have to add a quadratic constraint here
+        throw Exception("Quadratic constraints in fixed problems are not implemented");
+    }
+
+    const auto c = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
+    sub_problem.row_fixations.emplace_back(c, std::move(*full_row));
+
+}
+double idol::ADM::Formulation::evaluate(const QuadExpr<Var>& t_expr, const std::vector<Point<Var>>& t_primals) {
+    double result = t_expr.affine().constant();
+    for (const auto& [var, coeff] : t_expr.affine().linear()) {
+        result += coeff * t_primals[var.get(m_decomposition)].get(var);
+    }
+    for (const auto& [pair, coeff] : t_expr) {
+        result += coeff * t_primals[pair.first.get(m_decomposition)].get(pair.first) * t_primals[pair.second.get(m_decomposition)].get(pair.second);
+    }
+    return result;
+}
+
+idol::QuadExpr<idol::Var>
+idol::ADM::Formulation::evaluate(const QuadExpr<Var, QuadExpr<Var>>& t_expr, const std::vector<Point<Var>>& t_primals) {
+    QuadExpr<Var> result;
+    result.affine().constant() = evaluate(t_expr.affine().constant(), t_primals);
+    for (const auto& [var, coeff] : t_expr.affine().linear()) {
+        result.affine().linear().set(var, evaluate(coeff, t_primals));
+    }
+    for (const auto& [pair, coeff] : t_expr) {
+        result.set(pair, evaluate(coeff, t_primals));
+    }
+    return result;
+}
+
+idol::LinExpr<idol::Var> idol::ADM::Formulation::add_l1_vars(unsigned int t_ctr_id, double t_initial_penalty_parameter, idol::CtrType t_type, unsigned int t_sub_problem_id) {
+
+    auto& model = m_sub_problems[t_sub_problem_id].model;
+
+    LinExpr<Var> result;
+
+    const auto get_or_create_l1_var = [&](double t_coeff)-> Var {
+
+        std::optional<Var> var;
+        if (const auto it = m_l1_epigraph_vars.find(t_ctr_id) ; it != m_l1_epigraph_vars.end()) {
+            var = it->second;
+        } else {
+            var = Var(model.env(), 0, Inf, Continuous, 0);
+            var->set(*m_initial_penalty_parameters, t_initial_penalty_parameter);
+            m_l1_epigraph_vars.emplace_hint(it, t_ctr_id, *var);
+            m_sub_problems[t_sub_problem_id].l1_epigraph_vars.emplace_back(*var);
+        }
+
+        model.add(*var);
+        m_l1_epigraph_vars.emplace(t_ctr_id, *var);
+        m_sub_problems[t_sub_problem_id].l1_epigraph_vars.emplace_back(*var);
+        result += t_coeff * *var;
+
+        return *var;
+    };
+
+    switch (t_type) {
+        case Equal: {
+            const auto s = get_or_create_l1_var(0);
+            const auto s_minus = model.add_var(0, Inf, Continuous, 0);
+            const auto s_plus = model.add_var(0, Inf, Continuous, 0);
+            model.add_ctr(s == s_minus - s_plus);
+            result += s_plus - s_minus;
+        } break;
+        case LessOrEqual: get_or_create_l1_var(-1); break;
+        case GreaterOrEqual: get_or_create_l1_var(1); break;
+        default: throw Exception("Unsupported constraint type");
+    }
+
+    return result;
+}
+
+idol::LinExpr<idol::Var>
+idol::ADM::Formulation::add_l1_vars(const idol::Ctr &t_ctr, idol::CtrType t_type, unsigned int t_sub_problem_id) {
+    return add_l1_vars(t_ctr.id(), t_ctr.get(*m_initial_penalty_parameters), t_type, t_sub_problem_id);
+}
+
+idol::LinExpr<idol::Var>
+idol::ADM::Formulation::add_l1_vars(const idol::QCtr &t_ctr, idol::CtrType t_type, unsigned int t_sub_problem_id) {
+    return add_l1_vars(t_ctr.id(), t_ctr.get(*m_initial_penalty_parameters), t_type, t_sub_problem_id);
+}
+
+idol::ADM::Formulation::SubProblem::SubProblem(idol::Env &t_env) : model(t_env) {
+
 }

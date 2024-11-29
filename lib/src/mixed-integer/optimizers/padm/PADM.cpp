@@ -13,10 +13,9 @@ idol::PADM::PADM(idol::Annotation<unsigned int> t_decomposition)
 }
 
 idol::PADM::PADM(idol::Annotation<unsigned int> t_decomposition,
-                 idol::Annotation<bool> t_penalized_constraints)
+                 idol::Annotation<double> t_penalized_constraints)
         : m_decomposition(std::move(t_decomposition)),
-          m_penalized_constraints(t_penalized_constraints)
-{
+          m_penalized_constraints(t_penalized_constraints) {
 
 }
 
@@ -34,19 +33,14 @@ idol::PADM &idol::PADM::with_default_sub_problem_spec(idol::ADM::SubProblem t_su
 
 idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
 
-    if (!m_penalized_constraints && (m_rescaling || m_penalty_update || m_independent_penalty_update)) {
+    if (!m_penalized_constraints && (m_rescaling || m_penalty_update)) {
         std::cout << "Warning: The penalized constraints have not been set. The rescaling and penalty update will be ignored." << std::endl;
-    }
-
-    if (m_rescaling && m_rescaling->first && m_independent_penalty_update && m_independent_penalty_update.value()) {
-        throw Exception("The rescaling and independent penalty update cannot be used together.");
     }
 
     ADM::Formulation formulation(t_model,
                                  m_decomposition,
                                  m_penalized_constraints,
-                                 m_independent_penalty_update && *m_independent_penalty_update,
-                                 m_rescaling ? *m_rescaling : std::make_pair(false, 0.));
+                                 m_rescaling ? *m_rescaling : -1);
 
     auto sub_problem_specs = create_sub_problem_specs(t_model, formulation);
 
@@ -61,7 +55,6 @@ idol::Optimizer *idol::PADM::operator()(const idol::Model &t_model) const {
                 std::move(sub_problem_specs),
                 penalty_update,
                 m_feasible_solution_status ? *m_feasible_solution_status : Feasible,
-                m_initial_penalty_parameter ? *m_initial_penalty_parameter : 1e-1,
                 m_plot_manager ? *m_plot_manager : nullptr
             );
 
@@ -97,13 +90,13 @@ idol::PADM::create_sub_problem_specs(const idol::Model &t_model,
     return result;
 }
 
-idol::PADM &idol::PADM::with_rescaling(bool t_rescaling, double t_threshold) {
+idol::PADM &idol::PADM::with_rescaling_threshold(double t_threshold) {
 
     if (m_rescaling) {
         throw Exception("The rescaling has already been set.");
     }
 
-    m_rescaling = std::make_pair(t_rescaling, t_threshold);
+    m_rescaling = t_threshold;
 
     return *this;
 }
@@ -127,20 +120,8 @@ idol::PADM::PADM(const idol::PADM &t_src)
       m_sub_problem_specs(t_src.m_sub_problem_specs),
       m_rescaling(t_src.m_rescaling),
       m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr),
-      m_independent_penalty_update(t_src.m_independent_penalty_update),
       m_feasible_solution_status(t_src.m_feasible_solution_status) {
 
-}
-
-idol::PADM &idol::PADM::with_independent_penalty_update(bool t_value) {
-
-    if (m_independent_penalty_update) {
-        throw Exception("The independent penalty update has already been set.");
-    }
-
-    m_independent_penalty_update = t_value;
-
-    return *this;
 }
 
 idol::PADM &idol::PADM::with_feasible_solution_status(idol::SolutionStatus t_status) {
@@ -150,17 +131,6 @@ idol::PADM &idol::PADM::with_feasible_solution_status(idol::SolutionStatus t_sta
     }
 
     m_feasible_solution_status = t_status;
-
-    return *this;
-}
-
-idol::PADM &idol::PADM::with_initial_penalty_parameter(double t_value) {
-
-    if (m_initial_penalty_parameter) {
-        throw Exception("The initial penalty parameter has already been set.");
-    }
-
-    m_initial_penalty_parameter = t_value;
 
     return *this;
 }
