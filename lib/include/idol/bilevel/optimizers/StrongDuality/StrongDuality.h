@@ -26,7 +26,17 @@ public:
 
     StrongDuality& with_single_level_optimizer(const OptimizerFactory& t_deterministic_optimizer);
 
+    StrongDuality& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
+
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description);
 };
+
+namespace idol {
+    static Bilevel::StrongDuality operator+(const Bilevel::StrongDuality& t_strong_duality, const OptimizerFactory& t_optimizer) {
+        Bilevel::StrongDuality result(t_strong_duality);
+        result += t_optimizer;
+        return result;
+    }
+}
 
 #endif //IDOL_BILEVEL_STRONG_DUALITY_H

@@ -12,6 +12,8 @@
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 
 int main(int t_argc, const char** t_argv) {
 
@@ -34,26 +36,8 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(c);
     description.set_lower_level_obj(-2 * x - y);
 
-    Reformulators::KKT reformulator(model, description);
-
-    Model single_level(env);
-    reformulator.add_coupling_variables(single_level);
-    reformulator.add_strong_duality_reformulation(single_level);
-    reformulator.add_coupling_constraints(single_level);
-    single_level.set_obj_expr(single_level.get_obj_expr());
-
-    std::cout << model << std::endl;
-    std::cout << single_level << std::endl;
-
-    single_level.use(Gurobi());
-    single_level.optimize();
-
-    std::cout << save_primal(single_level) << std::endl;
-
-    Annotation<unsigned int> decomposition(env, "sub_problem");
-    for (const auto& var : single_level.vars()) {
-        var.set(decomposition, var.id() == delta.id());
-    }
+    Annotation<unsigned int> decomposition(env, "sub_problem", 0);
+    delta.set(decomposition, 1);
 
     /*
      * All constraints will be penalized.
@@ -62,23 +46,29 @@ int main(int t_argc, const char** t_argv) {
      */
     Annotation<double> initial_penalties(env, "initial_penalties", 1e2);
 
-    Point<Var> initial_point;
+    const auto strong_duality = Bilevel::StrongDuality(description);
 
-    single_level.use(
-            PADM(decomposition, initial_penalties)
-                    .with_default_sub_problem_spec(
-                            ADM::SubProblem()
-                                            .with_optimizer(Gurobi())
-                                            .with_initial_point(initial_point)
-                    )
-                    .with_penalty_update(PenaltyUpdates::Multiplicative(2))
-                    .with_rescaling_threshold(1e4)
-                    .with_logs(true)
-    );
+    const auto padm = PADM(decomposition, initial_penalties)
+            .with_default_sub_problem_spec(
+                    ADM::SubProblem()
+                            .with_optimizer(Gurobi().with_external_param(GRB_IntParam_NonConvex, 0))
+            )
+            .with_penalty_update(PenaltyUpdates::Multiplicative(2))
+            .with_rescaling_threshold(1e4)
+            .with_logs(true);
 
-    single_level.optimize();
+    model.use(strong_duality + padm);
 
-    std::cout << save_primal(single_level) << std::endl;
+    model.optimize();
+
+    std::cout << save_primal(model) << std::endl;
+
+    /**
+     * Alternatively, you can use:
+     * const Model strong_duality = Bilevel::StrongDuality::make_model(description);
+     * strong_duality.use(padm);
+     * strong_duality.optimize();
+     */
 
     return 0;
 }

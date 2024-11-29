@@ -38,7 +38,7 @@ idol::Bilevel::StrongDuality::with_single_level_optimizer(const idol::OptimizerF
 idol::Bilevel::StrongDuality::StrongDuality(const idol::Bilevel::StrongDuality &t_src)
         : OptimizerFactoryWithDefaultParameters<StrongDuality>(t_src),
           m_description(t_src.m_description),
-          m_single_level_optimizer(t_src.m_single_level_optimizer->clone()) {
+          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr) {
 
 }
 
@@ -47,10 +47,6 @@ idol::Bilevel::StrongDuality::make_model(const idol::Model &t_model, const idol:
 
     if (t_model.get_obj_sense() != Minimize) {
         throw Exception("Only minimization problems are supported.");
-    }
-
-    if (t_model.qctrs().size() > 0) {
-        throw Exception("Quadratic constraints are not supported.");
     }
 
     auto& env = t_model.env();
