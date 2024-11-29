@@ -146,7 +146,7 @@ public:
 
     [[nodiscard]] double get_var_primal(const Var &t_var) const override;
 
-    double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
 
     [[nodiscard]] double get_var_ray(const Var &t_var) const override;
 
@@ -213,7 +213,10 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::detect_integer_objective() {
 
 template<class NodeInfoT>
 double idol::Optimizers::BranchAndBound<NodeInfoT>::get_var_reduced_cost(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_reduced_cost");
+    if (m_n_solved_nodes > 1) {
+        throw Exception("Reduced cost not available.");
+    }
+    return m_relaxations.front()->get_var_reduced_cost(t_var);
 }
 
 template<class NodeInfoT>
@@ -250,7 +253,7 @@ unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_solution_index() c
 
 template<class NodeInfoT>
 unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_n_solutions() const {
-    return !!m_incumbent;
+    return m_incumbent;
 }
 
 template<class NodeInfoT>
