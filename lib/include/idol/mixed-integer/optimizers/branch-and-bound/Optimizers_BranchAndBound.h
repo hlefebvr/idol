@@ -253,7 +253,7 @@ unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_solution_index() c
 
 template<class NodeInfoT>
 unsigned int idol::Optimizers::BranchAndBound<NodeInfoT>::get_n_solutions() const {
-    return m_incumbent;
+    return m_incumbent.has_value();
 }
 
 template<class NodeInfoT>
