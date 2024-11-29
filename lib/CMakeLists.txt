@@ -237,6 +237,12 @@ add_library(idol STATIC
         include/idol/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.h
         src/robust/optimizers/affine-decision-rule/AffineDecisionRule.cpp
         src/robust/optimizers/affine-decision-rule/Optimizers_AffineDecisionRule.cpp
+        include/idol/bilevel/optimizers/KKT/KKT.h
+        include/idol/bilevel/optimizers/KKT/Optimizers_KKT.h
+        src/bilevel/optimizers/KKT/KKT.cpp
+        src/bilevel/optimizers/StrongDuality/StrongDuality.cpp
+        src/bilevel/optimizers/KKT/Optimizers_KKT.cpp
+        src/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.cpp
 )
 
 find_package(OpenMP REQUIRED)

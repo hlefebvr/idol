@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/modeling/models/KKT.h"
 #include "idol/mixed-integer/optimizers/wrappers/GLPK/GLPK.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
 
 using namespace idol;
 
@@ -56,16 +57,17 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c3);
     description.make_lower_level(follower_c4);
     
-    Reformulators::KKT reformulator(high_point_relaxation, description);
-
-    Model single_level(env);
-    reformulator.add_coupling_variables(single_level);
-    reformulator.add_kkt_reformulation(single_level);
-    reformulator.add_coupling_constraints(single_level);
-
+    auto single_level = Bilevel::KKT::make_model(high_point_relaxation, description);
     single_level.use(Gurobi());
-
     single_level.optimize();
+
+    /**
+     * Alternatively, you could also do
+     *  high_point_relaxation.use(Bilevel::KKT().with_single_level_optimizer(Gurobi()));
+     *  high_point_relaxation.optimize();
+     * Or even,
+     *  high_point_relaxation.use(Bilevel::KKT() + Gurobi());
+     */
 
     single_level.write("kkt.lp");
 

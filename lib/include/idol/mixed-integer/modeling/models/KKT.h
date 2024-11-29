@@ -104,6 +104,8 @@ public:
      * @param t_destination
      */
     void add_kkt_reformulation(idol::Model &t_destination);
+
+    void add_kkt_reformulation(idol::Model &t_destination, const Annotation<double>& t_big_M);
 };
 
 #endif //IDOL_KKT_H

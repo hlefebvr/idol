@@ -548,13 +548,23 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
     add_dual_constraints(t_destination);
 
     for (const auto& ctr : m_primal.ctrs())  {
+
+
         if (!m_primal_constraint_indicator(ctr)) {
             continue;
         }
+
+        const auto type = m_primal.get_ctr_type(ctr);
+
+        if (type == Equal) {
+            continue;
+        }
+
         const auto index = m_primal.get_ctr_index(ctr);
         const auto& dual_var = *m_dual_variables_for_constraints[index];
         const auto& row = m_primal.get_ctr_row(ctr);
         const auto rhs = m_primal.get_ctr_rhs(ctr);
+
         t_destination.add_qctr((row - rhs) * dual_var, Equal);
     }
 
@@ -574,6 +584,70 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
         if (!is_pos_inf(ub)) {
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
             t_destination.add_qctr((ub - var) * dual_var, Equal);
+        }
+
+    }
+
+}
+
+void
+idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination, const idol::Annotation<double> &t_big_M) {
+
+    add_primal_variables(t_destination);
+    add_dual_variables(t_destination);
+
+    add_primal_constraints(t_destination);
+    add_dual_constraints(t_destination);
+
+    for (const auto& ctr : m_primal.ctrs())  {
+
+        if (!m_primal_constraint_indicator(ctr)) {
+            continue;
+        }
+
+        const auto type = m_primal.get_ctr_type(ctr);
+
+        if (type == Equal) {
+            continue;
+        }
+
+        const auto index = m_primal.get_ctr_index(ctr);
+        const auto& dual_var = *m_dual_variables_for_constraints[index];
+        const auto& row = m_primal.get_ctr_row(ctr);
+        const auto rhs = m_primal.get_ctr_rhs(ctr);
+
+        const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_" + ctr.name());
+
+        t_destination.add_ctr(dual_var <= ctr.get(t_big_M) * z);
+
+        if (type == LessOrEqual) {
+            t_destination.add_ctr(row - rhs >= -ctr.get(t_big_M) * (1 - z));
+        } else {
+            t_destination.add_ctr(row - rhs <= ctr.get(t_big_M) * (1 - z));
+        }
+
+    }
+
+    for (const auto& var : m_primal.vars()) {
+        if (!m_primal_variable_indicator(var)) {
+            continue;
+        }
+        const auto index = m_primal.get_var_index(var);
+        const double lb = m_primal.get_var_lb(var);
+        const double ub = m_primal.get_var_ub(var);
+
+        if (!is_neg_inf(lb)) {
+            const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
+            const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_lb_" + var.name());
+            t_destination.add_ctr(dual_var <= var.get(t_big_M) * z);
+            t_destination.add_ctr(var - lb >= -var.get(t_big_M) * (1 - z));
+        }
+
+        if (!is_pos_inf(ub)) {
+            const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
+            const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_ub_" + var.name());
+            t_destination.add_ctr(dual_var <= var.get(t_big_M) * z);
+            t_destination.add_ctr(ub - var >= -var.get(t_big_M) * (1 - z));
         }
 
     }
