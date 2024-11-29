@@ -795,7 +795,7 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::prune_nodes_by_bound(BranchAnd
         const double raw_lower_bound = node.info().objective_value();
         const double lower_bound = m_has_integer_objective && !is_integer(raw_lower_bound, Tolerance::Integer) ? std::ceil(raw_lower_bound) : raw_lower_bound;
 
-        if (lower_bound >= upper_bound) { // TODO use tolerance in terms of gap
+        if (lower_bound >= upper_bound - get_tol_mip_absolute_gap()) {
             it = t_active_nodes.erase(it);
             end = t_active_nodes.by_objective_value().end();
         } else {
