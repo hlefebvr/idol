@@ -120,7 +120,8 @@ idol::PADM::PADM(const idol::PADM &t_src)
       m_sub_problem_specs(t_src.m_sub_problem_specs),
       m_rescaling(t_src.m_rescaling),
       m_penalty_update(t_src.m_penalty_update ? t_src.m_penalty_update->clone() : nullptr),
-      m_feasible_solution_status(t_src.m_feasible_solution_status) {
+      m_feasible_solution_status(t_src.m_feasible_solution_status),
+      m_plot_manager(t_src.m_plot_manager) {
 
 }
 
