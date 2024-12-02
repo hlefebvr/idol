@@ -153,8 +153,10 @@ class idol::Optimizers::PADM::IterationPlot {
 
     TCanvas* m_canvas = nullptr;
     std::vector<TPad*> m_pads;
-    std::vector<TGraph*> m_graphs;
-    std::vector<std::list<TLine*>> m_lines;
+    std::vector<TGraph*> m_objective_graphs;
+    std::vector<std::list<TLine*>> m_objective_lines;
+    std::vector<TGraph*> m_infeasibility_graphs;
+    std::vector<std::list<TLine*>> m_infeasibility_lines;
     unsigned int m_last_outer_iteration = 0;
 
     void initialize(unsigned int t_n_sub_problems);
