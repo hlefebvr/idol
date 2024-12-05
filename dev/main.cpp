@@ -80,6 +80,8 @@ int main(int t_argc, const char** t_argv) {
                        )
     );
 
+    model.dump(std::cout);
+
     model.use(Gurobi());
     model.optimize();
 

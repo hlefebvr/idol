@@ -55,7 +55,7 @@ private:
     std::vector<Ctr> m_constraints;
     std::vector<QCtr> m_qconstraints;
 
-    Storage m_storage = Both;
+    Storage m_storage;
     mutable bool m_has_minor_representation = false;
 
     std::unique_ptr<Optimizer> m_optimizer;
@@ -77,7 +77,7 @@ private:
     bool column_storage_matters() const;
     bool row_storage_matters() const;
 public:
-    explicit Model(Env& t_env, Storage t_storage = RowOriented);
+    explicit Model(Env& t_env, Storage t_storage = Both);
 
     Model(Model&&) noexcept;
 

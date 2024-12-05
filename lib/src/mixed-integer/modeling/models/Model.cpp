@@ -856,6 +856,8 @@ void idol::Model::throw_if_unknown_object(const idol::QuadExpr<T> &t_expr) {
 
 void idol::Model::dump(std::ostream &t_os) const {
 
+    std::cout << "Storage: " << m_storage << '\n';
+
     t_os << "Objective Function:\n";
     t_os << "-------------------\n";
 
