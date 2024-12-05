@@ -658,25 +658,49 @@ idol::Optimizers::PADM::IterationPlot::IterationPlot(idol::Plots::Manager &t_man
 void idol::Optimizers::PADM::IterationPlot::initialize(unsigned int t_n_sub_problems) {
 #ifdef IDOL_USE_ROOT
     // Create the canvas
-    m_canvas = m_manager.create<TCanvas>("canvas", "Sub-problems Objective Progress", 800, 600);
+    m_canvas = m_manager.create<TCanvas>("canvas", "Sub-problems Objective and Infeasibility Progress", 1200, 600);
 
-    // Create the pads for each sub-problem and TGraphs
-    m_pads.resize(t_n_sub_problems);
-    m_graphs.resize(t_n_sub_problems);
-    m_lines.resize(t_n_sub_problems);
+    // Create the pads for each sub-problem
+    m_pads.resize(t_n_sub_problems * 2);
+
+    m_objective_graphs.resize(t_n_sub_problems);
+    m_objective_lines.resize(t_n_sub_problems);
+
+    m_infeasibility_graphs.resize(t_n_sub_problems);
+    m_infeasibility_lines.resize(t_n_sub_problems);
 
     for (unsigned int i = 0; i < t_n_sub_problems; ++i) {
-        // Divide the canvas into vertical pads for each graph
-        m_pads[i] = m_manager.create<TPad>(Form("pad%d", i), Form("Sub-problem %d", i), 0.0, 1.0 - (i + 1) * (1.0 / t_n_sub_problems), 1.0, 1.0 - i * (1.0 / t_n_sub_problems));
-        m_pads[i]->Draw();
-        m_pads[i]->cd();
+        // Divide the canvas into two vertical panels (objectives on the left, infeasibilities on the right)
+        m_pads[2 * i] = m_manager.create<TPad>(
+                Form("pad_obj%d", i),
+                Form("Objective Sub-problem %d", i),
+                0.0, 1.0 - (i + 1) * (1.0 / t_n_sub_problems),
+                0.5, 1.0 - i * (1.0 / t_n_sub_problems));
+        m_pads[2 * i]->Draw();
+        m_pads[2 * i]->cd();
 
-        // Create a TGraph for each sub-problem
-        m_graphs[i] = m_manager.create<TGraph>();
-        m_graphs[i]->SetTitle(Form("Sub-problem %d; Inner Loop Iteration; Objective Value", i));
+        // Create a TGraph for each sub-problem's objectives
+        m_objective_graphs[i] = m_manager.create<TGraph>();
+        m_objective_graphs[i]->SetTitle(Form("Objective Value of Sub-problem %d; Inner Loop Iteration; Objective Value", i));
+        m_objective_graphs[i]->Draw("APL");
 
-        m_graphs[i]->Draw("APL");
+        // Return to canvas
+        m_canvas->cd();
 
+        m_pads[2 * i + 1] = m_manager.create<TPad>(
+                Form("pad_inf%d", i),
+                Form("Infeasibility Sub-problem %d", i),
+                0.5, 1.0 - (i + 1) * (1.0 / t_n_sub_problems),
+                1.0, 1.0 - i * (1.0 / t_n_sub_problems));
+        m_pads[2 * i + 1]->Draw();
+        m_pads[2 * i + 1]->cd();
+
+        // Create a TGraph for each sub-problem's infeasibilities
+        m_infeasibility_graphs[i] = m_manager.create<TGraph>();
+        m_infeasibility_graphs[i]->SetTitle(Form("Infeasibility of Sub-problem %d; Inner Loop Iteration; Infeasibility Value", i));
+        m_infeasibility_graphs[i]->Draw("APL");
+
+        // Return to canvas
         m_canvas->cd();
     }
 #else
@@ -699,28 +723,49 @@ idol::Optimizers::PADM::IterationPlot::update(unsigned int t_outer_loop_iteratio
     const bool outer_loop_changed = m_last_outer_iteration != t_outer_loop_iteration;
 
     for (unsigned int i = 0; i < n_sub_problems; ++i) {
-        m_graphs[i]->SetPoint(m_graphs[i]->GetN(), t_inner_loop_iteration, t_objective_values[i]);
+        // Update objective graphs
+        m_objective_graphs[i]->SetPoint(m_objective_graphs[i]->GetN(), t_inner_loop_iteration, t_objective_values[i]);
 
-        m_pads[i]->cd();
-        m_graphs[i]->Draw("AL");
+        m_pads[2 * i]->cd();
+        m_objective_graphs[i]->Draw("ALP");
 
         if (outer_loop_changed) {
             auto* vertical_line = m_manager.create<TLine>(t_inner_loop_iteration,
-                                                          m_graphs[i]->GetYaxis()->GetXmin(),
+                                                          m_objective_graphs[i]->GetYaxis()->GetXmin(),
                                                           t_inner_loop_iteration,
-                                                          m_graphs[i]->GetYaxis()->GetXmax());
+                                                          m_objective_graphs[i]->GetYaxis()->GetXmax());
             vertical_line->SetLineColor(kRed);
             vertical_line->SetLineStyle(2);  // Dashed line
-            m_lines[i].emplace_back(vertical_line);
-            m_last_outer_iteration = t_outer_loop_iteration;
+            m_objective_lines[i].emplace_back(vertical_line);
         }
 
-        for (auto* line : m_lines[i]) {
-            line->SetY1(m_graphs[i]->GetYaxis()->GetXmin());
-            line->SetY2(m_graphs[i]->GetYaxis()->GetXmax());
+        for (auto* line : m_objective_lines[i]) {
+            line->SetY1(m_objective_graphs[i]->GetYaxis()->GetXmin());
+            line->SetY2(m_objective_graphs[i]->GetYaxis()->GetXmax());
             line->Draw("SAME");
         }
 
+        // Update infeasibility graphs
+        m_infeasibility_graphs[i]->SetPoint(m_infeasibility_graphs[i]->GetN(), t_inner_loop_iteration, t_infeasibilities[i]);
+
+        m_pads[2 * i + 1]->cd();
+        m_infeasibility_graphs[i]->Draw("ALP");
+
+        if (outer_loop_changed) {
+            auto* vertical_line = m_manager.create<TLine>(t_inner_loop_iteration,
+                                                          m_infeasibility_graphs[i]->GetYaxis()->GetXmin(),
+                                                          t_inner_loop_iteration,
+                                                          m_infeasibility_graphs[i]->GetYaxis()->GetXmax());
+            vertical_line->SetLineColor(kRed);
+            vertical_line->SetLineStyle(2);  // Dashed line
+            m_infeasibility_lines[i].emplace_back(vertical_line);
+        }
+
+        for (auto* line : m_infeasibility_lines[i]) {
+            line->SetY1(m_infeasibility_graphs[i]->GetYaxis()->GetXmin());
+            line->SetY2(m_infeasibility_graphs[i]->GetYaxis()->GetXmax());
+            line->Draw("SAME");
+        }
     }
 
     m_canvas->cd();
