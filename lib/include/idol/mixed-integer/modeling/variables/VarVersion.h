@@ -50,7 +50,7 @@ public:
 
     void set_column(LinExpr<Ctr>&& t_column) { m_column = std::make_unique<LinExpr<Ctr>>(std::move(t_column)); }
 
-    bool has_column() const { return m_column != nullptr; }
+    bool has_column() const { return m_column.operator bool(); }
 
     void set_column(const LinExpr<Ctr>& t_column) { m_column = std::make_unique<LinExpr<Ctr>>(t_column); }
 
