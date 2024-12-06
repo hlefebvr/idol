@@ -338,13 +338,13 @@ void idol::Reformulators::KKT::create_dual_constraints() {
                                                     std::move(dual_constraint_expression.affine().linear()),
                                                     Equal,
                                                     -dual_constraint_expression.affine().constant()),
-                                            "dual_constraint_" + var.name());
+                                            "dual_" + var.name());
         } else {
             m_dual_constraints[index] = QCtr(env,
                                              TempQCtr(
                                                      std::move(dual_constraint_expression),
                                                      Equal),
-                                             "dual_constraint_" + var.name());
+                                             "dual_" + var.name());
         }
 
     }
@@ -533,9 +533,9 @@ void idol::Reformulators::KKT::add_strong_duality_reformulation(idol::Model &t_d
     auto duality_gap = m_primal_objective - m_dual_objective;
 
     if (duality_gap.has_quadratic()) {
-        t_destination.add_qctr(std::move(duality_gap), LessOrEqual);
+        t_destination.add_qctr(std::move(duality_gap), LessOrEqual, "strong_duality");
     } else {
-        t_destination.add_ctr(std::move(duality_gap.affine()) <= 0);
+        t_destination.add_ctr(std::move(duality_gap.affine()) <= 0, "strong_duality");
     }
 }
 
