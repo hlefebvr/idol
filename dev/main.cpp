@@ -40,7 +40,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Uncertainty set
     Model uncertainty_set(env);
-    const double Gamma = 0;
+    const double Gamma = 2;
     const auto xi = uncertainty_set.add_vars(Dim<1>(n_customers), 0, 1, Continuous, 0., "xi");
     uncertainty_set.add_ctr(idol_Sum(i, Range(n_customers), xi[i]) <= Gamma);
 
@@ -56,7 +56,7 @@ int main(int t_argc, const char** t_argv) {
         const auto c = model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
 
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            description.set_uncertain_rhs(c, -xi[j]);
+            description.set_uncertain_rhs(c, -instance.capacity(i) * xi[j]);
         }
 
     }
@@ -68,6 +68,7 @@ int main(int t_argc, const char** t_argv) {
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
             model.add_ctr(y[i][j] <= x[i]);
+            description.set_stage(y[i][j], 1);
         }
     }
 

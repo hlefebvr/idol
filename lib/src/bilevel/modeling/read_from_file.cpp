@@ -95,7 +95,7 @@ void AuxParser::read_aux_file(const std::string &t_path_to_aux, const std::funct
     if (read_tag(file, "@MPS", false) || read_tag(file, "@LP", false)) {
         read_file(file, t_path_to_aux, t_read_model_from_file);
     } else {
-        throw Exception("Parsing error: could not parse LP or MPS tags.");
+        throw Exception("Parsing error: could not parse_variables LP or MPS tags.");
     }
 
     file.close();
@@ -190,7 +190,7 @@ bool AuxParser::read_tag(std::ifstream &t_file, const std::string &t_tag, bool t
         return false;
     }
 
-    throw Exception("Parsing error, could not parse tag: " + t_tag);
+    throw Exception("Parsing error, could not parse_variables tag: " + t_tag);
 
 }
 

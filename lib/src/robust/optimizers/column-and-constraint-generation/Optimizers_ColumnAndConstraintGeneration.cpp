@@ -69,7 +69,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::remove(const idol:
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update() {
-    throw Exception("Not implemented update");
+
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::write(const std::string &t_name) {
@@ -78,6 +78,10 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::write(const std::s
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimize() {
     Optimizer::hook_before_optimize();
+
+    m_formulation = std::make_unique<CCG::Formulation>(parent(), m_description);
+    m_formulation->master().use(*m_master_optimizer);
+
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {

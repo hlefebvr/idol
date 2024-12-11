@@ -22,11 +22,11 @@ idol::Problems::FLP::Instance idol::Problems::FLP::read_instance_2021_Cheng_et_a
     auto data = parse_delimited(t_filename, '\t');
 
     if (data[0][0] != "FacNum") {
-        throw Exception("Could not parse instance, missing header FacNum.");
+        throw Exception("Could not parse_variables instance, missing header FacNum.");
     }
 
     if (data[0][2] != "CustNum") {
-        throw Exception("Could not parse instance, missing header CustNum.");
+        throw Exception("Could not parse_variables instance, missing header CustNum.");
     }
 
     unsigned int n_facilities = std::stoul(data[0][1]);
