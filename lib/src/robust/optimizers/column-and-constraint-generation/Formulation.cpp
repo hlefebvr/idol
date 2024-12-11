@@ -66,11 +66,17 @@ void idol::CCG::Formulation::parse_constraints() {
 
         const auto& row = m_parent.get_ctr_row(ctr);
 
+        const bool has_first_stage = std::any_of(row.begin(), row.end(), [this](const auto& term) {
+            return m_description.stage(term.first) == 0;
+        });
         const bool has_second_stage = std::any_of(row.begin(), row.end(), [this](const auto& term) {
             return m_description.stage(term.first) > 0;
         });
 
         if (has_second_stage || !m_description.uncertain_mat_coeffs(ctr).empty()) {
+            if (has_first_stage) {
+                m_linking_constraints.emplace_back(ctr);
+            }
             m_second_stage_constraints.emplace_back(ctr);
             continue;
         }

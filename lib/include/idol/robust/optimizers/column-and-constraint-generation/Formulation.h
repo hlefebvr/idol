@@ -19,6 +19,7 @@ class idol::CCG::Formulation {
     Model m_master;
     std::vector<Var> m_second_stage_variables;
     std::vector<Ctr> m_second_stage_constraints;
+    std::vector<Ctr> m_linking_constraints;
 
     unsigned int m_n_added_scenario = 0;
     std::optional<Var> m_second_stage_epigraph;
