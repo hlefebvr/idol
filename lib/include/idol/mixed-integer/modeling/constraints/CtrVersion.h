@@ -56,7 +56,7 @@ public:
 
     void set_row(LinExpr<Var>&& t_row) { m_lhs = std::make_unique<LinExpr<Var>>(std::move(t_row)); }
 
-    bool has_row() const { return m_lhs != nullptr; }
+    bool has_row() const { return m_lhs.operator bool(); }
 
     void set_row(const LinExpr<Var>& t_row) { m_lhs = std::make_unique<LinExpr<Var>>(t_row); }
 

@@ -380,10 +380,11 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
 
     auto& sub_problem = m_formulation.sub_problem(t_sub_problem_id);
 
+
+    //sub_problem.model.write("sub_problem_" + std::to_string(t_sub_problem_id) + "_" + std::to_string(m_outer_loop_iteration) + "_" + std::to_string(m_inner_loop_iterations) + ".lp");
+
     sub_problem.model.optimizer().set_param_time_limit(get_remaining_time());
     sub_problem.model.optimize();
-
-    //sub_problem.model.write("iter_" + std::to_string(m_outer_loop_iteration) + "_" + std::to_string(m_inner_loop_iterations) + ".sub_problem_" + std::to_string(t_sub_problem_id) + ".lp");
 
     const auto status = sub_problem.model.get_status();
 

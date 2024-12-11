@@ -10,6 +10,7 @@
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 #include <utility>
+#include <cassert>
 
 idol::ADM::Formulation::Formulation(const Model& t_src_model,
                                     Annotation<unsigned int> t_decomposition,
@@ -251,8 +252,6 @@ void idol::ADM::Formulation::set_penalty_in_all_sub_problems(const Var &t_var, d
 
 void idol::ADM::Formulation::initialize_penalty_parameters(bool t_use_inverse_penalties) {
 
-    const unsigned int n_sub_problems = m_sub_problems.size();
-
     for (auto& sub_problem : m_sub_problems) {
 
         for (const auto& var : sub_problem.l1_epigraph_vars) {
@@ -417,32 +416,41 @@ void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
     }
 
     auto& sub_problem = m_sub_problems[t_sub_problem_id];
+    std::optional<Ctr> new_linear_ctr;
 
     if (!full_row) {
 
         // here, we are still on RHS fixation
 
         if (rhs_quad.empty_all()) {
-            sub_problem.model.add_ctr(TempCtr(LinExpr(lhs), type, rhs_quad.affine().constant()), t_ctr.name());
+            new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr(lhs), type, rhs_quad.affine().constant()), t_ctr.name());
         } else {
-            const auto c = sub_problem.model.add_ctr(TempCtr(std::move(lhs), type, 0), t_ctr.name());
-            sub_problem.rhs_fixations.emplace_back(c, std::move(rhs_quad));
+            new_linear_ctr = sub_problem.model.add_ctr(TempCtr(std::move(lhs), type, 0), t_ctr.name());
+            sub_problem.rhs_fixations.emplace_back(*new_linear_ctr, std::move(rhs_quad));
         }
 
-        return;
+    } else {
+
+        // here, we are on LHS fixation
+
+        if (full_row->has_quadratic()) {
+            // we have to add a quadratic constraint here
+            throw Exception("Quadratic constraints in fixed problems are not implemented");
+        }
+
+        new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
+        sub_problem.row_fixations.emplace_back(*new_linear_ctr, std::move(*full_row));
+
     }
 
-    // here, we are on LHS fixation
+    assert(new_linear_ctr.has_value());
 
-    if (full_row->has_quadratic()) {
-        // we have to add a quadratic constraint here
-        throw Exception("Quadratic constraints in fixed problems are not implemented");
+    if (m_initial_penalty_parameters.has_value()) {
+        new_linear_ctr->set(*m_initial_penalty_parameters, t_ctr.get(*m_initial_penalty_parameters));
     }
-
-    const auto c = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
-    sub_problem.row_fixations.emplace_back(c, std::move(*full_row));
 
 }
+
 double idol::ADM::Formulation::evaluate(const QuadExpr<Var>& t_expr, const std::vector<Point<Var>>& t_primals) {
     double result = t_expr.affine().constant();
     for (const auto& [var, coeff] : t_expr.affine().linear()) {
@@ -479,7 +487,7 @@ idol::LinExpr<idol::Var> idol::ADM::Formulation::add_l1_vars(unsigned int t_ctr_
         if (const auto it = m_l1_epigraph_vars.find(t_ctr_id) ; it != m_l1_epigraph_vars.end()) {
             var = it->second;
         } else {
-            var = Var(model.env(), 0, Inf, Continuous, 0);
+            var = Var(model.env(), 0, Inf, Continuous, 0, "l1_epigraph_" + std::to_string(t_ctr_id));
             var->set(*m_initial_penalty_parameters, t_initial_penalty_parameter);
             m_l1_epigraph_vars.emplace_hint(it, t_ctr_id, *var);
             m_sub_problems[t_sub_problem_id].l1_epigraph_vars.emplace_back(*var);

@@ -1,6 +1,7 @@
 //
 // Created by henri on 29.11.24.
 //
+#include <cassert>
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
