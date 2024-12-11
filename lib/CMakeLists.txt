@@ -243,6 +243,12 @@ add_library(idol STATIC
         src/bilevel/optimizers/StrongDuality/StrongDuality.cpp
         src/bilevel/optimizers/KKT/Optimizers_KKT.cpp
         src/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h
+        src/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h
+        src/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
+        include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h
+        src/robust/optimizers/column-and-constraint-generation/Formulation.cpp
 )
 
 find_package(OpenMP REQUIRED)

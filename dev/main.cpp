@@ -25,6 +25,7 @@
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/robust/optimizers/deterministic/Deterministic.h"
 #include "idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h"
+#include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 
 using namespace idol;
 
@@ -80,14 +81,16 @@ int main(int t_argc, const char** t_argv) {
                        )
     );
 
-    model.dump(std::cout);
-
     model.use(Gurobi());
     model.optimize();
 
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
-    model.use(Robust::AffineDecisionRule(description).with_deterministic_optimizer(Gurobi()));
+    auto ccg = Robust::ColumnAndConstraintGeneration(description);
+
+    ccg.with_master_optimizer(Gurobi());
+
+    model.use(ccg);
     model.optimize();
 
     std::cout << "ADR Problem has value: " << model.get_best_obj() << std::endl;
