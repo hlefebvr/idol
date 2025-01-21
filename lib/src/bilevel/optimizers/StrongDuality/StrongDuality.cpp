@@ -58,7 +58,7 @@ idol::Bilevel::StrongDuality::make_model(const idol::Model &t_model, const idol:
     reformulator.add_coupling_variables(result);
     reformulator.add_strong_duality_reformulation(result);
     reformulator.add_coupling_constraints(result);
-    result.set_obj_expr(result.get_obj_expr());
+    result.set_obj_expr(t_model.get_obj_expr());
 
     return result;
 }
