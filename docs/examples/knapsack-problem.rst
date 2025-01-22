@@ -1,30 +1,40 @@
-Knapsack Problem (HiGHS)
-=========================
+Solving a knapsack problem with HiGHS
+=====================================
 
 Problem Definition
 ------------------
 
-We consider the Knapsack Problem (KP).
-Given a set of :math:`n` items, each of which having a weight and a profit, the goal is to
-select of subset of items such that the total weight does not exceed a given capacity and the total profit is maximized.
+Given a set of :math:`n` items, the goal is to select of subset of items to be put in a knapsack of limited capacity.
+Each item has a weight (the amount of space it takes in the knapsack) and a profit (the value of the item).
+The goal is to maximize the total profit of the items in the knapsack, while not exceeding the capacity.
 
-For each item :math:`j\in\{1,\dotsc,n\}`, we denote its weight by :math:`w_j` and its profit by :math:`p_j`.
-The maximum capacity of the knapsack is :math:`C`.
+For each item :math:`j\in\{1,\dotsc,n\}`, we let :math:`w_j` denote its weight and :math:`p_j` be its profit.
+The capacity of the knapsack is noted :math:`C`.
 
-We model the KP with the following binary linear program:
+The knapsack problem can be formulated as the following binary linear problem:
 
 .. math::
 
     \begin{align*}
-        \max_{x} \ & \sum_{j=1}^n p_j x_j \\
-        \text{s.t.} & \sum_{j=1}^n w_j x_j \le C \\
-                    & x_j \in \{0,1\} && j=1,\dotsc,n.
+        \max_{x} \quad & \sum_{j=1}^n p_j x_j \\
+        \text{s.t.} \quad & \sum_{j=1}^n w_j x_j \le C, \\
+                    & x \in \{0,1\}^n.
     \end{align*}
 
-Implementation with idol
-------------------------
+Instance
+--------
 
-In this example, we show how to model the Knapsack Problem with idol and how to solve it using the HiGHS solver.
+We will use an instance stored in a file called `knapsack.data.txt`. This file reads
 
-.. literalinclude:: ../../examples/mixed-integer-optimization/knapsack.example.cpp
+.. literalinclude:: ../../examples/mixed-integer/knapsack.data.txt
+
+The first line contains the number of items :math:`n`.
+Then, the following line contains the profits of each item, :math:`p_j`.
+The third line contains the weights of each item, :math:`w_j`.
+Finally, the last line contains the capacity of the knapsack, :math:`C`.
+
+Implementation
+--------------
+
+.. literalinclude:: ../../examples/mixed-integer/knapsack.example.cpp
     :language: cpp

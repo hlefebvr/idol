@@ -74,7 +74,7 @@ html_js_files = [
 # a list of builtin themes.
 #
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'press'
 html_theme_options = {
     "navigation_depth": -1,
     "titles_only": True,

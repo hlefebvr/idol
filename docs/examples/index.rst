@@ -3,33 +3,19 @@
 Examples
 ========
 
-Mixed-Integer Programming
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Mixed-Integer Optimization
+--------------------------
 
 .. toctree::
     :maxdepth: 1
 
     knapsack-problem
-
-Branch-and-Bound
-^^^^^^^^^^^^^^^^
-
-.. toctree::
-    :maxdepth: 1
-
     facility-location-problem
-
-Column Generation and Branch-and-Price
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. toctree::
-    :maxdepth: 1
-
     generalized-assignment-problem-bap
     generalized-assignment-problem-penalty-bap
 
 Bilevel Optimization
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 
 .. toctree::
@@ -37,14 +23,16 @@ Bilevel Optimization
 
     bilevel-kkt
     bilevel-mibs
+    bilevel-pessimistic
 
 
 Robust Optimization
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 
 .. toctree::
     :maxdepth: 1
 
-    two-stage-robust-facility-location-problem
+    robust-determistic
+    robust-adr
 

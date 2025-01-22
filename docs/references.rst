@@ -1,7 +1,7 @@
 References
 ==========
 
-The implementation of idol is based on a lot of scientific publications. Here is a selected subset.
+This page contains references to the literature used in the documentation.
 
 .. bibliography::
     :all:

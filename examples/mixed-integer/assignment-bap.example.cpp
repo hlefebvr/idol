@@ -78,12 +78,8 @@ int main(int t_argc, const char** t_argv) {
 
     const auto branch_and_price = branch_and_bound + column_generation;
 
-    model.use(Gurobi::ContinuousRelaxation());
+    model.use(branch_and_price);
     model.optimize();
-
-    for (const auto& var : model.vars()) {
-        std::cout << var << " -> " << model.get_var_reduced_cost(var) << std::endl;
-    }
 
     // Set optimizer
     model.use(branch_and_price);

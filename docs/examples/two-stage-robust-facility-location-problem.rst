@@ -42,11 +42,8 @@ It is defined as the set of vectors :math:`y\in \mathbb{R}^{|V_1|\times|V_2|}` t
         & y_{ij} \ge 0 && i\in V_1, j\in V_2.
     \end{align*}
 
-Implementation with idol
-------------------------
+Implementation
+--------------
 
-We now show how to implement the two-stage robust FLP with idol and how to solve it using a CCG algorithm.
-Here, the "adversarial problem" is solved by calling the bilevel solver MibS.
-
-.. literalinclude:: ../../examples/robust-optimization/robust_ccg.example.cpp
+.. literalinclude:: ../../examples/robust/robust_ccg.example.cpp
     :language: cpp

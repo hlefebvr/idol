@@ -73,14 +73,15 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
-    /*
-     * const auto adr_result = Robust::AffineDecisionRule::make_model(model, description);
-     * std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
-     */
-
     model.use(Gurobi());
     model.optimize();
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
+
+    /*
+     * Alternatively, you could also do
+     * const auto adr_result = Robust::AffineDecisionRule::make_model(model, description);
+     * std::cout << Robust::Description::View(adr_result.model, description) << std::endl;
+     */
 
     model.use(
             Robust::AffineDecisionRule(description)

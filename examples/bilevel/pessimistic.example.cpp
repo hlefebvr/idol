@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "idol/modeling.h"
-#include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
@@ -56,13 +55,9 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c3);
 
     auto [opt_model, opt_description] = Bilevel::PessimisticAsOptimistic::make_model(high_point_relaxation, description);
+    Annotation<double> big_M(env, "big_M", 1e4); // By default, we will set our big-M value to 1e4
 
-    std::cout << opt_model << std::endl;
-
-    // Use coin-or/MibS as external solver
-    opt_model.use(
-            Bilevel::KKT(opt_description) + Gurobi()
-    );
+    opt_model.use(Bilevel::KKT(opt_description).with_big_M(big_M) + Gurobi());
 
     // Optimize and print solution
     opt_model.optimize();
