@@ -27,7 +27,7 @@ We provide here a minimal :bash:`CMakeLists.txt`.
     # Define your idol CMake options here
     set(USE_GUROBI YES) # For instance, here, we specify that Gurobi will be used by idol
 
-    # Tell CMake which version of idol you desire
+    # Tell CMake which version of idol you want to use
     FetchContent_Declare(
             idol
             GIT_REPOSITORY https://github.com/hlefebvr/idol.git
@@ -44,7 +44,7 @@ We provide here a minimal :bash:`CMakeLists.txt`.
     target_link_libraries(my_target PUBLIC idol)
 
 By default, CMake will download the latest version of idol. However, you can also explicitly specify the desired version
-of idol you want to use by setting the :bash:`GIT_TAG` variable in the :bash:`FetchContent_Declare` function to the specific
+of idol by setting the :bash:`GIT_TAG` variable in the :bash:`FetchContent_Declare` function to the specific
 version, e.g., :bash:`v0.2.4-alpha`.
 
 .. hint::
@@ -55,7 +55,7 @@ version, e.g., :bash:`v0.2.4-alpha`.
     This is done with the :bash:`set` CMake function. For instance, to set the option :bash:`MY_OPTION` to the
     value :bash:`MY_VALUE`. You should add :code:`set(MY_OPTION MY_VALUE)` to your :bash:`CMakeLists.txt` file.
 
-    A list of **all possible options** can be found on :ref:`this page <cmake_options>`.
+    A list of **all possible options** can be found on the :ref:`complete list of options <cmake_options>`.
 
 Then, here is a starting :bash:`main.cpp`.
 
@@ -72,7 +72,7 @@ Then, here is a starting :bash:`main.cpp`.
 
         Model model(env);
 
-        const auto x = model.add_var(0., 1., Binary, "x");
+        const auto x = model.add_var(0., 1., Binary, 0., "x");
 
         // ...
 

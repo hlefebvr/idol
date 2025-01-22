@@ -7,12 +7,12 @@ Global Installation
 ===================
 
 This page is dedicated to the local installation of idol. It is thought for more advanced users who want to install
-idol globally on their computer (e.g., in `/usr/lib`).
+idol globally on their computer (e.g., in :code:`/usr/lib`).
 If you simply want to "try out" idol, we advise you to opt for a :ref:`local installation <installation_local>`.
 The installation process is managed by the CMake build system. You will therefore need to have it
 installed on your computer.
 
-The installation process follows the classical CMake build process "configure, build, install".
+The installation process follows the classical CMake build process :code:`configure, build, install`.
 
 Configure
 ---------
@@ -34,7 +34,7 @@ should be specified as follows:
 
     cmake -D<YOUR_CMAKE_OPTION>=<YOUR_VALUE> ..
 
-A list of **all possible options** can be found on :ref:`this page <cmake_options>`.
+A list of **all possible options** can be found on the :ref:`complete list of options <cmake_options>`.
 
 .. admonition:: Example for Gurobi
 
@@ -78,7 +78,7 @@ To install idol on your computer, run the following command.
 
 .. hint::
 
-    Here, you need superuser rights to install idol globally. If you want to install idol on a specific folder,
+    Here, you need superuser rights to install idol globally. If you want to install idol in a specific folder,
     you may also use the :bash:`CMAKE_INSTALL_PREFIX` CMake option to change the destination folder.
 
     .. code-block:: bash
@@ -86,8 +86,13 @@ To install idol on your computer, run the following command.
         cmake -CMAKE_INSTALL_PREFIX=/my/custom/installation/folder <YOUR_OTHER_CMAKE_OPTIONS...> ..
         make install
 
+And Then?
+---------
 
-Table of Contents
+That's it! idol is now installed on your computer. You can now use it in your C++ projects. To do so, you will need to
+link your project against the idol library. See the related pages for more information.
+
+Related Pages
 -----------------
 
 .. toctree::
