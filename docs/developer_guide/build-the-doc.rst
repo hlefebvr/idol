@@ -1,8 +1,8 @@
 .. highlight:: sh
 .. _dev_build_the_doc:
 
-Build the doc!
-==============
+Build the Documentation
+========================
 
 This page explains how to build the documentation on a local machine.
 
