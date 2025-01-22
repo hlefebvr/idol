@@ -29,9 +29,19 @@ public:
 
     KKT& with_big_M(const Annotation<double>& t_big_M);
 
+    KKT& operator+=(const OptimizerFactory& t_optimizer) { return with_single_level_optimizer(t_optimizer); }
+
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description);
 
     static Model make_model(const Model& t_model, const Bilevel::Description& t_description, const Annotation<double>& t_big_M);
 };
+
+namespace idol {
+    static Bilevel::KKT operator+(const Bilevel::KKT& t_strong_duality, const OptimizerFactory& t_optimizer) {
+        Bilevel::KKT result(t_strong_duality);
+        result += t_optimizer;
+        return result;
+    }
+}
 
 #endif //IDOL_BILEVEL_KKT_H

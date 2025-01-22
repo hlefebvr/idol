@@ -31,7 +31,7 @@ class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     std::unique_ptr<OsiSolverInterface> m_osi_interface;
 #endif
 public:
-    MibS(Bilevel::Description t_description);
+    explicit MibS(Bilevel::Description t_description);
 
     MibS(const MibS& t_src);
     MibS(MibS&&) noexcept = delete;

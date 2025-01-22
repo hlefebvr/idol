@@ -56,7 +56,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Use coin-or/MibS as external solver
     opt_model.use(
-            Bilevel::MibS(opt_description)
+            Bilevel::MibS(description)
                     .with_logs(true)
     );
 
