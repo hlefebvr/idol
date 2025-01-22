@@ -62,4 +62,21 @@ public:
     [[nodiscard]] bool is_follower(const QCtr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
 };
 
+namespace idol::Bilevel {
+    static bool is_coupling(const Model& t_model, const Description& t_description, const Ctr& t_ctr) {
+
+        if (!t_description.is_leader(t_ctr)) {
+            return false;
+        }
+
+        for (const auto& [var, constant] : t_model.get_ctr_row(t_ctr)) {
+            if (t_description.is_leader(var)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
 #endif //IDOL_BILEVEL_DESCRIPTION_H

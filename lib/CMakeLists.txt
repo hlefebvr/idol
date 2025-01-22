@@ -249,6 +249,8 @@ add_library(idol STATIC
         src/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.cpp
         include/idol/robust/optimizers/column-and-constraint-generation/Formulation.h
         src/robust/optimizers/column-and-constraint-generation/Formulation.cpp
+        include/idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h
+        src/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.cpp
 )
 
 find_package(OpenMP REQUIRED)
