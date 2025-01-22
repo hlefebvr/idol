@@ -140,6 +140,7 @@ void Helper::check_no_coupling_constraints() {
 
     for (const auto& ctr : m_src_model.ctrs()) {
         if (idol::Bilevel::is_coupling(m_src_model, m_src_description, ctr)) {
+            std::cout << ctr << std::endl;
             throw idol::Exception("Coupling constraints are not supported yet.");
         }
     }

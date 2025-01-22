@@ -19,6 +19,20 @@ namespace idol::Bilevel {
 class idol::Bilevel::Description {
     Annotation<unsigned int> m_level;
     QuadExpr<Var> m_follower_objective;
+
+    template<class T, unsigned int N>
+    void set_annotation(const Vector<T, N> &t_vector, unsigned int t_value) {
+        if constexpr (N == 1) {
+            for (const auto& x : t_vector) {
+                x.set(m_level, t_value);
+            }
+        } else  {
+            for (const auto& x : t_vector) {
+                add_vector<T, N - 1>(x);
+            }
+        }
+    }
+
 public:
     Description(Env& t_env, const std::string& t_name) : m_level(t_env, t_name + "_lower_level", MasterId)  {}
 
@@ -42,6 +56,8 @@ public:
     void make_upper_level(const QCtr& t_ctr) { t_ctr.set(m_level, MasterId); }
 
     void make_lower_level(const Var& t_var) { t_var.set(m_level, 0); }
+
+    template<unsigned int N> void make_lower_level(const Vector<Var, N>& t_vars) { set_annotation<Var, N>(t_vars, 0); }
 
     void make_lower_level(const Ctr& t_ctr) { t_ctr.set(m_level, 0); }
 
@@ -70,7 +86,7 @@ namespace idol::Bilevel {
         }
 
         for (const auto& [var, constant] : t_model.get_ctr_row(t_ctr)) {
-            if (t_description.is_leader(var)) {
+            if (t_description.is_follower(var)) {
                 return true;
             }
         }

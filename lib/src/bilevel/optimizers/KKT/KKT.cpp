@@ -52,7 +52,7 @@ idol::Bilevel::KKT::with_single_level_optimizer(const idol::OptimizerFactory &t_
 idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
         : OptimizerFactoryWithDefaultParameters<KKT>(t_src),
           m_description(t_src.m_description),
-          m_single_level_optimizer(t_src.m_single_level_optimizer->clone()) {
+          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr) {
 
 }
 
