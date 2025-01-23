@@ -1,7 +1,7 @@
 .. _tutorial_column_generation:
 
-Modeling and Solving A Dantzig-Wolfe Reformulation
-==================================================
+Solving A Dantzig-Wolfe Reformulation
+=====================================
 
 In this tutorial, we will see how to implement a column generation algorithm to solve a continuous relaxation of the Generalized Assignment Problem (GAP).
 This relaxation is obtained by relaxing the Dantzig-Wolfe reformulation of the GAP.
