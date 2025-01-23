@@ -38,7 +38,7 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage__*.info
@@ -91,7 +91,7 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage_*.info
@@ -131,7 +131,7 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage_*.info
@@ -171,7 +171,7 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage_*.info

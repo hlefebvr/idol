@@ -85,7 +85,10 @@ Then, you can derive the equivalent optimistic bilevel problem as follows:
 .. code::
 
     auto [opt_model, opt_description] =
-        Bilevel::PessimisticAsOptimistic::make_model(high_point_relaxation, description);
+        Bilevel::PessimisticAsOptimistic::make_model(
+                                            high_point_relaxation,
+                                            description
+                                    );
 
 Here, :code:`opt_model` is the high-point relaxation of :math:numref:`optimistic` and :code:`opt_description` is the bilevel description of :math:numref:`optimistic`.
 

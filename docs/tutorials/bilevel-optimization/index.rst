@@ -62,7 +62,7 @@ the worst solution for the upper-level problem. This can be modeled as follows.
 Pessimisitc bilevel problems are less studied in the literature.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
     :glob:
 
     modeling
