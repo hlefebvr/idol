@@ -1,5 +1,5 @@
-The Environment
----------------
+The Environment and the :code:`Env` class
+-----------------------------------------
 
 Every optimization object (such as variables and constraints) are managed by an "optimization environment".
 It is the environment that controls the death and life of such objects. It is also through the environment that idol

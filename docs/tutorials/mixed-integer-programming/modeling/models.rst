@@ -1,18 +1,21 @@
-Models
-------
+The :code:`Model` class
+-----------------------
 
-The :ref:`Model <api_Model>` class is used to represent a (standard) optimization model, i.e., a mathematical program of the form
+The :ref:`Model <api_Model>` class is used to represent a (standard) optimization model of the form
 
 .. math::
+    :label: eq:mip
 
     \begin{align}
-        \min_x \ & c^\top x + x^\top D x + c_0 \\
-        \text{s.t.} \ & a_{(i)}^\top x + x^\top Q^i x \le b_i \quad i=1,\dotsc,m \\
-        & x_j \in \mathbb Z \quad j=1,\dotsc,p
+        \min_{x} \quad & c^\top x + x^\top D x + c_0 \\
+        \text{s.t.} \quad & a_{i\cdot}^\top x + x^\top Q^i x \le b_i, \quad i = 1, \ldots, m, \\
+        & x_j \in \mathbb{Z}, \quad j \in I \subseteq \{ 1, \dotsc, n \}.
     \end{align}
 
-Here, :math:`x_j` are the decision variables of this optimization problem while matrices :math:`c, D, A` and :math:`Q^i` are given
-input parameters for this model. Additionally, variables :math:`x_j` having :math:`j\in\{ 1,\dotsc,p \}` have to be integer-valued.
+Here, :math:`x` are the decision variables, while :math:`c`, :math:`D`, :math:`c_0`, :math:`a_i`, :math:`Q^i`, and :math:`b_i` are given data.
+Some of the decision variables are required to be integer-valued and are indexed by :math:`I`.
+
+In what follows, we will dive into the :cpp:`Model` class and see how to create, read, and write models to files.
 
 
 .. contents:: Table of Contents
@@ -33,12 +36,12 @@ The following code creates a new optimization model.
     Model model(env);
 
 We can now define our decision variables and constraints, and add an objective function to our model.
-This is detailed in the :ref:`Variables <api_variables>`, :ref:`Constraints <api_constraints>` and :ref:`Objective <api_objective_functions>` sections.
+This is detailed in the :ref:`Variables <api_variables>`, :ref:`Constraints <api_constraints>` and :ref:`Objective <api_objective_functions>` sections, respectively.
 
 Reading a Model from a File
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A Model can also be created by reading a model from a file (typically, an MPS or an LP file).
+A Model can also be created by reading a model from a file (typically, a :code:`.mps` or an :code:`.lp` file).
 To do this, idol relies on an external solver. The following code reads a model from a file using Gurobi.
 
 .. code-block:: cpp
@@ -56,9 +59,11 @@ This is done by attaching a solver to a model, then by calling the :code:`Model:
 .. code::
 
     Env env;
-    Model model = some_function_creating_my_model(env); // this is assumed to create the desired optimization model
+    Model model(env);
 
-    model.use(Gurobi()); // We will use Gurobi as the optimizer
+    // Add variables and constraints HERE...
+
+    model.use(Gurobi()); // Set the optimizer as Gurobi
 
     model.write("instance.lp"); // Creates a new file "instance.lp" storing the model
 

@@ -3,8 +3,11 @@
 Tutorials
 =========
 
-Mixed-Integer Programming
--------------------------
+On this page, you will find a collection of tutorials that demonstrate how to use idol to solve various optimization problems.
+The tutorials are organized by topic.
+
+Mixed-Integer Optimization
+--------------------------
 
 .. toctree::
     :maxdepth: 3

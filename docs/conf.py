@@ -20,7 +20,7 @@ subprocess.call('doxygen Doxyfile.in', shell=True)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'idol'
-copyright = '2023, Henri Lefebvre'
+copyright = '2025, Henri Lefebvre'
 author = 'Henri Lefebvre'
 
 

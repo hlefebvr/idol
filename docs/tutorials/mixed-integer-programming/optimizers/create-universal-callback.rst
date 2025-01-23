@@ -1,29 +1,31 @@
 .. _tutorial_create_callback:
 
-Creating Your Own Universal Callback
-====================================
+Creating Your Own Callback
+==========================
 
-In this page, we will show you how to create your own universal callback.
-Universal callbacks are callbacks which are not specific to a particular solver. In that sense, they are generic and can be
-used with any solver.
-
-Note that there are also solver-specific callbacks, which are specific to a particular solver.
-If you are looking for this, you can refer to :ref:`this page <tutorial_create_bb_callback>`.
+In this page, we see how to create your own universal callback.
+Universal callbacks are callbacks which are not specific to a particular optimizer.
+In that sense, they are generic and can be used with different optimizers without any modification.
 
 Creating your own callback can useful if you want to create a callback that is not included in the
 default set of callbacks implemented in idol.
 If you are looking for quick and easy-to-use callbacks for separating user cuts or lazy constraints,
 you can refer to :ref:`this page <tutorial_user_lazy_cuts>`.
 
+.. hint::
+
+    Note that there are also callbacks specific to the :code:`BranchAndBound` optimizer.
+    If you are looking for this, you can refer to :ref:`this page <tutorial_create_bb_callback>`.
+
 .. contents:: Table of Contents
     :local:
     :depth: 2
 
-Basics
-^^^^^^
+The Basics
+^^^^^^^^^^
 
 Creating your callback is done by creating a sub-class of the :ref:`Callback <api_callback>` class and overriding the
-:code:`Callack::operator()` method. It is this method that will be called by the solver at each iteration.
+:code:`Callack::operator()` method. It is this method that will be called by the solver whenever an incumbent is found.
 
 Note, however, that callbacks cannot be given "as-is" to an optimizer but must be passed through a :ref:`CallbackFactory <api_CallbackFactory>`. A callback
 factory is a class whose role is to create a new callback object whenever it is needed. Every callback factories must be
@@ -34,11 +36,16 @@ iteration.
 
 .. code:: cpp
 
+    /* Callback factory implementation */
     class MyCallback : public CallbackFactory {
     public:
 
-        class Strategy { // Real callback implementation
+        /* Actual callback implementation */
+        class Strategy {
         protected:
+
+            /* This method is called whenever an event occurs
+               during the solution process */
             void operator()(CallbackEvent t_event) {
 
                    if (t_event != IncumbentSolution) {
@@ -47,13 +54,16 @@ iteration.
 
                    std::cout << primal_solution() << std::endl;
             }
+
         }
 
-        Callback* operator()() { // Creates a new callback object
+        /* This method creates a new callback object */
+        Callback* operator()() {
             return new Strategy();
         }
 
-        CallbackFactory* clone() const { // Creates a copy of the callback factory
+        /* This method creates a copy of the callback factory */
+        CallbackFactory* clone() const {
             return new MyCallback(*this);
         }
 
@@ -77,8 +87,20 @@ our new callback can be added to an optimizer as follows.
 
     model.optimize();
 
-A Simple Example: Knapsack Cover Cuts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+List of Optimizers Supporting Universal Callbacks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following solvers support universal callbacks:
+
+- :code:`Gurobi`
+- :code:`BranchAndBound`
+- :code:`Mosek`
+
+Hence, for these solvers, you can create your own callback and add it to the optimizer without having to
+worry about the underlying solver.
+
+An Example: Knapsack Cover Cuts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. hint::
 
@@ -103,8 +125,8 @@ This is done by solving the following separation problem.
 .. math::
 
     \begin{align}
-        \max_{z} \ & (1 - \hat x)^\top z & \ge 1 \\
-        \text{s.t.} \ & w^\top z \ge W + 1, \\
+        \max_{z} \quad & (1 - \hat x)^\top z \qquad \ge 1 \\
+        \text{s.t.} \quad & w^\top z \ge W + 1, \\
         & z\in\{0,1\}^n.
     \end{align}
 
@@ -120,7 +142,7 @@ To this end, we first create our knapsack problem model. This is done as follows
     Env env;
     Model knapsack(env, Maximize);
 
-    const auto x = knapsack.add_vars(Dim<1>(n), 0, 1, Binary, "x");
+    const auto x = knapsack.add_vars(Dim<1>(n), 0, 1, Binary, 0, "x");
 
     knapsack.add_ctr(idol_Sum(i, Range(n_items), w[i] * x[i]) <= W);
     knapsack.set_obj_expr(idol_Sum(i, Range(n_items), p[i] * x[i]));
@@ -142,26 +164,27 @@ This is done as follows.
                       const std::vector<double>& t_weights,
                       const std::vector<double>& t_profits,
                       double t_capacity)
-                        : m_x(t_x), m_weights(t_weights), m_profits(t_profits), m_capacity(t_capacity) {}
+                        : m_x(t_x), m_weights(t_weights),
+                          m_profits(t_profits), m_capacity(t_capacity) {}
 
         class Strategy;
 
-        Callback* operator()() { // Creates a new callback object
+        Callback* operator()() {
             return new Strategy(m_x, m_weights, m_profits, m_capacity);
         }
 
-        CallbackFactory* clone() const { // Creates a copy of the callback factory
+        CallbackFactory* clone() const {
             return new MyCallback(*this);
         }
 
     }
 
-The real implementation of the callback is done in the nested class :code:`Strategy`.
+The actual implementation of the callback is done in the nested class :code:`Strategy`.
 This class is a sub-class of the :ref:`Callback <api_callback>` class and is defined as follows.
 
 .. code:: cpp
 
-    class KnapsackCover::Strategy { // Real callback implementation
+    class KnapsackCover::Strategy {
         const std::vector<Var> m_x;
         const std::vector<double> m_weights;
         const std::vector<double> m_profits;
@@ -171,7 +194,8 @@ This class is a sub-class of the :ref:`Callback <api_callback>` class and is def
                  const std::vector<double>& t_weights,
                  const std::vector<double>& t_profits,
                  double t_capacity)
-                    : m_x(t_x), m_weights(t_weights), m_profits(t_profits), m_capacity(t_capacity) {}
+                    : m_x(t_x), m_weights(t_weights),
+                      m_profits(t_profits), m_capacity(t_capacity) {}
 
         void operator()(CallbackEvent t_event) {
 

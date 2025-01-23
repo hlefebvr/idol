@@ -1,4 +1,5 @@
 #include <iostream>
+#include <idol/idol/modeling/matrix/Column.h>
 #include "idol/general/utils/SparseVector.h"
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
