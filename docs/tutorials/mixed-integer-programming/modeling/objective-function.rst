@@ -1,7 +1,7 @@
 .. _api_objective_functions:
 
-Setting the Objective Functions
-===============================
+Objective Functions
+===================
 
 The objective function of an optimization model is a quadratic expression of the decision variables.
 It is used to guide the optimization process by defining the quantity to be minimized or maximized.

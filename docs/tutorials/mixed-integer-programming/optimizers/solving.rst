@@ -1,5 +1,5 @@
-Solving a Model and Accessing the Solution
-==========================================
+Using an External Solver and Accessing the Solution
+===================================================
 
 This page shows how to solve a model and access the solution.
 The reader should be familiar with the concept of optimizer and optimizer factories. If this is not the case,
@@ -9,8 +9,8 @@ please refer to the page on :ref:`Optimizers <mip_optimizers>`.
     :local:
     :depth: 2
 
-Solving a Model with GLPK
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Modeling and Solving with an External Solver (e.g., GLPK)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let us consider the following code.
 

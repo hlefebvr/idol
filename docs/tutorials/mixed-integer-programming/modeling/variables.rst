@@ -1,7 +1,7 @@
 .. _api_variables:
 
-Variables and the :code:`Var` Class
-===================================
+Variables
+=========
 
 Variables are the decision variables of an optimization problem. They are the objects that we want to find the best
 values for, with respect to some objective function given the specified constraints.

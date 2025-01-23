@@ -1,5 +1,5 @@
-Expressions with the :code:`QuadExpr`, :code:`AffExpr` and :code:`LinExpr` Classes
-==================================================================================
+Expressions
+===========
 
 An expression generically refers to any mathematical expression involving variables or constraints. In idol, expressions
 are represented by the :code:`QuadExpr`, :code:`AffExpr` and :code:`LinExpr` classes. These classes are used to represent

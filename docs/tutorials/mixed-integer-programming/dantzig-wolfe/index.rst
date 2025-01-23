@@ -16,4 +16,4 @@ Column Generation and Branch-and-Price Algorithm
     writing-branch-and-price
     integer-master
     strong-branching
-    writing-branch-and-cut-and-price
+    #writing-branch-and-cut-and-price

@@ -1,5 +1,5 @@
-The :code:`Model` class
------------------------
+Models
+======
 
 The :ref:`Model <api_Model>` class is used to represent a (standard) optimization model of the form
 

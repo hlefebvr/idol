@@ -1,7 +1,7 @@
 .. _api_constraints:
 
-Constraints: :code:`Ctr` and :code:`QCtr`
-=========================================
+Constraints
+===========
 
 Constraints are mathematical expressions that must be satisfied by the decision variables of an optimization problem.
 They are used to model relationships between variables, and to restrict the feasible region of the problem.
