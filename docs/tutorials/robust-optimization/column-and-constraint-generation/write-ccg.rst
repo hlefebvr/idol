@@ -40,7 +40,7 @@ In this example, we use the Bilevel separator which calls the MibS bilevel optim
 
 Finally, the method :code:`optimize` is called to solve the problem and the solution is printed.
 
-.. admonition::
+.. hint::
 
     Here, we have assumed that the problem does not satisfy the complete recourse assumption, i.e., it is not known if
     :math:`\forall x\in X, \forall\xi\in\Xi, \exists y\in Y(x,\xi)`. If, to the contrary, this assumption holds,

@@ -23,6 +23,12 @@ be integer. It is said to be mixed-integer if :math:`I \neq \emptyset`. Otherwis
 An important class of problems is when :math:`D = 0` and :math:`Q^i = 0` for all :math:`i`, i.e., when the objective function and the constraints are linear.
 In such a case, we say that :math:numref:`eq:mip` is a mixed-integer linear problem (MILP), or a linear problem (LP) if all variables are continuous.
 
+.. figure:: https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg
+    :align: center
+    :target: https://en.wikipedia.org/wiki/Integer_programming
+
+    The feasible region of an integer problem and its linear relaxation.
+
 **Table of Contents**
 
 .. toctree::

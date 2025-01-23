@@ -9,4 +9,3 @@ Column-and-Constraint-Generation Algorithm
     introduction
     write-ccg
     trust-region-stabilization
-    writing-separator

@@ -76,9 +76,7 @@ html_js_files = [
 
 html_theme = 'press'
 html_theme_options = {
-    "navigation_depth": -1,
-    "titles_only": True,
-    "style_external_links": True
+    "titles_only": True
 }
 pygments_style = "colorful"
 html_title = "idol"
