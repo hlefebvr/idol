@@ -35,25 +35,25 @@ public:
          bool t_use_file,
          bool t_use_cplex_for_feasibility);
 
-    std::string name() const override { return "mibs"; }
+    [[nodiscard]] std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;
 
-    SolutionStatus get_status() const override;
-    SolutionReason get_reason() const override;
-    double get_best_obj() const override;
-    double get_best_bound() const override;
-    double get_var_primal(const Var &t_var) const override;
-    double get_var_reduced_cost(const Var &t_var) const override;
-    double get_var_ray(const Var &t_var) const override;
-    double get_ctr_dual(const Ctr &t_ctr) const override;
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
-    double get_relative_gap() const override;
-    double get_absolute_gap() const override;
-    unsigned int get_n_solutions() const override;
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
+    [[nodiscard]] double get_best_obj() const override;
+    [[nodiscard]] double get_best_bound() const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_relative_gap() const override;
+    [[nodiscard]] double get_absolute_gap() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
     void add_callback(Callback* t_callback);
 
-    const idol::Bilevel::Description& bilevel_description() const { return m_description; }
+    [[nodiscard]] const idol::Bilevel::Description& bilevel_description() const { return m_description; }
 
 protected:
     void build() override;
