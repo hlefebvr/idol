@@ -84,6 +84,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight:300;
+    text-align: left;
     font-family: -apple-system, BlinkMacSystemFont,
     "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans",
@@ -239,4 +240,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .eqno {
     float:right;
+}
+
+@media (max-width: 767px) {
+
+    body {
+        font-size: 16px;
+    }
+
+
+    #cards {
+        display: grid;
+        grid-template-columns: auto;
+
+    }
+
+    #cards > a {
+        width: 95%;
+    }
+
+    .body-header {
+        display: none;
+    }
 }
