@@ -1,16 +1,16 @@
-Solving a Model and Accessing the Solution
-==========================================
+Using an External Solver and Accessing the Solution
+===================================================
+
+This page shows how to solve a model and access the solution.
+The reader should be familiar with the concept of optimizer and optimizer factories. If this is not the case,
+please refer to the page on :ref:`Optimizers <mip_optimizers>`.
 
 .. contents:: Table of Contents
     :local:
     :depth: 2
 
-Solving a Model
-^^^^^^^^^^^^^^^
-
-This page shoes how to solve a model and access the solution.
-The reader should be familiar with the concept of optimizer and optimizer factories. If this is not the case,
-please refer to the page on :ref:`Optimizers <mip_optimizers>`.
+Modeling and Solving with an External Solver (e.g., GLPK)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let us consider the following code.
 
@@ -26,49 +26,99 @@ Let us consider the following code.
     Env env;
     Model model(env, Maximize);
 
-    const auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, "x");
+    auto x = model.add_vars(Dim<1>(n_items), 0., 1., Binary, 0, "x");
     model.add(idol_Sum(j, Range(n_items), weight[j] * x[j] ) <= capacity);
     model.set_obj_expr(idol_Sum(j, Range(n_items), profit[i] * x[i]);
 
-This code creates a model for the knapsack problem. As described in the page on :ref:`this page <mip_optimizers>`,
-we now set up an optimizer and solve the model. We use GLPK.
+This code creates a model for the knapsack problem.
+
+As described in the page on :ref:`this page <mip_optimizers>`,
+we will now set up an optimizer and solve the model. For this example, we use GLPK.
 
 .. code:: cpp
 
     model.use(GLPK());
 
-Solving the model is done by a single class to the :code:`optimize` method.
+Solving the model is then done by calling the :code:`optimize` method.
 
 .. code:: cpp
 
     model.optimize();
 
-Then, idol provides several methods to access the solution.
+Accessing the Solution
+^^^^^^^^^^^^^^^^^^^^^^
 
-First, :code:`get_status` and :code:`get_reason` return the status and the reason of the solution.
-The status can be, for instance, :code:`Optimal` or :code:`Infeasible`. The reason provides more details about the status.
-For instance, if the status is :code:`Infeasible`, the reason can be that the original problem is infeasible (:code:`Proved`),
-or that the solver reached a time limit before finding a feasible solution (:code:`TimeLimit`).
+idol provides several methods to access the solution.
 
-The best objective value found can be accessed using :code:`get_best_obj`. This is the best objective value among feasible solutions considered during the execution of the algorithm.
-The best objective value bound can be accessed using :code:`get_best_bound`. For instance, this can be a dual bound.
-The methods :code:`get_relative_gap` and :code:`get_absolute_gap` return the relative and absolute optimality gaps, respectively.
-See :ref:`this page <api_tolerances>` for more details about gaps and tolerances.
+First, the status of the solution can be accessed using the :code:`get_status` method.
+Here is a detailed list of possible statuses and reasons:
 
-The methods :code:`get_var_primal` and :code:`get_var_ray` return the primal value and the (primal) ray value of a given variable, respectively.
-Note that primal values are only accessible if the model has status :code:`Feasible`, :code:`SubOptimal` or :code:`Optimal`.
-Similarly, a primal ray is only accessible if the model has status :code:`Unbounded`.
++-------------------+-------------------------------------------+
+| Status            | Description                               |
++===================+===========================================+
+| Loaded            | The model has been loaded but not solved. |
++-------------------+-------------------------------------------+
+| Optimal           | An optimal solution has been found.       |
++-------------------+-------------------------------------------+
+| Feasible          | A feasible solution has been found.       |
++-------------------+-------------------------------------------+
+| Infeasible        | No feasible solution could be found.      |
++-------------------+-------------------------------------------+
+| InfOrUnbnd        | The model is infeasible or unbounded.     |
++-------------------+-------------------------------------------+
+| Unbounded         | The model is unbounded.                   |
++-------------------+-------------------------------------------+
+| Fail              | The solver failed to solve the model.     |
++-------------------+-------------------------------------------+
+| SubOptimal        | A suboptimal solution has been found.     |
++-------------------+-------------------------------------------+
 
-The methods :code:`get_ctr_dual` and :code:`get_ctr_farkas` return the dual value and the Farkas certificate value of a given constraint, respectively.
-Note that dual values are only accessible if the model is continuous and has status :code:`Optimal` or :code:`Feasible`.
-Similarly, a Farkas certificate is only accessible if the model has status :code:`Infeasible`.
+Related to a status, the reason for the status can be accessed using the :code:`get_reason` method.
+
++-----------------+--------------------------------------------------------------------+
+| Reason          | Description                                                        |
++=================+====================================================================+
+| NotSpecified    | No specific reason is available.                                   |
++-----------------+--------------------------------------------------------------------+
+| Proved          | The solver proved optimality.                                      |
++-----------------+--------------------------------------------------------------------+
+| TimeLimit       | The solver reached the time limit.                                 |
++-----------------+--------------------------------------------------------------------+
+| IterLimit       | The solver reached the iteration limit.                            |
++-----------------+--------------------------------------------------------------------+
+| ObjLimit        | The solver reached the objective limit.                            |
++-----------------+--------------------------------------------------------------------+
+| Numerical       | A numerical issue occurred during the solution process.            |
++-----------------+--------------------------------------------------------------------+
+| MemoryLimit     | The solver ran out of memory.                                      |
++-----------------+--------------------------------------------------------------------+
+| Cycling         | The solver encountered cycling (e.g., in simplex method).          |
++-----------------+--------------------------------------------------------------------+
+| SolutionLimit   | The solver reached the solution limit (e.g., number of solutions). |
++-----------------+--------------------------------------------------------------------+
+
+Then, the following methods can be used to access the solution:
+
+- :code:`get_best_obj` returns the best known objective value (this always refers to feasible solutions),
+- :code:`get_best_bound` returns the best known objective value bound,
+- :code:`get_relative_gap` returns the relative optimality gap,
+- :code:`get_absolute_gap` returns the absolute optimality gap; see :ref:`this page <api_tolerances>` for more details about gaps and tolerances.
+
+Accessing the primal and dual values can be done with the following methods:
+
+- :code:`get_var_primal` returns the primal value of a given variable (Feasible and Optimal status only),
+- :code:`get_var_ray` returns the primal ray value of a given variable (Unbounded status only),
+- :code:`get_ctr_dual` returns the dual value of a given constraint (Continuous models only),
+- :code:`get_ctr_farkas` returns the Farkas certificate value of a given constraint (Continuous models and Infeasible status only).
 
 Saving a Solution
 ^^^^^^^^^^^^^^^^^
 
-Sometimes, you will find it useful to save a solution to access it later. idol provides the following functions to do so:
+Sometimes, you will find it useful to save a solution to access it later.
+
+idol provides the following functions to do so:
 :code:`save_primal`, :code:`save_ray`, :code:`save_dual` and :code:`save_farkas`.
-Each of these functions takes a model as argument and returns an object of the class :ref:`Solution::Primal <api_Solution_Primal>` or :ref:`Solution::Primal <api_Solution_Dual>` depending on the function.
+Each of these functions takes a model as argument and returns an object of the class :ref:`Point<Var> <api_Point>` or :ref:`Point<Ctr> <api_Point>` depending on the function.
 The returned object stores the results of corresponding calls to :code:`get_var_primal`, :code:`get_var_ray`, :code:`get_ctr_dual` or :code:`get_ctr_farkas` methods.
 
 .. admonition:: Example
@@ -135,5 +185,5 @@ For instance.
 
     const auto primal_values = save_primal(original_model, higher_dimensional_model);
 
-This code will return an object of the class :ref:`Solution::Primal <api_Solution_Primal>` storing the results of corresponding calls to :code:`get_var_primal` methods on the higher dimensional model
+This code will return an object of the class :ref:`Point<Var> <api_Solution_Primal>` storing the results of corresponding calls to :code:`get_var_primal` methods on the higher dimensional model
 for the original model variables.

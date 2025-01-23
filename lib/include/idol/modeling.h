@@ -5,13 +5,11 @@
 #ifndef OPTIMIZE_MODELING_H
 #define OPTIMIZE_MODELING_H
 
-#include "idol/modeling/objects/Env.h"
-#include "idol/modeling/models/Model.h"
+#include "idol/mixed-integer/modeling/objects/Env.h"
+#include "idol/mixed-integer/modeling/models/Model.h"
 
-#include "idol/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
-#include "idol/modeling/constraints/TempCtr.h"
-
-#include "idol/modeling/models/dualize.h"
+#include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 
 #endif //OPTIMIZE_MODELING_H

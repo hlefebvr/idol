@@ -20,7 +20,7 @@ subprocess.call('doxygen Doxyfile.in', shell=True)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'idol'
-copyright = '2023, Henri Lefebvre'
+copyright = '2025, Henri Lefebvre'
 author = 'Henri Lefebvre'
 
 
@@ -74,7 +74,7 @@ html_js_files = [
 # a list of builtin themes.
 #
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'press'
 html_theme_options = {
     "navigation_depth": -1,
     "titles_only": True,

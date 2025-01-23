@@ -1,6 +1,6 @@
 .. _api_Expr:
 
-Expr
+AffExpr
 ====
 
-.. doxygenclass:: idol::Expr
+.. doxygenclass:: idol::AffExpr

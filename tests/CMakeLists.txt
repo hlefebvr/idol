@@ -32,7 +32,4 @@ file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/tests/)
 file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/) # Necessary for GitHub Actions
 
 # Define tests
-add_subdirectory(modeling)
-add_subdirectory(wrappers)
-add_subdirectory(branch-and-bound)
-add_subdirectory(branch-and-price)
+add_subdirectory(mixed-integer)

@@ -1,7 +1,7 @@
 .. _example_bilevel_kkt:
 
-Bilevel LP-LP (KKT Reformulation)
-=================================
+Solving an optimistic LP-LP bilevel problem with KKT reformulation
+==================================================================
 
 Problem Definition
 ------------------
@@ -13,23 +13,25 @@ The problem is formulated as follows:
 .. math::
 
     \begin{align}
-        \min_{x, y} \ & x + 6 y \\
-        \text{s.t.} \ & -x + 5y \le 12.5 \\
-        & x \ge 0 \\
+        \min_{x, y} \quad & x + 6 y \\
+        \text{s.t.} \quad & -x + 5y \le 12.5, \\
+        & x \ge 0, \\
         & y\in
-            \begin{array}[t]{l}
-                \displaystyle \underset{y}{\text{arg min}} \ & -y \\
-                \text{s.t.} \ & 2 x - y \ge 0, \\
+            \begin{array}[t]{rl}
+                \displaystyle \underset{y}{\text{arg min}} \quad & -y \\
+                \text{s.t.} \quad & 2 x - y \ge 0, \\
                 & -x - y \ge -6, \\
                 & -x + 6 y \ge -3, \\
                 & x + 3 y \ge 3.
             \end{array}
     \end{align}
 
-KKT Reformulation with idol
----------------------------
+In this example, we will reformulate the bilevel problem as a single-level problem using the KKT conditions.
+The resulting problem will be solved by Gurobi as an NLP. Note that it is also possible to provide valid big-Ms to
+reformulate this problem as an MILP. Check out our tutorials to learn more.
 
-In this example, we show how to model this LP-LP bilevel problem and how to derive its KKT reformulation.
+Implementation
+--------------
 
-.. literalinclude:: ../../examples/bilevel-optimization/kkt.example.cpp
+.. literalinclude:: ../../examples/bilevel/kkt.example.cpp
     :language: cpp

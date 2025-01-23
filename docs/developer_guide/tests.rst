@@ -1,6 +1,6 @@
 .. _tests:
 
-Unit and integration tests
+Unit and Integration Tests
 ==========================
 
 This page explains how to build the unit and integration tests on a local machine.

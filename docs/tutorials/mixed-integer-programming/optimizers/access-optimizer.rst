@@ -1,7 +1,7 @@
 Getting Access to The Underlying Optimizer
 ==========================================
 
-In some situations, you may want to access the underlying optimizer.
+In some advanced situations, you may want to access the underlying optimizer of an optimization model.
 For instance, this could be the case if you want to get optimizer-specific information which are not exposed by the :code:`Model` interface.
 
 In this case, you can use the :code:`Model::optimizer` method. Note that this method
@@ -16,17 +16,22 @@ For instance, the following code shows how to access the underlying Gurobi optim
 
     Env env;
     Model model(env);
-    const auto x = model.add_var(0.0, 1.0, Continuous, Column(-1), "x");
+    auto x = model.add_var(0.0, 1.0, Continuous, -1, "x");
 
     model.use(Gurobi());
     model.optimize();
 
-    auto& gurobi_optimizer = model.optimizer().as<Optimizers::Gurobi>(); // Cast the optimizer to "Optimizers::Gurobi"
+    if (!model.optimizer().is<Optimizers::Gurobi>()) {
+        throw Exception("The optimizer is not Gurobi");
+    }
 
-    GRBVar& var = gurobi_optimizer[x]; // Access the optimizer-specific routines
+    auto& gurobi_optimizer = model.optimizer().as<Optimizers::Gurobi>();
+
+    // Access the optimizer-specific routines
+    GRBVar& var = gurobi_optimizer[x];
 
 .. warning::
 
     A common mistake is to try to cast the optimizer to the wrong type. In particular, to cast optimizer to its
     optimizer factory type (e.g., :code:`Gurobi` instead of :code:`Optimizers::Gurobi`).
-    This will result in a runtime error.
+    If so, this will result in a runtime error.

@@ -1,7 +1,7 @@
 .. _example_mibs:
 
-Bilevel MILP-MILP (MibS)
-========================
+Solving an optimistic MILP-MILP bilevel problem with coin-or/MibS
+=================================================================
 
 Problem Definition
 ------------------
@@ -13,24 +13,22 @@ The problem is formulated as follows:
 .. math::
 
     \begin{align}
-        \min_{x, y} \ & -x + -10 y \\
-        \text{s.t.} \ & x \in \mathbb Z_+ \\
+        \min_{x, y} \quad & -x + -10 y \\
+        \text{s.t.} \quad & x \in \mathbb Z_{\ge 0 },\\
         & y\in
-            \begin{array}[t]{l}
-                \displaystyle \underset{y}{\text{arg min}} \ & y \\
-                \text{s.t.} \ & -25 x + 20 y \leq 30, \\
+            \begin{array}[t]{rl}
+                \displaystyle \underset{y}{\text{arg min}} \quad & y \\
+                \text{s.t.} \quad & -25 x + 20 y \leq 30, \\
                 & x + 2 y \leq 10, \\
                 & 2 x - y \leq 15, \\
                 & 2 x + 10 y \geq 15, \\
                 & y \geq 0, \\
-                & y \in \mathbb Z_+.
+                & y \in \mathbb Z_{\ge 0}.
             \end{array}
     \end{align}
 
-Implementation with idol
-------------------------
+Implementation
+--------------
 
-In this example, we show how to model this MILP-MILP bilevel problem and how to solve it using the MibS solver.
-
-.. literalinclude:: ../../examples/bilevel-optimization/mibs.example.cpp
+.. literalinclude:: ../../examples/bilevel/mibs.example.cpp
     :language: cpp

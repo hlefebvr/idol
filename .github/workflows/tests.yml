@@ -11,7 +11,7 @@ env:
 
 jobs:
   modeling:
-    name: "Modeling Interface"
+    name: "Modeling"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,25 +33,26 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./modeling/test_modeling_interface
+        run: (cd ./mixed-integer/modeling && ./test_modeling_interface)
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage__*.info
+          path: coverage__$(uuidgen).info
 
   Mosek:
-    name: "Mosek Wrapper"
+    name: "Mosek"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_Mosek"
-          - "branch-and-bound/test_bab_location_Mosek"
-          - "branch-and-price/test_bap_assignment_Mosek"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_Mosek)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_Mosek)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_Mosek)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_Mosek)"
     steps:
       - uses: actions/checkout@v4
 
@@ -83,27 +84,28 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
         env:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage_*.info
+          path: coverage__$(uuidgen).info
 
   GLPK:
-    name: "GLPK Wrapper"
+    name: "GLPK"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_GLPK"
-          - "branch-and-bound/test_bab_location_GLPK"
-          - "branch-and-price/test_bap_assignment_GLPK"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_GLPK)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_GLPK)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_GLPK)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_GLPK)"
     steps:
       - uses: actions/checkout@v4
 
@@ -124,25 +126,26 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage_*.info
+          path: coverage__$(uuidgen).info
 
   HiGHS:
-    name: "HiGHS Wrapper"
+    name: "HiGHS"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         test:
-          - "branch-and-bound/test_bab_knapsack_HiGHS"
-          - "branch-and-bound/test_bab_location_HiGHS"
-          - "branch-and-price/test_bap_assignment_HiGHS"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_HiGHS)"
+          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_HiGHS)"
+          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_HiGHS)"
+          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_HiGHS)"
     steps:
       - uses: actions/checkout@v3
 
@@ -163,15 +166,15 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: ./${{ matrix.test }}
+        run: ${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage_*.info
+          path: coverage__$(uuidgen).info
 
   Coverage:
     name: "Coverage Report"

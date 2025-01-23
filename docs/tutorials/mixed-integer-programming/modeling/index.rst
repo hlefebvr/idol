@@ -3,13 +3,12 @@
 .. role:: cpp(code)
    :language: cpp
 
-Modeling
-========
+Modeling a MIP with idol
+========================
 
 This page introduces the basic concepts of modeling optimization problems in idol.
 We will discuss how to create optimization models and add variables, constraints and objective functions to that model.
 We will also see how to access the different components of an existing model.
-
 
 All classes which are used for modeling (standard) optimization problems can be accessed by including :code:`#include <idol/modeling.h>`.
 
