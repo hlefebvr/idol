@@ -66,5 +66,7 @@ Pessimisitc bilevel problems are less studied in the literature.
     :glob:
 
     modeling
+    files
+    kkt
     mibs
     pessimistic
