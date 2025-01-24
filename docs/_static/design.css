@@ -7,12 +7,16 @@ body {
     font-size: 20px;
 }
 
-.k, .n, .kt {
-    margin-right: 10px;
-}
+#doxygen {
 
-.cpp dd {
-    margin-bottom: 20px;
+    .k, .n, .kt {
+        margin-right: 10px;
+    }
+
+    .cpp > dd {
+        margin-bottom: 30px;
+    }
+
 }
 
 .content:not(.custom) {

@@ -26,23 +26,6 @@ namespace idol {
     class Ctr;
 }
 
-/**
- * Constraint modeling-old object.
- *
- * The class is used to represent a constraint in an optimization model.
- *
- * Constraints can be created by calling a constructor of `Ctr`, passing the optimization environment which will store
- * the constraint's versions as argument. The constraint can then be added to a model using the `Model::add` method.
- *
- * Another approach is to directly use the `Model::add_ctr` method.
- *
- * Note that constraints are created naturally by using intermediate temporary constraints `TempCtr` using operators such
- * as `<=`, `==` and `>=`. For instance, one may do
- *
- * ```cpp
- * model.add_ctr(x + y >= 2.);
- * ```
- */
 class idol::Ctr : public Object<CtrVersion, Ctr> {
     friend class impl::Env;
 public:
