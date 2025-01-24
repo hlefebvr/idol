@@ -118,7 +118,7 @@ Sometimes, you will find it useful to save a solution to access it later.
 
 idol provides the following functions to do so:
 :code:`save_primal`, :code:`save_ray`, :code:`save_dual` and :code:`save_farkas`.
-Each of these functions takes a model as argument and returns an object of the class :ref:`Point<Var> <api_Point>` or :ref:`Point<Ctr> <api_Point>` depending on the function.
+Each of these functions takes a model as argument and returns an object of the class :ref:`Point <api_Point>` with template parameter :code:`Var` or :code:`Ctr` depending on the function.
 The returned object stores the results of corresponding calls to :code:`get_var_primal`, :code:`get_var_ray`, :code:`get_ctr_dual` or :code:`get_ctr_farkas` methods.
 
 .. admonition:: Example
@@ -185,5 +185,5 @@ For instance.
 
     const auto primal_values = save_primal(original_model, higher_dimensional_model);
 
-This code will return an object of the class :ref:`Point<Var> <api_Solution_Primal>` storing the results of corresponding calls to :code:`get_var_primal` methods on the higher dimensional model
+This code will return an object of the class :ref:`Point<Var> <api_Point>` storing the results of corresponding calls to :code:`get_var_primal` methods on the higher dimensional model
 for the original model variables.

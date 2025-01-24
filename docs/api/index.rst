@@ -3,10 +3,29 @@
 API
 ===
 
+Mixed-Integer Optimization
+--------------------------
+
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 3
     :glob:
 
-    classes/index
-    types/index
-    constants/index
+    mixed-integer/index
+
+Bilevel Optimization
+--------------------
+
+.. toctree::
+    :maxdepth: 3
+    :glob:
+
+    bilevel/index
+
+Robust Optimization
+-------------------
+
+.. toctree::
+    :maxdepth: 3
+    :glob:
+
+    robust/index

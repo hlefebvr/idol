@@ -32,3 +32,10 @@ Options (External Solvers, etc.)
 No matter which installation method you choose, you can customize the installation by setting a set of parameters accordingly.
 This is particularly useful if you want to install idol with some external solver such as Gurobi.
 Please refer to the :ref:`complete list of options <cmake_options>` for more information.
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :glob:
+
+   options

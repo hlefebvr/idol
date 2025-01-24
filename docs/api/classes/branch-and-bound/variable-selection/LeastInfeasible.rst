@@ -1,4 +1,0 @@
-LeastInfeasible
-===============
-
-.. doxygenclass:: idol::LeastInfeasible

@@ -1,4 +1,0 @@
-Mosek
-=====
-
-.. doxygenclass:: idol::Mosek

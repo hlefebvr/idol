@@ -4,7 +4,6 @@ Models
 The :ref:`Model <api_Model>` class is used to represent a (standard) optimization model of the form
 
 .. math::
-    :label: eq:mip
 
     \begin{align}
         \min_{x} \quad & c^\top x + x^\top D x + c_0 \\

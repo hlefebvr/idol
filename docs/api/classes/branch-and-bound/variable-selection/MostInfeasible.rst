@@ -1,4 +1,0 @@
-MostInfeasible
-==============
-
-.. doxygenclass:: idol::MostInfeasible

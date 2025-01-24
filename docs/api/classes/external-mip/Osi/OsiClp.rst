@@ -1,4 +1,0 @@
-OsiClp
-======
-
-.. doxygenclass:: idol::OsiClp

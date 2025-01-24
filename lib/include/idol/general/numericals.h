@@ -46,7 +46,7 @@ namespace idol {
          * Used to declare optimality of a MIP solution by comparing with the current relative gap.
          *
          * The relative gap is computed as follows:
-         * \f[ RelativeGap := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \f]
+         * \f[ \gamma_{\text{rel}} := \frac{ |UB - LB| }{ 10^{-10} + |UB| }. \f]
          */
         static double MIPRelativeGap = 1e-4;
 
@@ -58,7 +58,7 @@ namespace idol {
          * Used to declare optimality of a MIP solution by comparing with the current absolute gap.
          *
          * The absolute gap is computed as follows:
-         * \f[ AbsoluteGap := |UB - LB| \f]
+         * \f[ \gamma_{\text{abs}} := |UB - LB| \f]
          */
         static double MIPAbsoluteGap = 1e-5;
 
