@@ -7,6 +7,14 @@ body {
     font-size: 20px;
 }
 
+.k, .n, .kt {
+    margin-right: 10px;
+}
+
+.cpp dd {
+    margin-bottom: 20px;
+}
+
 .content:not(.custom) {
     max-width: 900px;
     text-align: justify;
