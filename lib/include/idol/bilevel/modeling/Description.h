@@ -65,28 +65,28 @@ public:
 
     void set_lower_level_obj(QuadExpr<Var> t_objective) { m_follower_objective = std::move(t_objective); }
 
-    [[nodiscard]] bool is_leader(const Var& t_var) const { return t_var.get(m_level) == MasterId; }
+    [[nodiscard]] bool is_upper(const Var& t_var) const { return t_var.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_leader(const Ctr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
+    [[nodiscard]] bool is_upper(const Ctr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_leader(const QCtr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
+    [[nodiscard]] bool is_upper(const QCtr& t_ctr) const { return t_ctr.get(m_level) == MasterId; }
 
-    [[nodiscard]] bool is_follower(const Var& t_var) const { return t_var.get(m_level) != MasterId; }
+    [[nodiscard]] bool is_lower(const Var& t_var) const { return t_var.get(m_level) != MasterId; }
 
-    [[nodiscard]] bool is_follower(const Ctr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
+    [[nodiscard]] bool is_lower(const Ctr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
 
-    [[nodiscard]] bool is_follower(const QCtr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
+    [[nodiscard]] bool is_lower(const QCtr& t_ctr) const { return t_ctr.get(m_level) != MasterId; }
 };
 
 namespace idol::Bilevel {
     static bool is_coupling(const Model& t_model, const Description& t_description, const Ctr& t_ctr) {
 
-        if (!t_description.is_leader(t_ctr)) {
+        if (!t_description.is_upper(t_ctr)) {
             return false;
         }
 
         for (const auto& [var, constant] : t_model.get_ctr_row(t_ctr)) {
-            if (t_description.is_follower(var)) {
+            if (t_description.is_lower(var)) {
                 return true;
             }
         }

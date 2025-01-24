@@ -136,7 +136,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_
 
     for (const auto& var : m_model.vars()) {
 
-        if (m_description.is_follower(var)) {
+        if (m_description.is_lower(var)) {
             const auto index = m_model.get_var_index(var);
             lower_level.emplace_back(index);
         }
@@ -145,7 +145,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_
 
     for (const auto& var : m_model.vars()) {
 
-        if (m_description.is_leader(var) && m_model.get_var_type(var) != Continuous) {
+        if (m_description.is_upper(var) && m_model.get_var_type(var) != Continuous) {
             const auto index = m_model.get_var_index(var);
             upper_level.emplace_back(index);
         }
@@ -154,7 +154,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_
 
     for (const auto& var : m_model.vars()) {
 
-        if (m_description.is_leader(var) && m_model.get_var_type(var) == Continuous) {
+        if (m_description.is_upper(var) && m_model.get_var_type(var) == Continuous) {
             const auto index = m_model.get_var_index(var);
             upper_level.emplace_back(index);
         }
@@ -176,7 +176,7 @@ std::pair<std::vector<int>, std::vector<int>> idol::impl::MibSFromAPI::dispatch_
 
     for (const auto& ctr : m_model.ctrs()) {
 
-        auto& level = m_description.is_leader(ctr) ? upper_level : lower_level;
+        auto& level = m_description.is_upper(ctr) ? upper_level : lower_level;
         const auto index = m_model.get_ctr_index(ctr);
 
         level.emplace_back(index);

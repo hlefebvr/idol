@@ -46,9 +46,9 @@ idol::Reformulators::KKT::KKT(const Model& t_high_point_relaxation,
                          const Bilevel::Description &t_bilevel_description)
                          : KKT(t_high_point_relaxation,
                                     t_bilevel_description.follower_obj(),
-                                    [&](const Var& t_var) { return t_bilevel_description.is_follower(t_var); },
-                                    [&](const Ctr& t_ctr) { return t_bilevel_description.is_follower(t_ctr); },
-                                    [&](const QCtr& t_qctr) { return t_bilevel_description.is_follower(t_qctr); }) {
+                                    [&](const Var& t_var) { return t_bilevel_description.is_lower(t_var); },
+                                    [&](const Ctr& t_ctr) { return t_bilevel_description.is_lower(t_ctr); },
+                                    [&](const QCtr& t_qctr) { return t_bilevel_description.is_lower(t_qctr); }) {
 
 }
 

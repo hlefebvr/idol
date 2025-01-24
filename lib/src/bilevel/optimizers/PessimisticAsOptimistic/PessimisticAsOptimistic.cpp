@@ -56,7 +56,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
     // Create copies of variables
     for (const auto& var : m_src_model.vars()) {
 
-        if (m_src_description.is_leader(var)) {
+        if (m_src_description.is_upper(var)) {
             continue;
         }
 
@@ -74,13 +74,13 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
     // Create copies of constraints
     for (const auto& ctr : m_src_model.ctrs()) {
 
-        if (m_src_description.is_leader(ctr)) {
+        if (m_src_description.is_upper(ctr)) {
             continue;
         }
 
         idol::LinExpr<idol::Var> lhs;
         for (const auto& [var, constant] : m_src_model.get_ctr_row(ctr)) {
-            if (m_src_description.is_leader(var)) {
+            if (m_src_description.is_upper(var)) {
                 lhs += constant * var;
             } else {
                 lhs += constant * *result[m_src_model.get_var_index(var)];
@@ -120,7 +120,7 @@ void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>
     idol::AffExpr copy_objective;
     copy_objective += original_lower_objective.constant();
     for (const auto& [var, constant] : original_lower_objective.linear()) {
-        if (m_src_description.is_leader(var)) {
+        if (m_src_description.is_upper(var)) {
             copy_objective += constant * var;
         } else {
             copy_objective += constant * *t_lower_level_copy[m_src_model.get_var_index(var)];
