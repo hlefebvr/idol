@@ -76,7 +76,10 @@ html_js_files = [
 
 html_theme = 'press'
 html_theme_options = {
-    "titles_only": True
+    "titles_only": True,
+    "external_links": [
+        ("Github", "https://github.com/hlefebvr/idol")
+    ]
 }
 pygments_style = "colorful"
 html_title = "idol"

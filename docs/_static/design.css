@@ -18,7 +18,7 @@ body {
 
 #cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     /* grid-template-columns: auto auto auto; */
 }
 
@@ -42,25 +42,26 @@ body {
     margin-bottom: 10px;
 
     background-color: #1f5c88;
-    border-width: 0;
+    border: 1px solid lightgray;
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
     appearance: none;
 
-    b {
-        font-weight: bold;
+    span {
+        font-weight: 400;
     }
 
     > div {
         margin: 5px;
         margin-top: 10px;
         background: white;
-        border: 1px solid #efefef;
         text-align: center;
-        height: 200px;
+        height: 160px;
+        padding: 20px;
+        border: 1px solid lightgray;
 
         img {
-            max-height: 200px;
+            max-height: 160px;
             max-width: 100%;
         }
     }
@@ -256,4 +257,5 @@ h1, h2, h3, h4, h5, h6 {
     .body-header {
         display: none;
     }
+
 }

@@ -39,7 +39,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
 
     <div id="cards">
         <a href="tutorials/mixed-integer-programming/index.html">
-            <b>Mixed-Integer Optimization</b>
+            <span>Mixed-Integer Optimization</span>
             <div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/IP_polytope_with_LP_relaxation.svg">
             </div>
@@ -48,7 +48,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
             </p>
         </a>
         <a href="tutorials/mixed-integer-programming/dantzig-wolfe/index.html">
-            <b>Branch-and-Price</b>
+            <span>Branch-and-Price</span>
             <div>
                 <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00454-012-9421-9/MediaObjects/454_2012_9421_Fig1_HTML.gif">
             </div>
@@ -57,7 +57,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
             </p>
         </a>
         <a href="tutorials/bilevel-optimization/index.html">
-            <b>Bilevel Optimization</b>
+            <span>Bilevel Optimization</span>
             <div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Supply-demand-equilibrium.svg">
             </div>
@@ -67,7 +67,7 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
             </p>
         </a>
         <a href="tutorials/robust-optimization/index.html">
-            <b>Robust Optimization</b>
+            <span>Robust Optimization</span>
             <div>
                 <img src="_static/robust.png" />
             </div>
@@ -76,8 +76,8 @@ idol offers a variety of tools to tackle many different kinds of optimization pr
                 with column-and-constraint generation.
             </p>
         </a>
-        <a href="tutorials/index.html" style="background-color:#a1bccf;">
-            <b>And More...</b>
+        <a href="tutorials/index.html" style="background-color:#efefef;color:black;">
+            <span>And More...</span>
             <div>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Max_paraboloid.svg" />
             </div>
