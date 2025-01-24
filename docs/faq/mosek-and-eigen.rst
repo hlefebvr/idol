@@ -1,7 +1,7 @@
 .. _mosek_and_socp:
 
-Why is Eigen necessary to solve QPs and QCQPs with Mosek?
-=========================================================
+Why is Eigen Necessary to Solve QCQPs with Mosek?
+=================================================
 
 In Short
 --------

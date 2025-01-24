@@ -52,7 +52,7 @@ Note that it is also possible to pass the CMake option :bash:`MOSEK_DIR=/path/to
 another directory to look for Mosek.
 
 Note that :bash:`MOSEK_HOME` (or equivalently :bash:`MOSEK_DIR`) should point to the Mosek installation folder where
-folders :bash:`h` and :bash:`bin` can be found. For instance, :bash:`MOSEK_HOME=/home/<MY_USERNAME>/mosek/10.0/tools/platform/linux64x86`.
+folders :bash:`h` and :bash:`bin` can be found. For instance, :bash:`MOSEK_HOME=~/mosek/10.0/tools/platform/linux64x86`.
 
 .. admonition:: Example
 
@@ -123,6 +123,36 @@ another directory to look for GLPK.
         set(USE_HIGHS YES)
         set(HIGHS_DIR /path/to/glpk/install/dir)
 
+coin-or (Open-Source Solvers)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+idol can be linked with some of the coin-or libraries.
+Hereafter, we give a list of such libraries. For all the :code:`USE_*` options, you will need to define the environment
+variable :code:`COIN_OR_HOME` or to set the CMake option :code:`COIN_OR_DIR`. It must point to the :code:`dist` directory
+of coin-or.
+
+.. admonition:: Example
+
+    The following will prepare CMake for linking against coin-or libraries.
+
+    .. code-block::
+
+        cmake -DCOIN_OR_DIR=/path/to/coin_or/dist <OTHER_OPTIONS_GO_HERE> ..
+
+    If you are doing a *local installation*, then the same can be achieved as follows.
+
+    .. code-block::
+
+        set(COIN_OR_DIR /path/to/coin_or/dist)
+
+We now give the list of options which can be used in relation with coin-or libraries.
+
+- :code:`USE_OSI=YES`: use the Osi solver.
+- :code:`USE_SYMPHONY=YES`: use the Symphony solver (can only be used through Osi).
+- :code:`USE_CBC=YES`: use the Cbc solver (can only be used through Osi).
+- :code:`USE_CLP=YES`: use the Clp solver (can only be used through Osi).
+- :code:`USE_CPLEX=YES`: use the Cplex solver (can only be used through Osi).
+- :code:`USE_MIBS=YES`: use the MibS solver (will automatically search for Alps, Bcps, Blis, and Cgl).
 
 Building Examples
 -----------------
