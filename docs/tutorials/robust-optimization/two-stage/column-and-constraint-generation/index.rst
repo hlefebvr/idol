@@ -1,6 +1,5 @@
-Column-and-Constraint-Generation Algorithm
-==========================================
-
+Using Column-and-Constraint-Generation
+======================================
 
 .. toctree::
     :maxdepth: 1

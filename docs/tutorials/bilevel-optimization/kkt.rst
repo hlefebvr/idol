@@ -41,19 +41,19 @@ For this tutorial, we will work on the following code snippet:
     auto y = high_point_relaxation.add_var(-Inf, Inf, Continuous, 0., "y");
 
     high_point_relaxation.set_obj_expr(x + 6 * y);
-    auto follower_c1 = high_point_relaxation.add_ctr(2 * x - y >= 0);
-    auto follower_c2 = high_point_relaxation.add_ctr(-x - y >= -6);
-    auto follower_c3 = high_point_relaxation.add_ctr(-x + 6 * y >= -3);
-    auto follower_c4 = high_point_relaxation.add_ctr(x + 3 * y >= 3);
+    auto lower_c1 = high_point_relaxation.add_ctr(2 * x - y >= 0);
+    auto lower_c2 = high_point_relaxation.add_ctr(-x - y >= -6);
+    auto lower_c3 = high_point_relaxation.add_ctr(-x + 6 * y >= -3);
+    auto lower_c4 = high_point_relaxation.add_ctr(x + 3 * y >= 3);
     high_point_relaxation.add_ctr(-x + 5 * y <= 12.5);
 
     Bilevel::Description description(env);
     description.set_lower_level_obj(-y);
     description.make_lower_level(y);
-    description.make_lower_level(follower_c1);
-    description.make_lower_level(follower_c2);
-    description.make_lower_level(follower_c3);
-    description.make_lower_level(follower_c4);
+    description.make_lower_level(lower_c1);
+    description.make_lower_level(lower_c2);
+    description.make_lower_level(lower_c3);
+    description.make_lower_level(lower_c4);
 
 Here, a bilevel problem is modeled with idol. The high point relaxation is stored in :code:`high_point_relaxation`, while
 the lower-level problem is described using the :code:`Bilevel::Description` object :code:`description`.
@@ -114,12 +114,12 @@ In the following code, we will simply use a default value for the big-M values o
 
 The returned model is now a mixed-integer linear program that can be solved using a standard optimization solver.
 
-Now, say that constraint :code:`follower_c1` is known to have a dual variable bounded by, say, 10. One could do the following.
+Now, say that constraint :code:`lower_c1` is known to have a dual variable bounded by, say, 10. One could do the following.
 
 .. code::
 
     Annotation<double> big_M(env, "big_M", 1e4);
-    follower_c1.set(big_M, 10);
+    lower_c1.set(big_M, 10);
 
     auto single_level_model = Bilevel::KKT::make_model(
             high_point_relaxation, description, big_M
@@ -181,7 +181,7 @@ Here is an example.
     single_level_model.use(Gurobi());
     single_level_model.optimize();
 
-Note that here, the strong-duality reformulation is a nonlinear problem because of the complementarity constraint.
+Note that here, the strong-duality reformulation is a nonlinear problem because of the dual objective function.
 Hence, we use the nonlinear solving features of Gurobi here.
 
 Solving the Strong-duality Reformulation directly

@@ -136,13 +136,14 @@ Still, idol can be used to solve your favourite MILP, MIQP, or MIQCQP through th
 many external solvers it interfaces with.
 A clear advantage of using idol to solve these problems is that it offers a unified and common interface to every solver.
 Thus, you can write your code once and test it with different solvers.
-The following solvers are currently supported by idol
+The following solvers are currently supported by idol:
 
-* `Gurobi <https://www.gurobi.com/>`_
-* `Mosek <https://www.mosek.com/>`_
-* `GLPK <https://www.gnu.org/software/glpk/>`_
-* `HiGHS <https://highs.dev/>`_
-* `COIN-OR/Osi <https://github.com/coin-or/Osi>`_ which then gives you access to CPLEX, Symphony or any Osi compatible solver.
+* `Gurobi <https://www.gurobi.com/>`_,
+* `Mosek <https://www.mosek.com/>`_,
+* `GLPK <https://www.gnu.org/software/glpk/>`_,
+* `HiGHS <https://highs.dev/>`_,
+* `coin-or/Osi <https://github.com/coin-or/Osi>`_ (which gives access to Cplex, Symphony, or any Osi compatible solver),
+* `coin-or/MibS <https://github.com/coin-or/MibS>`_.
 
 Table of Contents
 -----------------

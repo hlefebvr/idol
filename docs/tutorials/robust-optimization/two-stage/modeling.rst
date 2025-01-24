@@ -1,6 +1,6 @@
 .. _modeling_two_stage_robust_problem:
 
-Modeling a Two-Stage Robust Problem
+Modeling Adjustable Robust Problems
 ===================================
 
 In this tutorial, we will see how to model a two-stage robust problem in idol.

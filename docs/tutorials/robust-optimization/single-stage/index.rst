@@ -1,7 +1,7 @@
-.. _robust:
+.. _robust_single:
 
-Robust Optimization
-===================
+Single-stage Robust Optimization
+================================
 
 .. warning::
 
@@ -11,5 +11,4 @@ Robust Optimization
     :maxdepth: 3
     :glob:
 
-    single-stage/index
-    two-stage/index
+
