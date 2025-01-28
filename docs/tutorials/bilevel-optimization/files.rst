@@ -1,8 +1,8 @@
-Reading and Writing Bilevel Instances (BOBiLib)
+Reading and Writing Bilevel Instances (BOBILib)
 ===============================================
 
-`BOBiLib <https://bobilib.org/>`_ is a library of instances for bilevel optimization problems.
-In this tutorial, we will show how to read and write bilevel instances in the format which is used by BOBiLib.
+`BOBILib <https://BOBILib.org/>`_ is a library of instances for bilevel optimization problems.
+In this tutorial, we will show how to read and write bilevel instances in the format which is used by BOBILib.
 The advantage is twofold. First, we can easily access a large number of bilevel instances.
 Second, we can easily share our bilevel instances with others.
 
@@ -15,7 +15,7 @@ Let's get started!
 The Format
 ----------
 
-The instances in BOBiLib are stored in two files:
+The instances in BOBILib are stored in two files:
 
 - An :code:`.mps` or :code:`.lp` file containing the high-point relaxation of the bilevel problem,
 - An :code:`.aux` file containing the description of the lower-level problem.
@@ -28,7 +28,7 @@ Implementation
 Reading Instances
 ^^^^^^^^^^^^^^^^
 
-Reading a BOBiLib instance is straightforward. We can use the :code:`Bilevel::read_from_file` function.
+Reading a BOBILib instance is straightforward. We can use the :code:`Bilevel::read_from_file` function.
 However, it requires an underlying solver to parse the :code:`.mps` file. Here, we will use Gurobi.
 
 .. code::
