@@ -35,6 +35,8 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
     m_separation_problem->set_obj_expr(std::move(objective));
     m_separation_problem->set_obj_sense(sense);
 
+    m_separation_problem->optimizer().set_param_time_limit(original_model().optimizer().get_remaining_time());
+
     m_separation_problem->optimize();
 
     const auto status = m_separation_problem->get_status();
