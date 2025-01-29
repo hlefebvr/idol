@@ -25,6 +25,9 @@ class idol::GurobiCallbackI : public GRBCallback, public CallbackI {
     Optimizers::Gurobi& m_parent;
     std::list<std::unique_ptr<Callback>> m_callbacks;
 
+    double m_best_obj = Inf;
+    double m_best_bound = -Inf;
+
     GRBTempConstr gurobi_temp_constr(const TempCtr& t_temp_ctr);
 public:
     explicit GurobiCallbackI(Optimizers::Gurobi& t_parent);
@@ -47,9 +50,9 @@ protected:
 
     [[nodiscard]] const Timer &time() const override;
 
-    double best_obj() const override;
+    [[nodiscard]] double best_obj() const override;
 
-    double best_bound() const override;
+    [[nodiscard]] double best_bound() const override;
 
     void terminate() override;
 };
