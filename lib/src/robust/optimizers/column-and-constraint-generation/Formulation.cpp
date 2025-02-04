@@ -5,8 +5,13 @@
 #include <idol/mixed-integer/modeling/variables/TempVar.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
 
-idol::CCG::Formulation::Formulation(const Model &t_parent, const ::idol::Robust::Description &t_description)
-    : m_parent(t_parent), m_description(t_description), m_master(t_parent.env()) {
+
+idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Robust::Description &t_robust_description,
+                                    const idol::Bilevel::Description &t_bilevel_description)
+        : m_parent(t_parent),
+          m_robust_description(t_robust_description),
+          m_bilevel_description(t_bilevel_description),
+          m_master(t_parent.env()) {
 
     parse_variables();
     parse_objective();
@@ -18,7 +23,7 @@ void idol::CCG::Formulation::parse_variables() {
 
     for (const auto& var : m_parent.vars()) {
 
-        if (m_description.stage(var) > 0) {
+        if (m_bilevel_description.is_lower(var) > 0) {
             m_second_stage_variables.emplace_back(var);
             continue;
         }
@@ -46,11 +51,11 @@ void idol::CCG::Formulation::parse_objective() {
 
     for (const auto& [pair, coeff] : objective) {
 
-        if (m_description.stage(pair.first) > 0) {
+        if (m_bilevel_description.is_lower(pair.first)) {
             continue;
         }
 
-        if (m_description.stage(pair.second) > 0) {
+        if (m_bilevel_description.is_lower(pair.second)) {
             continue;
         }
 
@@ -67,13 +72,13 @@ void idol::CCG::Formulation::parse_constraints() {
         const auto& row = m_parent.get_ctr_row(ctr);
 
         const bool has_first_stage = std::any_of(row.begin(), row.end(), [this](const auto& term) {
-            return m_description.stage(term.first) == 0;
+            return m_bilevel_description.is_upper(term.first);
         });
         const bool has_second_stage = std::any_of(row.begin(), row.end(), [this](const auto& term) {
-            return m_description.stage(term.first) > 0;
+            return m_bilevel_description.is_lower(term.first);
         });
 
-        if (has_second_stage || !m_description.uncertain_mat_coeffs(ctr).empty()) {
+        if (has_second_stage || !m_robust_description.uncertain_mat_coeffs(ctr).empty()) {
             if (has_first_stage) {
                 m_linking_constraints.emplace_back(ctr);
             }
@@ -116,7 +121,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         LinExpr<Var> new_row;
         for (const auto& [var, coeff] : row) {
 
-            if (m_description.stage(var) == 0) {
+            if (m_bilevel_description.is_upper(var)) {
                 new_row += coeff * var;
                 continue;
             }
@@ -124,12 +129,12 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
             new_row += coeff * new_vars[m_parent.get_var_index(var)].value();
         }
 
-        const auto uncertainties = m_description.uncertain_mat_coeffs(ctr);
+        const auto uncertainties = m_robust_description.uncertain_mat_coeffs(ctr);
         for (const auto& [var, coeff] : uncertainties) {
             new_row += evaluate(coeff, t_scenario) * new_vars[m_parent.get_var_index(var)].value();
         }
 
-        rhs += evaluate(m_description.uncertain_rhs(ctr), t_scenario);
+        rhs += evaluate(m_robust_description.uncertain_rhs(ctr), t_scenario);
 
         m_master.add_ctr(TempCtr(std::move(new_row), type, rhs), ctr.name() + "_" + std::to_string(m_n_added_scenario));
 
@@ -144,7 +149,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     for (const auto& var : m_second_stage_variables) {
         objective += m_parent.get_var_obj(var) * new_vars[m_parent.get_var_index(var)].value();
     }
-    for (const auto& [var, coeff] : m_description.uncertain_obj()) {
+    for (const auto& [var, coeff] : m_robust_description.uncertain_obj()) {
         objective += evaluate(coeff, t_scenario) * new_vars[m_parent.get_var_index(var)].value();
     }
 

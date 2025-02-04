@@ -9,19 +9,32 @@
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "Formulation.h"
+#include "idol/bilevel/modeling/Description.h"
 
 namespace idol::Optimizers::Robust {
     class ColumnAndConstraintGeneration;
 }
 
 class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm {
-    const ::idol::Robust::Description &m_description;
+
+    const ::idol::Robust::Description &m_robust_description;
+    const ::idol::Bilevel::Description &m_bilevel_description;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<idol::CCG::Formulation> m_formulation;
+    unsigned int m_n_iterations = 0;
+
+    // Initial scenarios
+    std::vector<Point<Var>> m_initial_scenarios;
+    std::unique_ptr<OptimizerFactory> m_initial_scenario_by_minimization;
+    std::unique_ptr<OptimizerFactory> m_initial_scenario_by_maximization;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
-                                  const ::idol::Robust::Description &t_description,
-                                  const OptimizerFactory &t_master_optimizer);
+                                  const ::idol::Robust::Description &t_robust_description,
+                                  const ::idol::Bilevel::Description &t_bilevel_description,
+                                  const OptimizerFactory &t_master_optimizer,
+                                  std::vector<Point<Var>> t_initial_scenarios,
+                                  OptimizerFactory* t_initial_scenario_by_minimization,
+                                  OptimizerFactory* t_initial_scenario_by_maximization);
 
     [[nodiscard]] std::string name() const override;
 
@@ -83,6 +96,12 @@ protected:
     void update_var_ub(const Var &t_var) override;
 
     void update_var_obj(const Var &t_var) override;
+
+    void add_initial_scenarios();
+    void add_initial_scenario_by_min_or_max(const OptimizerFactory& t_optimizer, double t_coefficient);
+    void solve_master_problem();
+    void check_termination_criteria();
+    void log_iteration();
 };
 
 

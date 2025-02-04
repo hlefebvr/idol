@@ -1,5 +1,4 @@
 #include <iostream>
-#include <idol/idol/modeling/matrix/Column.h>
 #include "idol/general/utils/SparseVector.h"
 #include "idol/mixed-integer/modeling/variables/Var.h"
 #include "idol/mixed-integer/modeling/models/Model.h"
@@ -47,29 +46,26 @@ int main(int t_argc, const char** t_argv) {
 
     // Make model
     Model model(env);
-    Robust::Description description(uncertainty_set);
 
-    auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
+    Robust::Description robust_description(uncertainty_set);
+    Bilevel::Description bilevel_description(env);
+
+    const auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., Inf, Continuous, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-
-        const auto c = model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
-
-        for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            description.set_uncertain_rhs(c, -instance.capacity(i) * xi[j]);
-        }
-
+        model.add_ctr(idol_Sum(j, Range(n_customers), y[i][j]) <= instance.capacity(i) * x[i]);
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= 1);
+        const auto c = model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= instance.demand(j));
+        robust_description.set_uncertain_rhs(c, 0.2 * instance.demand(j) * xi[j]);
     }
 
+    // Set second-stage variables
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
-            model.add_ctr(y[i][j] <= x[i]);
-            description.set_stage(y[i][j], 1);
+            bilevel_description.make_lower_level(y[i][j]);
         }
     }
 
@@ -88,14 +84,17 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
-    auto ccg = Robust::ColumnAndConstraintGeneration(description);
-
-    ccg.with_master_optimizer(Gurobi());
-
-    model.use(ccg);
+    model.use(
+            Robust::ColumnAndConstraintGeneration(robust_description,bilevel_description)
+                .with_master_optimizer(Gurobi())
+                .with_initial_scenario_by_minimization(Gurobi())
+                .with_initial_scenario_by_maximization(Gurobi())
+                .with_logs(true)
+    );
     model.optimize();
 
-    std::cout << "ADR Problem has value: " << model.get_best_obj() << std::endl;
+    std::cout << "Status is " << model.get_status() << std::endl;
+    std::cout << "Two-stage Robust Problem has value: " << model.get_best_obj() << std::endl;
 
     return 0;
 }

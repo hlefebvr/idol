@@ -7,6 +7,7 @@
 
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/robust/modeling/Description.h"
+#include "idol/bilevel/modeling/Description.h"
 
 namespace idol::CCG {
     class Formulation;
@@ -14,7 +15,8 @@ namespace idol::CCG {
 
 class idol::CCG::Formulation {
     const Model& m_parent;
-    const ::idol::Robust::Description &m_description;
+    const ::idol::Robust::Description &m_robust_description;
+    const ::idol::Bilevel::Description &m_bilevel_description;
 
     Model m_master;
     std::vector<Var> m_second_stage_variables;
@@ -28,13 +30,18 @@ class idol::CCG::Formulation {
     void parse_objective();
     void parse_constraints();
 public:
-    Formulation(const Model& t_parent, const ::idol::Robust::Description &t_description);
+    Formulation(const Model& t_parent,
+                const ::idol::Robust::Description &t_robust_description,
+                const ::idol::Bilevel::Description &t_bilevel_description
+                );
 
     Model& master() { return m_master; }
 
     const Model& master() const { return m_master; }
 
     void add_scenario_to_master(const Point<Var>& t_scenario);
+
+    unsigned int n_added_scenarios() const { return m_n_added_scenario; }
 };
 
 #endif //IDOL_CCG_FORMULATION_H

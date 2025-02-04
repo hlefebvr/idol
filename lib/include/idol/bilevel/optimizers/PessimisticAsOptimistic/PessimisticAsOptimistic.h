@@ -13,7 +13,7 @@ namespace idol::Bilevel {
 }
 
 class idol::Bilevel::PessimisticAsOptimistic : public OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic> {
-    //const Bilevel::Description &m_description;
+    //const Bilevel::Description &m_robust_description;
     //std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
 public:
 

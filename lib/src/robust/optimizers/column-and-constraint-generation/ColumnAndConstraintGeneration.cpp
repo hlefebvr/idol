@@ -4,13 +4,21 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
 
-idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const Robust::Description &t_description)
-    : m_description(t_description) {
+idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const Robust::Description &t_robust_description,
+                                                                           const Bilevel::Description &t_bilevel_description)
+    : m_robust_description(t_robust_description),
+      m_bilevel_description(t_bilevel_description) {
 
 }
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
-        const idol::Robust::ColumnAndConstraintGeneration &t_src) : m_description(t_src.m_description) {
+        const idol::Robust::ColumnAndConstraintGeneration &t_src)
+        : OptimizerFactoryWithDefaultParameters<ColumnAndConstraintGeneration>(*this),
+          m_robust_description(t_src.m_robust_description),
+          m_bilevel_description(t_src.m_bilevel_description),
+          m_initial_scenarios(t_src.m_initial_scenarios),
+          m_initial_scenario_by_minimization(t_src.m_initial_scenario_by_minimization ? t_src.m_initial_scenario_by_minimization->clone() : nullptr),
+          m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr) {
 
 }
 
@@ -37,11 +45,51 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
     }
 
     auto* result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
-                                                                 m_description,
-                                                                 *m_master_optimizer);
+                                                                         m_robust_description,
+                                                                         m_bilevel_description,
+                                                                         *m_master_optimizer,
+                                                                         m_initial_scenarios,
+                                                                         m_initial_scenario_by_minimization ? m_initial_scenario_by_minimization->clone() : nullptr,
+                                                                         m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr
+                                                                         );
 
     handle_default_parameters(result);
 
     return result;
 }
 
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::reserve_initial_scenarios(unsigned int t_n) {
+    m_initial_scenarios.reserve(t_n);
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::add_initial_scenario(idol::Point<idol::Var> t_scenario) {
+    m_initial_scenarios.emplace_back(std::move(t_scenario));
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_initial_scenario_by_minimization(const OptimizerFactory& t_optimizer) {
+
+    if (m_initial_scenario_by_minimization) {
+        throw Exception("Initial scenario by minimization already set");
+    }
+
+    m_initial_scenario_by_minimization.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_initial_scenario_by_maximization(const OptimizerFactory& t_optimizer) {
+
+    if (m_initial_scenario_by_maximization) {
+        throw Exception("Initial scenario by maximization already set");
+    }
+
+    m_initial_scenario_by_maximization.reset(t_optimizer.clone());
+
+    return *this;
+}
