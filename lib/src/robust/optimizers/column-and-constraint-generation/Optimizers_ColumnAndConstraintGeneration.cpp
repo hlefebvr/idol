@@ -4,6 +4,7 @@
 #include <idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
 #include <idol/bilevel/optimizers/BilevelOptimizerInterface.h>
+#include <idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h>
 #include <idol/bilevel/modeling/write_to_file.h>
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
@@ -277,17 +278,17 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration() {
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_problem() {
 
     if (m_optimizer_feasibility_separation) {
-        const bool is_upper_level_decision_feasible = solve_feasibility_separation_problem() == 0;
+        const bool is_upper_level_decision_feasible = solve_feasibility_adversarial_problem() == 0;
         if (!is_upper_level_decision_feasible) {
             return;
         }
     }
 
-    solve_optimality_separation_problem();
+    solve_optimality_adversarial_problem();
 
 }
 
-unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_separation_problem() {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
 
     std::cout << "Solving feasibility separation problem..." << std::endl;
 
@@ -310,7 +311,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     const auto status = high_point_relaxation.get_status();
 
     if (status != Optimal && status != Feasible) {
-        set_status(status);
+        set_status(Fail);
         set_reason(high_point_relaxation.get_reason());
         terminate();
         return 1;
@@ -329,18 +330,15 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     return 0;
 }
 
-unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem() {
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem() {
 
     std::cout << "Solving optimality separation problem..." << std::endl;
 
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
-    if (is_adjustable_robust_problem()) {
-        return solve_optimality_separation_problem_for_adjustable_robust_problem(upper_level_solution);
-    }
+    return solve_optimality_adversarial_problem(upper_level_solution);
 
-    return solve_optimality_separation_problem_for_wait_and_see_lower_level(upper_level_solution);
 }
 
 const bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustable_robust_problem() const {
@@ -348,12 +346,12 @@ const bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustabl
 }
 
 unsigned int
-idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution) {
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution) {
 
     const unsigned int n_coupling_constraints = m_formulation->n_coupling_constraints();
 
     for (unsigned int k = 0 ; k < n_coupling_constraints ; ++k) {
-        const unsigned int n_added_scenarios = solve_optimality_separation_problem_for_adjustable_robust_problem(t_upper_level_solution, k);
+        const unsigned int n_added_scenarios = solve_optimality_adversarial_problem(t_upper_level_solution, k);
         if (n_added_scenarios > 0) {
             return n_added_scenarios;
         }
@@ -363,12 +361,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separa
 }
 
 unsigned int
-idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_wait_and_see_lower_level(const Point<Var>& t_upper_level_solution) {
-    throw Exception("Wait-and-see follower not implemented yet.");
-}
-
-unsigned int
-idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_adjustable_robust_problem(
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(
         const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index) {
 
     Model high_point_relaxation = m_formulation->build_optimality_separation_problem_for_adjustable_robust_problem(
@@ -389,7 +382,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separa
     const auto status = high_point_relaxation.get_status();
 
     if (status != Optimal && status != Feasible) {
-        set_status(status);
+        set_status(Fail);
         set_reason(high_point_relaxation.get_reason());
         terminate();
         return 1;

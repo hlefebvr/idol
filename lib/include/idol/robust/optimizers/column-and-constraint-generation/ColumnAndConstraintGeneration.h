@@ -46,9 +46,9 @@ public:
 
     ColumnAndConstraintGeneration& with_initial_scenario_by_maximization(const OptimizerFactory& t_optimizer);
 
-    ColumnAndConstraintGeneration& with_feasibility_separation_optimizer(const OptimizerFactory& t_optimizer);
+    ColumnAndConstraintGeneration& add_feasibility_separation_optimizer(const OptimizerFactory& t_optimizer);
 
-    ColumnAndConstraintGeneration& with_optimality_separation_optimizer(const OptimizerFactory& t_optimizer);
+    ColumnAndConstraintGeneration& add_optimality_separation_optimizer(const OptimizerFactory& t_optimizer);
 };
 
 #endif //IDOL_COLUMNANDCONSTRAINTGENERATION_H

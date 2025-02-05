@@ -100,6 +100,8 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
     std::cout << "Adding scenario\n" << t_scenario << std::endl;
 
+    const auto& lower_level_annotation = m_bilevel_description.lower_level();
+
     std::vector<std::optional<Var>> new_vars;
     new_vars.resize(m_parent.vars().size());
 
@@ -112,7 +114,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         const auto index = m_parent.get_var_index(var);
 
         new_vars[index] = m_master.add_var(lb, ub, type, 0, var.name() + "_" + std::to_string(m_n_added_scenario));
-
+        new_vars[index]->set(lower_level_annotation, m_n_added_scenario);
     }
 
     m_master.update();
@@ -142,7 +144,8 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
         rhs += evaluate(m_robust_description.uncertain_rhs(ctr), t_scenario);
 
-        m_master.add_ctr(TempCtr(std::move(new_row), type, rhs), ctr.name() + "_" + std::to_string(m_n_added_scenario));
+        const auto new_ctr = m_master.add_ctr(TempCtr(std::move(new_row), type, rhs), ctr.name() + "_" + std::to_string(m_n_added_scenario));
+        new_ctr.set(lower_level_annotation, m_n_added_scenario);
 
     }
 
@@ -161,6 +164,11 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     }
 
     m_master.add_ctr(*m_second_stage_epigraph >= std::move(objective));
+
+    if (!m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility)) {
+        throw Exception("Newly created lower-levels do not have an objective function. This has to be "
+                        "implemented. Though they have the right annotation.");
+    }
 
     ++m_n_added_scenario;
 }

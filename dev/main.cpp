@@ -42,7 +42,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Uncertainty set
     Model uncertainty_set(env);
-    const double Gamma = 2;
+    const double Gamma = 5;
     const auto xi = uncertainty_set.add_vars(Dim<1>(n_customers), 0, 1, Continuous, 0., "xi");
     uncertainty_set.add_ctr(idol_Sum(i, Range(n_customers), xi[i]) <= Gamma);
 
@@ -99,12 +99,12 @@ int main(int t_argc, const char** t_argv) {
     ;
 
     model.use(
-            Robust::ColumnAndConstraintGeneration(robust_description,bilevel_description)
+            Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
                     .with_master_optimizer(Gurobi())
-                    //.with_initial_scenario_by_minimization(Gurobi())
-                    //.with_initial_scenario_by_maximization(Gurobi())
-                    .with_optimality_separation_optimizer(bilevel_optimizer)
-                    .with_feasibility_separation_optimizer(bilevel_optimizer)
+                            //.with_initial_scenario_by_minimization(Gurobi())
+                            //.with_initial_scenario_by_maximization(Gurobi())
+                    .add_optimality_separation_optimizer(bilevel_optimizer)
+                    .add_feasibility_separation_optimizer(bilevel_optimizer)
                     .with_logs(true)
     );
     model.optimize();

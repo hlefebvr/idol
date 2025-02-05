@@ -116,15 +116,10 @@ protected:
     void log_iteration();
 
     void solve_adversarial_problem();
-
-    unsigned int solve_feasibility_separation_problem();
-
-    unsigned int solve_optimality_separation_problem();
-
-    unsigned int solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution);
-    unsigned int solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution, unsigned int t_coupling_constraint_index);
-
-    unsigned int solve_optimality_separation_problem_for_wait_and_see_lower_level(const Point<Var>& t_upper_level_solution);
+    unsigned int solve_feasibility_adversarial_problem();
+    unsigned int solve_optimality_adversarial_problem();
+    unsigned int solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution);
+    unsigned int solve_optimality_adversarial_problem(const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index);
 
     const bool is_adjustable_robust_problem() const;
 };

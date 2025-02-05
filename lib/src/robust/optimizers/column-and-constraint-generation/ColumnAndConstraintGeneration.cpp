@@ -104,8 +104,8 @@ idol::Robust::ColumnAndConstraintGeneration::with_initial_scenario_by_maximizati
 }
 
 idol::Robust::ColumnAndConstraintGeneration &
-idol::Robust::ColumnAndConstraintGeneration::with_feasibility_separation_optimizer(
-        const idol::OptimizerFactory &t_optimizer) {
+idol::Robust::ColumnAndConstraintGeneration::add_feasibility_separation_optimizer(
+        const OptimizerFactory &t_optimizer) {
 
     if (m_optimizer_feasibility_separation) {
         throw Exception("Feasibility separation optimizer already set");
@@ -121,8 +121,8 @@ idol::Robust::ColumnAndConstraintGeneration::with_feasibility_separation_optimiz
 }
 
 idol::Robust::ColumnAndConstraintGeneration &
-idol::Robust::ColumnAndConstraintGeneration::with_optimality_separation_optimizer(
-        const idol::OptimizerFactory &t_optimizer) {
+idol::Robust::ColumnAndConstraintGeneration::add_optimality_separation_optimizer(
+        const OptimizerFactory &t_optimizer) {
 
     if (m_optimizer_optimality_separation) {
         throw Exception("Optimality separation optimizer already set");
