@@ -4,6 +4,7 @@
 #include <idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
 #include <idol/bilevel/optimizers/BilevelOptimizerInterface.h>
+#include <idol/bilevel/modeling/write_to_file.h>
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                        const idol::Robust::Description &t_robust_description,
@@ -276,7 +277,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration() {
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_problem() {
 
     if (m_optimizer_feasibility_separation) {
-        const bool is_upper_level_decision_feasible = solve_feasibility_separation_problem();
+        const bool is_upper_level_decision_feasible = solve_feasibility_separation_problem() == 0;
         if (!is_upper_level_decision_feasible) {
             return;
         }
@@ -287,11 +288,50 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 }
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_separation_problem() {
-    throw Exception("Not implemented solve_feasibility_separation_problem");
+
+    std::cout << "Solving feasibility separation problem..." << std::endl;
+
+    const auto& master = m_formulation->master();
+    const auto upper_level_solution = save_primal(master);
+
+    Model high_point_relaxation = m_formulation->build_feasibility_separation_problem(upper_level_solution);
+
+    // Set bilevel description
+    const auto& separation_bilevel_description = m_formulation->separation_bilevel_description();
+    m_optimizer_feasibility_separation->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
+
+    // Set optimizer
+    high_point_relaxation.use(*m_optimizer_feasibility_separation);
+    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
+    high_point_relaxation.optimize();
+    Bilevel::write_to_file(high_point_relaxation, separation_bilevel_description, "feasibility_separation");
+
+    // Analyze results
+    const auto status = high_point_relaxation.get_status();
+
+    if (status != Optimal && status != Feasible) {
+        set_status(status);
+        set_reason(high_point_relaxation.get_reason());
+        terminate();
+        return 1;
+    }
+
+    const double objective_value = -high_point_relaxation.get_best_obj();
+
+    std::cout << "Feasiblity = " << objective_value << std::endl;
+
+    if (objective_value >= Tolerance::Feasibility) {
+        const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
+        m_formulation->add_scenario_to_master(scenario);
+        return 1;
+    }
+
+    return 0;
 }
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem() {
-    std::cout << "Solve optimality separation problem" << std::endl;
+
+    std::cout << "Solving optimality separation problem..." << std::endl;
 
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
@@ -345,8 +385,32 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separa
     high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
     high_point_relaxation.optimize();
 
-    std::cout << high_point_relaxation.get_status() << std::endl;
-    std::cout << save_primal(high_point_relaxation) << std::endl;
+    // Analyze results
+    const auto status = high_point_relaxation.get_status();
 
-    throw Exception("STOP");
+    if (status != Optimal && status != Feasible) {
+        set_status(status);
+        set_reason(high_point_relaxation.get_reason());
+        terminate();
+        return 1;
+    }
+
+    bool is_violated;
+    if (t_coupling_constraint_index == 0) {
+        is_violated = true;
+        if (status == Optimal) {
+            set_best_obj(-high_point_relaxation.get_best_obj());
+        }
+    } else {
+        // TODO check with Tolerance::Feasiblity
+        throw Exception("Coupling constraints not yet implemented");
+    }
+
+    if (is_violated) {
+        const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
+        m_formulation->add_scenario_to_master(scenario);
+        return 1;
+    }
+
+    return 0;
 }

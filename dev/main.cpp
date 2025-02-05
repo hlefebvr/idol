@@ -56,11 +56,13 @@ int main(int t_argc, const char** t_argv) {
     const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., Inf, Continuous, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        model.add_ctr(idol_Sum(j, Range(n_customers), y[i][j]) <= instance.capacity(i) * x[i]);
+        const auto c = model.add_ctr(idol_Sum(j, Range(n_customers), y[i][j]) <= instance.capacity(i) * x[i], "capacity_" + std::to_string(i));
+        bilevel_description.make_lower_level(c);
     }
 
     for (unsigned int j = 0 ; j < n_customers ; ++j) {
-        const auto c = model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= instance.demand(j));
+        const auto c = model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= instance.demand(j), "demand_" + std::to_string(j));
+        bilevel_description.make_lower_level(c);
         robust_description.set_uncertain_rhs(c, 0.2 * instance.demand(j) * xi[j]);
     }
 
@@ -68,6 +70,7 @@ int main(int t_argc, const char** t_argv) {
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         for (unsigned int j = 0 ; j < n_customers ; ++j) {
             bilevel_description.make_lower_level(y[i][j]);
+            model.set_var_ub(y[i][j], 1.2 * instance.demand(j));
         }
     }
 
@@ -87,17 +90,19 @@ int main(int t_argc, const char** t_argv) {
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
     const auto bilevel_optimizer =
-            Bilevel::StrongDuality()
+            Bilevel::KKT()
                 .with_single_level_optimizer(
                         Gurobi()
                             .with_presolve(false)
-                );
+                            .with_logs(false)
+                )
+    ;
 
     model.use(
             Robust::ColumnAndConstraintGeneration(robust_description,bilevel_description)
                     .with_master_optimizer(Gurobi())
-                    .with_initial_scenario_by_minimization(Gurobi())
-                    .with_initial_scenario_by_maximization(Gurobi())
+                    //.with_initial_scenario_by_minimization(Gurobi())
+                    //.with_initial_scenario_by_maximization(Gurobi())
                     .with_optimality_separation_optimizer(bilevel_optimizer)
                     .with_feasibility_separation_optimizer(bilevel_optimizer)
                     .with_logs(true)

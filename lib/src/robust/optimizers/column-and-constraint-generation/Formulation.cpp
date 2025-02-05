@@ -98,6 +98,8 @@ void idol::CCG::Formulation::parse_constraints() {
 
 void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario) {
 
+    std::cout << "Adding scenario\n" << t_scenario << std::endl;
+
     std::vector<std::optional<Var>> new_vars;
     new_vars.resize(m_parent.vars().size());
 
@@ -112,6 +114,8 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         new_vars[index] = m_master.add_var(lb, ub, type, 0, var.name() + "_" + std::to_string(m_n_added_scenario));
 
     }
+
+    m_master.update();
 
     // Add Constraints
     for (const auto& ctr : m_second_stage_constraints) {
@@ -144,6 +148,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
     if (!m_second_stage_epigraph) {
         m_second_stage_epigraph = m_master.add_var(-Inf, Inf, Continuous, 1, "second_stage_epigraph");
+        m_master.update();
     }
 
     // Add Objective
@@ -160,10 +165,35 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     ++m_n_added_scenario;
 }
 
-idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem(
-        const idol::Point<idol::Var> &t_first_stage_decision, unsigned int t_coupling_constraint_index) {
+void idol::CCG::Formulation::add_separation_problem_constraints(idol::Model &t_model,
+                                                                const idol::Point<idol::Var> &t_first_stage_decision) {
 
-    Model result = m_robust_description.uncertainty_set().copy();
+    // Add uncertainty variables
+    for (const auto& var : m_robust_description.uncertainty_set().vars()) {
+
+        const double lb = m_robust_description.uncertainty_set().get_var_lb(var);
+        const double ub = m_robust_description.uncertainty_set().get_var_ub(var);
+        const auto type = m_robust_description.uncertainty_set().get_var_type(var);
+
+        t_model.add(var, TempVar(lb, ub, type, 0, LinExpr<Ctr>()));
+
+    }
+
+    // Add uncertainty constraints
+    for (const auto& ctr : m_robust_description.uncertainty_set().ctrs()) {
+
+        const auto& row = m_robust_description.uncertainty_set().get_ctr_row(ctr);
+        const auto type = m_robust_description.uncertainty_set().get_ctr_type(ctr);
+        double rhs = m_robust_description.uncertainty_set().get_ctr_rhs(ctr);
+
+        LinExpr<Var> new_row;
+        for (const auto& [var, coeff] : row) {
+            new_row += coeff * var;
+        }
+
+        t_model.add(ctr, TempCtr(std::move(new_row), type, rhs));
+
+    }
 
     // Add second-stage variables
     for (const auto& var : m_second_stage_variables) {
@@ -172,7 +202,7 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
         const double ub = m_parent.get_var_ub(var);
         const auto type = m_parent.get_var_type(var);
 
-        result.add(var, TempVar(lb, ub, type, 0, LinExpr<Ctr>()));
+        t_model.add(var, TempVar(lb, ub, type, 0, LinExpr<Ctr>()));
 
     }
 
@@ -192,9 +222,30 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
             new_row += coeff * var;
         }
 
-        result.add(ctr, TempCtr(std::move(new_row), type, rhs));
+        for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(ctr)) {
+            new_row -= coeff * var;
+        }
+
+        t_model.add(ctr, TempCtr(std::move(new_row), type, rhs));
 
     }
+
+    if (!m_robust_description.uncertain_obj().empty()) {
+        throw Exception("Uncertain objectives not yet implemented");
+    }
+
+    if (m_robust_description.uncertain_mat_coeffs().size() > 0) {
+        throw Exception("Uncertain matrix coefficients cannot be handled.");
+    }
+}
+
+idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adjustable_robust_problem(
+        const idol::Point<idol::Var> &t_first_stage_decision, unsigned int t_coupling_constraint_index) {
+
+    auto& env = m_master.env();
+    Model result(env);
+
+    add_separation_problem_constraints(result, t_first_stage_decision);
 
     // Compute objective
     QuadExpr objective;
@@ -238,4 +289,60 @@ void idol::CCG::Formulation::copy_bilevel_description() {
         ctr.set(dest_annotation, ctr.get(src_annotation));
     }
 
+}
+
+idol::Model
+idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<idol::Var> &t_first_stage_decision) {
+
+    auto& env = m_master.env();
+    Model result(env);
+
+    add_separation_problem_constraints(result, t_first_stage_decision);
+
+    const auto compute_range = [&](const Ctr& t_ctr) {
+        double lb = 0, ub = 0;
+        for (const auto& [var, coeff] : m_parent.get_ctr_row(t_ctr)) {
+            if (coeff < 0) {
+                lb += coeff * m_parent.get_var_lb(var);
+                ub += coeff * m_parent.get_var_ub(var);
+            } else {
+                lb += coeff * m_parent.get_var_ub(var);
+                ub += coeff * m_parent.get_var_lb(var);
+            }
+        }
+        if (is_inf(lb) || is_inf(ub)) {
+            return Inf;
+        }
+        return std::abs(ub - lb);
+    };
+
+    const auto add_slack = [&](const Ctr& t_ctr, double t_coeff) {
+        const double range = compute_range(t_ctr);
+        LinExpr<Ctr> column = t_coeff * t_ctr;
+        const auto s = result.add_var(0, range, Continuous, -1, column, "slack_" + t_ctr.name());
+        m_separation_bilevel_description.make_lower_level(s);
+    };
+
+    for (const auto& ctr : m_second_stage_constraints) {
+
+        const auto& type = m_parent.get_ctr_type(ctr);
+
+        switch (type) {
+            case LessOrEqual:
+                add_slack(ctr, -1);
+                break;
+            case GreaterOrEqual:
+                add_slack(ctr, 1);
+                break;
+            case Equal:
+                add_slack(ctr, 1);
+                add_slack(ctr, -1);
+                break;
+        }
+
+    }
+
+    m_separation_bilevel_description.set_lower_level_obj(-1. * result.get_obj_expr());
+
+    return std::move(result);
 }

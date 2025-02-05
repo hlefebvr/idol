@@ -32,6 +32,7 @@ class idol::CCG::Formulation {
     void parse_objective();
     void parse_constraints();
     void copy_bilevel_description();
+    void add_separation_problem_constraints(idol::Model &t_model, const idol::Point<idol::Var> &t_first_stage_decision);
 public:
     Formulation(const Model& t_parent,
                 const ::idol::Robust::Description &t_robust_description,
@@ -45,6 +46,8 @@ public:
     void add_scenario_to_master(const Point<Var>& t_scenario);
 
     Model build_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_first_stage_decision, unsigned int t_coupling_constraint_index);
+
+    Model build_feasibility_separation_problem(const Point<Var>& t_first_stage_decision);
 
     unsigned int n_coupling_constraints() const { return 1 + m_coupling_constraints.size(); }
 
