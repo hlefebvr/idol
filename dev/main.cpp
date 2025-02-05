@@ -101,10 +101,10 @@ int main(int t_argc, const char** t_argv) {
     model.use(
             Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
                     .with_master_optimizer(Gurobi())
-                            //.with_initial_scenario_by_minimization(Gurobi())
-                            //.with_initial_scenario_by_maximization(Gurobi())
-                    .add_optimality_separation_optimizer(bilevel_optimizer)
+                    //.with_initial_scenario_by_minimization(Gurobi())
+                    //.with_initial_scenario_by_maximization(Gurobi())
                     .add_feasibility_separation_optimizer(bilevel_optimizer)
+                    .add_optimality_separation_optimizer(bilevel_optimizer)
                     .with_logs(true)
     );
     model.optimize();

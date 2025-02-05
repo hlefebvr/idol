@@ -34,12 +34,12 @@ idol::SolutionReason idol::Optimizers::Bilevel::MibS::get_reason() const {
 
 double idol::Optimizers::Bilevel::MibS::get_best_obj() const {
     throw_if_no_mibs();
-    return m_mibs->get_best_obj();
+    return parent().get_obj_expr().affine().constant() + m_mibs->get_best_obj();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_best_bound() const {
     throw_if_no_mibs();
-    return m_mibs->get_best_bound();
+    return parent().get_obj_expr().affine().constant() + m_mibs->get_best_bound();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_var_primal(const idol::Var &t_var) const {

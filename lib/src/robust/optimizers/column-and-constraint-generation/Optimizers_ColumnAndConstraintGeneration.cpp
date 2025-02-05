@@ -120,11 +120,11 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
         check_termination_criteria();
 
+        log_iteration();
+
         if (is_terminated()) {
             break;
         }
-
-        log_iteration();
 
         ++m_n_iterations;
     }
@@ -239,6 +239,13 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::check_termination_criteria() {
 
+    if (get_best_bound() > get_best_obj() + 1e-3) {
+        set_status(Fail);
+        set_reason(Numerical);
+        terminate();
+        return;
+    }
+
     if (get_remaining_time() == 0) {
         set_reason(TimeLimit);
         terminate();
@@ -278,8 +285,8 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration() {
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_problem() {
 
     if (m_optimizer_feasibility_separation) {
-        const bool is_upper_level_decision_feasible = solve_feasibility_adversarial_problem() == 0;
-        if (!is_upper_level_decision_feasible) {
+        const bool n_added_scenario = solve_feasibility_adversarial_problem();
+        if (n_added_scenario > 0) {
             return;
         }
     }
@@ -341,7 +348,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
 }
 
-const bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustable_robust_problem() const {
+bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustable_robust_problem() const {
     return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
 }
 
@@ -349,15 +356,14 @@ unsigned int
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution) {
 
     const unsigned int n_coupling_constraints = m_formulation->n_coupling_constraints();
+    unsigned int total_n_added_scenarios = 0;
 
     for (unsigned int k = 0 ; k < n_coupling_constraints ; ++k) {
         const unsigned int n_added_scenarios = solve_optimality_adversarial_problem(t_upper_level_solution, k);
-        if (n_added_scenarios > 0) {
-            return n_added_scenarios;
-        }
+        total_n_added_scenarios += n_added_scenarios;
     }
 
-    return 0;
+    return total_n_added_scenarios;
 }
 
 unsigned int

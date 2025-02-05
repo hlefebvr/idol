@@ -10,4 +10,5 @@ Adjustable Robust Optimization (Two-stage)
     :glob:
 
     modeling
+    ccg
     column-and-constraint-generation/index
