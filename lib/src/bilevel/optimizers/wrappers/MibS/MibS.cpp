@@ -67,7 +67,9 @@ idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
 
 idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     : OptimizerFactoryWithDefaultParameters<MibS>(t_src),
-      m_description(t_src.m_description)
+      m_description(t_src.m_description),
+      m_use_file_interface(t_src.m_use_file_interface),
+      m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility)
 #ifdef IDOL_USE_OSI
     , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
 #endif

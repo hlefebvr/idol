@@ -33,7 +33,7 @@ int main(int t_argc, const char** t_argv) {
 
     // Uncertainty set
     Model uncertainty_set(env);
-    const double Gamma = 2;
+    const double Gamma = 1;
     const auto xi = uncertainty_set.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "xi");
     uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), idol_Sum(j, Range(n_customers), xi[i][j])) <= Gamma);
 
@@ -94,7 +94,8 @@ int main(int t_argc, const char** t_argv) {
 
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
-            .with_logs(false)
+            .with_file_interface(false)
+            .with_logs(true)
             ;
 
     model.use(
