@@ -3,6 +3,7 @@
 //
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h"
+#include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 
 idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const Robust::Description &t_robust_description,
                                                                            const Bilevel::Description &t_bilevel_description)
@@ -18,7 +19,9 @@ idol::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(
           m_bilevel_description(t_src.m_bilevel_description),
           m_initial_scenarios(t_src.m_initial_scenarios),
           m_initial_scenario_by_minimization(t_src.m_initial_scenario_by_minimization ? t_src.m_initial_scenario_by_minimization->clone() : nullptr),
-          m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr) {
+          m_initial_scenario_by_maximization(t_src.m_initial_scenario_by_maximization ? t_src.m_initial_scenario_by_maximization->clone() : nullptr),
+          m_optimizer_feasibility_separation(t_src.m_optimizer_feasibility_separation ? t_src.m_optimizer_feasibility_separation->clone() : nullptr),
+          m_optimizer_optimality_separation(t_src.m_optimizer_optimality_separation ? t_src.m_optimizer_optimality_separation->clone() : nullptr) {
 
 }
 
@@ -44,13 +47,19 @@ idol::Optimizer *idol::Robust::ColumnAndConstraintGeneration::operator()(const i
         throw Exception("Master optimizer not set");
     }
 
+    if (!m_optimizer_feasibility_separation && !m_optimizer_optimality_separation) {
+        throw Exception("At least one of feasibility or optimality separation optimizers must be set");
+    }
+
     auto* result = new Optimizers::Robust::ColumnAndConstraintGeneration(t_model,
                                                                          m_robust_description,
                                                                          m_bilevel_description,
                                                                          *m_master_optimizer,
                                                                          m_initial_scenarios,
                                                                          m_initial_scenario_by_minimization ? m_initial_scenario_by_minimization->clone() : nullptr,
-                                                                         m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr
+                                                                         m_initial_scenario_by_maximization ? m_initial_scenario_by_maximization->clone() : nullptr,
+                                                                         m_optimizer_feasibility_separation ? m_optimizer_feasibility_separation->clone() : nullptr,
+                                                                         m_optimizer_optimality_separation ? m_optimizer_optimality_separation->clone() : nullptr
                                                                          );
 
     handle_default_parameters(result);
@@ -90,6 +99,40 @@ idol::Robust::ColumnAndConstraintGeneration::with_initial_scenario_by_maximizati
     }
 
     m_initial_scenario_by_maximization.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_feasibility_separation_optimizer(
+        const idol::OptimizerFactory &t_optimizer) {
+
+    if (m_optimizer_feasibility_separation) {
+        throw Exception("Feasibility separation optimizer already set");
+    }
+
+    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
+        throw Exception("Feasibility separation optimizer must be a bilevel optimizer");
+    }
+
+    m_optimizer_feasibility_separation.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Robust::ColumnAndConstraintGeneration &
+idol::Robust::ColumnAndConstraintGeneration::with_optimality_separation_optimizer(
+        const idol::OptimizerFactory &t_optimizer) {
+
+    if (m_optimizer_optimality_separation) {
+        throw Exception("Optimality separation optimizer already set");
+    }
+
+    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
+        throw Exception("Optimality separation optimizer must be a bilevel optimizer");
+    }
+
+    m_optimizer_optimality_separation.reset(t_optimizer.clone());
 
     return *this;
 }

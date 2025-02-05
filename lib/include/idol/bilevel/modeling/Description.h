@@ -47,7 +47,7 @@ public:
 
     [[nodiscard]] const Annotation<unsigned int>& lower_level() const { return m_level; }
 
-    [[nodiscard]] const QuadExpr<Var>& follower_obj() const { return m_follower_objective; }
+    [[nodiscard]] const QuadExpr<Var>& lower_level_obj() const { return m_follower_objective; }
 
     void make_upper_level(const Var& t_var) { t_var.set(m_level, MasterId); }
 

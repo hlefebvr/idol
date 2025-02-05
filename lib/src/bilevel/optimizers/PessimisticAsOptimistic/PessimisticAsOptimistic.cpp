@@ -114,7 +114,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
 
 void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>> &t_lower_level_copy) {
 
-    const auto& original_lower_objective = m_src_description.follower_obj().affine();
+    const auto& original_lower_objective = m_src_description.lower_level_obj().affine();
 
     // Create objective function in terms of the copied variables
     idol::AffExpr copy_objective;

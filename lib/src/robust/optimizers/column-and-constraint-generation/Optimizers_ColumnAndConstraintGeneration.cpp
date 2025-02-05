@@ -3,6 +3,7 @@
 //
 #include <idol/robust/optimizers/column-and-constraint-generation/Optimizers_ColumnAndConstraintGeneration.h>
 #include <idol/mixed-integer/modeling/expressions/operations/operators.h>
+#include <idol/bilevel/optimizers/BilevelOptimizerInterface.h>
 
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGeneration(const idol::Model &t_parent,
                                                                                        const idol::Robust::Description &t_robust_description,
@@ -10,14 +11,18 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::ColumnAndConstraintGene
                                                                                        const idol::OptimizerFactory &t_master_optimizer,
                                                                                        std::vector<Point<Var>> t_initial_scenarios,
                                                                                        OptimizerFactory* t_initial_scenario_by_minimization,
-                                                                                       OptimizerFactory* t_initial_scenario_by_maximization)
+                                                                                       OptimizerFactory* t_initial_scenario_by_maximization,
+                                                                                       OptimizerFactory* t_optimizer_feasibility_separation,
+                                                                                       OptimizerFactory* t_optimizer_optimality_separation)
                                                                                        : Algorithm(t_parent),
                                                                                          m_robust_description(t_robust_description),
                                                                                          m_bilevel_description(t_bilevel_description),
                                                                                          m_master_optimizer(t_master_optimizer.clone()),
                                                                                          m_initial_scenario_by_minimization(t_initial_scenario_by_minimization),
                                                                                          m_initial_scenario_by_maximization(t_initial_scenario_by_maximization),
-                                                                                         m_initial_scenarios(std::move(t_initial_scenarios)) {
+                                                                                         m_initial_scenarios(std::move(t_initial_scenarios)),
+                                                                                         m_optimizer_feasibility_separation(t_optimizer_feasibility_separation),
+                                                                                         m_optimizer_optimality_separation(t_optimizer_optimality_separation) {
 
 }
 
@@ -102,6 +107,16 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
     while (true) {
 
         solve_master_problem();
+
+        check_termination_criteria();
+
+        if (is_terminated()) {
+            break;
+        }
+
+        solve_adversarial_problem();
+
+        check_termination_criteria();
 
         if (is_terminated()) {
             break;
@@ -256,4 +271,82 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration() {
               << get_relative_gap() << "\t"
               << get_absolute_gap() << std::endl;
 
+}
+
+void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_problem() {
+
+    if (m_optimizer_feasibility_separation) {
+        const bool is_upper_level_decision_feasible = solve_feasibility_separation_problem();
+        if (!is_upper_level_decision_feasible) {
+            return;
+        }
+    }
+
+    solve_optimality_separation_problem();
+
+}
+
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_separation_problem() {
+    throw Exception("Not implemented solve_feasibility_separation_problem");
+}
+
+unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem() {
+    std::cout << "Solve optimality separation problem" << std::endl;
+
+    const auto& master = m_formulation->master();
+    const auto upper_level_solution = save_primal(master);
+
+    if (is_adjustable_robust_problem()) {
+        return solve_optimality_separation_problem_for_adjustable_robust_problem(upper_level_solution);
+    }
+
+    return solve_optimality_separation_problem_for_wait_and_see_lower_level(upper_level_solution);
+}
+
+const bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustable_robust_problem() const {
+    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
+}
+
+unsigned int
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution) {
+
+    const unsigned int n_coupling_constraints = m_formulation->n_coupling_constraints();
+
+    for (unsigned int k = 0 ; k < n_coupling_constraints ; ++k) {
+        const unsigned int n_added_scenarios = solve_optimality_separation_problem_for_adjustable_robust_problem(t_upper_level_solution, k);
+        if (n_added_scenarios > 0) {
+            return n_added_scenarios;
+        }
+    }
+
+    return 0;
+}
+
+unsigned int
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_wait_and_see_lower_level(const Point<Var>& t_upper_level_solution) {
+    throw Exception("Wait-and-see follower not implemented yet.");
+}
+
+unsigned int
+idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_separation_problem_for_adjustable_robust_problem(
+        const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index) {
+
+    Model high_point_relaxation = m_formulation->build_optimality_separation_problem_for_adjustable_robust_problem(
+            t_upper_level_solution,
+            t_coupling_constraint_index
+    );
+
+    // Set bilevel description
+    const auto& separation_bilevel_description = m_formulation->separation_bilevel_description();
+    m_optimizer_optimality_separation->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
+
+    // Set optimizer
+    high_point_relaxation.use(*m_optimizer_optimality_separation);
+    high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
+    high_point_relaxation.optimize();
+
+    std::cout << high_point_relaxation.get_status() << std::endl;
+    std::cout << save_primal(high_point_relaxation) << std::endl;
+
+    throw Exception("STOP");
 }

@@ -197,7 +197,7 @@ idol::impl::MibSFromAPI::find_lower_level_objective_coefficients(const std::vect
     std::vector<double> result;
     result.reserve(t_lower_level_variables_indices.size());
 
-    const auto& follower_obj = m_description.follower_obj();
+    const auto& follower_obj = m_description.lower_level_obj();
 
     for (const auto& var_id : t_lower_level_variables_indices) {
 

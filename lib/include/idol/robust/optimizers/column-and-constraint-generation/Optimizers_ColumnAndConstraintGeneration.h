@@ -27,6 +27,12 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::vector<Point<Var>> m_initial_scenarios;
     std::unique_ptr<OptimizerFactory> m_initial_scenario_by_minimization;
     std::unique_ptr<OptimizerFactory> m_initial_scenario_by_maximization;
+
+    // Feasibility Separation
+    std::unique_ptr<OptimizerFactory> m_optimizer_feasibility_separation;
+
+    // Optimality Separation
+    std::unique_ptr<OptimizerFactory> m_optimizer_optimality_separation;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const ::idol::Robust::Description &t_robust_description,
@@ -34,7 +40,9 @@ public:
                                   const OptimizerFactory &t_master_optimizer,
                                   std::vector<Point<Var>> t_initial_scenarios,
                                   OptimizerFactory* t_initial_scenario_by_minimization,
-                                  OptimizerFactory* t_initial_scenario_by_maximization);
+                                  OptimizerFactory* t_initial_scenario_by_maximization,
+                                  OptimizerFactory* t_optimizer_feasibility_separation,
+                                  OptimizerFactory* t_optimizer_optimality_separation);
 
     [[nodiscard]] std::string name() const override;
 
@@ -98,10 +106,27 @@ protected:
     void update_var_obj(const Var &t_var) override;
 
     void add_initial_scenarios();
+
     void add_initial_scenario_by_min_or_max(const OptimizerFactory& t_optimizer, double t_coefficient);
+
     void solve_master_problem();
+
     void check_termination_criteria();
+
     void log_iteration();
+
+    void solve_adversarial_problem();
+
+    unsigned int solve_feasibility_separation_problem();
+
+    unsigned int solve_optimality_separation_problem();
+
+    unsigned int solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution);
+    unsigned int solve_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_upper_level_solution, unsigned int t_coupling_constraint_index);
+
+    unsigned int solve_optimality_separation_problem_for_wait_and_see_lower_level(const Point<Var>& t_upper_level_solution);
+
+    const bool is_adjustable_robust_problem() const;
 };
 
 

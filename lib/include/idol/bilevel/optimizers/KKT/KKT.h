@@ -7,19 +7,24 @@
 
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/bilevel/modeling/Description.h"
+#include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 
 namespace idol::Bilevel {
     class KKT;
 }
 
-class idol::Bilevel::KKT : public OptimizerFactoryWithDefaultParameters<KKT> {
-    const Bilevel::Description& m_description;
+class idol::Bilevel::KKT : public OptimizerFactoryWithDefaultParameters<KKT>, public Bilevel::OptimizerInterface {
+    const Bilevel::Description* m_description;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
     std::optional<Annotation<double>> m_big_M;
 public:
+    KKT() = default;
+
     explicit KKT(const Bilevel::Description& t_description);
 
     KKT(const KKT& t_src);
+
+    void set_bilevel_description(const Description &t_bilevel_description) override;
 
     Optimizer *operator()(const Model &t_model) const override;
 

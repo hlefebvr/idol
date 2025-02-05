@@ -26,6 +26,8 @@
 #include "idol/robust/optimizers/deterministic/Deterministic.h"
 #include "idol/robust/optimizers/affine-decision-rule/AffineDecisionRule.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
+#include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
 
 using namespace idol;
 
@@ -84,12 +86,21 @@ int main(int t_argc, const char** t_argv) {
 
     std::cout << "Deterministic Problem has value: " << model.get_best_obj() << std::endl;
 
+    const auto bilevel_optimizer =
+            Bilevel::StrongDuality()
+                .with_single_level_optimizer(
+                        Gurobi()
+                            .with_presolve(false)
+                );
+
     model.use(
             Robust::ColumnAndConstraintGeneration(robust_description,bilevel_description)
-                .with_master_optimizer(Gurobi())
-                .with_initial_scenario_by_minimization(Gurobi())
-                .with_initial_scenario_by_maximization(Gurobi())
-                .with_logs(true)
+                    .with_master_optimizer(Gurobi())
+                    .with_initial_scenario_by_minimization(Gurobi())
+                    .with_initial_scenario_by_maximization(Gurobi())
+                    .with_optimality_separation_optimizer(bilevel_optimizer)
+                    .with_feasibility_separation_optimizer(bilevel_optimizer)
+                    .with_logs(true)
     );
     model.optimize();
 
