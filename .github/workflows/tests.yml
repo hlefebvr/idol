@@ -190,7 +190,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage
-          path: *
 
       - name: Install lcov
         run: sudo apt-get install lcov
