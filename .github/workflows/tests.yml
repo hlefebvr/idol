@@ -39,12 +39,16 @@ jobs:
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
       - name: Hash the string in matrix.test
+        id: hash
         run: |
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
+          echo "::set-output name=hashed_string::$HASHED_STRING"
 
-      - uses: actions/upload-artifact@v4
+      # Upload the artifact using the hashed string as part of the name
+      - name: Upload coverage with hashed name
+        uses: actions/upload-artifact@v4
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
@@ -98,12 +102,15 @@ jobs:
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
       - name: Hash the string in matrix.test
+        id: hash
         run: |
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
+          echo "::set-output name=hashed_string::$HASHED_STRING"
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage with hashed name
+        uses: actions/upload-artifact@v4
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
@@ -144,12 +151,15 @@ jobs:
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
       - name: Hash the string in matrix.test
+        id: hash
         run: |
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
+          echo "::set-output name=hashed_string::$HASHED_STRING"
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage with hashed name
+        uses: actions/upload-artifact@v4
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
@@ -190,12 +200,15 @@ jobs:
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
       - name: Hash the string in matrix.test
+        id: hash
         run: |
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
+          echo "::set-output name=hashed_string::$HASHED_STRING"
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage with hashed name
+        uses: actions/upload-artifact@v4
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
