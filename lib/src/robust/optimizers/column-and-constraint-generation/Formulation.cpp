@@ -307,21 +307,56 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
 
     add_separation_problem_constraints(result, t_first_stage_decision);
 
+    std::cout << result << std::endl;
+
     const auto compute_range = [&](const Ctr& t_ctr) {
-        double lb = 0, ub = 0;
-        for (const auto& [var, coeff] : m_parent.get_ctr_row(t_ctr)) {
-            if (coeff < 0) {
-                lb += coeff * m_parent.get_var_lb(var);
-                ub += coeff * m_parent.get_var_ub(var);
-            } else {
-                lb += coeff * m_parent.get_var_ub(var);
-                ub += coeff * m_parent.get_var_lb(var);
+        double bound = 0;
+        const auto type = result.get_ctr_type(t_ctr);
+
+        if (type == LessOrEqual) {
+            bound -= result.get_ctr_rhs(t_ctr);
+            for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(t_ctr)) {
+                if (coeff > 0 ) {
+                    bound -= coeff * result.get_var_lb(var);
+                } else {
+                    bound -= coeff * result.get_var_ub(var);
+                }
             }
+            for (const auto& [var, coeff] : result.get_ctr_row(t_ctr)) {
+                if (coeff > 0) {
+                    bound += coeff * result.get_var_ub(var);
+                } else {
+                    bound += coeff * result.get_var_lb(var);
+                }
+            }
+            std::cout << "Bound of " << t_ctr.name() << " is " << bound << std::endl;
+        } else if (type == GreaterOrEqual) {
+            bound += result.get_ctr_rhs(t_ctr);
+            for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(t_ctr)) {
+                if (coeff > 0 ) {
+                    bound += coeff * result.get_var_ub(var);
+                } else {
+                    bound += coeff * result.get_var_lb(var);
+                }
+            }
+            for (const auto& [var, coeff] : result.get_ctr_row(t_ctr)) {
+                if (coeff > 0) {
+                    bound -= coeff * result.get_var_ub(var);
+                } else {
+                    bound -= coeff * result.get_var_lb(var);
+                }
+            }
+            bound *= -1;
+            std::cout << "Bound of " << t_ctr.name() << " is " << bound << std::endl;
+        } else {
+            throw Exception("Equal constraints not yet implemented");
         }
-        if (is_inf(lb) || is_inf(ub)) {
+
+        if (is_inf(bound) || is_inf(bound)) {
             return Inf;
         }
-        return std::abs(ub - lb);
+
+        return std::max(0., bound);
     };
 
     const auto add_slack = [&](const Ctr& t_ctr, double t_coeff) {

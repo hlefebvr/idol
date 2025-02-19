@@ -19,6 +19,7 @@
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
 
 using namespace idol;
 
@@ -26,14 +27,19 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
+    const auto instance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(5, 15, 2);
+    std::ofstream file("ccg-discrete-uncertainty.data.txt");
+    file << instance;
+    file.close();
+
     // Read instance
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-discrete-uncertainty.data.txt");
+    //const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-discrete-uncertainty.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
     // Uncertainty set
     Model uncertainty_set(env);
-    const double Gamma = 1;
+    const double Gamma = 2;
     const auto xi = uncertainty_set.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "xi");
     uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), idol_Sum(j, Range(n_customers), xi[i][j])) <= Gamma);
 
@@ -94,8 +100,12 @@ int main(int t_argc, const char** t_argv) {
 
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
-            .with_file_interface(false)
+            .with_file_interface(true)
             .with_logs(true)
+            ;
+
+    const auto kkt = Bilevel::KKT()
+            .with_single_level_optimizer(Gurobi().with_logs(true))
             ;
 
     model.use(

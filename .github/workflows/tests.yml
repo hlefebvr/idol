@@ -186,7 +186,7 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v4
         with:
-          name: coverage
+          name: coverage__*.info
 
       - name: Install lcov
         run: sudo apt-get install lcov
