@@ -40,7 +40,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}
+          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           path: "coverage__*.info"
 
   Mosek:
@@ -93,7 +93,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}
+          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           path: "coverage__*.info"
 
   GLPK:
@@ -133,7 +133,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}
+          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           path: "coverage__*.info"
 
   HiGHS:
@@ -173,7 +173,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}
+          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           path: "coverage__*.info"
 
   Coverage:
