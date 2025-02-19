@@ -179,7 +179,7 @@ jobs:
   Coverage:
     name: "Coverage Report"
     runs-on: ubuntu-latest
-    needs: [modeling]
+    needs: [modeling, Mosek, GLPK, HiGHS]
     steps:
       - uses: actions/checkout@v3
 
