@@ -40,7 +40,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__Modeling
           path: coverage__Modeling.info
 
   Mosek:
@@ -93,7 +93,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__Mosek
           path: coverage__Mosek.info
 
   GLPK:
@@ -133,7 +133,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__GLPK
           path: coverage__GLPK.info
 
   HiGHS:
@@ -173,7 +173,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__HiGHS
           path: coverage__HiGHS.info
 
   Coverage:
@@ -183,10 +183,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download a single artifact
+      - name: Download Modeling coverage report
         uses: actions/download-artifact@v4
         with:
-          name: coverage
+          name: coverage__Modeling
+
+      - name: Download GLPK coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage__GLPK
+
+      - name: Download Mosek coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage__Mosek
+
+      - name: Download HiGHS coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage__HiGHS
 
       - name: Install lcov
         run: sudo apt-get install lcov
