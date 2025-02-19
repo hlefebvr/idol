@@ -90,7 +90,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -141,7 +141,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -190,7 +190,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
