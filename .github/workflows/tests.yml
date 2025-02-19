@@ -38,9 +38,15 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
+      - name: Hash the string in matrix.test
+        run: |
+          echo "Hashing: ${{ matrix.test }}"
+          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          echo "Hashed string: $HASHED_STRING"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
   Mosek:
@@ -91,9 +97,15 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
+      - name: Hash the string in matrix.test
+        run: |
+          echo "Hashing: ${{ matrix.test }}"
+          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          echo "Hashed string: $HASHED_STRING"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
   GLPK:
@@ -131,9 +143,15 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
+      - name: Hash the string in matrix.test
+        run: |
+          echo "Hashing: ${{ matrix.test }}"
+          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          echo "Hashed string: $HASHED_STRING"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
   HiGHS:
@@ -171,9 +189,15 @@ jobs:
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
+      - name: Hash the string in matrix.test
+        run: |
+          echo "Hashing: ${{ matrix.test }}"
+          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          echo "Hashed string: $HASHED_STRING"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
+          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
   Coverage:
