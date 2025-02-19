@@ -40,7 +40,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__$(uuidgen)
           path: "coverage__*.info"
 
   Mosek:
@@ -93,7 +93,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__$(uuidgen)
           path: "coverage__*.info"
 
   GLPK:
@@ -133,7 +133,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__$(uuidgen)
           path: "coverage__*.info"
 
   HiGHS:
@@ -173,7 +173,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage__$(uuidgen)
           path: "coverage__*.info"
 
   Coverage:
