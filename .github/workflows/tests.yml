@@ -36,12 +36,12 @@ jobs:
         run: (cd ./mixed-integer/modeling && ./test_modeling_interface)
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__Modeling.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__Modeling
-          path: coverage__Modeling.info
+          name: coverage
+          path: "coverage__*.info"
 
   Mosek:
     name: "Mosek"
@@ -89,12 +89,12 @@ jobs:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__Mosek.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__Mosek
-          path: coverage__Mosek.info
+          name: coverage
+          path: "coverage__*.info"
 
   GLPK:
     name: "GLPK"
@@ -129,12 +129,12 @@ jobs:
         run: ${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__GLPK.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__GLPK
-          path: coverage__GLPK.info
+          name: coverage
+          path: "coverage__*.info"
 
   HiGHS:
     name: "HiGHS"
@@ -169,12 +169,12 @@ jobs:
         run: ${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__HiGHS.info
+        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage__HiGHS
-          path: coverage__HiGHS.info
+          name: coverage
+          path: "coverage__*.info"
 
   Coverage:
     name: "Coverage Report"
@@ -186,22 +186,7 @@ jobs:
       - name: Download Modeling coverage report
         uses: actions/download-artifact@v4
         with:
-          name: coverage__Modeling
-
-      - name: Download GLPK coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage__GLPK
-
-      - name: Download Mosek coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage__Mosek
-
-      - name: Download HiGHS coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage__HiGHS
+          name: coverage
 
       - name: Install lcov
         run: sudo apt-get install lcov
