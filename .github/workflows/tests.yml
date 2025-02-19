@@ -44,7 +44,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       # Upload the artifact using the hashed string as part of the name
       - name: Upload coverage with hashed name
@@ -107,7 +107,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
@@ -156,7 +156,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
@@ -205,7 +205,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
