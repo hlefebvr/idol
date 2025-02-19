@@ -29,7 +29,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
