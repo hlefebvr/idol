@@ -45,7 +45,6 @@ jobs:
 
   Mosek:
     name: "Mosek"
-    if: false
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -90,17 +89,16 @@ jobs:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
+        run: lcov --directory . --capture --output-file coverage__Mosek.info
 
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage__$(uuidgen).info
+          path: coverage__Mosek.info
 
   GLPK:
     name: "GLPK"
     runs-on: ubuntu-latest
-    if: false
     strategy:
       matrix:
         test:
@@ -131,17 +129,16 @@ jobs:
         run: ${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
+        run: lcov --directory . --capture --output-file coverage__GLPK.info
 
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage__$(uuidgen).info
+          path: coverage__GLPK.info
 
   HiGHS:
     name: "HiGHS"
     runs-on: ubuntu-latest
-    if: false
     strategy:
       matrix:
         test:
@@ -172,12 +169,12 @@ jobs:
         run: ${{ matrix.test }}
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
+        run: lcov --directory . --capture --output-file coverage__HiGHS.info
 
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage__$(uuidgen).info
+          path: coverage__HiGHS.info
 
   Coverage:
     name: "Coverage Report"
