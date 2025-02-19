@@ -36,12 +36,12 @@ jobs:
         run: (cd ./mixed-integer/modeling && ./test_modeling_interface)
 
       - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__$(uuidgen).info
+        run: lcov --directory . --capture --output-file coverage__Modeling.info
 
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage__$(uuidgen).info
+          path: coverage__Modeling.info
 
   Mosek:
     name: "Mosek"
@@ -190,6 +190,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage
+          path: *
 
       - name: Install lcov
         run: sudo apt-get install lcov
