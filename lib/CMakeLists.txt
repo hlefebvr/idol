@@ -252,6 +252,8 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h
         src/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.cpp
         include/idol/bilevel/optimizers/BilevelOptimizerInterface.h
+        src/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.cpp
+        include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h
 )
 
 find_package(OpenMP REQUIRED)
