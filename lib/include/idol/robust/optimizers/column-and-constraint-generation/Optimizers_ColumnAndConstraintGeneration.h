@@ -131,7 +131,6 @@ protected:
     unsigned int solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution);
     unsigned int solve_optimality_adversarial_problem(const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index);
 
-    [[nodiscard]] bool is_adjustable_robust_problem() const;
 };
 
 

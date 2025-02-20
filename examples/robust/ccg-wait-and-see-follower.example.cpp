@@ -15,6 +15,8 @@
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
+#include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
+#include "idol/bilevel/optimizers/KKT/KKT.h"
 
 using namespace idol;
 
@@ -26,7 +28,16 @@ int main(int t_argc, const char** t_argv) {
     /* Read Instance */
     /*****************/
 
-    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-discrete-uncertainty.data.txt");
+    if (false) {
+        const auto ginstance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(5, 5, 2);
+
+        std::ofstream file("ccg-wait-and-see-follower.data.txt");
+        assert(file.is_open());
+        file << ginstance;
+        file.close();
+    }
+
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-wait-and-see-follower.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -36,7 +47,7 @@ int main(int t_argc, const char** t_argv) {
 
     Model model(env);
     const auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
     std::list<Ctr> second_stage_constraints;
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
@@ -77,6 +88,7 @@ int main(int t_argc, const char** t_argv) {
     for (const auto& ctr : second_stage_constraints) {
         bilevel_description.make_lower_level(ctr);
     }
+    bilevel_description.set_lower_level_obj(model.get_obj_expr());
 
     /**************************/
     /* Create Uncertainty Set */
@@ -101,37 +113,20 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
-    /***********************************************************************************************/
-    /* Creating a heuristic for the adversarial problem: PADM based on strong duality reformulation */
-    /***********************************************************************************************/
-
-    Annotation<double> initial_penalties(env, "initial_penalties", 1e1);
-    Annotation<unsigned int> decomposition(env, "sub_problem", 0);
-    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
-        for (unsigned int j = 0; j < n_customers; ++j) {
-            xi[i][j].set(decomposition, 1);
-        }
-    }
-
-    const auto padm = Bilevel::StrongDuality()
-                .with_single_level_optimizer(
-                    PADM(decomposition, initial_penalties)
-                        .with_default_sub_problem_spec(
-                            ADM::SubProblem().with_optimizer(Gurobi())
-                        )
-                        .with_penalty_update(PenaltyUpdates::Multiplicative(2))
-                        .with_rescaling_threshold(1e4)
-                        .with_logs(false)
-                )
-            ;
-
     /**************************************************************/
     /* Creating an exact solver for the adversarial problem: MibS */
     /**************************************************************/
 
+    const Annotation<double> big_M(env, "big_M", 1e3);
+    const auto kkt = Bilevel::KKT()
+                .with_single_level_optimizer(Gurobi())
+                //.with_big_M(big_M)
+                .with_logs(false)
+            ;
+
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
-            .with_logs(true)
+            .with_logs(false)
             ;
 
     /************************************************/
@@ -144,16 +139,13 @@ int main(int t_argc, const char** t_argv) {
                     .with_initial_scenario_by_maximization(Gurobi())
                     .with_initial_scenario_by_minimization(Gurobi())
 
-                    .with_master_optimizer(Gurobi())
+                    .with_master_optimizer(kkt)
 
-                    .add_feasibility_separation_optimizer(padm)
-                    .add_feasibility_separation_optimizer(mibs)
+                    .add_feasibility_separation_optimizer(kkt)
 
-                    .add_optimality_separation_optimizer(padm)
-                    .add_optimality_separation_optimizer(mibs)
+                    .add_optimality_separation_optimizer(Bilevel::PessimisticAsOptimistic() + kkt)
                     .with_logs(true)
     );
-
 
     /***********/
     /* Solving */

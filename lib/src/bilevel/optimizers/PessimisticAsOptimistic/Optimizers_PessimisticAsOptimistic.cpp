@@ -139,3 +139,27 @@ void idol::Optimizers::Bilevel::PessimisticAsOptimistic::update_var_obj(const id
     m_optimistic_bilevel_model.reset();
 }
 
+idol::SolutionStatus idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_status() const {
+    return m_optimistic_bilevel_model->get_status();
+}
+
+idol::SolutionReason idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_reason() const {
+    return m_optimistic_bilevel_model->get_reason();
+}
+
+double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_best_obj() const {
+    return m_optimistic_bilevel_model->get_best_obj();
+}
+
+double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_best_bound() const {
+    return m_optimistic_bilevel_model->get_best_bound();
+}
+
+double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_relative_gap() const {
+    return m_optimistic_bilevel_model->optimizer().get_relative_gap();
+}
+
+double idol::Optimizers::Bilevel::PessimisticAsOptimistic::get_absolute_gap() const {
+    return m_optimistic_bilevel_model->optimizer().get_absolute_gap();
+}
+

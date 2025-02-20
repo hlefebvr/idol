@@ -107,6 +107,17 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     m_formulation = std::make_unique<CCG::Formulation>(parent(),
                                                        m_robust_description,
                                                        m_bilevel_description);
+
+    if (m_formulation->is_wait_and_see_follower()) {
+        if (!m_master_optimizer->is<::idol::Bilevel::OptimizerInterface>()) {
+            std::cerr << "Warning: the optimizer for the master problem is not a bilevel optimizer. "
+                         "However, the overall problem is a robust bilevel problem with wait-and-see follower." << std::endl;
+        } else {
+            auto& bilevel_interface = m_master_optimizer->as<::idol::Bilevel::OptimizerInterface>();
+            bilevel_interface.set_bilevel_description(m_formulation->bilevel_description_master());
+        }
+    }
+
     m_formulation->master().use(*m_master_optimizer);
 
     m_index_feasibility_separation = 0;
@@ -405,7 +416,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     Model high_point_relaxation = m_formulation->build_feasibility_separation_problem(upper_level_solution);
 
     // Set bilevel description
-    const auto& separation_bilevel_description = m_formulation->separation_bilevel_description();
+    const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
     m_optimizer_feasibility_separation[m_index_feasibility_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
 
     // Set optimizer
@@ -465,10 +476,6 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
 
 }
 
-bool idol::Optimizers::Robust::ColumnAndConstraintGeneration::is_adjustable_robust_problem() const {
-    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
-}
-
 unsigned int
 idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution) {
 
@@ -493,7 +500,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
     );
 
     // Set bilevel description
-    const auto& separation_bilevel_description = m_formulation->separation_bilevel_description();
+    const auto& separation_bilevel_description = m_formulation->bilevel_description_separation();
     m_optimizer_optimality_separation[m_index_optimality_separation]->as<Bilevel::OptimizerInterface>().set_bilevel_description(separation_bilevel_description);
 
     // Set optimizer

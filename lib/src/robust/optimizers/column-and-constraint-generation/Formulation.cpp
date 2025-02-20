@@ -12,12 +12,19 @@ idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Rob
           m_robust_description(t_robust_description),
           m_bilevel_description(t_bilevel_description),
           m_master(t_parent.env()),
-          m_separation_bilevel_description(t_parent.env()) {
+          m_bilevel_description_separation(t_parent.env()) {
 
     parse_variables();
     parse_objective();
     parse_constraints();
-    copy_bilevel_description();
+    copy_bilevel_description(t_bilevel_description, m_bilevel_description_separation);
+
+    // if is wait-and-see follower, copy annotation, make sure master solver is a bilevel solver
+    if (is_wait_and_see_follower()) {
+        auto& env = m_parent.env();
+        m_bilevel_description_master = std::make_optional<::idol::Bilevel::Description>(env);
+        copy_bilevel_description(t_bilevel_description, *m_bilevel_description_master);
+    }
 
 }
 
@@ -98,7 +105,7 @@ void idol::CCG::Formulation::parse_constraints() {
 
 void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario) {
 
-    const auto& lower_level_annotation = m_bilevel_description.lower_level();
+    const auto& lower_level_annotation = m_bilevel_description_master.has_value() ? m_bilevel_description_master->lower_level() : m_bilevel_description.lower_level();
 
     std::vector<std::optional<Var>> new_vars;
     new_vars.resize(m_parent.vars().size());
@@ -163,9 +170,20 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
     m_master.add_ctr(*m_second_stage_epigraph >= std::move(objective));
 
-    if (!m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility)) {
-        std::cerr << "Newly created lower-levels do not have an objective function. This has to be "
-                        "implemented. Though they have the right annotation." << std::endl;
+    if (is_wait_and_see_follower()) {
+
+        auto lower_objective = m_bilevel_description_master->lower_level_obj();
+
+        for (const auto& [var, coeff] : m_bilevel_description.lower_level_obj().affine().linear()) {
+            if (m_bilevel_description.is_upper(var)) {
+                continue;
+            }
+            lower_objective += coeff * new_vars[m_parent.get_var_index(var)].value();
+        }
+
+        m_bilevel_description_master->set_lower_level_obj(std::move(lower_objective));
+        m_master.update();
+
     }
 
     ++m_n_added_scenario;
@@ -277,15 +295,15 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
     }
 
     result.set_obj_expr(-1. * objective);
-    m_separation_bilevel_description.set_lower_level_obj(std::move(objective));
+    m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
 
     return result;
 }
 
-void idol::CCG::Formulation::copy_bilevel_description() {
+void idol::CCG::Formulation::copy_bilevel_description(const ::idol::Bilevel::Description& t_src, const ::idol::Bilevel::Description& t_dest) const {
 
-    const auto& src_annotation = m_bilevel_description.lower_level();
-    const auto& dest_annotation = m_separation_bilevel_description.lower_level();
+    const auto& src_annotation = t_src.lower_level();
+    const auto& dest_annotation = t_dest.lower_level();
 
     for (const auto& var : m_parent.vars()) {
         var.set(dest_annotation, var.get(src_annotation));
@@ -357,7 +375,7 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
         const double range = compute_range(t_ctr);
         LinExpr<Ctr> column = t_coeff * t_ctr;
         const auto s = result.add_var(0, range, Continuous, -1, column, "slack_" + t_ctr.name());
-        m_separation_bilevel_description.make_lower_level(s);
+        m_bilevel_description_separation.make_lower_level(s);
     };
 
     for (const auto& ctr : m_second_stage_constraints) {
@@ -379,7 +397,11 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
 
     }
 
-    m_separation_bilevel_description.set_lower_level_obj(-1. * result.get_obj_expr());
+    m_bilevel_description_separation.set_lower_level_obj(-1. * result.get_obj_expr());
 
     return std::move(result);
+}
+
+bool idol::CCG::Formulation::is_adjustable_robust_problem() const {
+    return m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility);
 }

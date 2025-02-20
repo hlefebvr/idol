@@ -26,6 +26,18 @@ public:
 
     std::string name() const override;
 
+    SolutionStatus get_status() const override;
+
+    SolutionReason get_reason() const override;
+
+    double get_best_obj() const override;
+
+    double get_best_bound() const override;
+
+    double get_relative_gap() const override;
+
+    double get_absolute_gap() const override;
+
     double get_var_primal(const Var &t_var) const override;
 
     double get_var_reduced_cost(const Var &t_var) const override;

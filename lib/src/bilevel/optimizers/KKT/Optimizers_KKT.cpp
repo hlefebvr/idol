@@ -16,7 +16,7 @@ idol::Optimizers::Bilevel::KKT::KKT(const Model& t_parent,
 }
 
 std::string idol::Optimizers::Bilevel::KKT::name() const {
-    return "deterministic";
+    return "kkt";
 }
 
 double idol::Optimizers::Bilevel::KKT::get_var_primal(const idol::Var &t_var) const {
