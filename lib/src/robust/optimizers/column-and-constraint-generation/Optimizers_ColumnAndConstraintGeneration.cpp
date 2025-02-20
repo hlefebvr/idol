@@ -342,7 +342,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration(
               << std::setw(5) << m_formulation->n_added_scenarios() << "\t"
               << std::setw(12) << get_best_bound() << "\t"
               << std::setw(12) << get_best_obj() << "\t"
-              << std::setw(12) << get_relative_gap() << "\t"
+              << std::setw(12) << get_relative_gap() * 100 << "\t"
               << std::setw(12) << get_absolute_gap() << "\t"
               << std::setw(35) << master_status.str() << "\t"
               << std::setw(35) << separation_status.str() << "\t"
