@@ -3,8 +3,10 @@
 # Create an array to store the report file names
 declare -a report_files
 
+ls
+
 # Add report files to the array based on your naming pattern
-for file in coverage__*.info; do
+for file in **/coverage__*.info; do
   report_files+=("--add-tracefile" "$file")
 done
 

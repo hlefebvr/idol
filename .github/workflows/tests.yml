@@ -29,7 +29,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -44,7 +44,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       # Upload the artifact using the hashed string as part of the name
       - name: Upload coverage with hashed name
@@ -90,7 +90,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -107,7 +107,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
@@ -141,7 +141,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -156,7 +156,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
@@ -190,7 +190,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
@@ -205,7 +205,7 @@ jobs:
           echo "Hashing: ${{ matrix.test }}"
           HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
           echo "Hashed string: $HASHED_STRING"
-          echo "::set-output name=hashed_string::$HASHED_STRING"
+          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
 
       - name: Upload coverage with hashed name
         uses: actions/upload-artifact@v4
