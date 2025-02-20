@@ -46,7 +46,7 @@ public:
 
     void set_bilevel_description(const Description &t_bilevel_description) override;
 
-    //MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
+    MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
 
     MibS& with_cplex_for_feasibility(bool t_value);
 

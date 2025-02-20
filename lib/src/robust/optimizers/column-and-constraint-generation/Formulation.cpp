@@ -98,8 +98,6 @@ void idol::CCG::Formulation::parse_constraints() {
 
 void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario) {
 
-    std::cout << "Adding scenario\n" << t_scenario << std::endl;
-
     const auto& lower_level_annotation = m_bilevel_description.lower_level();
 
     std::vector<std::optional<Var>> new_vars;
@@ -307,8 +305,6 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
 
     add_separation_problem_constraints(result, t_first_stage_decision);
 
-    std::cout << result << std::endl;
-
     const auto compute_range = [&](const Ctr& t_ctr) {
         double bound = 0;
         const auto type = result.get_ctr_type(t_ctr);
@@ -329,7 +325,6 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
                     bound += coeff * result.get_var_lb(var);
                 }
             }
-            std::cout << "Bound of " << t_ctr.name() << " is " << bound << std::endl;
         } else if (type == GreaterOrEqual) {
             bound += result.get_ctr_rhs(t_ctr);
             for (const auto& [var, coeff] : m_robust_description.uncertain_rhs(t_ctr)) {
@@ -347,7 +342,6 @@ idol::CCG::Formulation::build_feasibility_separation_problem(const idol::Point<i
                 }
             }
             bound *= -1;
-            std::cout << "Bound of " << t_ctr.name() << " is " << bound << std::endl;
         } else {
             throw Exception("Equal constraints not yet implemented");
         }

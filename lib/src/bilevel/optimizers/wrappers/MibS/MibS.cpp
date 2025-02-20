@@ -27,19 +27,15 @@ idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) con
         throw Exception("The bilevel description has not been set.");
     }
 
-    OsiSolverInterface* osi_interface = new OsiClpSolverInterface();
-
-    /*
+    OsiSolverInterface* osi_interface;
     if (m_osi_interface) {
+        if (!dynamic_cast<OsiClpSolverInterface*>(m_osi_interface.get())) {
+            std::cerr << "Warning: using other interface than OsiClpSolverInterface is not officially supported by MibS." << std::endl;
+        }
         osi_interface = m_osi_interface->clone();
     } else {
-#ifdef IDOL_USE_CPLEX
-            osi_interface = new OsiCpxSolverInterface();
-#else
-            osi_interface = new OsiClpSolverInterface();
-#endif
+        osi_interface = new OsiClpSolverInterface();
     }
-     */
 
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
@@ -79,7 +75,6 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     }
 }
 
-/*
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInterface &t_osi_optimizer) {
 #ifdef IDOL_USE_OSI
     if (m_osi_interface) {
@@ -93,7 +88,6 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInte
     throw Exception("idol was not linked with Osi.");
 #endif
 }
- */
 
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
 

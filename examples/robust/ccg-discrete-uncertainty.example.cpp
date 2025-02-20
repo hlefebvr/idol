@@ -2,6 +2,9 @@
 // Created by henri on 05.02.25.
 //
 #include <iostream>
+#include <OsiCpxSolverInterface.hpp>
+#include <OsiClpSolverInterface.hpp>
+#include <OsiSymSolverInterface.hpp>
 #include "idol/modeling.h"
 #include "idol/mixed-integer/problems/facility-location-problem/FLP_Instance.h"
 #include "idol/mixed-integer/optimizers/branch-and-bound/BranchAndBound.h"
@@ -27,13 +30,13 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    const auto instance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(5, 15, 2);
-    std::ofstream file("ccg-discrete-uncertainty.data.txt");
-    file << instance;
-    file.close();
+    //const auto instance = Problems::FLP::generate_instance_1991_Cornuejols_et_al(5, 10, 2);
+    //std::ofstream file("ccg-discrete-uncertainty.data.txt");
+    //file << instance;
+    //file.close();
 
     // Read instance
-    //const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-discrete-uncertainty.data.txt");
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("ccg-discrete-uncertainty.data.txt");
     const unsigned int n_customers = instance.n_customers();
     const unsigned int n_facilities = instance.n_facilities();
 
@@ -94,24 +97,16 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
-    model.use(Gurobi());
-    model.optimize();
-    std::cout << model.get_best_obj() << std::endl;
-
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
-            .with_file_interface(true)
-            .with_logs(true)
-            ;
-
-    const auto kkt = Bilevel::KKT()
-            .with_single_level_optimizer(Gurobi().with_logs(true))
+            .with_file_interface(false)
+            .with_logs(false)
             ;
 
     model.use(
             Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
-                    .with_initial_scenario_by_maximization(Gurobi())
-                    .with_initial_scenario_by_minimization(Gurobi())
+                    //.with_initial_scenario_by_maximization(Gurobi())
+                    //.with_initial_scenario_by_minimization(Gurobi())
                     .with_master_optimizer(Gurobi())
                     .add_feasibility_separation_optimizer(mibs)
                     .add_optimality_separation_optimizer(mibs)

@@ -297,8 +297,6 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_adversarial_
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feasibility_adversarial_problem() {
 
-    std::cout << "Solving feasibility separation problem..." << std::endl;
-
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
@@ -326,8 +324,6 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 
     const double objective_value = -high_point_relaxation.get_best_obj();
 
-    std::cout << "Feasiblity = " << objective_value << std::endl;
-
     if (objective_value >= Tolerance::Feasibility) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
         m_formulation->add_scenario_to_master(scenario);
@@ -338,8 +334,6 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 }
 
 unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_adversarial_problem() {
-
-    std::cout << "Solving optimality separation problem..." << std::endl;
 
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
@@ -394,18 +388,18 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
         return 1;
     }
 
-    bool is_violated;
+    bool add_scenario;
     if (t_coupling_constraint_index == 0) {
-        is_violated = true;
+        add_scenario = true;
         if (status == Optimal) {
-            set_best_obj(-high_point_relaxation.get_best_obj());
+            set_best_obj(std::min(get_best_obj(), -high_point_relaxation.get_best_obj()));
         }
     } else {
         // TODO check with Tolerance::Feasiblity
         throw Exception("Coupling constraints not yet implemented");
     }
 
-    if (is_violated) {
+    if (add_scenario) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
         m_formulation->add_scenario_to_master(scenario);
         return 1;
