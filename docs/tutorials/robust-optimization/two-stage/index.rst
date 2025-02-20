@@ -1,14 +1,11 @@
 .. _robust_single:
 
-Adjustable Robust Optimization (Two-stage)
+Two-stage Robust Optimization (Adjustable)
 ==========================================
 
-
-
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
     :glob:
 
     modeling
     ccg
-    column-and-constraint-generation/index

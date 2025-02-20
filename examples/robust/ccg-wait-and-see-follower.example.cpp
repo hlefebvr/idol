@@ -88,7 +88,7 @@ int main(int t_argc, const char** t_argv) {
     for (const auto& ctr : second_stage_constraints) {
         bilevel_description.make_lower_level(ctr);
     }
-    bilevel_description.set_lower_level_obj(model.get_obj_expr());
+    bilevel_description.set_lower_level_obj(-model.get_obj_expr());
 
     /**************************/
     /* Create Uncertainty Set */

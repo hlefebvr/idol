@@ -19,7 +19,6 @@ idol::CCG::Formulation::Formulation(const idol::Model &t_parent, const idol::Rob
     parse_constraints();
     copy_bilevel_description(t_bilevel_description, m_bilevel_description_separation);
 
-    // if is wait-and-see follower, copy annotation, make sure master solver is a bilevel solver
     if (is_wait_and_see_follower()) {
         auto& env = m_parent.env();
         m_bilevel_description_master = std::make_optional<::idol::Bilevel::Description>(env);
