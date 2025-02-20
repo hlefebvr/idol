@@ -166,3 +166,39 @@ idol::Bilevel::PessimisticAsOptimistic::make_model(const Model &t_model, const B
     };
 }
 
+void idol::Bilevel::PessimisticAsOptimistic::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
+    m_description = &t_bilevel_description;
+}
+
+idol::Optimizer *idol::Bilevel::PessimisticAsOptimistic::operator()(const idol::Model &t_model) const {
+    throw Exception("Not implemented.");
+}
+
+idol::OptimizerFactory *idol::Bilevel::PessimisticAsOptimistic::clone() const {
+    return new PessimisticAsOptimistic(*this);
+}
+
+idol::Bilevel::PessimisticAsOptimistic &idol::Bilevel::PessimisticAsOptimistic::with_optimistic_bilevel_optimizer(const idol::OptimizerFactory &t_optimizer) {
+
+    if (m_optimistic_bilevel_optimizer) {
+        throw Exception("Single level optimizer already set.");
+    }
+
+    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
+        throw Exception("The optimistic optimizer must be a Bilevel::OptimizerInterface.");
+    }
+
+    m_optimistic_bilevel_optimizer.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(const idol::Bilevel::Description &t_description)
+    :
+    OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic>(),
+    m_description(&t_description) {}
+
+idol::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(const idol::Bilevel::PessimisticAsOptimistic &t_src)
+    : OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic>(t_src),
+      m_optimistic_bilevel_optimizer(t_src.m_optimistic_bilevel_optimizer ? t_src.m_optimistic_bilevel_optimizer->clone() : nullptr),
+      m_description(t_src.m_description) {}

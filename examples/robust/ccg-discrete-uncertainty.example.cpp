@@ -27,6 +27,7 @@
 #include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/mixed-integer/optimizers/padm/PADM.h"
+#include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 
 using namespace idol;
 
@@ -130,16 +131,17 @@ int main(int t_argc, const char** t_argv) {
 
     model.use(
             Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
-                    //.with_initial_scenario_by_maximization(Gurobi())
-                    //.with_initial_scenario_by_minimization(Gurobi())
+
+                    .with_initial_scenario_by_maximization(Gurobi())
+                    .with_initial_scenario_by_minimization(Gurobi())
 
                     .with_master_optimizer(Gurobi())
 
                     .add_feasibility_separation_optimizer(padm)
-                    .add_feasibility_separation_optimizer(mibs)
+                    .add_feasibility_separation_optimizer(Bilevel::PessimisticAsOptimistic() + mibs)
 
                     .add_optimality_separation_optimizer(padm)
-                    .add_optimality_separation_optimizer(mibs)
+                    .add_optimality_separation_optimizer(Bilevel::PessimisticAsOptimistic() + mibs)
                     .with_logs(true)
     );
     model.optimize();

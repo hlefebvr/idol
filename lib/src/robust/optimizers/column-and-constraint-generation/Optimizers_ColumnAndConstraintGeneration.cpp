@@ -337,13 +337,13 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::log_iteration(
         }
     }
 
-    std::cout << std::setw(12) << time().count() << "s\t"
+    std::cout << std::setw(12) << pretty_double(time().count(), 5) << "s\t"
               << std::setw(5) << m_n_iterations << "\t"
               << std::setw(5) << m_formulation->n_added_scenarios() << "\t"
-              << std::setw(12) << get_best_bound() << "\t"
-              << std::setw(12) << get_best_obj() << "\t"
-              << std::setw(12) << get_relative_gap() * 100 << "\t"
-              << std::setw(12) << get_absolute_gap() << "\t"
+              << std::setw(12) << pretty_double(get_best_bound(), 5) << "\t"
+              << std::setw(12) << pretty_double(get_best_obj(), 5) << "\t"
+              << std::setw(12) << pretty_double(get_relative_gap() * 100, 5) << "\t"
+              << std::setw(12) << pretty_double(get_absolute_gap(), 5) << "\t"
               << std::setw(35) << master_status.str() << "\t"
               << std::setw(35) << separation_status.str() << "\t"
               << std::setw(8) << separation_outcome.str()
