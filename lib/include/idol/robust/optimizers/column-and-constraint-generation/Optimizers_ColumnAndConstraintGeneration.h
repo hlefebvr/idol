@@ -29,10 +29,12 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::unique_ptr<OptimizerFactory> m_initial_scenario_by_maximization;
 
     // Feasibility Separation
+    const bool m_with_feasibility_separation_loop_reset = false;
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
     unsigned int m_index_feasibility_separation = 0;
 
     // Optimality Separation
+    const bool m_with_optimality_separation_loop_reset = false;
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
     unsigned int m_index_optimality_separation = 0;
 public:
@@ -115,7 +117,13 @@ protected:
 
     void check_termination_criteria();
 
-    void log_iteration();
+    void log_banner();
+    void log_iteration(bool t_is_feasibility_separation,
+                       const std::string& t_optimizer_name,
+                       const SolutionStatus& t_status,
+                       const SolutionReason& t_reason,
+                       bool t_separation_outcome);
+    void log_iteration_separator();
 
     void solve_adversarial_problem();
     unsigned int solve_feasibility_adversarial_problem();
@@ -123,7 +131,7 @@ protected:
     unsigned int solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution);
     unsigned int solve_optimality_adversarial_problem(const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index);
 
-    bool is_adjustable_robust_problem() const;
+    [[nodiscard]] bool is_adjustable_robust_problem() const;
 };
 
 
