@@ -15,7 +15,7 @@ idol::Optimizers::Bilevel::StrongDuality::StrongDuality(const Model& t_parent,
 }
 
 std::string idol::Optimizers::Bilevel::StrongDuality::name() const {
-    return "deterministic";
+    return "strong-duality reformulation";
 }
 
 double idol::Optimizers::Bilevel::StrongDuality::get_var_primal(const idol::Var &t_var) const {

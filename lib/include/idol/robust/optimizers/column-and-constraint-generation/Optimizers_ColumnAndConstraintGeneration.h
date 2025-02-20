@@ -29,10 +29,12 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     std::unique_ptr<OptimizerFactory> m_initial_scenario_by_maximization;
 
     // Feasibility Separation
-    std::unique_ptr<OptimizerFactory> m_optimizer_feasibility_separation;
+    std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
+    unsigned int m_index_feasibility_separation = 0;
 
     // Optimality Separation
-    std::unique_ptr<OptimizerFactory> m_optimizer_optimality_separation;
+    std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
+    unsigned int m_index_optimality_separation = 0;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const ::idol::Robust::Description &t_robust_description,
@@ -41,8 +43,8 @@ public:
                                   std::vector<Point<Var>> t_initial_scenarios,
                                   OptimizerFactory* t_initial_scenario_by_minimization,
                                   OptimizerFactory* t_initial_scenario_by_maximization,
-                                  OptimizerFactory* t_optimizer_feasibility_separation,
-                                  OptimizerFactory* t_optimizer_optimality_separation);
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation);
 
     [[nodiscard]] std::string name() const override;
 

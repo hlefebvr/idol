@@ -435,6 +435,9 @@ void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
 
         if (full_row->has_quadratic()) {
             // we have to add a quadratic constraint here
+            for (const auto& [var, expr] : *full_row) {
+                std::cout << var << " <-> " << expr << std::endl;
+            }
             throw Exception("Quadratic constraints in fixed problems are not implemented");
         }
 

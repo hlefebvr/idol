@@ -24,8 +24,8 @@ class idol::Robust::ColumnAndConstraintGeneration : public OptimizerFactoryWithD
     std::vector<Point<Var>> m_initial_scenarios;
 
     // Separation
-    std::unique_ptr<OptimizerFactory> m_optimizer_feasibility_separation;
-    std::unique_ptr<OptimizerFactory> m_optimizer_optimality_separation;
+    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
+    std::list<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
 public:
     ColumnAndConstraintGeneration(const Robust::Description& t_robust_description,
                                   const Bilevel::Description& t_bilevel_description);

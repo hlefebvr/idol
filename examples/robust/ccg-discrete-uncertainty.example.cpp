@@ -23,6 +23,10 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/mixed-integer/optimizers/padm/SubProblem.h"
+#include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
+#include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
+#include "idol/mixed-integer/optimizers/padm/PADM.h"
 
 using namespace idol;
 
@@ -52,7 +56,7 @@ int main(int t_argc, const char** t_argv) {
     Bilevel::Description bilevel_description(env);
 
     auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
-    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
+    auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Continuous, 0., "y");
 
     for (unsigned int i = 0 ; i < n_facilities ; ++i) {
         const auto c = model.add_ctr(
@@ -97,6 +101,27 @@ int main(int t_argc, const char** t_argv) {
         }
     }
 
+    Annotation<unsigned int> decomposition(env, "sub_problem", 0);
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        for (unsigned int j = 0; j < n_customers; ++j) {
+            xi[i][j].set(decomposition, 1);
+        }
+    }
+
+    Annotation<double> initial_penalties(env, "initial_penalties", 1e1);
+
+    const auto padm = Bilevel::StrongDuality()
+                .with_single_level_optimizer(
+                    PADM(decomposition, initial_penalties)
+                        .with_default_sub_problem_spec(
+                            ADM::SubProblem().with_optimizer(Gurobi())
+                        )
+                        .with_penalty_update(PenaltyUpdates::Multiplicative(2))
+                        .with_rescaling_threshold(1e4)
+                        .with_logs(false)
+                )
+            ;
+
     const auto mibs = Bilevel::MibS()
             .with_cplex_for_feasibility(true)
             .with_file_interface(false)
@@ -107,8 +132,13 @@ int main(int t_argc, const char** t_argv) {
             Robust::ColumnAndConstraintGeneration(robust_description, bilevel_description)
                     //.with_initial_scenario_by_maximization(Gurobi())
                     //.with_initial_scenario_by_minimization(Gurobi())
+
                     .with_master_optimizer(Gurobi())
+
+                    .add_feasibility_separation_optimizer(padm)
                     .add_feasibility_separation_optimizer(mibs)
+
+                    .add_optimality_separation_optimizer(padm)
                     .add_optimality_separation_optimizer(mibs)
                     .with_logs(true)
     );
