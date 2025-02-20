@@ -164,8 +164,8 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
     m_master.add_ctr(*m_second_stage_epigraph >= std::move(objective));
 
     if (!m_bilevel_description.lower_level_obj().is_zero(Tolerance::Feasibility)) {
-        throw Exception("Newly created lower-levels do not have an objective function. This has to be "
-                        "implemented. Though they have the right annotation.");
+        std::cerr << "Newly created lower-levels do not have an objective function. This has to be "
+                        "implemented. Though they have the right annotation." << std::endl;
     }
 
     ++m_n_added_scenario;
