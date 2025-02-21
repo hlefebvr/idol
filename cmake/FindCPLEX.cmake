@@ -4,7 +4,7 @@ endif()
 
 file(GLOB CPLEX_IN_OPT "/opt/ibm/ILOG/CPLEX_Studio*")
 
-list(GET CPLEX_IN_OPT 0 CPLEX_LIBRARY)
+list(GET CPLEX_IN_OPT 0 CPLEX_IN_OPT)
 
 find_path(
         CPLEX_INCLUDE_DIRS
