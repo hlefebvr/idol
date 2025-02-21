@@ -243,7 +243,10 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
 
     auto& master = m_formulation->master();
     master.optimizer().set_param_time_limit(get_remaining_time());
+
+    m_master_timer.start();
     master.optimize();
+    m_master_timer.stop();
 
     const auto status = master.get_status();
 
@@ -424,7 +427,9 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
     high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
     // Solve adversarial problem
+    m_separation_timer.start();
     high_point_relaxation.optimize();
+    m_separation_timer.stop();
 
     // Analyze results
     const auto status = high_point_relaxation.get_status();
@@ -508,7 +513,9 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
     high_point_relaxation.optimizer().set_param_time_limit(get_remaining_time());
 
     // Solve adversarial problem
+    m_separation_timer.start();
     high_point_relaxation.optimize();
+    m_separation_timer.stop();
 
     // Analyze results
     const auto status = high_point_relaxation.get_status();

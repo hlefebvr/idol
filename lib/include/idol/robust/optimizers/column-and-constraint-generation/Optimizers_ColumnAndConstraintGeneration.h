@@ -37,6 +37,10 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
     const bool m_with_optimality_separation_loop_reset = false;
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
     unsigned int m_index_optimality_separation = 0;
+
+    // Timers
+    Timer m_master_timer;
+    Timer m_separation_timer;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
                                   const ::idol::Robust::Description &t_robust_description,
@@ -63,6 +67,14 @@ public:
     [[nodiscard]] unsigned int get_n_solutions() const override;
 
     [[nodiscard]] unsigned int get_solution_index() const override;
+
+    [[nodiscard]] unsigned int get_n_scenarios() const { return m_formulation->n_added_scenarios(); }
+
+    [[nodiscard]] unsigned int get_n_iterations() const { return m_n_iterations; }
+
+    [[nodiscard]] const Timer& get_master_timer() const { return m_master_timer; }
+
+    [[nodiscard]] const Timer& get_separation_timer() const { return m_separation_timer; }
 
 protected:
     void add(const Var &t_var) override;
