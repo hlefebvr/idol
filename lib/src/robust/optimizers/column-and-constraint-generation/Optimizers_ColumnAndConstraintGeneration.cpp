@@ -123,13 +123,13 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_before_optimi
     m_index_feasibility_separation = 0;
     m_index_optimality_separation = 0;
 
-    log_banner();
-
 }
 
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::hook_optimize() {
 
     add_initial_scenarios();
+
+    log_banner();
 
     while (true) {
 
