@@ -30,6 +30,7 @@ class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm
 
     // Feasibility Separation
     const bool m_with_feasibility_separation_loop_reset = false;
+    const bool m_with_annotation_for_infeasible_scenario = true;
     std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
     unsigned int m_index_feasibility_separation = 0;
 

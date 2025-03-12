@@ -44,7 +44,7 @@ public:
 
     const Model& master() const { return m_master; }
 
-    void add_scenario_to_master(const Point<Var>& t_scenario);
+    void add_scenario_to_master(const Point<Var>& t_scenario, bool t_add_annotation);
 
     Model build_optimality_separation_problem_for_adjustable_robust_problem(const Point<Var>& t_first_stage_decision, unsigned int t_coupling_constraint_index);
 
