@@ -481,6 +481,8 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_opti
     const auto& master = m_formulation->master();
     const auto upper_level_solution = save_primal(master);
 
+    std::cout << upper_level_solution << std::endl;
+
     return solve_optimality_adversarial_problem(upper_level_solution);
 
 }
