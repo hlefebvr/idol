@@ -302,7 +302,7 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
     if (is_adjustable_robust_problem()) {
         m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
     } else {
-        std::cerr << "Assuming pessimistic separator" << std::endl;
+        // std::cerr << "Assuming pessimistic separator" << std::endl;
         m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
     }
 

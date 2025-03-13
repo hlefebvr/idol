@@ -245,9 +245,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_master_probl
     master.optimizer().set_param_time_limit(get_remaining_time());
 
     m_master_timer.start();
-    std::cout << "Start master problem" << std::endl;
     master.optimize();
-    std::cout << "End master problem" << std::endl;
     m_master_timer.stop();
 
     const auto status = master.get_status();
@@ -430,9 +428,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 
     // Solve adversarial problem
     m_separation_timer.start();
-    std::cout << "Start separation problem (feasibility)" << std::endl;
     high_point_relaxation.optimize();
-    std::cout << "End separation problem (feasibility)" << std::endl;
     m_separation_timer.stop();
 
     // Analyze results
@@ -518,9 +514,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
 
     // Solve adversarial problem
     m_separation_timer.start();
-    std::cout << "Start separation problem (optimality)" << std::endl;
     high_point_relaxation.optimize();
-    std::cout << "End separation problem (optimality)" << std::endl;
     m_separation_timer.stop();
 
     // Analyze results
