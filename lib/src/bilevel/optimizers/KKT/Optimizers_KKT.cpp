@@ -100,6 +100,7 @@ void idol::Optimizers::Bilevel::KKT::hook_optimize() {
         m_deterministic_model->use(*m_deterministic_optimizer);
     }
 
+    m_deterministic_model->optimizer().set_param_time_limit(get_param_time_limit());
     m_deterministic_model->optimize();
 
 }
