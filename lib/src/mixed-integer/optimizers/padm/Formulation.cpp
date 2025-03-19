@@ -8,6 +8,7 @@
 #include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 #include <utility>
 #include <cassert>
@@ -309,14 +310,19 @@ void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::ve
             // TODO, here, we need to update the quadratic constraint
             auto qctr = std::get<QCtr>(row_fixation.ctr);
             auto eval = evaluate(row_fixation.row, t_primals);
-            std::cout << "Should update " << qctr.name() << " to " << eval << std::endl;
-            throw Exception("Updating expression of quadratic constraints is not supported.");
-        }
+            const auto type = sub_problem.model.get_qctr_type(qctr);
+            sub_problem.model.remove(qctr);
+            sub_problem.model.add(qctr, TempQCtr(std::move(eval), type));
+            //throw Exception("Updating expression of quadratic constraints is not supported.");
+        } else {
 
-        auto ctr = std::get<Ctr>(row_fixation.ctr);
-        auto eval = evaluate(row_fixation.row, t_primals);
-        sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
-        sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
+            auto ctr = std::get<Ctr>(row_fixation.ctr);
+
+            auto eval = evaluate(row_fixation.row, t_primals);
+            sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
+            sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
+
+        }
 
     }
 
@@ -441,16 +447,15 @@ void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
             // we have to add a quadratic constraint here
             const auto new_quad_ctr = sub_problem.model.add_qctr(QuadExpr(), type, t_ctr.name());
             sub_problem.row_fixations.emplace_back(new_quad_ctr, std::move(*full_row));
+            new_quad_ctr.set(*m_initial_penalty_parameters, t_ctr.get(*m_initial_penalty_parameters));
+        } else {
+            new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
+            sub_problem.row_fixations.emplace_back(*new_linear_ctr, std::move(*full_row));
         }
-
-        new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
-        sub_problem.row_fixations.emplace_back(*new_linear_ctr, std::move(*full_row));
 
     }
 
-    assert(new_linear_ctr.has_value());
-
-    if (m_initial_penalty_parameters.has_value()) {
+    if (new_linear_ctr.has_value() && m_initial_penalty_parameters.has_value()) {
         new_linear_ctr->set(*m_initial_penalty_parameters, t_ctr.get(*m_initial_penalty_parameters));
     }
 

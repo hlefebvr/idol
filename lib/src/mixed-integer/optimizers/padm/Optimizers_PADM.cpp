@@ -326,7 +326,7 @@ void idol::Optimizers::PADM::run_inner_loop() {
         bool objective_value_has_changed = false;
         bool feasibility_has_changed = false;
 
-        for (unsigned int i = 0 ; i < n_sub_problems ; ++i) {
+        for (unsigned int i = 0 ; i < n_sub_problems && !is_terminated() ; ++i) {
             const auto [obj, feas] = solve_sub_problem(i);
             objective_value_has_changed |= obj;
             feasibility_has_changed |= feas;
@@ -379,7 +379,6 @@ idol::Optimizers::PADM::solve_sub_problem(unsigned int t_sub_problem_id) {
     m_formulation.update(t_sub_problem_id, m_last_solutions);
 
     auto& sub_problem = m_formulation.sub_problem(t_sub_problem_id);
-
 
     //sub_problem.model.write("sub_problem_" + std::to_string(t_sub_problem_id) + "_" + std::to_string(m_outer_loop_iteration) + "_" + std::to_string(m_inner_loop_iterations) + ".lp");
 
