@@ -306,6 +306,10 @@ void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::ve
     for (const auto& row_fixation : sub_problem.row_fixations) {
 
         if (std::holds_alternative<QCtr>(row_fixation.ctr)) {
+            // TODO, here, we need to update the quadratic constraint
+            auto qctr = std::get<QCtr>(row_fixation.ctr);
+            auto eval = evaluate(row_fixation.row, t_primals);
+            std::cout << "Should update " << qctr.name() << " to " << eval << std::endl;
             throw Exception("Updating expression of quadratic constraints is not supported.");
         }
 
@@ -435,7 +439,8 @@ void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
 
         if (full_row->has_quadratic()) {
             // we have to add a quadratic constraint here
-            throw Exception("Quadratic constraints in fixed problems are not implemented");
+            const auto new_quad_ctr = sub_problem.model.add_qctr(QuadExpr(), type, t_ctr.name());
+            sub_problem.row_fixations.emplace_back(new_quad_ctr, std::move(*full_row));
         }
 
         new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());

@@ -41,6 +41,7 @@ public:
             QuadExpr<Var, QuadExpr<Var>> row;
 
             RowFixation(const Ctr& t_sub_problem_ctr, QuadExpr<Var, QuadExpr<Var>> t_row) : ctr(t_sub_problem_ctr), row(std::move(t_row)) {}
+            RowFixation(const QCtr& t_sub_problem_ctr, QuadExpr<Var, QuadExpr<Var>> t_row) : ctr(t_sub_problem_ctr), row(std::move(t_row)) {}
         };
 
         Model model;
