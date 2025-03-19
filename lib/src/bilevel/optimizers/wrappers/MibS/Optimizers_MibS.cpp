@@ -10,12 +10,12 @@
 #include <utility>
 
 idol::Optimizers::Bilevel::MibS::MibS(const idol::Model &t_parent,
-                                      idol::Bilevel::Description t_description,
+                                      const idol::Bilevel::Description& t_description,
                                       OsiSolverInterface* t_osi_solver,
                                       bool t_use_file,
                                       bool t_use_cplex_for_feasibility)
                                       : Optimizer(t_parent),
-                                        m_description(std::move(t_description)),
+                                        m_description(t_description),
                                         m_osi_solver(t_osi_solver),
                                         m_use_file(t_use_file),
                                         m_use_cplex_for_feasibility(t_use_cplex_for_feasibility) {
@@ -34,12 +34,12 @@ idol::SolutionReason idol::Optimizers::Bilevel::MibS::get_reason() const {
 
 double idol::Optimizers::Bilevel::MibS::get_best_obj() const {
     throw_if_no_mibs();
-    return m_mibs->get_best_obj();
+    return parent().get_obj_expr().affine().constant() + m_mibs->get_best_obj();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_best_bound() const {
     throw_if_no_mibs();
-    return m_mibs->get_best_bound();
+    return parent().get_obj_expr().affine().constant() + m_mibs->get_best_bound();
 }
 
 double idol::Optimizers::Bilevel::MibS::get_var_primal(const idol::Var &t_var) const {
@@ -107,7 +107,7 @@ void idol::Optimizers::Bilevel::MibS::write(const std::string &t_name) {
 void idol::Optimizers::Bilevel::MibS::hook_optimize() {
 
     if (m_mibs) {
-        return;
+        //return;
     }
 
     if (m_use_file) {

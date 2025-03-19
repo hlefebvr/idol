@@ -1,4 +1,4 @@
-# idol - The Mathematical Optimization Framework
+# idol, A C++ Framework for Optimization 
 
 ![License](https://img.shields.io/github/license/hlefebvr/idol?color=blue)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/release/hlefebvr/idol?color=blue)
@@ -10,19 +10,15 @@
 
 ![Making Branch-and-Price implementation as easy as Branch-and-Bound + Column-Generation](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/branch-and-price-implementation.png)
 
-Idol is a C++ library for mathematical optimization and complex decision making. 
+idol is a C++ framework for mathematical optimization and complex decision-making problems. 
 
-It is designed to help you build new algorithms easily for solving more and more challenging problems. It is a versatile and powerful tool that can be used to solve a wide range of optimization problems, including mixed-integer linear programming (MILP), quadratically constrained problems (MIQCQP and MIQP), bilevel problems (BO), robust optimization problems (RO and ARO) and many more.
+It is designed to help you build new algorithms for solving complex optimization problems. The main philosophy behind idol is interoperability and ease of use. Hence, any algorithm can be seamlessly combined with any other algorithm to create a new one. For instance, you can combine a Branch-and-Bound algorithm with a Column Generation algorithm to create a Branch-and-Price algorithm.
 
 - [Documentation](#Documentation)
 - [Using idol for Research?](#using-idol-for-research)
 - [Examples](#Examples)
   - [Branch-and-Price](#branch-and-price)
-  - [Bilevel Problem (using coin-or/Mibs)](#bilevel-problem-using-mibs)
-- [Implemented Features](#Implemented-Features)
-  - [Branch-and-Bound](#Branch-and-Bound)
-  - [Column Generation and Branch-and-Price](#Column-Generation-and-Branch-and-Price)
-  - [External Solvers](#External-Solvers)
+  - [Bilevel Optimization (using coin-or/Mibs)](#bilevel-optimization-using-mibs)
 
 ## Documentation
 
@@ -30,7 +26,7 @@ Visit our [online documentation](https://hlefebvr.github.io/idol/).
 
 ## Using idol for Research?
 
-If you are opting for idol in one of your research project and encounter some issues, please contact us at lefebvre(at)uni-trier.de.
+If you are opting for idol in one of your research projects and encounter some issues, please contact me at lefebvre(at)uni-trier.de.
 
 ## Examples
 
@@ -63,7 +59,7 @@ model.use(branch_and_price);
 model.optimize();
 ```
 
-### Bilevel Problem (using MibS)
+### Bilevel Optimization (using MibS)
 
 Here, idol uses the external solver [coin-or/MibS](https://github.com/coin-or/MibS) to solve a bilevel optimization problem with integer lower level.
 
@@ -124,59 +120,3 @@ Idol can also be interfaced with [ROOT](https://root.cern/) to monitor the progr
 For instance, here is a screenshot of the monitoring of MibS for a bilevel instance.
 
 ![Monitor Any Branch-and-Bound Method](https://raw.githubusercontent.com/hlefebvr/idol/main/docs/monitor-mibs.png)
-
-## Implemented Features
-
-### Mixed-Integer Optimization
-
-#### External Solvers
-
-Idol can be used as a unified interface to several open-source or commercial solvers like
-
-- [Gurobi](https://www.gurobi.com/)
-- [Mosek](https://www.mosek.com/)
-- [GLPK](https://www.gnu.org/software/glpk/)
-- [HiGHS](https://highs.dev/)
-- [coin-or/Osi](https://github.com/coin-or/Osi) --> [Cplex](https://www.ibm.com/products/ilog-cplex-optimization-studio), [Symphony](https://github.com/coin-or/SYMPHONY), [Cbc](https://github.com/coin-or/Cbc)
-
-#### Branch-and-Bound
-
-- Node selection rules: Best Bound, Worst Bound, Depth First, Best Estimate, Breadth First.
-- Branching rules (for variable branching): Pseudo Cost, Strong Branching (with phases), Most Infeasible, Least Infeasible, First Found, Uniformly Random.
-- Subtree exploration
-- Heuristics (for variable branching): Simple Rounding, Relaxed Enforced Neighborhood, Local Branching
-- Callbacks: User Cuts, Lazy Cuts
-
-#### Column Generation and Branch-and-Price
-
-- Automatic Dantzig-Wolfe reformulation
-- Soft and hard branching available (i.e, branching on master or sub-problem)
-- Stabilization by dual price smoothing: [Wentges (1997)](https://doi.org/10.1016/S0969-6016(97)00001-4), [Neame (2000)](https://scholar.google.com/scholar?&q=Neame%2C%20P.J.%3A%20Nonsmooth%20Dual%20Methods%20in%20Integer%20Programming.%20PhD%20thesis%20%281999%29)
-- Can solve sub-problems in parallel
-- Supports pricing heuristics
-- Heuristics: Integer Master
-
-### Bilevel Optimization 
-
-- Idol can solve optimistic mixed-integer bilevel problems using the external solver [coin-or/MibS](https://github.com/coin-or/MibS).
-
-### Two-stage Robust Optimization
-
-#### Column-and-Constraint Generation (CCG)
-
-- Generic implementation of the CCG algorithm for adjustable robust optimization problems.
-- Trust region stabilization for problems with binary first stage decisions.
-- Separation problem (max-min) solved by a bilevel solver.
-
-## Benchmark 
-
-- A benchmark for the **Branch-and-Price** implementation is available for the [Generalized Assignment Problem](https://hlefebvr.github.io/idol-benchmark-gap/GAP.render.html).
-- A benchmark for the **Branch-and-Bound** implementation is available for the [Knapsack Problem](https://hlefebvr.github.io/idol-benchmark-kp/KP.render.html).
-
-![Performance profile](https://raw.githubusercontent.com/hlefebvr/idol-benchmark-gap/gh-pages/profile.png)
-
-This is a performance profile computed according to *Dolan, E., Moré, J. Benchmarking optimization software with performance profiles. Math. Program. 91, 201–213 (2002)* [https://doi.org/10.1007/s101070100263](https://doi.org/10.1007/s101070100263).
-
-## Miscellaneous
-
-Versionning is compliant with [Semantic versionning 2.0.0](https://semver.org/).

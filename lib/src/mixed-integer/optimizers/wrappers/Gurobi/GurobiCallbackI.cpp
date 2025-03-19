@@ -22,6 +22,10 @@ void idol::GurobiCallbackI::callback() {
     switch (where) {
         case GRB_CB_MIPSOL: event = IncumbentSolution; break;
         case GRB_CB_MIPNODE: event = InvalidSolution; break;
+        case GRB_CB_MIP: {
+            m_best_bound = getDoubleInfo(GRB_CB_MIP_OBJBND);
+            m_best_obj = getDoubleInfo(GRB_CB_MIP_OBJBST);
+        } [[fallthrough]];
         default: return;
     }
 
@@ -143,13 +147,11 @@ void idol::GurobiCallbackI::submit_heuristic_solution(idol::PrimalPoint t_soluti
 }
 
 double idol::GurobiCallbackI::best_obj() const {
-    auto* me = const_cast<GurobiCallbackI*>(this);
-    return me->getDoubleInfo(GRB_CB_MIP_OBJBST);
+    return m_best_obj;
 }
 
 double idol::GurobiCallbackI::best_bound() const {
-    auto* me = const_cast<GurobiCallbackI*>(this);
-    return me->getDoubleInfo(GRB_CB_MIP_OBJBND);
+    return m_best_bound;
 }
 
 void idol::GurobiCallbackI::terminate() {

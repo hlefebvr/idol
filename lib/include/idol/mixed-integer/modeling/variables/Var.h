@@ -24,21 +24,6 @@ namespace idol {
     template<class, class> class LinExpr;
 }
 
-
-/**
- * Variable modeling-old object.
- *
- * The class is used to represent a variable in an optimization model.
- *
- * Variables can be created by calling a constructor of `Var`, passing the optimization environment which will store
- * the variable's versions as argument. The variable can then be added to a model using the `Model::add` method.
- *
- * Another approach is to directly use the `Model::add_var` method.
- *
- * ```cpp
- * Var x = model.add_var(0, 1, Continuous, "x");
- * ```
- */
 class idol::Var : public Object<VarVersion, Var> {
     friend class impl::Env;
 public:

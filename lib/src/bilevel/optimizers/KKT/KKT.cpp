@@ -5,7 +5,7 @@
 #include "idol/bilevel/optimizers/KKT/Optimizers_KKT.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 
-idol::Bilevel::KKT::KKT(const Bilevel::Description &t_description) : m_description(t_description) {
+idol::Bilevel::KKT::KKT(const Bilevel::Description &t_description) : m_description(&t_description) {
 
 }
 
@@ -15,8 +15,12 @@ idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) cons
         throw Exception("No deterministic optimizer has been set.");
     }
 
+    if (!m_description) {
+        throw Exception("No bilevel description has been set.");
+    }
+
     auto* result = new Optimizers::Bilevel::KKT(t_model,
-                                                m_description,
+                                                *m_description,
                                                 *m_single_level_optimizer,
                                                 m_big_M);
 
@@ -52,7 +56,8 @@ idol::Bilevel::KKT::with_single_level_optimizer(const idol::OptimizerFactory &t_
 idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
         : OptimizerFactoryWithDefaultParameters<KKT>(t_src),
           m_description(t_src.m_description),
-          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr) {
+          m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
+          m_big_M(t_src.m_big_M) {
 
 }
 
@@ -95,4 +100,8 @@ idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
     result.set_obj_expr(t_model.get_obj_expr());
 
     return result;
+}
+
+void idol::Bilevel::KKT::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
+    m_description = &t_bilevel_description;
 }

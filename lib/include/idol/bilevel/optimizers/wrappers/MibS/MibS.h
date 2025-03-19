@@ -11,6 +11,7 @@
 #include "idol/mixed-integer/modeling/constraints/Ctr.h"
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/mixed-integer/optimizers/callbacks/CallbackFactory.h"
+#include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 
 #ifdef IDOL_USE_OSI
 #include <OsiSolverInterface.hpp>
@@ -22,8 +23,8 @@ namespace idol::Bilevel {
 
 class OsiSolverInterface;
 
-class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
-    Bilevel::Description m_description;
+class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS>, public Bilevel::OptimizerInterface {
+    const Bilevel::Description* m_description = nullptr;
     std::optional<bool> m_use_file_interface;
     std::optional<bool> m_use_cplex_for_feasibility;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
@@ -31,7 +32,9 @@ class idol::Bilevel::MibS : public OptimizerFactoryWithDefaultParameters<MibS> {
     std::unique_ptr<OsiSolverInterface> m_osi_interface;
 #endif
 public:
-    explicit MibS(Bilevel::Description t_description);
+    MibS() = default;
+
+    explicit MibS(const Bilevel::Description& t_description);
 
     MibS(const MibS& t_src);
     MibS(MibS&&) noexcept = delete;
@@ -41,7 +44,9 @@ public:
 
     Optimizer *operator()(const Model &t_model) const override;
 
-    //MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
+    void set_bilevel_description(const Description &t_bilevel_description) override;
+
+    MibS& with_osi_interface(const OsiSolverInterface& t_osi_optimizer);
 
     MibS& with_cplex_for_feasibility(bool t_value);
 
@@ -49,7 +54,7 @@ public:
 
     MibS& add_callback(const CallbackFactory& t_cb);
 
-    MibS *clone() const override;
+    [[nodiscard]] MibS *clone() const override;
 };
 
 #endif //IDOL_MIBS_H

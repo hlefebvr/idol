@@ -1,4 +1,0 @@
-BestBound
-=========
-
-.. doxygenclass:: idol::BestBound

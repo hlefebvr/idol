@@ -20,7 +20,7 @@ namespace idol::Optimizers::Bilevel {
 }
 
 class idol::Optimizers::Bilevel::MibS : public Optimizer {
-    const idol::Bilevel::Description m_description;
+    const idol::Bilevel::Description& m_description;
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
@@ -30,28 +30,30 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     std::list<std::unique_ptr<Callback>> m_callbacks;
 public:
     MibS(const idol::Model& t_parent,
-         idol::Bilevel::Description  t_description,
+         const idol::Bilevel::Description& t_description,
          OsiSolverInterface* t_osi_solver,
          bool t_use_file,
          bool t_use_cplex_for_feasibility);
 
-    std::string name() const override { return "mibs"; }
+    [[nodiscard]] std::string name() const override { return "mibs"; }
     void throw_if_no_mibs() const;
 
-    SolutionStatus get_status() const override;
-    SolutionReason get_reason() const override;
-    double get_best_obj() const override;
-    double get_best_bound() const override;
-    double get_var_primal(const Var &t_var) const override;
-    double get_var_reduced_cost(const Var &t_var) const override;
-    double get_var_ray(const Var &t_var) const override;
-    double get_ctr_dual(const Ctr &t_ctr) const override;
-    double get_ctr_farkas(const Ctr &t_ctr) const override;
-    double get_relative_gap() const override;
-    double get_absolute_gap() const override;
-    unsigned int get_n_solutions() const override;
-    unsigned int get_solution_index() const override;
+    [[nodiscard]] SolutionStatus get_status() const override;
+    [[nodiscard]] SolutionReason get_reason() const override;
+    [[nodiscard]] double get_best_obj() const override;
+    [[nodiscard]] double get_best_bound() const override;
+    [[nodiscard]] double get_var_primal(const Var &t_var) const override;
+    [[nodiscard]] double get_var_reduced_cost(const Var &t_var) const override;
+    [[nodiscard]] double get_var_ray(const Var &t_var) const override;
+    [[nodiscard]] double get_ctr_dual(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_ctr_farkas(const Ctr &t_ctr) const override;
+    [[nodiscard]] double get_relative_gap() const override;
+    [[nodiscard]] double get_absolute_gap() const override;
+    [[nodiscard]] unsigned int get_n_solutions() const override;
+    [[nodiscard]] unsigned int get_solution_index() const override;
     void add_callback(Callback* t_callback);
+
+    [[nodiscard]] const idol::Bilevel::Description& bilevel_description() const { return m_description; }
 
 protected:
     void build() override;

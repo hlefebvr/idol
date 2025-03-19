@@ -55,6 +55,7 @@ In :cite:`Zeng2020`, the authors show that the pessimistic bilevel problem :math
         & g(x,\bar y) \ge 0, \\
         & y\in \tilde S(x, \bar y),
     \end{align}
+
 in which :math:`\tilde S(x, \bar y)` is the solution set of
 
 .. math::

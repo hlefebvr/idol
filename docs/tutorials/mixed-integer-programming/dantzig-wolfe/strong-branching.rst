@@ -1,13 +1,6 @@
 Using Strong Branching
 ======================
 
-.. contents:: Table of Contents
-    :local:
-    :depth: 2
-
-Basics
-------
-
 Strong Branching is a technique that falls into the category of *variable selection rules*, a crucial aspect of
 Branch-and-Bound algorithms.
 
@@ -29,7 +22,14 @@ the case when nodes are solved using Column Generation.
 
 The idea of Strong Branching is to evaluate the effect of branching on a variable before branching actually happens.
 
-To be more clear, let :math:`C` be a set of indices for branching candidates at a given node, i.e., for each :math:`j\in C`,
+.. contents:: Table of Contents
+    :local:
+    :depth: 2
+
+Formal Definition
+-----------------
+
+Let :math:`C` be a set of indices for branching candidates at a given node, i.e., for each :math:`j\in C`,
 :math:`x_j` is an integer variable in the original problem but with :math:`x_j^*\notin\mathbb Z` at the current node.
 Strong Branching tries to evaluate the effect of applying branching constraints :math:`x_j \le \lfloor x_j^* \rfloor` and
 :math:`x_j \ge \lceil x_j^* \rceil` to the current node. To do so, it solves, before branching happens, and for each :math:`j\in C`,
@@ -94,7 +94,7 @@ Implementation
 This section explains how to use the Strong Branching rule in idol.
 It is based on the Generalized Assignment Problem example from the :ref:`Column Generation <tutorial_column_generation>`.
 More specifically, we will assume that you have a variable
-:code:`model` of type :code:`Model` which has a decomposable structure specified by the annotation :code:`(Annotation<Ctr, unsigned int>) decomposition`.
+:code:`model` of type :code:`Model` which has a decomposable structure specified by the annotation :code:`(Annotation<unsigned int>) decomposition`.
 
 Full Strong Branching
 ^^^^^^^^^^^^^^^^^^^^^

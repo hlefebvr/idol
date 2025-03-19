@@ -9,19 +9,49 @@
 #include "idol/general/optimizers/Algorithm.h"
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "Formulation.h"
+#include "idol/bilevel/modeling/Description.h"
 
 namespace idol::Optimizers::Robust {
     class ColumnAndConstraintGeneration;
 }
 
 class idol::Optimizers::Robust::ColumnAndConstraintGeneration : public Algorithm {
-    const ::idol::Robust::Description &m_description;
+
+    const ::idol::Robust::Description &m_robust_description;
+    const ::idol::Bilevel::Description &m_bilevel_description;
     std::unique_ptr<OptimizerFactory> m_master_optimizer;
     std::unique_ptr<idol::CCG::Formulation> m_formulation;
+    unsigned int m_n_iterations = 0;
+
+    // Initial scenarios
+    std::vector<Point<Var>> m_initial_scenarios;
+    std::unique_ptr<OptimizerFactory> m_initial_scenario_by_minimization;
+    std::unique_ptr<OptimizerFactory> m_initial_scenario_by_maximization;
+
+    // Feasibility Separation
+    const bool m_with_feasibility_separation_loop_reset = false;
+    const bool m_with_annotation_for_infeasible_scenario = true;
+    std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_feasibility_separation;
+    unsigned int m_index_feasibility_separation = 0;
+
+    // Optimality Separation
+    const bool m_with_optimality_separation_loop_reset = false;
+    std::vector<std::unique_ptr<OptimizerFactory>> m_optimizer_optimality_separation;
+    unsigned int m_index_optimality_separation = 0;
+
+    // Timers
+    Timer m_master_timer;
+    Timer m_separation_timer;
 public:
     ColumnAndConstraintGeneration(const Model& t_parent,
-                                  const ::idol::Robust::Description &t_description,
-                                  const OptimizerFactory &t_master_optimizer);
+                                  const ::idol::Robust::Description &t_robust_description,
+                                  const ::idol::Bilevel::Description &t_bilevel_description,
+                                  const OptimizerFactory &t_master_optimizer,
+                                  std::vector<Point<Var>> t_initial_scenarios,
+                                  OptimizerFactory* t_initial_scenario_by_minimization,
+                                  OptimizerFactory* t_initial_scenario_by_maximization,
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_feasibility_separation,
+                                  const std::list<std::unique_ptr<OptimizerFactory>>& t_optimizer_optimality_separation);
 
     [[nodiscard]] std::string name() const override;
 
@@ -38,6 +68,14 @@ public:
     [[nodiscard]] unsigned int get_n_solutions() const override;
 
     [[nodiscard]] unsigned int get_solution_index() const override;
+
+    [[nodiscard]] unsigned int get_n_scenarios() const { return m_formulation->n_added_scenarios(); }
+
+    [[nodiscard]] unsigned int get_n_iterations() const { return m_n_iterations; }
+
+    [[nodiscard]] const Timer& get_master_timer() const { return m_master_timer; }
+
+    [[nodiscard]] const Timer& get_separation_timer() const { return m_separation_timer; }
 
 protected:
     void add(const Var &t_var) override;
@@ -83,6 +121,29 @@ protected:
     void update_var_ub(const Var &t_var) override;
 
     void update_var_obj(const Var &t_var) override;
+
+    void add_initial_scenarios();
+
+    void add_initial_scenario_by_min_or_max(const OptimizerFactory& t_optimizer, double t_coefficient);
+
+    void solve_master_problem();
+
+    void check_termination_criteria();
+
+    void log_banner();
+    void log_iteration(bool t_is_feasibility_separation,
+                       const std::string& t_optimizer_name,
+                       const SolutionStatus& t_status,
+                       const SolutionReason& t_reason,
+                       bool t_separation_outcome);
+    void log_iteration_separator();
+
+    void solve_adversarial_problem();
+    unsigned int solve_feasibility_adversarial_problem();
+    unsigned int solve_optimality_adversarial_problem();
+    unsigned int solve_optimality_adversarial_problem(const Point<Var>& t_upper_level_solution);
+    unsigned int solve_optimality_adversarial_problem(const idol::Point<idol::Var> &t_upper_level_solution, unsigned int t_coupling_constraint_index);
+
 };
 
 

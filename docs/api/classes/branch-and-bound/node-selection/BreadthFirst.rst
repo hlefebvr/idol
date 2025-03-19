@@ -1,4 +1,0 @@
-BreadthFirst
-============
-
-.. doxygenclass:: idol::BreadthFirst

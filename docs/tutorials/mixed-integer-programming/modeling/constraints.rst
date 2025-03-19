@@ -24,10 +24,10 @@ Creating Constraints
 Similarly to variables, constraints are easily created and added to a given ``Model``.
 
 Constraints can be created by calling the constructor of the :ref:`Ctr <api_Ctr>` class and added to a model by means of
-:cpp:`Model::add` or by calling the :cpp:`Model::add_ctr` method.
+:code:`Model::add` or by calling the :code:`Model::add_ctr` method.
 
-Using the :cpp:`Ctr` class directly creates a variable that is not associated to any model. We will then need to add it
-explicitly to a model. This is done by calling the :cpp:`Model::add` method. See for instance the following code.
+Using the :code:`Ctr` class directly creates a variable that is not associated to any model. We will then need to add it
+explicitly to a model. This is done by calling the :code:`Model::add` method. See for instance the following code.
 
 .. code::
 
@@ -82,7 +82,7 @@ Accessing Constraints
 ^^^^^^^^^^^^^^^^^^^^^
 
 Information about a given constraint in a model can be accessed by calling the corresponding methods of the model.
-For instance, one can access the right-hand side of a constraint by calling the :cpp:`Model::get_ctr_rhs` method.
+For instance, one can access the right-hand side of a constraint by calling the :code:`Model::get_ctr_rhs` method.
 Here is a list of the most common methods to access information about a constraint.
 
 - :code:`Model::get_ctr_rhs`: get the right-hand side of a constraint,
@@ -96,7 +96,7 @@ Here is a list of the most common methods to access information about a constrai
 - :code:`Model::get_ctr_dual`: get the dual value of a constraint,
 - :code:`Model::get_ctr_farkas`: get the Farkas certificate of a constraint (for infeasible systems).
 
-The :cpp:`Model::has` method can be used to check if a given constraint is in the model.
+The :code:`Model::has` method can be used to check if a given constraint is in the model.
 
 For more details, see the :ref:`Model <api_Model>` class.
 
@@ -110,7 +110,7 @@ Here is a list of the most common methods to modify a constraint.
 - :code:`Model::set_ctr_type`: set the type of a constraint,
 - :code:`Model::set_ctr_row`: set the row of a constraint.
 
-The row of a constraint in the model can be modified by calling the :cpp:`Ctr::set_row` method.
+The row of a constraint in the model can be modified by calling the :code:`Ctr::set_row` method.
 For instance.
 
 .. code:: cpp
@@ -126,7 +126,7 @@ For more details, see the :ref:`Model <api_Model>` class.
 Removing Constraints
 ^^^^^^^^^^^^^^^^^^^^
 
-A constraint can be removed from a model by calling the :cpp:`Model::remove` method.
+A constraint can be removed from a model by calling the :code:`Model::remove` method.
 
 Quadratic Constraints
 ---------------------

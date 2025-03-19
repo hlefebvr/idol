@@ -1,4 +1,0 @@
-OsiSymphony
-===========
-
-.. doxygenclass:: idol::OsiSymphony

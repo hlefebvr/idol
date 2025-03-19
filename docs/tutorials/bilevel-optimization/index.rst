@@ -54,7 +54,7 @@ the worst solution for the upper-level problem. This can be modeled as follows.
 
     \begin{align}
         \min_{x} \quad & \max_{ y\in S(x) } \ F(x,y) \\
-        \text{s.t.} \quad & G(x,\bar y) \ge 0, \quad \text{for all } \bar y\in S(x) \\
+        \text{s.t.} \quad & G(x,\bar y) \ge 0, \quad \text{for all } \bar y\in S(x), \\
         & x\in X, \\
         & S(x) \neq \emptyset.
      \end{align}
@@ -66,5 +66,7 @@ Pessimisitc bilevel problems are less studied in the literature.
     :glob:
 
     modeling
+    files
+    kkt
     mibs
     pessimistic

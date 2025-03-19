@@ -30,7 +30,7 @@ void AuxWriter::write() {
 
     std::list<Var> lower_level_vars = make_lower_level_vars_list();
     std::list<Ctr> lower_level_ctrs = make_lower_level_ctrs_list();
-    const auto& lower_level_obj = m_description.follower_obj();
+    const auto& lower_level_obj = m_description.lower_level_obj();
 
     aux_file << "@NUMVARS\n" << lower_level_vars.size() << "\n";
     aux_file << "@NUMCONSTRS\n" << lower_level_ctrs.size() << "\n";

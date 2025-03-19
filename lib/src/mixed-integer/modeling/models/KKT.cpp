@@ -45,10 +45,10 @@ idol::Reformulators::KKT::KKT(const idol::Model &t_parent,
 idol::Reformulators::KKT::KKT(const Model& t_high_point_relaxation,
                          const Bilevel::Description &t_bilevel_description)
                          : KKT(t_high_point_relaxation,
-                                    t_bilevel_description.follower_obj(),
-                                    [&](const Var& t_var) { return t_bilevel_description.is_follower(t_var); },
-                                    [&](const Ctr& t_ctr) { return t_bilevel_description.is_follower(t_ctr); },
-                                    [&](const QCtr& t_qctr) { return t_bilevel_description.is_follower(t_qctr); }) {
+                               t_bilevel_description.lower_level_obj(),
+                                    [&](const Var& t_var) { return t_bilevel_description.is_lower(t_var); },
+                                    [&](const Ctr& t_ctr) { return t_bilevel_description.is_lower(t_ctr); },
+                                    [&](const QCtr& t_qctr) { return t_bilevel_description.is_lower(t_qctr); }) {
 
 }
 
@@ -565,7 +565,7 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
         const auto& row = m_primal.get_ctr_row(ctr);
         const auto rhs = m_primal.get_ctr_rhs(ctr);
 
-        t_destination.add_qctr((row - rhs) * dual_var, Equal);
+        t_destination.add_qctr((row - rhs) * dual_var, Equal, "complementarity_" + ctr.name());
     }
 
     for (const auto& var : m_primal.vars()) {
@@ -578,12 +578,12 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
 
         if (!is_neg_inf(lb)) {
             const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
-            t_destination.add_qctr((var - lb) * dual_var, Equal);
+            t_destination.add_qctr((var - lb) * dual_var, Equal, "complementarity_lb_" + var.name());
         }
 
         if (!is_pos_inf(ub)) {
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
-            t_destination.add_qctr((ub - var) * dual_var, Equal);
+            t_destination.add_qctr((ub - var) * dual_var, Equal, "complementarity_ub_" + var.name());
         }
 
     }

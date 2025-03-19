@@ -1,8 +1,10 @@
 //
 // Created by henri on 23.10.24.
 //
+
 #include "idol/mixed-integer/optimizers/callbacks/watchers/Plots_OptimalityGap.h"
 #include "idol/general/optimizers/Timer.h"
+#include "idol/general/utils/uuid.h"
 
 #ifdef IDOL_USE_ROOT
 #include <TCanvas.h>
@@ -11,11 +13,15 @@
 #include <TAxis.h>
 
 idol::Plots::OptimalityGap::Strategy::Strategy(idol::Plots::Manager &t_plot_manager)
-        : m_plot_manager(t_plot_manager),
-          m_canvas(t_plot_manager.create<TCanvas>("canvas", "canvas", 800, 600)),
-          m_graph_bound(t_plot_manager.create<TGraph>()),
-          m_graph_obj(t_plot_manager.create<TGraph>())
-{
+        : m_plot_manager(t_plot_manager) {
+
+}
+
+void idol::Plots::OptimalityGap::Strategy::initialize() {
+
+    m_canvas = m_plot_manager.create<TCanvas>(generate_uuid_v4().c_str(), "canvas", 800, 600);
+    m_graph_bound = m_plot_manager.create<TGraph>();
+    m_graph_obj = m_plot_manager.create<TGraph>();
 
     m_graph_bound->SetTitle("Optimality Gap over Time");
 
@@ -30,10 +36,13 @@ idol::Plots::OptimalityGap::Strategy::Strategy(idol::Plots::Manager &t_plot_mana
     m_graph_obj->SetMarkerColor(kRed);
 
     m_canvas->cd();
-
 }
 
 void idol::Plots::OptimalityGap::Strategy::operator()(CallbackEvent t_event) {
+
+    if (!m_canvas) {
+        initialize();
+    }
 
     const double t = time().count();
     const double bound = best_bound();
@@ -117,6 +126,11 @@ idol::Plots::OptimalityGap::Strategy::Strategy(idol::Plots::Manager & t_plot_man
 {
     throw idol::Exception("idol was not compiled with ROOT.");
 }
+
+void idol::Plots::OptimalityGap::Strategy::initialize() {
+
+}
+
 void idol::Plots::OptimalityGap::Strategy::operator()(idol::CallbackEvent t_event){
     throw idol::Exception("idol was not compiled with ROOT.");
 }

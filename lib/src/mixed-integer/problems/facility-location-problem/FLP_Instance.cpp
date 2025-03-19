@@ -142,8 +142,8 @@ idol::Problems::FLP::Instance idol::Problems::FLP::generate_instance_1991_Cornue
         const double capacity = std::uniform_real_distribution<double>(10, 160)(engine);
         const double fixed_cost = fixed_cost_scaling_factor * std::uniform_real_distribution<double>(0, 90)(engine);
         sum_capacities += capacity;
-        result.set_capacity(i, capacity);
-        result.set_fixed_cost(i, fixed_cost);
+        result.set_capacity(i, std::round(capacity));
+        result.set_fixed_cost(i, std::round(fixed_cost));
     }
 
     // Demands
@@ -158,14 +158,14 @@ idol::Problems::FLP::Instance idol::Problems::FLP::generate_instance_1991_Cornue
 
     for (unsigned int j = 0 ; j < t_n_customers ; ++j) {
         const double scaled_demand = demand_scaling_factor * result.demand(j);
-        result.set_demand(j, scaled_demand);
+        result.set_demand(j, std::round(scaled_demand));
     }
 
     // Per unit transportation costs
     for (unsigned int i = 0, n = t_n_facilities ; i < n ; ++i) {
         for (unsigned int j = 0, m = t_n_customers ; j < m ; ++j) {
             const double distance = euclidean(facility_locations[i], customer_locations[j]);
-            result.set_per_unit_transportation_cost(i, j, distance);
+            result.set_per_unit_transportation_cost(i, j, std::round(distance * 1e2) / 1e2);
         }
     }
 

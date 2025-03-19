@@ -7,15 +7,18 @@
 
 #include "idol/general/optimizers/OptimizerFactory.h"
 #include "idol/bilevel/modeling/Description.h"
+#include "idol/bilevel/optimizers/BilevelOptimizerInterface.h"
 
 namespace idol::Bilevel {
     class StrongDuality;
 }
 
-class idol::Bilevel::StrongDuality : public OptimizerFactoryWithDefaultParameters<StrongDuality> {
-    const Bilevel::Description& m_description;
+class idol::Bilevel::StrongDuality : public OptimizerFactoryWithDefaultParameters<StrongDuality>, public Bilevel::OptimizerInterface {
+    const Bilevel::Description* m_description = nullptr;
     std::unique_ptr<OptimizerFactory> m_single_level_optimizer;
 public:
+    StrongDuality();
+
     explicit StrongDuality(const Bilevel::Description& t_description);
 
     StrongDuality(const StrongDuality& t_src);
@@ -23,6 +26,8 @@ public:
     Optimizer *operator()(const Model &t_model) const override;
 
     [[nodiscard]] OptimizerFactory *clone() const override;
+
+    void set_bilevel_description(const Description &t_bilevel_description) override;
 
     StrongDuality& with_single_level_optimizer(const OptimizerFactory& t_deterministic_optimizer);
 

@@ -2,7 +2,7 @@ Solving Mixed-Integer Bilevel Problems with coin-or/MibS
 ========================================================
 
 MibS is an optimization solver for mixed-integer bilevel problems; for more information, please refer to the `MibS website <https://projects.coin-or.org/MibS>`_.
-Idol seamlessly integrates with MibS to solve bilevel problems.
+Idol seamlessly interfaces with MibS to solve bilevel problems.
 
 We will see that solving bilevel problems with MibS is very similar to solving any optimization problem in idol.
 
@@ -40,7 +40,7 @@ The rest of the code is the same as with any other solver.
 
 .. hint::
 
-    To use MibS, you need to have the MibS library installed on your system and idol linked to the executable.
+    To use MibS, you need to have the MibS library installed on your system and idol linked against it.
     You can download MibS from `here <https://projects.coin-or.org/MibS>`_.
 
     Then, idol should be compiled with the options :code:`USE_MIBS=YES`, :code:`USE_CLP=YES`.

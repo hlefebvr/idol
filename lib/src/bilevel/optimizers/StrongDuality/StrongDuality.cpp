@@ -6,17 +6,25 @@
 #include "idol/bilevel/optimizers/StrongDuality/Optimizers_StrongDuality.h"
 #include "idol/mixed-integer/modeling/models/KKT.h"
 
-idol::Bilevel::StrongDuality::StrongDuality(const Bilevel::Description &t_description) : m_description(t_description) {
+idol::Bilevel::StrongDuality::StrongDuality() {
+
+}
+
+idol::Bilevel::StrongDuality::StrongDuality(const Bilevel::Description &t_description) : m_description(&t_description) {
 
 }
 
 idol::Optimizer *idol::Bilevel::StrongDuality::operator()(const idol::Model &t_model) const {
 
+    if (!m_description) {
+        throw Exception("No bilevel description has been set.");
+    }
+
     if (!m_single_level_optimizer) {
         throw Exception("No deterministic optimizer has been set.");
     }
 
-    auto* result = new Optimizers::Bilevel::StrongDuality(t_model, m_description, *m_single_level_optimizer);
+    auto* result = new Optimizers::Bilevel::StrongDuality(t_model, *m_description, *m_single_level_optimizer);
 
     handle_default_parameters(result);
 
@@ -63,3 +71,6 @@ idol::Bilevel::StrongDuality::make_model(const idol::Model &t_model, const idol:
     return result;
 }
 
+void idol::Bilevel::StrongDuality::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
+    m_description = &t_bilevel_description;
+}

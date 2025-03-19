@@ -15,31 +15,31 @@
 #include <OsiClpSolverInterface.hpp>
 #endif
 
-idol::Bilevel::MibS::MibS(Bilevel::Description  t_description)
-        : m_description(std::move(t_description)) {
+idol::Bilevel::MibS::MibS(const Bilevel::Description& t_description)
+        : m_description(&t_description) {
 
 }
 
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
 #ifdef IDOL_USE_OSI
 
-    OsiSolverInterface* osi_interface = new OsiClpSolverInterface();
+    if (!m_description) {
+        throw Exception("The bilevel description has not been set.");
+    }
 
-    /*
+    OsiSolverInterface* osi_interface;
     if (m_osi_interface) {
+        if (!dynamic_cast<OsiClpSolverInterface*>(m_osi_interface.get())) {
+            std::cerr << "Warning: using other interface than OsiClpSolverInterface is not officially supported by MibS." << std::endl;
+        }
         osi_interface = m_osi_interface->clone();
     } else {
-#ifdef IDOL_USE_CPLEX
-            osi_interface = new OsiCpxSolverInterface();
-#else
-            osi_interface = new OsiClpSolverInterface();
-#endif
+        osi_interface = new OsiClpSolverInterface();
     }
-     */
 
     auto* result = new Optimizers::Bilevel::MibS(
                 t_model,
-                m_description,
+                *m_description,
                 osi_interface,
                 m_use_file_interface.value_or(false),
                 m_use_cplex_for_feasibility.value_or(false)
@@ -63,7 +63,9 @@ idol::Bilevel::MibS *idol::Bilevel::MibS::clone() const {
 
 idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     : OptimizerFactoryWithDefaultParameters<MibS>(t_src),
-      m_description(t_src.m_description)
+      m_description(t_src.m_description),
+      m_use_file_interface(t_src.m_use_file_interface),
+      m_use_cplex_for_feasibility(t_src.m_use_cplex_for_feasibility)
 #ifdef IDOL_USE_OSI
     , m_osi_interface(t_src.m_osi_interface ? t_src.m_osi_interface->clone() : nullptr)
 #endif
@@ -73,7 +75,6 @@ idol::Bilevel::MibS::MibS(const idol::Bilevel::MibS &t_src)
     }
 }
 
-/*
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInterface &t_osi_optimizer) {
 #ifdef IDOL_USE_OSI
     if (m_osi_interface) {
@@ -87,7 +88,6 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_osi_interface(const OsiSolverInte
     throw Exception("idol was not linked with Osi.");
 #endif
 }
- */
 
 idol::Bilevel::MibS &idol::Bilevel::MibS::with_file_interface(bool t_value) {
 
@@ -114,4 +114,8 @@ idol::Bilevel::MibS &idol::Bilevel::MibS::with_cplex_for_feasibility(bool t_valu
 idol::Bilevel::MibS &idol::Bilevel::MibS::add_callback(const idol::CallbackFactory &t_cb) {
     m_callbacks.emplace_back(t_cb.clone());
     return *this;
+}
+
+void idol::Bilevel::MibS::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
+    m_description = &t_bilevel_description;
 }

@@ -14,7 +14,7 @@ idol::Optimizers::Robust::AffineDecisionRule::AffineDecisionRule(const Model& t_
 }
 
 std::string idol::Optimizers::Robust::AffineDecisionRule::name() const {
-    return "deterministic";
+    return "affine-decision-rule";
 }
 
 double idol::Optimizers::Robust::AffineDecisionRule::get_var_primal(const idol::Var &t_var) const {

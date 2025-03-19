@@ -1,4 +1,0 @@
-PseudoCost
-==========
-
-.. doxygenclass:: idol::PseudoCost

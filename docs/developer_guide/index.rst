@@ -20,7 +20,7 @@ For more information on how to run the tests, please refer to the :ref:`tests` p
 Building the Documentation
 --------------------------
 
-The documentation is built using `doxygen`_ and a bunch of other tools. For more information, please refer to the :ref:`dev_build_the_doc` page.
+The documentation is built using `doxygen <https://www.doxygen.nl/>`_ and a bunch of other tools. For more information, please refer to the :ref:`dev_build_the_doc` page.
 
 Related Pages
 -------------

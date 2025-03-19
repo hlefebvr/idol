@@ -27,7 +27,7 @@ public:
 
     SubProblem& with_optimizer(const OptimizerFactory& t_optimizer_factory);
 
-    SubProblem& with_initial_point(const PrimalPoint& t_initial_point);
+    SubProblem& with_initial_point(const PrimalPoint& t_initial_point, bool t_force = false);
 
     const OptimizerFactory& optimizer_factory() const;
 

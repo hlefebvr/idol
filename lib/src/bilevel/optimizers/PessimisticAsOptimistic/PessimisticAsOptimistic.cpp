@@ -3,6 +3,7 @@
 //
 #include "idol/bilevel/optimizers/PessimisticAsOptimistic/PessimisticAsOptimistic.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h"
 
 class Helper {
     const idol::Model& m_src_model;
@@ -56,7 +57,7 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
     // Create copies of variables
     for (const auto& var : m_src_model.vars()) {
 
-        if (m_src_description.is_leader(var)) {
+        if (m_src_description.is_upper(var)) {
             continue;
         }
 
@@ -74,13 +75,13 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
     // Create copies of constraints
     for (const auto& ctr : m_src_model.ctrs()) {
 
-        if (m_src_description.is_leader(ctr)) {
+        if (m_src_description.is_upper(ctr)) {
             continue;
         }
 
         idol::LinExpr<idol::Var> lhs;
         for (const auto& [var, constant] : m_src_model.get_ctr_row(ctr)) {
-            if (m_src_description.is_leader(var)) {
+            if (m_src_description.is_upper(var)) {
                 lhs += constant * var;
             } else {
                 lhs += constant * *result[m_src_model.get_var_index(var)];
@@ -114,13 +115,13 @@ std::vector<std::optional<idol::Var>> Helper::add_lower_level_copy() {
 
 void Helper::add_objective_constraint(const std::vector<std::optional<idol::Var>> &t_lower_level_copy) {
 
-    const auto& original_lower_objective = m_src_description.follower_obj().affine();
+    const auto& original_lower_objective = m_src_description.lower_level_obj().affine();
 
     // Create objective function in terms of the copied variables
     idol::AffExpr copy_objective;
     copy_objective += original_lower_objective.constant();
     for (const auto& [var, constant] : original_lower_objective.linear()) {
-        if (m_src_description.is_leader(var)) {
+        if (m_src_description.is_upper(var)) {
             copy_objective += constant * var;
         } else {
             copy_objective += constant * *t_lower_level_copy[m_src_model.get_var_index(var)];
@@ -166,3 +167,54 @@ idol::Bilevel::PessimisticAsOptimistic::make_model(const Model &t_model, const B
     };
 }
 
+void idol::Bilevel::PessimisticAsOptimistic::set_bilevel_description(const idol::Bilevel::Description &t_bilevel_description) {
+    m_description = &t_bilevel_description;
+}
+
+idol::Optimizer *idol::Bilevel::PessimisticAsOptimistic::operator()(const idol::Model &t_model) const {
+
+    if (!m_optimistic_bilevel_optimizer) {
+        throw Exception("Single level optimizer not set.");
+    }
+
+    if (!m_description) {
+        throw Exception("The bilevel description has not been set.");
+    }
+
+    auto* result = new Optimizers::Bilevel::PessimisticAsOptimistic(t_model,
+                                                                    *m_description,
+                                                                    *m_optimistic_bilevel_optimizer);
+
+    handle_default_parameters(result);
+
+    return result;
+}
+
+idol::OptimizerFactory *idol::Bilevel::PessimisticAsOptimistic::clone() const {
+    return new PessimisticAsOptimistic(*this);
+}
+
+idol::Bilevel::PessimisticAsOptimistic &idol::Bilevel::PessimisticAsOptimistic::with_optimistic_bilevel_optimizer(const idol::OptimizerFactory &t_optimizer) {
+
+    if (m_optimistic_bilevel_optimizer) {
+        throw Exception("Single level optimizer already set.");
+    }
+
+    if (!t_optimizer.is<Bilevel::OptimizerInterface>()) {
+        throw Exception("The optimistic optimizer must be a Bilevel::OptimizerInterface.");
+    }
+
+    m_optimistic_bilevel_optimizer.reset(t_optimizer.clone());
+
+    return *this;
+}
+
+idol::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(const idol::Bilevel::Description &t_description)
+    :
+    OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic>(),
+    m_description(&t_description) {}
+
+idol::Bilevel::PessimisticAsOptimistic::PessimisticAsOptimistic(const idol::Bilevel::PessimisticAsOptimistic &t_src)
+    : OptimizerFactoryWithDefaultParameters<PessimisticAsOptimistic>(t_src),
+      m_optimistic_bilevel_optimizer(t_src.m_optimistic_bilevel_optimizer ? t_src.m_optimistic_bilevel_optimizer->clone() : nullptr),
+      m_description(t_src.m_description) {}
