@@ -307,26 +307,21 @@ void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::ve
     for (const auto& row_fixation : sub_problem.row_fixations) {
 
         if (std::holds_alternative<QCtr>(row_fixation.ctr)) {
-            // TODO, here, we need to update the quadratic constraint
             auto qctr = std::get<QCtr>(row_fixation.ctr);
             auto eval = evaluate(row_fixation.row, t_primals);
             const auto type = sub_problem.model.get_qctr_type(qctr);
             sub_problem.model.remove(qctr);
             sub_problem.model.add(qctr, TempQCtr(std::move(eval), type));
-            //throw Exception("Updating expression of quadratic constraints is not supported.");
         } else {
-
             auto ctr = std::get<Ctr>(row_fixation.ctr);
-
             auto eval = evaluate(row_fixation.row, t_primals);
             sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
             sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
-
         }
 
     }
 
-    std::cerr << "The objective function is systematically updated" << std::endl;
+    //TODO: std::cerr << "The objective function is systematically updated" << std::endl;
 
     std::list<std::pair<Var, double>> penalties;
     for (const auto& var : sub_problem.l1_epigraph_vars) {
