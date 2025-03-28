@@ -7,22 +7,25 @@
 
 idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
                                    Model *t_separation_problem,
-                                   TempCtr t_cut)
+                                   GenerationPattern<Ctr> t_cut,
+                                   CtrType t_type)
     : m_triggering_event(t_triggering_event),
       m_separation_problem(t_separation_problem),
-      m_cut(std::move(t_cut)) {
+      m_cut_pattern(std::move(t_cut)),
+      m_separation_objective_pattern(!m_cut_pattern),
+      m_type(t_type) {
 
-    if (m_cut.type() == Equal) {
+    if (m_type == Equal) {
         throw Exception("Separating equality constraints is not available.");
+    }
+
+    if (m_type == GreaterOrEqual) {
+        m_separation_objective_pattern *= -1;
     }
 
 }
 
 void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
-
-    throw Exception("TODO: Was using Constant");
-
-    /*
 
     if (t_event != m_triggering_event) {
         return;
@@ -30,11 +33,12 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const auto& current_solution = primal_solution();
 
-    auto [objective, sense] = create_separation_objective(current_solution);
+    auto objective = m_cut_pattern(current_solution);
 
     m_separation_problem->set_obj_expr(std::move(objective));
-    m_separation_problem->set_obj_sense(sense);
+    m_separation_problem->set_obj_sense(Minimize);
 
+    m_separation_problem->optimizer().set_param_time_limit(this->original_model().optimizer().get_remaining_time());
     m_separation_problem->optimize();
 
     const auto status = m_separation_problem->get_status();
@@ -50,43 +54,18 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
         m_separation_problem->set_solution_index(k);
 
-        if (k == 0 && m_separation_problem->get_best_obj() >= -m_tolerance) {
+        const double objective_value = (m_type == LessOrEqual ? 1. : -1.) * m_separation_problem->get_best_obj();
+
+        if (k == 0 && objective_value >= -m_tolerance) {
             break;
         }
 
         const auto& solution = save_primal(*m_separation_problem);
+        auto expr = m_cut_pattern(solution);
 
-        TempCtr cut(m_cut.row().fix(solution), m_cut.type());
+        TempCtr cut(std::move(expr.linear()), m_type, expr.constant());
 
         hook_add_cut(cut);
     }
 
-     */
-}
-
-std::pair<idol::AffExpr<idol::Var>, idol::ObjectiveSense>
-idol::impl::CutSeparation::create_separation_objective(const idol::PrimalPoint &t_primal_solution) {
-
-    throw Exception("TODO: Was using Constant");
-    /*
-    const auto sense = m_cut.type() == LessOrEqual ? Minimize : Maximize;
-
-    const auto& row = m_cut.row();
-
-    ::idol::AffExpr result = row.rhs().numerical();
-
-    for (const auto& [param, coeff] : row.rhs().linear()) {
-        result += coeff * param.as<Var>();
-    }
-
-    for (const auto& [var, constant] : row.linear()) {
-        ::idol::AffExpr term = -constant.numerical();
-        for (const auto& [param, coeff] : constant.linear()) {
-            term += -coeff * param.as<Var>();
-        }
-        result += term * t_primal_solution.get(var);
-    }
-
-    return std::make_pair(std::move(result), sense);
-     */
 }
