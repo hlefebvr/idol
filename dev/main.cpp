@@ -28,30 +28,35 @@
 #include "idol/robust/optimizers/column-and-constraint-generation/ColumnAndConstraintGeneration.h"
 #include "idol/bilevel/optimizers/StrongDuality/StrongDuality.h"
 #include "idol/bilevel/optimizers/KKT/KKT.h"
+#include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
 
 using namespace idol;
-
-GenerationPattern<Ctr> operator!(const Var& t_var) {
-    GenerationPattern<Ctr> cut;
-    cut.constant().linear().set(t_var, 1);
-    return cut;
-}
 
 int main(int t_argc, const char** t_argv) {
 
     Env env;
 
     Model model(env);
-    const auto x = model.add_vars(Dim<1>(10), 0, 1, Continuous, 0, "x");
-    const auto y = model.add_vars(Dim<1>(10), 0, 1, Continuous, 0, "y");
+    const auto dummy = model.add_var(0,0,Integer,0,"dummy");
+    const auto pi = model.add_var(-1e3, 1e3, Continuous, 1, "pi");
 
-    auto cut = 1 + 2 * !y[0] + !y[1] + (1 + 2 * !y[7] + !y[0]) * x[0] + x[2] * !y[2] + 3;
+    Model Z(env);
+    const auto x = Z.add_vars(Dim<1>(10), 0, 1, Binary, 0, "x");
+    Z.add_ctr(idol_Sum(i, Range(10), x[i]) <= 1);
 
-    std::cout << x[0] * x[0] << std::endl;
-    std::cout << cut << std::endl;
-    std::cout << !!x[0] << std::endl;
-    std::cout << !cut << std::endl;
-    std::cout << !!cut << std::endl;
+    auto gurobi = Gurobi();
+    gurobi.with_logs(true);
+    gurobi.add_callback(
+            LazyCutCallback(Z, -1. * pi + idol_Sum(i, Range(10), !x[i]) )
+                    .with_separation_optimizer(Gurobi())
+    );
+    gurobi.with_lazy_cut(true);
+
+    model.use(gurobi);
+
+    model.optimize();
+
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }

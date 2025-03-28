@@ -19,7 +19,7 @@ idol::impl::CutSeparation::CutSeparation(CallbackEvent t_triggering_event,
         throw Exception("Separating equality constraints is not available.");
     }
 
-    if (m_type == GreaterOrEqual) {
+    if (m_type == LessOrEqual) {
         m_separation_objective_pattern *= -1;
     }
 
@@ -33,7 +33,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const auto& current_solution = primal_solution();
 
-    auto objective = m_cut_pattern(current_solution);
+    auto objective = m_separation_objective_pattern(current_solution);
 
     m_separation_problem->set_obj_expr(std::move(objective));
     m_separation_problem->set_obj_sense(Minimize);

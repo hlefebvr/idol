@@ -32,8 +32,7 @@ public:
     explicit CutSeparation(CallbackEvent t_triggering_event,
                            Model* t_separation_problem,
                            GenerationPattern<Ctr> t_cut,
-                           CtrType t_type = LessOrEqual
-                           );
+                           CtrType t_type);
 };
 
 #endif //CCG_WITH_NESTED_CG_CUTSEPARATIONCALLBACK_H

@@ -15,14 +15,16 @@ namespace idol {
 class idol::LazyCutCallback : public CallbackFactory {
     std::unique_ptr<Model> m_model;
     std::unique_ptr<OptimizerFactory> m_optimizer_factory;
-    TempCtr m_cut;
+    GenerationPattern<Ctr> m_cut;
+    CtrType m_type;
 
     LazyCutCallback(const LazyCutCallback& t_src)
         : m_model(t_src.m_model->clone()),
           m_cut(t_src.m_cut),
+          m_type(t_src.m_type),
           m_optimizer_factory(t_src.m_optimizer_factory ? t_src.m_optimizer_factory->clone() : nullptr) {}
 public:
-    LazyCutCallback(const Model& t_model, TempCtr t_cut) : m_model(t_model.clone()), m_cut(std::move(t_cut)) {}
+    LazyCutCallback(const Model& t_model, GenerationPattern<Ctr> t_cut, CtrType t_type = LessOrEqual) : m_model(t_model.clone()), m_cut(std::move(t_cut)), m_type(t_type) {}
 
     class Strategy : public impl::CutSeparation {
     protected:
@@ -35,8 +37,8 @@ public:
         }
 
     public:
-        explicit Strategy(Model* t_separation_problem, TempCtr t_cut)
-                : impl::CutSeparation(IncumbentSolution, t_separation_problem, std::move(t_cut)) {}
+        explicit Strategy(Model* t_separation_problem, GenerationPattern<Ctr> t_cut, CtrType t_type)
+                : impl::CutSeparation(IncumbentSolution, t_separation_problem, std::move(t_cut), t_type) {}
 
     };
 
@@ -49,7 +51,7 @@ public:
         auto* model = m_model->clone();
         model->use(*m_optimizer_factory);
 
-        auto* result = new Strategy(model, m_cut);
+        auto* result = new Strategy(model, m_cut, m_type);
 
         return result;
     }
