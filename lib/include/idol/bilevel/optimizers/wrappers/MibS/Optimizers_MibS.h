@@ -20,7 +20,7 @@ namespace idol::Optimizers::Bilevel {
 }
 
 class idol::Optimizers::Bilevel::MibS : public Optimizer {
-    const idol::Bilevel::Description m_description;
+    const idol::Bilevel::Description& m_description;
 
     std::unique_ptr<idol::impl::MibS> m_mibs;
     std::unique_ptr<OsiSolverInterface> m_osi_solver;
@@ -30,7 +30,7 @@ class idol::Optimizers::Bilevel::MibS : public Optimizer {
     std::list<std::unique_ptr<Callback>> m_callbacks;
 public:
     MibS(const idol::Model& t_parent,
-         idol::Bilevel::Description  t_description,
+         const idol::Bilevel::Description& t_description,
          OsiSolverInterface* t_osi_solver,
          bool t_use_file,
          bool t_use_cplex_for_feasibility);

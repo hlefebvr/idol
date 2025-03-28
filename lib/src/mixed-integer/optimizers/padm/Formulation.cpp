@@ -8,6 +8,7 @@
 #include "idol/mixed-integer/optimizers/padm/PenaltyUpdates.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
+#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 #include <utility>
 #include <cassert>
@@ -306,17 +307,21 @@ void idol::ADM::Formulation::update(unsigned int t_sub_problem_id, const std::ve
     for (const auto& row_fixation : sub_problem.row_fixations) {
 
         if (std::holds_alternative<QCtr>(row_fixation.ctr)) {
-            throw Exception("Updating expression of quadratic constraints is not supported.");
+            auto qctr = std::get<QCtr>(row_fixation.ctr);
+            auto eval = evaluate(row_fixation.row, t_primals);
+            const auto type = sub_problem.model.get_qctr_type(qctr);
+            sub_problem.model.remove(qctr);
+            sub_problem.model.add(qctr, TempQCtr(std::move(eval), type));
+        } else {
+            auto ctr = std::get<Ctr>(row_fixation.ctr);
+            auto eval = evaluate(row_fixation.row, t_primals);
+            sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
+            sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
         }
-
-        auto ctr = std::get<Ctr>(row_fixation.ctr);
-        auto eval = evaluate(row_fixation.row, t_primals);
-        sub_problem.model.set_ctr_row(ctr, eval.affine().linear());
-        sub_problem.model.set_ctr_rhs(ctr, -eval.affine().constant());
 
     }
 
-    std::cerr << "The objective function is systematically updated" << std::endl;
+    //TODO: std::cerr << "The objective function is systematically updated" << std::endl;
 
     std::list<std::pair<Var, double>> penalties;
     for (const auto& var : sub_problem.l1_epigraph_vars) {
@@ -435,20 +440,17 @@ void idol::ADM::Formulation::dispatch_qctr(const idol::Model &t_src_model,
 
         if (full_row->has_quadratic()) {
             // we have to add a quadratic constraint here
-            for (const auto& [var, expr] : *full_row) {
-                std::cout << var << " <-> " << expr << std::endl;
-            }
-            throw Exception("Quadratic constraints in fixed problems are not implemented");
+            const auto new_quad_ctr = sub_problem.model.add_qctr(QuadExpr(), type, t_ctr.name());
+            sub_problem.row_fixations.emplace_back(new_quad_ctr, std::move(*full_row));
+            new_quad_ctr.set(*m_initial_penalty_parameters, t_ctr.get(*m_initial_penalty_parameters));
+        } else {
+            new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
+            sub_problem.row_fixations.emplace_back(*new_linear_ctr, std::move(*full_row));
         }
-
-        new_linear_ctr = sub_problem.model.add_ctr(TempCtr(LinExpr<Var>(), type, 0.), t_ctr.name());
-        sub_problem.row_fixations.emplace_back(*new_linear_ctr, std::move(*full_row));
 
     }
 
-    assert(new_linear_ctr.has_value());
-
-    if (m_initial_penalty_parameters.has_value()) {
+    if (new_linear_ctr.has_value() && m_initial_penalty_parameters.has_value()) {
         new_linear_ctr->set(*m_initial_penalty_parameters, t_ctr.get(*m_initial_penalty_parameters));
     }
 

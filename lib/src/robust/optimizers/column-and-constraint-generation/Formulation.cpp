@@ -102,7 +102,7 @@ void idol::CCG::Formulation::parse_constraints() {
 
 }
 
-void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario) {
+void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var> &t_scenario, bool t_add_annotation) {
 
     const auto& lower_level_annotation = m_bilevel_description_master.has_value() ? m_bilevel_description_master->lower_level() : m_bilevel_description.lower_level();
 
@@ -118,7 +118,9 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         const auto index = m_parent.get_var_index(var);
 
         new_vars[index] = m_master.add_var(lb, ub, type, 0, var.name() + "_" + std::to_string(m_n_added_scenario));
-        new_vars[index]->set(lower_level_annotation, m_n_added_scenario);
+        if (t_add_annotation) {
+            new_vars[index]->set(lower_level_annotation, m_n_added_scenario);
+        }
     }
 
     m_master.update();
@@ -149,7 +151,9 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
         rhs += evaluate(m_robust_description.uncertain_rhs(ctr), t_scenario);
 
         const auto new_ctr = m_master.add_ctr(TempCtr(std::move(new_row), type, rhs), ctr.name() + "_" + std::to_string(m_n_added_scenario));
-        new_ctr.set(lower_level_annotation, m_n_added_scenario);
+        if (t_add_annotation) {
+            new_ctr.set(lower_level_annotation, m_n_added_scenario);
+        }
 
     }
 
@@ -169,7 +173,7 @@ void idol::CCG::Formulation::add_scenario_to_master(const idol::Point<idol::Var>
 
     m_master.add_ctr(*m_second_stage_epigraph >= std::move(objective));
 
-    if (is_wait_and_see_follower()) {
+    if (is_wait_and_see_follower() && t_add_annotation) {
 
         auto lower_objective = m_bilevel_description_master->lower_level_obj();
 
@@ -294,7 +298,14 @@ idol::Model idol::CCG::Formulation::build_optimality_separation_problem_for_adju
     }
 
     result.set_obj_expr(-1. * objective);
-    m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
+
+    if (is_adjustable_robust_problem()) {
+        m_bilevel_description_separation.set_lower_level_obj(std::move(objective));
+    } else {
+        // std::cerr << "Assuming pessimistic separator" << std::endl;
+        m_bilevel_description_separation.set_lower_level_obj(m_bilevel_description.lower_level_obj());
+    }
+
 
     return result;
 }

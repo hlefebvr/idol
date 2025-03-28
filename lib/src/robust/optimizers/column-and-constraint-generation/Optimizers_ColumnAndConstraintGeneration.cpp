@@ -42,7 +42,7 @@ std::string idol::Optimizers::Robust::ColumnAndConstraintGeneration::name() cons
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_primal(const idol::Var &t_var) const {
-    throw Exception("Not implemented get_var_primal");
+    return m_formulation->master().get_var_primal(t_var);
 }
 
 double idol::Optimizers::Robust::ColumnAndConstraintGeneration::get_var_reduced_cost(const idol::Var &t_var) const {
@@ -208,7 +208,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::update_var_obj(con
 void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenarios() {
 
     for (const auto& scenario : m_initial_scenarios) {
-        m_formulation->add_scenario_to_master(scenario);
+        m_formulation->add_scenario_to_master(scenario, true);
     }
 
     if (m_initial_scenario_by_minimization) {
@@ -235,7 +235,7 @@ void idol::Optimizers::Robust::ColumnAndConstraintGeneration::add_initial_scenar
         throw Exception("Initial scenario by minimization failed.");
     }
 
-    m_formulation->add_scenario_to_master(save_primal(model));
+    m_formulation->add_scenario_to_master(save_primal(model), true);
 
 }
 
@@ -461,7 +461,7 @@ unsigned int idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_feas
 
     if (!is_feasible) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
-        m_formulation->add_scenario_to_master(scenario);
+        m_formulation->add_scenario_to_master(scenario, m_with_annotation_for_infeasible_scenario);
         return 1;
     }
 
@@ -557,7 +557,7 @@ idol::Optimizers::Robust::ColumnAndConstraintGeneration::solve_optimality_advers
 
     if (add_scenario) {
         const auto scenario = save_primal(m_robust_description.uncertainty_set(), high_point_relaxation);
-        m_formulation->add_scenario_to_master(scenario);
+        m_formulation->add_scenario_to_master(scenario, true);
         return 1;
     }
 

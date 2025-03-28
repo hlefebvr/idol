@@ -79,6 +79,9 @@ void idol::Optimizers::Bilevel::PessimisticAsOptimistic::write(const std::string
 
 void idol::Optimizers::Bilevel::PessimisticAsOptimistic::hook_optimize() {
 
+    m_optimistic_bilevel_model.reset();
+    m_optimistic_bilevel_annotation.reset();
+
     auto [model, annotation] = ::idol::Bilevel::PessimisticAsOptimistic::make_model(parent(), m_description);
 
     m_optimistic_bilevel_model.emplace(std::move(model));
