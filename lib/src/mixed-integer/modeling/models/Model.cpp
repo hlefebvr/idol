@@ -732,7 +732,7 @@ void idol::Model::set_var_column(const Var &t_var, LinExpr<Ctr> &&t_column) {
         auto& ctr_version = m_env.version(*this, ctr);
         if (ctr_version.has_row()) {
             auto& row = ctr_version.row();
-            row.set(t_var, 0.);
+            row.set(t_var, constant);
         }
         constraints_to_update.emplace_back(ctr);
     }
