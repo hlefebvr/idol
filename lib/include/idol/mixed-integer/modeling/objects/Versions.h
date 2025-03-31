@@ -99,7 +99,7 @@ void idol::Versions<T>::create(const Model &t_model, unsigned int t_index, ArgsT
 template<class T>
 const T &idol::Versions<T>::get(const Model &t_model) const {
     const unsigned int id = t_model.id();
-    if (!m_versions[id].has_value()) {
+    if (id >= m_versions.size() || !m_versions[id].has_value()) {
         throw Exception("Object not part of model.");
     }
     return m_versions[id].value();
@@ -108,7 +108,7 @@ const T &idol::Versions<T>::get(const Model &t_model) const {
 template<class T>
 T &idol::Versions<T>::get(const Model &t_model) {
     const unsigned int id = t_model.id();
-    if (!m_versions[id].has_value()) {
+    if (id >= m_versions.size() || !m_versions[id].has_value()) {
         throw Exception("Object not part of model.");
     }
     return m_versions[id].value();
