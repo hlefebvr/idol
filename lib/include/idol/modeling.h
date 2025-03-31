@@ -9,6 +9,7 @@
 #include "idol/mixed-integer/modeling/models/Model.h"
 
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/general/utils/GenerationPattern.h"
 
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
 

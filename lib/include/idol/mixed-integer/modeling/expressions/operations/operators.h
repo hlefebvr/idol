@@ -138,7 +138,11 @@ static QuadExpr<T> operator*(const T& t_a, const LinExpr<T>& t_b) {           \
 }                            \
 static QuadExpr<T> operator*(const LinExpr<T>& t_a, const T& t_b) { return t_b * t_a; }       \
 static QuadExpr<T> operator*(const T& t_a, const AffExpr<T>& t_b) { return t_a * t_b.constant() + t_a * t_b.linear(); } \
-static QuadExpr<T> operator*(const AffExpr<T>& t_a, const T& t_b) { return t_b * t_a; }
+static QuadExpr<T> operator*(const AffExpr<T>& t_a, const T& t_b) { return t_b * t_a; }       \
+static LinExpr<T> operator/(const T& t_a, double t_b) { return (1./t_b) * t_a; }    \
+static LinExpr<T> operator/(const LinExpr<T>& t_a, double t_b) { return (1./t_b) * t_a; } \
+static AffExpr<T> operator/(const AffExpr<T>& t_a, double t_b) { return (1./t_b) * t_a; } \
+static QuadExpr<T> operator/(const QuadExpr<T>& t_a, double t_b) { return (1./t_b) * t_a; }
 
 namespace idol {
     DEFINE_OPERATIONS(Var)

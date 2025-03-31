@@ -151,6 +151,14 @@ namespace idol {
     }
 
     template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT>
+    operator+(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other, const CoefficientT &t_gen) {
+        auto result = t_other;
+        result += idol::AffExpr<CoefficientT>(t_gen);
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
     idol::GenerationPattern<GeneratedT, CoefficientT> operator+(const idol::LinExpr<CoefficientT> &t_gen,
                                                                 const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other) {
         auto result = t_other;
@@ -159,8 +167,56 @@ namespace idol {
     }
 
     template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator+(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other,
+                                                                const idol::LinExpr<CoefficientT> &t_gen) {
+        auto result = t_other;
+        result += idol::AffExpr<CoefficientT>(t_gen);
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
     idol::GenerationPattern<GeneratedT, CoefficientT> operator+(const idol::AffExpr<CoefficientT> &t_gen,
                                                                 const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other) {
+        auto result = t_other;
+        result += t_gen;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator-(const idol::LinExpr<CoefficientT> &t_gen,
+                                                                const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen;
+        result -= t_other;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator-(const idol::AffExpr<CoefficientT> &t_gen,
+                                                                const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen;
+        result -= t_other;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator-(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen,
+                                                                const idol::LinExpr<CoefficientT> &t_other) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen;
+        result -= t_other;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator-(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen,
+                                                                const idol::AffExpr<CoefficientT> &t_other) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen;
+        result -= t_other;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT> operator+(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_other,
+            const idol::AffExpr<CoefficientT> &t_gen) {
         auto result = t_other;
         result += t_gen;
         return result;
@@ -198,6 +254,24 @@ namespace idol {
     operator-(const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen1,
               const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen2) {
         auto result = t_gen1;
+        result -= t_gen2;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT>
+    operator-(const CoefficientT& t_gen1,
+              const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen2) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen1;
+        result -= t_gen2;
+        return result;
+    }
+
+    template<class GeneratedT, class CoefficientT>
+    idol::GenerationPattern<GeneratedT, CoefficientT>
+    operator-(const idol::GenerationPattern<GeneratedT, CoefficientT> & t_gen1,
+              const CoefficientT& t_gen2) {
+        GenerationPattern<GeneratedT, CoefficientT> result = t_gen1;
         result -= t_gen2;
         return result;
     }

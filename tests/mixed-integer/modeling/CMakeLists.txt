@@ -1,5 +1,5 @@
 add_executable(test_modeling_interface
-        Expr.operators-type.cpp
+        expressions-operators-type-deduction.test.cpp
         Model.add-by-column.cpp
         Model.add-by-row.cpp
         Model.update-variable.cpp
