@@ -133,7 +133,7 @@ TEST_CASE("operators type deduction", "[modeling]") {
 
         // Var * X
         CHECK(std::is_same_v<decltype(type<Var>() * type<double>()), LinExpr<Var>>);
-        CHECK(std::is_same_v<decltype(type<Var>() * type<Var>()), LinExpr<Var>>);
+        CHECK(std::is_same_v<decltype(type<Var>() * type<Var>()), QuadExpr<Var>>);
         CHECK(std::is_same_v<decltype(type<Var>() * type<LinExpr<Var>>()), QuadExpr<Var>>);
         CHECK(std::is_same_v<decltype(type<Var>() * type<AffExpr<Var>>()), QuadExpr<Var>>);
         // QuadExpr and GenerationPattern are not supported for Var
