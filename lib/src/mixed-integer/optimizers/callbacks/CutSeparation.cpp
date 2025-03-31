@@ -49,21 +49,20 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const unsigned int n_solutions = m_separation_problem->get_n_solutions();
 
-    unsigned int k = 0;
-    for ( ; k < n_solutions ; ++k) {
+    for (unsigned int k = 0 ; k < n_solutions ; ++k) {
 
         m_separation_problem->set_solution_index(k);
 
-        const double objective_value = (m_type == LessOrEqual ? 1. : -1.) * m_separation_problem->get_best_obj();
+        const double objective_value = m_separation_problem->get_best_obj();
 
-        if (k == 0 && objective_value >= -m_tolerance) {
+        if (objective_value >= -m_tolerance) {
             break;
         }
 
         const auto& solution = save_primal(*m_separation_problem);
         auto expr = m_cut_pattern(solution);
 
-        TempCtr cut(std::move(expr.linear()), m_type, expr.constant());
+        TempCtr cut(std::move(expr.linear()), m_type, -expr.constant());
 
         hook_add_cut(cut);
     }

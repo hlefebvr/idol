@@ -711,8 +711,6 @@ void idol::Optimizers::BranchAndBound<NodeInfoT>::analyze(const BranchAndBound::
 
     if (status == Fail || status == Loaded) {
 
-        std::cout << "HERE?" << std::endl;
-
         set_status(Fail);
         set_reason(NotSpecified);
         terminate();

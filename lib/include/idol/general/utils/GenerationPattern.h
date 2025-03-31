@@ -63,6 +63,9 @@ public:
 
     GenerationPattern operator-=(const AffExpr<CoefficientT>& t_other) {
         m_constant -= t_other;
+        for (const auto& [var, coeff] : t_other.linear()) {
+            m_linear.set(var, m_linear.get(var) - coeff);
+        }
         return *this;
     }
 
@@ -262,7 +265,8 @@ namespace idol {
     idol::GenerationPattern<GeneratedT, CoefficientT>
     operator-(const CoefficientT& t_gen1,
               const idol::GenerationPattern<GeneratedT, CoefficientT> &t_gen2) {
-        GenerationPattern<GeneratedT, CoefficientT> result = t_gen1;
+        GenerationPattern<GeneratedT, CoefficientT> result;
+        result.linear().set(t_gen1, 1);
         result -= t_gen2;
         return result;
     }

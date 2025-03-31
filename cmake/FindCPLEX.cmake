@@ -29,7 +29,8 @@ find_package_handle_standard_args(CPLEX DEFAULT_MSG
 
 if (CPLEX_FOUND)
     add_library(cplex SHARED IMPORTED
-            ../examples/robust/ccg-discrete-uncertainty.example.cpp)
+            ../examples/robust/ccg-discrete-uncertainty.example.cpp
+            ../examples/mixed-integer/benders.example.cpp)
     set_target_properties(cplex PROPERTIES IMPORTED_LOCATION ${CPLEX_LIBRARY})
     target_include_directories(cplex INTERFACE ${CPLEX_INCLUDE_DIRS})
 endif()

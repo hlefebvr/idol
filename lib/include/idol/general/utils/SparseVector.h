@@ -189,7 +189,7 @@ idol::SparseVector<IndexT, ValueT>::operator-=(const SparseVector &t_vector) {
     for (const auto& [var, val] : t_vector.m_map) {
         ValueT minus_val{};
         minus_val -= val;
-        auto [it, inserted] = m_map.emplace(var, std::move(minus_val));
+        auto [it, inserted] = m_map.emplace(var, minus_val);
         if (!inserted) {
             IDOL_REF_VALUE(it) += std::move(minus_val);
             if (::idol::is_zero(it->second, Tolerance::Sparsity)) {
