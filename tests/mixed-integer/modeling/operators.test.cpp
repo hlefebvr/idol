@@ -12,9 +12,9 @@ const T& type() {
     throw Exception("Only intended for type deduction");
 }
 
-TEST_CASE("operators type deduction", "[modeling]") {
+TEST_CASE("Modeling > Operators type deduction", "[modeling]") {
 
-    SECTION("type deduction: operator+") {
+    SECTION("Type deduction for operator+") {
 
         // Unary plus
         CHECK(std::is_same_v<decltype(+type<Var>()), LinExpr<Var>>);
@@ -68,7 +68,7 @@ TEST_CASE("operators type deduction", "[modeling]") {
 
     }
 
-    SECTION("type deduction: operator-") {
+    SECTION("Type deduction for operator-") {
 
         // Unary minus
         CHECK(std::is_same_v<decltype(-type<Var>()), LinExpr<Var>>);
@@ -122,7 +122,7 @@ TEST_CASE("operators type deduction", "[modeling]") {
 
     }
 
-    SECTION("type deduction: operator*") {
+    SECTION("Type deduction for operator*") {
 
         // double * X
         CHECK(std::is_same_v<decltype(type<double>() * type<Var>()), LinExpr<Var>>);
@@ -163,7 +163,7 @@ TEST_CASE("operators type deduction", "[modeling]") {
         // AffExpr, QuadExpr, and GenerationPattern are not supported for GenerationPattern<Ctr>
     }
 
-    SECTION("type deduction: operator/") {
+    SECTION("Type deduction for operator/") {
 
         // double / X
         CHECK(std::is_same_v<decltype(type<double>() / type<double>()), double>);

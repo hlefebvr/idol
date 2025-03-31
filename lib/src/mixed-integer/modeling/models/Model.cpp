@@ -112,13 +112,13 @@ void idol::Model::add(const Var &t_var) {
 
 void idol::Model::remove(const Var &t_var) {
 
+    auto& version = m_env.version(*this, t_var);
+
     if (has_optimizer()) {
         optimizer().remove(t_var);
     }
 
     m_objective.affine().linear().remove(t_var);
-
-    auto& version = m_env.version(*this, t_var);
 
     if (!version.has_column()) {
 
@@ -162,11 +162,12 @@ void idol::Model::remove(const Var &t_var) {
 
 void idol::Model::remove(const Ctr &t_ctr) {
 
+    auto& version = m_env.version(*this, t_ctr);
+
     if (has_optimizer()) {
         optimizer().remove(t_ctr);
     }
 
-    auto& version = m_env.version(*this, t_ctr);
     m_rhs.remove(t_ctr);
 
     if (!version.has_row()) {
@@ -631,7 +632,7 @@ void idol::Model::set_ctr_row(const Ctr &t_ctr, LinExpr<Var> &&t_row) {
         auto& var_version = m_env.version(*this, var);
         if (var_version.has_column()) {
             auto& column = var_version.column();
-            column.set(t_ctr, 0.);
+            column.set(t_ctr, constant);
         }
         variables_to_update.emplace_back(var);
     }
@@ -1064,11 +1065,12 @@ bool idol::Model::has(const idol::QCtr &t_ctr) const {
 
 void idol::Model::remove(const idol::QCtr &t_ctr) {
 
+    const auto index = m_env.version(*this, t_ctr).index();
+
     if (has_optimizer()) {
         optimizer().remove(t_ctr);
     }
 
-    const auto index = m_env.version(*this, t_ctr).index();
     m_env.version(*this, m_qconstraints.back()).set_index(index);
     m_qconstraints[index] = m_qconstraints.back();
     m_qconstraints.pop_back();

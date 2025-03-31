@@ -11,7 +11,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-std::string get_title() {
+static std::string get_title() {
     return std::string("Modeling > Variables, with ") + TO_STRING(OPTIMIZER);
 }
 
