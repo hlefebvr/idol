@@ -89,7 +89,7 @@ parameters. For instance, the following code is equivalent to the previous one.
 
 .. code:: cpp
 
-    const auto x = model.add(0, Inf, Continuous, "x");
+    const auto x = model.add_var(0, Inf, Continuous, "x");
 
     Model model2(env);
     model2.add(x, TempVar(0, 10, Continuous, 0));

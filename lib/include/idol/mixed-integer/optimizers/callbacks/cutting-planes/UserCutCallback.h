@@ -32,7 +32,7 @@ public:
             add_user_cut(t_cut);
         }
 
-        std::string name() const override {
+        [[nodiscard]] std::string name() const override {
             return "user-cut-callback";
         }
 
