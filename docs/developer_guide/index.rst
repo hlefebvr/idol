@@ -3,10 +3,11 @@
 Developers
 ==========
 
-Unit Tests and Integration
---------------------------
+Functional Testing
+------------------
 
-idol is tested using :code:`Catch2`. Currently, the level of testing is not sufficient, but we are working on it.
+The stable features of idol are tested using :code:`Catch2`.
+Currently, the level of testing is not sufficient, but we are working on it.
 
 Here is a grid plot of the code coverage:
 
@@ -16,6 +17,8 @@ Here is a grid plot of the code coverage:
 *Each block represents a single file in the project. The size and color of each block is represented by the number of statements and the coverage, respectively.* (`see codecov <https://app.codecov.io>`_)
 
 For more information on how to run the tests, please refer to the :ref:`tests` page.
+
+To see what features
 
 Building the Documentation
 --------------------------

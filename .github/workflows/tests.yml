@@ -259,8 +259,8 @@ jobs:
       - name: Move all xml inside _static
         run: |
           ls
-          mkdir -p docs/_static
           mv report__**/*.xml docs/_static/reports/
+          ls docs/_static/reports/
 
       - name: Install dependencies
         run: |
