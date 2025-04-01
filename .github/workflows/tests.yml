@@ -267,9 +267,12 @@ jobs:
           pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
           sudo apt-get install doxygen
 
-      - name: Sphinx build
+      - name: CMake
         run: |
-          cmake -B ${{github.workspace}}/build --target doc
+          cmake -B ${{github.workspace}}/build
+
+      - name: Build
+        run: (cd ${{github.workspace}}/build && make doc)
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

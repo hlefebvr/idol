@@ -8,13 +8,14 @@ They simulate real user interactions and verify that the application behaves as 
 
 This is also a good way to make sure that the feature you want to use is properly tested and stable.
 
-.. warning::
-
-    A current limitation is that commercial solvers like Gurobi and CPLEX are not tested on GitHub Actions
-    due to license restrictions.
-
 .. toctree::
    :maxdepth: 2
    :glob:
 
    mixed-integer-optimization
+
+
+.. warning::
+
+    A current limitation is that commercial solvers like Gurobi and CPLEX are not tested on GitHub Actions
+    due to license restrictions.
