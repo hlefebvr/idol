@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "coverage__*.info ./mixed-integer/modeling/*.xml"
+          path: "coverage__*.info ${{github.workspace}}/build/tests/mixed-integer/modeling/*.xml"
 
   Mosek:
     name: "Mosek"
