@@ -11,7 +11,10 @@
 #
 
 from sphinx.builders.html import StandaloneHTMLBuilder
-import subprocess, os
+import subprocess, os, sys
+
+# Add the '_ext' directory to the sys.path
+sys.path.insert(0, os.path.abspath('_ext'))
 
 # Doxygen
 subprocess.call('doxygen Doxyfile.in', shell=True)
@@ -42,7 +45,8 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_copybutton',
     'sphinxmermaid',
-    'sphinxcontrib.bibtex'
+    'sphinxcontrib.bibtex',
+    'test_report'
 ]
 bibtex_bibfiles = ['bibliography.bib']
 bibtex_default_style = 'plain'

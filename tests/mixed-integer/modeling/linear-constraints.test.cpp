@@ -18,7 +18,7 @@ static std::string get_title() {
 #ifdef OPTIMIZER
 TEST_CASE(get_title(), "[modeling]") {
 #else
-TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
+TEST_CASE(std::string("Modeling > Linear constraints"), "[constraints]") {
 #endif
     Env env;
     Model model(env);
@@ -29,7 +29,8 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
     model.update();
 #endif
 
-    SECTION("Adding") {
+    SECTION("Can add a linear constraint to a model") {
+
         SECTION("Can add a new linear constraint with type and expression") {
 
             const auto c1 = model.add_ctr(x[0] + x[1] <= 10, "c1");
@@ -233,7 +234,7 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
 
     }
 
-    SECTION("Updating") {
+    SECTION("Can update a linear constraint in a model") {
 
         SECTION("Can update a coefficient in the linear constraints matrix") {
 
@@ -287,7 +288,7 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
         }
     }
 
-    SECTION("Removing") {
+    SECTION("Can remove a linear constraint from a model") {
 
         SECTION("Can remove a linear constraint") {
 
@@ -308,7 +309,7 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
         }
     }
 
-    SECTION("Accessing") {
+    SECTION("Can access a linear constraint in a model") {
 
         const auto c1 = model.add_ctr(x[0] + x[1] <= 10, "c1");
         const auto c2 = model.add_ctr(x[0] + 2 * x[1] >= 5, "c2");
@@ -351,6 +352,7 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
             CHECK(model.get_ctr_by_index(1).id() == c2.id());
             CHECK(model.get_ctr_by_index(2).id() == c3.id());
         }
+
         SECTION("Can iterate over linear constraints in a model") {
 
             std::vector<Ctr> ctrs;
@@ -364,6 +366,7 @@ TEST_CASE(std::string("Modeling > Linear constraints"), "[modeling]") {
             CHECK(ctrs[2].id() == c3.id());
 
         }
+
     }
 
 }

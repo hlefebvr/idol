@@ -31,3 +31,4 @@ Related Pages
 
    build-the-doc
    tests
+   tests/index

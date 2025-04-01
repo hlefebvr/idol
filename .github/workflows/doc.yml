@@ -1,7 +1,7 @@
 name: Documentation
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "none" ]
 
 jobs:
   docs:
