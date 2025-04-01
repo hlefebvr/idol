@@ -33,7 +33,7 @@ def parse_report(xml_path):
     root = tree.getroot()
 
     pretty_names = {
-        "test_modeling_interface": "Modeling Interface",
+        "test_modeling_interface": "Modeling a MIP",
     }
 
     pretty_tag_names = {
