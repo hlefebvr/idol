@@ -12,9 +12,9 @@ const T& type() {
     throw Exception("Only intended for type deduction");
 }
 
-TEST_CASE("Modeling > Operators type deduction", "[modeling]") {
+TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
-    SECTION("Type deduction for operator+") {
+    SECTION("Can add mathematical expressions together") {
 
         // Unary plus
         CHECK(std::is_same_v<decltype(+type<Var>()), LinExpr<Var>>);
@@ -68,7 +68,7 @@ TEST_CASE("Modeling > Operators type deduction", "[modeling]") {
 
     }
 
-    SECTION("Type deduction for operator-") {
+    SECTION("Can subtract mathematical expressions from each other") {
 
         // Unary minus
         CHECK(std::is_same_v<decltype(-type<Var>()), LinExpr<Var>>);

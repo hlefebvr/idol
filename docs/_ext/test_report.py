@@ -39,7 +39,7 @@ def parse_report(xml_path):
     pretty_tag_names = {
         "[modeling]": "Modeling",
         "[variables]": "Variables",
-        "[constraints]": "Constraints",
+        "[linear-constraints]": "Linear Constraints",
         "[expressions]": "Mathematical Expressions",
         "[objective]": "Objective",
     }

@@ -9,9 +9,9 @@
 #define TO_STRING(x) STRINGIFY(x)
 
 #ifdef OPTIMIZER
-#define TEST_CASE_WITH_OPTIMIZER(title) TEST_CASE(std::string(title) + ", " + TO_STRING(OPTIMIZER), "[constraints]")
+#define TEST_CASE_WITH_OPTIMIZER(title) TEST_CASE(std::string(title) + ", " + TO_STRING(OPTIMIZER), "[linear-constraints]")
 #else
-#define TEST_CASE_WITH_OPTIMIZER(title) TEST_CASE(title, "[constraints]")
+#define TEST_CASE_WITH_OPTIMIZER(title) TEST_CASE(title, "[linear-constraints]")
 #endif
 
 using namespace Catch::literals;
