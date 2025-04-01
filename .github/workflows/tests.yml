@@ -260,7 +260,7 @@ jobs:
         run: |
           ls
           mv report__**/*.xml docs/_static/reports/
-          ls docs/_static/reports/
+          echo "Here is now the content of docs/_static/reports/" && ls docs/_static/reports/
 
       - name: Install dependencies
         run: |

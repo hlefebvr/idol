@@ -18,7 +18,7 @@ Here is a grid plot of the code coverage:
 
 For more information on how to run the tests, please refer to the :ref:`tests` page.
 
-To see what features
+To see what feature is currently tested, you can look at our `functional tests page <functional_tests>_`.
 
 Building the Documentation
 --------------------------
