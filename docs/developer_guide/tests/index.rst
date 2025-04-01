@@ -5,5 +5,5 @@ Mixed-integer Optimization
     :local:
     :depth: 2
 
-.. testreport:: _static/reports/modeling.xml
+.. testreport:: _static/reports/test_modeling_interface.xml
 

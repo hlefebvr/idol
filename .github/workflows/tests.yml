@@ -250,24 +250,27 @@ jobs:
     needs: [modeling] # , Mosek, GLPK, HiGHS
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v2
-      - name: Install dependencies
-        run: |
-          pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
-          sudo apt-get install doxygen
 
-      - name: Download coverage report
+      - uses: actions/setup-python@v2
+
+      - name: Download test report
         uses: actions/download-artifact@v4
 
       - name: Move all xml inside _static
         run: |
           ls
           mkdir -p docs/_static
-          mv report__**/*.xml docs/_static/
+          mv report__**/*.xml docs/_static/      
+
+      - name: Install dependencies
+        run: |
+          pip install setuptools sphinx breathe sphinx-sitemap sphinx-press-theme sphinx-copybutton sphinx-mermaid sphinxcontrib-bibtex
+          sudo apt-get install doxygen
 
       - name: Sphinx build
         run: |
           sphinx-build docs _build
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
