@@ -33,10 +33,13 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
-        run: cd ./mixed-integer/modeling && ./test_modeling_interface --reporter xml > test_modeling_interface.xml
+        run: (cd ./mixed-integer/modeling && ./test_modeling_interface --reporter xml > test_modeling_interface.xml)
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
+
+      - name: ls
+        run: ls
 
       - name: Hash the string in matrix.test
         id: hash
