@@ -1,18 +1,17 @@
 .. _functional_tests:
 
-Functional Testing
-===================
+Stable Features
+===============
 
 Functional tests are designed to test the functionality of the application as a whole.
 They simulate real user interactions and verify that the application behaves as expected.
 
 This is also a good way to make sure that the feature you want to use is properly tested and stable.
 
-.. warning:: Limitations
+.. warning::
 
-    A current limitation is that commerical solvers like Gurobi and CPLEX are not tested on GitHub Actions.
-    This is due to the fact that they are not open source and require a license to run.
-    Hence, the tests are not run on the CI/CD pipeline.
+    A current limitation is that commercial solvers like Gurobi and CPLEX are not tested on GitHub Actions
+    due to license restrictions.
 
 .. toctree::
    :maxdepth: 2

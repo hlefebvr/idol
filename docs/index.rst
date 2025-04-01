@@ -156,6 +156,7 @@ Table of Contents
     examples/index
     api/index
     faq/index
+    tests/index
     benchmark/index
     developer_guide/index
     references

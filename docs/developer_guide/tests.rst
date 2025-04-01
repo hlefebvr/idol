@@ -1,9 +1,9 @@
 .. _tests:
 
-Unit and Integration Tests
-==========================
+Functional, Unit and Integration Tests
+======================================
 
-This page explains how to build the unit and integration tests on a local machine.
+This page explains how to build the functional tests on a local machine.
 
 Dependencies
 ------------
