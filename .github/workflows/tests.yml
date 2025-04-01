@@ -260,7 +260,7 @@ jobs:
         run: |
           ls
           mkdir -p docs/_static
-          mv report__**/*.xml docs/_static/      
+          mv report__**/*.xml docs/_static/reports/
 
       - name: Install dependencies
         run: |

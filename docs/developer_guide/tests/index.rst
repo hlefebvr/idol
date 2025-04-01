@@ -6,4 +6,3 @@ Mixed-integer Optimization
     :depth: 2
 
 .. testreport:: _static/reports/test_modeling_interface.xml
-
