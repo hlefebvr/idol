@@ -1,4 +1,4 @@
-.. functional_tests::
+.. _functional_tests:
 
 Functional Testing
 ===================
