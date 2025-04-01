@@ -122,7 +122,7 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
     }
 
-    SECTION("Type deduction for operator*") {
+    SECTION("Can multiply mathematical expressions with each other") {
 
         // double * X
         CHECK(std::is_same_v<decltype(type<double>() * type<Var>()), LinExpr<Var>>);
@@ -163,7 +163,7 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
         // AffExpr, QuadExpr, and GenerationPattern are not supported for GenerationPattern<Ctr>
     }
 
-    SECTION("Type deduction for operator/") {
+    SECTION("Can divide mathematical expressions by each other") {
 
         // double / X
         CHECK(std::is_same_v<decltype(type<double>() / type<double>()), double>);
