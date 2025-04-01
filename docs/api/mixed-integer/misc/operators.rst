@@ -16,7 +16,7 @@ expression type in the first column. The return type of the operator
 is shown in the cell at the intersection of the row and column.
 
 Operator: +
-----------
+-----------
 
 .. list-table::
    :header-rows: 1
@@ -74,7 +74,7 @@ Operator: +
      - GenerationPattern<Ctr>
 
 Operator: -
-----------
+-----------
 
 .. list-table::
    :header-rows: 1
@@ -132,7 +132,7 @@ Operator: -
      - GenerationPattern<Ctr>
 
 Operator: *
-----------
+-----------
 
 .. list-table::
    :header-rows: 1
@@ -193,7 +193,7 @@ Note: * GenerationPattern<Ctr> multiplication only works if the GenerationPatter
 Otherwise, an exception is thrown.
 
 Operator: /
-----------
+-----------
 
 .. list-table::
    :header-rows: 1

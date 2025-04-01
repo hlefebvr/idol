@@ -26,7 +26,7 @@ Implementation
 --------------
 
 Reading Instances
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 Reading a BOBILib instance is straightforward. We can use the :code:`Bilevel::read_from_file` function.
 However, it requires an underlying solver to parse the :code:`.mps` file. Here, we will use Gurobi.
