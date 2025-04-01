@@ -269,7 +269,7 @@ jobs:
 
       - name: Sphinx build
         run: |
-          cmake --build doc
+          cmake -B ${{github.workspace}}/build --build doc
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

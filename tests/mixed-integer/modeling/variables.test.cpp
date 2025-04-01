@@ -236,7 +236,7 @@ TEST_CASE_WITH_OPTIMIZER("Can add variables to a model") {
 
     }
 
-    SECTION("Can add a multiple new variables with bounds and type") {
+    SECTION("Can add multiple new variables with bounds and type") {
 
         const auto x = model.add_vars(Dim<1>(5), -1, 1, Integer, 10, "x");
         CHECK(model.vars().size() == 5);
@@ -430,7 +430,6 @@ TEST_CASE_WITH_OPTIMIZER("Can access a variable in a model") {
     const auto x = model.add_var(-1, 1, Integer, 10, std::move(column),"x");
     const auto y = model.add_var(0, 10, Continuous, 2, "y");
     const auto z = model.add_var(-2, 2, Binary, 1, "z");
-
 
     SECTION("Can retrieve a variable's bound") {
         CHECK(model.get_var_lb(x) == -1_a);
