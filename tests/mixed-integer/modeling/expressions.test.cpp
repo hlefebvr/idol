@@ -14,7 +14,7 @@ const T& type() {
 
 TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
-    SECTION("Can add mathematical expressions together") {
+    SECTION("Can add mathematical expressions together via overloaded operator+") {
 
         // Unary plus
         CHECK(std::is_same_v<decltype(+type<Var>()), LinExpr<Var>>);
@@ -68,7 +68,7 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
     }
 
-    SECTION("Can subtract mathematical expressions from each other") {
+    SECTION("Can subtract mathematical expressions from each other via overloaded operator-") {
 
         // Unary minus
         CHECK(std::is_same_v<decltype(-type<Var>()), LinExpr<Var>>);
@@ -122,7 +122,7 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
     }
 
-    SECTION("Can multiply mathematical expressions with each other") {
+    SECTION("Can multiply mathematical expressions with each other via overloaded operator*") {
 
         // double * X
         CHECK(std::is_same_v<decltype(type<double>() * type<Var>()), LinExpr<Var>>);
@@ -163,7 +163,7 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
         // AffExpr, QuadExpr, and GenerationPattern are not supported for GenerationPattern<Ctr>
     }
 
-    SECTION("Can divide mathematical expressions by each other") {
+    SECTION("Can divide mathematical expressions by each other via overloaded operator/") {
 
         // double / X
         CHECK(std::is_same_v<decltype(type<double>() / type<double>()), double>);

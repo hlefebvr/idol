@@ -40,6 +40,7 @@ def parse_report(xml_path):
         "[modeling]": "Modeling",
         "[variables]": "Variables",
         "[linear-constraints]": "Linear Constraints",
+        "[quadratic-constraints]": "Quadratic Constraints",
         "[expressions]": "Mathematical Expressions",
         "[objective]": "Objective",
     }

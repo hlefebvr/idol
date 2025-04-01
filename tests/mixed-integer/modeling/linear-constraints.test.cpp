@@ -17,7 +17,6 @@
 using namespace Catch::literals;
 using namespace idol;
 
-
 TEST_CASE_WITH_OPTIMIZER("Can add a linear constraint to a model") {
 
     Env env;

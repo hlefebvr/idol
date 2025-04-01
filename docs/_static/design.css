@@ -270,7 +270,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .test-report-table-header {
-        background: white;
+        background: transparent;
         width: 300px;
         vertical-align: top;
     }
@@ -284,27 +284,32 @@ h1, h2, h3, h4, h5, h6 {
         background-color: rgb(255, 0, 0);  /* Red */
         color: white;
         text-align: center;
+        width: 40px;
     }
 
     .progress-25 {
         background-color: rgb(255, 165, 0);  /* Orange */
         text-align: center;
+        width: 40px;
     }
 
     .progress-50 {
         background-color: rgb(255, 255, 0);  /* Yellow */
         text-align: center;
+        width: 40px;
     }
 
     .progress-75 {
         background-color: rgb(144, 238, 144);  /* Light Green */
         text-align: center;
+        width: 40px;
     }
 
     .progress-100 {
         background-color: rgb(0, 128, 0);  /* Dark Green (for 100%) */
         color: white;
         text-align: center;
+        width: 40px;
     }
 }
 
