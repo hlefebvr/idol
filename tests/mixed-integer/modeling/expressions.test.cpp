@@ -12,9 +12,13 @@ const T& type() {
     throw Exception("Only intended for type deduction");
 }
 
-TEST_CASE("Can build mathematical expressions", "[expressions]") {
+TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
+
+    // TODO: should check that the computation is correct
 
     SECTION("Can add mathematical expressions together via overloaded operator+") {
+
+        CHECK(false);
 
         // Unary plus
         CHECK(std::is_same_v<decltype(+type<Var>()), LinExpr<Var>>);
@@ -70,6 +74,8 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
     SECTION("Can subtract mathematical expressions from each other via overloaded operator-") {
 
+        CHECK(false);
+
         // Unary minus
         CHECK(std::is_same_v<decltype(-type<Var>()), LinExpr<Var>>);
 
@@ -124,6 +130,8 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
 
     SECTION("Can multiply mathematical expressions with each other via overloaded operator*") {
 
+        CHECK(false);
+
         // double * X
         CHECK(std::is_same_v<decltype(type<double>() * type<Var>()), LinExpr<Var>>);
         CHECK(std::is_same_v<decltype(type<double>() * type<LinExpr<Var>>()), LinExpr<Var>>);
@@ -164,6 +172,8 @@ TEST_CASE("Can build mathematical expressions", "[expressions]") {
     }
 
     SECTION("Can divide mathematical expressions by each other via overloaded operator/") {
+
+        CHECK(false);
 
         // double / X
         CHECK(std::is_same_v<decltype(type<double>() / type<double>()), double>);

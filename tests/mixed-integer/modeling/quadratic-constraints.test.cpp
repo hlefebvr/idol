@@ -29,23 +29,23 @@ TEST_CASE_WITH_OPTIMIZER("Can add a quadratic constraint to a model") {
 #endif
 
     SECTION("Can add a new quadratic constraint with type and expression") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can add an existing quadratic constraint") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can add an existing quadratic constraint with new type and expression") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can add multiple new quadratic constraints with type and right-hand side") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can add multiple existing quadratic constraints with type and right-hand side") {
-        SKIP();
+        CHECK(false);
     }
 
 }
@@ -62,7 +62,7 @@ TEST_CASE_WITH_OPTIMIZER("Can remove a quadratic constraint from a model") {
 #endif
 
     SECTION("Can remove a quadratic constraint") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Throws an exception if trying to remove a quadratic constraint which is not in the model") {
@@ -86,23 +86,23 @@ TEST_CASE_WITH_OPTIMIZER("Can access a quadratic constraint in a model") {
 #endif
 
     SECTION("Can retrieve a quadratic constraint's type") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can retrieve a quadratic constraint's expression") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can retrieve a quadratic constraint's index") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can retrieve a quadratic constraint by index") {
-        SKIP();
+        CHECK(false);
     }
 
     SECTION("Can iterate over quadratic constraints in a model") {
-        SKIP();
+        CHECK(false);
     }
 
 }

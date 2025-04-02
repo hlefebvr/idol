@@ -80,7 +80,6 @@ html_js_files = [
 
 html_theme = 'press'
 html_theme_options = {
-    "titles_only": True,
     "external_links": [
         ("Github", "https://github.com/hlefebvr/idol")
     ]

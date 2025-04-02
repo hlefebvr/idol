@@ -3,6 +3,7 @@ add_executable(test_modeling_interface
         variables.test.cpp
         linear-constraints.test.cpp
         quadratic-constraints.test.cpp
+        objective.test.cpp
         #QuadExpr.rotated-cone.cpp
 )
 
