@@ -18,8 +18,8 @@
 #include <OsiSymSolverInterface.hpp>
 #endif
 
-#ifdef IDOL_USE_CBC
-#include <OsiCbcSolverInterface.hpp>
+#ifdef IDOL_USE_CLP
+#include <OsiClpSolverInterface.hpp>
 #endif
 
 #else
@@ -89,8 +89,8 @@ ADD_SHORTCUT(OsiSymphony, OsiSymSolverInterface)
 ADD_FAKE_SHORTCUT(OsiSymphony)
 #endif
 
-#ifdef IDOL_USE_CBC
-ADD_SHORTCUT(OsiCbc, OsiCbcSolverInterface)
+#ifdef IDOL_USE_CLP
+ADD_SHORTCUT(OsiClp, OsiClpSolverInterface)
 #else
 ADD_FAKE_SHORTCUT(OsiCbc)
 #endif
