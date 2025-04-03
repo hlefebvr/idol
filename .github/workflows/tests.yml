@@ -116,8 +116,9 @@ jobs:
           
             # Configure CMake
             UPPER_CASE=${{ matrix.test }}
-            UPPER_CASE=${UPPER_CASE^^}
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_COIN_OR=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES -DUSE_${UPPER_CASE}=YES
+            UPPER_CASE=$(echo "$UPPER_CASE" | tr 'a-z' 'A-Z')
+            echo "UPPER_CASE: $UPPER_CASE"
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES -DUSE_${UPPER_CASE}=YES
                
           else
             exit 1
