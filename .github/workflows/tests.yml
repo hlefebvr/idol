@@ -103,7 +103,7 @@ jobs:
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
           
           else
-            exit(1)
+            exit 1
           fi
           
           (cd ${{github.workspace}}/build && make -j 6)
