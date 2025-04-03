@@ -1,4 +1,3 @@
-# Knapsack Problem
 foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
 
     set(target_name "test_dualizer_location_${OPTIMIZER}")

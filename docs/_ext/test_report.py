@@ -10,7 +10,7 @@ def parse_section(section):
         result["successes"] = int(overall_results.get("successes"))
         result["failures"] = int(overall_results.get("failures"))
         result["skipped"] = overall_results.get("skipped") == "true"
-        result["progress"] = 0 if result["skipped"] else result["successes"] / (result["successes"] + result["failures"]) * 100
+        result["progress"] = None if result["skipped"] else result["successes"] / (result["successes"] + result["failures"]) * 100
     return result
 
 def parse_test_case(test_case):
@@ -20,7 +20,7 @@ def parse_test_case(test_case):
     result["sections"] = []
     for section in test_case.findall("Section"):
         result["sections"].append(parse_section(section))
-    result["progress"] = sum(section["progress"] for section in result["sections"]) / len(result["sections"]) if len(result["sections"]) > 0 else 0
+    result["progress"] = sum(section["progress"] or 0 for section in result["sections"]) / len(result["sections"])
     return result
 
 def parse_report(xml_path):
@@ -38,7 +38,10 @@ def parse_report(xml_path):
         "test_wrapper_HiGHS": "Interfacing with HiGHS",
         "test_wrapper_Mosek": "Interfacing with Mosek",
         "test_wrapper_Gurobi": "Interfacing with Gurobi",
-        "test_wrapper_Osi": "Interfacing with coin-or/Osi",
+        "test_wrapper_OsiCbc": "Interfacing with Cbc through coin-or/Osi",
+        "test_wrapper_OsiClp": "Interfacing with Clp through coin-or/Osi",
+        "test_wrapper_OsiCplex": "Interfacing with Cplex through coin-or/Osi",
+        "test_wrapper_OsiSymphony": "Interfacing with Symphony through coin-or/Osi",
     }
 
     pretty_tag_names = {
@@ -48,7 +51,9 @@ def parse_report(xml_path):
         "[quadratic-constraints]": "Quadratic Constraints",
         "[expressions]": "Mathematical Expressions",
         "[objective]": "Objective",
-        "[mip-solving]": "Solving a MIP",
+        "[solving-lp]": "Solving LPs",
+        "[solving-milp]": "Solving MILPs",
+        "[callbacks]": "Callbacks",
     }
 
     executable = root.get("name")

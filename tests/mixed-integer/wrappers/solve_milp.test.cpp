@@ -17,7 +17,7 @@ using namespace idol;
  * - IIS?
  */
 
-TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[mip-solving]") {
+TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solving-milp]") {
 
     // Taken from https://www.gurobi.com/documentation/9.5/examples/mip1_cpp_cpp.html#subsubsection:mip1_c++.cpp
     Env env;
@@ -53,10 +53,18 @@ TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[mip-so
 
     }
 
+    SECTION("Can retrieve the number of solutions") {
+        CHECK(false);
+    }
+
+    SECTION("Can iterate over solutions") {
+        CHECK(false);
+    }
+
 }
 
 
-TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[mip-solving]") {
+TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[solving-milp]") {
 
     Env env;
 
@@ -91,9 +99,17 @@ TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[mi
 
     }
 
+    SECTION("Can retrieve the number of solutions") {
+        CHECK(false);
+    }
+
+    SECTION("Can iterate over solutions") {
+        CHECK(false);
+    }
+
 }
 
-TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[mip-solving]") {
+TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solving-milp]") {
 
     Env env;
 
@@ -110,14 +126,18 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[mip-
 
     model.optimize();
 
-    THEN("Can retrieve the solution status") {
+    SECTION("Can retrieve the solution status") {
         CHECK(model.get_status() == Infeasible);
         CHECK(is_pos_inf(model.get_best_obj()));
     }
 
+    SECTION("Can compute an irreducible infeasible sub-system") {
+        CHECK(false);
+    }
+
 }
 
-TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[mip-solving]") {
+TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[solving-milp]") {
 
     Env env;
 
@@ -135,14 +155,19 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[mi
 
     model.optimize();
 
-    SECTION("Can retrieve the solution status", "[mip-solving]") {
+    SECTION("Can retrieve the solution status", "[solving-milp]") {
         CHECK(model.get_status() == Infeasible);
         CHECK(is_pos_inf(model.get_best_obj()));
     }
 
+    SECTION("Can compute an irreducible infeasible sub-system") {
+        CHECK(false);
+    }
+
 }
 
-TEST_CASE("Can solve an unbounded MIP", "[mip-solving]") {
+TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
+
     Env env;
     Var x(env, -Inf, Inf, Integer, 0., "x");
     Model model(env);
@@ -157,4 +182,56 @@ TEST_CASE("Can solve an unbounded MIP", "[mip-solving]") {
         CHECK(model.get_status() == Unbounded);
         CHECK(is_neg_inf(model.get_best_obj()));
     }
+}
+
+TEST_CASE("Can set parameters of the underlying solver", "[solving-milp]") {
+
+    SECTION("Can set a time limit") {
+        CHECK(false);
+    }
+
+    SECTION("Can turn off presolve") {
+        CHECK(false);
+    }
+
+    SECTION("Can activate infeasible or unbounded info") {
+        CHECK(false);
+    }
+
+    SECTION("Can set an external parameter") {
+        CHECK(false);
+    }
+
+    SECTION("Can set a thread limit") {
+        CHECK(false);
+    }
+
+    SECTION("Can set a relative MIP gap") {
+        CHECK(false);
+    }
+
+    SECTION("Can set an absolute MIP gap") {
+        CHECK(false);
+    }
+
+    SECTION("Can set a best bound stop") {
+        CHECK(false);
+    }
+
+    SECTION("Can set a best obj stop") {
+        CHECK(false);
+    }
+
+    SECTION("Can set an iteration limit") {
+        CHECK(false);
+    }
+
+    SECTION("Can turn on logs") {
+        CHECK(false);
+    }
+
+    SECTION("Can set the maximum number of solutions in the pool") {
+        CHECK(false);
+    }
+
 }

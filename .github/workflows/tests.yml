@@ -10,23 +10,17 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  modeling:
+  Modeling:
     name: "Modeling"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Eigen
-        run: wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
-
-      - name: Install Eigen
-        run: tar -xvf eigen*.tar.bz2 && rm eigen*.tar.bz2 && find . -depth -type d -name eigen-* -execdir mv {} ${{github.workspace}}/Eigen \;
-
       - name: Install lcov
         run: sudo apt-get install lcov
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen
+        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES
 
       - name: Build
         run: (cd ${{github.workspace}}/build && make -j 6)
@@ -59,50 +53,67 @@ jobs:
           name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "${{github.workspace}}/build/tests/mixed-integer/modeling/*.xml"
 
-  Mosek:
-    name: "Mosek"
+  Wrappers:
+    name: "MIP Wrappers"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         test:
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_Mosek)"
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_Mosek)"
-          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_Mosek)"
-          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_Mosek)"
+          - "GLPK"
+          - "HiGHS"
+          - "Mosek"
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Eigen
-        run: wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
+      - name: Install lcov
+        run: sudo apt-get install lcov
 
-      - name: Install Eigen
-        run: tar -xvf eigen*.tar.bz2 && rm eigen*.tar.bz2 && find . -depth -type d -name eigen-* -execdir mv {} ${{github.workspace}}/Eigen \;
+      - name: "Build idol with ${{ matrix.test }}"
+        run: |
+          if [ "${{ matrix.test }}" == "GLPK" ]; then
+          
+            # Install GLPK
+            sudo apt-get install glpk-utils libglpk-dev
+          
+            # Configure CMake
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
+          
+          elif [ "${{ matrix.test }}" == "HiGHS" ]; then
+          
+            # Install HiGHS
+            git clone --depth 1 --branch v1.7.1 https://github.com/ERGO-Code/HiGHS.git
+            mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install
+          
+            # Configure CMake
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
+          
+          elif [ "${{ matrix.test }}" == "Mosek" ]; then
+          
+            # Install Eigen
+            wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
+            tar -xvf eigen*.tar.bz2 && rm eigen*.tar.bz2 && find . -depth -type d -name eigen-* -execdir mv {} ${{github.workspace}}/Eigen \;
+            # Install Mosek
+            wget https://download.mosek.com/stable/10.0.47/mosektoolslinux64x86.tar.bz2
+            tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
+          
+            # Install Mosek license
+            'echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic'
+          
+            # Configure CMake
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
+          
+          else
+            exit(1)
+          fi
+          
+          (cd ${{github.workspace}}/build && make -j 6)
 
-      - name: Download Mosek
-        run: wget https://download.mosek.com/stable/10.0.47/mosektoolslinux64x86.tar.bz2
-
-      - name: Install Mosek
-        run: tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
-
-      - name: Install Mosek license
-        run: 'echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic'
         env:
           MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
 
-      - name: Install lcov
-        run: sudo apt-get install lcov
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
-
-      - name: Build
-        run: (cd ${{github.workspace}}/build && make -j 6)
-
-      - name: Test
+      - name: Run tests
         working-directory: ${{github.workspace}}/build/tests
-        run: ${{ matrix.test }}
-        env:
-          MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
+        run: ./test_wrappers_${{ matrix.test }}
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -121,108 +132,16 @@ jobs:
           name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
           path: "coverage__*.info"
 
-  GLPK:
-    name: "GLPK"
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        test:
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_GLPK)"
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_GLPK)"
-          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_GLPK)"
-          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_GLPK)"
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install lcov
-        run: sudo apt-get install lcov
-
-      - name: Update apt-get
-        run: sudo apt-get update
-
-      - name: Install GLPK
-        run: sudo apt-get install glpk-utils libglpk-dev
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_GLPK=YES
-
-      - name: Build
-        run: (cd ${{github.workspace}}/build && make -j 6)
-
-      - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ${{ matrix.test }}
-
-      - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
-
-      - name: Hash the string in matrix.test
-        id: hash
-        run: |
-          echo "Hashing: ${{ matrix.test }}"
-          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
-          echo "Hashed string: $HASHED_STRING"
-          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
-
-      - name: Upload coverage with hashed name
+      - name: Upload report
         uses: actions/upload-artifact@v4
         with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "coverage__*.info"
-
-  HiGHS:
-    name: "HiGHS"
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        test:
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_knapsack_HiGHS)"
-          - "(cd mixed-integer/branch-and-bound/ && ./test_bab_location_HiGHS)"
-          - "(cd mixed-integer/branch-and-price/ && ./test_bap_assignment_HiGHS)"
-          - "(cd mixed-integer/dualizer/ && ./test_dualizer_location_HiGHS)"
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install lcov
-        run: sudo apt-get install lcov
-
-      - name: Download HiGHS
-        run: git clone --depth 1 --branch v1.7.1 https://github.com/ERGO-Code/HiGHS.git
-
-      - name: Install HiGHS
-        run: mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
-
-      - name: Build
-        run: (cd ${{github.workspace}}/build && make -j 6)
-
-      - name: Test
-        working-directory: ${{github.workspace}}/build/tests
-        run: ${{ matrix.test }}
-
-      - name: Build coverage report
-        run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
-
-      - name: Hash the string in matrix.test
-        id: hash
-        run: |
-          echo "Hashing: ${{ matrix.test }}"
-          HASHED_STRING=$(echo -n "${{ matrix.test }}" | sha256sum | awk '{print $1}')
-          echo "Hashed string: $HASHED_STRING"
-          echo "hashed_string=${HASHED_STRING}" >> $GITHUB_OUTPUT
-
-      - name: Upload coverage with hashed name
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "coverage__*.info"
+          name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
+          path: "${{github.workspace}}/build/tests/mixed-integer/wrappers/*.xml"
 
   Coverage:
-    name: "Upload coverage report"
+    name: "Send coverage report to Codecov"
     runs-on: ubuntu-latest
-    needs: [modeling, Mosek, GLPK, HiGHS]
+    needs: [Modeling, Wrappers]
     steps:
       - uses: actions/checkout@v3
 
@@ -243,9 +162,9 @@ jobs:
           flags: default
 
   Documentation:
-    name: "Build and deploy documentation"
+    name: "Generate documentation"
     runs-on: ubuntu-latest
-    needs: [modeling] # , Mosek, GLPK, HiGHS
+    needs: [Modeling, Wrappers]
     steps:
       - uses: actions/checkout@v4
 

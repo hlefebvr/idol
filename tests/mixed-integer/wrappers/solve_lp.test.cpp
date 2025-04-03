@@ -12,7 +12,7 @@
 using namespace Catch::literals;
 using namespace idol;
 
-TEST_CASE("Can solve a feasible LP", "[mip-solving]") {
+TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
 
     // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
 
@@ -87,7 +87,7 @@ TEST_CASE("Can solve a feasible LP", "[mip-solving]") {
 
 }
 
-TEST_CASE("Can update and re-optimize a feasible LP", "[mip-solving]") {
+TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
 
     SECTION("Can add cut and re-optimize") {
         CHECK(false);
@@ -167,7 +167,7 @@ TEST_CASE("Can update and re-optimize a feasible LP", "[mip-solving]") {
 
 }
 
-TEST_CASE("Can solve an infeasible LP", "[mip-solving]") {
+TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
 
     Env env;
 
@@ -211,7 +211,7 @@ TEST_CASE("Can solve an infeasible LP", "[mip-solving]") {
 
 }
 
-TEST_CASE("Can solve an unbounded LP", "[mip-solving]") {
+TEST_CASE("Can solve an unbounded LP", "[solving-lp]") {
 
     Env env;
 
