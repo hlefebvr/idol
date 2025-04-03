@@ -6,3 +6,8 @@ Mixed-integer Optimization
     :depth: 2
 
 .. testreport:: _static/reports/test_modeling_interface.xml
+.. testreport:: _static/reports/test_wrapper_GLPK.xml
+.. testreport:: _static/reports/test_wrapper_HiGHS.xml
+.. testreport:: _static/reports/test_wrapper_Mosek.xml
+.. testreport:: _static/reports/test_wrapper_Gurobi.xml
+.. testreport:: _static/reports/test_wrapper_Osi.xml

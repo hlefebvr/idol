@@ -34,6 +34,11 @@ def parse_report(xml_path):
 
     pretty_names = {
         "test_modeling_interface": "Modeling a MIP",
+        "test_wrapper_GLPK": "Interfacing with GLPK",
+        "test_wrapper_HiGHS": "Interfacing with HiGHS",
+        "test_wrapper_Mosek": "Interfacing with Mosek",
+        "test_wrapper_Gurobi": "Interfacing with Gurobi",
+        "test_wrapper_Osi": "Interfacing with coin-or/Osi",
     }
 
     pretty_tag_names = {
@@ -43,6 +48,7 @@ def parse_report(xml_path):
         "[quadratic-constraints]": "Quadratic Constraints",
         "[expressions]": "Mathematical Expressions",
         "[objective]": "Objective",
+        "[mip-solving]": "Solving a MIP",
     }
 
     executable = root.get("name")
@@ -75,6 +81,10 @@ class TestReportDirective(Directive):
 
     def run(self):
 
+        print("***********************")
+        print("Test Report Directive")
+        print("***********************")
+
         result = []
 
         xml_path = self.arguments[0]
@@ -84,7 +94,13 @@ class TestReportDirective(Directive):
             report = parse_report(xml_path)
         except Exception as e:
             print("Error parsing report:", e)
-            result += [nodes.paragraph(text="Error parsing report: " + str(e))]
+            result += [
+                nodes.warning(
+                    '',
+                    nodes.paragraph(text=f"There was an error while parsing the test report {xml_path}."),
+                    nodes.paragraph(text=str(e))
+                )
+            ]
             return result
 
         report_section = nodes.section(level=2)

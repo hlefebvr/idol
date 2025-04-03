@@ -200,4 +200,10 @@ TEST_CASE("Can manipulate mathematical expressions", "[expressions]") {
         // Var, LinExpr, AffExpr, QuadExpr, GenerationPattern are unsupported for GenerationPattern<Ctr>
     }
 
+    SECTION("Can iterate over terms in mathematical expressions") {
+
+        CHECK(false);
+
+    }
+
 }

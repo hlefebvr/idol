@@ -4,8 +4,8 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
     set(target_name "test_wrapper_${OPTIMIZER}")
 
     add_executable(${target_name}
-            toy_lp.cpp
-            toy_milp.cpp
+            solve_lp.test.cpp
+            solve_milp.test.cpp
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})

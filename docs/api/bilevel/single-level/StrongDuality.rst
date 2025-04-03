@@ -1,5 +1,5 @@
 Bilevel::StrongDuality
-============
+======================
 
 Doxygen
 -------
