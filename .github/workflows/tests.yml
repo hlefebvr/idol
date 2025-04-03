@@ -97,7 +97,7 @@ jobs:
             tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
           
             # Install Mosek license
-            'echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic'
+            echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
           
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
@@ -112,7 +112,7 @@ jobs:
           MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
 
       - name: Run tests
-        working-directory: ${{github.workspace}}/build/tests
+        working-directory: ${{github.workspace}}/build/tests/mixed-integer/wrappers
         run: ./test_wrappers_${{ matrix.test }}
 
       - name: Build coverage report
