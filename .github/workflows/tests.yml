@@ -101,7 +101,7 @@ jobs:
             tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
           
             # Install Mosek license
-            echo $MOSEK_LICENSE
+            echo "License: ${MOSEK_LICENSE}"
             echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
           
             # Configure CMake
@@ -126,7 +126,12 @@ jobs:
       - name: Run tests
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/wrappers
         continue-on-error: true
-        run: ./test_wrapper_${{ matrix.test }} --reporter xml -o test_wrapper_${{ matrix.test }}.xml
+        run: |
+          OPTIMIZER=${{ matrix.test }}
+          if [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
+            OPTIMIZER=Osi${{ matrix.test }}
+          fi
+          ./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
