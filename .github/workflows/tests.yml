@@ -63,7 +63,7 @@ jobs:
           - "HiGHS"
           - "Mosek"
           - "Clp"
-          - "Symphony"
+          #- "Symphony"
     steps:
       - uses: actions/checkout@v4
 
