@@ -72,6 +72,8 @@ jobs:
         run: sudo apt-get install lcov
 
       - name: "Build idol with ${{ matrix.test }}"
+        env:
+          MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
         run: |
           if [ "${{ matrix.test }}" == "GLPK" ]; then
           
@@ -100,6 +102,7 @@ jobs:
             tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
           
             # Install Mosek license
+            echo $MOSEK_LICENSE
             echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
           
             # Configure CMake
@@ -120,9 +123,6 @@ jobs:
           fi
           
           (cd ${{github.workspace}}/build && make -j 6)
-
-        env:
-          MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
 
       - name: Run tests
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/wrappers
