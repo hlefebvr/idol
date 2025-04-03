@@ -21,7 +21,7 @@ idol::Bilevel::MibS::MibS(const Bilevel::Description& t_description)
 }
 
 idol::Optimizer *idol::Bilevel::MibS::operator()(const idol::Model &t_model) const {
-#ifdef IDOL_USE_OSI
+#ifdef IDOL_USE_MIBS
 
     if (!m_description) {
         throw Exception("The bilevel description has not been set.");
