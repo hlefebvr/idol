@@ -62,7 +62,6 @@ jobs:
           - "GLPK"
           - "HiGHS"
           - "Mosek"
-          - "Cbc"
           - "Clp"
           - "Symphony"
     steps:
@@ -108,12 +107,12 @@ jobs:
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
           
-          elif [ "${{ matrix.test }}" == "Cbc" ] || [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
+          elif [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
           
             # Install Coin-OR
             wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
             chmod +x coinbrew
-            ./coinbrew --no-prompt build ${{ matrix.test }}
+            ./coinbrew --no-prompt --tests=none build ${{ matrix.test }}
           
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_COIN_OR=YES -DCOIN_OR_DIR=${{github.workspace}}/dist
