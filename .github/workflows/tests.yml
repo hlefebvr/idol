@@ -34,7 +34,7 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/modeling
         continue-on-error: true
-        run: ./test_modeling_interface --reporter xml > test_modeling_interface.xml
+        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
