@@ -115,7 +115,7 @@ jobs:
             ./coinbrew --no-prompt --tests=none build ${{ matrix.test }}
           
             # Configure CMake
-            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_COIN_OR=YES -DCOIN_OR_DIR=${{github.workspace}}/dist
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_COIN_OR=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES
                
           else
             exit 1
