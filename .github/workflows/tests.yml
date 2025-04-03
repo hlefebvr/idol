@@ -82,7 +82,7 @@ jobs:
           
             # Install HiGHS
             git clone --depth 1 --branch v1.7.1 https://github.com/ERGO-Code/HiGHS.git
-            mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install
+            (mkdir HiGHS/build && cd HiGHS/build && cmake .. && make && sudo make install)
           
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_HIGHS=YES
