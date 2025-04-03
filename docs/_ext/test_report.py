@@ -20,7 +20,9 @@ def parse_test_case(test_case):
     result["sections"] = []
     for section in test_case.findall("Section"):
         result["sections"].append(parse_section(section))
-    result["progress"] = sum(section["progress"] or 0 for section in result["sections"]) / len(result["sections"])
+    n = len(result["sections"])
+    if n == 0: n = 1
+    result["progress"] = sum(section["progress"] or 0 for section in result["sections"]) / n
     return result
 
 def parse_report(xml_path):
