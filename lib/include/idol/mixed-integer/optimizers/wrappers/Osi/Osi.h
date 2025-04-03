@@ -9,10 +9,19 @@
 
 #ifdef IDOL_USE_OSI
 #include <OsiSolverInterface.hpp>
+
+#if IDOL_USE_CPLEX
 #include <OsiCpxSolverInterface.hpp>
+#endif
+
+#ifdef IDOL_USE_SYMPHONY
 #include <OsiSymSolverInterface.hpp>
+#endif
+
+#ifdef IDOL_USE_CBC
 #include <OsiCbcSolverInterface.hpp>
-#include <OsiClpSolverInterface.hpp>
+#endif
+
 #else
 struct OsiSolverInterface {
     virtual ~OsiSolverInterface() = default;
@@ -84,12 +93,6 @@ ADD_FAKE_SHORTCUT(OsiSymphony)
 ADD_SHORTCUT(OsiCbc, OsiCbcSolverInterface)
 #else
 ADD_FAKE_SHORTCUT(OsiCbc)
-#endif
-
-#ifdef IDOL_USE_CLP
-ADD_SHORTCUT(OsiClp, OsiClpSolverInterface)
-#else
-ADD_FAKE_SHORTCUT(OsiClp)
 #endif
 
 #endif //IDOL_OSI_H
