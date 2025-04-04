@@ -140,7 +140,7 @@ jobs:
       - name: Run tests
         continue-on-error: true
         env:
-          - MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
+          MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
         run: |
           
           OPTIMIZER=${{ matrix.test }}
