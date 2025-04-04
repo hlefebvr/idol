@@ -27,8 +27,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/modeling
-        continue-on-error: true
-        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml
+        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml  || ( [ $? -eq 1 ] && exit 0 )
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -138,7 +137,6 @@ jobs:
           (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Run tests
-        continue-on-error: true
         env:
           MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
         run: |
@@ -155,7 +153,7 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
           
-          (cd $WORKSPACE && ./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml)
+          (cd $WORKSPACE && ./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml  || ( [ $? -eq 1 ] && exit 0 ))
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
