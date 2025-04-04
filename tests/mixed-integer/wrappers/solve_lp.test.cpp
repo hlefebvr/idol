@@ -97,68 +97,149 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
 
 TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
 
+    Env env;
+    Model model(env);
+    const auto x = model.add_var( -1, Inf, Continuous, 0., "x");
+    const auto c = model.add_ctr(x >= 0);
+    model.set_obj_expr(x);
+    model.use(OPTIMIZER());
+    model.optimize();
+
+    CHECK(model.get_status() == Optimal);
+    CHECK(model.get_best_obj() == 0._a);
+
     SECTION("Can add cut and re-optimize") {
-        CHECK(false);
+        model.add_ctr(x >= 1);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(x) == 1._a);
     }
 
     SECTION("Can add column and re-optimize") {
-        CHECK(false);
+        const auto y = model.add_var(1, 1, Continuous, 1., "y");
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(x) == 0._a);
+        CHECK(model.get_var_primal(y) == 1._a);
     }
 
     SECTION("Can change bounds and re-optimize") {
-        CHECK(false);
+        model.set_var_lb(x, 1);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(x) == 1._a);
     }
 
     SECTION("Can add cut and column and re-optimize") {
-        CHECK(false);
+        const auto y = model.add_var(1, 1, Continuous, 1., "y");
+        model.add_ctr(x + y >= 2);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 2._a);
+        CHECK(model.get_var_primal(x) == 1._a);
+        CHECK(model.get_var_primal(y) == 1._a);
     }
 
     SECTION("Can change objective function and re-optimize") {
-        CHECK(false);
+        model.set_obj_expr(-x);
+        model.optimize();
+        CHECK(model.get_status() == Unbounded);
     }
 
     SECTION("Can change right-hand side and re-optimize") {
-        CHECK(false);
+        model.set_ctr_rhs(c, 1);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(x) == 1._a);
     }
 
     SECTION("Can change left-hand side and re-optimize") {
-        CHECK(false);
+        model.set_ctr_row(c, 2 * x);
+        model.set_ctr_rhs(c, 1);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0.5_a);
+        CHECK(model.get_var_primal(x) == 0.5_a);
     }
 
     SECTION("Can remove a constraint and re-optimize") {
-        CHECK(false);
+        model.remove(c);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == -1._a);
     }
 
     SECTION("Can remove a variable and re-optimize") {
-        CHECK(false);
+        model.remove(x);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0._a);
     }
 
     SECTION("Can add and remove the same variable and re-optimize") {
-        CHECK(false);
+        const auto y = model.add_var(1, 1, Continuous, 1., "y");
+        model.remove(y);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0._a);
     }
 
     SECTION("Can add and remove a different variable and re-optimize") {
-        CHECK(false);
+        const auto y = model.add_var(1, 1, Continuous, 1., "y");
+        model.remove(x);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(y) == 1._a);
     }
 
     SECTION("Can add and remove the same constraint") {
-        CHECK(false);
+        const auto c2 = model.add_ctr(x >= 1);
+        model.remove(c2);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0._a);
+        CHECK(model.get_var_primal(x) == 0._a);
     }
 
     SECTION("Can add and remove a different constraint") {
-        CHECK(false);
+        const auto c2 = model.add_ctr(x >= 1);
+        model.remove(c);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
+        CHECK(model.get_var_primal(x) == 1._a);
     }
 
     SECTION("Can add a constraint which depends on a variable that is then removed") {
-        CHECK(false);
+        const auto c2 = model.add_ctr(x + 1 >= 1);
+        model.remove(x);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0._a);
     }
 
     SECTION("Can add a variable which depends on a constraint that is then removed") {
-        CHECK(false);
+        LinExpr<Ctr> column = 2 * c;
+        const auto y = model.add_var(0, Inf, Continuous, 1, column, "y");
+        model.remove(c);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == -1._a);
+        CHECK(model.get_var_primal(x) == -1._a);
+        CHECK(model.get_var_primal(y) == 0._a);
     }
 
     SECTION("Can update a variable's bound then remove it") {
-        CHECK(false);
+        model.set_var_ub(x, 1);
+        model.remove(x);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 0._a);
     }
 
     SECTION("Can write a model to a file and read it back") {
@@ -166,11 +247,19 @@ TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
     }
 
     SECTION("Can change the objective function then remove a variable which appears in the objective function") {
-        CHECK(false);
+        model.set_obj_expr(2 * x + 1);
+        model.remove(x);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 1._a);
     }
 
     SECTION("Can update the objective function constant") {
-        CHECK(false);
+        model.set_obj_const(10);
+        model.optimize();
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == 10._a);
+        CHECK(model.get_var_primal(x) == 0._a);
     }
 
 }
