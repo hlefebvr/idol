@@ -138,14 +138,22 @@ jobs:
           (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Run tests
-        working-directory: ${{github.workspace}}/build/tests/mixed-integer/wrappers
         continue-on-error: true
         run: |
+          
           OPTIMIZER=${{ matrix.test }}
+          
           if [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
             OPTIMIZER=Osi${{ matrix.test }}
           fi
-          ./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml
+          
+          if [ "${{ matrix.test }}" == "MibS" ]; then
+            WORKSPACE=${{github.workspace}}/build/tests/bilevel/wrappers
+          else
+            WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
+          fi
+          
+          (cd $WORKSPACE && ./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml)
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -168,7 +176,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "${{github.workspace}}/build/tests/mixed-integer/wrappers/*.xml"
+          path: "${{github.workspace}}/build/tests/**/wrappers/*.xml"
 
   Coverage:
     name: "Send coverage report to Codecov"
