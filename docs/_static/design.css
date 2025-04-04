@@ -270,7 +270,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .test-report-table-header {
-        background: transparent;
+        background-color: white;
         width: 300px;
         vertical-align: top;
     }
@@ -280,6 +280,12 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     /* Define background colors for each progress range */
+    .progress-NA {
+        background-color: #efefef;  /* Grey */
+        text-align: center;
+        width: 40px;
+    }
+
     .progress-0 {
         background-color: rgb(255, 0, 0);  /* Red */
         color: white;

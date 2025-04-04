@@ -15,8 +15,3 @@ This is also a good way to make sure that the feature you want to use is properl
    mixed-integer-optimization
    bilevel-optimization
    robust-optimization
-
-.. warning::
-
-    A current limitation is that commercial solvers like Gurobi and CPLEX are not tested on GitHub Actions
-    due to license restrictions.

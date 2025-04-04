@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Catch2TestRun name="test_wrapper_OsiCplex" rng-seed="2571523186" xml-format-version="3" catch2-version="3.3.2">
+  <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="15">
+    <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="40">
+      <OverallResults successes="7" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve dual solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="54">
+      <OverallResults successes="9" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve reduced costs" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="71">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="73">
+        <Original>
+          model.get_var_reduced_cost(x) == 0._a
+        </Original>
+        <Expanded>
+          model.get_var_reduced_cost(x) == 0._a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="73">
+          Not implemented get_var_reduced_cost
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
+        <Original>
+          model.get_var_reduced_cost(y) == 0._a
+        </Original>
+        <Expanded>
+          model.get_var_reduced_cost(y) == 0._a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
+          Not implemented get_var_reduced_cost
+        </Exception>
+      </Expression>
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
+          Not implemented get_var_reduced_cost
+        </Exception>
+      </Expression>
+      <OverallResults successes="0" failures="3" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve basis" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="82">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="83">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal ray is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="86">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if farkas certificate is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="91">
+      <Expression success="false" type="CHECK_THROWS" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="92">
+        <Original>
+          model.get_ctr_farkas(c1)
+        </Original>
+        <Expanded>
+          model.get_ctr_farkas(c1)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <TestCase name="Can update and re-optimize a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="98">
+    <Section name="Can add cut and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="111">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="119">
+      <OverallResults successes="4" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change bounds and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="128">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add cut and column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="136">
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="136">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <FatalErrorCondition filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="136">
+          SIGSEGV - Segmentation violation signal
+        </FatalErrorCondition>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0"/>
+  </TestCase>
+  <OverallResults successes="37" failures="6" expectedFailures="0" skips="0"/>
+  <OverallResultsCases successes="0" failures="2" expectedFailures="0" skips="0"/>
+</Catch2TestRun>

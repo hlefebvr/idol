@@ -175,10 +175,14 @@ class TestReportDirective(Directive):
                         row += entry3
 
                         # Fourth Column: Section Progress
-                        section_progress = section.get("progress", "N/A")
+                        section_progress = section.get("progress", None)
                         entry4 = nodes.entry()
-                        entry4 += nodes.paragraph(text=f"{section_progress:.0f}%")
-                        entry4.attributes["classes"] += [get_progress_color(section_progress)]
+                        if section_progress is None:
+                            entry4 += nodes.paragraph(text="-")
+                            entry4.attributes["classes"] += ["progress-NA"]
+                        else:
+                            entry4 += nodes.paragraph(text=f"{section_progress:.0f}%")
+                            entry4.attributes["classes"] += [get_progress_color(section_progress)]
                         row += entry4
 
                         tbody += row

@@ -1,1 +1,3 @@
 *.xml
+!test_wrapper_Gurobi.xml
+!test_wrapper_OsiCplex.xml
