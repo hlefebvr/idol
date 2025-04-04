@@ -135,7 +135,7 @@ jobs:
             exit 1
           fi
           
-          (cd ${{github.workspace}}/build && make) #-j 6)
+          (cd ${{github.workspace}}/build && make -j 6)
 
       - name: Run tests
         continue-on-error: true
