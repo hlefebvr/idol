@@ -17,6 +17,7 @@ namespace idol::Optimizers {
 
 class idol::Optimizers::Osi : public OptimizerWithLazyUpdates<int, int, int> {
     bool m_continuous_relaxation;
+    bool m_is_resolve = false;
 
     std::unique_ptr<OsiSolverInterface> m_solver_interface;
 public:

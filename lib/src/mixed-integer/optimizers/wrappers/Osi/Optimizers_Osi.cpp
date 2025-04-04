@@ -20,7 +20,6 @@ idol::Optimizers::Osi::Osi(const idol::Model &t_model,
     m_solver_interface->setHintParam(OsiHintParam::OsiDoDualInInitial, false, OsiHintStrength::OsiHintDo);
     m_solver_interface->setHintParam(OsiHintParam::OsiDoDualInResolve, true, OsiHintStrength::OsiHintDo);
 
-
 }
 
 std::string idol::Optimizers::Osi::name() const {
@@ -149,7 +148,7 @@ void idol::Optimizers::Osi::hook_optimize() {
     m_solver_interface->setHintParam(OsiHintParam::OsiDoPresolveInInitial, presolve, OsiHintStrength::OsiHintDo);
     m_solver_interface->setHintParam(OsiHintParam::OsiDoPresolveInResolve, presolve, OsiHintStrength::OsiHintDo);
 
-    m_solver_interface->initialSolve(); // TODO handle resolve
+    m_solver_interface->initialSolve();
 
     if (m_solver_interface->isProvenOptimal()) {
 

@@ -102,7 +102,6 @@ jobs:
             tar -xvf mosektoolslinux64x86.tar.bz2 -C ${{github.workspace}} && (cd ${{github.workspace}}/mosek/10.0/tools/platform/linux64x86/src/fusion_cxx && make install)
           
             # Install Mosek license
-            echo "License: ${MOSEK_LICENSE}"
             echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
           
             # Configure CMake
@@ -176,7 +175,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: report__${{ github.job }}__${{ github.run_id }}__${{ steps.hash.outputs.hashed_string }}
-          path: "${{github.workspace}}/build/tests/**/wrappers/*.xml"
+          path: "${{github.workspace}}/build/tests/mixed-integer/wrappers/*.xml ${{github.workspace}}/build/tests/bilevel/wrappers/*.xml"
 
   Coverage:
     name: "Send coverage report to Codecov"

@@ -37,19 +37,14 @@ using namespace idol;
 int main(int t_argc, const char** t_argv) {
 
     Env env;
+    Var x(env, -1, 1, Integer, 0., "x");
     Model model(env);
-    const auto x = model.add_var( -1, Inf, Continuous, 0., "x");
-    const auto c = model.add_ctr(x >= 0);
-    model.set_obj_expr(x);
-    model.use(OsiClp());
+    model.add(x);
+    model.set_obj_expr(-x);
+    model.use(OsiSymphony());
     model.optimize();
 
-    save_ray(model);
-
-    const auto y = model.add_var(1, 1, Continuous, 1., "y");
-    model.add_ctr(x + y >= 2);
-
-    model.optimize();
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }
