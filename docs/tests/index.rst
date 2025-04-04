@@ -13,7 +13,8 @@ This is also a good way to make sure that the feature you want to use is properl
    :glob:
 
    mixed-integer-optimization
-
+   bilevel-optimization
+   robust-optimization
 
 .. warning::
 

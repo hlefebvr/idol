@@ -64,6 +64,7 @@ jobs:
           - "Mosek"
           - "Clp"
           #- "Symphony"
+          - "MibS"
     steps:
       - uses: actions/checkout@v4
 
@@ -109,7 +110,7 @@ jobs:
           
           elif [ "${{ matrix.test }}" == "Clp" ] || [ "${{ matrix.test }}" == "Symphony" ]; then
           
-            # Install Coin-OR
+            # Install Coin-OR solver
             wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
             chmod +x coinbrew
             ./coinbrew --no-prompt --tests=none build ${{ matrix.test }}
@@ -119,7 +120,17 @@ jobs:
             UPPER_CASE=$(echo "$UPPER_CASE" | tr 'a-z' 'A-Z')
             echo "UPPER_CASE: $UPPER_CASE"
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_OSI=YES -DUSE_${UPPER_CASE}=YES
-               
+          
+          elif [ "${{ matrix.test }}" == "MibS" ]; then
+          
+            # Install MibS
+            wget https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew
+            chmod +x coinbrew
+            ./coinbrew --no-prompt --tests=none build MibS
+          
+            # Configure CMake
+            cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DCOIN_OR_DIR=${{github.workspace}}/dist -DUSE_MIBS=YES
+          
           else
             exit 1
           fi

@@ -44,6 +44,7 @@ def parse_report(xml_path):
         "test_wrapper_OsiClp": "Interfacing with Clp through coin-or/Osi",
         "test_wrapper_OsiCplex": "Interfacing with Cplex through coin-or/Osi",
         "test_wrapper_OsiSymphony": "Interfacing with Symphony through coin-or/Osi",
+        "test_wrapper_MibS": "Interfacing with MibS",
     }
 
     pretty_tag_names = {
@@ -55,6 +56,7 @@ def parse_report(xml_path):
         "[objective]": "Objective",
         "[solving-lp]": "Solving LPs",
         "[solving-milp]": "Solving MILPs",
+        "[solving-bilevel]": "Solving bilevel problems",
         "[callbacks]": "Callbacks",
     }
 

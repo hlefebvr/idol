@@ -397,10 +397,12 @@ if (${USE_MIBS})
     target_link_libraries(idol PUBLIC alps)
     target_link_libraries(idol PUBLIC bcps)
     target_link_libraries(idol PUBLIC blis)
-    target_link_libraries(idol PUBLIC cgl) # not necessary
+    #target_link_libraries(idol PUBLIC cgl) # not necessary
 
     target_link_libraries(idol PUBLIC mibs)
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
+
+    list(APPEND AVAILABLE_BILEVEL_SOLVERS "MibS")
 
 endif()
 
@@ -416,6 +418,7 @@ if (${USE_OSI})
 endif()
 
 set(AVAILABLE_MILP_SOLVERS "${AVAILABLE_MILP_SOLVERS}" PARENT_SCOPE)
+set(AVAILABLE_BILEVEL_SOLVERS "${AVAILABLE_BILEVEL_SOLVERS}" PARENT_SCOPE)
 
 if (${WITH_PROFILING})
     target_compile_options(idol PRIVATE -pg)
