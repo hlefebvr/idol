@@ -62,7 +62,7 @@ jobs:
           - "GLPK"
           - "HiGHS"
           - "Mosek"
-          #- "Clp"
+          - "Clp"
           #- "Symphony"
           - "MibS"
     steps:
