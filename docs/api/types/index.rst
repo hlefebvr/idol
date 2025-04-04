@@ -10,7 +10,6 @@ Mixed-Integer Programming
     :maxdepth: 2
     :glob:
 
-    common/index
     universal-callbacks/index
 
 

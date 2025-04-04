@@ -9,7 +9,7 @@ They simulate real user interactions and verify that the application behaves as 
 This is also a good way to make sure that the feature you want to use is properly tested and stable.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :glob:
 
    mixed-integer-optimization

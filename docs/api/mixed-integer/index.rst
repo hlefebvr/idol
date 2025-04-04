@@ -1,4 +1,4 @@
-.. _classes:
+.. _classes_mip:
 
 Mixed-integer Optimization
 ==========================

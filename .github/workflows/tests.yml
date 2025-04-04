@@ -219,7 +219,7 @@ jobs:
 
       - name: Move all xml inside _static
         run: |
-          FILES=$(find . -type f -name "*.xml")
+          FILES=$(find . -type d -name "docs" -prune -o -type f -name "*.xml" -print)
           mv -n $FILES docs/_static/reports/
 
       - name: Install dependencies

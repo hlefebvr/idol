@@ -24,7 +24,7 @@ Global Installation
 
    local_installation
    global-installation/index
-   cmake_options
+   options
 
 Options (External Solvers, etc.)
 --------------------------------

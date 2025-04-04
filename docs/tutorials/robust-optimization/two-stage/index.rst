@@ -1,4 +1,4 @@
-.. _robust_single:
+.. _robust_two_stage:
 
 Two-stage Robust Optimization (Adjustable)
 ==========================================

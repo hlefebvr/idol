@@ -24,6 +24,7 @@ The two-stage robust facility location problem can be formulated as
     \begin{align}
         \min_{ x\in \{0,1\}^{|V_1|} } \quad & \left\{ \sum_{i\in V_1} f_i x_i + \max_{\xi\in \Xi} \min_{y\in Y(x,\xi)} \quad \sum_{i\in V_1} \sum_{j\in V_2} t_{ij} y_{ij} \right\},
     \end{align}
+
 in which :math:`\Xi := \left\{ \xi\in\{0,1\}^{|V_1|} : e^\top\xi \le \Gamma \right\}` and :math:`Y(x,\xi)` is the feasible set of the second-stage problem defined as
 
 .. math::

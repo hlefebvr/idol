@@ -1,4 +1,4 @@
-.. _api_TempCtr:
+.. _api_TempQCtr:
 
 TempQCtr
 ========
