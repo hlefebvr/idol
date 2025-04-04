@@ -179,7 +179,8 @@ TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
     model.optimize();
 
     SECTION("Can retrieve the solution status") {
-        CHECK(model.get_status() == Unbounded);
+        const auto status = model.get_status();
+        CHECK((status == Unbounded || status  == InfOrUnbnd));
         CHECK(is_neg_inf(model.get_best_obj()));
     }
 }

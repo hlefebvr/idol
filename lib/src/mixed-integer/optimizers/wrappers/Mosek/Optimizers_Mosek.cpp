@@ -139,6 +139,9 @@ idol::MosekVar idol::Optimizers::Mosek::hook_add(const Var &t_var, bool t_add_co
     if (t_add_column) {
 
         for (const auto& [ctr, constant] : column) {
+            if (!has_lazy(ctr)) { // if the constraint has no lazy, it will be created right after
+                continue;
+            }
             lazy(ctr).impl().constraint->index(0)->update(
                     mosek::fusion::Expr::mul(constant, result.variable->index(0)),
                     result.variable->index(0)
