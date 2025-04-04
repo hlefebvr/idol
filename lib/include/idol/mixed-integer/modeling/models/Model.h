@@ -422,6 +422,35 @@ namespace idol {
         return save_farkas(t_original_model, t_original_model);
     }
 
+    static auto save_reduced_cost(const Model &t_original_model, const Model &t_model) {
+
+        PrimalPoint result;
+
+        const auto status = t_model.get_status();
+        const auto reason = t_model.get_reason();
+
+        if (status != Optimal && status != Feasible && status != SubOptimal) {
+            throw Exception("Reduced costs not available.");
+        }
+
+        result.set_status(status);
+        result.set_reason(reason);
+
+        result.set_objective_value(t_model.get_best_obj());
+
+        for (const auto &var: t_original_model.vars()) {
+            const double value = t_model.get_var_reduced_cost(var);
+            result.set(var, value);
+        }
+
+        return result;
+
+    }
+
+    static auto save_reduced_cost(const Model &t_original_model) {
+        return save_reduced_cost(t_original_model, t_original_model);
+    }
+
 }
 
 namespace idol {

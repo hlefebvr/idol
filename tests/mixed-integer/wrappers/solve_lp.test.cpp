@@ -49,28 +49,34 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
         CHECK(primal_solution.get(x) == 21.875_a);
         CHECK(primal_solution.get(y) == 53.125_a);
 
-
     }
 
     SECTION("Can retrieve dual solution") {
 
         CHECK(model.get_status() == Optimal);
-        CHECK(model.get_best_obj() == -6315.625_a);
+        CHECK(model.get_best_bound() == -6315.625_a);
         CHECK(model.get_ctr_dual(c1) == 0_a);
-        CHECK(model.get_ctr_dual(c2) == Catch::Approx(-0.5));
-        CHECK(model.get_ctr_dual(c3) == Catch::Approx(-1.875_a));
+        CHECK(model.get_ctr_dual(c2) == -1.0375_a);
+        CHECK(model.get_ctr_dual(c3) == -28.875_a);
 
         const auto dual_solution = save_dual(model);
 
         CHECK(dual_solution.status() == Optimal);
         CHECK(dual_solution.get(c1) == 0._a);
-        CHECK(dual_solution.get(c2) == Catch::Approx(-0.5));
-        CHECK(dual_solution.get(c3) == Catch::Approx(-1.875));
+        CHECK(dual_solution.get(c2) == -1.0375_a);
+        CHECK(dual_solution.get(c3) == -28.875_a);
 
     }
 
     SECTION("Can retrieve reduced costs") {
-        CHECK(false);
+
+        CHECK(model.get_var_reduced_cost(x) == 0._a);
+        CHECK(model.get_var_reduced_cost(y) == 0._a);
+
+        const auto reduced_costs = save_reduced_cost(model);
+        CHECK(reduced_costs.get(x) == 0._a);
+        CHECK(reduced_costs.get(y) == 0._a);
+
     }
 
     SECTION("Can retrieve basis") {
@@ -78,11 +84,13 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
     }
 
     SECTION("Throws an exception if primal ray is asked") {
-        CHECK(false);
+        CHECK_THROWS(model.get_var_ray(x));
+        CHECK_THROWS(save_ray(model));
     }
 
     SECTION("Throws an exception if farkas certificate is asked") {
-        CHECK(false);
+        CHECK_THROWS(model.get_ctr_farkas(c1));
+        CHECK_THROWS(save_farkas(model));
     }
 
 }
@@ -190,14 +198,10 @@ TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
 
     model.optimize();
 
-    SECTION("Throws an exception if primal values are asked") {
-        CHECK(false);
-    }
-
     SECTION("Can retrieve a Farkas certificate") {
+
         CHECK(model.get_status() == Infeasible);
         CHECK(model.get_best_obj() == Inf);
-
 
         const auto farkas = save_farkas(model);
         CHECK(farkas.status() == Infeasible);
@@ -207,6 +211,26 @@ TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
         CHECK(-2. * c1_val + 1. * c2_val <= 0. );
         CHECK(-1. * c1_val + -1. * c2_val <= 0. );
 
+    }
+
+    SECTION("Throws an exception if primal values are asked") {
+        CHECK_THROWS(model.get_var_primal(u));
+        CHECK_THROWS(save_primal(model));
+    }
+
+    SECTION("Throws an exception if dual values are asked") {
+        CHECK_THROWS(model.get_ctr_dual(c1));
+        CHECK_THROWS(save_dual(model));
+    }
+
+    SECTION("Throws an exception if (primal) ray is asked") {
+        CHECK_THROWS(model.get_var_ray(u));
+        CHECK_THROWS(save_ray(model));
+    }
+
+    SECTION("Throws an exception if reduced costs are asked") {
+        CHECK_THROWS(model.get_var_reduced_cost(u));
+        CHECK_THROWS(save_reduced_cost(model));
     }
 
 }
@@ -234,11 +258,8 @@ TEST_CASE("Can solve an unbounded LP", "[solving-lp]") {
 
     model.optimize();
 
-    SECTION("Throws an exception if primal values are asked") {
-        CHECK(false);
-    }
-
     SECTION("Can retrieve a dual ray") {
+
         CHECK(model.get_status() == Unbounded);
         CHECK(model.get_best_obj() == -Inf);
 
@@ -251,6 +272,27 @@ TEST_CASE("Can solve an unbounded LP", "[solving-lp]") {
         CHECK(-3. * x_val - 2. * y_val <= 0._a);
         CHECK(-2. * x_val + y_val <= 0. + 1e-5);
         CHECK(x_val + y_val >= 0_a);
+
+    }
+
+    SECTION("Throws an exception if primal values are asked") {
+        CHECK_THROWS(model.get_var_primal(x));
+        CHECK_THROWS(save_primal(model));
+    }
+
+    SECTION("Throws an exception if dual values are asked") {
+        CHECK_THROWS(model.get_ctr_dual(c1));
+        CHECK_THROWS(save_dual(model));
+    }
+
+    SECTION("Throws an exception if farkas certificate is asked") {
+        CHECK_THROWS(model.get_ctr_farkas(c1));
+        CHECK_THROWS(save_farkas(model));
+    }
+
+    SECTION("Throws an exception if reduced costs are asked") {
+        CHECK_THROWS(model.get_var_reduced_cost(x));
+        CHECK_THROWS(save_reduced_cost(model));
     }
 
 }

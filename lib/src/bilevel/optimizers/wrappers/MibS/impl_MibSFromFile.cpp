@@ -4,10 +4,8 @@
 
 #ifdef IDOL_USE_MIBS
 
-#include <OsiSymSolverInterface.hpp>
 #include <AlpsKnowledgeBrokerSerial.h>
 #include <MibSSolution.hpp>
-#include <OsiCpxSolverInterface.hpp>
 #include <fcntl.h>
 #include <filesystem>
 #include "idol/bilevel/optimizers/wrappers/MibS/impl_MibSFromFile.h"
