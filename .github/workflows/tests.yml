@@ -13,6 +13,7 @@ jobs:
   Modeling:
     name: "Modeling"
     runs-on: ubuntu-latest
+    shell: /usr/bin/bash
     steps:
       - uses: actions/checkout@v4
 
@@ -27,7 +28,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build/tests/mixed-integer/modeling
-        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml || [ $? -eq 1 ]
+        run: ./test_modeling_interface --reporter xml -o test_modeling_interface.xml || ( [ $? -eq 1 ] && exit 0 )
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
@@ -71,6 +72,7 @@ jobs:
         run: sudo apt-get install lcov
 
       - name: "Build idol with ${{ matrix.test }}"
+        shell: /usr/bin/bash
         env:
           MOSEK_LICENSE: ${{secrets.MOSEK_LICENSE}}
         run: |
@@ -153,7 +155,7 @@ jobs:
             WORKSPACE=${{github.workspace}}/build/tests/mixed-integer/wrappers
           fi
           
-          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml || [ $? -eq 1 ]))
+          (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml || ( [ $? -eq 1 ] && exit 0 ) ) )
 
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
