@@ -370,20 +370,6 @@ if (${USE_CBC})
 
 endif()
 
-if (${USE_CLP})
-
-    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
-        message(WARNING "Clp can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
-        set(USE_OSI YES)
-    endif()
-
-    find_package(CLP REQUIRED)
-    target_link_libraries(idol PUBLIC clp)
-    target_compile_definitions(idol PUBLIC IDOL_USE_CLP)
-    list(APPEND AVAILABLE_MILP_SOLVERS "OsiClp")
-
-endif()
-
 if (${USE_MIBS})
 
     set(USE_OSI YES)
@@ -391,7 +377,7 @@ if (${USE_MIBS})
     find_package(ALPS REQUIRED)
     find_package(BCPS REQUIRED)
     find_package(BLIS REQUIRED)
-    find_package(CGL REQUIRED)
+    #find_package(CGL REQUIRED)
 
     find_package(MIBS REQUIRED)
     target_link_libraries(idol PUBLIC alps)
@@ -403,6 +389,22 @@ if (${USE_MIBS})
     target_compile_definitions(idol PUBLIC IDOL_USE_MIBS)
 
     list(APPEND AVAILABLE_BILEVEL_SOLVERS "MibS")
+
+    set(USE_CLP YES)
+
+endif()
+
+if (${USE_CLP})
+
+    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
+        message(WARNING "Clp can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
+        set(USE_OSI YES)
+    endif()
+
+    find_package(CLP REQUIRED)
+    target_link_libraries(idol PUBLIC clp)
+    target_compile_definitions(idol PUBLIC IDOL_USE_CLP)
+    list(APPEND AVAILABLE_MILP_SOLVERS "OsiClp")
 
 endif()
 

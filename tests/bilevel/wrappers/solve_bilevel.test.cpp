@@ -11,7 +11,11 @@ using namespace idol;
 
 TEST_CASE("Can solve a feasible bilevel problem", "[solving-bilevel]") {
 
-    SECTION("Throws an exception if some linking variables are continuous") {
+    SECTION("Can solve a bilevel problem with continuous lower level") {
+        CHECK(false);
+    }
+
+    SECTION("Can solve a bilevel problem with mixed-integer lower level") {
         CHECK(false);
     }
 
@@ -19,11 +23,15 @@ TEST_CASE("Can solve a feasible bilevel problem", "[solving-bilevel]") {
         CHECK(false);
     }
 
-    SECTION("Can solve a bilevel problem with continuous lower level") {
+    SECTION("Throws an exception if some linking variables are continuous") {
         CHECK(false);
     }
 
-    SECTION("Can solve a bilevel problem with mixed-integer lower level") {
+}
+
+TEST_CASE("Can update a problem and re-optimize") {
+
+    SECTION("") {
         CHECK(false);
     }
 
