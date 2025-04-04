@@ -289,7 +289,6 @@ h1, h2, h3, h4, h5, h6 {
 
     /* Define background colors for each progress range */
     .progress-NA {
-        background-color: #efefef;  /* Grey */
         text-align: center;
         width: 40px;
     }
