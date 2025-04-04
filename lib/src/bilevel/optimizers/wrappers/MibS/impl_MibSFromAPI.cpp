@@ -11,20 +11,17 @@
 #include "idol/bilevel/optimizers/wrappers/MibS/MibSCallbackI.h"
 
 #include <utility>
-#include <OsiSymSolverInterface.hpp>
-#include <AlpsKnowledgeBrokerSerial.h>
-#include <OsiCpxSolverInterface.hpp>
-#include <MibSSolution.hpp>
 
-namespace idol {
-    template<class T>
-    std::ostream &operator<<(std::ostream &t_os, const std::vector<T> &t_vec) {
-        for (const auto &x: t_vec) {
-            t_os << x << ", ";
-        }
-        return t_os;
-    }
-}
+#ifdef IDOL_USE_CPLEX
+#include <OsiCpxSolverInterface.hpp>
+#endif
+
+#ifdef IDOL_USE_SYMPHONY
+#include <OsiSymSolverInterface.hpp>
+#endif
+
+#include <AlpsKnowledgeBrokerSerial.h>
+#include <MibSSolution.hpp>
 
 idol::impl::MibSFromAPI::MibSFromAPI(const idol::Model &t_model,
                                      const idol::Bilevel::Description &t_description,
