@@ -54,11 +54,13 @@ TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solvin
     }
 
     SECTION("Can retrieve the number of solutions") {
-        CHECK(false);
+        CHECK(model.get_n_solutions() >= 1);
     }
 
     SECTION("Can iterate over solutions") {
-        CHECK(false);
+        for (unsigned int k = 0, n = model.get_n_solutions() ; k < n ; ++k) {
+            CHECK_NOTHROW(model.set_solution_index(k));
+        }
     }
 
 }
@@ -100,11 +102,13 @@ TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[so
     }
 
     SECTION("Can retrieve the number of solutions") {
-        CHECK(false);
+        CHECK(model.get_n_solutions() >= 1);
     }
 
     SECTION("Can iterate over solutions") {
-        CHECK(false);
+        for (unsigned int k = 0, n = model.get_n_solutions() ; k < n ; ++k) {
+            CHECK_NOTHROW(model.set_solution_index(k));
+        }
     }
 
 }
@@ -131,8 +135,16 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solv
         CHECK(is_pos_inf(model.get_best_obj()));
     }
 
+    SECTION("Can retrieve the number of solutions") {
+        CHECK(model.get_n_solutions() == 0);
+    }
+
     SECTION("Can compute an irreducible infeasible sub-system") {
-        CHECK(false);
+        if (std::is_same_v<OPTIMIZER, Gurobi>) {
+            CHECK(false);
+        } else {
+            SKIP("The solver does not implement IIS computation.");
+        }
     }
 
 }
@@ -160,8 +172,16 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[so
         CHECK(is_pos_inf(model.get_best_obj()));
     }
 
+    SECTION("Can retrieve the number of solutions") {
+        CHECK(model.get_n_solutions() == 0);
+    }
+
     SECTION("Can compute an irreducible infeasible sub-system") {
-        CHECK(false);
+        if (std::is_same_v<OPTIMIZER, Gurobi>) {
+            CHECK(false);
+        } else {
+            SKIP("The solver does not implement IIS computation.");
+        }
     }
 
 }
@@ -183,6 +203,11 @@ TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
         CHECK((status == Unbounded || status  == InfOrUnbnd));
         CHECK(is_neg_inf(model.get_best_obj()));
     }
+
+    SECTION("Can retrieve the number of solutions") {
+        CHECK(model.get_n_solutions() == 0);
+    }
+
 }
 
 TEST_CASE("Can set parameters of the underlying solver", "[solving-milp]") {
