@@ -96,12 +96,16 @@ int idol::Optimizers::GLPK::hook_add(const Var &t_var, bool t_add_column) {
 
     if (t_add_column) {
 
-        const auto n = (int) column.size();
+        auto n = (int) column.size();
         auto* coefficients = new double[n+1];
         auto* indices = new int[n+1];
 
         int i = 1;
         for (const auto& [ctr, constant] : column) {
+            if (!has_lazy(ctr)) { // if the constraint has no lazy, it will be created right after
+                --n;
+                continue;
+            }
             indices[i] = lazy(ctr).impl();
             coefficients[i] = constant;
             ++i;
@@ -130,6 +134,8 @@ void idol::Optimizers::GLPK::set_ctr_attr(int t_index, int t_type, double t_rhs)
 
 int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 
+    const auto& model = parent();
+
     int index;
     if (m_deleted_constraints.empty()) {
         index = (int) glp_get_num_rows(m_model) + 1;
@@ -147,12 +153,16 @@ int idol::Optimizers::GLPK::hook_add(const Ctr &t_ctr) {
 
     glp_set_row_name(m_model, index, t_ctr.name().c_str());
 
-    const auto n = (int) row.size();
+    auto n = (int) row.size();
     auto* coefficients = new double[n+1];
     auto* indices = new int[n+1];
 
     int i = 1;
     for (const auto& [var, constant] : row) {
+        if (!model.has(var)) {
+            --n;
+            continue;
+        }
         indices[i] = lazy(var).impl();
         coefficients[i] = constant;
         ++i;
@@ -242,7 +252,7 @@ void idol::Optimizers::GLPK::hook_remove(const Ctr &t_ctr) {
 
     glp_set_row_bnds(m_model, index, GLP_FX, 0., 0.);
     glp_set_mat_row(m_model, index, 0, NULL, NULL);
-    glp_set_col_name(m_model, index, ("_removed_" + t_ctr.name()).c_str());
+    glp_set_row_name(m_model, index, ("_removed_" + t_ctr.name()).c_str());
     m_deleted_constraints.push(index);
 
 }

@@ -109,11 +109,11 @@ TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
     CHECK(model.get_best_obj() == 0._a);
 
     SECTION("Can add cut and re-optimize") {
-        model.add_ctr(x >= 1);
-        model.optimize();
-        CHECK(model.get_status() == Optimal);
-        CHECK(model.get_best_obj() == 1._a);
-        CHECK(model.get_var_primal(x) == 1._a);
+         model.add_ctr(x >= 1);
+         model.optimize();
+         CHECK(model.get_status() == Optimal);
+         CHECK(model.get_best_obj() == 1._a);
+         CHECK(model.get_var_primal(x) == 1._a);
     }
 
     SECTION("Can add column and re-optimize") {

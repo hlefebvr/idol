@@ -35,28 +35,17 @@ using namespace idol;
 int main(int t_argc, const char** t_argv) {
 
     Env env;
-
     Model model(env);
-    const auto dummy = model.add_var(0,0,Integer,0,"dummy");
-    const auto pi = model.add_var(-1e3, 1e3, Continuous, 1, "pi");
-
-    Model Z(env);
-    const auto x = Z.add_vars(Dim<1>(10), 0, 1, Binary, 0, "x");
-    Z.add_ctr(idol_Sum(i, Range(10), x[i]) <= 1);
-
-    auto gurobi = Gurobi();
-    gurobi.with_logs(true);
-    gurobi.add_callback(
-            LazyCutCallback(Z, -1. * pi + idol_Sum(i, Range(10), !x[i]) )
-                    .with_separation_optimizer(Gurobi())
-    );
-    gurobi.with_lazy_cut(true);
-
-    model.use(gurobi);
-
+    const auto x = model.add_var( -1, Inf, Continuous, 0., "x");
+    const auto c = model.add_ctr(x >= 0);
+    model.set_obj_expr(x);
+    model.use(GLPK());
     model.optimize();
 
-    std::cout << save_primal(model) << std::endl;
+    const auto c2 = model.add_ctr(x >= 1);
+    model.remove(c2);
+
+    model.optimize();
 
     return 0;
 }

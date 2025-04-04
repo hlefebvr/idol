@@ -113,6 +113,21 @@ protected:
     void remove(const QCtr& t_ctr) final;
     virtual void hook_remove(const QCtr& t_ctr) = 0;
 
+    [[nodiscard]] bool has_lazy(const Var& t_var) const {
+        const unsigned int index = parent().get_var_index(t_var);
+        return index < m_variables.size() && m_variables[index].object().id() == t_var.id();
+    }
+
+    [[nodiscard]] bool has_lazy(const Ctr& t_ctr) const {
+        const unsigned int index = parent().get_ctr_index(t_ctr);
+        return index < m_constraints.size() && m_constraints[index].object().id() == t_ctr.id();
+    }
+
+    [[nodiscard]] bool has_lazy(const QCtr& t_qctr) const {
+        const unsigned int index = parent().get_qctr_index(t_qctr);
+        return index < m_qconstraints.size() && m_qconstraints[index].object().id() == t_qctr.id();
+    }
+
     auto& lazy(const Var& t_var) { return m_variables[parent().get_var_index(t_var)]; }
     const auto& lazy(const Var& t_var) const { return m_variables[parent().get_var_index(t_var)]; }
 
