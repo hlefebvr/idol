@@ -3,7 +3,7 @@ foreach (OPTIMIZER ${AVAILABLE_BILEVEL_SOLVERS})
     set(target_name "test_wrapper_${OPTIMIZER}")
 
     add_executable(${target_name}
-            solver_bilevel.test.cpp
+            solve_bilevel.test.cpp
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})

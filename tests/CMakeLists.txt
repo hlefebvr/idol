@@ -33,3 +33,4 @@ file(COPY ${CMAKE_SOURCE_DIR}/tests/data DESTINATION ${CMAKE_BINARY_DIR}/) # Nec
 
 # Define tests
 add_subdirectory(mixed-integer)
+add_subdirectory(bilevel)
