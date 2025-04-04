@@ -1,7 +1,7 @@
 .. _faq_stable:
 
-What features are stable?
-=========================
+What are the Stable Features of idol?
+=====================================
 
 We consider that a feature is stable when it has been tested and is working as expected.
 This means that the feature has been tested in a variety of scenarios and has been found to work correctly.

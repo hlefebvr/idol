@@ -1,5 +1,5 @@
-Bilevel Optimization
-====================
+Stable Features in Bilevel Optimization
+=======================================
 
 Here is the list of implemented features regarding bilevel optimization with their corresponding test reports.
 

@@ -1,5 +1,5 @@
-Mixed-integer Optimization
-==========================
+Stable Features in Mixed-integer Optimization
+=============================================
 
 Here is the list of implemented features regarding mixed-integer optimization with their corresponding test reports.
 

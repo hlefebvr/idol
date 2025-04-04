@@ -90,13 +90,26 @@ TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[so
     model.optimize();
 
     SECTION("Can retrieve the primal solution") {
+
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == -3_a);
 
-        const auto primal_solution = save_primal(model);
+        auto primal_solution = save_primal(model);
 
         CHECK(primal_solution.get(x) == 1._a);
         CHECK(primal_solution.get(y) == 0._a);
+        CHECK(primal_solution.get(z) == 1._a);
+
+        model.use(OPTIMIZER::ContinuousRelaxation());
+        model.optimize();
+
+        CHECK(model.get_status() == Optimal);
+        CHECK(model.get_best_obj() == -3.25_a);
+
+        primal_solution = save_primal(model);
+
+        CHECK(primal_solution.get(x) == 1._a);
+        CHECK(primal_solution.get(y) == 0.25_a);
         CHECK(primal_solution.get(z) == 1._a);
 
     }

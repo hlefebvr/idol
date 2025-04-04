@@ -419,6 +419,10 @@ double idol::Optimizers::Gurobi::get_best_bound() const {
 
 double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
 
+    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Primal solution not available.");
+    }
+
     if (m_model.get(GRB_IntParam_SolutionNumber) == 0) {
         GUROBI_CATCH(
             return lazy(t_var).impl().get(GRB_DoubleAttr_X);
@@ -431,18 +435,33 @@ double idol::Optimizers::Gurobi::get_var_primal(const Var &t_var) const {
 }
 
 double idol::Optimizers::Gurobi::get_var_ray(const Var &t_var) const {
+
+    if (const auto status = get_status() ; status != Unbounded) {
+        throw Exception("Ray not available.");
+    }
+
     GUROBI_CATCH(
         return lazy(t_var).impl().get(GRB_DoubleAttr_UnbdRay);
     )
 }
 
 double idol::Optimizers::Gurobi::get_ctr_dual(const Ctr &t_ctr) const {
+
+    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Dual solution not available.");
+    }
+
     GUROBI_CATCH(
         return lazy(t_ctr).impl().get(GRB_DoubleAttr_Pi);
     )
 }
 
 double idol::Optimizers::Gurobi::get_ctr_farkas(const Ctr &t_ctr) const {
+
+    if (const auto status = get_status() ; status != Infeasible) {
+        throw Exception("Farkas solution not available.");
+    }
+
     GUROBI_CATCH(
         return -lazy(t_ctr).impl().get(GRB_DoubleAttr_FarkasDual);
     )
@@ -457,6 +476,11 @@ double idol::Optimizers::Gurobi::get_absolute_gap() const {
 }
 
 unsigned int idol::Optimizers::Gurobi::get_n_solutions() const {
+
+    if (const auto status = get_status() ; status == Unbounded || status == Infeasible || status == InfOrUnbnd) {
+        return 0;
+    }
+
     return m_model.get(GRB_IntAttr_SolCount);
 }
 
@@ -656,6 +680,11 @@ void idol::Optimizers::Gurobi::update_objective_constant() {
 }
 
 double idol::Optimizers::Gurobi::get_var_reduced_cost(const idol::Var &t_var) const {
+
+    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Reduced cost not available.");
+    }
+
     GUROBI_CATCH(
         return lazy(t_var).impl().get(GRB_DoubleAttr_RC);
     )

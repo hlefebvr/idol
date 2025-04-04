@@ -35,15 +35,34 @@ TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm
 TEST_CASE("Can add universal callbacks to influence the execution of the algorithm", "[callbacks]") {
 
     SECTION("Can add user cut") {
-        CHECK(false);
+
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+            CHECK(false);
+        } else {
+           SKIP("The solver does not implement user cut.");
+        }
+
     }
 
     SECTION("Can add lazy constraint") {
-        CHECK(false);
+
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+            CHECK(false);
+        } else {
+            SKIP("The solver does not implement lazy cut.");
+        }
+
     }
 
     SECTION("Can terminate the algorithm") {
-        CHECK(false);
+
+
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+            CHECK(false);
+        } else {
+            SKIP("The solver does not implement early termination by user.");
+        }
+
     }
 
 }

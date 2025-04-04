@@ -1,5 +1,5 @@
-Robust Optimization
-===================
+Stable Features in Robust Optimization
+======================================
 
 Here is the list of implemented features regarding robust optimization with their corresponding test reports.
 

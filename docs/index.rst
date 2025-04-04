@@ -127,15 +127,15 @@ Is this a MIP Solver?
 ---------------------
 
 idol is not a MIP solver in itself. In fact, it typically needs to call external
-solvers as a sub-routine of more complex algorithms such as Branch-and-Price.
+solvers as a sub-routine of more complex algorithms like, e.g., branch-and-cut-and-price.
 
 The idea is to work hand in hand with existing well-engineered optimization
-software to enhance their possibilities. By doing so, we aim at solving larger and more complex problems than what is currently possible.
+software to enhance their possibilities. Not to replace them!
 
-Still, idol can be used to solve your favourite MILP, MIQP, or MIQCQP through the
+Nevertheless, you can use idol to solve your favourite optimization problem (MILP, MIQP, or MIQCQP) through the
 many external solvers it interfaces with.
-A clear advantage of using idol to solve these problems is that it offers a unified and common interface to every solver.
-Thus, you can write your code once and test it with different solvers.
+That way, you only need to write your model once, and you can test it with different solvers.
+
 The following solvers are currently supported by idol:
 
 * `Gurobi <https://www.gurobi.com/>`_,
@@ -143,7 +143,7 @@ The following solvers are currently supported by idol:
 * `GLPK <https://www.gnu.org/software/glpk/>`_,
 * `HiGHS <https://highs.dev/>`_,
 * `coin-or/Osi <https://github.com/coin-or/Osi>`_ (which gives access to Cplex, Symphony, or any Osi compatible solver),
-* `coin-or/MibS <https://github.com/coin-or/MibS>`_.
+* `coin-or/MibS <https://github.com/coin-or/MibS>`_ (the mixed-integer bilevel solver).
 
 Table of Contents
 -----------------
@@ -154,9 +154,10 @@ Table of Contents
     installation/index
     tutorials/index
     examples/index
-    api/index
-    faq/index
     tests/index
     benchmark/index
+
+    api/index
+    faq/index
     developer_guide/index
     references
