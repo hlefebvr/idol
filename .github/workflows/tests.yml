@@ -105,8 +105,6 @@ jobs:
             # Install Mosek license
             echo "${MOSEK_LICENSE}" | base64 --decode > ${{github.workspace}}/mosek/mosek.lic
           
-            ls mosek
-          
             # Configure CMake
             cmake -B ${{github.workspace}}/build -DBUILD_TESTS=YES -DWITH_TEST_COVERAGE=YES -DUSE_EIGEN=YES -DEIGEN_DIR=${{github.workspace}}/Eigen -DUSE_MOSEK=YES -DUSE_EIGEN=YES -DMOSEK_DIR=${{github.workspace}}/mosek/10.0/tools/platform/linux64x86
           
@@ -141,6 +139,8 @@ jobs:
 
       - name: Run tests
         continue-on-error: true
+        env:
+          - MOSEKLM_LICENSE_FILE: ${{github.workspace}}/mosek/mosek.lic
         run: |
           
           OPTIMIZER=${{ matrix.test }}
