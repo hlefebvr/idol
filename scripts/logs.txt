@@ -1,0 +1,1343 @@
+ninja: no work to do.
+Running test_wrapper_HiGHS
+Running test_wrapper_OsiClp
+Running test_wrapper_GLPK
+Running test_wrapper_Mosek
+Running test_wrapper_OsiSymphony
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000022...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.001
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000011...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.002
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.002
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000012...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.001
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.001
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000012...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.001
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.001
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000012...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.001
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.001
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 3 constraints 
+	 2 variables 
+	 6 nonzero coefficients
+
+Total Presolve Time: 0.000012...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.001
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.001
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            -6315.625
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: -6315.6250000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 53.1250000000
+      1 21.8750000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 1 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000013...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            0.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 0.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+All columns are zero in the solution!
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 2 constraints 
+	 1 variables 
+	 2 nonzero coefficients
+
+Total Presolve Time: 0.000011...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            1.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 1.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 1.0000000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 1 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000010...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            0.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 0.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+All columns are zero in the solution!
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 2 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000009...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            1.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 1.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      1 1.0000000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 1 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000011...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            0.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 0.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+All columns are zero in the solution!
++++++++++++++++++++++++++++++++++++++++++++++++++++
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 1 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000009...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.000
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.000
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            1.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 1.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+User indices and values of nonzeros in the solution
++++++++++++++++++++++++++++++++++++++++++++++++++++
+      0 1.0000000000
+
+Starting Preprocessing...
+Preprocessing finished...
+ 	 with no modifications...
+Problem has 
+	 1 constraints 
+	 1 variables 
+	 1 nonzero coefficients
+
+Total Presolve Time: 0.000010...
+
+Solving...
+
+
+****************************************************
+* Optimal Solution Found                           *
+* Now displaying stats and best solution found...  *
+****************************************************
+
+======================= CP Timing ===========================
+  Cut Pool                  0.000
+====================== LP/CG Timing =========================
+  LP Solution Time          0.001
+  LP Setup Time             0.000
+  Variable Fixing           0.000
+  Pricing                   0.000
+  Strong Branching          0.000
+  Separation                0.000
+  Primal Heuristics         0.000
+  Communication             0.000
+=================== Parallel Overhead ======================
+  Communication         0.000
+  Ramp Up Time (TM)     0.000
+  Ramp Down Time        0.000
+  Total User Time              0.001
+  Total Wallclock Time         0.000
+
+====================== Statistics =========================
+Number of created nodes :       1
+Number of analyzed nodes:       1
+Depth of tree:                  0
+Size of the tree:               1
+Number of solutions found:      1
+Number of solutions in pool:    1
+Number of Chains:               1
+Number of Diving Halts:         0
+Number of cuts in cut pool:     0
+Lower Bound in Root:            0.000
+
+======================= LP Solver =========================
+Number of times LP solver called:                 1
+Number of calls from feasibility pump:            0
+Number of calls from strong branching:            0
+Number of solutions found by LP solve:            1
+Number of bounds changed by strong branching:     0
+Number of nodes pruned by strong branching:       0
+Number of bounds changed by branching presolver:  0
+Number of nodes pruned by branching presolver:    0
+
+==================== Primal Heuristics ====================
+                             Time      #Called   #Solutions
+Rounding I                   0.00                           
+Rounding II                  0.00                           
+Diving                       0.00 
+Feasibility Pump             0.00 
+Local Search                 0.00            1            0 
+Restricted Search            0.00 
+Rins Search                  0.00 
+Local Branching              0.00 
+
+=========================== Cuts ==========================
+Accepted:                         0
+Added to LPs:                     0
+Deleted from LPs:                 0
+Removed because of bad coeffs:    0
+Removed because of duplicacy:     0
+Insufficiently violated:          0
+In root:                          0
+
+Time in cut generation:              0.00
+Time in checking quality and adding: 0.00
+
+                   Time     #Called     In Root       Total
+Gomory             0.00 
+Knapsack           0.00 
+Clique             0.00 
+Probing            0.00 
+Flowcover          0.00 
+Twomir             0.00 
+Oddhole            0.00 
+Mir                0.00 
+Rounding           0.00 
+LandP-I            0.00 
+LandP-II           0.00 
+Redsplit           0.00 
+
+===========================================================
+Solution Found: Node 0, Level 0
+Solution Cost: 0.0000000000
++++++++++++++++++++++++++++++++++++++++++++++++++++
+All columns are zero in the solution!
++++++++++++++++++++++++++++++++++++++++++++++++++++

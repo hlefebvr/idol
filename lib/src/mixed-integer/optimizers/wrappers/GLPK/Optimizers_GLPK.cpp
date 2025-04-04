@@ -634,6 +634,9 @@ double idol::Optimizers::GLPK::get_best_bound() const {
 }
 
 double idol::Optimizers::GLPK::get_var_primal(const Var &t_var) const {
+    if (m_solution_status != Feasible && m_solution_status != Optimal) {
+        throw Exception("Primal solution not available.");
+    }
     const int impl = lazy(t_var).impl();
     return m_solved_as_mip ? glp_mip_col_val(m_model, impl) : glp_get_col_prim(m_model, impl);
 }
@@ -648,6 +651,9 @@ double idol::Optimizers::GLPK::get_var_ray(const Var &t_var) const {
 }
 
 double idol::Optimizers::GLPK::get_ctr_dual(const Ctr &t_ctr) const {
+    if (m_solution_status != Feasible && m_solution_status != Optimal) {
+        throw Exception("Primal solution not available.");
+    }
     const auto &impl = lazy(t_ctr).impl();
     return glp_get_row_dual(m_model, impl);
 }
@@ -795,6 +801,9 @@ idol::Model idol::Optimizers::GLPK::read_from_mps_file(idol::Env &t_env, const s
 }
 
 double idol::Optimizers::GLPK::get_var_reduced_cost(const idol::Var &t_var) const {
+    if (m_solution_status != Feasible && m_solution_status != Optimal) {
+        throw Exception("Primal solution not available.");
+    }
     return glp_get_col_dual(m_model, lazy(t_var).impl());
 }
 

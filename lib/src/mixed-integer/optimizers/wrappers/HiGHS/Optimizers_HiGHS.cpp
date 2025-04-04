@@ -442,11 +442,9 @@ double idol::Optimizers::HiGHS::get_best_bound() const {
 }
 
 double idol::Optimizers::HiGHS::get_var_primal(const Var &t_var) const {
-    /*
     if (!m_model.getSolution().value_valid) {
-        throw Exception("Cannot access primal values");
+        throw Exception("Primal solution not available.");
     }
-     */
     return m_model.getSolution().col_value[lazy(t_var).impl()];
 }
 
@@ -460,6 +458,9 @@ double idol::Optimizers::HiGHS::get_var_ray(const Var &t_var) const {
 }
 
 double idol::Optimizers::HiGHS::get_ctr_dual(const Ctr &t_ctr) const {
+    if (!m_model.getSolution().dual_valid) {
+        throw Exception("Primal solution not available.");
+    }
     return m_model.getSolution().row_dual[lazy(t_ctr).impl()];
 }
 
@@ -511,6 +512,9 @@ void idol::Optimizers::HiGHS::update_objective_constant() {
 }
 
 double idol::Optimizers::HiGHS::get_var_reduced_cost(const idol::Var &t_var) const {
+    if (m_model.getSolution().dual_valid) {
+        throw Exception("Dual solution not available.");
+    }
     return m_model.getSolution().col_dual[lazy(t_var).impl()];
 }
 

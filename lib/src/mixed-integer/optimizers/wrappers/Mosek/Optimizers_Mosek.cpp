@@ -477,24 +477,40 @@ double idol::Optimizers::Mosek::get_best_bound() const {
 }
 
 double idol::Optimizers::Mosek::get_var_primal(const Var &t_var) const {
+    if (has_lazy(t_var) && lazy(t_var).impl().variable->level()->size() > 0) {
+        throw Exception("Primal solution not available.");
+    }
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
 double idol::Optimizers::Mosek::get_var_ray(const Var &t_var) const {
+    if (has_lazy(t_var) && lazy(t_var).impl().variable->level()->size() > 0) {
+        throw Exception("Ray not available.");
+    }
+    /*
     if (m_model->getPrimalSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
         throw Exception("Ray not available.");
     }
+     */
     return lazy(t_var).impl().variable->level()->operator[](0);
 }
 
 double idol::Optimizers::Mosek::get_ctr_dual(const Ctr &t_ctr) const {
+    if (has_lazy(t_ctr) && lazy(t_ctr).impl().constraint->dual()->size() > 0) {
+        throw Exception("Dual solution not available.");
+    }
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
 
 double idol::Optimizers::Mosek::get_ctr_farkas(const Ctr &t_ctr) const {
+    if (has_lazy(t_ctr) && lazy(t_ctr).impl().constraint->dual()->size() > 0) {
+        throw Exception("Primal solution not available.");
+    }
+    /*
     if (m_model->getDualSolutionStatus() != mosek::fusion::SolutionStatus::Certificate) {
         throw Exception("Farkas certificate not available.");
     }
+    */
     return lazy(t_ctr).impl().constraint->dual()->operator[](0);
 }
 
@@ -547,6 +563,9 @@ void idol::Optimizers::Mosek::set_param_logs(bool t_value) {
 }
 
 double idol::Optimizers::Mosek::get_var_reduced_cost(const idol::Var &t_var) const {
+    if (has_lazy(t_var) && lazy(t_var).impl().variable->dual()->size() > 0) {
+        throw Exception("Primal solution not available.");
+    }
     return lazy(t_var).impl().variable->dual()->operator[](0);
 }
 
