@@ -136,6 +136,10 @@ GRBVar idol::Optimizers::Gurobi::hook_add(const Var& t_var, bool t_add_column) {
 
         for (const auto& [ctr, constant] : column) {
 
+            if (!has_lazy(ctr)) { // if the constraint has no lazy, it will be created right after
+                continue;
+            }
+
             auto& impl = lazy(ctr).impl();
 
             col.addTerm( constant, impl);

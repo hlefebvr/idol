@@ -40,7 +40,7 @@ int main(int t_argc, const char** t_argv) {
     const auto x = model.add_var( -1, Inf, Continuous, 0., "x");
     const auto c = model.add_ctr(x >= 0);
     model.set_obj_expr(x);
-    model.use(Mosek());
+    model.use(Gurobi());
     model.optimize();
 
     const auto y = model.add_var(1, 1, Continuous, 1., "y");
