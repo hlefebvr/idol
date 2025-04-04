@@ -30,6 +30,7 @@
 #include "idol/bilevel/optimizers/KKT/KKT.h"
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
 #include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
+#include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
 
 using namespace idol;
 
@@ -40,8 +41,10 @@ int main(int t_argc, const char** t_argv) {
     const auto x = model.add_var( -1, Inf, Continuous, 0., "x");
     const auto c = model.add_ctr(x >= 0);
     model.set_obj_expr(x);
-    model.use(Gurobi());
+    model.use(OsiClp());
     model.optimize();
+
+    save_ray(model);
 
     const auto y = model.add_var(1, 1, Continuous, 1., "y");
     model.add_ctr(x + y >= 2);

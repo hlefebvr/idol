@@ -97,18 +97,30 @@ double idol::Optimizers::Osi::get_best_bound() const {
 }
 
 double idol::Optimizers::Osi::get_var_primal(const idol::Var &t_var) const {
+    if (m_solver_interface->getColSolution() == nullptr) {
+        throw Exception("Primal not available.");
+    }
     return m_solver_interface->getColSolution()[lazy(t_var).impl()];
 }
 
 double idol::Optimizers::Osi::get_var_ray(const idol::Var &t_var) const {
+    if (m_solver_interface->getPrimalRays(1).front() == nullptr) {
+        throw Exception("Ray not available.");
+    }
     return m_solver_interface->getPrimalRays(1).front()[lazy(t_var).impl()];
 }
 
 double idol::Optimizers::Osi::get_ctr_dual(const idol::Ctr &t_ctr) const {
+    if (m_solver_interface->getRowPrice() == nullptr) {
+        throw Exception("Dual not available.");
+    }
     return m_solver_interface->getRowPrice()[lazy(t_ctr).impl()];
 }
 
 double idol::Optimizers::Osi::get_ctr_farkas(const idol::Ctr &t_ctr) const {
+    if (m_solver_interface->getDualRays(1).front() == nullptr) {
+        throw Exception("Farkas certificate not available.");
+    }
     return -m_solver_interface->getDualRays(1).front()[lazy(t_ctr).impl()];
 }
 
