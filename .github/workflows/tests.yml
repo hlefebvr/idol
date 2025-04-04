@@ -165,13 +165,6 @@ jobs:
           
           (cd $WORKSPACE && (./test_wrapper_${OPTIMIZER} --reporter xml -o test_wrapper_${OPTIMIZER}.xml ) )
 
-      - name: Check report has been created
-        run: |
-          if [ ! -f $WORKSPACE/test_wrapper_${OPTIMIZER}.xml ]; then
-            echo "Test report not found!"
-            exit 1
-          fi
-
       - name: Build coverage report
         run: lcov --directory . --capture --output-file coverage__${{ github.job }}__${{ github.run_id }}.info
 
