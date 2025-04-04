@@ -36,7 +36,6 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-
     Env env;
 
     Var u(env, 0., Inf, Continuous, 0., "u");

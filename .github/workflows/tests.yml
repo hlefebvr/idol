@@ -220,7 +220,7 @@ jobs:
       - name: Move all xml inside _static
         run: |
           FILES=$(find . -type f -name "*.xml")
-          mv $FILES docs/_static/reports/
+          mv -n $FILES docs/_static/reports/
 
       - name: Install dependencies
         run: |

@@ -79,7 +79,7 @@ double idol::Optimizers::Osi::get_best_obj() const {
 
     const auto status = get_status();
 
-    if (status == Infeasible) {
+    if (status == Infeasible || status == InfOrUnbnd) {
         return Inf;
     }
 
@@ -230,6 +230,9 @@ int idol::Optimizers::Osi::hook_add(const idol::Var &t_var, bool t_add_column) {
     if (t_add_column) {
 
         for (const auto& [ctr, constant] : column) {
+            if (!has_lazy(ctr)) { // if the constraint has no lazy, it will be created right after
+                continue;
+            }
             const int ctr_index = lazy(ctr).impl();
             const double coefficient = constant;
             vector.insert(ctr_index, coefficient);

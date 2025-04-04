@@ -17,12 +17,12 @@ Mixed-integer Optimization
 
 .. testreport:: _static/reports/test_wrapper_Gurobi.xml
 
-.. warning::
+.. note::
     The test report for Gurobi was generated on a local machine and not on GitHub Actions.
     The reason is that the Gurobi license is not available on GitHub Actions.
 
 .. testreport:: _static/reports/test_wrapper_OsiCplex.xml
 
-.. warning::
+.. note::
     The test report for CPLEX was generated on a local machine and not on GitHub Actions.
     The reason is that the CPLEX license is not available on GitHub Actions.
