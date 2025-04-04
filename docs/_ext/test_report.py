@@ -20,9 +20,11 @@ def parse_test_case(test_case):
     result["sections"] = []
     for section in test_case.findall("Section"):
         result["sections"].append(parse_section(section))
-    n = len(result["sections"])
-    if n == 0: n = 1
-    result["progress"] = sum(section["progress"] or 0 for section in result["sections"]) / n
+    n = sum([not section["skipped"] for section in result["sections"]])
+    if n == 0:
+        result["progress"] = None
+    else:
+        result["progress"] = sum(section["progress"] or 0 for section in result["sections"]) / n
     return result
 
 def parse_report(xml_path):
@@ -77,6 +79,9 @@ def parse_report(xml_path):
     return result
 
 def get_progress_color(progress):
+
+    if progress is None: return "progress-NA"
+
     progress = max(0, min(100, progress))  # Ensure it's between 0 and 100
 
     if progress <= 25: return "progress-0"
@@ -143,7 +148,10 @@ class TestReportDirective(Directive):
                     test_case_name = test_case["name"]
                     test_case_progress = test_case["progress"]
                     test_case_progress_class = get_progress_color(test_case_progress)
-                    test_case_progress = f"{test_case_progress:.0f}%"
+                    if test_case_progress is None:
+                        test_case_progress = "-"
+                    else:
+                        test_case_progress = f"{test_case_progress:.0f}%"
                     sections = test_case["sections"]
 
                     # Number of rows to span for the test case and progress
@@ -179,10 +187,9 @@ class TestReportDirective(Directive):
                         entry4 = nodes.entry()
                         if section_progress is None:
                             entry4 += nodes.paragraph(text="-")
-                            entry4.attributes["classes"] += ["progress-NA"]
                         else:
                             entry4 += nodes.paragraph(text=f"{section_progress:.0f}%")
-                            entry4.attributes["classes"] += [get_progress_color(section_progress)]
+                        entry4.attributes["classes"] += [get_progress_color(section_progress)]
                         row += entry4
 
                         tbody += row
