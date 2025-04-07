@@ -254,6 +254,10 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/BilevelOptimizerInterface.h
         src/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.cpp
         include/idol/bilevel/optimizers/PessimisticAsOptimistic/Optimizers_PessimisticAsOptimistic.h
+        include/idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h
+        src/mixed-integer/optimizers/wrappers/Cplex/Cplex.cpp
+        include/idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h
+        src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp
 )
 
 find_package(OpenMP REQUIRED)
@@ -339,6 +343,7 @@ if (${USE_CPLEX})
     target_link_libraries(idol PUBLIC cplex)
     target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
     list(APPEND AVAILABLE_MILP_SOLVERS "OsiCplex")
+    list(APPEND AVAILABLE_MILP_SOLVERS "Cplex")
 
 endif()
 

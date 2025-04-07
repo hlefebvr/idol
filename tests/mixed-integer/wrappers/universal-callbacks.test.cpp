@@ -8,9 +8,14 @@
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/HiGHS/HiGHS.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 
 using namespace Catch::literals;
 using namespace idol;
+
+#ifndef IDOL_USE_GUROBI
+class Gurobi {};
+#endif
 
 TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm", "[callbacks]") {
 
