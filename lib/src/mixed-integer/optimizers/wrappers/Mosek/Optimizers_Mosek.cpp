@@ -568,7 +568,7 @@ double idol::Optimizers::Mosek::get_var_reduced_cost(const idol::Var &t_var) con
     if (m_solution_status != Optimal && m_solution_status != Feasible && m_solution_status != SubOptimal) {
         throw Exception("Reduced cost not available.");
     }
-    if (has_lazy(t_var) && lazy(t_var).impl().variable->dual()->size() > 0) {
+    if (has_lazy(t_var) && lazy(t_var).impl().variable->dual()->size() == 0) {
         throw Exception("Primal solution not available.");
     }
     return lazy(t_var).impl().variable->dual()->operator[](0);

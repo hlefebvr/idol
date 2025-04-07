@@ -148,11 +148,11 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solv
 
         SECTION("Can retrieve the solution status") {
             const auto status = model.get_status();
-            CHECK((status == Unbounded || status  == InfOrUnbnd));
-            if (status == Unbounded) {
-                CHECK(is_neg_inf(model.get_best_obj()));
-            } else {
+            CHECK((status == Infeasible || status  == InfOrUnbnd));
+            if (status == Infeasible) {
                 CHECK(is_pos_inf(model.get_best_obj()));
+            } else {
+                CHECK(is_neg_inf(model.get_best_obj()));
             }
         }
 
@@ -190,20 +190,14 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[so
 
     model.optimize();
 
-    SECTION("Can retrieve the solution status", "[solving-milp]") {
+    SECTION("Can retrieve the solution status") {
         const auto status = model.get_status();
-        CHECK((status == Infeasible || status == InfOrUnbnd));
-
-        SECTION("Can retrieve the solution status") {
-            const auto status = model.get_status();
-            CHECK((status == Unbounded || status  == InfOrUnbnd));
-            if (status == Unbounded) {
-                CHECK(is_neg_inf(model.get_best_obj()));
-            } else {
-                CHECK(is_pos_inf(model.get_best_obj()));
-            }
+        CHECK((status == Infeasible || status  == InfOrUnbnd));
+        if (status == Infeasible) {
+            CHECK(is_pos_inf(model.get_best_obj()));
+        } else {
+            CHECK(is_neg_inf(model.get_best_obj()));
         }
-
     }
 
     SECTION("Can retrieve the number of solutions") {

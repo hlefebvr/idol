@@ -39,26 +39,21 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    Var x(env, 0, Inf, Continuous, 0., "x");
-    Var y(env, 0, Inf, Continuous, 0., "y");
-
-    Ctr c1(env, x - 2 * y <= 1);
-    Ctr c2(env, -2 * x + y <= 1);
-    Ctr c3(env, x + y >= 2);
+    Var x(env, 0., 1., Binary, 0., "x");
+    Ctr c1(env, x >= .1);
+    Ctr c2(env, x <= .9);
 
     Model model(env);
+
     model.add(x);
-    model.add(y);
     model.add(c1);
     model.add(c2);
-    model.add(c3);
-    model.set_obj_expr(-3 * x - 2 * y);
 
-    model.use(Mosek().with_infeasible_or_unbounded_info(true));
+    model.use(Mosek());
 
     model.optimize();
 
-    std::cout << model.get_var_primal(x) << std::endl;
+    std::cout << model.get_status() << std::endl;
 
 
     return 0;
