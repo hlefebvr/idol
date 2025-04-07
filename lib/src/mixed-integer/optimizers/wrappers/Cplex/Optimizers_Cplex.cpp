@@ -47,7 +47,7 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
     m_cplex.setParam(IloCplex::Param::MIP::Display, get_param_logs());
     m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_bound_stop());
     m_cplex.setParam(IloCplex::Param::MIP::Tolerances::UpperCutoff, get_param_best_obj_stop());
-    m_cplex.setParam(IloCplex::Param::TimeLimit, get_param_time_limit());
+    m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(1e+75, get_param_time_limit()));
     m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, get_param_presolve());
     m_cplex.setParam(IloCplex::Param::Threads, (int) get_param_thread_limit());
     m_cplex.setParam(IloCplex::Param::MIP::Limits::RepairTries, get_param_infeasible_or_unbounded_info());

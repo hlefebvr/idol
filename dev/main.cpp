@@ -31,6 +31,7 @@
 #include "idol/mixed-integer/optimizers/callbacks/cutting-planes/LazyCutCallback.h"
 #include "idol/mixed-integer/optimizers/wrappers/Mosek/Mosek.h"
 #include "idol/mixed-integer/optimizers/wrappers/Osi/Osi.h"
+#include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 
 using namespace idol;
 
@@ -39,17 +40,22 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    Var x(env, 0., 1., Binary, 0., "x");
-    Ctr c1(env, x >= .1);
-    Ctr c2(env, x <= .9);
+    Var x(env, 0, Inf, Continuous, 0., "x");
+    Var y(env, 0, Inf, Continuous, 0., "y");
+
+    Ctr c1(env, 120 * x + 210 * y <= 15000);
+    Ctr c2(env, 110 * x +  30 * y <=  4000);
+    Ctr c3(env,       x +       y <=    75);
 
     Model model(env);
-
     model.add(x);
+    model.add(y);
     model.add(c1);
     model.add(c2);
+    model.add(c3);
+    model.set_obj_expr(-143 * x - 60 * y);
 
-    model.use(Mosek());
+    model.use(Cplex());
 
     model.optimize();
 

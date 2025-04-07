@@ -14,7 +14,9 @@ using namespace Catch::literals;
 using namespace idol;
 
 #ifndef IDOL_USE_GUROBI
-class Gurobi {};
+namespace idol {
+    class Gurobi;
+}
 #endif
 
 TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm", "[callbacks]") {

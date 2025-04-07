@@ -55,7 +55,8 @@ find_package_handle_standard_args(CPLEX DEFAULT_MSG
 
 if (CPLEX_FOUND)
     add_library(cplex SHARED IMPORTED)
-    set_target_properties(cplex PROPERTIES IMPORTED_LOCATION ${CPLEX_LIBRARY} ${CPLEX_CONCERT_LIBRARY} ${CPLEX_ILOCPLEX_LIBRARY})
+    set_target_properties(cplex PROPERTIES IMPORTED_LOCATION ${CPLEX_LIBRARY})
+    target_link_libraries(cplex INTERFACE ${CPLEX_CONCERT_LIBRARY} ${CPLEX_ILOCPLEX_LIBRARY})
     target_include_directories(cplex INTERFACE ${CPLEX_INCLUDE_DIRS})
     target_include_directories(cplex INTERFACE ${CPLEX_CONCERT_INCLUDE_DIRS})
 endif()

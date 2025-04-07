@@ -45,7 +45,8 @@ TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solvin
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == -3_a);
 
-        const auto primal_solution = save_primal(model);
+        PrimalPoint primal_solution;
+        CHECK_NOTHROW(primal_solution = save_primal(model));
 
         CHECK(primal_solution.get(x) == 1._a);
         CHECK(primal_solution.get(y) == 0._a);
@@ -94,7 +95,8 @@ TEST_CASE("Can solve a feasible MIP which is not integer at the root node", "[so
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == -3_a);
 
-        auto primal_solution = save_primal(model);
+        PrimalPoint primal_solution;
+        CHECK_NOTHROW(primal_solution = save_primal(model));
 
         CHECK(primal_solution.get(x) == 1._a);
         CHECK(primal_solution.get(y) == 0._a);
@@ -144,11 +146,12 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solv
     model.optimize();
 
     SECTION("Can retrieve the solution status") {
-        const auto status = model.get_status();
+        SolutionStatus status;
+        CHECK_NOTHROW(status = model.get_status());
         CHECK((status == Infeasible || status == InfOrUnbnd));
 
         SECTION("Can retrieve the solution status") {
-            const auto status = model.get_status();
+            CHECK_NOTHROW(status = model.get_status());
             CHECK((status == Infeasible || status  == InfOrUnbnd));
             if (status == Infeasible) {
                 CHECK(is_pos_inf(model.get_best_obj()));
@@ -192,7 +195,8 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[so
     model.optimize();
 
     SECTION("Can retrieve the solution status") {
-        const auto status = model.get_status();
+        SolutionStatus status;
+        CHECK_NOTHROW(status = model.get_status());
         CHECK((status == Infeasible || status  == InfOrUnbnd));
         if (status == Infeasible) {
             CHECK(is_pos_inf(model.get_best_obj()));
@@ -228,7 +232,8 @@ TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
     model.optimize();
 
     SECTION("Can retrieve the solution status") {
-        const auto status = model.get_status();
+        SolutionStatus status;
+        CHECK_NOTHROW(status = model.get_status());
         CHECK((status == Unbounded || status  == InfOrUnbnd));
         if (status == Unbounded) {
             CHECK(is_neg_inf(model.get_best_obj()));

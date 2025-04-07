@@ -17,6 +17,12 @@ Here is the list of implemented features regarding mixed-integer optimization wi
 
 .. testreport:: _static/reports/test_wrapper_Mosek.xml
 
+.. testreport:: _static/reports/test_wrapper_Cplex.xml
+
+.. note::
+    The test report for CPLEX was generated on a local machine and not on GitHub Actions.
+    The reason is that the CPLEX license is not available on GitHub Actions.
+
 .. testreport:: _static/reports/test_wrapper_OsiCplex.xml
 
 .. note::

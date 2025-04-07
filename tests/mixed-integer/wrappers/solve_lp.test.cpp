@@ -45,7 +45,8 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
         CHECK(model.get_var_primal(x) == 21.875_a);
         CHECK(model.get_var_primal(y) == 53.125_a);
 
-        const auto primal_solution = save_primal(model);
+        PrimalPoint primal_solution;
+        CHECK_NOTHROW(primal_solution = save_primal(model));
         CHECK(primal_solution.status() == Optimal);
         CHECK(primal_solution.get(x) == 21.875_a);
         CHECK(primal_solution.get(y) == 53.125_a);
@@ -60,7 +61,8 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
         CHECK(model.get_ctr_dual(c2) == -1.0375_a);
         CHECK(model.get_ctr_dual(c3) == -28.875_a);
 
-        const auto dual_solution = save_dual(model);
+        DualPoint dual_solution;
+        CHECK_NOTHROW(dual_solution = save_dual(model));
 
         CHECK(dual_solution.status() == Optimal);
         CHECK(dual_solution.get(c1) == 0._a);
@@ -74,7 +76,8 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
         CHECK(model.get_var_reduced_cost(x) == 0._a);
         CHECK(model.get_var_reduced_cost(y) == 0._a);
 
-        const auto reduced_costs = save_reduced_cost(model);
+        PrimalPoint reduced_costs;
+        CHECK_NOTHROW(reduced_costs = save_reduced_cost(model));
         CHECK(reduced_costs.get(x) == 0._a);
         CHECK(reduced_costs.get(y) == 0._a);
 
@@ -293,7 +296,8 @@ TEST_CASE("Can solve an infeasible LP", "[solving-lp]") {
         CHECK(model.get_status() == Infeasible);
         CHECK(model.get_best_obj() == Inf);
 
-        const auto farkas = save_farkas(model);
+        DualPoint farkas;
+        CHECK_NOTHROW(farkas = save_farkas(model));
         CHECK(farkas.status() == Infeasible);
         const double c1_val = farkas.get(c1);
         const double c2_val = farkas.get(c2);
@@ -353,7 +357,8 @@ TEST_CASE("Can solve an unbounded LP", "[solving-lp]") {
         CHECK(model.get_status() == Unbounded);
         CHECK(model.get_best_obj() == -Inf);
 
-        const auto dual_ray = save_ray(model);
+        PrimalPoint dual_ray;
+        CHECK_NOTHROW(dual_ray = save_ray(model));
         CHECK(dual_ray.status() == Unbounded);
 
         const double x_val = dual_ray.get(x);
