@@ -37,31 +37,17 @@ using namespace idol;
 int main(int t_argc, const char** t_argv) {
 
     Env env;
-
-    Var x(env, 0, Inf, Continuous, 0., "x");
-    Var y(env, 0, Inf, Continuous, 0., "y");
-
-    Ctr c1(env, 120 * x + 210 * y <= 15000);
-    Ctr c2(env, 110 * x +  30 * y <=  4000);
-    Ctr c3(env,       x +       y <=    75);
-
+    Var x(env, -Inf, Inf, Integer, 0., "x");
     Model model(env);
     model.add(x);
-    model.add(y);
-    model.add(c1);
-    model.add(c2);
-    model.add(c3);
-    model.set_obj_expr(-143 * x - 60 * y);
+    model.set_obj_expr(-x);
 
     model.use(Mosek());
 
     model.optimize();
 
     std::cout << model.get_status() << std::endl;
-    for (const auto& var : model.vars()) {
-        std::cout << var.name() << " = " << model.get_var_primal(var) << std::endl;
-    }
-    std::cout << save_primal(model) << std::endl;
+    std::cout << model.get_best_obj() << std::endl;
 
     return 0;
 }

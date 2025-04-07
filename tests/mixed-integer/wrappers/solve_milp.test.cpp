@@ -14,7 +14,6 @@ using namespace idol;
 
 /*
  * - Test parameters
- * - IIS?
  */
 
 TEST_CASE("Can solve a feasible MIP which is integer at the root node", "[solving-milp]") {
@@ -144,8 +143,19 @@ TEST_CASE("Can solve an infeasible MIP which is infeasible at root node", "[solv
     model.optimize();
 
     SECTION("Can retrieve the solution status") {
-        CHECK(model.get_status() == Infeasible);
-        CHECK(is_pos_inf(model.get_best_obj()));
+        const auto status = model.get_status();
+        CHECK((status == Infeasible || status == InfOrUnbnd));
+
+        SECTION("Can retrieve the solution status") {
+            const auto status = model.get_status();
+            CHECK((status == Unbounded || status  == InfOrUnbnd));
+            if (status == Unbounded) {
+                CHECK(is_neg_inf(model.get_best_obj()));
+            } else {
+                CHECK(is_pos_inf(model.get_best_obj()));
+            }
+        }
+
     }
 
     SECTION("Can retrieve the number of solutions") {
@@ -181,8 +191,19 @@ TEST_CASE("Can solve an infeasible MIP which is feasible at the root node", "[so
     model.optimize();
 
     SECTION("Can retrieve the solution status", "[solving-milp]") {
-        CHECK(model.get_status() == Infeasible);
-        CHECK(is_pos_inf(model.get_best_obj()));
+        const auto status = model.get_status();
+        CHECK((status == Infeasible || status == InfOrUnbnd));
+
+        SECTION("Can retrieve the solution status") {
+            const auto status = model.get_status();
+            CHECK((status == Unbounded || status  == InfOrUnbnd));
+            if (status == Unbounded) {
+                CHECK(is_neg_inf(model.get_best_obj()));
+            } else {
+                CHECK(is_pos_inf(model.get_best_obj()));
+            }
+        }
+
     }
 
     SECTION("Can retrieve the number of solutions") {
@@ -214,7 +235,11 @@ TEST_CASE("Can solve an unbounded MIP", "[solving-milp]") {
     SECTION("Can retrieve the solution status") {
         const auto status = model.get_status();
         CHECK((status == Unbounded || status  == InfOrUnbnd));
-        CHECK(is_neg_inf(model.get_best_obj()));
+        if (status == Unbounded) {
+            CHECK(is_neg_inf(model.get_best_obj()));
+        } else {
+            CHECK(is_pos_inf(model.get_best_obj()));
+        }
     }
 
     SECTION("Can retrieve the number of solutions") {

@@ -465,14 +465,14 @@ idol::SolutionReason idol::Optimizers::Mosek::get_reason() const {
 }
 
 double idol::Optimizers::Mosek::get_best_obj() const {
-    if (m_solution_status == Infeasible) { return Inf; }
+    if (m_solution_status == Infeasible || m_solution_status == InfOrUnbnd) { return Inf; }
     if (m_solution_status == Unbounded) { return -Inf; }
     return m_model->primalObjValue();
 }
 
 double idol::Optimizers::Mosek::get_best_bound() const {
     if (m_solution_status == Infeasible) { return Inf; }
-    if (m_solution_status == Unbounded) { return -Inf; }
+    if (m_solution_status == Unbounded || m_solution_status == InfOrUnbnd) { return -Inf; }
     return m_model->dualObjValue();
 }
 
