@@ -38,25 +38,30 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    Var u(env, 0., Inf, Continuous, 0., "u");
-    Var v(env, 0., Inf, Continuous, 0., "v");
-    Var w(env, 0., Inf, Continuous, 0., "w");
-    Ctr c1(env, u + -2 * v + -1 * w >= 3);
-    Ctr c2(env, -2 * u + v + -1 * w >= 2);
-    auto objective = u + v - 2 * w;
+    Var x(env, 0, Inf, Continuous, 0., "x");
+    Var y(env, 0, Inf, Continuous, 0., "y");
+
+    Ctr c1(env, 120 * x + 210 * y <= 15000);
+    Ctr c2(env, 110 * x +  30 * y <=  4000);
+    Ctr c3(env,       x +       y <=    75);
 
     Model model(env);
-    model.add(u);
-    model.add(v);
-    model.add(w);
+    model.add(x);
+    model.add(y);
     model.add(c1);
     model.add(c2);
-    model.set_obj_expr(objective);
+    model.add(c3);
+    model.set_obj_expr(-143 * x - 60 * y);
 
-    model.use(GLPK());
+    model.use(Mosek());
+
     model.optimize();
 
-    const double val = model.get_var_primal(u);
+    std::cout << model.get_status() << std::endl;
+    for (const auto& var : model.vars()) {
+        std::cout << var.name() << " = " << model.get_var_primal(var) << std::endl;
+    }
+    std::cout << save_primal(model) << std::endl;
 
     return 0;
 }
