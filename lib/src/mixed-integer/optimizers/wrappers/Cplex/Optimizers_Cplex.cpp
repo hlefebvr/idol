@@ -6,6 +6,13 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 
+#define CATCH_CPLEX(cmd) \
+try { \
+    cmd \
+} catch (IloException& error) { \
+    throw Exception("Cplex exception: " + std::string(error.getMessage()) ); \
+}
+
 std::unique_ptr<IloEnv> idol::Optimizers::Cplex::s_global_env;
 
 IloEnv &idol::Optimizers::Cplex::get_global_env() {
@@ -58,6 +65,9 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
     m_cplex.setParam(IloCplex::Param::MIP::Tolerances::Integrality, get_tol_integer());
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, get_tol_feasibility());
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, get_tol_optimality());
+
+    IloObjective objective = IloMinimize(m_env);
+    m_model.add(objective);
 
 }
 
@@ -296,8 +306,30 @@ void idol::Optimizers::Cplex::hook_remove(const Ctr& t_ctr) {
 }
 
 void idol::Optimizers::Cplex::hook_optimize() {
+
     set_solution_index(0);
     m_cplex.solve();
+
+    if (get_param_infeasible_or_unbounded_info()) {
+        auto status = get_status();
+
+        if (status == InfOrUnbnd) {
+            const auto presolve = m_cplex.getParam(IloCplex::Param::Preprocessing::Presolve);
+            if (presolve == false) {
+                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, true);
+                m_cplex.solve();
+                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, false);
+                status = get_status();
+            }
+        }
+
+        if (status == Infeasible) {
+            //save_farkas();
+        } else if (status == Unbounded) {
+            //save_ray();
+        }
+    }
+
 }
 
 void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
@@ -305,7 +337,8 @@ void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
 }
 
 void idol::Optimizers::Cplex::hook_update_objective_sense() {
-    throw Exception("Not implemented");
+    const auto sense = parent().get_obj_sense();
+    m_cplex.getObjective().setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
 }
 
 void idol::Optimizers::Cplex::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
@@ -347,7 +380,6 @@ void idol::Optimizers::Cplex::set_param_presolve(bool t_value) {
 }
 
 void idol::Optimizers::Cplex::set_param_infeasible_or_unbounded_info(bool t_value) {
-    throw Exception("Not implemented");
     Optimizer::set_param_infeasible_or_unbounded_info(t_value);
 }
 
@@ -356,23 +388,77 @@ void idol::Optimizers::Cplex::add_callback(Callback *t_ptr_to_callback) {
 }
 
 idol::SolutionStatus idol::Optimizers::Cplex::get_status() const {
-    throw Exception("Not implemented");
+    const auto status = m_cplex.getStatus();
+    switch (status) {
+        case IloAlgorithm::Unknown: return SolutionStatus::Fail;
+        case IloAlgorithm::Feasible: return SolutionStatus::Feasible;
+        case IloAlgorithm::Optimal: return SolutionStatus::Optimal;
+        case IloAlgorithm::Infeasible: return SolutionStatus::Infeasible;
+        case IloAlgorithm::Unbounded: return SolutionStatus::Unbounded;
+        case IloAlgorithm::InfeasibleOrUnbounded: return SolutionStatus::InfOrUnbnd;
+        case IloAlgorithm::Error: return SolutionStatus::Fail;
+        // case IloAlgorithm::Bounded: return SolutionStatus::SubOptimal;
+        default: throw Exception("Unknown status: " + std::to_string(status));
+    }
 }
 
 idol::SolutionReason idol::Optimizers::Cplex::get_reason() const {
-    throw Exception("Not implemented");
+    const auto status = m_cplex.getCplexStatus();
+    switch (status) {
+        case IloCplex::Optimal: [[fallthrough]];
+        case IloCplex::Unbounded: [[fallthrough]];
+        case IloCplex::Infeasible: [[fallthrough]];
+        case IloCplex::InfOrUnbd: return SolutionReason::Proved;
+        case IloCplex::AbortObjLim: [[fallthrough]];
+        case IloCplex::AbortPrimObjLim: [[fallthrough]];
+        case IloCplex::AbortDualObjLim: return SolutionReason::ObjLimit;
+        case IloCplex::AbortItLim: return SolutionReason::IterLimit;
+        case IloCplex::AbortTimeLim: return SolutionReason::TimeLimit;
+        default:
+            std::cerr << "CPLEX terminated with unknown reason: " << status << std::endl;
+            return SolutionReason::NotSpecified;
+    }
 }
 
 double idol::Optimizers::Cplex::get_best_obj() const {
-    throw Exception("Not implemented");
+    const auto status = get_status();
+
+    if (status == Unbounded) {
+        return -Inf;
+    }
+
+    if (status == Infeasible || status == InfOrUnbnd) {
+        return +Inf;
+    }
+
+    return m_cplex.getObjValue();
 }
 
 double idol::Optimizers::Cplex::get_best_bound() const {
-    throw Exception("Not implemented");
+    const auto status = get_status();
+
+    if (status == Unbounded || status == InfOrUnbnd) {
+        return -Inf;
+    }
+
+    if (status == Infeasible) {
+        return +Inf;
+    }
+
+    return m_cplex.getBestObjValue();
 }
 
 double idol::Optimizers::Cplex::get_var_primal(const Var &t_var) const {
-    throw Exception("Not implemented");
+
+    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Primal solution not available.");
+    }
+
+    if (m_cplex.isMIP()) {
+        CATCH_CPLEX(return m_cplex.getValue(lazy(t_var).impl(), m_solution_index);)
+    }
+
+    CATCH_CPLEX(return m_cplex.getValue(lazy(t_var).impl());)
 }
 
 double idol::Optimizers::Cplex::get_var_ray(const Var &t_var) const {
@@ -401,19 +487,19 @@ unsigned int idol::Optimizers::Cplex::get_n_solutions() const {
         return 0;
     }
 
-    throw Exception("Not implemented");
+    return m_cplex.getSolnPoolNsolns();
 }
 
 unsigned int idol::Optimizers::Cplex::get_solution_index() const {
-    throw Exception("Not implemented");
+    return m_solution_index;
 }
 
 void idol::Optimizers::Cplex::set_solution_index(unsigned int t_index) {
-    throw Exception("Not implemented");
+    m_solution_index = t_index;
 }
 
 void idol::Optimizers::Cplex::set_max_n_solution_in_pool(unsigned int t_value) {
-    throw Exception("Not implemented");
+    m_cplex.setParam(IloCplex::Param::MIP::Pool::Capacity, (CPXINT) t_value);
 }
 
 void idol::Optimizers::Cplex::set_param_logs(bool t_value) {
@@ -452,7 +538,7 @@ idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std:
 
 void idol::Optimizers::Cplex::update_objective_constant() {
     const double constant = parent().get_obj_expr().affine().constant();
-    throw Exception("Not implemented");
+    m_cplex.getObjective().setConstant(constant);
 }
 
 double idol::Optimizers::Cplex::get_var_reduced_cost(const idol::Var &t_var) const {

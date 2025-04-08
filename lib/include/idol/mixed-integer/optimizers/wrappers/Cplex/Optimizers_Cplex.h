@@ -26,6 +26,7 @@ class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<IloNumVar, IloRa
     IloModel m_model;
     IloCplex m_cplex;
     bool m_continuous_relaxation;
+    unsigned int m_solution_index = 0;
 
     IloNumVar::Type cplex_var_type(int t_type);
     static double cplex_numeric(double t_value);

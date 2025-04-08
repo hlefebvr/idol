@@ -385,7 +385,7 @@ double idol::Optimizers::Gurobi::get_best_obj() const {
         return -Inf;
     }
 
-    if (status == Infeasible) {
+    if (status == Infeasible || status == InfOrUnbnd) {
         return +Inf;
     }
 

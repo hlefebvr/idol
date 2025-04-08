@@ -1,58 +1,1479 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="154718280" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="2804058139" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="16">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="16">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="41">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="44">
+        <Original>
+          model.get_best_obj() == -6315.625_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -6315.625 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="45">
+        <Original>
+          model.get_var_primal(x) == 21.875_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 21.875 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="46">
+        <Original>
+          model.get_var_primal(y) == 53.125_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 53.125 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="51">
+        <Original>
+          primal_solution.get(x) == 21.875_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 21.875 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="52">
+        <Original>
+          primal_solution.get(y) == 53.125_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 53.125 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="5" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve dual solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="56">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="59">
+        <Original>
+          model.get_best_bound() == -6315.625_a
+        </Original>
+        <Expanded>
+          inf == Approx( -6315.625 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="60">
+        <Original>
+          model.get_ctr_dual(c1) == 0_a
+        </Original>
+        <Expanded>
+          model.get_ctr_dual(c1) == 0_a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="60">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
+        <Original>
+          model.get_ctr_dual(c2) == -1.0375_a
+        </Original>
+        <Expanded>
+          model.get_ctr_dual(c2) == -1.0375_a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="61">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="62">
+        <Original>
+          model.get_ctr_dual(c3) == -28.875_a
+        </Original>
+        <Expanded>
+          model.get_ctr_dual(c3) == -28.875_a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="62">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="65">
+        <Original>
+          dual_solution = save_dual(model)
+        </Original>
+        <Expanded>
+          dual_solution = save_dual(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="65">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="67">
+        <Original>
+          dual_solution.status() == Optimal
+        </Original>
+        <Expanded>
+          Loaded == Optimal
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="69">
+        <Original>
+          dual_solution.get(c2) == -1.0375_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -1.0375 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="70">
+        <Original>
+          dual_solution.get(c3) == -28.875_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -28.875 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="8" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve reduced costs" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
+        <Original>
+          model.get_var_reduced_cost(x) == 0._a
+        </Original>
+        <Expanded>
+          model.get_var_reduced_cost(x) == 0._a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="77">
+        <Original>
+          model.get_var_reduced_cost(y) == 0._a
+        </Original>
+        <Expanded>
+          model.get_var_reduced_cost(y) == 0._a
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="77">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="80">
+        <Original>
+          reduced_costs = save_reduced_cost(model)
+        </Original>
+        <Expanded>
+          reduced_costs = save_reduced_cost(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="80">
+          Not implemented
+        </Exception>
+      </Expression>
+      <OverallResults successes="2" failures="3" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve basis" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="86">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="87">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal ray is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="90">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if farkas certificate is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="95">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 3 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can update and re-optimize a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="102">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="102">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can add cut and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="115">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="119">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="123">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="127">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change bounds and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="132">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="136">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add cut and column and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="140">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="145">
+        <Original>
+          model.get_best_obj() == 2._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 2.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change objective function and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="150">
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="150">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="150">
+          Not implemented
+        </Exception>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change right-hand side and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="156">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="160">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change left-hand side and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="164">
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="164">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="164">
+          Not implemented
+        </Exception>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a constraint and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="173">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="177">
+        <Original>
+          model.get_best_obj() == -1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can remove a variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="180">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="187">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different variable and re-optimize" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="195">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="200">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove the same constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="204">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add and remove a different constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="213">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="218">
+        <Original>
+          model.get_best_obj() == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a constraint which depends on a variable that is then removed" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="222">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can add a variable which depends on a constraint that is then removed" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="230">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="236">
+        <Original>
+          model.get_best_obj() == -1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update a variable's bound then remove it" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="241">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can write a model to a file and read it back" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="249">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="250">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can change the objective function then remove a variable which appears in the objective function" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="253">
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="253">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="253">
+          Not implemented
+        </Exception>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can update the objective function constant" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="261">
+      <Expression success="false" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="261">
+        <Original>
+          {Unknown expression after the reported line}
+        </Original>
+        <Expanded>
+          {Unknown expression after the reported line}
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="261">
+          Not implemented
+        </Exception>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+
+Iteration log . . .
+Iteration:     1   Dual objective     =             0.000000
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+
+Iteration log . . .
+Iteration:     1   Dual objective     =             0.000000
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+
+Iteration log . . .
+Iteration:     1   Dual objective     =             0.000000
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Using devex.
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 1 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+      </StdOut>
+      <StdErr>
+WARNING: conversion is not implemented
+WARNING: updating a single coefficient in objective
+WARNING: conversion is not implemented
+WARNING: updating a single coefficient in objective
+      </StdErr>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve an infeasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="271">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="271">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve a Farkas certificate" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="294">
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="300">
+        <Original>
+          farkas = save_farkas(model)
+        </Original>
+        <Expanded>
+          farkas = save_farkas(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="300">
+          Not implemented
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="301">
+        <Original>
+          farkas.status() == Infeasible
+        </Original>
+        <Expanded>
+          Loaded == Infeasible
+        </Expanded>
+      </Expression>
+      <OverallResults successes="5" failures="2" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="310">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if dual values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="315">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if (primal) ray is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="320">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if reduced costs are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="325">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Bound infeasibility column 'u'.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Bound infeasibility column 'u'.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Bound infeasibility column 'u'.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Bound infeasibility column 'u'.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Bound infeasibility column 'u'.
+Presolve time = 0.00 sec. (0.00 ticks)
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve an unbounded LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="332">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="332">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve a dual ray" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="355">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="357">
+        <Original>
+          model.get_status() == Unbounded
+        </Original>
+        <Expanded>
+          Optimal == Unbounded
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="358">
+        <Original>
+          model.get_best_obj() == -Inf
+        </Original>
+        <Expanded>
+          0.0 == -100000000000000000000.0
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="361">
+        <Original>
+          dual_ray = save_ray(model)
+        </Original>
+        <Expanded>
+          dual_ray = save_ray(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="361">
+          Ray not available.
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="362">
+        <Original>
+          dual_ray.status() == Unbounded
+        </Original>
+        <Expanded>
+          Loaded == Unbounded
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="4" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if primal values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="373">
+      <Expression success="false" type="CHECK_THROWS" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="374">
+        <Original>
+          model.get_var_primal(x)
+        </Original>
+        <Expanded>
+          model.get_var_primal(x)
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THROWS" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="375">
+        <Original>
+          save_primal(model)
+        </Original>
+        <Expanded>
+          save_primal(model)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="2" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if dual values are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="378">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if farkas certificate is asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="383">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Throws an exception if reduced costs are asked" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="388">
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 1 columns.
+Aggregator did 1 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 1 columns.
+Aggregator did 1 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 1 columns.
+Aggregator did 1 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 1 columns.
+Aggregator did 1 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 1 columns.
+Aggregator did 1 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve a feasible MIP which is integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="20">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="20">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="44">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="45">
+        <Original>
+          model.get_status() == Optimal
+        </Original>
+        <Expanded>
+          Infeasible == Optimal
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="46">
+        <Original>
+          model.get_best_obj() == -3_a
+        </Original>
+        <Expanded>
+          100000000000000000000.0 == Approx( -3.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="49">
+        <Original>
+          primal_solution = save_primal(model)
+        </Original>
+        <Expanded>
+          primal_solution = save_primal(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="49">
+          Primal values not available.
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="51">
+        <Original>
+          primal_solution.get(x) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="53">
+        <Original>
+          primal_solution.get(z) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="5" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="57">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="58">
+        <Original>
+          model.get_n_solutions() >= 1
+        </Original>
+        <Expanded>
+          0 >= 1
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="61">
+      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve a feasible MIP which is not integer at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="70">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="70">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve the primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="93">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="95">
+        <Original>
+          model.get_status() == Optimal
+        </Original>
+        <Expanded>
+          Infeasible == Optimal
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="96">
+        <Original>
+          model.get_best_obj() == -3_a
+        </Original>
+        <Expanded>
+          100000000000000000000.0 == Approx( -3.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="99">
+        <Original>
+          primal_solution = save_primal(model)
+        </Original>
+        <Expanded>
+          primal_solution = save_primal(model)
+        </Expanded>
+        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="99">
+          Primal values not available.
+        </Exception>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="101">
+        <Original>
+          primal_solution.get(x) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="103">
+        <Original>
+          primal_solution.get(z) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="109">
+        <Original>
+          model.get_best_obj() == -3.25_a
+        </Original>
+        <Expanded>
+          0.0 == Approx( -3.25 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="113">
+        <Original>
+          primal_solution.get(x) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="114">
+        <Original>
+          primal_solution.get(y) == 0.25_a
+        </Original>
+        <Expanded>
+          1.0 == Approx( 0.25 )
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="115">
+        <Original>
+          primal_solution.get(z) == 1._a
+        </Original>
+        <Expanded>
+          0.0 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="9" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="119">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="120">
+        <Original>
+          model.get_n_solutions() >= 1
+        </Original>
+        <Expanded>
+          0 >= 1
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can iterate over solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="123">
+      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Tried aggregator 1 time.
+LP Presolve eliminated 2 rows and 3 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve an infeasible MIP which is infeasible at root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="131">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="131">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="148">
+      <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="153">
+        <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+      </Section>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="165">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can compute an irreducible infeasible sub-system" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="169">
+      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="173">
+        The solver does not implement IIS computation.
+      </Skip>
+      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
+    </Section>
+    <OverallResult success="true" skips="1">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve an infeasible MIP which is feasible at the root node" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="179">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="179">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="197">
+      <OverallResults successes="3" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="208">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can compute an irreducible infeasible sub-system" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="212">
+      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="216">
+        The solver does not implement IIS computation.
+      </Skip>
+      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
+    </Section>
+    <OverallResult success="true" skips="1">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can solve an unbounded MIP" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="222">
-    <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="222">
-      Not implemented
-    </Exception>
-    <OverallResult success="false" skips="0"/>
+    <Section name="Can retrieve the solution status" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="234">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="237">
+        <Original>
+          (status == Unbounded || status == InfOrUnbnd)
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="1" expectedFailures="0" skipped="false"/>
+    </Section>
+    <Section name="Can retrieve the number of solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="245">
+      <OverallResults successes="1" failures="0" expectedFailures="0" skipped="false"/>
+    </Section>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             0
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_UpperCutoff              -1e+20
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="Can set parameters of the underlying solver" tags="[solving-milp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="251">
     <Section name="Can set a time limit" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_milp.test.cpp" line="253">
@@ -189,9 +1610,9 @@
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="20">
-    <Section name="Can retrieve root node gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="22">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="23">
+  <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="22">
+    <Section name="Can retrieve root node gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="24">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="25">
         <Original>
           false
         </Original>
@@ -201,8 +1622,8 @@
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can retrieve root node solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="26">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="27">
+    <Section name="Can retrieve root node solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="28">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="29">
         <Original>
           false
         </Original>
@@ -212,8 +1633,8 @@
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can access nodes' solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="30">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="31">
+    <Section name="Can access nodes' solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="32">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="33">
         <Original>
           false
         </Original>
@@ -223,8 +1644,8 @@
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can access integer solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="34">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="35">
+    <Section name="Can access integer solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="36">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="37">
         <Original>
           false
         </Original>
@@ -236,27 +1657,27 @@
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Can add universal callbacks to influence the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="40">
-    <Section name="Can add user cut" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="42">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="47">
+  <TestCase name="Can add universal callbacks to influence the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="42">
+    <Section name="Can add user cut" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="44">
+      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="49">
         The solver does not implement user cut.
       </Skip>
       <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
     </Section>
-    <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="52">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="57">
+    <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="54">
+      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="59">
         The solver does not implement lazy cut.
       </Skip>
       <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
     </Section>
-    <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="62">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="68">
+    <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="64">
+      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="70">
         The solver does not implement early termination by user.
       </Skip>
       <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
     </Section>
     <OverallResult success="true" skips="3"/>
   </TestCase>
-  <OverallResults successes="0" failures="25" expectedFailures="0" skips="3"/>
-  <OverallResultsCases successes="0" failures="11" expectedFailures="0" skips="1"/>
+  <OverallResults successes="120" failures="72" expectedFailures="0" skips="5"/>
+  <OverallResultsCases successes="0" failures="9" expectedFailures="0" skips="3"/>
 </Catch2TestRun>
