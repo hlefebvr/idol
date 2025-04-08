@@ -10,7 +10,8 @@ def parse_section(section):
         result["successes"] = int(overall_results.get("successes"))
         result["failures"] = int(overall_results.get("failures"))
         result["skipped"] = overall_results.get("skipped") == "true"
-        result["progress"] = None if result["skipped"] else result["successes"] / (result["successes"] + result["failures"]) * 100
+        n = max(result["successes"] + result["failures"], 1)
+        result["progress"] = None if result["skipped"] else result["successes"] / n * 100
     return result
 
 def parse_test_case(test_case):
