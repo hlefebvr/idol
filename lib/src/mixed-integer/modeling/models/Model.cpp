@@ -198,9 +198,9 @@ void idol::Model::remove(const Ctr &t_ctr) {
 
     // Shifting all indices left after the deleted constraint
     for (const unsigned int n_ctrs = m_constraints.size(); index < n_ctrs ; ++index) {
-        m_env.version(*this, m_constraints.at(index)).set_index(index);
+        env.version(*this, m_constraints.at(index)).set_index(index);
     }
-    m_env.remove_version(*this, t_ctr);
+    env.remove_version(*this, t_ctr);
      */
 
     const auto index = m_env.version(*this, t_ctr).index();

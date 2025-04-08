@@ -38,40 +38,30 @@ using namespace idol;
 
 int main(int t_argc, const char** t_argv) {
 
-
     Env env;
 
-    Var u(env, 0., Inf, Continuous, 0., "u");
-    Var v(env, 0., Inf, Continuous, 0., "v");
-    Var w(env, 0., Inf, Continuous, 0., "w");
-    Ctr c1(env, u + -2 * v + -1 * w >= 3);
-    Ctr c2(env, -2 * u + v + -1 * w >= 2);
-    auto objective = u + v - 2 * w;
+    Var x(env, 0., 1., Binary, 0., "x");
+    Var y(env, 0., 1., Binary, 0., "y");
+    Var z(env, 0., 1., Binary, 0., "z");
+    Ctr c1(env, x + 2 * y + 2.5 * z <= 4);
+    Ctr c2(env, x + y >= 1);
+    auto objective = -x - y - 2 * z;
 
     Model model(env);
-    model.add(u);
-    model.add(v);
-    model.add(w);
+    model.add(x);
+    model.add(y);
+    model.add(z);
     model.add(c1);
     model.add(c2);
     model.set_obj_expr(objective);
 
-    model.use(Cplex().with_infeasible_or_unbounded_info(true));
+    model.use(Cplex().with_infeasible_or_unbounded_info(true).with_logs(true));
 
+    model.write("model-2.lp");
     model.optimize();
 
 
-    (model.get_status() == Infeasible);
-    (model.get_best_obj() == Inf);
-
-    DualPoint farkas;
-    (farkas = save_farkas(model));
-    (farkas.status() == Infeasible);
-    const double c1_val = farkas.get(c1);
-    const double c2_val = farkas.get(c2);
-    (1. * c1_val - 2. * c2_val <= 0. );
-    (-2. * c1_val + 1. * c2_val <= 0. );
-    (-1. * c1_val + -1. * c2_val <= 0. );
+    std::cout << model.get_status() << std::endl;
 
     return 0;
 }

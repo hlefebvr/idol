@@ -15,16 +15,26 @@
 
 namespace idol::Optimizers {
     class Cplex;
+
+    namespace impl {
+        class CplexEnvKiller;
+    }
 }
 
+struct idol::Optimizers::impl::CplexEnvKiller {
+    IloEnv env;
+    ~CplexEnvKiller() { env.end(); }
+};
+
 class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<IloNumVar, IloRange, IloRange> {
-    static std::unique_ptr<IloEnv> s_global_env;
+    static std::unique_ptr<impl::CplexEnvKiller> s_global_env;
 
     static IloEnv& get_global_env();
 
     IloEnv& m_env;
     IloModel m_model;
     IloCplex m_cplex;
+    IloObjective m_objective;
     bool m_continuous_relaxation;
     unsigned int m_solution_index = 0;
 
@@ -68,6 +78,8 @@ protected:
 public:
     Cplex(const Model& t_model, bool t_continuous_relaxation, IloEnv& t_env);
     explicit Cplex(const Model& t_model, bool t_continuous_relaxation) : Cplex(t_model, t_continuous_relaxation, Cplex::get_global_env()) {}
+
+    ~Cplex() override;
 
     IloEnv& env() { return m_env; }
 

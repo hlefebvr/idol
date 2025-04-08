@@ -13,25 +13,25 @@ try { \
     throw Exception("Cplex exception: " + std::string(error.getMessage()) ); \
 }
 
-std::unique_ptr<IloEnv> idol::Optimizers::Cplex::s_global_env;
+std::unique_ptr<idol::Optimizers::impl::CplexEnvKiller> idol::Optimizers::Cplex::s_global_env;
 
 IloEnv &idol::Optimizers::Cplex::get_global_env() {
     if (!s_global_env) {
-        s_global_env = std::make_unique<IloEnv>();
+        s_global_env = std::make_unique<impl::CplexEnvKiller>();
     }
-    return *s_global_env;
+    return s_global_env->env;
 }
 
 IloNumVar::Type idol::Optimizers::Cplex::cplex_var_type(int t_type) {
 
     if (m_continuous_relaxation) {
-        return ILOFLOAT;
+        return IloNumVar::Type::Float;
     }
 
     switch (t_type) {
-        case Continuous: return ILOFLOAT;
-        case Integer: return ILOINT;
-        case Binary: return ILOBOOL;
+        case Continuous: return IloNumVar::Type::Float;
+        case Integer: return IloNumVar::Type::Int;
+        case Binary: return IloNumVar::Type::Bool;
         default:;
     }
     throw Exception("Unsupported variable type: " + std::to_string(t_type));
@@ -48,12 +48,13 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
           m_continuous_relaxation(t_continuous_relaxation),
           m_env(t_env),
           m_model(t_env),
+          m_objective(t_env),
           m_cplex(m_model) {
 
     // Parameters
     m_cplex.setParam(IloCplex::Param::MIP::Display, get_param_logs());
     m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_bound_stop());
-    m_cplex.setParam(IloCplex::Param::MIP::Tolerances::UpperCutoff, get_param_best_obj_stop());
+    m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, get_param_best_obj_stop());
     m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(1e+75, get_param_time_limit()));
     m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, get_param_presolve());
     m_cplex.setParam(IloCplex::Param::Threads, (int) get_param_thread_limit());
@@ -66,8 +67,7 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, get_tol_feasibility());
     m_cplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, get_tol_optimality());
 
-    IloObjective objective = IloMinimize(m_env);
-    m_model.add(objective);
+    m_model.add(m_objective);
 
 }
 
@@ -115,6 +115,7 @@ IloNumVar idol::Optimizers::Cplex::hook_add(const Var& t_var, bool t_add_column)
 
     IloNumVar var(col, lb, ub, type, name.c_str());
     m_model.add(var);
+    m_objective.setLinearCoef(var, cplex_numeric(objective));
     return var;
 }
 
@@ -144,7 +145,7 @@ IloRange idol::Optimizers::Cplex::hook_add(const Ctr& t_ctr) {
             throw Exception("Unsupported constraint type: " + std::to_string(type));
     }
 
-    IloExpr expr(m_env);
+    IloNumExpr expr(m_env);
     const unsigned int n = row.size();
     for (const auto &[var, constant]: row) {
         expr += cplex_numeric(constant) * lazy(var).impl();
@@ -180,7 +181,7 @@ IloRange idol::Optimizers::Cplex::hook_add(const idol::QCtr &t_ctr) {
             throw Exception("Unsupported constraint type: " + std::to_string(type));
     }
 
-    IloExpr quad_expr(m_env);
+    IloNumExpr quad_expr(m_env);
     quad_expr += expr.affine().constant();
 
     for (const auto& [var, constant]: expr.affine().linear()) {
@@ -206,10 +207,9 @@ void idol::Optimizers::Cplex::hook_update(const Var& t_var) {
     const double obj = model.get_var_obj(t_var);
 
     impl.setBounds(lb, ub);
-    // m_model.add(IloConversion(m_env, impl, cplex_var_type(type)));
+    // m_model.add(IloConversion(env, impl, cplex_var_type(type)));
     std::cerr << "WARNING: conversion is not implemented" << std::endl;
-    // impl.set(GRB_DoubleAttr_Obj, gurobi_numeric(obj));
-    std::cerr << "WARNING: updating a single coefficient in objective" << std::endl;
+    m_objective.setLinearCoef(impl, cplex_numeric(obj));
 
 }
 
@@ -245,40 +245,24 @@ void idol::Optimizers::Cplex::hook_update(const Ctr& t_ctr) {
 
 void idol::Optimizers::Cplex::hook_update_objective() {
 
-    throw Exception("Not implemented");
-
-    /*
     const auto& model = parent();
     const auto& objective = model.get_obj_expr();
-    const auto sense = gurobi_obj_sense(model.get_obj_sense());
+    const auto sense = model.get_obj_sense();
 
-    GRBLinExpr linear_expr = gurobi_numeric(objective.affine().constant());
+    IloNumExpr expr(m_env);
+    expr += cplex_numeric(objective.affine().constant());
 
-    const unsigned int n = objective.affine().linear().size();
-    auto* vars = new GRBVar[n];
-    auto* vals = new double[n];
-    unsigned int i = 0;
     for (const auto& [var, constant] : objective.affine().linear()) {
-        vars[i] = lazy(var).impl();
-        vals[i] = gurobi_numeric(constant);
-        ++i;
-    }
-    linear_expr.addTerms(vals, vars, (int) n);
-    delete[] vars;
-    delete[] vals;
-
-    if (!objective.has_quadratic()) {
-        m_model.setObjective(linear_expr, sense);
-        return;
+        expr += cplex_numeric(constant) * lazy(var).impl();
     }
 
-    GRBQuadExpr quad_expr(linear_expr);
     for (const auto& [pair, constant] : objective) {
-        quad_expr += gurobi_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
+        expr += cplex_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
     }
 
-    m_model.setObjective(quad_expr, sense);
-    */
+    auto cplex_objective = m_objective;
+    cplex_objective.setExpr(expr);
+    cplex_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
 }
 
 void idol::Optimizers::Cplex::hook_update_rhs() {
@@ -293,15 +277,17 @@ void idol::Optimizers::Cplex::hook_update_rhs() {
 
 void idol::Optimizers::Cplex::hook_remove(const Var& t_var) {
 
-    const auto& impl = lazy(t_var).impl();
+    auto impl = lazy(t_var).impl();
     m_model.remove(impl);
+    impl.end();
 
 }
 
 void idol::Optimizers::Cplex::hook_remove(const Ctr& t_ctr) {
 
-    const auto& impl = lazy(t_ctr).impl();
+    auto impl = lazy(t_ctr).impl();
     m_model.remove(impl);
+    impl.end();
 
 }
 
@@ -315,30 +301,32 @@ void idol::Optimizers::Cplex::hook_optimize() {
 
         if (status == InfOrUnbnd) {
             const auto presolve = m_cplex.getParam(IloCplex::Param::Preprocessing::Presolve);
-            if (presolve == false) {
-                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, true);
-                m_cplex.solve();
+            if (presolve == true) {
                 m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, false);
+                m_cplex.solve();
+                m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, true);
                 status = get_status();
             }
         }
 
         if (status == Infeasible) {
             //save_farkas();
+            std::cerr << "WARNING: infeasibility certificate is not implemented" << std::endl;
         } else if (status == Unbounded) {
             //save_ray();
+            std::cerr << "WARNING: unbounded ray is not implemented" << std::endl;
         }
     }
 
 }
 
 void idol::Optimizers::Cplex::hook_write(const std::string &t_name) {
-    throw Exception("Not implemented");
+    m_cplex.exportModel(t_name.c_str());
 }
 
 void idol::Optimizers::Cplex::hook_update_objective_sense() {
     const auto sense = parent().get_obj_sense();
-    m_cplex.getObjective().setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
+    m_objective.setSense(sense == Minimize ? IloObjective::Minimize : IloObjective::Maximize);
 }
 
 void idol::Optimizers::Cplex::hook_update_matrix(const Ctr &t_ctr, const Var &t_var, double t_constant) {
@@ -445,6 +433,10 @@ double idol::Optimizers::Cplex::get_best_bound() const {
         return +Inf;
     }
 
+    if (!m_cplex.isMIP() && status == Optimal) {
+        return get_best_obj();
+    }
+
     return m_cplex.getBestObjValue();
 }
 
@@ -466,7 +458,12 @@ double idol::Optimizers::Cplex::get_var_ray(const Var &t_var) const {
 }
 
 double idol::Optimizers::Cplex::get_ctr_dual(const Ctr &t_ctr) const {
-    throw Exception("Not implemented");
+
+    if (const auto status = get_status() ; status != Optimal && status != Feasible && status != SubOptimal) {
+        throw Exception("Dual solution not available.");
+    }
+
+    CATCH_CPLEX(return m_cplex.getDual(lazy(t_ctr).impl());)
 }
 
 double idol::Optimizers::Cplex::get_ctr_farkas(const Ctr &t_ctr) const {
@@ -538,7 +535,7 @@ idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std:
 
 void idol::Optimizers::Cplex::update_objective_constant() {
     const double constant = parent().get_obj_expr().affine().constant();
-    m_cplex.getObjective().setConstant(constant);
+    m_objective.setConstant(constant);
 }
 
 double idol::Optimizers::Cplex::get_var_reduced_cost(const idol::Var &t_var) const {
@@ -552,6 +549,12 @@ double idol::Optimizers::Cplex::get_var_reduced_cost(const idol::Var &t_var) con
 
 void idol::Optimizers::Cplex::hook_remove(const idol::QCtr &t_ctr) {
     m_model.remove(lazy(t_ctr).impl());
+}
+
+idol::Optimizers::Cplex::~Cplex() {
+    m_model.end();
+    m_cplex.end();
+    m_objective.end();
 }
 
 #endif
