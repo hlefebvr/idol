@@ -19,6 +19,12 @@ namespace idol {
 }
 #endif
 
+#ifndef IDOL_USE_CPLEX
+namespace idol {
+    class Cplex;
+}
+#endif
+
 TEST_CASE("Can add universal callbacks to monitor the execution of the algorithm", "[callbacks]") {
 
     SECTION("Can retrieve root node gap") {
@@ -43,7 +49,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
 
     SECTION("Can add user cut") {
 
-        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK> || std::is_same_v<OPTIMIZER, Cplex>) {
             CHECK(false);
         } else {
            SKIP("The solver does not implement user cut.");
@@ -53,7 +59,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
 
     SECTION("Can add lazy constraint") {
 
-        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK> || std::is_same_v<OPTIMIZER, Cplex>) {
             CHECK(false);
         } else {
             SKIP("The solver does not implement lazy cut.");
@@ -64,7 +70,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
     SECTION("Can terminate the algorithm") {
 
 
-        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK>) {
+        if (std::is_same_v<OPTIMIZER, Gurobi> || std::is_same_v<OPTIMIZER, GLPK> || std::is_same_v<OPTIMIZER, Cplex>) {
             CHECK(false);
         } else {
             SKIP("The solver does not implement early termination by user.");

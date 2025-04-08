@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="2804058139" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="2719057457" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="16">
     <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="41">
       <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="44">
@@ -1610,9 +1610,9 @@ CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="22">
-    <Section name="Can retrieve root node gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="24">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="25">
+  <TestCase name="Can add universal callbacks to monitor the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="28">
+    <Section name="Can retrieve root node gap" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="30">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="31">
         <Original>
           false
         </Original>
@@ -1622,8 +1622,8 @@ CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can retrieve root node solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="28">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="29">
+    <Section name="Can retrieve root node solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="34">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="35">
         <Original>
           false
         </Original>
@@ -1633,8 +1633,8 @@ CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can access nodes' solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="32">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="33">
+    <Section name="Can access nodes' solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="38">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="39">
         <Original>
           false
         </Original>
@@ -1644,8 +1644,8 @@ CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can access integer solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="36">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="37">
+    <Section name="Can access integer solutions" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="42">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="43">
         <Original>
           false
         </Original>
@@ -1657,27 +1657,42 @@ CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <TestCase name="Can add universal callbacks to influence the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="42">
-    <Section name="Can add user cut" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="44">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="49">
-        The solver does not implement user cut.
-      </Skip>
-      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
+  <TestCase name="Can add universal callbacks to influence the execution of the algorithm" tags="[callbacks]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="48">
+    <Section name="Can add user cut" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="50">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="53">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="54">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="59">
-        The solver does not implement lazy cut.
-      </Skip>
-      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
+    <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="60">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="63">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="64">
-      <Skip filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="70">
-        The solver does not implement early termination by user.
-      </Skip>
-      <OverallResults successes="0" failures="0" expectedFailures="0" skipped="true"/>
+    <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="70">
+      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="74">
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <OverallResult success="true" skips="3"/>
+    <OverallResult success="false" skips="0"/>
   </TestCase>
-  <OverallResults successes="120" failures="72" expectedFailures="0" skips="5"/>
-  <OverallResultsCases successes="0" failures="9" expectedFailures="0" skips="3"/>
+  <OverallResults successes="120" failures="75" expectedFailures="0" skips="2"/>
+  <OverallResultsCases successes="0" failures="10" expectedFailures="0" skips="2"/>
 </Catch2TestRun>
