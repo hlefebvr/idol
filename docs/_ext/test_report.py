@@ -43,11 +43,12 @@ def parse_report(xml_path):
         "test_wrapper_HiGHS": "Interfacing with HiGHS",
         "test_wrapper_Mosek": "Interfacing with Mosek",
         "test_wrapper_Gurobi": "Interfacing with Gurobi",
-        "test_wrapper_OsiCbc": "Interfacing with Cbc through coin-or/Osi",
-        "test_wrapper_OsiClp": "Interfacing with Clp through coin-or/Osi",
+        "test_wrapper_OsiCbc": "Interfacing with coin-or/Osi (Cbc)",
+        "test_wrapper_OsiClp": "Interfacing with coin-or/Osi (Clp)",
         "test_wrapper_Cplex": "Interfacing with Cplex",
-        "test_wrapper_OsiCplex": "Interfacing with Cplex through coin-or/Osi",
-        "test_wrapper_OsiSymphony": "Interfacing with Symphony through coin-or/Osi",
+        "test_wrapper_OsiCplex": "Interfacing with coin-or/Osi (Cplex)",
+        "test_wrapper_OsiSymphony": "Interfacing with coin-or/Osi (Symphony)",
+        "test_wrapper_OsiVol": "Interfacing with coin-or/Osi (Vol)",
         "test_wrapper_MibS": "Interfacing with MibS",
     }
 
