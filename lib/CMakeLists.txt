@@ -334,11 +334,6 @@ endif()
 
 if (${USE_CPLEX})
 
-    if (NOT DEFINED USE_OSI OR NOT USE_OSI)
-        message(WARNING "Cplex can only be used through coin-or/Osi. USE_OSI is automatically switched to YES.")
-        set(USE_OSI YES)
-    endif()
-
     find_package(CPLEX REQUIRED)
     target_link_libraries(idol PUBLIC cplex)
     target_compile_definitions(idol PUBLIC IDOL_USE_CPLEX)
@@ -421,6 +416,10 @@ if (${USE_OSI})
     target_link_libraries(idol PUBLIC coinUtils)
     target_link_libraries(idol PUBLIC osi)
     target_compile_definitions(idol PUBLIC IDOL_USE_OSI)
+
+    if (${USE_GUROBI})
+        #list(APPEND AVAILABLE_MILP_SOLVERS "OsiGurobi")
+    endif ()
 
 endif()
 

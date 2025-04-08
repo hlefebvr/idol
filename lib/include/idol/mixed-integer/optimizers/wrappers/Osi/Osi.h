@@ -14,6 +14,10 @@
 #include <OsiCpxSolverInterface.hpp>
 #endif
 
+#if IDOL_USE_GUROBI
+//#include <OsiGrbSolverInterface.hpp>
+#endif
+
 #ifdef IDOL_USE_SYMPHONY
 #include <OsiSymSolverInterface.hpp>
 #endif

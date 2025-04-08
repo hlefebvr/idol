@@ -35,6 +35,15 @@ if (${USE_CPLEX})
     list(APPEND REQUIRED_FILES "OSI_CPX_LIBRARY")
 endif()
 
+if (${USE_GUROBI})
+    find_library(
+            OSI_GRB_LIBRARY
+            NAMES OsiGrb
+            HINTS ${COIN_OR_DIR}
+            PATH_SUFFIXES lib)
+    #list(APPEND REQUIRED_FILES "OSI_GRB_LIBRARY")
+endif()
+
 if (${USE_SYMPHONY})
     find_library(
             OSI_SYM_LIBRARY
@@ -71,6 +80,10 @@ if (OSI_FOUND)
 
     if (OSI_CLP_LIBRARY)
         target_link_libraries(osi INTERFACE ${OSI_CLP_LIBRARY})
+    endif()
+
+    if (OSI_GRB_LIBRARY)
+        target_link_libraries(osi INTERFACE ${OSI_GRB_LIBRARY})
     endif()
 
     if (OSI_SYM_LIBRARY)
