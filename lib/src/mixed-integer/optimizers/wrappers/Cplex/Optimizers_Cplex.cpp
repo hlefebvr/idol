@@ -544,7 +544,7 @@ double idol::Optimizers::Cplex::get_var_reduced_cost(const idol::Var &t_var) con
         throw Exception("Reduced cost not available.");
     }
 
-    throw Exception("Not implemented");
+    return m_cplex.getReducedCost(lazy(t_var).impl());
 }
 
 void idol::Optimizers::Cplex::hook_remove(const idol::QCtr &t_ctr) {

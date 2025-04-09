@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="2220462618" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="3549290735" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="16">
     <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="41">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
@@ -8,40 +8,7 @@
       <OverallResults successes="10" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can retrieve reduced costs" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="74">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
-        <Original>
-          model.get_var_reduced_cost(x) == 0._a
-        </Original>
-        <Expanded>
-          model.get_var_reduced_cost(x) == 0._a
-        </Expanded>
-        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="76">
-          Not implemented
-        </Exception>
-      </Expression>
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="77">
-        <Original>
-          model.get_var_reduced_cost(y) == 0._a
-        </Original>
-        <Expanded>
-          model.get_var_reduced_cost(y) == 0._a
-        </Expanded>
-        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="77">
-          Not implemented
-        </Exception>
-      </Expression>
-      <Expression success="false" type="CHECK_NOTHROW" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="80">
-        <Original>
-          reduced_costs = save_reduced_cost(model)
-        </Original>
-        <Expanded>
-          reduced_costs = save_reduced_cost(model)
-        </Expanded>
-        <Exception filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="80">
-          Not implemented
-        </Exception>
-      </Expression>
-      <OverallResults successes="2" failures="3" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="5" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can retrieve basis" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="86">
       <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="87">
@@ -1382,6 +1349,6 @@ CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
     </Section>
     <OverallResult success="false" skips="0"/>
   </TestCase>
-  <OverallResults successes="171" failures="29" expectedFailures="0" skips="2"/>
+  <OverallResults successes="174" failures="26" expectedFailures="0" skips="2"/>
   <OverallResultsCases successes="3" failures="7" expectedFailures="0" skips="2"/>
 </Catch2TestRun>
