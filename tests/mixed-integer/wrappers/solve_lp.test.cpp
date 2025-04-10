@@ -13,6 +13,25 @@
 using namespace Catch::literals;
 using namespace idol;
 
+template<class T>
+struct CallReadFromFile {
+    static Model call(Env& t_env, const std::string& t_filename) {
+        throw Exception("Cannot read from file using this solver");
+    }
+};
+
+#define IMPLEMENT_CALL_READ_FROM_FILE(SolverT) \
+template<> \
+struct CallReadFromFile<SolverT> { \
+    static Model call(Env& t_env, const std::string& t_filename) { \
+        return SolverT::read_from_file(t_env, t_filename); \
+    } \
+};
+
+IMPLEMENT_CALL_READ_FROM_FILE(Gurobi)
+IMPLEMENT_CALL_READ_FROM_FILE(GLPK)
+IMPLEMENT_CALL_READ_FROM_FILE(Cplex)
+
 TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
 
     // Example taken from http://lpsolve.sourceforge.net/5.5/formulate.htm#Construct%20the%20model%20from%20a%20Programming%20Language
@@ -22,9 +41,9 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
     Var x(env, 0, Inf, Continuous, 0., "x");
     Var y(env, 0, Inf, Continuous, 0., "y");
 
-    Ctr c1(env, 120 * x + 210 * y <= 15000);
-    Ctr c2(env, 110 * x +  30 * y <=  4000);
-    Ctr c3(env,       x +       y <=    75);
+    Ctr c1(env, 120 * x + 210 * y <= 15000, "c1");
+    Ctr c2(env, 110 * x +  30 * y <=  4000, "c2");
+    Ctr c3(env,       x +       y <=    75, "c3");
 
     Model model(env);
     model.add(x);
@@ -95,6 +114,82 @@ TEST_CASE("Can solve a feasible LP", "[solving-lp]") {
     SECTION("Throws an exception if farkas certificate is asked") {
         CHECK_THROWS(model.get_ctr_farkas(c1));
         CHECK_THROWS(save_farkas(model));
+    }
+
+    SECTION("Can write a model to a file and read it back") {
+
+        if (!std::is_same_v<OPTIMIZER, Gurobi>
+            && !std::is_same_v<OPTIMIZER, GLPK>
+            && !std::is_same_v<OPTIMIZER, Cplex>) {
+
+            CHECK(false);
+
+        } else {
+
+            model.write("model.lp");
+
+            const auto copy = CallReadFromFile<OPTIMIZER>::call(env, "model.lp");
+
+            std::optional<Var> _x, _y;
+            std::optional<Ctr> _c1, _c2, _c3;
+
+            for (const auto& var : copy.vars()) {
+                if (var.name() == "x") {
+                    _x = var;
+                    continue;
+                }
+                if (var.name() == "y") {
+                    _y = var;
+                    continue;
+                }
+            }
+
+            for (const auto& ctr : copy.ctrs()) {
+                if (ctr.name() == "c1") {
+                    _c1 = ctr;
+                    continue;
+                }
+                if (ctr.name() == "c2") {
+                    _c2 = ctr;
+                    continue;
+                }
+                if (ctr.name() == "c3") {
+                    _c3 = ctr;
+                    continue;
+                }
+            }
+
+            CHECK(copy.vars().size() == 2);
+            CHECK(copy.ctrs().size() == 3);
+            CHECK(_x.has_value());
+            CHECK(_y.has_value());
+            CHECK(_c1.has_value());
+            CHECK(_c2.has_value());
+            CHECK(_c3.has_value());
+
+            CHECK(copy.get_var_obj(*_x) == -143._a);
+            CHECK(copy.get_var_obj(*_y) == -60._a);
+            CHECK(copy.get_ctr_rhs(*_c1) == 15000._a);
+            CHECK(copy.get_ctr_rhs(*_c2) == 4000._a);
+            CHECK(copy.get_ctr_rhs(*_c3) == 75._a);
+            CHECK(copy.get_ctr_type(*_c1) == LessOrEqual);
+            CHECK(copy.get_ctr_type(*_c2) == LessOrEqual);
+            CHECK(copy.get_ctr_type(*_c3) == LessOrEqual);
+
+            const auto& c1_row = copy.get_ctr_row(*_c1);
+            CHECK(c1_row.get(*_x) == 120._a);
+            CHECK(c1_row.get(*_y) == 210._a);
+
+            const auto& c2_row = copy.get_ctr_row(*_c2);
+            CHECK(c2_row.get(*_x) == 110._a);
+            CHECK(c2_row.get(*_y) == 30._a);
+
+            const auto& c3_row = copy.get_ctr_row(*_c3);
+            CHECK(c3_row.get(*_x) == 1._a);
+            CHECK(c3_row.get(*_y) == 1._a);
+
+        }
+
     }
 
 }
@@ -244,10 +339,6 @@ TEST_CASE("Can update and re-optimize a feasible LP", "[solving-lp]") {
         model.optimize();
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == 0._a);
-    }
-
-    SECTION("Can write a model to a file and read it back") {
-        CHECK(false);
     }
 
     SECTION("Can change the objective function then remove a variable which appears in the objective function") {

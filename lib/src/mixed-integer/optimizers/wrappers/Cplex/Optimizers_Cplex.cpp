@@ -5,6 +5,7 @@
 
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
+#include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
 
 #define CATCH_CPLEX(cmd) \
 try { \
@@ -530,7 +531,109 @@ void idol::Optimizers::Cplex::set_tol_integer(double t_tol_integer) {
 }
 
 idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std::string &t_filename) {
-    throw Exception("Not implemented");
+
+    Model result(t_env);
+
+    auto& env = get_global_env();
+    IloModel model(env);
+    IloCplex cplex(env);
+    IloObjective objective(env);
+    IloNumVarArray vars(env);
+    IloRangeArray ranges(env);
+    IloRangeArray lazy(env);
+    IloRangeArray cuts(env);
+    cplex.importModel(model, t_filename.c_str(), objective, vars, ranges, lazy, cuts);
+
+    const unsigned int n_vars = vars.getSize();
+    const unsigned int n_ctrs = ranges.getSize();
+
+    Map<IloInt, Var> vars_map;
+
+    // Variables
+    result.reserve_vars(n_vars);
+    for (unsigned int i = 0 ; i < n_vars ; ++i) {
+        const auto& var = vars[i];
+        const auto cplex_type = var.getType();
+        const auto lb = var.getLB();
+        const auto ub = var.getUB();
+        const auto name = var.getName();
+
+        VarType type = Continuous;
+        switch (cplex_type) {
+            case IloNumVar::Int:
+                type = Integer;
+                break;
+            case IloNumVar::Bool:
+                type = Binary;
+                break;
+            default:;
+        }
+
+        const auto idol_var = result.add_var(lb, ub, type, 0, std::string(name));
+
+        const auto [it, success] = vars_map.emplace(var.getId(), idol_var);
+        assert(success);
+
+    }
+
+    const auto parse_expr = [&](const IloExpr& t_expr) {
+        QuadExpr result;
+
+        for (auto it = t_expr.getLinearIterator() ; it.ok() ; ++it) {
+            const auto& var = it.getVar();
+            const double constant = it.getCoef();
+            result += constant * vars_map.at(var.getId());
+        }
+
+        for (auto it = t_expr.getQuadIterator() ; it.ok() ; ++it) {
+            const auto& var1 = it.getVar1();
+            const auto& var2 = it.getVar2();
+            const double constant = it.getCoef();
+            result += constant * vars_map.at(var1.getId()) * vars_map.at(var2.getId());
+        }
+
+        result += t_expr.getConstant();
+
+        return result;
+    };
+
+    // Constraints
+    result.reserve_ctrs(n_ctrs);
+    for (unsigned int i = 0 ; i < n_ctrs ; ++i) {
+        const auto& ctr = ranges[i];
+        const auto& cplex_expr = ctr.getExpr();
+        const auto lb = ctr.getLB();
+        const double ub = ctr.getUB();
+        const auto name = ctr.getName();
+
+        auto expr = parse_expr(cplex_expr);
+        CtrType type;
+        double rhs;
+        if (lb <= -IloInfinity) {
+            type = LessOrEqual;
+            rhs = ub;
+        } else if (ub >= IloInfinity) {
+            type = GreaterOrEqual;
+            rhs = lb;
+        } else {
+            type = Equal;
+            rhs = ub;
+        }
+
+        if (!expr.has_quadratic()) {
+            result.add_ctr(TempCtr(std::move(expr.affine().linear()), type, rhs), std::string(name));
+        } else {
+            result.add_qctr(TempQCtr(std::move(expr - rhs), type), std::string(name));
+        }
+    }
+
+    // Objective
+    result.set_obj_expr(parse_expr(objective.getExpr()));
+
+    model.end();
+    cplex.end();
+
+    return std::move(result);
 }
 
 void idol::Optimizers::Cplex::update_objective_constant() {
