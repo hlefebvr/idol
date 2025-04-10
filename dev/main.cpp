@@ -35,7 +35,6 @@
 
 using namespace idol;
 
-
 int main(int t_argc, const char** t_argv) {
 
     Env env;

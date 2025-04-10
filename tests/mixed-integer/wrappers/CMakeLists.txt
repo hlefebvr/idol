@@ -9,6 +9,7 @@ foreach (OPTIMIZER ${AVAILABLE_MILP_SOLVERS})
     )
 
     target_compile_definitions(${target_name} PRIVATE OPTIMIZER=${OPTIMIZER})
+    target_compile_definitions(${target_name} PRIVATE OPTIMIZER_IS_${OPTIMIZER})
     target_link_libraries(${target_name} PRIVATE idol Catch2::Catch2WithMain)
 
 endforeach ()
