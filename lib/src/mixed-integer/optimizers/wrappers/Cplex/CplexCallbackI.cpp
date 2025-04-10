@@ -4,6 +4,8 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 
+#ifdef IDOL_USE_CPLEX
+
 idol::CplexCallbackI::CplexCallbackI(Optimizers::Cplex &t_parent) :
         m_parent(t_parent) {
 
@@ -130,3 +132,5 @@ void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
     }
 
 }
+
+#endif
