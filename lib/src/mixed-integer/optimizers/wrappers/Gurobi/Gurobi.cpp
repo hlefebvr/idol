@@ -59,6 +59,7 @@ idol::Gurobi &idol::Gurobi::add_callback(const CallbackFactory &t_cb) {
 idol::Gurobi::Gurobi(const Gurobi& t_src) :
         OptimizerFactoryWithDefaultParameters<Gurobi>(t_src),
         m_continuous_relaxation(t_src.m_continuous_relaxation),
+        m_max_n_solution_in_pool(t_src.m_max_n_solution_in_pool),
         m_lazy_cuts(t_src.m_lazy_cuts),
         m_double_params(t_src.m_double_params),
         m_int_params(t_src.m_int_params) {

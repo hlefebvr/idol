@@ -26,6 +26,7 @@ namespace idol {
 
 class idol::Cplex : public OptimizerFactoryWithDefaultParameters<Cplex> {
     std::optional<bool> m_continuous_relaxation;
+    std::optional<bool> m_lazy_cuts;
     std::optional<unsigned int> m_max_n_solution_in_pool;
     std::list<std::unique_ptr<CallbackFactory>> m_callbacks;
 
@@ -45,6 +46,8 @@ public:
     Cplex& add_callback(const CallbackFactory& t_cb);
 
     Cplex& with_max_n_solution_in_pool(unsigned int t_value);
+
+    Cplex& with_lazy_cut(bool t_value);
 
     Cplex& with_continuous_relaxation_only(bool t_value);
 

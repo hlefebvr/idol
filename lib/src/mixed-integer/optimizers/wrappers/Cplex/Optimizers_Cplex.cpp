@@ -14,15 +14,6 @@ try { \
     throw Exception("Cplex exception: " + std::string(error.getMessage()) ); \
 }
 
-std::unique_ptr<idol::Optimizers::impl::CplexEnvKiller> idol::Optimizers::Cplex::s_global_env;
-
-IloEnv &idol::Optimizers::Cplex::get_global_env() {
-    if (!s_global_env) {
-        s_global_env = std::make_unique<impl::CplexEnvKiller>();
-    }
-    return s_global_env->env;
-}
-
 IloNumVar::Type idol::Optimizers::Cplex::cplex_var_type(int t_type) {
 
     if (m_continuous_relaxation) {
@@ -39,23 +30,22 @@ IloNumVar::Type idol::Optimizers::Cplex::cplex_var_type(int t_type) {
 }
 
 double idol::Optimizers::Cplex::cplex_numeric(double t_value) {
-    if (is_pos_inf(t_value)) { return IloInfinity; }
-    if (is_neg_inf(t_value)) { return -IloInfinity; }
+    if (is_pos_inf(t_value)) { return IloGetInfinity(); }
+    if (is_neg_inf(t_value)) { return -IloGetInfinity(); }
     return t_value;
 }
 
-idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxation, IloEnv &t_env)
+idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxation)
         : OptimizerWithLazyUpdates(t_model),
           m_continuous_relaxation(t_continuous_relaxation),
-          m_env(t_env),
-          m_model(t_env),
-          m_objective(t_env),
+          m_model(m_env),
+          m_objective(m_env),
           m_cplex(m_model) {
 
     // Parameters
     m_cplex.setParam(IloCplex::Param::MIP::Display, get_param_logs());
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_bound_stop());
-    m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, get_param_best_obj_stop());
+    m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_obj_stop());
+    m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, get_param_best_bound_stop());
     m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(1e+75, get_param_time_limit()));
     m_cplex.setParam(IloCplex::Param::Preprocessing::Presolve, get_param_presolve());
     m_cplex.setParam(IloCplex::Param::Threads, (int) get_param_thread_limit());
@@ -91,9 +81,9 @@ IloNumVar idol::Optimizers::Cplex::hook_add(const Var& t_var, bool t_add_column)
 
     const auto& model = parent();
     const auto& column = model.get_var_column(t_var);
-    const auto lb = model.get_var_lb(t_var);
-    const auto ub = model.get_var_ub(t_var);
-    const auto objective = model.get_var_obj(t_var);
+    const auto lb = cplex_numeric(model.get_var_lb(t_var));
+    const auto ub = cplex_numeric(model.get_var_ub(t_var));
+    const auto objective = cplex_numeric(model.get_var_obj(t_var));
     const auto type = cplex_var_type(model.get_var_type(t_var));
     const auto& name = t_var.name();
 
@@ -114,7 +104,7 @@ IloNumVar idol::Optimizers::Cplex::hook_add(const Var& t_var, bool t_add_column)
 
     }
 
-    IloNumVar var(col, lb, ub, type, name.c_str());
+    IloNumVar var(col,lb, ub, type, name.c_str());
     m_model.add(var);
     m_objective.setLinearCoef(var, cplex_numeric(objective));
     return var;
@@ -125,7 +115,7 @@ IloRange idol::Optimizers::Cplex::hook_add(const Ctr& t_ctr) {
     const auto& model = parent();
     const auto& row = model.get_ctr_row(t_ctr);
     const auto type = model.get_ctr_type(t_ctr);
-    const auto rhs = model.get_ctr_rhs(t_ctr);
+    const auto rhs = cplex_numeric(model.get_ctr_rhs(t_ctr));
     const auto& name = t_ctr.name();
 
     double lb = -IloInfinity, ub = IloInfinity;
@@ -183,14 +173,14 @@ IloRange idol::Optimizers::Cplex::hook_add(const idol::QCtr &t_ctr) {
     }
 
     IloNumExpr quad_expr(m_env);
-    quad_expr += expr.affine().constant();
+    quad_expr += cplex_numeric(expr.affine().constant());
 
     for (const auto& [var, constant]: expr.affine().linear()) {
         quad_expr += cplex_numeric(constant) * lazy(var).impl();
     }
 
     for (const auto& [pair, constant]: expr) {
-        quad_expr += constant * lazy(pair.first).impl() * lazy(pair.second).impl();
+        quad_expr += cplex_numeric(constant) * lazy(pair.first).impl() * lazy(pair.second).impl();
     }
 
     IloRange ctr(m_env, lb, quad_expr, ub, name.c_str());
@@ -202,10 +192,10 @@ void idol::Optimizers::Cplex::hook_update(const Var& t_var) {
 
     const auto& model = parent();
     auto& impl = lazy(t_var).impl();
-    const double lb = model.get_var_lb(t_var);
-    const double ub = model.get_var_ub(t_var);
+    const double lb = cplex_numeric(model.get_var_lb(t_var));
+    const double ub = cplex_numeric(model.get_var_ub(t_var));
     const int type = model.get_var_type(t_var);
-    const double obj = model.get_var_obj(t_var);
+    const double obj = cplex_numeric(model.get_var_obj(t_var));
 
     impl.setBounds(lb, ub);
     // m_model.add(IloConversion(env, impl, cplex_var_type(type)));
@@ -295,7 +285,7 @@ void idol::Optimizers::Cplex::hook_remove(const Ctr& t_ctr) {
 void idol::Optimizers::Cplex::hook_optimize() {
 
     set_solution_index(0);
-    m_cplex.solve();
+    CATCH_CPLEX(m_cplex.solve();)
 
     if (get_param_infeasible_or_unbounded_info()) {
         auto status = get_status();
@@ -344,7 +334,7 @@ void idol::Optimizers::Cplex::hook_update() {
 }
 
 void idol::Optimizers::Cplex::set_param_time_limit(double t_time_limit) {
-    m_cplex.setParam(IloCplex::Param::TimeLimit, t_time_limit);
+    m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(t_time_limit, 1e+75));
     Optimizer::set_param_time_limit(t_time_limit);
 }
 
@@ -373,7 +363,16 @@ void idol::Optimizers::Cplex::set_param_infeasible_or_unbounded_info(bool t_valu
 }
 
 void idol::Optimizers::Cplex::add_callback(Callback *t_ptr_to_callback) {
-    throw Exception("Not implemented");
+    create_callback_if_not_exists();
+    m_cplex_callback->add_callback(t_ptr_to_callback);
+}
+
+void idol::Optimizers::Cplex::set_lazy_cuts(bool t_lazy_cut) {
+    m_lazy_cut = t_lazy_cut;
+    if (m_lazy_cut) {
+        create_callback_if_not_exists();
+        m_cplex.use(m_cplex_callback->create_lazy_constraint_callback());
+    }
 }
 
 idol::SolutionStatus idol::Optimizers::Cplex::get_status() const {
@@ -485,6 +484,10 @@ unsigned int idol::Optimizers::Cplex::get_n_solutions() const {
         return 0;
     }
 
+    if (!m_cplex.isMIP()) {
+        return 1;
+    }
+
     return m_cplex.getSolnPoolNsolns();
 }
 
@@ -534,7 +537,7 @@ idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std:
 
     Model result(t_env);
 
-    auto& env = get_global_env();
+    IloEnv env;
     IloModel model(env);
     IloCplex cplex(env);
     IloObjective objective(env);
@@ -630,8 +633,7 @@ idol::Model idol::Optimizers::Cplex::read_from_file(idol::Env &t_env, const std:
     // Objective
     result.set_obj_expr(parse_expr(objective.getExpr()));
 
-    model.end();
-    cplex.end();
+    env.end();
 
     return std::move(result);
 }
@@ -658,6 +660,17 @@ idol::Optimizers::Cplex::~Cplex() {
     m_model.end();
     m_cplex.end();
     m_objective.end();
+}
+
+void idol::Optimizers::Cplex::create_callback_if_not_exists() {
+
+    if (m_cplex_callback) {
+        return;
+    }
+
+    m_cplex_callback = std::make_unique<CplexCallbackI>(*this);
+    //m_cplex.use(m_cplex_callback->create_user_cut_callback());
+
 }
 
 #endif

@@ -63,7 +63,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
 
     SECTION("Can add lazy constraint") {
 
-#if defined(OPTIMIZER_IS_Gurobi)
+#if defined(OPTIMIZER_IS_Gurobi) || defined(OPTIMIZER_IS_Cplex)
 
         const auto y = model.add_var(0, Inf, Integer, 2, "y");
         const auto z = model.add_var(0, Inf, Continuous, 1, "z");
@@ -79,7 +79,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
 
         auto optimizer = OPTIMIZER();
         optimizer.add_callback(cb);
-#if defined(OPTIMIZER_IS_Gurobi)
+#if defined(OPTIMIZER_IS_Gurobi) || defined(OPTIMIZER_IS_Cplex)
         optimizer.with_lazy_cut(true);
 #endif
         optimizer.with_logs(true);
@@ -90,7 +90,7 @@ TEST_CASE("Can add universal callbacks to influence the execution of the algorit
         CHECK(model.get_status() == Optimal);
         CHECK(model.get_best_obj() == 5.4_a);
 
-#elif defined(OPTIMIZER_IS_Cplex) || defined(OPTIMIZER_IS_GLPK)
+#elif defined(OPTIMIZER_IS_GLPK)
         CHECK(false);
 #else
         SKIP("The solver des not implement lazy cuts");

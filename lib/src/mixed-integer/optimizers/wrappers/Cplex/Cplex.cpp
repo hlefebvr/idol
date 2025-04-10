@@ -20,6 +20,10 @@ idol::Optimizer *idol::Cplex::operator()(const Model &t_model) const {
         result->set_max_n_solution_in_pool(m_max_n_solution_in_pool.value());
     }
 
+    if (m_lazy_cuts.has_value()) {
+        result->set_lazy_cuts(m_lazy_cuts.value());
+    }
+
     return result;
 #else
     throw Exception("idol was not linked with Cplex.");
@@ -41,7 +45,9 @@ idol::Cplex &idol::Cplex::add_callback(const CallbackFactory &t_cb) {
 
 idol::Cplex::Cplex(const Cplex& t_src) :
         OptimizerFactoryWithDefaultParameters<Cplex>(t_src),
-        m_continuous_relaxation(t_src.m_continuous_relaxation) {
+        m_continuous_relaxation(t_src.m_continuous_relaxation),
+        m_lazy_cuts(t_src.m_lazy_cuts),
+        m_max_n_solution_in_pool(t_src.m_max_n_solution_in_pool) {
 
     for (const auto& cb : t_src.m_callbacks) {
         m_callbacks.emplace_back(cb->clone());
@@ -77,4 +83,15 @@ idol::Model idol::Cplex::read_from_file(idol::Env &t_env, const std::string &t_f
 #else
     throw Exception("idol was not linked with Cplex.");
 #endif
+}
+
+idol::Cplex &idol::Cplex::with_lazy_cut(bool t_value) {
+
+    if (m_lazy_cuts.has_value()) {
+        throw Exception("Lazy cut mode activation has already been configured.");
+    }
+
+    m_lazy_cuts = t_value;
+
+    return *this;
 }

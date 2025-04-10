@@ -12,6 +12,7 @@
 
 #include "idol/general/optimizers/OptimizerWithLazyUpdates.h"
 #include "idol/mixed-integer/optimizers/callbacks/Callback.h"
+#include "CplexCallbackI.h"
 
 namespace idol::Optimizers {
     class Cplex;
@@ -29,14 +30,15 @@ struct idol::Optimizers::impl::CplexEnvKiller {
 class idol::Optimizers::Cplex : public OptimizerWithLazyUpdates<IloNumVar, IloRange, IloRange> {
     static std::unique_ptr<impl::CplexEnvKiller> s_global_env;
 
-    static IloEnv& get_global_env();
-
-    IloEnv& m_env;
+    IloEnv m_env;
     IloModel m_model;
     IloCplex m_cplex;
     IloObjective m_objective;
     bool m_continuous_relaxation;
     unsigned int m_solution_index = 0;
+    bool m_lazy_cut = false;
+
+    std::unique_ptr<CplexCallbackI> m_cplex_callback;
 
     IloNumVar::Type cplex_var_type(int t_type);
     static double cplex_numeric(double t_value);
@@ -75,9 +77,9 @@ protected:
 
     void set_solution_index(unsigned int t_index) override;
 
+    void create_callback_if_not_exists();
 public:
-    Cplex(const Model& t_model, bool t_continuous_relaxation, IloEnv& t_env);
-    explicit Cplex(const Model& t_model, bool t_continuous_relaxation) : Cplex(t_model, t_continuous_relaxation, Cplex::get_global_env()) {}
+    Cplex(const Model& t_model, bool t_continuous_relaxation);
 
     ~Cplex() override;
 
@@ -90,6 +92,8 @@ public:
     [[nodiscard]] const IloModel& model() const { return m_model; }
 
     [[nodiscard]] std::string name() const override { return "Cplex"; }
+
+    void set_lazy_cuts(bool t_lazy_cut);
 
     void set_param_time_limit(double t_time_limit) override;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="938426148" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="743284603" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="35">
     <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="60">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
@@ -39,8 +39,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -55,8 +55,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -71,8 +71,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -87,8 +87,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -103,8 +103,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -119,8 +119,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -135,8 +135,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -222,8 +222,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -235,8 +235,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 
 Iteration log . . .
 Iteration:     1   Dual objective     =             1.000000
@@ -247,8 +247,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -260,8 +260,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -270,8 +270,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -283,8 +283,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 
 Iteration log . . .
 Iteration:     1   Dual objective     =             1.000000
@@ -295,8 +295,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -308,8 +308,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 
 Iteration log . . .
 Iteration:     1   Dual objective     =             2.000000
@@ -320,8 +320,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -333,8 +333,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -343,8 +343,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -356,8 +356,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -366,8 +366,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -379,8 +379,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -392,8 +392,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -402,8 +402,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -415,8 +415,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -425,8 +425,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -438,8 +438,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -448,8 +448,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -461,8 +461,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -471,8 +471,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -484,8 +484,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -494,8 +494,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -507,8 +507,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -517,8 +517,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -530,8 +530,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -540,8 +540,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -553,8 +553,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -563,8 +563,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -576,8 +576,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -586,8 +586,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -599,8 +599,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
@@ -609,8 +609,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 LP Presolve eliminated 1 rows and 1 columns.
 All rows and columns eliminated.
@@ -622,8 +622,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Using devex.
       </StdOut>
       <StdErr>
@@ -676,8 +676,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Row 'c_3' infeasible, all entries at implied bounds.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -687,8 +687,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Row 'c_3' infeasible, all entries at implied bounds.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -698,8 +698,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Row 'c_3' infeasible, all entries at implied bounds.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -709,8 +709,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Row 'c_3' infeasible, all entries at implied bounds.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -720,8 +720,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Row 'c_3' infeasible, all entries at implied bounds.
 Presolve time = 0.00 sec. (0.00 ticks)
       </StdOut>
@@ -778,8 +778,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Dual infeasible due to empty column 'y'.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -790,8 +790,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -799,8 +799,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Dual infeasible due to empty column 'y'.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -811,8 +811,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -820,8 +820,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Dual infeasible due to empty column 'y'.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -832,8 +832,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -841,8 +841,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Dual infeasible due to empty column 'y'.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -853,8 +853,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -862,8 +862,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Dual infeasible due to empty column 'y'.
 Presolve time = 0.00 sec. (0.00 ticks)
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
@@ -874,8 +874,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
       <StdErr>
 WARNING: unbounded ray is not implemented
@@ -905,8 +905,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -914,8 +914,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -923,8 +923,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
     </OverallResult>
   </TestCase>
@@ -947,8 +947,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -956,8 +956,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
 Presolve time = 0.00 sec. (0.00 ticks)
@@ -971,8 +971,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -980,8 +980,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
     </OverallResult>
   </TestCase>
@@ -1010,8 +1010,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1019,8 +1019,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1028,8 +1028,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1037,8 +1037,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
     </OverallResult>
   </TestCase>
@@ -1064,8 +1064,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1073,8 +1073,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1082,8 +1082,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1091,8 +1091,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
     </OverallResult>
   </TestCase>
@@ -1112,8 +1112,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
 CPXPARAM_Threads                                 1
 CPXPARAM_MIP_Display                             0
@@ -1121,8 +1121,8 @@ CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
-CPXPARAM_MIP_Limits_LowerObjStop                 1e+20
-CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
       </StdOut>
     </OverallResult>
   </TestCase>
@@ -1321,15 +1321,7 @@ CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can add lazy constraint" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="64">
-      <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="94">
-        <Original>
-          false
-        </Original>
-        <Expanded>
-          false
-        </Expanded>
-      </Expression>
-      <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0" skipped="false"/>
     </Section>
     <Section name="Can terminate the algorithm" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="101">
       <Expression success="false" type="CHECK" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/universal-callbacks.test.cpp" line="105">
@@ -1342,8 +1334,90 @@ CPXPARAM_MIP_Limits_UpperObjStop                 -1e+20
       </Expression>
       <OverallResults successes="0" failures="1" expectedFailures="0" skipped="false"/>
     </Section>
-    <OverallResult success="false" skips="0"/>
+    <OverallResult success="false" skips="0">
+      <StdOut>
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Threads                                 1
+CPXPARAM_MIP_Display                             1
+CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
+CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
+CPXPARAM_MIP_Tolerances_Integrality              0.0001
+CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
+CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
+Legacy callback                                  LD
+Lazy constraint(s) or lazy constraint/branch callback is present.
+    Disabling dual reductions (CPX_PARAM_REDUCE) in presolve.
+    Disabling presolve reductions that prevent crushing forms (CPX_PARAM_PREREFORM).
+         Disabling repeat represolve because of lazy constraint/incumbent callback.
+Tried aggregator 1 time.
+Reduced MIP has 0 rows, 2 columns, and 0 nonzeros.
+Reduced MIP has 0 binaries, 1 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.00 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: traditional branch-and-cut.
+Parallel mode: none, using 1 thread.
+Called primal_solution
+Status: Optimal
+Reason: Proved
+Objective value: 0
+Values: 
+
+End of primal_solution
+Should add 2.2 y + 1 z >= 5.6
+Adding 5.6 &lt;= 2.2 * y  + z  
+Added cut
+Called primal_solution
+Status: Optimal
+Reason: Proved
+Objective value: 6
+Values: 
+y: 3
+
+End of primal_solution
+
+Node log . . .
+Best integer =   6.000000e+00  Node =       0  Best node =   0.000000e+00
+Called primal_solution
+Status: Optimal
+Reason: Proved
+Objective value: 5.2
+Values: 
+y: 2
+z: 1.2
+
+End of primal_solution
+Should add 1.5 y + 1 z >= 4.5
+Adding 4.5 &lt;= 1.5 * y  + z  
+Added cut
+Called primal_solution
+Status: Optimal
+Reason: Proved
+Objective value: 5.5
+Values: 
+y: 2
+z: 1.5
+
+End of primal_solution
+Best integer =   5.500000e+00  Node =       0  Best node =   5.285714e+00
+Called primal_solution
+Status: Optimal
+Reason: Proved
+Objective value: 5.4
+Values: 
+y: 1
+z: 3.4
+
+End of primal_solution
+Best integer =   5.400000e+00  Node =       0  Best node =   5.285714e+00
+
+User cuts applied:  2
+      </StdOut>
+      <StdErr>
+Warning: Control callbacks may disable some MIP features.
+      </StdErr>
+    </OverallResult>
   </TestCase>
-  <OverallResults successes="193" failures="25" expectedFailures="0" skips="2"/>
+  <OverallResults successes="195" failures="24" expectedFailures="0" skips="2"/>
   <OverallResultsCases successes="3" failures="7" expectedFailures="0" skips="2"/>
 </Catch2TestRun>

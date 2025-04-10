@@ -43,6 +43,7 @@ void idol::impl::CutSeparation::operator()(CallbackEvent t_event) {
 
     const auto status = m_separation_problem->get_status();
 
+
     if (status != Optimal && status != Feasible) {
         return;
     }
