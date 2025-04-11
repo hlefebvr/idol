@@ -4,6 +4,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Cplex.h"
 #include "idol/mixed-integer/optimizers/wrappers/Gurobi/Gurobi.h"
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
+#include <cassert>
 
 class idol::Optimizers::Bilevel::BranchAndCut::BoundTighteningCallback : public idol::CallbackFactory {
     BranchAndCut* m_parent;
