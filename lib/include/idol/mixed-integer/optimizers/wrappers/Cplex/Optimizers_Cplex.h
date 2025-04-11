@@ -93,6 +93,8 @@ public:
 
     [[nodiscard]] std::string name() const override { return "Cplex"; }
 
+    bool lazy_cuts() const { return m_lazy_cut; }
+
     void set_lazy_cuts(bool t_lazy_cut);
 
     void set_param_time_limit(double t_time_limit) override;

@@ -33,23 +33,27 @@ const idol::Model &idol::CplexCallbackI::original_model() const {
 
 void idol::CplexCallbackI::add_lazy_cut(const idol::TempCtr &t_lazy_cut) {
 
-    std::cout << "Should add " << t_lazy_cut << std::endl;
-
-    auto* cb = dynamic_cast<Optimizers::impl::CplexLazyConstraintCallbackI*>(m_caller);
-    if (!cb) {
-        throw Exception("Cannot add a lazy callback at fractional points.");
+    if (auto* cb = dynamic_cast<Optimizers::impl::CplexLazyConstraintCallbackI*>(m_caller) ; cb) {
+        auto cut = cplex_temp_constr(t_lazy_cut);
+        cb->add(cut);
+        return;
     }
 
-    auto cut = cplex_temp_constr(t_lazy_cut);
+    if (auto* cb = dynamic_cast<Optimizers::impl::CplexUserCutCallbackI*>(m_caller) ; cb) {
+        if (!m_parent.lazy_cuts()) {
+            throw Exception("Lazy cuts are not enabled.");
+        }
+        auto cut = cplex_temp_constr(t_lazy_cut);
+        cb->add(cut);
+        return;
+    }
 
-    std::cout << "Adding " << cut << std::endl;
-    cb->add(cut);
-    std::cout << "Added cut" << std::endl;
+    throw Exception("Cannot add a lazy callback at fractional points.");
+
 }
 
 idol::PrimalPoint idol::CplexCallbackI::primal_solution() const {
 
-    std::cout << "Called primal_solution" << std::endl;
     PrimalPoint point;
     point.set_status(Optimal);
     point.set_reason(Proved);
@@ -58,9 +62,6 @@ idol::PrimalPoint idol::CplexCallbackI::primal_solution() const {
         const auto& cplex_var = m_parent[var];
         point.set(var, m_caller->getValue(cplex_var));
     }
-
-    std::cout << point << std::endl;
-    std::cout << "End of primal_solution" << std::endl;
 
     return point;
 }
@@ -122,6 +123,18 @@ IloRange idol::CplexCallbackI::cplex_temp_constr(const idol::TempCtr &t_temp_ctr
 
 }
 
+void idol::CplexCallbackI::add_user_cut(const idol::TempCtr &t_user_cut) {
+
+    if (auto* cb = dynamic_cast<Optimizers::impl::CplexUserCutCallbackI*>(m_caller) ; cb) {
+        auto cut = cplex_temp_constr(t_user_cut);
+        cb->add(cut);
+        return;
+    }
+
+    throw Exception("Cannot add a user cut at fractional points.");
+
+}
+
 void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
 
     try {
@@ -134,3 +147,14 @@ void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
 }
 
 #endif
+
+void idol::Optimizers::impl::CplexUserCutCallbackI::main() {
+
+    try {
+        m_callback->call(this, InvalidSolution);
+    } catch (const IloException& t_err) {
+        std::cerr << "There was an error during callback, CPLEX reported " << t_err.getMessage() << std::endl;
+        __throw_exception_again;
+    }
+
+}

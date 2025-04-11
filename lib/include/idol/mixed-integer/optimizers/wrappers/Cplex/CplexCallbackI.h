@@ -25,12 +25,12 @@ class idol::Optimizers::impl::CplexUserCutCallbackI : public IloCplex::UserCutCa
     CplexCallbackI *m_callback;
 public:
     explicit CplexUserCutCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::UserCutCallbackI(t_env), m_callback(t_callback) {}
-protected:
-    void main() override {
-        std::cout << "CALLED CplexUserCutCallbackI" << std::endl;
-    }
 
-    CallbackI *duplicateCallback() const override {
+    using IloCplex::UserCutCallbackI::add;
+protected:
+    void main() override;
+
+    [[nodiscard]] CallbackI *duplicateCallback() const override {
         throw Exception("Duplicate CplexUserCutCallbackI!");
     }
 };
@@ -39,10 +39,12 @@ class idol::Optimizers::impl::CplexLazyConstraintCallbackI : public IloCplex::La
     CplexCallbackI *m_callback = nullptr;
 public:
     explicit CplexLazyConstraintCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::LazyConstraintCallbackI(t_env), m_callback(t_callback) {}
+
+    using IloCplex::LazyConstraintCallbackI::add;
 protected:
     void main() override;
 
-    CallbackI *duplicateCallback() const override {
+    [[nodiscard]] CallbackI *duplicateCallback() const override {
         std::cerr << "Warning: Cplex called duplicateCallback and it is not implemented..." << std::endl;
         throw Exception("Duplicate CplexLazyConstraintCallbackI!");
     }
@@ -73,7 +75,7 @@ public:
 
     void add_lazy_cut(const TempCtr &t_lazy_cut) override;
 
-    void add_user_cut(const TempCtr &t_user_cut) override {}
+    void add_user_cut(const TempCtr &t_user_cut) override;
 
     void submit_heuristic_solution(PrimalPoint t_solution) override {}
 
