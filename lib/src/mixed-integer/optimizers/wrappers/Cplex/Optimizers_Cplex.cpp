@@ -43,7 +43,7 @@ idol::Optimizers::Cplex::Cplex(const Model &t_model, bool t_continuous_relaxatio
           m_cplex(m_model) {
 
     // Parameters
-    m_cplex.setParam(IloCplex::Param::MIP::Display, get_param_logs());
+    m_cplex.setParam(IloCplex::Param::MIP::Display, ((int) get_param_logs()) * 4);
     m_cplex.setParam(IloCplex::Param::MIP::Limits::LowerObjStop, get_param_best_obj_stop());
     m_cplex.setParam(IloCplex::Param::MIP::Limits::UpperObjStop, get_param_best_bound_stop());
     m_cplex.setParam(IloCplex::Param::TimeLimit, std::min(1e+75, get_param_time_limit()));
@@ -504,7 +504,7 @@ void idol::Optimizers::Cplex::set_max_n_solution_in_pool(unsigned int t_value) {
 }
 
 void idol::Optimizers::Cplex::set_param_logs(bool t_value) {
-    m_cplex.setParam(IloCplex::Param::MIP::Display, (int) t_value);
+    m_cplex.setParam(IloCplex::Param::MIP::Display, ((int) t_value) * 4);
     Optimizer::set_param_logs(t_value);
 }
 
@@ -669,8 +669,16 @@ void idol::Optimizers::Cplex::create_callback_if_not_exists() {
     }
 
     m_cplex_callback = std::make_unique<CplexCallbackI>(*this);
-    //m_cplex.use(m_cplex_callback->create_user_cut_callback());
+    m_cplex.use(m_cplex_callback->create_user_cut_callback());
+    m_cplex.use(m_cplex_callback->create_branch_callback());
 
+}
+
+idol::CplexCallbackI &idol::Optimizers::Cplex::get_cplex_callback_interface() {
+    if (!m_cplex_callback) {
+        throw Exception("Cplex callback is not created");
+    }
+    return *m_cplex_callback;
 }
 
 #endif

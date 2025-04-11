@@ -97,6 +97,12 @@ idol::Optimizers::impl::CplexLazyConstraintCallbackI *idol::CplexCallbackI::crea
     return m_lazy_constraint_callback.get();
 }
 
+idol::Optimizers::impl::CplexBranchCallbackI *idol::CplexCallbackI::create_branch_callback() {
+    assert(!m_branch_callback);
+    m_branch_callback = std::make_unique<Optimizers::impl::CplexBranchCallbackI>(m_parent.env(), this);
+    return m_branch_callback.get();
+}
+
 idol::Optimizers::impl::CplexHeuristicCallbackI *idol::CplexCallbackI::create_heuristic_callback() {
     assert(false);
     /*
@@ -135,6 +141,28 @@ void idol::CplexCallbackI::add_user_cut(const idol::TempCtr &t_user_cut) {
 
 }
 
+double idol::CplexCallbackI::get_var_local_lb(const idol::Var &t_var) const {
+    return m_caller->getLB(m_parent[t_var]);
+}
+
+double idol::CplexCallbackI::get_var_local_ub(const idol::Var &t_var) const {
+    return m_caller->getUB(m_parent[t_var]);
+}
+
+double idol::CplexCallbackI::get_var_primal(const idol::Var &t_var) const {
+    return m_caller->getValue(m_parent[t_var]);
+}
+
+void idol::CplexCallbackI::set_var_local_lb(const idol::Var &t_var, double t_bound) {
+    m_local_bounds_node_id = m_caller->getNodeId();
+    m_local_lbs.emplace_back(t_var, t_bound);
+}
+
+void idol::CplexCallbackI::set_var_local_ub(const idol::Var &t_var, double t_bound) {
+    m_local_bounds_node_id = m_caller->getNodeId();
+    m_local_ubs.emplace_back(t_var, t_bound);
+}
+
 void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
 
     try {
@@ -146,8 +174,6 @@ void idol::Optimizers::impl::CplexLazyConstraintCallbackI::main() {
 
 }
 
-#endif
-
 void idol::Optimizers::impl::CplexUserCutCallbackI::main() {
 
     try {
@@ -158,3 +184,48 @@ void idol::Optimizers::impl::CplexUserCutCallbackI::main() {
     }
 
 }
+
+void idol::Optimizers::impl::CplexBranchCallbackI::main() {
+
+    const unsigned int n_local_lbs = m_callback->m_local_lbs.size();
+    const unsigned int n_local_ubs = m_callback->m_local_ubs.size();
+    const unsigned int n_local_bounds = m_callback->m_local_lbs.size() + m_callback->m_local_ubs.size();
+
+    if (n_local_bounds == 0) {
+        return;
+    }
+
+    assert(*m_callback->m_local_bounds_node_id == getNodeId());
+
+    auto& env = m_callback->m_parent.env();
+    IloNumVarArray var_array(env);
+    IloNumArray bound_array(env);
+    IloCplex::BranchDirectionArray direction_array(env);
+
+    var_array.setSize(n_local_bounds);
+    bound_array.setSize(n_local_bounds);
+    direction_array.setSize(n_local_bounds);
+
+    for (unsigned int i = 0 ; i < n_local_lbs ; ++i) {
+        const auto& [var, lb] = m_callback->m_local_lbs[i];
+        var_array[i] = m_callback->m_parent[var];
+        bound_array[i] = lb;
+        direction_array[i] = IloCplex::BranchUp;
+    }
+
+    for (unsigned int i = 0 ; i < n_local_ubs ; ++i) {
+        const auto& [var, ub] = m_callback->m_local_ubs[i];
+        const unsigned int k = i + n_local_lbs;
+        var_array[k] = m_callback->m_parent[var];
+        bound_array[k] = ub;
+        direction_array[k] = IloCplex::BranchDown;
+    }
+
+    makeBranch(var_array, bound_array, direction_array, getObjValue());
+
+    m_callback->m_local_lbs.clear();
+    m_callback->m_local_ubs.clear();
+    m_callback->m_local_bounds_node_id.reset();
+}
+
+#endif

@@ -126,6 +126,8 @@ public:
     void set_tol_integer(double t_tol_integer) override;
 
     static Model read_from_file(Env& t_env, const std::string& t_filename);
+
+    CplexCallbackI& get_cplex_callback_interface();
 };
 
 #endif

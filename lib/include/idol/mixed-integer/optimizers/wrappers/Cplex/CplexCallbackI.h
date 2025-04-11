@@ -16,6 +16,7 @@ namespace idol {
             class CplexUserCutCallbackI;
             class CplexLazyConstraintCallbackI;
             class CplexHeuristicCallbackI;
+            class CplexBranchCallbackI;
         }
     }
     class CplexCallbackI;
@@ -50,6 +51,21 @@ protected:
     }
 };
 
+class idol::Optimizers::impl::CplexBranchCallbackI : public IloCplex::BranchCallbackI {
+    CplexCallbackI *m_callback = nullptr;
+public:
+    explicit CplexBranchCallbackI(IloEnv t_env, CplexCallbackI *t_callback) : IloCplex::BranchCallbackI(t_env), m_callback(t_callback) {}
+
+    using IloCplex::BranchCallbackI::makeBranch;
+protected:
+    void main() override;
+
+    [[nodiscard]] CallbackI *duplicateCallback() const override {
+        std::cerr << "Warning: Cplex called duplicateCallback and it is not implemented..." << std::endl;
+        throw Exception("Duplicate CplexBranchCallbackI!");
+    }
+};
+
 class idol::CplexCallbackI : public CallbackI {
     Optimizers::Cplex &m_parent;
     std::list<std::unique_ptr<Callback>> m_callbacks;
@@ -58,10 +74,16 @@ class idol::CplexCallbackI : public CallbackI {
     std::unique_ptr<Optimizers::impl::CplexUserCutCallbackI> m_user_cut_callback;
     std::unique_ptr<Optimizers::impl::CplexLazyConstraintCallbackI> m_lazy_constraint_callback;
     // std::unique_ptr<Optimizers::impl::CplexHeuristicCallbackI> m_heuristic_callback;
+    std::unique_ptr<Optimizers::impl::CplexBranchCallbackI> m_branch_callback;
 
     Optimizers::impl::CplexUserCutCallbackI* create_user_cut_callback();
     Optimizers::impl::CplexLazyConstraintCallbackI* create_lazy_constraint_callback();
     Optimizers::impl::CplexHeuristicCallbackI* create_heuristic_callback();
+    Optimizers::impl::CplexBranchCallbackI* create_branch_callback();
+
+    std::optional<IloCplex::MIPCallbackI::NodeId> m_local_bounds_node_id;
+    std::vector<std::pair<Var, double>> m_local_lbs;
+    std::vector<std::pair<Var, double>> m_local_ubs;
 
     IloRange cplex_temp_constr(const TempCtr &t_temp_ctr);
 public:
@@ -87,9 +109,16 @@ public:
 
     [[nodiscard]] double best_bound() const override;
 
+    double get_var_primal(const Var& t_var) const;
+    double get_var_local_lb(const Var& t_var) const;
+    double get_var_local_ub(const Var& t_var) const;
+    void set_var_local_lb(const Var& t_var, double t_bound);
+    void set_var_local_ub(const Var& t_var, double t_bound);
+
     void terminate() override;
 
     friend class idol::Optimizers::Cplex;
+    friend class idol::Optimizers::impl::CplexBranchCallbackI;
 };
 
 #endif

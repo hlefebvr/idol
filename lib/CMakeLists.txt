@@ -260,6 +260,10 @@ add_library(idol STATIC
         src/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.cpp
         include/idol/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.h
         src/mixed-integer/optimizers/wrappers/Cplex/CplexCallbackI.cpp
+        include/idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h
+        include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h
+        src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
+        src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
 )
 
 find_package(OpenMP REQUIRED)
