@@ -6,6 +6,7 @@
 #include "idol/mixed-integer/optimizers/wrappers/Cplex/Optimizers_Cplex.h"
 #include <cassert>
 
+#ifdef IDOL_USE_CPLEX
 class idol::Optimizers::Bilevel::BranchAndCut::BoundTighteningCallback : public idol::CallbackFactory {
     BranchAndCut* m_parent;
 public:
@@ -106,6 +107,7 @@ public:
     }
 
 };
+#endif
 
 idol::Optimizers::Bilevel::BranchAndCut::BranchAndCut(const idol::Model &t_parent,
                                                       const idol::Bilevel::Description &m_description,
@@ -428,7 +430,7 @@ void idol::Optimizers::Bilevel::BranchAndCut::build_hpr(double t_lambda_lb, doub
 }
 
 void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
-
+#ifdef IDOL_USE_CPLEX
     check_assumptions();
 
     check_value_function_is_well_posed();
@@ -469,7 +471,9 @@ void idol::Optimizers::Bilevel::BranchAndCut::hook_optimize() {
     set_reason(m_hpr->get_reason());
     set_best_obj(m_hpr->get_best_obj());
     set_best_bound(m_hpr->get_best_bound());
-
+#else
+    throw Exception("CPLEX not available.");
+#endif
 }
 
 idol::GenerationPattern<idol::Ctr> idol::Optimizers::Bilevel::BranchAndCut::build_dantzig_wolfe_cut() {
