@@ -35,6 +35,8 @@
 #include "idol/bilevel/optimizers/wrappers/MibS/MibS.h"
 #include "idol/bilevel/optimizers/BranchAndCut/BranchAndCut.h"
 #include "idol/bilevel/modeling/read_from_file.h"
+#include "idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h"
+#include "idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h"
 
 using namespace idol;
 
@@ -42,20 +44,118 @@ int main(int t_argc, const char** t_argv) {
 
     Env env;
 
-    auto [high_point_relaxation, description] = idol::Bilevel::read_from_file<Gurobi>(env, "branch-and-cut.data.aux");
+    /*****************/
+    /* Read Instance */
+    /*****************/
 
-    high_point_relaxation.use(
-            Bilevel::BranchAndCut(description)
-                    .with_sub_problem_optimizer(Gurobi())
-                    .with_logs(true)
+    const auto instance = Problems::FLP::read_instance_1991_Cornuejols_et_al("/home/henri/Research/idol/examples/robust/ccg-discrete-uncertainty.data.txt");
+    const unsigned int n_customers = instance.n_customers();
+    const unsigned int n_facilities = instance.n_facilities();
+
+    /****************************/
+    /* Make Deterministic Model */
+    /****************************/
+
+    Model model(env);
+    const auto x = model.add_vars(Dim<1>(n_facilities), 0., 1., Binary, 0., "x");
+    const auto y = model.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "y");
+    std::list<Ctr> second_stage_constraints;
+
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        const auto c = model.add_ctr(idol_Sum(j, Range(n_customers), instance.demand(j) * y[i][j]) <= instance.capacity(i));
+        second_stage_constraints.emplace_back(c);
+    }
+
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        const auto c = model.add_ctr(idol_Sum(i, Range(n_facilities), y[i][j]) >= 1);
+        second_stage_constraints.emplace_back(c);
+    }
+
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        for (unsigned int j = 0 ; j < n_customers ; ++j) {
+            const auto c = model.add_ctr(y[i][j] <= x[i]);
+            second_stage_constraints.emplace_back(c);
+        }
+    }
+
+    model.set_obj_expr(idol_Sum(i, Range(n_facilities),
+                                instance.fixed_cost(i) * x[i]
+                                + idol_Sum(j, Range(n_customers),
+                                           instance.per_unit_transportation_cost(i, j) *
+                                           instance.demand(j) *
+                                           y[i][j]
+                                )
+                       )
     );
 
-    // Optimize and print solution
-    high_point_relaxation.optimize();
+    /************************/
+    /* Declare Second Stage */
+    /************************/
 
-    std::cout << high_point_relaxation.get_status() << std::endl;
-    std::cout << high_point_relaxation.get_reason() << std::endl;
-    std::cout << save_primal(high_point_relaxation) << std::endl;
+    Bilevel::Description bilevel_description(env);
+    for (const auto& y_ij : flatten<Var, 2>(y)) {
+        bilevel_description.make_lower_level(y_ij);
+    }
+    for (const auto& ctr : second_stage_constraints) {
+        bilevel_description.make_lower_level(ctr);
+    }
+
+    /**************************/
+    /* Create Uncertainty Set */
+    /**************************/
+
+    Model uncertainty_set(env);
+    const double Gamma = 2;
+    const auto xi = uncertainty_set.add_vars(Dim<2>(n_facilities, n_customers), 0., 1., Binary, 0., "xi");
+    uncertainty_set.add_ctr(idol_Sum(i, Range(n_facilities), idol_Sum(j, Range(n_customers), xi[i][j])) <= Gamma);
+
+    /***********************/
+    /* Declare Uncertainty */
+    /***********************/
+
+    Robust::Description robust_description(uncertainty_set);
+
+    for (unsigned int i = 0 ; i < n_facilities ; ++i) {
+        for (unsigned int j = 0; j < n_customers; ++j) {
+            const auto c = model.add_ctr(y[i][j] <= 1);
+            robust_description.set_uncertain_rhs(c, -xi[i][j]); // models y_ij <= 1 - xi_j
+            bilevel_description.make_lower_level(c);
+        }
+    }
+
+    const unsigned int K = 2;
+    Robust::ScenarioBasedKAdaptabilityProblemSolver optimizer(bilevel_description, robust_description, K);
+    optimizer.with_optimizer(Gurobi());
+
+    model.use(optimizer);
+
+
+    ////// START TEST DISJUNCTION //////
+    std::vector<std::list<PrimalPoint>> disjunction(K);
+    PrimalPoint point;
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        point.set(xi[0][j], 1);
+        point.set(xi[1][j], 1);
+    }
+    disjunction[1].emplace_back(point);
+    point.clear();
+    for (unsigned int j = 0 ; j < n_customers ; ++j) {
+        point.set(xi[2][j], 1);
+        point.set(xi[4][j], 1);
+    }
+    disjunction[0].emplace_back(point);
+    model.update();
+    auto& impl = model.optimizer().as<Optimizers::Robust::ScenarioBasedKAdaptabilityProblemSolver>();
+    impl.set_uncertainty_disjunction(disjunction);
+    ////// END TEST DISJUNCTION //////
+
+    model.optimize();
+
+    for (unsigned int k = 0 ; k < K ; ++k) {
+        model.set_solution_index(k);
+        std::cout << model.get_solution_index() << " = " << std::endl;
+        std::cout << save_primal(model) << std::endl;
+    }
 
     return 0;
 }

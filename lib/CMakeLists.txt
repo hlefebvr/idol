@@ -264,6 +264,11 @@ add_library(idol STATIC
         include/idol/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.h
         src/bilevel/optimizers/BranchAndCut/BranchAndCut.cpp
         src/bilevel/optimizers/BranchAndCut/Optimizers_BranchAndCut.cpp
+        include/idol/robust/optimizers/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.h
+        src/optimizers/robust/KAdaptabilityBranchAndBound/KAdaptabilityBranchAndBound.cpp
+        include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
+        src/optimizers/robust/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
+        src/optimizers/robust/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
 )
 
 find_package(OpenMP REQUIRED)
