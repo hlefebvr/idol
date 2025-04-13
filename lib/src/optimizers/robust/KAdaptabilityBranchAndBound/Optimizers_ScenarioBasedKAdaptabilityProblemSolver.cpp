@@ -4,6 +4,7 @@
 #include "idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h"
 #include "idol/mixed-integer/modeling/expressions/operations/operators.h"
 #include "idol/mixed-integer/modeling/variables/TempVar.h"
+#include <cassert>
 
 idol::Optimizers::Robust::ScenarioBasedKAdaptabilityProblemSolver::ScenarioBasedKAdaptabilityProblemSolver(
         const idol::Model &t_parent,
