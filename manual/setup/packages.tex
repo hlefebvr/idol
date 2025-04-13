@@ -1,0 +1,55 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+\usepackage{todonotes}
+\usepackage{csquotes}
+\usepackage{microtype}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{algorithm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{algpseudocode}
+\usepackage[style = authoryear-comp,
+            maxbibnames = 100,
+            maxcitenames = 2,
+            giveninits = true,
+            uniquename = init,
+            isbn = false,
+            backend = bibtex]{biblatex}
+\usepackage[colorlinks,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=blue]{hyperref} % should always be the last package
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Modify text style of title and authors
+\makeatletter
+\patchcmd{\@settitle}{\uppercasenonmath\@title}{\scshape\large}{}{}
+\patchcmd{\@setauthors}{\MakeUppercase}{\scshape\normalsize}{}{}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Moderate adjustment of the parameters that TeX uses 
+% when calculating line breaks. 
+% See: The LaTeX2e Register of Sins
+\tolerance 1414
+\hbadness 1414
+\emergencystretch 1.5em
+\hfuzz 0.3pt
+\widowpenalty=10000
+\vfuzz \hfuzz
+\raggedbottom
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Make MSC work with 2020 classification
+\makeatletter
+\@namedef{subjclassname@2020}{%
+  \textup{2020} Mathematics Subject Classification}
+\makeatother
+
+\input{setup/commands.tex}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch2TestRun name="test_wrapper_Cplex" rng-seed="2754086515" xml-format-version="3" catch2-version="3.3.2">
+<Catch2TestRun name="test_wrapper_Cplex" rng-seed="1362790079" xml-format-version="3" catch2-version="3.3.2">
   <TestCase name="Can solve a feasible LP" tags="[solving-lp]" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="35">
     <Section name="Can retrieve primal solution" filename="/home/henri/Research/idol/tests/mixed-integer/wrappers/solve_lp.test.cpp" line="60">
       <OverallResults successes="8" failures="0" expectedFailures="0" skipped="false"/>
@@ -1337,33 +1337,52 @@ CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
     <OverallResult success="false" skips="0">
       <StdOut>
 Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Preprocessing_Reduce                    1
 CPXPARAM_Threads                                 1
-CPXPARAM_MIP_Display                             1
+CPXPARAM_Preprocessing_Reformulations            0
+CPXPARAM_MIP_Display                             4
 CPXPARAM_Simplex_Tolerances_Optimality           1.0000000000000001e-05
 CPXPARAM_Simplex_Tolerances_Feasibility          1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_AbsMIPGap                1.0000000000000001e-05
 CPXPARAM_MIP_Tolerances_Integrality              0.0001
 CPXPARAM_MIP_Limits_LowerObjStop                 -1e+20
 CPXPARAM_MIP_Limits_UpperObjStop                 1e+20
-Legacy callback                                  LD
-Lazy constraint(s) or lazy constraint/branch callback is present.
-    Disabling dual reductions (CPX_PARAM_REDUCE) in presolve.
-    Disabling presolve reductions that prevent crushing forms (CPX_PARAM_PREREFORM).
+Legacy callback                                  BbLUD
          Disabling repeat represolve because of lazy constraint/incumbent callback.
 Tried aggregator 1 time.
 Reduced MIP has 0 rows, 2 columns, and 0 nonzeros.
 Reduced MIP has 0 binaries, 1 generals, 0 SOSs, and 0 indicators.
 Presolve time = 0.00 sec. (0.00 ticks)
+Dual steepest-edge pricing selected.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: traditional branch-and-cut.
 Parallel mode: none, using 1 thread.
+Tried aggregator 1 time.
+No LP presolve or aggregator reductions.
+Presolve time = 0.00 sec. (0.00 ticks)
+Root relaxation solution time = 0.00 sec. (0.00 ticks)
 
-Node log . . .
-Best integer =   6.000000e+00  Node =       0  Best node =   0.000000e+00
-Best integer =   5.500000e+00  Node =       0  Best node =   5.285714e+00
-Best integer =   5.400000e+00  Node =       0  Best node =   5.285714e+00
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap         Variable B NodeID Parent  Depth
+
+      0     0        5.0909     1                      0.0000        0         
+*     0+    0                            6.0000        0.0000           100.00%
+Found incumbent of value 6.000000 after 0.00 sec. (0.00 ticks)
+*     0+    0                            5.5000        5.2857             3.90%
+Found incumbent of value 5.500000 after 0.00 sec. (0.01 ticks)
+*     0+    0                            5.4000        5.2857             2.12%
+Found incumbent of value 5.400000 after 0.00 sec. (0.02 ticks)
+      0     0        5.2857     1        5.4000        5.4000        1    0.00%                        0             0
+Elapsed time = 0.00 sec. (0.03 ticks, tree = 0.01 MB, solutions = 3)
 
 User cuts applied:  2
+
+Root node processing (before b&amp;c):
+  Real time             =    0.00 sec. (0.03 ticks)
+Sequential b&amp;c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&amp;cut) =    0.00 sec. (0.03 ticks)
       </StdOut>
       <StdErr>
 Warning: Control callbacks may disable some MIP features.
