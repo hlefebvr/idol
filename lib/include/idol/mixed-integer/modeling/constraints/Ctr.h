@@ -95,7 +95,7 @@ public:
         });
     }
 
-    unsigned int index(const Model& t_index) const;
+    [[nodiscard]] unsigned int index(const Model& t_index) const;
 };
 
 //IDOL_MAKE_HASHABLE(Ctr)

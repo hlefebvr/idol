@@ -269,6 +269,9 @@ add_library(idol STATIC
         include/idol/robust/optimizers/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.h
         src/optimizers/robust/KAdaptabilityBranchAndBound/Optimizers_ScenarioBasedKAdaptabilityProblemSolver.cpp
         src/optimizers/robust/KAdaptabilityBranchAndBound/ScenarioBasedKAdaptabilityProblemSolver.cpp
+        include/idol/mixed-integer/modeling/constraints/SOSCtr.h
+        include/idol/mixed-integer/modeling/constraints/SOSCtrVersion.h
+        src/mixed-integer/modeling/constraints/SOSCtr.cpp
 )
 
 find_package(OpenMP REQUIRED)

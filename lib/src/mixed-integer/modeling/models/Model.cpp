@@ -1,6 +1,8 @@
 //
 // Created by henri on 27/01/23.
 //
+#include <utility>
+
 #include "idol/mixed-integer/modeling/models/Model.h"
 #include "idol/mixed-integer/modeling/objects/Env.h"
 #include "idol/mixed-integer/modeling/constraints/TempCtr.h"
@@ -111,6 +113,14 @@ void idol::Model::add(const Var &t_var) {
 }
 
 void idol::Model::remove(const Var &t_var) {
+
+    for (const auto& sos : m_sosconstraints) {
+        for (const auto& var : get_sosctr_vars(sos)) {
+            if (var.id() == t_var.id()) {
+                throw Exception("Cannot remove a variable that is part of an SOS constraint.");
+            }
+        }
+    }
 
     auto& version = m_env.version(*this, t_var);
 
@@ -1091,4 +1101,102 @@ const idol::QuadExpr<idol::Var> &idol::Model::get_qctr_expr(const idol::QCtr &t_
 
 idol::CtrType idol::Model::get_qctr_type(const idol::QCtr &t_ctr) const {
     return m_env.version(*this, t_ctr).type();
+}
+
+idol::SOSCtr
+idol::Model::add_sosctr(bool t_is_sos1, std::vector<Var> t_vars, std::vector<double> t_weights,
+                        std::string t_name) {
+    SOSCtr result(m_env, t_is_sos1, std::move(t_vars), std::move(t_weights), std::move(t_name));
+    add(result);
+    return result;
+}
+
+void idol::Model::reserve_qctrs(unsigned int t_size) {
+    m_qconstraints.reserve(t_size);
+}
+
+void idol::Model::reserve_sos_ctrs(unsigned int t_size) {
+    m_sosconstraints.reserve(t_size);
+}
+
+void idol::Model::add(const idol::SOSCtr &t_ctr,
+                      bool t_is_sos1,
+                      const std::vector<Var>& t_vars,
+                      const std::vector<double>& t_weights) {
+
+    const unsigned int index = m_sosconstraints.size();
+
+    if (t_vars.size() <= 1) {
+        throw Exception("SOS constraints must have at least two variable.");
+    }
+
+    if (t_vars.size() != t_weights.size()) {
+        throw Exception("SOS constraints must have the same number of variables and weights.");
+    }
+
+    for (const auto& var : t_vars) {
+        if (!has(var)) {
+            throw Exception("Variable " + var.name() + " is not part of the model.");
+        }
+    }
+
+    // Create SOS version
+    m_env.create_version(*this, t_ctr, index, t_is_sos1, t_vars, t_weights);
+    m_sosconstraints.emplace_back(t_ctr);
+
+    if (has_optimizer()) {
+        throw Exception("SOS constraints are not supported by the optimizers.");
+    }
+
+}
+
+bool idol::Model::has(const idol::SOSCtr &t_ctr) const {
+    return m_env.has_version(*this, t_ctr);
+}
+
+void idol::Model::add(const idol::SOSCtr &t_ctr) {
+    const auto& default_version = m_env[t_ctr];
+    add(t_ctr,
+        default_version.is_sos1(),
+        default_version.vars(),
+        default_version.weights()
+    );
+}
+
+void idol::Model::remove(const idol::SOSCtr &t_ctr) {
+
+    if (has_optimizer()) {
+        throw Exception("SOS constraints are not supported by the optimizers.");
+        // optimizer().remove(t_ctr);
+    }
+
+    const auto index = m_env.version(*this, t_ctr).index();
+    m_env.version(*this, m_sosconstraints.back()).set_index(index);
+    m_sosconstraints[index] = m_sosconstraints.back();
+    m_sosconstraints.pop_back();
+    m_env.remove_version(*this, t_ctr);
+}
+
+const std::vector<idol::Var>& idol::Model::get_sosctr_vars(const SOSCtr& t_ctr) const {
+    const auto& version = m_env.version(*this, t_ctr);
+    return version.vars();
+}
+
+const std::vector<double>& idol::Model::get_sosctr_weights(const idol::SOSCtr &t_ctr) const {
+    const auto& version = m_env.version(*this, t_ctr);
+    return version.weights();
+}
+
+bool idol::Model::is_sos1(const idol::SOSCtr &t_ctr) const {
+    const auto& version = m_env.version(*this, t_ctr);
+    return version.is_sos1();
+}
+
+unsigned int idol::Model::get_sosctr_index(const idol::SOSCtr &t_ctr) const {
+    const auto& version = m_env.version(*this, t_ctr);
+    return version.index();
+}
+
+idol::SOSCtr idol::Model::get_sosctr_by_index(unsigned int t_index) const {
+    return m_sosconstraints.at(t_index);
 }

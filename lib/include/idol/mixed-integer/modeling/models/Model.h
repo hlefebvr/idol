@@ -25,6 +25,7 @@
 #include "idol/general/optimizers/Timer.h"
 #include "idol/general/utils/LimitedWidthStream.h"
 #include "idol/mixed-integer/modeling/constraints/QCtr.h"
+#include "idol/mixed-integer/modeling/constraints/SOSCtr.h"
 
 namespace idol {
     static const unsigned int MasterId = std::numeric_limits<unsigned int>::max();
@@ -54,6 +55,7 @@ private:
     std::vector<Var> m_variables;
     std::vector<Ctr> m_constraints;
     std::vector<QCtr> m_qconstraints;
+    std::vector<SOSCtr> m_sosconstraints;
 
     Storage m_storage;
     mutable bool m_has_minor_representation = false;
@@ -134,6 +136,18 @@ public:
 
     [[nodiscard]] ConstIteratorForward<std::vector<QCtr>> qctrs() const { return m_qconstraints; }
 
+    SOSCtr add_sosctr(bool t_is_sos1, std::vector<Var> t_vars, std::vector<double> t_weights, std::string t_name = "");
+
+    void add(const SOSCtr& t_ctr, bool t_is_sos1, const std::vector<Var>& t_vars, const std::vector<double>& t_weights);
+
+    void add(const SOSCtr& t_ctr);
+
+    void remove(const SOSCtr& t_ctr);
+
+    [[nodiscard]] ConstIteratorForward<std::vector<SOSCtr>> sosctrs() const { return m_sosconstraints; }
+
+    [[nodiscard]] bool has(const SOSCtr& t_ctr) const;
+
     [[nodiscard]] unsigned int id() const { return m_id; }
 
     [[nodiscard]] Model* clone() const;
@@ -145,6 +159,8 @@ public:
     void reserve_ctrs(unsigned int t_size);
 
     void reserve_qctrs(unsigned int t_size);
+
+    void reserve_sos_ctrs(unsigned int t_size);
 
     [[nodiscard]] Env& env() const { return const_cast<Model*>(this)->m_env; }
 
@@ -206,9 +222,13 @@ public:
 
     [[nodiscard]] Var get_var_by_index(unsigned int t_index) const;
 
+    [[nodiscard]] SOSCtr get_sosctr_by_index(unsigned int t_index) const;
+
     [[nodiscard]] unsigned int get_ctr_index(const Ctr& t_ctr) const;
 
     [[nodiscard]] unsigned int get_qctr_index(const QCtr& tctr) const;
+
+    [[nodiscard]] unsigned int get_sosctr_index(const SOSCtr& t_ctr) const;
 
     [[nodiscard]] CtrType get_ctr_type(const Ctr& t_ctr) const;
 
@@ -261,6 +281,12 @@ public:
     void set_var_column(const Var& t_var, const LinExpr<Ctr>& t_column);
 
     void set_var_column(const Var& t_var, LinExpr<Ctr>&& t_column);
+
+    const std::vector<Var>& get_sosctr_vars(const SOSCtr& t_ctr) const;
+
+    const std::vector<double>& get_sosctr_weights(const SOSCtr& t_ctr) const;
+
+    [[nodiscard]] bool is_sos1(const SOSCtr& t_ctr) const;
 
     [[nodiscard]] unsigned int get_n_solutions() const;
 
@@ -567,6 +593,19 @@ namespace idol {
             stream << "Binaries\n";
             for (const auto& var : binaries) {
                 stream << '\t' << var.name() << std::endl;
+            }
+        }
+
+        if (t_model.sosctrs().size() > 0) {
+            stream << "SOS\n";
+            for (const auto& sos : t_model.sosctrs()) {
+                stream << '\t' << sos << ": ";
+                const auto& vars = t_model.get_sosctr_vars(sos);
+                const auto& weights = t_model.get_sosctr_weights(sos);
+                for (unsigned int i = 0; i < vars.size(); ++i) {
+                    stream << vars[i] << " " << weights[i] << " ";
+                }
+                stream << std::endl;
             }
         }
 

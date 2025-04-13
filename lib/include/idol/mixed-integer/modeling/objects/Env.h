@@ -16,6 +16,8 @@
 #include "idol/mixed-integer/modeling/constraints/QCtrVersion.h"
 #include "idol/mixed-integer/modeling/constraints/QCtr.h"
 #include "idol/mixed-integer/modeling/constraints/TempQCtr.h"
+#include "idol/mixed-integer/modeling/constraints/SOSCtrVersion.h"
+#include "idol/mixed-integer/modeling/constraints/SOSCtr.h"
 
 namespace idol {
 
@@ -57,6 +59,7 @@ class idol::impl::Env {
     std::list<Versions<VarVersion>> m_variables; /// Every version of each variable in the environment is stored here
     std::list<Versions<CtrVersion>> m_constraints; /// Every version of each constraint in the environment is stored here
     std::list<Versions<QCtrVersion>> m_qconstraints; /// Every version of each quadratic constraint in the environment is stored here
+    std::list<Versions<SOSCtrVersion>> m_sosconstraints; /// Every version of each sos constraint in the environment is stored here
 
     template<class T, class VersionT, class ...ArgsT>
     ObjectId<VersionT> create(std::string t_name, const std::string& t_default_name, std::list<Versions<VersionT>>& t_container, ArgsT&& ...t_args) {
@@ -76,7 +79,7 @@ protected:
 
     template<class T, class ...ArgsT>
     void create_version(const Model& t_model, const T& t_object, unsigned int t_index, ArgsT&& ...t_args) {
-        t_object.create_version(t_model, t_index, std::forward<ArgsT>(t_args)...);
+        t_object.create_version(t_model, t_index, std::forward<ArgsT&&>(t_args)...);
     }
 
     template<class T>
@@ -109,6 +112,10 @@ protected:
 
     ObjectId<QCtrVersion> create_qctr(std::string t_name, TempQCtr&& t_temp_ctr) {
         return create<QCtr>(std::move(t_name), "c", m_qconstraints, std::move(t_temp_ctr));
+    }
+
+    ObjectId<SOSCtrVersion> create_sosctr(std::string t_name, bool t_is_sos1, std::vector<Var>&& t_vars, std::vector<double>&& t_weights) {
+        return create<SOSCtr>(std::move(t_name), "sos", m_sosconstraints, t_is_sos1, std::move(t_vars), std::move(t_weights));
     }
 
 public:
@@ -167,6 +174,7 @@ public:
     friend class Var;
     friend class Ctr;
     friend class QCtr;
+    friend class SOSCtr;
     friend class impl::Annotation;
 };
 
