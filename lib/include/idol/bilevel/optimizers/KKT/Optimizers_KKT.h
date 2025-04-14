@@ -7,6 +7,7 @@
 
 #include "idol/bilevel/modeling/Description.h"
 #include "idol/general/optimizers/Algorithm.h"
+#include "idol/mixed-integer/modeling/models/KKT.h"
 
 namespace idol::Optimizers::Bilevel {
     class KKT;
@@ -16,14 +17,14 @@ class idol::Optimizers::Bilevel::KKT : public Algorithm {
     const idol::Bilevel::Description& m_description;
     std::unique_ptr<OptimizerFactory> m_deterministic_optimizer;
     std::unique_ptr<Model> m_deterministic_model;
-    std::optional<Annotation<double>> m_big_M;
+    std::unique_ptr<idol::Reformulators::KKT::BoundProvider> m_bound_provider;
 
     void throw_if_no_deterministic_model() const;
 public:
     KKT(const Model& t_parent,
         const idol::Bilevel::Description& t_description,
         const OptimizerFactory& t_deterministic_optimizer,
-        const std::optional<Annotation<double>>& t_big_M);
+        const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider);
 
     [[nodiscard]] std::string name() const override;
 

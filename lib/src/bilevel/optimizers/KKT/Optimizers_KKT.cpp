@@ -7,11 +7,11 @@
 idol::Optimizers::Bilevel::KKT::KKT(const Model& t_parent,
                                     const idol::Bilevel::Description &t_description,
                                     const OptimizerFactory &t_deterministic_optimizer,
-                                    const std::optional<Annotation<double>>& t_big_M)
+                                    const std::unique_ptr<Reformulators::KKT::BoundProvider>& t_bound_provider)
         : Algorithm(t_parent),
           m_description(t_description),
           m_deterministic_optimizer(t_deterministic_optimizer.clone()),
-          m_big_M(t_big_M) {
+          m_bound_provider(t_bound_provider ? t_bound_provider->clone() : nullptr) {
 
 }
 
@@ -91,8 +91,8 @@ void idol::Optimizers::Bilevel::KKT::hook_optimize() {
 
     if (!m_deterministic_model) {
 
-        if (m_big_M) {
-            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description, *m_big_M));
+        if (m_bound_provider) {
+            m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description, *m_bound_provider));
         } else {
             m_deterministic_model = std::make_unique<Model>(idol::Bilevel::KKT::make_model(parent(), m_description));
         }

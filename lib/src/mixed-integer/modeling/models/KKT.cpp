@@ -590,8 +590,8 @@ void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination)
 
 }
 
-void
-idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination, const idol::Annotation<double> &t_big_M) {
+void idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination,
+                                                     idol::Reformulators::KKT::BoundProvider &t_bound_provider) {
 
     add_primal_variables(t_destination);
     add_dual_variables(t_destination);
@@ -619,11 +619,11 @@ idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination, cons
         const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_" + ctr.name());
 
         if (type == LessOrEqual) {
-            t_destination.add_ctr(dual_var >= -ctr.get(t_big_M) * z);
-            t_destination.add_ctr(row - rhs >= -ctr.get(t_big_M) * (1 - z));
+            t_destination.add_ctr(dual_var >= t_bound_provider.get_ctr_dual_lb(ctr) * z);
+            t_destination.add_ctr(row - rhs >= t_bound_provider.get_ctr_slack_lb(ctr) * (1 - z));
         } else {
-            t_destination.add_ctr(dual_var <= ctr.get(t_big_M) * z);
-            t_destination.add_ctr(row - rhs <= ctr.get(t_big_M) * (1 - z));
+            t_destination.add_ctr(dual_var <= t_bound_provider.get_ctr_dual_ub(ctr) * z);
+            t_destination.add_ctr(row - rhs <= t_bound_provider.get_ctr_slack_ub(ctr) * (1 - z));
         }
 
     }
@@ -635,19 +635,28 @@ idol::Reformulators::KKT::add_kkt_reformulation(idol::Model &t_destination, cons
         const auto index = m_primal.get_var_index(var);
         const double lb = m_primal.get_var_lb(var);
         const double ub = m_primal.get_var_ub(var);
+        const double slack_bound = ub - lb;
+
+        if (is_neg_inf(lb) && is_pos_inf(ub)) {
+            continue;
+        }
+
+        if (is_neg_inf(lb) || is_pos_inf(ub)) {
+            throw Exception("KKT reformulation requires finite bounds on variables.");
+        }
 
         if (!is_neg_inf(lb)) {
             const auto& dual_var = *m_dual_variables_for_lower_bounds[index];
             const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_lb_" + var.name());
-            t_destination.add_ctr(dual_var <= var.get(t_big_M) * z);
-            t_destination.add_ctr(var - lb <= var.get(t_big_M) * (1 - z));
+            t_destination.add_ctr(dual_var <= t_bound_provider.get_var_lb_dual_ub(var) * z);
+            t_destination.add_ctr(var - lb <= slack_bound * (1 - z));
         }
 
         if (!is_pos_inf(ub)) {
             const auto& dual_var = *m_dual_variables_for_upper_bounds[index];
             const auto z = t_destination.add_var(0, 1, Binary, 0, "complementarity_ub_" + var.name());
-            t_destination.add_ctr(dual_var >= -var.get(t_big_M) * z);
-            t_destination.add_ctr(var - ub >= -var.get(t_big_M) * (1 - z));
+            t_destination.add_ctr(dual_var >= t_bound_provider.get_var_ub_dual_lb(var) * z);
+            t_destination.add_ctr(var - ub >= -slack_bound * (1 - z));
         }
 
     }

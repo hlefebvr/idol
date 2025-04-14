@@ -13,10 +13,23 @@
 
 using namespace idol;
 
+// This is a dummy example which returns 1e3 for all bounds.
+class MyBoundProvider : public idol::Reformulators::KKT::BoundProvider {
+public:
+    double get_ctr_dual_lb(const Ctr &t_ctr) override { return -1e3; }
+    double get_ctr_dual_ub(const Ctr &t_ctr) override { return 1e3; }
+    double get_ctr_slack_lb(const Ctr &t_ctr) override { return -1e3; }
+    double get_ctr_slack_ub(const Ctr &t_ctr) override { return 1e3; }
+    double get_var_lb_dual_ub(const Var &t_var) override { return 1e3; }
+    double get_var_ub_dual_lb(const Var &t_var) override { return -1e3; }
+    [[nodiscard]] MyBoundProvider *clone() const override { return new MyBoundProvider(*this); }
+};
+
 int main(int t_argc, const char** t_argv) {
 
     /*
-        This example is taken from Kleinert, T. (2021). “Algorithms for Mixed-Integer Bilevel Problems with Convex Followers.” PhD thesis.
+        This example is taken from Kleinert, T. (2021). “Algorithms for Mixed-Integer Bilevel Problems with Convex Followers.” PhD thesis; see Example 1.
+
         min x + 6 y
         s.t.
 
@@ -56,8 +69,9 @@ int main(int t_argc, const char** t_argv) {
     description.make_lower_level(follower_c2);
     description.make_lower_level(follower_c3);
     description.make_lower_level(follower_c4);
-    
-    auto single_level = Bilevel::KKT::make_model(high_point_relaxation, description);
+
+    MyBoundProvider bound_provider;
+    auto single_level = Bilevel::KKT::make_model(high_point_relaxation, description, bound_provider);
     single_level.use(Gurobi());
     single_level.optimize();
 

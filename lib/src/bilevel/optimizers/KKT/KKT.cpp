@@ -9,6 +9,13 @@ idol::Bilevel::KKT::KKT(const Bilevel::Description &t_description) : m_descripti
 
 }
 
+idol::Bilevel::KKT::KKT(const idol::Bilevel::Description &t_description,
+                        const idol::Reformulators::KKT::BoundProvider &t_bound_provider)
+                        : m_description(&t_description),
+                          m_bound_provider(t_bound_provider.clone()) {
+
+}
+
 idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) const {
 
     if (!m_single_level_optimizer) {
@@ -22,7 +29,7 @@ idol::Optimizer *idol::Bilevel::KKT::operator()(const idol::Model &t_model) cons
     auto* result = new Optimizers::Bilevel::KKT(t_model,
                                                 *m_description,
                                                 *m_single_level_optimizer,
-                                                m_big_M);
+                                                m_bound_provider);
 
     handle_default_parameters(result);
 
@@ -33,13 +40,13 @@ idol::OptimizerFactory *idol::Bilevel::KKT::clone() const {
     return new KKT(*this);
 }
 
-idol::Bilevel::KKT &idol::Bilevel::KKT::with_big_M(const idol::Annotation<double> &t_big_M) {
+idol::Bilevel::KKT &idol::Bilevel::KKT::with_bound_provider(const Reformulators::KKT::BoundProvider &t_bound_provider) {
 
-    if (m_big_M.has_value()) {
+    if (m_bound_provider) {
         throw Exception("Big M has already been set.");
     }
 
-    m_big_M = t_big_M;
+    m_bound_provider.reset(t_bound_provider.clone());
 
     return *this;
 }
@@ -57,7 +64,7 @@ idol::Bilevel::KKT::KKT(const idol::Bilevel::KKT &t_src)
         : OptimizerFactoryWithDefaultParameters<KKT>(t_src),
           m_description(t_src.m_description),
           m_single_level_optimizer(t_src.m_single_level_optimizer ? t_src.m_single_level_optimizer->clone() : nullptr),
-          m_big_M(t_src.m_big_M) {
+          m_bound_provider(t_src.m_bound_provider ? t_src.m_bound_provider->clone() : nullptr) {
 
 }
 
@@ -83,7 +90,7 @@ idol::Bilevel::KKT::make_model(const idol::Model &t_model, const idol::Bilevel::
 
 idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
                                            const idol::Bilevel::Description &t_description,
-                                           const idol::Annotation<double> &t_big_M) {
+                                           Reformulators::KKT::BoundProvider &t_bound_provider) {
 
     if (t_model.get_obj_sense() != Minimize) {
         throw Exception("Only minimization problems are supported.");
@@ -95,7 +102,7 @@ idol::Model idol::Bilevel::KKT::make_model(const idol::Model &t_model,
 
     Model result(env);
     reformulator.add_coupling_variables(result);
-    reformulator.add_kkt_reformulation(result, t_big_M);
+    reformulator.add_kkt_reformulation(result, t_bound_provider);
     reformulator.add_coupling_constraints(result);
     result.set_obj_expr(t_model.get_obj_expr());
 

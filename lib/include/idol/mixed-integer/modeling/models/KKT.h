@@ -45,6 +45,8 @@ class idol::Reformulators::KKT {
     [[nodiscard]] std::pair<double, double> bounds_for_dual_variable(idol::CtrType t_type) const;
     void create_dual_constraints();
 public:
+    class BoundProvider;
+
     KKT(const Model& t_parent,
               const QuadExpr<Var, double>& t_primal_objective,
               const std::function<bool(const Var&)>& t_primal_variable_indicator = [](const Var&) { return true; },
@@ -105,7 +107,30 @@ public:
      */
     void add_kkt_reformulation(idol::Model &t_destination);
 
-    void add_kkt_reformulation(idol::Model &t_destination, const Annotation<double>& t_big_M);
+    void add_kkt_reformulation(idol::Model &t_destination, BoundProvider& t_bound_provider);
+};
+
+class idol::Reformulators::KKT::BoundProvider {
+    const Model* m_model = nullptr;
+    const Bilevel::Description* m_bilevel_description = nullptr;
+    virtual void set_model(const Model& t_hpr, const Bilevel::Description& t_bilevel_description) {
+        m_model = &t_hpr;
+        m_bilevel_description = &t_bilevel_description;
+    }
+public:
+    virtual ~BoundProvider() = default;
+
+    [[nodiscard]] const Model& model() const { return *m_model; }
+    [[nodiscard]] const Bilevel::Description& bilevel_description() const { return *m_bilevel_description; }
+
+    virtual double get_ctr_dual_lb(const Ctr& t_ctr) = 0;
+    virtual double get_ctr_dual_ub(const Ctr& t_ctr) = 0;
+    virtual double get_ctr_slack_lb(const Ctr& t_ctr) = 0;
+    virtual double get_ctr_slack_ub(const Ctr& t_ctr) = 0;
+    virtual double get_var_lb_dual_ub(const Var& t_var) = 0;
+    virtual double get_var_ub_dual_lb(const Var& t_var) = 0;
+
+    [[nodiscard]] virtual BoundProvider* clone() const = 0;
 };
 
 #endif //IDOL_KKT_H

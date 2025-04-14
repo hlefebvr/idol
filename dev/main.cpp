@@ -128,8 +128,7 @@ int main(int t_argc, const char** t_argv) {
     optimizer.with_optimizer(Gurobi());
 
     model.use(optimizer);
-
-
+    
     ////// START TEST DISJUNCTION //////
     std::vector<std::list<PrimalPoint>> disjunction(K);
     PrimalPoint point;
