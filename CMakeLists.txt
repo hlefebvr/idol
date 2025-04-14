@@ -21,5 +21,4 @@ elseif(${TEST_COVERAGE})
     message(FATAL "Must have BUILD_TESTS=YES in order to build code coverage")
 endif()
 
-add_custom_target(doc COMMAND sphinx-build -M html . _build WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/docs)
-
+add_custom_target(doc COMMAND ./build_docs.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts)

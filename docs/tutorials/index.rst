@@ -14,7 +14,7 @@ Mixed-Integer Optimization
     :glob:
     :titlesonly:
 
-    mixed-integer-programming/index
+    mixed-integer/index
 
 Bilevel Optimization
 --------------------
@@ -24,7 +24,7 @@ Bilevel Optimization
     :glob:
     :titlesonly:
 
-    bilevel-optimization/index
+    bilevel/index
 
 Robust Optimization
 -------------------
@@ -34,7 +34,7 @@ Robust Optimization
     :glob:
     :titlesonly:
 
-    robust-optimization/index
+    robust/index
 
 Artificial Intelligence
 -----------------------
