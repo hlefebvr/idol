@@ -1,0 +1,79 @@
+\section{Example: The facility location problem with facility disruption}
+
+\subsection{Problem statement}
+
+\begin{subequations}
+    \begin{align}
+        \min_{x,y} \quad & \sum_{i\in V_1} f_ix_i + \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij} \\
+        \text{s.t.} \quad & \sum_{i\in V_1} y_{ij} = 1, \quad \text{for all } j\in V_2, \label{eq:ccg:flp:assignment} \\
+        & \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, \quad \text{for all } i\in V_1, \label{eq:ccg:flp:capacity} \\
+        & y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \label{eq:ccg:flp:non-negative} \\
+        & x_i\in\{0,1\}, \quad \text{for all } i\in V_1.
+    \end{align}
+\end{subequations}
+
+$$Y(x,u) \define \Defset{ y\in\mathbb{R}^{|V_1|\times|V_2|} }{
+\text{\eqref{eq:ccg:flp:assignment}--\eqref{eq:ccg:flp:non-negative} and }
+y_{ij} \le 1 - \xi_i, \quad \text{for all }i\in V_1 }.$$
+
+$$U \define \Defset{ u\in\{0,1\}^{|V_1|} }{ \sum_{i\in V_1} u_i \le \Gamma }.$$
+
+\begin{equation*}
+    \min_{x\in\{0,1\}^{|V_1|}} \Set{
+        \sum_{i\in V_1} f_ix_i +
+        \max_{u\in U} \ 
+        \min_{ y\in Y(x,u) } \ 
+        \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}
+    }
+\end{equation*}
+
+\subsection{Solving the separation problem}
+
+The KKT conditions read
+\begin{align*}
+    \text{primal feasibility} = & 
+    \begin{cases}
+        \sum_{i\in V_1} y_{ij} = 1, & \text{for all } j\in V_2, \\
+        \sum_{j\in V_2} d_jy_{ij} \le q_ix_i, & \text{for all } i\in V_1, \\
+        y_{ij} \le 1 - \xi_i, & \text{for all } i\in V_1, j\in V_2, \\
+        y_{ij} \ge 0, & \text{for all } i\in V_1, j\in V_2,
+    \end{cases} \\
+    \text{dual feasibility} = & 
+    \begin{cases}
+        \beta_i, \gamma_{ij} \le 0, &\text{for all } i\in V_1, j\in V_2, \\
+        \delta_{ij} \ge 0, &\text{for all } i\in V_1, j\in V_2,
+    \end{cases} \\
+    \text{stationarity} = & 
+    \begin{cases}
+        \alpha_j + d_j\beta_i + \gamma_{ij} + \delta_{ij} = c_{ij}, & \text{for all } i\in V_1, j\in V_2,
+    \end{cases} \\
+    \text{complementarity} = & 
+    \begin{cases}
+        \left( \sum_{j\in V_2} d_jy_{ij} - q_ix_i \right) \beta_i \le 0, & \text{for all } i\in V_1, \\
+        \left( y_{ij} - 1 + \xi_i \right) \gamma_{ij} \le 0, & \text{for all } i\in V_1, j\in V_2, \\
+        y_{ij}\delta_{ij} \le 0, & \text{for all } i\in V_1, j\in V_2.
+    \end{cases}
+\end{align*}
+
+Strong duality implies
+\begin{equation}
+    \sum_{j\in V_2} \alpha_j + \sum_{i\in V_1} q_ix_i\beta_i + \sum_{i\in V_1}\sum_{j\in V_2} \left( 1 - \xi_i \right)\gamma_{ij}
+    = \sum_{i\in V_1} \sum_{j\in V_2} c_{ij} y_{ij}.
+\end{equation}
+
+\subsection*{Bounds on $\alpha_j$} 
+
+\begin{proposition}
+    $\alpha \ge 0$.
+\end{proposition}
+\begin{proof}
+    We start with the lower bound. By the stationaty conditions, the following
+    holds.
+    \begin{align*}
+        & \alpha_j y_{ij} + d_j \underbrace{\beta_j y_{ij}}_{\le 0} + \underbrace{\gamma_{ij} y_{ij}}_{\le 0} + \underbrace{\delta_{ij} y_{ij}}_{= 0} 
+        = c_{ij} y_{ij}, \quad \text{for all } i\in V_1, j\in V_2,  \\
+        \implies\quad & \alpha_j y_{ij} \ge c_{ij} y_{ij} \ge 0, \quad \text{for all } i\in V_1, j\in V_2, \\
+        \implies\quad & \sum_{i\in V_1} \alpha_j y_{ij} \ge 0, \quad\text{for all } j\in V_2, \\
+        \implies\quad & \alpha_j \underbrace{\sum_{i\in V_1} y_{ij}}_{=1} \ge 0, \quad \text{for all } j\in V_2.
+    \end{align*}
+\end{proof}

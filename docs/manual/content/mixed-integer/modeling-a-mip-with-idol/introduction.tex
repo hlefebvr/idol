@@ -382,14 +382,16 @@ large optimization problems.
 Variables are the decision-making elements of an optimization problem. These
 are the quantities that we aim to determine in order to optimize an objective
 function, subject to a set of constraints. In \textsf{idol}, they are
-represented by the \textsf{Var} class. Creating variables can be done in
-mainly two ways. The first one is through the \textsf{Var} constructor and the
-\textsf{Model::add()} method, while the second uses the
-\textsf{Model::add\_var(...)} methods.
+represented by the \textsf{Var} class. 
 
-We start with the fist method which uses the \textsf{Var} constructor. This
-method is less direct, but more informative on how optimization objects are
-managed in~\textsf{idol}. We focus on the following constructor:
+\subsection{Creating variables}
+
+Creating variables can be done in mainly two ways. The first one is through
+the \textsf{Var} constructor and the \textsf{Model::add()} method, while the
+second uses the \textsf{Model::add\_var(...)} methods. We start with the fist
+method which uses the \textsf{Var} constructor. This method is less direct,
+but more informative on how optimization objects are managed in~\textsf{idol}.
+We focus on the following constructor:
 \begin{center}
     \textsf{Var(Env\&, double, double, VarType, double, std::string)}.
 \end{center}
@@ -503,6 +505,8 @@ Naturally, it is also possible to achieve this goal through methods of the
     const auto x = model.add_vars(Dim<2>(2,3), 0, Inf, Continuous, "x");
 \end{lstlisting}
 
+\subsection{Removing variables}
+
 Once a variable has been added to a model, it can also be removed from it. We
 use the \textsf{Model::remove(const Var\&)} method for this. Calling this
 method will remove the variable from the model and update all linear and
@@ -515,16 +519,22 @@ possible to remove a variable which is involved in an SOS-type constraint.
 This is not limiting since SOS-type constraints can be removed and added
 again.
 
-Next is list of methods which can be used to retrieve information about
-variables in a model.
+\subsection{Accessing variables}
+
+Variables have two immutable attributes: a name, which is the given name at
+creation time of the variable and an id, which is unique in the environment.
+Other attributes are tied to a specific model and can be accessed through the
+model's methods \textsf{Model::get\_var\_Y} where \textsf{Y} is the name of
+that attribute. Next is list of methods which can be used to retrieve
+information about variables in a model.
 %
 \begin{description}
     \item[\textsf{double Model::get\_var\_lb(const Var\&)}]\hphantom{.}\\
-    Returns the lower bound of the variable given as parameter. May return any
-    value between \textsf{-idol::Inf} and \textsf{idol::Inf}.
+    Returns the lower bound of the variable given as parameter. \\
+    May return any value between \textsf{-idol::Inf} and \textsf{idol::Inf}.
     \item[\textsf{double Model::get\_var\_ub(const Var\&)}]\hphantom{.}\\
-    Returns the upper bound of the variable given as parameter. May return any
-    value between \textsf{-idol::Inf} and \textsf{idol::Inf}.
+    Returns the upper bound of the variable given as parameter. \\ 
+    May return any value between \textsf{-idol::Inf} and \textsf{idol::Inf}.
     \item[\textsf{double Model::get\_var\_obj(const Var\&)}]\hphantom{.}\\
     Returns the objective coefficient in the linear part of the objective
     function.
@@ -534,25 +544,64 @@ variables in a model.
     \item[\textsf{LinExpr<Ctr> Model::get\_var\_column(const Var\&)}]\hphantom{.}\\
     Returns the associated column in the LP matrix.
     \item[\textsf{unsigned int Model::get\_var\_index(const Var\&)}]\hphantom{.}\\
-    Returns the index of the variable. Note that this index may change if
-    variables are removed.
+    Returns the index of the variable. \\ 
+    Note that this index may change if variables are removed.
 \end{description}
 
-Similarly, here is a list of methods to be used for modifying attributes of a
-variable in a model.
+We now give an example which prints out all free variables. 
+
+\begin{lstlisting}
+    for (const auto& var : model.vars()) {
+
+        const double lb = model.get_var_lb(var);
+        const double ub = model.get_var_ub(var);
+
+        if (is_neg_inf(lb) && is_pos_inf(ub)) {
+            std::cout << var.name() << " is free." << std::endl;
+        }
+
+    }
+\end{lstlisting}
+
+One final note regarding indices. Though they may change over time, e.g., if
+variables are removed from a model, it can still be used to access variables
+by using the \textsf{Model::get\_var\_by\_index} method. The following code
+snippet shows an alternative way to iterate over variables in a model. 
+
+\begin{lstlisting}
+    for (unsigned int i = 0, n = model.vars().size(); i < n; ++i) {
+        
+        // Get the variable by index
+        const auto& var = model.get_var_by_index(i);
+        
+        // Print out its name
+        std::cout << var.name() << std::endl;
+
+    }
+\end{lstlisting}
+
+\subsection{Modifying variables}
+
+Some of the attributes of a variable may be directly changed through the
+model's methods \textsf{Model::set\_var\_Y}. Here again, \textsf{Y} is the
+name of the attribute you wish to modify. Here is a list of methods to be used
+for modifying attributes of a variable in a model.
 %
 \begin{description}
-    \item[\textsf{void set\_var\_lb(const Var\&, double)}]\hphantom{.}\\ 
-    Sets the lower bound of a variable. The new lower bound can be
-    \textsf{-idol::Inf}, \textsf{idol::Inf} or any double in between. 
-    \item[\textsf{void set\_var\_ub(const Var\&, double)}]\hphantom{.}\\ 
-    Sets the lower bound of a variable. The new lower bound can be
-    \textsf{-idol::Inf}, \textsf{idol::Inf} or any double in between. 
-    \item[\textsf{void set\_var\_obj(const Var\&, double)}]\hphantom{.}\\ 
+    \item[\textsf{void Model::set\_var\_lb(const Var\&, double)}]\hphantom{.}\\ 
+    Sets the lower bound of a variable. \\
+    The new lower bound can be \textsf{-idol::Inf}, \textsf{idol::Inf} or any
+    double in between. 
+    \item[\textsf{void Model::set\_var\_ub(const Var\&, double)}]\hphantom{.}\\ 
+    Sets the lower bound of a variable. \\
+    The new lower bound can be \textsf{-idol::Inf}, \textsf{idol::Inf} or any
+    double in between. 
+    \item[\textsf{void Model::set\_var\_obj(const Var\&, double)}]\hphantom{.}\\ 
     Sets the linear coefficient in the objective function. 
-    \item[\textsf{void set\_var\_type(const Var\&, VarType)}]\hphantom{.}\\ 
-    Sets the type of a variable. Changing the type of variable does not affect its bounds. 
-    \item[\textsf{void set\_var\_column(const Var\&, const LinExpr<Ctr>\&)}]\hphantom{.}\\ 
+    \item[\textsf{void Model::set\_var\_type(const Var\&, VarType)}]\hphantom{.}\\ 
+    Sets the type of a variable. \\
+    Changing the type of variable does not affect its bounds. 
+    \item[\textsf{void Model::set\_var\_column(const Var\&, const LinExpr<Ctr>\&)}]\hphantom{.}\\ 
     Sets the column of a variable in the LP matrix. 
 \end{description}
 
